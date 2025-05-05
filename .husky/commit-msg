@@ -1,0 +1,3 @@
+# Seu comando existente:
+
+pnpm commitlint --edit "$1"

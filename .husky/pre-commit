@@ -1,0 +1,12 @@
+echo "Executando verificações pré-commit..."
+
+# Exemplo: Rodar o linter em todo o projeto
+# pnpm lint
+
+# Exemplo: Rodar verificação de tipos
+# pnpm typecheck
+
+# Exemplo: Rodar testes (talvez você não queira rodar TODOS sempre)
+# pnpm test
+
+echo "Verificações pré-commit concluídas!"
