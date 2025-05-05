@@ -30,11 +30,16 @@ export class ListaMaterialParserService implements IHtmlParser {
     };
 
     // Encontrar a tabela principal pela classe e caption
-    const $mainTable = $('table.listagem').filter((i, table) => {
+    const $mainTable = $('table.listagem')
+      .filter((i, table) => {
         const $caption = $(table).find('> caption.listagem');
         // Adaptado para a caption "Acompanhamento de Requisições"
-        return $caption.length > 0 && $caption.text().includes('Acompanhamento de Requisições');
-    }).first();
+        return (
+          $caption.length > 0 &&
+          $caption.text().includes('Acompanhamento de Requisições')
+        );
+      })
+      .first();
 
     if ($mainTable.length > 0) {
       result.data.items = this.parseListTable($mainTable, $);
@@ -94,10 +99,7 @@ export class ListaMaterialParserService implements IHtmlParser {
    * @param $ O contexto CheerioAPI global.
    * @returns Um array de objetos representando os itens da lista.
    */
-  private parseListTable(
-    $table: cheerio.Cheerio,
-    $: cheerio.Root,
-  ): object[] {
+  private parseListTable($table: cheerio.Cheerio, $: cheerio.Root): object[] {
     const headers: (string | null)[] = [];
     // O header nesta tabela usa <td> com <b> dentro
     const headerCells = $table.find('> thead > tr > td');
@@ -107,23 +109,23 @@ export class ListaMaterialParserService implements IHtmlParser {
       // Tenta pegar o texto do <b>, senão do <td>
       let rawHeader = this.cleanValue($td.find('b').first().text());
       if (!rawHeader) {
-          rawHeader = this.cleanValue($td.text());
+        rawHeader = this.cleanValue($td.text());
       }
 
       // Ignora headers vazios ou com apenas   (colunas de icones)
       if (rawHeader && rawHeader !== ' ') {
-          // Normalização específica (ex: Grupo de Material)
-          if (rawHeader.toLowerCase() === 'grupo de material') {
-              headers.push('grupoMaterial');
-          } else if (rawHeader.toLowerCase() === 'unidade requisitante') {
-              headers.push('unidadeRequisitante');
-          } else if (rawHeader.toLowerCase() === 'unidade de custo') {
-              headers.push('unidadeCusto');
-          } else if (rawHeader.toLowerCase() === 'tipo da requisicao') {
-              headers.push('tipoRequisicao');
-          } else {
-              headers.push(this.toCamelCase(rawHeader));
-          }
+        // Normalização específica (ex: Grupo de Material)
+        if (rawHeader.toLowerCase() === 'grupo de material') {
+          headers.push('grupoMaterial');
+        } else if (rawHeader.toLowerCase() === 'unidade requisitante') {
+          headers.push('unidadeRequisitante');
+        } else if (rawHeader.toLowerCase() === 'unidade de custo') {
+          headers.push('unidadeCusto');
+        } else if (rawHeader.toLowerCase() === 'tipo da requisicao') {
+          headers.push('tipoRequisicao');
+        } else {
+          headers.push(this.toCamelCase(rawHeader));
+        }
       } else {
         headers.push(null); // Marca como nulo para ignorar colunas de icones
       }
@@ -158,31 +160,32 @@ export class ListaMaterialParserService implements IHtmlParser {
         // --------------------------------------
 
         if (headerIndex < headers.length) {
-            const key = headers[headerIndex];
-            if (key) { // Apenas processa se o header não for nulo
-                // Limpa o valor, considerando texto dentro de tooltips
-                let value = this.cleanValue($cell.html()); // Usa .html() para pegar texto antes de <br> e limpar
-                if (!value) {
-                    value = this.cleanValue($cell.text()); // Fallback
-                }
-
-                 // Extrair informação do tooltip se existir e for útil (ex: usuário)
-                 const tooltip = $cell.attr('onmouseover');
-                 if(tooltip && key === 'usuario') {
-                     const tooltipMatch = tooltip.match(/ddrivetip\('([^']+)'/);
-                     if(tooltipMatch && tooltipMatch[1]) {
-                         rowData['usuarioDetalhes'] = this.cleanValue(tooltipMatch[1]);
-                     }
-                 }
-
-                rowData[key] = value;
-                if (value) {
-                    hasData = true;
-                }
+          const key = headers[headerIndex];
+          if (key) {
+            // Apenas processa se o header não for nulo
+            // Limpa o valor, considerando texto dentro de tooltips
+            let value = this.cleanValue($cell.html()); // Usa .html() para pegar texto antes de <br> e limpar
+            if (!value) {
+              value = this.cleanValue($cell.text()); // Fallback
             }
-            headerIndex++; // Avança para o próximo header esperado
+
+            // Extrair informação do tooltip se existir e for útil (ex: usuário)
+            const tooltip = $cell.attr('onmouseover');
+            if (tooltip && key === 'usuario') {
+              const tooltipMatch = tooltip.match(/ddrivetip\('([^']+)'/);
+              if (tooltipMatch && tooltipMatch[1]) {
+                rowData['usuarioDetalhes'] = this.cleanValue(tooltipMatch[1]);
+              }
+            }
+
+            rowData[key] = value;
+            if (value) {
+              hasData = true;
+            }
+          }
+          headerIndex++; // Avança para o próximo header esperado
         } else {
-             // this.logger.warn(`Célula extra encontrada na linha ${i}, índice ${index}. Headers definidos: ${headers.length}`);
+          // this.logger.warn(`Célula extra encontrada na linha ${i}, índice ${index}. Headers definidos: ${headers.length}`);
         }
       }); // Fim each cell
 
@@ -190,10 +193,12 @@ export class ListaMaterialParserService implements IHtmlParser {
       if (hasData && Object.keys(rowData).length > 0 && idFound) {
         data.push(rowData);
       } else if (hasData && !idFound) {
-          this.logger.warn(`Row ${i} skipped because ID hidden input was not found, although other data existed.`, JSON.stringify(rowData));
+        this.logger.warn(
+          `Row ${i} skipped because ID hidden input was not found, although other data existed.`,
+          JSON.stringify(rowData),
+        );
       }
     }); // Fim each row
-
 
     return data;
   }

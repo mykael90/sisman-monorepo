@@ -15,16 +15,20 @@
     "prisma:studio": "pnpm --filter @sisman/prisma db:studio",
     "prisma:db:push": "pnpm --filter @sisman/prisma db:push",
     "prisma:db:pull": "pnpm --filter @sisman/prisma db:pull",
-    "typecheck": "pnpm run --recursive typecheck"
+    "typecheck": "pnpm run --recursive typecheck",
+    "prepare": "husky"
   },
   "devDependencies": {
-    "typescript": "^5.8.3",
-    "ts-node": "^10.9.2",
-    "eslint": "^9.25.1",
-    "prettier": "^3.5.3",
-    "eslint-config-prettier": "^10.1.2",
+    "@commitlint/cli": "^19.8.0",
+    "@commitlint/config-conventional": "^19.8.0",
     "@eslint/eslintrc": "^3",
-    "@types/node": "^22.15.3"
+    "@types/node": "^22.15.3",
+    "eslint": "^9.25.1",
+    "eslint-config-prettier": "^10.1.2",
+    "husky": "^9.1.7",
+    "prettier": "^3.5.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
   },
   "engines": {
     "node": ">=22",
