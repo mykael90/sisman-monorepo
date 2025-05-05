@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Creator: CorelDRAW -->
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="12.952mm" height="12.9888mm" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+viewBox="0 0 118.01 118.34"
+ xmlns:xlink="http://www.w3.org/1999/xlink"
+ xmlns:xodm="http://www.corel.com/coreldraw/odm/2003">
+ <defs>
+  <style type="text/css">
+   <![CDATA[
+    .fil2 {fill:#68B205}
+    .fil0 {fill:#EBF5EE}
+    .fil1 {fill:#FEFEFE}
+   ]]>
+  </style>
+ </defs>
+ <g id="Camada_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <path class="fil0" d="M15.51 0l86.99 0c8.56,0 15.51,6.95 15.51,15.51l-0 86.99c0,8.56 -6.94,15.51 -15.51,15.51l-86.99 0c-8.56,-0 -15.51,-6.95 -15.51,-15.51l-0 -86.99c0,-8.56 6.95,-15.51 15.51,-15.51z"/>
+  <polygon class="fil1" points="52.23,118 16.51,117.94 16.77,33.7 37.85,26.1 52.12,33.98 "/>
+  <polygon class="fil1" points="100.83,118 65.11,117.94 65.36,59.17 86.45,51.57 100.71,59.45 "/>
+  <polygon class="fil2" points="16.51,117.94 37.85,117.94 37.85,26.1 16.77,33.7 "/>
+  <polygon class="fil2" points="65.11,118.34 86.45,118.34 86.45,51.57 65.36,59.17 "/>
+ </g>
+</svg>

@@ -1,0 +1,34 @@
+{
+  "name": "sisman-monorepo",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "backend:dev": "pnpm --filter sisman-backend start:dev",
+    "backend:seed": "pnpm --filter sisman-backend seed",
+    "frontend:dev": "pnpm --filter sisman-frontend start:dev",
+    "build": "pnpm run --recursive build",
+    "lint": "pnpm run --recursive lint",
+    "format": "pnpm run --recursive format",
+    "prisma:generate": "pnpm --filter @sisman/prisma db:generate",
+    "prisma:migrate:dev": "pnpm --filter @sisman/prisma db:migrate:dev",
+    "prisma:migrate:reset": "pnpm --filter @sisman/prisma db:migrate:reset",
+    "prisma:studio": "pnpm --filter @sisman/prisma db:studio",
+    "prisma:db:push": "pnpm --filter @sisman/prisma db:push",
+    "prisma:db:pull": "pnpm --filter @sisman/prisma db:pull",
+    "typecheck": "pnpm run --recursive typecheck"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3",
+    "ts-node": "^10.9.2",
+    "eslint": "^9.25.1",
+    "prettier": "^3.5.3",
+    "eslint-config-prettier": "^10.1.2",
+    "@eslint/eslintrc": "^3",
+    "@types/node": "^22.15.3"
+  },
+  "engines": {
+    "node": ">=22",
+    "pnpm": ">=10"
+  },
+  "packageManager": "pnpm@10.0.0"
+}

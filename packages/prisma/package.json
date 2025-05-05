@@ -1,0 +1,22 @@
+{
+    "name": "@sisman/prisma",
+    "version": "1.0.0",
+    "main": "./generated/client/index.js",
+    "types": "./generated/client/index.d.ts",
+    "scripts": {
+      "build": "echo 'Nada a construir aqui, tipos são gerados'",
+      "db:generate": "exec prisma generate",
+      "db:migrate:dev": "exec prisma migrate dev",
+      "db:migrate:reset": "exec prisma migrate reset",
+      "db:reset": "exec prisma db reset",
+      "db:studio": "exec prisma studio",
+      "db:push": "exec prisma db push",
+      "db:pull": "exec prisma db pull"
+    },
+    "dependencies": {
+        "@prisma/client": "^6.7.0"
+    },
+    "devDependencies": {
+        "prisma": "^6.7.0"
+    }
+  }

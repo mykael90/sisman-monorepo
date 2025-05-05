@@ -1,0 +1,12 @@
+[
+ {"id":1, "role":"user", "description":"USUÁRIO COMUM"},
+ {"id":100, "role":"adm", "description":"ADMINISTRADOR"},
+ {"id":200, "role":"adm_materials", "description":"ADMINISTRADOR MODULO MATERIAIS"},
+ {"id":201, "role":"super_materials", "description":"SUPER USUARIO MODULO MATERIAIS"},
+ {"id":202, "role":"common_materials", "description":"USUARIO COMUM MODULO MATERIAIS"},
+ {"id":300, "role":"adm_workers", "description":"ADMINISTRADOR MODULO COLABORADORES"},
+ {"id":301, "role":"super_workers", "description":"SUPER USUARIO MODULO COLABORADORES"},
+ {"id":302, "role":"common_workers", "description":"USUARIO COMUM MODULO COLABORADORES"},
+ {"id":400, "role":"adm_suppliers", "description":"ADMINISTRADOR MODULO FORNECEDORES"},
+ {"id":401, "role":"super_suppliers", "description":"SUPER USUARIO MODULO FORNECEDORES"},
+ {"id":402, "role":"common_suppliers", "description":"USUARIO COMUM MODULO FORNECEDORES"}]

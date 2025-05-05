@@ -1,0 +1,87 @@
+### Variables
+@urlLocal = {{apiUrl}}/users
+@contentType = application/json
+
+### GET all
+GET {{urlLocal}}
+Authorization: Bearer {{token}}
+
+### GET one
+# @prompt userId
+GET {{urlLocal}}/{{userId}}
+Authorization: Bearer {{token}}
+
+### POST
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "name": "example5",
+    "email": "example5@provider.com",
+    "password": "123456"
+}
+
+### POST
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "name": "example8",
+    "email": "example8@provider.com",
+    "password": "123456",
+    "birthAt": "1990-06-18"
+}
+
+### POST role 2
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "name": "admin",
+    "email": "admin@provider.com",
+    "password": "123456",
+    "birthAt": "1990-06-18",
+    "role": 2
+}
+
+### PUT
+# @prompt userId
+PUT {{urlLocal}}/{{userId}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "name": "example4",
+    "email": "example@provider.com",
+    "password": "123456"
+}
+
+### PUT
+# @prompt userId
+PUT {{urlLocal}}/{{userId}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "name": "example4",
+    "email": "example@provider.com",
+    "password": "123456",
+    "birthAt": "1990-06-18"
+}
+
+### PATCH
+# @prompt userId
+PATCH {{urlLocal}}/{{userId}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "name": "example"
+}
+
+### DELETE one
+# @prompt userId
+DELETE {{urlLocal}}/{{userId}}

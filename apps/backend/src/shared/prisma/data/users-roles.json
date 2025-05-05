@@ -1,0 +1,454 @@
+[
+	{
+		"userId" : 1,
+		"userRoletypeId" : 202
+	},
+	{
+		"userId" : 1,
+		"userRoletypeId" : 302
+	},
+	{
+		"userId" : 1,
+		"userRoletypeId" : 402
+	},
+	{
+		"userId" : 2,
+		"userRoletypeId" : 202
+	},
+	{
+		"userId" : 2,
+		"userRoletypeId" : 302
+	},
+	{
+		"userId" : 2,
+		"userRoletypeId" : 402
+	},
+	{
+		"userId" : 3,
+		"userRoletypeId" : 202
+	},
+	{
+		"userId" : 3,
+		"userRoletypeId" : 302
+	},
+	{
+		"userId" : 3,
+		"userRoletypeId" : 402
+	},
+	{
+		"userId" : 4,
+		"userRoletypeId" : 202
+	},
+	{
+		"userId" : 4,
+		"userRoletypeId" : 302
+	},
+	{
+		"userId" : 4,
+		"userRoletypeId" : 402
+	},
+	{
+		"userId" : 5,
+		"userRoletypeId" : 202
+	},
+	{
+		"userId" : 5,
+		"userRoletypeId" : 302
+	},
+	{
+		"userId" : 5,
+		"userRoletypeId" : 402
+	},
+	{
+		"userId" : 6,
+		"userRoletypeId" : 202
+	},
+	{
+		"userId" : 6,
+		"userRoletypeId" : 302
+	},
+	{
+		"userId" : 6,
+		"userRoletypeId" : 402
+	},
+	{
+		"userId" : 7,
+		"userRoletypeId" : 202
+	},
+	{
+		"userId" : 7,
+		"userRoletypeId" : 302
+	},
+	{
+		"userId" : 7,
+		"userRoletypeId" : 402
+	},
+	{
+		"userId" : 8,
+		"userRoletypeId" : 202
+	},
+	{
+		"userId" : 8,
+		"userRoletypeId" : 300
+	},
+	{
+		"userId" : 8,
+		"userRoletypeId" : 302
+	},
+	{
+		"userId" : 8,
+		"userRoletypeId" : 402
+	},
+	{
+		"userId" : 9,
+		"userRoletypeId" : 202
+	},
+	{
+		"userId" : 9,
+		"userRoletypeId" : 302
+	},
+	{
+		"userId" : 9,
+		"userRoletypeId" : 402
+	},
+	{
+		"userId" : 10,
+		"userRoletypeId" : 202
+	},
+	{
+		"userId" : 10,
+		"userRoletypeId" : 302
+	},
+	{
+		"userId" : 10,
+		"userRoletypeId" : 402
+	},
+	{
+		"userId" : 11,
+		"userRoletypeId" : 200
+	},
+	{
+		"userId" : 11,
+		"userRoletypeId" : 302
+	},
+	{
+		"userId" : 11,
+		"userRoletypeId" : 402
+	},
+	{
+		"userId" : 12,
+		"userRoletypeId" : 202
+	},
+	{
+		"userId" : 12,
+		"userRoletypeId" : 302
+	},
+	{
+		"userId" : 12,
+		"userRoletypeId" : 402
+	},
+	{
+		"userId" : 13,
+		"userRoletypeId" : 202
+	},
+	{
+		"userId" : 13,
+		"userRoletypeId" : 302
+	},
+	{
+		"userId" : 13,
+		"userRoletypeId" : 402
+	},
+	{
+		"userId" : 14,
+		"userRoletypeId" : 202
+	},
+	{
+		"userId" : 14,
+		"userRoletypeId" : 302
+	},
+	{
+		"userId" : 14,
+		"userRoletypeId" : 402
+	},
+	{
+		"userId" : 15,
+		"userRoletypeId" : 202
+	},
+	{
+		"userId" : 15,
+		"userRoletypeId" : 302
+	},
+	{
+		"userId" : 15,
+		"userRoletypeId" : 402
+	},
+	{
+		"userId" : 16,
+		"userRoletypeId" : 202
+	},
+	{
+		"userId" : 16,
+		"userRoletypeId" : 302
+	},
+	{
+		"userId" : 16,
+		"userRoletypeId" : 402
+	},
+	{
+		"userId" : 17,
+		"userRoletypeId" : 100
+	},
+	{
+		"userId" : 17,
+		"userRoletypeId" : 202
+	},
+	{
+		"userId" : 17,
+		"userRoletypeId" : 302
+	},
+	{
+		"userId" : 17,
+		"userRoletypeId" : 402
+	},
+	{
+		"userId" : 18,
+		"userRoletypeId" : 202
+	},
+	{
+		"userId" : 18,
+		"userRoletypeId" : 302
+	},
+	{
+		"userId" : 18,
+		"userRoletypeId" : 402
+	},
+	{
+		"userId" : 19,
+		"userRoletypeId" : 202
+	},
+	{
+		"userId" : 19,
+		"userRoletypeId" : 302
+	},
+	{
+		"userId" : 19,
+		"userRoletypeId" : 402
+	},
+	{
+		"userId" : 20,
+		"userRoletypeId" : 202
+	},
+	{
+		"userId" : 20,
+		"userRoletypeId" : 300
+	},
+	{
+		"userId" : 20,
+		"userRoletypeId" : 302
+	},
+	{
+		"userId" : 20,
+		"userRoletypeId" : 402
+	},
+	{
+		"userId" : 21,
+		"userRoletypeId" : 202
+	},
+	{
+		"userId" : 21,
+		"userRoletypeId" : 302
+	},
+	{
+		"userId" : 21,
+		"userRoletypeId" : 402
+	},
+	{
+		"userId" : 22,
+		"userRoletypeId" : 202
+	},
+	{
+		"userId" : 22,
+		"userRoletypeId" : 302
+	},
+	{
+		"userId" : 22,
+		"userRoletypeId" : 402
+	},
+	{
+		"userId" : 24,
+		"userRoletypeId" : 202
+	},
+	{
+		"userId" : 24,
+		"userRoletypeId" : 300
+	},
+	{
+		"userId" : 24,
+		"userRoletypeId" : 302
+	},
+	{
+		"userId" : 24,
+		"userRoletypeId" : 402
+	},
+	{
+		"userId" : 26,
+		"userRoletypeId" : 201
+	},
+	{
+		"userId" : 29,
+		"userRoletypeId" : 202
+	},
+	{
+		"userId" : 29,
+		"userRoletypeId" : 302
+	},
+	{
+		"userId" : 34,
+		"userRoletypeId" : 201
+	},
+	{
+		"userId" : 34,
+		"userRoletypeId" : 202
+	},
+	{
+		"userId" : 34,
+		"userRoletypeId" : 302
+	},
+	{
+		"userId" : 34,
+		"userRoletypeId" : 402
+	},
+	{
+		"userId" : 36,
+		"userRoletypeId" : 202
+	},
+	{
+		"userId" : 36,
+		"userRoletypeId" : 302
+	},
+	{
+		"userId" : 37,
+		"userRoletypeId" : 301
+	},
+	{
+		"userId" : 38,
+		"userRoletypeId" : 202
+	},
+	{
+		"userId" : 38,
+		"userRoletypeId" : 301
+	},
+	{
+		"userId" : 38,
+		"userRoletypeId" : 302
+	},
+	{
+		"userId" : 38,
+		"userRoletypeId" : 402
+	},
+	{
+		"userId" : 39,
+		"userRoletypeId" : 301
+	},
+	{
+		"userId" : 40,
+		"userRoletypeId" : 202
+	},
+	{
+		"userId" : 41,
+		"userRoletypeId" : 201
+	},
+	{
+		"userId" : 41,
+		"userRoletypeId" : 302
+	},
+	{
+		"userId" : 42,
+		"userRoletypeId" : 100
+	},
+	{
+		"userId" : 42,
+		"userRoletypeId" : 202
+	},
+	{
+		"userId" : 42,
+		"userRoletypeId" : 302
+	},
+	{
+		"userId" : 42,
+		"userRoletypeId" : 402
+	},
+	{
+		"userId" : 50,
+		"userRoletypeId" : 202
+	},
+	{
+		"userId" : 50,
+		"userRoletypeId" : 302
+	},
+	{
+		"userId" : 50,
+		"userRoletypeId" : 402
+	},
+	{
+		"userId" : 51,
+		"userRoletypeId" : 202
+	},
+	{
+		"userId" : 51,
+		"userRoletypeId" : 302
+	},
+	{
+		"userId" : 51,
+		"userRoletypeId" : 402
+	},
+	{
+		"userId" : 52,
+		"userRoletypeId" : 201
+	},
+	{
+		"userId" : 53,
+		"userRoletypeId" : 201
+	},
+	{
+		"userId" : 54,
+		"userRoletypeId" : 202
+	},
+	{
+		"userId" : 54,
+		"userRoletypeId" : 302
+	},
+	{
+		"userId" : 54,
+		"userRoletypeId" : 402
+	},
+	{
+		"userId" : 56,
+		"userRoletypeId" : 202
+	},
+	{
+		"userId" : 56,
+		"userRoletypeId" : 302
+	},
+	{
+		"userId" : 56,
+		"userRoletypeId" : 402
+	},
+	{
+		"userId" : 57,
+		"userRoletypeId" : 202
+	},
+	{
+		"userId" : 57,
+		"userRoletypeId" : 300
+	},
+	{
+		"userId" : 57,
+		"userRoletypeId" : 302
+	},
+	{
+		"userId" : 57,
+		"userRoletypeId" : 402
+	}
+]

@@ -1,0 +1,85 @@
+### Variables
+@urlLocal = {{apiUrl}}/sipac
+@contentType = application/json
+
+### GET portal administrativo
+GET {{urlLocal}}/portal/administrativo
+Content-Type: {{contentType}}
+
+### GET requisição de material
+GET {{urlLocal}}/requisicao/material
+?id=2156665
+&requisicao=2156665
+&acao=200
+Content-Type: {{contentType}}
+
+### GET requisição de material
+GET {{urlLocal}}/requisicao/manutencao
+?id=2153960
+Content-Type: {{contentType}}
+
+### GET lista de manutencao
+GET {{urlLocal}}/lista/requisicao/manutencao
+?pageNum=1 
+&buscaNumAno=false
+&buscaTipo=true
+&buscaStatus=false
+&buscaUsuario=false
+&buscaProponente=false
+&buscaProposto=false
+&buscaData=true
+&buscaUnidadeReq=false
+&dataInicial=01/01/2025
+&dataFinal=31/01/2025
+&proposto.cpf_cnpj=-1
+&usuario.id=0
+&proponente.siape=0
+&numero=0
+# &ano=2025
+&tipoReq.id=11
+&status=-1
+&unidade.id=0
+&buscaUnidadesSubordinadas=false
+&buscaTipoServico=false
+&grupoManutencao.id=0
+Content-Type: {{contentType}}
+
+
+### GET lista de material
+GET {{urlLocal}}/lista/requisicao/material
+?pageNum=1 
+&tipoReq.id=1
+&subTipoReq.id=1
+&grupo.codigo=5244
+&buscaAlmoxarifado=true
+&idAlmoxarifado=3
+&status=-1
+&grupoStatus=0
+&proponente.siape=0
+&grupoManutencao.id=7
+&gestora_comboUnidadeCusto=0
+&unidadeCusto.id=0
+&acao=13
+&tipo=1
+&buscaNumAno=false
+&buscaTipo=true
+&buscaStatus=false
+&buscaUsuario=false
+&buscaProponente=false
+&buscaProposto=false
+&buscaFornecedor=false
+&fornecedor.id=0
+&buscaData=true
+&buscaUnidadeReq=false
+&buscaUnidadeCusto=false
+&dataInicial=01/01/2025
+&dataFinal=10/01/2025
+&proposto.cpf_cnpj=-1
+&usuario.id=0
+&numero=0
+# &ano=2025
+&unidade.id=0
+&buscaUnidadesSubordinadas=false
+Content-Type: {{contentType}}
+
+

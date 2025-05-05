@@ -1,0 +1,113 @@
+### Local variable
+@urlLocal = {{apiUrl}}/auth
+@contentType = application/json
+
+
+### Login authorization token
+# @name login
+# @prompt authorizationToken
+POST {{urlLocal}}/login-authorization-token
+Content-Type: {{contentType}}
+
+{
+    "token": {{authorizationToken}}
+}
+
+###
+
+# @authToken = {{login.response.headers.X-AuthToken}}
+
+### Register authorization token
+# @prompt authorizationToken
+POST {{urlLocal}}/register-authorization-token
+Content-Type: {{contentType}}
+
+{
+    "token": {{authorizationToken}}
+}
+
+### Register
+POST {{urlLocal}}/register
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "name": "Mykael",
+    "login": "mykael.mello",
+    "email": "eng.mykael@gmail.com",
+    "password": "123456"
+}
+
+
+### Check-token
+POST {{urlLocal}}/check-token
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  
+}
+
+### Upload-photo
+POST {{urlLocal}}/photo
+Content-Type: multipart/form-data; boundary=MfnBoundry
+Authorization: Bearer {{token}}
+
+--MfnBoundry
+Content-Disposition: form-data; name="title"
+
+Título
+--MfnBoundry
+Content-Disposition: form-data; name="photo"; filename="imageNest.png"
+Content-Type: image/png
+
+< ./imageNest.png
+--MfnBoundry--
+
+### Upload-files
+POST {{urlLocal}}/files
+Content-Type: multipart/form-data; boundary=MfnBoundry
+Authorization: Bearer {{token}}
+
+--MfnBoundry
+Content-Disposition: form-data; name="files"; filename="imageNest.png"
+Content-Type: image/png
+
+< ./imageNest.png
+
+--MfnBoundry
+Content-Disposition: form-data; name="files"; filename="imageNest1.png"
+Content-Type: image/png
+
+< ./imageNest1.png
+--MfnBoundry--
+
+### Upload-files-fields
+POST {{urlLocal}}/files-field
+Content-Type: multipart/form-data; boundary=MfnBoundry
+Authorization: Bearer {{token}}
+
+--MfnBoundry
+Content-Disposition: form-data; name="documents"; filename="nestCommands.txt"
+Content-Type: text/plain
+
+< ./nestCommands.txt
+
+--MfnBoundry
+Content-Disposition: form-data; name="photos"; filename="imageNest.png"
+Content-Type: image/png
+
+< ./imageNest.png
+
+--MfnBoundry
+Content-Disposition: form-data; name="photos"; filename="imageNest.png"
+Content-Type: image/png
+
+< ./imageNest.png
+
+--MfnBoundry
+Content-Disposition: form-data; name="photos"; filename="imageNest1.png"
+Content-Type: image/png
+
+< ./imageNest1.png
+--MfnBoundry--

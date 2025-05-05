@@ -1,0 +1,85 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "generated/client"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DB_URL")
+}
+
+model User {
+  id        Int        @id @default(autoincrement())
+  name      String     @db.VarChar(63)
+  login     String     @unique @db.VarChar(63)
+  email     String     @unique @db.VarChar(127)
+  createdAt DateTime   @default(now()) @map("created_at") @db.Timestamp(0)
+  updatedAt DateTime   @updatedAt @map("updated_at") @db.Timestamp(0)
+  userRoles UserRole[]
+  LogLogin  LogLogin[]
+
+  @@map("users")
+}
+
+model Material {
+  id            BigInt   @id @db.UnsignedBigInt
+  name          String   @db.TinyText
+  specification String?  @db.VarChar(1023)
+  unit          String   @db.VarChar(31)
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamp(0)
+  updatedAt     DateTime @updatedAt @map("updated_at") @db.Timestamp(0)
+
+  @@map("materials")
+}
+
+model UserRoletype {
+  id          Int        @id
+  role        String     @db.VarChar(255)
+  description String     @db.Text
+  createdAt   DateTime   @default(now()) @map("created_at") @db.Timestamp(0)
+  updatedAt   DateTime   @updatedAt @map("updated_at") @db.Timestamp(0)
+  userRoles   UserRole[]
+
+  @@map("users_roletypes")
+}
+
+model UserRole {
+  userId         Int          @map("user_id")
+  userRoletypeId Int          @map("user_roletype_id")
+  user           User         @relation(fields: [userId], references: [id], onUpdate: Restrict, map: "users_roles_ibfk_1")
+  userRoletype   UserRoletype @relation(fields: [userRoletypeId], references: [id], onUpdate: Restrict, map: "users_roles_ibfk_2")
+
+  @@id([userId, userRoletypeId])
+  @@index([userRoletypeId], map: "role_id")
+  @@map("users_roles")
+}
+
+model LogError {
+  id          String   @id @default(uuid())
+  timestamp   DateTime @default(now()) @db.Timestamp(0)
+  statusCode  Int?     @map("status_code")
+  path        String?
+  method      String?
+  message     String   @db.VarChar(1023)
+  stackTrace  String?  @map("stack_trace") @db.Text // Usar Text para stacks potencialmente longos
+  ipAddress   String?  @map("ip_address")
+  userId      Int?     @map("user_id") // Opcional, depende se o usuário está logado
+  requestBody String?  @map("request_body") @db.Text // Cuidado com dados sensíveis!
+
+  @@map("log_errors")
+}
+
+model LogLogin {
+  id         String   @id @default(uuid())
+  userId     Int      @map("user_id") // ID do usuário que tentou logar
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade) // Relacionamento com o User
+  timestamp  DateTime @default(now()) @db.Timestamp(0) // Quando ocorreu a tentativa
+  ipAddress  String?  @map("ip_address") // IP de origem da tentativa
+  userAgent  String?  @map("user_agent") @db.Text // Informações do navegador/cliente
+  successful Boolean // Foi bem-sucedido?
+
+  @@index([userId]) // Index para buscar histórico por usuário
+  @@index([timestamp]) // Index para buscas por data
+  @@map("log_logins")
+}

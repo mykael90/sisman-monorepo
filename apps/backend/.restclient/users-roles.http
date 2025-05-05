@@ -1,0 +1,35 @@
+### Variables
+@urlLocal = {{apiUrl}}/users/roles
+@contentType = application/json
+
+### POST
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "userId": "1",
+    "userRoletypeId": "200"
+}
+
+### GET
+get {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+### DELETE
+delete {{urlLocal}}?userId=1&userRoletypeId=200
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+### PATCH
+patch {{urlLocal}}?userId=1&userRoletypeId=200
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "newUserRoletypeId": "400"
+}
+
+
+

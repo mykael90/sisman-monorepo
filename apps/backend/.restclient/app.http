@@ -1,0 +1,14 @@
+### GET index
+GET {{apiUrl}}
+
+### POST index
+POST {{apiUrl}}
+
+### Test shutdown with request delay
+GET {{apiUrl}}/delay
+
+### Test error response
+GET {{apiUrl}}/error-http
+
+### Test error response
+GET {{apiUrl}}/error-not-http

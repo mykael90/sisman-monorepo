@@ -1,0 +1,37 @@
+### Variables
+@urlLocal = {{apiUrl}}/materials
+@contentType = application/json
+
+### POST
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "id": "302400000015",
+    "name": "ADAPTADOR EM PVC, SOLDA-ROSCA, AGUA FRIA - 75MM (2.1/2\")",
+    "specification": "ADAPTADOR CURTO COM SOLDA/ROSCA, ATENDA A NORMA TECNICA NBR 5648 E 5626, MARROM, SISTEMA DE AGUA FRIA, USO INDICADO PARA CONECTAR UMA CONEXAO OU REGISTRO ROSCAVEL, BOLSA SOLDAVEL E PONTA ROSCAVEL PADRAO BSP, PRESSAO MAXIMA DE FUNCIONAMENTO DE 10,0 KGF/CM² A 20°C. CATMAT: 265178",
+    "unit": "UNIDADE"
+}
+
+### GET all
+GET {{urlLocal}}
+Authorization: Bearer {{token}}
+
+### GET one
+# @name material
+GET {{urlLocal}}/302400000015
+Authorization: Bearer {{token}}
+
+
+### PATCH
+PATCH {{urlLocal}}/{{material.response.body.id}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "name": "CONECTOR EM PVC, SOLDA-ROSCA, AGUA FRIA - 75MM (2.1/2\")"
+}
+
+### DELETE one
+DELETE {{urlLocal}}/{{material.response.body.id}}

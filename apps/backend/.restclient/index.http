@@ -1,0 +1,5 @@
+### GET index
+GET {{apiUrl}}
+
+### POST index
+POST {{apiUrl}}

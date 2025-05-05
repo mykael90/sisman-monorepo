@@ -1,0 +1,16 @@
+{
+    "name": "@sisman/types",
+    "version": "1.0.0",
+    "private": true,
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "scripts": {
+      "build": "tsc -b",
+      "dev": "tsc -b --watch",
+      "typecheck": "tsc --noEmit"
+    },
+    "devDependencies": {
+    },
+    "peerDependencies": {
+    }
+  }
