@@ -6,5 +6,5 @@ export async function Data({ children }) {
   const data = await getUsers();
 
   // como passar a prop data para o children abaixo
-  return <>{children(data)}</>;
+  return <>{children({ data })}</>;
 }

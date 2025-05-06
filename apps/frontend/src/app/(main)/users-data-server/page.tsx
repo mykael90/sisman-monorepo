@@ -12,7 +12,7 @@ export default function Page() {
     <div>
       <h1>Data Page</h1>
       <Suspense fallback={<p>Loading initial data...</p>}>
-        <Data>{data => <DisplayData data={data} />}</Data>
+        <Data>{({ data }) => <DisplayData data={data} />}</Data>
       </Suspense>
     </div>
   );
