@@ -104,7 +104,7 @@ Profile: ${JSON.stringify(profile, null, 2)}
       }
       // 2. Validação/Renovação do Token UFRN (se aplicável e expirado)
       // Verifica se é uma chamada subsequente e se o token UFRN está expirado
-      else if (Date.now() >= Number(processedToken.expiresAtUfrn) * 1000) {
+      else if (processedToken.provider === 'ufrn' && Date.now() >= Number(processedToken.expiresAtUfrn) * 1000) {
         logger.warn(
           'Token UFRN expirado ou inválido, tentando renovar/revalidar...'
         );
