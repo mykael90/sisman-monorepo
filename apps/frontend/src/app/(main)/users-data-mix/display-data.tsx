@@ -1,26 +1,26 @@
 'use client';
 
-import { useState, useEffect, use } from 'react'
-import { getUsers } from './_actions';
- 
-export function DisplayData({ dataPromise }) {
-  const [users, setUsers] = useState(null)
-  // const users1 = use(dataPromise);
-  // console.log(users1);
+import { useState, use, useEffect } from 'react';
+// import { getUsers } from './_actions'; // getUsers is not called directly in DisplayData
 
+export function DisplayData({ dataPromise }) {
+  // The `use` hook will suspend the component if `dataPromise` is pending,
+  // and return the resolved value once the promise settles.
+  const resolvedData = use(dataPromise);
+
+  // Initialize `currentData` with the data resolved from the promise.
+  // `useState` only uses its argument for the initial render.
+  const [currentData, setCurrentData] = useState(resolvedData);
+
+  // This useEffect hook ensures that if `resolvedData` changes (e.g., if a new `dataPromise`
+  // is passed and resolves to different data), `currentData` is updated accordingly.
   useEffect(() => {
-    async function fetchPosts() {
-      const data = use(dataPromise())
-      setUsers(data)
-    }
-    fetchPosts()
-  }, [])
- 
-  if (!users) return <div>Loading...</div>
+    setCurrentData(resolvedData);
+  }, [resolvedData]);
 
   return (
     <div>
-      <p>Current Message: {JSON.stringify(users)}</p>
+      <p>Current Message: {JSON.stringify(currentData)}</p>
       {/* <button onClick={handleRefresh} disabled={isPending}>
         {isPending ? 'Refreshing...' : 'Refresh Data (via Server Action)'}
       </button> */}

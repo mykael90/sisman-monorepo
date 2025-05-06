@@ -1,9 +1,10 @@
-'use server'
+'use server';
 
+import fetchApiSisman from '../../../lib/fetch/api-sisman';
 import fetchApiSismanUserSession from '../../../lib/fetch/api-sisman-user-session';
 
 export async function getUsers() {
-  const response = await fetchApiSismanUserSession('/users', {
+  const response = await fetchApiSisman('/users', {
     cache: 'no-store'
   });
   const data = response.json();

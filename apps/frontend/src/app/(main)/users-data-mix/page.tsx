@@ -1,9 +1,6 @@
-'use client'
-
-import {Suspense, use, useEffect, useMemo} from "react"
-import { addUser } from "./_actions"
+import {Suspense} from "react"
+import { getUsers } from "./_actions"
 import { DisplayData } from "./display-data";
-import fetchApiSismanUserSession from "../../../lib/fetch/api-sisman-user-session";
 import Logger from "../../../lib/logger";
 
 
@@ -25,13 +22,4 @@ export default function Page() {
       </Suspense>
     </div>
   );
-}
-
-export async function getUsers() {
-  const response = await fetchApiSismanUserSession('/users', {
-    cache: 'no-store'
-  });
-  const data =  await response.json();
-  // console.log(data);
-  return data;
 }

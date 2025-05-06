@@ -24,8 +24,8 @@ import { AuthGuard } from 'src/shared/auth/guards/auth.guard';
 import { ApiTags, ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
 import { UsersEntity } from '../../shared/entities/users.entity';
 
-@Roles(Role.Adm)
-@UseGuards(AuthGuard, RoleGuard)
+// @Roles(Role.Adm)
+// @UseGuards(AuthGuard, RoleGuard)
 // o prefixo /users é gerenciado pelo RouterModule
 @Controller()
 @ApiTags('users')
