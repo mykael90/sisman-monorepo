@@ -1,4 +1,4 @@
-import fetchApiUFRNUserSession from '@/lib/fetch/api-ufrn-user-session'; // Ajuste o caminho
+import fetchApiUFRNUserSession from '@/src/lib/fetch/api-ufrn'; // Ajuste o caminho
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/_options';
 

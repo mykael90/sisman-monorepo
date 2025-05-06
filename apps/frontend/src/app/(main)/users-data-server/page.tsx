@@ -1,7 +1,7 @@
 import { Suspense, use, useEffect, useMemo } from 'react';
 import { addUser } from './_actions';
 import { Data } from './data';
-import fetchApiSismanUserSession from '../../../lib/fetch/api-sisman-user-session';
+import fetchApiSisman from '../../../lib/fetch/api-sisman';
 import Logger from '../../../lib/logger';
 import { DisplayData } from './display-data';
 
@@ -19,7 +19,7 @@ export default function Page() {
 }
 
 export async function getUsers() {
-  const response = await fetchApiSismanUserSession('/users', {
+  const response = await fetchApiSisman('/users', {
     cache: 'no-store'
   });
   const data = await response.json();

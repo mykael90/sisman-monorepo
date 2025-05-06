@@ -1,12 +1,12 @@
-'use server'
+'use server';
 
-import fetchApiSismanUserSession from '../../../lib/fetch/api-sisman-user-session';
+import fetchApiSisman from '../../../lib/fetch/api-sisman';
 
 export async function getUsers() {
-  const response = await fetchApiSismanUserSession('/users', {
+  const response = await fetchApiSisman('/users', undefined, {
     cache: 'no-store'
   });
-  const data =  await response.json();
+  const data = await response.json();
   console.log(data);
   return data;
 }
@@ -15,7 +15,7 @@ export async function addUser(userId, formData) {
   const data = Object.fromEntries(formData);
   data.userId = userId;
 
-  const response = await fetchApiSismanUserSession('/users', {
+  const response = await fetchApiSisman('/users', undefined, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'

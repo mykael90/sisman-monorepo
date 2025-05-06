@@ -1,4 +1,4 @@
-import fetchApiSismanUserSession from '@/lib/fetch/api-sisman-user-session'; // Ajustado para usar a API Sisman
+import fetchApiSisman from '@/src/lib/fetch/api-sisman'; // Ajustado para usar a API Sisman
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/_options';
 
@@ -13,7 +13,7 @@ export default async function ServerPage() {
   if (session) {
     // Só tenta buscar se houver uma sessão (opcional, a função fetch já verifica)
     try {
-      const response = await fetchApiSismanUserSession(
+      const response = await fetchApiSisman(
         '/users' // <-- Substitua pela rota correta da API Sisman
       );
       // Verifica se a resposta foi realmente OK antes de tentar ler o JSON
