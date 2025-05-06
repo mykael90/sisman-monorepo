@@ -1,7 +1,6 @@
-'use client'
- 
-export async function DisplayData({data}) {
+// pode ser use client aqui
 
+export async function DisplayData({ data }) {
   return (
     <div>
       <p>Current Message: {JSON.stringify(data)}</p>
