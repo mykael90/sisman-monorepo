@@ -22,16 +22,21 @@ export function DisplayData({ dataPromise, refreshAction }) {
     setCurrentData(initialData);
   }, [initialData]);
 
-  const handleRefresh = async () => {
-    startTransition(async () => {
-      try {
-        const newData = await dataPromise; // Chama a Server Action
-        setCurrentData(newData);
-      } catch (error) {
-        console.error('Error refreshing data:', error);
-        // Lidar com erro
-      }
-    });
+  const handleRefresh = () => {
+    // `startTransition` é usado para marcar as atualizações de estado resultantes
+    // da `refreshAction` como transições. Isso é útil se a busca de dados
+    // for assíncrona e puder causar suspense.
+    if (refreshAction) {
+      startTransition(() => {
+        refreshAction(); // Esta função deve acionar a busca por novos dados
+        // e, idealmente, resultar em um novo `dataPromise` sendo passado
+        // para este componente pelo componente pai.
+      });
+    } else {
+      console.warn(
+        'DisplayData: A propriedade refreshAction não foi fornecida. O botão de refresh pode não buscar novos dados.'
+      );
+    }
   };
 
   return (

@@ -6,17 +6,28 @@ import { getSismanAccessToken } from '../../../lib/auth/get-access-token';
 
 const logger = new Logger('users-data-client');
 
+const accessTokenSisman = await getSismanAccessToken();
+
+async function refreshData() {
+  'use server';
+  const data = await getUsers(accessTokenSisman);
+  return data;
+}
+
 export default async function Page() {
-  const accessTokenSisman = await getSismanAccessToken();
   logger.warn(accessTokenSisman);
+  //deixar para resolver a promessa no cliente, promove uma melhor experiência do usuário
   const data = getUsers(accessTokenSisman);
-  // logger.warn(data);
 
   return (
     <div>
       <h1>Data Page</h1>
-      <Suspense fallback={<p>Loading initial data...</p>}>
-        <DisplayData dataPromise={data} />
+      <Suspense
+        fallback={
+          <p>Loading initial data (suspense envolvendo DisplayData)...</p>
+        }
+      >
+        <DisplayData dataPromise={data} refreshAction={refreshData} />
       </Suspense>
     </div>
   );
