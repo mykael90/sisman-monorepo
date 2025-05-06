@@ -17,6 +17,9 @@ export class AuthRegisterDTO {
   @IsEmail()
   email: string;
 
+  @IsString()
+  image: string;
+
   // @IsStrongPassword({
   //   minLength: 6,
   //   minLowercase: 0,

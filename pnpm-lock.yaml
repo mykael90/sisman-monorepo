@@ -241,6 +241,9 @@ importers:
         specifier: ^2.0.3
         version: 2.0.3
     devDependencies:
+      '@sisman/prisma':
+        specifier: workspace:*
+        version: link:../../packages/prisma
       '@tailwindcss/postcss':
         specifier: ^4
         version: 4.1.5
@@ -397,7 +400,11 @@ importers:
         specifier: ^6.7.0
         version: 6.7.0(typescript@5.8.3)
 
-  packages/types: {}
+  packages/types:
+    devDependencies:
+      '@sisman/prisma':
+        specifier: workspace:*
+        version: link:../prisma
 
 packages:
 

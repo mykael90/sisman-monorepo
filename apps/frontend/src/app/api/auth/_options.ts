@@ -85,7 +85,7 @@ Profile: ${JSON.stringify(profile, null, 2)}
 
       // 1. Login Inicial ou Primeira Chamada JWT pós-login
       if (account && user) {
-        logger.info(
+        logger.debug(
           `Primeiro acesso ou chamada inicial, processando dados do provedor e autorização.`
         );
         processedToken = {
@@ -119,7 +119,7 @@ Profile: ${JSON.stringify(profile, null, 2)}
         processedToken = await refreshSismanAccessToken(processedToken); // Função a ser criada
       } else {
         // Token (UFRN ou outro) ainda válido, não faz nada
-        logger.info(
+        logger.debug(
           `Token [${processedToken.provider}] e SISMAN ainda válido.`
         );
       }

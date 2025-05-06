@@ -1,132 +1,246 @@
-import { User } from '../../../types/user';
+import { UserWithRoles, UserWithRoles1, UserWithAll, UserWithSelectedFieldsAndRoles } from '../../../types/user';
 
 // Dados de exemplo
-const initialUsers: User[] = [
+const initialUsers: UserWithRoles1[] = [
   {
-    id: '1',
+    id: 1,
     name: 'Sarah Connor',
-    username: 'sconnor',
+    login: 'sarah.connor',
     email: 'sarah.connor@example.com',
-    role: 'Admin',
-    status: 'Active',
-    avatar: '/placeholder.svg?height=40&width=40'
+    userRoles: [
+      {
+        "userRoletypeId": 202
+      },
+      {
+        "userRoletypeId": 302
+      },
+      {
+        "userRoletypeId": 402
+      }
+    ],
+    isActive: true,
+    image: '/placeholder.svg?height=40&width=40',
   },
   {
-    id: '2',
+    id: 2,
     name: 'John Smith',
-    username: 'jsmith',
+    login: 'john.smith',
     email: 'john.smith@example.com',
-    role: 'Editor',
-    status: 'Active',
-    avatar: '/placeholder.svg?height=40&width=40'
+    userRoles: [
+      {
+        "userRoletypeId": 201
+      },
+      {
+        "userRoletypeId": 301
+      },
+      { "userRoletypeId": 401 }
+    ],
+    isActive: true,
+    image: '/placeholder.svg?height=40&width=40'
   },
   {
-    id: '3',
+    id: 3,
     name: 'Emma Wilson',
-    username: 'ewilson',
+    login: 'emma.wilson',
     email: 'emma.wilson@example.com',
-    role: 'Viewer',
-    status: 'Inactive',
-    avatar: '/placeholder.svg?height=40&width=40'
+    userRoles: [
+      {
+        "userRoletypeId": 203
+      },
+      {
+        "userRoletypeId": 303
+      },
+      { "userRoletypeId": 403 }
+    ],
+    isActive: true,
+    image: '/placeholder.svg?height=40&width=40'
   },
   {
-    id: '4',
+    id: 4,
     name: 'Michael Johnson',
-    username: 'mjohnson',
+    login: 'michael.johnson',
     email: 'michael.johnson@example.com',
-    role: 'Admin',
-    status: 'Active',
-    avatar: '/placeholder.svg?height=40&width=40'
+    userRoles: [
+      {
+        "userRoletypeId": 204
+      },
+      {
+        "userRoletypeId": 304
+      },
+      { "userRoletypeId": 404 }
+    ],
+    isActive: true,
+    image: '/placeholder.svg?height=40&width=40'
   },
   {
-    id: '5',
+    id: 5,
     name: 'Olivia Brown',
-    username: 'obrown',
+    login: 'olivia.brown',
     email: 'olivia.brown@example.com',
-    role: 'Editor',
-    status: 'Active',
-    avatar: '/placeholder.svg?height=40&width=40'
+    userRoles: [
+      {
+        "userRoletypeId": 201
+      },
+      {
+        "userRoletypeId": 301
+      },
+      { "userRoletypeId": 401 }
+    ],
+    isActive: true,
+    image: '/placeholder.svg?height=40&width=40'
   },
   {
-    id: '6',
+    id: 6,
     name: 'William Davis',
-    username: 'wdavis',
+    login: 'william.davis',
     email: 'william.davis@example.com',
-    role: 'Viewer',
-    status: 'Inactive',
-    avatar: '/placeholder.svg?height=40&width=40'
+    userRoles: [
+      {
+        "userRoletypeId": 203
+      },
+      {
+        "userRoletypeId": 303
+      },
+      { "userRoletypeId": 403 }
+    ],
+    isActive: true,
+    image: '/placeholder.svg?height=40&width=40'
   },
   {
-    id: '7',
+    id: 7,
     name: 'Ava Garcia',
-    username: 'agarcia',
+    login: 'ava.garcia',
     email: 'ava.garcia@example.com',
-    role: 'Admin',
-    status: 'Active',
-    avatar: '/placeholder.svg?height=40&width=40'
+    userRoles: [
+      {
+        "userRoletypeId": 204
+      },
+      {
+        "userRoletypeId": 304
+      },
+      { "userRoletypeId": 404 }
+    ],
+    isActive: true,
+    image: '/placeholder.svg?height=40&width=40'
   },
   {
-    id: '8',
+    id: 8,
     name: 'James Rodriguez',
-    username: 'jrodriguez',
+    login: 'james.rodriguez',
     email: 'james.rodriguez@example.com',
-    role: 'Editor',
-    status: 'Active',
-    avatar: '/placeholder.svg?height=40&width=40'
+    userRoles: [
+      {
+        "userRoletypeId": 201
+      },
+      {
+        "userRoletypeId": 301
+      },
+      { "userRoletypeId": 401 }
+    ],
+    isActive: true,
+    image: '/placeholder.svg?height=40&width=40'
   },
   {
-    id: '9',
+    id: 9,
     name: 'Sophia Martinez',
-    username: 'smartinez',
+    login: 'sophia.martinez',
     email: 'sophia.martinez@example.com',
-    role: 'Viewer',
-    status: 'Inactive',
-    avatar: '/placeholder.svg?height=40&width=40'
+    userRoles: [
+      {
+        "userRoletypeId": 203
+      },
+      {
+        "userRoletypeId": 303
+      },
+      { "userRoletypeId": 403 }
+    ],
+    isActive: true,
+    image: '/placeholder.svg?height=40&width=40'
   },
   {
-    id: '10',
+    id: 10,
     name: 'Benjamin Hernandez',
-    username: 'bhernandez',
+    login: 'benjamin.hernandez',
     email: 'benjamin.hernandez@example.com',
-    role: 'Admin',
-    status: 'Active',
-    avatar: '/placeholder.svg?height=40&width=40'
+    userRoles: [
+      {
+        "userRoletypeId": 204
+      },
+      {
+        "userRoletypeId": 304
+      },
+      { "userRoletypeId": 404 }
+    ],
+    isActive: true,
+    image: '/placeholder.svg?height=40&width=40'
   },
   {
-    id: '11',
+    id: 11,
     name: 'Isabella Lopez',
-    username: 'ilopez',
+    login: 'isabella.lopez',
     email: 'isabella.lopez@example.com',
-    role: 'Editor',
-    status: 'Active',
-    avatar: '/placeholder.svg?height=40&width=40'
+    userRoles: [
+      {
+        "userRoletypeId": 201
+      },
+      {
+        "userRoletypeId": 301
+      },
+      { "userRoletypeId": 401 }
+    ],
+    isActive: true,
+    image: '/placeholder.svg?height=40&width=40'
   },
   {
-    id: '12',
+    id: 12,
     name: 'Ethan Gonzalez',
-    username: 'egonzalez',
+    login: 'ethan.gonzalez',
     email: 'ethan.gonzalez@example.com',
-    role: 'Viewer',
-    status: 'Inactive',
-    avatar: '/placeholder.svg?height=40&width=40'
+    userRoles: [
+      {
+        "userRoletypeId": 203
+      },
+      {
+        "userRoletypeId": 303
+      },
+      { "userRoletypeId": 403 }
+    ],
+    isActive: true,
+    image: '/placeholder.svg?height=40&width=40'
   },
   {
-    id: '13',
+    id: 13,
     name: 'Mia Wilson',
-    username: 'mwilson',
+    login: 'mia.wilson',
     email: 'mia.wilson@example.com',
-    role: 'Admin',
-    status: 'Active',
-    avatar: '/placeholder.svg?height=40&width=40'
+    userRoles: [
+      {
+        "userRoletypeId": 204
+      },
+      {
+        "userRoletypeId": 304
+      },
+      { "userRoletypeId": 404 }
+    ],
+    isActive: true,
+    image: '/placeholder.svg?height=40&width=40'
   },
   {
-    id: '14',
+    id: 14,
     name: 'Alexander Perez',
-    username: 'aperez',
+    login: 'alexander.perez',
     email: 'alexander.perez@example.com',
-    role: 'Editor',
-    status: 'Active',
-    avatar: '/placeholder.svg?height=40&width=40'
+    userRoles: [
+      {
+        "userRoletypeId": 201
+      },
+      {
+        "userRoletypeId": 301
+      },
+      { "userRoletypeId": 401 }
+    ],
+    isActive: true,
+    image: '/placeholder.svg?height=40&width=40'
   }
 ];
 

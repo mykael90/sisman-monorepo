@@ -12,7 +12,7 @@ export default withAuth(
     const start = Date.now();
     const pathname = req.nextUrl.pathname;
 
-    logger.info(`Request START: ${method} ${pathname}`, {
+    logger.debug(`Request START: ${method} ${pathname}`, {
       req: { method, url }
     });
 
@@ -47,7 +47,7 @@ export default withAuth(
     // permite que a requisição continue normalmente.
     const response = NextResponse.next();
     const duration = Date.now() - start;
-    logger.info(
+    logger.debug(
       `Middleware END (Allowed): ${method} ${pathname} in ${duration}ms`,
       {
         req: { method, url },

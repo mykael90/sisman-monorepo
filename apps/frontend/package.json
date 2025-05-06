@@ -32,6 +32,8 @@
     "ua-parser-js": "^2.0.3"
   },
   "devDependencies": {
+    "@sisman/types": "workspace:*",
+    "@sisman/prisma": "workspace:*",
     "@tailwindcss/postcss": "^4",
     "@types/react": "^19",
     "@types/react-dom": "^19",

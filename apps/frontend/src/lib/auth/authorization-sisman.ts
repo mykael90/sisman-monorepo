@@ -11,6 +11,7 @@ export interface AuthorizationRequestUserData {
   email: string;
   login?: string; // Assumindo que 'login' é o username
   name?: string;
+  image?: string
 }
 
 // Interface para a resposta esperada da sua API de autorização
@@ -42,7 +43,8 @@ export async function createAuthorizationRequestToken(
   const payload = {
     email: userData.email,
     login: userData.login,
-    name: userData.name
+    name: userData.name,
+    image: userData.image
   };
 
   logger.info('Creating authorization request token with payload:', payload); // Log para depuração
@@ -122,7 +124,8 @@ export async function handleAuthorizationLogic(
       const userDataForToken: AuthorizationRequestUserData = {
         email: user.email,
         login: user.login, // Inclui o login (username)
-        name: user.name // Inclui o name
+        name: user.name, // Inclui o name
+        image: user.image
       };
 
       // Cria o token de requisição com os dados do usuário

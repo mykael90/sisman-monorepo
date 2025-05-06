@@ -23,9 +23,14 @@ export class UsersService {
     return await this.prisma.user.findMany({
       include: {
         userRoles: {
-          select: {
-            userRoletypeId: true,
-          },
+          include: {
+            userRoletype: {
+              select: {
+                role: true, 
+                description: true,
+              }
+            }
+          }
         },
       },
     });

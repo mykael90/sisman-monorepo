@@ -1,0 +1,36 @@
+// /home/mykael/sisman-monorepo/.vscode/settings.example.json
+{
+    "rest-client.environmentVariables": {
+      // Copie este arquivo para settings.json e preencha seus valores locais
+      "$shared": {
+          "apiUrl": "http://localhost:3080" // Ou outra URL base, se aplicável
+      },
+      "development": {
+        "token": "COLOQUE_SEU_TOKEN_DE_DESENVOLVIMENTO_AQUI"
+    },
+      "production": {
+        "token": "COLOQUE_SEU_TOKEN_DE_PRODUCAO_AQUI"
+    }
+  },
+  
+  "editor.rulers": [
+      80,
+      120
+    ],
+  
+      "files.associations": {
+      ".env.*": "dotenv",
+      ".prettierrc": "json",
+      "*.css": "css",
+      ".dev.vars": "dotenv"
+    },
+    "cSpell.words": [
+      "typeorm"
+    ],
+    "typescript.preferences.importModuleSpecifier": "relative",
+    "material-icon-theme.activeIconPack": "nest",
+    "[prisma]": {
+      "editor.formatOnSave": true
+    }
+  }
+  

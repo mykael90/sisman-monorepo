@@ -1,5 +1,13 @@
-import { UserManagementPage } from "@/components/user-management/user-management-page"
+import { UserManagementPage } from '@/components/user-management/user-management-page';
+import { Suspense } from 'react';
+import { Data } from './data';
 
 export default function Page() {
-  return <UserManagementPage />
+  return (
+    <Suspense fallback={<p>Loading initial data...</p>}>
+      <Data>
+        <UserManagementPage />
+      </Data>
+    </Suspense>
+  );
 }

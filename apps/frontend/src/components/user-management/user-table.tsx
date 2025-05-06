@@ -18,12 +18,12 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Edit, Trash2 } from 'lucide-react';
-import type { User } from '@/types/user';
+import type { UserWithRoles1 } from '@/types/user';
 
 interface UserTableProps {
-  users: User[];
-  onEdit: (userId: string) => void;
-  onDelete: (userId: string) => void;
+  users: UserWithRoles1[];
+  onEdit: (userId: number) => void;
+  onDelete: (userId: number) => void;
 }
 
 // Componentes auxiliares para Badges (mantidos do original)
@@ -65,11 +65,11 @@ function StatusBadge({ status }: { status: string }) {
 }
 
 // 1. Definir as colunas com createColumnHelper
-const columnHelper = createColumnHelper<User>();
+const columnHelper = createColumnHelper<UserWithRoles1>();
 
 const columns = (
-  onEdit: (userId: string) => void,
-  onDelete: (userId: string) => void
+  onEdit: (userId: number) => void,
+  onDelete: (userId: number) => void
 ) => [
   columnHelper.accessor('name', {
     header: 'User',
@@ -78,7 +78,7 @@ const columns = (
       <div className='flex items-center gap-2'>
         <Avatar className='h-12 w-12'>
           <AvatarImage
-            src={info.row.original.avatar || '/placeholder.svg'}
+            src={info.row.original.image || '/placeholder.svg'}
             alt={info.getValue()}
           />
           <AvatarFallback>{info.getValue().charAt(0)}</AvatarFallback>
@@ -87,21 +87,21 @@ const columns = (
       </div>
     )
   }),
-  columnHelper.accessor('username', {
-    header: 'Username',
+  columnHelper.accessor('login', {
+    header: 'Login',
     cell: info => info.getValue()
   }),
   columnHelper.accessor('email', {
     header: 'Email',
     cell: info => info.getValue()
   }),
-  columnHelper.accessor('role', {
-    header: 'Role',
-    cell: info => <RoleBadge role={info.getValue()} /> // Usa o componente RoleBadge
-  }),
-  columnHelper.accessor('status', {
+  // columnHelper.accessor('role', {
+  //   header: 'Role',
+  //   cell: info => <RoleBadge role={info.getValue()} /> // Usa o componente RoleBadge
+  // }),
+  columnHelper.accessor('isActive', {
     header: 'Status',
-    cell: info => <StatusBadge status={info.getValue()} /> // Usa o componente StatusBadge
+    cell: info => <StatusBadge status={`${info.getValue()}`} /> // Usa o componente StatusBadge
   }),
   columnHelper.display({
     id: 'actions',

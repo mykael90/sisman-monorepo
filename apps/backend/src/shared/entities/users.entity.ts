@@ -15,6 +15,12 @@ export class UsersEntity implements User {
   @ApiProperty({ example: 'example@mailserver.com' })
   email: string;
 
+  @ApiProperty({ required: false, nullable: true })
+  isActive: boolean;
+
+  @ApiProperty({ required: false, nullable: true })
+  image: string;
+
   // @ApiProperty({ example: '123456' })
   // password: string;
 

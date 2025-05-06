@@ -125,9 +125,15 @@ export class AuthService {
             name: token.name,
             email: token.email,
             login: token.login,
+            image: token.image,
           },
           request,
         );
+      }
+
+      //atualizar foto se for diferente a que está chegando
+      if (user.image !== token.image) {
+        await this.updateImage(user, token.image);
       }
 
       // Se chegou aqui, a validação foi bem-sucedida
@@ -266,6 +272,7 @@ export class AuthService {
         name: token.name,
         email: token.email,
         login: token.login,
+        image: token.image,
       },
       request,
     );
@@ -279,4 +286,12 @@ export class AuthService {
     const user = await this.prisma.user.findFirst({ where: { login } });
     return !!user;
   }
+
+  async updateImage(user: User, newImage: string) {
+      await this.prisma.user.update({
+        where: { id: user.id },
+        data: { image: newImage },
+      });  
+  }
+
 }

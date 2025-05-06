@@ -16,7 +16,7 @@ interface optionsComplement {
   redirectUri?: string;
 }
 
-const logger = new Logger('stiProvider');
+const logger = new Logger('ufrnProvider');
 
 export default function UFRNOAuthProvider<P extends UFRNProfile>(
   options: OAuthUserConfig<P> & optionsComplement
@@ -44,7 +44,7 @@ export default function UFRNOAuthProvider<P extends UFRNProfile>(
         grant_type: 'authorization_code'
       },
       async request(context) {
-        logger.info(`
+        logger.debug(`
 --------------------------------------------------
 UFRNOAuthProvider - Token Request - Contexto
 --------------------------------------------------
@@ -68,7 +68,7 @@ ${JSON.stringify(context, null, 2)}
         });
 
         const tokens = await response.json();
-        logger.info(`
+        logger.debug(`
 --------------------------------------------------
 UFRNOAuthProvider - Token Request - Tokens Recebidos
 --------------------------------------------------
@@ -80,7 +80,7 @@ ${JSON.stringify(tokens, null, 2)}
     },
     userinfo: {
       async request({ tokens }) {
-        logger.info(`
+        logger.debug(`
 --------------------------------------------------
 UFRNOAuthProvider - Userinfo Request - Tokens Recebidos
 --------------------------------------------------
@@ -104,7 +104,7 @@ ${JSON.stringify(tokens, null, 2)}
 
         const userInfo = await userInfoResponse.json();
 
-        logger.info(`
+        logger.debug(`
 --------------------------------------------------
 UFRNOAuthProvider - Userinfo Request - UserInfo Recebido
 --------------------------------------------------
@@ -122,14 +122,14 @@ ${JSON.stringify(userInfo, null, 2)}
       }
     },
     profile(profile, tokens) {
-      logger.info(`
+      logger.debug(`
 --------------------------------------------------
 UFRNOAuthProvider - Profile - Profile Recebido
 --------------------------------------------------
 
 ${JSON.stringify(profile, null, 2)}
 `);
-      logger.info(`
+      logger.debug(`
 --------------------------------------------------
 UFRNOAuthProvider - Profile - Tokens Recebidos
 --------------------------------------------------
