@@ -2,9 +2,9 @@
 
 import fetchApiSisman from '../../../lib/fetch/api-sisman';
 
-export async function getUsers() {
+export async function getUsers(accessTokenSisman: string | undefined) {
   //TODO: vai ter que usar fetchApiSismanUserSession por causa que é uma listagem para administrador, diferente das outras listagens.
-  const response = await fetchApiSisman('/users', undefined, {
+  const response = await fetchApiSisman('/users', accessTokenSisman, {
     cache: 'no-store'
   });
   const data = await response.json();
