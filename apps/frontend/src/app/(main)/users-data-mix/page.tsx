@@ -2,22 +2,11 @@ import { Suspense } from 'react';
 import { getUsers } from './_actions';
 import { DisplayData } from './display-data';
 import Logger from '../../../lib/logger';
-import { getSismanAccessToken } from '../../../lib/auth/get-access-token';
 
 const logger = new Logger('users-data-client');
 
-const accessTokenSisman = await getSismanAccessToken();
-
-async function refreshData() {
-  'use server';
-  const data = await getUsers(accessTokenSisman);
-  return data;
-}
-
 export default async function Page() {
-  logger.warn(accessTokenSisman);
-  //deixar para resolver a promessa no cliente, promove uma melhor experiência do usuário
-  const data = getUsers(accessTokenSisman);
+  const data = getUsers();
 
   return (
     <div>
@@ -27,7 +16,8 @@ export default async function Page() {
           <p>Loading initial data (suspense envolvendo DisplayData)...</p>
         }
       >
-        <DisplayData dataPromise={data} refreshAction={refreshData} />
+        {/* veja que dataPromise recebe a chamada da função sem await, ou seja, uma promessa. já refreshAction eu passo a declaração da função para ser carregada dentro do cliente */}
+        <DisplayData dataPromise={getUsers()} refreshAction={getUsers} />
       </Suspense>
     </div>
   );

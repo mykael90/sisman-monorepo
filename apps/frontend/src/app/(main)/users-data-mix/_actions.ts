@@ -1,8 +1,11 @@
 'use server';
 
+import { getSismanAccessToken } from '../../../lib/auth/get-access-token';
 import fetchApiSisman from '../../../lib/fetch/api-sisman';
 
-export async function getUsers(accessTokenSisman: string | undefined) {
+const accessTokenSisman = await getSismanAccessToken();
+
+export async function getUsers() {
   //TODO: vai ter que usar fetchApiSismanUserSession por causa que é uma listagem para administrador, diferente das outras listagens.
   const response = await fetchApiSisman('/users', accessTokenSisman, {
     cache: 'no-store'
