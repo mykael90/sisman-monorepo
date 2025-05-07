@@ -32,7 +32,7 @@ export async function getRefreshedUsers() {
   logger.info(
     '(Server Action) refreshUsersData: Revalidating /users-data-client'
   );
-  revalidatePath('/users');
+  revalidatePath('/users-data-client');
 
   logger.info(
     '(Server Action) refreshUsersData: Path revalidated, returning new data.'
@@ -40,7 +40,7 @@ export async function getRefreshedUsers() {
 
   // Opcionalmente, pode retornar os novos dados para o cliente
   // mas a revalidação + router.refresh() cuidará da UI.
-  // Veja que já utiliza a funcão getUsers para montar um novo compomente no server com o revalidatePath, 
+  // Veja que já utiliza a funcão getUsers para montar um novo compomente no server com o revalidatePath,
   // logo esse retorno é apenas para mandar para o cliente, mas lá pode não ter utilidade
   return response;
 }
