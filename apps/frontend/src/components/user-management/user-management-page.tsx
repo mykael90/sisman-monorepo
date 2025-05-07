@@ -4,22 +4,21 @@ import { UserManagementHeader } from './user-management-header';
 import { UserFilters } from './user-filters';
 import { UserTable } from './user-table';
 import { UserPagination } from './user-pagination';
-import { useState } from 'react';
+import { use, useState } from 'react';
 import initialUsers from './user-data-example';
 import { UserWithRoles1 } from '../../../types/user';
 import { getUsers } from '../../app/(main)/user-management/_actions';
 
-export function UserManagementPage({ initialData }) {
-  const [users, setUsers] = useState<UserWithRoles1[]>(initialData);
+export function UserManagementPage({ dataPromise, refreshAction }) {
+  const initialData: UserWithRoles1[] = use(dataPromise);
+
+  const [users, setUsers] = useState(initialData);
   const [searchQuery, setSearchQuery] = useState('');
   const [roleFilter, setRoleFilter] = useState('All Roles');
   const [statusFilter, setStatusFilter] = useState('All Status');
   const [currentPage, setCurrentPage] = useState(1);
   const totalEntries = 100;
   const entriesPerPage = 3;
-
-  const fetchData = getUsers();
-  console.log(fetchData);
 
   // Função para adicionar novo usuário
   const handleAddUser = () => {
@@ -35,7 +34,7 @@ export function UserManagementPage({ initialData }) {
 
   // Função para excluir usuário
   const handleDeleteUser = (userId: number) => {
-    setUsers(users.filter(user => user.id !== userId));
+    setUsers(users.filter((user) => user.id !== userId));
   };
 
   // Função para limpar filtros
