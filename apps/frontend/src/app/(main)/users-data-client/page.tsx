@@ -3,13 +3,15 @@ import { Suspense } from 'react';
 import { getRefreshedUsers, getUsers } from './_actions'; // Sua Server Action
 import { DisplayData } from './display-data'; // Seu Client Component
 import Logger from '../../../lib/logger'; // Seu logger
+import { getSismanAccessToken } from '../../../lib/auth/get-access-token';
 
 const logger = new Logger('users-data-page');
 
 export default async function Page() {
+  const accessTokenSisman = await getSismanAccessToken();
   // Chame getUsers() UMA VEZ para esta renderização do Server Component.
   // Esta promise será passada para o DisplayData.
-  const currentDataPromise = getUsers();
+  const currentDataPromise = getUsers(accessTokenSisman);
 
   // Gere uma chave única para esta renderização.
   // Pode ser um timestamp, um ID aleatório, ou algo que mude quando

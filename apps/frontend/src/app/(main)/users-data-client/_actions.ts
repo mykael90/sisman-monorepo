@@ -1,15 +1,12 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { getSismanAccessToken } from '../../../lib/auth/get-access-token';
 import fetchApiSisman from '../../../lib/fetch/api-sisman';
 import Logger from '@/lib/logger';
 
 const logger = new Logger('users-data-client/_actions');
 
-const accessTokenSisman = await getSismanAccessToken();
-
-export async function getUsers() {
+export async function getUsers(accessTokenSisman: string) {
   logger.info('(Server Action) getUsers: Called for initial page load.');
   const response = await fetchApiSisman('/users', accessTokenSisman, {
     cache: 'no-store'
@@ -22,10 +19,10 @@ export async function getUsers() {
 }
 
 export async function getRefreshedUsers() {
-  logger.info(
-    '(Server Action) refreshUsersData: Called by client, fetching new data...'
-  );
-  const response = await getUsers();
+  // logger.info(
+  //   '(Server Action) refreshUsersData: Called by client, fetching new data...'
+  // );
+  // const response = await getUsers();
 
   // Revalida o caminho APÓS buscar os dados e ANTES de retornar (ou em paralelo)
   // Esta é a ação que o usuário disparou.
@@ -42,19 +39,19 @@ export async function getRefreshedUsers() {
   // mas a revalidação + router.refresh() cuidará da UI.
   // Veja que já utiliza a funcão getUsers para montar um novo compomente no server com o revalidatePath,
   // logo esse retorno é apenas para mandar para o cliente, mas lá pode não ter utilidade
-  return response;
+  // return response;
 }
 
-export async function addUser(userId, formData) {
-  const data = Object.fromEntries(formData);
-  data.userId = userId;
+// export async function addUser(userId, formData) {
+//   const data = Object.fromEntries(formData);
+//   data.userId = userId;
 
-  const response = await fetchApiSisman('/users', accessTokenSisman, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data)
-  });
-  return response.json();
-}
+//   const response = await fetchApiSisman('/users', accessTokenSisman, {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'application/json'
+//     },
+//     body: JSON.stringify(data)
+//   });
+//   return response.json();
+// }
