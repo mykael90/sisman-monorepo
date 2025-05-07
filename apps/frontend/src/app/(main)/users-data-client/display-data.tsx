@@ -36,7 +36,7 @@ export function DisplayData({ dataPromise, refreshAction }) {
             // logger.info('refreshAction completed on client, Page should revalidate and re-render.');
             // Não é necessário fazer setCurrentData aqui, pois o componente será remontado
           })
-          .catch(error => {
+          .catch((error) => {
             // logger.error('Error during refreshAction:', error);
             // Lidar com erro, se necessário
           });
