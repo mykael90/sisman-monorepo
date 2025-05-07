@@ -17,12 +17,3 @@ export default function Page() {
     </div>
   );
 }
-
-export async function getUsers() {
-  const response = await fetchApiSisman('/users', {
-    cache: 'no-store'
-  });
-  const data = await response.json();
-  // console.log(data);
-  return data;
-}
