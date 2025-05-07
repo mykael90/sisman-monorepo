@@ -13,7 +13,7 @@ export async function getUsers(accessTokenSisman: string) {
   });
   const data = await response.json();
   // console.log(data);
-  const aguarde = await new Promise(resolve => setTimeout(resolve, 2000));
+  // const aguarde = await new Promise(resolve => setTimeout(resolve, 2000));
 
   return data;
 }
