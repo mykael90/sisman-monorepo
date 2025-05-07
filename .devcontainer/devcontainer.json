@@ -51,7 +51,14 @@
 			// "codeium.codeium",
 			"prisma.prisma",
 			"humao.rest-client",
-			"google.geminicodeassist"
+			"google.geminicodeassist",
+			"ecmel.vscode-html-css",
+			"oderwat.indent-rainbow",
+			"mrmlnc.vscode-scss",
+			"bradlc.vscode-tailwindcss",
+			"meganrogge.template-string-converter",
+			"editorconfig.editorconfig",
+			"formulahendry.code-runner"
 		  ]
 		}
 	  },

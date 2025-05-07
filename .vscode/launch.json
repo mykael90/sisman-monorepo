@@ -7,11 +7,11 @@
         {
             "type": "node",
             "request": "attach",
-            "name": "Debug API Gateway",
+            "name": "Debug NestJS (Backend)",
             "port": 9229,
             "address": "localhost",
-            "localRoot": "${workspaceFolder}/api-gateway",
-            "remoteRoot": "/home/node/api-gateway/",
+            "localRoot": "${workspaceFolder}/apps/backend",
+            "remoteRoot": "/home/node/sisman-monorepo/apps/backend/",
             "restart": true,
             "skipFiles": [
                 "<node_internals>/**"
@@ -21,11 +21,11 @@
           {
             "type": "node",
             "request": "attach",
-            "name": "Debug Microservice Admin",
-            "port": 9230,
+            "name": "Debug Next.js (Frontend)",
+            "port": 3000,
             "address": "localhost",
-            "localRoot": "${workspaceFolder}/micro-admin-backend",
-            "remoteRoot": "/home/node/micro-admin-backend/",
+            "localRoot": "${workspaceFolder}/apps/frontend",
+            "remoteRoot": "/home/node/sisman-monorepo/apps/frontend/",
             "restart": true,
             "skipFiles": [
                 "<node_internals>/**"
