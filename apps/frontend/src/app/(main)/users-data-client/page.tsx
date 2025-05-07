@@ -8,7 +8,9 @@ import { getSismanAccessToken } from '../../../lib/auth/get-access-token';
 const logger = new Logger('users-data-page');
 
 export default async function Page() {
-  const accessTokenSisman = await getSismanAccessToken();
+  // const accessTokenSisman = await getSismanAccessToken();
+
+  const accessTokenSisman =  123456
   // Chame getUsers() UMA VEZ para esta renderização do Server Component.
   // Esta promise será passada para o DisplayData.
   const currentDataPromise = getUsers(accessTokenSisman);

@@ -59,10 +59,10 @@ export function DisplayData({ dataPromise, refreshAction }) {
       >
         Increment Client Counter: {counter}
       </Button>
+      {isPending && <p>Loading new data...</p>}
       <p style={{ marginTop: '10px' }}>
         Current Message: {JSON.stringify(currentData)}
       </p>
-      {isPending && <p>Loading new data...</p>}
     </div>
   );
 }
