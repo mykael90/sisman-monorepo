@@ -1,6 +1,6 @@
-import { getUsers } from "./_actions";
+import { getUsers } from './_actions';
 
 export default async function initialData() {
-    const data = await getUsers();
-    return data;
+  // const data = await getUsers();
+  // return data;
 }
