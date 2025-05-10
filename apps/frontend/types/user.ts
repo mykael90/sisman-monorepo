@@ -6,12 +6,14 @@ import { use } from 'react';
 // e que cada 'role' tem um campo 'name' do tipo PrismaUserRoleEnum.
 export type UserWithRoles = Prisma.UserGetPayload<{
   include: {
-    userRoles: { // Supondo que a relação se chama 'roles' e aponta para um modelo 'Role'
-      select: { // O que você quer selecionar do modelo 'Role'
-        userRoletypeId: true,
-      }
-    }
-  }
+    userRoles: {
+      // Supondo que a relação se chama 'roles' e aponta para um modelo 'Role'
+      select: {
+        // O que você quer selecionar do modelo 'Role'
+        userRoletypeId: true;
+      };
+    };
+  };
 }>;
 
 export interface UserWithRoles1 extends Partial<User> {
@@ -25,13 +27,14 @@ const user: UserWithRoles1 = {
   name: 'John Doe',
   userRoles: [
     {
-      userId: 1,
+      userId: 1
     }
   ]
-}
+};
 
 export type UserWithSelectedFieldsAndRoles = Prisma.UserGetPayload<{
-  select: { // Seleciona explicitamente os campos do User
+  select: {
+    // Seleciona explicitamente os campos do User
     id: true;
     name: true;
     login: true;
@@ -39,22 +42,24 @@ export type UserWithSelectedFieldsAndRoles = Prisma.UserGetPayload<{
     image: true;
     isActive: true;
     // Não estamos selecionando createdAt, updatedAt, ou LogLogin aqui
-    userRoles: { // Inclui a relação userRoles
+    userRoles: {
+      // Inclui a relação userRoles
       select: {
-        userRoletypeId: true,
-      }
-    }
-  }
+        userRoletypeId: true;
+      };
+    };
+  };
 }>;
 
-
 //Partial para deixar opcional
-export type UserWithAll = Partial<Prisma.UserGetPayload<{
-  include: {
-logLogin: true,
-userRoles: true
-  }
-}>>;
+export type UserWithAll = Partial<
+  Prisma.UserGetPayload<{
+    include: {
+      logLogin: true;
+      userRoles: true;
+    };
+  }>
+>;
 
 // Se UserRole fosse um modelo e não um enum, e a relação fosse userRoles:
 // type UserWithActualRoles = Prisma.UserGetPayload<{
@@ -82,7 +87,10 @@ interface UserAssignedRole {
 // Esta estrutura é mais parecida com o que um 'include' faria.
 // É um objeto UserRole (da tabela de junção) onde a propriedade userRoletype
 // é preenchida com os detalhes que queremos de UserRoletype.
-type PopulatedUserRoleEntry = Omit<UserRole, 'user' | 'userRoletype' /* campos de relação */> & {
+type PopulatedUserRoleEntry = Omit<
+  UserRole,
+  'user' | 'userRoletype' /* campos de relação */
+> & {
   // user e userRoletype são omitidos porque eram tipos de relação não populados.
   // Aqui, substituímos userRoletype por uma versão populada ou com campos selecionados.
   userRoletype: RoleDetails; // Ou Pick<UserRoletype, 'id' | 'role' | 'description'>
