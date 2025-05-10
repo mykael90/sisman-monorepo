@@ -57,15 +57,10 @@ const columns = (
         <div className='flex items-center gap-2'>
           <Avatar className='h-10 w-10'>
             <AvatarImage
-              src={user.image || '/placeholder.svg'}
+              src={user.image}
               alt={loginValue ? `${nameValue} (${loginValue})` : nameValue} // Ex: "Nome (Login)"
             />
             <AvatarFallback>
-              {/* Usa a inicial do nome, ou do login se o nome não existir, ou 'U' como padrão */}
-              {/* usar como a primeira letra do primeiro nome do login e a primeira letra do segundo nome do login após o ponto, caso login não seja fornecido, utilize a primeira letra do nome e a primeira letra do ultimo nome separado por espaços              {nameValue
-                ? nameValue.split(' ').map(part => part.charAt(0)).join('').toUpperCase()
-                : loginValue ? loginValue.split('.').map(part => part.charAt(0)).join('').toUpperCase() : 'U'}
-                 de nameValue */}
               {getAvatarInitials(loginValue, nameValue)}
             </AvatarFallback>
           </Avatar>
@@ -330,7 +325,7 @@ function Filter({ column }: { column: Column<any, unknown> }) {
         </select>
       );
 
-    //em outras palavras text
+    //defualt é input de texto
     default:
       return (
         <DebouncedInput
