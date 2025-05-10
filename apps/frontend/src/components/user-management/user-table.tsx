@@ -37,6 +37,8 @@ interface UserTableProps {
   users: UserWithRoles1[];
   onEdit: (userId: number | undefined) => void;
   onDelete: (userId: number | undefined) => void;
+  columnFilters: ColumnFiltersState;
+  setColumnFilters: React.Dispatch<React.SetStateAction<ColumnFiltersState>>;
 }
 
 // 1. Definir as colunas com createColumnHelper
@@ -113,11 +115,13 @@ const columns = (
   })
 ];
 
-export function UserTable({ users, onEdit, onDelete }: UserTableProps) {
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
-
+export function UserTable({
+  users,
+  onEdit,
+  onDelete,
+  columnFilters,
+  setColumnFilters
+}: UserTableProps) {
   // 2. Instanciar a tabela com useReactTable
   const table = useReactTable({
     data: users,
