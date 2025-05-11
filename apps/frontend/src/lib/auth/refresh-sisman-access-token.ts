@@ -21,7 +21,7 @@ export default async function refreshSismanAccessToken(
     email: token.email as string,
     login: token.login as string, // Inclui o login (username)
     name: token.name as string, // Inclui o name
-    image: token.image as string
+    image: token.picture as string
   };
 
   //utilizar a mesma lógica para criar o token original e o de refresh. No SISMAN a autenticação sempre é enviando um token mesmo
