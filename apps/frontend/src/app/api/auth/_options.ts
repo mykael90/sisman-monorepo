@@ -103,25 +103,30 @@ Profile: ${JSON.stringify(profile, null, 2)}
         processedToken = { ...processedToken, ...authorizationFields };
       }
       // 2. Validação/Renovação do Token UFRN (se aplicável e expirado)
-      // Verifica se é uma chamada subsequente e se o token UFRN está expirado
-      else if (processedToken.provider === 'ufrn' && Date.now() >= Number(processedToken.expiresAtUfrn) * 1000) {
+      // Verifica se o token UFRN está expirado (não pode ser na primeira chamada, pois account não existirá)
+      if (
+        !account &&
+        processedToken.provider === 'ufrn' &&
+        Date.now() >= Number(processedToken.expiresAtUfrn) * 1000
+      ) {
         logger.warn(
           'Token UFRN expirado ou inválido, tentando renovar/revalidar...'
         );
         processedToken = await refreshUfrnAccessToken(processedToken);
       }
       // 3. Validação/Renovação do Token SISMAN (TODO)
-      else if (Date.now() >= Number(processedToken.expiresAtSisman) * 1000) {
+      // Verifica se o token SISMAN está expirado (não pode ser na primeira chamada, pois account não existirá)
+      // E também verifica se existe um expiresAtSisman, pois pode não existir se o login inicial falhou na autorização
+      if (
+        !account &&
+        processedToken.expiresAtSisman &&
+        Date.now() >= Number(processedToken.expiresAtSisman) * 1000
+      ) {
         /* condição de expiração do token SISMAN expiresAtAuthorization */
         logger.warn(
           'Token SISMAN expirado ou inválido, tentando renovar/revalidar...'
         );
         processedToken = await refreshSismanAccessToken(processedToken); // Função a ser criada
-      } else {
-        // Token (UFRN ou outro) ainda válido, não faz nada
-        logger.debug(
-          `Token [${processedToken.provider}] e SISMAN ainda válido.`
-        );
       }
 
       logger.debug(`
