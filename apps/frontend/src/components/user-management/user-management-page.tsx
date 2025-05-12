@@ -4,7 +4,6 @@ import React, { use, useState, useMemo, useRef } from 'react'; // Importe useMem
 import { UserManagementHeader } from './user-management-header';
 import { UserFilters } from './user-filters';
 import { UserTable } from './user-table';
-import { UserPagination } from './user-pagination';
 // import initialUsers from './user-data-example'; // Removido se não usado
 import { UserWithRoles1 } from '../../../types/user';
 // import { getUsers } from '../../app/(main)/user-management/_actions'; // Removido se não usado
@@ -91,8 +90,6 @@ export function UserManagementPage({ dataPromise, refreshAction }) {
 
       <UserTable
         users={users} // Passa os dados (potencialmente já filtrados se a lógica for no backend)
-        onEdit={handleEditUser}
-        onDelete={handleDeleteUser}
         // Passa o estado calculado dos filtros para a tabela
         columnFilters={columnFilters}
         // A tabela PODE precisar de setColumnFilters se ela tiver sua própria lógica interna de filtro,
@@ -119,10 +116,8 @@ export function UserManagementPage({ dataPromise, refreshAction }) {
 
 export interface UserTableProps {
   users: UserWithRoles1[];
-  onEdit: (userId: number | undefined) => void;
-  onDelete: (userId: number | undefined) => void;
   columnFilters: ColumnFiltersState;
-  setColumnFilters: React.Dispatch<React.SetStateAction<ColumnFiltersState>>;
+  setColumnFilters?: React.Dispatch<React.SetStateAction<ColumnFiltersState>>;
   pagination: PaginationState;
   setPagination: React.Dispatch<React.SetStateAction<any>>;
   setSorting: React.Dispatch<React.SetStateAction<SortingState>>;
