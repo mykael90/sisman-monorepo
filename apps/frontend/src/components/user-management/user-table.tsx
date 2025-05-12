@@ -56,7 +56,7 @@ const columns = (
   onDelete: (userId: number | undefined) => void
 ) => [
   columnHelper.accessor('name', {
-    header: 'User',
+    header: 'Nome',
     cell: (props) => {
       const user = props.row.original; // Acesso ao objeto de dados completo da linha
       const nameValue = props.getValue(); // Valor da célula atual (user.name)
@@ -99,7 +99,7 @@ const columns = (
   }),
   columnHelper.display({
     id: 'actions',
-    header: 'Actions',
+    header: 'Ações',
     cell: ({ row }) => (
       // Mantém a estrutura original da célula Actions com botões
       <div className='flex gap-2'>
