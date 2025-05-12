@@ -11,7 +11,9 @@ import {
   getFilteredRowModel,
   RowData,
   getPaginationRowModel,
-  PaginationState
+  PaginationState,
+  SortingState,
+  getSortedRowModel
 } from '@tanstack/react-table';
 
 import {
@@ -132,6 +134,13 @@ export function UserTable({
     pageSize: 10 //default page size
   });
 
+  const [sorting, setSorting] = React.useState<SortingState>([
+    {
+      id: 'name',
+      desc: false
+    }
+  ]); // can set initial sorting state here
+
   // 2. Instanciar a tabela com useReactTable
   const table = useReactTable({
     data: users,
@@ -141,9 +150,12 @@ export function UserTable({
     onColumnFiltersChange: setColumnFilters,
     getPaginationRowModel: getPaginationRowModel(),
     onPaginationChange: setPagination,
+    getSortedRowModel: getSortedRowModel(),
+    onSortingChange: setSorting,
     filterFns: {},
     state: {
       columnFilters,
+      sorting,
       pagination
     },
     debugTable: true,

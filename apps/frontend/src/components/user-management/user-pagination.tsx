@@ -24,18 +24,19 @@ interface UserPaginationProps {
   table: Table<UserWithRoles1>;
 }
 
-export function UserPagination({ table }: UserPaginationProps) {
-  const { pageIndex, pageSize } = table.getState().pagination;
-  const currentPage = pageIndex + 1; // TanStack Table pageIndex is 0-based
-  const totalPages = table.getPageCount();
-  const totalEntries = table.getRowCount(); // Assumes table is configured to provide total row count
+interface PageNumberInputProps {
+  currentPage: number;
+  totalPages: number;
+  onSetPage: (pageIndex: number) => void;
+}
 
+function PageNumberInput({
+  currentPage,
+  totalPages,
+  onSetPage
+}: PageNumberInputProps) {
+  // Este estado será reinicializado quando o componente for recriado devido à mudança da key.
   const [inputValue, setInputValue] = useState<string>(currentPage.toString());
-
-  // Update input value if currentPage changes externally
-  useEffect(() => {
-    setInputValue(currentPage.toString());
-  }, [currentPage]); // currentPage is derived from pageIndex
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
@@ -45,18 +46,21 @@ export function UserPagination({ table }: UserPaginationProps) {
     const pageNum = parseInt(value, 10);
     if (!isNaN(pageNum) && pageNum >= 1 && pageNum <= totalPages) {
       if (pageNum !== currentPage) {
-        table.setPageIndex(pageNum - 1); // pageIndex is 0-based
+        onSetPage(pageNum - 1); // pageIndex é 0-based
+        // A mudança de `currentPage` no pai fará este componente ser recriado, resetando `inputValue`.
+      } else {
+        // Normaliza o input se o número da página for o mesmo (ex: "03" para "3")
+        setInputValue(currentPage.toString());
       }
     } else {
-      // Reset input to current page if invalid value is entered
-      // or if the entered page is the current page (to reflect actual state if input was, e.g. "03" for page 3)
+      // Reseta o input para a página atual se um valor inválido for inserido.
       setInputValue(currentPage.toString());
     }
   };
 
   const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      event.preventDefault(); // Prevent form submission if applicable
+      event.preventDefault(); // Previne submissão de formulário, se aplicável
       goToPage(inputValue);
     }
   };
@@ -64,6 +68,30 @@ export function UserPagination({ table }: UserPaginationProps) {
   const handleInputBlur = () => {
     goToPage(inputValue);
   };
+
+  return (
+    <div className='flex items-center space-x-2 text-sm'>
+      <span>Página</span>
+      <Input
+        type='number'
+        value={inputValue}
+        onChange={handleInputChange}
+        onKeyDown={handleInputKeyDown}
+        onBlur={handleInputBlur}
+        min={1}
+        max={totalPages > 0 ? totalPages : 1}
+        className='h-8 w-14 text-center'
+      />
+      <span>de {totalPages > 0 ? totalPages : 1}</span>
+    </div>
+  );
+}
+
+export function UserPagination({ table }: UserPaginationProps) {
+  const { pageIndex, pageSize } = table.getState().pagination;
+  const currentPage = pageIndex + 1; // TanStack Table pageIndex is 0-based
+  const totalPages = table.getPageCount();
+  const totalEntries = table.getRowCount(); // Assumes table is configured to provide total row count
 
   return (
     <div className='flex flex-col items-center justify-between gap-4 sm:flex-row sm:gap-6'>
@@ -93,20 +121,12 @@ export function UserPagination({ table }: UserPaginationProps) {
             <ChevronLeft className='h-4 w-4' />
             <span className='sr-only'>Página anterior</span>
           </Button>
-          <div className='flex items-center space-x-2 text-sm'>
-            <span>Página</span>
-            <Input
-              type='number'
-              value={inputValue}
-              onChange={handleInputChange}
-              onKeyDown={handleInputKeyDown}
-              onBlur={handleInputBlur}
-              min={1}
-              max={totalPages > 0 ? totalPages : 1}
-              className='h-8 w-14 text-center'
-            />
-            <span>de {totalPages > 0 ? totalPages : 1}</span>
-          </div>
+          <PageNumberInput
+            key={currentPage} // Chave para forçar a recriação e resetar o estado interno
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onSetPage={(newPageIndex) => table.setPageIndex(newPageIndex)}
+          />
           <Button
             variant='outline'
             size='icon'
