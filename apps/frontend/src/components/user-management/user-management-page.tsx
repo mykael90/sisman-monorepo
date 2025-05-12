@@ -101,15 +101,6 @@ export function UserManagementPage({ dataPromise, refreshAction }) {
         setSorting={setSorting}
         sorting={sorting}
       />
-
-      {/* <div className='mt-1 h-14 rounded-b-md border-0 bg-white px-4 py-3.5'>
-        <UserPagination
-          currentPage={currentPage}
-          totalEntries={totalEntries}
-          entriesPerPage={entriesPerPage}
-          onPageChange={setCurrentPage}
-        />
-      </div> */}
     </div>
   );
 }

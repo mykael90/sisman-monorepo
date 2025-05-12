@@ -30,7 +30,7 @@ interface TableProps<TData> {
   }) => ColumnDef<TData>[];
   actions: { [key: string]: (row: Row<TData>) => void };
   columnFilters: ColumnFiltersState;
-  setColumnFilters: React.Dispatch<React.SetStateAction<ColumnFiltersState>>;
+  setColumnFilters?: React.Dispatch<React.SetStateAction<ColumnFiltersState>>;
   pagination: PaginationState;
   setPagination: React.Dispatch<React.SetStateAction<any>>;
   setSorting: React.Dispatch<React.SetStateAction<SortingState>>;
