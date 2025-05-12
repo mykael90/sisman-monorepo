@@ -9,7 +9,9 @@ import {
   useReactTable,
   ColumnFiltersState,
   getFilteredRowModel,
-  RowData
+  RowData,
+  getPaginationRowModel,
+  PaginationState
 } from '@tanstack/react-table';
 
 import {
@@ -25,6 +27,7 @@ import { Button } from '@/components/ui/button';
 import { Edit, Trash2 } from 'lucide-react';
 import type { UserWithRoles1 } from '@/types/user';
 import React from 'react';
+import { UserPagination } from './user-pagination';
 
 declare module '@tanstack/react-table' {
   //allows us to define custom properties for our columns
@@ -39,6 +42,8 @@ interface UserTableProps {
   onDelete: (userId: number | undefined) => void;
   columnFilters: ColumnFiltersState;
   setColumnFilters: React.Dispatch<React.SetStateAction<ColumnFiltersState>>;
+  pagination: PaginationState;
+  setPagination: React.Dispatch<React.SetStateAction<any>>;
 }
 
 // 1. Definir as colunas com createColumnHelper
@@ -122,6 +127,11 @@ export function UserTable({
   columnFilters,
   setColumnFilters
 }: UserTableProps) {
+  const [pagination, setPagination] = React.useState<PaginationState>({
+    pageIndex: 0, //initial page index
+    pageSize: 10 //default page size
+  });
+
   // 2. Instanciar a tabela com useReactTable
   const table = useReactTable({
     data: users,
@@ -129,9 +139,12 @@ export function UserTable({
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(), //client side filtering
     onColumnFiltersChange: setColumnFilters,
+    getPaginationRowModel: getPaginationRowModel(),
+    onPaginationChange: setPagination,
     filterFns: {},
     state: {
-      columnFilters
+      columnFilters,
+      pagination
     },
     debugTable: true,
     debugHeaders: true,
@@ -139,47 +152,53 @@ export function UserTable({
   });
 
   return (
-    <div className='border-md rounded-md'>
-      <Table>
-        <TableHeader className='bg-gray-100'>
-          {/* 3. Renderizar cabeçalhos usando table.getHeaderGroups */}
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <TableHead key={header.id}>
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                  {header.column.getCanFilter() ? (
-                    <div>
-                      <Filter column={header.column} />
-                    </div>
-                  ) : null}
-                </TableHead>
-              ))}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody className='bg-white'>
-          {/* 4. Renderizar linhas e células usando table.getRowModel e flexRender */}
-          {table.getRowModel().rows.map((row) => (
-            <TableRow key={row.id}>
-              {row.getVisibleCells().map((cell) => (
-                // Aplica a classe específica apenas na célula 'name' para manter o layout do Avatar
-                <TableCell
-                  key={cell.id}
-                  className={`${cell.column.id === 'name' ? 'flex items-center gap-2' : ''} py-2.5`}
-                >
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+    <div>
+      <div className='border-md rounded-md'>
+        <Table>
+          <TableHeader className='bg-gray-100'>
+            {/* 3. Renderizar cabeçalhos usando table.getHeaderGroups */}
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                    {/* {header.column.getCanFilter() ? (
+                      <div>
+                        <Filter column={header.column} />
+                      </div>
+                    ) : null} */}
+                  </TableHead>
+                ))}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody className='bg-white'>
+            {/* 4. Renderizar linhas e células usando table.getRowModel e flexRender */}
+            {table.getRowModel().rows.map((row) => (
+              <TableRow key={row.id}>
+                {row.getVisibleCells().map((cell) => (
+                  // Aplica a classe específica apenas na célula 'name' para manter o layout do Avatar
+                  <TableCell
+                    key={cell.id}
+                    className={`${cell.column.id === 'name' ? 'flex items-center gap-2' : ''} py-2.5`}
+                  >
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+
+      <div className='mt-1 h-14 rounded-b-md border-0 bg-white px-4 py-3.5'>
+        <UserPagination table={table} />
+      </div>
     </div>
   );
 }
@@ -218,30 +237,6 @@ function getAvatarInitials(
   } else return 'U';
 }
 
-// Componentes auxiliares para Badges (mantidos do original)
-function RoleBadge({ role }: { role: string }) {
-  const getColorByRole = () => {
-    switch (role) {
-      case 'Admin':
-        return 'bg-blue-100 text-blue-800';
-      case 'Editor':
-        return 'bg-purple-100 text-purple-800';
-      case 'Viewer':
-        return 'bg-indigo-100 text-indigo-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
-    }
-  };
-
-  return (
-    <span
-      className={`rounded-full px-2 py-1 text-xs font-medium ${getColorByRole()}`}
-    >
-      {role}
-    </span>
-  );
-}
-
 function StatusBadge({ status }: { status: string }) {
   return (
     <span
@@ -253,127 +248,5 @@ function StatusBadge({ status }: { status: string }) {
     >
       {status}
     </span>
-  );
-}
-
-function Filter({ column }: { column: Column<any, unknown> }) {
-  const columnFilterValue = column.getFilterValue();
-  const { filterVariant } = column.columnDef.meta ?? {};
-
-  switch (filterVariant) {
-    case 'range':
-      return (
-        <div>
-          <div className='flex space-x-2'>
-            {/* See faceted column filters example for min max values functionality */}
-            <DebouncedInput
-              type='number'
-              value={(columnFilterValue as [number, number])?.[0] ?? ''}
-              onChange={(value) =>
-                column.setFilterValue((old: [number, number]) => [
-                  value,
-                  old?.[1]
-                ])
-              }
-              placeholder={`Min`}
-              className='w-24 rounded border shadow'
-            />
-            <DebouncedInput
-              type='number'
-              value={(columnFilterValue as [number, number])?.[1] ?? ''}
-              onChange={(value) =>
-                column.setFilterValue((old: [number, number]) => [
-                  old?.[0],
-                  value
-                ])
-              }
-              placeholder={`Max`}
-              className='w-24 rounded border shadow'
-            />
-          </div>
-          <div className='h-1' />
-        </div>
-      );
-
-    case 'selectBoolean':
-      return (
-        <select
-          onChange={(e) => column.setFilterValue(e.target.value)}
-          value={columnFilterValue?.toString()}
-        >
-          {/* See faceted column filters example for dynamic select options */}
-          <option value=''>All</option>
-          <option value='true'>true</option>
-          <option value='false'>false</option>
-        </select>
-      );
-
-    case 'select':
-      return (
-        <select
-          onChange={(e) =>
-            column.setFilterValue(
-              e.target.value === ''
-                ? ''
-                : e.target.value === 'true'
-                  ? true
-                  : false
-            )
-          }
-          value={columnFilterValue?.toString()}
-        >
-          {/* See faceted column filters example for dynamic select options */}
-          <option value=''>All</option>
-          <option value='true'>true</option>
-          <option value='false'>false</option>
-        </select>
-      );
-
-    //defualt é input de texto
-    default:
-      return (
-        <DebouncedInput
-          className='w-36 rounded border shadow'
-          onChange={(value) => column.setFilterValue(value)}
-          placeholder={`Search...`}
-          type='text'
-          value={(columnFilterValue ?? '') as string}
-        />
-        // See faceted column filters example for datalist search suggestions
-      );
-  }
-}
-
-// A typical debounced input react component
-function DebouncedInput({
-  value: initialValue,
-  onChange,
-  debounce = 500,
-  ...props
-}: {
-  value: string | number;
-  onChange: (value: string | number) => void;
-  debounce?: number;
-} & Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'>) {
-  const [value, setValue] = React.useState(initialValue);
-
-  React.useEffect(() => {
-    setValue(initialValue);
-  }, [initialValue]);
-
-  React.useEffect(() => {
-    const timeout = setTimeout(() => {
-      onChange(value);
-    }, debounce);
-
-    return () => clearTimeout(timeout);
-  }, [value]);
-
-  return (
-    <input
-      {...props}
-      value={value}
-      onChange={(e) => setValue(e.target.value)}
-    />
   );
 }

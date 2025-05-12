@@ -1,6 +1,6 @@
 'use client';
 
-import { Input } from '@/components/ui/input';
+import { InputDebounce, InputDebounceRef } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
@@ -10,108 +10,72 @@ import {
 } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { Search, FilterX } from 'lucide-react';
-import React, { EventHandler } from 'react';
-import { ColumnFiltersState } from '@tanstack/react-table';
+import { memo } from 'react';
 
-export function UserFilters({
-  setColumnFilters
-}: {
-  setColumnFilters: React.Dispatch<React.SetStateAction<ColumnFiltersState>>;
-}) {
-  const [userValue, setUserValue] = React.useState('');
-  const [roleFilter, setRoleFilter] = React.useState('');
-  const [statusFilter, setStatusFilter] = React.useState('');
+interface UserFiltersProps {
+  userValue: string;
+  setUserValue: React.Dispatch<React.SetStateAction<string>>;
+  statusFilter: string;
+  setStatusFilter: React.Dispatch<React.SetStateAction<string>>;
+  onClearFilters: () => void; // Função para limpar vinda do pai
+  // A prop que recebe a ref do pai (nome pode ser qualquer um)
+  inputDebounceRef: React.Ref<InputDebounceRef>;
+}
 
+// Usando desestruturação nas props para clareza
+const UserFilters = memo(function UserFilters({
+  userValue,
+  setUserValue,
+  statusFilter,
+  setStatusFilter,
+  onClearFilters, // Recebe a função de limpar
+  inputDebounceRef // Recebe a ref do pai
+}: UserFiltersProps) {
+  // O handleClearFilters agora simplesmente chama a função do pai
   const handleClearFilters = () => {
-    setColumnFilters([]);
-    setUserValue('');
-    // Se os filtros de role e status estivessem ativos, você também os redefiniria aqui:
-    // setRoleFilter('');
-    // setStatusFilter('');
+    onClearFilters();
+  };
+
+  // Usa diretamente os setters recebidos via props
+  const handleStatusChange = (value: string) => {
+    // Trata 'All Status' como um valor vazio para o estado no pai
+    setStatusFilter(value === 'All Status' ? '' : value);
   };
 
   return (
     <div className='flex flex-col gap-4 md:flex-row'>
       <div className='relative flex-1'>
         <Search className='text-muted-foreground absolute top-2.5 left-2.5 h-4 w-4' />
-        <DebouncedInput
+        <InputDebounce
+          imperativeRef={inputDebounceRef}
           type='text'
           placeholder='Search users...'
           className='pl-8'
-          value={userValue}
-          onChange={(newInputValue) => {
-            // newInputValue é o valor do DebouncedInput (string | number)
-            // Como o type do input é "text", esperamos uma string.
-            const newStringValue = String(newInputValue);
-            setUserValue(newStringValue); // Atualiza o estado local para o input
-
-            setColumnFilters((prevFilters) => {
-              const filterId = 'name';
-
-              // Se o valor do input estiver vazio, remove o filtro 'name'
-              if (newStringValue === '') {
-                const updatedFilters = prevFilters.filter(
-                  (f) => f.id !== filterId
-                );
-                // Retorna novo array apenas se algo mudou
-                if (updatedFilters.length < prevFilters.length) {
-                  return updatedFilters;
-                }
-                return prevFilters;
-              }
-
-              const existingFilterIndex = prevFilters.findIndex(
-                (f) => f.id === filterId
-              );
-
-              if (existingFilterIndex !== -1) {
-                // Filtro existe, atualiza o valor
-                if (prevFilters[existingFilterIndex].value === newStringValue) {
-                  return prevFilters; // Nenhum alteração necessária valor igual a anetrior
-                }
-                return prevFilters.map((filter, index) =>
-                  index === existingFilterIndex
-                    ? { ...filter, value: newStringValue }
-                    : filter
-                );
-              } else {
-                // Filtro não existe, adiciona
-                return [
-                  ...prevFilters,
-                  { id: filterId, value: newStringValue }
-                ];
-              }
-            });
-          }}
+          // InputDebounce agora é controlado pelo estado do pai
+          inputValue={userValue} // Passa o valor do pai
+          setInputValue={setUserValue} // Passa o setter do pai
+          // Use a versão refatorada do InputDebounce que lida bem com valor controlado
         />
       </div>
 
-      {/* <Select value={roleFilter} onValueChange={onRoleFilterChange}>
-        <SelectTrigger className='w-full md:w-[180px]'>
-          <SelectValue placeholder='All Roles' />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value='All Roles'>All Roles</SelectItem>
-          <SelectItem value='Admin'>Admin</SelectItem>
-          <SelectItem value='Editor'>Editor</SelectItem>
-          <SelectItem value='Viewer'>Viewer</SelectItem>
-        </SelectContent>
-      </Select>
-
-      <Select value={statusFilter} onValueChange={onStatusFilterChange}>
+      <Select
+        value={statusFilter || 'All Status'} // Mostra 'All Status' se o valor for vazio
+        onValueChange={handleStatusChange} // Chama o handler que usa o setter do pai
+      >
         <SelectTrigger className='w-full md:w-[180px]'>
           <SelectValue placeholder='All Status' />
         </SelectTrigger>
         <SelectContent>
+          {/* O valor 'All Status' é tratado no handleStatusChange */}
           <SelectItem value='All Status'>All Status</SelectItem>
-          <SelectItem value='Active'>Active</SelectItem>
-          <SelectItem value='Inactive'>Inactive</SelectItem>
+          <SelectItem value='true'>Active</SelectItem>
+          <SelectItem value='false'>Inactive</SelectItem>
         </SelectContent>
-      </Select> */}
+      </Select>
 
       <Button
         variant='outline'
-        onClick={handleClearFilters}
+        onClick={handleClearFilters} // Chama a função de limpar do pai
         className='flex items-center'
       >
         <FilterX className='mr-2 h-4 w-4' />
@@ -119,38 +83,6 @@ export function UserFilters({
       </Button>
     </div>
   );
-}
+});
 
-// A typical debounced input react component
-function DebouncedInput({
-  value: initialValue,
-  onChange,
-  debounce = 500,
-  ...props
-}: {
-  value: string | number;
-  onChange: (value: string | number) => void;
-  debounce?: number;
-} & Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'>) {
-  const [value, setValue] = React.useState(initialValue);
-
-  React.useEffect(() => {
-    setValue(initialValue);
-  }, [initialValue]);
-
-  React.useEffect(() => {
-    const timeout = setTimeout(() => {
-      onChange(value);
-    }, debounce);
-
-    return () => clearTimeout(timeout);
-  }, [value, onChange, debounce]); // Adicionado onChange e debounce às dependências
-
-  return (
-    <input
-      {...props}
-      value={value}
-      onChange={(e) => setValue(e.target.value)}
-    />
-  );
-}
+export { UserFilters };

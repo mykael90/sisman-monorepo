@@ -1,39 +1,56 @@
 'use client';
 
+import React, { use, useState, useMemo, useRef } from 'react'; // Importe useMemo
 import { UserManagementHeader } from './user-management-header';
 import { UserFilters } from './user-filters';
 import { UserTable } from './user-table';
 import { UserPagination } from './user-pagination';
-import React, { use, useState } from 'react';
-import initialUsers from './user-data-example';
+// import initialUsers from './user-data-example'; // Removido se não usado
 import { UserWithRoles1 } from '../../../types/user';
-import { getUsers } from '../../app/(main)/user-management/_actions';
-import { ColumnFiltersState } from '@tanstack/react-table';
+// import { getUsers } from '../../app/(main)/user-management/_actions'; // Removido se não usado
+import { ColumnFiltersState, PaginationState } from '@tanstack/react-table';
+import { InputDebounceRef } from '@/components/ui/input'; // Importe o tipo da Ref
 
 export function UserManagementPage({ dataPromise, refreshAction }) {
   const initialData: UserWithRoles1[] = use(dataPromise);
 
-  const [users, setUsers] = useState(initialData);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
-  const [currentPage, setCurrentPage] = useState(1);
-  const totalEntries = 100;
-  const entriesPerPage = 3;
+  const [users, setUsers] = useState(initialData); // Estado dos dados da tabela
 
-  // Função para adicionar novo usuário
+  // --- Estado dos Filtros Movido para Cá ---
+  const [userValue, setUserValue] = useState('');
+  const [statusFilter, setStatusFilter] = useState(''); // Valor inicial ('', 'true', 'false')
+  const inputDebounceRef = useRef<InputDebounceRef>(null); // Cria a Ref
+
+  // --- Calcular columnFilters diretamente com base no estado local ---
+  const columnFilters = useMemo<ColumnFiltersState>(() => {
+    const filters: ColumnFiltersState = [];
+    if (userValue) {
+      filters.push({ id: 'name', value: userValue });
+    }
+    if (statusFilter) {
+      // Só adiciona se statusFilter não for vazio
+      // Ajuste o valor conforme esperado pela tabela ('true'/'false' string ou boolean)
+      filters.push({ id: 'isActive', value: statusFilter === 'true' });
+      // Ou: filters.push({ id: 'isActive', value: statusFilter });
+    }
+    return filters;
+  }, [userValue, statusFilter]); // Recalcula apenas quando userValue ou statusFilter mudam
+
+  // Função para limpar filtros (agora pertence ao pai)
+  const handleClearFilters = () => {
+    setUserValue('');
+    setStatusFilter('');
+    // Chama o método clearInput exposto pelo filho via ref
+    inputDebounceRef.current?.clearInput();
+  };
+
+  // Funções de exemplo (manter como antes)
   const handleAddUser = () => {
-    // Implementação futura
     console.log('Add new user');
   };
-
-  // Função para editar usuário
   const handleEditUser = (userId: number) => {
-    // Implementação futura
     console.log('Edit user', userId);
   };
-
-  // Função para excluir usuário
   const handleDeleteUser = (userId: number) => {
     setUsers(users.filter((user) => user.id !== userId));
   };
@@ -42,26 +59,40 @@ export function UserManagementPage({ dataPromise, refreshAction }) {
     <div className='container mx-auto p-4'>
       <UserManagementHeader onAddUser={handleAddUser} />
 
-      <div className='mt-4 mb-4 h-16 rounded-xl border-0 bg-white px-4 py-3.5'>
-        <UserFilters setColumnFilters={setColumnFilters} />
+      <div className='mt-4 mb-4 h-auto rounded-xl border-0 bg-white px-4 py-3.5'>
+        {' '}
+        {/* Ajuste altura se necessário */}
+        <UserFilters
+          // Passa os valores e setters para o componente filho
+          userValue={userValue}
+          setUserValue={setUserValue}
+          statusFilter={statusFilter}
+          setStatusFilter={setStatusFilter}
+          onClearFilters={handleClearFilters} // Passa a função de limpar
+          inputDebounceRef={inputDebounceRef} // Passa a ref
+        />
       </div>
 
       <UserTable
-        users={users}
+        users={users} // Passa os dados (potencialmente já filtrados se a lógica for no backend)
         onEdit={handleEditUser}
         onDelete={handleDeleteUser}
+        // Passa o estado calculado dos filtros para a tabela
         columnFilters={columnFilters}
-        setColumnFilters={setColumnFilters}
+        // A tabela PODE precisar de setColumnFilters se ela tiver sua própria lógica interna de filtro,
+        // mas se a filtragem é feita aqui ou no backend, talvez não precise mais.
+        // Se precisar, você teria que criar um setter aqui também.
+        // setColumnFilters={setColumnFilters} // Removido ou ajustado conforme necessidade da tabela
       />
 
-      <div className='mt-1 h-14 rounded-b-md border-0 bg-white px-4 py-3.5'>
+      {/* <div className='mt-1 h-14 rounded-b-md border-0 bg-white px-4 py-3.5'>
         <UserPagination
           currentPage={currentPage}
           totalEntries={totalEntries}
           entriesPerPage={entriesPerPage}
           onPageChange={setCurrentPage}
         />
-      </div>
+      </div> */}
     </div>
   );
 }

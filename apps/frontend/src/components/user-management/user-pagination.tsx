@@ -1,5 +1,12 @@
 'use client';
 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/components/ui/select';
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -10,54 +17,52 @@ import {
   ChevronsRight
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Table } from '@tanstack/react-table';
+import { UserWithRoles1 } from '../../../types/user';
+
 interface UserPaginationProps {
-  currentPage: number;
-  totalEntries: number;
-  entriesPerPage: number;
-  onPageChange: (page: number) => void;
+  table: Table<UserWithRoles1>;
 }
 
-export function UserPagination({
-  currentPage,
-  totalEntries,
-  entriesPerPage,
-  onPageChange
-}: UserPaginationProps) {
-  const totalPages = Math.ceil(totalEntries / entriesPerPage);
-  const startEntry = (currentPage - 1) * entriesPerPage + 1;
-  // const endEntry = Math.min(currentPage * entriesPerPage, totalEntries) // No longer needed for display
+export function UserPagination({ table }: UserPaginationProps) {
+  const { pageIndex, pageSize } = table.getState().pagination;
+  const currentPage = pageIndex + 1; // TanStack Table pageIndex is 0-based
+  const totalPages = table.getPageCount();
+  const totalEntries = table.getRowCount(); // Assumes table is configured to provide total row count
+
   const [inputValue, setInputValue] = useState<string>(currentPage.toString());
 
   // Update input value if currentPage changes externally
   useEffect(() => {
     setInputValue(currentPage.toString());
-  }, [currentPage]);
+  }, [currentPage]); // currentPage is derived from pageIndex
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
   };
 
   const goToPage = (value: string) => {
-    const pageNumber = parseInt(value, 10);
-    if (!isNaN(pageNumber) && pageNumber >= 1 && pageNumber <= totalPages) {
-      if (pageNumber !== currentPage) {
-        onPageChange(pageNumber);
+    const pageNum = parseInt(value, 10);
+    if (!isNaN(pageNum) && pageNum >= 1 && pageNum <= totalPages) {
+      if (pageNum !== currentPage) {
+        table.setPageIndex(pageNum - 1); // pageIndex is 0-based
       }
     } else {
       // Reset input to current page if invalid value is entered
+      // or if the entered page is the current page (to reflect actual state if input was, e.g. "03" for page 3)
       setInputValue(currentPage.toString());
     }
   };
 
   const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
+      event.preventDefault(); // Prevent form submission if applicable
       goToPage(inputValue);
     }
   };
 
   const handleInputBlur = () => {
-    // Optionally navigate on blur, or just reset if invalid
-    goToPage(inputValue); // Or just reset: setInputValue(currentPage.toString()) if invalid
+    goToPage(inputValue);
   };
 
   return (
@@ -66,61 +71,83 @@ export function UserPagination({
         {/* Showing {startEntry} to {endEntry} of {totalEntries} entries */}
         Total de {totalEntries} registro(s)
       </div>
-      <div className='flex items-center gap-2'>
-        <Button
-          variant='outline'
-          size='icon'
-          className='h-8 w-8'
-          onClick={() => onPageChange(1)}
-          disabled={currentPage === 1}
-        >
-          <ChevronsLeft className='h-4 w-4' />
-          <span className='sr-only'>Primeira página</span>
-        </Button>
-        <Button
-          variant='outline'
-          size='icon'
-          className='h-8 w-8'
-          onClick={() => onPageChange(currentPage - 1)}
-          disabled={currentPage === 1}
-        >
-          <ChevronLeft className='h-4 w-4' />
-          <span className='sr-only'>Página anterior</span>
-        </Button>
-        <div className='flex items-center space-x-2 text-sm'>
-          <span>Página</span>
-          <Input
-            type='number'
-            value={inputValue}
-            onChange={handleInputChange}
-            onKeyDown={handleInputKeyDown}
-            onBlur={handleInputBlur}
-            min={1}
-            max={totalPages}
-            className='h-8 w-14 text-center'
-          />
-          <span>de {totalPages}</span>
+      <div className='flex flex-wrap items-center justify-center gap-x-4 gap-y-2 sm:justify-end sm:gap-x-6 lg:gap-x-8'>
+        <div className='flex items-center gap-2'>
+          <Button
+            variant='outline'
+            size='icon'
+            className='h-8 w-8'
+            onClick={() => table.firstPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            <ChevronsLeft className='h-4 w-4' />
+            <span className='sr-only'>Primeira página</span>
+          </Button>
+          <Button
+            variant='outline'
+            size='icon'
+            className='h-8 w-8'
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            <ChevronLeft className='h-4 w-4' />
+            <span className='sr-only'>Página anterior</span>
+          </Button>
+          <div className='flex items-center space-x-2 text-sm'>
+            <span>Página</span>
+            <Input
+              type='number'
+              value={inputValue}
+              onChange={handleInputChange}
+              onKeyDown={handleInputKeyDown}
+              onBlur={handleInputBlur}
+              min={1}
+              max={totalPages > 0 ? totalPages : 1}
+              className='h-8 w-14 text-center'
+            />
+            <span>de {totalPages > 0 ? totalPages : 1}</span>
+          </div>
+          <Button
+            variant='outline'
+            size='icon'
+            className='h-8 w-8'
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            <ChevronRight className='h-4 w-4' />
+            <span className='sr-only'>Próxima página</span>
+          </Button>
+          <Button
+            variant='outline'
+            size='icon'
+            className='h-8 w-8'
+            onClick={() => table.lastPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            <ChevronsRight className='h-4 w-4' />
+            <span className='sr-only'>Última página</span>
+          </Button>
         </div>
-        <Button
-          variant='outline'
-          size='icon'
-          className='h-8 w-8'
-          onClick={() => onPageChange(currentPage + 1)}
-          disabled={currentPage === totalPages}
+      </div>
+      <div className='flex items-center space-x-2'>
+        <p className='text-muted-foreground text-sm'>Linhas por página:</p>
+        <Select
+          value={`${pageSize}`}
+          onValueChange={(value) => {
+            table.setPageSize(Number(value));
+          }}
         >
-          <ChevronRight className='h-4 w-4' />
-          <span className='sr-only'>Próxima página</span>
-        </Button>
-        <Button
-          variant='outline'
-          size='icon'
-          className='h-8 w-8'
-          onClick={() => onPageChange(totalPages)}
-          disabled={currentPage === totalPages}
-        >
-          <ChevronsRight className='h-4 w-4' />
-          <span className='sr-only'>Última página</span>
-        </Button>
+          <SelectTrigger size='sm' className='w-fit'>
+            <SelectValue placeholder={`${pageSize}`} />
+          </SelectTrigger>
+          <SelectContent side='top'>
+            {[10, 20, 50, 100].map((size) => (
+              <SelectItem key={size} value={`${size}`}>
+                {size}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
     </div>
   );
