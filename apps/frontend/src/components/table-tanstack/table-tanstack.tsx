@@ -1,4 +1,5 @@
 import {
+  ColumnDef,
   ColumnFiltersState,
   flexRender,
   getCoreRowModel,
@@ -19,10 +20,12 @@ import {
 } from '../ui/table';
 import { Pagination } from './pagination';
 
-export interface TableProps<TData> {
-  data: TData;
-  onEdit: (id: number | undefined) => void;
-  onDelete: (id: number | undefined) => void;
+interface TableProps<TData> {
+  data: TData[];
+  columns: (actions: {
+    [key: string]: (row: TData) => void;
+  }) => ColumnDef<TData>[];
+  actions: { [key: string]: (row: TData) => void };
   columnFilters: ColumnFiltersState;
   setColumnFilters: React.Dispatch<React.SetStateAction<ColumnFiltersState>>;
   pagination: PaginationState;
@@ -31,22 +34,21 @@ export interface TableProps<TData> {
   sorting: SortingState;
 }
 
-export function TableTanstack({
+export function TableTanstack<TData>({
   data,
   columns,
-  onEdit,
-  onDelete,
+  actions,
   columnFilters,
   setColumnFilters,
   pagination,
   setPagination,
   setSorting,
   sorting
-}) {
+}: TableProps<TData>) {
   // 2. Instanciar a tabela com useReactTable
   const table = useReactTable({
     data: data,
-    columns: columns(onEdit, onDelete), // Passa os callbacks para a definição das colunas
+    columns: columns(actions), // Passa os callbacks para a definição das colunas
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(), //client side filtering
     onColumnFiltersChange: setColumnFilters,
