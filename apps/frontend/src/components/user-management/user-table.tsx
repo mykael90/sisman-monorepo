@@ -7,12 +7,9 @@ import {
   flexRender,
   getCoreRowModel,
   useReactTable,
-  ColumnFiltersState,
   getFilteredRowModel,
   RowData,
   getPaginationRowModel,
-  PaginationState,
-  SortingState,
   getSortedRowModel
 } from '@tanstack/react-table';
 
@@ -30,22 +27,13 @@ import { Edit, Trash2 } from 'lucide-react';
 import type { UserWithRoles1 } from '@/types/user';
 import React from 'react';
 import { UserPagination } from './user-pagination';
+import { UserTableProps } from './user-management-page';
 
 declare module '@tanstack/react-table' {
   //allows us to define custom properties for our columns
   interface ColumnMeta<TData extends RowData, TValue> {
     filterVariant?: 'text' | 'range' | 'select' | 'selectBoolean';
   }
-}
-
-interface UserTableProps {
-  users: UserWithRoles1[];
-  onEdit: (userId: number | undefined) => void;
-  onDelete: (userId: number | undefined) => void;
-  columnFilters: ColumnFiltersState;
-  setColumnFilters: React.Dispatch<React.SetStateAction<ColumnFiltersState>>;
-  pagination: PaginationState;
-  setPagination: React.Dispatch<React.SetStateAction<any>>;
 }
 
 // 1. Definir as colunas com createColumnHelper
@@ -127,20 +115,12 @@ export function UserTable({
   onEdit,
   onDelete,
   columnFilters,
-  setColumnFilters
+  setColumnFilters,
+  pagination,
+  setPagination,
+  setSorting,
+  sorting
 }: UserTableProps) {
-  const [pagination, setPagination] = React.useState<PaginationState>({
-    pageIndex: 0, //initial page index
-    pageSize: 10 //default page size
-  });
-
-  const [sorting, setSorting] = React.useState<SortingState>([
-    {
-      id: 'name',
-      desc: false
-    }
-  ]); // can set initial sorting state here
-
   // 2. Instanciar a tabela com useReactTable
   const table = useReactTable({
     data: users,

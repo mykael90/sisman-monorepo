@@ -8,7 +8,11 @@ import { UserPagination } from './user-pagination';
 // import initialUsers from './user-data-example'; // Removido se não usado
 import { UserWithRoles1 } from '../../../types/user';
 // import { getUsers } from '../../app/(main)/user-management/_actions'; // Removido se não usado
-import { ColumnFiltersState, PaginationState } from '@tanstack/react-table';
+import {
+  ColumnFiltersState,
+  PaginationState,
+  SortingState
+} from '@tanstack/react-table';
 import { InputDebounceRef } from '@/components/ui/input'; // Importe o tipo da Ref
 
 export function UserManagementPage({ dataPromise, refreshAction }) {
@@ -20,6 +24,18 @@ export function UserManagementPage({ dataPromise, refreshAction }) {
   const [userValue, setUserValue] = useState('');
   const [statusFilter, setStatusFilter] = useState(''); // Valor inicial ('', 'true', 'false')
   const inputDebounceRef = useRef<InputDebounceRef>(null); // Cria a Ref
+
+  const [pagination, setPagination] = React.useState<PaginationState>({
+    pageIndex: 0, //initial page index
+    pageSize: 10 //default page size
+  });
+
+  const [sorting, setSorting] = React.useState<SortingState>([
+    {
+      id: 'name',
+      desc: false
+    }
+  ]); // can set initial sorting state here
 
   // --- Calcular columnFilters diretamente com base no estado local ---
   const columnFilters = useMemo<ColumnFiltersState>(() => {
@@ -83,6 +99,10 @@ export function UserManagementPage({ dataPromise, refreshAction }) {
         // mas se a filtragem é feita aqui ou no backend, talvez não precise mais.
         // Se precisar, você teria que criar um setter aqui também.
         // setColumnFilters={setColumnFilters} // Removido ou ajustado conforme necessidade da tabela
+        pagination={pagination}
+        setPagination={setPagination}
+        setSorting={setSorting}
+        sorting={sorting}
       />
 
       {/* <div className='mt-1 h-14 rounded-b-md border-0 bg-white px-4 py-3.5'>
@@ -95,4 +115,16 @@ export function UserManagementPage({ dataPromise, refreshAction }) {
       </div> */}
     </div>
   );
+}
+
+export interface UserTableProps {
+  users: UserWithRoles1[];
+  onEdit: (userId: number | undefined) => void;
+  onDelete: (userId: number | undefined) => void;
+  columnFilters: ColumnFiltersState;
+  setColumnFilters: React.Dispatch<React.SetStateAction<ColumnFiltersState>>;
+  pagination: PaginationState;
+  setPagination: React.Dispatch<React.SetStateAction<any>>;
+  setSorting: React.Dispatch<React.SetStateAction<SortingState>>;
+  sorting: SortingState;
 }
