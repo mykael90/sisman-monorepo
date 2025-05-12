@@ -8,7 +8,6 @@ import { actions, columns } from './user-columns';
 export function UserTable({
   users,
   columnFilters,
-  setColumnFilters,
   pagination,
   setPagination,
   setSorting,
@@ -20,7 +19,6 @@ export function UserTable({
       columns={columns}
       actions={actions}
       columnFilters={columnFilters}
-      setColumnFilters={setColumnFilters}
       pagination={pagination}
       setPagination={setPagination}
       setSorting={setSorting}
