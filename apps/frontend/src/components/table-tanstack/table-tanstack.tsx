@@ -22,7 +22,7 @@ import { Pagination } from './pagination';
 
 interface TableProps<TData> {
   data: TData[];
-  columns: ColumnDef<TData>[];
+  columns: ColumnDef<TData, any>[];
   columnFilters?: ColumnFiltersState;
   setColumnFilters?: React.Dispatch<React.SetStateAction<ColumnFiltersState>>;
   pagination?: PaginationState;

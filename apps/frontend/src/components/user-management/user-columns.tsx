@@ -1,15 +1,8 @@
-import { createColumnHelper, Row, RowData } from '@tanstack/react-table';
+import { ColumnDef, createColumnHelper, Row } from '@tanstack/react-table';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Edit, Trash2 } from 'lucide-react';
 import type { UserWithRoles1 } from '@/types/user';
-
-declare module '@tanstack/react-table' {
-  //allows us to define custom properties for our columns
-  interface ColumnMeta<TData extends RowData, TValue> {
-    filterVariant?: 'text' | 'range' | 'select' | 'selectBoolean';
-  }
-}
 
 // 1. Definir as colunas com createColumnHelper
 const columnHelper = createColumnHelper<UserWithRoles1>();
@@ -31,7 +24,6 @@ const actions: ActionHandlers = {
   }
 };
 
-//TODO: Tive que colocar essa tipagem any para resolver o problema. Depois preciso ver direito como resolver isso
 const columns = (actions: ActionHandlers): ColumnDef<UserWithRoles1, any>[] => [
   columnHelper.accessor('name', {
     header: 'Nome',
