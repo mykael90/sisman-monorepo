@@ -16,8 +16,7 @@ export function UserTable({
   return (
     <TableTanstack
       data={users}
-      columns={columns}
-      actions={actions}
+      columns={columns(actions)}
       columnFilters={columnFilters}
       pagination={pagination}
       setPagination={setPagination}

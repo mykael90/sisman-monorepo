@@ -24,11 +24,7 @@ import { Pagination } from './pagination';
 
 interface TableProps<TData> {
   data: TData[];
-  columns: (actions: {
-    // Use Row<TData> for better type safety matching cell context
-    [key: string]: (row: Row<TData>) => void;
-  }) => ColumnDef<TData>[];
-  actions: { [key: string]: (row: Row<TData>) => void };
+  columns: ColumnDef<TData>[];
   columnFilters: ColumnFiltersState;
   setColumnFilters?: React.Dispatch<React.SetStateAction<ColumnFiltersState>>;
   pagination: PaginationState;
@@ -40,7 +36,6 @@ interface TableProps<TData> {
 export function TableTanstack<TData>({
   data,
   columns,
-  actions,
   columnFilters,
   setColumnFilters,
   pagination,
@@ -51,7 +46,7 @@ export function TableTanstack<TData>({
   // 2. Instanciar a tabela com useReactTable
   const table = useReactTable({
     data: data,
-    columns: columns(actions), // Passa os callbacks para a definição das colunas
+    columns: columns, // Passa os callbacks para a definição das colunas
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(), //client side filtering
     onColumnFiltersChange: setColumnFilters,
