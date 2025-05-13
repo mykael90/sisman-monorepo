@@ -7,8 +7,6 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   PaginationState,
-  Row,
-  RowData,
   SortingState,
   useReactTable
 } from '@tanstack/react-table';
@@ -25,12 +23,12 @@ import { Pagination } from './pagination';
 interface TableProps<TData> {
   data: TData[];
   columns: ColumnDef<TData>[];
-  columnFilters: ColumnFiltersState;
+  columnFilters?: ColumnFiltersState;
   setColumnFilters?: React.Dispatch<React.SetStateAction<ColumnFiltersState>>;
-  pagination: PaginationState;
-  setPagination: React.Dispatch<React.SetStateAction<any>>;
-  setSorting: React.Dispatch<React.SetStateAction<SortingState>>;
-  sorting: SortingState;
+  pagination?: PaginationState;
+  setPagination?: React.Dispatch<React.SetStateAction<any>>;
+  setSorting?: React.Dispatch<React.SetStateAction<SortingState>>;
+  sorting?: SortingState;
 }
 
 export function TableTanstack<TData>({
