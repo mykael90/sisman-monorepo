@@ -7,11 +7,11 @@ import { UserHeader } from './user-header';
 import { UserForm } from './user-form';
 
 export interface UserFormData {
-  fullName: string;
-  username: string;
+  name: string;
+  login: string;
   email: string;
-  avatarUrl?: string;
-  roles: string[];
+  // avatarUrl?: string;
+  // roles?: string[];
 }
 
 // We are transforming this into a page, so it won't take props like onClose or onSubmit.
@@ -19,8 +19,8 @@ export interface UserFormData {
 export default function UserPage() {
   const router = useRouter();
   const [formData, setFormData] = useState<UserFormData>({
-    fullName: '',
-    username: '',
+    name: '',
+    login: '',
     email: '',
     avatarUrl: '',
     roles: []

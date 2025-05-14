@@ -1,101 +1,174 @@
-import React from 'react';
+// src/components/user-form.tsx
+'use client';
+
+import React, { useActionState, useRef, useState } from 'react';
+import { useForm, useTransform, mergeForm } from '@tanstack/react-form';
+import { initialFormState } from '@tanstack/react-form/nextjs';
+import { useStore } from '@tanstack/react-store';
+
+// Seus componentes e tipos
 import { UserAvatar } from './user-avatar';
-import { UserRolesSelector } from './users-rolers-selector'; // Corrigido: users-roles-selector
+import { UserRolesSelector } from './users-rolers-selector';
 import { Button } from '@/components/ui/button';
 import { UserPlus, AlertCircle } from 'lucide-react';
-import { useForm } from '@tanstack/react-form';
-import { useRouter } from 'next/navigation';
-import { UserFormData } from './user';
-import { createUserAction, CreateUserActionResult } from './actions'; // Importe a server action
 import { FormInputField } from '@/components/form-tanstack/form-input-fields';
-import { addUser } from '../_actions';
+import { UserFormData } from './user';
+import { addUser, ICreateUserActionResult } from '../_actions';
+import { formOpts } from './shared-code';
 
-// (Opcional: Zod para validação client-side, pode ser o mesmo schema do server)
+// (Opcional: Zod para validação client-side)
 // import { zodValidator } from '@tanstack/zod-form-adapter';
 // import { z } from 'zod';
-// const clientUserFormSchema = z.object({ ... }); // O mesmo schema ou um subconjunto
+// const clientUserFormSchema = z.object({ ... }); // Schema Zod para cliente
 
-interface UserFormProps {
-  // onSubmit é removido se a navegação/feedback de sucesso for tratado internamente
-  // ou pode ser mantido para ações pós-sucesso no componente pai
-  onSuccess?: (data: UserFormData) => void;
-}
+const myInitialState: ICreateUserActionResult = {
+  // values: {
+  //   name: 'a'
+  // },
+  errorMap: {},
+  errors: [],
+  message: ''
+  // submittedData: defaultFormValuesForClient
+};
 
 function UserForm({ onSuccess }: UserFormProps) {
-  const router = useRouter();
+  // useActionState para interagir com a Server Action
+  // O tipo de serverState será inferido de CreateUserActionResult
+  // initialFormState é um objeto vazio {} por padrão
+  const [state, action, isPending] = useActionState(addUser, myInitialState);
+
+  // Para controlar a chave do formulário e forçar o reset do useActionState
+  // const [formKey, setFormKey] = useState(() => Date.now().toString());
 
   const form = useForm({
-    // O segundo tipo genérico é para o retorno do onSubmit
-    defaultValues: {
-      name: '',
-      login: '',
-      email: '',
-      roles: [],
-      avatarUrl: ''
-    },
-    // validatorAdapter: zodValidator, // Para validação client-side com Zod
-    // clientValidation: clientUserFormSchema, // Se estiver usando Zod
-
-    onSubmit: async ({ value }) => {
-      // 'value' contém os dados do formulário (potencialmente validados no cliente)
-      const result = await addUser(value);
-
-      if (!result.success) {
-        const errorsToSet: Partial<
-          Record<keyof UserFormData | 'FORM', string[]>
-        > = {};
-        if (result.errors) {
-          for (const key in result.errors) {
-            errorsToSet[key as keyof UserFormData] =
-              result.errors[key as keyof UserFormData];
-          }
-        }
-        if (result.formErrors && result.formErrors.length > 0) {
-          errorsToSet.FORM = result.formErrors;
-        }
-        if (result.message && !result.errors && !result.formErrors) {
-          errorsToSet.FORM = [result.message]; // Mensagem geral como erro de formulário
-        }
-        console.log(errorsToSet);
-        // form.setErrors(errorsToSet); // Define erros retornados pelo servidor
-        // Você também pode usar form.setServerErrors(result.errors) se o formato corresponder
-        // ou individualmente: field.setError("Server error message")
-      } else {
-        // Sucesso!
-        console.log(result.message);
-        form.reset(); // Limpa o formulário
-        if (onSuccess && result.createdUser) {
-          onSuccess(result.createdUser);
-        }
-        // Exemplo: redirecionar ou mostrar notificação de sucesso
-        // router.push('/users');
-        // alert(result.message); // Ou use um componente de toast/notificação
-      }
-      return result; // Retorna o resultado da action, pode ser útil
-    }
+    ...formOpts,
+    transform: useTransform(
+      (baseForm) => mergeForm(baseForm, state ?? {}), // serverState aqui é CreateUserActionResult
+      [state]
+    )
   });
+
+  // validatorAdapter: zodValidator, // Para validação client-side com Zod
+  // clientValidation: clientUserFormSchema, // Se estiver usando Zod
+
+  // A action é chamada pelo atributo 'action' do <form> HTML.
+  // Mas podemos manter um onSubmit para lógica client-side se necessário ANTES da action.
+  // No entanto, com o padrão server action, é mais comum não ter um onSubmit aqui.
+  // A validação do TanStack Form ainda roda antes da server action ser chamada.
+
+  // Rastrear se o callback onSuccess já foi chamado para o estado de sucesso atual
+
+  // Lógica que executa na renderização se houver um novo estado de sucesso
+  // TODO:
+
+  // Para exibir erros globais do formulário que vêm do servidor
+  // const formLevelErrors = useStore(form.store, (state) => {
+  //   const globalErrors: string[] = [];
+  //   // Erros de validação do TanStack Form (geralmente `errors.FORM`)
+  //   if (
+  //     state.errors &&
+  //     state.errors['FORM' as any] &&
+  //     Array.isArray(state.errors['FORM' as any])
+  //   ) {
+  //     globalErrors.push(...(state.errors['FORM' as any] as string[]));
+  //   }
+  //   // Erros retornados pela server action em `formErrors`
+  //   if (serverState?.formErrors && Array.isArray(serverState.formErrors)) {
+  //     globalErrors.push(...serverState.formErrors);
+  //   }
+  //   // Erros retornados pela server action em `errors.FORM`
+  //   if (
+  //     serverState?.errors?.['FORM'] &&
+  //     Array.isArray(serverState.errors['FORM'])
+  //   ) {
+  //     globalErrors.push(...(serverState.errors['FORM'] as string[]));
+  //   }
+  //   return [...new Set(globalErrors)]; // Remover duplicatas
+  // });
+
+  // // Se a submissão foi bem-sucedida, mostramos uma mensagem e um botão para adicionar outro.
+  // if (serverState?.success) {
+  //   // Os valores do formulário já devem ter sido "resetados" pelo mergeForm
+  //   // usando o `submittedData` (que eram os defaultValues) da action.
+  //   return (
+  //     <div className='rounded-lg bg-white p-6 text-center shadow-md'>
+  //       <h2 className='mb-4 text-xl font-semibold text-green-600'>
+  //         {serverState.message || 'Operation successful!'}
+  //       </h2>
+  //       {serverState.createdUser && (
+  //         <p className='mb-4 text-sm text-gray-700'>
+  //           Usuário: {serverState.createdUser.name} (ID:{' '}
+  //           {serverState.createdUser.id})
+  //         </p>
+  //       )}
+  //       <Button
+  //         onClick={() => {
+  //           form.reset(); // Reseta o estado do TanStack Form (meta, touched, etc.)
+  //           // setFormKey(Date.now().toString()); // Muda a key para resetar o useActionState
+  //           onSuccessCalledRef.current = false; // Permite que onSuccess seja chamado novamente
+  //         }}
+  //       >
+  //         Adicionar Outro Usuário
+  //       </Button>
+  //     </div>
+  //   );
+  // }
+
+  const formErrors = useStore(form.store, (formState) => formState.errors);
 
   return (
     <form
+      // key={formKey} // Mudar esta chave reseta o estado do formulário e do useActionState
+      action={action}
       onSubmit={(e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        form.handleSubmit(); // Isso irá executar validações client-side (se houver)
-        // e então chamar o onSubmit definido em useForm
+        // e.preventDefault(); // Não é necessário com action={formAction}
+        // e.stopPropagation(); // Opcional
+        form.handleSubmit(); // Executa validações client do TanStack Form
+        // Se válido, o <form> prossegue com a 'formAction'
+      }}
+      onReset={() => {
+        form.reset();
+        // Se precisar resetar o serverState também ao clicar em "Reset HTML",
+        // setFormKey(Date.now().toString()); // Descomente se necessário
+        // onSuccessCalledRef.current = false;
       }}
       className='rounded-lg bg-white p-6 shadow-md'
     >
-      {/* Exibe erros gerais do formulário */}
-      <form.Subscribe selector={(state) => state.errors}>
-        {(errors) =>
-          errors && errors.FORM && errors.FORM.length > 0 ? (
+      {/* {formLevelErrors.length > 0 && (
+        <div className='mb-4 rounded border border-red-400 bg-red-100 p-3 text-red-700'>
+          <div className='flex items-center'>
+            <AlertCircle className='mr-2 h-5 w-5' />
+            <strong>Error:</strong>
+          </div>
+          <ul className='mt-1 ml-5 list-inside list-disc'>
+            {formLevelErrors.map((err, i) => (
+              <li key={i}>{err}</li>
+            ))}
+          </ul>
+        </div>
+      )} */}
+
+      <div className='bg-red-100'>{JSON.stringify(form.state, null, 2)}</div>
+
+      <div className='bg-blue-100'>{JSON.stringify(state, null, 2)}</div>
+
+      {formErrors.map((error) => (
+        <p key={error as unknown as string}>{error}</p>
+      ))}
+
+      {/* Exibe erros gerais do formulário Tanstack (geralmente de validação client) */}
+      {/* Este se sobreporia ao de cima se 'FORM' for usado. */}
+      {/*
+      <form.Subscribe selector={(state) => state.errors?.FORM}>
+        {(formErrors) =>
+          formErrors && formErrors.length > 0 ? (
             <div className='mb-4 rounded border border-red-400 bg-red-100 p-3 text-red-700'>
               <div className='flex items-center'>
                 <AlertCircle className='mr-2 h-5 w-5' />
                 <strong>Error:</strong>
               </div>
               <ul className='mt-1 ml-5 list-inside list-disc'>
-                {errors.FORM.map((err, i) => (
+                {formErrors.map((err, i) => (
                   <li key={i}>{err}</li>
                 ))}
               </ul>
@@ -103,10 +176,13 @@ function UserForm({ onSuccess }: UserFormProps) {
           ) : null
         }
       </form.Subscribe>
+      */}
 
       {/* <form.Field
         name='avatarUrl'
-        children={(field) => (
+        // Adicione validadores client-side se desejar
+      >
+        {(field) => (
           <div className='mb-6 flex flex-col items-center'>
             <UserAvatar
               value={field.state.value}
@@ -119,34 +195,40 @@ function UserForm({ onSuccess }: UserFormProps) {
                 {field.state.meta.touchedErrors.join(', ')}
               </em>
             ) : null}
+            {field.state.meta.errors.map((error) => (
+              <p key={error as string} className='mt-1 text-xs text-red-500'>
+                {error}
+              </p>
+            ))}
           </div>
         )}
-      /> */}
+      </form.Field> */}
 
       <form.Field
         name='name'
-        // validators={{ onChange: clientUserFormSchema?.shape.name }} // Validação client-side
-        children={(field) => (
+        // validators={{ onChange: clientUserFormSchema?.shape.name }}
+      >
+        {(field) => (
           <FormInputField
             field={field}
             label='Full Name'
             placeholder='Enter full name'
           />
         )}
-      />
-      <form.Field
-        name='login'
-        children={(field) => (
+      </form.Field>
+
+      <form.Field name='login'>
+        {(field) => (
           <FormInputField
             field={field}
             label='Login'
             placeholder='Enter login'
           />
         )}
-      />
-      <form.Field
-        name='email'
-        children={(field) => (
+      </form.Field>
+
+      <form.Field name='email'>
+        {(field) => (
           <FormInputField
             field={field}
             label='Email'
@@ -154,13 +236,12 @@ function UserForm({ onSuccess }: UserFormProps) {
             placeholder='Enter email address'
           />
         )}
-      />
+      </form.Field>
 
       {/* <div className='mt-6'>
         <h3 className='mb-2 text-sm font-medium text-gray-700'>User Roles</h3>
-        <form.Field
-          name='roles'
-          children={(field) => (
+        <form.Field name='roles'>
+          {(field) => (
             <>
               <UserRolesSelector
                 value={field.state.value}
@@ -171,35 +252,40 @@ function UserForm({ onSuccess }: UserFormProps) {
                   {field.state.meta.touchedErrors.join(', ')}
                 </em>
               ) : null}
+              {field.state.meta.errors.map((error) => (
+                <p key={error as string} className='mt-1 text-xs text-red-500'>
+                  {error}
+                </p>
+              ))}
             </>
           )}
-        />
+        </form.Field>
       </div> */}
 
       <div className='mt-8 flex justify-end gap-3'>
         <Button
-          type='button'
+          type='button' // Para não submeter o form
           variant='outline'
           onClick={() => {
-            form.reset(); // Opcional: resetar ao cancelar
-            router.push('/users');
+            form.reset();
+            // Se o cancelamento deve levar a outra página:
+            // router.push('/users');
+            // Se precisar resetar o serverState também:
+            // setFormKey(Date.now().toString());
+            // onSuccessCalledRef.current = false;
           }}
         >
           Cancel
         </Button>
         <form.Subscribe
-          selector={(state) => [
-            state.canSubmit,
-            state.isSubmitting,
-            state.isValidating
-          ]}
-          children={([canSubmit, isSubmitting, isValidating]) => (
+          selector={(state) => [state.canSubmit, state.isValidating]}
+        >
+          {([canSubmit, isValidating]) => (
             <Button
               type='submit'
-              disabled={!canSubmit || isSubmitting || isValidating}
-              className='bg-green-600 text-white hover:bg-green-700 disabled:opacity-50'
+              disabled={!canSubmit || isPending || isValidating}
             >
-              {isSubmitting || isValidating ? (
+              {isPending || isValidating ? (
                 'Processing...'
               ) : (
                 <>
@@ -209,7 +295,7 @@ function UserForm({ onSuccess }: UserFormProps) {
               )}
             </Button>
           )}
-        />
+        </form.Subscribe>
       </div>
     </form>
   );

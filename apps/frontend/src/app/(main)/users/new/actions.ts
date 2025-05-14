@@ -52,7 +52,13 @@ export async function createUserAction(
     };
   }
 
-  const { fullName, username, email, roles, avatarUrl } = validationResult.data;
+  const {
+    name: fullName,
+    login: username,
+    email,
+    roles,
+    avatarUrl
+  } = validationResult.data;
 
   try {
     // Simule a lógica de criação do usuário no banco de dados

@@ -204,6 +204,9 @@ importers:
       '@tanstack/react-form':
         specifier: ^1.11.1
         version: 1.11.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@tanstack/react-store':
+        specifier: ^0.7.0
+        version: 0.7.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@tanstack/react-table':
         specifier: ^8.21.3
         version: 8.21.3(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -246,6 +249,9 @@ importers:
       ua-parser-js:
         specifier: ^2.0.3
         version: 2.0.3
+      zod:
+        specifier: ^3.24.4
+        version: 3.24.4
     devDependencies:
       '@sisman/prisma':
         specifier: workspace:*
