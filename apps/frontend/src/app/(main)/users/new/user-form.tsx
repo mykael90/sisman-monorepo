@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { UserFormData } from './user';
 import { createUserAction, CreateUserActionResult } from './actions'; // Importe a server action
 import { FormInputField } from '@/components/form-tanstack/form-input-fields';
+import { addUser } from '../_actions';
 
 // (Opcional: Zod para validação client-side, pode ser o mesmo schema do server)
 // import { zodValidator } from '@tanstack/zod-form-adapter';
@@ -37,7 +38,7 @@ function UserForm({ onSuccess }: UserFormProps) {
 
     onSubmit: async ({ value }) => {
       // 'value' contém os dados do formulário (potencialmente validados no cliente)
-      const result = await createUserAction(value);
+      const result = await addUser(value);
 
       if (!result.success) {
         const errorsToSet: Partial<

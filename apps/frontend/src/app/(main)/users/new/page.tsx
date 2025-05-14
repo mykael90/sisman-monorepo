@@ -1,9 +1,10 @@
 import User from './user';
 import { Suspense } from 'react';
 // import { Data } from './data';
-// import { getSismanAccessToken } from '../../../lib/auth/get-access-token';
+import { getSismanAccessToken } from '../../../../lib/auth/get-access-token';
 // import { getRefreshedUsers, getUsers } from './_actions';
 import Logger from '../../../../lib/logger';
+// import { addUser } from '../_actions';
 
 const logger = new Logger('users-management');
 

@@ -192,8 +192,8 @@ export class AuthService {
     let userId: number | null = null;
     let loginSuccess = false;
     try {
-      if (await this.existsEmail(data.email)) {
-        throw new BadRequestException(`E-mail already in use!`);
+      if (await this.userService.existsEmail(data.email) || await this.userService.existsLogin(data.login)) {
+        throw new BadRequestException(`E-mail or login already in use!`);
       }
 
       const user = await this.userService.create(data);
@@ -259,11 +259,11 @@ export class AuthService {
       throw new UnauthorizedException(`Token inválido!`);
     }
 
-    if (await this.existsEmail(token.email)) {
+    if (await this.userService.existsEmail(token.email)) {
       throw new BadRequestException(`E-mail already in use!`);
     }
 
-    if (await this.existsLogin(token.login)) {
+    if (await this.userService.existsLogin(token.login)) {
       throw new BadRequestException(`Login already in use!`);
     }
 
@@ -278,14 +278,7 @@ export class AuthService {
     );
   }
 
-  async existsEmail(email: string) {
-    const user = await this.prisma.user.findFirst({ where: { email } });
-    return !!user;
-  }
-  async existsLogin(login: string) {
-    const user = await this.prisma.user.findFirst({ where: { login } });
-    return !!user;
-  }
+
 
   async updateImage(user: User, newImage: string) {
       await this.prisma.user.update({

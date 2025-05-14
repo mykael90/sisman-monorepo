@@ -3,6 +3,8 @@
 import { revalidatePath } from 'next/cache';
 import fetchApiSisman from '../../../lib/fetch/api-sisman';
 import Logger from '@/lib/logger';
+import { UserFormData } from './new/user';
+import { getSismanAccessToken } from '../../../lib/auth/get-access-token';
 
 const logger = new Logger('users-data-client/_actions');
 
@@ -42,16 +44,18 @@ export async function getRefreshedUsers() {
   // return response;
 }
 
-// export async function addUser(userId, formData) {
-//   const data = Object.fromEntries(formData);
-//   data.userId = userId;
+export async function addUser(formData: UserFormData) {
+  // const data = Object.fromEntries(formData);
+  // data.userId = userId;
 
-//   const response = await fetchApiSisman('/users', accessTokenSisman, {
-//     method: 'POST',
-//     headers: {
-//       'Content-Type': 'application/json'
-//     },
-//     body: JSON.stringify(data)
-//   });
-//   return response.json();
-// }
+  const accessTokenSisman = await getSismanAccessToken();
+
+  const response = await fetchApiSisman('/users', accessTokenSisman, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(formData)
+  });
+  return response.json();
+}
