@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDTO } from 'src/shared/dto/user/create-user.dto';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
 import { UpdatePutUserDTO } from 'src/shared/dto/user/update-put-user.dto';
@@ -11,7 +11,7 @@ export class UsersService {
     // data.password = await this.hashPassword(data.password);
 
     if (await this.existsEmail(data.email) || await this.existsLogin(data.login)) {
-      throw new BadRequestException(`E-mail or login already in use!`);
+      throw new ConflictException(`E-mail or login already in use!`);
     }
 
     return await this.prisma.user.create({

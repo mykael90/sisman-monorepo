@@ -5,6 +5,7 @@ import {
   UnauthorizedException,
   Inject,
   Logger,
+  ConflictException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
@@ -193,7 +194,7 @@ export class AuthService {
     let loginSuccess = false;
     try {
       if (await this.userService.existsEmail(data.email) || await this.userService.existsLogin(data.login)) {
-        throw new BadRequestException(`E-mail or login already in use!`);
+        throw new ConflictException(`E-mail or login already in use!`);
       }
 
       const user = await this.userService.create(data);
@@ -260,11 +261,11 @@ export class AuthService {
     }
 
     if (await this.userService.existsEmail(token.email)) {
-      throw new BadRequestException(`E-mail already in use!`);
+      throw new ConflictException(`E-mail already in use!`);
     }
 
     if (await this.userService.existsLogin(token.login)) {
-      throw new BadRequestException(`Login already in use!`);
+      throw new ConflictException(`Login already in use!`);
     }
 
     return this.register(

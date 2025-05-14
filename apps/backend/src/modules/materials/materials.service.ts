@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ConflictException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -12,7 +13,7 @@ export class MaterialsService {
   constructor(private readonly prisma: PrismaService) {}
   async create(data: CreateMaterialDto) {
     const exists = await this.exists(data.id);
-    if (exists) throw new BadRequestException('Material already exists');
+    if (exists) throw new ConflictException('Material already exists');
     return await this.prisma.material.create({ data });
   }
 

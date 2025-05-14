@@ -4,6 +4,7 @@ import {
   InternalServerErrorException,
   NotFoundException,
   Logger,
+  ConflictException,
 } from '@nestjs/common';
 import { PrismaService } from '../../../shared/prisma/prisma.service';
 import { CreateUserRoleDto } from '../../../shared/dto/user/role/create-user-role.dto';
@@ -46,13 +47,13 @@ export class RolesService {
       });
 
       if (existingRole) {
-        throw new BadRequestException('User already has this role.');
+        throw new ConflictException('User already has this role.');
       }
 
       return await this.prisma.userRole.create({ data });
     } catch (error) {
       if (
-        error instanceof BadRequestException ||
+        error instanceof ConflictException ||
         error instanceof NotFoundException
       ) {
         throw error;
@@ -128,7 +129,7 @@ export class RolesService {
       where: { userId: userId, userRoletypeId: newUserRoletypeId },
     });
     if (alreadyHasNewRole > 0) {
-      throw new BadRequestException(
+      throw new ConflictException(
         `User already has the role type ID ${newUserRoletypeId}.`,
       );
     }
@@ -146,7 +147,7 @@ export class RolesService {
       });
     } catch (error) {
       if (
-        error instanceof BadRequestException ||
+        error instanceof ConflictException ||
         error instanceof NotFoundException
       ) {
         throw error;
