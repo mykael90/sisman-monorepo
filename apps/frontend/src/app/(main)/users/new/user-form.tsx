@@ -3,7 +3,6 @@
 
 import React, { useActionState, useRef, useState } from 'react';
 import { useForm, useTransform, mergeForm } from '@tanstack/react-form';
-import { initialFormState } from '@tanstack/react-form/nextjs';
 import { useStore } from '@tanstack/react-store';
 
 // Seus componentes e tipos
@@ -22,20 +21,19 @@ import { formOpts } from './shared-code';
 // const clientUserFormSchema = z.object({ ... }); // Schema Zod para cliente
 
 const myInitialState: ICreateUserActionResult = {
-  // values: {
-  //   name: 'a'
-  // },
   errorMap: {},
   errors: [],
   message: ''
-  // submittedData: defaultFormValuesForClient
 };
 
-function UserForm({ onSuccess }: UserFormProps) {
+function UserForm() {
   // useActionState para interagir com a Server Action
-  // O tipo de serverState será inferido de CreateUserActionResult
-  // initialFormState é um objeto vazio {} por padrão
-  const [state, action, isPending] = useActionState(addUser, myInitialState);
+  // O tipo de serverState será inferido de ICreateUserActionResult
+
+  const [serverState, formAction, isPending] = useActionState(
+    addUser,
+    myInitialState
+  );
 
   // Para controlar a chave do formulário e forçar o reset do useActionState
   // const [formKey, setFormKey] = useState(() => Date.now().toString());
@@ -43,8 +41,8 @@ function UserForm({ onSuccess }: UserFormProps) {
   const form = useForm({
     ...formOpts,
     transform: useTransform(
-      (baseForm) => mergeForm(baseForm, state ?? {}), // serverState aqui é CreateUserActionResult
-      [state]
+      (baseForm) => mergeForm(baseForm, serverState ?? {}), // serverState aqui é CreateUserActionResult
+      [serverState]
     )
   });
 
@@ -87,12 +85,12 @@ function UserForm({ onSuccess }: UserFormProps) {
   //   );
   // }
 
-  const formErrors = useStore(form.store, (formState) => formState.errors);
+  const messageError = useStore(form.store, (formState) => formState.message);
 
   return (
     <form
       // key={formKey} // Mudar esta chave reseta o estado do formulário e do useActionState
-      action={action}
+      action={formAction}
       onSubmit={(e) => {
         // e.preventDefault(); // Não é necessário com action={formAction}
         // e.stopPropagation(); // Opcional
@@ -107,7 +105,7 @@ function UserForm({ onSuccess }: UserFormProps) {
       }}
       className='rounded-lg bg-white p-6 shadow-md'
     >
-      {formErrors.length > 0 && (
+      {/* {formErrors.length > 0 && (
         <div className='mb-4 rounded border border-red-400 bg-red-100 p-3 text-red-700'>
           <div className='flex items-center'>
             <AlertCircle className='mr-2 h-5 w-5' />
@@ -119,11 +117,29 @@ function UserForm({ onSuccess }: UserFormProps) {
             ))}
           </ul>
         </div>
-      )}
+      )} */}
+
+      {/* Exibir a mensagem geral do servidor */}
+      {serverState &&
+        serverState.message &&
+        !serverState.isSubmitSuccessful && (
+          <div
+            className={`mb-4 rounded border p-3 ${serverState.isSubmitSuccessful === false ? 'border-red-400 bg-red-100 text-red-700' : 'border-green-400 bg-green-100 text-green-700'}`}
+          >
+            <div className='flex items-center'>
+              <AlertCircle className='mr-2 h-5 w-5' />{' '}
+              {/* Ou CheckCircle para sucesso */}
+              <strong>
+                {serverState.isSubmitSuccessful === false ? 'Error:' : 'Info:'}
+              </strong>
+            </div>
+            <p className='mt-1 ml-7'>{serverState.message}</p>
+          </div>
+        )}
 
       <div className='bg-red-100'>{JSON.stringify(form.state, null, 2)}</div>
 
-      <div className='bg-blue-100'>{JSON.stringify(state, null, 2)}</div>
+      <div className='bg-blue-100'>{JSON.stringify(serverState, null, 2)}</div>
 
       {/* Exibe erros gerais do formulário Tanstack (geralmente de validação client) */}
       {/* Este se sobreporia ao de cima se 'FORM' for usado. */}

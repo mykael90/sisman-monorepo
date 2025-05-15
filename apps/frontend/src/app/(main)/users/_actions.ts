@@ -124,9 +124,9 @@ export async function addUser(
       });
       return {
         isSubmitSuccessful: false,
-        errors: [
-          'Favor, corrigir os campos com indicações de erro marcadas em vermelho.'
-        ],
+        // errors: [
+        //   'Favor, corrigir os campos com indicações de erro marcadas em vermelho.'
+        // ],
         message: 'Validation failed on server.',
         fieldMeta: fieldMeta,
         submittedData: formData // Retorna os dados submetidos para correção
