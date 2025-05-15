@@ -6,6 +6,7 @@ import Logger from '@/lib/logger';
 import { UserFormData } from './_components/add/user-add';
 import { getSismanAccessToken } from '../../../lib/auth/get-access-token';
 import { z } from 'zod';
+import { IUserList } from './users-types';
 
 const logger = new Logger('users-data-client/_actions');
 
@@ -15,7 +16,9 @@ const defaultFormValues: UserFormData = {
   email: ''
 };
 
-export async function getUsers(accessTokenSisman: string) {
+export async function getUsers(
+  accessTokenSisman: string
+): Promise<IUserList[]> {
   logger.info('(Server Action) getUsers: Called for initial page load.');
   const response = await fetchApiSisman('/users', accessTokenSisman, {
     cache: 'no-store'

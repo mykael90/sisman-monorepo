@@ -1,21 +1,32 @@
 'use client';
 
-import React, { use, useState, useMemo, useRef } from 'react'; // Importe useMemo
+import {
+  use,
+  useState,
+  useMemo,
+  useRef,
+  Dispatch,
+  SetStateAction
+} from 'react'; // Importe useMemo
 import { UserListHeader } from './user-list-header';
 import { UserFilters } from './user-filters';
 import { UserTable } from './user-table';
-// import initialUsers from './user-data-example'; // Removido se não usado
-import { IUserWithRoles } from '../../../../../types/user';
-// import { getUsers } from '../../app/(main)/user-management/_actions'; // Removido se não usado
 import {
   ColumnFiltersState,
   PaginationState,
   SortingState
 } from '@tanstack/react-table';
 import { InputDebounceRef } from '@/components/ui/input'; // Importe o tipo da Ref
+import { IUserList } from '../../users-types';
 
-export function UserListPage({ dataPromise, refreshAction }) {
-  const initialData: IUserWithRoles[] = use(dataPromise);
+export function UserListPage({
+  dataPromise,
+  refreshAction
+}: {
+  dataPromise: Promise<IUserList[]>;
+  refreshAction: () => void;
+}) {
+  const initialData: IUserList[] = use(dataPromise);
 
   const [users, setUsers] = useState(initialData); // Estado dos dados da tabela
 
@@ -24,12 +35,12 @@ export function UserListPage({ dataPromise, refreshAction }) {
   const [statusFilter, setStatusFilter] = useState(''); // Valor inicial ('', 'true', 'false')
   const inputDebounceRef = useRef<InputDebounceRef>(null); // Cria a Ref
 
-  const [pagination, setPagination] = React.useState<PaginationState>({
+  const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0, //initial page index
     pageSize: 10 //default page size
   });
 
-  const [sorting, setSorting] = React.useState<SortingState>([
+  const [sorting, setSorting] = useState<SortingState>([
     {
       id: 'name',
       desc: false
@@ -106,11 +117,11 @@ export function UserListPage({ dataPromise, refreshAction }) {
 }
 
 export interface UserTableProps {
-  users: IUserWithRoles[];
+  users: IUserList[];
   columnFilters: ColumnFiltersState;
-  setColumnFilters?: React.Dispatch<React.SetStateAction<ColumnFiltersState>>;
+  setColumnFilters?: Dispatch<SetStateAction<ColumnFiltersState>>;
   pagination: PaginationState;
-  setPagination: React.Dispatch<React.SetStateAction<any>>;
-  setSorting: React.Dispatch<React.SetStateAction<SortingState>>;
+  setPagination: Dispatch<SetStateAction<any>>;
+  setSorting: Dispatch<SetStateAction<SortingState>>;
   sorting: SortingState;
 }

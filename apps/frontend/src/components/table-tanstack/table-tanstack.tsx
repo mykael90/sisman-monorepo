@@ -1,13 +1,13 @@
 import {
-  ColumnDef,
-  ColumnFiltersState,
+  ColumnDef, //tipagem
+  ColumnFiltersState, //tipagem
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  PaginationState,
-  SortingState,
+  PaginationState, //tipagem
+  SortingState, //tipagem
   useReactTable
 } from '@tanstack/react-table';
 import {
