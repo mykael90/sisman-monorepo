@@ -8,19 +8,19 @@ function UserHeader() {
         {' '}
         {/* Consistent horizontal padding, adjusted vertical for balance */}
         <div className='flex items-center'>
-          <div className='flex items-center text-green-600'>
-            <div className='flex h-10 w-10 items-center justify-center rounded-full bg-green-100'>
+          <div className='text-sisman-green flex items-center'>
+            <div className='flex h-10 w-10 items-center justify-center rounded-full bg-gray-100'>
               <UserPlus className='h-5 w-5' />
             </div>
-            <h2 className='ml-3 text-xl font-bold'>New User</h2>{' '}
+            <h2 className='ml-3 text-xl font-bold'>Novo Usuário</h2>{' '}
             {/* Increased ml slightly for better spacing from icon bg */}
           </div>
         </div>
         <p className='mt-2 text-sm text-gray-600'>
-          Add a new user to the system
+          Adicionar um novo usuário ao sistema
         </p>
       </div>
-      <div className='ml-6 h-1 w-1/4 bg-green-600'></div>{' '}
+      <div className='bg-sisman-green ml-6 h-1 w-1/10'></div>{' '}
       {/* Accent underline, aligned with px-6 content */}
     </div>
   );

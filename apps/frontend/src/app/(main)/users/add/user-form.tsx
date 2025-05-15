@@ -1,7 +1,7 @@
 // src/components/user-form.tsx
 'use client';
 
-import React, { useActionState, useRef, useState } from 'react';
+import { useActionState, useRef, useState } from 'react';
 import { useForm, useTransform, mergeForm } from '@tanstack/react-form';
 import { useStore } from '@tanstack/react-store';
 
@@ -88,8 +88,8 @@ function UserForm({ onWantToReset }: { onWantToReset: () => void }) {
     onWantToReset();
   };
 
-  //sempre que formState.message muda dentro do estado do form.store, o formulário é renderizado novamente
-  useStore(form.store, (formState) => formState.message);
+  //sempre que formState.errorsServer muda dentro do estado do form.store, o formulário é renderizado novamente
+  useStore(form.store, (formState) => formState.errorsServer);
 
   return (
     <form
@@ -131,16 +131,21 @@ function UserForm({ onWantToReset }: { onWantToReset: () => void }) {
               <AlertCircle className='mr-2 h-5 w-5' />{' '}
               {/* Ou CheckCircle para sucesso */}
               <strong>
-                {serverState.isSubmitSuccessful === false ? 'Error:' : 'Info:'}
+                {serverState.isSubmitSuccessful === false ? 'Erro:' : 'Info:'}
               </strong>
             </div>
             <p className='mt-1 ml-7'>{serverState.message}</p>
+            <ul className='mt-1 ml-5 list-inside list-disc'>
+              {serverState.errorsServer?.map((err, i) => (
+                <li key={i}>{err}</li>
+              ))}
+            </ul>
           </div>
         )}
 
-      <div className='bg-red-100'>{JSON.stringify(form.state, null, 2)}</div>
+      {/* <div className='bg-red-100'>{JSON.stringify(form.state, null, 2)}</div> */}
 
-      <div className='bg-blue-100'>{JSON.stringify(serverState, null, 2)}</div>
+      {/* <div className='bg-blue-100'>{JSON.stringify(serverState, null, 2)}</div> */}
 
       {/* Exibe erros gerais do formulário Tanstack (geralmente de validação client) */}
       {/* Este se sobreporia ao de cima se 'FORM' for usado. */}
@@ -198,8 +203,8 @@ function UserForm({ onWantToReset }: { onWantToReset: () => void }) {
           <>
             <FormInputField
               field={field}
-              label='Full Name'
-              placeholder='Enter full name'
+              label='Nome Completo'
+              placeholder='Digite o nome completo'
             />
             {/* {JSON.stringify(field.getMeta(), null, 2)} */}
           </>
@@ -211,7 +216,7 @@ function UserForm({ onWantToReset }: { onWantToReset: () => void }) {
           <FormInputField
             field={field}
             label='Login'
-            placeholder='Enter login'
+            placeholder='Digite o login'
           />
         )}
       </form.Field>
@@ -222,7 +227,7 @@ function UserForm({ onWantToReset }: { onWantToReset: () => void }) {
             field={field}
             label='Email'
             type='email'
-            placeholder='Enter email address'
+            placeholder='Digite o email'
           />
         )}
       </form.Field>
@@ -268,11 +273,11 @@ function UserForm({ onWantToReset }: { onWantToReset: () => void }) {
               disabled={!canSubmit || isPending || isValidating}
             >
               {isPending || isValidating ? (
-                'Processing...'
+                'Processando...'
               ) : (
                 <>
                   <UserPlus className='mr-2 h-5 w-5' />
-                  Create User
+                  Criar usuário
                 </>
               )}
             </Button>

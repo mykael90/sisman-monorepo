@@ -5,7 +5,7 @@ import { UserManagementHeader } from './user-management-header';
 import { UserFilters } from './user-filters';
 import { UserTable } from './user-table';
 // import initialUsers from './user-data-example'; // Removido se não usado
-import { UserWithRoles1 } from '../../../types/user';
+import { IUserWithRoles } from '../../types/user';
 // import { getUsers } from '../../app/(main)/user-management/_actions'; // Removido se não usado
 import {
   ColumnFiltersState,
@@ -15,7 +15,7 @@ import {
 import { InputDebounceRef } from '@/components/ui/input'; // Importe o tipo da Ref
 
 export function UserManagementPage({ dataPromise, refreshAction }) {
-  const initialData: UserWithRoles1[] = use(dataPromise);
+  const initialData: IUserWithRoles[] = use(dataPromise);
 
   const [users, setUsers] = useState(initialData); // Estado dos dados da tabela
 
@@ -106,7 +106,7 @@ export function UserManagementPage({ dataPromise, refreshAction }) {
 }
 
 export interface UserTableProps {
-  users: UserWithRoles1[];
+  users: IUserWithRoles[];
   columnFilters: ColumnFiltersState;
   setColumnFilters?: React.Dispatch<React.SetStateAction<ColumnFiltersState>>;
   pagination: PaginationState;

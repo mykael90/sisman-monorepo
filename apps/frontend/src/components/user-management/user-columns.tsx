@@ -2,29 +2,29 @@ import { ColumnDef, createColumnHelper, Row } from '@tanstack/react-table';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Edit, Trash2 } from 'lucide-react';
-import type { UserWithRoles1 } from '@/types/user';
+import type { IUserWithRoles } from '@/src/types/user';
 
 // 1. Definir as colunas com createColumnHelper
-const columnHelper = createColumnHelper<UserWithRoles1>();
+const columnHelper = createColumnHelper<IUserWithRoles>();
 
 // Define the actions type more specifically if possible, or keep as is
 // Using Row<UserWithRoles1> is often better than RowData
 type ActionHandlers = {
-  [key: string]: (row: Row<UserWithRoles1>) => void;
+  [key: string]: (row: Row<IUserWithRoles>) => void;
 };
 
 // Use the more specific ActionHandlers type if you changed it above
 const actions: ActionHandlers = {
   // Pass the row object directly, which is Row<UserWithRoles1>
-  onEdit: (row: Row<UserWithRoles1>) => {
+  onEdit: (row: Row<IUserWithRoles>) => {
     console.log('Edit user', row.original); // Access original data
   },
-  onDelete: (row: Row<UserWithRoles1>) => {
+  onDelete: (row: Row<IUserWithRoles>) => {
     console.log('Delete user', row.original);
   }
 };
 
-const columns = (actions: ActionHandlers): ColumnDef<UserWithRoles1, any>[] => [
+const columns = (actions: ActionHandlers): ColumnDef<IUserWithRoles, any>[] => [
   columnHelper.accessor('name', {
     header: 'Nome',
     cell: (props) => {

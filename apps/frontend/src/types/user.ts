@@ -16,11 +16,11 @@ export type UserWithRoles = Prisma.UserGetPayload<{
   };
 }>;
 
-export interface UserWithRoles1 extends Partial<User> {
+export interface IUserWithRoles extends Partial<User> {
   userRoles?: Partial<UserRole>[];
 }
 
-const user: UserWithRoles1 = {
+const user: IUserWithRoles = {
   id: 1,
   createdAt: new Date(),
   updatedAt: new Date(),

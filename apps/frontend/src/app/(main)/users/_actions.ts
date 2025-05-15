@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import fetchApiSisman, { SismanApiError } from '../../../lib/fetch/api-sisman';
 import Logger from '@/lib/logger';
-import { UserFormData } from './new/user';
+import { UserFormData } from './add/user';
 import { getSismanAccessToken } from '../../../lib/auth/get-access-token';
 import { z } from 'zod';
 
@@ -154,7 +154,8 @@ export async function addUser(
       isSubmitSuccessful: true,
       createdUser: createdUserData,
       submittedData: formDataToObject(formData),
-      message: 'User created successfully!'
+      message: 'User created successfully!',
+      errorsServer: []
     };
 
     return createUserActionResult;
