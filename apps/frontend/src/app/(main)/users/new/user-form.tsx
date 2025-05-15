@@ -26,7 +26,11 @@ const myInitialState: ICreateUserActionResult = {
   message: ''
 };
 
-function UserForm() {
+function UserForm({
+  setFormKey
+}: {
+  setFormKey: React.Dispatch<React.SetStateAction<string>>;
+}) {
   // useActionState para interagir com a Server Action
   // O tipo de serverState será inferido de ICreateUserActionResult
 
@@ -34,9 +38,6 @@ function UserForm() {
     addUser,
     myInitialState
   );
-
-  // Para controlar a chave do formulário e forçar o reset do useActionState
-  // const [formKey, setFormKey] = useState(() => Date.now().toString());
 
   const form = useForm({
     ...formOpts,
@@ -85,6 +86,13 @@ function UserForm() {
   //   );
   // }
 
+  const handleResetForm = () => {
+    form.reset(); // 1. Reseta o estado interno do TanStack Form para defaultValues
+    // 2. Mudar a key força a recriação do <form> e de seus hooks internos,
+    //    incluindo a reinicialização do useActionState para myInitialServerState.
+    setFormKey(Date.now().toString());
+  };
+
   //sempre que JSON.stringify(formState.fieldMeta) muda dentro do estado do form.store, o formulário é renderizado novamente
   const fieldErrors = useStore(form.store, (formState) =>
     JSON.stringify(formState.fieldMeta)
@@ -92,7 +100,6 @@ function UserForm() {
 
   return (
     <form
-      // key={formKey} // Mudar esta chave reseta o estado do formulário e do useActionState
       action={formAction}
       onSubmit={(e) => {
         // e.preventDefault(); // Não é necessário com action={formAction}
@@ -100,11 +107,9 @@ function UserForm() {
         form.handleSubmit(); // Executa validações client do TanStack Form
         // Se válido, o <form> prossegue com a 'formAction'
       }}
-      onReset={() => {
-        form.reset();
-        // Se precisar resetar o serverState também ao clicar em "Reset HTML",
-        // setFormKey(Date.now().toString()); // Descomente se necessário
-        // onSuccessCalledRef.current = false;
+      onReset={(e) => {
+        e.preventDefault(); // Previne o reset nativo do HTML se você quiser controle total
+        handleResetForm();
       }}
       className='rounded-lg bg-white p-6 shadow-md'
     >
@@ -254,14 +259,7 @@ function UserForm() {
         <Button
           type='button' // Para não submeter o form
           variant='outline'
-          onClick={() => {
-            form.reset();
-            // Se o cancelamento deve levar a outra página:
-            // router.push('/users');
-            // Se precisar resetar o serverState também:
-            // setFormKey(Date.now().toString());
-            // onSuccessCalledRef.current = false;
-          }}
+          onClick={handleResetForm}
         >
           Cancel
         </Button>

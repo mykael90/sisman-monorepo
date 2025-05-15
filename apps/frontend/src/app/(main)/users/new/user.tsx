@@ -26,6 +26,9 @@ export default function UserPage() {
     roles: []
   });
 
+  // Para controlar a chave do formulário e forçar o reset do useActionState
+  const [formKey, setFormKey] = useState(() => Date.now().toString());
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     // TODO: Implement the actual user creation logic here
@@ -54,10 +57,7 @@ export default function UserPage() {
       <UserHeader></UserHeader>
 
       {/* Form Section */}
-      <UserForm
-        handleSubmit={handleSubmit}
-        updateFormData={updateFormData}
-      ></UserForm>
+      <UserForm key={formKey} setFormKey={setFormKey}></UserForm>
     </div>
   );
 }
