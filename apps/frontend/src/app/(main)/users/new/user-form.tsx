@@ -85,7 +85,10 @@ function UserForm() {
   //   );
   // }
 
-  const messageError = useStore(form.store, (formState) => formState.message);
+  //sempre que JSON.stringify(formState.fieldMeta) muda dentro do estado do form.store, o formulário é renderizado novamente
+  const fieldErrors = useStore(form.store, (formState) =>
+    JSON.stringify(formState.fieldMeta)
+  );
 
   return (
     <form
