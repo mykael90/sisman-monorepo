@@ -30,7 +30,7 @@ function UserAddForm({
 }: {
   onWantToReset: () => void;
   defaultData: IUserAdd;
-  initialServerState?: IActionResultForm<IUserAdd>;
+  initialServerState: IActionResultForm<IUserAdd>;
 }) {
   // useActionState para interagir com a Server Action
   // O tipo de serverState será inferido de ICreateUserActionResult
@@ -40,6 +40,8 @@ function UserAddForm({
     initialServerState
   );
 
+  const [formKey, setFormKey] = useState(() => Date.now().toString());
+
   const form = useForm({
     defaultValues: defaultData,
     transform: useTransform(
@@ -47,6 +49,13 @@ function UserAddForm({
       [serverState]
     )
   });
+
+  const handleResetForm = () => {
+    form.reset(); // 1. Reseta o estado interno do TanStack Form para defaultValues
+    // 2. Mudar a key força a recriação do <form> e de seus hooks internos,
+    //    incluindo a reinicialização do useActionState para myInitialServerState.
+    onWantToReset();
+  };
 
   // validatorAdapter: zodValidator, // Para validação client-side com Zod
   // clientValidation: clientUserFormSchema, // Se estiver usando Zod
@@ -60,45 +69,32 @@ function UserAddForm({
   // TODO:
 
   // // Se a submissão foi bem-sucedida, mostramos uma mensagem e um botão para adicionar outro.
-  // if (state?.isSubmitSuccessful) {
-  //   // Os valores do formulário já devem ter sido "resetados" pelo mergeForm
-  //   // usando o `submittedData` (que eram os defaultValues) da action.
-  //   return (
-  //     <div className='rounded-lg bg-white p-6 text-center shadow-md'>
-  //       <h2 className='mb-4 text-xl font-semibold text-green-600'>
-  //         {serverState.message || 'Operation successful!'}
-  //       </h2>
-  //       {serverState.createdUser && (
-  //         <p className='mb-4 text-sm text-gray-700'>
-  //           Usuário: {serverState.createdUser.name} (ID:{' '}
-  //           {serverState.createdUser.id})
-  //         </p>
-  //       )}
-  //       <Button
-  //         onClick={() => {
-  //           form.reset(); // Reseta o estado do TanStack Form (meta, touched, etc.)
-  //           // setFormKey(Date.now().toString()); // Muda a key para resetar o useActionState
-  //           onSuccessCalledRef.current = false; // Permite que onSuccess seja chamado novamente
-  //         }}
-  //       >
-  //         Adicionar Outro Usuário
-  //       </Button>
-  //     </div>
-  //   );
-  // }
-
-  const handleResetForm = () => {
-    form.reset(); // 1. Reseta o estado interno do TanStack Form para defaultValues
-    // 2. Mudar a key força a recriação do <form> e de seus hooks internos,
-    //    incluindo a reinicialização do useActionState para myInitialServerState.
-    onWantToReset();
-  };
+  if (serverState?.isSubmitSuccessful) {
+    // Os valores do formulário já devem ter sido "resetados" pelo mergeForm
+    // usando o `submittedData` (que eram os defaultValues) da action.
+    return (
+      <div className='rounded-lg bg-white p-6 text-center shadow-md'>
+        <h2 className='mb-4 text-xl font-semibold text-green-600'>
+          {serverState.message || 'Operation successful!'}
+        </h2>
+        {serverState.submittedData && (
+          <p className='mb-4 text-sm text-gray-700'>
+            Usuário: {serverState.submittedData.name}
+            {/* (ID: {serverState.submittedData.id}) */}
+          </p>
+        )}
+        <Button onClick={handleResetForm}>Adicionar Outro Usuário</Button>
+      </div>
+    );
+  }
 
   //sempre que formState.errorsServer muda dentro do estado do form.store, o formulário é renderizado novamente
-  useStore(form.store, (formState) => formState.errorsServer);
+  // useStore(form.store, (formState) => formState.errorsServer);
+  //usar alguma função para mandar renderizar no cliente
 
   return (
     <form
+      key={formKey}
       action={formAction}
       onSubmit={(e) => {
         // e.preventDefault(); // Não é necessário com action={formAction}

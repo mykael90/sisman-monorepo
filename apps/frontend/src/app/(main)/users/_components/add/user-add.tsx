@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { UserHeader } from './user-add-header';
 import { UserForm } from './user-add-form';
 import { IUserAdd } from '../../users-types';
-import { ICreateUserActionResult } from '../../users-actions';
+import { IActionResultForm } from '../../../../../types/types-server-actions';
 
 // We are transforming this into a page, so it won't take props like onClose or onSubmit.
 // The page will manage its own state and submission logic.
@@ -26,7 +26,7 @@ export default function UserAdd() {
     email: ''
   };
 
-  const initialServerState: ICreateUserActionResult = {
+  const initialServerState: IActionResultForm<IUserAdd> = {
     errorsServer: [],
     message: ''
   };
