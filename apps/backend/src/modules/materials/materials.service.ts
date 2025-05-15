@@ -2,7 +2,7 @@ import {
   BadRequestException,
   ConflictException,
   Injectable,
-  NotFoundException,
+  NotFoundException
 } from '@nestjs/common';
 import { CreateMaterialDto } from '../../shared/dto/material/create-material.dto';
 import { UpdateMaterialDto } from '../../shared/dto/material/update-material.dto';
@@ -32,7 +32,7 @@ export class MaterialsService {
     if (!exists) throw new NotFoundException('Material not found');
     return await this.prisma.material.update({
       where: { id },
-      data,
+      data
     });
   }
 

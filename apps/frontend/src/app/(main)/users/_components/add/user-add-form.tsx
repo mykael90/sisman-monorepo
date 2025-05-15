@@ -145,9 +145,23 @@ function UserAddForm({
           </div>
         )}
 
-      {/* <div className='bg-red-100'>{JSON.stringify(form.state, null, 2)}</div> */}
+      <div className='bg-red-100'>
+        {Object.entries(form.state).map(([key, value]) => (
+          <div key={key}>
+            <strong>{key}:</strong> {JSON.stringify(value, null, 2)}
+          </div>
+        ))}
+      </div>
 
-      {/* <div className='bg-blue-100'>{JSON.stringify(serverState, null, 2)}</div> */}
+      <div className='bg-red-100'>{JSON.stringify(form.state, null, 2)}</div>
+
+      <div className='bg-blue-100'>
+        {Object.entries(serverState).map(([key, value]) => (
+          <div key={key}>
+            <strong>{key}:</strong> {JSON.stringify(value, null, 2)}
+          </div>
+        ))}
+      </div>
 
       {/* Exibe erros gerais do formulário Tanstack (geralmente de validação client) */}
       {/* Este se sobreporia ao de cima se 'FORM' for usado. */}

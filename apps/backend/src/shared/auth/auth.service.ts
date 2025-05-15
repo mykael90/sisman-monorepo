@@ -5,7 +5,7 @@ import {
   UnauthorizedException,
   Inject,
   Logger,
-  ConflictException,
+  ConflictException
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
@@ -32,10 +32,8 @@ export class AuthService {
     private readonly userService: UsersService,
     private readonly mailer: MailerService,
     private readonly metricsService: MetricsService, // Injete o serviço de métricas
-    private readonly logLoginService: LogLoginService, // Injete o serviço de métricas
+    private readonly logLoginService: LogLoginService // Injete o serviço de métricas
   ) {}
-
-
 
   createToken(user: User, roles: UserRole[] = []) {
     this.logger.log(`Criando token para o usuário ${user.name}`);
@@ -46,19 +44,19 @@ export class AuthService {
           login: user.login,
           name: user.name,
           email: user.email,
-          roles: roles.map((role) => role.userRoletypeId),
+          roles: roles.map((role) => role.userRoletypeId)
         },
         {
-          expiresIn: 1*60*60*24, //in seconds (24hs)
+          expiresIn: 1 * 60 * 60 * 24, //in seconds (24hs)
           subject: String(user.id),
           issuer: this.issuer,
-          audience: this.audience,
-        },
+          audience: this.audience
+        }
       ),
       roles: roles.map((role) => role.userRoletypeId),
       id: user.id,
       //implementar a chave expires_in baseado no valor da assinatura já informado
-      expires_in: 1*60*60*24, //valor em segundos (corresponde a 24hs)
+      expires_in: 1 * 60 * 60 * 24 //valor em segundos (corresponde a 24hs)
     };
   }
 
@@ -69,7 +67,7 @@ export class AuthService {
     try {
       const data = this.jwtService.verify(token, {
         audience: this.audience,
-        issuer: this.issuer,
+        issuer: this.issuer
       });
       return data;
     } catch (e) {
@@ -89,10 +87,10 @@ export class AuthService {
 
   async loginAuthorizationToken(
     data: AuthLoginAuthorizationTokenDTO,
-    request: RequestExpress,
+    request: RequestExpress
   ) {
     this.logger.log(
-      `Iniciando o processo de login ou cadastro via Token de autorização`,
+      `Iniciando o processo de login ou cadastro via Token de autorização`
     );
     const ipAddress = request.ip;
     const userAgent = request.headers['user-agent'];
@@ -101,7 +99,7 @@ export class AuthService {
 
     try {
       const token = this.jwtService.verify(data.token, {
-        secret: process.env.AUTHORIZATION_JWT_SECRET,
+        secret: process.env.AUTHORIZATION_JWT_SECRET
       });
 
       if (!token) {
@@ -114,10 +112,10 @@ export class AuthService {
 
       const user: User = token.login
         ? await this.prisma.user.findFirst({
-            where: { login: token.login },
+            where: { login: token.login }
           })
         : await this.prisma.user.findFirst({
-            where: { email: token.email },
+            where: { email: token.email }
           });
 
       if (!user) {
@@ -126,9 +124,9 @@ export class AuthService {
             name: token.name,
             email: token.email,
             login: token.login,
-            image: token.image,
+            image: token.image
           },
-          request,
+          request
         );
       }
 
@@ -145,7 +143,7 @@ export class AuthService {
       this.metricsService.userLoginCounter.inc(); // Pode adicionar labels aqui se definiu algum
 
       const roles = await this.prisma.userRole.findMany({
-        where: { userId: user.id },
+        where: { userId: user.id }
       });
 
       return this.createToken(user, roles);
@@ -166,13 +164,13 @@ export class AuthService {
             userId: userId,
             ipAddress: ipAddress,
             userAgent: userAgent,
-            successful: loginSuccess,
+            successful: loginSuccess
           })
           .catch((logError) => {
             // Log interno caso a gravação do histórico falhe
             console.error(
               'Failed background task: recordLoginAttempt',
-              logError,
+              logError
             );
           });
       } else if (!loginSuccess) {
@@ -193,8 +191,12 @@ export class AuthService {
     let userId: number | null = null;
     let loginSuccess = false;
     try {
-      if (await this.userService.existsEmail(data.email) || await this.userService.existsLogin(data.login)) {
-        throw new ConflictException(`E-mail or login already in use!`);
+      if (await this.userService.existsLogin(data.login)) {
+        throw new ConflictException(`Login já cadastrado!`);
+      }
+
+      if (await this.userService.existsEmail(data.email)) {
+        throw new ConflictException(`E-mail já cadastrado!`);
       }
 
       const user = await this.userService.create(data);
@@ -222,13 +224,13 @@ export class AuthService {
             userId: userId,
             ipAddress: ipAddress,
             userAgent: userAgent,
-            successful: loginSuccess,
+            successful: loginSuccess
           })
           .catch((logError) => {
             // Log interno caso a gravação do histórico falhe
             console.error(
               'Failed background task: recordLoginAttempt',
-              logError,
+              logError
             );
           });
       } else if (!loginSuccess) {
@@ -243,13 +245,13 @@ export class AuthService {
 
   async registerAuthorizationToken(
     data: AuthRegisterAuthorizationTokenDTO,
-    request: RequestExpress,
+    request: RequestExpress
   ) {
     this.logger.log(
-      `Realizando o cadastro do usuário via token de autorização`,
+      `Realizando o cadastro do usuário via token de autorização`
     );
     const token = this.jwtService.verify(data.token, {
-      secret: process.env.AUTHORIZATION_JWT_SECRET,
+      secret: process.env.AUTHORIZATION_JWT_SECRET
     });
 
     if (!token) {
@@ -260,12 +262,12 @@ export class AuthService {
       throw new UnauthorizedException(`Token inválido!`);
     }
 
-    if (await this.userService.existsEmail(token.email)) {
-      throw new ConflictException(`E-mail already in use!`);
+    if (await this.userService.existsLogin(token.login)) {
+      throw new ConflictException(`Login já cadastrado!`);
     }
 
-    if (await this.userService.existsLogin(token.login)) {
-      throw new ConflictException(`Login already in use!`);
+    if (await this.userService.existsEmail(token.email)) {
+      throw new ConflictException(`E-mail já cadastrado!`);
     }
 
     return this.register(
@@ -273,19 +275,16 @@ export class AuthService {
         name: token.name,
         email: token.email,
         login: token.login,
-        image: token.image,
+        image: token.image
       },
-      request,
+      request
     );
   }
 
-
-
   async updateImage(user: User, newImage: string) {
-      await this.prisma.user.update({
-        where: { id: user.id },
-        data: { image: newImage },
-      });  
+    await this.prisma.user.update({
+      where: { id: user.id },
+      data: { image: newImage }
+    });
   }
-
 }

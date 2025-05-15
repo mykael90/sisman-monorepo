@@ -67,7 +67,7 @@ export async function addUser(
       const fieldMeta: Partial<Record<keyof IUserAdd, { errors: string[] }>> =
         {};
       validationResult.error.issues.forEach((err) => {
-        const pathKey = err.path.join('.') as keyof UserFormData;
+        const pathKey = err.path.join('.') as keyof IUserAdd;
         // Garante que fieldMeta[pathKey] exista e tenha uma propriedade 'errors' como array.
         if (!fieldMeta[pathKey]) {
           fieldMeta[pathKey] = { errors: [] };
@@ -78,11 +78,12 @@ export async function addUser(
       return {
         isSubmitSuccessful: false,
         errorsServer: [
-          'Favor, corrigir os campos com indicações de erro marcadas em vermelho.'
+          'Favor, corrigir os campos com indicações de erro marcadas em vermelho.',
+          'Em seguida tente novamente'
         ],
-        message: 'Validation failed on server.',
+        message: 'Falha de validação do formulário: server-side',
         fieldMeta: fieldMeta,
-        submittedData: formData // Retorna os dados submetidos para correção
+        submittedData: formDataToObject(formData) // Retorna os dados submetidos para correção
       };
     }
 
@@ -114,20 +115,6 @@ export async function addUser(
 
     return createUserActionResult;
   } catch (error) {
-    // if (error instanceof ServerValidateError) {
-    //   const createUserActionResult: IActionResultForm<IUserAdd> = {
-    //     isSubmitSuccessful: false,
-    //     submittedData: formDataToObject(formData),
-    //     message: `Erro de validação do servidor: ${error.formState}`
-    //     // fieldMeta: {
-    //     //   name: {
-    //     //     errors: ['Nome Ao mínimo 3 letras']
-    //     //   }
-    //     // }
-    //   };
-
-    //   return { ...error.formState, ...createUserActionResult };
-    // } else
     if (error instanceof SismanApiError) {
       // Tratar erros conhecidos para melhor experiência do usuário. Exemplo, duplicação de registro não gerar reset no formulário, dà a possibilidade do usuário tentar trocar os dados.
       logger.error(
@@ -139,7 +126,7 @@ export async function addUser(
           isSubmitSuccessful: false,
           errorsServer: [error.apiMessage],
           submittedData: formDataToObject(formData),
-          message: error.apiMessage
+          message: 'Conflito com registro existente'
         };
 
         //retorna para a tela para que o usuário possa corrigir as informações

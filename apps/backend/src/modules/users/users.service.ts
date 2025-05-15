@@ -1,4 +1,9 @@
-import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+  NotFoundException
+} from '@nestjs/common';
 import { CreateUserDTO } from 'src/shared/dto/user/create-user.dto';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
 import { UpdatePutUserDTO } from 'src/shared/dto/user/update-put-user.dto';
@@ -10,12 +15,16 @@ export class UsersService {
   async create(data: CreateUserDTO) {
     // data.password = await this.hashPassword(data.password);
 
-    if (await this.existsEmail(data.email) || await this.existsLogin(data.login)) {
-      throw new ConflictException(`E-mail or login already in use!`);
+    if (await this.existsLogin(data.login)) {
+      throw new ConflictException(`Login já cadastrado!`);
+    }
+
+    if (await this.existsEmail(data.email)) {
+      throw new ConflictException(`E-mail já cadastrado!`);
     }
 
     return await this.prisma.user.create({
-      data,
+      data
       // select: {
       //   id: true,
       //   name: true,
@@ -30,13 +39,13 @@ export class UsersService {
           include: {
             userRoletype: {
               select: {
-                role: true, 
-                description: true,
+                role: true,
+                description: true
               }
             }
           }
-        },
-      },
+        }
+      }
     });
   }
   async show(id: number) {
@@ -46,10 +55,10 @@ export class UsersService {
       include: {
         userRoles: {
           select: {
-            userRoletypeId: true,
-          },
-        },
-      },
+            userRoletypeId: true
+          }
+        }
+      }
     });
     return user;
   }
@@ -78,14 +87,16 @@ export class UsersService {
     }
   }
 
-    async existsEmail(email: string) {
-      const user = await this.prisma.user.findFirst({ where: { email } });
-      return !!user;
-    }
-    async existsLogin(login: string) {
-      const user = await this.prisma.user.findFirst({ where: { login } });
-      return !!user;
-    }
+  async existsEmail(email: string) {
+    const user = await this.prisma.user.findFirst({ where: { email } });
+    return !!user;
+  }
+  async existsLogin(login: string) {
+    const user = await this.prisma.user.findFirst({ where: { login } });
+    console.log('resposta' + !!user);
+    console.log(user);
+    return !!user;
+  }
 
   // async hashPassword(password: string) {
   //   const salt = await bcrypt.genSalt();

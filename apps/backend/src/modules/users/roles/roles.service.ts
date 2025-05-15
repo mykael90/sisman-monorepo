@@ -4,7 +4,7 @@ import {
   InternalServerErrorException,
   NotFoundException,
   Logger,
-  ConflictException,
+  ConflictException
 } from '@nestjs/common';
 import { PrismaService } from '../../../shared/prisma/prisma.service';
 import { CreateUserRoleDto } from '../../../shared/dto/user/role/create-user-role.dto';
@@ -21,17 +21,17 @@ export class RolesService {
     // Verifica se o usuário e o tipo de role existem antes de criar a relação
     // (Opcional, mas recomendado para evitar erros de FK)
     const userExists = await this.prisma.user.count({
-      where: { id: data.userId },
+      where: { id: data.userId }
     });
     if (!userExists) {
       throw new NotFoundException(`User with ID ${data.userId} not found.`);
     }
     const roleTypeExists = await this.prisma.userRoletype.count({
-      where: { id: data.userRoletypeId },
+      where: { id: data.userRoletypeId }
     });
     if (!roleTypeExists) {
       throw new NotFoundException(
-        `Role type with ID ${data.userRoletypeId} not found.`,
+        `Role type with ID ${data.userRoletypeId} not found.`
       );
     }
 
@@ -41,13 +41,13 @@ export class RolesService {
         where: {
           userId_userRoletypeId: {
             userId: data.userId,
-            userRoletypeId: data.userRoletypeId,
-          },
-        },
+            userRoletypeId: data.userRoletypeId
+          }
+        }
       });
 
       if (existingRole) {
-        throw new ConflictException('User already has this role.');
+        throw new ConflictException('Usuário já possui essa autorização.');
       }
 
       return await this.prisma.userRole.create({ data });
@@ -61,7 +61,7 @@ export class RolesService {
       // Logar o erro original pode ser útil aqui
       this.logger.error('Error creating user role:', error);
       throw new InternalServerErrorException(
-        'Error creating user role. Please check logs.',
+        'Error creating user role. Please check logs.'
       );
     }
   }
@@ -76,10 +76,10 @@ export class RolesService {
           // user: false, // 'include: { user: false }' não é uma sintaxe válida, use select
           userRoletype: {
             select: {
-              role: true,
-            },
-          },
-        },
+              role: true
+            }
+          }
+        }
       });
     } catch (error) {
       // Logar o erro original pode ser útil aqui
@@ -98,9 +98,9 @@ export class RolesService {
         where: {
           userId_userRoletypeId: {
             userId,
-            userRoletypeId,
-          },
-        },
+            userRoletypeId
+          }
+        }
       });
     } catch (error) {
       // Logar o erro original pode ser útil aqui
@@ -116,21 +116,21 @@ export class RolesService {
 
     // Opcional: Verificar se o novo role type existe
     const newRoleTypeExists = await this.prisma.userRoletype.count({
-      where: { id: newUserRoletypeId },
+      where: { id: newUserRoletypeId }
     });
     if (!newRoleTypeExists) {
       throw new NotFoundException(
-        `New Role type with ID ${newUserRoletypeId} not found.`,
+        `New Role type with ID ${newUserRoletypeId} not found.`
       );
     }
 
     // Opcional: Verificar se o usuário já possui o novo role para evitar erro de constraint unique
     const alreadyHasNewRole = await this.prisma.userRole.count({
-      where: { userId: userId, userRoletypeId: newUserRoletypeId },
+      where: { userId: userId, userRoletypeId: newUserRoletypeId }
     });
     if (alreadyHasNewRole > 0) {
       throw new ConflictException(
-        `User already has the role type ID ${newUserRoletypeId}.`,
+        `User already has the role type ID ${newUserRoletypeId}.`
       );
     }
 
@@ -140,10 +140,10 @@ export class RolesService {
         where: {
           userId_userRoletypeId: {
             userId,
-            userRoletypeId,
-          },
+            userRoletypeId
+          }
         },
-        data: { userRoletypeId: newUserRoletypeId },
+        data: { userRoletypeId: newUserRoletypeId }
       });
     } catch (error) {
       if (
@@ -162,11 +162,11 @@ export class RolesService {
     // O método count aceita o where mais simples, então está correto.
     // Alternativamente, poderia usar findUnique e verificar se o resultado é null.
     const count = await this.prisma.userRole.count({
-      where: { userId, userRoletypeId },
+      where: { userId, userRoletypeId }
     });
     if (count === 0) {
       throw new NotFoundException(
-        `User role relationship not found for User ID ${userId} and Role Type ID ${userRoletypeId}`,
+        `User role relationship not found for User ID ${userId} and Role Type ID ${userRoletypeId}`
       );
     }
     // Não é necessário retornar nada aqui, a função serve para lançar erro ou passar.
