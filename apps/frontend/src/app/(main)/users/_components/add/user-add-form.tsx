@@ -68,6 +68,10 @@ function UserAddForm({
   // Lógica que executa na renderização se houver um novo estado de sucesso
   // TODO:
 
+  //sempre que formState.errorsServer muda dentro do estado do form.store, o formulário é renderizado novamente
+  useStore(form.store, (formState) => formState.errorsServer);
+  //usar alguma função para mandar renderizar no cliente
+
   // // Se a submissão foi bem-sucedida, mostramos uma mensagem e um botão para adicionar outro.
   if (serverState?.isSubmitSuccessful) {
     // Os valores do formulário já devem ter sido "resetados" pelo mergeForm
@@ -87,10 +91,6 @@ function UserAddForm({
       </div>
     );
   }
-
-  //sempre que formState.errorsServer muda dentro do estado do form.store, o formulário é renderizado novamente
-  // useStore(form.store, (formState) => formState.errorsServer);
-  //usar alguma função para mandar renderizar no cliente
 
   return (
     <form
