@@ -31,7 +31,7 @@ const myInitialState: ICreateUserActionResult = {
   // submittedData: defaultFormValuesForClient
 };
 
-function UserForm() {
+function UserForm({ onSuccess }: UserFormProps) {
   // useActionState para interagir com a Server Action
   // O tipo de serverState será inferido de CreateUserActionResult
   // initialFormState é um objeto vazio {} por padrão
@@ -87,7 +87,7 @@ function UserForm() {
   //   );
   // }
 
-  // const formErrors = useStore(form.store, (formState) => formState.errors);
+  const formErrors = useStore(form.store, (formState) => formState.errors);
 
   return (
     <form
@@ -107,7 +107,7 @@ function UserForm() {
       }}
       className='rounded-lg bg-white p-6 shadow-md'
     >
-      {/* {formErrors.length > 0 && (
+      {formErrors.length > 0 && (
         <div className='mb-4 rounded border border-red-400 bg-red-100 p-3 text-red-700'>
           <div className='flex items-center'>
             <AlertCircle className='mr-2 h-5 w-5' />
@@ -119,16 +119,16 @@ function UserForm() {
             ))}
           </ul>
         </div>
-      )} */}
+      )}
 
-      {/* <div className='bg-red-100'>{JSON.stringify(form.state, null, 2)}</div> */}
+      <div className='bg-red-100'>{JSON.stringify(form.state, null, 2)}</div>
 
-      {/* <div className='bg-blue-100'>{JSON.stringify(state, null, 2)}</div> */}
+      <div className='bg-blue-100'>{JSON.stringify(state, null, 2)}</div>
 
       {/* Exibe erros gerais do formulário Tanstack (geralmente de validação client) */}
       {/* Este se sobreporia ao de cima se 'FORM' for usado. */}
-
-      <form.Subscribe selector={(state) => state.errors}>
+      {/*
+      <form.Subscribe selector={(state) => state.errors?.FORM}>
         {(formErrors) =>
           formErrors && formErrors.length > 0 ? (
             <div className='mb-4 rounded border border-red-400 bg-red-100 p-3 text-red-700'>
@@ -145,6 +145,7 @@ function UserForm() {
           ) : null
         }
       </form.Subscribe>
+      */}
 
       {/* <form.Field
         name='avatarUrl'
