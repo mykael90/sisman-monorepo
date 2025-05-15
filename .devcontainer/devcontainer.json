@@ -58,7 +58,8 @@
 			"bradlc.vscode-tailwindcss",
 			"meganrogge.template-string-converter",
 			"editorconfig.editorconfig",
-			"formulahendry.code-runner"
+			"formulahendry.code-runner",
+			"mxsdev.typescript-explorer"
 		  ]
 		}
 	  },
