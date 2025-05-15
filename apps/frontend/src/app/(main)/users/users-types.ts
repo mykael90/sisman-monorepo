@@ -43,3 +43,15 @@ export type IUserList = Prisma.UserGetPayload<{
   //   updatedAt: true;
   // };
 }>;
+
+// export type IUserAdd = Prisma.UserCreateInput;
+
+export type IUserAdd = Prisma.UserCreateManyInput;
+
+export type IUserEdit = Prisma.UserUncheckedUpdateInput;
+
+export type IUserRemove = {
+  id: string;
+};
+
+export type IUserSelect = Prisma.UserSelect;

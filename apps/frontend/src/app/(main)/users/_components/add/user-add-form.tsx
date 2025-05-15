@@ -1,41 +1,47 @@
 // src/components/user-form.tsx
 'use client';
 
-import { useActionState, useRef, useState } from 'react';
-import { useForm, useTransform, mergeForm } from '@tanstack/react-form';
+import { mergeForm, useForm, useTransform } from '@tanstack/react-form';
 import { useStore } from '@tanstack/react-store';
+import { useActionState, useRef, useState } from 'react';
 
 // Seus componentes e tipos
+import { FormInputField } from '@/components/form-tanstack/form-input-fields';
+import { Button } from '@/components/ui/button';
+import { AlertCircle, UserPlus } from 'lucide-react';
+import { IActionResultForm } from '../../../../../types/types-server-actions';
+import { addUser } from '../../users-actions';
+import { IUserAdd } from '../../users-types';
 import { UserAddAvatar } from './user-add-avatar';
 import { UserRolesSelector } from './users-rolers-selector';
-import { Button } from '@/components/ui/button';
-import { UserPlus, AlertCircle } from 'lucide-react';
-import { FormInputField } from '@/components/form-tanstack/form-input-fields';
-import { UserFormData } from './user-add';
-import { addUser, ICreateUserActionResult } from '../../users-actions';
-import { formOpts } from './shared-code';
 
 // (Opcional: Zod para validação client-side)
 // import { zodValidator } from '@tanstack/zod-form-adapter';
 // import { z } from 'zod';
 // const clientUserFormSchema = z.object({ ... }); // Schema Zod para cliente
 
-const myInitialState: ICreateUserActionResult = {
-  errorsServer: [],
-  message: ''
-};
-
-function UserAddForm({ onWantToReset }: { onWantToReset: () => void }) {
+function UserAddForm({
+  onWantToReset,
+  defaultData,
+  initialServerState = {
+    errorsServer: [],
+    message: ''
+  }
+}: {
+  onWantToReset: () => void;
+  defaultData: IUserAdd;
+  initialServerState?: IActionResultForm<IUserAdd>;
+}) {
   // useActionState para interagir com a Server Action
   // O tipo de serverState será inferido de ICreateUserActionResult
 
   const [serverState, formAction, isPending] = useActionState(
     addUser,
-    myInitialState
+    initialServerState
   );
 
   const form = useForm({
-    ...formOpts,
+    defaultValues: defaultData,
     transform: useTransform(
       (baseForm) => mergeForm(baseForm, serverState ?? {}), // serverState aqui é CreateUserActionResult
       [serverState]

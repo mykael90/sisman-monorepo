@@ -1,20 +1,15 @@
 'use server';
 
-import { revalidatePath } from 'next/cache';
-import fetchApiSisman, { SismanApiError } from '../../../lib/fetch/api-sisman';
 import Logger from '@/lib/logger';
-import { UserFormData } from './_components/add/user-add';
+import { revalidatePath } from 'next/cache';
 import { getSismanAccessToken } from '../../../lib/auth/get-access-token';
-import { z } from 'zod';
-import { IUserList } from './users-types';
+import fetchApiSisman, { SismanApiError } from '../../../lib/fetch/api-sisman';
+import formDataToObject from '../../../lib/formdata-to-object';
+import { IActionResultForm } from '../../../types/types-server-actions';
+import { IUserAdd, IUserList } from './users-types';
+import userFormSchemaOnServer from './users-validation-form';
 
 const logger = new Logger('users-data-client/_actions');
-
-const defaultFormValues: UserFormData = {
-  name: '',
-  login: '',
-  email: ''
-};
 
 export async function getUsers(
   accessTokenSisman: string
@@ -54,42 +49,6 @@ export async function getRefreshedUsers() {
   // return response;
 }
 
-export interface ICreateUserActionResult {
-  isSubmitSuccessful?: boolean;
-  errorsServer?: string[]; // Erros globais de formulário gerados no lado do servidor
-  values?: Partial<UserFormData>;
-  createdUser?: UserFormData;
-  submittedData?: Partial<UserFormData>; // Para mergeForm usar para atualizar valores
-  fieldMeta?: Partial<
-    Record<
-      keyof UserFormData,
-      {
-        errors: string[];
-      }
-    >
-  >;
-  message: string;
-}
-
-// Schema Zod (adapte conforme sua necessidade)
-const userFormSchemaOnServer = z.object({
-  name: z.string().min(3, 'Name must be at least 3 characters'),
-  // a string de login deve ter obrigatoriamente um ponto dividindo 2 nomes
-
-  // eu quero inserir essas 2 restriçÕes para login
-  login: z
-    .string()
-    .regex(/\./, 'Login must contain a dot (.)')
-    .min(3, 'Login must be at least 3 characters'),
-  email: z.string().email('Invalid email address')
-  // roles: z.array(z.string()).min(1, 'At least one role is required'),
-  // avatarUrl: z
-  //   .string()
-  //   .url('Invalid URL for avatar')
-  //   .optional()
-  //   .or(z.literal(''))
-});
-
 export async function addUser(
   // Mesmo que não o usemos ativamente, ele precisa estar na assinatura.
   // O tipo do estado anterior deve corresponder ao tipo de retorno da action.
@@ -100,21 +59,13 @@ export async function addUser(
   console.log(formData);
   logger.warn('aqui antes do serverValidate');
   try {
-    // const rawData = formDataToObject(formData);
-    // const validatedData = userFormSchemaOnServer.safeParse(rawData);
-
-    // const rawData = formDataToObject(formData);
-    // const validationResult = userFormSchemaOnServer.safeParse(rawData);
-
-    // // TODO:
     const rawData = formDataToObject(formData);
     const validationResult = userFormSchemaOnServer.safeParse(rawData);
     logger.info(JSON.stringify(validationResult));
 
     if (!validationResult.success) {
-      const fieldMeta: Partial<
-        Record<keyof UserFormData, { errors: string[] }>
-      > = {};
+      const fieldMeta: Partial<Record<keyof IUserAdd, { errors: string[] }>> =
+        {};
       validationResult.error.issues.forEach((err) => {
         const pathKey = err.path.join('.') as keyof UserFormData;
         // Garante que fieldMeta[pathKey] exista e tenha uma propriedade 'errors' como array.
@@ -153,9 +104,9 @@ export async function addUser(
 
     const createdUserData = await response.json();
 
-    const createUserActionResult: ICreateUserActionResult = {
+    const createUserActionResult: IActionResultForm<IUserAdd> = {
       isSubmitSuccessful: true,
-      createdUser: createdUserData,
+      createdData: createdUserData,
       submittedData: formDataToObject(formData),
       message: 'User created successfully!',
       errorsServer: []
@@ -164,7 +115,7 @@ export async function addUser(
     return createUserActionResult;
   } catch (error) {
     // if (error instanceof ServerValidateError) {
-    //   const createUserActionResult: ICreateUserActionResult = {
+    //   const createUserActionResult: IActionResultForm<IUserAdd> = {
     //     isSubmitSuccessful: false,
     //     submittedData: formDataToObject(formData),
     //     message: `Erro de validação do servidor: ${error.formState}`
@@ -184,7 +135,7 @@ export async function addUser(
       );
 
       if (error.statusCode === 409) {
-        const createUserActionResult: ICreateUserActionResult = {
+        const createUserActionResult: IActionResultForm<IUserAdd> = {
           isSubmitSuccessful: false,
           errorsServer: [error.apiMessage],
           submittedData: formDataToObject(formData),
@@ -202,8 +153,4 @@ export async function addUser(
     // Some other error occurred while validating your form
     throw error;
   }
-}
-
-function formDataToObject<T = any>(formData: FormData): T {
-  return Object.fromEntries(formData.entries()) as T;
 }
