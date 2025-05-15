@@ -1,7 +1,7 @@
 import { UserPlus } from 'lucide-react';
 import React from 'react';
 
-function UserHeader() {
+function UserAddHeader() {
   return (
     <div className='border-b'>
       <div className='px-6 pt-6 pb-5'>
@@ -26,4 +26,4 @@ function UserHeader() {
   );
 }
 
-export { UserHeader };
+export { UserAddHeader as UserHeader };

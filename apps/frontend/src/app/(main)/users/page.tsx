@@ -1,8 +1,8 @@
-import { UserManagementPage } from '@/components/user-management/user-management-page';
+import { UserListPage } from '@/src/app/(main)/users/_components/list/user-list';
 import { Suspense } from 'react';
 import { Data } from './data';
 import { getSismanAccessToken } from '../../../lib/auth/get-access-token';
-import { getRefreshedUsers, getUsers } from './_actions';
+import { getRefreshedUsers, getUsers } from './users-actions';
 import Logger from '../../../lib/logger';
 
 const logger = new Logger('users-management');
@@ -34,7 +34,7 @@ export default async function Page() {
 
   return (
     <Suspense fallback={<p>Loading initial data...</p>}>
-      <UserManagementPage
+      <UserListPage
         dataPromise={currentDataPromise} // Passa a promise criada acima
         refreshAction={getRefreshedUsers} // Passa a referência da função Server Action
         key={keyForDisplayData} // Passa a string gerada como chave

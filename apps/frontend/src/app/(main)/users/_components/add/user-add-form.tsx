@@ -6,13 +6,13 @@ import { useForm, useTransform, mergeForm } from '@tanstack/react-form';
 import { useStore } from '@tanstack/react-store';
 
 // Seus componentes e tipos
-import { UserAvatar } from './user-avatar';
+import { UserAddAvatar } from './user-add-avatar';
 import { UserRolesSelector } from './users-rolers-selector';
 import { Button } from '@/components/ui/button';
 import { UserPlus, AlertCircle } from 'lucide-react';
 import { FormInputField } from '@/components/form-tanstack/form-input-fields';
-import { UserFormData } from './user';
-import { addUser, ICreateUserActionResult } from '../_actions';
+import { UserFormData } from './user-add';
+import { addUser, ICreateUserActionResult } from '../../users-actions';
 import { formOpts } from './shared-code';
 
 // (Opcional: Zod para validação client-side)
@@ -25,7 +25,7 @@ const myInitialState: ICreateUserActionResult = {
   message: ''
 };
 
-function UserForm({ onWantToReset }: { onWantToReset: () => void }) {
+function UserAddForm({ onWantToReset }: { onWantToReset: () => void }) {
   // useActionState para interagir com a Server Action
   // O tipo de serverState será inferido de ICreateUserActionResult
 
@@ -288,4 +288,4 @@ function UserForm({ onWantToReset }: { onWantToReset: () => void }) {
   );
 }
 
-export { UserForm };
+export { UserAddForm as UserForm };

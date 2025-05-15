@@ -11,7 +11,7 @@ interface UserAvatarProps {
   initialAvatarUrl?: string;
 }
 
-export function UserAvatar({
+export function UserAddAvatar({
   onAvatarChange,
   initialAvatarUrl
 }: UserAvatarProps) {

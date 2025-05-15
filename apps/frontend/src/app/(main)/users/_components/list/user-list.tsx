@@ -1,11 +1,11 @@
 'use client';
 
 import React, { use, useState, useMemo, useRef } from 'react'; // Importe useMemo
-import { UserManagementHeader } from './user-management-header';
+import { UserListHeader } from './user-list-header';
 import { UserFilters } from './user-filters';
 import { UserTable } from './user-table';
 // import initialUsers from './user-data-example'; // Removido se não usado
-import { IUserWithRoles } from '../../types/user';
+import { IUserWithRoles } from '../../../../../types/user';
 // import { getUsers } from '../../app/(main)/user-management/_actions'; // Removido se não usado
 import {
   ColumnFiltersState,
@@ -14,7 +14,7 @@ import {
 } from '@tanstack/react-table';
 import { InputDebounceRef } from '@/components/ui/input'; // Importe o tipo da Ref
 
-export function UserManagementPage({ dataPromise, refreshAction }) {
+export function UserListPage({ dataPromise, refreshAction }) {
   const initialData: IUserWithRoles[] = use(dataPromise);
 
   const [users, setUsers] = useState(initialData); // Estado dos dados da tabela
@@ -72,7 +72,7 @@ export function UserManagementPage({ dataPromise, refreshAction }) {
 
   return (
     <div className='container mx-auto p-4'>
-      <UserManagementHeader onAddUser={handleAddUser} />
+      <UserListHeader onAddUser={handleAddUser} />
 
       <div className='mt-4 mb-4 h-auto rounded-xl border-0 bg-white px-4 py-3.5'>
         {' '}

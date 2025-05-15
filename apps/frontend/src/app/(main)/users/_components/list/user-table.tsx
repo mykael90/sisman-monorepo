@@ -1,8 +1,8 @@
 'use client';
 
 import React from 'react';
-import { UserTableProps } from './user-management-page';
-import { TableTanstack } from '../table-tanstack/table-tanstack';
+import { UserTableProps } from './user-list';
+import { TableTanstack } from '../../../../../components/table-tanstack/table-tanstack';
 import { actions, columns } from './user-columns';
 
 export function UserTable({

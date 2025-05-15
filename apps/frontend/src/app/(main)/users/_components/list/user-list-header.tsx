@@ -3,11 +3,11 @@
 import { Button } from '@/components/ui/button';
 import { UserPlus } from 'lucide-react';
 
-interface UserManagementHeaderProps {
+interface UserListHeaderProps {
   onAddUser: () => void;
 }
 
-export function UserManagementHeader({ onAddUser }: UserManagementHeaderProps) {
+export function UserListHeader({ onAddUser }: UserListHeaderProps) {
   return (
     <div className='flex items-center justify-between'>
       <div>

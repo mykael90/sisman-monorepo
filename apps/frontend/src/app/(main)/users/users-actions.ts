@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import fetchApiSisman, { SismanApiError } from '../../../lib/fetch/api-sisman';
 import Logger from '@/lib/logger';
-import { UserFormData } from './add/user';
+import { UserFormData } from './_components/add/user-add';
 import { getSismanAccessToken } from '../../../lib/auth/get-access-token';
 import { z } from 'zod';
 

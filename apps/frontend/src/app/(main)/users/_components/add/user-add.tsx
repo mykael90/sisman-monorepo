@@ -3,8 +3,8 @@
 import type React from 'react';
 import { useState, type FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
-import { UserHeader } from './user-header';
-import { UserForm } from './user-form';
+import { UserHeader } from './user-add-header';
+import { UserForm } from './user-add-form';
 
 export interface UserFormData {
   name: string;
@@ -16,7 +16,7 @@ export interface UserFormData {
 
 // We are transforming this into a page, so it won't take props like onClose or onSubmit.
 // The page will manage its own state and submission logic.
-export default function UserPage() {
+export default function UserAdd() {
   const router = useRouter();
   const [formData, setFormData] = useState<UserFormData>({
     name: '',

@@ -1,5 +1,4 @@
 import { User, UserRole, UserRoletype, Prisma } from '@sisman/prisma';
-import { use } from 'react';
 
 // Defina o tipo para um usuário COM seus papéis (se papéis fossem um modelo relacionado)
 // Este exemplo assume que 'roles' é o nome da relação no seu modelo User
@@ -48,6 +47,11 @@ export type UserWithSelectedFieldsAndRoles = Prisma.UserGetPayload<{
         userRoletypeId: true;
       };
     };
+  };
+  omit: {
+    createdAt: true;
+    updatedAt: true;
+    logLogin: true;
   };
 }>;
 

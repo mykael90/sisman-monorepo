@@ -1,4 +1,4 @@
-import User from './user';
+import User from '../_components/add/user-add';
 import { Suspense } from 'react';
 // import { Data } from './data';
 import { getSismanAccessToken } from '../../../../lib/auth/get-access-token';
