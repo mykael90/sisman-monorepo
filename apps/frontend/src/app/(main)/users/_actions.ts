@@ -53,8 +53,7 @@ export async function getRefreshedUsers() {
 
 export interface ICreateUserActionResult {
   isSubmitSuccessful?: boolean;
-  errors?: string[]; // Erros globais de formulário
-  errorMap?: Record<string, string>;
+  errorsServer?: string[]; // Erros globais de formulário gerados no lado do servidor
   values?: Partial<UserFormData>;
   createdUser?: UserFormData;
   submittedData?: Partial<UserFormData>; // Para mergeForm usar para atualizar valores
@@ -124,9 +123,9 @@ export async function addUser(
       });
       return {
         isSubmitSuccessful: false,
-        // errors: [
-        //   'Favor, corrigir os campos com indicações de erro marcadas em vermelho.'
-        // ],
+        errorsServer: [
+          'Favor, corrigir os campos com indicações de erro marcadas em vermelho.'
+        ],
         message: 'Validation failed on server.',
         fieldMeta: fieldMeta,
         submittedData: formData // Retorna os dados submetidos para correção
@@ -180,17 +179,20 @@ export async function addUser(
         `Erro conhecido: Status: ${error.statusCode}, Type: ${error.errorType}, API Msg: ${error.apiMessage}`
       );
 
-      const createUserActionResult: ICreateUserActionResult = {
-        isSubmitSuccessful: false,
-        errors: [error.apiMessage],
-        errorMap: {
-          email: error.apiMessage
-        },
-        submittedData: formDataToObject(formData),
-        message: error.apiMessage
-      };
+      if (error.statusCode === 409) {
+        const createUserActionResult: ICreateUserActionResult = {
+          isSubmitSuccessful: false,
+          errorsServer: [error.apiMessage],
+          submittedData: formDataToObject(formData),
+          message: error.apiMessage
+        };
 
-      return createUserActionResult;
+        //retorna para a tela para que o usuário possa corrigir as informações
+        return createUserActionResult;
+      }
+
+      //vai para a captura de erro do nextjs mais próxima
+      throw error;
     }
 
     // Some other error occurred while validating your form

@@ -21,13 +21,14 @@ export default function UserPage() {
   const [formData, setFormData] = useState<UserFormData>({
     name: '',
     login: '',
-    email: '',
-    avatarUrl: '',
-    roles: []
+    email: ''
+    // avatarUrl: '',
+    // roles: []
   });
 
   // Para controlar a chave do formulário e forçar o reset do useActionState
   const [formKey, setFormKey] = useState(() => Date.now().toString());
+  const triggerFormReset = () => setFormKey(Date.now().toString());
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -57,7 +58,7 @@ export default function UserPage() {
       <UserHeader></UserHeader>
 
       {/* Form Section */}
-      <UserForm key={formKey} setFormKey={setFormKey}></UserForm>
+      <UserForm key={formKey} onWantToReset={triggerFormReset}></UserForm>
     </div>
   );
 }

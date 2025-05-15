@@ -21,16 +21,11 @@ import { formOpts } from './shared-code';
 // const clientUserFormSchema = z.object({ ... }); // Schema Zod para cliente
 
 const myInitialState: ICreateUserActionResult = {
-  errorMap: {},
-  errors: [],
+  errorsServer: [],
   message: ''
 };
 
-function UserForm({
-  setFormKey
-}: {
-  setFormKey: React.Dispatch<React.SetStateAction<string>>;
-}) {
+function UserForm({ onWantToReset }: { onWantToReset: () => void }) {
   // useActionState para interagir com a Server Action
   // O tipo de serverState será inferido de ICreateUserActionResult
 
@@ -90,13 +85,11 @@ function UserForm({
     form.reset(); // 1. Reseta o estado interno do TanStack Form para defaultValues
     // 2. Mudar a key força a recriação do <form> e de seus hooks internos,
     //    incluindo a reinicialização do useActionState para myInitialServerState.
-    setFormKey(Date.now().toString());
+    onWantToReset();
   };
 
-  //sempre que JSON.stringify(formState.fieldMeta) muda dentro do estado do form.store, o formulário é renderizado novamente
-  const fieldErrors = useStore(form.store, (formState) =>
-    JSON.stringify(formState.fieldMeta)
-  );
+  //sempre que formState.message muda dentro do estado do form.store, o formulário é renderizado novamente
+  useStore(form.store, (formState) => formState.message);
 
   return (
     <form
@@ -202,11 +195,14 @@ function UserForm({
         // validators={{ onChange: clientUserFormSchema?.shape.name }}
       >
         {(field) => (
-          <FormInputField
-            field={field}
-            label='Full Name'
-            placeholder='Enter full name'
-          />
+          <>
+            <FormInputField
+              field={field}
+              label='Full Name'
+              placeholder='Enter full name'
+            />
+            {/* {JSON.stringify(field.getMeta(), null, 2)} */}
+          </>
         )}
       </form.Field>
 
