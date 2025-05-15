@@ -31,7 +31,7 @@ const myInitialState: ICreateUserActionResult = {
   // submittedData: defaultFormValuesForClient
 };
 
-function UserForm({ onSuccess }: UserFormProps) {
+function UserForm() {
   // useActionState para interagir com a Server Action
   // O tipo de serverState será inferido de CreateUserActionResult
   // initialFormState é um objeto vazio {} por padrão
@@ -56,38 +56,11 @@ function UserForm({ onSuccess }: UserFormProps) {
   // No entanto, com o padrão server action, é mais comum não ter um onSubmit aqui.
   // A validação do TanStack Form ainda roda antes da server action ser chamada.
 
-  // Rastrear se o callback onSuccess já foi chamado para o estado de sucesso atual
-
   // Lógica que executa na renderização se houver um novo estado de sucesso
   // TODO:
 
-  // Para exibir erros globais do formulário que vêm do servidor
-  // const formLevelErrors = useStore(form.store, (state) => {
-  //   const globalErrors: string[] = [];
-  //   // Erros de validação do TanStack Form (geralmente `errors.FORM`)
-  //   if (
-  //     state.errors &&
-  //     state.errors['FORM' as any] &&
-  //     Array.isArray(state.errors['FORM' as any])
-  //   ) {
-  //     globalErrors.push(...(state.errors['FORM' as any] as string[]));
-  //   }
-  //   // Erros retornados pela server action em `formErrors`
-  //   if (serverState?.formErrors && Array.isArray(serverState.formErrors)) {
-  //     globalErrors.push(...serverState.formErrors);
-  //   }
-  //   // Erros retornados pela server action em `errors.FORM`
-  //   if (
-  //     serverState?.errors?.['FORM'] &&
-  //     Array.isArray(serverState.errors['FORM'])
-  //   ) {
-  //     globalErrors.push(...(serverState.errors['FORM'] as string[]));
-  //   }
-  //   return [...new Set(globalErrors)]; // Remover duplicatas
-  // });
-
   // // Se a submissão foi bem-sucedida, mostramos uma mensagem e um botão para adicionar outro.
-  // if (serverState?.success) {
+  // if (state?.isSubmitSuccessful) {
   //   // Os valores do formulário já devem ter sido "resetados" pelo mergeForm
   //   // usando o `submittedData` (que eram os defaultValues) da action.
   //   return (
@@ -114,7 +87,7 @@ function UserForm({ onSuccess }: UserFormProps) {
   //   );
   // }
 
-  const formErrors = useStore(form.store, (formState) => formState.errors);
+  // const formErrors = useStore(form.store, (formState) => formState.errors);
 
   return (
     <form
@@ -134,32 +107,28 @@ function UserForm({ onSuccess }: UserFormProps) {
       }}
       className='rounded-lg bg-white p-6 shadow-md'
     >
-      {/* {formLevelErrors.length > 0 && (
+      {/* {formErrors.length > 0 && (
         <div className='mb-4 rounded border border-red-400 bg-red-100 p-3 text-red-700'>
           <div className='flex items-center'>
             <AlertCircle className='mr-2 h-5 w-5' />
             <strong>Error:</strong>
           </div>
           <ul className='mt-1 ml-5 list-inside list-disc'>
-            {formLevelErrors.map((err, i) => (
+            {formErrors.map((err, i) => (
               <li key={i}>{err}</li>
             ))}
           </ul>
         </div>
       )} */}
 
-      <div className='bg-red-100'>{JSON.stringify(form.state, null, 2)}</div>
+      {/* <div className='bg-red-100'>{JSON.stringify(form.state, null, 2)}</div> */}
 
-      <div className='bg-blue-100'>{JSON.stringify(state, null, 2)}</div>
-
-      {formErrors.map((error) => (
-        <p key={error as unknown as string}>{error}</p>
-      ))}
+      {/* <div className='bg-blue-100'>{JSON.stringify(state, null, 2)}</div> */}
 
       {/* Exibe erros gerais do formulário Tanstack (geralmente de validação client) */}
       {/* Este se sobreporia ao de cima se 'FORM' for usado. */}
-      {/*
-      <form.Subscribe selector={(state) => state.errors?.FORM}>
+
+      <form.Subscribe selector={(state) => state.errors}>
         {(formErrors) =>
           formErrors && formErrors.length > 0 ? (
             <div className='mb-4 rounded border border-red-400 bg-red-100 p-3 text-red-700'>
@@ -176,7 +145,6 @@ function UserForm({ onSuccess }: UserFormProps) {
           ) : null
         }
       </form.Subscribe>
-      */}
 
       {/* <form.Field
         name='avatarUrl'
