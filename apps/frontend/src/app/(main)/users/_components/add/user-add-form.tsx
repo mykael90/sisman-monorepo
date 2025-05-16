@@ -1,6 +1,5 @@
 // src/components/user-form.tsx
 'use client';
-import type { ZodIssue } from 'zod'; // Import ZodIssue if it's the expected type
 
 import { mergeForm, useForm, useTransform } from '@tanstack/react-form';
 import { useStore } from '@tanstack/react-store';
@@ -9,10 +8,12 @@ import { useActionState, useRef, useState } from 'react';
 // Seus componentes e tipos
 import { FormInputField } from '@/components/form-tanstack/form-input-fields';
 import { Button } from '@/components/ui/button';
-import { AlertCircle, UserPlus } from 'lucide-react';
+import { UserPlus } from 'lucide-react';
 import { IActionResultForm } from '../../../../../types/types-server-actions';
 import { addUser } from '../../users-actions';
 import { IUserAdd } from '../../users-types';
+import { FormSuccessDisplay } from '../../../../../components/form-tanstack/form-success-display';
+import { ErrorServerForm } from '../../../../../components/form-tanstack/error-server-form';
 import { UserAddAvatar } from './user-add-avatar';
 import { UserRolesSelector } from './users-rolers-selector';
 
@@ -68,28 +69,20 @@ function UserAddForm({
 
   //sempre que formState.errorsServer muda dentro do estado do form.store, o formulário é renderizado novamente
   useStore(form.store, (formState) => formState.errorsServer);
-  //usar alguma função para mandar renderizar no cliente
 
   // // Se a submissão foi bem-sucedida, mostramos uma mensagem e um botão para adicionar outro.
   if (serverState?.isSubmitSuccessful) {
     // Os valores do formulário já devem ter sido "resetados" pelo mergeForm
     // usando o `submittedData` (que eram os defaultValues) da action.
     return (
-      <div className='rounded-lg bg-white p-6 text-center shadow-md'>
-        <h2 className='mb-4 text-xl font-semibold text-green-600'>
-          {serverState.message || 'Operation successful!'}
-        </h2>
-        {serverState.submittedData && (
-          <p className='mb-4 text-sm text-gray-700'>
-            Usuário: {serverState.submittedData.name}
-            {/* (ID: {serverState.submittedData.id}) */}
-          </p>
-        )}
-        <Button onClick={handleResetForm}>Adicionar Outro Usuário</Button>
-      </div>
+      <FormSuccessDisplay
+        serverState={serverState}
+        handleActions={{
+          handleResetForm
+        }}
+      />
     );
   }
-
   return (
     <form
       action={formAction}
@@ -105,83 +98,24 @@ function UserAddForm({
       }}
       className='rounded-lg bg-white p-6 shadow-md'
     >
-      {/* {formErrors.length > 0 && (
-        <div className='mb-4 rounded border border-red-400 bg-red-100 p-3 text-red-700'>
-          <div className='flex items-center'>
-            <AlertCircle className='mr-2 h-5 w-5' />
-            <strong>Error:</strong>
-          </div>
-          <ul className='mt-1 ml-5 list-inside list-disc'>
-            {formErrors.map((err, i) => (
-              <li key={i}>{err}</li>
-            ))}
-          </ul>
-        </div>
-      )} */}
+      {/* Exibir a mensagem geral de erro do servidor */}
+      <ErrorServerForm serverState={serverState} />
 
-      {/* Exibir a mensagem geral do servidor */}
-      {serverState &&
-        serverState.message &&
-        !serverState.isSubmitSuccessful && (
-          <div
-            className={`mb-4 rounded border p-3 ${serverState.isSubmitSuccessful === false ? 'border-red-400 bg-red-100 text-red-700' : 'border-green-400 bg-green-100 text-green-700'}`}
-          >
-            <div className='flex items-center'>
-              <AlertCircle className='mr-2 h-5 w-5' />{' '}
-              {/* Ou CheckCircle para sucesso */}
-              <strong>
-                {serverState.isSubmitSuccessful === false ? 'Erro:' : 'Info:'}
-              </strong>
-            </div>
-            <p className='mt-1 ml-7'>{serverState.message}</p>
-            <ul className='mt-1 ml-5 list-inside list-disc'>
-              {/* Safely access and map errorsServer */}
-              {serverState &&
-              typeof serverState === 'object' &&
-              'errorsServer' in serverState && // Check if property exists
-              Array.isArray((serverState as any).errorsServer) // Check if it's an array
-                ? ((serverState as any).errorsServer as string[]).map(
-                    (err: string, i: number) => <li key={i}>{err}</li>
-                  )
-                : null}
-            </ul>
-            <ul className='mt-1 ml-5 list-inside list-disc'>
-              {/* Safely access and map errorsFieldsServer if it's an array of ZodIssues */}
-              {serverState &&
-              typeof serverState === 'object' &&
-              'errorsFieldsServer' in serverState // Check if property exists
-                ? Object.entries(serverState.errorsFieldsServer || {}).map(
-                    (arr: [string, string[]]) => (
-                      <li key={arr[0]}>
-                        <strong>{arr[0]}:</strong>
-                        <ul className='mt-1 ml-7 list-inside list-disc'>
-                          {arr[1].map((err: string, i: number) => (
-                            <li key={i}>{err}</li>
-                          ))}
-                        </ul>
-                      </li>
-                    )
-                  )
-                : null}
-            </ul>
-          </div>
-        )}
-
-      <div className='bg-red-100'>
+      {/* <div className='bg-red-100'>
         {Object.entries(form.state).map(([key, value]) => (
           <div key={key}>
             <strong>{key}:</strong> {JSON.stringify(value, null, 2)}
           </div>
         ))}
-      </div>
+      </div> */}
 
-      <div className='bg-blue-100'>
+      {/* <div className='bg-blue-100'>
         {Object.entries(serverState).map(([key, value]) => (
           <div key={key}>
             <strong>{key}:</strong> {JSON.stringify(value, null, 2)}
           </div>
         ))}
-      </div>
+      </div> */}
 
       {/* Exibe erros gerais do formulário Tanstack (geralmente de validação client) */}
       {/* Este se sobreporia ao de cima se 'FORM' for usado. */}
