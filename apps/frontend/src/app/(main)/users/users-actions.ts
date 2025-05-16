@@ -7,7 +7,7 @@ import fetchApiSisman, { SismanApiError } from '../../../lib/fetch/api-sisman';
 import formDataToObject from '../../../lib/formdata-to-object';
 import { IActionResultForm } from '../../../types/types-server-actions';
 import { IUserAdd, IUserList } from './users-types';
-import userFormSchemaOnServer from './users-validation-form';
+import userFormSchema from './_components/add/users-validation-form';
 
 const pagePath = '/users';
 
@@ -79,7 +79,7 @@ export async function addUser(
 
     // Valida os dados brutos usando o esquema `userFormSchemaOnServer` definido em `users-validation-form.ts`.
     // O método `safeParse` retorna um objeto com uma propriedade `success` indicando se a validação foi bem-sucedida.
-    const validationResult = userFormSchemaOnServer.safeParse(rawData);
+    const validationResult = userFormSchema.safeParse(rawData);
 
     // Se a validação falhar, entra neste bloco.
     if (!validationResult.success) {

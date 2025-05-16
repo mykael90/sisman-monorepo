@@ -16,6 +16,7 @@ import { FormSuccessDisplay } from '../../../../../components/form-tanstack/form
 import { ErrorServerForm } from '../../../../../components/form-tanstack/error-server-form';
 import { UserAddAvatar } from './user-add-avatar';
 import { UserRolesSelector } from './users-rolers-selector';
+import userFormSchema from './users-validation-form';
 
 // (Opcional: Zod para validação client-side)
 // import { zodValidator } from '@tanstack/zod-form-adapter';
@@ -47,7 +48,11 @@ function UserAddForm({
     transform: useTransform(
       (baseForm) => mergeForm(baseForm, serverState ?? {}), // serverState aqui é CreateUserActionResult
       [serverState]
-    )
+    ),
+    validators: {
+      // onChange: userFormSchema
+      onBlur: userFormSchema
+    }
   });
   const handleResetForm = () => {
     form.reset(); // 1. Reseta o estado interno do TanStack Form para defaultValues
@@ -117,27 +122,7 @@ function UserAddForm({
         ))}
       </div> */}
 
-      {/* Exibe erros gerais do formulário Tanstack (geralmente de validação client) */}
-      {/* Este se sobreporia ao de cima se 'FORM' for usado. */}
-      {/*
-      <form.Subscribe selector={(state) => state.errors?.FORM}>
-        {(formErrors) =>
-          formErrors && formErrors.length > 0 ? (
-            <div className='mb-4 rounded border border-red-400 bg-red-100 p-3 text-red-700'>
-              <div className='flex items-center'>
-                <AlertCircle className='mr-2 h-5 w-5' />
-                <strong>Error:</strong>
-              </div>
-              <ul className='mt-1 ml-5 list-inside list-disc'>
-                {formErrors.map((err, i) => (
-                  <li key={i}>{err}</li>
-                ))}
-              </ul>
-            </div>
-          ) : null
-        }
-      </form.Subscribe>
-      */}
+      {/* Avaliar se é necessário erro geral do formulário Tanstack no lado cliente) */}
 
       {/* <form.Field
         name='avatarUrl'
@@ -235,12 +220,16 @@ function UserAddForm({
           Cancel
         </Button>
         <form.Subscribe
-          selector={(state) => [state.canSubmit, state.isValidating]}
+          selector={(state) => [
+            state.canSubmit,
+            state.isValidating,
+            state.isTouched
+          ]}
         >
-          {([canSubmit, isValidating]) => (
+          {([canSubmit, isValidating, isTouched]) => (
             <Button
               type='submit'
-              disabled={!canSubmit || isPending || isValidating}
+              disabled={!canSubmit || isPending || isValidating || !isTouched}
             >
               {isPending || isValidating ? (
                 'Processando...'

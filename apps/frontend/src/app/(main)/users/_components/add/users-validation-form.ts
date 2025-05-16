@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 // Schema Zod (adapte conforme sua necessidade)
-const userFormSchemaOnServer = z.object({
+const userFormSchema = z.object({
   name: z.string().min(3, 'Name must be at least 3 characters'),
   // a string de login deve ter obrigatoriamente um ponto dividindo 2 nomes
 
@@ -19,5 +19,5 @@ const userFormSchemaOnServer = z.object({
   //   .or(z.literal(''))
 });
 
-export type UserFormSchemaOnServer = z.infer<typeof userFormSchemaOnServer>;
-export default userFormSchemaOnServer;
+export type UserFormSchema = z.infer<typeof userFormSchema>;
+export default userFormSchema;

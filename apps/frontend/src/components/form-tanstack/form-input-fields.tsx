@@ -45,8 +45,11 @@ export function FormInputField({
         // A biblioteca garante que errors é um array.
         // O exemplo original usava !field.state.meta.isValid, o que também é válido.
         // Usar errors.length > 0 é muitas vezes mais direto.
-        <em className='mt-1 text-xs text-red-500'>
-          {field.state.meta.errors.join(', ')}
+        <em className='mt-1 block text-xs text-red-500'>
+          {/* Mapeia os erros para extrair apenas a propriedade 'message' e depois junta com vírgula */}
+          {field.state.meta.errors
+            .map((error: any) => error.message)
+            .join('; ')}
         </em>
       ) : null}
       {field.state.meta.isValidating ? (
