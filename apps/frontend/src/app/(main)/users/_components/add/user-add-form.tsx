@@ -1,5 +1,6 @@
 // src/components/user-form.tsx
 'use client';
+import type { ZodIssue } from 'zod'; // Import ZodIssue if it's the expected type
 
 import { mergeForm, useForm, useTransform } from '@tanstack/react-form';
 import { useStore } from '@tanstack/react-store';
@@ -40,8 +41,6 @@ function UserAddForm({
     initialServerState
   );
 
-  const [formKey, setFormKey] = useState(() => Date.now().toString());
-
   const form = useForm({
     defaultValues: defaultData,
     transform: useTransform(
@@ -49,7 +48,6 @@ function UserAddForm({
       [serverState]
     )
   });
-
   const handleResetForm = () => {
     form.reset(); // 1. Reseta o estado interno do TanStack Form para defaultValues
     // 2. Mudar a key força a recriação do <form> e de seus hooks internos,
@@ -94,7 +92,6 @@ function UserAddForm({
 
   return (
     <form
-      key={formKey}
       action={formAction}
       onSubmit={(e) => {
         // e.preventDefault(); // Não é necessário com action={formAction}
@@ -138,9 +135,34 @@ function UserAddForm({
             </div>
             <p className='mt-1 ml-7'>{serverState.message}</p>
             <ul className='mt-1 ml-5 list-inside list-disc'>
-              {serverState.errorsServer?.map((err, i) => (
-                <li key={i}>{err}</li>
-              ))}
+              {/* Safely access and map errorsServer */}
+              {serverState &&
+              typeof serverState === 'object' &&
+              'errorsServer' in serverState && // Check if property exists
+              Array.isArray((serverState as any).errorsServer) // Check if it's an array
+                ? ((serverState as any).errorsServer as string[]).map(
+                    (err: string, i: number) => <li key={i}>{err}</li>
+                  )
+                : null}
+            </ul>
+            <ul className='mt-1 ml-5 list-inside list-disc'>
+              {/* Safely access and map errorsFieldsServer if it's an array of ZodIssues */}
+              {serverState &&
+              typeof serverState === 'object' &&
+              'errorsFieldsServer' in serverState // Check if property exists
+                ? Object.entries(serverState.errorsFieldsServer || {}).map(
+                    (arr: [string, string[]]) => (
+                      <li key={arr[0]}>
+                        <strong>{arr[0]}:</strong>
+                        <ul className='mt-1 ml-7 list-inside list-disc'>
+                          {arr[1].map((err: string, i: number) => (
+                            <li key={i}>{err}</li>
+                          ))}
+                        </ul>
+                      </li>
+                    )
+                  )
+                : null}
             </ul>
           </div>
         )}
@@ -152,8 +174,6 @@ function UserAddForm({
           </div>
         ))}
       </div>
-
-      <div className='bg-red-100'>{JSON.stringify(form.state, null, 2)}</div>
 
       <div className='bg-blue-100'>
         {Object.entries(serverState).map(([key, value]) => (
