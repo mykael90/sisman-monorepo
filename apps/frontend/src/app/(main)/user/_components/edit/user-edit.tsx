@@ -1,17 +1,18 @@
 'use client';
 
-import type React from 'react';
-import { ReactNode, useState, FC } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import FormAddHeader from '../../../../../components/form-tanstack/form-add-header';
-import { UserForm } from './user-add-form';
+import UserForm from './user-edit-form';
 import { IUserAdd } from '../../user-types';
 import { IActionResultForm } from '../../../../../types/types-server-actions';
 import { UserPlus } from 'lucide-react';
+import { addUser } from '../../user-actions';
+import userFormSchema from './users-validation-form';
 
 // We are transforming this into a page, so it won't take props like onClose or onSubmit.
 // The page will manage its own state and submission logic.
-export default function UserAdd() {
+export default function UserEdit() {
   // const router = useRouter();
   // const [formData, setFormData] = useState<IUserAdd>({
   //   name: '',
@@ -27,7 +28,7 @@ export default function UserAdd() {
     email: ''
   };
 
-  const userAddLabel: IUserAdd = {
+  const fieldLabels: IUserAdd = {
     name: 'Nome',
     login: 'Login',
     email: 'E-mail'
@@ -76,10 +77,15 @@ export default function UserAdd() {
       {/* Form Section */}
       <UserForm
         key={formKey}
-        onWantToReset={triggerFormReset}
+        mode='add'
+        onCancel={triggerFormReset}
         defaultData={defaultData}
         initialServerState={initialServerState}
-        userAddLabel={userAddLabel}
+        fieldLabels={fieldLabels}
+        formActionProp={addUser}
+        formSchema={userFormSchema}
+        SubmitButtonIcon={UserPlus}
+        submitButtonText='Criar Usuário'
       ></UserForm>
     </div>
   );

@@ -1,4 +1,4 @@
-import UserAdd from '../_components/add/user-add';
+import UserEdit from '../_components/edit/user-edit';
 import { Suspense } from 'react';
 // import { Data } from './data';
 import { getSismanAccessToken } from '../../../../lib/auth/get-access-token';
@@ -35,7 +35,7 @@ export default async function Page() {
 
   return (
     <Suspense fallback={<p>Loading initial data...</p>}>
-      <UserAdd
+      <UserEdit
       // dataPromise={currentDataPromise} // Passa a promise criada acima
       // refreshAction={getRefreshedUsers} // Passa a referência da função Server Action
       // key={keyForDisplayData} // Passa a string gerada como chave
