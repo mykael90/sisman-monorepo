@@ -40,7 +40,8 @@ export function FormInputField({
         placeholder={placeholder}
       />
       {/* Exibindo informações de erro e validação como no exemplo fornecido */}
-      {field.state.meta.isTouched && field.state.meta.errors.length > 0 ? (
+      {/* {field.state.meta.isTouched && field.state.meta.errors.length > 0 ? ( */}
+      {!field.state.meta.isValid && field.state.meta.isBlurred ? (
         // Acessando field.state.meta.errors diretamente.
         // A biblioteca garante que errors é um array.
         // O exemplo original usava !field.state.meta.isValid, o que também é válido.

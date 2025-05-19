@@ -10,8 +10,8 @@ import { FormInputField } from '@/components/form-tanstack/form-input-fields';
 import { Button } from '@/components/ui/button';
 import { UserPlus } from 'lucide-react';
 import { IActionResultForm } from '../../../../../types/types-server-actions';
-import { addUser } from '../../users-actions';
-import { IUserAdd } from '../../users-types';
+import { addUser } from '../../user-actions';
+import { IUserAdd } from '../../user-types';
 import { FormSuccessDisplay } from '../../../../../components/form-tanstack/form-success-display';
 import { ErrorServerForm } from '../../../../../components/form-tanstack/error-server-form';
 import { UserAddAvatar } from './user-add-avatar';
@@ -29,11 +29,13 @@ function UserAddForm({
   initialServerState = {
     errorsServer: [],
     message: ''
-  }
+  },
+  userAddLabel
 }: {
   onWantToReset: () => void;
   defaultData: IUserAdd;
   initialServerState: IActionResultForm<IUserAdd>;
+  userAddLabel: IUserAdd;
 }) {
   // useActionState para interagir com a Server Action
   // O tipo de serverState será inferido de ICreateUserActionResult
@@ -50,8 +52,8 @@ function UserAddForm({
       [serverState]
     ),
     validators: {
-      // onChange: userFormSchema
-      onBlur: userFormSchema
+      onChange: userFormSchema
+      // onBlur: userFormSchema
     }
   });
   const handleResetForm = () => {
@@ -85,6 +87,7 @@ function UserAddForm({
         handleActions={{
           handleResetForm
         }}
+        dataAddLabel={userAddLabel}
       />
     );
   }
@@ -158,7 +161,7 @@ function UserAddForm({
           <>
             <FormInputField
               field={field}
-              label='Nome Completo'
+              label={userAddLabel.name}
               placeholder='Digite o nome completo'
             />
             {/* {JSON.stringify(field.getMeta(), null, 2)} */}
@@ -170,7 +173,7 @@ function UserAddForm({
         {(field) => (
           <FormInputField
             field={field}
-            label='Login'
+            label={userAddLabel.login}
             placeholder='Digite o login'
           />
         )}
@@ -180,7 +183,7 @@ function UserAddForm({
         {(field) => (
           <FormInputField
             field={field}
-            label='Email'
+            label={userAddLabel.email}
             type='email'
             placeholder='Digite o email'
           />

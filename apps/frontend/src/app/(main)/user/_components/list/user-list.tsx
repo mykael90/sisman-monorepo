@@ -17,7 +17,7 @@ import {
   SortingState
 } from '@tanstack/react-table';
 import { InputDebounceRef } from '@/components/ui/input'; // Importe o tipo da Ref
-import { IUserList } from '../../users-types';
+import { IUserList } from '../../user-types';
 
 export function UserListPage({
   dataPromise,

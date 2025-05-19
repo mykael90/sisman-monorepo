@@ -2,7 +2,7 @@ import { ColumnDef, createColumnHelper, Row } from '@tanstack/react-table';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Edit, Trash2 } from 'lucide-react';
-import { IUserList } from '../../users-types';
+import { IUserList } from '../../user-types';
 
 // 1. Definir as colunas com createColumnHelper
 const columnHelper = createColumnHelper<IUserList>();

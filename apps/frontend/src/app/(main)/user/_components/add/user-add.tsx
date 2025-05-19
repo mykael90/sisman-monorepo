@@ -1,11 +1,11 @@
 'use client';
 
 import type React from 'react';
-import { useState, type FormEvent } from 'react';
+import { ReactNode, useState, type FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { UserHeader } from './user-add-header';
 import { UserForm } from './user-add-form';
-import { IUserAdd } from '../../users-types';
+import { IUserAdd } from '../../user-types';
 import { IActionResultForm } from '../../../../../types/types-server-actions';
 
 // We are transforming this into a page, so it won't take props like onClose or onSubmit.
@@ -24,6 +24,12 @@ export default function UserAdd() {
     name: '',
     login: '',
     email: ''
+  };
+
+  const userAddLabel: IUserAdd = {
+    name: 'Nome',
+    login: 'Login',
+    email: 'E-mail'
   };
 
   const initialServerState: IActionResultForm<IUserAdd> = {
@@ -68,6 +74,7 @@ export default function UserAdd() {
         onWantToReset={triggerFormReset}
         defaultData={defaultData}
         initialServerState={initialServerState}
+        userAddLabel={userAddLabel}
       ></UserForm>
     </div>
   );

@@ -6,7 +6,7 @@ import { getSismanAccessToken } from '../../../lib/auth/get-access-token';
 import fetchApiSisman, { SismanApiError } from '../../../lib/fetch/api-sisman';
 import formDataToObject from '../../../lib/formdata-to-object';
 import { IActionResultForm } from '../../../types/types-server-actions';
-import { IUserAdd, IUserList } from './users-types';
+import { IUserAdd, IUserList } from './user-types';
 import userFormSchema from './_components/add/users-validation-form';
 
 const pagePath = '/users';
@@ -17,7 +17,7 @@ export async function getUsers(
   accessTokenSisman: string
 ): Promise<IUserList[]> {
   logger.info('(Server Action) getUsers: Called.');
-
+  logger.info('(Server Action) getUsers: Chamado.');
   // Faz uma requisição para a API do Sisman para obter a lista de usuários.
   // O parâmetro `accessTokenSisman` é usado para autenticar a requisição.
   // A opção `cache: 'no-store'` garante que os dados não sejam armazenados em cache,
@@ -30,7 +30,7 @@ export async function getUsers(
   const data = await response.json();
 
   logger.info(
-    `(Server Action) getUsers: Returning ${data.length} users from API.`
+    `(Server Action) getUsers: Retornando ${data.length} usuários da API.`
   ); // Registra a quantidade de usuários retornados pela API.
 
   return data as IUserList[];
@@ -47,10 +47,10 @@ export async function getRefreshedUsers() {
   // A função `revalidatePath` é fornecida pelo Next.js.
   revalidatePath(pagePath);
   logger.info(
-    `(Server Action) refreshUsersData: Revalidated path "${pagePath}" for fresh data.`
+    `(Server Action) refreshUsersData: Revalidado o caminho "${pagePath}" para novos dados.`
   );
   logger.info(
-    '(Server Action) refreshUsersData: Path revalidated, returning new data.'
+    '(Server Action) refreshUsersData: Caminho revalidado, retornando novos dados.'
   );
 
   // Opcionalmente, pode retornar os novos dados para o cliente
@@ -110,7 +110,7 @@ export async function addUser(
       });
 
       logger.warn(
-        '(Server Action) addUser: Form validation failed on server-side.',
+        '(Server Action) addUser: Validação do formulário falhou no lado do servidor.',
         fieldMeta
       );
       // Retorna um objeto indicando que o envio falhou e incluindo mensagens de erro, dados submetidos e informações sobre os campos com erro.
@@ -131,7 +131,7 @@ export async function addUser(
     // Se a validação for bem-sucedida, os dados validados são extraídos do resultado.
     const validatedData = validationResult.data;
     logger.info(
-      '(Server Action) addUser: Form data validated successfully on server-side.'
+      '(Server Action) addUser: Dados do formulário validados com sucesso no lado do servidor.'
     );
 
     // Obtém o token de acesso do Sisman. Apenas usuários autenticados com permissões adequadas podem adicionar usuários.
@@ -154,7 +154,7 @@ export async function addUser(
     // Extrai os dados do usuário criado da resposta da API.
     const createdUserData = await response.json();
     logger.info(
-      '(Server Action) addUser: User created successfully via API.',
+      '(Server Action) addUser: Usuário criado com sucesso via API.',
       createdUserData
 
       // Cria um objeto com o resultado da ação, indicando sucesso, incluindo os dados do usuário criado, os dados submetidos e uma mensagem de sucesso.
@@ -164,7 +164,7 @@ export async function addUser(
       isSubmitSuccessful: true,
       createdData: createdUserData,
       submittedData: formDataToObject(formData),
-      message: 'User created successfully!'
+      message: 'Usuário cadastrado com sucesso!'
     };
 
     return createUserActionResult;
