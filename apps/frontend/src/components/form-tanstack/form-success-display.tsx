@@ -12,6 +12,9 @@ interface FormSuccessDisplayProps<TData extends object> {
     [key: string]: (() => void) | undefined; // Permite outras ações dinâmicas
   };
   dataAddLabel: TData;
+  messageActions?: {
+    [key: string]: string;
+  };
 }
 
 //TData>;
@@ -19,7 +22,8 @@ interface FormSuccessDisplayProps<TData extends object> {
 export function FormSuccessDisplay<TData extends object>({
   serverState,
   handleActions,
-  dataAddLabel
+  dataAddLabel,
+  messageActions
 }: FormSuccessDisplayProps<TData>) {
   const { responseData, message } = serverState;
 
@@ -59,7 +63,7 @@ export function FormSuccessDisplay<TData extends object>({
 
       {handleActions.handleResetForm && ( //adicionar botão se a ação estiver definida
         <Button onClick={handleActions.handleResetForm} className='mt-4'>
-          Adicionar Outro
+          {messageActions?.handleResetForm || ''}
         </Button>
       )}
       {/* Você pode adicionar um botão para "Tentar Novamente" em caso de erro, se desejar */}

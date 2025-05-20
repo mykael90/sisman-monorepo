@@ -109,6 +109,9 @@ export default function UserForm({
           handleResetForm: handleResetOrCancel // Para "Adicionar Outro" ou "Continuar Editando"
         }}
         dataAddLabel={fieldLabels}
+        messageActions={{
+          handleResetForm: mode === 'add' ? 'Adicionar Outro' : 'Ir para lista'
+        }}
       />
     );
   }
