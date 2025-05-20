@@ -40,12 +40,10 @@ export default async function Page({
   // );
 
   return (
-    <Suspense fallback={<p>Loading initial data...</p>}>
-      <UserEdit
-        dataPromise={currentDataPromise} // Passa a promise criada acima
-        // refreshAction={getRefreshedUsers} // Passa a referência da função Server Action
-        // key={keyForDisplayData} // Passa a string gerada como chave
-      />
-    </Suspense>
+    <UserEdit
+      dataPromise={currentDataPromise} // Passa a promise criada acima
+      // refreshAction={getRefreshedUsers} // Passa a referência da função Server Action
+      // key={keyForDisplayData} // Passa a string gerada como chave
+    />
   );
 }

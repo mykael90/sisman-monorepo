@@ -34,12 +34,12 @@ export default async function Page() {
   );
 
   return (
-    <Suspense fallback={<p>Loading initial data...</p>}>
-      <UserAdd
-      // dataPromise={currentDataPromise} // Passa a promise criada acima
-      // refreshAction={getRefreshedUsers} // Passa a referência da função Server Action
-      // key={keyForDisplayData} // Passa a string gerada como chave
-      />
-    </Suspense>
+    // <Suspense fallback={<p>Loading initial data...</p>}>
+    <UserAdd
+    // dataPromise={currentDataPromise} // Passa a promise criada acima
+    // refreshAction={getRefreshedUsers} // Passa a referência da função Server Action
+    // key={keyForDisplayData} // Passa a string gerada como chave
+    />
+    // </Suspense>
   );
 }
