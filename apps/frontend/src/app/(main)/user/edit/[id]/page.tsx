@@ -1,20 +1,26 @@
-import UserEdit from '../_components/edit/user-edit';
+import UserEdit from '../../_components/edit/user-edit';
 import { Suspense } from 'react';
 // import { Data } from './data';
-import { getSismanAccessToken } from '../../../../lib/auth/get-access-token';
+import { getSismanAccessToken } from '../../../../../lib/auth/get-access-token';
 // import { getRefreshedUsers, getUsers } from './_actions';
-import Logger from '../../../../lib/logger';
+import Logger from '../../../../../lib/logger';
+import { showUser } from '../../user-actions';
 // import { addUser } from '../_actions';
 
 const logger = new Logger('user/add/page.tsx');
 
-export default async function Page() {
-  // const accessTokenSisman = await getSismanAccessToken();
+export default async function Page({
+  params
+}: {
+  params: Promise<{ id: number }>;
+}) {
+  const { id } = await params;
+  const accessTokenSisman = await getSismanAccessToken();
 
   // const accessTokenSisman =  123456
-  // Chame getUsers() UMA VEZ para esta renderização do Server Component.
-  // Esta promise será passada para o DisplayData.
-  // const currentDataPromise = getUsers(accessTokenSisman);
+  // Chame showUser() UMA VEZ para esta renderização do Server Component.
+  // Esta promise será passada para frente. Não espere a resolução da promessa.
+  const currentDataPromise = showUser(accessTokenSisman, id);
 
   // Gere uma chave única para esta renderização.
   // Pode ser um timestamp, um ID aleatório, ou algo que mude quando
@@ -36,9 +42,9 @@ export default async function Page() {
   return (
     <Suspense fallback={<p>Loading initial data...</p>}>
       <UserEdit
-      // dataPromise={currentDataPromise} // Passa a promise criada acima
-      // refreshAction={getRefreshedUsers} // Passa a referência da função Server Action
-      // key={keyForDisplayData} // Passa a string gerada como chave
+        dataPromise={currentDataPromise} // Passa a promise criada acima
+        // refreshAction={getRefreshedUsers} // Passa a referência da função Server Action
+        key={keyForDisplayData} // Passa a string gerada como chave
       />
     </Suspense>
   );

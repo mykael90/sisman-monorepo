@@ -6,199 +6,298 @@ import { getSismanAccessToken } from '../../../lib/auth/get-access-token';
 import fetchApiSisman, { SismanApiError } from '../../../lib/fetch/api-sisman';
 import formDataToObject from '../../../lib/formdata-to-object';
 import { IActionResultForm } from '../../../types/types-server-actions';
-import { IUserAdd, IUserList } from './user-types';
-import userFormSchema from './_components/add/users-validation-form';
+import { IUser, IUserAdd, IUserEdit, IUserList } from './user-types';
+import {
+  validateFormData,
+  userFormSchemaAdd,
+  userFormSchemaEdit
+} from './_components/form/user-form-validation';
 
-const pagePath = '/users';
+const PAGE_PATH = '/users'; // Usar maiúsculas para constantes globais ao módulo
+const API_BASE_PATH = '/users'; // Para chamadas de API relacionadas a usuários
 
-const logger = new Logger(`${pagePath}/_actions`);
+const logger = new Logger(`${PAGE_PATH}/user-actions`);
+
+// --- Funções de Leitura de Dados ---
 
 export async function getUsers(
   accessTokenSisman: string
 ): Promise<IUserList[]> {
-  logger.info('(Server Action) getUsers: Called.');
-  logger.info('(Server Action) getUsers: Chamado.');
-  // Faz uma requisição para a API do Sisman para obter a lista de usuários.
-  // O parâmetro `accessTokenSisman` é usado para autenticar a requisição.
-  // A opção `cache: 'no-store'` garante que os dados não sejam armazenados em cache,
-  // assegurando que a resposta seja sempre a mais atualizada.
-  // A função `fetchApiSisman` é um wrapper para a função `fetch` do Next.js,
-  // que já configura os cabeçalhos e a URL base da API.
-  const response = await fetchApiSisman('/users', accessTokenSisman, {
-    cache: 'no-store'
-  });
-  const data = await response.json();
-
-  logger.info(
-    `(Server Action) getUsers: Retornando ${data.length} usuários da API.`
-  ); // Registra a quantidade de usuários retornados pela API.
-
-  return data as IUserList[];
-}
-
-export async function getRefreshedUsers() {
-  logger.info(
-    '(Server Action) refreshUsersData: Called by client, fetching new data...'
-  );
-
-  // Revalida o caminho da página de usuários no cache do Next.js.
-  // Isso garante que, na próxima vez que a página for acessada,
-  // os dados sejam buscados novamente do servidor, refletindo quaisquer mudanças.
-  // A função `revalidatePath` é fornecida pelo Next.js.
-  revalidatePath(pagePath);
-  logger.info(
-    `(Server Action) refreshUsersData: Revalidado o caminho "${pagePath}" para novos dados.`
-  );
-  logger.info(
-    '(Server Action) refreshUsersData: Caminho revalidado, retornando novos dados.'
-  );
-
-  // Opcionalmente, pode retornar os novos dados para o cliente
-  // mas a revalidação + router.refresh() cuidará da UI.
-  // Veja que já utiliza a funcão getUsers para montar um novo compomente no server com o revalidatePath,
-  // logo esse retorno é apenas para mandar para o cliente, mas lá pode não ter utilidade
-  // return response;
-}
-
-export async function addUser(
-  // Mesmo que não o usemos ativamente, ele precisa estar na assinatura.
-  // O tipo do estado anterior deve corresponder ao tipo de retorno da action.
-  prev: unknown, // ou apenas CreateUserActionResult se initialFormState for compatível
-  formData: FormData
-) {
-  logger.info('(Server Action) addUser: Called.');
-  logger.debug(
-    '(Server Action) addUser: Received form data:',
-    formDataToObject(formData)
-  );
-
-  // Inicia um bloco `try...catch` para lidar com possíveis erros durante o processo de adição de usuário.
+  logger.info(`(Server Action) getUsers: Buscando lista de usuários.`);
   try {
-    // Converte os dados do `FormData` para um objeto JavaScript simples.
-    const rawData = formDataToObject<IUserAdd>(formData);
+    const response = await fetchApiSisman(API_BASE_PATH, accessTokenSisman, {
+      cache: 'force-cache' // Cache agressivo para dados que mudam pouco
+    });
+    const data = await response.json();
+    logger.info(
+      `(Server Action) getUsers: ${data.length} usuários retornados.`
+    );
+    return data;
+  } catch (error) {
+    logger.error(`(Server Action) getUsers: Erro ao buscar usuários.`, error);
+    throw error; // Re-lança para ser tratado pelo Next.js ou error boundary
+  }
+}
 
-    // Valida os dados brutos usando o esquema `userFormSchemaOnServer` definido em `users-validation-form.ts`.
-    // O método `safeParse` retorna um objeto com uma propriedade `success` indicando se a validação foi bem-sucedida.
-    const validationResult = userFormSchema.safeParse(rawData);
+export async function showUser(
+  accessTokenSisman: string,
+  id: number
+): Promise<IUserEdit> {
+  logger.info(`(Server Action) showUser: Buscando usuário com ID ${id}.`);
+  try {
+    const response = await fetchApiSisman(
+      `${API_BASE_PATH}/${id}`,
+      accessTokenSisman,
+      {
+        cache: 'no-store' // Garante dados sempre atualizados para um usuário específico
+      }
+    );
+    const data = await response.json();
+    logger.info(`(Server Action) showUser: Usuário com ID ${id} retornado.`);
+    return data;
+  } catch (error) {
+    logger.error(
+      `(Server Action) showUser: Erro ao buscar usuário com ID ${id}.`,
+      error
+    );
+    throw error;
+  }
+}
 
-    // Se a validação falhar, entra neste bloco.
-    if (!validationResult.success) {
-      // Cria um objeto para armazenar os erros de validação por campo.
-      const fieldMeta: Partial<
-        Record<keyof IUserAdd, { errorsFieldsServer: string[] }>
-      > = {};
+export async function getRefreshedUsers(): Promise<void> {
+  // O objetivo principal é revalidar, não necessariamente retornar dados.
+  // Se fosse para retornar, o tipo seria Promise<IUserList[]> e chamaria getUsers.
+  logger.info(
+    `(Server Action) getRefreshedUsers: Iniciando revalidação de dados para ${PAGE_PATH}.`
+  );
+  try {
+    revalidatePath(PAGE_PATH);
+    logger.info(
+      `(Server Action) getRefreshedUsers: Caminho "${PAGE_PATH}" revalidado com sucesso.`
+    );
+  } catch (error) {
+    logger.error(
+      `(Server Action) getRefreshedUsers: Erro ao revalidar caminho ${PAGE_PATH}.`,
+      error
+    );
+    // Decide-se não re-lançar aqui, pois a falha na revalidação pode não ser crítica para o client,
+    // mas é importante logar. Se for crítico, re-lançar.
+  }
+}
 
-      // Itera sobre os erros de validação e os organiza por campo.
-      validationResult.error.issues.forEach((err) => {
-        const pathKey = err.path.join('.') as keyof IUserAdd;
-        // Garante que fieldMeta[pathKey] exista e tenha uma propriedade 'errors' como array.
-        if (!fieldMeta[pathKey]) {
-          fieldMeta[pathKey] = { errorsFieldsServer: [] };
-        }
-        // Agora é seguro adicionar a mensagem de erro, pois fieldMeta[pathKey].errors existe.
-        fieldMeta[pathKey]!.errorsFieldsServer.push(err.message);
-      });
+/**
+ * Lida com a lógica comum de submissão de formulário de usuário (adição/atualização).
+ */
+async function handleApiAction<
+  TValidatedData, // Tipo dos dados já validados para enviar à API
+  TApiResponseData, // Tipo da resposta da API
+  TSubmittedData = TValidatedData // Tipo dos dados originais do formulário (para submittedData em caso de erro)
+>(
+  validatedData: TValidatedData, // Recebe os dados já validados
+  originalRawData: TSubmittedData, // Recebe os dados brutos originais para retorno em caso de erro
+  apiConfig: {
+    endpoint: string;
+    method: 'POST' | 'PUT' | 'DELETE' | 'PATCH'; // Métodos comuns de escrita
+    accessToken: string;
+  },
+  revalidationConfig: {
+    mainPath: string;
+    detailPath?: string; // Opcional, para revalidar uma página de detalhe
+  },
+  successMessage: string
+): Promise<IActionResultForm<TSubmittedData, TApiResponseData>> {
+  logger.info(
+    `(Server Action) handleApiAction: Executando ação API para ${apiConfig.method} ${apiConfig.endpoint}.`
+  );
 
-      const errorsFieldsServer: Partial<Record<keyof IUserAdd, string[]>> = {};
+  try {
+    const response = await fetchApiSisman(
+      apiConfig.endpoint,
+      apiConfig.accessToken,
+      {
+        method: apiConfig.method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(validatedData)
+      }
+    );
 
-      validationResult.error.issues.forEach((err) => {
-        const pathKey = err.path.join('.') as keyof IUserAdd;
-        if (!errorsFieldsServer[pathKey]) {
-          errorsFieldsServer[pathKey] = [];
-        }
-        errorsFieldsServer[pathKey]!.push(err.message);
-      });
+    const responseDataFromApi = (await response.json()) as TApiResponseData;
+    logger.info(
+      `(Server Action) handleApiAction: Operação API bem-sucedida.`,
+      responseDataFromApi
+    );
 
-      logger.warn(
-        '(Server Action) addUser: Validação do formulário falhou no lado do servidor.',
-        fieldMeta
-      );
-      // Retorna um objeto indicando que o envio falhou e incluindo mensagens de erro, dados submetidos e informações sobre os campos com erro.
+    // Revalidação do Cache
+    revalidatePath(revalidationConfig.mainPath);
+    if (revalidationConfig.detailPath) {
+      revalidatePath(revalidationConfig.detailPath);
+    }
+    logger.info(
+      `(Server Action) handleApiAction: Cache revalidado para ${
+        revalidationConfig.mainPath
+      } ${
+        revalidationConfig.detailPath
+          ? `e ${revalidationConfig.detailPath}`
+          : ''
+      }.`
+    );
 
+    return {
+      isSubmitSuccessful: true,
+      responseData: responseDataFromApi,
+      submittedData: originalRawData, // Retorna os dados brutos originais
+      message: successMessage
+    };
+  } catch (error) {
+    logger.error(
+      `(Server Action) handleApiAction: Erro durante a operação API.`,
+      error
+    );
+    if (error instanceof SismanApiError) {
+      // Tratamento de erro da API (ex: 409 Conflito)
+      if (error.statusCode === 409) {
+        return {
+          isSubmitSuccessful: false,
+          errorsServer: [
+            error.apiMessage || 'Conflito com registro existente.'
+          ],
+          submittedData: originalRawData,
+          message: 'Conflito com registro existente.'
+        };
+      }
+      // Outros erros da API
       return {
         isSubmitSuccessful: false,
-        // errorsServer: [
-        //   'Favor, corrigir os campos com indicações de erro marcadas em vermelho.',
-        //   'Em seguida tente novamente.'
-        // ],
-        errorsFieldsServer: errorsFieldsServer,
-        message: 'Falha de validação do formulário: server-side',
-        // fieldMeta: fieldMeta,
-        submittedData: formDataToObject(formData) // Retorna os dados submetidos para correção
+        errorsServer: [
+          error.apiMessage ||
+            'Ocorreu um erro ao comunicar com o servidor. Tente novamente.'
+        ],
+        submittedData: originalRawData,
+        message: 'Erro na comunicação com a API.'
       };
     }
-
-    // Se a validação for bem-sucedida, os dados validados são extraídos do resultado.
-    const validatedData = validationResult.data;
-    logger.info(
-      '(Server Action) addUser: Dados do formulário validados com sucesso no lado do servidor.'
-    );
-
-    // Obtém o token de acesso do Sisman. Apenas usuários autenticados com permissões adequadas podem adicionar usuários.
-    const accessTokenSisman = await getSismanAccessToken();
-
-    // Faz uma requisição para a API do Sisman para criar um novo usuário.
-    // Utiliza o método POST e envia os dados validados no corpo da requisição como JSON.
-    // O token de acesso é incluído no cabeçalho para autenticação.
-    // A função `fetchApiSisman` é usada para facilitar a comunicação com a API.
-    // A resposta da API é esperada conter os dados do usuário criado.
-
-    const response = await fetchApiSisman('/users', accessTokenSisman, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(validatedData)
-    });
-
-    // Extrai os dados do usuário criado da resposta da API.
-    const createdUserData = await response.json();
-    logger.info(
-      '(Server Action) addUser: Usuário criado com sucesso via API.',
-      createdUserData
-
-      // Cria um objeto com o resultado da ação, indicando sucesso, incluindo os dados do usuário criado, os dados submetidos e uma mensagem de sucesso.
-    );
-
-    const createUserActionResult: IActionResultForm<IUserAdd> = {
-      isSubmitSuccessful: true,
-      createdData: createdUserData,
-      submittedData: formDataToObject(formData),
-      message: 'Usuário cadastrado com sucesso!'
-    };
-
-    return createUserActionResult;
-
-    // Inicia o bloco `catch` para capturar erros que ocorram durante a execução do bloco `try`.
-  } catch (error) {
-    // Verifica se o erro é uma instância de `SismanApiError`, indicando um erro específico da API do Sisman.
-    if (error instanceof SismanApiError) {
-      // Trata erros conhecidos da API para fornecer uma melhor experiência ao usuário.
-      // Por exemplo, um erro de conflito (409) pode indicar uma tentativa de criar um usuário com um login já existente.
-      logger.error(
-        `Erro conhecido: Status: ${error.statusCode}, Type: ${error.errorType}, API Msg: ${error.apiMessage}`
-      );
-      // Se o erro for um conflito (409), retorna um resultado indicando falha, incluindo a mensagem de erro da API e os dados submetidos.
-      if (error.statusCode === 409) {
-        const createUserActionResult: IActionResultForm<IUserAdd> = {
-          isSubmitSuccessful: false,
-          errorsServer: [error.apiMessage],
-          submittedData: formDataToObject(formData),
-          message: 'Conflito com registro existente'
-          // Retorna para a tela para que o usuário possa corrigir as informações
-        };
-
-        //retorna para a tela para que o usuário possa corrigir as informações
-        return createUserActionResult;
-      }
-
-      //vai para a captura de erro do nextjs mais próxima
-      throw error;
-      // Lança o erro para ser capturado pelo manipulador de erros global do Next.js.
-    }
-
-    // Some other error occurred while validating your form
+    // Para erros inesperados não capturados pelo SismanApiError
     throw error;
-    // Se o erro não for um `SismanApiError`, lança o erro para ser tratado por um manipulador de erros mais genérico.
+  }
+}
+
+// --- Ações de Formulário Exportadas ---
+
+export async function addUser(
+  prevState: unknown,
+  formData: FormData
+): Promise<IActionResultForm<IUserAdd, IUser>> {
+  const rawData = formDataToObject<IUserAdd>(formData);
+  logger.info(
+    `(Server Action) addUser: Tentativa de adicionar usuário.`,
+    rawData
+  );
+
+  // 1. Validação específica para UserAdd
+  const validationProcessResult = validateFormData(rawData, userFormSchemaAdd); // userFormSchema é específico para usuários
+
+  if (!validationProcessResult.success) {
+    logger.warn(
+      `(Server Action) addUser: Falha na validação do formulário.`,
+      validationProcessResult.errorResult.errorsFieldsServer
+    );
+    return validationProcessResult.errorResult; // Retorna o erro de validação formatado
+  }
+
+  // Se a validação for bem-sucedida, validationProcessResult.data contém os dados validados
+  const validatedUserData = validationProcessResult.data;
+  logger.info(
+    `(Server Action) addUser: Dados do usuário validados com sucesso.`
+  );
+
+  // 2. Chamar a ação genérica da API
+  try {
+    const accessToken = await getSismanAccessToken();
+    return await handleApiAction<IUserAdd, IUser, IUserAdd>( // TValidatedData, TApiResponseData, TSubmittedData
+      validatedUserData, // Dados validados para enviar à API
+      rawData, // Dados brutos originais para o campo submittedData
+      {
+        endpoint: API_BASE_PATH, // Endpoint para criar usuários
+        method: 'POST',
+        accessToken: accessToken
+      },
+      {
+        mainPath: PAGE_PATH // Path principal para revalidar
+        // detailPath não se aplica diretamente na criação, a menos que você redirecione para a página de detalhes
+      },
+      'Usuário cadastrado com sucesso!'
+    );
+  } catch (error) {
+    // Erros inesperados não tratados por handleApiAction (ex: falha em getSismanAccessToken)
+    logger.error(`(Server Action) addUser: Erro inesperado.`, error);
+    return {
+      isSubmitSuccessful: false,
+      errorsServer: [
+        'Ocorreu um erro inesperado ao processar sua solicitação.'
+      ],
+      submittedData: rawData,
+      message: 'Erro inesperado.'
+    };
+  }
+}
+
+export async function updateUser(
+  prevState: unknown,
+  formData: FormData
+): Promise<IActionResultForm<IUserEdit, IUser>> {
+  // Supondo que a API retorna IUser
+  const rawData = formDataToObject<IUserEdit>(formData);
+  logger.info(
+    `(Server Action) updateUser: Tentativa de atualizar usuário ${rawData.id}.`,
+    rawData
+  );
+
+  // 1. Validação específica para UserEdit
+  // Se o schema de edição for diferente, use-o aqui. Se for o mesmo:
+  const validationProcessResult = validateFormData(rawData, userFormSchemaEdit);
+
+  if (!validationProcessResult.success) {
+    logger.warn(
+      `(Server Action) updateUser: Falha na validação do formulário para o usuário ${rawData.id}.`,
+      validationProcessResult.errorResult.errorsFieldsServer
+    );
+    return validationProcessResult.errorResult;
+  }
+
+  const validatedUserData = validationProcessResult.data;
+  logger.info(
+    `(Server Action) updateUser: Dados do usuário ${validatedUserData.id} validados com sucesso.`
+  );
+
+  // 2. Chamar a ação genérica da API
+  try {
+    const accessToken = await getSismanAccessToken();
+    return await handleApiAction<IUserEdit, IUser, IUserEdit>(
+      validatedUserData,
+      rawData,
+      {
+        endpoint: `${API_BASE_PATH}/${validatedUserData.id}`, // Endpoint para atualizar usuário específico
+        method: 'PUT',
+        accessToken: accessToken
+      },
+      {
+        mainPath: PAGE_PATH,
+        detailPath: `${PAGE_PATH}/${validatedUserData.id}` // Revalida a página de detalhes do usuário
+      },
+      'Usuário atualizado com sucesso!'
+    );
+  } catch (error) {
+    logger.error(
+      `(Server Action) updateUser: Erro inesperado para o usuário ${rawData.id}.`,
+      error
+    );
+    return {
+      isSubmitSuccessful: false,
+      errorsServer: [
+        'Ocorreu um erro inesperado ao processar sua solicitação.'
+      ],
+      submittedData: rawData,
+      message: 'Erro inesperado.'
+    };
   }
 }

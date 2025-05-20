@@ -11,7 +11,7 @@ export default async function Page() {
 
   // const accessTokenSisman =  123456
   // Chame getUsers() UMA VEZ para esta renderização do Server Component.
-  // Esta promise será passada para o DisplayData.
+  // Esta promise será passada para o DisplayData. Não espere a resolução da promessa.
   const currentDataPromise = getUsers(accessTokenSisman);
 
   // Gere uma chave única para esta renderização.

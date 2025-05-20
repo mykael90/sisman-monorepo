@@ -69,8 +69,7 @@ export default function UserForm({
   formActionProp,
   initialServerState = {
     isSubmitSuccessful: false,
-    message: '',
-    createdData: null
+    message: ''
   }, // Estado inicial padrão
   fieldLabels,
   formSchema,
@@ -102,7 +101,7 @@ export default function UserForm({
   // useStore para observar erros do servidor no estado do formulário
   useStore(form.store, (formState) => formState.errorsServer); // Ou formState.errors para erros de campo
 
-  if (serverState?.isSubmitSuccessful && serverState.createdData) {
+  if (serverState?.isSubmitSuccessful && serverState.responseData) {
     return (
       <FormSuccessDisplay
         serverState={serverState as IActionResultForm<object>} // Cast para o tipo esperado por FormSuccessDisplay
@@ -166,6 +165,22 @@ export default function UserForm({
           </div>
         )}
       </form.Field> */}
+
+      <div className='bg-red-100'>
+        {Object.entries(form.state).map(([key, value]) => (
+          <div key={key}>
+            <strong>{key}:</strong> {JSON.stringify(value, null, 2)}
+          </div>
+        ))}
+      </div>
+
+      <div className='bg-blue-100'>
+        {Object.entries(serverState).map(([key, value]) => (
+          <div key={key}>
+            <strong>{key}:</strong> {JSON.stringify(value, null, 2)}
+          </div>
+        ))}
+      </div>
 
       {/* Campo ID oculto para o modo de edição */}
       {mode === 'edit' && defaultData.id && (
@@ -253,12 +268,12 @@ export default function UserForm({
           {([canSubmit, isTouched, isValidating]) => (
             <Button
               type='submit'
-              disabled={
-                !canSubmit ||
-                isPending ||
-                isValidating ||
-                (mode === 'add' && !isTouched)
-              }
+              // disabled={
+              //   !canSubmit ||
+              //   isPending ||
+              //   isValidating ||
+              //   (mode === 'add' && !isTouched)
+              // }
               // Em modo de edição, pode desabilitar se nada foi tocado (isTouched)
             >
               {isPending || isValidating

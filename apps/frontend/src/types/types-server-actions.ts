@@ -1,8 +1,11 @@
-export interface IActionResultForm<TData> {
+export interface IActionResultForm<
+  TSubmittedData,
+  TApiResponse = Partial<TSubmittedData> // Permite resposta parcial
+> {
   isSubmitSuccessful?: boolean;
   errorsServer?: string[];
-  errorsFieldsServer?: Partial<Record<keyof TData, string[]>>; //
-  createdData?: any;
-  submittedData?: FormData | Partial<TData>;
+  errorsFieldsServer?: Partial<Record<keyof TSubmittedData, string[]>>;
+  responseData?: Partial<TApiResponse>;
+  submittedData?: FormData | Partial<TSubmittedData>;
   message?: string;
 }
