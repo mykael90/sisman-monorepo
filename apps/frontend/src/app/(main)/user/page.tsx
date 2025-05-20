@@ -3,6 +3,7 @@ import { Suspense } from 'react';
 import { getSismanAccessToken } from '../../../lib/auth/get-access-token';
 import { getRefreshedUsers, getUsers } from './user-actions';
 import Logger from '../../../lib/logger';
+import { UserListPageSkeleton } from './_components/list/user-list-skeleton';
 
 const logger = new Logger('users-management');
 
@@ -32,7 +33,7 @@ export default async function Page() {
   );
 
   return (
-    <Suspense fallback={<p>Loading initial data...</p>}>
+    <Suspense fallback={<UserListPageSkeleton />}>
       <UserListPage
         dataPromise={currentDataPromise} // Passa a promise criada acima
         refreshAction={getRefreshedUsers} // Passa a referência da função Server Action
