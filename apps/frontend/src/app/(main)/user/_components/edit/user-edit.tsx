@@ -41,14 +41,11 @@ export default function UserEdit({
   };
 
   // Para controlar a chave do formulário e forçar o reset do useActionState
-  const [formKey, setFormKey] = useState(() => Date.now().toString());
   const router = useRouter();
 
   const redirect = () => {
     router.push('/user');
   };
-
-  const triggerFormReset = () => setFormKey(Date.now().toString());
   // const handleSubmit = async (e: FormEvent) => {
   //   e.preventDefault();
   //   // TODO: Implement the actual user creation logic here
@@ -82,7 +79,6 @@ export default function UserEdit({
 
       {/* Form Section */}
       <UserForm
-        key={formKey}
         mode='edit'
         onCancel={redirect}
         defaultData={defaultData}

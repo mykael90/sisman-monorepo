@@ -21,7 +21,7 @@ export function FormSuccessDisplay<TData extends object>({
   handleActions,
   dataAddLabel
 }: FormSuccessDisplayProps<TData>) {
-  const { createdData, message } = serverState;
+  const { responseData, message } = serverState;
 
   return (
     <div className='rounded-lg bg-white p-6 text-center shadow-md'>
@@ -29,15 +29,15 @@ export function FormSuccessDisplay<TData extends object>({
         {message || 'Operação realizada com sucesso!'}
       </h2>
 
-      {createdData &&
-        typeof createdData === 'object' &&
+      {responseData &&
+        typeof responseData === 'object' &&
         dataAddLabel &&
         // TypeScript precisa de ajuda para saber que `key` é do tipo `keyof TData`
         // Object.keys retorna string[], então fazemos um type assertion.
-        (Object.keys(createdData) as Array<keyof TData>).map((key) => {
+        (Object.keys(responseData) as Array<keyof TData>).map((key) => {
           // `createdData` já foi verificado como objeto não nulo
           // `dataAddLabel` já foi verificado como objeto não nulo
-          const value = createdData[key]; // Tipo: TData[keyof TData]
+          const value = responseData[key]; // Tipo: TData[keyof TData]
           const label = dataAddLabel[key]; // Tipo: ReactNode | undefined
 
           // Renderiza apenas se o label existir para esta chave e o valor não for undefined
