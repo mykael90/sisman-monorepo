@@ -9,18 +9,32 @@ datasource db {
 }
 
 model User {
-  id        Int        @id @default(autoincrement())
-  name      String     @db.VarChar(63)
-  login     String     @unique @db.VarChar(63)
-  email     String     @unique @db.VarChar(127)
-  image     String     @default("") @db.VarChar(255)
-  isActive  Boolean    @default(true) @map("is_active")
-  createdAt DateTime   @default(now()) @map("created_at") @db.Timestamp(0)
-  updatedAt DateTime   @updatedAt @map("updated_at") @db.Timestamp(0)
-  logLogin  LogLogin[]
-  userRoles UserRole[]
+  id         Int         @id @default(autoincrement())
+  name       String      @db.VarChar(63)
+  login      String      @unique @db.VarChar(63)
+  email      String      @unique @db.VarChar(127)
+  image      String      @default("") @db.VarChar(255)
+  isActive   Boolean     @default(true)
+  createdAt  DateTime    @default(now()) @db.Timestamp(0)
+  updatedAt  DateTime    @updatedAt @db.Timestamp(0)
+  logLogin   LogLogin[]
+  userRoles  UserRole[]
+  magicLinks MagicLink[]
 
   @@map("users")
+}
+
+model MagicLink {
+  id        String    @id @default(cuid())
+  code      String    @unique // Para garantir que o código seja único
+  userId    Int
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime  @db.Timestamp(0)
+  usedAt    DateTime? // Para marcar se o código já foi usado
+  createdAt DateTime  @default(now()) @db.Timestamp(0)
+
+  @@index([userId, code]) // Índice para busca rápida
+  @@map("magicLinks")
 }
 
 model Material {
@@ -29,8 +43,8 @@ model Material {
   specification String?  @db.VarChar(1023)
   unit          String   @db.VarChar(31)
   isActive      Boolean  @default(true)
-  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamp(0)
-  updatedAt     DateTime @updatedAt @map("updated_at") @db.Timestamp(0)
+  createdAt     DateTime @default(now()) @db.Timestamp(0)
+  updatedAt     DateTime @updatedAt @db.Timestamp(0)
 
   @@map("materials")
 }
@@ -39,49 +53,49 @@ model UserRoletype {
   id          Int        @id
   role        String     @db.VarChar(255)
   description String     @db.Text
-  createdAt   DateTime   @default(now()) @map("created_at") @db.Timestamp(0)
-  updatedAt   DateTime   @updatedAt @map("updated_at") @db.Timestamp(0)
+  createdAt   DateTime   @default(now()) @db.Timestamp(0)
+  updatedAt   DateTime   @updatedAt @db.Timestamp(0)
   userRoles   UserRole[]
 
-  @@map("users_roletypes")
+  @@map("usersRoletypes")
 }
 
 model UserRole {
-  userId         Int          @map("user_id")
-  userRoletypeId Int          @map("user_roletype_id")
-  user           User         @relation(fields: [userId], references: [id], onUpdate: Restrict, map: "users_roles_ibfk_1")
-  userRoletype   UserRoletype @relation(fields: [userRoletypeId], references: [id], onUpdate: Restrict, map: "users_roles_ibfk_2")
+  userId         Int
+  userRoletypeId Int
+  user           User         @relation(fields: [userId], references: [id], onUpdate: Cascade, map: "users_roles_ibfk_1")
+  userRoletype   UserRoletype @relation(fields: [userRoletypeId], references: [id], onUpdate: Cascade, map: "users_roles_ibfk_2")
 
   @@id([userId, userRoletypeId])
-  @@index([userRoletypeId], map: "role_id")
-  @@map("users_roles")
+  @@index([userRoletypeId])
+  @@map("usersRoles")
 }
 
 model LogError {
   id          String   @id @default(uuid())
   timestamp   DateTime @default(now()) @db.Timestamp(0)
-  statusCode  Int?     @map("status_code")
+  statusCode  Int?
   path        String?
   method      String?
   message     String   @db.VarChar(1023)
-  stackTrace  String?  @map("stack_trace") @db.Text
-  ipAddress   String?  @map("ip_address")
-  userId      Int?     @map("user_id")
-  requestBody String?  @map("request_body") @db.Text
+  stackTrace  String?  @db.Text
+  ipAddress   String?
+  userId      Int?
+  requestBody String?  @db.Text
 
-  @@map("log_errors")
+  @@map("logErrors")
 }
 
 model LogLogin {
   id         String   @id @default(uuid())
-  userId     Int      @map("user_id")
+  userId     Int
   timestamp  DateTime @default(now()) @db.Timestamp(0)
-  ipAddress  String?  @map("ip_address")
-  userAgent  String?  @map("user_agent") @db.Text
+  ipAddress  String?
+  userAgent  String?  @db.Text
   successful Boolean
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([timestamp])
-  @@map("log_logins")
+  @@map("logLogins")
 }

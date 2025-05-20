@@ -19,6 +19,11 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  */
 export type User = $Result.DefaultSelection<Prisma.$UserPayload>
 /**
+ * Model MagicLink
+ * 
+ */
+export type MagicLink = $Result.DefaultSelection<Prisma.$MagicLinkPayload>
+/**
  * Model Material
  * 
  */
@@ -178,6 +183,16 @@ export class PrismaClient<
     * ```
     */
   get user(): Prisma.UserDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.magicLink`: Exposes CRUD operations for the **MagicLink** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more MagicLinks
+    * const magicLinks = await prisma.magicLink.findMany()
+    * ```
+    */
+  get magicLink(): Prisma.MagicLinkDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.material`: Exposes CRUD operations for the **Material** model.
@@ -669,6 +684,7 @@ export namespace Prisma {
 
   export const ModelName: {
     User: 'User',
+    MagicLink: 'MagicLink',
     Material: 'Material',
     UserRoletype: 'UserRoletype',
     UserRole: 'UserRole',
@@ -692,7 +708,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "material" | "userRoletype" | "userRole" | "logError" | "logLogin"
+      modelProps: "user" | "magicLink" | "material" | "userRoletype" | "userRole" | "logError" | "logLogin"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -759,6 +775,72 @@ export namespace Prisma {
           count: {
             args: Prisma.UserCountArgs<ExtArgs>
             result: $Utils.Optional<UserCountAggregateOutputType> | number
+          }
+        }
+      }
+      MagicLink: {
+        payload: Prisma.$MagicLinkPayload<ExtArgs>
+        fields: Prisma.MagicLinkFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.MagicLinkFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MagicLinkPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.MagicLinkFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MagicLinkPayload>
+          }
+          findFirst: {
+            args: Prisma.MagicLinkFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MagicLinkPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.MagicLinkFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MagicLinkPayload>
+          }
+          findMany: {
+            args: Prisma.MagicLinkFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MagicLinkPayload>[]
+          }
+          create: {
+            args: Prisma.MagicLinkCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MagicLinkPayload>
+          }
+          createMany: {
+            args: Prisma.MagicLinkCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.MagicLinkDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MagicLinkPayload>
+          }
+          update: {
+            args: Prisma.MagicLinkUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MagicLinkPayload>
+          }
+          deleteMany: {
+            args: Prisma.MagicLinkDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.MagicLinkUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.MagicLinkUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MagicLinkPayload>
+          }
+          aggregate: {
+            args: Prisma.MagicLinkAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMagicLink>
+          }
+          groupBy: {
+            args: Prisma.MagicLinkGroupByArgs<ExtArgs>
+            result: $Utils.Optional<MagicLinkGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.MagicLinkCountArgs<ExtArgs>
+            result: $Utils.Optional<MagicLinkCountAggregateOutputType> | number
           }
         }
       }
@@ -1177,6 +1259,7 @@ export namespace Prisma {
   }
   export type GlobalOmitConfig = {
     user?: UserOmit
+    magicLink?: MagicLinkOmit
     material?: MaterialOmit
     userRoletype?: UserRoletypeOmit
     userRole?: UserRoleOmit
@@ -1278,11 +1361,13 @@ export namespace Prisma {
   export type UserCountOutputType = {
     logLogin: number
     userRoles: number
+    magicLinks: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     logLogin?: boolean | UserCountOutputTypeCountLogLoginArgs
     userRoles?: boolean | UserCountOutputTypeCountUserRolesArgs
+    magicLinks?: boolean | UserCountOutputTypeCountMagicLinksArgs
   }
 
   // Custom InputTypes
@@ -1308,6 +1393,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountUserRolesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: UserRoleWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountMagicLinksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MagicLinkWhereInput
   }
 
 
@@ -1570,6 +1662,7 @@ export namespace Prisma {
     updatedAt?: boolean
     logLogin?: boolean | User$logLoginArgs<ExtArgs>
     userRoles?: boolean | User$userRolesArgs<ExtArgs>
+    magicLinks?: boolean | User$magicLinksArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -1590,6 +1683,7 @@ export namespace Prisma {
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     logLogin?: boolean | User$logLoginArgs<ExtArgs>
     userRoles?: boolean | User$userRolesArgs<ExtArgs>
+    magicLinks?: boolean | User$magicLinksArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -1598,6 +1692,7 @@ export namespace Prisma {
     objects: {
       logLogin: Prisma.$LogLoginPayload<ExtArgs>[]
       userRoles: Prisma.$UserRolePayload<ExtArgs>[]
+      magicLinks: Prisma.$MagicLinkPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -1950,6 +2045,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     logLogin<T extends User$logLoginArgs<ExtArgs> = {}>(args?: Subset<T, User$logLoginArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LogLoginPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     userRoles<T extends User$userRolesArgs<ExtArgs> = {}>(args?: Subset<T, User$userRolesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserRolePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    magicLinks<T extends User$magicLinksArgs<ExtArgs> = {}>(args?: Subset<T, User$magicLinksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MagicLinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2378,6 +2474,30 @@ export namespace Prisma {
   }
 
   /**
+   * User.magicLinks
+   */
+  export type User$magicLinksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MagicLink
+     */
+    select?: MagicLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MagicLink
+     */
+    omit?: MagicLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MagicLinkInclude<ExtArgs> | null
+    where?: MagicLinkWhereInput
+    orderBy?: MagicLinkOrderByWithRelationInput | MagicLinkOrderByWithRelationInput[]
+    cursor?: MagicLinkWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MagicLinkScalarFieldEnum | MagicLinkScalarFieldEnum[]
+  }
+
+  /**
    * User without action
    */
   export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2393,6 +2513,980 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: UserInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model MagicLink
+   */
+
+  export type AggregateMagicLink = {
+    _count: MagicLinkCountAggregateOutputType | null
+    _avg: MagicLinkAvgAggregateOutputType | null
+    _sum: MagicLinkSumAggregateOutputType | null
+    _min: MagicLinkMinAggregateOutputType | null
+    _max: MagicLinkMaxAggregateOutputType | null
+  }
+
+  export type MagicLinkAvgAggregateOutputType = {
+    userId: number | null
+  }
+
+  export type MagicLinkSumAggregateOutputType = {
+    userId: number | null
+  }
+
+  export type MagicLinkMinAggregateOutputType = {
+    id: string | null
+    code: string | null
+    userId: number | null
+    expiresAt: Date | null
+    usedAt: Date | null
+    createdAt: Date | null
+  }
+
+  export type MagicLinkMaxAggregateOutputType = {
+    id: string | null
+    code: string | null
+    userId: number | null
+    expiresAt: Date | null
+    usedAt: Date | null
+    createdAt: Date | null
+  }
+
+  export type MagicLinkCountAggregateOutputType = {
+    id: number
+    code: number
+    userId: number
+    expiresAt: number
+    usedAt: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type MagicLinkAvgAggregateInputType = {
+    userId?: true
+  }
+
+  export type MagicLinkSumAggregateInputType = {
+    userId?: true
+  }
+
+  export type MagicLinkMinAggregateInputType = {
+    id?: true
+    code?: true
+    userId?: true
+    expiresAt?: true
+    usedAt?: true
+    createdAt?: true
+  }
+
+  export type MagicLinkMaxAggregateInputType = {
+    id?: true
+    code?: true
+    userId?: true
+    expiresAt?: true
+    usedAt?: true
+    createdAt?: true
+  }
+
+  export type MagicLinkCountAggregateInputType = {
+    id?: true
+    code?: true
+    userId?: true
+    expiresAt?: true
+    usedAt?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type MagicLinkAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MagicLink to aggregate.
+     */
+    where?: MagicLinkWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MagicLinks to fetch.
+     */
+    orderBy?: MagicLinkOrderByWithRelationInput | MagicLinkOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: MagicLinkWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MagicLinks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MagicLinks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned MagicLinks
+    **/
+    _count?: true | MagicLinkCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: MagicLinkAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: MagicLinkSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: MagicLinkMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: MagicLinkMaxAggregateInputType
+  }
+
+  export type GetMagicLinkAggregateType<T extends MagicLinkAggregateArgs> = {
+        [P in keyof T & keyof AggregateMagicLink]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMagicLink[P]>
+      : GetScalarType<T[P], AggregateMagicLink[P]>
+  }
+
+
+
+
+  export type MagicLinkGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MagicLinkWhereInput
+    orderBy?: MagicLinkOrderByWithAggregationInput | MagicLinkOrderByWithAggregationInput[]
+    by: MagicLinkScalarFieldEnum[] | MagicLinkScalarFieldEnum
+    having?: MagicLinkScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: MagicLinkCountAggregateInputType | true
+    _avg?: MagicLinkAvgAggregateInputType
+    _sum?: MagicLinkSumAggregateInputType
+    _min?: MagicLinkMinAggregateInputType
+    _max?: MagicLinkMaxAggregateInputType
+  }
+
+  export type MagicLinkGroupByOutputType = {
+    id: string
+    code: string
+    userId: number
+    expiresAt: Date
+    usedAt: Date | null
+    createdAt: Date
+    _count: MagicLinkCountAggregateOutputType | null
+    _avg: MagicLinkAvgAggregateOutputType | null
+    _sum: MagicLinkSumAggregateOutputType | null
+    _min: MagicLinkMinAggregateOutputType | null
+    _max: MagicLinkMaxAggregateOutputType | null
+  }
+
+  type GetMagicLinkGroupByPayload<T extends MagicLinkGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<MagicLinkGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof MagicLinkGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], MagicLinkGroupByOutputType[P]>
+            : GetScalarType<T[P], MagicLinkGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type MagicLinkSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    code?: boolean
+    userId?: boolean
+    expiresAt?: boolean
+    usedAt?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["magicLink"]>
+
+
+
+  export type MagicLinkSelectScalar = {
+    id?: boolean
+    code?: boolean
+    userId?: boolean
+    expiresAt?: boolean
+    usedAt?: boolean
+    createdAt?: boolean
+  }
+
+  export type MagicLinkOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "code" | "userId" | "expiresAt" | "usedAt" | "createdAt", ExtArgs["result"]["magicLink"]>
+  export type MagicLinkInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $MagicLinkPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "MagicLink"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      code: string
+      userId: number
+      expiresAt: Date
+      usedAt: Date | null
+      createdAt: Date
+    }, ExtArgs["result"]["magicLink"]>
+    composites: {}
+  }
+
+  type MagicLinkGetPayload<S extends boolean | null | undefined | MagicLinkDefaultArgs> = $Result.GetResult<Prisma.$MagicLinkPayload, S>
+
+  type MagicLinkCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<MagicLinkFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: MagicLinkCountAggregateInputType | true
+    }
+
+  export interface MagicLinkDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['MagicLink'], meta: { name: 'MagicLink' } }
+    /**
+     * Find zero or one MagicLink that matches the filter.
+     * @param {MagicLinkFindUniqueArgs} args - Arguments to find a MagicLink
+     * @example
+     * // Get one MagicLink
+     * const magicLink = await prisma.magicLink.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends MagicLinkFindUniqueArgs>(args: SelectSubset<T, MagicLinkFindUniqueArgs<ExtArgs>>): Prisma__MagicLinkClient<$Result.GetResult<Prisma.$MagicLinkPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one MagicLink that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {MagicLinkFindUniqueOrThrowArgs} args - Arguments to find a MagicLink
+     * @example
+     * // Get one MagicLink
+     * const magicLink = await prisma.magicLink.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends MagicLinkFindUniqueOrThrowArgs>(args: SelectSubset<T, MagicLinkFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MagicLinkClient<$Result.GetResult<Prisma.$MagicLinkPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MagicLink that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MagicLinkFindFirstArgs} args - Arguments to find a MagicLink
+     * @example
+     * // Get one MagicLink
+     * const magicLink = await prisma.magicLink.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends MagicLinkFindFirstArgs>(args?: SelectSubset<T, MagicLinkFindFirstArgs<ExtArgs>>): Prisma__MagicLinkClient<$Result.GetResult<Prisma.$MagicLinkPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MagicLink that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MagicLinkFindFirstOrThrowArgs} args - Arguments to find a MagicLink
+     * @example
+     * // Get one MagicLink
+     * const magicLink = await prisma.magicLink.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends MagicLinkFindFirstOrThrowArgs>(args?: SelectSubset<T, MagicLinkFindFirstOrThrowArgs<ExtArgs>>): Prisma__MagicLinkClient<$Result.GetResult<Prisma.$MagicLinkPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more MagicLinks that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MagicLinkFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all MagicLinks
+     * const magicLinks = await prisma.magicLink.findMany()
+     * 
+     * // Get first 10 MagicLinks
+     * const magicLinks = await prisma.magicLink.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const magicLinkWithIdOnly = await prisma.magicLink.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends MagicLinkFindManyArgs>(args?: SelectSubset<T, MagicLinkFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MagicLinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a MagicLink.
+     * @param {MagicLinkCreateArgs} args - Arguments to create a MagicLink.
+     * @example
+     * // Create one MagicLink
+     * const MagicLink = await prisma.magicLink.create({
+     *   data: {
+     *     // ... data to create a MagicLink
+     *   }
+     * })
+     * 
+     */
+    create<T extends MagicLinkCreateArgs>(args: SelectSubset<T, MagicLinkCreateArgs<ExtArgs>>): Prisma__MagicLinkClient<$Result.GetResult<Prisma.$MagicLinkPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many MagicLinks.
+     * @param {MagicLinkCreateManyArgs} args - Arguments to create many MagicLinks.
+     * @example
+     * // Create many MagicLinks
+     * const magicLink = await prisma.magicLink.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends MagicLinkCreateManyArgs>(args?: SelectSubset<T, MagicLinkCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a MagicLink.
+     * @param {MagicLinkDeleteArgs} args - Arguments to delete one MagicLink.
+     * @example
+     * // Delete one MagicLink
+     * const MagicLink = await prisma.magicLink.delete({
+     *   where: {
+     *     // ... filter to delete one MagicLink
+     *   }
+     * })
+     * 
+     */
+    delete<T extends MagicLinkDeleteArgs>(args: SelectSubset<T, MagicLinkDeleteArgs<ExtArgs>>): Prisma__MagicLinkClient<$Result.GetResult<Prisma.$MagicLinkPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one MagicLink.
+     * @param {MagicLinkUpdateArgs} args - Arguments to update one MagicLink.
+     * @example
+     * // Update one MagicLink
+     * const magicLink = await prisma.magicLink.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends MagicLinkUpdateArgs>(args: SelectSubset<T, MagicLinkUpdateArgs<ExtArgs>>): Prisma__MagicLinkClient<$Result.GetResult<Prisma.$MagicLinkPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more MagicLinks.
+     * @param {MagicLinkDeleteManyArgs} args - Arguments to filter MagicLinks to delete.
+     * @example
+     * // Delete a few MagicLinks
+     * const { count } = await prisma.magicLink.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends MagicLinkDeleteManyArgs>(args?: SelectSubset<T, MagicLinkDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MagicLinks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MagicLinkUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many MagicLinks
+     * const magicLink = await prisma.magicLink.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends MagicLinkUpdateManyArgs>(args: SelectSubset<T, MagicLinkUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one MagicLink.
+     * @param {MagicLinkUpsertArgs} args - Arguments to update or create a MagicLink.
+     * @example
+     * // Update or create a MagicLink
+     * const magicLink = await prisma.magicLink.upsert({
+     *   create: {
+     *     // ... data to create a MagicLink
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the MagicLink we want to update
+     *   }
+     * })
+     */
+    upsert<T extends MagicLinkUpsertArgs>(args: SelectSubset<T, MagicLinkUpsertArgs<ExtArgs>>): Prisma__MagicLinkClient<$Result.GetResult<Prisma.$MagicLinkPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of MagicLinks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MagicLinkCountArgs} args - Arguments to filter MagicLinks to count.
+     * @example
+     * // Count the number of MagicLinks
+     * const count = await prisma.magicLink.count({
+     *   where: {
+     *     // ... the filter for the MagicLinks we want to count
+     *   }
+     * })
+    **/
+    count<T extends MagicLinkCountArgs>(
+      args?: Subset<T, MagicLinkCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], MagicLinkCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a MagicLink.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MagicLinkAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MagicLinkAggregateArgs>(args: Subset<T, MagicLinkAggregateArgs>): Prisma.PrismaPromise<GetMagicLinkAggregateType<T>>
+
+    /**
+     * Group by MagicLink.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MagicLinkGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends MagicLinkGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: MagicLinkGroupByArgs['orderBy'] }
+        : { orderBy?: MagicLinkGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, MagicLinkGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMagicLinkGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the MagicLink model
+   */
+  readonly fields: MagicLinkFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for MagicLink.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__MagicLinkClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the MagicLink model
+   */
+  interface MagicLinkFieldRefs {
+    readonly id: FieldRef<"MagicLink", 'String'>
+    readonly code: FieldRef<"MagicLink", 'String'>
+    readonly userId: FieldRef<"MagicLink", 'Int'>
+    readonly expiresAt: FieldRef<"MagicLink", 'DateTime'>
+    readonly usedAt: FieldRef<"MagicLink", 'DateTime'>
+    readonly createdAt: FieldRef<"MagicLink", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * MagicLink findUnique
+   */
+  export type MagicLinkFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MagicLink
+     */
+    select?: MagicLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MagicLink
+     */
+    omit?: MagicLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MagicLinkInclude<ExtArgs> | null
+    /**
+     * Filter, which MagicLink to fetch.
+     */
+    where: MagicLinkWhereUniqueInput
+  }
+
+  /**
+   * MagicLink findUniqueOrThrow
+   */
+  export type MagicLinkFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MagicLink
+     */
+    select?: MagicLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MagicLink
+     */
+    omit?: MagicLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MagicLinkInclude<ExtArgs> | null
+    /**
+     * Filter, which MagicLink to fetch.
+     */
+    where: MagicLinkWhereUniqueInput
+  }
+
+  /**
+   * MagicLink findFirst
+   */
+  export type MagicLinkFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MagicLink
+     */
+    select?: MagicLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MagicLink
+     */
+    omit?: MagicLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MagicLinkInclude<ExtArgs> | null
+    /**
+     * Filter, which MagicLink to fetch.
+     */
+    where?: MagicLinkWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MagicLinks to fetch.
+     */
+    orderBy?: MagicLinkOrderByWithRelationInput | MagicLinkOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MagicLinks.
+     */
+    cursor?: MagicLinkWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MagicLinks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MagicLinks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MagicLinks.
+     */
+    distinct?: MagicLinkScalarFieldEnum | MagicLinkScalarFieldEnum[]
+  }
+
+  /**
+   * MagicLink findFirstOrThrow
+   */
+  export type MagicLinkFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MagicLink
+     */
+    select?: MagicLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MagicLink
+     */
+    omit?: MagicLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MagicLinkInclude<ExtArgs> | null
+    /**
+     * Filter, which MagicLink to fetch.
+     */
+    where?: MagicLinkWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MagicLinks to fetch.
+     */
+    orderBy?: MagicLinkOrderByWithRelationInput | MagicLinkOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MagicLinks.
+     */
+    cursor?: MagicLinkWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MagicLinks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MagicLinks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MagicLinks.
+     */
+    distinct?: MagicLinkScalarFieldEnum | MagicLinkScalarFieldEnum[]
+  }
+
+  /**
+   * MagicLink findMany
+   */
+  export type MagicLinkFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MagicLink
+     */
+    select?: MagicLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MagicLink
+     */
+    omit?: MagicLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MagicLinkInclude<ExtArgs> | null
+    /**
+     * Filter, which MagicLinks to fetch.
+     */
+    where?: MagicLinkWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MagicLinks to fetch.
+     */
+    orderBy?: MagicLinkOrderByWithRelationInput | MagicLinkOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing MagicLinks.
+     */
+    cursor?: MagicLinkWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MagicLinks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MagicLinks.
+     */
+    skip?: number
+    distinct?: MagicLinkScalarFieldEnum | MagicLinkScalarFieldEnum[]
+  }
+
+  /**
+   * MagicLink create
+   */
+  export type MagicLinkCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MagicLink
+     */
+    select?: MagicLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MagicLink
+     */
+    omit?: MagicLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MagicLinkInclude<ExtArgs> | null
+    /**
+     * The data needed to create a MagicLink.
+     */
+    data: XOR<MagicLinkCreateInput, MagicLinkUncheckedCreateInput>
+  }
+
+  /**
+   * MagicLink createMany
+   */
+  export type MagicLinkCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many MagicLinks.
+     */
+    data: MagicLinkCreateManyInput | MagicLinkCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * MagicLink update
+   */
+  export type MagicLinkUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MagicLink
+     */
+    select?: MagicLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MagicLink
+     */
+    omit?: MagicLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MagicLinkInclude<ExtArgs> | null
+    /**
+     * The data needed to update a MagicLink.
+     */
+    data: XOR<MagicLinkUpdateInput, MagicLinkUncheckedUpdateInput>
+    /**
+     * Choose, which MagicLink to update.
+     */
+    where: MagicLinkWhereUniqueInput
+  }
+
+  /**
+   * MagicLink updateMany
+   */
+  export type MagicLinkUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update MagicLinks.
+     */
+    data: XOR<MagicLinkUpdateManyMutationInput, MagicLinkUncheckedUpdateManyInput>
+    /**
+     * Filter which MagicLinks to update
+     */
+    where?: MagicLinkWhereInput
+    /**
+     * Limit how many MagicLinks to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * MagicLink upsert
+   */
+  export type MagicLinkUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MagicLink
+     */
+    select?: MagicLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MagicLink
+     */
+    omit?: MagicLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MagicLinkInclude<ExtArgs> | null
+    /**
+     * The filter to search for the MagicLink to update in case it exists.
+     */
+    where: MagicLinkWhereUniqueInput
+    /**
+     * In case the MagicLink found by the `where` argument doesn't exist, create a new MagicLink with this data.
+     */
+    create: XOR<MagicLinkCreateInput, MagicLinkUncheckedCreateInput>
+    /**
+     * In case the MagicLink was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<MagicLinkUpdateInput, MagicLinkUncheckedUpdateInput>
+  }
+
+  /**
+   * MagicLink delete
+   */
+  export type MagicLinkDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MagicLink
+     */
+    select?: MagicLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MagicLink
+     */
+    omit?: MagicLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MagicLinkInclude<ExtArgs> | null
+    /**
+     * Filter which MagicLink to delete.
+     */
+    where: MagicLinkWhereUniqueInput
+  }
+
+  /**
+   * MagicLink deleteMany
+   */
+  export type MagicLinkDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MagicLinks to delete
+     */
+    where?: MagicLinkWhereInput
+    /**
+     * Limit how many MagicLinks to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * MagicLink without action
+   */
+  export type MagicLinkDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MagicLink
+     */
+    select?: MagicLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MagicLink
+     */
+    omit?: MagicLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MagicLinkInclude<ExtArgs> | null
   }
 
 
@@ -7238,6 +8332,18 @@ export namespace Prisma {
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+  export const MagicLinkScalarFieldEnum: {
+    id: 'id',
+    code: 'code',
+    userId: 'userId',
+    expiresAt: 'expiresAt',
+    usedAt: 'usedAt',
+    createdAt: 'createdAt'
+  };
+
+  export type MagicLinkScalarFieldEnum = (typeof MagicLinkScalarFieldEnum)[keyof typeof MagicLinkScalarFieldEnum]
+
+
   export const MaterialScalarFieldEnum: {
     id: 'id',
     name: 'name',
@@ -7322,6 +8428,14 @@ export namespace Prisma {
   };
 
   export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+  export const MagicLinkOrderByRelevanceFieldEnum: {
+    id: 'id',
+    code: 'code'
+  };
+
+  export type MagicLinkOrderByRelevanceFieldEnum = (typeof MagicLinkOrderByRelevanceFieldEnum)[keyof typeof MagicLinkOrderByRelevanceFieldEnum]
 
 
   export const MaterialOrderByRelevanceFieldEnum: {
@@ -7427,6 +8541,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"User"> | Date | string
     logLogin?: LogLoginListRelationFilter
     userRoles?: UserRoleListRelationFilter
+    magicLinks?: MagicLinkListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -7440,6 +8555,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     logLogin?: LogLoginOrderByRelationAggregateInput
     userRoles?: UserRoleOrderByRelationAggregateInput
+    magicLinks?: MagicLinkOrderByRelationAggregateInput
     _relevance?: UserOrderByRelevanceInput
   }
 
@@ -7457,6 +8573,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"User"> | Date | string
     logLogin?: LogLoginListRelationFilter
     userRoles?: UserRoleListRelationFilter
+    magicLinks?: MagicLinkListRelationFilter
   }, "id" | "login" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -7487,6 +8604,69 @@ export namespace Prisma {
     isActive?: BoolWithAggregatesFilter<"User"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
+  }
+
+  export type MagicLinkWhereInput = {
+    AND?: MagicLinkWhereInput | MagicLinkWhereInput[]
+    OR?: MagicLinkWhereInput[]
+    NOT?: MagicLinkWhereInput | MagicLinkWhereInput[]
+    id?: StringFilter<"MagicLink"> | string
+    code?: StringFilter<"MagicLink"> | string
+    userId?: IntFilter<"MagicLink"> | number
+    expiresAt?: DateTimeFilter<"MagicLink"> | Date | string
+    usedAt?: DateTimeNullableFilter<"MagicLink"> | Date | string | null
+    createdAt?: DateTimeFilter<"MagicLink"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type MagicLinkOrderByWithRelationInput = {
+    id?: SortOrder
+    code?: SortOrder
+    userId?: SortOrder
+    expiresAt?: SortOrder
+    usedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+    _relevance?: MagicLinkOrderByRelevanceInput
+  }
+
+  export type MagicLinkWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    code?: string
+    AND?: MagicLinkWhereInput | MagicLinkWhereInput[]
+    OR?: MagicLinkWhereInput[]
+    NOT?: MagicLinkWhereInput | MagicLinkWhereInput[]
+    userId?: IntFilter<"MagicLink"> | number
+    expiresAt?: DateTimeFilter<"MagicLink"> | Date | string
+    usedAt?: DateTimeNullableFilter<"MagicLink"> | Date | string | null
+    createdAt?: DateTimeFilter<"MagicLink"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "code">
+
+  export type MagicLinkOrderByWithAggregationInput = {
+    id?: SortOrder
+    code?: SortOrder
+    userId?: SortOrder
+    expiresAt?: SortOrder
+    usedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: MagicLinkCountOrderByAggregateInput
+    _avg?: MagicLinkAvgOrderByAggregateInput
+    _max?: MagicLinkMaxOrderByAggregateInput
+    _min?: MagicLinkMinOrderByAggregateInput
+    _sum?: MagicLinkSumOrderByAggregateInput
+  }
+
+  export type MagicLinkScalarWhereWithAggregatesInput = {
+    AND?: MagicLinkScalarWhereWithAggregatesInput | MagicLinkScalarWhereWithAggregatesInput[]
+    OR?: MagicLinkScalarWhereWithAggregatesInput[]
+    NOT?: MagicLinkScalarWhereWithAggregatesInput | MagicLinkScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"MagicLink"> | string
+    code?: StringWithAggregatesFilter<"MagicLink"> | string
+    userId?: IntWithAggregatesFilter<"MagicLink"> | number
+    expiresAt?: DateTimeWithAggregatesFilter<"MagicLink"> | Date | string
+    usedAt?: DateTimeNullableWithAggregatesFilter<"MagicLink"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"MagicLink"> | Date | string
   }
 
   export type MaterialWhereInput = {
@@ -7811,6 +8991,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     logLogin?: LogLoginCreateNestedManyWithoutUserInput
     userRoles?: UserRoleCreateNestedManyWithoutUserInput
+    magicLinks?: MagicLinkCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -7824,6 +9005,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     logLogin?: LogLoginUncheckedCreateNestedManyWithoutUserInput
     userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
+    magicLinks?: MagicLinkUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -7836,6 +9018,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     logLogin?: LogLoginUpdateManyWithoutUserNestedInput
     userRoles?: UserRoleUpdateManyWithoutUserNestedInput
+    magicLinks?: MagicLinkUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -7849,6 +9032,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     logLogin?: LogLoginUncheckedUpdateManyWithoutUserNestedInput
     userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
+    magicLinks?: MagicLinkUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -7881,6 +9065,68 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MagicLinkCreateInput = {
+    id?: string
+    code: string
+    expiresAt: Date | string
+    usedAt?: Date | string | null
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutMagicLinksInput
+  }
+
+  export type MagicLinkUncheckedCreateInput = {
+    id?: string
+    code: string
+    userId: number
+    expiresAt: Date | string
+    usedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type MagicLinkUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutMagicLinksNestedInput
+  }
+
+  export type MagicLinkUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    userId?: IntFieldUpdateOperationsInput | number
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MagicLinkCreateManyInput = {
+    id?: string
+    code: string
+    userId: number
+    expiresAt: Date | string
+    usedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type MagicLinkUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MagicLinkUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    userId?: IntFieldUpdateOperationsInput | number
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type MaterialCreateInput = {
@@ -8254,11 +9500,21 @@ export namespace Prisma {
     none?: UserRoleWhereInput
   }
 
+  export type MagicLinkListRelationFilter = {
+    every?: MagicLinkWhereInput
+    some?: MagicLinkWhereInput
+    none?: MagicLinkWhereInput
+  }
+
   export type LogLoginOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
   export type UserRoleOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type MagicLinkOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -8365,6 +9621,82 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type UserScalarRelationFilter = {
+    is?: UserWhereInput
+    isNot?: UserWhereInput
+  }
+
+  export type SortOrderInput = {
+    sort: SortOrder
+    nulls?: NullsOrder
+  }
+
+  export type MagicLinkOrderByRelevanceInput = {
+    fields: MagicLinkOrderByRelevanceFieldEnum | MagicLinkOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type MagicLinkCountOrderByAggregateInput = {
+    id?: SortOrder
+    code?: SortOrder
+    userId?: SortOrder
+    expiresAt?: SortOrder
+    usedAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type MagicLinkAvgOrderByAggregateInput = {
+    userId?: SortOrder
+  }
+
+  export type MagicLinkMaxOrderByAggregateInput = {
+    id?: SortOrder
+    code?: SortOrder
+    userId?: SortOrder
+    expiresAt?: SortOrder
+    usedAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type MagicLinkMinOrderByAggregateInput = {
+    id?: SortOrder
+    code?: SortOrder
+    userId?: SortOrder
+    expiresAt?: SortOrder
+    usedAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type MagicLinkSumOrderByAggregateInput = {
+    userId?: SortOrder
+  }
+
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
   export type BigIntFilter<$PrismaModel = never> = {
     equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
     in?: bigint[] | number[]
@@ -8389,11 +9721,6 @@ export namespace Prisma {
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     search?: string
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
-  }
-
-  export type SortOrderInput = {
-    sort: SortOrder
-    nulls?: NullsOrder
   }
 
   export type MaterialOrderByRelevanceInput = {
@@ -8510,11 +9837,6 @@ export namespace Prisma {
 
   export type UserRoletypeSumOrderByAggregateInput = {
     id?: SortOrder
-  }
-
-  export type UserScalarRelationFilter = {
-    is?: UserWhereInput
-    isNot?: UserWhereInput
   }
 
   export type UserRoletypeScalarRelationFilter = {
@@ -8689,6 +10011,13 @@ export namespace Prisma {
     connect?: UserRoleWhereUniqueInput | UserRoleWhereUniqueInput[]
   }
 
+  export type MagicLinkCreateNestedManyWithoutUserInput = {
+    create?: XOR<MagicLinkCreateWithoutUserInput, MagicLinkUncheckedCreateWithoutUserInput> | MagicLinkCreateWithoutUserInput[] | MagicLinkUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: MagicLinkCreateOrConnectWithoutUserInput | MagicLinkCreateOrConnectWithoutUserInput[]
+    createMany?: MagicLinkCreateManyUserInputEnvelope
+    connect?: MagicLinkWhereUniqueInput | MagicLinkWhereUniqueInput[]
+  }
+
   export type LogLoginUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<LogLoginCreateWithoutUserInput, LogLoginUncheckedCreateWithoutUserInput> | LogLoginCreateWithoutUserInput[] | LogLoginUncheckedCreateWithoutUserInput[]
     connectOrCreate?: LogLoginCreateOrConnectWithoutUserInput | LogLoginCreateOrConnectWithoutUserInput[]
@@ -8701,6 +10030,13 @@ export namespace Prisma {
     connectOrCreate?: UserRoleCreateOrConnectWithoutUserInput | UserRoleCreateOrConnectWithoutUserInput[]
     createMany?: UserRoleCreateManyUserInputEnvelope
     connect?: UserRoleWhereUniqueInput | UserRoleWhereUniqueInput[]
+  }
+
+  export type MagicLinkUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<MagicLinkCreateWithoutUserInput, MagicLinkUncheckedCreateWithoutUserInput> | MagicLinkCreateWithoutUserInput[] | MagicLinkUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: MagicLinkCreateOrConnectWithoutUserInput | MagicLinkCreateOrConnectWithoutUserInput[]
+    createMany?: MagicLinkCreateManyUserInputEnvelope
+    connect?: MagicLinkWhereUniqueInput | MagicLinkWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -8743,6 +10079,20 @@ export namespace Prisma {
     deleteMany?: UserRoleScalarWhereInput | UserRoleScalarWhereInput[]
   }
 
+  export type MagicLinkUpdateManyWithoutUserNestedInput = {
+    create?: XOR<MagicLinkCreateWithoutUserInput, MagicLinkUncheckedCreateWithoutUserInput> | MagicLinkCreateWithoutUserInput[] | MagicLinkUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: MagicLinkCreateOrConnectWithoutUserInput | MagicLinkCreateOrConnectWithoutUserInput[]
+    upsert?: MagicLinkUpsertWithWhereUniqueWithoutUserInput | MagicLinkUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: MagicLinkCreateManyUserInputEnvelope
+    set?: MagicLinkWhereUniqueInput | MagicLinkWhereUniqueInput[]
+    disconnect?: MagicLinkWhereUniqueInput | MagicLinkWhereUniqueInput[]
+    delete?: MagicLinkWhereUniqueInput | MagicLinkWhereUniqueInput[]
+    connect?: MagicLinkWhereUniqueInput | MagicLinkWhereUniqueInput[]
+    update?: MagicLinkUpdateWithWhereUniqueWithoutUserInput | MagicLinkUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: MagicLinkUpdateManyWithWhereWithoutUserInput | MagicLinkUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: MagicLinkScalarWhereInput | MagicLinkScalarWhereInput[]
+  }
+
   export type IntFieldUpdateOperationsInput = {
     set?: number
     increment?: number
@@ -8777,6 +10127,38 @@ export namespace Prisma {
     update?: UserRoleUpdateWithWhereUniqueWithoutUserInput | UserRoleUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: UserRoleUpdateManyWithWhereWithoutUserInput | UserRoleUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: UserRoleScalarWhereInput | UserRoleScalarWhereInput[]
+  }
+
+  export type MagicLinkUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<MagicLinkCreateWithoutUserInput, MagicLinkUncheckedCreateWithoutUserInput> | MagicLinkCreateWithoutUserInput[] | MagicLinkUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: MagicLinkCreateOrConnectWithoutUserInput | MagicLinkCreateOrConnectWithoutUserInput[]
+    upsert?: MagicLinkUpsertWithWhereUniqueWithoutUserInput | MagicLinkUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: MagicLinkCreateManyUserInputEnvelope
+    set?: MagicLinkWhereUniqueInput | MagicLinkWhereUniqueInput[]
+    disconnect?: MagicLinkWhereUniqueInput | MagicLinkWhereUniqueInput[]
+    delete?: MagicLinkWhereUniqueInput | MagicLinkWhereUniqueInput[]
+    connect?: MagicLinkWhereUniqueInput | MagicLinkWhereUniqueInput[]
+    update?: MagicLinkUpdateWithWhereUniqueWithoutUserInput | MagicLinkUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: MagicLinkUpdateManyWithWhereWithoutUserInput | MagicLinkUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: MagicLinkScalarWhereInput | MagicLinkScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutMagicLinksInput = {
+    create?: XOR<UserCreateWithoutMagicLinksInput, UserUncheckedCreateWithoutMagicLinksInput>
+    connectOrCreate?: UserCreateOrConnectWithoutMagicLinksInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
+  }
+
+  export type UserUpdateOneRequiredWithoutMagicLinksNestedInput = {
+    create?: XOR<UserCreateWithoutMagicLinksInput, UserUncheckedCreateWithoutMagicLinksInput>
+    connectOrCreate?: UserCreateOrConnectWithoutMagicLinksInput
+    upsert?: UserUpsertWithoutMagicLinksInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutMagicLinksInput, UserUpdateWithoutMagicLinksInput>, UserUncheckedUpdateWithoutMagicLinksInput>
   }
 
   export type BigIntFieldUpdateOperationsInput = {
@@ -8992,6 +10374,42 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type NestedIntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
   export type NestedBigIntFilter<$PrismaModel = never> = {
     equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
     in?: bigint[] | number[]
@@ -9050,17 +10468,6 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
     _max?: NestedStringNullableFilter<$PrismaModel>
-  }
-
-  export type NestedIntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
   export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -9134,6 +10541,32 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type MagicLinkCreateWithoutUserInput = {
+    id?: string
+    code: string
+    expiresAt: Date | string
+    usedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type MagicLinkUncheckedCreateWithoutUserInput = {
+    id?: string
+    code: string
+    expiresAt: Date | string
+    usedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type MagicLinkCreateOrConnectWithoutUserInput = {
+    where: MagicLinkWhereUniqueInput
+    create: XOR<MagicLinkCreateWithoutUserInput, MagicLinkUncheckedCreateWithoutUserInput>
+  }
+
+  export type MagicLinkCreateManyUserInputEnvelope = {
+    data: MagicLinkCreateManyUserInput | MagicLinkCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type LogLoginUpsertWithWhereUniqueWithoutUserInput = {
     where: LogLoginWhereUniqueInput
     update: XOR<LogLoginUpdateWithoutUserInput, LogLoginUncheckedUpdateWithoutUserInput>
@@ -9186,6 +10619,100 @@ export namespace Prisma {
     userRoletypeId?: IntFilter<"UserRole"> | number
   }
 
+  export type MagicLinkUpsertWithWhereUniqueWithoutUserInput = {
+    where: MagicLinkWhereUniqueInput
+    update: XOR<MagicLinkUpdateWithoutUserInput, MagicLinkUncheckedUpdateWithoutUserInput>
+    create: XOR<MagicLinkCreateWithoutUserInput, MagicLinkUncheckedCreateWithoutUserInput>
+  }
+
+  export type MagicLinkUpdateWithWhereUniqueWithoutUserInput = {
+    where: MagicLinkWhereUniqueInput
+    data: XOR<MagicLinkUpdateWithoutUserInput, MagicLinkUncheckedUpdateWithoutUserInput>
+  }
+
+  export type MagicLinkUpdateManyWithWhereWithoutUserInput = {
+    where: MagicLinkScalarWhereInput
+    data: XOR<MagicLinkUpdateManyMutationInput, MagicLinkUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type MagicLinkScalarWhereInput = {
+    AND?: MagicLinkScalarWhereInput | MagicLinkScalarWhereInput[]
+    OR?: MagicLinkScalarWhereInput[]
+    NOT?: MagicLinkScalarWhereInput | MagicLinkScalarWhereInput[]
+    id?: StringFilter<"MagicLink"> | string
+    code?: StringFilter<"MagicLink"> | string
+    userId?: IntFilter<"MagicLink"> | number
+    expiresAt?: DateTimeFilter<"MagicLink"> | Date | string
+    usedAt?: DateTimeNullableFilter<"MagicLink"> | Date | string | null
+    createdAt?: DateTimeFilter<"MagicLink"> | Date | string
+  }
+
+  export type UserCreateWithoutMagicLinksInput = {
+    name: string
+    login: string
+    email: string
+    image?: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    logLogin?: LogLoginCreateNestedManyWithoutUserInput
+    userRoles?: UserRoleCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutMagicLinksInput = {
+    id?: number
+    name: string
+    login: string
+    email: string
+    image?: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    logLogin?: LogLoginUncheckedCreateNestedManyWithoutUserInput
+    userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutMagicLinksInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutMagicLinksInput, UserUncheckedCreateWithoutMagicLinksInput>
+  }
+
+  export type UserUpsertWithoutMagicLinksInput = {
+    update: XOR<UserUpdateWithoutMagicLinksInput, UserUncheckedUpdateWithoutMagicLinksInput>
+    create: XOR<UserCreateWithoutMagicLinksInput, UserUncheckedCreateWithoutMagicLinksInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutMagicLinksInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutMagicLinksInput, UserUncheckedUpdateWithoutMagicLinksInput>
+  }
+
+  export type UserUpdateWithoutMagicLinksInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    login?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    image?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    logLogin?: LogLoginUpdateManyWithoutUserNestedInput
+    userRoles?: UserRoleUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutMagicLinksInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    login?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    image?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    logLogin?: LogLoginUncheckedUpdateManyWithoutUserNestedInput
+    userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  }
+
   export type UserRoleCreateWithoutUserRoletypeInput = {
     user: UserCreateNestedOneWithoutUserRolesInput
   }
@@ -9229,6 +10756,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     logLogin?: LogLoginCreateNestedManyWithoutUserInput
+    magicLinks?: MagicLinkCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUserRolesInput = {
@@ -9241,6 +10769,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     logLogin?: LogLoginUncheckedCreateNestedManyWithoutUserInput
+    magicLinks?: MagicLinkUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutUserRolesInput = {
@@ -9289,6 +10818,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     logLogin?: LogLoginUpdateManyWithoutUserNestedInput
+    magicLinks?: MagicLinkUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUserRolesInput = {
@@ -9301,6 +10831,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     logLogin?: LogLoginUncheckedUpdateManyWithoutUserNestedInput
+    magicLinks?: MagicLinkUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserRoletypeUpsertWithoutUserRolesInput = {
@@ -9339,6 +10870,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     userRoles?: UserRoleCreateNestedManyWithoutUserInput
+    magicLinks?: MagicLinkCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutLogLoginInput = {
@@ -9351,6 +10883,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
+    magicLinks?: MagicLinkUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutLogLoginInput = {
@@ -9378,6 +10911,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userRoles?: UserRoleUpdateManyWithoutUserNestedInput
+    magicLinks?: MagicLinkUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLogLoginInput = {
@@ -9390,6 +10924,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
+    magicLinks?: MagicLinkUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type LogLoginCreateManyUserInput = {
@@ -9402,6 +10937,14 @@ export namespace Prisma {
 
   export type UserRoleCreateManyUserInput = {
     userRoletypeId: number
+  }
+
+  export type MagicLinkCreateManyUserInput = {
+    id?: string
+    code: string
+    expiresAt: Date | string
+    usedAt?: Date | string | null
+    createdAt?: Date | string
   }
 
   export type LogLoginUpdateWithoutUserInput = {
@@ -9438,6 +10981,30 @@ export namespace Prisma {
 
   export type UserRoleUncheckedUpdateManyWithoutUserInput = {
     userRoletypeId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type MagicLinkUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MagicLinkUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MagicLinkUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserRoleCreateManyUserRoletypeInput = {

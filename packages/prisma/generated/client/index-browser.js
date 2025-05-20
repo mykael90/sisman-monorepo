@@ -131,6 +131,15 @@ exports.Prisma.UserScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.MagicLinkScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  userId: 'userId',
+  expiresAt: 'expiresAt',
+  usedAt: 'usedAt',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.MaterialScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -193,6 +202,11 @@ exports.Prisma.NullsOrder = {
   last: 'last'
 };
 
+exports.Prisma.MagicLinkOrderByRelevanceFieldEnum = {
+  id: 'id',
+  code: 'code'
+};
+
 exports.Prisma.MaterialOrderByRelevanceFieldEnum = {
   name: 'name',
   specification: 'specification',
@@ -223,6 +237,7 @@ exports.Prisma.LogLoginOrderByRelevanceFieldEnum = {
 
 exports.Prisma.ModelName = {
   User: 'User',
+  MagicLink: 'MagicLink',
   Material: 'Material',
   UserRoletype: 'UserRoletype',
   UserRole: 'UserRole',
