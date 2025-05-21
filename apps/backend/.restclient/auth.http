@@ -48,6 +48,26 @@ Authorization: Bearer {{token}}
   
 }
 
+### Magic-link request
+# @prompt email
+POST {{urlLocal}}/magic-link/request
+Content-Type: {{contentType}}
+
+{
+    "email": {{email}}
+}
+
+### Magic-link request
+# @prompt email
+# @prompt code
+POST {{urlLocal}}/magic-link/verify
+Content-Type: {{contentType}}
+
+{
+    "email": {{email}},
+    "code": {{code}}
+}
+
 ### Upload-photo
 POST {{urlLocal}}/photo
 Content-Type: multipart/form-data; boundary=MfnBoundry

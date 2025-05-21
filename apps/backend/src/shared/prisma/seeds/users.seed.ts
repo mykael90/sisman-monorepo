@@ -5,9 +5,9 @@ import { plainToInstance } from 'class-transformer';
 import {
   removeNullOrEmptyStringProps,
   seedModel,
-  TransformValidateFn,
+  TransformValidateFn
 } from './seed-utils';
-import { CreateUserDTO } from '../../dto/user/create-user.dto';
+import { CreateUserDTO } from '../../../modules/users/dto/create-user.dto';
 
 const logger = console;
 const usersJsonPath = '../data/users.json';
@@ -32,7 +32,7 @@ const transformAndValidateUser: TransformValidateFn<
   if (errors.length > 0) {
     // Log the original raw data for easier debugging
     logger.warn(
-      `Skipping user due to validation errors: ${errors.map((e) => Object.values(e.constraints || {})).join(', ')}. Original Data: ${JSON.stringify(rawUser)}`,
+      `Skipping user due to validation errors: ${errors.map((e) => Object.values(e.constraints || {})).join(', ')}. Original Data: ${JSON.stringify(rawUser)}`
     );
     // Log the detailed errors
     logger.warn('Validation Errors:', JSON.stringify(errors));
@@ -65,7 +65,7 @@ const transformAndValidateUser: TransformValidateFn<
   const createInput: Prisma.UserCreateInput = {
     name: userDto.name,
     email: userDto.email,
-    login: userDto.login,
+    login: userDto.login
     // password: hashedPassword, // Use the hashed password
     // // Only include birthAt if it exists and is valid in the DTO
     // ...(userDto.birthAt && { birthAt: userDto.birthAt }),
@@ -87,6 +87,6 @@ export async function main(prisma: PrismaClient): Promise<void> {
     jsonFilePath: usersJsonPath,
     prismaDelegate: prisma.user,
     transformAndValidate: transformAndValidateUser,
-    uniqueKey: 'email',
+    uniqueKey: 'email'
   });
 }

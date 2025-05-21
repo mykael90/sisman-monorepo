@@ -32,3 +32,6 @@ The pnpm equivalent of this is `pnpm dlx create-react-app my-app`.
 `pnpm dlx shadcn@latest add label`
 
 Isso ajuda a confirmar o nome correto do workspace antes de instalar o pacote 🚀
+
+Novo recurso Nest
+`pnpm exec nest -g res`

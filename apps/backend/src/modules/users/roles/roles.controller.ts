@@ -7,12 +7,12 @@ import {
   ParseIntPipe,
   Patch,
   Post,
-  Query,
+  Query
 } from '@nestjs/common';
 import { RolesService } from './roles.service';
-import { CreateUserRoleDto } from '../../../shared/dto/user/role/create-user-role.dto';
-import { DeleteUserRoleDto } from '../../../shared/dto/user/role/delete-user-role.dto';
-import { UpdateUserRoleDto } from '../../../shared/dto/user/role/update-user-role.dto';
+import { CreateUserRoleDto } from '../dto/role/create-user-role.dto';
+import { DeleteUserRoleDto } from '../dto/role/delete-user-role.dto';
+import { UpdateUserRoleDto } from '../dto/role/update-user-role.dto';
 
 @Controller()
 export class RolesController {
@@ -31,7 +31,7 @@ export class RolesController {
   @Patch()
   async update(
     @Query() data: UpdateUserRoleDto,
-    @Body('newUserRoletypeId', ParseIntPipe) newUserRoletypeId: number,
+    @Body('newUserRoletypeId', ParseIntPipe) newUserRoletypeId: number
   ) {
     return this.rolesService.update(data, newUserRoletypeId);
   }

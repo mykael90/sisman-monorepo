@@ -4,8 +4,8 @@ import {
   Injectable,
   NotFoundException
 } from '@nestjs/common';
-import { CreateMaterialDto } from '../../shared/dto/material/create-material.dto';
-import { UpdateMaterialDto } from '../../shared/dto/material/update-material.dto';
+import { CreateMaterialDto } from './dto/create-material.dto';
+import { UpdateMaterialDto } from './dto/update-material.dto';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
 
 @Injectable()

@@ -1,0 +1,137 @@
+doctype html
+html(lang="pt-BR")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title Login em #[= appName]
+    style.
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+        margin: 0;
+        padding: 0;
+        background-color: #f0f2f5; /* Um fundo claro e moderno */
+        color: #1c1e21; /* Cor de texto padrão */
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      .email-wrapper {
+        padding: 20px;
+      }
+      .email-container {
+        max-width: 580px;
+        margin: 0 auto;
+        background-color: #ffffff;
+        border: 1px solid #ccd0d5; /* Borda sutil */
+        border-radius: 8px; /* Cantos arredondados */
+        overflow: hidden; /* Garante que o border-radius recorte o conteúdo */
+      }
+      .email-header {
+        padding: 24px 32px;
+        text-align: center; /* Centraliza o conteúdo do cabeçalho, incluindo a logo */
+        border-bottom: 1px solid #e9ebee; /* Linha sutil abaixo do cabeçalho */
+      }
+      .email-header h1 {
+        margin: 0;
+        font-size: 24px;
+        font-weight: 600;
+        color: #[= projectPrimaryColor || '#007bff']; /* Usa a cor primária para o título */
+      }
+      .email-header img.logo {
+        max-width: 150px; /* Ajuste conforme o tamanho da sua logo */
+        height: auto; /* Mantém a proporção */
+        margin-bottom: 10px; /* Espaço entre a logo e o título, se houver */
+      }
+      .email-body {
+        padding: 24px 32px; /* Mais preenchimento para o conteúdo */
+        font-size: 16px;
+        line-height: 1.6;
+      }
+      .email-body p {
+        margin: 0 0 16px 0;
+      }
+      .email-body p:last-child {
+        margin-bottom: 0;
+      }
+      .button-link {
+        display: inline-block;
+        background-color: #[= projectPrimaryColor || '#007bff']; /* Cor primária do projeto ou azul padrão */
+        color: #ffffff !important; /* !important para sobrescrever estilos de clientes de e-mail */
+        padding: 12px 24px;
+        text-decoration: none;
+        border-radius: 6px;
+        font-weight: 500;
+        font-size: 16px;
+        text-align: center;
+        margin-top: 8px; /* Espaço acima do botão */
+        margin-bottom: 20px; /* Espaço abaixo do botão */
+      }
+      .access-code-section {
+        margin-top: 24px;
+        margin-bottom: 24px;
+        padding: 16px;
+        background-color: #f7f7f7; /* Fundo levemente diferente para esta seção */
+        border-radius: 6px;
+        text-align: center;
+      }
+      .access-code-section p {
+        margin-bottom: 8px;
+        font-size: 14px;
+        color: #555555;
+      }
+      .access-code {
+        font-family: 'Menlo', 'Monaco', 'Consolas', 'Courier New', monospace; /* Fonte monoespaçada para código */
+        font-size: 28px; /* Fonte maior para o código */
+        font-weight: bold;
+        color: #[= projectAccentColor || '#1c1e21']; /* Cor de destaque do projeto ou cor de texto primária */
+        letter-spacing: 3px; /* Espaçamento entre dígitos */
+        padding: 8px 12px;
+        border: 1px dashed #adb5bd; /* Borda tracejada */
+        border-radius: 4px;
+        background-color: #ffffff; /* Fundo branco para o código em si */
+        display: inline-block; /* Para permitir preenchimento e borda */
+      }
+      .fine-print {
+        font-size: 14px;
+        color: #606770; /* Cor suave para texto menos importante */
+        margin-top: 20px;
+      }
+      .email-footer {
+        padding: 20px 32px;
+        font-size: 12px;
+        color: #8a8d91; /* Cor suave mais clara para o rodapé */
+        text-align: center;
+        border-top: 1px solid #e9ebee; /* Separador do rodapé */
+      }
+      .email-footer p {
+        margin: 0 0 5px 0;
+      }
+
+  body
+    div(class="email-wrapper")
+      div(class="email-container")
+        div(class="email-header")
+          //- Adicione a URL da sua logo aqui, passada como variável `logoUrl`
+          if logoUrl
+            img(src=logoUrl, alt=appName + " Logo", class="logo")
+          h1 Acesso ao #[= appName]
+
+        div(class="email-body")
+          p Olá,
+          p Para completar seu login no #[strong #[= appName]], clique no botão abaixo ou use o código de acesso.
+          
+          p(style="text-align: center;")
+            a(href=link, class="button-link") Entrar em #[= appName]
+
+          div(class="access-code-section")
+            p Ou insira este código manualmente:
+            div(class="access-code") #[= code]
+          
+          p(class="fine-print") Este link e código expirarão em #[= expiresInMinutes] minutos.
+          
+          p(class="fine-print") Se você não solicitou este acesso, pode ignorar este e-mail com segurança. Sua conta está protegida.
+        
+        div(class="email-footer")
+          p
+            | Obrigado,
+            br
+            | Equipe #[= appName]

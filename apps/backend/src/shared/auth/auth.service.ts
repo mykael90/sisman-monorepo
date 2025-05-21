@@ -5,20 +5,24 @@ import {
   UnauthorizedException,
   Inject,
   Logger,
-  ConflictException
+  ConflictException,
+  NotFoundException
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
 import { User, UserRole } from '@sisman/prisma';
 import { AuthRegisterDTO } from './dto/auth-register.dto';
 import { UsersService } from 'src/modules/users/users.service';
-import { MailerService } from '@nestjs-modules/mailer';
 import { AuthRegisterAuthorizationTokenDTO } from './dto/auth-register-authorization-token.dto';
 import { AuthLoginAuthorizationTokenDTO } from './dto/auth-login-authorization-token.dto';
 import { MetricsService } from '../observability/metrics.service'; // Ajuste o caminho
 import { LogLoginService } from '../log-login/log-login.service';
 import { Request as RequestExpress } from 'express'; // <-- Importe Request
 import { read } from 'fs';
+import { randomInt } from 'crypto';
+import { MagicLinkLoginDto } from './dto/magic-link-login.dto';
+import { VerifyCodeDto } from './dto/verify-code-magic-link.dto';
+import { EmailService } from '../notifications/email/email.service';
 
 @Injectable()
 export class AuthService {
@@ -29,8 +33,8 @@ export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
     private readonly prisma: PrismaService,
-    private readonly userService: UsersService,
-    private readonly mailer: MailerService,
+    private readonly usersService: UsersService,
+    private readonly emailService: EmailService,
     private readonly metricsService: MetricsService, // Injete o serviço de métricas
     private readonly logLoginService: LogLoginService // Injete o serviço de métricas
   ) {}
@@ -191,15 +195,15 @@ export class AuthService {
     let userId: number | null = null;
     let loginSuccess = false;
     try {
-      if (await this.userService.existsLogin(data.login)) {
+      if (await this.usersService.existsLogin(data.login)) {
         throw new ConflictException(`Login já cadastrado!`);
       }
 
-      if (await this.userService.existsEmail(data.email)) {
+      if (await this.usersService.existsEmail(data.email)) {
         throw new ConflictException(`E-mail já cadastrado!`);
       }
 
-      const user = await this.userService.create(data);
+      const user = await this.usersService.create(data);
       // Se chegou aqui, a criação foi bem-sucedida
       userId = user.id;
       loginSuccess = true;
@@ -262,11 +266,11 @@ export class AuthService {
       throw new UnauthorizedException(`Token inválido!`);
     }
 
-    if (await this.userService.existsLogin(token.login)) {
+    if (await this.usersService.existsLogin(token.login)) {
       throw new ConflictException(`Login já cadastrado!`);
     }
 
-    if (await this.userService.existsEmail(token.email)) {
+    if (await this.usersService.existsEmail(token.email)) {
       throw new ConflictException(`E-mail já cadastrado!`);
     }
 
@@ -286,5 +290,146 @@ export class AuthService {
       where: { id: user.id },
       data: { image: newImage }
     });
+  }
+
+  private generateMagicCode(): string {
+    // Gera um código numérico de 6 dígitos
+    return randomInt(100000, 999999).toString();
+  }
+
+  async requestMagicLink(
+    magicLinkLoginDto: MagicLinkLoginDto
+  ): Promise<{ message: string }> {
+    const { email } = magicLinkLoginDto;
+    const user = await this.usersService.findByEmail(email);
+
+    if (!user) {
+      throw new NotFoundException('Usuário não encontrado.');
+    }
+
+    // Invalidar códigos anteriores não usados para este usuário (opcional, mas recomendado)
+    await this.prisma.magicLink.updateMany({
+      where: { userId: user.id, usedAt: null, expiresAt: { gt: new Date() } },
+      data: { expiresAt: new Date() } // Expira imediatamente
+    });
+
+    const code = this.generateMagicCode();
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // Expira em 10 minutos
+
+    await this.prisma.magicLink.create({
+      data: {
+        code,
+        userId: user.id,
+        expiresAt
+      }
+    });
+
+    await this.emailService.sendEmail(
+      email,
+      'Código de acesso - SISMAN',
+      `magic-link`,
+      {
+        appName: 'SISMAN',
+        code,
+        link: `http://localhost:3000/login/magic-link?code=${code}&email=${email}`,
+        expiresInMinutes: 10,
+        projectPrimaryColor: '#001a4c',
+        logoUrl:
+          'https://www.ufrn.br/resources/documentos/identidadevisual/logotipo/logotipo_sem-legenda.png'
+      }
+    );
+    return { message: 'Código de acesso enviado para seu e-mail.' };
+  }
+
+  async verifyCodeAndLogin(
+    verifyCodeDto: VerifyCodeDto,
+    request: RequestExpress
+  ) {
+    this.logger.log(`Iniciando o processo de login via código magic link`);
+    const ipAddress = request.ip;
+    const userAgent = request.headers['user-agent'];
+    const { email, code } = verifyCodeDto;
+
+    let userId: number | null = null;
+    let loginSuccess = false;
+
+    try {
+      const user = await this.usersService.findByEmail(email);
+      if (!user) {
+        throw new NotFoundException('Usuário não encontrado.');
+      }
+
+      const magicLink = await this.prisma.magicLink.findFirst({
+        where: {
+          userId: user.id,
+          code: code,
+          usedAt: null, // Ainda não foi usado
+          expiresAt: {
+            gt: new Date() // Não expirou
+          }
+        }
+      });
+
+      if (!magicLink) {
+        throw new UnauthorizedException(
+          'Código inválido, expirado ou já utilizado.'
+        );
+      }
+
+      // Marcar código como usado
+      await this.prisma.magicLink.update({
+        where: { id: magicLink.id },
+        data: { usedAt: new Date() }
+      });
+
+      // Se chegou aqui, a validação foi bem-sucedida
+      userId = user.id;
+      loginSuccess = true;
+
+      // >>> Incrementa o contador de login BEM-SUCEDIDO AQUI <<<
+      this.metricsService.userLoginCounter.inc(); // Pode adicionar labels aqui se definiu algum
+
+      const roles = await this.prisma.userRole.findMany({
+        where: { userId: user.id }
+      });
+
+      return this.createToken(user, roles);
+    } catch (error) {
+      // Se o erro não for Unauthorized, é algo inesperado, relance
+
+      if (!(error instanceof UnauthorizedException)) {
+        throw error;
+      }
+
+      // Se for Unauthorized, já tratamos acima (loginSuccess = false)
+
+      throw error; // Relança para o NestJS tratar e retornar 401
+    } finally {
+      // SEMPRE registra a tentativa no banco de dados, independente do sucesso
+      if (userId) {
+        // Só registra se conseguimos identificar o usuário
+        // Não use await aqui para não bloquear a resposta - "fire-and-forget"
+        this.logLoginService
+          .recordLoginAttempt({
+            userId: userId,
+            ipAddress: ipAddress,
+            userAgent: userAgent,
+            successful: loginSuccess
+          })
+          .catch((logError) => {
+            // Log interno caso a gravação do histórico falhe
+            console.error(
+              'Failed background task: recordLoginAttempt',
+              logError
+            );
+          });
+      } else if (!loginSuccess) {
+        // Opcional: Registrar tentativas com email inválido (sem userId)
+        // Poderia ter um campo 'attemptedEmail' na tabela LoginHistory
+        // console.warn(
+        //   `Failed login attempt for non-existent email: ${authLoginDto.email} from IP: ${ipAddress}`,
+        // );
+      }
+    }
   }
 }

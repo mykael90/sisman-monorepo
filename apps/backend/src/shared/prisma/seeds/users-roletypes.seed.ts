@@ -5,9 +5,9 @@ import { plainToInstance } from 'class-transformer';
 import {
   removeNullOrEmptyStringProps,
   seedModel,
-  TransformValidateFn,
+  TransformValidateFn
 } from './seed-utils';
-import { CreateUserRoletypeDto } from '../../dto/user/role/create-user-roletype.dto';
+import { CreateUserRoletypeDto } from '../../../modules/users/dto/role/create-user-roletype.dto';
 // Adjust the path if your DTO is located elsewhere
 
 const logger = console;
@@ -23,13 +23,13 @@ const transformAndValidateUserRoletypes: TransformValidateFn<
   // --- 2. DTO Validation ---
   const roleTypeDto = plainToInstance(
     CreateUserRoletypeDto,
-    processedRawRoleType,
+    processedRawRoleType
   );
 
   const errors = await validate(roleTypeDto);
   if (errors.length > 0) {
     logger.warn(
-      `Skipping user role type due to validation errors: ${errors.map((e) => Object.values(e.constraints || {})).join(', ')}. Original Data: ${JSON.stringify(rawRoleType)}`,
+      `Skipping user role type due to validation errors: ${errors.map((e) => Object.values(e.constraints || {})).join(', ')}. Original Data: ${JSON.stringify(rawRoleType)}`
     );
     logger.warn('Validation Errors:', JSON.stringify(errors));
     return null;
@@ -42,7 +42,7 @@ const transformAndValidateUserRoletypes: TransformValidateFn<
   const createInput: Prisma.UserRoletypeCreateInput = {
     id: roleTypeDto.id,
     role: roleTypeDto.role,
-    description: roleTypeDto.description,
+    description: roleTypeDto.description
     // Add any other required fields from your UserRoletypes model schema here
   };
 
@@ -60,7 +60,7 @@ export async function main(prisma: PrismaClient): Promise<void> {
     jsonFilePath: userRoletypeJsonPath,
     prismaDelegate: prisma.userRoletype, // Make sure this matches your Prisma model delegate
     transformAndValidate: transformAndValidateUserRoletypes,
-    uniqueKey: 'id', // Use 'id' or 'role' as the unique identifier based on your schema
+    uniqueKey: 'id' // Use 'id' or 'role' as the unique identifier based on your schema
   });
 }
 

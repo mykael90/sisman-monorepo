@@ -7,9 +7,9 @@ import {
   ConflictException
 } from '@nestjs/common';
 import { PrismaService } from '../../../shared/prisma/prisma.service';
-import { CreateUserRoleDto } from '../../../shared/dto/user/role/create-user-role.dto';
-import { DeleteUserRoleDto } from '../../../shared/dto/user/role/delete-user-role.dto';
-import { UpdateUserRoleDto } from '../../../shared/dto/user/role/update-user-role.dto';
+import { CreateUserRoleDto } from '../dto/role/create-user-role.dto';
+import { DeleteUserRoleDto } from '../dto/role/delete-user-role.dto';
+import { UpdateUserRoleDto } from '../dto/role/update-user-role.dto';
 
 @Injectable()
 export class RolesService {

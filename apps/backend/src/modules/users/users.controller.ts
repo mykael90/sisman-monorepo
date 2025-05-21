@@ -9,11 +9,11 @@ import {
   Post,
   Put,
   UseGuards,
-  UseInterceptors,
+  UseInterceptors
 } from '@nestjs/common';
-import { CreateUserDTO } from 'src/shared/dto/user/create-user.dto';
-import { UpdatePutUserDTO } from 'src/shared/dto/user/update-put-user.dto';
-import { UpdatePatchUserDTO } from 'src/shared/dto/user/update-patch-user.dto';
+import { CreateUserDTO } from './dto/create-user.dto';
+import { UpdatePutUserDTO } from './dto/update-put-user.dto';
+import { UpdatePatchUserDTO } from './dto/update-patch-user.dto';
 import { UsersService } from './users.service';
 import { LogInterceptor } from 'src/shared/interceptors/log.interceptor';
 import { ParamId } from 'src/shared/decorators/param-id-decorator';
@@ -56,7 +56,7 @@ export class UsersController {
   @ApiOkResponse({ type: UsersEntity })
   async updateAll(
     @Param('id', ParseIntPipe) id: number,
-    @Body() data: UpdatePutUserDTO,
+    @Body() data: UpdatePutUserDTO
   ) {
     return this.userService.update(id, data);
   }
@@ -65,7 +65,7 @@ export class UsersController {
   @ApiOkResponse({ type: UsersEntity })
   async update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() data: UpdatePatchUserDTO,
+    @Body() data: UpdatePatchUserDTO
   ) {
     return this.userService.updatePartial(id, data);
   }

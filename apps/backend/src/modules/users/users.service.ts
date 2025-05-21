@@ -4,10 +4,10 @@ import {
   Injectable,
   NotFoundException
 } from '@nestjs/common';
-import { CreateUserDTO } from 'src/shared/dto/user/create-user.dto';
+import { CreateUserDTO } from './dto/create-user.dto';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
-import { UpdatePutUserDTO } from 'src/shared/dto/user/update-put-user.dto';
-import { UpdatePatchUserDTO } from 'src/shared/dto/user/update-patch-user.dto';
+import { UpdatePutUserDTO } from './dto/update-put-user.dto';
+import { UpdatePatchUserDTO } from './dto/update-patch-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -91,6 +91,11 @@ export class UsersService {
     const user = await this.prisma.user.findFirst({ where: { email } });
     return !!user;
   }
+
+  async findByEmail(email: string) {
+    return await this.prisma.user.findFirst({ where: { email } });
+  }
+
   async existsLogin(login: string) {
     const user = await this.prisma.user.findFirst({ where: { login } });
     console.log('resposta' + !!user);

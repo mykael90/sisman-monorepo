@@ -1,4 +1,3 @@
-import { CreateMaterialDto } from '../../dto/material/create-material.dto';
 import type { PrismaClient, Prisma } from '@sisman/prisma';
 import { validate } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
@@ -6,8 +5,9 @@ import { plainToInstance } from 'class-transformer';
 import {
   seedModel,
   TransformValidateFn,
-  removeNullOrEmptyStringProps, // <-- Importe aqui
+  removeNullOrEmptyStringProps // <-- Importe aqui
 } from './seed-utils';
+import { CreateMaterialDto } from '../../../modules/materials/dto/create-material.dto';
 
 const logger = console;
 
@@ -30,7 +30,7 @@ const transformAndValidateMaterial: TransformValidateFn<
   const errors = await validate(materialDto);
   if (errors.length > 0) {
     logger.warn(
-      `Skipping material due to validation errors: ${errors.map((e) => Object.values(e.constraints || {})).join(', ')}. Original Data: ${JSON.stringify(rawMaterial)}`, // Log original data
+      `Skipping material due to validation errors: ${errors.map((e) => Object.values(e.constraints || {})).join(', ')}. Original Data: ${JSON.stringify(rawMaterial)}` // Log original data
     );
     logger.warn('Validation Errors:', JSON.stringify(errors));
     return null;
@@ -44,7 +44,7 @@ const transformAndValidateMaterial: TransformValidateFn<
     materialIdBigInt = BigInt(materialDto.id); // Convert ID from DTO to BigInt
   } catch (e) {
     logger.warn(
-      `Skipping material: Invalid ID format (must be convertible to BigInt) in DTO after validation. Original Data: ${JSON.stringify(rawMaterial)}`,
+      `Skipping material: Invalid ID format (must be convertible to BigInt) in DTO after validation. Original Data: ${JSON.stringify(rawMaterial)}`
     );
     return null;
   }
@@ -56,13 +56,13 @@ const transformAndValidateMaterial: TransformValidateFn<
     unit: materialDto.unit,
     // Use os campos do DTO validado. Se forem opcionais no DTO e não existirem, não serão incluídos.
     ...(materialDto.specification && {
-      specification: materialDto.specification,
+      specification: materialDto.specification
     }),
     // O DTO já deve ter transformado para boolean se necessário (@Transform)
     // ou validado (@IsBoolean). Inclua se existir no DTO.
     ...(materialDto.isActive !== undefined && {
-      isActive: materialDto.isActive,
-    }),
+      isActive: materialDto.isActive
+    })
   };
 
   return createInput;
@@ -79,6 +79,6 @@ export async function main(prisma: PrismaClient): Promise<void> {
     jsonFilePath: materialsJsonPath,
     prismaDelegate: prisma.material, // Pass the material delegate
     transformAndValidate: transformAndValidateMaterial,
-    uniqueKey: 'id', // For specific duplicate logging
+    uniqueKey: 'id' // For specific duplicate logging
   });
 }

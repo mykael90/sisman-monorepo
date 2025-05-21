@@ -5,9 +5,9 @@ import { plainToInstance } from 'class-transformer';
 import {
   removeNullOrEmptyStringProps,
   seedModel,
-  TransformValidateFn,
+  TransformValidateFn
 } from './seed-utils';
-import { CreateUserRoleDto } from '../../dto/user/role/create-user-role.dto'; // Adjust path if needed
+import { CreateUserRoleDto } from '../../../modules/users/dto/role/create-user-role.dto'; // Adjust path if needed
 
 const logger = console;
 const userRolesJsonPath = '../data/users-roles.json'; // Assuming data is in this file
@@ -23,13 +23,13 @@ const transformAndValidateUserRole: TransformValidateFn<
   // Use the pre-processed data for DTO instantiation
   // Ensure numbers are transformed correctly if coming from JSON as strings
   const userRoleDto = plainToInstance(CreateUserRoleDto, processedRawUserRole, {
-    enableImplicitConversion: true, // Helps convert string numbers from JSON if needed
+    enableImplicitConversion: true // Helps convert string numbers from JSON if needed
   });
 
   const errors = await validate(userRoleDto);
   if (errors.length > 0) {
     logger.warn(
-      `Skipping user role due to validation errors: ${errors.map((e) => Object.values(e.constraints || {})).join(', ')}. Original Data: ${JSON.stringify(rawUserRole)}`,
+      `Skipping user role due to validation errors: ${errors.map((e) => Object.values(e.constraints || {})).join(', ')}. Original Data: ${JSON.stringify(rawUserRole)}`
     );
     logger.warn('Validation Errors:', JSON.stringify(errors));
     return null;
@@ -41,7 +41,7 @@ const transformAndValidateUserRole: TransformValidateFn<
   const createInput: Prisma.UserRoleCreateInput = {
     // Assuming relation is established via IDs
     user: { connect: { id: userRoleDto.userId } },
-    userRoletype: { connect: { id: userRoleDto.userRoletypeId } },
+    userRoletype: { connect: { id: userRoleDto.userRoletypeId } }
   };
 
   return createInput; // Return the data ready for Prisma
@@ -57,7 +57,7 @@ export async function main(prisma: PrismaClient): Promise<void> {
     modelName: 'UserRole',
     jsonFilePath: userRolesJsonPath,
     prismaDelegate: prisma.userRole,
-    transformAndValidate: transformAndValidateUserRole,
+    transformAndValidate: transformAndValidateUserRole
     // Note: A simple unique key isn't obvious for a join table like UserRole.
     // The unique constraint is usually on the combination of userId and userRoletypeId.
     // The seedModel utility might need adjustment if upsert based on a single key is required.
