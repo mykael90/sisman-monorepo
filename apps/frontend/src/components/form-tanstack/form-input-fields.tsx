@@ -8,13 +8,15 @@ export function FormInputField({
   type = 'text',
   placeholder,
   showLabel = true,
-  ...rest
+  className = '',
+  ...props
 }: {
   field: AnyFieldApi;
   label: string;
   type?: string;
   placeholder?: string;
   showLabel?: boolean;
+  className?: string;
   [key: string]: any;
 }) {
   // Como AnyFieldApi é genérico (any para muitos tipos internos),
@@ -27,7 +29,7 @@ export function FormInputField({
   //   const errors = field.state.meta.errors as string[] | undefined; // Asserção para o formato esperado de erros
 
   return (
-    <div className='mb-4'>
+    <div className={className}>
       {showLabel && (
         <label
           htmlFor={field.name}

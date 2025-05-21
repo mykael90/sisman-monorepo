@@ -137,7 +137,7 @@ Profile: ${JSON.stringify(profile, null, 2)}
 
       //---------------------------------------------------------------------------------------
       // 1. Login inicial com link mágico por email
-      if (processedToken.provider === 'email') {
+      if (account && user && account.provider === 'magic-link-verifier') {
         processedToken = {
           ...processedToken,
           id: user.id,

@@ -81,10 +81,11 @@ export const config = {
      * - _next/image (Arquivos de otimização de imagem)
      * - favicon.ico (Arquivo de favicon)
      * - signin (Sua página de login)
+     * - callback/magic-link (Sua de callback de link magico)
      * E que terminam com extensões comuns de assets (adicione mais se necessário)
      * OU caminhos específicos como /images, /fonts etc.
      */
-    '/((?!api|_next/static|_next/image|favicon\\.ico|signin|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)'
+    '/((?!api|_next/static|_next/image|favicon\\.ico|signin|callback/magic-link|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)'
     // Alternativa se seus assets estiverem em pastas específicas:
     // '/((?!api|_next/static|_next/image|favicon.ico|signin|images/|icons/).*)',
   ]

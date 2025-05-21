@@ -51,8 +51,7 @@ class Logger {
   // Métodos públicos de log agora são métodos de instância
   // e não precisam mais receber o 'context' como parâmetro
   debug(message: string, ...args: any[]) {
-    
-    // this.log(LogLevel.DEBUG, message, ...args);
+    this.log(LogLevel.DEBUG, message, ...args);
   }
 
   info(message: string, ...args: any[]) {

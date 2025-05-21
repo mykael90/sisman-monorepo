@@ -7,7 +7,6 @@ import { FormInputField } from '@/components/form-tanstack/form-input-fields';
 import { Button } from '@/components/ui/button';
 import { IActionResultForm } from '../../../../../types/types-server-actions';
 import { ErrorServerForm } from '../../../../../components/form-tanstack/error-server-form';
-import { UserPlus } from 'lucide-react';
 import { z } from 'zod';
 import { requestMagicLink } from '../../signin-actions';
 
@@ -44,10 +43,6 @@ export default function LoginForm() {
 
   useStore(form.store, (formState) => formState.errorsServer);
 
-  const currentSubmitButtonText = 'Receber código';
-
-  const CurrentSubmitButtonIcon = <UserPlus className='mr-2 h-5 w-5' />;
-
   return (
     <form
       action={formAction} // Server action do useActionState
@@ -61,7 +56,7 @@ export default function LoginForm() {
     >
       <ErrorServerForm serverState={serverState} />
 
-      <div className='flex flex-row items-center justify-between gap-2'>
+      <div className='my-4 flex flex-row items-center justify-between gap-2'>
         <form.Field
           name='email'
           validators={{
@@ -78,6 +73,7 @@ export default function LoginForm() {
               type='email'
               placeholder='Digite o email'
               showLabel={false}
+              className='flex-1'
             />
           )}
         </form.Field>
@@ -93,10 +89,7 @@ export default function LoginForm() {
               type='submit'
               disabled={!canSubmit || isPending || isValidating || !isTouched}
             >
-              {isPending || isValidating
-                ? 'Processando...'
-                : CurrentSubmitButtonIcon}
-              {isPending || isValidating ? '' : currentSubmitButtonText}
+              {isPending || isValidating ? 'Enviando...' : 'Solicitar código'}
             </Button>
           )}
         </form.Subscribe>

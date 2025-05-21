@@ -205,6 +205,7 @@ export default function UserForm({
               field={field}
               label={fieldLabels.name}
               placeholder='Digite o nome completo'
+              className='mb-4'
             />
             {/* {JSON.stringify(field.getMeta(), null, 2)} */}
           </>
@@ -217,6 +218,7 @@ export default function UserForm({
             field={field}
             label={fieldLabels.login}
             placeholder='Digite o login'
+            className='mb-4'
           />
         )}
       </form.Field>
@@ -228,6 +230,7 @@ export default function UserForm({
             label={fieldLabels.email}
             type='email'
             placeholder='Digite o email'
+            className='mb-4'
           />
         )}
       </form.Field>
