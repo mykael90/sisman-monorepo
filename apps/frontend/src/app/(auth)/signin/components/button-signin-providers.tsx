@@ -1,13 +1,14 @@
 'use client';
 
 import { signIn } from 'next-auth/react';
-import { Button } from './button';
+import { Button } from '../../../../components/ui/button';
 import Link from 'next/link';
 import { ExternalLink, Info, ArrowRight } from 'lucide-react';
 import LogoUFRNDark from '@/assets/img/logo-ufrn-dark.png';
 import Image from 'next/image';
 import LogoGovBr from '@/assets/img/logo-govbr.webp';
 import LogoGoogle from '@/assets/img/logo-g-google.png';
+import LoginForm from './form/login-email-form';
 
 // Mantive a constante para o botão GOV.BR, mas ela será aplicada dentro do details agora
 const classNameButtonOthers =
@@ -34,7 +35,7 @@ const StiSiginButton = ({ callback: callbackUrl }: { callback: string }) => {
         <div className=''>Entrar com UFRN.BR</div>
       </Button>
 
-      {/* Usando details e summary para o botão GOV.BR */}
+      {/* Usando details e summary para o link mágico */}
       <details className='mt-4 w-full'>
         <summary className='cursor-pointer list-none text-center text-sm text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200'>
           <span className='hidden sm:inline-block'>
@@ -42,61 +43,15 @@ const StiSiginButton = ({ callback: callbackUrl }: { callback: string }) => {
           </span>
           <span className='text-sisman-teal hover:underline'>
             {' '}
-            Outras opções de login
+            Acesse com seu e-mail
           </span>
         </summary>
         {/* O botão GOV.BR agora fica dentro do details */}
-        <div className='mt-3 flex flex-col gap-3'>
-          {' '}
-          {/* Adiciona um espaço acima do botão quando expandido */}
-          <Button
-            className={classNameButtonOthers} // Reutiliza a classe definida
-            variant='outline'
-            size='default'
-            onClick={() => signIn('ufrn', { callbackUrl })} // Atenção: O provider 'ufrn' está sendo usado para GOV.BR também. Verifique se isso está correto.
-          >
-            <div className='w-15'>
-              <Image
-                src={LogoGovBr}
-                alt='Logo GOV.BR'
-                height={50}
-                width={50}
-                className='brightness-100'
-              />
-            </div>
-            Entrar com GOV.BR
-          </Button>
-          <Button
-            className={classNameButtonOthers} // Reutiliza a classe definida
-            variant='outline'
-            size='default'
-            onClick={() => signIn('ufrn', { callbackUrl })} // Atenção: O provider 'ufrn' está sendo usado para GOV.BR também. Verifique se isso está correto.
-          >
-            <div className='w-15'>
-              <Image
-                src={LogoGoogle}
-                alt='Logo Google'
-                height={50}
-                width={30}
-                className='brightness-100'
-              />
-            </div>
-            Entrar com Google
-          </Button>
-          <Link
-            href='#'
-            className='text-center text-sm text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200'
-          >
-            <span className='hidden sm:inline-block'>
-              Problemas para entrar?{' '}
-            </span>
-            <span className='text-sisman-teal hover:underline'>
-              {' '}
-              Contate o suporte
-            </span>
-          </Link>
-        </div>
+        <LoginForm></LoginForm>
       </details>
+
+      {/* Botão GOV.BR entre outros */}
+      {/* <OthersProviders callbackUrl={callbackUrl}></OthersProviders> */}
 
       <details className='mt-2 w-full'>
         <summary className='cursor-pointer list-none text-center text-sm text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200'>
@@ -135,5 +90,74 @@ const StiSiginButton = ({ callback: callbackUrl }: { callback: string }) => {
     </div>
   );
 };
+
+import React from 'react';
+
+function OthersProviders({ callbackUrl }: { callbackUrl: string }) {
+  return (
+    <details className='mt-2 w-full'>
+      <summary className='cursor-pointer list-none text-center text-sm text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200'>
+        <span className='hidden sm:inline-block'>
+          Não tem conta na UFRN.BR?{' '}
+        </span>
+        <span className='text-sisman-teal hover:underline'>
+          {' '}
+          Outras opções de login
+        </span>
+      </summary>
+      {/* O botão GOV.BR agora fica dentro do details */}
+      <div className='mt-3 flex flex-col gap-3'>
+        {' '}
+        {/* Adiciona um espaço acima do botão quando expandido */}
+        <Button
+          className={classNameButtonOthers} // Reutiliza a classe definida
+          variant='outline'
+          size='default'
+          onClick={() => signIn('ufrn', { callbackUrl })} // Atenção: O provider 'ufrn' está sendo usado para GOV.BR também. Verifique se isso está correto.
+        >
+          <div className='w-15'>
+            <Image
+              src={LogoGovBr}
+              alt='Logo GOV.BR'
+              height={50}
+              width={50}
+              className='brightness-100'
+            />
+          </div>
+          Entrar com GOV.BR
+        </Button>
+        <Button
+          className={classNameButtonOthers} // Reutiliza a classe definida
+          variant='outline'
+          size='default'
+          onClick={() => signIn('ufrn', { callbackUrl })} // Atenção: O provider 'ufrn' está sendo usado para GOV.BR também. Verifique se isso está correto.
+        >
+          <div className='w-15'>
+            <Image
+              src={LogoGoogle}
+              alt='Logo Google'
+              height={50}
+              width={30}
+              className='brightness-100'
+            />
+          </div>
+          Entrar com Google
+        </Button>
+        <Link
+          href='#'
+          className='text-center text-sm text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200'
+        >
+          <span className='hidden sm:inline-block'>
+            Problemas para entrar?{' '}
+          </span>
+          <span className='text-sisman-teal hover:underline'>
+            {' '}
+            Contate o suporte
+          </span>
+        </Link>
+      </div>
+    </details>
+  );
+}
 
 export default StiSiginButton;

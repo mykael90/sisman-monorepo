@@ -6,7 +6,7 @@ import HeroLogin from '@/assets/img/hero-login.jpg';
 import Logo from '@/assets/img/logo.svg';
 import LogoDark from '@/assets/img/logo-dark.svg';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import ProvidersSigninButton from '../../../components/ui/button-signin-providers';
+import ProvidersSigninButton from './components/button-signin-providers';
 import { User, AlertTriangle, ShieldCheck, ExternalLink } from 'lucide-react';
 
 const authErrorMessages = {

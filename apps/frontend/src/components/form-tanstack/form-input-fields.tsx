@@ -6,12 +6,16 @@ export function FormInputField({
   field,
   label,
   type = 'text',
-  placeholder
+  placeholder,
+  showLabel = true,
+  ...rest
 }: {
   field: AnyFieldApi;
   label: string;
   type?: string;
   placeholder?: string;
+  showLabel?: boolean;
+  [key: string]: any;
 }) {
   // Como AnyFieldApi é genérico (any para muitos tipos internos),
   // você pode precisar de algumas asserções de tipo ao acessar propriedades
@@ -24,12 +28,14 @@ export function FormInputField({
 
   return (
     <div className='mb-4'>
-      <label
-        htmlFor={field.name}
-        className='mb-1 block text-sm font-medium text-gray-700'
-      >
-        {label}
-      </label>
+      {showLabel && (
+        <label
+          htmlFor={field.name}
+          className='mb-1 block text-sm font-medium text-gray-700'
+        >
+          {label}
+        </label>
+      )}
       <Input
         id={field.name}
         name={field.name}

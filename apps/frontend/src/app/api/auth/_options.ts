@@ -1,4 +1,4 @@
-import UFRNOAuthProvider from './_ufrnProvider';
+import UFRNOAuthProvider from './providers/_ufrn-provider';
 import { AuthOptions } from 'next-auth';
 import GithubProvider from 'next-auth/providers/github';
 import { AdapterUser } from 'next-auth/adapters';
@@ -7,11 +7,15 @@ import Logger from '@/lib/logger';
 import { handleAuthorizationLogic } from '@/src/lib/auth/authorization-sisman';
 import refreshUfrnAccessToken from '../../../lib/auth/refresh-ufrn-access-token';
 import refreshSismanAccessToken from '../../../lib/auth/refresh-sisman-access-token';
+import { emailMagicLinkProviderConfig } from './providers/_magic-link-provider';
+import { magicLinkCredentialsProviderConfig } from './providers/_magic-link-credentials-provider';
 
 const logger = new Logger('authOptions');
 
 export const authOptions: AuthOptions = {
   providers: [
+    // emailMagicLinkProviderConfig, // Para iniciar o fluxo (opcionalmente, pela UI do NextAuth)
+    magicLinkCredentialsProviderConfig, // Para verificar o código do link mágico
     GithubProvider({
       clientId: process.env.GITHUB_CLIENT_ID as string,
       clientSecret: process.env.GITHUB_CLIENT_SECRET as string
@@ -29,7 +33,9 @@ export const authOptions: AuthOptions = {
   },
   session: {
     strategy: 'jwt',
-    maxAge: 30 * 24 * 60 * 60 // 30 days
+    maxAge:
+      parseInt(process.env.NEXTAUTH_SESSION_MAX_AGE as string) ||
+      1 * 24 * 60 * 60 // 1 day as number
   },
   callbacks: {
     async signIn({ user, account, profile }) {
@@ -83,8 +89,8 @@ Profile: ${JSON.stringify(profile, null, 2)}
 
       let processedToken = token; // Usar uma variável temporária
 
-      // 1. Login Inicial ou Primeira Chamada JWT pós-login
-      if (account && user) {
+      // 1. Login Inicial ou Primeira Chamada JWT pós-login para provider UFRN
+      if (account && user && processedToken.provider === 'ufrn') {
         logger.debug(
           `Primeiro acesso ou chamada inicial, processando dados do provedor e autorização.`
         );
@@ -127,6 +133,20 @@ Profile: ${JSON.stringify(profile, null, 2)}
           'Token SISMAN expirado ou inválido, tentando renovar/revalidar...'
         );
         processedToken = await refreshSismanAccessToken(processedToken); // Função a ser criada
+      }
+
+      //---------------------------------------------------------------------------------------
+      // 1. Login inicial com link mágico por email
+      if (processedToken.provider === 'email') {
+        processedToken = {
+          ...processedToken,
+          id: user.id,
+          accessTokenSisman: user.access_token,
+          expiresAtSisman: Math.floor(
+            Date.now() / 1000 + (user.expires_in || 3600)
+          ),
+          login: user.login // Adiciona o login, se existir
+        };
       }
 
       logger.debug(`
