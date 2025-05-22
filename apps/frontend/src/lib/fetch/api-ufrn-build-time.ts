@@ -88,7 +88,7 @@ async function authenticate(
  * @returns A promise that resolves with the fetch Response object.
  * @throws Throws an error if both initial fetch and retry fetch fail.
  */
-export default async function fetchApiUFRNBuildTime(
+export async function fetchApiUFRNBuildTime(
   url: string,
   options: RequestInit = {}
 ): Promise<Response> {

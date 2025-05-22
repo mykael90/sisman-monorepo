@@ -1,6 +1,6 @@
 // export const dynamic = 'force-dynamic';
 
-import fetchApiUFRNBuildTime from '../../../lib/fetch/api-ufrn-build-time';
+import { fetchApiUFRNBuildTime } from '../../../lib/fetch/api-ufrn-build-time';
 
 interface sistemaInterface {
   ['id-sistema']: number;
@@ -33,7 +33,7 @@ export default async function Sistemas() {
       <div className='flex w-md flex-col'>
         <h1 className='flex text-2xl font-bold'>SISTEMAS</h1>
         <ul className='mt-6 flex flex-col gap-3'>
-          {sistemas.slice(0, 10).map(sistema => (
+          {sistemas.slice(0, 10).map((sistema) => (
             <li key={sistema['id-sistema']}>{sistema.nome}</li>
           ))}
         </ul>

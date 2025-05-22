@@ -19,7 +19,7 @@ const logger = new Logger('ApiUFRN');
  * @throws Lança um erro se o usuário não estiver autenticado, se variáveis de ambiente
  *         necessárias estiverem faltando, ou se a requisição fetch falhar.
  */
-export default async function fetchApiUFRN(
+export async function fetchApiUFRN(
   relativeUrl: string,
   accessTokenUfrn?: string,
   options: RequestInit = {}

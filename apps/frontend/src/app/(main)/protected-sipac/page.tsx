@@ -1,10 +1,10 @@
-import fetchApiUFRNUserSession from '@/src/lib/fetch/api-ufrn'; // Ajuste o caminho
+import { fetchApiUFRN } from '@/src/lib/fetch/api-ufrn'; // Ajuste o caminho
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/_options';
 
 export default async function ServerPage() {
   // getServerSession ainda pode ser útil para obter outros dados da sessão
-  // ou para verificações iniciais, embora fetchApiUFRNUserSession já faça a verificação.
+  // ou para verificações iniciais, embora fetchApiUFRN já faça a verificação.
   const session = await getServerSession(authOptions);
 
   let apiData = null;
@@ -13,9 +13,7 @@ export default async function ServerPage() {
   if (session) {
     // Só tenta buscar se houver uma sessão (opcional, a função fetch já verifica)
     try {
-      const response = await fetchApiUFRNUserSession(
-        '/usuario/v1/usuarios/info'
-      );
+      const response = await fetchApiUFRN('/usuario/v1/usuarios/info');
       // Verifica se a resposta foi realmente OK antes de tentar ler o JSON
       if (response.ok) {
         apiData = await response.json();
@@ -24,7 +22,7 @@ export default async function ServerPage() {
         fetchError = `Erro ao buscar dados: ${response.status} ${response.statusText}`;
       }
     } catch (error) {
-      console.error('Erro ao chamar fetchApiUFRNUserSession:', error);
+      console.error('Erro ao chamar fetchApiUFRN:', error);
       fetchError =
         error instanceof Error
           ? error.message

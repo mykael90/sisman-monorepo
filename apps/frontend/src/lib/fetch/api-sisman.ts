@@ -84,7 +84,7 @@ function isSismanApiErrorResponse(obj: any): obj is ISismanApiErrorResponse {
  * @throws Throws {@link SismanApiError} if the API returns an error response
  *         in the expected JSON format.
  */
-export default async function fetchApiSisman(
+export async function fetchApiSisman(
   relativeUrl: string,
   accessTokenSisman?: string,
   options: RequestInit = {}

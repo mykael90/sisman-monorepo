@@ -1,7 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import fetchApiSisman from '../../../lib/fetch/api-sisman';
+import { fetchApiSisman } from '../../../lib/fetch/api-sisman';
 import Logger from '@/lib/logger';
 
 const logger = new Logger('users-data-client/_actions');

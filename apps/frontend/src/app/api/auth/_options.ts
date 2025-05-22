@@ -115,7 +115,7 @@ export const authOptions: AuthOptions = {
           token = { ...token, ...authorizationFields };
         } else if (account.provider === 'magic-link-verifier') {
           // ID do provider de credentials
-          // O provider de credentials já deve ter retornado accessTokenFromProvider e expiresInProvider
+          // O provider de credentials já deve ter retornado accessTokenSisman e expiresInSisman
           if (typedUser.accessTokenSisman) {
             token.accessTokenSisman = typedUser.accessTokenSisman;
             token.expiresAtSisman = Math.floor(
@@ -125,9 +125,7 @@ export const authOptions: AuthOptions = {
             token.roles = typedUser.roles;
             // Aqui você pode querer buscar 'roles' ou outros dados do Sisman se não vieram no 'authorize'
           } else {
-            logger.warn(
-              'Magic link verifier não retornou accessTokenFromProvider.'
-            );
+            logger.warn('Magic link verifier não retornou accessTokenSisman.');
             token.authorizationError =
               'Falha ao obter token do Sisman via Magic Link.';
           }

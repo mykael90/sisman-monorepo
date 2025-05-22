@@ -1,4 +1,4 @@
-import fetchApiSisman from '@/src/lib/fetch/api-sisman'; // Ajustado para usar a API Sisman
+import { fetchApiSisman } from '@/src/lib/fetch/api-sisman'; // Ajustado para usar a API Sisman
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/_options';
 

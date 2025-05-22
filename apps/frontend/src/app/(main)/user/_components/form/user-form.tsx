@@ -169,7 +169,9 @@ export default function UserForm({
         )}
       </form.Field> */}
 
-      <div className='bg-red-100'>
+      {/* Debug: Mostrar estados na tela */}
+
+      {/* <div className='bg-red-100'>
         {Object.entries(form.state).map(([key, value]) => (
           <div key={key}>
             <strong>{key}:</strong> {JSON.stringify(value, null, 2)}
@@ -183,7 +185,7 @@ export default function UserForm({
             <strong>{key}:</strong> {JSON.stringify(value, null, 2)}
           </div>
         ))}
-      </div>
+      </div> */}
 
       {/* Campo ID oculto para o modo de edição */}
       {mode === 'edit' && defaultData.id && (
@@ -274,12 +276,12 @@ export default function UserForm({
           {([canSubmit, isTouched, isValidating]) => (
             <Button
               type='submit'
-              // disabled={
-              //   !canSubmit ||
-              //   isPending ||
-              //   isValidating ||
-              //   (mode === 'add' && !isTouched)
-              // }
+              disabled={
+                !canSubmit ||
+                isPending ||
+                isValidating ||
+                (mode === 'add' && !isTouched)
+              }
               // Em modo de edição, pode desabilitar se nada foi tocado (isTouched)
             >
               {isPending || isValidating
