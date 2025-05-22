@@ -23,7 +23,8 @@ import { randomInt } from 'crypto';
 import { MagicLinkLoginDto } from './dto/magic-link-login.dto';
 import { VerifyCodeDto } from './dto/verify-code-magic-link.dto';
 import { EmailService } from '../notifications/email/email.service';
-import { ConfigService } from '@nestjs/config';
+import { ConfigService, ConfigType } from '@nestjs/config';
+import generalConfig from '../../config/general.config';
 
 @Injectable()
 export class AuthService {
@@ -38,7 +39,9 @@ export class AuthService {
     private readonly emailService: EmailService,
     private readonly metricsService: MetricsService, // Injete o serviço de métricas
     private readonly logLoginService: LogLoginService, // Injete o serviço de métricas
-    private readonly configService: ConfigService // Injete o serviço de configuração
+    private readonly configService: ConfigService, // Injete o serviço de configuração
+    @Inject(generalConfig.KEY)
+    private gnConfig: ConfigType<typeof generalConfig>
   ) {}
 
   createToken(user: User, roles: UserRole[] = []) {
@@ -335,13 +338,13 @@ export class AuthService {
       `Código de acesso - SISMAN: ${code}`,
       `magic-link`,
       {
-        appName: this.configService.get('general.appName'),
+        appName: this.gnConfig.appName,
         code,
-        link: `${this.configService.get('general.magicLinkCallbackUrl')}?code=${code}&email=${email}`,
-        expiresInMinutes: 10,
-        projectPrimaryColor: this.configService.get('general.appPrimaryColor'),
+        link: `${this.gnConfig.magicLinkCallbackUrl}?code=${code}&email=${email}`,
+        expiresInMinutes: this.gnConfig.magicLinkExpiresMinutes,
+        projectPrimaryColor: this.gnConfig.appPrimaryColor,
         //TODO: inserir logo sisman em variável global
-        logoUrl: this.configService.get('general.logoUrl')
+        logoUrl: this.gnConfig.appLogoUrl
       }
     );
     return { message: 'Código de acesso enviado para seu e-mail.' };

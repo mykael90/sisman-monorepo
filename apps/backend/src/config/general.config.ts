@@ -21,6 +21,7 @@ interface GeneralConfig {
   appSecondaryColor?: string;
   appFrontendUrl?: string;
   magicLinkCallbackUrl?: string;
+  magicLinkExpiresMinutes?: number;
 }
 
 export default registerAs(
@@ -34,6 +35,7 @@ export default registerAs(
     appFrontendUrl: process.env.APP_FRONTEND_URL || 'http://localhost:3000',
     magicLinkCallbackUrl:
       process.env.MAGIC_LINK_CALLBACK_URL ||
-      `${process.env.APP_FRONTEND_URL || 'http://localhost:3000'}/callback/magic-link`
+      `${process.env.APP_FRONTEND_URL || 'http://localhost:3000'}/callback/magic-link`,
+    magicLinkExpiresMinutes: 10
   })
 );
