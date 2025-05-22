@@ -122,8 +122,8 @@ export const sidebarItems: SidebarItem[] = [
   },
   {
     label: 'Settings',
-    href: '/settings',
-    icon: <Settings className='h-6 w-6' />
+    icon: <Settings className='h-6 w-6' />,
+    children: [{ label: 'Usuários', href: '/user' }]
   },
   {
     label: 'Sobre',

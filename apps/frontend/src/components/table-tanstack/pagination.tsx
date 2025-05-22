@@ -144,7 +144,7 @@ export function Pagination<TData>({ table }: { table: Table<TData> }) {
         </div>
       </div>
       <div className='flex items-center space-x-2'>
-        <p className='text-muted-foreground text-sm'>Linhas por página:</p>
+        <p className='text-muted-foreground text-sm'>Registros por página:</p>
         <Select
           value={`${pageSize}`}
           onValueChange={(value) => {
