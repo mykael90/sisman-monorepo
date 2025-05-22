@@ -18,9 +18,9 @@ export default function Error({
   const userFriendlyMessage =
     'Não foi possível concluir a ação solicitada. Você pode tentar novamente ou voltar para a página inicial.';
   const technicalDetailsLabel = 'Detalhes técnicos';
-  const goHomeLabel = 'Ir para o Início';
+  const goHomeLabel = 'Ir para o início';
   const tryAgainLabel = 'Tentar Novamente';
-  const contactSupportLabel = 'Falar com Suporte';
+  const contactSupportLabel = 'Suporte';
 
   return (
     <div className='flex flex-grow flex-col items-center justify-center gap-y-8 p-10 text-center'>

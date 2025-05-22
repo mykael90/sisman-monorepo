@@ -16,13 +16,21 @@ import { MetricsInterceptor } from './shared/interceptors/metrics.interceptor';
 import { LogLoginModule } from './shared/log-login/log-login.module';
 import { HttpExceptionFilter } from './shared/exception_filters/http-exception.filter';
 import { NotificationsModule } from './shared/notifications/notifications.module';
+import mailerConfig from './config/mailer.config';
+import databaseConfig from './config/database.config';
+import generalConfig from './config/general.config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      load: [generalConfig, mailerConfig, databaseConfig],
       expandVariables: true,
-      validationSchema
+      validationSchema,
+      validationOptions: {
+        allowUnknown: true,
+        abortEarly: true
+      }
     }),
     ThrottlerModule.forRoot({
       throttlers: [

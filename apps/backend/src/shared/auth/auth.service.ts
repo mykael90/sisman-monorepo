@@ -23,6 +23,7 @@ import { randomInt } from 'crypto';
 import { MagicLinkLoginDto } from './dto/magic-link-login.dto';
 import { VerifyCodeDto } from './dto/verify-code-magic-link.dto';
 import { EmailService } from '../notifications/email/email.service';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
@@ -36,7 +37,8 @@ export class AuthService {
     private readonly usersService: UsersService,
     private readonly emailService: EmailService,
     private readonly metricsService: MetricsService, // Injete o serviço de métricas
-    private readonly logLoginService: LogLoginService // Injete o serviço de métricas
+    private readonly logLoginService: LogLoginService, // Injete o serviço de métricas
+    private readonly configService: ConfigService // Injete o serviço de configuração
   ) {}
 
   createToken(user: User, roles: UserRole[] = []) {
@@ -333,13 +335,13 @@ export class AuthService {
       `Código de acesso - SISMAN: ${code}`,
       `magic-link`,
       {
-        appName: 'SISMAN',
+        appName: this.configService.get('general.appName'),
         code,
-        link: `http://localhost:3000/login/magic-link?code=${code}&email=${email}`,
+        link: `${this.configService.get('general.magicLinkCallbackUrl')}?code=${code}&email=${email}`,
         expiresInMinutes: 10,
-        projectPrimaryColor: '#001a4c',
-        logoUrl:
-          'https://www.ufrn.br/resources/documentos/identidadevisual/logotipo/logotipo_sem-legenda.png'
+        projectPrimaryColor: this.configService.get('general.appPrimaryColor'),
+        //TODO: inserir logo sisman em variável global
+        logoUrl: this.configService.get('general.logoUrl')
       }
     );
     return { message: 'Código de acesso enviado para seu e-mail.' };
