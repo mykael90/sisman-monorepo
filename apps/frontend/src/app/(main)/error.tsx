@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { AlertTriangle, Home, RefreshCw } from 'lucide-react';
+import { AlertTriangle, Home, MessageSquare, RefreshCw } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '../../components/ui/alert';
 import { Button } from '../../components/ui/button';
 
@@ -20,6 +20,7 @@ export default function Error({
   const technicalDetailsLabel = 'Detalhes técnicos';
   const goHomeLabel = 'Ir para o Início';
   const tryAgainLabel = 'Tentar Novamente';
+  const contactSupportLabel = 'Falar com Suporte';
 
   return (
     <div className='flex flex-grow flex-col items-center justify-center gap-y-8 p-10 text-center'>
@@ -60,6 +61,14 @@ export default function Error({
         >
           <RefreshCw className='mr-2 h-4 w-4' />
           {tryAgainLabel}
+        </Button>
+        <Button
+          onClick={() => console.log('Falar com Suporte clicado')} // Lógica a ser implementada
+          variant='outline'
+          className='w-full sm:w-auto'
+        >
+          <MessageSquare className='mr-2 h-4 w-4' />
+          {contactSupportLabel}
         </Button>
       </div>
     </div>

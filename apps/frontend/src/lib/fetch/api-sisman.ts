@@ -142,7 +142,7 @@ export async function fetchApiSisman(
           ? parsedError.message.join('; ')
           : parsedError.message;
 
-        const userFriendlyErrorMessage = `SISMAN API Error: ${parsedError.statusCode} ${parsedError.error} on ${parsedError.path || relativeUrl}. API Message(s): ${apiMessages}`;
+        const userFriendlyErrorMessage = `SISMAN API Erro: ${parsedError.statusCode} ${parsedError.error} em ${parsedError.path || relativeUrl}. API Mensagens(s): ${apiMessages}`;
 
         throw new SismanApiError(
           userFriendlyErrorMessage, // User-friendly message for Error.message

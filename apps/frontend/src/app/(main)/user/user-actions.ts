@@ -54,7 +54,7 @@ export async function showUser(
       `${API_RELATIVE_PATH}/${id}`,
       accessTokenSisman,
       {
-        cache: 'no-store' // Garante dados sempre atualizados para um usuário específico
+        cache: 'force-cache' // Quando atualizar um usuário é eliminar o cache dele com revalidatePath, e a rota geral
       }
     );
     const data = await response.json();
@@ -190,7 +190,7 @@ export async function updateUser(
         accessToken: accessToken
       },
       {
-        mainPath: PAGE_PATH,
+        mainPath: PAGE_PATH, // Revalida a página de listagem
         detailPath: `${PAGE_PATH}/${validatedUserData.id}` // Revalida a página de detalhes do usuário
       },
       'Usuário atualizado com sucesso!'
