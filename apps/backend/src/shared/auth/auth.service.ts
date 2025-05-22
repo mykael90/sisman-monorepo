@@ -1,6 +1,4 @@
 import {
-  BadRequestException,
-  ConsoleLogger,
   Injectable,
   UnauthorizedException,
   Inject,
@@ -18,12 +16,11 @@ import { AuthLoginAuthorizationTokenDTO } from './dto/auth-login-authorization-t
 import { MetricsService } from '../observability/metrics.service'; // Ajuste o caminho
 import { LogLoginService } from '../log-login/log-login.service';
 import { Request as RequestExpress } from 'express'; // <-- Importe Request
-import { read } from 'fs';
 import { randomInt } from 'crypto';
 import { MagicLinkLoginDto } from './dto/magic-link-login.dto';
 import { VerifyCodeDto } from './dto/verify-code-magic-link.dto';
 import { EmailService } from '../notifications/email/email.service';
-import { ConfigService, ConfigType } from '@nestjs/config';
+import { ConfigType } from '@nestjs/config';
 import generalConfig from '../../config/general.config';
 
 @Injectable()
@@ -39,7 +36,6 @@ export class AuthService {
     private readonly emailService: EmailService,
     private readonly metricsService: MetricsService, // Injete o serviço de métricas
     private readonly logLoginService: LogLoginService, // Injete o serviço de métricas
-    private readonly configService: ConfigService, // Injete o serviço de configuração
     @Inject(generalConfig.KEY)
     private gnConfig: ConfigType<typeof generalConfig>
   ) {}

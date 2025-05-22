@@ -1,27 +1,28 @@
 import { Global, Module } from '@nestjs/common';
 import { EmailService } from './email.service';
 import { MailerModule } from '@nestjs-modules/mailer';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule, ConfigService, ConfigType } from '@nestjs/config';
 import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
 import { join } from 'path';
+import mailerConfig from '../../../config/mailer.config';
 
 @Global()
 @Module({
   imports: [
     MailerModule.forRootAsync({
       imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
+      inject: [mailerConfig.KEY],
+      useFactory: (config: ConfigType<typeof mailerConfig>) => ({
         transport: {
-          host: config.get<string>('MAILER_HOST'),
-          port: config.get<number>('MAILER_PORT', 587), // Valor padrão de 587
+          host: config.host,
+          port: config.port, // Valor padrão de 587
           auth: {
-            user: config.get<string>('MAILER_USER'),
-            pass: config.get<string>('MAILER_PASS')
+            user: config.user,
+            pass: config.pass
           }
         },
         defaults: {
-          from: `"SISMAN - Email automático" <${config.get<string>('MAILER_USER')}>`
+          from: `"SISMAN - Email automático" <${config.user}>`
         },
         template: {
           dir: join(__dirname, 'templates'), // Diretório dos templates Pug
