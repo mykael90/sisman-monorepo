@@ -11,7 +11,7 @@ export interface AuthorizationRequestUserData {
   email: string;
   login?: string; // Assumindo que 'login' é o username
   name?: string;
-  image?: string
+  image?: string;
 }
 
 // Interface para a resposta esperada da sua API de autorização
@@ -107,7 +107,7 @@ export async function handleAuthorizationLogic(
   user: AdapterUser | any // Use 'any' for flexibility if user structure varies
 ): Promise<Partial<JWT>> {
   const fieldsToAdd: Partial<JWT> = {
-    accessTokenSisman: null,
+    accessTokenSisman: undefined,
     roles: [],
     authorizationError: undefined,
     expiresAtSisman: undefined

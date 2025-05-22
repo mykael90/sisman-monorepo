@@ -1,49 +1,59 @@
-// Em src/types/next-auth.d.ts (ou onde preferir)
-import { DefaultSession, DefaultUser } from 'next-auth';
+import NextAuth, {
+  AuthOptions,
+  Profile,
+  User as NextAuthUser,
+  Account
+} from 'next-auth';
 import { DefaultJWT } from 'next-auth/jwt';
 
-declare module 'next-auth' {
-  /**
-   * Retornado pela hook `useSession`, `getSession` e recebido como prop para o `SessionProvider`
-   */
-  interface Session {
-    user: {
-      idUfrn: string; // Ou o tipo correto do seu ID (number, etc.)
-      idSisman?: string;
-      login?: string | null;
-    } & DefaultSession['user']; // Mantém os campos padrão como name, email, image
-    provider?: string;
-    accessTokenUfrn?: string; // Token do provedor (ex: UFRN)
-    refreshTokenUfrn?: string; // Refresh token do provedor
-    accessTokenSisman?: string | null;
-    roles?: string[];
-    authorizationError?: string;
-    error?: string; // Para erros gerais (ex: refresh token falhou)
-  }
-
-  /**
-   * Adiciona campos personalizados ao objeto User padrão
-   */
-  interface User extends DefaultUser {
-    // Se você adicionar campos ao User no callback signIn ou no profile, declare-os aqui
-    login?: string | null;
-    // outros campos que vêm do profile ou que você adiciona
-  }
+// Tipagem para o objeto user do NextAuth, estendendo com campos customizados
+interface ExtendedUser extends NextAuthUser {
+  login?: string;
+  // Para magic link, o provider de credentials retorna isso
+  accessTokenSisman?: string;
+  expiresInSisman?: number;
+  roles?: number[];
+  authorizationError?: string;
+  error?: string;
 }
 
-declare module 'next-auth/jwt' {
-  /** Retornado pelas funções `getToken` ou no callback `jwt` */
-  interface JWT extends DefaultJWT {
-    // Campos que você adiciona no callback jwt
-    id?: string; // Ou o tipo correto
-    login?: string | null;
+// Tipagem para o token JWT
+interface ExtendedJWT extends JWT, DefaultJWT {
+  id?: string; // O ID do usuário (pode ser sub ou id do AdapterUser)
+  login?: string | null;
+  provider?: string;
+  // UFRN
+  accessTokenUfrn?: string;
+  refreshTokenUfrn?: string;
+  expiresAtUfrn?: number;
+  // SISMAN (via UFRN auth ou Magic Link)
+  idSisman?: string;
+  accessTokenSisman?: string;
+  expiresAtSisman?: number;
+  roles?: number[];
+  authorizationError?: string;
+  // Erro genérico do NextAuth (ex: RefreshAccessTokenError)
+  error?: string;
+}
+
+// Tipagem para a sessão
+declare module 'next-auth' {
+  interface Session {
+    user: {
+      idUfrn?: string; // ou id do usuário, dependendo do provedor
+      idSisman?: string;
+      login?: string | null;
+      roles?: number[];
+      // campos padrão do NextAuth (name, email, image) já estão aqui
+    } & NextAuthUser; // Inclui name, email, image
     provider?: string;
-    accessTokenUfrn?: string; // Token do provedor (ex: UFRN)
-    refreshTokenUfrn?: string; // Refresh token do provedor
-    expiresAtUfrn?: number; // Timestamp de expiração do token do provedor
-    accessTokenSisman?: string | null; // Token da sua API
-    roles?: string[];
+    accessTokenUfrn?: string | null;
+    refreshTokenUfrn?: string | null; // Evite expor refresh tokens para o client, se possível
+    accessTokenSisman?: string | null;
     authorizationError?: string;
-    error?: string; // Campo para sinalizar erros (ex: RefreshAccessTokenError)
+    error?: string; // Erro genérico do NextAuth (ex: RefreshAccessTokenError)
   }
+}
+declare module 'next-auth/jwt' {
+  interface JWT extends ExtendedJWT {}
 }

@@ -59,6 +59,10 @@ export class AuthService {
       ),
       roles: roles.map((role) => role.userRoletypeId),
       id: user.id,
+      name: user.name,
+      email: user.email,
+      login: user.login,
+      image: user.image,
       //implementar a chave expires_in baseado no valor da assinatura já informado
       expires_in: 1 * 60 * 60 * 24 //valor em segundos (corresponde a 24hs)
     };
@@ -326,7 +330,7 @@ export class AuthService {
 
     await this.emailService.sendEmail(
       email,
-      'Código de acesso - SISMAN',
+      `Código de acesso - SISMAN: ${code}`,
       `magic-link`,
       {
         appName: 'SISMAN',

@@ -1,61 +1,57 @@
-import { OAuthUserConfig, OAuthConfig } from 'next-auth/providers/oauth';
-import Logger from '@/lib/logger';
-
-export interface UFRNProfile {
-  sub: string;
-  name?: string;
-  email?: string;
-  image?: string;
-  login?: string;
-}
-
-// Define the optionsComplement interface
-interface optionsComplement {
-  authorizationUrl?: string;
-  tokenUrl?: string;
-  redirectUri?: string;
-}
+import { OAuthConfig, OAuthUserConfig } from 'next-auth/providers/oauth';
+import Logger from '@/lib/logger'; // Assumindo que Logger está em '@/lib/logger'
 
 const logger = new Logger('ufrnProvider');
 
-export default function UFRNOAuthProvider<P extends UFRNProfile>(
-  options: OAuthUserConfig<P> & optionsComplement
-): OAuthConfig<P> {
+export interface UFRNProfile {
+  sub: string; // id-usuario
+  name?: string; // nome-pessoa
+  email?: string; // email
+  image?: string; // url-foto
+  login?: string; // login
+  // Adicione outros campos que você espera do userinfo
+}
+
+export interface UFRNProviderOptions extends OAuthUserConfig<UFRNProfile> {
+  authorizationUrl: string;
+  tokenUrl: string;
+  userInfoUrl: string;
+  redirectUri: string;
+  xApiKey: string;
+}
+
+export default function UFRNOAuthProvider(
+  options: UFRNProviderOptions
+): OAuthConfig<UFRNProfile> {
   return {
     id: 'ufrn',
     name: 'STI/UFRN',
     type: 'oauth',
     version: '2.0',
+    checks: ['pkce', 'state'], // Adicionar PKCE para maior segurança, se suportado pela UFRN
     authorization: {
       url: options.authorizationUrl,
       params: {
         response_type: 'code',
         client_id: options.clientId,
         redirect_uri: options.redirectUri,
-        scope: 'read' // Use openid para garantir um ID Token
+        scope: 'read' // Solicite escopos padrão OIDC
       }
     },
     token: {
       url: options.tokenUrl,
       params: {
+        // Alguns desses podem ser padrão, mas explícito é bom
         client_id: options.clientId,
         client_secret: options.clientSecret,
         redirect_uri: options.redirectUri,
         grant_type: 'authorization_code'
       },
       async request(context) {
-        logger.debug(`
---------------------------------------------------
-UFRNOAuthProvider - Token Request - Contexto
---------------------------------------------------
+        logger.debug('UFRNOAuthProvider - Token Request - Contexto:', context);
+        const { provider, params, checks } = context;
 
-${JSON.stringify(context, null, 2)}
-`);
-        const { provider, params } = context;
-        if (!provider.token) {
-          throw new Error('Provider token URL is missing.');
-        }
-        const response = await fetch(provider.token?.url, {
+        const response = await fetch(provider.token!.url!, {
           method: 'POST',
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
           body: new URLSearchParams({
@@ -63,57 +59,64 @@ ${JSON.stringify(context, null, 2)}
             client_secret: provider.clientSecret as string,
             redirect_uri: provider.redirectUri as string,
             grant_type: 'authorization_code',
-            code: params.code as string
+            code: params.code as string,
+            code_verifier: checks.pkce as string // Se PKCE estiver habilitado
           })
         });
 
         const tokens = await response.json();
-        logger.debug(`
---------------------------------------------------
-UFRNOAuthProvider - Token Request - Tokens Recebidos
---------------------------------------------------
-
-${JSON.stringify(tokens, null, 2)}
-`);
+        if (!response.ok) {
+          logger.error('UFRNOAuthProvider - Token Request - Erro:', tokens);
+          throw new Error(
+            tokens.error_description || 'Falha ao obter token da UFRN'
+          );
+        }
+        logger.debug(
+          'UFRNOAuthProvider - Token Request - Tokens Recebidos:',
+          tokens
+        );
         return { tokens };
       }
     },
     userinfo: {
+      url: options.userInfoUrl,
       async request({ tokens }) {
-        logger.debug(`
---------------------------------------------------
-UFRNOAuthProvider - Userinfo Request - Tokens Recebidos
---------------------------------------------------
+        logger.debug('UFRNOAuthProvider - Userinfo Request - Tokens:', tokens);
 
-${JSON.stringify(tokens, null, 2)}
-`);
-
-        if (!process.env.UFRN_USERINFO_URL) {
-          throw new Error('UFRN_USERINFO_URL environment variable is missing.');
-        }
-        if (!process.env.UFRN_XAPI_KEY) {
-          throw new Error('UFRN_XAPI_KEY environment variable is missing.');
+        if (!tokens.access_token) {
+          logger.error(
+            'UFRNOAuthProvider - Userinfo Request - Access token ausente.'
+          );
+          throw new Error('Access token ausente para buscar userinfo da UFRN.');
         }
 
-        const userInfoResponse = await fetch(process.env.UFRN_USERINFO_URL, {
+        const userInfoResponse = await fetch(options.userInfoUrl, {
           headers: {
             Authorization: `Bearer ${tokens.access_token}`,
-            'X-API-Key': process.env.UFRN_XAPI_KEY
+            'X-API-Key': options.xApiKey
           }
         });
 
+        if (!userInfoResponse.ok) {
+          const errorData = await userInfoResponse.text();
+          logger.error('UFRNOAuthProvider - Userinfo Request - Erro:', {
+            status: userInfoResponse.status,
+            data: errorData
+          });
+          throw new Error(
+            `Falha ao buscar userinfo da UFRN: ${userInfoResponse.status}`
+          );
+        }
+
         const userInfo = await userInfoResponse.json();
+        logger.debug(
+          'UFRNOAuthProvider - Userinfo Request - UserInfo Recebido:',
+          userInfo
+        );
 
-        logger.debug(`
---------------------------------------------------
-UFRNOAuthProvider - Userinfo Request - UserInfo Recebido
---------------------------------------------------
-
-${JSON.stringify(userInfo, null, 2)}
-`);
-
+        // Mapeamento dos campos do userinfo da UFRN para UFRNProfile
         return {
-          sub: userInfo['id-usuario'],
+          sub: userInfo['id-usuario']?.toString(), // Garanta que é string
           name: userInfo['nome-pessoa'] || '',
           email: userInfo.email || '',
           image: userInfo['url-foto'] || '',
@@ -121,67 +124,22 @@ ${JSON.stringify(userInfo, null, 2)}
         };
       }
     },
-    profile(profile, tokens) {
-      logger.debug(`
---------------------------------------------------
-UFRNOAuthProvider - Profile - Profile Recebido
---------------------------------------------------
+    profile(profile: UFRNProfile, tokens) {
+      logger.debug('UFRNOAuthProvider - Profile Callback - Profile:', profile);
+      logger.debug('UFRNOAuthProvider - Profile Callback - Tokens:', tokens);
 
-${JSON.stringify(profile, null, 2)}
-`);
-      logger.debug(`
---------------------------------------------------
-UFRNOAuthProvider - Profile - Tokens Recebidos
---------------------------------------------------
-${JSON.stringify(tokens, null, 2)}`);
-
-      type Decoded = {
-        sub: string;
-        name?: string;
-        email?: string;
-        image?: string;
-        login?: string;
-      };
-
-      let decoded: Decoded = {
-        sub: '',
-        name: '',
-        email: '',
-        image: '',
-        login: ''
-      };
-
-      if (tokens.id_token) {
-        decoded = JSON.parse(
-          Buffer.from(tokens.id_token.split('.')[1], 'base64').toString()
-        );
-      } else {
-        logger.warn(`
---------------------------------------------------
-UFRNOAuthProvider - Profile - ID Token Não Encontrado
---------------------------------------------------
-
-ID Token: ${tokens.id_token}
-`);
-        // Use the sub from the userinfo response (profile)
-        decoded = {
-          sub: profile.sub,
-          name: profile.name,
-          email: profile.email,
-          image: profile.image,
-          login: profile.login
-        };
-      }
-
+      // O id_token já deve ser decodificado e verificado pelo NextAuth se o escopo 'openid' for usado
+      // e o provider OIDC retornar um id_token válido.
+      // Se o id_token não estiver presente ou for incompleto, usamos os dados do userinfo (profile)
+      // NextAuth espera que o `id` seja o identificador único do usuário.
       return {
-        id: decoded.sub,
-        name: decoded.name || '',
-        email: decoded.email || '',
-        image: decoded.image || '',
-        login: decoded.login || ''
+        id: profile.sub, // `sub` do userinfo é o `id-usuario`
+        name: profile.name,
+        email: profile.email,
+        image: profile.image,
+        login: profile.login
       };
     },
-
-    options
+    ...options // Espalha o restante das opções, como clientId e clientSecret
   };
 }
