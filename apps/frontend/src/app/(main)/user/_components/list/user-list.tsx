@@ -12,12 +12,15 @@ import { UserListHeader } from './user-list-header';
 import { UserFilters } from './user-filters';
 import { UserTable } from './user-table';
 import {
+  ColumnDef,
   ColumnFiltersState,
   PaginationState,
   SortingState
 } from '@tanstack/react-table';
 import { InputDebounceRef } from '@/components/ui/input'; // Importe o tipo da Ref
 import { IUserList } from '../../user-types';
+import { useRouter } from 'next/navigation';
+import { columns, createActions } from './user-columns';
 
 export function UserListPage({
   dataPromise,
@@ -26,6 +29,8 @@ export function UserListPage({
   dataPromise: Promise<IUserList[]>;
   refreshAction: () => void;
 }) {
+  const router = useRouter(); // Obtenha a função de navegação
+
   const initialData: IUserList[] = use(dataPromise);
 
   const [users, setUsers] = useState(initialData); // Estado dos dados da tabela
@@ -70,9 +75,9 @@ export function UserListPage({
     inputDebounceRef.current?.clearInput();
   };
 
-  // Funções de exemplo (manter como antes)
+  // Ações gerais (manter como antes)
   const handleAddUser = () => {
-    console.log('Add new user');
+    router.push('user/add');
   };
   const handleEditUser = (userId: number) => {
     console.log('Edit user', userId);
@@ -80,6 +85,9 @@ export function UserListPage({
   const handleDeleteUser = (userId: number) => {
     setUsers(users.filter((user) => user.id !== userId));
   };
+
+  //Configurando açoes de colunas. Ações de colunas definidas no arquivo de colunas
+  const columnActions = createActions(router); // Crie o objeto de ações, passando a função de navegação
 
   return (
     <div className='container mx-auto p-4'>
@@ -111,6 +119,7 @@ export function UserListPage({
         setPagination={setPagination}
         setSorting={setSorting}
         sorting={sorting}
+        columns={columns(columnActions)}
       />
     </div>
   );
@@ -124,4 +133,5 @@ export interface UserTableProps {
   setPagination: Dispatch<SetStateAction<any>>;
   setSorting: Dispatch<SetStateAction<SortingState>>;
   sorting: SortingState;
+  columns: ColumnDef<IUserList, any>[];
 }

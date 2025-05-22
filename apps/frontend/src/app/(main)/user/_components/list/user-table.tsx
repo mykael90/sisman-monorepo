@@ -3,7 +3,6 @@
 import React from 'react';
 import { UserTableProps } from './user-list';
 import { TableTanstack } from '../../../../../components/table-tanstack/table-tanstack';
-import { actions, columns } from './user-columns';
 
 export function UserTable({
   users,
@@ -11,12 +10,13 @@ export function UserTable({
   pagination,
   setPagination,
   setSorting,
-  sorting
+  sorting,
+  columns
 }: UserTableProps) {
   return (
     <TableTanstack
       data={users}
-      columns={columns(actions)}
+      columns={columns}
       columnFilters={columnFilters}
       pagination={pagination}
       setPagination={setPagination}

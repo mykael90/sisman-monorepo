@@ -3,6 +3,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Edit, Trash2 } from 'lucide-react';
 import { IUserList } from '../../user-types';
+import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
 // 1. Definir as colunas com createColumnHelper
 const columnHelper = createColumnHelper<IUserList>();
@@ -13,19 +14,33 @@ type ActionHandlers<TData> = {
   [key: string]: (row: Row<TData>) => void;
 };
 
-// Use the more specific ActionHandlers type if you changed it above
-const actions: ActionHandlers<IUserList> = {
-  // Pass the row object directly, which is Row<UserWithRoles1>
+// createActions será uma função que CRIA o objeto de ações,
+// recebendo a função de navegação.
+export const createActions = (
+  router: AppRouterInstance // Recebe a função de navegação
+): ActionHandlers<IUserList> => ({
   onEdit: (row: Row<IUserList>) => {
-    console.log('Edit user', row.original); // Access original data
+    console.log('Edit user', row.original);
+    // Certifique-se que row.original.id existe e é o identificador correto.
+    // Se seu ID estiver em outra propriedade (ex: _id, userId), ajuste abaixo.
+    if (row.original.id) {
+      // Navega para a rota de edição, passando o ID do usuário
+      // Ajuste o caminho '/admin/users/edit/' conforme sua estrutura de rotas
+      router.push(`user/edit/${row.original.id}`);
+    } else {
+      console.error('User ID is missing, cannot navigate to edit page.');
+      // Poderia também navegar para uma página de erro ou mostrar um alerta
+      throw new Error('User ID is missing, cannot navigate to edit page.');
+    }
   },
   onDelete: (row: Row<IUserList>) => {
     console.log('Delete user', row.original);
+    // Implemente sua lógica de deleção aqui (ex: modal de confirmação, chamada de API)
   }
-};
+});
 
-const columns = (
-  actions: ActionHandlers<IUserList>
+export const columns = (
+  configuredActions: ActionHandlers<IUserList>
 ): ColumnDef<IUserList, any>[] => [
   columnHelper.accessor('name', {
     header: 'Nome',
@@ -71,13 +86,17 @@ const columns = (
     cell: ({ row }) => (
       // Mantém a estrutura original da célula Actions com botões
       <div className='flex gap-2'>
-        <Button variant='ghost' size='icon' onClick={() => actions.onEdit(row)}>
+        <Button
+          variant='ghost'
+          size='icon'
+          onClick={() => configuredActions.onEdit(row)}
+        >
           <Edit className='h-4 w-4' />
         </Button>
         <Button
           variant='ghost'
           size='icon'
-          onClick={() => actions.onDelete(row)}
+          onClick={() => configuredActions.onDelete(row)}
         >
           <Trash2 className='h-4 w-4 text-red-500' />
         </Button>
@@ -132,5 +151,3 @@ function StatusBadge({ status }: { status: string }) {
     </span>
   );
 }
-
-export { columns, actions };
