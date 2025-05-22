@@ -3,7 +3,7 @@ import {
   MiddlewareConsumer,
   Module,
   NestModule,
-  RequestMethod,
+  RequestMethod
 } from '@nestjs/common';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
@@ -21,23 +21,23 @@ import { RouterModule } from '@nestjs/core';
     RouterModule.register([
       // Registre a rota filha
       {
-        path: 'users', // O caminho base definido no UsersController
+        path: 'user', // O caminho base definido no UsersController
         module: UsersModule, // O módulo atual
         children: [
           // Rotas aninhadas sob /users
           {
-            path: 'roles', // O segmento de caminho para o módulo filho
-            module: RolesModule, // O módulo a ser montado em /users/roles
-          },
+            path: 'role', // O segmento de caminho para o módulo filho
+            module: RolesModule // O módulo a ser montado em /users/roles
+          }
           // Você pode adicionar mais filhos aqui se necessário
           // { path: 'permissions', module: PermissionsModule },
-        ],
-      },
-    ]),
+        ]
+      }
+    ])
   ],
   controllers: [UsersController],
   providers: [UsersService],
-  exports: [UsersService],
+  exports: [UsersService]
 })
 export class UsersModule implements NestModule {
   constructor() {}
@@ -48,7 +48,7 @@ export class UsersModule implements NestModule {
       .apply(UserIdCheckMiddleware)
       .exclude(
         // Exclua explicitamente o caminho base do RolesController
-        { path: 'users/roles', method: RequestMethod.ALL }, // Ou métodos específicos se necessário
+        { path: 'user/role', method: RequestMethod.ALL } // Ou métodos específicos se necessário
         // Se tiver mais rotas literais sob /users que não têm :id, exclua-as também
         // { path: 'users/some-other-literal-path', method: RequestMethod.GET }
       )
@@ -56,8 +56,8 @@ export class UsersModule implements NestModule {
       // Pode ser pelo controller (mais simples se a maioria das rotas precisa)
       // ou por caminhos específicos.
       .forRoutes({
-        path: 'users/:id',
-        method: RequestMethod.ALL,
+        path: 'user/:id',
+        method: RequestMethod.ALL
       });
   }
 }

@@ -66,7 +66,7 @@ export default function UserAdd() {
   // };
 
   return (
-    <div className='mx-auto my-8 w-full max-w-2xl rounded-lg bg-white shadow-lg'>
+    <div className='mx-auto mt-4 w-full max-w-2xl rounded-lg bg-white shadow-lg'>
       {/* Header */}
       <FormAddHeader
         Icon={UserPlus}

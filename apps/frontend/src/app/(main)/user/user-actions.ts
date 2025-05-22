@@ -14,8 +14,8 @@ import {
 } from './_components/form/user-form-validation';
 import { handleApiAction } from '../../../lib/fetch/handle-form-action-sisman';
 
-const PAGE_PATH = '/users'; // Usar maiúsculas para constantes globais ao módulo
-const API_RELATIVE_PATH = '/users'; // Para chamadas de API relacionadas a usuários
+const PAGE_PATH = '/user'; // Usar maiúsculas para constantes globais ao módulo
+const API_RELATIVE_PATH = '/user'; // Para chamadas de API relacionadas a usuários
 
 const logger = new Logger(`${PAGE_PATH}/user-actions`);
 

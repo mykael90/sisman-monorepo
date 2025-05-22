@@ -1,5 +1,5 @@
 ### Variables
-@urlLocal = {{apiUrl}}/users
+@urlLocal = {{apiUrl}}/user
 @contentType = application/json
 
 ### GET all
