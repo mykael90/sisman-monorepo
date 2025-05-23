@@ -150,17 +150,12 @@ exports.Prisma.MaterialScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
-exports.Prisma.UserRoletypeScalarFieldEnum = {
+exports.Prisma.RoleScalarFieldEnum = {
   id: 'id',
   role: 'role',
   description: 'description',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
-};
-
-exports.Prisma.UserRoleScalarFieldEnum = {
-  userId: 'userId',
-  userRoletypeId: 'userRoletypeId'
 };
 
 exports.Prisma.LogErrorScalarFieldEnum = {
@@ -213,7 +208,7 @@ exports.Prisma.MaterialOrderByRelevanceFieldEnum = {
   unit: 'unit'
 };
 
-exports.Prisma.UserRoletypeOrderByRelevanceFieldEnum = {
+exports.Prisma.RoleOrderByRelevanceFieldEnum = {
   role: 'role',
   description: 'description'
 };
@@ -239,8 +234,7 @@ exports.Prisma.ModelName = {
   User: 'User',
   MagicLink: 'MagicLink',
   Material: 'Material',
-  UserRoletype: 'UserRoletype',
-  UserRole: 'UserRole',
+  Role: 'Role',
   LogError: 'LogError',
   LogLogin: 'LogLogin'
 };

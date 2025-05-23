@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
-import { User, UserRole } from '@sisman/prisma';
+import { User, Role, Prisma } from '@sisman/prisma';
 import { AuthRegisterDTO } from './dto/auth-register.dto';
 import { UsersService } from 'src/modules/users/users.service';
 import { AuthRegisterAuthorizationTokenDTO } from './dto/auth-register-authorization-token.dto';
@@ -22,6 +22,10 @@ import { VerifyCodeDto } from './dto/verify-code-magic-link.dto';
 import { EmailService } from '../notifications/email/email.service';
 import { ConfigType } from '@nestjs/config';
 import generalConfig from '../../config/general.config';
+
+type UserWithRoles = Prisma.UserGetPayload<{
+  include: { roles: true };
+}>;
 
 @Injectable()
 export class AuthService {
@@ -40,7 +44,7 @@ export class AuthService {
     private gnConfig: ConfigType<typeof generalConfig>
   ) {}
 
-  createToken(user: User, roles: UserRole[] = []) {
+  createToken(user: User, roles: Role[] = []) {
     this.logger.log(`Criando token para o usuário ${user.name}`);
     return {
       access_token: this.jwtService.sign(
@@ -49,7 +53,7 @@ export class AuthService {
           login: user.login,
           name: user.name,
           email: user.email,
-          roles: roles.map((role) => role.userRoletypeId)
+          roles: roles.map((role) => role.id)
         },
         {
           expiresIn: 1 * 60 * 60 * 24, //in seconds (24hs)
@@ -58,7 +62,7 @@ export class AuthService {
           audience: this.audience
         }
       ),
-      roles: roles.map((role) => role.userRoletypeId),
+      roles: roles.map((role) => role.id),
       id: user.id,
       name: user.name,
       email: user.email,
@@ -119,12 +123,18 @@ export class AuthService {
         throw new UnauthorizedException(`Token inválido!`);
       }
 
-      const user: User = token.login
+      const user: UserWithRoles | null = token.login
         ? await this.prisma.user.findFirst({
-            where: { login: token.login }
+            where: { login: token.login },
+            include: {
+              roles: true
+            }
           })
         : await this.prisma.user.findFirst({
-            where: { email: token.email }
+            where: { email: token.email },
+            include: {
+              roles: true
+            }
           });
 
       if (!user) {
@@ -151,9 +161,9 @@ export class AuthService {
       // >>> Incrementa o contador de login BEM-SUCEDIDO AQUI <<<
       this.metricsService.userLoginCounter.inc(); // Pode adicionar labels aqui se definiu algum
 
-      const roles = await this.prisma.userRole.findMany({
-        where: { userId: user.id }
-      });
+      const roles = user.roles;
+
+      this.logger.error(JSON.stringify(roles));
 
       return this.createToken(user, roles);
     } catch (error) {
@@ -359,7 +369,12 @@ export class AuthService {
     let loginSuccess = false;
 
     try {
-      const user = await this.usersService.findByEmail(email);
+      const user: UserWithRoles | null = await this.prisma.user.findFirst({
+        where: { email },
+        include: {
+          roles: true
+        }
+      });
       if (!user) {
         throw new NotFoundException('Usuário não encontrado.');
       }
@@ -394,9 +409,17 @@ export class AuthService {
       // >>> Incrementa o contador de login BEM-SUCEDIDO AQUI <<<
       this.metricsService.userLoginCounter.inc(); // Pode adicionar labels aqui se definiu algum
 
-      const roles = await this.prisma.userRole.findMany({
-        where: { userId: user.id }
-      });
+      // const roles = await this.prisma.role.findMany({
+      //   where: {
+      //     users: {
+      //       some: {
+      //         id: userId
+      //       }
+      //     }
+      //   }
+      // });
+
+      const roles = user.roles;
 
       return this.createToken(user, roles);
     } catch (error) {

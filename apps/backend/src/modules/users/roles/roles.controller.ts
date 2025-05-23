@@ -9,10 +9,10 @@ import {
   Post,
   Query
 } from '@nestjs/common';
+import { CreateUserRoleDto } from '../dto/roles/create-user-role.dto';
+import { DeleteUserRoleDto } from '../dto/roles/delete-user-role.dto';
+import { UpdateUserRoleDto } from '../dto/roles/update-user-role.dto';
 import { RolesService } from './roles.service';
-import { CreateUserRoleDto } from '../dto/role/create-user-role.dto';
-import { DeleteUserRoleDto } from '../dto/role/delete-user-role.dto';
-import { UpdateUserRoleDto } from '../dto/role/update-user-role.dto';
 
 @Controller()
 export class RolesController {

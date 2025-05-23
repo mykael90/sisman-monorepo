@@ -17,35 +17,23 @@ Content-Type: {{contentType}}
 Authorization: Bearer {{token}}
 
 {
-    "name": "example5",
-    "login": "example.5",
-    "email": "example5@provider.com"
+    "name": "example1",
+    "login": "example.1t",
+    "email": "example1t@provider.com"
 }
 
-### POST
+### POST WITH ROLES
 POST {{urlLocal}}
 Content-Type: {{contentType}}
 Authorization: Bearer {{token}}
 
 {
-    "name": "example8",
-    "email": "example8@provider.com",
-    "password": "123456",
-    "birthAt": "1990-06-18"
+    "name": "example4",
+    "login": "example.4",
+    "email": "example4@provider.com",
+    "roles": [{"id": 100}, {"id": 200}]
 }
 
-### POST role 2
-POST {{urlLocal}}
-Content-Type: {{contentType}}
-Authorization: Bearer {{token}}
-
-{
-    "name": "admin",
-    "email": "admin@provider.com",
-    "password": "123456",
-    "birthAt": "1990-06-18",
-    "role": 2
-}
 
 ### PUT
 # @prompt userId
@@ -72,16 +60,8 @@ Authorization: Bearer {{token}}
     "birthAt": "1990-06-18"
 }
 
-### PATCH
-# @prompt userId
-PATCH {{urlLocal}}/{{userId}}
-Content-Type: {{contentType}}
-Authorization: Bearer {{token}}
-
-{
-    "name": "example"
-}
-
 ### DELETE one
 # @prompt userId
 DELETE {{urlLocal}}/{{userId}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}

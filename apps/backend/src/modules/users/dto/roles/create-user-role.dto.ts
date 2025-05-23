@@ -8,5 +8,5 @@ export class CreateUserRoleDto {
 
   @IsNumber()
   @Transform(({ value }) => Number(value))
-  userRoletypeId: number;
+  rolesId: number[];
 }

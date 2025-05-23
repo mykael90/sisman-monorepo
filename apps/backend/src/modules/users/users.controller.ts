@@ -23,6 +23,9 @@ import { RoleGuard } from 'src/shared/auth/guards/role.guard';
 import { AuthGuard } from 'src/shared/auth/guards/auth.guard';
 import { ApiTags, ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
 import { UsersEntity } from '../../shared/entities/users.entity';
+import { CreateUserWithRolesDTO } from './dto/create-user-with-roles.dto';
+import { UpdateUserWithRelationsDTO } from './dto/update-user-with-relations.dto';
+import { CreateUserWithRelationsDTO } from './dto/create-user-with-relations.dto';
 
 @Roles(Role.Adm)
 @UseGuards(AuthGuard, RoleGuard)
@@ -34,7 +37,7 @@ export class UsersController {
 
   @ApiCreatedResponse({ type: UsersEntity })
   @Post()
-  async create(@Body() data: CreateUserDTO) {
+  async create(@Body() data: CreateUserWithRelationsDTO) {
     return this.userService.create(data);
   }
 
@@ -56,18 +59,9 @@ export class UsersController {
   @ApiOkResponse({ type: UsersEntity })
   async updateAll(
     @Param('id', ParseIntPipe) id: number,
-    @Body() data: UpdatePutUserDTO
+    @Body() data: UpdateUserWithRelationsDTO
   ) {
     return this.userService.update(id, data);
-  }
-
-  @Patch(':id')
-  @ApiOkResponse({ type: UsersEntity })
-  async update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() data: UpdatePatchUserDTO
-  ) {
-    return this.userService.updatePartial(id, data);
   }
 
   @Delete(':id')

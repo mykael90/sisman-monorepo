@@ -18,7 +18,7 @@ model User {
   createdAt  DateTime    @default(now()) @db.Timestamp(0)
   updatedAt  DateTime    @updatedAt @db.Timestamp(0)
   logLogin   LogLogin[]
-  userRoles  UserRole[]
+  roles      Role[]
   magicLinks MagicLink[]
 
   @@map("users")
@@ -49,26 +49,15 @@ model Material {
   @@map("materials")
 }
 
-model UserRoletype {
-  id          Int        @id
-  role        String     @db.VarChar(255)
-  description String     @db.Text
-  createdAt   DateTime   @default(now()) @db.Timestamp(0)
-  updatedAt   DateTime   @updatedAt @db.Timestamp(0)
-  userRoles   UserRole[]
+model Role {
+  id          Int      @id
+  role        String   @db.VarChar(255)
+  description String   @db.Text
+  createdAt   DateTime @default(now()) @db.Timestamp(0)
+  updatedAt   DateTime @updatedAt @db.Timestamp(0)
+  users       User[]
 
-  @@map("usersRoletypes")
-}
-
-model UserRole {
-  userId         Int
-  userRoletypeId Int
-  user           User         @relation(fields: [userId], references: [id], onUpdate: Cascade, map: "users_roles_ibfk_1")
-  userRoletype   UserRoletype @relation(fields: [userRoletypeId], references: [id], onUpdate: Cascade, map: "users_roles_ibfk_2")
-
-  @@id([userId, userRoletypeId])
-  @@index([userRoletypeId])
-  @@map("usersRoles")
+  @@map("roles")
 }
 
 model LogError {
@@ -77,7 +66,7 @@ model LogError {
   statusCode  Int?
   path        String?
   method      String?
-  message     String   @db.VarChar(1023)
+  message     String   @db.Text
   stackTrace  String?  @db.Text
   ipAddress   String?
   userId      Int?
