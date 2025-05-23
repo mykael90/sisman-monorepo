@@ -108,7 +108,7 @@ export function TableTanstack<TData>({
         </Table>
       </div>
 
-      <div className='mt-1 h-14 rounded-b-md border-0 bg-white px-4 py-3.5'>
+      <div className='h-min-14 mt-1 rounded-b-md border-0 bg-white px-4 py-3.5'>
         <Pagination table={table} />
       </div>
     </div>
