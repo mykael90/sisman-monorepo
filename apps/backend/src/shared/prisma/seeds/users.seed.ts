@@ -7,7 +7,7 @@ import {
   seedModel,
   TransformValidateFn
 } from './seed-utils';
-import { CreateUserDTO } from '../../../modules/users/dto/create-user.dto';
+import { CreateUserDto } from '../../../modules/users/dto/user.dto';
 
 const logger = console;
 const usersJsonPath = '../data/users.json';
@@ -24,7 +24,7 @@ const transformAndValidateUser: TransformValidateFn<
 
   // --- 2. DTO Validation ---
   // Use the pre-processed data for DTO instantiation
-  const userDto = plainToInstance(CreateUserDTO, processedRawUser, {
+  const userDto = plainToInstance(CreateUserDto, processedRawUser, {
     // excludeExtraneousValues: true, // Optional: helps ensure no extra props sneak in
   });
 

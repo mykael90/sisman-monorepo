@@ -33,7 +33,7 @@ import { RoleGuard } from './guards/role.guard';
 import { Request as RequestExpress } from 'express'; // Importe Request
 import { MagicLinkLoginDto } from './dto/magic-link-login.dto';
 import { VerifyCodeDto } from './dto/verify-code-magic-link.dto';
-import { CreateUserDTO } from '../../modules/users/dto/create-user.dto';
+import { CreateUserDto } from '../../modules/users/dto/user.dto';
 
 @Controller('auth')
 @ApiTags('auth')
@@ -73,7 +73,7 @@ export class AuthController {
 
   @UseGuards(AuthGuard)
   @Post('check-token')
-  async checkToken(@User(['id', 'name', 'email']) user: CreateUserDTO) {
+  async checkToken(@User(['id', 'name', 'email']) user: CreateUserDto) {
     return user;
   }
 

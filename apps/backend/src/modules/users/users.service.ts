@@ -1,17 +1,16 @@
 import {
   BadRequestException,
-  ConflictException,
   Injectable,
   Logger,
   NotFoundException
 } from '@nestjs/common';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
-import { UpdateUserWithRelationsDTO } from './dto/update-user-with-relations.dto';
-import {
-  ConnectByIdInput,
-  CreateUserWithRelationsDTO
-} from './dto/create-user-with-relations.dto';
 import { Prisma, User } from '@sisman/prisma';
+import { handlePrismaError } from '../../shared/utils/prisma-error-handler';
+import {
+  CreateUserWithRelationsDto,
+  UpdateUserWithRelationsDto
+} from './dto/user.dto';
 
 @Injectable()
 export class UsersService {
@@ -19,10 +18,10 @@ export class UsersService {
 
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(data: CreateUserWithRelationsDTO): Promise<User> {
+  async create(data: CreateUserWithRelationsDto): Promise<User> {
     // 1. Definir quais chaves do DTO representam relações que usam 'connect'
     //    e esperam um array de { id: number }
-    const relationConnectKeys: (keyof CreateUserWithRelationsDTO)[] = [
+    const relationConnectKeys: (keyof CreateUserWithRelationsDto)[] = [
       'roles'
       // Adicione outras chaves de relação aqui
     ];
@@ -35,7 +34,7 @@ export class UsersService {
     // Iterar sobre todas as chaves do DTO de entrada
     for (const key in data) {
       if (Object.prototype.hasOwnProperty.call(data, key)) {
-        const typedKey = key as keyof CreateUserWithRelationsDTO;
+        const typedKey = key as keyof CreateUserWithRelationsDto;
         const value = data[typedKey];
 
         if (value === undefined) {
@@ -50,12 +49,13 @@ export class UsersService {
           value.length > 0
         ) {
           // Validação adicional para garantir que os itens da relação têm 'id'
-          const relationData = value as ConnectByIdInput[];
+          const relationData = value;
           const isValidRelationData = relationData.every(
             (item) =>
               typeof item === 'object' &&
               item !== null &&
               'id' in item &&
+              //TODO: verificar number or string
               typeof item.id === 'number'
           );
 
@@ -106,17 +106,20 @@ export class UsersService {
             : undefined
       });
     } catch (error) {
-      this.handlePrismaError(error, data.login, data.email); // Abstraído para um método auxiliar
+      handlePrismaError(error, this.logger, 'Usuário', {
+        operation: 'create',
+        data
+      });
       throw error; // Se não for um erro Prisma conhecido, re-lance
     }
   }
 
   async update(
     userId: number,
-    data: UpdateUserWithRelationsDTO
+    data: UpdateUserWithRelationsDto
   ): Promise<User> {
     // 1. Definir quais chaves do DTO representam relações que devem ser gerenciadas com 'set'
-    const relationSetKeys: (keyof UpdateUserWithRelationsDTO)[] = [
+    const relationSetKeys: (keyof UpdateUserWithRelationsDto)[] = [
       'roles' // Esta relação agora será gerenciada com 'set'
       // 'photos',
       // 'groups',
@@ -129,7 +132,7 @@ export class UsersService {
 
     for (const key in data) {
       if (Object.prototype.hasOwnProperty.call(data, key)) {
-        const typedKey = key as keyof UpdateUserWithRelationsDTO;
+        const typedKey = key as keyof UpdateUserWithRelationsDto;
         const value = data[typedKey];
 
         if (value === undefined) {
@@ -143,7 +146,7 @@ export class UsersService {
           relationSetKeys.includes(typedKey) &&
           Array.isArray(value) // 'value' deve ser um array (pode ser vazio para remover todas as conexões)
         ) {
-          const relationDataToSet = value as ConnectByIdInput[]; // Reutilizando ConnectByIdInput
+          const relationDataToSet = value;
 
           // Validação: cada item deve ser um objeto com 'id' numérico
           // Esta validação se aplica mesmo se o array estiver vazio (passará)
@@ -152,6 +155,7 @@ export class UsersService {
               typeof item === 'object' &&
               item !== null &&
               'id' in item &&
+              //TODO: number os string
               typeof item.id === 'number'
           );
 
@@ -207,7 +211,11 @@ export class UsersService {
             : undefined
       });
     } catch (error) {
-      this.handlePrismaError(error, data.login, data.email, userId);
+      handlePrismaError(error, this.logger, 'Usuário', {
+        operation: 'update',
+        userId: userId,
+        data
+      });
       throw error;
     }
   }
@@ -262,66 +270,4 @@ export class UsersService {
   //   const salt = await bcrypt.genSalt();
   //   return await bcrypt.hash(password, salt);
   // }
-
-  // Método auxiliar para tratar erros Prisma (corrigido)
-  private handlePrismaError(
-    error: any,
-    login?: string,
-    email?: string,
-    userId?: number
-  ) {
-    if (error instanceof Prisma.PrismaClientKnownRequestError) {
-      if (error.code === 'P2002') {
-        let targetFields = 'campo único';
-        if (error.meta?.target) {
-          if (Array.isArray(error.meta.target)) {
-            targetFields = (error.meta.target as string[]).join(', ');
-          } else if (typeof error.meta.target === 'string') {
-            targetFields = error.meta.target as string;
-          }
-        }
-        const entityContext = userId
-          ? `dados do usuário (login: ${login}, email: ${email})`
-          : `novo usuário`;
-        this.logger.error(
-          `Erro de unicidade ao tentar salvar ${entityContext}: campo(s) '${targetFields}' já existe(m).`
-        );
-        throw new ConflictException(
-          `Conflito: O(s) campo(s) '${targetFields}' já está(ão) em uso.`
-        );
-      } else if (error.code === 'P2025') {
-        let message =
-          'Erro: Um ou mais registros necessários para a operação não foram encontrados.';
-        let isRecordToUpdateNotFound = false;
-
-        // Verifica se a causa do erro é o registro principal não encontrado
-        const cause = (error.meta?.cause as string)?.toLowerCase();
-        if (
-          cause?.includes('record to update not found') ||
-          error.message.toLowerCase().includes('record to update not found')
-        ) {
-          isRecordToUpdateNotFound = true;
-        }
-
-        if (isRecordToUpdateNotFound) {
-          message = `Usuário com ID ${userId} não encontrado para atualização.`;
-          this.logger.error(message, { meta: error.meta, userId });
-          throw new NotFoundException(message);
-        } else {
-          // Erro P2025 devido a um ID inválido em `set: [...]` ou outra falha de dependência
-          message = `Erro ao definir relações ou dependência não encontrada.`;
-          this.logger.error(
-            `${message} Verifique os IDs das relações fornecidas ou outras dependências.`,
-            { meta: error.meta, userId } // Removida a referência a prismaUpdateInput
-          );
-          throw new BadRequestException(
-            `${message} Verifique os IDs das relações fornecidas ou outras dependências.`
-          );
-        }
-      }
-    }
-    // Não re-lançar o erro aqui, pois ele já é lançado no catch do método chamador (update/create)
-    // Isso evita que o erro seja encapsulado duas vezes ou que a propagação seja interrompida prematuramente
-    // se o método chamador tiver um `finally` ou outro tratamento.
-  }
 }
