@@ -14,6 +14,21 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
 
 
 /**
+ * Model LogError
+ * 
+ */
+export type LogError = $Result.DefaultSelection<Prisma.$LogErrorPayload>
+/**
+ * Model LogLogin
+ * 
+ */
+export type LogLogin = $Result.DefaultSelection<Prisma.$LogLoginPayload>
+/**
+ * Model Material
+ * 
+ */
+export type Material = $Result.DefaultSelection<Prisma.$MaterialPayload>
+/**
  * Model User
  * 
  */
@@ -24,25 +39,10 @@ export type User = $Result.DefaultSelection<Prisma.$UserPayload>
  */
 export type MagicLink = $Result.DefaultSelection<Prisma.$MagicLinkPayload>
 /**
- * Model Material
- * 
- */
-export type Material = $Result.DefaultSelection<Prisma.$MaterialPayload>
-/**
  * Model Role
  * 
  */
 export type Role = $Result.DefaultSelection<Prisma.$RolePayload>
-/**
- * Model LogError
- * 
- */
-export type LogError = $Result.DefaultSelection<Prisma.$LogErrorPayload>
-/**
- * Model LogLogin
- * 
- */
-export type LogLogin = $Result.DefaultSelection<Prisma.$LogLoginPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -51,8 +51,8 @@ export type LogLogin = $Result.DefaultSelection<Prisma.$LogLoginPayload>
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more Users
- * const users = await prisma.user.findMany()
+ * // Fetch zero or more LogErrors
+ * const logErrors = await prisma.logError.findMany()
  * ```
  *
  *
@@ -72,8 +72,8 @@ export class PrismaClient<
    * @example
    * ```
    * const prisma = new PrismaClient()
-   * // Fetch zero or more Users
-   * const users = await prisma.user.findMany()
+   * // Fetch zero or more LogErrors
+   * const logErrors = await prisma.logError.findMany()
    * ```
    *
    *
@@ -170,6 +170,36 @@ export class PrismaClient<
   }>>
 
       /**
+   * `prisma.logError`: Exposes CRUD operations for the **LogError** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more LogErrors
+    * const logErrors = await prisma.logError.findMany()
+    * ```
+    */
+  get logError(): Prisma.LogErrorDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.logLogin`: Exposes CRUD operations for the **LogLogin** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more LogLogins
+    * const logLogins = await prisma.logLogin.findMany()
+    * ```
+    */
+  get logLogin(): Prisma.LogLoginDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.material`: Exposes CRUD operations for the **Material** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Materials
+    * const materials = await prisma.material.findMany()
+    * ```
+    */
+  get material(): Prisma.MaterialDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.user`: Exposes CRUD operations for the **User** model.
     * Example usage:
     * ```ts
@@ -190,16 +220,6 @@ export class PrismaClient<
   get magicLink(): Prisma.MagicLinkDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.material`: Exposes CRUD operations for the **Material** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Materials
-    * const materials = await prisma.material.findMany()
-    * ```
-    */
-  get material(): Prisma.MaterialDelegate<ExtArgs, ClientOptions>;
-
-  /**
    * `prisma.role`: Exposes CRUD operations for the **Role** model.
     * Example usage:
     * ```ts
@@ -208,26 +228,6 @@ export class PrismaClient<
     * ```
     */
   get role(): Prisma.RoleDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.logError`: Exposes CRUD operations for the **LogError** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more LogErrors
-    * const logErrors = await prisma.logError.findMany()
-    * ```
-    */
-  get logError(): Prisma.LogErrorDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.logLogin`: Exposes CRUD operations for the **LogLogin** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more LogLogins
-    * const logLogins = await prisma.logLogin.findMany()
-    * ```
-    */
-  get logLogin(): Prisma.LogLoginDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -668,12 +668,12 @@ export namespace Prisma {
 
 
   export const ModelName: {
+    LogError: 'LogError',
+    LogLogin: 'LogLogin',
+    Material: 'Material',
     User: 'User',
     MagicLink: 'MagicLink',
-    Material: 'Material',
-    Role: 'Role',
-    LogError: 'LogError',
-    LogLogin: 'LogLogin'
+    Role: 'Role'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -692,274 +692,10 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "magicLink" | "material" | "role" | "logError" | "logLogin"
+      modelProps: "logError" | "logLogin" | "material" | "user" | "magicLink" | "role"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
-      User: {
-        payload: Prisma.$UserPayload<ExtArgs>
-        fields: Prisma.UserFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.UserFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.UserFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserPayload>
-          }
-          findFirst: {
-            args: Prisma.UserFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.UserFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserPayload>
-          }
-          findMany: {
-            args: Prisma.UserFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserPayload>[]
-          }
-          create: {
-            args: Prisma.UserCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserPayload>
-          }
-          createMany: {
-            args: Prisma.UserCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          delete: {
-            args: Prisma.UserDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserPayload>
-          }
-          update: {
-            args: Prisma.UserUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserPayload>
-          }
-          deleteMany: {
-            args: Prisma.UserDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.UserUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          upsert: {
-            args: Prisma.UserUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$UserPayload>
-          }
-          aggregate: {
-            args: Prisma.UserAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateUser>
-          }
-          groupBy: {
-            args: Prisma.UserGroupByArgs<ExtArgs>
-            result: $Utils.Optional<UserGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.UserCountArgs<ExtArgs>
-            result: $Utils.Optional<UserCountAggregateOutputType> | number
-          }
-        }
-      }
-      MagicLink: {
-        payload: Prisma.$MagicLinkPayload<ExtArgs>
-        fields: Prisma.MagicLinkFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.MagicLinkFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MagicLinkPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.MagicLinkFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MagicLinkPayload>
-          }
-          findFirst: {
-            args: Prisma.MagicLinkFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MagicLinkPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.MagicLinkFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MagicLinkPayload>
-          }
-          findMany: {
-            args: Prisma.MagicLinkFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MagicLinkPayload>[]
-          }
-          create: {
-            args: Prisma.MagicLinkCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MagicLinkPayload>
-          }
-          createMany: {
-            args: Prisma.MagicLinkCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          delete: {
-            args: Prisma.MagicLinkDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MagicLinkPayload>
-          }
-          update: {
-            args: Prisma.MagicLinkUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MagicLinkPayload>
-          }
-          deleteMany: {
-            args: Prisma.MagicLinkDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.MagicLinkUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          upsert: {
-            args: Prisma.MagicLinkUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MagicLinkPayload>
-          }
-          aggregate: {
-            args: Prisma.MagicLinkAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateMagicLink>
-          }
-          groupBy: {
-            args: Prisma.MagicLinkGroupByArgs<ExtArgs>
-            result: $Utils.Optional<MagicLinkGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.MagicLinkCountArgs<ExtArgs>
-            result: $Utils.Optional<MagicLinkCountAggregateOutputType> | number
-          }
-        }
-      }
-      Material: {
-        payload: Prisma.$MaterialPayload<ExtArgs>
-        fields: Prisma.MaterialFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.MaterialFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MaterialPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.MaterialFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MaterialPayload>
-          }
-          findFirst: {
-            args: Prisma.MaterialFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MaterialPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.MaterialFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MaterialPayload>
-          }
-          findMany: {
-            args: Prisma.MaterialFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MaterialPayload>[]
-          }
-          create: {
-            args: Prisma.MaterialCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MaterialPayload>
-          }
-          createMany: {
-            args: Prisma.MaterialCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          delete: {
-            args: Prisma.MaterialDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MaterialPayload>
-          }
-          update: {
-            args: Prisma.MaterialUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MaterialPayload>
-          }
-          deleteMany: {
-            args: Prisma.MaterialDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.MaterialUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          upsert: {
-            args: Prisma.MaterialUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MaterialPayload>
-          }
-          aggregate: {
-            args: Prisma.MaterialAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateMaterial>
-          }
-          groupBy: {
-            args: Prisma.MaterialGroupByArgs<ExtArgs>
-            result: $Utils.Optional<MaterialGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.MaterialCountArgs<ExtArgs>
-            result: $Utils.Optional<MaterialCountAggregateOutputType> | number
-          }
-        }
-      }
-      Role: {
-        payload: Prisma.$RolePayload<ExtArgs>
-        fields: Prisma.RoleFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.RoleFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RolePayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.RoleFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RolePayload>
-          }
-          findFirst: {
-            args: Prisma.RoleFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RolePayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.RoleFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RolePayload>
-          }
-          findMany: {
-            args: Prisma.RoleFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RolePayload>[]
-          }
-          create: {
-            args: Prisma.RoleCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RolePayload>
-          }
-          createMany: {
-            args: Prisma.RoleCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          delete: {
-            args: Prisma.RoleDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RolePayload>
-          }
-          update: {
-            args: Prisma.RoleUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RolePayload>
-          }
-          deleteMany: {
-            args: Prisma.RoleDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.RoleUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          upsert: {
-            args: Prisma.RoleUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RolePayload>
-          }
-          aggregate: {
-            args: Prisma.RoleAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateRole>
-          }
-          groupBy: {
-            args: Prisma.RoleGroupByArgs<ExtArgs>
-            result: $Utils.Optional<RoleGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.RoleCountArgs<ExtArgs>
-            result: $Utils.Optional<RoleCountAggregateOutputType> | number
-          }
-        }
-      }
       LogError: {
         payload: Prisma.$LogErrorPayload<ExtArgs>
         fields: Prisma.LogErrorFieldRefs
@@ -1092,6 +828,270 @@ export namespace Prisma {
           }
         }
       }
+      Material: {
+        payload: Prisma.$MaterialPayload<ExtArgs>
+        fields: Prisma.MaterialFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.MaterialFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.MaterialFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialPayload>
+          }
+          findFirst: {
+            args: Prisma.MaterialFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.MaterialFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialPayload>
+          }
+          findMany: {
+            args: Prisma.MaterialFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialPayload>[]
+          }
+          create: {
+            args: Prisma.MaterialCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialPayload>
+          }
+          createMany: {
+            args: Prisma.MaterialCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.MaterialDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialPayload>
+          }
+          update: {
+            args: Prisma.MaterialUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialPayload>
+          }
+          deleteMany: {
+            args: Prisma.MaterialDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.MaterialUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.MaterialUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialPayload>
+          }
+          aggregate: {
+            args: Prisma.MaterialAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMaterial>
+          }
+          groupBy: {
+            args: Prisma.MaterialGroupByArgs<ExtArgs>
+            result: $Utils.Optional<MaterialGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.MaterialCountArgs<ExtArgs>
+            result: $Utils.Optional<MaterialCountAggregateOutputType> | number
+          }
+        }
+      }
+      User: {
+        payload: Prisma.$UserPayload<ExtArgs>
+        fields: Prisma.UserFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.UserFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.UserFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>
+          }
+          findFirst: {
+            args: Prisma.UserFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.UserFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>
+          }
+          findMany: {
+            args: Prisma.UserFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>[]
+          }
+          create: {
+            args: Prisma.UserCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>
+          }
+          createMany: {
+            args: Prisma.UserCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.UserDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>
+          }
+          update: {
+            args: Prisma.UserUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>
+          }
+          deleteMany: {
+            args: Prisma.UserDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.UserUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.UserUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>
+          }
+          aggregate: {
+            args: Prisma.UserAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateUser>
+          }
+          groupBy: {
+            args: Prisma.UserGroupByArgs<ExtArgs>
+            result: $Utils.Optional<UserGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.UserCountArgs<ExtArgs>
+            result: $Utils.Optional<UserCountAggregateOutputType> | number
+          }
+        }
+      }
+      MagicLink: {
+        payload: Prisma.$MagicLinkPayload<ExtArgs>
+        fields: Prisma.MagicLinkFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.MagicLinkFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MagicLinkPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.MagicLinkFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MagicLinkPayload>
+          }
+          findFirst: {
+            args: Prisma.MagicLinkFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MagicLinkPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.MagicLinkFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MagicLinkPayload>
+          }
+          findMany: {
+            args: Prisma.MagicLinkFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MagicLinkPayload>[]
+          }
+          create: {
+            args: Prisma.MagicLinkCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MagicLinkPayload>
+          }
+          createMany: {
+            args: Prisma.MagicLinkCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.MagicLinkDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MagicLinkPayload>
+          }
+          update: {
+            args: Prisma.MagicLinkUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MagicLinkPayload>
+          }
+          deleteMany: {
+            args: Prisma.MagicLinkDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.MagicLinkUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.MagicLinkUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MagicLinkPayload>
+          }
+          aggregate: {
+            args: Prisma.MagicLinkAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMagicLink>
+          }
+          groupBy: {
+            args: Prisma.MagicLinkGroupByArgs<ExtArgs>
+            result: $Utils.Optional<MagicLinkGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.MagicLinkCountArgs<ExtArgs>
+            result: $Utils.Optional<MagicLinkCountAggregateOutputType> | number
+          }
+        }
+      }
+      Role: {
+        payload: Prisma.$RolePayload<ExtArgs>
+        fields: Prisma.RoleFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.RoleFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RolePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.RoleFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RolePayload>
+          }
+          findFirst: {
+            args: Prisma.RoleFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RolePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.RoleFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RolePayload>
+          }
+          findMany: {
+            args: Prisma.RoleFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RolePayload>[]
+          }
+          create: {
+            args: Prisma.RoleCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RolePayload>
+          }
+          createMany: {
+            args: Prisma.RoleCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.RoleDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RolePayload>
+          }
+          update: {
+            args: Prisma.RoleUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RolePayload>
+          }
+          deleteMany: {
+            args: Prisma.RoleDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.RoleUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.RoleUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RolePayload>
+          }
+          aggregate: {
+            args: Prisma.RoleAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRole>
+          }
+          groupBy: {
+            args: Prisma.RoleGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RoleGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.RoleCountArgs<ExtArgs>
+            result: $Utils.Optional<RoleCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1176,12 +1176,12 @@ export namespace Prisma {
     omit?: Prisma.GlobalOmitConfig
   }
   export type GlobalOmitConfig = {
-    user?: UserOmit
-    magicLink?: MagicLinkOmit
-    material?: MaterialOmit
-    role?: RoleOmit
     logError?: LogErrorOmit
     logLogin?: LogLoginOmit
+    material?: MaterialOmit
+    user?: UserOmit
+    magicLink?: MagicLinkOmit
+    role?: RoleOmit
   }
 
   /* Types for Logging */
@@ -1354,6 +1354,2893 @@ export namespace Prisma {
   /**
    * Models
    */
+
+  /**
+   * Model LogError
+   */
+
+  export type AggregateLogError = {
+    _count: LogErrorCountAggregateOutputType | null
+    _avg: LogErrorAvgAggregateOutputType | null
+    _sum: LogErrorSumAggregateOutputType | null
+    _min: LogErrorMinAggregateOutputType | null
+    _max: LogErrorMaxAggregateOutputType | null
+  }
+
+  export type LogErrorAvgAggregateOutputType = {
+    statusCode: number | null
+    userId: number | null
+  }
+
+  export type LogErrorSumAggregateOutputType = {
+    statusCode: number | null
+    userId: number | null
+  }
+
+  export type LogErrorMinAggregateOutputType = {
+    id: string | null
+    timestamp: Date | null
+    statusCode: number | null
+    path: string | null
+    method: string | null
+    message: string | null
+    stackTrace: string | null
+    ipAddress: string | null
+    userId: number | null
+    requestBody: string | null
+  }
+
+  export type LogErrorMaxAggregateOutputType = {
+    id: string | null
+    timestamp: Date | null
+    statusCode: number | null
+    path: string | null
+    method: string | null
+    message: string | null
+    stackTrace: string | null
+    ipAddress: string | null
+    userId: number | null
+    requestBody: string | null
+  }
+
+  export type LogErrorCountAggregateOutputType = {
+    id: number
+    timestamp: number
+    statusCode: number
+    path: number
+    method: number
+    message: number
+    stackTrace: number
+    ipAddress: number
+    userId: number
+    requestBody: number
+    _all: number
+  }
+
+
+  export type LogErrorAvgAggregateInputType = {
+    statusCode?: true
+    userId?: true
+  }
+
+  export type LogErrorSumAggregateInputType = {
+    statusCode?: true
+    userId?: true
+  }
+
+  export type LogErrorMinAggregateInputType = {
+    id?: true
+    timestamp?: true
+    statusCode?: true
+    path?: true
+    method?: true
+    message?: true
+    stackTrace?: true
+    ipAddress?: true
+    userId?: true
+    requestBody?: true
+  }
+
+  export type LogErrorMaxAggregateInputType = {
+    id?: true
+    timestamp?: true
+    statusCode?: true
+    path?: true
+    method?: true
+    message?: true
+    stackTrace?: true
+    ipAddress?: true
+    userId?: true
+    requestBody?: true
+  }
+
+  export type LogErrorCountAggregateInputType = {
+    id?: true
+    timestamp?: true
+    statusCode?: true
+    path?: true
+    method?: true
+    message?: true
+    stackTrace?: true
+    ipAddress?: true
+    userId?: true
+    requestBody?: true
+    _all?: true
+  }
+
+  export type LogErrorAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which LogError to aggregate.
+     */
+    where?: LogErrorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LogErrors to fetch.
+     */
+    orderBy?: LogErrorOrderByWithRelationInput | LogErrorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: LogErrorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LogErrors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LogErrors.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned LogErrors
+    **/
+    _count?: true | LogErrorCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: LogErrorAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: LogErrorSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: LogErrorMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: LogErrorMaxAggregateInputType
+  }
+
+  export type GetLogErrorAggregateType<T extends LogErrorAggregateArgs> = {
+        [P in keyof T & keyof AggregateLogError]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateLogError[P]>
+      : GetScalarType<T[P], AggregateLogError[P]>
+  }
+
+
+
+
+  export type LogErrorGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LogErrorWhereInput
+    orderBy?: LogErrorOrderByWithAggregationInput | LogErrorOrderByWithAggregationInput[]
+    by: LogErrorScalarFieldEnum[] | LogErrorScalarFieldEnum
+    having?: LogErrorScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: LogErrorCountAggregateInputType | true
+    _avg?: LogErrorAvgAggregateInputType
+    _sum?: LogErrorSumAggregateInputType
+    _min?: LogErrorMinAggregateInputType
+    _max?: LogErrorMaxAggregateInputType
+  }
+
+  export type LogErrorGroupByOutputType = {
+    id: string
+    timestamp: Date
+    statusCode: number | null
+    path: string | null
+    method: string | null
+    message: string
+    stackTrace: string | null
+    ipAddress: string | null
+    userId: number | null
+    requestBody: string | null
+    _count: LogErrorCountAggregateOutputType | null
+    _avg: LogErrorAvgAggregateOutputType | null
+    _sum: LogErrorSumAggregateOutputType | null
+    _min: LogErrorMinAggregateOutputType | null
+    _max: LogErrorMaxAggregateOutputType | null
+  }
+
+  type GetLogErrorGroupByPayload<T extends LogErrorGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<LogErrorGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof LogErrorGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], LogErrorGroupByOutputType[P]>
+            : GetScalarType<T[P], LogErrorGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type LogErrorSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    timestamp?: boolean
+    statusCode?: boolean
+    path?: boolean
+    method?: boolean
+    message?: boolean
+    stackTrace?: boolean
+    ipAddress?: boolean
+    userId?: boolean
+    requestBody?: boolean
+  }, ExtArgs["result"]["logError"]>
+
+
+
+  export type LogErrorSelectScalar = {
+    id?: boolean
+    timestamp?: boolean
+    statusCode?: boolean
+    path?: boolean
+    method?: boolean
+    message?: boolean
+    stackTrace?: boolean
+    ipAddress?: boolean
+    userId?: boolean
+    requestBody?: boolean
+  }
+
+  export type LogErrorOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "timestamp" | "statusCode" | "path" | "method" | "message" | "stackTrace" | "ipAddress" | "userId" | "requestBody", ExtArgs["result"]["logError"]>
+
+  export type $LogErrorPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "LogError"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      timestamp: Date
+      statusCode: number | null
+      path: string | null
+      method: string | null
+      message: string
+      stackTrace: string | null
+      ipAddress: string | null
+      userId: number | null
+      requestBody: string | null
+    }, ExtArgs["result"]["logError"]>
+    composites: {}
+  }
+
+  type LogErrorGetPayload<S extends boolean | null | undefined | LogErrorDefaultArgs> = $Result.GetResult<Prisma.$LogErrorPayload, S>
+
+  type LogErrorCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<LogErrorFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: LogErrorCountAggregateInputType | true
+    }
+
+  export interface LogErrorDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['LogError'], meta: { name: 'LogError' } }
+    /**
+     * Find zero or one LogError that matches the filter.
+     * @param {LogErrorFindUniqueArgs} args - Arguments to find a LogError
+     * @example
+     * // Get one LogError
+     * const logError = await prisma.logError.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends LogErrorFindUniqueArgs>(args: SelectSubset<T, LogErrorFindUniqueArgs<ExtArgs>>): Prisma__LogErrorClient<$Result.GetResult<Prisma.$LogErrorPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one LogError that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {LogErrorFindUniqueOrThrowArgs} args - Arguments to find a LogError
+     * @example
+     * // Get one LogError
+     * const logError = await prisma.logError.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends LogErrorFindUniqueOrThrowArgs>(args: SelectSubset<T, LogErrorFindUniqueOrThrowArgs<ExtArgs>>): Prisma__LogErrorClient<$Result.GetResult<Prisma.$LogErrorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first LogError that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LogErrorFindFirstArgs} args - Arguments to find a LogError
+     * @example
+     * // Get one LogError
+     * const logError = await prisma.logError.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends LogErrorFindFirstArgs>(args?: SelectSubset<T, LogErrorFindFirstArgs<ExtArgs>>): Prisma__LogErrorClient<$Result.GetResult<Prisma.$LogErrorPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first LogError that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LogErrorFindFirstOrThrowArgs} args - Arguments to find a LogError
+     * @example
+     * // Get one LogError
+     * const logError = await prisma.logError.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends LogErrorFindFirstOrThrowArgs>(args?: SelectSubset<T, LogErrorFindFirstOrThrowArgs<ExtArgs>>): Prisma__LogErrorClient<$Result.GetResult<Prisma.$LogErrorPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more LogErrors that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LogErrorFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all LogErrors
+     * const logErrors = await prisma.logError.findMany()
+     * 
+     * // Get first 10 LogErrors
+     * const logErrors = await prisma.logError.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const logErrorWithIdOnly = await prisma.logError.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends LogErrorFindManyArgs>(args?: SelectSubset<T, LogErrorFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LogErrorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a LogError.
+     * @param {LogErrorCreateArgs} args - Arguments to create a LogError.
+     * @example
+     * // Create one LogError
+     * const LogError = await prisma.logError.create({
+     *   data: {
+     *     // ... data to create a LogError
+     *   }
+     * })
+     * 
+     */
+    create<T extends LogErrorCreateArgs>(args: SelectSubset<T, LogErrorCreateArgs<ExtArgs>>): Prisma__LogErrorClient<$Result.GetResult<Prisma.$LogErrorPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many LogErrors.
+     * @param {LogErrorCreateManyArgs} args - Arguments to create many LogErrors.
+     * @example
+     * // Create many LogErrors
+     * const logError = await prisma.logError.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends LogErrorCreateManyArgs>(args?: SelectSubset<T, LogErrorCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a LogError.
+     * @param {LogErrorDeleteArgs} args - Arguments to delete one LogError.
+     * @example
+     * // Delete one LogError
+     * const LogError = await prisma.logError.delete({
+     *   where: {
+     *     // ... filter to delete one LogError
+     *   }
+     * })
+     * 
+     */
+    delete<T extends LogErrorDeleteArgs>(args: SelectSubset<T, LogErrorDeleteArgs<ExtArgs>>): Prisma__LogErrorClient<$Result.GetResult<Prisma.$LogErrorPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one LogError.
+     * @param {LogErrorUpdateArgs} args - Arguments to update one LogError.
+     * @example
+     * // Update one LogError
+     * const logError = await prisma.logError.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends LogErrorUpdateArgs>(args: SelectSubset<T, LogErrorUpdateArgs<ExtArgs>>): Prisma__LogErrorClient<$Result.GetResult<Prisma.$LogErrorPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more LogErrors.
+     * @param {LogErrorDeleteManyArgs} args - Arguments to filter LogErrors to delete.
+     * @example
+     * // Delete a few LogErrors
+     * const { count } = await prisma.logError.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends LogErrorDeleteManyArgs>(args?: SelectSubset<T, LogErrorDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more LogErrors.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LogErrorUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many LogErrors
+     * const logError = await prisma.logError.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends LogErrorUpdateManyArgs>(args: SelectSubset<T, LogErrorUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one LogError.
+     * @param {LogErrorUpsertArgs} args - Arguments to update or create a LogError.
+     * @example
+     * // Update or create a LogError
+     * const logError = await prisma.logError.upsert({
+     *   create: {
+     *     // ... data to create a LogError
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the LogError we want to update
+     *   }
+     * })
+     */
+    upsert<T extends LogErrorUpsertArgs>(args: SelectSubset<T, LogErrorUpsertArgs<ExtArgs>>): Prisma__LogErrorClient<$Result.GetResult<Prisma.$LogErrorPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of LogErrors.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LogErrorCountArgs} args - Arguments to filter LogErrors to count.
+     * @example
+     * // Count the number of LogErrors
+     * const count = await prisma.logError.count({
+     *   where: {
+     *     // ... the filter for the LogErrors we want to count
+     *   }
+     * })
+    **/
+    count<T extends LogErrorCountArgs>(
+      args?: Subset<T, LogErrorCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], LogErrorCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a LogError.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LogErrorAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends LogErrorAggregateArgs>(args: Subset<T, LogErrorAggregateArgs>): Prisma.PrismaPromise<GetLogErrorAggregateType<T>>
+
+    /**
+     * Group by LogError.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LogErrorGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends LogErrorGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: LogErrorGroupByArgs['orderBy'] }
+        : { orderBy?: LogErrorGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, LogErrorGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetLogErrorGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the LogError model
+   */
+  readonly fields: LogErrorFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for LogError.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__LogErrorClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the LogError model
+   */
+  interface LogErrorFieldRefs {
+    readonly id: FieldRef<"LogError", 'String'>
+    readonly timestamp: FieldRef<"LogError", 'DateTime'>
+    readonly statusCode: FieldRef<"LogError", 'Int'>
+    readonly path: FieldRef<"LogError", 'String'>
+    readonly method: FieldRef<"LogError", 'String'>
+    readonly message: FieldRef<"LogError", 'String'>
+    readonly stackTrace: FieldRef<"LogError", 'String'>
+    readonly ipAddress: FieldRef<"LogError", 'String'>
+    readonly userId: FieldRef<"LogError", 'Int'>
+    readonly requestBody: FieldRef<"LogError", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * LogError findUnique
+   */
+  export type LogErrorFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LogError
+     */
+    select?: LogErrorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LogError
+     */
+    omit?: LogErrorOmit<ExtArgs> | null
+    /**
+     * Filter, which LogError to fetch.
+     */
+    where: LogErrorWhereUniqueInput
+  }
+
+  /**
+   * LogError findUniqueOrThrow
+   */
+  export type LogErrorFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LogError
+     */
+    select?: LogErrorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LogError
+     */
+    omit?: LogErrorOmit<ExtArgs> | null
+    /**
+     * Filter, which LogError to fetch.
+     */
+    where: LogErrorWhereUniqueInput
+  }
+
+  /**
+   * LogError findFirst
+   */
+  export type LogErrorFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LogError
+     */
+    select?: LogErrorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LogError
+     */
+    omit?: LogErrorOmit<ExtArgs> | null
+    /**
+     * Filter, which LogError to fetch.
+     */
+    where?: LogErrorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LogErrors to fetch.
+     */
+    orderBy?: LogErrorOrderByWithRelationInput | LogErrorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for LogErrors.
+     */
+    cursor?: LogErrorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LogErrors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LogErrors.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of LogErrors.
+     */
+    distinct?: LogErrorScalarFieldEnum | LogErrorScalarFieldEnum[]
+  }
+
+  /**
+   * LogError findFirstOrThrow
+   */
+  export type LogErrorFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LogError
+     */
+    select?: LogErrorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LogError
+     */
+    omit?: LogErrorOmit<ExtArgs> | null
+    /**
+     * Filter, which LogError to fetch.
+     */
+    where?: LogErrorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LogErrors to fetch.
+     */
+    orderBy?: LogErrorOrderByWithRelationInput | LogErrorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for LogErrors.
+     */
+    cursor?: LogErrorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LogErrors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LogErrors.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of LogErrors.
+     */
+    distinct?: LogErrorScalarFieldEnum | LogErrorScalarFieldEnum[]
+  }
+
+  /**
+   * LogError findMany
+   */
+  export type LogErrorFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LogError
+     */
+    select?: LogErrorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LogError
+     */
+    omit?: LogErrorOmit<ExtArgs> | null
+    /**
+     * Filter, which LogErrors to fetch.
+     */
+    where?: LogErrorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LogErrors to fetch.
+     */
+    orderBy?: LogErrorOrderByWithRelationInput | LogErrorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing LogErrors.
+     */
+    cursor?: LogErrorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LogErrors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LogErrors.
+     */
+    skip?: number
+    distinct?: LogErrorScalarFieldEnum | LogErrorScalarFieldEnum[]
+  }
+
+  /**
+   * LogError create
+   */
+  export type LogErrorCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LogError
+     */
+    select?: LogErrorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LogError
+     */
+    omit?: LogErrorOmit<ExtArgs> | null
+    /**
+     * The data needed to create a LogError.
+     */
+    data: XOR<LogErrorCreateInput, LogErrorUncheckedCreateInput>
+  }
+
+  /**
+   * LogError createMany
+   */
+  export type LogErrorCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many LogErrors.
+     */
+    data: LogErrorCreateManyInput | LogErrorCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * LogError update
+   */
+  export type LogErrorUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LogError
+     */
+    select?: LogErrorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LogError
+     */
+    omit?: LogErrorOmit<ExtArgs> | null
+    /**
+     * The data needed to update a LogError.
+     */
+    data: XOR<LogErrorUpdateInput, LogErrorUncheckedUpdateInput>
+    /**
+     * Choose, which LogError to update.
+     */
+    where: LogErrorWhereUniqueInput
+  }
+
+  /**
+   * LogError updateMany
+   */
+  export type LogErrorUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update LogErrors.
+     */
+    data: XOR<LogErrorUpdateManyMutationInput, LogErrorUncheckedUpdateManyInput>
+    /**
+     * Filter which LogErrors to update
+     */
+    where?: LogErrorWhereInput
+    /**
+     * Limit how many LogErrors to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * LogError upsert
+   */
+  export type LogErrorUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LogError
+     */
+    select?: LogErrorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LogError
+     */
+    omit?: LogErrorOmit<ExtArgs> | null
+    /**
+     * The filter to search for the LogError to update in case it exists.
+     */
+    where: LogErrorWhereUniqueInput
+    /**
+     * In case the LogError found by the `where` argument doesn't exist, create a new LogError with this data.
+     */
+    create: XOR<LogErrorCreateInput, LogErrorUncheckedCreateInput>
+    /**
+     * In case the LogError was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<LogErrorUpdateInput, LogErrorUncheckedUpdateInput>
+  }
+
+  /**
+   * LogError delete
+   */
+  export type LogErrorDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LogError
+     */
+    select?: LogErrorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LogError
+     */
+    omit?: LogErrorOmit<ExtArgs> | null
+    /**
+     * Filter which LogError to delete.
+     */
+    where: LogErrorWhereUniqueInput
+  }
+
+  /**
+   * LogError deleteMany
+   */
+  export type LogErrorDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which LogErrors to delete
+     */
+    where?: LogErrorWhereInput
+    /**
+     * Limit how many LogErrors to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * LogError without action
+   */
+  export type LogErrorDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LogError
+     */
+    select?: LogErrorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LogError
+     */
+    omit?: LogErrorOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model LogLogin
+   */
+
+  export type AggregateLogLogin = {
+    _count: LogLoginCountAggregateOutputType | null
+    _avg: LogLoginAvgAggregateOutputType | null
+    _sum: LogLoginSumAggregateOutputType | null
+    _min: LogLoginMinAggregateOutputType | null
+    _max: LogLoginMaxAggregateOutputType | null
+  }
+
+  export type LogLoginAvgAggregateOutputType = {
+    userId: number | null
+  }
+
+  export type LogLoginSumAggregateOutputType = {
+    userId: number | null
+  }
+
+  export type LogLoginMinAggregateOutputType = {
+    id: string | null
+    userId: number | null
+    timestamp: Date | null
+    ipAddress: string | null
+    userAgent: string | null
+    successful: boolean | null
+  }
+
+  export type LogLoginMaxAggregateOutputType = {
+    id: string | null
+    userId: number | null
+    timestamp: Date | null
+    ipAddress: string | null
+    userAgent: string | null
+    successful: boolean | null
+  }
+
+  export type LogLoginCountAggregateOutputType = {
+    id: number
+    userId: number
+    timestamp: number
+    ipAddress: number
+    userAgent: number
+    successful: number
+    _all: number
+  }
+
+
+  export type LogLoginAvgAggregateInputType = {
+    userId?: true
+  }
+
+  export type LogLoginSumAggregateInputType = {
+    userId?: true
+  }
+
+  export type LogLoginMinAggregateInputType = {
+    id?: true
+    userId?: true
+    timestamp?: true
+    ipAddress?: true
+    userAgent?: true
+    successful?: true
+  }
+
+  export type LogLoginMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    timestamp?: true
+    ipAddress?: true
+    userAgent?: true
+    successful?: true
+  }
+
+  export type LogLoginCountAggregateInputType = {
+    id?: true
+    userId?: true
+    timestamp?: true
+    ipAddress?: true
+    userAgent?: true
+    successful?: true
+    _all?: true
+  }
+
+  export type LogLoginAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which LogLogin to aggregate.
+     */
+    where?: LogLoginWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LogLogins to fetch.
+     */
+    orderBy?: LogLoginOrderByWithRelationInput | LogLoginOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: LogLoginWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LogLogins from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LogLogins.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned LogLogins
+    **/
+    _count?: true | LogLoginCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: LogLoginAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: LogLoginSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: LogLoginMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: LogLoginMaxAggregateInputType
+  }
+
+  export type GetLogLoginAggregateType<T extends LogLoginAggregateArgs> = {
+        [P in keyof T & keyof AggregateLogLogin]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateLogLogin[P]>
+      : GetScalarType<T[P], AggregateLogLogin[P]>
+  }
+
+
+
+
+  export type LogLoginGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LogLoginWhereInput
+    orderBy?: LogLoginOrderByWithAggregationInput | LogLoginOrderByWithAggregationInput[]
+    by: LogLoginScalarFieldEnum[] | LogLoginScalarFieldEnum
+    having?: LogLoginScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: LogLoginCountAggregateInputType | true
+    _avg?: LogLoginAvgAggregateInputType
+    _sum?: LogLoginSumAggregateInputType
+    _min?: LogLoginMinAggregateInputType
+    _max?: LogLoginMaxAggregateInputType
+  }
+
+  export type LogLoginGroupByOutputType = {
+    id: string
+    userId: number
+    timestamp: Date
+    ipAddress: string | null
+    userAgent: string | null
+    successful: boolean
+    _count: LogLoginCountAggregateOutputType | null
+    _avg: LogLoginAvgAggregateOutputType | null
+    _sum: LogLoginSumAggregateOutputType | null
+    _min: LogLoginMinAggregateOutputType | null
+    _max: LogLoginMaxAggregateOutputType | null
+  }
+
+  type GetLogLoginGroupByPayload<T extends LogLoginGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<LogLoginGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof LogLoginGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], LogLoginGroupByOutputType[P]>
+            : GetScalarType<T[P], LogLoginGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type LogLoginSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    timestamp?: boolean
+    ipAddress?: boolean
+    userAgent?: boolean
+    successful?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["logLogin"]>
+
+
+
+  export type LogLoginSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    timestamp?: boolean
+    ipAddress?: boolean
+    userAgent?: boolean
+    successful?: boolean
+  }
+
+  export type LogLoginOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "timestamp" | "ipAddress" | "userAgent" | "successful", ExtArgs["result"]["logLogin"]>
+  export type LogLoginInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $LogLoginPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "LogLogin"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: number
+      timestamp: Date
+      ipAddress: string | null
+      userAgent: string | null
+      successful: boolean
+    }, ExtArgs["result"]["logLogin"]>
+    composites: {}
+  }
+
+  type LogLoginGetPayload<S extends boolean | null | undefined | LogLoginDefaultArgs> = $Result.GetResult<Prisma.$LogLoginPayload, S>
+
+  type LogLoginCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<LogLoginFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: LogLoginCountAggregateInputType | true
+    }
+
+  export interface LogLoginDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['LogLogin'], meta: { name: 'LogLogin' } }
+    /**
+     * Find zero or one LogLogin that matches the filter.
+     * @param {LogLoginFindUniqueArgs} args - Arguments to find a LogLogin
+     * @example
+     * // Get one LogLogin
+     * const logLogin = await prisma.logLogin.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends LogLoginFindUniqueArgs>(args: SelectSubset<T, LogLoginFindUniqueArgs<ExtArgs>>): Prisma__LogLoginClient<$Result.GetResult<Prisma.$LogLoginPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one LogLogin that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {LogLoginFindUniqueOrThrowArgs} args - Arguments to find a LogLogin
+     * @example
+     * // Get one LogLogin
+     * const logLogin = await prisma.logLogin.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends LogLoginFindUniqueOrThrowArgs>(args: SelectSubset<T, LogLoginFindUniqueOrThrowArgs<ExtArgs>>): Prisma__LogLoginClient<$Result.GetResult<Prisma.$LogLoginPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first LogLogin that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LogLoginFindFirstArgs} args - Arguments to find a LogLogin
+     * @example
+     * // Get one LogLogin
+     * const logLogin = await prisma.logLogin.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends LogLoginFindFirstArgs>(args?: SelectSubset<T, LogLoginFindFirstArgs<ExtArgs>>): Prisma__LogLoginClient<$Result.GetResult<Prisma.$LogLoginPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first LogLogin that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LogLoginFindFirstOrThrowArgs} args - Arguments to find a LogLogin
+     * @example
+     * // Get one LogLogin
+     * const logLogin = await prisma.logLogin.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends LogLoginFindFirstOrThrowArgs>(args?: SelectSubset<T, LogLoginFindFirstOrThrowArgs<ExtArgs>>): Prisma__LogLoginClient<$Result.GetResult<Prisma.$LogLoginPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more LogLogins that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LogLoginFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all LogLogins
+     * const logLogins = await prisma.logLogin.findMany()
+     * 
+     * // Get first 10 LogLogins
+     * const logLogins = await prisma.logLogin.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const logLoginWithIdOnly = await prisma.logLogin.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends LogLoginFindManyArgs>(args?: SelectSubset<T, LogLoginFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LogLoginPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a LogLogin.
+     * @param {LogLoginCreateArgs} args - Arguments to create a LogLogin.
+     * @example
+     * // Create one LogLogin
+     * const LogLogin = await prisma.logLogin.create({
+     *   data: {
+     *     // ... data to create a LogLogin
+     *   }
+     * })
+     * 
+     */
+    create<T extends LogLoginCreateArgs>(args: SelectSubset<T, LogLoginCreateArgs<ExtArgs>>): Prisma__LogLoginClient<$Result.GetResult<Prisma.$LogLoginPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many LogLogins.
+     * @param {LogLoginCreateManyArgs} args - Arguments to create many LogLogins.
+     * @example
+     * // Create many LogLogins
+     * const logLogin = await prisma.logLogin.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends LogLoginCreateManyArgs>(args?: SelectSubset<T, LogLoginCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a LogLogin.
+     * @param {LogLoginDeleteArgs} args - Arguments to delete one LogLogin.
+     * @example
+     * // Delete one LogLogin
+     * const LogLogin = await prisma.logLogin.delete({
+     *   where: {
+     *     // ... filter to delete one LogLogin
+     *   }
+     * })
+     * 
+     */
+    delete<T extends LogLoginDeleteArgs>(args: SelectSubset<T, LogLoginDeleteArgs<ExtArgs>>): Prisma__LogLoginClient<$Result.GetResult<Prisma.$LogLoginPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one LogLogin.
+     * @param {LogLoginUpdateArgs} args - Arguments to update one LogLogin.
+     * @example
+     * // Update one LogLogin
+     * const logLogin = await prisma.logLogin.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends LogLoginUpdateArgs>(args: SelectSubset<T, LogLoginUpdateArgs<ExtArgs>>): Prisma__LogLoginClient<$Result.GetResult<Prisma.$LogLoginPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more LogLogins.
+     * @param {LogLoginDeleteManyArgs} args - Arguments to filter LogLogins to delete.
+     * @example
+     * // Delete a few LogLogins
+     * const { count } = await prisma.logLogin.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends LogLoginDeleteManyArgs>(args?: SelectSubset<T, LogLoginDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more LogLogins.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LogLoginUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many LogLogins
+     * const logLogin = await prisma.logLogin.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends LogLoginUpdateManyArgs>(args: SelectSubset<T, LogLoginUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one LogLogin.
+     * @param {LogLoginUpsertArgs} args - Arguments to update or create a LogLogin.
+     * @example
+     * // Update or create a LogLogin
+     * const logLogin = await prisma.logLogin.upsert({
+     *   create: {
+     *     // ... data to create a LogLogin
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the LogLogin we want to update
+     *   }
+     * })
+     */
+    upsert<T extends LogLoginUpsertArgs>(args: SelectSubset<T, LogLoginUpsertArgs<ExtArgs>>): Prisma__LogLoginClient<$Result.GetResult<Prisma.$LogLoginPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of LogLogins.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LogLoginCountArgs} args - Arguments to filter LogLogins to count.
+     * @example
+     * // Count the number of LogLogins
+     * const count = await prisma.logLogin.count({
+     *   where: {
+     *     // ... the filter for the LogLogins we want to count
+     *   }
+     * })
+    **/
+    count<T extends LogLoginCountArgs>(
+      args?: Subset<T, LogLoginCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], LogLoginCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a LogLogin.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LogLoginAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends LogLoginAggregateArgs>(args: Subset<T, LogLoginAggregateArgs>): Prisma.PrismaPromise<GetLogLoginAggregateType<T>>
+
+    /**
+     * Group by LogLogin.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LogLoginGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends LogLoginGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: LogLoginGroupByArgs['orderBy'] }
+        : { orderBy?: LogLoginGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, LogLoginGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetLogLoginGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the LogLogin model
+   */
+  readonly fields: LogLoginFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for LogLogin.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__LogLoginClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the LogLogin model
+   */
+  interface LogLoginFieldRefs {
+    readonly id: FieldRef<"LogLogin", 'String'>
+    readonly userId: FieldRef<"LogLogin", 'Int'>
+    readonly timestamp: FieldRef<"LogLogin", 'DateTime'>
+    readonly ipAddress: FieldRef<"LogLogin", 'String'>
+    readonly userAgent: FieldRef<"LogLogin", 'String'>
+    readonly successful: FieldRef<"LogLogin", 'Boolean'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * LogLogin findUnique
+   */
+  export type LogLoginFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LogLogin
+     */
+    select?: LogLoginSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LogLogin
+     */
+    omit?: LogLoginOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LogLoginInclude<ExtArgs> | null
+    /**
+     * Filter, which LogLogin to fetch.
+     */
+    where: LogLoginWhereUniqueInput
+  }
+
+  /**
+   * LogLogin findUniqueOrThrow
+   */
+  export type LogLoginFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LogLogin
+     */
+    select?: LogLoginSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LogLogin
+     */
+    omit?: LogLoginOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LogLoginInclude<ExtArgs> | null
+    /**
+     * Filter, which LogLogin to fetch.
+     */
+    where: LogLoginWhereUniqueInput
+  }
+
+  /**
+   * LogLogin findFirst
+   */
+  export type LogLoginFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LogLogin
+     */
+    select?: LogLoginSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LogLogin
+     */
+    omit?: LogLoginOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LogLoginInclude<ExtArgs> | null
+    /**
+     * Filter, which LogLogin to fetch.
+     */
+    where?: LogLoginWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LogLogins to fetch.
+     */
+    orderBy?: LogLoginOrderByWithRelationInput | LogLoginOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for LogLogins.
+     */
+    cursor?: LogLoginWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LogLogins from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LogLogins.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of LogLogins.
+     */
+    distinct?: LogLoginScalarFieldEnum | LogLoginScalarFieldEnum[]
+  }
+
+  /**
+   * LogLogin findFirstOrThrow
+   */
+  export type LogLoginFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LogLogin
+     */
+    select?: LogLoginSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LogLogin
+     */
+    omit?: LogLoginOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LogLoginInclude<ExtArgs> | null
+    /**
+     * Filter, which LogLogin to fetch.
+     */
+    where?: LogLoginWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LogLogins to fetch.
+     */
+    orderBy?: LogLoginOrderByWithRelationInput | LogLoginOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for LogLogins.
+     */
+    cursor?: LogLoginWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LogLogins from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LogLogins.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of LogLogins.
+     */
+    distinct?: LogLoginScalarFieldEnum | LogLoginScalarFieldEnum[]
+  }
+
+  /**
+   * LogLogin findMany
+   */
+  export type LogLoginFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LogLogin
+     */
+    select?: LogLoginSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LogLogin
+     */
+    omit?: LogLoginOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LogLoginInclude<ExtArgs> | null
+    /**
+     * Filter, which LogLogins to fetch.
+     */
+    where?: LogLoginWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LogLogins to fetch.
+     */
+    orderBy?: LogLoginOrderByWithRelationInput | LogLoginOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing LogLogins.
+     */
+    cursor?: LogLoginWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LogLogins from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LogLogins.
+     */
+    skip?: number
+    distinct?: LogLoginScalarFieldEnum | LogLoginScalarFieldEnum[]
+  }
+
+  /**
+   * LogLogin create
+   */
+  export type LogLoginCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LogLogin
+     */
+    select?: LogLoginSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LogLogin
+     */
+    omit?: LogLoginOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LogLoginInclude<ExtArgs> | null
+    /**
+     * The data needed to create a LogLogin.
+     */
+    data: XOR<LogLoginCreateInput, LogLoginUncheckedCreateInput>
+  }
+
+  /**
+   * LogLogin createMany
+   */
+  export type LogLoginCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many LogLogins.
+     */
+    data: LogLoginCreateManyInput | LogLoginCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * LogLogin update
+   */
+  export type LogLoginUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LogLogin
+     */
+    select?: LogLoginSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LogLogin
+     */
+    omit?: LogLoginOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LogLoginInclude<ExtArgs> | null
+    /**
+     * The data needed to update a LogLogin.
+     */
+    data: XOR<LogLoginUpdateInput, LogLoginUncheckedUpdateInput>
+    /**
+     * Choose, which LogLogin to update.
+     */
+    where: LogLoginWhereUniqueInput
+  }
+
+  /**
+   * LogLogin updateMany
+   */
+  export type LogLoginUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update LogLogins.
+     */
+    data: XOR<LogLoginUpdateManyMutationInput, LogLoginUncheckedUpdateManyInput>
+    /**
+     * Filter which LogLogins to update
+     */
+    where?: LogLoginWhereInput
+    /**
+     * Limit how many LogLogins to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * LogLogin upsert
+   */
+  export type LogLoginUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LogLogin
+     */
+    select?: LogLoginSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LogLogin
+     */
+    omit?: LogLoginOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LogLoginInclude<ExtArgs> | null
+    /**
+     * The filter to search for the LogLogin to update in case it exists.
+     */
+    where: LogLoginWhereUniqueInput
+    /**
+     * In case the LogLogin found by the `where` argument doesn't exist, create a new LogLogin with this data.
+     */
+    create: XOR<LogLoginCreateInput, LogLoginUncheckedCreateInput>
+    /**
+     * In case the LogLogin was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<LogLoginUpdateInput, LogLoginUncheckedUpdateInput>
+  }
+
+  /**
+   * LogLogin delete
+   */
+  export type LogLoginDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LogLogin
+     */
+    select?: LogLoginSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LogLogin
+     */
+    omit?: LogLoginOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LogLoginInclude<ExtArgs> | null
+    /**
+     * Filter which LogLogin to delete.
+     */
+    where: LogLoginWhereUniqueInput
+  }
+
+  /**
+   * LogLogin deleteMany
+   */
+  export type LogLoginDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which LogLogins to delete
+     */
+    where?: LogLoginWhereInput
+    /**
+     * Limit how many LogLogins to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * LogLogin without action
+   */
+  export type LogLoginDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LogLogin
+     */
+    select?: LogLoginSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LogLogin
+     */
+    omit?: LogLoginOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LogLoginInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Material
+   */
+
+  export type AggregateMaterial = {
+    _count: MaterialCountAggregateOutputType | null
+    _avg: MaterialAvgAggregateOutputType | null
+    _sum: MaterialSumAggregateOutputType | null
+    _min: MaterialMinAggregateOutputType | null
+    _max: MaterialMaxAggregateOutputType | null
+  }
+
+  export type MaterialAvgAggregateOutputType = {
+    id: number | null
+  }
+
+  export type MaterialSumAggregateOutputType = {
+    id: bigint | null
+  }
+
+  export type MaterialMinAggregateOutputType = {
+    id: bigint | null
+    name: string | null
+    specification: string | null
+    unit: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MaterialMaxAggregateOutputType = {
+    id: bigint | null
+    name: string | null
+    specification: string | null
+    unit: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MaterialCountAggregateOutputType = {
+    id: number
+    name: number
+    specification: number
+    unit: number
+    isActive: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type MaterialAvgAggregateInputType = {
+    id?: true
+  }
+
+  export type MaterialSumAggregateInputType = {
+    id?: true
+  }
+
+  export type MaterialMinAggregateInputType = {
+    id?: true
+    name?: true
+    specification?: true
+    unit?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MaterialMaxAggregateInputType = {
+    id?: true
+    name?: true
+    specification?: true
+    unit?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MaterialCountAggregateInputType = {
+    id?: true
+    name?: true
+    specification?: true
+    unit?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type MaterialAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Material to aggregate.
+     */
+    where?: MaterialWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Materials to fetch.
+     */
+    orderBy?: MaterialOrderByWithRelationInput | MaterialOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: MaterialWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Materials from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Materials.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Materials
+    **/
+    _count?: true | MaterialCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: MaterialAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: MaterialSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: MaterialMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: MaterialMaxAggregateInputType
+  }
+
+  export type GetMaterialAggregateType<T extends MaterialAggregateArgs> = {
+        [P in keyof T & keyof AggregateMaterial]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMaterial[P]>
+      : GetScalarType<T[P], AggregateMaterial[P]>
+  }
+
+
+
+
+  export type MaterialGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MaterialWhereInput
+    orderBy?: MaterialOrderByWithAggregationInput | MaterialOrderByWithAggregationInput[]
+    by: MaterialScalarFieldEnum[] | MaterialScalarFieldEnum
+    having?: MaterialScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: MaterialCountAggregateInputType | true
+    _avg?: MaterialAvgAggregateInputType
+    _sum?: MaterialSumAggregateInputType
+    _min?: MaterialMinAggregateInputType
+    _max?: MaterialMaxAggregateInputType
+  }
+
+  export type MaterialGroupByOutputType = {
+    id: bigint
+    name: string
+    specification: string | null
+    unit: string
+    isActive: boolean
+    createdAt: Date
+    updatedAt: Date
+    _count: MaterialCountAggregateOutputType | null
+    _avg: MaterialAvgAggregateOutputType | null
+    _sum: MaterialSumAggregateOutputType | null
+    _min: MaterialMinAggregateOutputType | null
+    _max: MaterialMaxAggregateOutputType | null
+  }
+
+  type GetMaterialGroupByPayload<T extends MaterialGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<MaterialGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof MaterialGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], MaterialGroupByOutputType[P]>
+            : GetScalarType<T[P], MaterialGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type MaterialSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    specification?: boolean
+    unit?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["material"]>
+
+
+
+  export type MaterialSelectScalar = {
+    id?: boolean
+    name?: boolean
+    specification?: boolean
+    unit?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type MaterialOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "specification" | "unit" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["material"]>
+
+  export type $MaterialPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Material"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: bigint
+      name: string
+      specification: string | null
+      unit: string
+      isActive: boolean
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["material"]>
+    composites: {}
+  }
+
+  type MaterialGetPayload<S extends boolean | null | undefined | MaterialDefaultArgs> = $Result.GetResult<Prisma.$MaterialPayload, S>
+
+  type MaterialCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<MaterialFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: MaterialCountAggregateInputType | true
+    }
+
+  export interface MaterialDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Material'], meta: { name: 'Material' } }
+    /**
+     * Find zero or one Material that matches the filter.
+     * @param {MaterialFindUniqueArgs} args - Arguments to find a Material
+     * @example
+     * // Get one Material
+     * const material = await prisma.material.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends MaterialFindUniqueArgs>(args: SelectSubset<T, MaterialFindUniqueArgs<ExtArgs>>): Prisma__MaterialClient<$Result.GetResult<Prisma.$MaterialPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Material that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {MaterialFindUniqueOrThrowArgs} args - Arguments to find a Material
+     * @example
+     * // Get one Material
+     * const material = await prisma.material.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends MaterialFindUniqueOrThrowArgs>(args: SelectSubset<T, MaterialFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MaterialClient<$Result.GetResult<Prisma.$MaterialPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Material that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaterialFindFirstArgs} args - Arguments to find a Material
+     * @example
+     * // Get one Material
+     * const material = await prisma.material.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends MaterialFindFirstArgs>(args?: SelectSubset<T, MaterialFindFirstArgs<ExtArgs>>): Prisma__MaterialClient<$Result.GetResult<Prisma.$MaterialPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Material that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaterialFindFirstOrThrowArgs} args - Arguments to find a Material
+     * @example
+     * // Get one Material
+     * const material = await prisma.material.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends MaterialFindFirstOrThrowArgs>(args?: SelectSubset<T, MaterialFindFirstOrThrowArgs<ExtArgs>>): Prisma__MaterialClient<$Result.GetResult<Prisma.$MaterialPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Materials that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaterialFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Materials
+     * const materials = await prisma.material.findMany()
+     * 
+     * // Get first 10 Materials
+     * const materials = await prisma.material.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const materialWithIdOnly = await prisma.material.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends MaterialFindManyArgs>(args?: SelectSubset<T, MaterialFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaterialPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Material.
+     * @param {MaterialCreateArgs} args - Arguments to create a Material.
+     * @example
+     * // Create one Material
+     * const Material = await prisma.material.create({
+     *   data: {
+     *     // ... data to create a Material
+     *   }
+     * })
+     * 
+     */
+    create<T extends MaterialCreateArgs>(args: SelectSubset<T, MaterialCreateArgs<ExtArgs>>): Prisma__MaterialClient<$Result.GetResult<Prisma.$MaterialPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Materials.
+     * @param {MaterialCreateManyArgs} args - Arguments to create many Materials.
+     * @example
+     * // Create many Materials
+     * const material = await prisma.material.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends MaterialCreateManyArgs>(args?: SelectSubset<T, MaterialCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Material.
+     * @param {MaterialDeleteArgs} args - Arguments to delete one Material.
+     * @example
+     * // Delete one Material
+     * const Material = await prisma.material.delete({
+     *   where: {
+     *     // ... filter to delete one Material
+     *   }
+     * })
+     * 
+     */
+    delete<T extends MaterialDeleteArgs>(args: SelectSubset<T, MaterialDeleteArgs<ExtArgs>>): Prisma__MaterialClient<$Result.GetResult<Prisma.$MaterialPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Material.
+     * @param {MaterialUpdateArgs} args - Arguments to update one Material.
+     * @example
+     * // Update one Material
+     * const material = await prisma.material.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends MaterialUpdateArgs>(args: SelectSubset<T, MaterialUpdateArgs<ExtArgs>>): Prisma__MaterialClient<$Result.GetResult<Prisma.$MaterialPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Materials.
+     * @param {MaterialDeleteManyArgs} args - Arguments to filter Materials to delete.
+     * @example
+     * // Delete a few Materials
+     * const { count } = await prisma.material.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends MaterialDeleteManyArgs>(args?: SelectSubset<T, MaterialDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Materials.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaterialUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Materials
+     * const material = await prisma.material.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends MaterialUpdateManyArgs>(args: SelectSubset<T, MaterialUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Material.
+     * @param {MaterialUpsertArgs} args - Arguments to update or create a Material.
+     * @example
+     * // Update or create a Material
+     * const material = await prisma.material.upsert({
+     *   create: {
+     *     // ... data to create a Material
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Material we want to update
+     *   }
+     * })
+     */
+    upsert<T extends MaterialUpsertArgs>(args: SelectSubset<T, MaterialUpsertArgs<ExtArgs>>): Prisma__MaterialClient<$Result.GetResult<Prisma.$MaterialPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Materials.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaterialCountArgs} args - Arguments to filter Materials to count.
+     * @example
+     * // Count the number of Materials
+     * const count = await prisma.material.count({
+     *   where: {
+     *     // ... the filter for the Materials we want to count
+     *   }
+     * })
+    **/
+    count<T extends MaterialCountArgs>(
+      args?: Subset<T, MaterialCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], MaterialCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Material.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaterialAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MaterialAggregateArgs>(args: Subset<T, MaterialAggregateArgs>): Prisma.PrismaPromise<GetMaterialAggregateType<T>>
+
+    /**
+     * Group by Material.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaterialGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends MaterialGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: MaterialGroupByArgs['orderBy'] }
+        : { orderBy?: MaterialGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, MaterialGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMaterialGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Material model
+   */
+  readonly fields: MaterialFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Material.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__MaterialClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Material model
+   */
+  interface MaterialFieldRefs {
+    readonly id: FieldRef<"Material", 'BigInt'>
+    readonly name: FieldRef<"Material", 'String'>
+    readonly specification: FieldRef<"Material", 'String'>
+    readonly unit: FieldRef<"Material", 'String'>
+    readonly isActive: FieldRef<"Material", 'Boolean'>
+    readonly createdAt: FieldRef<"Material", 'DateTime'>
+    readonly updatedAt: FieldRef<"Material", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Material findUnique
+   */
+  export type MaterialFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Material
+     */
+    select?: MaterialSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Material
+     */
+    omit?: MaterialOmit<ExtArgs> | null
+    /**
+     * Filter, which Material to fetch.
+     */
+    where: MaterialWhereUniqueInput
+  }
+
+  /**
+   * Material findUniqueOrThrow
+   */
+  export type MaterialFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Material
+     */
+    select?: MaterialSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Material
+     */
+    omit?: MaterialOmit<ExtArgs> | null
+    /**
+     * Filter, which Material to fetch.
+     */
+    where: MaterialWhereUniqueInput
+  }
+
+  /**
+   * Material findFirst
+   */
+  export type MaterialFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Material
+     */
+    select?: MaterialSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Material
+     */
+    omit?: MaterialOmit<ExtArgs> | null
+    /**
+     * Filter, which Material to fetch.
+     */
+    where?: MaterialWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Materials to fetch.
+     */
+    orderBy?: MaterialOrderByWithRelationInput | MaterialOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Materials.
+     */
+    cursor?: MaterialWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Materials from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Materials.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Materials.
+     */
+    distinct?: MaterialScalarFieldEnum | MaterialScalarFieldEnum[]
+  }
+
+  /**
+   * Material findFirstOrThrow
+   */
+  export type MaterialFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Material
+     */
+    select?: MaterialSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Material
+     */
+    omit?: MaterialOmit<ExtArgs> | null
+    /**
+     * Filter, which Material to fetch.
+     */
+    where?: MaterialWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Materials to fetch.
+     */
+    orderBy?: MaterialOrderByWithRelationInput | MaterialOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Materials.
+     */
+    cursor?: MaterialWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Materials from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Materials.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Materials.
+     */
+    distinct?: MaterialScalarFieldEnum | MaterialScalarFieldEnum[]
+  }
+
+  /**
+   * Material findMany
+   */
+  export type MaterialFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Material
+     */
+    select?: MaterialSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Material
+     */
+    omit?: MaterialOmit<ExtArgs> | null
+    /**
+     * Filter, which Materials to fetch.
+     */
+    where?: MaterialWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Materials to fetch.
+     */
+    orderBy?: MaterialOrderByWithRelationInput | MaterialOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Materials.
+     */
+    cursor?: MaterialWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Materials from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Materials.
+     */
+    skip?: number
+    distinct?: MaterialScalarFieldEnum | MaterialScalarFieldEnum[]
+  }
+
+  /**
+   * Material create
+   */
+  export type MaterialCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Material
+     */
+    select?: MaterialSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Material
+     */
+    omit?: MaterialOmit<ExtArgs> | null
+    /**
+     * The data needed to create a Material.
+     */
+    data: XOR<MaterialCreateInput, MaterialUncheckedCreateInput>
+  }
+
+  /**
+   * Material createMany
+   */
+  export type MaterialCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Materials.
+     */
+    data: MaterialCreateManyInput | MaterialCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Material update
+   */
+  export type MaterialUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Material
+     */
+    select?: MaterialSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Material
+     */
+    omit?: MaterialOmit<ExtArgs> | null
+    /**
+     * The data needed to update a Material.
+     */
+    data: XOR<MaterialUpdateInput, MaterialUncheckedUpdateInput>
+    /**
+     * Choose, which Material to update.
+     */
+    where: MaterialWhereUniqueInput
+  }
+
+  /**
+   * Material updateMany
+   */
+  export type MaterialUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Materials.
+     */
+    data: XOR<MaterialUpdateManyMutationInput, MaterialUncheckedUpdateManyInput>
+    /**
+     * Filter which Materials to update
+     */
+    where?: MaterialWhereInput
+    /**
+     * Limit how many Materials to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Material upsert
+   */
+  export type MaterialUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Material
+     */
+    select?: MaterialSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Material
+     */
+    omit?: MaterialOmit<ExtArgs> | null
+    /**
+     * The filter to search for the Material to update in case it exists.
+     */
+    where: MaterialWhereUniqueInput
+    /**
+     * In case the Material found by the `where` argument doesn't exist, create a new Material with this data.
+     */
+    create: XOR<MaterialCreateInput, MaterialUncheckedCreateInput>
+    /**
+     * In case the Material was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<MaterialUpdateInput, MaterialUncheckedUpdateInput>
+  }
+
+  /**
+   * Material delete
+   */
+  export type MaterialDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Material
+     */
+    select?: MaterialSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Material
+     */
+    omit?: MaterialOmit<ExtArgs> | null
+    /**
+     * Filter which Material to delete.
+     */
+    where: MaterialWhereUniqueInput
+  }
+
+  /**
+   * Material deleteMany
+   */
+  export type MaterialDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Materials to delete
+     */
+    where?: MaterialWhereInput
+    /**
+     * Limit how many Materials to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Material without action
+   */
+  export type MaterialDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Material
+     */
+    select?: MaterialSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Material
+     */
+    omit?: MaterialOmit<ExtArgs> | null
+  }
+
 
   /**
    * Model User
@@ -3408,944 +6295,6 @@ export namespace Prisma {
 
 
   /**
-   * Model Material
-   */
-
-  export type AggregateMaterial = {
-    _count: MaterialCountAggregateOutputType | null
-    _avg: MaterialAvgAggregateOutputType | null
-    _sum: MaterialSumAggregateOutputType | null
-    _min: MaterialMinAggregateOutputType | null
-    _max: MaterialMaxAggregateOutputType | null
-  }
-
-  export type MaterialAvgAggregateOutputType = {
-    id: number | null
-  }
-
-  export type MaterialSumAggregateOutputType = {
-    id: bigint | null
-  }
-
-  export type MaterialMinAggregateOutputType = {
-    id: bigint | null
-    name: string | null
-    specification: string | null
-    unit: string | null
-    isActive: boolean | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type MaterialMaxAggregateOutputType = {
-    id: bigint | null
-    name: string | null
-    specification: string | null
-    unit: string | null
-    isActive: boolean | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type MaterialCountAggregateOutputType = {
-    id: number
-    name: number
-    specification: number
-    unit: number
-    isActive: number
-    createdAt: number
-    updatedAt: number
-    _all: number
-  }
-
-
-  export type MaterialAvgAggregateInputType = {
-    id?: true
-  }
-
-  export type MaterialSumAggregateInputType = {
-    id?: true
-  }
-
-  export type MaterialMinAggregateInputType = {
-    id?: true
-    name?: true
-    specification?: true
-    unit?: true
-    isActive?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type MaterialMaxAggregateInputType = {
-    id?: true
-    name?: true
-    specification?: true
-    unit?: true
-    isActive?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type MaterialCountAggregateInputType = {
-    id?: true
-    name?: true
-    specification?: true
-    unit?: true
-    isActive?: true
-    createdAt?: true
-    updatedAt?: true
-    _all?: true
-  }
-
-  export type MaterialAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Material to aggregate.
-     */
-    where?: MaterialWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Materials to fetch.
-     */
-    orderBy?: MaterialOrderByWithRelationInput | MaterialOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: MaterialWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Materials from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Materials.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned Materials
-    **/
-    _count?: true | MaterialCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: MaterialAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: MaterialSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: MaterialMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: MaterialMaxAggregateInputType
-  }
-
-  export type GetMaterialAggregateType<T extends MaterialAggregateArgs> = {
-        [P in keyof T & keyof AggregateMaterial]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateMaterial[P]>
-      : GetScalarType<T[P], AggregateMaterial[P]>
-  }
-
-
-
-
-  export type MaterialGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: MaterialWhereInput
-    orderBy?: MaterialOrderByWithAggregationInput | MaterialOrderByWithAggregationInput[]
-    by: MaterialScalarFieldEnum[] | MaterialScalarFieldEnum
-    having?: MaterialScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: MaterialCountAggregateInputType | true
-    _avg?: MaterialAvgAggregateInputType
-    _sum?: MaterialSumAggregateInputType
-    _min?: MaterialMinAggregateInputType
-    _max?: MaterialMaxAggregateInputType
-  }
-
-  export type MaterialGroupByOutputType = {
-    id: bigint
-    name: string
-    specification: string | null
-    unit: string
-    isActive: boolean
-    createdAt: Date
-    updatedAt: Date
-    _count: MaterialCountAggregateOutputType | null
-    _avg: MaterialAvgAggregateOutputType | null
-    _sum: MaterialSumAggregateOutputType | null
-    _min: MaterialMinAggregateOutputType | null
-    _max: MaterialMaxAggregateOutputType | null
-  }
-
-  type GetMaterialGroupByPayload<T extends MaterialGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<MaterialGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof MaterialGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], MaterialGroupByOutputType[P]>
-            : GetScalarType<T[P], MaterialGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type MaterialSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    name?: boolean
-    specification?: boolean
-    unit?: boolean
-    isActive?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-  }, ExtArgs["result"]["material"]>
-
-
-
-  export type MaterialSelectScalar = {
-    id?: boolean
-    name?: boolean
-    specification?: boolean
-    unit?: boolean
-    isActive?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-  }
-
-  export type MaterialOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "specification" | "unit" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["material"]>
-
-  export type $MaterialPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "Material"
-    objects: {}
-    scalars: $Extensions.GetPayloadResult<{
-      id: bigint
-      name: string
-      specification: string | null
-      unit: string
-      isActive: boolean
-      createdAt: Date
-      updatedAt: Date
-    }, ExtArgs["result"]["material"]>
-    composites: {}
-  }
-
-  type MaterialGetPayload<S extends boolean | null | undefined | MaterialDefaultArgs> = $Result.GetResult<Prisma.$MaterialPayload, S>
-
-  type MaterialCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<MaterialFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: MaterialCountAggregateInputType | true
-    }
-
-  export interface MaterialDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Material'], meta: { name: 'Material' } }
-    /**
-     * Find zero or one Material that matches the filter.
-     * @param {MaterialFindUniqueArgs} args - Arguments to find a Material
-     * @example
-     * // Get one Material
-     * const material = await prisma.material.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends MaterialFindUniqueArgs>(args: SelectSubset<T, MaterialFindUniqueArgs<ExtArgs>>): Prisma__MaterialClient<$Result.GetResult<Prisma.$MaterialPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one Material that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {MaterialFindUniqueOrThrowArgs} args - Arguments to find a Material
-     * @example
-     * // Get one Material
-     * const material = await prisma.material.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends MaterialFindUniqueOrThrowArgs>(args: SelectSubset<T, MaterialFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MaterialClient<$Result.GetResult<Prisma.$MaterialPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Material that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {MaterialFindFirstArgs} args - Arguments to find a Material
-     * @example
-     * // Get one Material
-     * const material = await prisma.material.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends MaterialFindFirstArgs>(args?: SelectSubset<T, MaterialFindFirstArgs<ExtArgs>>): Prisma__MaterialClient<$Result.GetResult<Prisma.$MaterialPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Material that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {MaterialFindFirstOrThrowArgs} args - Arguments to find a Material
-     * @example
-     * // Get one Material
-     * const material = await prisma.material.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends MaterialFindFirstOrThrowArgs>(args?: SelectSubset<T, MaterialFindFirstOrThrowArgs<ExtArgs>>): Prisma__MaterialClient<$Result.GetResult<Prisma.$MaterialPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more Materials that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {MaterialFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all Materials
-     * const materials = await prisma.material.findMany()
-     * 
-     * // Get first 10 Materials
-     * const materials = await prisma.material.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const materialWithIdOnly = await prisma.material.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends MaterialFindManyArgs>(args?: SelectSubset<T, MaterialFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaterialPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a Material.
-     * @param {MaterialCreateArgs} args - Arguments to create a Material.
-     * @example
-     * // Create one Material
-     * const Material = await prisma.material.create({
-     *   data: {
-     *     // ... data to create a Material
-     *   }
-     * })
-     * 
-     */
-    create<T extends MaterialCreateArgs>(args: SelectSubset<T, MaterialCreateArgs<ExtArgs>>): Prisma__MaterialClient<$Result.GetResult<Prisma.$MaterialPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many Materials.
-     * @param {MaterialCreateManyArgs} args - Arguments to create many Materials.
-     * @example
-     * // Create many Materials
-     * const material = await prisma.material.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends MaterialCreateManyArgs>(args?: SelectSubset<T, MaterialCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Delete a Material.
-     * @param {MaterialDeleteArgs} args - Arguments to delete one Material.
-     * @example
-     * // Delete one Material
-     * const Material = await prisma.material.delete({
-     *   where: {
-     *     // ... filter to delete one Material
-     *   }
-     * })
-     * 
-     */
-    delete<T extends MaterialDeleteArgs>(args: SelectSubset<T, MaterialDeleteArgs<ExtArgs>>): Prisma__MaterialClient<$Result.GetResult<Prisma.$MaterialPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one Material.
-     * @param {MaterialUpdateArgs} args - Arguments to update one Material.
-     * @example
-     * // Update one Material
-     * const material = await prisma.material.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends MaterialUpdateArgs>(args: SelectSubset<T, MaterialUpdateArgs<ExtArgs>>): Prisma__MaterialClient<$Result.GetResult<Prisma.$MaterialPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more Materials.
-     * @param {MaterialDeleteManyArgs} args - Arguments to filter Materials to delete.
-     * @example
-     * // Delete a few Materials
-     * const { count } = await prisma.material.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends MaterialDeleteManyArgs>(args?: SelectSubset<T, MaterialDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Materials.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {MaterialUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many Materials
-     * const material = await prisma.material.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends MaterialUpdateManyArgs>(args: SelectSubset<T, MaterialUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create or update one Material.
-     * @param {MaterialUpsertArgs} args - Arguments to update or create a Material.
-     * @example
-     * // Update or create a Material
-     * const material = await prisma.material.upsert({
-     *   create: {
-     *     // ... data to create a Material
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the Material we want to update
-     *   }
-     * })
-     */
-    upsert<T extends MaterialUpsertArgs>(args: SelectSubset<T, MaterialUpsertArgs<ExtArgs>>): Prisma__MaterialClient<$Result.GetResult<Prisma.$MaterialPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of Materials.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {MaterialCountArgs} args - Arguments to filter Materials to count.
-     * @example
-     * // Count the number of Materials
-     * const count = await prisma.material.count({
-     *   where: {
-     *     // ... the filter for the Materials we want to count
-     *   }
-     * })
-    **/
-    count<T extends MaterialCountArgs>(
-      args?: Subset<T, MaterialCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], MaterialCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a Material.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {MaterialAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends MaterialAggregateArgs>(args: Subset<T, MaterialAggregateArgs>): Prisma.PrismaPromise<GetMaterialAggregateType<T>>
-
-    /**
-     * Group by Material.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {MaterialGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends MaterialGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: MaterialGroupByArgs['orderBy'] }
-        : { orderBy?: MaterialGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, MaterialGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMaterialGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the Material model
-   */
-  readonly fields: MaterialFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for Material.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__MaterialClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the Material model
-   */
-  interface MaterialFieldRefs {
-    readonly id: FieldRef<"Material", 'BigInt'>
-    readonly name: FieldRef<"Material", 'String'>
-    readonly specification: FieldRef<"Material", 'String'>
-    readonly unit: FieldRef<"Material", 'String'>
-    readonly isActive: FieldRef<"Material", 'Boolean'>
-    readonly createdAt: FieldRef<"Material", 'DateTime'>
-    readonly updatedAt: FieldRef<"Material", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * Material findUnique
-   */
-  export type MaterialFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Material
-     */
-    select?: MaterialSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Material
-     */
-    omit?: MaterialOmit<ExtArgs> | null
-    /**
-     * Filter, which Material to fetch.
-     */
-    where: MaterialWhereUniqueInput
-  }
-
-  /**
-   * Material findUniqueOrThrow
-   */
-  export type MaterialFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Material
-     */
-    select?: MaterialSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Material
-     */
-    omit?: MaterialOmit<ExtArgs> | null
-    /**
-     * Filter, which Material to fetch.
-     */
-    where: MaterialWhereUniqueInput
-  }
-
-  /**
-   * Material findFirst
-   */
-  export type MaterialFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Material
-     */
-    select?: MaterialSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Material
-     */
-    omit?: MaterialOmit<ExtArgs> | null
-    /**
-     * Filter, which Material to fetch.
-     */
-    where?: MaterialWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Materials to fetch.
-     */
-    orderBy?: MaterialOrderByWithRelationInput | MaterialOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Materials.
-     */
-    cursor?: MaterialWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Materials from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Materials.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Materials.
-     */
-    distinct?: MaterialScalarFieldEnum | MaterialScalarFieldEnum[]
-  }
-
-  /**
-   * Material findFirstOrThrow
-   */
-  export type MaterialFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Material
-     */
-    select?: MaterialSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Material
-     */
-    omit?: MaterialOmit<ExtArgs> | null
-    /**
-     * Filter, which Material to fetch.
-     */
-    where?: MaterialWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Materials to fetch.
-     */
-    orderBy?: MaterialOrderByWithRelationInput | MaterialOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Materials.
-     */
-    cursor?: MaterialWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Materials from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Materials.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Materials.
-     */
-    distinct?: MaterialScalarFieldEnum | MaterialScalarFieldEnum[]
-  }
-
-  /**
-   * Material findMany
-   */
-  export type MaterialFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Material
-     */
-    select?: MaterialSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Material
-     */
-    omit?: MaterialOmit<ExtArgs> | null
-    /**
-     * Filter, which Materials to fetch.
-     */
-    where?: MaterialWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Materials to fetch.
-     */
-    orderBy?: MaterialOrderByWithRelationInput | MaterialOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing Materials.
-     */
-    cursor?: MaterialWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Materials from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Materials.
-     */
-    skip?: number
-    distinct?: MaterialScalarFieldEnum | MaterialScalarFieldEnum[]
-  }
-
-  /**
-   * Material create
-   */
-  export type MaterialCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Material
-     */
-    select?: MaterialSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Material
-     */
-    omit?: MaterialOmit<ExtArgs> | null
-    /**
-     * The data needed to create a Material.
-     */
-    data: XOR<MaterialCreateInput, MaterialUncheckedCreateInput>
-  }
-
-  /**
-   * Material createMany
-   */
-  export type MaterialCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many Materials.
-     */
-    data: MaterialCreateManyInput | MaterialCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * Material update
-   */
-  export type MaterialUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Material
-     */
-    select?: MaterialSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Material
-     */
-    omit?: MaterialOmit<ExtArgs> | null
-    /**
-     * The data needed to update a Material.
-     */
-    data: XOR<MaterialUpdateInput, MaterialUncheckedUpdateInput>
-    /**
-     * Choose, which Material to update.
-     */
-    where: MaterialWhereUniqueInput
-  }
-
-  /**
-   * Material updateMany
-   */
-  export type MaterialUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update Materials.
-     */
-    data: XOR<MaterialUpdateManyMutationInput, MaterialUncheckedUpdateManyInput>
-    /**
-     * Filter which Materials to update
-     */
-    where?: MaterialWhereInput
-    /**
-     * Limit how many Materials to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * Material upsert
-   */
-  export type MaterialUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Material
-     */
-    select?: MaterialSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Material
-     */
-    omit?: MaterialOmit<ExtArgs> | null
-    /**
-     * The filter to search for the Material to update in case it exists.
-     */
-    where: MaterialWhereUniqueInput
-    /**
-     * In case the Material found by the `where` argument doesn't exist, create a new Material with this data.
-     */
-    create: XOR<MaterialCreateInput, MaterialUncheckedCreateInput>
-    /**
-     * In case the Material was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<MaterialUpdateInput, MaterialUncheckedUpdateInput>
-  }
-
-  /**
-   * Material delete
-   */
-  export type MaterialDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Material
-     */
-    select?: MaterialSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Material
-     */
-    omit?: MaterialOmit<ExtArgs> | null
-    /**
-     * Filter which Material to delete.
-     */
-    where: MaterialWhereUniqueInput
-  }
-
-  /**
-   * Material deleteMany
-   */
-  export type MaterialDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Materials to delete
-     */
-    where?: MaterialWhereInput
-    /**
-     * Limit how many Materials to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * Material without action
-   */
-  export type MaterialDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Material
-     */
-    select?: MaterialSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Material
-     */
-    omit?: MaterialOmit<ExtArgs> | null
-  }
-
-
-  /**
    * Model Role
    */
 
@@ -5335,1955 +7284,6 @@ export namespace Prisma {
 
 
   /**
-   * Model LogError
-   */
-
-  export type AggregateLogError = {
-    _count: LogErrorCountAggregateOutputType | null
-    _avg: LogErrorAvgAggregateOutputType | null
-    _sum: LogErrorSumAggregateOutputType | null
-    _min: LogErrorMinAggregateOutputType | null
-    _max: LogErrorMaxAggregateOutputType | null
-  }
-
-  export type LogErrorAvgAggregateOutputType = {
-    statusCode: number | null
-    userId: number | null
-  }
-
-  export type LogErrorSumAggregateOutputType = {
-    statusCode: number | null
-    userId: number | null
-  }
-
-  export type LogErrorMinAggregateOutputType = {
-    id: string | null
-    timestamp: Date | null
-    statusCode: number | null
-    path: string | null
-    method: string | null
-    message: string | null
-    stackTrace: string | null
-    ipAddress: string | null
-    userId: number | null
-    requestBody: string | null
-  }
-
-  export type LogErrorMaxAggregateOutputType = {
-    id: string | null
-    timestamp: Date | null
-    statusCode: number | null
-    path: string | null
-    method: string | null
-    message: string | null
-    stackTrace: string | null
-    ipAddress: string | null
-    userId: number | null
-    requestBody: string | null
-  }
-
-  export type LogErrorCountAggregateOutputType = {
-    id: number
-    timestamp: number
-    statusCode: number
-    path: number
-    method: number
-    message: number
-    stackTrace: number
-    ipAddress: number
-    userId: number
-    requestBody: number
-    _all: number
-  }
-
-
-  export type LogErrorAvgAggregateInputType = {
-    statusCode?: true
-    userId?: true
-  }
-
-  export type LogErrorSumAggregateInputType = {
-    statusCode?: true
-    userId?: true
-  }
-
-  export type LogErrorMinAggregateInputType = {
-    id?: true
-    timestamp?: true
-    statusCode?: true
-    path?: true
-    method?: true
-    message?: true
-    stackTrace?: true
-    ipAddress?: true
-    userId?: true
-    requestBody?: true
-  }
-
-  export type LogErrorMaxAggregateInputType = {
-    id?: true
-    timestamp?: true
-    statusCode?: true
-    path?: true
-    method?: true
-    message?: true
-    stackTrace?: true
-    ipAddress?: true
-    userId?: true
-    requestBody?: true
-  }
-
-  export type LogErrorCountAggregateInputType = {
-    id?: true
-    timestamp?: true
-    statusCode?: true
-    path?: true
-    method?: true
-    message?: true
-    stackTrace?: true
-    ipAddress?: true
-    userId?: true
-    requestBody?: true
-    _all?: true
-  }
-
-  export type LogErrorAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which LogError to aggregate.
-     */
-    where?: LogErrorWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of LogErrors to fetch.
-     */
-    orderBy?: LogErrorOrderByWithRelationInput | LogErrorOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: LogErrorWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` LogErrors from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` LogErrors.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned LogErrors
-    **/
-    _count?: true | LogErrorCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: LogErrorAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: LogErrorSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: LogErrorMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: LogErrorMaxAggregateInputType
-  }
-
-  export type GetLogErrorAggregateType<T extends LogErrorAggregateArgs> = {
-        [P in keyof T & keyof AggregateLogError]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateLogError[P]>
-      : GetScalarType<T[P], AggregateLogError[P]>
-  }
-
-
-
-
-  export type LogErrorGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: LogErrorWhereInput
-    orderBy?: LogErrorOrderByWithAggregationInput | LogErrorOrderByWithAggregationInput[]
-    by: LogErrorScalarFieldEnum[] | LogErrorScalarFieldEnum
-    having?: LogErrorScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: LogErrorCountAggregateInputType | true
-    _avg?: LogErrorAvgAggregateInputType
-    _sum?: LogErrorSumAggregateInputType
-    _min?: LogErrorMinAggregateInputType
-    _max?: LogErrorMaxAggregateInputType
-  }
-
-  export type LogErrorGroupByOutputType = {
-    id: string
-    timestamp: Date
-    statusCode: number | null
-    path: string | null
-    method: string | null
-    message: string
-    stackTrace: string | null
-    ipAddress: string | null
-    userId: number | null
-    requestBody: string | null
-    _count: LogErrorCountAggregateOutputType | null
-    _avg: LogErrorAvgAggregateOutputType | null
-    _sum: LogErrorSumAggregateOutputType | null
-    _min: LogErrorMinAggregateOutputType | null
-    _max: LogErrorMaxAggregateOutputType | null
-  }
-
-  type GetLogErrorGroupByPayload<T extends LogErrorGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<LogErrorGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof LogErrorGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], LogErrorGroupByOutputType[P]>
-            : GetScalarType<T[P], LogErrorGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type LogErrorSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    timestamp?: boolean
-    statusCode?: boolean
-    path?: boolean
-    method?: boolean
-    message?: boolean
-    stackTrace?: boolean
-    ipAddress?: boolean
-    userId?: boolean
-    requestBody?: boolean
-  }, ExtArgs["result"]["logError"]>
-
-
-
-  export type LogErrorSelectScalar = {
-    id?: boolean
-    timestamp?: boolean
-    statusCode?: boolean
-    path?: boolean
-    method?: boolean
-    message?: boolean
-    stackTrace?: boolean
-    ipAddress?: boolean
-    userId?: boolean
-    requestBody?: boolean
-  }
-
-  export type LogErrorOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "timestamp" | "statusCode" | "path" | "method" | "message" | "stackTrace" | "ipAddress" | "userId" | "requestBody", ExtArgs["result"]["logError"]>
-
-  export type $LogErrorPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "LogError"
-    objects: {}
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      timestamp: Date
-      statusCode: number | null
-      path: string | null
-      method: string | null
-      message: string
-      stackTrace: string | null
-      ipAddress: string | null
-      userId: number | null
-      requestBody: string | null
-    }, ExtArgs["result"]["logError"]>
-    composites: {}
-  }
-
-  type LogErrorGetPayload<S extends boolean | null | undefined | LogErrorDefaultArgs> = $Result.GetResult<Prisma.$LogErrorPayload, S>
-
-  type LogErrorCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<LogErrorFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: LogErrorCountAggregateInputType | true
-    }
-
-  export interface LogErrorDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['LogError'], meta: { name: 'LogError' } }
-    /**
-     * Find zero or one LogError that matches the filter.
-     * @param {LogErrorFindUniqueArgs} args - Arguments to find a LogError
-     * @example
-     * // Get one LogError
-     * const logError = await prisma.logError.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends LogErrorFindUniqueArgs>(args: SelectSubset<T, LogErrorFindUniqueArgs<ExtArgs>>): Prisma__LogErrorClient<$Result.GetResult<Prisma.$LogErrorPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one LogError that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {LogErrorFindUniqueOrThrowArgs} args - Arguments to find a LogError
-     * @example
-     * // Get one LogError
-     * const logError = await prisma.logError.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends LogErrorFindUniqueOrThrowArgs>(args: SelectSubset<T, LogErrorFindUniqueOrThrowArgs<ExtArgs>>): Prisma__LogErrorClient<$Result.GetResult<Prisma.$LogErrorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first LogError that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {LogErrorFindFirstArgs} args - Arguments to find a LogError
-     * @example
-     * // Get one LogError
-     * const logError = await prisma.logError.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends LogErrorFindFirstArgs>(args?: SelectSubset<T, LogErrorFindFirstArgs<ExtArgs>>): Prisma__LogErrorClient<$Result.GetResult<Prisma.$LogErrorPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first LogError that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {LogErrorFindFirstOrThrowArgs} args - Arguments to find a LogError
-     * @example
-     * // Get one LogError
-     * const logError = await prisma.logError.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends LogErrorFindFirstOrThrowArgs>(args?: SelectSubset<T, LogErrorFindFirstOrThrowArgs<ExtArgs>>): Prisma__LogErrorClient<$Result.GetResult<Prisma.$LogErrorPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more LogErrors that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {LogErrorFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all LogErrors
-     * const logErrors = await prisma.logError.findMany()
-     * 
-     * // Get first 10 LogErrors
-     * const logErrors = await prisma.logError.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const logErrorWithIdOnly = await prisma.logError.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends LogErrorFindManyArgs>(args?: SelectSubset<T, LogErrorFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LogErrorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a LogError.
-     * @param {LogErrorCreateArgs} args - Arguments to create a LogError.
-     * @example
-     * // Create one LogError
-     * const LogError = await prisma.logError.create({
-     *   data: {
-     *     // ... data to create a LogError
-     *   }
-     * })
-     * 
-     */
-    create<T extends LogErrorCreateArgs>(args: SelectSubset<T, LogErrorCreateArgs<ExtArgs>>): Prisma__LogErrorClient<$Result.GetResult<Prisma.$LogErrorPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many LogErrors.
-     * @param {LogErrorCreateManyArgs} args - Arguments to create many LogErrors.
-     * @example
-     * // Create many LogErrors
-     * const logError = await prisma.logError.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends LogErrorCreateManyArgs>(args?: SelectSubset<T, LogErrorCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Delete a LogError.
-     * @param {LogErrorDeleteArgs} args - Arguments to delete one LogError.
-     * @example
-     * // Delete one LogError
-     * const LogError = await prisma.logError.delete({
-     *   where: {
-     *     // ... filter to delete one LogError
-     *   }
-     * })
-     * 
-     */
-    delete<T extends LogErrorDeleteArgs>(args: SelectSubset<T, LogErrorDeleteArgs<ExtArgs>>): Prisma__LogErrorClient<$Result.GetResult<Prisma.$LogErrorPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one LogError.
-     * @param {LogErrorUpdateArgs} args - Arguments to update one LogError.
-     * @example
-     * // Update one LogError
-     * const logError = await prisma.logError.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends LogErrorUpdateArgs>(args: SelectSubset<T, LogErrorUpdateArgs<ExtArgs>>): Prisma__LogErrorClient<$Result.GetResult<Prisma.$LogErrorPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more LogErrors.
-     * @param {LogErrorDeleteManyArgs} args - Arguments to filter LogErrors to delete.
-     * @example
-     * // Delete a few LogErrors
-     * const { count } = await prisma.logError.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends LogErrorDeleteManyArgs>(args?: SelectSubset<T, LogErrorDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more LogErrors.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {LogErrorUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many LogErrors
-     * const logError = await prisma.logError.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends LogErrorUpdateManyArgs>(args: SelectSubset<T, LogErrorUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create or update one LogError.
-     * @param {LogErrorUpsertArgs} args - Arguments to update or create a LogError.
-     * @example
-     * // Update or create a LogError
-     * const logError = await prisma.logError.upsert({
-     *   create: {
-     *     // ... data to create a LogError
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the LogError we want to update
-     *   }
-     * })
-     */
-    upsert<T extends LogErrorUpsertArgs>(args: SelectSubset<T, LogErrorUpsertArgs<ExtArgs>>): Prisma__LogErrorClient<$Result.GetResult<Prisma.$LogErrorPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of LogErrors.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {LogErrorCountArgs} args - Arguments to filter LogErrors to count.
-     * @example
-     * // Count the number of LogErrors
-     * const count = await prisma.logError.count({
-     *   where: {
-     *     // ... the filter for the LogErrors we want to count
-     *   }
-     * })
-    **/
-    count<T extends LogErrorCountArgs>(
-      args?: Subset<T, LogErrorCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], LogErrorCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a LogError.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {LogErrorAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends LogErrorAggregateArgs>(args: Subset<T, LogErrorAggregateArgs>): Prisma.PrismaPromise<GetLogErrorAggregateType<T>>
-
-    /**
-     * Group by LogError.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {LogErrorGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends LogErrorGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: LogErrorGroupByArgs['orderBy'] }
-        : { orderBy?: LogErrorGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, LogErrorGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetLogErrorGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the LogError model
-   */
-  readonly fields: LogErrorFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for LogError.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__LogErrorClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the LogError model
-   */
-  interface LogErrorFieldRefs {
-    readonly id: FieldRef<"LogError", 'String'>
-    readonly timestamp: FieldRef<"LogError", 'DateTime'>
-    readonly statusCode: FieldRef<"LogError", 'Int'>
-    readonly path: FieldRef<"LogError", 'String'>
-    readonly method: FieldRef<"LogError", 'String'>
-    readonly message: FieldRef<"LogError", 'String'>
-    readonly stackTrace: FieldRef<"LogError", 'String'>
-    readonly ipAddress: FieldRef<"LogError", 'String'>
-    readonly userId: FieldRef<"LogError", 'Int'>
-    readonly requestBody: FieldRef<"LogError", 'String'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * LogError findUnique
-   */
-  export type LogErrorFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the LogError
-     */
-    select?: LogErrorSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the LogError
-     */
-    omit?: LogErrorOmit<ExtArgs> | null
-    /**
-     * Filter, which LogError to fetch.
-     */
-    where: LogErrorWhereUniqueInput
-  }
-
-  /**
-   * LogError findUniqueOrThrow
-   */
-  export type LogErrorFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the LogError
-     */
-    select?: LogErrorSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the LogError
-     */
-    omit?: LogErrorOmit<ExtArgs> | null
-    /**
-     * Filter, which LogError to fetch.
-     */
-    where: LogErrorWhereUniqueInput
-  }
-
-  /**
-   * LogError findFirst
-   */
-  export type LogErrorFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the LogError
-     */
-    select?: LogErrorSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the LogError
-     */
-    omit?: LogErrorOmit<ExtArgs> | null
-    /**
-     * Filter, which LogError to fetch.
-     */
-    where?: LogErrorWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of LogErrors to fetch.
-     */
-    orderBy?: LogErrorOrderByWithRelationInput | LogErrorOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for LogErrors.
-     */
-    cursor?: LogErrorWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` LogErrors from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` LogErrors.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of LogErrors.
-     */
-    distinct?: LogErrorScalarFieldEnum | LogErrorScalarFieldEnum[]
-  }
-
-  /**
-   * LogError findFirstOrThrow
-   */
-  export type LogErrorFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the LogError
-     */
-    select?: LogErrorSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the LogError
-     */
-    omit?: LogErrorOmit<ExtArgs> | null
-    /**
-     * Filter, which LogError to fetch.
-     */
-    where?: LogErrorWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of LogErrors to fetch.
-     */
-    orderBy?: LogErrorOrderByWithRelationInput | LogErrorOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for LogErrors.
-     */
-    cursor?: LogErrorWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` LogErrors from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` LogErrors.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of LogErrors.
-     */
-    distinct?: LogErrorScalarFieldEnum | LogErrorScalarFieldEnum[]
-  }
-
-  /**
-   * LogError findMany
-   */
-  export type LogErrorFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the LogError
-     */
-    select?: LogErrorSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the LogError
-     */
-    omit?: LogErrorOmit<ExtArgs> | null
-    /**
-     * Filter, which LogErrors to fetch.
-     */
-    where?: LogErrorWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of LogErrors to fetch.
-     */
-    orderBy?: LogErrorOrderByWithRelationInput | LogErrorOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing LogErrors.
-     */
-    cursor?: LogErrorWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` LogErrors from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` LogErrors.
-     */
-    skip?: number
-    distinct?: LogErrorScalarFieldEnum | LogErrorScalarFieldEnum[]
-  }
-
-  /**
-   * LogError create
-   */
-  export type LogErrorCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the LogError
-     */
-    select?: LogErrorSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the LogError
-     */
-    omit?: LogErrorOmit<ExtArgs> | null
-    /**
-     * The data needed to create a LogError.
-     */
-    data: XOR<LogErrorCreateInput, LogErrorUncheckedCreateInput>
-  }
-
-  /**
-   * LogError createMany
-   */
-  export type LogErrorCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many LogErrors.
-     */
-    data: LogErrorCreateManyInput | LogErrorCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * LogError update
-   */
-  export type LogErrorUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the LogError
-     */
-    select?: LogErrorSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the LogError
-     */
-    omit?: LogErrorOmit<ExtArgs> | null
-    /**
-     * The data needed to update a LogError.
-     */
-    data: XOR<LogErrorUpdateInput, LogErrorUncheckedUpdateInput>
-    /**
-     * Choose, which LogError to update.
-     */
-    where: LogErrorWhereUniqueInput
-  }
-
-  /**
-   * LogError updateMany
-   */
-  export type LogErrorUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update LogErrors.
-     */
-    data: XOR<LogErrorUpdateManyMutationInput, LogErrorUncheckedUpdateManyInput>
-    /**
-     * Filter which LogErrors to update
-     */
-    where?: LogErrorWhereInput
-    /**
-     * Limit how many LogErrors to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * LogError upsert
-   */
-  export type LogErrorUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the LogError
-     */
-    select?: LogErrorSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the LogError
-     */
-    omit?: LogErrorOmit<ExtArgs> | null
-    /**
-     * The filter to search for the LogError to update in case it exists.
-     */
-    where: LogErrorWhereUniqueInput
-    /**
-     * In case the LogError found by the `where` argument doesn't exist, create a new LogError with this data.
-     */
-    create: XOR<LogErrorCreateInput, LogErrorUncheckedCreateInput>
-    /**
-     * In case the LogError was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<LogErrorUpdateInput, LogErrorUncheckedUpdateInput>
-  }
-
-  /**
-   * LogError delete
-   */
-  export type LogErrorDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the LogError
-     */
-    select?: LogErrorSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the LogError
-     */
-    omit?: LogErrorOmit<ExtArgs> | null
-    /**
-     * Filter which LogError to delete.
-     */
-    where: LogErrorWhereUniqueInput
-  }
-
-  /**
-   * LogError deleteMany
-   */
-  export type LogErrorDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which LogErrors to delete
-     */
-    where?: LogErrorWhereInput
-    /**
-     * Limit how many LogErrors to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * LogError without action
-   */
-  export type LogErrorDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the LogError
-     */
-    select?: LogErrorSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the LogError
-     */
-    omit?: LogErrorOmit<ExtArgs> | null
-  }
-
-
-  /**
-   * Model LogLogin
-   */
-
-  export type AggregateLogLogin = {
-    _count: LogLoginCountAggregateOutputType | null
-    _avg: LogLoginAvgAggregateOutputType | null
-    _sum: LogLoginSumAggregateOutputType | null
-    _min: LogLoginMinAggregateOutputType | null
-    _max: LogLoginMaxAggregateOutputType | null
-  }
-
-  export type LogLoginAvgAggregateOutputType = {
-    userId: number | null
-  }
-
-  export type LogLoginSumAggregateOutputType = {
-    userId: number | null
-  }
-
-  export type LogLoginMinAggregateOutputType = {
-    id: string | null
-    userId: number | null
-    timestamp: Date | null
-    ipAddress: string | null
-    userAgent: string | null
-    successful: boolean | null
-  }
-
-  export type LogLoginMaxAggregateOutputType = {
-    id: string | null
-    userId: number | null
-    timestamp: Date | null
-    ipAddress: string | null
-    userAgent: string | null
-    successful: boolean | null
-  }
-
-  export type LogLoginCountAggregateOutputType = {
-    id: number
-    userId: number
-    timestamp: number
-    ipAddress: number
-    userAgent: number
-    successful: number
-    _all: number
-  }
-
-
-  export type LogLoginAvgAggregateInputType = {
-    userId?: true
-  }
-
-  export type LogLoginSumAggregateInputType = {
-    userId?: true
-  }
-
-  export type LogLoginMinAggregateInputType = {
-    id?: true
-    userId?: true
-    timestamp?: true
-    ipAddress?: true
-    userAgent?: true
-    successful?: true
-  }
-
-  export type LogLoginMaxAggregateInputType = {
-    id?: true
-    userId?: true
-    timestamp?: true
-    ipAddress?: true
-    userAgent?: true
-    successful?: true
-  }
-
-  export type LogLoginCountAggregateInputType = {
-    id?: true
-    userId?: true
-    timestamp?: true
-    ipAddress?: true
-    userAgent?: true
-    successful?: true
-    _all?: true
-  }
-
-  export type LogLoginAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which LogLogin to aggregate.
-     */
-    where?: LogLoginWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of LogLogins to fetch.
-     */
-    orderBy?: LogLoginOrderByWithRelationInput | LogLoginOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: LogLoginWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` LogLogins from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` LogLogins.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned LogLogins
-    **/
-    _count?: true | LogLoginCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: LogLoginAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: LogLoginSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: LogLoginMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: LogLoginMaxAggregateInputType
-  }
-
-  export type GetLogLoginAggregateType<T extends LogLoginAggregateArgs> = {
-        [P in keyof T & keyof AggregateLogLogin]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateLogLogin[P]>
-      : GetScalarType<T[P], AggregateLogLogin[P]>
-  }
-
-
-
-
-  export type LogLoginGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: LogLoginWhereInput
-    orderBy?: LogLoginOrderByWithAggregationInput | LogLoginOrderByWithAggregationInput[]
-    by: LogLoginScalarFieldEnum[] | LogLoginScalarFieldEnum
-    having?: LogLoginScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: LogLoginCountAggregateInputType | true
-    _avg?: LogLoginAvgAggregateInputType
-    _sum?: LogLoginSumAggregateInputType
-    _min?: LogLoginMinAggregateInputType
-    _max?: LogLoginMaxAggregateInputType
-  }
-
-  export type LogLoginGroupByOutputType = {
-    id: string
-    userId: number
-    timestamp: Date
-    ipAddress: string | null
-    userAgent: string | null
-    successful: boolean
-    _count: LogLoginCountAggregateOutputType | null
-    _avg: LogLoginAvgAggregateOutputType | null
-    _sum: LogLoginSumAggregateOutputType | null
-    _min: LogLoginMinAggregateOutputType | null
-    _max: LogLoginMaxAggregateOutputType | null
-  }
-
-  type GetLogLoginGroupByPayload<T extends LogLoginGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<LogLoginGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof LogLoginGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], LogLoginGroupByOutputType[P]>
-            : GetScalarType<T[P], LogLoginGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type LogLoginSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    userId?: boolean
-    timestamp?: boolean
-    ipAddress?: boolean
-    userAgent?: boolean
-    successful?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["logLogin"]>
-
-
-
-  export type LogLoginSelectScalar = {
-    id?: boolean
-    userId?: boolean
-    timestamp?: boolean
-    ipAddress?: boolean
-    userAgent?: boolean
-    successful?: boolean
-  }
-
-  export type LogLoginOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "timestamp" | "ipAddress" | "userAgent" | "successful", ExtArgs["result"]["logLogin"]>
-  export type LogLoginInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }
-
-  export type $LogLoginPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "LogLogin"
-    objects: {
-      user: Prisma.$UserPayload<ExtArgs>
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      userId: number
-      timestamp: Date
-      ipAddress: string | null
-      userAgent: string | null
-      successful: boolean
-    }, ExtArgs["result"]["logLogin"]>
-    composites: {}
-  }
-
-  type LogLoginGetPayload<S extends boolean | null | undefined | LogLoginDefaultArgs> = $Result.GetResult<Prisma.$LogLoginPayload, S>
-
-  type LogLoginCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<LogLoginFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: LogLoginCountAggregateInputType | true
-    }
-
-  export interface LogLoginDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['LogLogin'], meta: { name: 'LogLogin' } }
-    /**
-     * Find zero or one LogLogin that matches the filter.
-     * @param {LogLoginFindUniqueArgs} args - Arguments to find a LogLogin
-     * @example
-     * // Get one LogLogin
-     * const logLogin = await prisma.logLogin.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends LogLoginFindUniqueArgs>(args: SelectSubset<T, LogLoginFindUniqueArgs<ExtArgs>>): Prisma__LogLoginClient<$Result.GetResult<Prisma.$LogLoginPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one LogLogin that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {LogLoginFindUniqueOrThrowArgs} args - Arguments to find a LogLogin
-     * @example
-     * // Get one LogLogin
-     * const logLogin = await prisma.logLogin.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends LogLoginFindUniqueOrThrowArgs>(args: SelectSubset<T, LogLoginFindUniqueOrThrowArgs<ExtArgs>>): Prisma__LogLoginClient<$Result.GetResult<Prisma.$LogLoginPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first LogLogin that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {LogLoginFindFirstArgs} args - Arguments to find a LogLogin
-     * @example
-     * // Get one LogLogin
-     * const logLogin = await prisma.logLogin.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends LogLoginFindFirstArgs>(args?: SelectSubset<T, LogLoginFindFirstArgs<ExtArgs>>): Prisma__LogLoginClient<$Result.GetResult<Prisma.$LogLoginPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first LogLogin that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {LogLoginFindFirstOrThrowArgs} args - Arguments to find a LogLogin
-     * @example
-     * // Get one LogLogin
-     * const logLogin = await prisma.logLogin.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends LogLoginFindFirstOrThrowArgs>(args?: SelectSubset<T, LogLoginFindFirstOrThrowArgs<ExtArgs>>): Prisma__LogLoginClient<$Result.GetResult<Prisma.$LogLoginPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more LogLogins that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {LogLoginFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all LogLogins
-     * const logLogins = await prisma.logLogin.findMany()
-     * 
-     * // Get first 10 LogLogins
-     * const logLogins = await prisma.logLogin.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const logLoginWithIdOnly = await prisma.logLogin.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends LogLoginFindManyArgs>(args?: SelectSubset<T, LogLoginFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LogLoginPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a LogLogin.
-     * @param {LogLoginCreateArgs} args - Arguments to create a LogLogin.
-     * @example
-     * // Create one LogLogin
-     * const LogLogin = await prisma.logLogin.create({
-     *   data: {
-     *     // ... data to create a LogLogin
-     *   }
-     * })
-     * 
-     */
-    create<T extends LogLoginCreateArgs>(args: SelectSubset<T, LogLoginCreateArgs<ExtArgs>>): Prisma__LogLoginClient<$Result.GetResult<Prisma.$LogLoginPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many LogLogins.
-     * @param {LogLoginCreateManyArgs} args - Arguments to create many LogLogins.
-     * @example
-     * // Create many LogLogins
-     * const logLogin = await prisma.logLogin.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends LogLoginCreateManyArgs>(args?: SelectSubset<T, LogLoginCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Delete a LogLogin.
-     * @param {LogLoginDeleteArgs} args - Arguments to delete one LogLogin.
-     * @example
-     * // Delete one LogLogin
-     * const LogLogin = await prisma.logLogin.delete({
-     *   where: {
-     *     // ... filter to delete one LogLogin
-     *   }
-     * })
-     * 
-     */
-    delete<T extends LogLoginDeleteArgs>(args: SelectSubset<T, LogLoginDeleteArgs<ExtArgs>>): Prisma__LogLoginClient<$Result.GetResult<Prisma.$LogLoginPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one LogLogin.
-     * @param {LogLoginUpdateArgs} args - Arguments to update one LogLogin.
-     * @example
-     * // Update one LogLogin
-     * const logLogin = await prisma.logLogin.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends LogLoginUpdateArgs>(args: SelectSubset<T, LogLoginUpdateArgs<ExtArgs>>): Prisma__LogLoginClient<$Result.GetResult<Prisma.$LogLoginPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more LogLogins.
-     * @param {LogLoginDeleteManyArgs} args - Arguments to filter LogLogins to delete.
-     * @example
-     * // Delete a few LogLogins
-     * const { count } = await prisma.logLogin.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends LogLoginDeleteManyArgs>(args?: SelectSubset<T, LogLoginDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more LogLogins.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {LogLoginUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many LogLogins
-     * const logLogin = await prisma.logLogin.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends LogLoginUpdateManyArgs>(args: SelectSubset<T, LogLoginUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create or update one LogLogin.
-     * @param {LogLoginUpsertArgs} args - Arguments to update or create a LogLogin.
-     * @example
-     * // Update or create a LogLogin
-     * const logLogin = await prisma.logLogin.upsert({
-     *   create: {
-     *     // ... data to create a LogLogin
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the LogLogin we want to update
-     *   }
-     * })
-     */
-    upsert<T extends LogLoginUpsertArgs>(args: SelectSubset<T, LogLoginUpsertArgs<ExtArgs>>): Prisma__LogLoginClient<$Result.GetResult<Prisma.$LogLoginPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of LogLogins.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {LogLoginCountArgs} args - Arguments to filter LogLogins to count.
-     * @example
-     * // Count the number of LogLogins
-     * const count = await prisma.logLogin.count({
-     *   where: {
-     *     // ... the filter for the LogLogins we want to count
-     *   }
-     * })
-    **/
-    count<T extends LogLoginCountArgs>(
-      args?: Subset<T, LogLoginCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], LogLoginCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a LogLogin.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {LogLoginAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends LogLoginAggregateArgs>(args: Subset<T, LogLoginAggregateArgs>): Prisma.PrismaPromise<GetLogLoginAggregateType<T>>
-
-    /**
-     * Group by LogLogin.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {LogLoginGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends LogLoginGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: LogLoginGroupByArgs['orderBy'] }
-        : { orderBy?: LogLoginGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, LogLoginGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetLogLoginGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the LogLogin model
-   */
-  readonly fields: LogLoginFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for LogLogin.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__LogLoginClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the LogLogin model
-   */
-  interface LogLoginFieldRefs {
-    readonly id: FieldRef<"LogLogin", 'String'>
-    readonly userId: FieldRef<"LogLogin", 'Int'>
-    readonly timestamp: FieldRef<"LogLogin", 'DateTime'>
-    readonly ipAddress: FieldRef<"LogLogin", 'String'>
-    readonly userAgent: FieldRef<"LogLogin", 'String'>
-    readonly successful: FieldRef<"LogLogin", 'Boolean'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * LogLogin findUnique
-   */
-  export type LogLoginFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the LogLogin
-     */
-    select?: LogLoginSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the LogLogin
-     */
-    omit?: LogLoginOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LogLoginInclude<ExtArgs> | null
-    /**
-     * Filter, which LogLogin to fetch.
-     */
-    where: LogLoginWhereUniqueInput
-  }
-
-  /**
-   * LogLogin findUniqueOrThrow
-   */
-  export type LogLoginFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the LogLogin
-     */
-    select?: LogLoginSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the LogLogin
-     */
-    omit?: LogLoginOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LogLoginInclude<ExtArgs> | null
-    /**
-     * Filter, which LogLogin to fetch.
-     */
-    where: LogLoginWhereUniqueInput
-  }
-
-  /**
-   * LogLogin findFirst
-   */
-  export type LogLoginFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the LogLogin
-     */
-    select?: LogLoginSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the LogLogin
-     */
-    omit?: LogLoginOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LogLoginInclude<ExtArgs> | null
-    /**
-     * Filter, which LogLogin to fetch.
-     */
-    where?: LogLoginWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of LogLogins to fetch.
-     */
-    orderBy?: LogLoginOrderByWithRelationInput | LogLoginOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for LogLogins.
-     */
-    cursor?: LogLoginWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` LogLogins from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` LogLogins.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of LogLogins.
-     */
-    distinct?: LogLoginScalarFieldEnum | LogLoginScalarFieldEnum[]
-  }
-
-  /**
-   * LogLogin findFirstOrThrow
-   */
-  export type LogLoginFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the LogLogin
-     */
-    select?: LogLoginSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the LogLogin
-     */
-    omit?: LogLoginOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LogLoginInclude<ExtArgs> | null
-    /**
-     * Filter, which LogLogin to fetch.
-     */
-    where?: LogLoginWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of LogLogins to fetch.
-     */
-    orderBy?: LogLoginOrderByWithRelationInput | LogLoginOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for LogLogins.
-     */
-    cursor?: LogLoginWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` LogLogins from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` LogLogins.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of LogLogins.
-     */
-    distinct?: LogLoginScalarFieldEnum | LogLoginScalarFieldEnum[]
-  }
-
-  /**
-   * LogLogin findMany
-   */
-  export type LogLoginFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the LogLogin
-     */
-    select?: LogLoginSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the LogLogin
-     */
-    omit?: LogLoginOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LogLoginInclude<ExtArgs> | null
-    /**
-     * Filter, which LogLogins to fetch.
-     */
-    where?: LogLoginWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of LogLogins to fetch.
-     */
-    orderBy?: LogLoginOrderByWithRelationInput | LogLoginOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing LogLogins.
-     */
-    cursor?: LogLoginWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` LogLogins from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` LogLogins.
-     */
-    skip?: number
-    distinct?: LogLoginScalarFieldEnum | LogLoginScalarFieldEnum[]
-  }
-
-  /**
-   * LogLogin create
-   */
-  export type LogLoginCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the LogLogin
-     */
-    select?: LogLoginSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the LogLogin
-     */
-    omit?: LogLoginOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LogLoginInclude<ExtArgs> | null
-    /**
-     * The data needed to create a LogLogin.
-     */
-    data: XOR<LogLoginCreateInput, LogLoginUncheckedCreateInput>
-  }
-
-  /**
-   * LogLogin createMany
-   */
-  export type LogLoginCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many LogLogins.
-     */
-    data: LogLoginCreateManyInput | LogLoginCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * LogLogin update
-   */
-  export type LogLoginUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the LogLogin
-     */
-    select?: LogLoginSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the LogLogin
-     */
-    omit?: LogLoginOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LogLoginInclude<ExtArgs> | null
-    /**
-     * The data needed to update a LogLogin.
-     */
-    data: XOR<LogLoginUpdateInput, LogLoginUncheckedUpdateInput>
-    /**
-     * Choose, which LogLogin to update.
-     */
-    where: LogLoginWhereUniqueInput
-  }
-
-  /**
-   * LogLogin updateMany
-   */
-  export type LogLoginUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update LogLogins.
-     */
-    data: XOR<LogLoginUpdateManyMutationInput, LogLoginUncheckedUpdateManyInput>
-    /**
-     * Filter which LogLogins to update
-     */
-    where?: LogLoginWhereInput
-    /**
-     * Limit how many LogLogins to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * LogLogin upsert
-   */
-  export type LogLoginUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the LogLogin
-     */
-    select?: LogLoginSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the LogLogin
-     */
-    omit?: LogLoginOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LogLoginInclude<ExtArgs> | null
-    /**
-     * The filter to search for the LogLogin to update in case it exists.
-     */
-    where: LogLoginWhereUniqueInput
-    /**
-     * In case the LogLogin found by the `where` argument doesn't exist, create a new LogLogin with this data.
-     */
-    create: XOR<LogLoginCreateInput, LogLoginUncheckedCreateInput>
-    /**
-     * In case the LogLogin was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<LogLoginUpdateInput, LogLoginUncheckedUpdateInput>
-  }
-
-  /**
-   * LogLogin delete
-   */
-  export type LogLoginDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the LogLogin
-     */
-    select?: LogLoginSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the LogLogin
-     */
-    omit?: LogLoginOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LogLoginInclude<ExtArgs> | null
-    /**
-     * Filter which LogLogin to delete.
-     */
-    where: LogLoginWhereUniqueInput
-  }
-
-  /**
-   * LogLogin deleteMany
-   */
-  export type LogLoginDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which LogLogins to delete
-     */
-    where?: LogLoginWhereInput
-    /**
-     * Limit how many LogLogins to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * LogLogin without action
-   */
-  export type LogLoginDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the LogLogin
-     */
-    select?: LogLoginSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the LogLogin
-     */
-    omit?: LogLoginOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: LogLoginInclude<ExtArgs> | null
-  }
-
-
-  /**
    * Enums
    */
 
@@ -7295,56 +7295,6 @@ export namespace Prisma {
   };
 
   export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
-
-
-  export const UserScalarFieldEnum: {
-    id: 'id',
-    name: 'name',
-    login: 'login',
-    email: 'email',
-    image: 'image',
-    isActive: 'isActive',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
-  };
-
-  export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
-
-
-  export const MagicLinkScalarFieldEnum: {
-    id: 'id',
-    code: 'code',
-    userId: 'userId',
-    expiresAt: 'expiresAt',
-    usedAt: 'usedAt',
-    createdAt: 'createdAt'
-  };
-
-  export type MagicLinkScalarFieldEnum = (typeof MagicLinkScalarFieldEnum)[keyof typeof MagicLinkScalarFieldEnum]
-
-
-  export const MaterialScalarFieldEnum: {
-    id: 'id',
-    name: 'name',
-    specification: 'specification',
-    unit: 'unit',
-    isActive: 'isActive',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
-  };
-
-  export type MaterialScalarFieldEnum = (typeof MaterialScalarFieldEnum)[keyof typeof MaterialScalarFieldEnum]
-
-
-  export const RoleScalarFieldEnum: {
-    id: 'id',
-    role: 'role',
-    description: 'description',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
-  };
-
-  export type RoleScalarFieldEnum = (typeof RoleScalarFieldEnum)[keyof typeof RoleScalarFieldEnum]
 
 
   export const LogErrorScalarFieldEnum: {
@@ -7375,6 +7325,56 @@ export namespace Prisma {
   export type LogLoginScalarFieldEnum = (typeof LogLoginScalarFieldEnum)[keyof typeof LogLoginScalarFieldEnum]
 
 
+  export const MaterialScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    specification: 'specification',
+    unit: 'unit',
+    isActive: 'isActive',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type MaterialScalarFieldEnum = (typeof MaterialScalarFieldEnum)[keyof typeof MaterialScalarFieldEnum]
+
+
+  export const UserScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    login: 'login',
+    email: 'email',
+    image: 'image',
+    isActive: 'isActive',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+  export const MagicLinkScalarFieldEnum: {
+    id: 'id',
+    code: 'code',
+    userId: 'userId',
+    expiresAt: 'expiresAt',
+    usedAt: 'usedAt',
+    createdAt: 'createdAt'
+  };
+
+  export type MagicLinkScalarFieldEnum = (typeof MagicLinkScalarFieldEnum)[keyof typeof MagicLinkScalarFieldEnum]
+
+
+  export const RoleScalarFieldEnum: {
+    id: 'id',
+    role: 'role',
+    description: 'description',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type RoleScalarFieldEnum = (typeof RoleScalarFieldEnum)[keyof typeof RoleScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -7383,47 +7383,12 @@ export namespace Prisma {
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
-  export const UserOrderByRelevanceFieldEnum: {
-    name: 'name',
-    login: 'login',
-    email: 'email',
-    image: 'image'
-  };
-
-  export type UserOrderByRelevanceFieldEnum = (typeof UserOrderByRelevanceFieldEnum)[keyof typeof UserOrderByRelevanceFieldEnum]
-
-
   export const NullsOrder: {
     first: 'first',
     last: 'last'
   };
 
   export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
-
-
-  export const MagicLinkOrderByRelevanceFieldEnum: {
-    id: 'id',
-    code: 'code'
-  };
-
-  export type MagicLinkOrderByRelevanceFieldEnum = (typeof MagicLinkOrderByRelevanceFieldEnum)[keyof typeof MagicLinkOrderByRelevanceFieldEnum]
-
-
-  export const MaterialOrderByRelevanceFieldEnum: {
-    name: 'name',
-    specification: 'specification',
-    unit: 'unit'
-  };
-
-  export type MaterialOrderByRelevanceFieldEnum = (typeof MaterialOrderByRelevanceFieldEnum)[keyof typeof MaterialOrderByRelevanceFieldEnum]
-
-
-  export const RoleOrderByRelevanceFieldEnum: {
-    role: 'role',
-    description: 'description'
-  };
-
-  export type RoleOrderByRelevanceFieldEnum = (typeof RoleOrderByRelevanceFieldEnum)[keyof typeof RoleOrderByRelevanceFieldEnum]
 
 
   export const LogErrorOrderByRelevanceFieldEnum: {
@@ -7448,16 +7413,44 @@ export namespace Prisma {
   export type LogLoginOrderByRelevanceFieldEnum = (typeof LogLoginOrderByRelevanceFieldEnum)[keyof typeof LogLoginOrderByRelevanceFieldEnum]
 
 
+  export const MaterialOrderByRelevanceFieldEnum: {
+    name: 'name',
+    specification: 'specification',
+    unit: 'unit'
+  };
+
+  export type MaterialOrderByRelevanceFieldEnum = (typeof MaterialOrderByRelevanceFieldEnum)[keyof typeof MaterialOrderByRelevanceFieldEnum]
+
+
+  export const UserOrderByRelevanceFieldEnum: {
+    name: 'name',
+    login: 'login',
+    email: 'email',
+    image: 'image'
+  };
+
+  export type UserOrderByRelevanceFieldEnum = (typeof UserOrderByRelevanceFieldEnum)[keyof typeof UserOrderByRelevanceFieldEnum]
+
+
+  export const MagicLinkOrderByRelevanceFieldEnum: {
+    id: 'id',
+    code: 'code'
+  };
+
+  export type MagicLinkOrderByRelevanceFieldEnum = (typeof MagicLinkOrderByRelevanceFieldEnum)[keyof typeof MagicLinkOrderByRelevanceFieldEnum]
+
+
+  export const RoleOrderByRelevanceFieldEnum: {
+    role: 'role',
+    description: 'description'
+  };
+
+  export type RoleOrderByRelevanceFieldEnum = (typeof RoleOrderByRelevanceFieldEnum)[keyof typeof RoleOrderByRelevanceFieldEnum]
+
+
   /**
    * Field references
    */
-
-
-  /**
-   * Reference to a field of type 'Int'
-   */
-  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
 
 
   /**
@@ -7468,16 +7461,23 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Boolean'
+   * Reference to a field of type 'DateTime'
    */
-  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+  export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
     
 
 
   /**
-   * Reference to a field of type 'DateTime'
+   * Reference to a field of type 'Int'
    */
-  export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
+  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+    
+
+
+  /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -7497,271 +7497,6 @@ export namespace Prisma {
    * Deep Input Types
    */
 
-
-  export type UserWhereInput = {
-    AND?: UserWhereInput | UserWhereInput[]
-    OR?: UserWhereInput[]
-    NOT?: UserWhereInput | UserWhereInput[]
-    id?: IntFilter<"User"> | number
-    name?: StringFilter<"User"> | string
-    login?: StringFilter<"User"> | string
-    email?: StringFilter<"User"> | string
-    image?: StringFilter<"User"> | string
-    isActive?: BoolFilter<"User"> | boolean
-    createdAt?: DateTimeFilter<"User"> | Date | string
-    updatedAt?: DateTimeFilter<"User"> | Date | string
-    logLogin?: LogLoginListRelationFilter
-    roles?: RoleListRelationFilter
-    magicLinks?: MagicLinkListRelationFilter
-  }
-
-  export type UserOrderByWithRelationInput = {
-    id?: SortOrder
-    name?: SortOrder
-    login?: SortOrder
-    email?: SortOrder
-    image?: SortOrder
-    isActive?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    logLogin?: LogLoginOrderByRelationAggregateInput
-    roles?: RoleOrderByRelationAggregateInput
-    magicLinks?: MagicLinkOrderByRelationAggregateInput
-    _relevance?: UserOrderByRelevanceInput
-  }
-
-  export type UserWhereUniqueInput = Prisma.AtLeast<{
-    id?: number
-    login?: string
-    email?: string
-    AND?: UserWhereInput | UserWhereInput[]
-    OR?: UserWhereInput[]
-    NOT?: UserWhereInput | UserWhereInput[]
-    name?: StringFilter<"User"> | string
-    image?: StringFilter<"User"> | string
-    isActive?: BoolFilter<"User"> | boolean
-    createdAt?: DateTimeFilter<"User"> | Date | string
-    updatedAt?: DateTimeFilter<"User"> | Date | string
-    logLogin?: LogLoginListRelationFilter
-    roles?: RoleListRelationFilter
-    magicLinks?: MagicLinkListRelationFilter
-  }, "id" | "login" | "email">
-
-  export type UserOrderByWithAggregationInput = {
-    id?: SortOrder
-    name?: SortOrder
-    login?: SortOrder
-    email?: SortOrder
-    image?: SortOrder
-    isActive?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    _count?: UserCountOrderByAggregateInput
-    _avg?: UserAvgOrderByAggregateInput
-    _max?: UserMaxOrderByAggregateInput
-    _min?: UserMinOrderByAggregateInput
-    _sum?: UserSumOrderByAggregateInput
-  }
-
-  export type UserScalarWhereWithAggregatesInput = {
-    AND?: UserScalarWhereWithAggregatesInput | UserScalarWhereWithAggregatesInput[]
-    OR?: UserScalarWhereWithAggregatesInput[]
-    NOT?: UserScalarWhereWithAggregatesInput | UserScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"User"> | number
-    name?: StringWithAggregatesFilter<"User"> | string
-    login?: StringWithAggregatesFilter<"User"> | string
-    email?: StringWithAggregatesFilter<"User"> | string
-    image?: StringWithAggregatesFilter<"User"> | string
-    isActive?: BoolWithAggregatesFilter<"User"> | boolean
-    createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
-  }
-
-  export type MagicLinkWhereInput = {
-    AND?: MagicLinkWhereInput | MagicLinkWhereInput[]
-    OR?: MagicLinkWhereInput[]
-    NOT?: MagicLinkWhereInput | MagicLinkWhereInput[]
-    id?: StringFilter<"MagicLink"> | string
-    code?: StringFilter<"MagicLink"> | string
-    userId?: IntFilter<"MagicLink"> | number
-    expiresAt?: DateTimeFilter<"MagicLink"> | Date | string
-    usedAt?: DateTimeNullableFilter<"MagicLink"> | Date | string | null
-    createdAt?: DateTimeFilter<"MagicLink"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }
-
-  export type MagicLinkOrderByWithRelationInput = {
-    id?: SortOrder
-    code?: SortOrder
-    userId?: SortOrder
-    expiresAt?: SortOrder
-    usedAt?: SortOrderInput | SortOrder
-    createdAt?: SortOrder
-    user?: UserOrderByWithRelationInput
-    _relevance?: MagicLinkOrderByRelevanceInput
-  }
-
-  export type MagicLinkWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    code?: string
-    AND?: MagicLinkWhereInput | MagicLinkWhereInput[]
-    OR?: MagicLinkWhereInput[]
-    NOT?: MagicLinkWhereInput | MagicLinkWhereInput[]
-    userId?: IntFilter<"MagicLink"> | number
-    expiresAt?: DateTimeFilter<"MagicLink"> | Date | string
-    usedAt?: DateTimeNullableFilter<"MagicLink"> | Date | string | null
-    createdAt?: DateTimeFilter<"MagicLink"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }, "id" | "code">
-
-  export type MagicLinkOrderByWithAggregationInput = {
-    id?: SortOrder
-    code?: SortOrder
-    userId?: SortOrder
-    expiresAt?: SortOrder
-    usedAt?: SortOrderInput | SortOrder
-    createdAt?: SortOrder
-    _count?: MagicLinkCountOrderByAggregateInput
-    _avg?: MagicLinkAvgOrderByAggregateInput
-    _max?: MagicLinkMaxOrderByAggregateInput
-    _min?: MagicLinkMinOrderByAggregateInput
-    _sum?: MagicLinkSumOrderByAggregateInput
-  }
-
-  export type MagicLinkScalarWhereWithAggregatesInput = {
-    AND?: MagicLinkScalarWhereWithAggregatesInput | MagicLinkScalarWhereWithAggregatesInput[]
-    OR?: MagicLinkScalarWhereWithAggregatesInput[]
-    NOT?: MagicLinkScalarWhereWithAggregatesInput | MagicLinkScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"MagicLink"> | string
-    code?: StringWithAggregatesFilter<"MagicLink"> | string
-    userId?: IntWithAggregatesFilter<"MagicLink"> | number
-    expiresAt?: DateTimeWithAggregatesFilter<"MagicLink"> | Date | string
-    usedAt?: DateTimeNullableWithAggregatesFilter<"MagicLink"> | Date | string | null
-    createdAt?: DateTimeWithAggregatesFilter<"MagicLink"> | Date | string
-  }
-
-  export type MaterialWhereInput = {
-    AND?: MaterialWhereInput | MaterialWhereInput[]
-    OR?: MaterialWhereInput[]
-    NOT?: MaterialWhereInput | MaterialWhereInput[]
-    id?: BigIntFilter<"Material"> | bigint | number
-    name?: StringFilter<"Material"> | string
-    specification?: StringNullableFilter<"Material"> | string | null
-    unit?: StringFilter<"Material"> | string
-    isActive?: BoolFilter<"Material"> | boolean
-    createdAt?: DateTimeFilter<"Material"> | Date | string
-    updatedAt?: DateTimeFilter<"Material"> | Date | string
-  }
-
-  export type MaterialOrderByWithRelationInput = {
-    id?: SortOrder
-    name?: SortOrder
-    specification?: SortOrderInput | SortOrder
-    unit?: SortOrder
-    isActive?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    _relevance?: MaterialOrderByRelevanceInput
-  }
-
-  export type MaterialWhereUniqueInput = Prisma.AtLeast<{
-    id?: bigint | number
-    AND?: MaterialWhereInput | MaterialWhereInput[]
-    OR?: MaterialWhereInput[]
-    NOT?: MaterialWhereInput | MaterialWhereInput[]
-    name?: StringFilter<"Material"> | string
-    specification?: StringNullableFilter<"Material"> | string | null
-    unit?: StringFilter<"Material"> | string
-    isActive?: BoolFilter<"Material"> | boolean
-    createdAt?: DateTimeFilter<"Material"> | Date | string
-    updatedAt?: DateTimeFilter<"Material"> | Date | string
-  }, "id">
-
-  export type MaterialOrderByWithAggregationInput = {
-    id?: SortOrder
-    name?: SortOrder
-    specification?: SortOrderInput | SortOrder
-    unit?: SortOrder
-    isActive?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    _count?: MaterialCountOrderByAggregateInput
-    _avg?: MaterialAvgOrderByAggregateInput
-    _max?: MaterialMaxOrderByAggregateInput
-    _min?: MaterialMinOrderByAggregateInput
-    _sum?: MaterialSumOrderByAggregateInput
-  }
-
-  export type MaterialScalarWhereWithAggregatesInput = {
-    AND?: MaterialScalarWhereWithAggregatesInput | MaterialScalarWhereWithAggregatesInput[]
-    OR?: MaterialScalarWhereWithAggregatesInput[]
-    NOT?: MaterialScalarWhereWithAggregatesInput | MaterialScalarWhereWithAggregatesInput[]
-    id?: BigIntWithAggregatesFilter<"Material"> | bigint | number
-    name?: StringWithAggregatesFilter<"Material"> | string
-    specification?: StringNullableWithAggregatesFilter<"Material"> | string | null
-    unit?: StringWithAggregatesFilter<"Material"> | string
-    isActive?: BoolWithAggregatesFilter<"Material"> | boolean
-    createdAt?: DateTimeWithAggregatesFilter<"Material"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"Material"> | Date | string
-  }
-
-  export type RoleWhereInput = {
-    AND?: RoleWhereInput | RoleWhereInput[]
-    OR?: RoleWhereInput[]
-    NOT?: RoleWhereInput | RoleWhereInput[]
-    id?: IntFilter<"Role"> | number
-    role?: StringFilter<"Role"> | string
-    description?: StringFilter<"Role"> | string
-    createdAt?: DateTimeFilter<"Role"> | Date | string
-    updatedAt?: DateTimeFilter<"Role"> | Date | string
-    users?: UserListRelationFilter
-  }
-
-  export type RoleOrderByWithRelationInput = {
-    id?: SortOrder
-    role?: SortOrder
-    description?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    users?: UserOrderByRelationAggregateInput
-    _relevance?: RoleOrderByRelevanceInput
-  }
-
-  export type RoleWhereUniqueInput = Prisma.AtLeast<{
-    id?: number
-    AND?: RoleWhereInput | RoleWhereInput[]
-    OR?: RoleWhereInput[]
-    NOT?: RoleWhereInput | RoleWhereInput[]
-    role?: StringFilter<"Role"> | string
-    description?: StringFilter<"Role"> | string
-    createdAt?: DateTimeFilter<"Role"> | Date | string
-    updatedAt?: DateTimeFilter<"Role"> | Date | string
-    users?: UserListRelationFilter
-  }, "id">
-
-  export type RoleOrderByWithAggregationInput = {
-    id?: SortOrder
-    role?: SortOrder
-    description?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    _count?: RoleCountOrderByAggregateInput
-    _avg?: RoleAvgOrderByAggregateInput
-    _max?: RoleMaxOrderByAggregateInput
-    _min?: RoleMinOrderByAggregateInput
-    _sum?: RoleSumOrderByAggregateInput
-  }
-
-  export type RoleScalarWhereWithAggregatesInput = {
-    AND?: RoleScalarWhereWithAggregatesInput | RoleScalarWhereWithAggregatesInput[]
-    OR?: RoleScalarWhereWithAggregatesInput[]
-    NOT?: RoleScalarWhereWithAggregatesInput | RoleScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"Role"> | number
-    role?: StringWithAggregatesFilter<"Role"> | string
-    description?: StringWithAggregatesFilter<"Role"> | string
-    createdAt?: DateTimeWithAggregatesFilter<"Role"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"Role"> | Date | string
-  }
 
   export type LogErrorWhereInput = {
     AND?: LogErrorWhereInput | LogErrorWhereInput[]
@@ -7906,282 +7641,269 @@ export namespace Prisma {
     successful?: BoolWithAggregatesFilter<"LogLogin"> | boolean
   }
 
-  export type UserCreateInput = {
-    name: string
-    login: string
-    email: string
-    image?: string
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    logLogin?: LogLoginCreateNestedManyWithoutUserInput
-    roles?: RoleCreateNestedManyWithoutUsersInput
-    magicLinks?: MagicLinkCreateNestedManyWithoutUserInput
+  export type MaterialWhereInput = {
+    AND?: MaterialWhereInput | MaterialWhereInput[]
+    OR?: MaterialWhereInput[]
+    NOT?: MaterialWhereInput | MaterialWhereInput[]
+    id?: BigIntFilter<"Material"> | bigint | number
+    name?: StringFilter<"Material"> | string
+    specification?: StringNullableFilter<"Material"> | string | null
+    unit?: StringFilter<"Material"> | string
+    isActive?: BoolFilter<"Material"> | boolean
+    createdAt?: DateTimeFilter<"Material"> | Date | string
+    updatedAt?: DateTimeFilter<"Material"> | Date | string
   }
 
-  export type UserUncheckedCreateInput = {
+  export type MaterialOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    specification?: SortOrderInput | SortOrder
+    unit?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _relevance?: MaterialOrderByRelevanceInput
+  }
+
+  export type MaterialWhereUniqueInput = Prisma.AtLeast<{
+    id?: bigint | number
+    AND?: MaterialWhereInput | MaterialWhereInput[]
+    OR?: MaterialWhereInput[]
+    NOT?: MaterialWhereInput | MaterialWhereInput[]
+    name?: StringFilter<"Material"> | string
+    specification?: StringNullableFilter<"Material"> | string | null
+    unit?: StringFilter<"Material"> | string
+    isActive?: BoolFilter<"Material"> | boolean
+    createdAt?: DateTimeFilter<"Material"> | Date | string
+    updatedAt?: DateTimeFilter<"Material"> | Date | string
+  }, "id">
+
+  export type MaterialOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    specification?: SortOrderInput | SortOrder
+    unit?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: MaterialCountOrderByAggregateInput
+    _avg?: MaterialAvgOrderByAggregateInput
+    _max?: MaterialMaxOrderByAggregateInput
+    _min?: MaterialMinOrderByAggregateInput
+    _sum?: MaterialSumOrderByAggregateInput
+  }
+
+  export type MaterialScalarWhereWithAggregatesInput = {
+    AND?: MaterialScalarWhereWithAggregatesInput | MaterialScalarWhereWithAggregatesInput[]
+    OR?: MaterialScalarWhereWithAggregatesInput[]
+    NOT?: MaterialScalarWhereWithAggregatesInput | MaterialScalarWhereWithAggregatesInput[]
+    id?: BigIntWithAggregatesFilter<"Material"> | bigint | number
+    name?: StringWithAggregatesFilter<"Material"> | string
+    specification?: StringNullableWithAggregatesFilter<"Material"> | string | null
+    unit?: StringWithAggregatesFilter<"Material"> | string
+    isActive?: BoolWithAggregatesFilter<"Material"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"Material"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Material"> | Date | string
+  }
+
+  export type UserWhereInput = {
+    AND?: UserWhereInput | UserWhereInput[]
+    OR?: UserWhereInput[]
+    NOT?: UserWhereInput | UserWhereInput[]
+    id?: IntFilter<"User"> | number
+    name?: StringFilter<"User"> | string
+    login?: StringFilter<"User"> | string
+    email?: StringFilter<"User"> | string
+    image?: StringFilter<"User"> | string
+    isActive?: BoolFilter<"User"> | boolean
+    createdAt?: DateTimeFilter<"User"> | Date | string
+    updatedAt?: DateTimeFilter<"User"> | Date | string
+    logLogin?: LogLoginListRelationFilter
+    roles?: RoleListRelationFilter
+    magicLinks?: MagicLinkListRelationFilter
+  }
+
+  export type UserOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    login?: SortOrder
+    email?: SortOrder
+    image?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    logLogin?: LogLoginOrderByRelationAggregateInput
+    roles?: RoleOrderByRelationAggregateInput
+    magicLinks?: MagicLinkOrderByRelationAggregateInput
+    _relevance?: UserOrderByRelevanceInput
+  }
+
+  export type UserWhereUniqueInput = Prisma.AtLeast<{
     id?: number
-    name: string
-    login: string
-    email: string
-    image?: string
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    logLogin?: LogLoginUncheckedCreateNestedManyWithoutUserInput
-    roles?: RoleUncheckedCreateNestedManyWithoutUsersInput
-    magicLinks?: MagicLinkUncheckedCreateNestedManyWithoutUserInput
+    login?: string
+    email?: string
+    AND?: UserWhereInput | UserWhereInput[]
+    OR?: UserWhereInput[]
+    NOT?: UserWhereInput | UserWhereInput[]
+    name?: StringFilter<"User"> | string
+    image?: StringFilter<"User"> | string
+    isActive?: BoolFilter<"User"> | boolean
+    createdAt?: DateTimeFilter<"User"> | Date | string
+    updatedAt?: DateTimeFilter<"User"> | Date | string
+    logLogin?: LogLoginListRelationFilter
+    roles?: RoleListRelationFilter
+    magicLinks?: MagicLinkListRelationFilter
+  }, "id" | "login" | "email">
+
+  export type UserOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    login?: SortOrder
+    email?: SortOrder
+    image?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: UserCountOrderByAggregateInput
+    _avg?: UserAvgOrderByAggregateInput
+    _max?: UserMaxOrderByAggregateInput
+    _min?: UserMinOrderByAggregateInput
+    _sum?: UserSumOrderByAggregateInput
   }
 
-  export type UserUpdateInput = {
-    name?: StringFieldUpdateOperationsInput | string
-    login?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    image?: StringFieldUpdateOperationsInput | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    logLogin?: LogLoginUpdateManyWithoutUserNestedInput
-    roles?: RoleUpdateManyWithoutUsersNestedInput
-    magicLinks?: MagicLinkUpdateManyWithoutUserNestedInput
+  export type UserScalarWhereWithAggregatesInput = {
+    AND?: UserScalarWhereWithAggregatesInput | UserScalarWhereWithAggregatesInput[]
+    OR?: UserScalarWhereWithAggregatesInput[]
+    NOT?: UserScalarWhereWithAggregatesInput | UserScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"User"> | number
+    name?: StringWithAggregatesFilter<"User"> | string
+    login?: StringWithAggregatesFilter<"User"> | string
+    email?: StringWithAggregatesFilter<"User"> | string
+    image?: StringWithAggregatesFilter<"User"> | string
+    isActive?: BoolWithAggregatesFilter<"User"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
   }
 
-  export type UserUncheckedUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    login?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    image?: StringFieldUpdateOperationsInput | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    logLogin?: LogLoginUncheckedUpdateManyWithoutUserNestedInput
-    roles?: RoleUncheckedUpdateManyWithoutUsersNestedInput
-    magicLinks?: MagicLinkUncheckedUpdateManyWithoutUserNestedInput
+  export type MagicLinkWhereInput = {
+    AND?: MagicLinkWhereInput | MagicLinkWhereInput[]
+    OR?: MagicLinkWhereInput[]
+    NOT?: MagicLinkWhereInput | MagicLinkWhereInput[]
+    id?: StringFilter<"MagicLink"> | string
+    code?: StringFilter<"MagicLink"> | string
+    userId?: IntFilter<"MagicLink"> | number
+    expiresAt?: DateTimeFilter<"MagicLink"> | Date | string
+    usedAt?: DateTimeNullableFilter<"MagicLink"> | Date | string | null
+    createdAt?: DateTimeFilter<"MagicLink"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
-  export type UserCreateManyInput = {
+  export type MagicLinkOrderByWithRelationInput = {
+    id?: SortOrder
+    code?: SortOrder
+    userId?: SortOrder
+    expiresAt?: SortOrder
+    usedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+    _relevance?: MagicLinkOrderByRelevanceInput
+  }
+
+  export type MagicLinkWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    code?: string
+    AND?: MagicLinkWhereInput | MagicLinkWhereInput[]
+    OR?: MagicLinkWhereInput[]
+    NOT?: MagicLinkWhereInput | MagicLinkWhereInput[]
+    userId?: IntFilter<"MagicLink"> | number
+    expiresAt?: DateTimeFilter<"MagicLink"> | Date | string
+    usedAt?: DateTimeNullableFilter<"MagicLink"> | Date | string | null
+    createdAt?: DateTimeFilter<"MagicLink"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "code">
+
+  export type MagicLinkOrderByWithAggregationInput = {
+    id?: SortOrder
+    code?: SortOrder
+    userId?: SortOrder
+    expiresAt?: SortOrder
+    usedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: MagicLinkCountOrderByAggregateInput
+    _avg?: MagicLinkAvgOrderByAggregateInput
+    _max?: MagicLinkMaxOrderByAggregateInput
+    _min?: MagicLinkMinOrderByAggregateInput
+    _sum?: MagicLinkSumOrderByAggregateInput
+  }
+
+  export type MagicLinkScalarWhereWithAggregatesInput = {
+    AND?: MagicLinkScalarWhereWithAggregatesInput | MagicLinkScalarWhereWithAggregatesInput[]
+    OR?: MagicLinkScalarWhereWithAggregatesInput[]
+    NOT?: MagicLinkScalarWhereWithAggregatesInput | MagicLinkScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"MagicLink"> | string
+    code?: StringWithAggregatesFilter<"MagicLink"> | string
+    userId?: IntWithAggregatesFilter<"MagicLink"> | number
+    expiresAt?: DateTimeWithAggregatesFilter<"MagicLink"> | Date | string
+    usedAt?: DateTimeNullableWithAggregatesFilter<"MagicLink"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"MagicLink"> | Date | string
+  }
+
+  export type RoleWhereInput = {
+    AND?: RoleWhereInput | RoleWhereInput[]
+    OR?: RoleWhereInput[]
+    NOT?: RoleWhereInput | RoleWhereInput[]
+    id?: IntFilter<"Role"> | number
+    role?: StringFilter<"Role"> | string
+    description?: StringFilter<"Role"> | string
+    createdAt?: DateTimeFilter<"Role"> | Date | string
+    updatedAt?: DateTimeFilter<"Role"> | Date | string
+    users?: UserListRelationFilter
+  }
+
+  export type RoleOrderByWithRelationInput = {
+    id?: SortOrder
+    role?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    users?: UserOrderByRelationAggregateInput
+    _relevance?: RoleOrderByRelevanceInput
+  }
+
+  export type RoleWhereUniqueInput = Prisma.AtLeast<{
     id?: number
-    name: string
-    login: string
-    email: string
-    image?: string
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
+    AND?: RoleWhereInput | RoleWhereInput[]
+    OR?: RoleWhereInput[]
+    NOT?: RoleWhereInput | RoleWhereInput[]
+    role?: StringFilter<"Role"> | string
+    description?: StringFilter<"Role"> | string
+    createdAt?: DateTimeFilter<"Role"> | Date | string
+    updatedAt?: DateTimeFilter<"Role"> | Date | string
+    users?: UserListRelationFilter
+  }, "id">
+
+  export type RoleOrderByWithAggregationInput = {
+    id?: SortOrder
+    role?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: RoleCountOrderByAggregateInput
+    _avg?: RoleAvgOrderByAggregateInput
+    _max?: RoleMaxOrderByAggregateInput
+    _min?: RoleMinOrderByAggregateInput
+    _sum?: RoleSumOrderByAggregateInput
   }
 
-  export type UserUpdateManyMutationInput = {
-    name?: StringFieldUpdateOperationsInput | string
-    login?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    image?: StringFieldUpdateOperationsInput | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type UserUncheckedUpdateManyInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    login?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    image?: StringFieldUpdateOperationsInput | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type MagicLinkCreateInput = {
-    id?: string
-    code: string
-    expiresAt: Date | string
-    usedAt?: Date | string | null
-    createdAt?: Date | string
-    user: UserCreateNestedOneWithoutMagicLinksInput
-  }
-
-  export type MagicLinkUncheckedCreateInput = {
-    id?: string
-    code: string
-    userId: number
-    expiresAt: Date | string
-    usedAt?: Date | string | null
-    createdAt?: Date | string
-  }
-
-  export type MagicLinkUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    code?: StringFieldUpdateOperationsInput | string
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutMagicLinksNestedInput
-  }
-
-  export type MagicLinkUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    code?: StringFieldUpdateOperationsInput | string
-    userId?: IntFieldUpdateOperationsInput | number
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type MagicLinkCreateManyInput = {
-    id?: string
-    code: string
-    userId: number
-    expiresAt: Date | string
-    usedAt?: Date | string | null
-    createdAt?: Date | string
-  }
-
-  export type MagicLinkUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    code?: StringFieldUpdateOperationsInput | string
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type MagicLinkUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    code?: StringFieldUpdateOperationsInput | string
-    userId?: IntFieldUpdateOperationsInput | number
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type MaterialCreateInput = {
-    id: bigint | number
-    name: string
-    specification?: string | null
-    unit: string
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type MaterialUncheckedCreateInput = {
-    id: bigint | number
-    name: string
-    specification?: string | null
-    unit: string
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type MaterialUpdateInput = {
-    id?: BigIntFieldUpdateOperationsInput | bigint | number
-    name?: StringFieldUpdateOperationsInput | string
-    specification?: NullableStringFieldUpdateOperationsInput | string | null
-    unit?: StringFieldUpdateOperationsInput | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type MaterialUncheckedUpdateInput = {
-    id?: BigIntFieldUpdateOperationsInput | bigint | number
-    name?: StringFieldUpdateOperationsInput | string
-    specification?: NullableStringFieldUpdateOperationsInput | string | null
-    unit?: StringFieldUpdateOperationsInput | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type MaterialCreateManyInput = {
-    id: bigint | number
-    name: string
-    specification?: string | null
-    unit: string
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type MaterialUpdateManyMutationInput = {
-    id?: BigIntFieldUpdateOperationsInput | bigint | number
-    name?: StringFieldUpdateOperationsInput | string
-    specification?: NullableStringFieldUpdateOperationsInput | string | null
-    unit?: StringFieldUpdateOperationsInput | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type MaterialUncheckedUpdateManyInput = {
-    id?: BigIntFieldUpdateOperationsInput | bigint | number
-    name?: StringFieldUpdateOperationsInput | string
-    specification?: NullableStringFieldUpdateOperationsInput | string | null
-    unit?: StringFieldUpdateOperationsInput | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type RoleCreateInput = {
-    id: number
-    role: string
-    description: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    users?: UserCreateNestedManyWithoutRolesInput
-  }
-
-  export type RoleUncheckedCreateInput = {
-    id: number
-    role: string
-    description: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    users?: UserUncheckedCreateNestedManyWithoutRolesInput
-  }
-
-  export type RoleUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    role?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    users?: UserUpdateManyWithoutRolesNestedInput
-  }
-
-  export type RoleUncheckedUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    role?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    users?: UserUncheckedUpdateManyWithoutRolesNestedInput
-  }
-
-  export type RoleCreateManyInput = {
-    id: number
-    role: string
-    description: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type RoleUpdateManyMutationInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    role?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type RoleUncheckedUpdateManyInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    role?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  export type RoleScalarWhereWithAggregatesInput = {
+    AND?: RoleScalarWhereWithAggregatesInput | RoleScalarWhereWithAggregatesInput[]
+    OR?: RoleScalarWhereWithAggregatesInput[]
+    NOT?: RoleScalarWhereWithAggregatesInput | RoleScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"Role"> | number
+    role?: StringWithAggregatesFilter<"Role"> | string
+    description?: StringWithAggregatesFilter<"Role"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"Role"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Role"> | Date | string
   }
 
   export type LogErrorCreateInput = {
@@ -8337,15 +8059,282 @@ export namespace Prisma {
     successful?: BoolFieldUpdateOperationsInput | boolean
   }
 
-  export type IntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[]
-    notIn?: number[]
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
+  export type MaterialCreateInput = {
+    id: bigint | number
+    name: string
+    specification?: string | null
+    unit: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaterialUncheckedCreateInput = {
+    id: bigint | number
+    name: string
+    specification?: string | null
+    unit: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaterialUpdateInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    name?: StringFieldUpdateOperationsInput | string
+    specification?: NullableStringFieldUpdateOperationsInput | string | null
+    unit?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaterialUncheckedUpdateInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    name?: StringFieldUpdateOperationsInput | string
+    specification?: NullableStringFieldUpdateOperationsInput | string | null
+    unit?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaterialCreateManyInput = {
+    id: bigint | number
+    name: string
+    specification?: string | null
+    unit: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaterialUpdateManyMutationInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    name?: StringFieldUpdateOperationsInput | string
+    specification?: NullableStringFieldUpdateOperationsInput | string | null
+    unit?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaterialUncheckedUpdateManyInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    name?: StringFieldUpdateOperationsInput | string
+    specification?: NullableStringFieldUpdateOperationsInput | string | null
+    unit?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserCreateInput = {
+    name: string
+    login: string
+    email: string
+    image?: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    logLogin?: LogLoginCreateNestedManyWithoutUserInput
+    roles?: RoleCreateNestedManyWithoutUsersInput
+    magicLinks?: MagicLinkCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateInput = {
+    id?: number
+    name: string
+    login: string
+    email: string
+    image?: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    logLogin?: LogLoginUncheckedCreateNestedManyWithoutUserInput
+    roles?: RoleUncheckedCreateNestedManyWithoutUsersInput
+    magicLinks?: MagicLinkUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUpdateInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    login?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    image?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    logLogin?: LogLoginUpdateManyWithoutUserNestedInput
+    roles?: RoleUpdateManyWithoutUsersNestedInput
+    magicLinks?: MagicLinkUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    login?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    image?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    logLogin?: LogLoginUncheckedUpdateManyWithoutUserNestedInput
+    roles?: RoleUncheckedUpdateManyWithoutUsersNestedInput
+    magicLinks?: MagicLinkUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateManyInput = {
+    id?: number
+    name: string
+    login: string
+    email: string
+    image?: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type UserUpdateManyMutationInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    login?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    image?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    login?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    image?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MagicLinkCreateInput = {
+    id?: string
+    code: string
+    expiresAt: Date | string
+    usedAt?: Date | string | null
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutMagicLinksInput
+  }
+
+  export type MagicLinkUncheckedCreateInput = {
+    id?: string
+    code: string
+    userId: number
+    expiresAt: Date | string
+    usedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type MagicLinkUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutMagicLinksNestedInput
+  }
+
+  export type MagicLinkUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    userId?: IntFieldUpdateOperationsInput | number
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MagicLinkCreateManyInput = {
+    id?: string
+    code: string
+    userId: number
+    expiresAt: Date | string
+    usedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type MagicLinkUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MagicLinkUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    userId?: IntFieldUpdateOperationsInput | number
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RoleCreateInput = {
+    id: number
+    role: string
+    description: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    users?: UserCreateNestedManyWithoutRolesInput
+  }
+
+  export type RoleUncheckedCreateInput = {
+    id: number
+    role: string
+    description: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    users?: UserUncheckedCreateNestedManyWithoutRolesInput
+  }
+
+  export type RoleUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    role?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUpdateManyWithoutRolesNestedInput
+  }
+
+  export type RoleUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    role?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUncheckedUpdateManyWithoutRolesNestedInput
+  }
+
+  export type RoleCreateManyInput = {
+    id: number
+    role: string
+    description: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RoleUpdateManyMutationInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    role?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RoleUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    role?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -8363,11 +8352,6 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
-  export type BoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[]
@@ -8377,6 +8361,315 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type StringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    search?: string
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type SortOrderInput = {
+    sort: SortOrder
+    nulls?: NullsOrder
+  }
+
+  export type LogErrorOrderByRelevanceInput = {
+    fields: LogErrorOrderByRelevanceFieldEnum | LogErrorOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type LogErrorCountOrderByAggregateInput = {
+    id?: SortOrder
+    timestamp?: SortOrder
+    statusCode?: SortOrder
+    path?: SortOrder
+    method?: SortOrder
+    message?: SortOrder
+    stackTrace?: SortOrder
+    ipAddress?: SortOrder
+    userId?: SortOrder
+    requestBody?: SortOrder
+  }
+
+  export type LogErrorAvgOrderByAggregateInput = {
+    statusCode?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type LogErrorMaxOrderByAggregateInput = {
+    id?: SortOrder
+    timestamp?: SortOrder
+    statusCode?: SortOrder
+    path?: SortOrder
+    method?: SortOrder
+    message?: SortOrder
+    stackTrace?: SortOrder
+    ipAddress?: SortOrder
+    userId?: SortOrder
+    requestBody?: SortOrder
+  }
+
+  export type LogErrorMinOrderByAggregateInput = {
+    id?: SortOrder
+    timestamp?: SortOrder
+    statusCode?: SortOrder
+    path?: SortOrder
+    method?: SortOrder
+    message?: SortOrder
+    stackTrace?: SortOrder
+    ipAddress?: SortOrder
+    userId?: SortOrder
+    requestBody?: SortOrder
+  }
+
+  export type LogErrorSumOrderByAggregateInput = {
+    statusCode?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type StringWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel>
+    in?: string[]
+    notIn?: string[]
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    search?: string
+    not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedStringFilter<$PrismaModel>
+    _max?: NestedStringFilter<$PrismaModel>
+  }
+
+  export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[]
+    notIn?: Date[] | string[]
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    search?: string
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type UserScalarRelationFilter = {
+    is?: UserWhereInput
+    isNot?: UserWhereInput
+  }
+
+  export type LogLoginOrderByRelevanceInput = {
+    fields: LogLoginOrderByRelevanceFieldEnum | LogLoginOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type LogLoginCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    timestamp?: SortOrder
+    ipAddress?: SortOrder
+    userAgent?: SortOrder
+    successful?: SortOrder
+  }
+
+  export type LogLoginAvgOrderByAggregateInput = {
+    userId?: SortOrder
+  }
+
+  export type LogLoginMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    timestamp?: SortOrder
+    ipAddress?: SortOrder
+    userAgent?: SortOrder
+    successful?: SortOrder
+  }
+
+  export type LogLoginMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    timestamp?: SortOrder
+    ipAddress?: SortOrder
+    userAgent?: SortOrder
+    successful?: SortOrder
+  }
+
+  export type LogLoginSumOrderByAggregateInput = {
+    userId?: SortOrder
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type BigIntFilter<$PrismaModel = never> = {
+    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    in?: bigint[] | number[]
+    notIn?: bigint[] | number[]
+    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    not?: NestedBigIntFilter<$PrismaModel> | bigint | number
+  }
+
+  export type MaterialOrderByRelevanceInput = {
+    fields: MaterialOrderByRelevanceFieldEnum | MaterialOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type MaterialCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    specification?: SortOrder
+    unit?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MaterialAvgOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type MaterialMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    specification?: SortOrder
+    unit?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MaterialMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    specification?: SortOrder
+    unit?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MaterialSumOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type BigIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    in?: bigint[] | number[]
+    notIn?: bigint[] | number[]
+    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    not?: NestedBigIntWithAggregatesFilter<$PrismaModel> | bigint | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedBigIntFilter<$PrismaModel>
+    _min?: NestedBigIntFilter<$PrismaModel>
+    _max?: NestedBigIntFilter<$PrismaModel>
   }
 
   export type LogLoginListRelationFilter = {
@@ -8456,62 +8749,6 @@ export namespace Prisma {
     id?: SortOrder
   }
 
-  export type IntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[]
-    notIn?: number[]
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
-  }
-
-  export type StringWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[]
-    notIn?: string[]
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    search?: string
-    not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedStringFilter<$PrismaModel>
-    _max?: NestedStringFilter<$PrismaModel>
-  }
-
-  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
-  }
-
-  export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[]
-    notIn?: Date[] | string[]
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedDateTimeFilter<$PrismaModel>
-    _max?: NestedDateTimeFilter<$PrismaModel>
-  }
-
   export type DateTimeNullableFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | null
@@ -8521,16 +8758,6 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
-  export type UserScalarRelationFilter = {
-    is?: UserWhereInput
-    isNot?: UserWhereInput
-  }
-
-  export type SortOrderInput = {
-    sort: SortOrder
-    nulls?: NullsOrder
   }
 
   export type MagicLinkOrderByRelevanceInput = {
@@ -8588,110 +8815,6 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
-  export type BigIntFilter<$PrismaModel = never> = {
-    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    in?: bigint[] | number[]
-    notIn?: bigint[] | number[]
-    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    not?: NestedBigIntFilter<$PrismaModel> | bigint | number
-  }
-
-  export type StringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | null
-    notIn?: string[] | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    search?: string
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
-  }
-
-  export type MaterialOrderByRelevanceInput = {
-    fields: MaterialOrderByRelevanceFieldEnum | MaterialOrderByRelevanceFieldEnum[]
-    sort: SortOrder
-    search: string
-  }
-
-  export type MaterialCountOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    specification?: SortOrder
-    unit?: SortOrder
-    isActive?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type MaterialAvgOrderByAggregateInput = {
-    id?: SortOrder
-  }
-
-  export type MaterialMaxOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    specification?: SortOrder
-    unit?: SortOrder
-    isActive?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type MaterialMinOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    specification?: SortOrder
-    unit?: SortOrder
-    isActive?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type MaterialSumOrderByAggregateInput = {
-    id?: SortOrder
-  }
-
-  export type BigIntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    in?: bigint[] | number[]
-    notIn?: bigint[] | number[]
-    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    not?: NestedBigIntWithAggregatesFilter<$PrismaModel> | bigint | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedBigIntFilter<$PrismaModel>
-    _min?: NestedBigIntFilter<$PrismaModel>
-    _max?: NestedBigIntFilter<$PrismaModel>
-  }
-
-  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | null
-    notIn?: string[] | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    search?: string
-    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
-  }
-
   export type UserListRelationFilter = {
     every?: UserWhereInput
     some?: UserWhereInput
@@ -8740,127 +8863,58 @@ export namespace Prisma {
     id?: SortOrder
   }
 
-  export type IntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  export type StringFieldUpdateOperationsInput = {
+    set?: string
   }
 
-  export type LogErrorOrderByRelevanceInput = {
-    fields: LogErrorOrderByRelevanceFieldEnum | LogErrorOrderByRelevanceFieldEnum[]
-    sort: SortOrder
-    search: string
+  export type DateTimeFieldUpdateOperationsInput = {
+    set?: Date | string
   }
 
-  export type LogErrorCountOrderByAggregateInput = {
-    id?: SortOrder
-    timestamp?: SortOrder
-    statusCode?: SortOrder
-    path?: SortOrder
-    method?: SortOrder
-    message?: SortOrder
-    stackTrace?: SortOrder
-    ipAddress?: SortOrder
-    userId?: SortOrder
-    requestBody?: SortOrder
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
-  export type LogErrorAvgOrderByAggregateInput = {
-    statusCode?: SortOrder
-    userId?: SortOrder
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
   }
 
-  export type LogErrorMaxOrderByAggregateInput = {
-    id?: SortOrder
-    timestamp?: SortOrder
-    statusCode?: SortOrder
-    path?: SortOrder
-    method?: SortOrder
-    message?: SortOrder
-    stackTrace?: SortOrder
-    ipAddress?: SortOrder
-    userId?: SortOrder
-    requestBody?: SortOrder
+  export type UserCreateNestedOneWithoutLogLoginInput = {
+    create?: XOR<UserCreateWithoutLogLoginInput, UserUncheckedCreateWithoutLogLoginInput>
+    connectOrCreate?: UserCreateOrConnectWithoutLogLoginInput
+    connect?: UserWhereUniqueInput
   }
 
-  export type LogErrorMinOrderByAggregateInput = {
-    id?: SortOrder
-    timestamp?: SortOrder
-    statusCode?: SortOrder
-    path?: SortOrder
-    method?: SortOrder
-    message?: SortOrder
-    stackTrace?: SortOrder
-    ipAddress?: SortOrder
-    userId?: SortOrder
-    requestBody?: SortOrder
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
   }
 
-  export type LogErrorSumOrderByAggregateInput = {
-    statusCode?: SortOrder
-    userId?: SortOrder
+  export type UserUpdateOneRequiredWithoutLogLoginNestedInput = {
+    create?: XOR<UserCreateWithoutLogLoginInput, UserUncheckedCreateWithoutLogLoginInput>
+    connectOrCreate?: UserCreateOrConnectWithoutLogLoginInput
+    upsert?: UserUpsertWithoutLogLoginInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutLogLoginInput, UserUpdateWithoutLogLoginInput>, UserUncheckedUpdateWithoutLogLoginInput>
   }
 
-  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
-  export type LogLoginOrderByRelevanceInput = {
-    fields: LogLoginOrderByRelevanceFieldEnum | LogLoginOrderByRelevanceFieldEnum[]
-    sort: SortOrder
-    search: string
-  }
-
-  export type LogLoginCountOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    timestamp?: SortOrder
-    ipAddress?: SortOrder
-    userAgent?: SortOrder
-    successful?: SortOrder
-  }
-
-  export type LogLoginAvgOrderByAggregateInput = {
-    userId?: SortOrder
-  }
-
-  export type LogLoginMaxOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    timestamp?: SortOrder
-    ipAddress?: SortOrder
-    userAgent?: SortOrder
-    successful?: SortOrder
-  }
-
-  export type LogLoginMinOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    timestamp?: SortOrder
-    ipAddress?: SortOrder
-    userAgent?: SortOrder
-    successful?: SortOrder
-  }
-
-  export type LogLoginSumOrderByAggregateInput = {
-    userId?: SortOrder
+  export type BigIntFieldUpdateOperationsInput = {
+    set?: bigint | number
+    increment?: bigint | number
+    decrement?: bigint | number
+    multiply?: bigint | number
+    divide?: bigint | number
   }
 
   export type LogLoginCreateNestedManyWithoutUserInput = {
@@ -8903,18 +8957,6 @@ export namespace Prisma {
     connect?: MagicLinkWhereUniqueInput | MagicLinkWhereUniqueInput[]
   }
 
-  export type StringFieldUpdateOperationsInput = {
-    set?: string
-  }
-
-  export type BoolFieldUpdateOperationsInput = {
-    set?: boolean
-  }
-
-  export type DateTimeFieldUpdateOperationsInput = {
-    set?: Date | string
-  }
-
   export type LogLoginUpdateManyWithoutUserNestedInput = {
     create?: XOR<LogLoginCreateWithoutUserInput, LogLoginUncheckedCreateWithoutUserInput> | LogLoginCreateWithoutUserInput[] | LogLoginUncheckedCreateWithoutUserInput[]
     connectOrCreate?: LogLoginCreateOrConnectWithoutUserInput | LogLoginCreateOrConnectWithoutUserInput[]
@@ -8954,14 +8996,6 @@ export namespace Prisma {
     update?: MagicLinkUpdateWithWhereUniqueWithoutUserInput | MagicLinkUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: MagicLinkUpdateManyWithWhereWithoutUserInput | MagicLinkUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: MagicLinkScalarWhereInput | MagicLinkScalarWhereInput[]
-  }
-
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
   }
 
   export type LogLoginUncheckedUpdateManyWithoutUserNestedInput = {
@@ -9023,18 +9057,6 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutMagicLinksInput, UserUpdateWithoutMagicLinksInput>, UserUncheckedUpdateWithoutMagicLinksInput>
   }
 
-  export type BigIntFieldUpdateOperationsInput = {
-    set?: bigint | number
-    increment?: bigint | number
-    decrement?: bigint | number
-    multiply?: bigint | number
-    divide?: bigint | number
-  }
-
-  export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null
-  }
-
   export type UserCreateNestedManyWithoutRolesInput = {
     create?: XOR<UserCreateWithoutRolesInput, UserUncheckedCreateWithoutRolesInput> | UserCreateWithoutRolesInput[] | UserUncheckedCreateWithoutRolesInput[]
     connectOrCreate?: UserCreateOrConnectWithoutRolesInput | UserCreateOrConnectWithoutRolesInput[]
@@ -9073,39 +9095,6 @@ export namespace Prisma {
     deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
   }
 
-  export type NullableIntFieldUpdateOperationsInput = {
-    set?: number | null
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
-  }
-
-  export type UserCreateNestedOneWithoutLogLoginInput = {
-    create?: XOR<UserCreateWithoutLogLoginInput, UserUncheckedCreateWithoutLogLoginInput>
-    connectOrCreate?: UserCreateOrConnectWithoutLogLoginInput
-    connect?: UserWhereUniqueInput
-  }
-
-  export type UserUpdateOneRequiredWithoutLogLoginNestedInput = {
-    create?: XOR<UserCreateWithoutLogLoginInput, UserUncheckedCreateWithoutLogLoginInput>
-    connectOrCreate?: UserCreateOrConnectWithoutLogLoginInput
-    upsert?: UserUpsertWithoutLogLoginInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutLogLoginInput, UserUpdateWithoutLogLoginInput>, UserUncheckedUpdateWithoutLogLoginInput>
-  }
-
-  export type NestedIntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[]
-    notIn?: number[]
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
-  }
-
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[]
@@ -9121,11 +9110,6 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
-  export type NestedBoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
   export type NestedDateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[]
@@ -9135,6 +9119,125 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
+  export type NestedIntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedStringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    search?: string
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel>
+    in?: string[]
+    notIn?: string[]
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    search?: string
+    not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedStringFilter<$PrismaModel>
+    _max?: NestedStringFilter<$PrismaModel>
+  }
+
+  export type NestedIntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
+  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[]
+    notIn?: Date[] | string[]
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    search?: string
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -9164,24 +9267,6 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
-  export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[]
-    notIn?: string[]
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    search?: string
-    not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedStringFilter<$PrismaModel>
-    _max?: NestedStringFilter<$PrismaModel>
-  }
-
   export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
@@ -9190,18 +9275,31 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
-  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[]
-    notIn?: Date[] | string[]
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+  export type NestedBigIntFilter<$PrismaModel = never> = {
+    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    in?: bigint[] | number[]
+    notIn?: bigint[] | number[]
+    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    not?: NestedBigIntFilter<$PrismaModel> | bigint | number
+  }
+
+  export type NestedBigIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    in?: bigint[] | number[]
+    notIn?: bigint[] | number[]
+    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    not?: NestedBigIntWithAggregatesFilter<$PrismaModel> | bigint | number
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedDateTimeFilter<$PrismaModel>
-    _max?: NestedDateTimeFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedBigIntFilter<$PrismaModel>
+    _min?: NestedBigIntFilter<$PrismaModel>
+    _max?: NestedBigIntFilter<$PrismaModel>
   }
 
   export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
@@ -9229,102 +9327,70 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
-  export type NestedIntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  export type UserCreateWithoutLogLoginInput = {
+    name: string
+    login: string
+    email: string
+    image?: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    roles?: RoleCreateNestedManyWithoutUsersInput
+    magicLinks?: MagicLinkCreateNestedManyWithoutUserInput
   }
 
-  export type NestedBigIntFilter<$PrismaModel = never> = {
-    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    in?: bigint[] | number[]
-    notIn?: bigint[] | number[]
-    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    not?: NestedBigIntFilter<$PrismaModel> | bigint | number
+  export type UserUncheckedCreateWithoutLogLoginInput = {
+    id?: number
+    name: string
+    login: string
+    email: string
+    image?: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    roles?: RoleUncheckedCreateNestedManyWithoutUsersInput
+    magicLinks?: MagicLinkUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type NestedStringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | null
-    notIn?: string[] | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    search?: string
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  export type UserCreateOrConnectWithoutLogLoginInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutLogLoginInput, UserUncheckedCreateWithoutLogLoginInput>
   }
 
-  export type NestedBigIntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    in?: bigint[] | number[]
-    notIn?: bigint[] | number[]
-    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    not?: NestedBigIntWithAggregatesFilter<$PrismaModel> | bigint | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedBigIntFilter<$PrismaModel>
-    _min?: NestedBigIntFilter<$PrismaModel>
-    _max?: NestedBigIntFilter<$PrismaModel>
+  export type UserUpsertWithoutLogLoginInput = {
+    update: XOR<UserUpdateWithoutLogLoginInput, UserUncheckedUpdateWithoutLogLoginInput>
+    create: XOR<UserCreateWithoutLogLoginInput, UserUncheckedCreateWithoutLogLoginInput>
+    where?: UserWhereInput
   }
 
-  export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | null
-    notIn?: string[] | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    search?: string
-    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
+  export type UserUpdateToOneWithWhereWithoutLogLoginInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutLogLoginInput, UserUncheckedUpdateWithoutLogLoginInput>
   }
 
-  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
+  export type UserUpdateWithoutLogLoginInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    login?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    image?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    roles?: RoleUpdateManyWithoutUsersNestedInput
+    magicLinks?: MagicLinkUpdateManyWithoutUserNestedInput
   }
 
-  export type NestedFloatNullableFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  export type UserUncheckedUpdateWithoutLogLoginInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    login?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    image?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    roles?: RoleUncheckedUpdateManyWithoutUsersNestedInput
+    magicLinks?: MagicLinkUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type LogLoginCreateWithoutUserInput = {
@@ -9607,72 +9673,6 @@ export namespace Prisma {
     isActive?: BoolFilter<"User"> | boolean
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
-  }
-
-  export type UserCreateWithoutLogLoginInput = {
-    name: string
-    login: string
-    email: string
-    image?: string
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    roles?: RoleCreateNestedManyWithoutUsersInput
-    magicLinks?: MagicLinkCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutLogLoginInput = {
-    id?: number
-    name: string
-    login: string
-    email: string
-    image?: string
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    roles?: RoleUncheckedCreateNestedManyWithoutUsersInput
-    magicLinks?: MagicLinkUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutLogLoginInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutLogLoginInput, UserUncheckedCreateWithoutLogLoginInput>
-  }
-
-  export type UserUpsertWithoutLogLoginInput = {
-    update: XOR<UserUpdateWithoutLogLoginInput, UserUncheckedUpdateWithoutLogLoginInput>
-    create: XOR<UserCreateWithoutLogLoginInput, UserUncheckedCreateWithoutLogLoginInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutLogLoginInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutLogLoginInput, UserUncheckedUpdateWithoutLogLoginInput>
-  }
-
-  export type UserUpdateWithoutLogLoginInput = {
-    name?: StringFieldUpdateOperationsInput | string
-    login?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    image?: StringFieldUpdateOperationsInput | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    roles?: RoleUpdateManyWithoutUsersNestedInput
-    magicLinks?: MagicLinkUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutLogLoginInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    login?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    image?: StringFieldUpdateOperationsInput | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    roles?: RoleUncheckedUpdateManyWithoutUsersNestedInput
-    magicLinks?: MagicLinkUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type LogLoginCreateManyUserInput = {

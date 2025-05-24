@@ -120,44 +120,6 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
-exports.Prisma.UserScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  login: 'login',
-  email: 'email',
-  image: 'image',
-  isActive: 'isActive',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
-exports.Prisma.MagicLinkScalarFieldEnum = {
-  id: 'id',
-  code: 'code',
-  userId: 'userId',
-  expiresAt: 'expiresAt',
-  usedAt: 'usedAt',
-  createdAt: 'createdAt'
-};
-
-exports.Prisma.MaterialScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  specification: 'specification',
-  unit: 'unit',
-  isActive: 'isActive',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
-exports.Prisma.RoleScalarFieldEnum = {
-  id: 'id',
-  role: 'role',
-  description: 'description',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
 exports.Prisma.LogErrorScalarFieldEnum = {
   id: 'id',
   timestamp: 'timestamp',
@@ -180,37 +142,52 @@ exports.Prisma.LogLoginScalarFieldEnum = {
   successful: 'successful'
 };
 
+exports.Prisma.MaterialScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  specification: 'specification',
+  unit: 'unit',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.UserScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  login: 'login',
+  email: 'email',
+  image: 'image',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.MagicLinkScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  userId: 'userId',
+  expiresAt: 'expiresAt',
+  usedAt: 'usedAt',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.RoleScalarFieldEnum = {
+  id: 'id',
+  role: 'role',
+  description: 'description',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
 };
 
-exports.Prisma.UserOrderByRelevanceFieldEnum = {
-  name: 'name',
-  login: 'login',
-  email: 'email',
-  image: 'image'
-};
-
 exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
-};
-
-exports.Prisma.MagicLinkOrderByRelevanceFieldEnum = {
-  id: 'id',
-  code: 'code'
-};
-
-exports.Prisma.MaterialOrderByRelevanceFieldEnum = {
-  name: 'name',
-  specification: 'specification',
-  unit: 'unit'
-};
-
-exports.Prisma.RoleOrderByRelevanceFieldEnum = {
-  role: 'role',
-  description: 'description'
 };
 
 exports.Prisma.LogErrorOrderByRelevanceFieldEnum = {
@@ -229,14 +206,37 @@ exports.Prisma.LogLoginOrderByRelevanceFieldEnum = {
   userAgent: 'userAgent'
 };
 
+exports.Prisma.MaterialOrderByRelevanceFieldEnum = {
+  name: 'name',
+  specification: 'specification',
+  unit: 'unit'
+};
+
+exports.Prisma.UserOrderByRelevanceFieldEnum = {
+  name: 'name',
+  login: 'login',
+  email: 'email',
+  image: 'image'
+};
+
+exports.Prisma.MagicLinkOrderByRelevanceFieldEnum = {
+  id: 'id',
+  code: 'code'
+};
+
+exports.Prisma.RoleOrderByRelevanceFieldEnum = {
+  role: 'role',
+  description: 'description'
+};
+
 
 exports.Prisma.ModelName = {
+  LogError: 'LogError',
+  LogLogin: 'LogLogin',
+  Material: 'Material',
   User: 'User',
   MagicLink: 'MagicLink',
-  Material: 'Material',
-  Role: 'Role',
-  LogError: 'LogError',
-  LogLogin: 'LogLogin'
+  Role: 'Role'
 };
 
 /**

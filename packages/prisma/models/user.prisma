@@ -1,13 +1,3 @@
-generator client {
-  provider = "prisma-client-js"
-  output   = "generated/client"
-}
-
-datasource db {
-  provider = "mysql"
-  url      = env("DB_URL")
-}
-
 model User {
   id         Int         @id @default(autoincrement())
   name       String      @db.VarChar(63)
@@ -37,18 +27,6 @@ model MagicLink {
   @@map("magicLinks")
 }
 
-model Material {
-  id            BigInt   @id @db.UnsignedBigInt
-  name          String   @db.TinyText
-  specification String?  @db.VarChar(1023)
-  unit          String   @db.VarChar(31)
-  isActive      Boolean  @default(true)
-  createdAt     DateTime @default(now()) @db.Timestamp(0)
-  updatedAt     DateTime @updatedAt @db.Timestamp(0)
-
-  @@map("materials")
-}
-
 model Role {
   id          Int      @id
   role        String   @db.VarChar(255)
@@ -58,33 +36,4 @@ model Role {
   users       User[]
 
   @@map("roles")
-}
-
-model LogError {
-  id          String   @id @default(uuid())
-  timestamp   DateTime @default(now()) @db.Timestamp(0)
-  statusCode  Int?
-  path        String?
-  method      String?
-  message     String   @db.Text
-  stackTrace  String?  @db.Text
-  ipAddress   String?
-  userId      Int?
-  requestBody String?  @db.Text
-
-  @@map("logErrors")
-}
-
-model LogLogin {
-  id         String   @id @default(uuid())
-  userId     Int
-  timestamp  DateTime @default(now()) @db.Timestamp(0)
-  ipAddress  String?
-  userAgent  String?  @db.Text
-  successful Boolean
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([userId])
-  @@index([timestamp])
-  @@map("logLogins")
 }
