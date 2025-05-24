@@ -19,6 +19,7 @@ export class UsersService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(data: CreateUserWithRelationsDto): Promise<User> {
+    this.logger.log(`Criando usuário com dados: ${JSON.stringify(data)}`);
     // 1. Definir quais chaves do DTO representam relações que usam 'connect'
     //    e esperam um array de { id: number }
     const relationConnectKeys: (keyof CreateUserWithRelationsDto)[] = [

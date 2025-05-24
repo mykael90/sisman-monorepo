@@ -2,17 +2,22 @@ import { PartialType } from '@nestjs/mapped-types';
 import { ApiProperty } from '@nestjs/swagger';
 import { Prisma } from '@sisman/prisma';
 import {
+  ArrayMinSize,
+  IsArray,
   IsEmail,
   IsNotEmpty,
   IsNumber,
   IsOptional,
-  IsString
+  IsString,
+  ValidateNested
 } from 'class-validator';
+import { UpdateRoleDto } from './roles/role.dto';
+import { Type } from 'class-transformer';
 
-export interface ICreateUserWithRelationsDto
-  extends Prisma.UserCreateManyInput {
-  roles?: Partial<Prisma.RoleCreateManyInput>;
-}
+// export interface ICreateUserWithRelationsDto
+//   extends Prisma.UserCreateManyInput {
+//   roles?: Partial<Prisma.RoleCreateManyInput>;
+// }
 
 export class CreateUserDto implements Prisma.UserCreateManyInput {
   @ApiProperty()
@@ -39,13 +44,14 @@ export class CreateUserDto implements Prisma.UserCreateManyInput {
   isActive?: boolean;
 }
 
-export class CreateUserWithRelationsDto
-  extends CreateUserDto
-  implements ICreateUserWithRelationsDto
-{
-  @ApiProperty()
+export class CreateUserWithRelationsDto extends CreateUserDto {
+  @ApiProperty({ description: 'roles', required: false, type: [UpdateRoleDto] })
   @IsOptional()
-  roles?: Partial<Prisma.RoleCreateManyInput>;
+  @IsArray()
+  @ArrayMinSize(1)
+  @ValidateNested({ each: true }) // Validate each item in the array
+  @Type(() => UpdateRoleDto) // Transform plain objects to UpdateRoleDto instances
+  roles?: UpdateRoleDto[];
 }
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {

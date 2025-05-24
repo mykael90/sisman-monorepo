@@ -13,14 +13,23 @@ async function bootstrap() {
   const logger = WinstonModule.createLogger(winstonConfig); // Crie a instância do logger
   const app = await NestFactory.create(AppModule, {
     // Substitua o logger padrão do NestJS
-    logger: logger,
+    logger: logger
   });
 
   app.enableCors({
-    origin: ['http://10.10.10.10:3002', 'http://localhost:3090'],
+    origin: ['http://10.10.10.10:3002', 'http://localhost:3090']
   });
 
-  app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
+  // Remove propriedades não listadas no DTO
+  // Transforma o payload para o tipo do DTO
+  // LANÇA UM ERRO se propriedades não listadas forem encontradas
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      transform: true,
+      forbidNonWhitelisted: true
+    })
+  );
 
   // Habilitar o hook de encerramento do NestJS, aguarda as requisições terminarem além de bloquear novas requisições
   app.enableShutdownHooks();
