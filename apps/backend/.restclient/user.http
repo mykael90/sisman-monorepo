@@ -28,10 +28,10 @@ Content-Type: {{contentType}}
 Authorization: Bearer {{token}}
 
 {
-    "name": "example9",
-    "login": "example.9",
-    "email": "example9@provider.com",
-    "roles": [{"id": 100}, {"id": 200}]
+    "name": "example10",
+    "login": "example.10",
+    "email": "example10@provider.com",
+    "roles": [{"id": "100"}, {"id": "200"}]
 
 }
 
