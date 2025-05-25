@@ -54,7 +54,7 @@ export class UsersController {
 
   @Put(':id')
   @ApiOkResponse({ type: UsersEntity })
-  async updateAll(
+  async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() data: UpdateUserWithRelationsDto
   ) {

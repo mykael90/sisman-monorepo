@@ -18,11 +18,6 @@ export class CreateRoleDto implements Prisma.RoleCreateManyInput {
   @IsNotEmpty()
   @IsString()
   description: string;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsString()
-  name!: string;
 }
 
 export class UpdateRoleDto extends PartialType(CreateRoleDto) {}

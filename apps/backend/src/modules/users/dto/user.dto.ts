@@ -11,8 +11,8 @@ import {
   IsString,
   ValidateNested
 } from 'class-validator';
-import { UpdateRoleDto } from './roles/role.dto';
 import { Type } from 'class-transformer';
+import { UpdateRoleDto } from '../../roles/dto/roles/role.dto';
 
 // export interface ICreateUserWithRelationsDto
 //   extends Prisma.UserCreateManyInput {

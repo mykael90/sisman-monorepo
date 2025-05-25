@@ -18,7 +18,7 @@ type TransformResult<T> = T | null;
  * @returns A promise resolving to TransformResult<T>, where T is the expected input type for Prisma's `create` method (e.g., Prisma.UserCreateInput).
  */
 export type TransformValidateFn<RawType, CreateInputType> = (
-  rawItem: RawType,
+  rawItem: RawType
 ) =>
   | Promise<TransformResult<CreateInputType>>
   | TransformResult<CreateInputType>;
@@ -33,6 +33,7 @@ interface SeedModelOptions<RawType, CreateInputType, Delegate> {
   prismaDelegate: Delegate; // The actual Prisma delegate (e.g., prisma.user, prisma.material)
   transformAndValidate: TransformValidateFn<RawType, CreateInputType>;
   uniqueKey?: keyof CreateInputType; // Optional: field name for duplicate logging (e.g., 'email', 'id')
+  method?: 'create' | 'update'; // Default to 'create'
 }
 
 /**
@@ -43,8 +44,9 @@ export async function seedModel<
   RawType extends Record<string, any>, // Type of raw data from JSON
   CreateInputType extends Record<string, any>, // Type expected by prismaDelegate.create({ data: ... })
   Delegate extends {
-    create: (args: { data: CreateInputType }) => Promise<any>;
-  }, // Type constraint for prismaDelegate
+    create?: (args: { data: CreateInputType }) => Promise<any>;
+    update?: (args: { where: any; data: CreateInputType }) => Promise<any>;
+  } // Type constraint for prismaDelegate
 >({
   prisma, // Use the passed prisma instance
   modelName,
@@ -52,6 +54,7 @@ export async function seedModel<
   prismaDelegate,
   transformAndValidate,
   uniqueKey,
+  method = 'create'
 }: SeedModelOptions<RawType, CreateInputType, Delegate>): Promise<void> {
   logger.log(`--- Seeding ${modelName} ---`);
 
@@ -64,14 +67,14 @@ export async function seedModel<
   } catch (error) {
     logger.error(
       `Error reading or parsing JSON file for ${modelName} at ${jsonFilePath}:`,
-      error,
+      error
     );
     throw new Error(`Failed to load data for ${modelName}`); // Stop seeding if file fails
   }
 
   if (!Array.isArray(rawDataArray)) {
     logger.error(
-      `${modelName} data file (${jsonFilePath}) does not contain a JSON array. Skipping.`,
+      `${modelName} data file (${jsonFilePath}) does not contain a JSON array. Skipping.`
     );
     return;
   }
@@ -94,7 +97,14 @@ export async function seedModel<
       }
 
       // Attempt to create the record in the database
-      await prismaDelegate.create({ data: createData });
+      if (method === 'create') {
+        await prismaDelegate[method]({ data: createData });
+      } else if (method === 'update') {
+        await prismaDelegate[method]({
+          where: { id: createData.id },
+          data: createData
+        });
+      }
       createdCount++;
     } catch (error: any) {
       skippedCount++;
@@ -107,23 +117,23 @@ export async function seedModel<
       ) {
         // Log specific duplicate error if uniqueKey and data are available
         logger.warn(
-          `Skipping duplicate ${modelName} record with ${String(uniqueKey)}: ${createData[uniqueKey]}`,
+          `Skipping duplicate ${modelName} record with ${String(uniqueKey)}: ${createData[uniqueKey]}`
         );
       } else if (error.code === 'P2002') {
         logger.warn(
-          `Skipping duplicate ${modelName} record (unique key violation). Raw data: ${JSON.stringify(rawItem)}`,
+          `Skipping duplicate ${modelName} record (unique key violation). Raw data: ${JSON.stringify(rawItem)}`
         );
       } else if (createData) {
         // Log specific error for the item being processed
         logger.error(
-          `Failed to create ${modelName} record for data ${JSON.stringify(createData)}:`,
-          error.message || error,
+          `Failed to ${method} ${modelName} record for data ${JSON.stringify(createData)}:`,
+          error.message || error
         );
       } else {
         // Log error during validation/transformation phase if not caught by transformAndValidate returning null
         logger.error(
           `Error processing ${modelName} record. Raw data: ${JSON.stringify(rawItem)}:`,
-          error.message || error,
+          error.message || error
         );
       }
       // Decide whether to continue seeding or stop on error
@@ -134,7 +144,7 @@ export async function seedModel<
   logger.log(`Seeded ${createdCount} ${modelName} records.`);
   if (skippedCount > 0) {
     logger.warn(
-      `Skipped ${skippedCount} ${modelName} records due to validation errors or duplicates.`,
+      `Skipped ${skippedCount} ${modelName} records due to validation errors or duplicates.`
     );
   }
   logger.log(`--- Finished Seeding ${modelName} ---`);
@@ -147,7 +157,7 @@ export async function seedModel<
  * @returns Um novo objeto com as propriedades nulas ou vazias removidas.
  */
 export function removeNullOrEmptyStringProps<T extends Record<string, any>>(
-  rawObject: T,
+  rawObject: T
 ): Partial<T> {
   // Cria uma cópia superficial para evitar mutar o objeto original
   const cleanedObject: Partial<T> = { ...rawObject };
@@ -159,7 +169,7 @@ export function removeNullOrEmptyStringProps<T extends Record<string, any>>(
       // Remove se for estritamente null ou uma string vazia
       if (value === null || value === '') {
         logger.debug(
-          `Preprocessing: Removing property "${key}" because it was null or empty.`,
+          `Preprocessing: Removing property "${key}" because it was null or empty.`
         );
         delete cleanedObject[key];
       }

@@ -19,6 +19,7 @@ import { NotificationsModule } from './shared/notifications/notifications.module
 import mailerConfig from './config/mailer.config';
 import databaseConfig from './config/database.config';
 import generalConfig from './config/general.config';
+import { RolesModule } from './modules/roles/roles.module';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import generalConfig from './config/general.config';
     LogLoginModule,
     ObservabilityModule,
     UsersModule,
+    RolesModule,
     AuthModule,
     FilesModule,
     MaterialsModule,

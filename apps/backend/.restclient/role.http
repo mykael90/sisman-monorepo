@@ -1,0 +1,68 @@
+### Variables
+@urlLocal = {{apiUrl}}/role
+@contentType = application/json
+
+### GET all
+GET {{urlLocal}}
+Authorization: Bearer {{token}}
+
+### GET one
+# @prompt userId
+GET {{urlLocal}}/{{userId}}
+Authorization: Bearer {{token}}
+
+### POST
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "name": "example1",
+    "login": "example.1t",
+    "email": "example1t@provider.com"
+}
+
+### POST WITH ROLES
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "name": "example10",
+    "login": "example.10",
+    "email": "example10@provider.com",
+    "roles": [{"id": "100"}, {"id": "200"}]
+
+}
+
+
+### PUT
+# @prompt userId
+PUT {{urlLocal}}/{{userId}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "name": "example4",
+    "email": "example@provider.com",
+    "password": "123456"
+}
+
+### PUT
+# @prompt userId
+PUT {{urlLocal}}/{{userId}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "name": "example4",
+    "email": "example@provider.com",
+    "password": "123456",
+    "birthAt": "1990-06-18"
+}
+
+### DELETE one
+# @prompt userId
+DELETE {{urlLocal}}/{{userId}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
