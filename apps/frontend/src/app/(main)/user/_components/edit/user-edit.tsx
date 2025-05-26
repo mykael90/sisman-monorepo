@@ -9,10 +9,17 @@ import { IActionResultForm } from '../../../../../types/types-server-actions';
 import { Save, UserPlus } from 'lucide-react';
 import { updateUser } from '../../user-actions';
 import { userFormSchemaEdit } from '../form/user-form-validation';
+import { IRoleList } from '../../../role/role-types';
 
 // We are transforming this into a page, so it won't take props like onClose or onSubmit.
 // The page will manage its own state and submission logic.
-export default function UserEdit({ initialUser }: { initialUser: IUserEdit }) {
+export default function UserEdit({
+  initialUser,
+  possibleRoles
+}: {
+  initialUser: IUserEdit;
+  possibleRoles: IRoleList[];
+}) {
   // const router = useRouter();
   // const [formData, setFormData] = useState<IUserAdd>({
   //   name: '',
@@ -66,6 +73,7 @@ export default function UserEdit({ initialUser }: { initialUser: IUserEdit }) {
 
   return (
     <div className='mx-auto mt-4 w-full max-w-2xl rounded-lg bg-white shadow-lg'>
+      {JSON.stringify(possibleRoles)}
       {/* Header */}
       <FormAddHeader
         Icon={UserPlus}

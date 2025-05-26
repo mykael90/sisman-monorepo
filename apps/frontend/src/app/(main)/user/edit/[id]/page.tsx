@@ -5,6 +5,7 @@ import { getSismanAccessToken } from '../../../../../lib/auth/get-access-token';
 // import { getRefreshedUsers, getUsers } from './_actions';
 import Logger from '../../../../../lib/logger';
 import { showUser } from '../../user-actions';
+import { getRoles } from '../../../role/role-actions';
 // import { addUser } from '../_actions';
 
 const logger = new Logger('user/add/page.tsx');
@@ -22,7 +23,10 @@ export default async function Page({
   // Esta promise será passada para frente. Não espere a resolução da promessa.
   // const currentDataPromise = showUser(accessTokenSisman, id);
 
-  const [initialUser] = await Promise.all([showUser(accessTokenSisman, id)]);
+  const [initialUser, possibleRoles] = await Promise.all([
+    showUser(accessTokenSisman, id),
+    getRoles(accessTokenSisman)
+  ]);
 
   console.log(initialUser);
 
@@ -46,6 +50,7 @@ export default async function Page({
   return (
     <UserEdit
       initialUser={initialUser} // Passa a promise criada acima
+      possibleRoles={possibleRoles}
       // refreshAction={getRefreshedUsers} // Passa a referência da função Server Action
       // key={keyForDisplayData} // Passa a string gerada como chave
     />
