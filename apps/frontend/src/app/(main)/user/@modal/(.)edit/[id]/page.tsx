@@ -14,7 +14,11 @@ export default async function Page({
   // const accessTokenSisman =  123456
   // Chame showUser() UMA VEZ para esta renderização do Server Component.
   // Esta promise será passada para frente. Não espere a resolução da promessa.
-  const currentDataPromise = showUser(accessTokenSisman, id);
+  // const currentDataPromise = showUser(accessTokenSisman, id);
+
+  const [initialUser] = await Promise.all([showUser(accessTokenSisman, id)]);
+
+  console.log(initialUser);
 
   // Gere uma chave única para esta renderização.
   // Pode ser um timestamp, um ID aleatório, ou algo que mude quando
@@ -36,7 +40,7 @@ export default async function Page({
   return (
     <Modal>
       <UserEdit
-        dataPromise={currentDataPromise} // Passa a promise criada acima
+        initialUser={initialUser} // Passa a promise criada acima
         // refreshAction={getRefreshedUsers} // Passa a referência da função Server Action
         // key={keyForDisplayData} // Passa a string gerada como chave
       />

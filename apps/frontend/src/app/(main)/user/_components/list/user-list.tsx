@@ -23,17 +23,15 @@ import { useRouter } from 'next/navigation';
 import { columns, createActions } from './user-columns';
 
 export function UserListPage({
-  dataPromise,
+  initialUsers,
   refreshAction
 }: {
-  dataPromise: Promise<IUserList[]>;
+  initialUsers: IUserList[];
   refreshAction: () => void;
 }) {
   const router = useRouter(); // Obtenha a função de navegação
 
-  const initialData: IUserList[] = use(dataPromise);
-
-  const [users, setUsers] = useState(initialData); // Estado dos dados da tabela
+  const [users, setUsers] = useState(initialUsers); // Estado dos dados da tabela
 
   // --- Estado dos Filtros Movido para Cá ---
   const [userValue, setUserValue] = useState('');

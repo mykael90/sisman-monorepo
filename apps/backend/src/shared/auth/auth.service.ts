@@ -346,7 +346,7 @@ export class AuthService {
       {
         appName: this.gnConfig.appName,
         code,
-        link: `${this.gnConfig.magicLinkCallbackUrl}?code=${code}&email=${email}&callbackUrl=${callbackUrl}`,
+        link: `${this.gnConfig.magicLinkCallbackUrl}?code=${code}&email=${email}&callbackUrl=${encodeURIComponent(callbackUrl)}`,
         expiresInMinutes: this.gnConfig.magicLinkExpiresMinutes,
         projectPrimaryColor: this.gnConfig.appPrimaryColor,
         //TODO: inserir logo sisman em variável global

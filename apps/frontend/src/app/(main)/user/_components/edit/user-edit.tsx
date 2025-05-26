@@ -12,11 +12,7 @@ import { userFormSchemaEdit } from '../form/user-form-validation';
 
 // We are transforming this into a page, so it won't take props like onClose or onSubmit.
 // The page will manage its own state and submission logic.
-export default function UserEdit({
-  dataPromise
-}: {
-  dataPromise: Promise<IUserEdit>;
-}) {
+export default function UserEdit({ initialUser }: { initialUser: IUserEdit }) {
   // const router = useRouter();
   // const [formData, setFormData] = useState<IUserAdd>({
   //   name: '',
@@ -26,7 +22,7 @@ export default function UserEdit({
   //   // roles: []
   // });
 
-  const defaultData = use(dataPromise);
+  const defaultData = { ...initialUser };
 
   const fieldLabels: IUserEdit = {
     id: 'ID',
