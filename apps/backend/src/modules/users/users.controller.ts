@@ -27,7 +27,7 @@ import {
 @Roles(Role.Adm)
 @UseGuards(AuthGuard, RoleGuard)
 // o prefixo /users é gerenciado pelo RouterModule
-@Controller()
+@Controller('user')
 @ApiTags('user')
 export class UsersController {
   constructor(private readonly userService: UsersService) {}
