@@ -1,4 +1,5 @@
 import { User, UserRole, UserRoletype, Prisma } from '@sisman/prisma';
+import { IRole, IRoleAdd } from '../role/role-types';
 
 const dateFields = ['createdAt', 'updatedAt'];
 
@@ -26,16 +27,7 @@ export type IUserList = Prisma.UserGetPayload<{
   //   isActive: true;
   // };
   include: {
-    userRoles: {
-      include: {
-        userRoletype: {
-          select: {
-            role: true;
-            description: true;
-          };
-        };
-      };
-    };
+    roles: true;
   };
   // omit: {
   //   id: true;
@@ -46,9 +38,13 @@ export type IUserList = Prisma.UserGetPayload<{
 
 // export type IUserAdd = Prisma.UserCreateInput;
 
-export type IUserAdd = Prisma.UserCreateManyInput;
+export interface IUserAdd extends Prisma.UserCreateManyInput {
+  roles: Pick<IRoleAdd, 'id'>[];
+}
 
-export type IUserEdit = IUserAdd & { id: number };
+export interface IUserEdit extends IUserAdd {
+  id: number;
+}
 
 export type IUser = User;
 

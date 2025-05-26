@@ -96,6 +96,7 @@ export async function addUser(
   prevState: unknown,
   formData: FormData
 ): Promise<IActionResultForm<IUserAdd, IUser>> {
+  logger.info(JSON.stringify(formData.getAll('roles')));
   const rawData = formDataToObject<IUserAdd>(formData);
   logger.info(
     `(Server Action) addUser: Tentativa de adicionar usuário.`,

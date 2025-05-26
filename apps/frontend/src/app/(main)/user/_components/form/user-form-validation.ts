@@ -28,8 +28,14 @@ const userFormSchemaAdd = z.object({
     .string()
     .regex(/\./, 'Login must contain a dot (.)')
     .min(3, 'Login must be at least 3 characters'),
-  email: z.string().email('Invalid email address')
-  // roles: z.array(z.string()).min(1, 'At least one role is required'),
+  email: z.string().email('Invalid email address'),
+  roles: z
+    .array(
+      z.object({
+        id: z.string().min(1, 'Role ID cannot be empty.')
+      })
+    )
+    .min(0, 'roles can be empty')
   // avatarUrl: z
   //   .string()
   //   .url('Invalid URL for avatar')

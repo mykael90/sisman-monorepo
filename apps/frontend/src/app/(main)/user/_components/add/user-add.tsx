@@ -9,29 +9,28 @@ import { IActionResultForm } from '../../../../../types/types-server-actions';
 import { UserPlus } from 'lucide-react';
 import { addUser } from '../../user-actions';
 import { userFormSchemaAdd } from '../form/user-form-validation';
+import { IRoleList } from '../../../role/role-types';
+import { NonOptionalKeys } from '../../../../../types/utils-types';
 
 // We are transforming this into a page, so it won't take props like onClose or onSubmit.
 // The page will manage its own state and submission logic.
-export default function UserAdd() {
-  // const router = useRouter();
-  // const [formData, setFormData] = useState<IUserAdd>({
-  //   name: '',
-  //   login: '',
-  //   email: ''
-  //   // avatarUrl: '',
-  //   // roles: []
-  // });
-
+export default function UserAdd({
+  possibleRoles
+}: {
+  possibleRoles: IRoleList[];
+}) {
   const defaultData: IUserAdd = {
     name: '',
     login: '',
-    email: ''
+    email: '',
+    roles: []
   };
 
-  const fieldLabels: IUserAdd = {
+  const fieldLabels: Record<NonOptionalKeys<IUserAdd>, string> = {
     name: 'Nome',
     login: 'Login',
-    email: 'E-mail'
+    email: 'E-mail',
+    roles: 'Permissões'
   };
 
   const initialServerState: IActionResultForm<IUserAdd> = {
@@ -39,31 +38,8 @@ export default function UserAdd() {
     message: ''
   };
 
-  // Para controlar a chave do formulário e forçar o reset do useActionState
   const [formKey, setFormKey] = useState(() => Date.now().toString());
   const triggerFormReset = () => setFormKey(Date.now().toString());
-
-  // const handleSubmit = async (e: FormEvent) => {
-  //   e.preventDefault();
-  //   // TODO: Implement the actual user creation logic here
-  //   // For example, make an API call:
-  //   // try {
-  //   //   const response = await fetch('/api/users', { method: 'POST', body: JSON.stringify(formData) });
-  //   //   if (response.ok) {
-  //   //     alert('User created successfully!');
-  //   //     router.push('/users'); // Navigate to the users list or another appropriate page
-  //   //   } else { //   alert('Failed to create user.'); }
-  //   // } catch (error) { console.error('Error creating user:', error); alert('An error occurred.'); }
-  //   console.log('Form submitted:', formData);
-  //   alert(
-  //     `User data submitted (in a real app, this would call an API):\n${JSON.stringify(formData, null, 2)}`
-  //   );
-  //   router.push('/users'); // Example navigation after submission
-  // };
-
-  // const updateFormData = (data: Partial<UserFormData>) => {
-  //   setFormData((prev) => ({ ...prev, ...data }));
-  // };
 
   return (
     <div className='mx-auto mt-4 w-full max-w-2xl rounded-lg bg-white shadow-lg'>
@@ -86,6 +62,7 @@ export default function UserAdd() {
         formSchema={userFormSchemaAdd}
         SubmitButtonIcon={UserPlus}
         submitButtonText='Criar Usuário'
+        possibleRoles={possibleRoles}
       ></UserForm>
     </div>
   );

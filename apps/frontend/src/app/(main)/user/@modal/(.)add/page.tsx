@@ -1,10 +1,10 @@
 import Modal from '../../../../../components/ui/modal';
-import UserAdd from '../../_components/add/user-add';
+import UserAddPage from '../../add/page';
 
 export default function page() {
   return (
     <Modal>
-      <UserAdd></UserAdd>
+      <UserAddPage />
     </Modal>
   );
 }
