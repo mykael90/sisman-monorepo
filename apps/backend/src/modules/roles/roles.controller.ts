@@ -8,11 +8,18 @@ import {
   Patch,
   Post,
   Put,
-  Query
+  Query,
+  UseGuards
 } from '@nestjs/common';
 import { RolesService } from './roles.service';
 import { CreateRoleDto, UpdateRoleDto } from './dto/roles/role.dto';
+import { Roles } from '../../shared/decorators/roles.decorator';
+import { Role } from '../../shared/enums/role.enum';
+import { AuthGuard } from '../../shared/auth/guards/auth.guard';
+import { RoleGuard } from '../../shared/auth/guards/role.guard';
 
+@Roles(Role.Adm)
+@UseGuards(AuthGuard, RoleGuard)
 @Controller('role')
 export class RolesController {
   constructor(private readonly rolesService: RolesService) {}

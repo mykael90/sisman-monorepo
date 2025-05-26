@@ -1,5 +1,6 @@
 import {
   forwardRef,
+  Global,
   MiddlewareConsumer,
   Module,
   NestModule,
@@ -10,6 +11,7 @@ import { UsersService } from './users.service';
 import { UserIdCheckMiddleware } from 'src/shared/middlewares/user-id-check.middleware';
 import { AuthModule } from 'src/shared/auth/auth.module';
 
+@Global()
 @Module({
   imports: [forwardRef(() => AuthModule)],
   controllers: [UsersController],
