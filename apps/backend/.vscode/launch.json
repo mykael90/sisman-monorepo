@@ -7,7 +7,7 @@
     {
       "type": "node",
       "request": "attach",
-      "restart": true,
+      // "restart": true,
       "name": "SISMAN - backend",
       "skipFiles": ["<node_internals>/**"]
     }

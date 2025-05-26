@@ -7,7 +7,7 @@ services:
     ports:
       - 3080:3080
       - 3000:3000
-      - 9229:9229  # Porta para o debug do Visual Studio Code, fechar se em produção
+      # - 9229:9229  # Porta para o debug do Visual Studio Code, fechar se em produção ou debug no proprio conteiner
     environment:
       ENV: ${ENV}
       # DEBUG_MODE: ${DEBUG_MODE}

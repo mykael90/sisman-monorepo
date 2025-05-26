@@ -4,19 +4,20 @@
     // Para obter mais informações, acesse: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-        {
-            "type": "node",
-            "request": "attach",
-            "name": "Debug NestJS (Backend)",
-            "port": 9229,
-            "address": "localhost",
-            "localRoot": "${workspaceFolder}/apps/backend",
-            "remoteRoot": "/home/node/sisman-monorepo/apps/backend/",
-            "restart": true,
-            "skipFiles": [
-                "<node_internals>/**"
-            ],            
-          },
+      // debug no proprio conteiner  
+      // {
+        //     "type": "node",
+        //     "request": "attach",
+        //     "name": "Debug NestJS (Backend)",
+        //     "port": 9229,
+        //     "address": "localhost",
+        //     "localRoot": "${workspaceFolder}/apps/backend",
+        //     "remoteRoot": "/home/node/sisman-monorepo/apps/backend/",
+        //     "restart": true,
+        //     "skipFiles": [
+        //         "<node_internals>/**"
+        //     ],            
+        //   },
 
           {
             "type": "node",
