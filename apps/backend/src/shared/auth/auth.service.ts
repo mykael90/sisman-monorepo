@@ -315,7 +315,7 @@ export class AuthService {
   async requestMagicLink(
     magicLinkLoginDto: MagicLinkLoginDto
   ): Promise<{ message: string }> {
-    const { email } = magicLinkLoginDto;
+    const { email, callbackUrl } = magicLinkLoginDto;
     const user = await this.usersService.findByEmail(email);
 
     if (!user) {
@@ -346,7 +346,7 @@ export class AuthService {
       {
         appName: this.gnConfig.appName,
         code,
-        link: `${this.gnConfig.magicLinkCallbackUrl}?code=${code}&email=${email}`,
+        link: `${this.gnConfig.magicLinkCallbackUrl}?code=${code}&email=${email}&callbackUrl=${callbackUrl}`,
         expiresInMinutes: this.gnConfig.magicLinkExpiresMinutes,
         projectPrimaryColor: this.gnConfig.appPrimaryColor,
         //TODO: inserir logo sisman em variável global

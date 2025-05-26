@@ -23,6 +23,10 @@ const authErrorMessages = {
     'Sign in failed. Check the details you provided are correct.',
   SessionRequired: 'Please sign in to access this page.',
   SessionExpired: 'Your session has expired. Please sign in again.',
+  MagicLinkExpired: 'Your magic link has expired.',
+  InvalidMagicLinkParams: 'Invalid magic link parameters.',
+  UnexpectedSignInErrorMagicLink:
+    'An unexpected error occurred during sign-in with magic link.',
   default: 'Unable to sign in.'
 };
 

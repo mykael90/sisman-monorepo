@@ -38,16 +38,14 @@ const StiSiginButton = ({ callback: callbackUrl }: { callback: string }) => {
       {/* Usando details e summary para o link mágico */}
       <details className='mt-4 w-full'>
         <summary className='cursor-pointer list-none text-center text-sm text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200'>
-          <span className='hidden sm:inline-block'>
-            Problemas de acesso via UFRN.BR?{' '}
-          </span>
+          <span className=''>Problemas de acesso via UFRN.BR? </span>
           <span className='text-sisman-teal hover:underline'>
             {' '}
             Entre com seu e-mail
           </span>
         </summary>
         {/* O botão GOV.BR agora fica dentro do details */}
-        <LoginForm></LoginForm>
+        <LoginForm callbackUrl={callbackUrl}></LoginForm>
       </details>
 
       {/* Botão GOV.BR entre outros */}
