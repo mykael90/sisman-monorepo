@@ -9,8 +9,18 @@ export class RolesService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(data: CreateRoleDto) {
-    // Returns the provided 'data' parameter
-    return data;
+    try {
+      const role = await this.prisma.role.create({
+        data
+      });
+      return role;
+    } catch (error) {
+      handlePrismaError(error, this.logger, 'RolesService', {
+        operation: 'create',
+        data
+      });
+      throw error;
+    }
   }
 
   async list() {
@@ -26,16 +36,55 @@ export class RolesService {
   }
 
   show(id: number) {
-    throw new Error('Method not implemented.');
+    try {
+      const role = this.prisma.role.findUnique({
+        where: {
+          id
+        }
+      });
+      return role;
+    } catch (error) {
+      handlePrismaError(error, this.logger, 'RolesService', {
+        operation: 'show',
+        id
+      });
+      throw error;
+    }
   }
 
   async update(id: number, data: UpdateRoleDto) {
-    // Returns the provided parameters
-    return { data, newUserRoletypeId: id };
+    try {
+      const updated = await this.prisma.role.update({
+        where: {
+          id
+        },
+        data
+      });
+      return { message: 'Role updated successfully', updated };
+    } catch (error) {
+      handlePrismaError(error, this.logger, 'RolesService', {
+        operation: 'update',
+        id,
+        data
+      });
+      throw error;
+    }
   }
 
-  async delete(data: { id: number }) {
-    // Returns the provided 'data' parameter
-    return data;
+  async delete(id: number) {
+    try {
+      const deleted = await this.prisma.role.delete({
+        where: {
+          id
+        }
+      });
+      return { message: 'Role deleted successfully', deleted };
+    } catch (error) {
+      handlePrismaError(error, this.logger, 'RolesService', {
+        operation: 'delete',
+        id
+      });
+      throw error;
+    }
   }
 }

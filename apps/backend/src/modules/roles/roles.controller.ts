@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Put,
   Query
 } from '@nestjs/common';
 import { RolesService } from './roles.service';
@@ -31,7 +32,7 @@ export class RolesController {
     return this.rolesService.list();
   }
 
-  @Patch()
+  @Put(':id')
   async update(
     @Param('id', ParseIntPipe) id: number,
 
@@ -40,8 +41,8 @@ export class RolesController {
     return this.rolesService.update(id, data);
   }
 
-  @Delete()
-  async delete(@Query() data: { id: number }) {
-    return this.rolesService.delete(data);
+  @Delete(':id')
+  async delete(@Param('id') id: number) {
+    return this.rolesService.delete(id);
   }
 }
