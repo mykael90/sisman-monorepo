@@ -220,7 +220,7 @@ export default function UserForm({
                   {selectableRoles.map((role) => {
                     const roleId = String(role.id); // ID da role atual (string)
                     const isChecked = currentSelectedRoleObjects.some(
-                      (selectedRole) => selectedRole.id === roleId
+                      (selectedRole) => String(selectedRole.id) === roleId
                     );
 
                     return (
@@ -264,14 +264,12 @@ export default function UserForm({
                   Nenhuma função disponível para seleção.
                 </p>
               )}
-              {field.getMeta().touchedErrors?.length
-                ? field
-                    .getMeta()
-                    .touchedErrors.map((error: string, index: number) => (
-                      <em key={index} className='mt-1 text-xs text-red-500'>
-                        {error}
-                      </em>
-                    ))
+              {field.getMeta().errors?.length
+                ? field.getMeta().errors.map((error: string, index: number) => (
+                    <em key={index} className='mt-1 text-xs text-red-500'>
+                      {error}
+                    </em>
+                  ))
                 : null}
             </div>
           );

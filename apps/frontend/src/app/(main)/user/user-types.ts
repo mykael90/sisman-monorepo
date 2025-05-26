@@ -39,7 +39,7 @@ export type IUserList = Prisma.UserGetPayload<{
 // export type IUserAdd = Prisma.UserCreateInput;
 
 export interface IUserAdd extends Prisma.UserCreateManyInput {
-  roles: Pick<IRoleAdd, 'id'>[];
+  roles: Record<'id', any>[];
 }
 
 export interface IUserEdit extends IUserAdd {
