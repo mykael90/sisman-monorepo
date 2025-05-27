@@ -4,7 +4,6 @@ import Logger from '@/lib/logger';
 import { revalidatePath } from 'next/cache';
 import { getSismanAccessToken } from '../../../lib/auth/get-access-token';
 import { fetchApiSisman } from '../../../lib/fetch/api-sisman';
-import formDataToObject from '../../../lib/formdata-to-object';
 import { IActionResultForm } from '../../../types/types-server-actions';
 import { IUser, IUserAdd, IUserEdit, IUserList } from './user-types';
 import {
@@ -93,29 +92,33 @@ export async function getRefreshedUsers(): Promise<void> {
 // --- Ações de Formulário Exportadas ---
 
 export async function addUser(
-  prevState: unknown,
-  formData: FormData
+  prevState: unknown, // Or IActionResultForm<IUserAdd, IUser> if you prefer stricter prev state typing
+  data: IUserAdd // Changed from formData: FormData
 ): Promise<IActionResultForm<IUserAdd, IUser>> {
-  logger.info(JSON.stringify(formData.getAll('roles')));
-  const rawData = formDataToObject<IUserAdd>(formData);
+  // const rawData = formDataToObject<IUserAdd>(formData); // NO LONGER NEEDED, 'data' is the object
   logger.info(
     `(Server Action) addUser: Tentativa de adicionar usuário.`,
-    rawData
+    data // Log the received object
   );
+  logger.info(JSON.stringify(data.roles)); // If roles are passed correctly as an array of objects
 
   // 1. Validação específica para UserAdd
-  const validationProcessResult = validateFormData(rawData, userFormSchemaAdd); // userFormSchema é específico para usuários
+  // 'validateFormData' now receives the object directly
+  const validationProcessResult = validateFormData(data, userFormSchemaAdd);
 
   if (!validationProcessResult.success) {
     logger.warn(
       `(Server Action) addUser: Falha na validação do formulário.`,
       validationProcessResult.errorResult.errorsFieldsServer
     );
-    return validationProcessResult.errorResult; // Retorna o erro de validação formatado
+    // Important: Make sure submittedData in errorResult uses the 'data' object
+    return {
+      ...validationProcessResult.errorResult,
+      submittedData: data // Ensure submittedData reflects the object
+    };
   }
 
-  // Se a validação for bem-sucedida, validationProcessResult.data contém os dados validados
-  const validatedUserData = validationProcessResult.data;
+  const validatedUserData = validationProcessResult.data; // This is IUserAdd
   logger.info(
     `(Server Action) addUser: Dados do usuário validados com sucesso.`
   );
@@ -123,58 +126,57 @@ export async function addUser(
   // 2. Chamar a ação genérica da API
   try {
     const accessToken = await getSismanAccessToken();
-    return await handleApiAction<IUserAdd, IUser, IUserAdd>( // TValidatedData, TApiResponseData, TSubmittedData
-      validatedUserData, // Dados validados para enviar à API
-      rawData, // Dados brutos originais para o campo submittedData
+    return await handleApiAction<IUserAdd, IUser, IUserAdd>(
+      validatedUserData,
+      data, // Pass the original 'data' object as submittedData for handleApiAction
       {
-        endpoint: API_RELATIVE_PATH, // Endpoint para criar usuários
+        endpoint: API_RELATIVE_PATH,
         method: 'POST',
         accessToken: accessToken
       },
       {
-        mainPath: PAGE_PATH // Path principal para revalidar
-        // detailPath não se aplica diretamente na criação, a menos que você redirecione para a página de detalhes
+        mainPath: PAGE_PATH
       },
       'Usuário cadastrado com sucesso!'
     );
   } catch (error) {
-    // Erros inesperados não tratados por handleApiAction (ex: falha em getSismanAccessToken)
     logger.error(`(Server Action) addUser: Erro inesperado.`, error);
     return {
       isSubmitSuccessful: false,
       errorsServer: [
         'Ocorreu um erro inesperado ao processar sua solicitação.'
       ],
-      submittedData: rawData,
+      submittedData: data, // Use the 'data' object
       message: 'Erro inesperado.'
     };
   }
 }
 
 export async function updateUser(
-  prevState: unknown,
-  formData: FormData
+  prevState: unknown, // Or IActionResultForm<IUserEdit, IUser>
+  data: IUserEdit // Changed from formData: FormData
 ): Promise<IActionResultForm<IUserEdit, IUser>> {
-  // Supondo que a API retorna IUser
-  const rawData = formDataToObject<IUserEdit>(formData);
+  // const rawData = formDataToObject<IUserEdit>(formData); // NO LONGER NEEDED
   logger.info(
-    `(Server Action) updateUser: Tentativa de atualizar usuário ${rawData.id}.`,
-    rawData
+    `(Server Action) updateUser: Tentativa de atualizar usuário ${data.id}.`,
+    data // Log the received object
   );
 
   // 1. Validação específica para UserEdit
-  // Se o schema de edição for diferente, use-o aqui. Se for o mesmo:
-  const validationProcessResult = validateFormData(rawData, userFormSchemaEdit);
+  const validationProcessResult = validateFormData(data, userFormSchemaEdit);
 
   if (!validationProcessResult.success) {
     logger.warn(
-      `(Server Action) updateUser: Falha na validação do formulário para o usuário ${rawData.id}.`,
+      `(Server Action) updateUser: Falha na validação do formulário para o usuário ${data.id}.`,
       validationProcessResult.errorResult.errorsFieldsServer
     );
-    return validationProcessResult.errorResult;
+    return {
+      ...validationProcessResult.errorResult,
+      submittedData: data // Ensure submittedData reflects the object
+    };
   }
 
-  const validatedUserData = validationProcessResult.data;
+  const validatedUserData = validationProcessResult.data; // This is IUserEdit
   logger.info(
     `(Server Action) updateUser: Dados do usuário ${validatedUserData.id} validados com sucesso.`
   );
@@ -184,21 +186,21 @@ export async function updateUser(
     const accessToken = await getSismanAccessToken();
     return await handleApiAction<IUserEdit, IUser, IUserEdit>(
       validatedUserData,
-      rawData,
+      data, // Pass the original 'data' object as submittedData
       {
-        endpoint: `${API_RELATIVE_PATH}/${validatedUserData.id}`, // Endpoint para atualizar usuário específico
+        endpoint: `${API_RELATIVE_PATH}/${validatedUserData.id}`,
         method: 'PUT',
         accessToken: accessToken
       },
       {
-        mainPath: PAGE_PATH, // Revalida a página de listagem
-        detailPath: `${PAGE_PATH}/${validatedUserData.id}` // Revalida a página de detalhes do usuário
+        mainPath: PAGE_PATH,
+        detailPath: `${PAGE_PATH}/${validatedUserData.id}`
       },
       'Usuário atualizado com sucesso!'
     );
   } catch (error) {
     logger.error(
-      `(Server Action) updateUser: Erro inesperado para o usuário ${rawData.id}.`,
+      `(Server Action) updateUser: Erro inesperado para o usuário ${data.id}.`,
       error
     );
     return {
@@ -206,7 +208,7 @@ export async function updateUser(
       errorsServer: [
         'Ocorreu um erro inesperado ao processar sua solicitação.'
       ],
-      submittedData: rawData,
+      submittedData: data, // Use the 'data' object
       message: 'Erro inesperado.'
     };
   }

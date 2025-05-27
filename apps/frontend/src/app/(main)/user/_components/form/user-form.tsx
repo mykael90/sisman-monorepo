@@ -1,26 +1,26 @@
 // src/components/user-form.tsx
 'use client';
 
-import {
-  FieldApi,
-  mergeForm,
-  useForm,
-  useTransform
-} from '@tanstack/react-form';
+import { mergeForm, useForm, useTransform } from '@tanstack/react-form';
 import { useStore } from '@tanstack/react-store';
-import { FC, ReactNode, useActionState, useMemo } from 'react';
-
+import { FC, useActionState } from 'react';
 import { FormInputField } from '@/components/form-tanstack/form-input-fields';
 import { Button } from '@/components/ui/button';
-import { UserPlus, Save, CheckSquare, Square } from 'lucide-react'; // Added CheckSquare, Square for header
+import { UserPlus, Save, CheckSquare, Square } from 'lucide-react';
 import { IActionResultForm } from '../../../../../types/types-server-actions';
 import { FormSuccessDisplay } from '../../../../../components/form-tanstack/form-success-display';
 import { ErrorServerForm } from '../../../../../components/form-tanstack/error-server-form';
-import { IUserAdd } from '../../user-types';
-import { IRoleList } from '../../../role/role-types'; // Ensure this can have { id: string|number, role: string, description?: string }
+import { IUser, IUserAdd, IUserEdit } from '../../user-types'; // Added IUser, IUserEdit
+import { IRoleList } from '../../../role/role-types';
+
+// Helper type for form data based on mode
+type UserFormData<TMode extends 'add' | 'edit'> = TMode extends 'add'
+  ? IUserAdd
+  : IUserEdit;
 
 // Componente genérico UserForm
-export default function UserForm({
+export default function UserForm<TMode extends 'add' | 'edit'>({
+  // Made generic
   mode,
   defaultData,
   formActionProp,
@@ -34,8 +34,25 @@ export default function UserForm({
   submitButtonText,
   SubmitButtonIcon,
   possibleRoles
-}: UserFormProps) {
-  const [serverState, formAction, isPending] = useActionState(
+}: {
+  // Explicitly defining props for the generic component
+  mode: TMode;
+  defaultData: UserFormData<TMode>;
+  formActionProp: (
+    prevState: IActionResultForm<UserFormData<TMode>, IUser>, // Adjusted prevState type
+    data: UserFormData<TMode> // Data is now an object
+  ) => Promise<IActionResultForm<UserFormData<TMode>, IUser>>;
+  initialServerState?: IActionResultForm<UserFormData<TMode>, IUser>;
+  fieldLabels: {
+    [k: string]: string;
+  };
+  formSchema?: any;
+  onCancel?: () => void;
+  submitButtonText?: string;
+  SubmitButtonIcon?: FC<{ className?: string }>;
+  possibleRoles?: IRoleList[];
+}) {
+  const [serverState, dispatchFormAction, isPending] = useActionState(
     formActionProp,
     initialServerState
   );
@@ -46,24 +63,34 @@ export default function UserForm({
       (baseForm) => mergeForm(baseForm, serverState ?? {}),
       [serverState]
     ),
-    validators: formSchema ? { onChange: formSchema } : undefined
+    validators: formSchema ? { onChange: formSchema } : undefined,
+    // Add onSubmit to get validated values
+    onSubmit: async ({ value }: { value: UserFormData<TMode> }) => {
+      // `value` is the validated form data as an object
+      // `dispatchFormAction` is the function returned by `useActionState`
+      // It expects the new "payload" as its argument.
+      // The `prevState` is managed internally by `useActionState`.
+      console.log('Form submitted with values:', value);
+      await dispatchFormAction(value);
+    }
   });
 
   const handleResetOrCancel = () => {
     form.reset();
-    onCancel();
+    onCancel && onCancel();
   };
 
   useStore(form.store, (formState) => formState.errorsServer);
 
   if (serverState?.isSubmitSuccessful && serverState.responseData) {
+    // serverState.responseData ensures we have something for IUser
     return (
-      <FormSuccessDisplay
-        serverState={serverState as IActionResultForm<object>}
+      <FormSuccessDisplay<UserFormData<TMode>, IUser> // Specify both generics
+        serverState={serverState} // serverState is IActionResultForm<UserFormData<TMode>, IUser>
         handleActions={{
           handleResetForm: handleResetOrCancel
         }}
-        dataAddLabel={fieldLabels}
+        dataAddLabel={fieldLabels} // This will be used to pick fields from Partial<IUser>
         messageActions={{
           handleResetForm: mode === 'add' ? 'Adicionar Outro' : 'Ir para lista'
         }}
@@ -85,9 +112,11 @@ export default function UserForm({
 
   return (
     <form
-      action={formAction}
+      // Removed action={dispatchFormAction}
       onSubmit={(e) => {
-        form.handleSubmit();
+        e.preventDefault();
+        e.stopPropagation(); // Good practice with manual handleSubmit
+        form.handleSubmit(); // This will call the `onSubmit` defined in `useForm` options
       }}
       onReset={(e) => {
         e.preventDefault();
@@ -95,13 +124,18 @@ export default function UserForm({
       }}
       className='rounded-lg bg-white p-6 shadow-md'
     >
-      <ErrorServerForm serverState={serverState} />
+      <ErrorServerForm<UserFormData<TMode>> serverState={serverState} />
 
-      {mode === 'edit' && defaultData.id && (
+      {/* Conditionally render ID field if mode is 'edit' and id exists in defaultData */}
+      {mode === 'edit' && 'id' in defaultData && defaultData.id && (
         <form.Field
-          name={'id' as any}
+          name={'id' as any} // Still need to cast to any if 'id' isn't in all UserFormData versions
           children={(field) => (
-            <input type='hidden' value={field.state.value} name={field.name} />
+            <input
+              type='hidden'
+              value={field.state.value as any}
+              name={field.name}
+            />
           )}
         />
       )}
@@ -109,7 +143,7 @@ export default function UserForm({
       <form.Field name='name'>
         {(field) => (
           <FormInputField
-            field={field}
+            field={field} // Cast if TS complains
             label={fieldLabels.name}
             placeholder='Digite o nome completo'
             className='mb-4'
@@ -145,7 +179,8 @@ export default function UserForm({
         name='roles'
         mode='array'
         children={(field) => {
-          const currentSelectedRoleObjects = field.state.value || [];
+          const currentSelectedRoleObjects =
+            (field.state.value as Array<{ id: string }>) || [];
 
           return (
             <div>
@@ -174,7 +209,7 @@ export default function UserForm({
                       );
 
                       return (
-                        <label // The entire row is a label for the checkbox
+                        <label
                           key={role.id}
                           htmlFor={`role-${role.id}`}
                           className={`grid cursor-pointer grid-cols-[40px_50px_1fr_1.5fr] items-center gap-x-2 px-3 py-3 transition-colors duration-150 hover:bg-slate-50 has-[:checked]:bg-indigo-50 sm:gap-x-4`}
@@ -183,8 +218,8 @@ export default function UserForm({
                             <input
                               type='checkbox'
                               id={`role-${role.id}`}
-                              name={field.name} // "roles"
-                              value={roleId} // Sends the ID as string value
+                              name={field.name}
+                              value={roleId}
                               checked={isChecked}
                               onChange={(e) => {
                                 let newSelectedRoleObjects: Array<{
@@ -247,9 +282,11 @@ export default function UserForm({
       />
 
       <div className='mt-8 flex justify-end gap-3'>
-        <Button type='button' variant='outline' onClick={handleResetOrCancel}>
-          Cancelar
-        </Button>
+        {mode === 'add' && (
+          <Button type='button' variant='outline' onClick={handleResetOrCancel}>
+            Limpar
+          </Button>
+        )}
         <form.Subscribe
           selector={(state) => [
             state.canSubmit,
@@ -262,7 +299,7 @@ export default function UserForm({
               type='submit'
               disabled={
                 !canSubmit ||
-                isPending ||
+                isPending || // from useActionState
                 isValidating ||
                 (mode === 'add' && !isTouched)
               }
@@ -277,27 +314,4 @@ export default function UserForm({
       </div>
     </form>
   );
-}
-
-// Tipos genéricos para o formulário
-interface UserFormProps {
-  mode: 'add' | 'edit';
-  defaultData: IUserAdd;
-  formActionProp: (
-    prevState: IActionResultForm<IUserAdd>,
-    formData: FormData
-  ) => Promise<IActionResultForm<IUserAdd>>;
-  initialServerState?: IActionResultForm<IUserAdd>;
-  fieldLabels: {
-    [k: string]: string; // e.g., fieldLabels.roles = "Funções Atribuídas"
-  };
-  formSchema?: any;
-  onCancel: () => void;
-  submitButtonText?: string;
-  SubmitButtonIcon?: FC<{ className?: string }>;
-  /**
-   * Lista de todas as funções possíveis que o usuário pode ter.
-   * Assumes IRoleList objects have at least `id` and `role`, and optionally `description`.
-   */
-  possibleRoles?: IRoleList[];
 }

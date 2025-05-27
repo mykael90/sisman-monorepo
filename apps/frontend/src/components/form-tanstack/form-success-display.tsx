@@ -5,26 +5,26 @@ import { ReactNode } from 'react'; // Importação necessária para ReactNode
 import { IActionResultForm } from '../../types/types-server-actions'; // Ajuste o caminho se necessário
 import { Button } from '../ui/button'; // Ajuste o caminho se necessário
 
-interface FormSuccessDisplayProps<TData extends object> {
-  serverState: IActionResultForm<TData>;
+interface FormSuccessDisplayProps<TSubmittedData, TApiResponse> {
+  serverState: IActionResultForm<TSubmittedData, TApiResponse>;
   handleActions: {
     handleResetForm?: () => void; // Ação específica opcional
     [key: string]: (() => void) | undefined; // Permite outras ações dinâmicas
   };
-  dataAddLabel: TData;
+  dataAddLabel?: { [k: string]: string };
   messageActions?: {
-    [key: string]: string;
+    handleResetForm?: string;
   };
 }
 
 //TData>;
 
-export function FormSuccessDisplay<TData extends object>({
+export function FormSuccessDisplay<TSubmittedData, TApiResponse>({
   serverState,
   handleActions,
   dataAddLabel,
   messageActions
-}: FormSuccessDisplayProps<TData>) {
+}: FormSuccessDisplayProps<TSubmittedData, TApiResponse>) {
   const { responseData, message } = serverState;
 
   return (
@@ -33,33 +33,23 @@ export function FormSuccessDisplay<TData extends object>({
         {message || 'Operação realizada com sucesso!'}
       </h2>
 
-      {responseData &&
-        typeof responseData === 'object' &&
+      {/* Example of how you might display responseData if needed */}
+      {serverState.responseData &&
         dataAddLabel &&
-        // TypeScript precisa de ajuda para saber que `key` é do tipo `keyof TData`
-        // Object.keys retorna string[], então fazemos um type assertion.
-        (Object.keys(responseData) as Array<keyof TData>).map((key) => {
-          // `createdData` já foi verificado como objeto não nulo
-          // `dataAddLabel` já foi verificado como objeto não nulo
-          const value = responseData[key]; // Tipo: TData[keyof TData]
-          const label = dataAddLabel[key]; // Tipo: ReactNode | undefined
-
-          // Renderiza apenas se o label existir para esta chave e o valor não for undefined
-          if (label !== undefined && value !== undefined) {
-            return (
-              <p
-                key={String(key)} // Chaves de React devem ser strings ou números
-                className='mb-2 text-sm text-gray-700'
-              >
-                {String(label)}: {String(value)}{' '}
-                {/* Garante que o valor seja tratado como string para exibição */}
-              </p>
-            );
-          }
-          return null; // Retorna null se o label não deve ser exibido
-        })}
-
-      {/* } */}
+        Object.keys(serverState.responseData).length > 0 && (
+          <div className='mt-4 text-left text-sm'>
+            <p className='font-medium'>Detalhes:</p>
+            <ul className='list-inside list-disc'>
+              {Object.entries(serverState.responseData)
+                .filter(([key]) => dataAddLabel[key]) // Only show if label exists
+                .map(([key, value]) => (
+                  <li key={key}>
+                    <strong>{dataAddLabel[key]}:</strong> {String(value)}
+                  </li>
+                ))}
+            </ul>
+          </div>
+        )}
 
       {handleActions.handleResetForm && ( //adicionar botão se a ação estiver definida
         <Button onClick={handleActions.handleResetForm} className='mt-4'>
