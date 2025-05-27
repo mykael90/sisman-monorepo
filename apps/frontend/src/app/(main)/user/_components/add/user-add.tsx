@@ -11,7 +11,7 @@ import { addUser } from '../../user-actions';
 import { userFormSchemaAdd } from '../form/user-form-validation';
 import { IRoleList } from '../../../role/role-types';
 import { NonOptionalKeys } from '../../../../../types/utils-types';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 // We are transforming this into a page, so it won't take props like onClose or onSubmit.
 // The page will manage its own state and submission logic.

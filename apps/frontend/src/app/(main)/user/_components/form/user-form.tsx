@@ -79,10 +79,12 @@ export default function UserForm<TMode extends 'add' | 'edit'>({
     }
   });
 
-  const handleReset = () => {
-    form.reset();
-    onClean && onClean();
-  };
+  const handleReset = onClean
+    ? () => {
+        form.reset();
+        onClean && onClean();
+      }
+    : undefined;
 
   const handleCancel = () => {
     onCancel && onCancel();
@@ -101,8 +103,8 @@ export default function UserForm<TMode extends 'add' | 'edit'>({
         }}
         dataAddLabel={fieldLabels} // This will be used to pick fields from Partial<IUser>
         messageActions={{
-          handleResetForm: 'Limpar',
-          handleCancel: 'Cancelar'
+          handleResetForm: 'Cadastrar novo usuário',
+          handleCancel: 'Voltar para a lista'
         }}
         isInDialog={isInDialog}
       />
@@ -131,7 +133,7 @@ export default function UserForm<TMode extends 'add' | 'edit'>({
       }}
       onReset={(e) => {
         e.preventDefault();
-        handleReset();
+        handleReset && handleReset();
       }}
       className='rounded-lg bg-white p-6 shadow-md'
     >
