@@ -31,9 +31,12 @@ export default function UserForm<TMode extends 'add' | 'edit'>({
   fieldLabels,
   formSchema,
   onCancel,
+  onRedirect,
+  onClean,
   submitButtonText,
   SubmitButtonIcon,
-  possibleRoles
+  possibleRoles,
+  isInDialog = false
 }: {
   // Explicitly defining props for the generic component
   mode: TMode;
@@ -48,9 +51,12 @@ export default function UserForm<TMode extends 'add' | 'edit'>({
   };
   formSchema?: any;
   onCancel?: () => void;
+  onRedirect?: () => void;
+  onClean?: () => void;
   submitButtonText?: string;
   SubmitButtonIcon?: FC<{ className?: string }>;
   possibleRoles?: IRoleList[];
+  isInDialog?: boolean;
 }) {
   const [serverState, dispatchFormAction, isPending] = useActionState(
     formActionProp,
@@ -75,9 +81,9 @@ export default function UserForm<TMode extends 'add' | 'edit'>({
     }
   });
 
-  const handleResetOrCancel = () => {
+  const handleReset = () => {
     form.reset();
-    onCancel && onCancel();
+    onClean && onClean();
   };
 
   useStore(form.store, (formState) => formState.errorsServer);
@@ -88,12 +94,13 @@ export default function UserForm<TMode extends 'add' | 'edit'>({
       <FormSuccessDisplay<UserFormData<TMode>, IUser> // Specify both generics
         serverState={serverState} // serverState is IActionResultForm<UserFormData<TMode>, IUser>
         handleActions={{
-          handleResetForm: handleResetOrCancel
+          handleResetForm: handleReset
         }}
         dataAddLabel={fieldLabels} // This will be used to pick fields from Partial<IUser>
         messageActions={{
           handleResetForm: mode === 'add' ? 'Adicionar Outro' : 'Ir para lista'
         }}
+        isInDialog={isInDialog}
       />
     );
   }
@@ -120,7 +127,7 @@ export default function UserForm<TMode extends 'add' | 'edit'>({
       }}
       onReset={(e) => {
         e.preventDefault();
-        handleResetOrCancel();
+        handleReset();
       }}
       className='rounded-lg bg-white p-6 shadow-md'
     >
@@ -180,7 +187,7 @@ export default function UserForm<TMode extends 'add' | 'edit'>({
         mode='array'
         children={(field) => {
           const currentSelectedRoleObjects =
-            (field.state.value as Array<{ id: string }>) || [];
+            (field.state.value as Array<{ id: number }>) || [];
 
           return (
             <div>
@@ -203,9 +210,9 @@ export default function UserForm<TMode extends 'add' | 'edit'>({
                 {possibleRoles && possibleRoles.length > 0 ? (
                   <div className='divide-y divide-slate-200'>
                     {possibleRoles.map((role) => {
-                      const roleId = String(role.id);
+                      const roleId = role.id;
                       const isChecked = currentSelectedRoleObjects.some(
-                        (selectedRole) => String(selectedRole.id) === roleId
+                        (selectedRole) => selectedRole.id === roleId
                       );
 
                       return (
@@ -223,7 +230,7 @@ export default function UserForm<TMode extends 'add' | 'edit'>({
                               checked={isChecked}
                               onChange={(e) => {
                                 let newSelectedRoleObjects: Array<{
-                                  id: string;
+                                  id: number;
                                 }>;
                                 if (e.target.checked) {
                                   newSelectedRoleObjects = [
@@ -237,7 +244,9 @@ export default function UserForm<TMode extends 'add' | 'edit'>({
                                         selectedRole.id !== roleId
                                     );
                                 }
-                                field.handleChange(newSelectedRoleObjects);
+                                field.handleChange(
+                                  newSelectedRoleObjects as any
+                                );
                               }}
                               className='h-4 w-4 rounded border-gray-400 text-indigo-600 shadow-sm checked:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-white'
                             />
@@ -283,7 +292,7 @@ export default function UserForm<TMode extends 'add' | 'edit'>({
 
       <div className='mt-8 flex justify-end gap-3'>
         {mode === 'add' && (
-          <Button type='button' variant='outline' onClick={handleResetOrCancel}>
+          <Button type='button' variant='outline' onClick={handleReset}>
             Limpar
           </Button>
         )}

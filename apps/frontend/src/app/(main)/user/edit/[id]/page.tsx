@@ -4,9 +4,11 @@ import { showUser } from '../../user-actions';
 import { getRoles } from '../../../role/role-actions';
 
 export default async function Page({
-  params
+  params,
+  isInDialog = false
 }: {
   params: Promise<{ id: number }>;
+  isInDialog?: boolean;
 }) {
   const { id } = await params;
   const accessTokenSisman = await getSismanAccessToken();
@@ -16,5 +18,11 @@ export default async function Page({
     getRoles(accessTokenSisman)
   ]);
 
-  return <UserEdit initialUser={initialUser} possibleRoles={possibleRoles} />;
+  return (
+    <UserEdit
+      initialUser={initialUser}
+      possibleRoles={possibleRoles}
+      isInDialog={isInDialog}
+    />
+  );
 }

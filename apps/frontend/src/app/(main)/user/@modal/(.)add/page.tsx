@@ -4,7 +4,7 @@ import UserAddPage from '../../add/page';
 export default function page() {
   return (
     <Modal>
-      <UserAddPage />
+      <UserAddPage isInDialog={true} />
     </Modal>
   );
 }

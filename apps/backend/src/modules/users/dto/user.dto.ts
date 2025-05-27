@@ -48,7 +48,7 @@ export class CreateUserWithRelationsDto extends CreateUserDto {
   @ApiProperty({ description: 'roles', required: false, type: [UpdateRoleDto] })
   @IsOptional()
   @IsArray()
-  @ArrayMinSize(1)
+  @ArrayMinSize(0)
   @ValidateNested({ each: true }) // Validate each item in the array
   @Type(() => UpdateRoleDto) // Transform plain objects to UpdateRoleDto instances
   roles?: UpdateRoleDto[];

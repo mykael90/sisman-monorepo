@@ -194,7 +194,7 @@ export async function updateUser(
       },
       {
         mainPath: PAGE_PATH,
-        detailPath: `${PAGE_PATH}/${validatedUserData.id}`
+        detailPath: `${PAGE_PATH}/edit/${validatedUserData.id}`
       },
       'Usuário atualizado com sucesso!'
     );

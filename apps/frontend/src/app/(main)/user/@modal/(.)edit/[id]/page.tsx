@@ -8,7 +8,7 @@ export default async function Page({
 }) {
   return (
     <Modal>
-      <UserEditPage params={params} />
+      <UserEditPage params={params} isInDialog={true} />
     </Modal>
   );
 }

@@ -4,7 +4,7 @@ import type React from 'react';
 import { useState } from 'react';
 import FormAddHeader from '../../../../../components/form-tanstack/form-add-header';
 import UserForm from '../form/user-form';
-import { IUserAdd } from '../../user-types';
+import { IUser, IUserAdd } from '../../user-types';
 import { IActionResultForm } from '../../../../../types/types-server-actions';
 import { UserPlus } from 'lucide-react';
 import { addUser } from '../../user-actions';
@@ -15,9 +15,11 @@ import { NonOptionalKeys } from '../../../../../types/utils-types';
 // We are transforming this into a page, so it won't take props like onClose or onSubmit.
 // The page will manage its own state and submission logic.
 export default function UserAdd({
-  possibleRoles
+  possibleRoles,
+  isInDialog = false
 }: {
   possibleRoles: IRoleList[];
+  isInDialog?: boolean;
 }) {
   const defaultData: IUserAdd = {
     name: '',
@@ -33,7 +35,7 @@ export default function UserAdd({
     roles: 'Permissões'
   };
 
-  const initialServerState: IActionResultForm<IUserAdd> = {
+  const initialServerState: IActionResultForm<IUserAdd, IUser> = {
     errorsServer: [],
     message: ''
   };
@@ -54,7 +56,7 @@ export default function UserAdd({
       <UserForm
         key={formKey}
         mode='add'
-        onCancel={triggerFormReset}
+        onClean={triggerFormReset}
         defaultData={defaultData}
         initialServerState={initialServerState}
         fieldLabels={fieldLabels}
@@ -63,6 +65,7 @@ export default function UserAdd({
         SubmitButtonIcon={UserPlus}
         submitButtonText='Criar Usuário'
         possibleRoles={possibleRoles}
+        isInDialog={isInDialog}
       ></UserForm>
     </div>
   );

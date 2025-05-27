@@ -4,6 +4,7 @@
 import { ReactNode } from 'react'; // Importação necessária para ReactNode
 import { IActionResultForm } from '../../types/types-server-actions'; // Ajuste o caminho se necessário
 import { Button } from '../ui/button'; // Ajuste o caminho se necessário
+import { DialogClose } from '@/components/ui/dialog'; // Importar DialogClose
 
 interface FormSuccessDisplayProps<TSubmittedData, TApiResponse> {
   serverState: IActionResultForm<TSubmittedData, TApiResponse>;
@@ -15,6 +16,7 @@ interface FormSuccessDisplayProps<TSubmittedData, TApiResponse> {
   messageActions?: {
     handleResetForm?: string;
   };
+  isInDialog?: boolean;
 }
 
 //TData>;
@@ -23,7 +25,8 @@ export function FormSuccessDisplay<TSubmittedData, TApiResponse>({
   serverState,
   handleActions,
   dataAddLabel,
-  messageActions
+  messageActions,
+  isInDialog = false
 }: FormSuccessDisplayProps<TSubmittedData, TApiResponse>) {
   const { responseData, message } = serverState;
 
@@ -55,6 +58,11 @@ export function FormSuccessDisplay<TSubmittedData, TApiResponse>({
         <Button onClick={handleActions.handleResetForm} className='mt-4'>
           {messageActions?.handleResetForm || ''}
         </Button>
+      )}
+      {isInDialog && (
+        <DialogClose asChild>
+          <Button className='mt-4'>Voltar</Button>
+        </DialogClose>
       )}
       {/* Você pode adicionar um botão para "Tentar Novamente" em caso de erro, se desejar */}
       {/* {!success &&

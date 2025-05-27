@@ -15,10 +15,12 @@ import { NonOptionalKeys } from '../../../../../types/utils-types';
 // The page will manage its own state and submission logic.
 export default function UserEdit({
   initialUser,
-  possibleRoles
+  possibleRoles,
+  isInDialog = false
 }: {
   initialUser: IUserEdit;
   possibleRoles: IRoleList[];
+  isInDialog?: boolean;
 }) {
   const defaultData = { ...initialUser };
 
@@ -55,7 +57,7 @@ export default function UserEdit({
       {/* Form Section */}
       <UserForm
         mode='edit'
-        onCancel={redirect}
+        onRedirect={redirect}
         defaultData={defaultData}
         initialServerState={initialServerState}
         fieldLabels={fieldLabels}
@@ -64,6 +66,7 @@ export default function UserEdit({
         SubmitButtonIcon={Save}
         submitButtonText='Salvar'
         possibleRoles={possibleRoles}
+        isInDialog={isInDialog}
       ></UserForm>
     </div>
   );
