@@ -42,7 +42,7 @@ export default function UserAdd({
   const triggerFormReset = () => setFormKey(Date.now().toString());
 
   return (
-    <div className='mx-auto mt-4 w-full max-w-2xl rounded-lg bg-white shadow-lg'>
+    <div className='mx-auto w-full rounded-lg bg-white shadow-lg'>
       {/* Header */}
       <FormAddHeader
         Icon={UserPlus}

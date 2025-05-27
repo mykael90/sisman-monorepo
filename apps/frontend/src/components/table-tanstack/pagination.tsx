@@ -65,7 +65,7 @@ function PageNumberInput({
 
   return (
     <div className='flex items-center space-x-2 text-sm'>
-      <span>Página</span>
+      <span>Pág.</span>
       <Input
         type='number'
         value={inputValue}
