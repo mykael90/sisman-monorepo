@@ -68,7 +68,7 @@ export async function showUser(
   }
 }
 
-export async function getRefreshedUsers(): Promise<void> {
+export async function getRefreshedUsers() {
   // O objetivo principal é revalidar, não necessariamente retornar dados.
   // Se fosse para retornar, o tipo seria Promise<IUserList[]> e chamaria getUsers.
   logger.info(
@@ -79,6 +79,7 @@ export async function getRefreshedUsers(): Promise<void> {
     logger.info(
       `(Server Action) getRefreshedUsers: Caminho "${PAGE_PATH}" revalidado com sucesso.`
     );
+    return true;
   } catch (error) {
     logger.error(
       `(Server Action) getRefreshedUsers: Erro ao revalidar caminho ${PAGE_PATH}.`,

@@ -11,3 +11,6 @@ arquivo. pode usar como base, se necessário, o conteúdo dos comentários
 existentes. Não altere a lógica do código.
 
 Usando o componente atual @... crie um componente espelho como skeleton.
+
+Para essa página gere uma melhor estilização, alterando padding e margins quando
+necessário, e se aproveitando das cores utilizadas no projeto.

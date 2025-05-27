@@ -31,7 +31,6 @@ export default function UserForm<TMode extends 'add' | 'edit'>({
   fieldLabels,
   formSchema,
   onCancel,
-  onRedirect,
   onClean,
   submitButtonText,
   SubmitButtonIcon,
@@ -51,7 +50,6 @@ export default function UserForm<TMode extends 'add' | 'edit'>({
   };
   formSchema?: any;
   onCancel?: () => void;
-  onRedirect?: () => void;
   onClean?: () => void;
   submitButtonText?: string;
   SubmitButtonIcon?: FC<{ className?: string }>;
@@ -86,6 +84,10 @@ export default function UserForm<TMode extends 'add' | 'edit'>({
     onClean && onClean();
   };
 
+  const handleCancel = () => {
+    onCancel && onCancel();
+  };
+
   useStore(form.store, (formState) => formState.errorsServer);
 
   if (serverState?.isSubmitSuccessful && serverState.responseData) {
@@ -94,11 +96,13 @@ export default function UserForm<TMode extends 'add' | 'edit'>({
       <FormSuccessDisplay<UserFormData<TMode>, IUser> // Specify both generics
         serverState={serverState} // serverState is IActionResultForm<UserFormData<TMode>, IUser>
         handleActions={{
-          handleResetForm: handleReset
+          handleResetForm: handleReset,
+          handleCancelForm: handleCancel
         }}
         dataAddLabel={fieldLabels} // This will be used to pick fields from Partial<IUser>
         messageActions={{
-          handleResetForm: mode === 'add' ? 'Adicionar Outro' : 'Ir para lista'
+          handleResetForm: 'Limpar',
+          handleCancel: 'Cancelar'
         }}
         isInDialog={isInDialog}
       />

@@ -11,6 +11,7 @@ import { addUser } from '../../user-actions';
 import { userFormSchemaAdd } from '../form/user-form-validation';
 import { IRoleList } from '../../../role/role-types';
 import { NonOptionalKeys } from '../../../../../types/utils-types';
+import { useRouter } from 'next/router';
 
 // We are transforming this into a page, so it won't take props like onClose or onSubmit.
 // The page will manage its own state and submission logic.
@@ -40,6 +41,13 @@ export default function UserAdd({
     message: ''
   };
 
+  // Para controlar a chave do formulário e forçar o reset do useActionState
+  const router = useRouter();
+
+  const redirect = () => {
+    router.push('/user');
+  };
+
   const [formKey, setFormKey] = useState(() => Date.now().toString());
   const triggerFormReset = () => setFormKey(Date.now().toString());
 
@@ -57,6 +65,7 @@ export default function UserAdd({
         key={formKey}
         mode='add'
         onClean={triggerFormReset}
+        onCancel={redirect}
         defaultData={defaultData}
         initialServerState={initialServerState}
         fieldLabels={fieldLabels}

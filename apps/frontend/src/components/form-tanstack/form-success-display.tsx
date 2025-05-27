@@ -15,6 +15,7 @@ interface FormSuccessDisplayProps<TSubmittedData, TApiResponse> {
   dataAddLabel?: { [k: string]: string };
   messageActions?: {
     handleResetForm?: string;
+    [key: string]: string | undefined; // Permite outras ações dinâmicas
   };
   isInDialog?: boolean;
 }
@@ -54,16 +55,25 @@ export function FormSuccessDisplay<TSubmittedData, TApiResponse>({
           </div>
         )}
 
-      {handleActions.handleResetForm && ( //adicionar botão se a ação estiver definida
-        <Button onClick={handleActions.handleResetForm} className='mt-4'>
-          {messageActions?.handleResetForm || ''}
-        </Button>
-      )}
-      {isInDialog && (
-        <DialogClose asChild>
-          <Button className='mt-4'>Voltar</Button>
-        </DialogClose>
-      )}
+      <div className='mt-4 flex justify-center gap-4'>
+        {handleActions.handleResetForm && ( //adicionar botão se a ação estiver definida
+          <Button onClick={handleActions.handleResetForm} className='flex'>
+            {messageActions?.handleResetForm || ''}
+          </Button>
+        )}
+        {isInDialog ? (
+          <DialogClose asChild>
+            <Button className='flex'>Voltar para lista</Button>
+          </DialogClose>
+        ) : (
+          handleActions.handleCancelForm && (
+            <Button onClick={handleActions.handleCancelForm} className='flex'>
+              Voltar para lista
+            </Button>
+          )
+        )}
+      </div>
+
       {/* Você pode adicionar um botão para "Tentar Novamente" em caso de erro, se desejar */}
       {/* {!success &&
         handleActions.handleResetForm && ( // Exemplo: um botão de reset/retry em caso de erro

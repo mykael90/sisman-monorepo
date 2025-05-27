@@ -24,22 +24,22 @@ export default async function Page() {
   // esse parâmetro seria um candidato ideal para a chave.
   // Como não parece ser o caso aqui, um timestamp ou string aleatória
   // garantirá que, se a Page re-renderizar (ex: após refreshAction),
-  // a key será nova, forçando DisplayData a resetar.
-  const keyForDisplayData = Date.now().toString() + Math.random().toString();
+  // a key será nova, forçando UserListPage a resetar.
+  const listKey = Date.now().toString() + Math.random().toString();
   // Ou simplesmente: const keyForDisplayData = Math.random().toString();
   // Ou, se você tiver um ID da sessão de dados: const keyForDisplayData = someDataSessionId;
   // Fazia mais sentido ainda ser a query que foi enviada para realizar alguma filtragem no fetch
 
-  logger.info(
-    `Page RSC render: dataPromise created. Key for DisplayData: ${keyForDisplayData}`
-  );
+  // logger.info(
+  //   `Page RSC render: dataPromise created. Key for DisplayData: ${keyForDisplayData}`
+  // );
 
   return (
     // <Suspense fallback={<Loading />}>
     <UserListPage
       initialUsers={initialUsers} // Passa a promise criada acima
       refreshAction={getRefreshedUsers} // Passa a referência da função Server Action
-      key={keyForDisplayData} // Passa a string gerada como chave
+      key={listKey} // Passa a string gerada como chave
     />
     // </Suspense>
   );

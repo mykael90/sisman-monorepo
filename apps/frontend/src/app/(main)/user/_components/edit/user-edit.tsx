@@ -57,7 +57,7 @@ export default function UserEdit({
       {/* Form Section */}
       <UserForm
         mode='edit'
-        onRedirect={redirect}
+        onCancel={redirect}
         defaultData={defaultData}
         initialServerState={initialServerState}
         fieldLabels={fieldLabels}
