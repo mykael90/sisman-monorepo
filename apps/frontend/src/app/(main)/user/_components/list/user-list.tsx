@@ -21,6 +21,7 @@ import { InputDebounceRef } from '@/components/ui/input'; // Importe o tipo da R
 import { IUserList } from '../../user-types';
 import { useRouter } from 'next/navigation';
 import { columns, createActions } from './user-columns';
+import { User2Icon, UserCog, UserPlus } from 'lucide-react';
 
 export function UserListPage({
   initialUsers,
@@ -89,7 +90,17 @@ export function UserListPage({
 
   return (
     <div className='container mx-auto p-4'>
-      <UserListHeader onAddUser={handleAddUser} />
+      <UserListHeader
+        title='Gerenciamento de Usuários'
+        subtitle='Sistema de gerenciamento de usuários e suas permissões'
+        TitleIcon={UserCog}
+        actionButton={{
+          text: 'Cadastrar usuário',
+          onClick: handleAddUser,
+          variant: 'default',
+          Icon: UserPlus
+        }}
+      />
 
       <div className='mt-4 mb-4 h-auto rounded-xl border-0 bg-white px-4 py-3.5'>
         {' '}

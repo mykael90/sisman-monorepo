@@ -44,6 +44,7 @@ export interface IUserAdd extends Prisma.UserCreateManyInput {
 
 export interface IUserEdit extends IUserAdd {
   id: number;
+  isActive: boolean;
 }
 
 export type IUser = User;

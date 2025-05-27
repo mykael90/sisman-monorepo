@@ -44,7 +44,8 @@ const userFormSchemaAdd = z.object({
 });
 
 const userFormSchemaEdit = userFormSchemaAdd.extend({
-  id: z.coerce.number()
+  id: z.coerce.number(),
+  isActive: z.boolean()
 });
 
 function validateFormData<TInputData>(

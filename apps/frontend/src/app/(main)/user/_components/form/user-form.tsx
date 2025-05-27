@@ -4,7 +4,10 @@
 import { mergeForm, useForm, useTransform } from '@tanstack/react-form';
 import { useStore } from '@tanstack/react-store';
 import { FC, useActionState } from 'react';
-import { FormInputField } from '@/components/form-tanstack/form-input-fields';
+import {
+  FormInputCheckbox,
+  FormInputField
+} from '@/components/form-tanstack/form-input-fields';
 import { Button } from '@/components/ui/button';
 import { UserPlus, Save } from 'lucide-react';
 import { IActionResultForm } from '../../../../../types/types-server-actions';
@@ -142,7 +145,7 @@ export default function UserForm<TMode extends 'add' | 'edit'>({
       {/* Conditionally render ID field if mode is 'edit' and id exists in defaultData */}
       {mode === 'edit' && 'id' in defaultData && defaultData.id && (
         <form.Field
-          name={'id' as any} // Still need to cast to any if 'id' isn't in all UserFormData versions
+          name='id' // Still need to cast to any if 'id' isn't in all UserFormData versions
           children={(field) => (
             <input
               type='hidden'
@@ -151,6 +154,25 @@ export default function UserForm<TMode extends 'add' | 'edit'>({
             />
           )}
         />
+      )}
+      {/* Conditionally render ID field if mode is 'edit' and id exists in defaultData */}
+      {mode === 'edit' && 'id' in defaultData && defaultData.id && (
+        <div className='flex h-8 flex-row items-center justify-end gap-2'>
+          <div className='text-sm font-medium text-indigo-600'>
+            Usuário Ativo{' '}
+          </div>
+          <form.Field name='isActive'>
+            {(field) => (
+              <FormInputCheckbox
+                field={field} // Cast if TS complains
+                label={fieldLabels.isActive}
+                className=''
+                type='checkbox'
+                showLabel={false}
+              />
+            )}
+          </form.Field>
+        </div>
       )}
 
       <form.Field name='name'>

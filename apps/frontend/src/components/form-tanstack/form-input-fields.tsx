@@ -46,6 +46,7 @@ export function FormInputField({
         onChange={(e) => field.handleChange(e.target.value)}
         type={type}
         placeholder={placeholder}
+        {...props}
       />
       {/* Exibindo informações de erro e validação como no exemplo fornecido */}
       {/* {field.state.meta.isTouched && field.state.meta.errors.length > 0 ? ( */}
@@ -56,6 +57,58 @@ export function FormInputField({
         // Usar errors.length > 0 é muitas vezes mais direto.
         <em className='mt-1 block text-xs text-red-500'>
           {/* Mapeia os erros para extrair apenas a propriedade 'message' e depois junta com vírgula */}
+          {field.state.meta.errors
+            .map((error: any) => error.message)
+            .join('; ')}
+        </em>
+      ) : null}
+      {field.state.meta.isValidating ? (
+        <em className='mt-1 text-xs text-blue-500'>Validating...</em>
+      ) : null}
+    </div>
+  );
+}
+
+// Novo componente FormInputCheckbox
+export function FormInputCheckbox({
+  field,
+  label,
+  showLabel = true,
+  className = '',
+  ...props
+}: {
+  field: AnyFieldApi;
+  label: string;
+  showLabel?: boolean;
+  className?: string;
+  [key: string]: any;
+}) {
+  const checked = field.state.value as boolean;
+
+  return (
+    <div className={className}>
+      <div className='flex items-center'>
+        <input
+          id={field.name}
+          name={field.name}
+          type='checkbox'
+          checked={checked}
+          onBlur={field.handleBlur}
+          onChange={(e) => field.handleChange(e.target.checked)}
+          className='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500' // Estilo básico, ajuste conforme necessário
+          {...props}
+        />
+        {showLabel && (
+          <label
+            htmlFor={field.name}
+            className='ml-2 block text-sm font-medium text-gray-700'
+          >
+            {label}
+          </label>
+        )}
+      </div>
+      {!field.state.meta.isValid && field.state.meta.isBlurred ? (
+        <em className='mt-1 block text-xs text-red-500'>
           {field.state.meta.errors
             .map((error: any) => error.message)
             .join('; ')}

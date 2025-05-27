@@ -29,7 +29,8 @@ export default function UserEdit({
     name: 'Nome',
     login: 'Login',
     email: 'E-mail',
-    roles: 'Permissões'
+    roles: 'Permissões',
+    isActive: 'Ativo'
   };
 
   const initialServerState: IActionResultForm<IUserEdit, IUser> = {
