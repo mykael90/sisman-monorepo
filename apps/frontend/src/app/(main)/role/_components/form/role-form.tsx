@@ -1,33 +1,21 @@
-'use client';
-
 import { mergeForm, useForm, useTransform } from '@tanstack/react-form';
 import { useStore } from '@tanstack/react-store';
 import { FC, useActionState } from 'react';
-
 import { FormInputField } from '@/components/form-tanstack/form-input-fields';
 import { Button } from '@/components/ui/button';
-import { ShieldPlus, Save } from 'lucide-react'; // Ícones para Role
+import { CirclePlus, Save } from 'lucide-react'; // Using CirclePlus and Save icons
 import { IActionResultForm } from '../../../../../types/types-server-actions';
 import { FormSuccessDisplay } from '../../../../../components/form-tanstack/form-success-display';
 import { ErrorServerForm } from '../../../../../components/form-tanstack/error-server-form';
-import { IRoleAdd, IRoleEdit } from '../../role-types'; // Tipos específicos de Role
+import { IRole, IRoleAdd, IRoleEdit } from '../../role-types';
 
-interface RoleFormProps {
-  mode: 'add' | 'edit';
-  defaultData: IRoleAdd | IRoleEdit; // Aceita tanto para adicionar quanto para editar
-  formActionProp: (
-    prevState: IActionResultForm<IRoleAdd | IRoleEdit>,
-    formData: FormData
-  ) => Promise<IActionResultForm<IRoleAdd | IRoleEdit>>;
-  initialServerState?: IActionResultForm<IRoleAdd | IRoleEdit>;
-  fieldLabels: Partial<Record<keyof (IRoleAdd & IRoleEdit), string>>; // Labels para os campos
-  formSchema?: any; // Schema de validação Zod (roleFormSchemaAdd ou roleFormSchemaEdit)
-  onCancel: () => void;
-  submitButtonText?: string;
-  SubmitButtonIcon?: FC<{ className?: string }>;
-}
+// Helper type for form data based on mode
+type RoleFormData<TMode extends 'add' | 'edit'> = TMode extends 'add'
+  ? IRoleAdd
+  : IRoleEdit;
 
-export default function RoleForm({
+// Componente genérico RoleForm
+export default function RoleForm<TMode extends 'add' | 'edit'>({
   mode,
   defaultData,
   formActionProp,
@@ -38,10 +26,29 @@ export default function RoleForm({
   fieldLabels,
   formSchema,
   onCancel,
+  onClean,
   submitButtonText,
-  SubmitButtonIcon
-}: RoleFormProps) {
-  const [serverState, formAction, isPending] = useActionState(
+  SubmitButtonIcon,
+  isInDialog = false
+}: {
+  mode: TMode;
+  defaultData: RoleFormData<TMode>;
+  formActionProp: (
+    prevState: IActionResultForm<RoleFormData<TMode>, IRole>,
+    data: RoleFormData<TMode>
+  ) => Promise<IActionResultForm<RoleFormData<TMode>, IRole>>;
+  initialServerState?: IActionResultForm<RoleFormData<TMode>, IRole>;
+  fieldLabels: {
+    [k: string]: string;
+  };
+  formSchema?: any; // Zod schema type
+  onCancel?: () => void;
+  onClean?: () => void;
+  submitButtonText?: string;
+  SubmitButtonIcon?: FC<{ className?: string }>;
+  isInDialog?: boolean;
+}) {
+  const [serverState, dispatchFormAction, isPending] = useActionState(
     formActionProp,
     initialServerState
   );
@@ -52,28 +59,40 @@ export default function RoleForm({
       (baseForm) => mergeForm(baseForm, serverState ?? {}),
       [serverState]
     ),
-    validators: formSchema ? { onChange: formSchema } : undefined
+    validators: formSchema ? { onChange: formSchema } : undefined,
+    onSubmit: async ({ value }: { value: RoleFormData<TMode> }) => {
+      console.log('Role Form submitted with values:', value);
+      await dispatchFormAction(value);
+    }
   });
 
-  const handleResetOrCancel = () => {
-    form.reset();
-    onCancel();
+  const handleReset = onClean
+    ? () => {
+        form.reset();
+        onClean && onClean();
+      }
+    : undefined;
+
+  const handleCancel = () => {
+    onCancel && onCancel();
   };
 
   useStore(form.store, (formState) => formState.errorsServer);
 
   if (serverState?.isSubmitSuccessful && serverState.responseData) {
     return (
-      <FormSuccessDisplay
-        serverState={serverState as IActionResultForm<object>}
+      <FormSuccessDisplay<RoleFormData<TMode>, IRole>
+        serverState={serverState}
         handleActions={{
-          handleResetForm: handleResetOrCancel
+          handleResetForm: handleReset,
+          handleCancelForm: handleCancel
         }}
-        dataAddLabel={fieldLabels as Record<string, string>}
+        dataAddLabel={fieldLabels}
         messageActions={{
-          handleResetForm:
-            mode === 'add' ? 'Adicionar Outro Papel' : 'Ir para lista'
+          handleResetForm: 'Cadastrar novo papel',
+          handleCancel: 'Voltar para a lista'
         }}
+        isInDialog={isInDialog}
       />
     );
   }
@@ -84,42 +103,45 @@ export default function RoleForm({
   const CurrentSubmitButtonIcon =
     (SubmitButtonIcon && <SubmitButtonIcon className='mr-2 h-5 w-5' />) ||
     (mode === 'add' ? (
-      <ShieldPlus className='mr-2 h-5 w-5' />
+      <CirclePlus className='mr-2 h-5 w-5' />
     ) : (
       <Save className='mr-2 h-5 w-5' />
     ));
 
   return (
     <form
-      action={formAction}
       onSubmit={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
         form.handleSubmit();
       }}
       onReset={(e) => {
         e.preventDefault();
-        handleResetOrCancel();
+        handleReset && handleReset();
       }}
       className='rounded-lg bg-white p-6 shadow-md'
     >
-      <ErrorServerForm serverState={serverState} />
+      <ErrorServerForm<RoleFormData<TMode>> serverState={serverState} />
 
-      {mode === 'edit' && 'id' in defaultData && defaultData.id && (
-        <form.Field
-          name={'id'}
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore next line
-          children={(field) => (
-            <input type='hidden' value={field.state.value} name={field.name} />
-          )}
-        />
-      )}
+      <form.Field
+        name='id'
+        children={(field) => (
+          <FormInputField
+            field={field as any} // Cast needed due to generic type complexity
+            label={fieldLabels.id}
+            placeholder='Ex: 100'
+            className='mb-4'
+            disabled={mode === 'edit'}
+          />
+        )}
+      />
 
       <form.Field name='role'>
         {(field) => (
           <FormInputField
-            field={field}
-            label={fieldLabels.role || 'Nome do Papel'}
-            placeholder='Ex: ADMINISTRATOR, EDITOR_CHEFE'
+            field={field as any} // Cast needed due to generic type complexity
+            label={fieldLabels.role}
+            placeholder='Ex: ADMIN_USER'
             className='mb-4'
           />
         )}
@@ -128,19 +150,22 @@ export default function RoleForm({
       <form.Field name='description'>
         {(field) => (
           <FormInputField
-            field={field}
-            label={fieldLabels.description || 'Descrição'}
-            placeholder='Descreva a finalidade deste papel'
+            field={field as any} // Cast needed due to generic type complexity
+            label={fieldLabels.description}
+            placeholder='Descrição detalhada do papel'
             className='mb-4'
-            isTextArea={true} // Se quiser um textarea para descrição
           />
         )}
       </form.Field>
 
+      {/* No roles selector or isActive for roles */}
+
       <div className='mt-8 flex justify-end gap-3'>
-        <Button type='button' variant='outline' onClick={handleResetOrCancel}>
-          Cancelar
-        </Button>
+        {mode === 'add' && (
+          <Button type='button' variant='outline' onClick={handleReset}>
+            Limpar
+          </Button>
+        )}
         <form.Subscribe
           selector={(state) => [
             state.canSubmit,

@@ -4,15 +4,14 @@ import Logger from '@/lib/logger';
 import { revalidatePath } from 'next/cache';
 import { getSismanAccessToken } from '../../../lib/auth/get-access-token';
 import { fetchApiSisman } from '../../../lib/fetch/api-sisman';
-import formDataToObject from '../../../lib/formdata-to-object';
 import { IActionResultForm } from '../../../types/types-server-actions';
 import { IRole, IRoleAdd, IRoleEdit, IRoleList } from './role-types';
 import {
-  validateRoleFormData,
   roleFormSchemaAdd,
   roleFormSchemaEdit
 } from './_components/form/role-form-validation';
 import { handleApiAction } from '../../../lib/fetch/handle-form-action-sisman';
+import { validateFormData } from '../../../lib/validate-form-data';
 
 const PAGE_PATH = '/role';
 const API_RELATIVE_PATH = '/role'; // Endpoint da API para UserRoletype
@@ -89,80 +88,116 @@ export async function getRefreshedRoles(): Promise<void> {
 // --- Ações de Formulário Exportadas ---
 
 export async function addRole(
-  prevState: unknown,
-  formData: FormData
+  prevState: unknown, // Or IActionResultForm<IRoleAdd, IRole>
+  data: IRoleAdd // Directly accept the object, not FormData
 ): Promise<IActionResultForm<IRoleAdd, IRole>> {
-  const rawData = formDataToObject<IRoleAdd>(formData);
-  logger.info(
-    `(Server Action) addRole: Tentativa de adicionar papel.`,
-    rawData
-  );
+  logger.info(`(Server Action) addRole: Tentativa de adicionar papel.`, data);
 
-  const validationResult = validateRoleFormData(rawData, roleFormSchemaAdd);
-  if (!validationResult.success) {
+  // 1. Validação específica para RoleAdd
+  const validationProcessResult = validateFormData(data, roleFormSchemaAdd);
+
+  if (!validationProcessResult.success) {
     logger.warn(
-      `(Server Action) addRole: Falha na validação.`,
-      validationResult.errorResult.errorsFieldsServer
+      `(Server Action) addRole: Falha na validação do formulário.`,
+      validationProcessResult.errorResult.errorsFieldsServer
     );
-    return validationResult.errorResult;
+    return {
+      ...validationProcessResult.errorResult,
+      submittedData: data // Ensure submittedData reflects the object
+    };
   }
 
-  const validatedData = validationResult.data;
-  logger.info(`(Server Action) addRole: Dados validados.`);
+  const validatedRoleData = validationProcessResult.data; // This is IRoleAdd
+  logger.info(`(Server Action) addRole: Dados do papel validados com sucesso.`);
 
-  const accessToken = await getSismanAccessToken();
-  return handleApiAction<IRoleAdd, IRole, IRoleAdd>(
-    validatedData,
-    rawData,
-    {
-      endpoint: API_RELATIVE_PATH,
-      method: 'POST',
-      accessToken: accessToken
-    },
-    { mainPath: PAGE_PATH },
-    'Papel cadastrado com sucesso!'
-  );
+  // 2. Chamar a ação genérica da API
+  try {
+    const accessToken = await getSismanAccessToken();
+    return await handleApiAction<IRoleAdd, IRole, IRoleAdd>(
+      validatedRoleData,
+      data, // Pass the original 'data' object as submittedData for handleApiAction
+      {
+        endpoint: API_RELATIVE_PATH,
+        method: 'POST',
+        accessToken: accessToken
+      },
+      {
+        mainPath: PAGE_PATH
+      },
+      'Papel cadastrado com sucesso!'
+    );
+  } catch (error) {
+    logger.error(`(Server Action) addRole: Erro inesperado.`, error);
+    return {
+      isSubmitSuccessful: false,
+      errorsServer: [
+        'Ocorreu um erro inesperado ao processar sua solicitação.'
+      ],
+      submittedData: data, // Use the 'data' object
+      message: 'Erro inesperado.'
+    };
+  }
 }
 
 export async function updateRole(
-  prevState: unknown,
-  formData: FormData
+  prevState: unknown, // Or IActionResultForm<IRoleEdit, IRole>
+  data: IRoleEdit // Directly accept the object, not FormData
 ): Promise<IActionResultForm<IRoleEdit, IRole>> {
-  const rawData = formDataToObject<IRoleEdit>(formData);
   logger.info(
-    `(Server Action) updateRole: Tentativa de atualizar papel ${rawData.id}.`,
-    rawData
+    `(Server Action) updateRole: Tentativa de atualizar papel ${data.id}.`,
+    data
   );
 
-  const validationResult = validateRoleFormData(rawData, roleFormSchemaEdit);
-  if (!validationResult.success) {
+  // 1. Validação específica para RoleEdit
+  const validationProcessResult = validateFormData(data, roleFormSchemaEdit);
+
+  if (!validationProcessResult.success) {
     logger.warn(
-      `(Server Action) updateRole: Falha na validação para ${rawData.id}.`,
-      validationResult.errorResult.errorsFieldsServer
+      `(Server Action) updateRole: Falha na validação do formulário para o papel ${data.id}.`,
+      validationProcessResult.errorResult.errorsFieldsServer
     );
-    return validationResult.errorResult;
+    return {
+      ...validationProcessResult.errorResult,
+      submittedData: data // Ensure submittedData reflects the object
+    };
   }
 
-  const validatedData = validationResult.data;
+  const validatedRoleData = validationProcessResult.data; // This is IRoleEdit
   logger.info(
-    `(Server Action) updateRole: Dados validados para ${validatedData.id}.`
+    `(Server Action) updateRole: Dados do papel ${validatedRoleData.id} validados com sucesso.`
   );
 
-  const accessToken = await getSismanAccessToken();
-  return handleApiAction<IRoleEdit, IRole, IRoleEdit>(
-    validatedData,
-    rawData,
-    {
-      endpoint: `${API_RELATIVE_PATH}/${validatedData.id}`,
-      method: 'PUT',
-      accessToken: accessToken
-    },
-    {
-      mainPath: PAGE_PATH,
-      detailPath: `${PAGE_PATH}/edit/${validatedData.id}`
-    }, // Revalida lista e página de edição
-    'Papel atualizado com sucesso!'
-  );
+  // 2. Chamar a ação genérica da API
+  try {
+    const accessToken = await getSismanAccessToken();
+    return await handleApiAction<IRoleEdit, IRole, IRoleEdit>(
+      validatedRoleData,
+      data, // Pass the original 'data' object as submittedData
+      {
+        endpoint: `${API_RELATIVE_PATH}/${validatedRoleData.id}`,
+        method: 'PUT',
+        accessToken: accessToken
+      },
+      {
+        mainPath: PAGE_PATH,
+        detailPath: `${PAGE_PATH}/edit/${validatedRoleData.id}`
+      },
+      'Papel atualizado com sucesso!'
+    );
+  } catch (error) {
+    logger.error(
+      `(Server Action) updateRole: Erro inesperado para o papel ${data.id}.`,
+      error
+    );
+    return {
+      isSubmitSuccessful: false,
+      errorsServer: [
+        'Ocorreu um erro inesperado ao processar sua solicitação.'
+      ],
+      submittedData: data, // Use the 'data' object
+      message: 'Erro inesperado.'
+    };
+  }
 }
 
-// TODO: Implementar deleteRole se necessário
+// --- Ações de Formulário Exportadas ---

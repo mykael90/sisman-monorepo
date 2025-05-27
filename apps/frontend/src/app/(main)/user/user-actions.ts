@@ -7,11 +7,11 @@ import { fetchApiSisman } from '../../../lib/fetch/api-sisman';
 import { IActionResultForm } from '../../../types/types-server-actions';
 import { IUser, IUserAdd, IUserEdit, IUserList } from './user-types';
 import {
-  validateFormData,
   userFormSchemaAdd,
   userFormSchemaEdit
 } from './_components/form/user-form-validation';
 import { handleApiAction } from '../../../lib/fetch/handle-form-action-sisman';
+import { validateFormData } from '../../../lib/validate-form-data';
 
 const PAGE_PATH = '/user'; // Usar maiúsculas para constantes globais ao módulo
 const API_RELATIVE_PATH = '/user'; // Para chamadas de API relacionadas a usuários

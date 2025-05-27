@@ -6,16 +6,15 @@ import { Search, FilterX } from 'lucide-react';
 import { memo } from 'react';
 
 interface RoleFiltersProps {
-  roleNameFilter: string;
-  setRoleNameFilter: React.Dispatch<React.SetStateAction<string>>;
-  // Adicione outros filtros aqui se necessário
+  roleValue: string;
+  setRoleValue: React.Dispatch<React.SetStateAction<string>>;
   onClearFilters: () => void;
   inputDebounceRef: React.Ref<InputDebounceRef>;
 }
 
 const RoleFilters = memo(function RoleFilters({
-  roleNameFilter,
-  setRoleNameFilter,
+  roleValue,
+  setRoleValue,
   onClearFilters,
   inputDebounceRef
 }: RoleFiltersProps) {
@@ -30,12 +29,14 @@ const RoleFilters = memo(function RoleFilters({
         <InputDebounce
           imperativeRef={inputDebounceRef}
           type='text'
-          placeholder='Buscar papéis por nome...'
+          placeholder='Search roles by name or description...'
           className='pl-8'
-          inputValue={roleNameFilter}
-          setInputValue={setRoleNameFilter}
+          inputValue={roleValue}
+          setInputValue={setRoleValue}
         />
       </div>
+
+      {/* No status filter needed for roles based on IRoleList */}
 
       <Button
         variant='outline'
@@ -43,7 +44,7 @@ const RoleFilters = memo(function RoleFilters({
         className='flex items-center'
       >
         <FilterX className='mr-2 h-4 w-4' />
-        Limpar Filtros
+        Clear Filters
       </Button>
     </div>
   );

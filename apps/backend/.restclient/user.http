@@ -43,9 +43,7 @@ Content-Type: {{contentType}}
 Authorization: Bearer {{token}}
 
 {
-    "name": "example4",
-    "email": "example@provider.com",
-    "password": "123456"
+    "name": "example4"
 }
 
 ### PUT

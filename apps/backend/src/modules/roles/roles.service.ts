@@ -60,7 +60,7 @@ export class RolesService {
         },
         data
       });
-      return { message: 'Role updated successfully', updated };
+      return updated;
     } catch (error) {
       handlePrismaError(error, this.logger, 'RolesService', {
         operation: 'update',

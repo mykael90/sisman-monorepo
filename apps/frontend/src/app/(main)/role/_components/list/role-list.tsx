@@ -1,42 +1,34 @@
 'use client';
 
-import { useState, useMemo, useRef } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useMemo, useRef, Dispatch, SetStateAction } from 'react';
+import { SectionListHeader } from '../../../../../components/section-list-header';
+import { RoleFilters } from './role-filters';
+import { RoleTable } from './role-table';
 import {
+  ColumnDef,
   ColumnFiltersState,
   PaginationState,
-  SortingState,
-  ColumnDef
+  SortingState
 } from '@tanstack/react-table';
-
-import { IRoleList } from '../../role-types';
 import { InputDebounceRef } from '@/components/ui/input';
-
-// Componentes que precisarão ser criados/adaptados para Role:
-import { RoleListHeader } from './role-list-header'; // Similar a UserListHeader
-import { RoleFilters } from './role-filters'; // Similar a UserFilters
-import { RoleTable } from './role-table'; // Similar a UserTable
-import {
-  columns as defineRoleColumns,
-  createActions as createRoleActions
-} from './role-columns'; // Similar a user-columns
-
-export interface RoleListPageProps {
-  initialRoles: IRoleList[];
-  refreshAction: () => Promise<void>; // Ou void, dependendo da sua implementação
-}
+import { IRoleList } from '../../role-types';
+import { useRouter } from 'next/navigation';
+import { columns, createActions } from './role-columns';
+import { KeyRound, CirclePlus } from 'lucide-react'; // Using KeyRound for Role list header
 
 export function RoleListPage({
   initialRoles,
   refreshAction
-}: RoleListPageProps) {
+}: {
+  initialRoles: IRoleList[];
+  refreshAction: () => void;
+}) {
   const router = useRouter();
 
-  const [roles, setRoles] = useState<IRoleList[]>(initialRoles);
+  const [roles, setRoles] = useState(initialRoles); // State for table data
 
-  // Estados para filtros, paginação e ordenação
-  const [roleNameFilter, setRoleNameFilter] = useState(''); // Exemplo de filtro específico para nome do papel
-  // Adicione outros estados de filtro conforme necessário (ex: descriptionFilter)
+  // --- Filter State ---
+  const [roleValue, setRoleValue] = useState(''); // For searching role name or description
   const inputDebounceRef = useRef<InputDebounceRef>(null);
 
   const [pagination, setPagination] = useState<PaginationState>({
@@ -46,63 +38,94 @@ export function RoleListPage({
 
   const [sorting, setSorting] = useState<SortingState>([
     {
-      id: 'role', // Campo padrão para ordenação
+      id: 'role', // Default sort by role name
       desc: false
     }
   ]);
 
+  // --- Calculate columnFilters ---
   const columnFilters = useMemo<ColumnFiltersState>(() => {
     const filters: ColumnFiltersState = [];
-    if (roleNameFilter) {
-      filters.push({ id: 'role', value: roleNameFilter }); // Filtro pelo nome do papel
+    if (roleValue) {
+      // Assuming search applies to both role name and description
+      // TanStack Table's default filtering might handle this if you configure it
+      // or you might need a custom filter function.
+      // For simplicity, let's assume a global filter or filter on 'role' for now.
+      // A more advanced approach would involve a custom filterFn in column definition
+      // or filtering the 'roles' state array directly based on roleValue.
+      // Let's apply it to the 'role' column for now.
+      filters.push({ id: 'role', value: roleValue });
+      // If you want to filter by description too, you'd need another filter object
+      // or a custom global filter logic in the table component.
+      // filters.push({ id: 'description', value: roleValue }); // Example for description filter
     }
-    // Adicione lógica para outros filtros
+    // No status filter for roles based on IRoleList
     return filters;
-  }, [roleNameFilter /*, outros estados de filtro */]);
+  }, [roleValue]); // Recalculate only when roleValue changes
 
+  // Function to clear filters
   const handleClearFilters = () => {
-    setRoleNameFilter('');
-    // Limpe outros estados de filtro
-    inputDebounceRef.current?.clearInput(); // Se estiver usando InputDebounce
-    // Chamar refreshAction se a limpeza de filtros deve buscar dados novamente
-    // refreshAction();
+    setRoleValue('');
+    inputDebounceRef.current?.clearInput();
   };
 
+  // General Actions
   const handleAddRole = () => {
-    router.push('/role/add'); // Ajuste a rota conforme necessário
+    router.push('role/add');
   };
 
-  // Ações específicas para as colunas de Role
-  const columnActions = useMemo(() => createRoleActions(router), [router]);
-  const tableColumns = useMemo(
-    () => defineRoleColumns(columnActions),
-    [columnActions]
-  );
+  // Note: Delete action needs implementation (e.g., modal)
+  // const handleDeleteRole = (roleId: number) => {
+  //   setRoles(roles.filter((role) => role.id !== roleId)); // Example optimistic update
+  //   // Call server action to delete
+  // };
+
+  // Configure column actions
+  const columnActions = createActions(router); // Pass the navigation function
 
   return (
     <div className='container mx-auto p-4'>
-      <RoleListHeader onAddRole={handleAddRole} />
+      <SectionListHeader
+        title='Gerenciamento de Papéis'
+        subtitle='Sistema de gerenciamento de papéis (roles) e suas permissões'
+        TitleIcon={KeyRound} // Using KeyRound for Role list header
+        actionButton={{
+          text: 'Cadastrar Papel',
+          onClick: handleAddRole,
+          variant: 'default',
+          Icon: CirclePlus // Using CirclePlus for Add Role button
+        }}
+      />
 
       <div className='mt-4 mb-4 h-auto rounded-xl border-0 bg-white px-4 py-3.5'>
         <RoleFilters
-          roleNameFilter={roleNameFilter}
-          setRoleNameFilter={setRoleNameFilter}
-          // Passe outros filtros e setters
+          roleValue={roleValue}
+          setRoleValue={setRoleValue}
           onClearFilters={handleClearFilters}
-          inputDebounceRef={inputDebounceRef} // Se aplicável
+          inputDebounceRef={inputDebounceRef}
         />
       </div>
 
       <RoleTable
-        data={roles} // Os dados a serem exibidos
-        columns={tableColumns}
+        roles={roles}
         columnFilters={columnFilters}
         pagination={pagination}
         setPagination={setPagination}
-        sorting={sorting}
         setSorting={setSorting}
-        // setColumnFilters não é necessário se os filtros são gerenciados aqui
+        sorting={sorting}
+        columns={columns(columnActions)}
       />
     </div>
   );
+}
+
+export interface RoleTableProps {
+  roles: IRoleList[];
+  columnFilters: ColumnFiltersState;
+  setColumnFilters?: Dispatch<SetStateAction<ColumnFiltersState>>; // Optional if filtering is external
+  pagination: PaginationState;
+  setPagination: Dispatch<SetStateAction<any>>;
+  setSorting: Dispatch<SetStateAction<SortingState>>;
+  sorting: SortingState;
+  columns: ColumnDef<IRoleList, any>[];
 }

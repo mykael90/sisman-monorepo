@@ -8,12 +8,9 @@ export type IRole = Role;
 
 // Interface para adicionar uma nova role
 // Omitimos 'id' e campos gerenciados pelo Prisma como 'createdAt', 'updatedAt'
-export type IRoleAdd = Omit<
-  Prisma.RoleCreateInput,
-  'users' // Se RoleCreateInput incluir relações, omita-as se não forem definidas no formulário de criação de Role
->; // Geralmente 'role' e 'description'
+export interface IRoleAdd extends Prisma.RoleCreateManyInput {}
 
 // Interface para editar uma role
 // Inclui 'id' e os campos que podem ser editados
-export type IRoleEdit = Prisma.RoleUpdateInput & { id: number }; // Garante que 'id' está presente e os campos são os de update
+export interface IRoleEdit extends IRoleAdd {} // Garante que 'id' está presente e os campos são os de update
 // Geralmente 'role', 'description' e o 'id'

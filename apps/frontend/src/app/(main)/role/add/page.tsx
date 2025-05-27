@@ -1,10 +1,13 @@
 import RoleAdd from '../_components/add/role-add';
-import Logger from '../../../../lib/logger';
 
-const logger = new Logger('role/add/page.tsx');
+export default async function Page({
+  isInDialog = false
+}: {
+  isInDialog?: boolean;
+}) {
+  // Roles don't seem to have relationships like users have with roles,
+  // so no extra data fetching is needed here for the form itself.
+  // If roles needed to select permissions, you would fetch them here.
 
-export default async function Page() {
-  logger.info(`Página de adição de papel carregada.`);
-
-  return <RoleAdd />;
+  return <RoleAdd isInDialog={isInDialog} />;
 }

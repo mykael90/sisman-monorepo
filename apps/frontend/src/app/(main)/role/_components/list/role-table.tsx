@@ -1,38 +1,21 @@
 'use client';
 
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
+import { RoleTableProps } from './role-list';
 import { TableTanstack } from '../../../../../components/table-tanstack/table-tanstack';
-import { IRoleList } from '../../role-types';
-import {
-  ColumnDef,
-  ColumnFiltersState,
-  PaginationState,
-  SortingState
-} from '@tanstack/react-table';
-
-export interface RoleTableProps {
-  data: IRoleList[]; // Nome da prop de dados ajustado para 'data'
-  columnFilters: ColumnFiltersState;
-  setColumnFilters?: Dispatch<SetStateAction<ColumnFiltersState>>;
-  pagination: PaginationState;
-  setPagination: Dispatch<SetStateAction<PaginationState>>; // Tipo mais específico
-  setSorting: Dispatch<SetStateAction<SortingState>>;
-  sorting: SortingState;
-  columns: ColumnDef<IRoleList, any>[]; // Tipo da coluna ajustado para IRoleList
-}
 
 export function RoleTable({
-  data, // Usando 'data'
-  columns,
+  roles,
   columnFilters,
   pagination,
   setPagination,
   setSorting,
-  sorting
+  sorting,
+  columns
 }: RoleTableProps) {
   return (
     <TableTanstack
-      data={data} // Passa 'data' para TableTanstack
+      data={roles}
       columns={columns}
       columnFilters={columnFilters}
       pagination={pagination}

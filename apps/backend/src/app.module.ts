@@ -20,6 +20,7 @@ import mailerConfig from './config/mailer.config';
 import databaseConfig from './config/database.config';
 import generalConfig from './config/general.config';
 import { RolesModule } from './modules/roles/roles.module';
+import { MaintenanceInstancesModule } from './modules/maintenance-instances/maintenance-instances.module';
 
 @Module({
   imports: [
@@ -50,7 +51,8 @@ import { RolesModule } from './modules/roles/roles.module';
     AuthModule,
     FilesModule,
     MaterialsModule,
-    NotificationsModule
+    NotificationsModule,
+    MaintenanceInstancesModule
   ],
   controllers: [AppController],
   providers: [

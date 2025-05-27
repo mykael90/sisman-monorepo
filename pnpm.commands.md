@@ -34,4 +34,4 @@ The pnpm equivalent of this is `pnpm dlx create-react-app my-app`.
 Isso ajuda a confirmar o nome correto do workspace antes de instalar o pacote 🚀
 
 Novo recurso Nest
-`pnpm exec nest -g res`
+`pnpm exec nest g res`

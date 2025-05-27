@@ -142,6 +142,14 @@ exports.Prisma.LogLoginScalarFieldEnum = {
   successful: 'successful'
 };
 
+exports.Prisma.MaintenanceInstanceScalarFieldEnum = {
+  id: 'id',
+  sipacId: 'sipacId',
+  name: 'name',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.MaterialScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -206,6 +214,11 @@ exports.Prisma.LogLoginOrderByRelevanceFieldEnum = {
   userAgent: 'userAgent'
 };
 
+exports.Prisma.MaintenanceInstanceOrderByRelevanceFieldEnum = {
+  sipacId: 'sipacId',
+  name: 'name'
+};
+
 exports.Prisma.MaterialOrderByRelevanceFieldEnum = {
   name: 'name',
   specification: 'specification',
@@ -233,6 +246,7 @@ exports.Prisma.RoleOrderByRelevanceFieldEnum = {
 exports.Prisma.ModelName = {
   LogError: 'LogError',
   LogLogin: 'LogLogin',
+  MaintenanceInstance: 'MaintenanceInstance',
   Material: 'Material',
   User: 'User',
   MagicLink: 'MagicLink',

@@ -123,7 +123,10 @@ export const sidebarItems: SidebarItem[] = [
   {
     label: 'Settings',
     icon: <Settings className='h-6 w-6' />,
-    children: [{ label: 'Usuários', href: '/user' }]
+    children: [
+      { label: 'Usuários', href: '/user' },
+      { label: 'Tipos de Permissões', href: '/role' }
+    ]
   },
   {
     label: 'Sobre',

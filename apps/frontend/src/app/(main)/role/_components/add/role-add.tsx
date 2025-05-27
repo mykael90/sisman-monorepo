@@ -1,53 +1,77 @@
 'use client';
 
-import { useState } from 'react';
 import FormAddHeader from '../../../../../components/form-tanstack/form-add-header';
 import RoleForm from '../form/role-form';
-import { IRoleAdd } from '../../role-types';
+import { IRole, IRoleAdd } from '../../role-types';
 import { IActionResultForm } from '../../../../../types/types-server-actions';
-import { ShieldPlus } from 'lucide-react'; // Ícone para adicionar Role
+import { CirclePlus } from 'lucide-react'; // Using CirclePlus for Role
 import { addRole } from '../../role-actions';
 import { roleFormSchemaAdd } from '../form/role-form-validation';
+import { NonOptionalKeys } from '../../../../../types/utils-types';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
-export default function RoleAdd() {
+export default function RoleAdd({
+  isInDialog = false
+}: {
+  isInDialog?: boolean;
+}) {
   const defaultData: IRoleAdd = {
+    id: '' as any,
     role: '',
     description: ''
   };
 
-  const fieldLabels: Partial<Record<keyof IRoleAdd, string>> = {
+  // Note: IRoleAdd from role-types.ts includes 'id' and other Prisma fields
+  // but the form only needs 'role' and 'description' for adding.
+  // We define fieldLabels for the fields the form will actually use.
+  const fieldLabels: Record<
+    keyof Pick<IRoleAdd, 'id' | 'role' | 'description'>,
+    string
+  > = {
+    id: 'ID',
     role: 'Nome do Papel',
     description: 'Descrição'
   };
 
-  const initialServerState: IActionResultForm<IRoleAdd> = {
-    isSubmitSuccessful: false,
+  const initialServerState: IActionResultForm<IRoleAdd, IRole> = {
+    errorsServer: [],
     message: ''
   };
 
-  // Para controlar a chave do formulário e forçar o reset do useActionState
+  const router = useRouter();
+
+  const redirect = () => {
+    router.push('/role');
+  };
+
   const [formKey, setFormKey] = useState(() => Date.now().toString());
   const triggerFormReset = () => setFormKey(Date.now().toString());
 
   return (
-    <div className='mx-auto mt-4 w-full max-w-2xl rounded-lg bg-white shadow-lg'>
+    <div className='mx-auto w-full rounded-lg bg-white shadow-lg'>
+      {/* Header */}
       <FormAddHeader
-        Icon={ShieldPlus}
+        Icon={CirclePlus} // Using CirclePlus for Role
         title='Novo Papel'
-        subtitle='Adicionar um novo papel ao sistema'
-      />
+        subtitle='Adicionar um novo papel (role) ao sistema'
+      ></FormAddHeader>
+
+      {/* Form Section */}
       <RoleForm
         key={formKey}
         mode='add'
-        onCancel={triggerFormReset} // Reseta o formulário e seu estado de ação
+        onClean={triggerFormReset}
+        onCancel={redirect}
         defaultData={defaultData}
         initialServerState={initialServerState}
-        fieldLabels={fieldLabels}
+        fieldLabels={fieldLabels as any} // Cast needed because fieldLabels doesn't cover all IRoleAdd keys
         formActionProp={addRole}
         formSchema={roleFormSchemaAdd}
-        SubmitButtonIcon={ShieldPlus}
+        SubmitButtonIcon={CirclePlus}
         submitButtonText='Criar Papel'
-      />
+        isInDialog={isInDialog}
+      ></RoleForm>
     </div>
   );
 }

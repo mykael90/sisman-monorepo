@@ -1,14 +1,10 @@
 import Modal from '../../../../../components/ui/modal';
-import RoleAdd from '../../_components/add/role-add'; // Caminho para o componente de adição
-import Logger from '../../../../../lib/logger';
+import RoleAddPage from '../../add/page';
 
-const logger = new Logger('role/@modal/(.)add/page.tsx');
-
-export default function Page() {
-  logger.info(`Modal de adição de papel carregado.`);
+export default function page() {
   return (
     <Modal>
-      <RoleAdd />
+      <RoleAddPage isInDialog={true} />
     </Modal>
   );
 }

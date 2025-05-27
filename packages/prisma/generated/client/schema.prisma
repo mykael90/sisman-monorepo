@@ -27,6 +27,17 @@ model LogLogin {
   @@map("logLogins")
 }
 
+model MaintenanceInstance {
+  id        Int      @id @default(autoincrement())
+  sipacId   String   @unique
+  name      String
+  createdAt DateTime @default(now()) @db.Timestamp(0)
+  updatedAt DateTime @updatedAt @db.Timestamp(0)
+
+  @@index([sipacId])
+  @@map("maintenanceInstances")
+}
+
 model Material {
   id            BigInt   @id @db.UnsignedBigInt
   name          String   @db.TinyText

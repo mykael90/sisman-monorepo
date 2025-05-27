@@ -1,30 +1,24 @@
 import { ColumnDef, createColumnHelper, Row } from '@tanstack/react-table';
 import { Button } from '@/components/ui/button';
 import { Edit, Trash2 } from 'lucide-react';
-import { IRoleList } from '../../role-types'; // Importa o tipo IRoleList
+import { IRoleList } from '../../role-types';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
-import { format } from 'date-fns'; // Para formatar datas
-import { ptBR } from 'date-fns/locale'; // Se precisar de localização
+import { format } from 'date-fns'; // Assuming date-fns is available for date formatting
+import { ptBR } from 'date-fns/locale'; // Assuming ptBR locale
 
-// 1. Definir as colunas com createColumnHelper
-const columnHelper = createColumnHelper<IRoleList>(); // Usa IRoleList
+const columnHelper = createColumnHelper<IRoleList>();
 
-// Define o tipo das ações
 type ActionHandlers<TData> = {
-  onEdit: (row: Row<TData>) => void;
-  onDelete: (row: Row<TData>) => void;
+  [key: string]: (row: Row<TData>) => void;
 };
 
-// createActions será uma função que CRIA o objeto de ações,
-// recebendo a função de navegação.
 export const createActions = (
-  router: AppRouterInstance // Recebe a função de navegação
+  router: AppRouterInstance
 ): ActionHandlers<IRoleList> => ({
   onEdit: (row: Row<IRoleList>) => {
     console.log('Edit role', row.original);
     if (row.original.id) {
-      // Navega para a rota de edição de role
-      router.push(`/role/edit/${row.original.id}`); // Ajuste o caminho
+      router.push(`role/edit/${row.original.id}`);
     } else {
       console.error('Role ID is missing, cannot navigate to edit page.');
       throw new Error('Role ID is missing, cannot navigate to edit page.');
@@ -32,29 +26,58 @@ export const createActions = (
   },
   onDelete: (row: Row<IRoleList>) => {
     console.log('Delete role', row.original);
-    // Implemente sua lógica de deleção aqui (ex: modal de confirmação, chamada de API)
-    alert(`Implementar exclusão para o papel: ${row.original.role}`);
+    // Implement delete logic here (e.g., confirmation modal, API call)
+    // You might need to pass a delete function down from the list page
   }
 });
 
 export const columns = (
   configuredActions: ActionHandlers<IRoleList>
 ): ColumnDef<IRoleList, any>[] => [
+  columnHelper.accessor('id', {
+    header: 'ID',
+    cell: (props) => props.getValue(),
+    enableSorting: true,
+    meta: {
+      filterVariant: 'number' // Assuming ID is a number and filterable
+    }
+  }),
   columnHelper.accessor('role', {
     header: 'Papel',
-    cell: (props) => props.getValue()
+    cell: (props) => props.getValue(),
+    enableSorting: true,
+    meta: {
+      filterVariant: 'text' // Assuming role name is filterable by text
+    }
   }),
   columnHelper.accessor('description', {
     header: 'Descrição',
-    cell: (props) => props.getValue()
+    cell: (props) =>
+      props.getValue() || (
+        <span className='text-slate-400 italic'>Sem descrição</span>
+      ),
+    enableSorting: true,
+    meta: {
+      filterVariant: 'text' // Assuming description is filterable by text
+    }
   }),
   columnHelper.accessor('updatedAt', {
     header: 'Última Atualização',
     cell: (props) => {
       const date = props.getValue();
-      return date
-        ? format(new Date(date), 'dd/MM/yyyy HH:mm', { locale: ptBR })
-        : 'N/A';
+      // Format date if it's a valid Date object or string
+      try {
+        return date
+          ? format(new Date(date), 'dd/MM/yyyy HH:mm', { locale: ptBR })
+          : '-';
+      } catch (e) {
+        console.error('Failed to format date:', date, e);
+        return date ? String(date) : '-'; // Fallback to string or '-'
+      }
+    },
+    enableSorting: true,
+    meta: {
+      filterVariant: 'date' // If you implement date filtering
     }
   }),
   columnHelper.display({
@@ -69,14 +92,17 @@ export const columns = (
         >
           <Edit className='h-4 w-4' />
         </Button>
-        <Button
+        {/* Delete button - requires implementation */}
+        {/* <Button
           variant='ghost'
           size='icon'
           onClick={() => configuredActions.onDelete(row)}
         >
           <Trash2 className='h-4 w-4 text-red-500' />
-        </Button>
+        </Button> */}
       </div>
-    )
+    ),
+    enableSorting: false,
+    enableColumnFilter: false
   })
 ];
