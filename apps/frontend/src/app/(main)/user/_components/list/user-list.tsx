@@ -8,7 +8,7 @@ import {
   Dispatch,
   SetStateAction
 } from 'react'; // Importe useMemo
-import { UserListHeader } from './user-list-header';
+import { SectionListHeader } from '../../../../../components/section-list-header';
 import { UserFilters } from './user-filters';
 import { UserTable } from './user-table';
 import {
@@ -90,7 +90,7 @@ export function UserListPage({
 
   return (
     <div className='container mx-auto p-4'>
-      <UserListHeader
+      <SectionListHeader
         title='Gerenciamento de Usuários'
         subtitle='Sistema de gerenciamento de usuários e suas permissões'
         TitleIcon={UserCog}

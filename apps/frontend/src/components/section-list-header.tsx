@@ -4,7 +4,7 @@ import { type FC } from 'react'; // FC for functional component types
 import { type VariantProps } from 'class-variance-authority'; // To get variant types
 import { Button, buttonVariants } from '@/components/ui/button'; // Button and its props type
 
-interface UserListHeaderProps {
+interface SectionListHeader {
   title: string;
   subtitle?: string;
   TitleIcon?: FC<{ className?: string }>; // Optional icon for the title area
@@ -16,12 +16,12 @@ interface UserListHeaderProps {
   };
 }
 
-export function UserListHeader({
+export function SectionListHeader({
   title,
   subtitle,
   TitleIcon,
   actionButton
-}: UserListHeaderProps) {
+}: SectionListHeader) {
   return (
     <div className='flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center'>
       <div className='flex items-center'>
