@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import FormAddHeader from '../../../../../components/form-tanstack/form-add-header';
 import UserForm from '../form/user-form';
-import { IUserEdit } from '../../user-types';
+import { IUser, IUserEdit } from '../../user-types';
 import { IActionResultForm } from '../../../../../types/types-server-actions';
 import { Save, UserPlus } from 'lucide-react';
 import { updateUser } from '../../user-actions';
@@ -30,7 +30,7 @@ export default function UserEdit({
     roles: 'Permissões'
   };
 
-  const initialServerState: IActionResultForm<IUserEdit> = {
+  const initialServerState: IActionResultForm<IUserEdit, IUser> = {
     errorsServer: [],
     message: ''
   };

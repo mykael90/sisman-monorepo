@@ -6,7 +6,7 @@ import { useStore } from '@tanstack/react-store';
 import { FC, useActionState } from 'react';
 import { FormInputField } from '@/components/form-tanstack/form-input-fields';
 import { Button } from '@/components/ui/button';
-import { UserPlus, Save, CheckSquare, Square } from 'lucide-react';
+import { UserPlus, Save } from 'lucide-react';
 import { IActionResultForm } from '../../../../../types/types-server-actions';
 import { FormSuccessDisplay } from '../../../../../components/form-tanstack/form-success-display';
 import { ErrorServerForm } from '../../../../../components/form-tanstack/error-server-form';

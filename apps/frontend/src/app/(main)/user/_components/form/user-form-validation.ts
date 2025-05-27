@@ -32,7 +32,7 @@ const userFormSchemaAdd = z.object({
   roles: z
     .array(
       z.object({
-        id: z.string().min(1, 'Role ID cannot be empty.')
+        id: z.number().min(1, 'Role ID cannot be empty.')
       })
     )
     .min(0, 'roles can be empty')
