@@ -8,18 +8,16 @@ import {
   useTransform
 } from '@tanstack/react-form';
 import { useStore } from '@tanstack/react-store';
-import { FC, ReactNode, useActionState, useState } from 'react'; // Removido useRef, useState (não usados diretamente aqui)
+import { FC, ReactNode, useActionState, useMemo } from 'react';
 
-import { FormInputField } from '@/components/form-tanstack/form-input-fields'; // Ajuste o caminho
-import { Button } from '@/components/ui/button'; // Ajuste o caminho
-import { UserPlus, Save } from 'lucide-react'; // Adicionado Save icon
-import { IActionResultForm } from '../../../../../types/types-server-actions'; // Ajuste o caminho
-import { FormSuccessDisplay } from '../../../../../components/form-tanstack/form-success-display'; // Ajuste o caminho
-import { ErrorServerForm } from '../../../../../components/form-tanstack/error-server-form'; // Ajuste o caminho
+import { FormInputField } from '@/components/form-tanstack/form-input-fields';
+import { Button } from '@/components/ui/button';
+import { UserPlus, Save, CheckSquare, Square } from 'lucide-react'; // Added CheckSquare, Square for header
+import { IActionResultForm } from '../../../../../types/types-server-actions';
+import { FormSuccessDisplay } from '../../../../../components/form-tanstack/form-success-display';
+import { ErrorServerForm } from '../../../../../components/form-tanstack/error-server-form';
 import { IUserAdd } from '../../user-types';
-import { IRoleList } from '../../../role/role-types';
-// import { UserAddAvatar } from './user-add-avatar'; // Comentado, adicionar se necessário
-// import userFormSchema from './users-validation-form'; // Será passado como prop
+import { IRoleList } from '../../../role/role-types'; // Ensure this can have { id: string|number, role: string, description?: string }
 
 // Componente genérico UserForm
 export default function UserForm({
@@ -29,7 +27,7 @@ export default function UserForm({
   initialServerState = {
     isSubmitSuccessful: false,
     message: ''
-  }, // Estado inicial padrão
+  },
   fieldLabels,
   formSchema,
   onCancel,
@@ -42,18 +40,13 @@ export default function UserForm({
     initialServerState
   );
 
-  const [selectableRoles, setSelectableRoles] = useState(possibleRoles);
-
   const form = useForm({
-    // TData is inferred from defaultData (IUserAdd), TFormValidator is any for schema
     defaultValues: defaultData,
     transform: useTransform(
       (baseForm) => mergeForm(baseForm, serverState ?? {}),
-      // TODO: Consider if serverState should also be typed with TData or a partial of it
       [serverState]
     ),
-    validators: formSchema ? { onChange: formSchema } : undefined // Aplicar schema se fornecido
-    // validatorAdapter: zodValidator, // Se estiver usando Zod
+    validators: formSchema ? { onChange: formSchema } : undefined
   });
 
   const handleResetOrCancel = () => {
@@ -61,15 +54,14 @@ export default function UserForm({
     onCancel();
   };
 
-  // useStore para observar erros do servidor no estado do formulário
-  useStore(form.store, (formState) => formState.errorsServer); // Ou formState.errors para erros de campo
+  useStore(form.store, (formState) => formState.errorsServer);
 
   if (serverState?.isSubmitSuccessful && serverState.responseData) {
     return (
       <FormSuccessDisplay
-        serverState={serverState as IActionResultForm<object>} // Cast para o tipo esperado por FormSuccessDisplay
+        serverState={serverState as IActionResultForm<object>}
         handleActions={{
-          handleResetForm: handleResetOrCancel // Para "Adicionar Outro" ou "Continuar Editando"
+          handleResetForm: handleResetOrCancel
         }}
         dataAddLabel={fieldLabels}
         messageActions={{
@@ -93,10 +85,9 @@ export default function UserForm({
 
   return (
     <form
-      action={formAction} // Server action do useActionState
+      action={formAction}
       onSubmit={(e) => {
-        // e.preventDefault(); // Não é necessário com action={formAction}
-        form.handleSubmit(); // Validações do TanStack Form
+        form.handleSubmit();
       }}
       onReset={(e) => {
         e.preventDefault();
@@ -106,57 +97,9 @@ export default function UserForm({
     >
       <ErrorServerForm serverState={serverState} />
 
-      {/* <form.Field
-        name='avatarUrl'
-        // Adicione validadores client-side se desejar
-      >
-        {(field) => (
-          <div className='mb-6 flex flex-col items-center'>
-            <UserAvatar
-              value={field.state.value}
-              onChange={(url: string | undefined) =>
-                field.handleChange(url || '')
-              }
-            />
-            {field.state.meta.touchedErrors?.length ? (
-              <em className='mt-1 text-xs text-red-500'>
-                {field.state.meta.touchedErrors.join(', ')}
-              </em>
-            ) : null}
-            {field.state.meta.errors.map((error) => (
-              <p key={error as string} className='mt-1 text-xs text-red-500'>
-                {error}
-              </p>
-            ))}
-          </div>
-        )}
-      </form.Field> */}
-
-      {/* Debug: Mostrar estados na tela */}
-
-      {/* <div className='bg-red-100'>
-        {Object.entries(form.state).map(([key, value]) => (
-          <div key={key}>
-            <strong>{key}:</strong> {JSON.stringify(value, null, 2)}
-          </div>
-        ))}
-      </div>
-
-      <div className='bg-blue-100'>
-        {Object.entries(serverState).map(([key, value]) => (
-          <div key={key}>
-            <strong>{key}:</strong> {JSON.stringify(value, null, 2)}
-          </div>
-        ))}
-      </div> */}
-
-      {/* Campo ID oculto para o modo de edição */}
       {mode === 'edit' && defaultData.id && (
         <form.Field
-          name={'id' as any} // TanStack Form pode precisar de 'id' no TData
-          // Se 'id' não estiver em TData formalmente, mas presente em defaultData para edição:
-          // É melhor garantir que TData inclua 'id' se for relevante para o formulário.
-          // Para este exemplo, assumimos que TData pode ter 'id'.
+          name={'id' as any}
           children={(field) => (
             <input type='hidden' value={field.state.value} name={field.name} />
           )}
@@ -165,15 +108,12 @@ export default function UserForm({
 
       <form.Field name='name'>
         {(field) => (
-          <>
-            <FormInputField
-              field={field}
-              label={fieldLabels.name}
-              placeholder='Digite o nome completo'
-              className='mb-4'
-            />
-            {/* {JSON.stringify(field.getMeta(), null, 2)} */}
-          </>
+          <FormInputField
+            field={field}
+            label={fieldLabels.name}
+            placeholder='Digite o nome completo'
+            className='mb-4'
+          />
         )}
       </form.Field>
 
@@ -200,85 +140,113 @@ export default function UserForm({
         )}
       </form.Field>
 
-      {/* Roles Selection Field */}
-      {/* Ensure IUserAdd includes `roles?: string[]` or `roles?: number[]` */}
+      {/* Roles Selection Field - STYLED TABLE SECTION */}
       <form.Field
         name='roles'
         mode='array'
         children={(field) => {
-          // field.state.value é esperado ser Array<{ id: string }> | undefined
-          // com base na tipagem de IUserAdd['roles'] e defaultData.roles
           const currentSelectedRoleObjects = field.state.value || [];
 
           return (
-            <div className='mb-4'>
-              <label className='mb-2 block text-sm font-medium text-gray-700'>
-                {fieldLabels.roles || 'Funções'}
+            <div>
+              <label className='mb-3 block text-sm font-medium text-gray-700'>
+                {fieldLabels.roles || 'Atribuir Funções'}
               </label>
-              {selectableRoles && selectableRoles.length > 0 ? (
-                <div className='space-y-2'>
-                  {selectableRoles.map((role) => {
-                    const roleId = String(role.id); // ID da role atual (string)
-                    const isChecked = currentSelectedRoleObjects.some(
-                      (selectedRole) => String(selectedRole.id) === roleId
-                    );
 
-                    return (
-                      <label
-                        key={role.id}
-                        htmlFor={`role-${role.id}`}
-                        className='flex cursor-pointer items-center'
-                      >
-                        <input
-                          type='checkbox'
-                          id={`role-${role.id}`}
-                          name={field.name} // Importante: "roles" para o FormData
-                          value={`{id: ${roleId}}`} // Valor enviado no FormData (string ID)
-                          checked={isChecked}
-                          onChange={(e) => {
-                            let newSelectedRoleObjects: Array<{ id: string }>;
-                            if (e.target.checked) {
-                              newSelectedRoleObjects = [
-                                ...currentSelectedRoleObjects,
-                                { id: roleId } // Armazena como objeto no estado do formulário
-                              ];
-                            } else {
-                              newSelectedRoleObjects =
-                                currentSelectedRoleObjects.filter(
-                                  (selectedRole) => selectedRole.id !== roleId
-                                );
-                            }
-                            field.handleChange(newSelectedRoleObjects);
-                          }}
-                          className='mr-3 h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                        />
-                        <span className='text-sm text-gray-900'>
-                          {role.role}
-                        </span>
-                      </label>
-                    );
-                  })}
+              <div className='max-h-80 overflow-y-auto rounded-md border border-slate-300 bg-white shadow-sm'>
+                {/* Table Header */}
+                <div
+                  className={`sticky top-0 z-10 grid grid-cols-[40px_50px_1fr_1.5fr] items-center gap-x-2 border-b border-slate-300 bg-slate-100 px-3 py-2.5 text-xs font-medium tracking-wider text-slate-600 uppercase sm:gap-x-4`}
+                >
+                  <div className='text-center'>Sel.</div>
+                  <div className='text-left'>ID</div>
+                  <div className='text-left'>Função</div>
+                  <div className='text-left'>Descrição</div>
                 </div>
-              ) : (
-                <p className='text-sm text-gray-500'>
-                  Nenhuma função disponível para seleção.
-                </p>
-              )}
-              {field.getMeta().errors?.length
-                ? field.getMeta().errors.map((error: string, index: number) => (
-                    <em key={index} className='mt-1 text-xs text-red-500'>
-                      {error}
-                    </em>
-                  ))
-                : null}
+
+                {/* Table Body */}
+                {possibleRoles && possibleRoles.length > 0 ? (
+                  <div className='divide-y divide-slate-200'>
+                    {possibleRoles.map((role) => {
+                      const roleId = String(role.id);
+                      const isChecked = currentSelectedRoleObjects.some(
+                        (selectedRole) => String(selectedRole.id) === roleId
+                      );
+
+                      return (
+                        <label // The entire row is a label for the checkbox
+                          key={role.id}
+                          htmlFor={`role-${role.id}`}
+                          className={`grid cursor-pointer grid-cols-[40px_50px_1fr_1.5fr] items-center gap-x-2 px-3 py-3 transition-colors duration-150 hover:bg-slate-50 has-[:checked]:bg-indigo-50 sm:gap-x-4`}
+                        >
+                          <div className='flex justify-center'>
+                            <input
+                              type='checkbox'
+                              id={`role-${role.id}`}
+                              name={field.name} // "roles"
+                              value={roleId} // Sends the ID as string value
+                              checked={isChecked}
+                              onChange={(e) => {
+                                let newSelectedRoleObjects: Array<{
+                                  id: string;
+                                }>;
+                                if (e.target.checked) {
+                                  newSelectedRoleObjects = [
+                                    ...currentSelectedRoleObjects,
+                                    { id: roleId }
+                                  ];
+                                } else {
+                                  newSelectedRoleObjects =
+                                    currentSelectedRoleObjects.filter(
+                                      (selectedRole) =>
+                                        selectedRole.id !== roleId
+                                    );
+                                }
+                                field.handleChange(newSelectedRoleObjects);
+                              }}
+                              className='h-4 w-4 rounded border-gray-400 text-indigo-600 shadow-sm checked:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-white'
+                            />
+                          </div>
+                          <div className='truncate text-sm text-slate-600'>
+                            {role.id}
+                          </div>
+                          <div className='truncate text-sm font-medium text-slate-800'>
+                            {role.role}
+                          </div>
+                          <div className='truncate text-sm text-slate-600'>
+                            {role.description || (
+                              <span className='text-slate-400 italic'>
+                                Sem descrição
+                              </span>
+                            )}
+                          </div>
+                        </label>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <p className='p-6 text-center text-sm text-slate-500'>
+                    Nenhuma função disponível para seleção.
+                  </p>
+                )}
+              </div>
+              {field.getMeta().errors?.length ? (
+                <div className='mt-3'>
+                  {field
+                    .getMeta()
+                    .errors.map((error: string, index: number) => (
+                      <em key={index} className='block text-xs text-red-600'>
+                        {error}
+                      </em>
+                    ))}
+                </div>
+              ) : null}
             </div>
           );
         }}
       />
 
       <div className='mt-8 flex justify-end gap-3'>
-        {' '}
-        {/* Increased top margin if roles section is substantial */}
         <Button type='button' variant='outline' onClick={handleResetOrCancel}>
           Cancelar
         </Button>
@@ -298,7 +266,6 @@ export default function UserForm({
                 isValidating ||
                 (mode === 'add' && !isTouched)
               }
-              // Em modo de edição, pode desabilitar se nada foi tocado (isTouched)
             >
               {isPending || isValidating
                 ? 'Processando...'
@@ -313,54 +280,24 @@ export default function UserForm({
 }
 
 // Tipos genéricos para o formulário
-// TData representa a estrutura dos dados do formulário (ex: IUser, IUserAdd)
-// TServerResultData representa a estrutura dos dados retornados pelo servidor (pode ser igual a TData)
 interface UserFormProps {
   mode: 'add' | 'edit';
-  /**
-   * Dados iniciais para o formulário.
-   * Para 'add', pode ser um objeto com valores padrão.
-   * Para 'edit', deve ser o objeto do usuário a ser editado (incluindo o 'id' e 'roles' preenchidos).
-   */
   defaultData: IUserAdd;
-  /**
-   * A server action a ser chamada (addUserAction, editUserAction, etc.).
-   * Deve aceitar (prevState, formData) e retornar Promise<IActionResultForm<TServerResultData>>.
-   */
   formActionProp: (
     prevState: IActionResultForm<IUserAdd>,
     formData: FormData
   ) => Promise<IActionResultForm<IUserAdd>>;
-  /**
-   * Estado inicial para `useActionState`.
-   */
   initialServerState?: IActionResultForm<IUserAdd>;
-  /**
-   * Labels para os campos do formulário e para exibição no FormSuccessDisplay.
-   * As chaves devem corresponder às chaves de TData (e.g., 'name', 'login', 'email', 'roles').
-   */
   fieldLabels: {
-    [k: string]: string;
+    [k: string]: string; // e.g., fieldLabels.roles = "Funções Atribuídas"
   };
-  /**
-   * Esquema de validação para o TanStack Form (ex: objeto de validadores ou schema Zod adaptado).
-   */
-  formSchema?: any; // Seja mais específico se souber o tipo do schema (ex: typeof userFormSchema)
-  /**
-   * Chamado quando o usuário clica em "Cancelar" ou após um sucesso para resetar/fechar o formulário.
-   */
+  formSchema?: any;
   onCancel: () => void;
-  /**
-   * Texto customizado para o botão de submissão.
-   */
   submitButtonText?: string;
-  /**
-   * Ícone customizado para o botão de submissão.
-   */
   SubmitButtonIcon?: FC<{ className?: string }>;
-
   /**
    * Lista de todas as funções possíveis que o usuário pode ter.
+   * Assumes IRoleList objects have at least `id` and `role`, and optionally `description`.
    */
   possibleRoles?: IRoleList[];
 }

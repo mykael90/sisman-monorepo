@@ -49,7 +49,7 @@ export default function Modal({ children }: { children: React.ReactNode }) {
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogOverlay />
       <DialogContent
-        className='sm:max-w-lg'
+        className='max-w-sm sm:max-w-lg'
         // onOpenAutoFocus={(e) => e.preventDefault()} // Descomente se quiser evitar foco automático no primeiro elemento focável
         // onInteractOutside={(e) => { // Para controle mais fino do clique fora
         //   // Por padrão, DialogOverlay já lida com isso e chama onOpenChange(false)
