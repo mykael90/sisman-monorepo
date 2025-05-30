@@ -1,11 +1,81 @@
+// --------------- MATERIAIS (Catálogo) ---------------
 model Material {
-    id            BigInt   @id @db.UnsignedBigInt
-    name          String   @db.TinyText
-    specification String?  @db.VarChar(1023)
-    unit          String   @db.VarChar(31)
+    id            Int      @id @default(autoincrement())
+    code          String?  @unique // Código interno do material
+    name          String
+    description   String?  @db.Text
+    unitOfMeasure String // Ex: "un", "m", "kg", "L"
+    // currentStock   Decimal? @db.Decimal(10,2) // Se for controlar estoque aqui
+    // minStock       Decimal? @db.Decimal(10,2)
+    // costPrice      Decimal? @db.Decimal(10,2)
     isActive      Boolean  @default(true)
     createdAt     DateTime @default(now()) @db.Timestamp(0)
     updatedAt     DateTime @updatedAt @db.Timestamp(0)
 
+    // One-to-many self relations: Referenciar materiais com diferentes unidades de medida gerados por um material pai
+    parentMaterialId Int?
+    parentMaterial   Material?  @relation("ParentChilds", fields: [parentMaterialId], references: [id])
+    childs           Material[] @relation("ParentChilds")
+
+    materialRequestItems MaterialRequestItem[]
+
     @@map("materials")
+}
+
+// --------------- REQUISIÇÃO DE MATERIAL (Cabeçalho) ---------------
+model MaterialRequest {
+    id            Int                   @id @default(autoincrement())
+    justification String?               @db.Text // Justificativa para a requisição
+    requestDate   DateTime              @default(now())
+    status        MaterialRequestStatus @default(PENDING)
+
+    // --- Chaves Estrangeiras ---
+    maintenanceRequestId Int
+    maintenanceRequest   MaintenanceRequest @relation(fields: [maintenanceRequestId], references: [id], onDelete: Cascade)
+
+    // Quem solicitou o material
+    requestedById Int
+    requestedBy   User @relation("MaterialRequestedByUser", fields: [requestedById], references: [id])
+
+    // Quem aprovou/rejeitou (opcional)
+    approvedById  Int?
+    approvedBy    User?     @relation("MaterialApprovedByUser", fields: [approvedById], references: [id])
+    approvalDate  DateTime?
+    approvalNotes String?   @db.Text
+
+    createdAt DateTime @default(now()) @db.Timestamp(0)
+    updatedAt DateTime @updatedAt @db.Timestamp(0)
+
+    // Relações
+    items MaterialRequestItem[]
+
+    @@index([maintenanceRequestId])
+    @@index([requestedById])
+    @@index([approvedById])
+    @@map("materialRequests")
+}
+
+// --------------- ITENS DA REQUISIÇÃO DE MATERIAL (Detalhe) ---------------
+model MaterialRequestItem {
+    id                Int      @id @default(autoincrement())
+    quantityRequested Decimal  @db.Decimal(10, 2)
+    quantityApproved  Decimal? @db.Decimal(10, 2) // Quantidade aprovada (pode ser menor que a solicitada)
+    quantityDelivered Decimal? @db.Decimal(10, 2) // Quantidade efetivamente entregue/utilizada
+
+    // --- Chaves Estrangeiras ---
+    materialRequestId Int
+    materialRequest   MaterialRequest @relation(fields: [materialRequestId], references: [id], onDelete: Cascade)
+
+    materialId Int
+    material   Material @relation(fields: [materialId], references: [id])
+
+    // unitPrice        Decimal? @db.Decimal(10,2) // Preço unitário no momento da requisição (histórico)
+    // totalPrice       Decimal? @db.Decimal(10,2) // Calculado
+
+    createdAt DateTime @default(now()) @db.Timestamp(0)
+    updatedAt DateTime @updatedAt @db.Timestamp(0)
+
+    @@index([materialRequestId])
+    @@index([materialId])
+    @@map("materialRequestItems")
 }

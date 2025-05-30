@@ -9,9 +9,8 @@ import {
   ParseIntPipe
 } from '@nestjs/common';
 import { MaterialsService } from './materials.service';
-import { CreateMaterialDto } from './dto/create-material.dto';
-import { UpdateMaterialDto } from './dto/update-material.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { CreateMaterialDto, UpdateMaterialDto } from './dto/material.dto';
 
 @Controller('materials')
 @ApiTags('materials')

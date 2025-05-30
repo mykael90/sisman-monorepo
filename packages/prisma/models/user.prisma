@@ -11,6 +11,14 @@ model User {
   roles      Role[]
   magicLinks MagicLink[]
 
+  // Relações: maintenance.prisma
+  reportedOccurrences         InfrastructureOccurrence[] @relation("ReportedOccurrences") // Ocorrências de infra reportadas por este usuário
+  createdMaintenanceRequests  MaintenanceRequest[]       @relation("CreatedByUser")
+  assignedMaintenanceRequests MaintenanceRequest[]       @relation("AssignedToUser")
+  timelineEvents              MaintenanceTimelineEvent[] @relation("ActionByUser") // Eventos/ações realizadas por este usuário
+  materialRequestsCreated     MaterialRequest[]          @relation("MaterialRequestedByUser")
+  materialRequestsApproved    MaterialRequest[]          @relation("MaterialApprovedByUser")
+
   @@map("users")
 }
 

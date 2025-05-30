@@ -4,16 +4,13 @@ import {
   Injectable,
   NotFoundException
 } from '@nestjs/common';
-import { CreateMaterialDto } from './dto/create-material.dto';
-import { UpdateMaterialDto } from './dto/update-material.dto';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
+import { CreateMaterialDto, UpdateMaterialDto } from './dto/material.dto';
 
 @Injectable()
 export class MaterialsService {
   constructor(private readonly prisma: PrismaService) {}
   async create(data: CreateMaterialDto) {
-    const exists = await this.exists(data.id);
-    if (exists) throw new ConflictException('Material already exists');
     return await this.prisma.material.create({ data });
   }
 

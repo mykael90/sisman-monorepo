@@ -24,15 +24,55 @@ export type LogError = $Result.DefaultSelection<Prisma.$LogErrorPayload>
  */
 export type LogLogin = $Result.DefaultSelection<Prisma.$LogLoginPayload>
 /**
+ * Model MaintenanceRequest
+ * 
+ */
+export type MaintenanceRequest = $Result.DefaultSelection<Prisma.$MaintenanceRequestPayload>
+/**
+ * Model MaintenanceRequestStatus
+ * 
+ */
+export type MaintenanceRequestStatus = $Result.DefaultSelection<Prisma.$MaintenanceRequestStatusPayload>
+/**
+ * Model MaintenanceTimelineEvent
+ * 
+ */
+export type MaintenanceTimelineEvent = $Result.DefaultSelection<Prisma.$MaintenanceTimelineEventPayload>
+/**
  * Model MaintenanceInstance
  * 
  */
 export type MaintenanceInstance = $Result.DefaultSelection<Prisma.$MaintenanceInstancePayload>
 /**
+ * Model ServiceType
+ * 
+ */
+export type ServiceType = $Result.DefaultSelection<Prisma.$ServiceTypePayload>
+/**
+ * Model Equipment
+ * 
+ */
+export type Equipment = $Result.DefaultSelection<Prisma.$EquipmentPayload>
+/**
+ * Model InfrastructureOccurrence
+ * 
+ */
+export type InfrastructureOccurrence = $Result.DefaultSelection<Prisma.$InfrastructureOccurrencePayload>
+/**
  * Model Material
  * 
  */
 export type Material = $Result.DefaultSelection<Prisma.$MaterialPayload>
+/**
+ * Model MaterialRequest
+ * 
+ */
+export type MaterialRequest = $Result.DefaultSelection<Prisma.$MaterialRequestPayload>
+/**
+ * Model MaterialRequestItem
+ * 
+ */
+export type MaterialRequestItem = $Result.DefaultSelection<Prisma.$MaterialRequestItemPayload>
 /**
  * Model User
  * 
@@ -48,6 +88,81 @@ export type MagicLink = $Result.DefaultSelection<Prisma.$MagicLinkPayload>
  * 
  */
 export type Role = $Result.DefaultSelection<Prisma.$RolePayload>
+
+/**
+ * Enums
+ */
+export namespace $Enums {
+  export const RequestPriority: {
+  LOW: 'LOW',
+  NORMAL: 'NORMAL',
+  HIGH: 'HIGH',
+  URGENT: 'URGENT'
+};
+
+export type RequestPriority = (typeof RequestPriority)[keyof typeof RequestPriority]
+
+
+export const TimelineEventType: {
+  CREATION: 'CREATION',
+  COMMENT: 'COMMENT',
+  STATUS_CHANGE: 'STATUS_CHANGE',
+  PRIORITY_CHANGE: 'PRIORITY_CHANGE',
+  ASSIGNMENT: 'ASSIGNMENT',
+  UNASSIGNMENT: 'UNASSIGNMENT',
+  TRANSFER_INITIATED: 'TRANSFER_INITIATED',
+  SOLUTION_REGISTERED: 'SOLUTION_REGISTERED',
+  MATERIAL_REQUESTED: 'MATERIAL_REQUESTED',
+  MATERIAL_STATUS_CHANGED: 'MATERIAL_STATUS_CHANGED',
+  DEADLINE_CHANGED: 'DEADLINE_CHANGED',
+  CLOSED: 'CLOSED',
+  REOPENED: 'REOPENED',
+  LINKED_INFRA_OCCURRENCE: 'LINKED_INFRA_OCCURRENCE',
+  UNLINKED_INFRA_OCCURRENCE: 'UNLINKED_INFRA_OCCURRENCE'
+};
+
+export type TimelineEventType = (typeof TimelineEventType)[keyof typeof TimelineEventType]
+
+
+export const MaterialRequestStatus: {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  PARTIALLY_DELIVERED: 'PARTIALLY_DELIVERED',
+  DELIVERED: 'DELIVERED',
+  CANCELLED: 'CANCELLED'
+};
+
+export type MaterialRequestStatus = (typeof MaterialRequestStatus)[keyof typeof MaterialRequestStatus]
+
+
+export const InfrastructureOccurrenceStatus: {
+  REPORTED: 'REPORTED',
+  ANALYZING: 'ANALYZING',
+  ACCEPTED: 'ACCEPTED',
+  DISMISSED: 'DISMISSED',
+  RESOLVED: 'RESOLVED'
+};
+
+export type InfrastructureOccurrenceStatus = (typeof InfrastructureOccurrenceStatus)[keyof typeof InfrastructureOccurrenceStatus]
+
+}
+
+export type RequestPriority = $Enums.RequestPriority
+
+export const RequestPriority: typeof $Enums.RequestPriority
+
+export type TimelineEventType = $Enums.TimelineEventType
+
+export const TimelineEventType: typeof $Enums.TimelineEventType
+
+export type MaterialRequestStatus = $Enums.MaterialRequestStatus
+
+export const MaterialRequestStatus: typeof $Enums.MaterialRequestStatus
+
+export type InfrastructureOccurrenceStatus = $Enums.InfrastructureOccurrenceStatus
+
+export const InfrastructureOccurrenceStatus: typeof $Enums.InfrastructureOccurrenceStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -195,6 +310,36 @@ export class PrismaClient<
   get logLogin(): Prisma.LogLoginDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.maintenanceRequest`: Exposes CRUD operations for the **MaintenanceRequest** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more MaintenanceRequests
+    * const maintenanceRequests = await prisma.maintenanceRequest.findMany()
+    * ```
+    */
+  get maintenanceRequest(): Prisma.MaintenanceRequestDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.maintenanceRequestStatus`: Exposes CRUD operations for the **MaintenanceRequestStatus** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more MaintenanceRequestStatuses
+    * const maintenanceRequestStatuses = await prisma.maintenanceRequestStatus.findMany()
+    * ```
+    */
+  get maintenanceRequestStatus(): Prisma.MaintenanceRequestStatusDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.maintenanceTimelineEvent`: Exposes CRUD operations for the **MaintenanceTimelineEvent** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more MaintenanceTimelineEvents
+    * const maintenanceTimelineEvents = await prisma.maintenanceTimelineEvent.findMany()
+    * ```
+    */
+  get maintenanceTimelineEvent(): Prisma.MaintenanceTimelineEventDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.maintenanceInstance`: Exposes CRUD operations for the **MaintenanceInstance** model.
     * Example usage:
     * ```ts
@@ -205,6 +350,36 @@ export class PrismaClient<
   get maintenanceInstance(): Prisma.MaintenanceInstanceDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.serviceType`: Exposes CRUD operations for the **ServiceType** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ServiceTypes
+    * const serviceTypes = await prisma.serviceType.findMany()
+    * ```
+    */
+  get serviceType(): Prisma.ServiceTypeDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.equipment`: Exposes CRUD operations for the **Equipment** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Equipment
+    * const equipment = await prisma.equipment.findMany()
+    * ```
+    */
+  get equipment(): Prisma.EquipmentDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.infrastructureOccurrence`: Exposes CRUD operations for the **InfrastructureOccurrence** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more InfrastructureOccurrences
+    * const infrastructureOccurrences = await prisma.infrastructureOccurrence.findMany()
+    * ```
+    */
+  get infrastructureOccurrence(): Prisma.InfrastructureOccurrenceDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.material`: Exposes CRUD operations for the **Material** model.
     * Example usage:
     * ```ts
@@ -213,6 +388,26 @@ export class PrismaClient<
     * ```
     */
   get material(): Prisma.MaterialDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.materialRequest`: Exposes CRUD operations for the **MaterialRequest** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more MaterialRequests
+    * const materialRequests = await prisma.materialRequest.findMany()
+    * ```
+    */
+  get materialRequest(): Prisma.MaterialRequestDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.materialRequestItem`: Exposes CRUD operations for the **MaterialRequestItem** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more MaterialRequestItems
+    * const materialRequestItems = await prisma.materialRequestItem.findMany()
+    * ```
+    */
+  get materialRequestItem(): Prisma.MaterialRequestItemDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.user`: Exposes CRUD operations for the **User** model.
@@ -685,8 +880,16 @@ export namespace Prisma {
   export const ModelName: {
     LogError: 'LogError',
     LogLogin: 'LogLogin',
+    MaintenanceRequest: 'MaintenanceRequest',
+    MaintenanceRequestStatus: 'MaintenanceRequestStatus',
+    MaintenanceTimelineEvent: 'MaintenanceTimelineEvent',
     MaintenanceInstance: 'MaintenanceInstance',
+    ServiceType: 'ServiceType',
+    Equipment: 'Equipment',
+    InfrastructureOccurrence: 'InfrastructureOccurrence',
     Material: 'Material',
+    MaterialRequest: 'MaterialRequest',
+    MaterialRequestItem: 'MaterialRequestItem',
     User: 'User',
     MagicLink: 'MagicLink',
     Role: 'Role'
@@ -708,7 +911,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "logError" | "logLogin" | "maintenanceInstance" | "material" | "user" | "magicLink" | "role"
+      modelProps: "logError" | "logLogin" | "maintenanceRequest" | "maintenanceRequestStatus" | "maintenanceTimelineEvent" | "maintenanceInstance" | "serviceType" | "equipment" | "infrastructureOccurrence" | "material" | "materialRequest" | "materialRequestItem" | "user" | "magicLink" | "role"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -844,6 +1047,204 @@ export namespace Prisma {
           }
         }
       }
+      MaintenanceRequest: {
+        payload: Prisma.$MaintenanceRequestPayload<ExtArgs>
+        fields: Prisma.MaintenanceRequestFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.MaintenanceRequestFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaintenanceRequestPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.MaintenanceRequestFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaintenanceRequestPayload>
+          }
+          findFirst: {
+            args: Prisma.MaintenanceRequestFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaintenanceRequestPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.MaintenanceRequestFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaintenanceRequestPayload>
+          }
+          findMany: {
+            args: Prisma.MaintenanceRequestFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaintenanceRequestPayload>[]
+          }
+          create: {
+            args: Prisma.MaintenanceRequestCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaintenanceRequestPayload>
+          }
+          createMany: {
+            args: Prisma.MaintenanceRequestCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.MaintenanceRequestDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaintenanceRequestPayload>
+          }
+          update: {
+            args: Prisma.MaintenanceRequestUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaintenanceRequestPayload>
+          }
+          deleteMany: {
+            args: Prisma.MaintenanceRequestDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.MaintenanceRequestUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.MaintenanceRequestUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaintenanceRequestPayload>
+          }
+          aggregate: {
+            args: Prisma.MaintenanceRequestAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMaintenanceRequest>
+          }
+          groupBy: {
+            args: Prisma.MaintenanceRequestGroupByArgs<ExtArgs>
+            result: $Utils.Optional<MaintenanceRequestGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.MaintenanceRequestCountArgs<ExtArgs>
+            result: $Utils.Optional<MaintenanceRequestCountAggregateOutputType> | number
+          }
+        }
+      }
+      MaintenanceRequestStatus: {
+        payload: Prisma.$MaintenanceRequestStatusPayload<ExtArgs>
+        fields: Prisma.MaintenanceRequestStatusFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.MaintenanceRequestStatusFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaintenanceRequestStatusPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.MaintenanceRequestStatusFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaintenanceRequestStatusPayload>
+          }
+          findFirst: {
+            args: Prisma.MaintenanceRequestStatusFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaintenanceRequestStatusPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.MaintenanceRequestStatusFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaintenanceRequestStatusPayload>
+          }
+          findMany: {
+            args: Prisma.MaintenanceRequestStatusFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaintenanceRequestStatusPayload>[]
+          }
+          create: {
+            args: Prisma.MaintenanceRequestStatusCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaintenanceRequestStatusPayload>
+          }
+          createMany: {
+            args: Prisma.MaintenanceRequestStatusCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.MaintenanceRequestStatusDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaintenanceRequestStatusPayload>
+          }
+          update: {
+            args: Prisma.MaintenanceRequestStatusUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaintenanceRequestStatusPayload>
+          }
+          deleteMany: {
+            args: Prisma.MaintenanceRequestStatusDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.MaintenanceRequestStatusUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.MaintenanceRequestStatusUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaintenanceRequestStatusPayload>
+          }
+          aggregate: {
+            args: Prisma.MaintenanceRequestStatusAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMaintenanceRequestStatus>
+          }
+          groupBy: {
+            args: Prisma.MaintenanceRequestStatusGroupByArgs<ExtArgs>
+            result: $Utils.Optional<MaintenanceRequestStatusGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.MaintenanceRequestStatusCountArgs<ExtArgs>
+            result: $Utils.Optional<MaintenanceRequestStatusCountAggregateOutputType> | number
+          }
+        }
+      }
+      MaintenanceTimelineEvent: {
+        payload: Prisma.$MaintenanceTimelineEventPayload<ExtArgs>
+        fields: Prisma.MaintenanceTimelineEventFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.MaintenanceTimelineEventFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaintenanceTimelineEventPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.MaintenanceTimelineEventFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaintenanceTimelineEventPayload>
+          }
+          findFirst: {
+            args: Prisma.MaintenanceTimelineEventFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaintenanceTimelineEventPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.MaintenanceTimelineEventFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaintenanceTimelineEventPayload>
+          }
+          findMany: {
+            args: Prisma.MaintenanceTimelineEventFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaintenanceTimelineEventPayload>[]
+          }
+          create: {
+            args: Prisma.MaintenanceTimelineEventCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaintenanceTimelineEventPayload>
+          }
+          createMany: {
+            args: Prisma.MaintenanceTimelineEventCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.MaintenanceTimelineEventDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaintenanceTimelineEventPayload>
+          }
+          update: {
+            args: Prisma.MaintenanceTimelineEventUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaintenanceTimelineEventPayload>
+          }
+          deleteMany: {
+            args: Prisma.MaintenanceTimelineEventDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.MaintenanceTimelineEventUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.MaintenanceTimelineEventUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaintenanceTimelineEventPayload>
+          }
+          aggregate: {
+            args: Prisma.MaintenanceTimelineEventAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMaintenanceTimelineEvent>
+          }
+          groupBy: {
+            args: Prisma.MaintenanceTimelineEventGroupByArgs<ExtArgs>
+            result: $Utils.Optional<MaintenanceTimelineEventGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.MaintenanceTimelineEventCountArgs<ExtArgs>
+            result: $Utils.Optional<MaintenanceTimelineEventCountAggregateOutputType> | number
+          }
+        }
+      }
       MaintenanceInstance: {
         payload: Prisma.$MaintenanceInstancePayload<ExtArgs>
         fields: Prisma.MaintenanceInstanceFieldRefs
@@ -910,6 +1311,204 @@ export namespace Prisma {
           }
         }
       }
+      ServiceType: {
+        payload: Prisma.$ServiceTypePayload<ExtArgs>
+        fields: Prisma.ServiceTypeFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ServiceTypeFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ServiceTypePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ServiceTypeFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ServiceTypePayload>
+          }
+          findFirst: {
+            args: Prisma.ServiceTypeFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ServiceTypePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ServiceTypeFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ServiceTypePayload>
+          }
+          findMany: {
+            args: Prisma.ServiceTypeFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ServiceTypePayload>[]
+          }
+          create: {
+            args: Prisma.ServiceTypeCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ServiceTypePayload>
+          }
+          createMany: {
+            args: Prisma.ServiceTypeCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.ServiceTypeDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ServiceTypePayload>
+          }
+          update: {
+            args: Prisma.ServiceTypeUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ServiceTypePayload>
+          }
+          deleteMany: {
+            args: Prisma.ServiceTypeDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ServiceTypeUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.ServiceTypeUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ServiceTypePayload>
+          }
+          aggregate: {
+            args: Prisma.ServiceTypeAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateServiceType>
+          }
+          groupBy: {
+            args: Prisma.ServiceTypeGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ServiceTypeGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ServiceTypeCountArgs<ExtArgs>
+            result: $Utils.Optional<ServiceTypeCountAggregateOutputType> | number
+          }
+        }
+      }
+      Equipment: {
+        payload: Prisma.$EquipmentPayload<ExtArgs>
+        fields: Prisma.EquipmentFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.EquipmentFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EquipmentPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.EquipmentFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EquipmentPayload>
+          }
+          findFirst: {
+            args: Prisma.EquipmentFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EquipmentPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.EquipmentFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EquipmentPayload>
+          }
+          findMany: {
+            args: Prisma.EquipmentFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EquipmentPayload>[]
+          }
+          create: {
+            args: Prisma.EquipmentCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EquipmentPayload>
+          }
+          createMany: {
+            args: Prisma.EquipmentCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.EquipmentDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EquipmentPayload>
+          }
+          update: {
+            args: Prisma.EquipmentUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EquipmentPayload>
+          }
+          deleteMany: {
+            args: Prisma.EquipmentDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.EquipmentUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.EquipmentUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EquipmentPayload>
+          }
+          aggregate: {
+            args: Prisma.EquipmentAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateEquipment>
+          }
+          groupBy: {
+            args: Prisma.EquipmentGroupByArgs<ExtArgs>
+            result: $Utils.Optional<EquipmentGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.EquipmentCountArgs<ExtArgs>
+            result: $Utils.Optional<EquipmentCountAggregateOutputType> | number
+          }
+        }
+      }
+      InfrastructureOccurrence: {
+        payload: Prisma.$InfrastructureOccurrencePayload<ExtArgs>
+        fields: Prisma.InfrastructureOccurrenceFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.InfrastructureOccurrenceFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InfrastructureOccurrencePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.InfrastructureOccurrenceFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InfrastructureOccurrencePayload>
+          }
+          findFirst: {
+            args: Prisma.InfrastructureOccurrenceFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InfrastructureOccurrencePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.InfrastructureOccurrenceFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InfrastructureOccurrencePayload>
+          }
+          findMany: {
+            args: Prisma.InfrastructureOccurrenceFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InfrastructureOccurrencePayload>[]
+          }
+          create: {
+            args: Prisma.InfrastructureOccurrenceCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InfrastructureOccurrencePayload>
+          }
+          createMany: {
+            args: Prisma.InfrastructureOccurrenceCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.InfrastructureOccurrenceDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InfrastructureOccurrencePayload>
+          }
+          update: {
+            args: Prisma.InfrastructureOccurrenceUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InfrastructureOccurrencePayload>
+          }
+          deleteMany: {
+            args: Prisma.InfrastructureOccurrenceDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.InfrastructureOccurrenceUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.InfrastructureOccurrenceUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InfrastructureOccurrencePayload>
+          }
+          aggregate: {
+            args: Prisma.InfrastructureOccurrenceAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateInfrastructureOccurrence>
+          }
+          groupBy: {
+            args: Prisma.InfrastructureOccurrenceGroupByArgs<ExtArgs>
+            result: $Utils.Optional<InfrastructureOccurrenceGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.InfrastructureOccurrenceCountArgs<ExtArgs>
+            result: $Utils.Optional<InfrastructureOccurrenceCountAggregateOutputType> | number
+          }
+        }
+      }
       Material: {
         payload: Prisma.$MaterialPayload<ExtArgs>
         fields: Prisma.MaterialFieldRefs
@@ -973,6 +1572,138 @@ export namespace Prisma {
           count: {
             args: Prisma.MaterialCountArgs<ExtArgs>
             result: $Utils.Optional<MaterialCountAggregateOutputType> | number
+          }
+        }
+      }
+      MaterialRequest: {
+        payload: Prisma.$MaterialRequestPayload<ExtArgs>
+        fields: Prisma.MaterialRequestFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.MaterialRequestFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialRequestPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.MaterialRequestFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialRequestPayload>
+          }
+          findFirst: {
+            args: Prisma.MaterialRequestFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialRequestPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.MaterialRequestFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialRequestPayload>
+          }
+          findMany: {
+            args: Prisma.MaterialRequestFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialRequestPayload>[]
+          }
+          create: {
+            args: Prisma.MaterialRequestCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialRequestPayload>
+          }
+          createMany: {
+            args: Prisma.MaterialRequestCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.MaterialRequestDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialRequestPayload>
+          }
+          update: {
+            args: Prisma.MaterialRequestUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialRequestPayload>
+          }
+          deleteMany: {
+            args: Prisma.MaterialRequestDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.MaterialRequestUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.MaterialRequestUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialRequestPayload>
+          }
+          aggregate: {
+            args: Prisma.MaterialRequestAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMaterialRequest>
+          }
+          groupBy: {
+            args: Prisma.MaterialRequestGroupByArgs<ExtArgs>
+            result: $Utils.Optional<MaterialRequestGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.MaterialRequestCountArgs<ExtArgs>
+            result: $Utils.Optional<MaterialRequestCountAggregateOutputType> | number
+          }
+        }
+      }
+      MaterialRequestItem: {
+        payload: Prisma.$MaterialRequestItemPayload<ExtArgs>
+        fields: Prisma.MaterialRequestItemFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.MaterialRequestItemFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialRequestItemPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.MaterialRequestItemFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialRequestItemPayload>
+          }
+          findFirst: {
+            args: Prisma.MaterialRequestItemFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialRequestItemPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.MaterialRequestItemFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialRequestItemPayload>
+          }
+          findMany: {
+            args: Prisma.MaterialRequestItemFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialRequestItemPayload>[]
+          }
+          create: {
+            args: Prisma.MaterialRequestItemCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialRequestItemPayload>
+          }
+          createMany: {
+            args: Prisma.MaterialRequestItemCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.MaterialRequestItemDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialRequestItemPayload>
+          }
+          update: {
+            args: Prisma.MaterialRequestItemUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialRequestItemPayload>
+          }
+          deleteMany: {
+            args: Prisma.MaterialRequestItemDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.MaterialRequestItemUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.MaterialRequestItemUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialRequestItemPayload>
+          }
+          aggregate: {
+            args: Prisma.MaterialRequestItemAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMaterialRequestItem>
+          }
+          groupBy: {
+            args: Prisma.MaterialRequestItemGroupByArgs<ExtArgs>
+            result: $Utils.Optional<MaterialRequestItemGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.MaterialRequestItemCountArgs<ExtArgs>
+            result: $Utils.Optional<MaterialRequestItemCountAggregateOutputType> | number
           }
         }
       }
@@ -1260,8 +1991,16 @@ export namespace Prisma {
   export type GlobalOmitConfig = {
     logError?: LogErrorOmit
     logLogin?: LogLoginOmit
+    maintenanceRequest?: MaintenanceRequestOmit
+    maintenanceRequestStatus?: MaintenanceRequestStatusOmit
+    maintenanceTimelineEvent?: MaintenanceTimelineEventOmit
     maintenanceInstance?: MaintenanceInstanceOmit
+    serviceType?: ServiceTypeOmit
+    equipment?: EquipmentOmit
+    infrastructureOccurrence?: InfrastructureOccurrenceOmit
     material?: MaterialOmit
+    materialRequest?: MaterialRequestOmit
+    materialRequestItem?: MaterialRequestItemOmit
     user?: UserOmit
     magicLink?: MagicLinkOmit
     role?: RoleOmit
@@ -1355,6 +2094,268 @@ export namespace Prisma {
 
 
   /**
+   * Count Type MaintenanceRequestCountOutputType
+   */
+
+  export type MaintenanceRequestCountOutputType = {
+    originatingOccurrences: number
+    timelineEvents: number
+    materialRequests: number
+  }
+
+  export type MaintenanceRequestCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    originatingOccurrences?: boolean | MaintenanceRequestCountOutputTypeCountOriginatingOccurrencesArgs
+    timelineEvents?: boolean | MaintenanceRequestCountOutputTypeCountTimelineEventsArgs
+    materialRequests?: boolean | MaintenanceRequestCountOutputTypeCountMaterialRequestsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * MaintenanceRequestCountOutputType without action
+   */
+  export type MaintenanceRequestCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceRequestCountOutputType
+     */
+    select?: MaintenanceRequestCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * MaintenanceRequestCountOutputType without action
+   */
+  export type MaintenanceRequestCountOutputTypeCountOriginatingOccurrencesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InfrastructureOccurrenceWhereInput
+  }
+
+  /**
+   * MaintenanceRequestCountOutputType without action
+   */
+  export type MaintenanceRequestCountOutputTypeCountTimelineEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MaintenanceTimelineEventWhereInput
+  }
+
+  /**
+   * MaintenanceRequestCountOutputType without action
+   */
+  export type MaintenanceRequestCountOutputTypeCountMaterialRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MaterialRequestWhereInput
+  }
+
+
+  /**
+   * Count Type MaintenanceRequestStatusCountOutputType
+   */
+
+  export type MaintenanceRequestStatusCountOutputType = {
+    maintenanceRequests: number
+  }
+
+  export type MaintenanceRequestStatusCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    maintenanceRequests?: boolean | MaintenanceRequestStatusCountOutputTypeCountMaintenanceRequestsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * MaintenanceRequestStatusCountOutputType without action
+   */
+  export type MaintenanceRequestStatusCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceRequestStatusCountOutputType
+     */
+    select?: MaintenanceRequestStatusCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * MaintenanceRequestStatusCountOutputType without action
+   */
+  export type MaintenanceRequestStatusCountOutputTypeCountMaintenanceRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MaintenanceRequestWhereInput
+  }
+
+
+  /**
+   * Count Type MaintenanceInstanceCountOutputType
+   */
+
+  export type MaintenanceInstanceCountOutputType = {
+    currentMaintenanceRequests: number
+    timelineEventsTransferredFrom: number
+    timelineEventsTransferredTo: number
+  }
+
+  export type MaintenanceInstanceCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    currentMaintenanceRequests?: boolean | MaintenanceInstanceCountOutputTypeCountCurrentMaintenanceRequestsArgs
+    timelineEventsTransferredFrom?: boolean | MaintenanceInstanceCountOutputTypeCountTimelineEventsTransferredFromArgs
+    timelineEventsTransferredTo?: boolean | MaintenanceInstanceCountOutputTypeCountTimelineEventsTransferredToArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * MaintenanceInstanceCountOutputType without action
+   */
+  export type MaintenanceInstanceCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceInstanceCountOutputType
+     */
+    select?: MaintenanceInstanceCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * MaintenanceInstanceCountOutputType without action
+   */
+  export type MaintenanceInstanceCountOutputTypeCountCurrentMaintenanceRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MaintenanceRequestWhereInput
+  }
+
+  /**
+   * MaintenanceInstanceCountOutputType without action
+   */
+  export type MaintenanceInstanceCountOutputTypeCountTimelineEventsTransferredFromArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MaintenanceTimelineEventWhereInput
+  }
+
+  /**
+   * MaintenanceInstanceCountOutputType without action
+   */
+  export type MaintenanceInstanceCountOutputTypeCountTimelineEventsTransferredToArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MaintenanceTimelineEventWhereInput
+  }
+
+
+  /**
+   * Count Type ServiceTypeCountOutputType
+   */
+
+  export type ServiceTypeCountOutputType = {
+    maintenanceRequests: number
+  }
+
+  export type ServiceTypeCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    maintenanceRequests?: boolean | ServiceTypeCountOutputTypeCountMaintenanceRequestsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ServiceTypeCountOutputType without action
+   */
+  export type ServiceTypeCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ServiceTypeCountOutputType
+     */
+    select?: ServiceTypeCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ServiceTypeCountOutputType without action
+   */
+  export type ServiceTypeCountOutputTypeCountMaintenanceRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MaintenanceRequestWhereInput
+  }
+
+
+  /**
+   * Count Type EquipmentCountOutputType
+   */
+
+  export type EquipmentCountOutputType = {
+    maintenanceRequests: number
+  }
+
+  export type EquipmentCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    maintenanceRequests?: boolean | EquipmentCountOutputTypeCountMaintenanceRequestsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * EquipmentCountOutputType without action
+   */
+  export type EquipmentCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EquipmentCountOutputType
+     */
+    select?: EquipmentCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * EquipmentCountOutputType without action
+   */
+  export type EquipmentCountOutputTypeCountMaintenanceRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MaintenanceRequestWhereInput
+  }
+
+
+  /**
+   * Count Type MaterialCountOutputType
+   */
+
+  export type MaterialCountOutputType = {
+    childs: number
+    materialRequestItems: number
+  }
+
+  export type MaterialCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    childs?: boolean | MaterialCountOutputTypeCountChildsArgs
+    materialRequestItems?: boolean | MaterialCountOutputTypeCountMaterialRequestItemsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * MaterialCountOutputType without action
+   */
+  export type MaterialCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialCountOutputType
+     */
+    select?: MaterialCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * MaterialCountOutputType without action
+   */
+  export type MaterialCountOutputTypeCountChildsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MaterialWhereInput
+  }
+
+  /**
+   * MaterialCountOutputType without action
+   */
+  export type MaterialCountOutputTypeCountMaterialRequestItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MaterialRequestItemWhereInput
+  }
+
+
+  /**
+   * Count Type MaterialRequestCountOutputType
+   */
+
+  export type MaterialRequestCountOutputType = {
+    items: number
+  }
+
+  export type MaterialRequestCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    items?: boolean | MaterialRequestCountOutputTypeCountItemsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * MaterialRequestCountOutputType without action
+   */
+  export type MaterialRequestCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialRequestCountOutputType
+     */
+    select?: MaterialRequestCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * MaterialRequestCountOutputType without action
+   */
+  export type MaterialRequestCountOutputTypeCountItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MaterialRequestItemWhereInput
+  }
+
+
+  /**
    * Count Type UserCountOutputType
    */
 
@@ -1362,12 +2363,24 @@ export namespace Prisma {
     logLogin: number
     roles: number
     magicLinks: number
+    reportedOccurrences: number
+    createdMaintenanceRequests: number
+    assignedMaintenanceRequests: number
+    timelineEvents: number
+    materialRequestsCreated: number
+    materialRequestsApproved: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     logLogin?: boolean | UserCountOutputTypeCountLogLoginArgs
     roles?: boolean | UserCountOutputTypeCountRolesArgs
     magicLinks?: boolean | UserCountOutputTypeCountMagicLinksArgs
+    reportedOccurrences?: boolean | UserCountOutputTypeCountReportedOccurrencesArgs
+    createdMaintenanceRequests?: boolean | UserCountOutputTypeCountCreatedMaintenanceRequestsArgs
+    assignedMaintenanceRequests?: boolean | UserCountOutputTypeCountAssignedMaintenanceRequestsArgs
+    timelineEvents?: boolean | UserCountOutputTypeCountTimelineEventsArgs
+    materialRequestsCreated?: boolean | UserCountOutputTypeCountMaterialRequestsCreatedArgs
+    materialRequestsApproved?: boolean | UserCountOutputTypeCountMaterialRequestsApprovedArgs
   }
 
   // Custom InputTypes
@@ -1400,6 +2413,48 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountMagicLinksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: MagicLinkWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountReportedOccurrencesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InfrastructureOccurrenceWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountCreatedMaintenanceRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MaintenanceRequestWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountAssignedMaintenanceRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MaintenanceRequestWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountTimelineEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MaintenanceTimelineEventWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountMaterialRequestsCreatedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MaterialRequestWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountMaterialRequestsApprovedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MaterialRequestWhereInput
   }
 
 
@@ -3388,6 +4443,3394 @@ export namespace Prisma {
 
 
   /**
+   * Model MaintenanceRequest
+   */
+
+  export type AggregateMaintenanceRequest = {
+    _count: MaintenanceRequestCountAggregateOutputType | null
+    _avg: MaintenanceRequestAvgAggregateOutputType | null
+    _sum: MaintenanceRequestSumAggregateOutputType | null
+    _min: MaintenanceRequestMinAggregateOutputType | null
+    _max: MaintenanceRequestMaxAggregateOutputType | null
+  }
+
+  export type MaintenanceRequestAvgAggregateOutputType = {
+    id: number | null
+    currentMaintenanceInstanceId: number | null
+    createdById: number | null
+    assignedToId: number | null
+    equipmentId: number | null
+    serviceTypeId: number | null
+    statusId: number | null
+  }
+
+  export type MaintenanceRequestSumAggregateOutputType = {
+    id: number | null
+    currentMaintenanceInstanceId: number | null
+    createdById: number | null
+    assignedToId: number | null
+    equipmentId: number | null
+    serviceTypeId: number | null
+    statusId: number | null
+  }
+
+  export type MaintenanceRequestMinAggregateOutputType = {
+    id: number | null
+    protocolNumber: string | null
+    title: string | null
+    description: string | null
+    priority: $Enums.RequestPriority | null
+    requestedAt: Date | null
+    deadline: Date | null
+    solutionDetails: string | null
+    completedAt: Date | null
+    currentMaintenanceInstanceId: number | null
+    createdById: number | null
+    assignedToId: number | null
+    equipmentId: number | null
+    serviceTypeId: number | null
+    statusId: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MaintenanceRequestMaxAggregateOutputType = {
+    id: number | null
+    protocolNumber: string | null
+    title: string | null
+    description: string | null
+    priority: $Enums.RequestPriority | null
+    requestedAt: Date | null
+    deadline: Date | null
+    solutionDetails: string | null
+    completedAt: Date | null
+    currentMaintenanceInstanceId: number | null
+    createdById: number | null
+    assignedToId: number | null
+    equipmentId: number | null
+    serviceTypeId: number | null
+    statusId: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MaintenanceRequestCountAggregateOutputType = {
+    id: number
+    protocolNumber: number
+    title: number
+    description: number
+    priority: number
+    requestedAt: number
+    deadline: number
+    solutionDetails: number
+    completedAt: number
+    currentMaintenanceInstanceId: number
+    createdById: number
+    assignedToId: number
+    equipmentId: number
+    serviceTypeId: number
+    statusId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type MaintenanceRequestAvgAggregateInputType = {
+    id?: true
+    currentMaintenanceInstanceId?: true
+    createdById?: true
+    assignedToId?: true
+    equipmentId?: true
+    serviceTypeId?: true
+    statusId?: true
+  }
+
+  export type MaintenanceRequestSumAggregateInputType = {
+    id?: true
+    currentMaintenanceInstanceId?: true
+    createdById?: true
+    assignedToId?: true
+    equipmentId?: true
+    serviceTypeId?: true
+    statusId?: true
+  }
+
+  export type MaintenanceRequestMinAggregateInputType = {
+    id?: true
+    protocolNumber?: true
+    title?: true
+    description?: true
+    priority?: true
+    requestedAt?: true
+    deadline?: true
+    solutionDetails?: true
+    completedAt?: true
+    currentMaintenanceInstanceId?: true
+    createdById?: true
+    assignedToId?: true
+    equipmentId?: true
+    serviceTypeId?: true
+    statusId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MaintenanceRequestMaxAggregateInputType = {
+    id?: true
+    protocolNumber?: true
+    title?: true
+    description?: true
+    priority?: true
+    requestedAt?: true
+    deadline?: true
+    solutionDetails?: true
+    completedAt?: true
+    currentMaintenanceInstanceId?: true
+    createdById?: true
+    assignedToId?: true
+    equipmentId?: true
+    serviceTypeId?: true
+    statusId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MaintenanceRequestCountAggregateInputType = {
+    id?: true
+    protocolNumber?: true
+    title?: true
+    description?: true
+    priority?: true
+    requestedAt?: true
+    deadline?: true
+    solutionDetails?: true
+    completedAt?: true
+    currentMaintenanceInstanceId?: true
+    createdById?: true
+    assignedToId?: true
+    equipmentId?: true
+    serviceTypeId?: true
+    statusId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type MaintenanceRequestAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MaintenanceRequest to aggregate.
+     */
+    where?: MaintenanceRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MaintenanceRequests to fetch.
+     */
+    orderBy?: MaintenanceRequestOrderByWithRelationInput | MaintenanceRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: MaintenanceRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MaintenanceRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MaintenanceRequests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned MaintenanceRequests
+    **/
+    _count?: true | MaintenanceRequestCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: MaintenanceRequestAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: MaintenanceRequestSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: MaintenanceRequestMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: MaintenanceRequestMaxAggregateInputType
+  }
+
+  export type GetMaintenanceRequestAggregateType<T extends MaintenanceRequestAggregateArgs> = {
+        [P in keyof T & keyof AggregateMaintenanceRequest]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMaintenanceRequest[P]>
+      : GetScalarType<T[P], AggregateMaintenanceRequest[P]>
+  }
+
+
+
+
+  export type MaintenanceRequestGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MaintenanceRequestWhereInput
+    orderBy?: MaintenanceRequestOrderByWithAggregationInput | MaintenanceRequestOrderByWithAggregationInput[]
+    by: MaintenanceRequestScalarFieldEnum[] | MaintenanceRequestScalarFieldEnum
+    having?: MaintenanceRequestScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: MaintenanceRequestCountAggregateInputType | true
+    _avg?: MaintenanceRequestAvgAggregateInputType
+    _sum?: MaintenanceRequestSumAggregateInputType
+    _min?: MaintenanceRequestMinAggregateInputType
+    _max?: MaintenanceRequestMaxAggregateInputType
+  }
+
+  export type MaintenanceRequestGroupByOutputType = {
+    id: number
+    protocolNumber: string
+    title: string
+    description: string
+    priority: $Enums.RequestPriority
+    requestedAt: Date
+    deadline: Date | null
+    solutionDetails: string | null
+    completedAt: Date | null
+    currentMaintenanceInstanceId: number
+    createdById: number
+    assignedToId: number | null
+    equipmentId: number | null
+    serviceTypeId: number | null
+    statusId: number
+    createdAt: Date
+    updatedAt: Date
+    _count: MaintenanceRequestCountAggregateOutputType | null
+    _avg: MaintenanceRequestAvgAggregateOutputType | null
+    _sum: MaintenanceRequestSumAggregateOutputType | null
+    _min: MaintenanceRequestMinAggregateOutputType | null
+    _max: MaintenanceRequestMaxAggregateOutputType | null
+  }
+
+  type GetMaintenanceRequestGroupByPayload<T extends MaintenanceRequestGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<MaintenanceRequestGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof MaintenanceRequestGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], MaintenanceRequestGroupByOutputType[P]>
+            : GetScalarType<T[P], MaintenanceRequestGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type MaintenanceRequestSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    protocolNumber?: boolean
+    title?: boolean
+    description?: boolean
+    priority?: boolean
+    requestedAt?: boolean
+    deadline?: boolean
+    solutionDetails?: boolean
+    completedAt?: boolean
+    currentMaintenanceInstanceId?: boolean
+    createdById?: boolean
+    assignedToId?: boolean
+    equipmentId?: boolean
+    serviceTypeId?: boolean
+    statusId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    currentMaintenanceInstance?: boolean | MaintenanceInstanceDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+    assignedTo?: boolean | MaintenanceRequest$assignedToArgs<ExtArgs>
+    equipment?: boolean | MaintenanceRequest$equipmentArgs<ExtArgs>
+    serviceType?: boolean | MaintenanceRequest$serviceTypeArgs<ExtArgs>
+    status?: boolean | MaintenanceRequestStatusDefaultArgs<ExtArgs>
+    originatingOccurrences?: boolean | MaintenanceRequest$originatingOccurrencesArgs<ExtArgs>
+    timelineEvents?: boolean | MaintenanceRequest$timelineEventsArgs<ExtArgs>
+    materialRequests?: boolean | MaintenanceRequest$materialRequestsArgs<ExtArgs>
+    _count?: boolean | MaintenanceRequestCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["maintenanceRequest"]>
+
+
+
+  export type MaintenanceRequestSelectScalar = {
+    id?: boolean
+    protocolNumber?: boolean
+    title?: boolean
+    description?: boolean
+    priority?: boolean
+    requestedAt?: boolean
+    deadline?: boolean
+    solutionDetails?: boolean
+    completedAt?: boolean
+    currentMaintenanceInstanceId?: boolean
+    createdById?: boolean
+    assignedToId?: boolean
+    equipmentId?: boolean
+    serviceTypeId?: boolean
+    statusId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type MaintenanceRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "protocolNumber" | "title" | "description" | "priority" | "requestedAt" | "deadline" | "solutionDetails" | "completedAt" | "currentMaintenanceInstanceId" | "createdById" | "assignedToId" | "equipmentId" | "serviceTypeId" | "statusId" | "createdAt" | "updatedAt", ExtArgs["result"]["maintenanceRequest"]>
+  export type MaintenanceRequestInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    currentMaintenanceInstance?: boolean | MaintenanceInstanceDefaultArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+    assignedTo?: boolean | MaintenanceRequest$assignedToArgs<ExtArgs>
+    equipment?: boolean | MaintenanceRequest$equipmentArgs<ExtArgs>
+    serviceType?: boolean | MaintenanceRequest$serviceTypeArgs<ExtArgs>
+    status?: boolean | MaintenanceRequestStatusDefaultArgs<ExtArgs>
+    originatingOccurrences?: boolean | MaintenanceRequest$originatingOccurrencesArgs<ExtArgs>
+    timelineEvents?: boolean | MaintenanceRequest$timelineEventsArgs<ExtArgs>
+    materialRequests?: boolean | MaintenanceRequest$materialRequestsArgs<ExtArgs>
+    _count?: boolean | MaintenanceRequestCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $MaintenanceRequestPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "MaintenanceRequest"
+    objects: {
+      currentMaintenanceInstance: Prisma.$MaintenanceInstancePayload<ExtArgs>
+      createdBy: Prisma.$UserPayload<ExtArgs>
+      assignedTo: Prisma.$UserPayload<ExtArgs> | null
+      equipment: Prisma.$EquipmentPayload<ExtArgs> | null
+      serviceType: Prisma.$ServiceTypePayload<ExtArgs> | null
+      status: Prisma.$MaintenanceRequestStatusPayload<ExtArgs>
+      originatingOccurrences: Prisma.$InfrastructureOccurrencePayload<ExtArgs>[]
+      timelineEvents: Prisma.$MaintenanceTimelineEventPayload<ExtArgs>[]
+      materialRequests: Prisma.$MaterialRequestPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      protocolNumber: string
+      title: string
+      description: string
+      priority: $Enums.RequestPriority
+      requestedAt: Date
+      deadline: Date | null
+      solutionDetails: string | null
+      completedAt: Date | null
+      currentMaintenanceInstanceId: number
+      createdById: number
+      assignedToId: number | null
+      equipmentId: number | null
+      serviceTypeId: number | null
+      statusId: number
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["maintenanceRequest"]>
+    composites: {}
+  }
+
+  type MaintenanceRequestGetPayload<S extends boolean | null | undefined | MaintenanceRequestDefaultArgs> = $Result.GetResult<Prisma.$MaintenanceRequestPayload, S>
+
+  type MaintenanceRequestCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<MaintenanceRequestFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: MaintenanceRequestCountAggregateInputType | true
+    }
+
+  export interface MaintenanceRequestDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['MaintenanceRequest'], meta: { name: 'MaintenanceRequest' } }
+    /**
+     * Find zero or one MaintenanceRequest that matches the filter.
+     * @param {MaintenanceRequestFindUniqueArgs} args - Arguments to find a MaintenanceRequest
+     * @example
+     * // Get one MaintenanceRequest
+     * const maintenanceRequest = await prisma.maintenanceRequest.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends MaintenanceRequestFindUniqueArgs>(args: SelectSubset<T, MaintenanceRequestFindUniqueArgs<ExtArgs>>): Prisma__MaintenanceRequestClient<$Result.GetResult<Prisma.$MaintenanceRequestPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one MaintenanceRequest that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {MaintenanceRequestFindUniqueOrThrowArgs} args - Arguments to find a MaintenanceRequest
+     * @example
+     * // Get one MaintenanceRequest
+     * const maintenanceRequest = await prisma.maintenanceRequest.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends MaintenanceRequestFindUniqueOrThrowArgs>(args: SelectSubset<T, MaintenanceRequestFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MaintenanceRequestClient<$Result.GetResult<Prisma.$MaintenanceRequestPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MaintenanceRequest that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaintenanceRequestFindFirstArgs} args - Arguments to find a MaintenanceRequest
+     * @example
+     * // Get one MaintenanceRequest
+     * const maintenanceRequest = await prisma.maintenanceRequest.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends MaintenanceRequestFindFirstArgs>(args?: SelectSubset<T, MaintenanceRequestFindFirstArgs<ExtArgs>>): Prisma__MaintenanceRequestClient<$Result.GetResult<Prisma.$MaintenanceRequestPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MaintenanceRequest that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaintenanceRequestFindFirstOrThrowArgs} args - Arguments to find a MaintenanceRequest
+     * @example
+     * // Get one MaintenanceRequest
+     * const maintenanceRequest = await prisma.maintenanceRequest.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends MaintenanceRequestFindFirstOrThrowArgs>(args?: SelectSubset<T, MaintenanceRequestFindFirstOrThrowArgs<ExtArgs>>): Prisma__MaintenanceRequestClient<$Result.GetResult<Prisma.$MaintenanceRequestPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more MaintenanceRequests that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaintenanceRequestFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all MaintenanceRequests
+     * const maintenanceRequests = await prisma.maintenanceRequest.findMany()
+     * 
+     * // Get first 10 MaintenanceRequests
+     * const maintenanceRequests = await prisma.maintenanceRequest.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const maintenanceRequestWithIdOnly = await prisma.maintenanceRequest.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends MaintenanceRequestFindManyArgs>(args?: SelectSubset<T, MaintenanceRequestFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaintenanceRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a MaintenanceRequest.
+     * @param {MaintenanceRequestCreateArgs} args - Arguments to create a MaintenanceRequest.
+     * @example
+     * // Create one MaintenanceRequest
+     * const MaintenanceRequest = await prisma.maintenanceRequest.create({
+     *   data: {
+     *     // ... data to create a MaintenanceRequest
+     *   }
+     * })
+     * 
+     */
+    create<T extends MaintenanceRequestCreateArgs>(args: SelectSubset<T, MaintenanceRequestCreateArgs<ExtArgs>>): Prisma__MaintenanceRequestClient<$Result.GetResult<Prisma.$MaintenanceRequestPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many MaintenanceRequests.
+     * @param {MaintenanceRequestCreateManyArgs} args - Arguments to create many MaintenanceRequests.
+     * @example
+     * // Create many MaintenanceRequests
+     * const maintenanceRequest = await prisma.maintenanceRequest.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends MaintenanceRequestCreateManyArgs>(args?: SelectSubset<T, MaintenanceRequestCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a MaintenanceRequest.
+     * @param {MaintenanceRequestDeleteArgs} args - Arguments to delete one MaintenanceRequest.
+     * @example
+     * // Delete one MaintenanceRequest
+     * const MaintenanceRequest = await prisma.maintenanceRequest.delete({
+     *   where: {
+     *     // ... filter to delete one MaintenanceRequest
+     *   }
+     * })
+     * 
+     */
+    delete<T extends MaintenanceRequestDeleteArgs>(args: SelectSubset<T, MaintenanceRequestDeleteArgs<ExtArgs>>): Prisma__MaintenanceRequestClient<$Result.GetResult<Prisma.$MaintenanceRequestPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one MaintenanceRequest.
+     * @param {MaintenanceRequestUpdateArgs} args - Arguments to update one MaintenanceRequest.
+     * @example
+     * // Update one MaintenanceRequest
+     * const maintenanceRequest = await prisma.maintenanceRequest.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends MaintenanceRequestUpdateArgs>(args: SelectSubset<T, MaintenanceRequestUpdateArgs<ExtArgs>>): Prisma__MaintenanceRequestClient<$Result.GetResult<Prisma.$MaintenanceRequestPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more MaintenanceRequests.
+     * @param {MaintenanceRequestDeleteManyArgs} args - Arguments to filter MaintenanceRequests to delete.
+     * @example
+     * // Delete a few MaintenanceRequests
+     * const { count } = await prisma.maintenanceRequest.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends MaintenanceRequestDeleteManyArgs>(args?: SelectSubset<T, MaintenanceRequestDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MaintenanceRequests.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaintenanceRequestUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many MaintenanceRequests
+     * const maintenanceRequest = await prisma.maintenanceRequest.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends MaintenanceRequestUpdateManyArgs>(args: SelectSubset<T, MaintenanceRequestUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one MaintenanceRequest.
+     * @param {MaintenanceRequestUpsertArgs} args - Arguments to update or create a MaintenanceRequest.
+     * @example
+     * // Update or create a MaintenanceRequest
+     * const maintenanceRequest = await prisma.maintenanceRequest.upsert({
+     *   create: {
+     *     // ... data to create a MaintenanceRequest
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the MaintenanceRequest we want to update
+     *   }
+     * })
+     */
+    upsert<T extends MaintenanceRequestUpsertArgs>(args: SelectSubset<T, MaintenanceRequestUpsertArgs<ExtArgs>>): Prisma__MaintenanceRequestClient<$Result.GetResult<Prisma.$MaintenanceRequestPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of MaintenanceRequests.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaintenanceRequestCountArgs} args - Arguments to filter MaintenanceRequests to count.
+     * @example
+     * // Count the number of MaintenanceRequests
+     * const count = await prisma.maintenanceRequest.count({
+     *   where: {
+     *     // ... the filter for the MaintenanceRequests we want to count
+     *   }
+     * })
+    **/
+    count<T extends MaintenanceRequestCountArgs>(
+      args?: Subset<T, MaintenanceRequestCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], MaintenanceRequestCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a MaintenanceRequest.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaintenanceRequestAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MaintenanceRequestAggregateArgs>(args: Subset<T, MaintenanceRequestAggregateArgs>): Prisma.PrismaPromise<GetMaintenanceRequestAggregateType<T>>
+
+    /**
+     * Group by MaintenanceRequest.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaintenanceRequestGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends MaintenanceRequestGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: MaintenanceRequestGroupByArgs['orderBy'] }
+        : { orderBy?: MaintenanceRequestGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, MaintenanceRequestGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMaintenanceRequestGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the MaintenanceRequest model
+   */
+  readonly fields: MaintenanceRequestFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for MaintenanceRequest.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__MaintenanceRequestClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    currentMaintenanceInstance<T extends MaintenanceInstanceDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MaintenanceInstanceDefaultArgs<ExtArgs>>): Prisma__MaintenanceInstanceClient<$Result.GetResult<Prisma.$MaintenanceInstancePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    createdBy<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    assignedTo<T extends MaintenanceRequest$assignedToArgs<ExtArgs> = {}>(args?: Subset<T, MaintenanceRequest$assignedToArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    equipment<T extends MaintenanceRequest$equipmentArgs<ExtArgs> = {}>(args?: Subset<T, MaintenanceRequest$equipmentArgs<ExtArgs>>): Prisma__EquipmentClient<$Result.GetResult<Prisma.$EquipmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    serviceType<T extends MaintenanceRequest$serviceTypeArgs<ExtArgs> = {}>(args?: Subset<T, MaintenanceRequest$serviceTypeArgs<ExtArgs>>): Prisma__ServiceTypeClient<$Result.GetResult<Prisma.$ServiceTypePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    status<T extends MaintenanceRequestStatusDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MaintenanceRequestStatusDefaultArgs<ExtArgs>>): Prisma__MaintenanceRequestStatusClient<$Result.GetResult<Prisma.$MaintenanceRequestStatusPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    originatingOccurrences<T extends MaintenanceRequest$originatingOccurrencesArgs<ExtArgs> = {}>(args?: Subset<T, MaintenanceRequest$originatingOccurrencesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InfrastructureOccurrencePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    timelineEvents<T extends MaintenanceRequest$timelineEventsArgs<ExtArgs> = {}>(args?: Subset<T, MaintenanceRequest$timelineEventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaintenanceTimelineEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    materialRequests<T extends MaintenanceRequest$materialRequestsArgs<ExtArgs> = {}>(args?: Subset<T, MaintenanceRequest$materialRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaterialRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the MaintenanceRequest model
+   */
+  interface MaintenanceRequestFieldRefs {
+    readonly id: FieldRef<"MaintenanceRequest", 'Int'>
+    readonly protocolNumber: FieldRef<"MaintenanceRequest", 'String'>
+    readonly title: FieldRef<"MaintenanceRequest", 'String'>
+    readonly description: FieldRef<"MaintenanceRequest", 'String'>
+    readonly priority: FieldRef<"MaintenanceRequest", 'RequestPriority'>
+    readonly requestedAt: FieldRef<"MaintenanceRequest", 'DateTime'>
+    readonly deadline: FieldRef<"MaintenanceRequest", 'DateTime'>
+    readonly solutionDetails: FieldRef<"MaintenanceRequest", 'String'>
+    readonly completedAt: FieldRef<"MaintenanceRequest", 'DateTime'>
+    readonly currentMaintenanceInstanceId: FieldRef<"MaintenanceRequest", 'Int'>
+    readonly createdById: FieldRef<"MaintenanceRequest", 'Int'>
+    readonly assignedToId: FieldRef<"MaintenanceRequest", 'Int'>
+    readonly equipmentId: FieldRef<"MaintenanceRequest", 'Int'>
+    readonly serviceTypeId: FieldRef<"MaintenanceRequest", 'Int'>
+    readonly statusId: FieldRef<"MaintenanceRequest", 'Int'>
+    readonly createdAt: FieldRef<"MaintenanceRequest", 'DateTime'>
+    readonly updatedAt: FieldRef<"MaintenanceRequest", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * MaintenanceRequest findUnique
+   */
+  export type MaintenanceRequestFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceRequest
+     */
+    select?: MaintenanceRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceRequest
+     */
+    omit?: MaintenanceRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which MaintenanceRequest to fetch.
+     */
+    where: MaintenanceRequestWhereUniqueInput
+  }
+
+  /**
+   * MaintenanceRequest findUniqueOrThrow
+   */
+  export type MaintenanceRequestFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceRequest
+     */
+    select?: MaintenanceRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceRequest
+     */
+    omit?: MaintenanceRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which MaintenanceRequest to fetch.
+     */
+    where: MaintenanceRequestWhereUniqueInput
+  }
+
+  /**
+   * MaintenanceRequest findFirst
+   */
+  export type MaintenanceRequestFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceRequest
+     */
+    select?: MaintenanceRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceRequest
+     */
+    omit?: MaintenanceRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which MaintenanceRequest to fetch.
+     */
+    where?: MaintenanceRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MaintenanceRequests to fetch.
+     */
+    orderBy?: MaintenanceRequestOrderByWithRelationInput | MaintenanceRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MaintenanceRequests.
+     */
+    cursor?: MaintenanceRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MaintenanceRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MaintenanceRequests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MaintenanceRequests.
+     */
+    distinct?: MaintenanceRequestScalarFieldEnum | MaintenanceRequestScalarFieldEnum[]
+  }
+
+  /**
+   * MaintenanceRequest findFirstOrThrow
+   */
+  export type MaintenanceRequestFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceRequest
+     */
+    select?: MaintenanceRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceRequest
+     */
+    omit?: MaintenanceRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which MaintenanceRequest to fetch.
+     */
+    where?: MaintenanceRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MaintenanceRequests to fetch.
+     */
+    orderBy?: MaintenanceRequestOrderByWithRelationInput | MaintenanceRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MaintenanceRequests.
+     */
+    cursor?: MaintenanceRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MaintenanceRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MaintenanceRequests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MaintenanceRequests.
+     */
+    distinct?: MaintenanceRequestScalarFieldEnum | MaintenanceRequestScalarFieldEnum[]
+  }
+
+  /**
+   * MaintenanceRequest findMany
+   */
+  export type MaintenanceRequestFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceRequest
+     */
+    select?: MaintenanceRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceRequest
+     */
+    omit?: MaintenanceRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which MaintenanceRequests to fetch.
+     */
+    where?: MaintenanceRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MaintenanceRequests to fetch.
+     */
+    orderBy?: MaintenanceRequestOrderByWithRelationInput | MaintenanceRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing MaintenanceRequests.
+     */
+    cursor?: MaintenanceRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MaintenanceRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MaintenanceRequests.
+     */
+    skip?: number
+    distinct?: MaintenanceRequestScalarFieldEnum | MaintenanceRequestScalarFieldEnum[]
+  }
+
+  /**
+   * MaintenanceRequest create
+   */
+  export type MaintenanceRequestCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceRequest
+     */
+    select?: MaintenanceRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceRequest
+     */
+    omit?: MaintenanceRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceRequestInclude<ExtArgs> | null
+    /**
+     * The data needed to create a MaintenanceRequest.
+     */
+    data: XOR<MaintenanceRequestCreateInput, MaintenanceRequestUncheckedCreateInput>
+  }
+
+  /**
+   * MaintenanceRequest createMany
+   */
+  export type MaintenanceRequestCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many MaintenanceRequests.
+     */
+    data: MaintenanceRequestCreateManyInput | MaintenanceRequestCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * MaintenanceRequest update
+   */
+  export type MaintenanceRequestUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceRequest
+     */
+    select?: MaintenanceRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceRequest
+     */
+    omit?: MaintenanceRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceRequestInclude<ExtArgs> | null
+    /**
+     * The data needed to update a MaintenanceRequest.
+     */
+    data: XOR<MaintenanceRequestUpdateInput, MaintenanceRequestUncheckedUpdateInput>
+    /**
+     * Choose, which MaintenanceRequest to update.
+     */
+    where: MaintenanceRequestWhereUniqueInput
+  }
+
+  /**
+   * MaintenanceRequest updateMany
+   */
+  export type MaintenanceRequestUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update MaintenanceRequests.
+     */
+    data: XOR<MaintenanceRequestUpdateManyMutationInput, MaintenanceRequestUncheckedUpdateManyInput>
+    /**
+     * Filter which MaintenanceRequests to update
+     */
+    where?: MaintenanceRequestWhereInput
+    /**
+     * Limit how many MaintenanceRequests to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * MaintenanceRequest upsert
+   */
+  export type MaintenanceRequestUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceRequest
+     */
+    select?: MaintenanceRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceRequest
+     */
+    omit?: MaintenanceRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceRequestInclude<ExtArgs> | null
+    /**
+     * The filter to search for the MaintenanceRequest to update in case it exists.
+     */
+    where: MaintenanceRequestWhereUniqueInput
+    /**
+     * In case the MaintenanceRequest found by the `where` argument doesn't exist, create a new MaintenanceRequest with this data.
+     */
+    create: XOR<MaintenanceRequestCreateInput, MaintenanceRequestUncheckedCreateInput>
+    /**
+     * In case the MaintenanceRequest was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<MaintenanceRequestUpdateInput, MaintenanceRequestUncheckedUpdateInput>
+  }
+
+  /**
+   * MaintenanceRequest delete
+   */
+  export type MaintenanceRequestDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceRequest
+     */
+    select?: MaintenanceRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceRequest
+     */
+    omit?: MaintenanceRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceRequestInclude<ExtArgs> | null
+    /**
+     * Filter which MaintenanceRequest to delete.
+     */
+    where: MaintenanceRequestWhereUniqueInput
+  }
+
+  /**
+   * MaintenanceRequest deleteMany
+   */
+  export type MaintenanceRequestDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MaintenanceRequests to delete
+     */
+    where?: MaintenanceRequestWhereInput
+    /**
+     * Limit how many MaintenanceRequests to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * MaintenanceRequest.assignedTo
+   */
+  export type MaintenanceRequest$assignedToArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * MaintenanceRequest.equipment
+   */
+  export type MaintenanceRequest$equipmentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Equipment
+     */
+    select?: EquipmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Equipment
+     */
+    omit?: EquipmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EquipmentInclude<ExtArgs> | null
+    where?: EquipmentWhereInput
+  }
+
+  /**
+   * MaintenanceRequest.serviceType
+   */
+  export type MaintenanceRequest$serviceTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ServiceType
+     */
+    select?: ServiceTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ServiceType
+     */
+    omit?: ServiceTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ServiceTypeInclude<ExtArgs> | null
+    where?: ServiceTypeWhereInput
+  }
+
+  /**
+   * MaintenanceRequest.originatingOccurrences
+   */
+  export type MaintenanceRequest$originatingOccurrencesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InfrastructureOccurrence
+     */
+    select?: InfrastructureOccurrenceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InfrastructureOccurrence
+     */
+    omit?: InfrastructureOccurrenceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InfrastructureOccurrenceInclude<ExtArgs> | null
+    where?: InfrastructureOccurrenceWhereInput
+    orderBy?: InfrastructureOccurrenceOrderByWithRelationInput | InfrastructureOccurrenceOrderByWithRelationInput[]
+    cursor?: InfrastructureOccurrenceWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: InfrastructureOccurrenceScalarFieldEnum | InfrastructureOccurrenceScalarFieldEnum[]
+  }
+
+  /**
+   * MaintenanceRequest.timelineEvents
+   */
+  export type MaintenanceRequest$timelineEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceTimelineEvent
+     */
+    select?: MaintenanceTimelineEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceTimelineEvent
+     */
+    omit?: MaintenanceTimelineEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceTimelineEventInclude<ExtArgs> | null
+    where?: MaintenanceTimelineEventWhereInput
+    orderBy?: MaintenanceTimelineEventOrderByWithRelationInput | MaintenanceTimelineEventOrderByWithRelationInput[]
+    cursor?: MaintenanceTimelineEventWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MaintenanceTimelineEventScalarFieldEnum | MaintenanceTimelineEventScalarFieldEnum[]
+  }
+
+  /**
+   * MaintenanceRequest.materialRequests
+   */
+  export type MaintenanceRequest$materialRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialRequest
+     */
+    select?: MaterialRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialRequest
+     */
+    omit?: MaterialRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialRequestInclude<ExtArgs> | null
+    where?: MaterialRequestWhereInput
+    orderBy?: MaterialRequestOrderByWithRelationInput | MaterialRequestOrderByWithRelationInput[]
+    cursor?: MaterialRequestWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MaterialRequestScalarFieldEnum | MaterialRequestScalarFieldEnum[]
+  }
+
+  /**
+   * MaintenanceRequest without action
+   */
+  export type MaintenanceRequestDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceRequest
+     */
+    select?: MaintenanceRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceRequest
+     */
+    omit?: MaintenanceRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceRequestInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model MaintenanceRequestStatus
+   */
+
+  export type AggregateMaintenanceRequestStatus = {
+    _count: MaintenanceRequestStatusCountAggregateOutputType | null
+    _avg: MaintenanceRequestStatusAvgAggregateOutputType | null
+    _sum: MaintenanceRequestStatusSumAggregateOutputType | null
+    _min: MaintenanceRequestStatusMinAggregateOutputType | null
+    _max: MaintenanceRequestStatusMaxAggregateOutputType | null
+  }
+
+  export type MaintenanceRequestStatusAvgAggregateOutputType = {
+    id: number | null
+    order: number | null
+  }
+
+  export type MaintenanceRequestStatusSumAggregateOutputType = {
+    id: number | null
+    order: number | null
+  }
+
+  export type MaintenanceRequestStatusMinAggregateOutputType = {
+    id: number | null
+    name: string | null
+    description: string | null
+    isFinal: boolean | null
+    order: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MaintenanceRequestStatusMaxAggregateOutputType = {
+    id: number | null
+    name: string | null
+    description: string | null
+    isFinal: boolean | null
+    order: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MaintenanceRequestStatusCountAggregateOutputType = {
+    id: number
+    name: number
+    description: number
+    isFinal: number
+    order: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type MaintenanceRequestStatusAvgAggregateInputType = {
+    id?: true
+    order?: true
+  }
+
+  export type MaintenanceRequestStatusSumAggregateInputType = {
+    id?: true
+    order?: true
+  }
+
+  export type MaintenanceRequestStatusMinAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    isFinal?: true
+    order?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MaintenanceRequestStatusMaxAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    isFinal?: true
+    order?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MaintenanceRequestStatusCountAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    isFinal?: true
+    order?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type MaintenanceRequestStatusAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MaintenanceRequestStatus to aggregate.
+     */
+    where?: MaintenanceRequestStatusWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MaintenanceRequestStatuses to fetch.
+     */
+    orderBy?: MaintenanceRequestStatusOrderByWithRelationInput | MaintenanceRequestStatusOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: MaintenanceRequestStatusWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MaintenanceRequestStatuses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MaintenanceRequestStatuses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned MaintenanceRequestStatuses
+    **/
+    _count?: true | MaintenanceRequestStatusCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: MaintenanceRequestStatusAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: MaintenanceRequestStatusSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: MaintenanceRequestStatusMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: MaintenanceRequestStatusMaxAggregateInputType
+  }
+
+  export type GetMaintenanceRequestStatusAggregateType<T extends MaintenanceRequestStatusAggregateArgs> = {
+        [P in keyof T & keyof AggregateMaintenanceRequestStatus]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMaintenanceRequestStatus[P]>
+      : GetScalarType<T[P], AggregateMaintenanceRequestStatus[P]>
+  }
+
+
+
+
+  export type MaintenanceRequestStatusGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MaintenanceRequestStatusWhereInput
+    orderBy?: MaintenanceRequestStatusOrderByWithAggregationInput | MaintenanceRequestStatusOrderByWithAggregationInput[]
+    by: MaintenanceRequestStatusScalarFieldEnum[] | MaintenanceRequestStatusScalarFieldEnum
+    having?: MaintenanceRequestStatusScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: MaintenanceRequestStatusCountAggregateInputType | true
+    _avg?: MaintenanceRequestStatusAvgAggregateInputType
+    _sum?: MaintenanceRequestStatusSumAggregateInputType
+    _min?: MaintenanceRequestStatusMinAggregateInputType
+    _max?: MaintenanceRequestStatusMaxAggregateInputType
+  }
+
+  export type MaintenanceRequestStatusGroupByOutputType = {
+    id: number
+    name: string
+    description: string | null
+    isFinal: boolean
+    order: number
+    createdAt: Date
+    updatedAt: Date
+    _count: MaintenanceRequestStatusCountAggregateOutputType | null
+    _avg: MaintenanceRequestStatusAvgAggregateOutputType | null
+    _sum: MaintenanceRequestStatusSumAggregateOutputType | null
+    _min: MaintenanceRequestStatusMinAggregateOutputType | null
+    _max: MaintenanceRequestStatusMaxAggregateOutputType | null
+  }
+
+  type GetMaintenanceRequestStatusGroupByPayload<T extends MaintenanceRequestStatusGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<MaintenanceRequestStatusGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof MaintenanceRequestStatusGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], MaintenanceRequestStatusGroupByOutputType[P]>
+            : GetScalarType<T[P], MaintenanceRequestStatusGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type MaintenanceRequestStatusSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    isFinal?: boolean
+    order?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    maintenanceRequests?: boolean | MaintenanceRequestStatus$maintenanceRequestsArgs<ExtArgs>
+    _count?: boolean | MaintenanceRequestStatusCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["maintenanceRequestStatus"]>
+
+
+
+  export type MaintenanceRequestStatusSelectScalar = {
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    isFinal?: boolean
+    order?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type MaintenanceRequestStatusOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "isFinal" | "order" | "createdAt" | "updatedAt", ExtArgs["result"]["maintenanceRequestStatus"]>
+  export type MaintenanceRequestStatusInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    maintenanceRequests?: boolean | MaintenanceRequestStatus$maintenanceRequestsArgs<ExtArgs>
+    _count?: boolean | MaintenanceRequestStatusCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $MaintenanceRequestStatusPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "MaintenanceRequestStatus"
+    objects: {
+      maintenanceRequests: Prisma.$MaintenanceRequestPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      name: string
+      description: string | null
+      isFinal: boolean
+      order: number
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["maintenanceRequestStatus"]>
+    composites: {}
+  }
+
+  type MaintenanceRequestStatusGetPayload<S extends boolean | null | undefined | MaintenanceRequestStatusDefaultArgs> = $Result.GetResult<Prisma.$MaintenanceRequestStatusPayload, S>
+
+  type MaintenanceRequestStatusCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<MaintenanceRequestStatusFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: MaintenanceRequestStatusCountAggregateInputType | true
+    }
+
+  export interface MaintenanceRequestStatusDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['MaintenanceRequestStatus'], meta: { name: 'MaintenanceRequestStatus' } }
+    /**
+     * Find zero or one MaintenanceRequestStatus that matches the filter.
+     * @param {MaintenanceRequestStatusFindUniqueArgs} args - Arguments to find a MaintenanceRequestStatus
+     * @example
+     * // Get one MaintenanceRequestStatus
+     * const maintenanceRequestStatus = await prisma.maintenanceRequestStatus.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends MaintenanceRequestStatusFindUniqueArgs>(args: SelectSubset<T, MaintenanceRequestStatusFindUniqueArgs<ExtArgs>>): Prisma__MaintenanceRequestStatusClient<$Result.GetResult<Prisma.$MaintenanceRequestStatusPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one MaintenanceRequestStatus that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {MaintenanceRequestStatusFindUniqueOrThrowArgs} args - Arguments to find a MaintenanceRequestStatus
+     * @example
+     * // Get one MaintenanceRequestStatus
+     * const maintenanceRequestStatus = await prisma.maintenanceRequestStatus.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends MaintenanceRequestStatusFindUniqueOrThrowArgs>(args: SelectSubset<T, MaintenanceRequestStatusFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MaintenanceRequestStatusClient<$Result.GetResult<Prisma.$MaintenanceRequestStatusPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MaintenanceRequestStatus that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaintenanceRequestStatusFindFirstArgs} args - Arguments to find a MaintenanceRequestStatus
+     * @example
+     * // Get one MaintenanceRequestStatus
+     * const maintenanceRequestStatus = await prisma.maintenanceRequestStatus.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends MaintenanceRequestStatusFindFirstArgs>(args?: SelectSubset<T, MaintenanceRequestStatusFindFirstArgs<ExtArgs>>): Prisma__MaintenanceRequestStatusClient<$Result.GetResult<Prisma.$MaintenanceRequestStatusPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MaintenanceRequestStatus that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaintenanceRequestStatusFindFirstOrThrowArgs} args - Arguments to find a MaintenanceRequestStatus
+     * @example
+     * // Get one MaintenanceRequestStatus
+     * const maintenanceRequestStatus = await prisma.maintenanceRequestStatus.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends MaintenanceRequestStatusFindFirstOrThrowArgs>(args?: SelectSubset<T, MaintenanceRequestStatusFindFirstOrThrowArgs<ExtArgs>>): Prisma__MaintenanceRequestStatusClient<$Result.GetResult<Prisma.$MaintenanceRequestStatusPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more MaintenanceRequestStatuses that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaintenanceRequestStatusFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all MaintenanceRequestStatuses
+     * const maintenanceRequestStatuses = await prisma.maintenanceRequestStatus.findMany()
+     * 
+     * // Get first 10 MaintenanceRequestStatuses
+     * const maintenanceRequestStatuses = await prisma.maintenanceRequestStatus.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const maintenanceRequestStatusWithIdOnly = await prisma.maintenanceRequestStatus.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends MaintenanceRequestStatusFindManyArgs>(args?: SelectSubset<T, MaintenanceRequestStatusFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaintenanceRequestStatusPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a MaintenanceRequestStatus.
+     * @param {MaintenanceRequestStatusCreateArgs} args - Arguments to create a MaintenanceRequestStatus.
+     * @example
+     * // Create one MaintenanceRequestStatus
+     * const MaintenanceRequestStatus = await prisma.maintenanceRequestStatus.create({
+     *   data: {
+     *     // ... data to create a MaintenanceRequestStatus
+     *   }
+     * })
+     * 
+     */
+    create<T extends MaintenanceRequestStatusCreateArgs>(args: SelectSubset<T, MaintenanceRequestStatusCreateArgs<ExtArgs>>): Prisma__MaintenanceRequestStatusClient<$Result.GetResult<Prisma.$MaintenanceRequestStatusPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many MaintenanceRequestStatuses.
+     * @param {MaintenanceRequestStatusCreateManyArgs} args - Arguments to create many MaintenanceRequestStatuses.
+     * @example
+     * // Create many MaintenanceRequestStatuses
+     * const maintenanceRequestStatus = await prisma.maintenanceRequestStatus.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends MaintenanceRequestStatusCreateManyArgs>(args?: SelectSubset<T, MaintenanceRequestStatusCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a MaintenanceRequestStatus.
+     * @param {MaintenanceRequestStatusDeleteArgs} args - Arguments to delete one MaintenanceRequestStatus.
+     * @example
+     * // Delete one MaintenanceRequestStatus
+     * const MaintenanceRequestStatus = await prisma.maintenanceRequestStatus.delete({
+     *   where: {
+     *     // ... filter to delete one MaintenanceRequestStatus
+     *   }
+     * })
+     * 
+     */
+    delete<T extends MaintenanceRequestStatusDeleteArgs>(args: SelectSubset<T, MaintenanceRequestStatusDeleteArgs<ExtArgs>>): Prisma__MaintenanceRequestStatusClient<$Result.GetResult<Prisma.$MaintenanceRequestStatusPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one MaintenanceRequestStatus.
+     * @param {MaintenanceRequestStatusUpdateArgs} args - Arguments to update one MaintenanceRequestStatus.
+     * @example
+     * // Update one MaintenanceRequestStatus
+     * const maintenanceRequestStatus = await prisma.maintenanceRequestStatus.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends MaintenanceRequestStatusUpdateArgs>(args: SelectSubset<T, MaintenanceRequestStatusUpdateArgs<ExtArgs>>): Prisma__MaintenanceRequestStatusClient<$Result.GetResult<Prisma.$MaintenanceRequestStatusPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more MaintenanceRequestStatuses.
+     * @param {MaintenanceRequestStatusDeleteManyArgs} args - Arguments to filter MaintenanceRequestStatuses to delete.
+     * @example
+     * // Delete a few MaintenanceRequestStatuses
+     * const { count } = await prisma.maintenanceRequestStatus.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends MaintenanceRequestStatusDeleteManyArgs>(args?: SelectSubset<T, MaintenanceRequestStatusDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MaintenanceRequestStatuses.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaintenanceRequestStatusUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many MaintenanceRequestStatuses
+     * const maintenanceRequestStatus = await prisma.maintenanceRequestStatus.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends MaintenanceRequestStatusUpdateManyArgs>(args: SelectSubset<T, MaintenanceRequestStatusUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one MaintenanceRequestStatus.
+     * @param {MaintenanceRequestStatusUpsertArgs} args - Arguments to update or create a MaintenanceRequestStatus.
+     * @example
+     * // Update or create a MaintenanceRequestStatus
+     * const maintenanceRequestStatus = await prisma.maintenanceRequestStatus.upsert({
+     *   create: {
+     *     // ... data to create a MaintenanceRequestStatus
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the MaintenanceRequestStatus we want to update
+     *   }
+     * })
+     */
+    upsert<T extends MaintenanceRequestStatusUpsertArgs>(args: SelectSubset<T, MaintenanceRequestStatusUpsertArgs<ExtArgs>>): Prisma__MaintenanceRequestStatusClient<$Result.GetResult<Prisma.$MaintenanceRequestStatusPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of MaintenanceRequestStatuses.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaintenanceRequestStatusCountArgs} args - Arguments to filter MaintenanceRequestStatuses to count.
+     * @example
+     * // Count the number of MaintenanceRequestStatuses
+     * const count = await prisma.maintenanceRequestStatus.count({
+     *   where: {
+     *     // ... the filter for the MaintenanceRequestStatuses we want to count
+     *   }
+     * })
+    **/
+    count<T extends MaintenanceRequestStatusCountArgs>(
+      args?: Subset<T, MaintenanceRequestStatusCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], MaintenanceRequestStatusCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a MaintenanceRequestStatus.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaintenanceRequestStatusAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MaintenanceRequestStatusAggregateArgs>(args: Subset<T, MaintenanceRequestStatusAggregateArgs>): Prisma.PrismaPromise<GetMaintenanceRequestStatusAggregateType<T>>
+
+    /**
+     * Group by MaintenanceRequestStatus.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaintenanceRequestStatusGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends MaintenanceRequestStatusGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: MaintenanceRequestStatusGroupByArgs['orderBy'] }
+        : { orderBy?: MaintenanceRequestStatusGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, MaintenanceRequestStatusGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMaintenanceRequestStatusGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the MaintenanceRequestStatus model
+   */
+  readonly fields: MaintenanceRequestStatusFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for MaintenanceRequestStatus.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__MaintenanceRequestStatusClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    maintenanceRequests<T extends MaintenanceRequestStatus$maintenanceRequestsArgs<ExtArgs> = {}>(args?: Subset<T, MaintenanceRequestStatus$maintenanceRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaintenanceRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the MaintenanceRequestStatus model
+   */
+  interface MaintenanceRequestStatusFieldRefs {
+    readonly id: FieldRef<"MaintenanceRequestStatus", 'Int'>
+    readonly name: FieldRef<"MaintenanceRequestStatus", 'String'>
+    readonly description: FieldRef<"MaintenanceRequestStatus", 'String'>
+    readonly isFinal: FieldRef<"MaintenanceRequestStatus", 'Boolean'>
+    readonly order: FieldRef<"MaintenanceRequestStatus", 'Int'>
+    readonly createdAt: FieldRef<"MaintenanceRequestStatus", 'DateTime'>
+    readonly updatedAt: FieldRef<"MaintenanceRequestStatus", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * MaintenanceRequestStatus findUnique
+   */
+  export type MaintenanceRequestStatusFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceRequestStatus
+     */
+    select?: MaintenanceRequestStatusSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceRequestStatus
+     */
+    omit?: MaintenanceRequestStatusOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceRequestStatusInclude<ExtArgs> | null
+    /**
+     * Filter, which MaintenanceRequestStatus to fetch.
+     */
+    where: MaintenanceRequestStatusWhereUniqueInput
+  }
+
+  /**
+   * MaintenanceRequestStatus findUniqueOrThrow
+   */
+  export type MaintenanceRequestStatusFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceRequestStatus
+     */
+    select?: MaintenanceRequestStatusSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceRequestStatus
+     */
+    omit?: MaintenanceRequestStatusOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceRequestStatusInclude<ExtArgs> | null
+    /**
+     * Filter, which MaintenanceRequestStatus to fetch.
+     */
+    where: MaintenanceRequestStatusWhereUniqueInput
+  }
+
+  /**
+   * MaintenanceRequestStatus findFirst
+   */
+  export type MaintenanceRequestStatusFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceRequestStatus
+     */
+    select?: MaintenanceRequestStatusSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceRequestStatus
+     */
+    omit?: MaintenanceRequestStatusOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceRequestStatusInclude<ExtArgs> | null
+    /**
+     * Filter, which MaintenanceRequestStatus to fetch.
+     */
+    where?: MaintenanceRequestStatusWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MaintenanceRequestStatuses to fetch.
+     */
+    orderBy?: MaintenanceRequestStatusOrderByWithRelationInput | MaintenanceRequestStatusOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MaintenanceRequestStatuses.
+     */
+    cursor?: MaintenanceRequestStatusWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MaintenanceRequestStatuses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MaintenanceRequestStatuses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MaintenanceRequestStatuses.
+     */
+    distinct?: MaintenanceRequestStatusScalarFieldEnum | MaintenanceRequestStatusScalarFieldEnum[]
+  }
+
+  /**
+   * MaintenanceRequestStatus findFirstOrThrow
+   */
+  export type MaintenanceRequestStatusFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceRequestStatus
+     */
+    select?: MaintenanceRequestStatusSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceRequestStatus
+     */
+    omit?: MaintenanceRequestStatusOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceRequestStatusInclude<ExtArgs> | null
+    /**
+     * Filter, which MaintenanceRequestStatus to fetch.
+     */
+    where?: MaintenanceRequestStatusWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MaintenanceRequestStatuses to fetch.
+     */
+    orderBy?: MaintenanceRequestStatusOrderByWithRelationInput | MaintenanceRequestStatusOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MaintenanceRequestStatuses.
+     */
+    cursor?: MaintenanceRequestStatusWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MaintenanceRequestStatuses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MaintenanceRequestStatuses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MaintenanceRequestStatuses.
+     */
+    distinct?: MaintenanceRequestStatusScalarFieldEnum | MaintenanceRequestStatusScalarFieldEnum[]
+  }
+
+  /**
+   * MaintenanceRequestStatus findMany
+   */
+  export type MaintenanceRequestStatusFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceRequestStatus
+     */
+    select?: MaintenanceRequestStatusSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceRequestStatus
+     */
+    omit?: MaintenanceRequestStatusOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceRequestStatusInclude<ExtArgs> | null
+    /**
+     * Filter, which MaintenanceRequestStatuses to fetch.
+     */
+    where?: MaintenanceRequestStatusWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MaintenanceRequestStatuses to fetch.
+     */
+    orderBy?: MaintenanceRequestStatusOrderByWithRelationInput | MaintenanceRequestStatusOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing MaintenanceRequestStatuses.
+     */
+    cursor?: MaintenanceRequestStatusWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MaintenanceRequestStatuses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MaintenanceRequestStatuses.
+     */
+    skip?: number
+    distinct?: MaintenanceRequestStatusScalarFieldEnum | MaintenanceRequestStatusScalarFieldEnum[]
+  }
+
+  /**
+   * MaintenanceRequestStatus create
+   */
+  export type MaintenanceRequestStatusCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceRequestStatus
+     */
+    select?: MaintenanceRequestStatusSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceRequestStatus
+     */
+    omit?: MaintenanceRequestStatusOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceRequestStatusInclude<ExtArgs> | null
+    /**
+     * The data needed to create a MaintenanceRequestStatus.
+     */
+    data: XOR<MaintenanceRequestStatusCreateInput, MaintenanceRequestStatusUncheckedCreateInput>
+  }
+
+  /**
+   * MaintenanceRequestStatus createMany
+   */
+  export type MaintenanceRequestStatusCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many MaintenanceRequestStatuses.
+     */
+    data: MaintenanceRequestStatusCreateManyInput | MaintenanceRequestStatusCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * MaintenanceRequestStatus update
+   */
+  export type MaintenanceRequestStatusUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceRequestStatus
+     */
+    select?: MaintenanceRequestStatusSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceRequestStatus
+     */
+    omit?: MaintenanceRequestStatusOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceRequestStatusInclude<ExtArgs> | null
+    /**
+     * The data needed to update a MaintenanceRequestStatus.
+     */
+    data: XOR<MaintenanceRequestStatusUpdateInput, MaintenanceRequestStatusUncheckedUpdateInput>
+    /**
+     * Choose, which MaintenanceRequestStatus to update.
+     */
+    where: MaintenanceRequestStatusWhereUniqueInput
+  }
+
+  /**
+   * MaintenanceRequestStatus updateMany
+   */
+  export type MaintenanceRequestStatusUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update MaintenanceRequestStatuses.
+     */
+    data: XOR<MaintenanceRequestStatusUpdateManyMutationInput, MaintenanceRequestStatusUncheckedUpdateManyInput>
+    /**
+     * Filter which MaintenanceRequestStatuses to update
+     */
+    where?: MaintenanceRequestStatusWhereInput
+    /**
+     * Limit how many MaintenanceRequestStatuses to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * MaintenanceRequestStatus upsert
+   */
+  export type MaintenanceRequestStatusUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceRequestStatus
+     */
+    select?: MaintenanceRequestStatusSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceRequestStatus
+     */
+    omit?: MaintenanceRequestStatusOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceRequestStatusInclude<ExtArgs> | null
+    /**
+     * The filter to search for the MaintenanceRequestStatus to update in case it exists.
+     */
+    where: MaintenanceRequestStatusWhereUniqueInput
+    /**
+     * In case the MaintenanceRequestStatus found by the `where` argument doesn't exist, create a new MaintenanceRequestStatus with this data.
+     */
+    create: XOR<MaintenanceRequestStatusCreateInput, MaintenanceRequestStatusUncheckedCreateInput>
+    /**
+     * In case the MaintenanceRequestStatus was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<MaintenanceRequestStatusUpdateInput, MaintenanceRequestStatusUncheckedUpdateInput>
+  }
+
+  /**
+   * MaintenanceRequestStatus delete
+   */
+  export type MaintenanceRequestStatusDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceRequestStatus
+     */
+    select?: MaintenanceRequestStatusSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceRequestStatus
+     */
+    omit?: MaintenanceRequestStatusOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceRequestStatusInclude<ExtArgs> | null
+    /**
+     * Filter which MaintenanceRequestStatus to delete.
+     */
+    where: MaintenanceRequestStatusWhereUniqueInput
+  }
+
+  /**
+   * MaintenanceRequestStatus deleteMany
+   */
+  export type MaintenanceRequestStatusDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MaintenanceRequestStatuses to delete
+     */
+    where?: MaintenanceRequestStatusWhereInput
+    /**
+     * Limit how many MaintenanceRequestStatuses to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * MaintenanceRequestStatus.maintenanceRequests
+   */
+  export type MaintenanceRequestStatus$maintenanceRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceRequest
+     */
+    select?: MaintenanceRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceRequest
+     */
+    omit?: MaintenanceRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceRequestInclude<ExtArgs> | null
+    where?: MaintenanceRequestWhereInput
+    orderBy?: MaintenanceRequestOrderByWithRelationInput | MaintenanceRequestOrderByWithRelationInput[]
+    cursor?: MaintenanceRequestWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MaintenanceRequestScalarFieldEnum | MaintenanceRequestScalarFieldEnum[]
+  }
+
+  /**
+   * MaintenanceRequestStatus without action
+   */
+  export type MaintenanceRequestStatusDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceRequestStatus
+     */
+    select?: MaintenanceRequestStatusSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceRequestStatus
+     */
+    omit?: MaintenanceRequestStatusOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceRequestStatusInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model MaintenanceTimelineEvent
+   */
+
+  export type AggregateMaintenanceTimelineEvent = {
+    _count: MaintenanceTimelineEventCountAggregateOutputType | null
+    _avg: MaintenanceTimelineEventAvgAggregateOutputType | null
+    _sum: MaintenanceTimelineEventSumAggregateOutputType | null
+    _min: MaintenanceTimelineEventMinAggregateOutputType | null
+    _max: MaintenanceTimelineEventMaxAggregateOutputType | null
+  }
+
+  export type MaintenanceTimelineEventAvgAggregateOutputType = {
+    id: number | null
+    maintenanceRequestId: number | null
+    actionById: number | null
+    transferredFromInstanceId: number | null
+    transferredToInstanceId: number | null
+  }
+
+  export type MaintenanceTimelineEventSumAggregateOutputType = {
+    id: number | null
+    maintenanceRequestId: number | null
+    actionById: number | null
+    transferredFromInstanceId: number | null
+    transferredToInstanceId: number | null
+  }
+
+  export type MaintenanceTimelineEventMinAggregateOutputType = {
+    id: number | null
+    type: $Enums.TimelineEventType | null
+    description: string | null
+    occurredAt: Date | null
+    maintenanceRequestId: number | null
+    actionById: number | null
+    transferredFromInstanceId: number | null
+    transferredToInstanceId: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MaintenanceTimelineEventMaxAggregateOutputType = {
+    id: number | null
+    type: $Enums.TimelineEventType | null
+    description: string | null
+    occurredAt: Date | null
+    maintenanceRequestId: number | null
+    actionById: number | null
+    transferredFromInstanceId: number | null
+    transferredToInstanceId: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MaintenanceTimelineEventCountAggregateOutputType = {
+    id: number
+    type: number
+    description: number
+    eventData: number
+    occurredAt: number
+    maintenanceRequestId: number
+    actionById: number
+    transferredFromInstanceId: number
+    transferredToInstanceId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type MaintenanceTimelineEventAvgAggregateInputType = {
+    id?: true
+    maintenanceRequestId?: true
+    actionById?: true
+    transferredFromInstanceId?: true
+    transferredToInstanceId?: true
+  }
+
+  export type MaintenanceTimelineEventSumAggregateInputType = {
+    id?: true
+    maintenanceRequestId?: true
+    actionById?: true
+    transferredFromInstanceId?: true
+    transferredToInstanceId?: true
+  }
+
+  export type MaintenanceTimelineEventMinAggregateInputType = {
+    id?: true
+    type?: true
+    description?: true
+    occurredAt?: true
+    maintenanceRequestId?: true
+    actionById?: true
+    transferredFromInstanceId?: true
+    transferredToInstanceId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MaintenanceTimelineEventMaxAggregateInputType = {
+    id?: true
+    type?: true
+    description?: true
+    occurredAt?: true
+    maintenanceRequestId?: true
+    actionById?: true
+    transferredFromInstanceId?: true
+    transferredToInstanceId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MaintenanceTimelineEventCountAggregateInputType = {
+    id?: true
+    type?: true
+    description?: true
+    eventData?: true
+    occurredAt?: true
+    maintenanceRequestId?: true
+    actionById?: true
+    transferredFromInstanceId?: true
+    transferredToInstanceId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type MaintenanceTimelineEventAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MaintenanceTimelineEvent to aggregate.
+     */
+    where?: MaintenanceTimelineEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MaintenanceTimelineEvents to fetch.
+     */
+    orderBy?: MaintenanceTimelineEventOrderByWithRelationInput | MaintenanceTimelineEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: MaintenanceTimelineEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MaintenanceTimelineEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MaintenanceTimelineEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned MaintenanceTimelineEvents
+    **/
+    _count?: true | MaintenanceTimelineEventCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: MaintenanceTimelineEventAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: MaintenanceTimelineEventSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: MaintenanceTimelineEventMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: MaintenanceTimelineEventMaxAggregateInputType
+  }
+
+  export type GetMaintenanceTimelineEventAggregateType<T extends MaintenanceTimelineEventAggregateArgs> = {
+        [P in keyof T & keyof AggregateMaintenanceTimelineEvent]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMaintenanceTimelineEvent[P]>
+      : GetScalarType<T[P], AggregateMaintenanceTimelineEvent[P]>
+  }
+
+
+
+
+  export type MaintenanceTimelineEventGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MaintenanceTimelineEventWhereInput
+    orderBy?: MaintenanceTimelineEventOrderByWithAggregationInput | MaintenanceTimelineEventOrderByWithAggregationInput[]
+    by: MaintenanceTimelineEventScalarFieldEnum[] | MaintenanceTimelineEventScalarFieldEnum
+    having?: MaintenanceTimelineEventScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: MaintenanceTimelineEventCountAggregateInputType | true
+    _avg?: MaintenanceTimelineEventAvgAggregateInputType
+    _sum?: MaintenanceTimelineEventSumAggregateInputType
+    _min?: MaintenanceTimelineEventMinAggregateInputType
+    _max?: MaintenanceTimelineEventMaxAggregateInputType
+  }
+
+  export type MaintenanceTimelineEventGroupByOutputType = {
+    id: number
+    type: $Enums.TimelineEventType
+    description: string
+    eventData: JsonValue | null
+    occurredAt: Date
+    maintenanceRequestId: number
+    actionById: number
+    transferredFromInstanceId: number | null
+    transferredToInstanceId: number | null
+    createdAt: Date
+    updatedAt: Date
+    _count: MaintenanceTimelineEventCountAggregateOutputType | null
+    _avg: MaintenanceTimelineEventAvgAggregateOutputType | null
+    _sum: MaintenanceTimelineEventSumAggregateOutputType | null
+    _min: MaintenanceTimelineEventMinAggregateOutputType | null
+    _max: MaintenanceTimelineEventMaxAggregateOutputType | null
+  }
+
+  type GetMaintenanceTimelineEventGroupByPayload<T extends MaintenanceTimelineEventGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<MaintenanceTimelineEventGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof MaintenanceTimelineEventGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], MaintenanceTimelineEventGroupByOutputType[P]>
+            : GetScalarType<T[P], MaintenanceTimelineEventGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type MaintenanceTimelineEventSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    type?: boolean
+    description?: boolean
+    eventData?: boolean
+    occurredAt?: boolean
+    maintenanceRequestId?: boolean
+    actionById?: boolean
+    transferredFromInstanceId?: boolean
+    transferredToInstanceId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    maintenanceRequest?: boolean | MaintenanceRequestDefaultArgs<ExtArgs>
+    actionBy?: boolean | UserDefaultArgs<ExtArgs>
+    transferredFromInstance?: boolean | MaintenanceTimelineEvent$transferredFromInstanceArgs<ExtArgs>
+    transferredToInstance?: boolean | MaintenanceTimelineEvent$transferredToInstanceArgs<ExtArgs>
+  }, ExtArgs["result"]["maintenanceTimelineEvent"]>
+
+
+
+  export type MaintenanceTimelineEventSelectScalar = {
+    id?: boolean
+    type?: boolean
+    description?: boolean
+    eventData?: boolean
+    occurredAt?: boolean
+    maintenanceRequestId?: boolean
+    actionById?: boolean
+    transferredFromInstanceId?: boolean
+    transferredToInstanceId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type MaintenanceTimelineEventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "description" | "eventData" | "occurredAt" | "maintenanceRequestId" | "actionById" | "transferredFromInstanceId" | "transferredToInstanceId" | "createdAt" | "updatedAt", ExtArgs["result"]["maintenanceTimelineEvent"]>
+  export type MaintenanceTimelineEventInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    maintenanceRequest?: boolean | MaintenanceRequestDefaultArgs<ExtArgs>
+    actionBy?: boolean | UserDefaultArgs<ExtArgs>
+    transferredFromInstance?: boolean | MaintenanceTimelineEvent$transferredFromInstanceArgs<ExtArgs>
+    transferredToInstance?: boolean | MaintenanceTimelineEvent$transferredToInstanceArgs<ExtArgs>
+  }
+
+  export type $MaintenanceTimelineEventPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "MaintenanceTimelineEvent"
+    objects: {
+      maintenanceRequest: Prisma.$MaintenanceRequestPayload<ExtArgs>
+      actionBy: Prisma.$UserPayload<ExtArgs>
+      transferredFromInstance: Prisma.$MaintenanceInstancePayload<ExtArgs> | null
+      transferredToInstance: Prisma.$MaintenanceInstancePayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      type: $Enums.TimelineEventType
+      description: string
+      eventData: Prisma.JsonValue | null
+      occurredAt: Date
+      maintenanceRequestId: number
+      actionById: number
+      transferredFromInstanceId: number | null
+      transferredToInstanceId: number | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["maintenanceTimelineEvent"]>
+    composites: {}
+  }
+
+  type MaintenanceTimelineEventGetPayload<S extends boolean | null | undefined | MaintenanceTimelineEventDefaultArgs> = $Result.GetResult<Prisma.$MaintenanceTimelineEventPayload, S>
+
+  type MaintenanceTimelineEventCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<MaintenanceTimelineEventFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: MaintenanceTimelineEventCountAggregateInputType | true
+    }
+
+  export interface MaintenanceTimelineEventDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['MaintenanceTimelineEvent'], meta: { name: 'MaintenanceTimelineEvent' } }
+    /**
+     * Find zero or one MaintenanceTimelineEvent that matches the filter.
+     * @param {MaintenanceTimelineEventFindUniqueArgs} args - Arguments to find a MaintenanceTimelineEvent
+     * @example
+     * // Get one MaintenanceTimelineEvent
+     * const maintenanceTimelineEvent = await prisma.maintenanceTimelineEvent.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends MaintenanceTimelineEventFindUniqueArgs>(args: SelectSubset<T, MaintenanceTimelineEventFindUniqueArgs<ExtArgs>>): Prisma__MaintenanceTimelineEventClient<$Result.GetResult<Prisma.$MaintenanceTimelineEventPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one MaintenanceTimelineEvent that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {MaintenanceTimelineEventFindUniqueOrThrowArgs} args - Arguments to find a MaintenanceTimelineEvent
+     * @example
+     * // Get one MaintenanceTimelineEvent
+     * const maintenanceTimelineEvent = await prisma.maintenanceTimelineEvent.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends MaintenanceTimelineEventFindUniqueOrThrowArgs>(args: SelectSubset<T, MaintenanceTimelineEventFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MaintenanceTimelineEventClient<$Result.GetResult<Prisma.$MaintenanceTimelineEventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MaintenanceTimelineEvent that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaintenanceTimelineEventFindFirstArgs} args - Arguments to find a MaintenanceTimelineEvent
+     * @example
+     * // Get one MaintenanceTimelineEvent
+     * const maintenanceTimelineEvent = await prisma.maintenanceTimelineEvent.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends MaintenanceTimelineEventFindFirstArgs>(args?: SelectSubset<T, MaintenanceTimelineEventFindFirstArgs<ExtArgs>>): Prisma__MaintenanceTimelineEventClient<$Result.GetResult<Prisma.$MaintenanceTimelineEventPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MaintenanceTimelineEvent that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaintenanceTimelineEventFindFirstOrThrowArgs} args - Arguments to find a MaintenanceTimelineEvent
+     * @example
+     * // Get one MaintenanceTimelineEvent
+     * const maintenanceTimelineEvent = await prisma.maintenanceTimelineEvent.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends MaintenanceTimelineEventFindFirstOrThrowArgs>(args?: SelectSubset<T, MaintenanceTimelineEventFindFirstOrThrowArgs<ExtArgs>>): Prisma__MaintenanceTimelineEventClient<$Result.GetResult<Prisma.$MaintenanceTimelineEventPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more MaintenanceTimelineEvents that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaintenanceTimelineEventFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all MaintenanceTimelineEvents
+     * const maintenanceTimelineEvents = await prisma.maintenanceTimelineEvent.findMany()
+     * 
+     * // Get first 10 MaintenanceTimelineEvents
+     * const maintenanceTimelineEvents = await prisma.maintenanceTimelineEvent.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const maintenanceTimelineEventWithIdOnly = await prisma.maintenanceTimelineEvent.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends MaintenanceTimelineEventFindManyArgs>(args?: SelectSubset<T, MaintenanceTimelineEventFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaintenanceTimelineEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a MaintenanceTimelineEvent.
+     * @param {MaintenanceTimelineEventCreateArgs} args - Arguments to create a MaintenanceTimelineEvent.
+     * @example
+     * // Create one MaintenanceTimelineEvent
+     * const MaintenanceTimelineEvent = await prisma.maintenanceTimelineEvent.create({
+     *   data: {
+     *     // ... data to create a MaintenanceTimelineEvent
+     *   }
+     * })
+     * 
+     */
+    create<T extends MaintenanceTimelineEventCreateArgs>(args: SelectSubset<T, MaintenanceTimelineEventCreateArgs<ExtArgs>>): Prisma__MaintenanceTimelineEventClient<$Result.GetResult<Prisma.$MaintenanceTimelineEventPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many MaintenanceTimelineEvents.
+     * @param {MaintenanceTimelineEventCreateManyArgs} args - Arguments to create many MaintenanceTimelineEvents.
+     * @example
+     * // Create many MaintenanceTimelineEvents
+     * const maintenanceTimelineEvent = await prisma.maintenanceTimelineEvent.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends MaintenanceTimelineEventCreateManyArgs>(args?: SelectSubset<T, MaintenanceTimelineEventCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a MaintenanceTimelineEvent.
+     * @param {MaintenanceTimelineEventDeleteArgs} args - Arguments to delete one MaintenanceTimelineEvent.
+     * @example
+     * // Delete one MaintenanceTimelineEvent
+     * const MaintenanceTimelineEvent = await prisma.maintenanceTimelineEvent.delete({
+     *   where: {
+     *     // ... filter to delete one MaintenanceTimelineEvent
+     *   }
+     * })
+     * 
+     */
+    delete<T extends MaintenanceTimelineEventDeleteArgs>(args: SelectSubset<T, MaintenanceTimelineEventDeleteArgs<ExtArgs>>): Prisma__MaintenanceTimelineEventClient<$Result.GetResult<Prisma.$MaintenanceTimelineEventPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one MaintenanceTimelineEvent.
+     * @param {MaintenanceTimelineEventUpdateArgs} args - Arguments to update one MaintenanceTimelineEvent.
+     * @example
+     * // Update one MaintenanceTimelineEvent
+     * const maintenanceTimelineEvent = await prisma.maintenanceTimelineEvent.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends MaintenanceTimelineEventUpdateArgs>(args: SelectSubset<T, MaintenanceTimelineEventUpdateArgs<ExtArgs>>): Prisma__MaintenanceTimelineEventClient<$Result.GetResult<Prisma.$MaintenanceTimelineEventPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more MaintenanceTimelineEvents.
+     * @param {MaintenanceTimelineEventDeleteManyArgs} args - Arguments to filter MaintenanceTimelineEvents to delete.
+     * @example
+     * // Delete a few MaintenanceTimelineEvents
+     * const { count } = await prisma.maintenanceTimelineEvent.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends MaintenanceTimelineEventDeleteManyArgs>(args?: SelectSubset<T, MaintenanceTimelineEventDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MaintenanceTimelineEvents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaintenanceTimelineEventUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many MaintenanceTimelineEvents
+     * const maintenanceTimelineEvent = await prisma.maintenanceTimelineEvent.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends MaintenanceTimelineEventUpdateManyArgs>(args: SelectSubset<T, MaintenanceTimelineEventUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one MaintenanceTimelineEvent.
+     * @param {MaintenanceTimelineEventUpsertArgs} args - Arguments to update or create a MaintenanceTimelineEvent.
+     * @example
+     * // Update or create a MaintenanceTimelineEvent
+     * const maintenanceTimelineEvent = await prisma.maintenanceTimelineEvent.upsert({
+     *   create: {
+     *     // ... data to create a MaintenanceTimelineEvent
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the MaintenanceTimelineEvent we want to update
+     *   }
+     * })
+     */
+    upsert<T extends MaintenanceTimelineEventUpsertArgs>(args: SelectSubset<T, MaintenanceTimelineEventUpsertArgs<ExtArgs>>): Prisma__MaintenanceTimelineEventClient<$Result.GetResult<Prisma.$MaintenanceTimelineEventPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of MaintenanceTimelineEvents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaintenanceTimelineEventCountArgs} args - Arguments to filter MaintenanceTimelineEvents to count.
+     * @example
+     * // Count the number of MaintenanceTimelineEvents
+     * const count = await prisma.maintenanceTimelineEvent.count({
+     *   where: {
+     *     // ... the filter for the MaintenanceTimelineEvents we want to count
+     *   }
+     * })
+    **/
+    count<T extends MaintenanceTimelineEventCountArgs>(
+      args?: Subset<T, MaintenanceTimelineEventCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], MaintenanceTimelineEventCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a MaintenanceTimelineEvent.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaintenanceTimelineEventAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MaintenanceTimelineEventAggregateArgs>(args: Subset<T, MaintenanceTimelineEventAggregateArgs>): Prisma.PrismaPromise<GetMaintenanceTimelineEventAggregateType<T>>
+
+    /**
+     * Group by MaintenanceTimelineEvent.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaintenanceTimelineEventGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends MaintenanceTimelineEventGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: MaintenanceTimelineEventGroupByArgs['orderBy'] }
+        : { orderBy?: MaintenanceTimelineEventGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, MaintenanceTimelineEventGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMaintenanceTimelineEventGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the MaintenanceTimelineEvent model
+   */
+  readonly fields: MaintenanceTimelineEventFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for MaintenanceTimelineEvent.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__MaintenanceTimelineEventClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    maintenanceRequest<T extends MaintenanceRequestDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MaintenanceRequestDefaultArgs<ExtArgs>>): Prisma__MaintenanceRequestClient<$Result.GetResult<Prisma.$MaintenanceRequestPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    actionBy<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    transferredFromInstance<T extends MaintenanceTimelineEvent$transferredFromInstanceArgs<ExtArgs> = {}>(args?: Subset<T, MaintenanceTimelineEvent$transferredFromInstanceArgs<ExtArgs>>): Prisma__MaintenanceInstanceClient<$Result.GetResult<Prisma.$MaintenanceInstancePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    transferredToInstance<T extends MaintenanceTimelineEvent$transferredToInstanceArgs<ExtArgs> = {}>(args?: Subset<T, MaintenanceTimelineEvent$transferredToInstanceArgs<ExtArgs>>): Prisma__MaintenanceInstanceClient<$Result.GetResult<Prisma.$MaintenanceInstancePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the MaintenanceTimelineEvent model
+   */
+  interface MaintenanceTimelineEventFieldRefs {
+    readonly id: FieldRef<"MaintenanceTimelineEvent", 'Int'>
+    readonly type: FieldRef<"MaintenanceTimelineEvent", 'TimelineEventType'>
+    readonly description: FieldRef<"MaintenanceTimelineEvent", 'String'>
+    readonly eventData: FieldRef<"MaintenanceTimelineEvent", 'Json'>
+    readonly occurredAt: FieldRef<"MaintenanceTimelineEvent", 'DateTime'>
+    readonly maintenanceRequestId: FieldRef<"MaintenanceTimelineEvent", 'Int'>
+    readonly actionById: FieldRef<"MaintenanceTimelineEvent", 'Int'>
+    readonly transferredFromInstanceId: FieldRef<"MaintenanceTimelineEvent", 'Int'>
+    readonly transferredToInstanceId: FieldRef<"MaintenanceTimelineEvent", 'Int'>
+    readonly createdAt: FieldRef<"MaintenanceTimelineEvent", 'DateTime'>
+    readonly updatedAt: FieldRef<"MaintenanceTimelineEvent", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * MaintenanceTimelineEvent findUnique
+   */
+  export type MaintenanceTimelineEventFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceTimelineEvent
+     */
+    select?: MaintenanceTimelineEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceTimelineEvent
+     */
+    omit?: MaintenanceTimelineEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceTimelineEventInclude<ExtArgs> | null
+    /**
+     * Filter, which MaintenanceTimelineEvent to fetch.
+     */
+    where: MaintenanceTimelineEventWhereUniqueInput
+  }
+
+  /**
+   * MaintenanceTimelineEvent findUniqueOrThrow
+   */
+  export type MaintenanceTimelineEventFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceTimelineEvent
+     */
+    select?: MaintenanceTimelineEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceTimelineEvent
+     */
+    omit?: MaintenanceTimelineEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceTimelineEventInclude<ExtArgs> | null
+    /**
+     * Filter, which MaintenanceTimelineEvent to fetch.
+     */
+    where: MaintenanceTimelineEventWhereUniqueInput
+  }
+
+  /**
+   * MaintenanceTimelineEvent findFirst
+   */
+  export type MaintenanceTimelineEventFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceTimelineEvent
+     */
+    select?: MaintenanceTimelineEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceTimelineEvent
+     */
+    omit?: MaintenanceTimelineEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceTimelineEventInclude<ExtArgs> | null
+    /**
+     * Filter, which MaintenanceTimelineEvent to fetch.
+     */
+    where?: MaintenanceTimelineEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MaintenanceTimelineEvents to fetch.
+     */
+    orderBy?: MaintenanceTimelineEventOrderByWithRelationInput | MaintenanceTimelineEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MaintenanceTimelineEvents.
+     */
+    cursor?: MaintenanceTimelineEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MaintenanceTimelineEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MaintenanceTimelineEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MaintenanceTimelineEvents.
+     */
+    distinct?: MaintenanceTimelineEventScalarFieldEnum | MaintenanceTimelineEventScalarFieldEnum[]
+  }
+
+  /**
+   * MaintenanceTimelineEvent findFirstOrThrow
+   */
+  export type MaintenanceTimelineEventFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceTimelineEvent
+     */
+    select?: MaintenanceTimelineEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceTimelineEvent
+     */
+    omit?: MaintenanceTimelineEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceTimelineEventInclude<ExtArgs> | null
+    /**
+     * Filter, which MaintenanceTimelineEvent to fetch.
+     */
+    where?: MaintenanceTimelineEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MaintenanceTimelineEvents to fetch.
+     */
+    orderBy?: MaintenanceTimelineEventOrderByWithRelationInput | MaintenanceTimelineEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MaintenanceTimelineEvents.
+     */
+    cursor?: MaintenanceTimelineEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MaintenanceTimelineEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MaintenanceTimelineEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MaintenanceTimelineEvents.
+     */
+    distinct?: MaintenanceTimelineEventScalarFieldEnum | MaintenanceTimelineEventScalarFieldEnum[]
+  }
+
+  /**
+   * MaintenanceTimelineEvent findMany
+   */
+  export type MaintenanceTimelineEventFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceTimelineEvent
+     */
+    select?: MaintenanceTimelineEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceTimelineEvent
+     */
+    omit?: MaintenanceTimelineEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceTimelineEventInclude<ExtArgs> | null
+    /**
+     * Filter, which MaintenanceTimelineEvents to fetch.
+     */
+    where?: MaintenanceTimelineEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MaintenanceTimelineEvents to fetch.
+     */
+    orderBy?: MaintenanceTimelineEventOrderByWithRelationInput | MaintenanceTimelineEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing MaintenanceTimelineEvents.
+     */
+    cursor?: MaintenanceTimelineEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MaintenanceTimelineEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MaintenanceTimelineEvents.
+     */
+    skip?: number
+    distinct?: MaintenanceTimelineEventScalarFieldEnum | MaintenanceTimelineEventScalarFieldEnum[]
+  }
+
+  /**
+   * MaintenanceTimelineEvent create
+   */
+  export type MaintenanceTimelineEventCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceTimelineEvent
+     */
+    select?: MaintenanceTimelineEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceTimelineEvent
+     */
+    omit?: MaintenanceTimelineEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceTimelineEventInclude<ExtArgs> | null
+    /**
+     * The data needed to create a MaintenanceTimelineEvent.
+     */
+    data: XOR<MaintenanceTimelineEventCreateInput, MaintenanceTimelineEventUncheckedCreateInput>
+  }
+
+  /**
+   * MaintenanceTimelineEvent createMany
+   */
+  export type MaintenanceTimelineEventCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many MaintenanceTimelineEvents.
+     */
+    data: MaintenanceTimelineEventCreateManyInput | MaintenanceTimelineEventCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * MaintenanceTimelineEvent update
+   */
+  export type MaintenanceTimelineEventUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceTimelineEvent
+     */
+    select?: MaintenanceTimelineEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceTimelineEvent
+     */
+    omit?: MaintenanceTimelineEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceTimelineEventInclude<ExtArgs> | null
+    /**
+     * The data needed to update a MaintenanceTimelineEvent.
+     */
+    data: XOR<MaintenanceTimelineEventUpdateInput, MaintenanceTimelineEventUncheckedUpdateInput>
+    /**
+     * Choose, which MaintenanceTimelineEvent to update.
+     */
+    where: MaintenanceTimelineEventWhereUniqueInput
+  }
+
+  /**
+   * MaintenanceTimelineEvent updateMany
+   */
+  export type MaintenanceTimelineEventUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update MaintenanceTimelineEvents.
+     */
+    data: XOR<MaintenanceTimelineEventUpdateManyMutationInput, MaintenanceTimelineEventUncheckedUpdateManyInput>
+    /**
+     * Filter which MaintenanceTimelineEvents to update
+     */
+    where?: MaintenanceTimelineEventWhereInput
+    /**
+     * Limit how many MaintenanceTimelineEvents to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * MaintenanceTimelineEvent upsert
+   */
+  export type MaintenanceTimelineEventUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceTimelineEvent
+     */
+    select?: MaintenanceTimelineEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceTimelineEvent
+     */
+    omit?: MaintenanceTimelineEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceTimelineEventInclude<ExtArgs> | null
+    /**
+     * The filter to search for the MaintenanceTimelineEvent to update in case it exists.
+     */
+    where: MaintenanceTimelineEventWhereUniqueInput
+    /**
+     * In case the MaintenanceTimelineEvent found by the `where` argument doesn't exist, create a new MaintenanceTimelineEvent with this data.
+     */
+    create: XOR<MaintenanceTimelineEventCreateInput, MaintenanceTimelineEventUncheckedCreateInput>
+    /**
+     * In case the MaintenanceTimelineEvent was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<MaintenanceTimelineEventUpdateInput, MaintenanceTimelineEventUncheckedUpdateInput>
+  }
+
+  /**
+   * MaintenanceTimelineEvent delete
+   */
+  export type MaintenanceTimelineEventDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceTimelineEvent
+     */
+    select?: MaintenanceTimelineEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceTimelineEvent
+     */
+    omit?: MaintenanceTimelineEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceTimelineEventInclude<ExtArgs> | null
+    /**
+     * Filter which MaintenanceTimelineEvent to delete.
+     */
+    where: MaintenanceTimelineEventWhereUniqueInput
+  }
+
+  /**
+   * MaintenanceTimelineEvent deleteMany
+   */
+  export type MaintenanceTimelineEventDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MaintenanceTimelineEvents to delete
+     */
+    where?: MaintenanceTimelineEventWhereInput
+    /**
+     * Limit how many MaintenanceTimelineEvents to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * MaintenanceTimelineEvent.transferredFromInstance
+   */
+  export type MaintenanceTimelineEvent$transferredFromInstanceArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceInstance
+     */
+    select?: MaintenanceInstanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceInstance
+     */
+    omit?: MaintenanceInstanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceInstanceInclude<ExtArgs> | null
+    where?: MaintenanceInstanceWhereInput
+  }
+
+  /**
+   * MaintenanceTimelineEvent.transferredToInstance
+   */
+  export type MaintenanceTimelineEvent$transferredToInstanceArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceInstance
+     */
+    select?: MaintenanceInstanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceInstance
+     */
+    omit?: MaintenanceInstanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceInstanceInclude<ExtArgs> | null
+    where?: MaintenanceInstanceWhereInput
+  }
+
+  /**
+   * MaintenanceTimelineEvent without action
+   */
+  export type MaintenanceTimelineEventDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceTimelineEvent
+     */
+    select?: MaintenanceTimelineEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceTimelineEvent
+     */
+    omit?: MaintenanceTimelineEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceTimelineEventInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model MaintenanceInstance
    */
 
@@ -3411,6 +7854,7 @@ export namespace Prisma {
     id: number | null
     sipacId: string | null
     name: string | null
+    isActive: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -3419,6 +7863,7 @@ export namespace Prisma {
     id: number | null
     sipacId: string | null
     name: string | null
+    isActive: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -3427,6 +7872,7 @@ export namespace Prisma {
     id: number
     sipacId: number
     name: number
+    isActive: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -3445,6 +7891,7 @@ export namespace Prisma {
     id?: true
     sipacId?: true
     name?: true
+    isActive?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -3453,6 +7900,7 @@ export namespace Prisma {
     id?: true
     sipacId?: true
     name?: true
+    isActive?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -3461,6 +7909,7 @@ export namespace Prisma {
     id?: true
     sipacId?: true
     name?: true
+    isActive?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -3556,6 +8005,7 @@ export namespace Prisma {
     id: number
     sipacId: string
     name: string
+    isActive: boolean
     createdAt: Date
     updatedAt: Date
     _count: MaintenanceInstanceCountAggregateOutputType | null
@@ -3583,8 +8033,13 @@ export namespace Prisma {
     id?: boolean
     sipacId?: boolean
     name?: boolean
+    isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    currentMaintenanceRequests?: boolean | MaintenanceInstance$currentMaintenanceRequestsArgs<ExtArgs>
+    timelineEventsTransferredFrom?: boolean | MaintenanceInstance$timelineEventsTransferredFromArgs<ExtArgs>
+    timelineEventsTransferredTo?: boolean | MaintenanceInstance$timelineEventsTransferredToArgs<ExtArgs>
+    _count?: boolean | MaintenanceInstanceCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["maintenanceInstance"]>
 
 
@@ -3593,19 +8048,31 @@ export namespace Prisma {
     id?: boolean
     sipacId?: boolean
     name?: boolean
+    isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type MaintenanceInstanceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "sipacId" | "name" | "createdAt" | "updatedAt", ExtArgs["result"]["maintenanceInstance"]>
+  export type MaintenanceInstanceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "sipacId" | "name" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["maintenanceInstance"]>
+  export type MaintenanceInstanceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    currentMaintenanceRequests?: boolean | MaintenanceInstance$currentMaintenanceRequestsArgs<ExtArgs>
+    timelineEventsTransferredFrom?: boolean | MaintenanceInstance$timelineEventsTransferredFromArgs<ExtArgs>
+    timelineEventsTransferredTo?: boolean | MaintenanceInstance$timelineEventsTransferredToArgs<ExtArgs>
+    _count?: boolean | MaintenanceInstanceCountOutputTypeDefaultArgs<ExtArgs>
+  }
 
   export type $MaintenanceInstancePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "MaintenanceInstance"
-    objects: {}
+    objects: {
+      currentMaintenanceRequests: Prisma.$MaintenanceRequestPayload<ExtArgs>[]
+      timelineEventsTransferredFrom: Prisma.$MaintenanceTimelineEventPayload<ExtArgs>[]
+      timelineEventsTransferredTo: Prisma.$MaintenanceTimelineEventPayload<ExtArgs>[]
+    }
     scalars: $Extensions.GetPayloadResult<{
       id: number
       sipacId: string
       name: string
+      isActive: boolean
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["maintenanceInstance"]>
@@ -3948,6 +8415,9 @@ export namespace Prisma {
    */
   export interface Prisma__MaintenanceInstanceClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    currentMaintenanceRequests<T extends MaintenanceInstance$currentMaintenanceRequestsArgs<ExtArgs> = {}>(args?: Subset<T, MaintenanceInstance$currentMaintenanceRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaintenanceRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    timelineEventsTransferredFrom<T extends MaintenanceInstance$timelineEventsTransferredFromArgs<ExtArgs> = {}>(args?: Subset<T, MaintenanceInstance$timelineEventsTransferredFromArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaintenanceTimelineEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    timelineEventsTransferredTo<T extends MaintenanceInstance$timelineEventsTransferredToArgs<ExtArgs> = {}>(args?: Subset<T, MaintenanceInstance$timelineEventsTransferredToArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaintenanceTimelineEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3980,6 +8450,7 @@ export namespace Prisma {
     readonly id: FieldRef<"MaintenanceInstance", 'Int'>
     readonly sipacId: FieldRef<"MaintenanceInstance", 'String'>
     readonly name: FieldRef<"MaintenanceInstance", 'String'>
+    readonly isActive: FieldRef<"MaintenanceInstance", 'Boolean'>
     readonly createdAt: FieldRef<"MaintenanceInstance", 'DateTime'>
     readonly updatedAt: FieldRef<"MaintenanceInstance", 'DateTime'>
   }
@@ -3999,6 +8470,10 @@ export namespace Prisma {
      */
     omit?: MaintenanceInstanceOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceInstanceInclude<ExtArgs> | null
+    /**
      * Filter, which MaintenanceInstance to fetch.
      */
     where: MaintenanceInstanceWhereUniqueInput
@@ -4017,6 +8492,10 @@ export namespace Prisma {
      */
     omit?: MaintenanceInstanceOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceInstanceInclude<ExtArgs> | null
+    /**
      * Filter, which MaintenanceInstance to fetch.
      */
     where: MaintenanceInstanceWhereUniqueInput
@@ -4034,6 +8513,10 @@ export namespace Prisma {
      * Omit specific fields from the MaintenanceInstance
      */
     omit?: MaintenanceInstanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceInstanceInclude<ExtArgs> | null
     /**
      * Filter, which MaintenanceInstance to fetch.
      */
@@ -4083,6 +8566,10 @@ export namespace Prisma {
      */
     omit?: MaintenanceInstanceOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceInstanceInclude<ExtArgs> | null
+    /**
      * Filter, which MaintenanceInstance to fetch.
      */
     where?: MaintenanceInstanceWhereInput
@@ -4131,6 +8618,10 @@ export namespace Prisma {
      */
     omit?: MaintenanceInstanceOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceInstanceInclude<ExtArgs> | null
+    /**
      * Filter, which MaintenanceInstances to fetch.
      */
     where?: MaintenanceInstanceWhereInput
@@ -4174,6 +8665,10 @@ export namespace Prisma {
      */
     omit?: MaintenanceInstanceOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceInstanceInclude<ExtArgs> | null
+    /**
      * The data needed to create a MaintenanceInstance.
      */
     data: XOR<MaintenanceInstanceCreateInput, MaintenanceInstanceUncheckedCreateInput>
@@ -4202,6 +8697,10 @@ export namespace Prisma {
      * Omit specific fields from the MaintenanceInstance
      */
     omit?: MaintenanceInstanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceInstanceInclude<ExtArgs> | null
     /**
      * The data needed to update a MaintenanceInstance.
      */
@@ -4243,6 +8742,10 @@ export namespace Prisma {
      */
     omit?: MaintenanceInstanceOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceInstanceInclude<ExtArgs> | null
+    /**
      * The filter to search for the MaintenanceInstance to update in case it exists.
      */
     where: MaintenanceInstanceWhereUniqueInput
@@ -4269,6 +8772,10 @@ export namespace Prisma {
      */
     omit?: MaintenanceInstanceOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceInstanceInclude<ExtArgs> | null
+    /**
      * Filter which MaintenanceInstance to delete.
      */
     where: MaintenanceInstanceWhereUniqueInput
@@ -4289,6 +8796,78 @@ export namespace Prisma {
   }
 
   /**
+   * MaintenanceInstance.currentMaintenanceRequests
+   */
+  export type MaintenanceInstance$currentMaintenanceRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceRequest
+     */
+    select?: MaintenanceRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceRequest
+     */
+    omit?: MaintenanceRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceRequestInclude<ExtArgs> | null
+    where?: MaintenanceRequestWhereInput
+    orderBy?: MaintenanceRequestOrderByWithRelationInput | MaintenanceRequestOrderByWithRelationInput[]
+    cursor?: MaintenanceRequestWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MaintenanceRequestScalarFieldEnum | MaintenanceRequestScalarFieldEnum[]
+  }
+
+  /**
+   * MaintenanceInstance.timelineEventsTransferredFrom
+   */
+  export type MaintenanceInstance$timelineEventsTransferredFromArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceTimelineEvent
+     */
+    select?: MaintenanceTimelineEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceTimelineEvent
+     */
+    omit?: MaintenanceTimelineEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceTimelineEventInclude<ExtArgs> | null
+    where?: MaintenanceTimelineEventWhereInput
+    orderBy?: MaintenanceTimelineEventOrderByWithRelationInput | MaintenanceTimelineEventOrderByWithRelationInput[]
+    cursor?: MaintenanceTimelineEventWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MaintenanceTimelineEventScalarFieldEnum | MaintenanceTimelineEventScalarFieldEnum[]
+  }
+
+  /**
+   * MaintenanceInstance.timelineEventsTransferredTo
+   */
+  export type MaintenanceInstance$timelineEventsTransferredToArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceTimelineEvent
+     */
+    select?: MaintenanceTimelineEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceTimelineEvent
+     */
+    omit?: MaintenanceTimelineEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceTimelineEventInclude<ExtArgs> | null
+    where?: MaintenanceTimelineEventWhereInput
+    orderBy?: MaintenanceTimelineEventOrderByWithRelationInput | MaintenanceTimelineEventOrderByWithRelationInput[]
+    cursor?: MaintenanceTimelineEventWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MaintenanceTimelineEventScalarFieldEnum | MaintenanceTimelineEventScalarFieldEnum[]
+  }
+
+  /**
    * MaintenanceInstance without action
    */
   export type MaintenanceInstanceDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4300,6 +8879,3136 @@ export namespace Prisma {
      * Omit specific fields from the MaintenanceInstance
      */
     omit?: MaintenanceInstanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceInstanceInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ServiceType
+   */
+
+  export type AggregateServiceType = {
+    _count: ServiceTypeCountAggregateOutputType | null
+    _avg: ServiceTypeAvgAggregateOutputType | null
+    _sum: ServiceTypeSumAggregateOutputType | null
+    _min: ServiceTypeMinAggregateOutputType | null
+    _max: ServiceTypeMaxAggregateOutputType | null
+  }
+
+  export type ServiceTypeAvgAggregateOutputType = {
+    id: number | null
+  }
+
+  export type ServiceTypeSumAggregateOutputType = {
+    id: number | null
+  }
+
+  export type ServiceTypeMinAggregateOutputType = {
+    id: number | null
+    name: string | null
+    description: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ServiceTypeMaxAggregateOutputType = {
+    id: number | null
+    name: string | null
+    description: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ServiceTypeCountAggregateOutputType = {
+    id: number
+    name: number
+    description: number
+    isActive: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ServiceTypeAvgAggregateInputType = {
+    id?: true
+  }
+
+  export type ServiceTypeSumAggregateInputType = {
+    id?: true
+  }
+
+  export type ServiceTypeMinAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ServiceTypeMaxAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ServiceTypeCountAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ServiceTypeAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ServiceType to aggregate.
+     */
+    where?: ServiceTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ServiceTypes to fetch.
+     */
+    orderBy?: ServiceTypeOrderByWithRelationInput | ServiceTypeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ServiceTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ServiceTypes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ServiceTypes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ServiceTypes
+    **/
+    _count?: true | ServiceTypeCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ServiceTypeAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ServiceTypeSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ServiceTypeMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ServiceTypeMaxAggregateInputType
+  }
+
+  export type GetServiceTypeAggregateType<T extends ServiceTypeAggregateArgs> = {
+        [P in keyof T & keyof AggregateServiceType]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateServiceType[P]>
+      : GetScalarType<T[P], AggregateServiceType[P]>
+  }
+
+
+
+
+  export type ServiceTypeGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ServiceTypeWhereInput
+    orderBy?: ServiceTypeOrderByWithAggregationInput | ServiceTypeOrderByWithAggregationInput[]
+    by: ServiceTypeScalarFieldEnum[] | ServiceTypeScalarFieldEnum
+    having?: ServiceTypeScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ServiceTypeCountAggregateInputType | true
+    _avg?: ServiceTypeAvgAggregateInputType
+    _sum?: ServiceTypeSumAggregateInputType
+    _min?: ServiceTypeMinAggregateInputType
+    _max?: ServiceTypeMaxAggregateInputType
+  }
+
+  export type ServiceTypeGroupByOutputType = {
+    id: number
+    name: string
+    description: string | null
+    isActive: boolean
+    createdAt: Date
+    updatedAt: Date
+    _count: ServiceTypeCountAggregateOutputType | null
+    _avg: ServiceTypeAvgAggregateOutputType | null
+    _sum: ServiceTypeSumAggregateOutputType | null
+    _min: ServiceTypeMinAggregateOutputType | null
+    _max: ServiceTypeMaxAggregateOutputType | null
+  }
+
+  type GetServiceTypeGroupByPayload<T extends ServiceTypeGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ServiceTypeGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ServiceTypeGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ServiceTypeGroupByOutputType[P]>
+            : GetScalarType<T[P], ServiceTypeGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ServiceTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    maintenanceRequests?: boolean | ServiceType$maintenanceRequestsArgs<ExtArgs>
+    _count?: boolean | ServiceTypeCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["serviceType"]>
+
+
+
+  export type ServiceTypeSelectScalar = {
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ServiceTypeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["serviceType"]>
+  export type ServiceTypeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    maintenanceRequests?: boolean | ServiceType$maintenanceRequestsArgs<ExtArgs>
+    _count?: boolean | ServiceTypeCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $ServiceTypePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ServiceType"
+    objects: {
+      maintenanceRequests: Prisma.$MaintenanceRequestPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      name: string
+      description: string | null
+      isActive: boolean
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["serviceType"]>
+    composites: {}
+  }
+
+  type ServiceTypeGetPayload<S extends boolean | null | undefined | ServiceTypeDefaultArgs> = $Result.GetResult<Prisma.$ServiceTypePayload, S>
+
+  type ServiceTypeCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ServiceTypeFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ServiceTypeCountAggregateInputType | true
+    }
+
+  export interface ServiceTypeDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ServiceType'], meta: { name: 'ServiceType' } }
+    /**
+     * Find zero or one ServiceType that matches the filter.
+     * @param {ServiceTypeFindUniqueArgs} args - Arguments to find a ServiceType
+     * @example
+     * // Get one ServiceType
+     * const serviceType = await prisma.serviceType.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ServiceTypeFindUniqueArgs>(args: SelectSubset<T, ServiceTypeFindUniqueArgs<ExtArgs>>): Prisma__ServiceTypeClient<$Result.GetResult<Prisma.$ServiceTypePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ServiceType that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ServiceTypeFindUniqueOrThrowArgs} args - Arguments to find a ServiceType
+     * @example
+     * // Get one ServiceType
+     * const serviceType = await prisma.serviceType.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ServiceTypeFindUniqueOrThrowArgs>(args: SelectSubset<T, ServiceTypeFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ServiceTypeClient<$Result.GetResult<Prisma.$ServiceTypePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ServiceType that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ServiceTypeFindFirstArgs} args - Arguments to find a ServiceType
+     * @example
+     * // Get one ServiceType
+     * const serviceType = await prisma.serviceType.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ServiceTypeFindFirstArgs>(args?: SelectSubset<T, ServiceTypeFindFirstArgs<ExtArgs>>): Prisma__ServiceTypeClient<$Result.GetResult<Prisma.$ServiceTypePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ServiceType that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ServiceTypeFindFirstOrThrowArgs} args - Arguments to find a ServiceType
+     * @example
+     * // Get one ServiceType
+     * const serviceType = await prisma.serviceType.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ServiceTypeFindFirstOrThrowArgs>(args?: SelectSubset<T, ServiceTypeFindFirstOrThrowArgs<ExtArgs>>): Prisma__ServiceTypeClient<$Result.GetResult<Prisma.$ServiceTypePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ServiceTypes that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ServiceTypeFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ServiceTypes
+     * const serviceTypes = await prisma.serviceType.findMany()
+     * 
+     * // Get first 10 ServiceTypes
+     * const serviceTypes = await prisma.serviceType.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const serviceTypeWithIdOnly = await prisma.serviceType.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ServiceTypeFindManyArgs>(args?: SelectSubset<T, ServiceTypeFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ServiceTypePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ServiceType.
+     * @param {ServiceTypeCreateArgs} args - Arguments to create a ServiceType.
+     * @example
+     * // Create one ServiceType
+     * const ServiceType = await prisma.serviceType.create({
+     *   data: {
+     *     // ... data to create a ServiceType
+     *   }
+     * })
+     * 
+     */
+    create<T extends ServiceTypeCreateArgs>(args: SelectSubset<T, ServiceTypeCreateArgs<ExtArgs>>): Prisma__ServiceTypeClient<$Result.GetResult<Prisma.$ServiceTypePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ServiceTypes.
+     * @param {ServiceTypeCreateManyArgs} args - Arguments to create many ServiceTypes.
+     * @example
+     * // Create many ServiceTypes
+     * const serviceType = await prisma.serviceType.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ServiceTypeCreateManyArgs>(args?: SelectSubset<T, ServiceTypeCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a ServiceType.
+     * @param {ServiceTypeDeleteArgs} args - Arguments to delete one ServiceType.
+     * @example
+     * // Delete one ServiceType
+     * const ServiceType = await prisma.serviceType.delete({
+     *   where: {
+     *     // ... filter to delete one ServiceType
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ServiceTypeDeleteArgs>(args: SelectSubset<T, ServiceTypeDeleteArgs<ExtArgs>>): Prisma__ServiceTypeClient<$Result.GetResult<Prisma.$ServiceTypePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ServiceType.
+     * @param {ServiceTypeUpdateArgs} args - Arguments to update one ServiceType.
+     * @example
+     * // Update one ServiceType
+     * const serviceType = await prisma.serviceType.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ServiceTypeUpdateArgs>(args: SelectSubset<T, ServiceTypeUpdateArgs<ExtArgs>>): Prisma__ServiceTypeClient<$Result.GetResult<Prisma.$ServiceTypePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ServiceTypes.
+     * @param {ServiceTypeDeleteManyArgs} args - Arguments to filter ServiceTypes to delete.
+     * @example
+     * // Delete a few ServiceTypes
+     * const { count } = await prisma.serviceType.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ServiceTypeDeleteManyArgs>(args?: SelectSubset<T, ServiceTypeDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ServiceTypes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ServiceTypeUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ServiceTypes
+     * const serviceType = await prisma.serviceType.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ServiceTypeUpdateManyArgs>(args: SelectSubset<T, ServiceTypeUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one ServiceType.
+     * @param {ServiceTypeUpsertArgs} args - Arguments to update or create a ServiceType.
+     * @example
+     * // Update or create a ServiceType
+     * const serviceType = await prisma.serviceType.upsert({
+     *   create: {
+     *     // ... data to create a ServiceType
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ServiceType we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ServiceTypeUpsertArgs>(args: SelectSubset<T, ServiceTypeUpsertArgs<ExtArgs>>): Prisma__ServiceTypeClient<$Result.GetResult<Prisma.$ServiceTypePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ServiceTypes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ServiceTypeCountArgs} args - Arguments to filter ServiceTypes to count.
+     * @example
+     * // Count the number of ServiceTypes
+     * const count = await prisma.serviceType.count({
+     *   where: {
+     *     // ... the filter for the ServiceTypes we want to count
+     *   }
+     * })
+    **/
+    count<T extends ServiceTypeCountArgs>(
+      args?: Subset<T, ServiceTypeCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ServiceTypeCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ServiceType.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ServiceTypeAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ServiceTypeAggregateArgs>(args: Subset<T, ServiceTypeAggregateArgs>): Prisma.PrismaPromise<GetServiceTypeAggregateType<T>>
+
+    /**
+     * Group by ServiceType.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ServiceTypeGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ServiceTypeGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ServiceTypeGroupByArgs['orderBy'] }
+        : { orderBy?: ServiceTypeGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ServiceTypeGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetServiceTypeGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ServiceType model
+   */
+  readonly fields: ServiceTypeFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ServiceType.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ServiceTypeClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    maintenanceRequests<T extends ServiceType$maintenanceRequestsArgs<ExtArgs> = {}>(args?: Subset<T, ServiceType$maintenanceRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaintenanceRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ServiceType model
+   */
+  interface ServiceTypeFieldRefs {
+    readonly id: FieldRef<"ServiceType", 'Int'>
+    readonly name: FieldRef<"ServiceType", 'String'>
+    readonly description: FieldRef<"ServiceType", 'String'>
+    readonly isActive: FieldRef<"ServiceType", 'Boolean'>
+    readonly createdAt: FieldRef<"ServiceType", 'DateTime'>
+    readonly updatedAt: FieldRef<"ServiceType", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ServiceType findUnique
+   */
+  export type ServiceTypeFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ServiceType
+     */
+    select?: ServiceTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ServiceType
+     */
+    omit?: ServiceTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ServiceTypeInclude<ExtArgs> | null
+    /**
+     * Filter, which ServiceType to fetch.
+     */
+    where: ServiceTypeWhereUniqueInput
+  }
+
+  /**
+   * ServiceType findUniqueOrThrow
+   */
+  export type ServiceTypeFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ServiceType
+     */
+    select?: ServiceTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ServiceType
+     */
+    omit?: ServiceTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ServiceTypeInclude<ExtArgs> | null
+    /**
+     * Filter, which ServiceType to fetch.
+     */
+    where: ServiceTypeWhereUniqueInput
+  }
+
+  /**
+   * ServiceType findFirst
+   */
+  export type ServiceTypeFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ServiceType
+     */
+    select?: ServiceTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ServiceType
+     */
+    omit?: ServiceTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ServiceTypeInclude<ExtArgs> | null
+    /**
+     * Filter, which ServiceType to fetch.
+     */
+    where?: ServiceTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ServiceTypes to fetch.
+     */
+    orderBy?: ServiceTypeOrderByWithRelationInput | ServiceTypeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ServiceTypes.
+     */
+    cursor?: ServiceTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ServiceTypes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ServiceTypes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ServiceTypes.
+     */
+    distinct?: ServiceTypeScalarFieldEnum | ServiceTypeScalarFieldEnum[]
+  }
+
+  /**
+   * ServiceType findFirstOrThrow
+   */
+  export type ServiceTypeFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ServiceType
+     */
+    select?: ServiceTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ServiceType
+     */
+    omit?: ServiceTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ServiceTypeInclude<ExtArgs> | null
+    /**
+     * Filter, which ServiceType to fetch.
+     */
+    where?: ServiceTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ServiceTypes to fetch.
+     */
+    orderBy?: ServiceTypeOrderByWithRelationInput | ServiceTypeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ServiceTypes.
+     */
+    cursor?: ServiceTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ServiceTypes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ServiceTypes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ServiceTypes.
+     */
+    distinct?: ServiceTypeScalarFieldEnum | ServiceTypeScalarFieldEnum[]
+  }
+
+  /**
+   * ServiceType findMany
+   */
+  export type ServiceTypeFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ServiceType
+     */
+    select?: ServiceTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ServiceType
+     */
+    omit?: ServiceTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ServiceTypeInclude<ExtArgs> | null
+    /**
+     * Filter, which ServiceTypes to fetch.
+     */
+    where?: ServiceTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ServiceTypes to fetch.
+     */
+    orderBy?: ServiceTypeOrderByWithRelationInput | ServiceTypeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ServiceTypes.
+     */
+    cursor?: ServiceTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ServiceTypes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ServiceTypes.
+     */
+    skip?: number
+    distinct?: ServiceTypeScalarFieldEnum | ServiceTypeScalarFieldEnum[]
+  }
+
+  /**
+   * ServiceType create
+   */
+  export type ServiceTypeCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ServiceType
+     */
+    select?: ServiceTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ServiceType
+     */
+    omit?: ServiceTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ServiceTypeInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ServiceType.
+     */
+    data: XOR<ServiceTypeCreateInput, ServiceTypeUncheckedCreateInput>
+  }
+
+  /**
+   * ServiceType createMany
+   */
+  export type ServiceTypeCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ServiceTypes.
+     */
+    data: ServiceTypeCreateManyInput | ServiceTypeCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ServiceType update
+   */
+  export type ServiceTypeUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ServiceType
+     */
+    select?: ServiceTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ServiceType
+     */
+    omit?: ServiceTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ServiceTypeInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ServiceType.
+     */
+    data: XOR<ServiceTypeUpdateInput, ServiceTypeUncheckedUpdateInput>
+    /**
+     * Choose, which ServiceType to update.
+     */
+    where: ServiceTypeWhereUniqueInput
+  }
+
+  /**
+   * ServiceType updateMany
+   */
+  export type ServiceTypeUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ServiceTypes.
+     */
+    data: XOR<ServiceTypeUpdateManyMutationInput, ServiceTypeUncheckedUpdateManyInput>
+    /**
+     * Filter which ServiceTypes to update
+     */
+    where?: ServiceTypeWhereInput
+    /**
+     * Limit how many ServiceTypes to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ServiceType upsert
+   */
+  export type ServiceTypeUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ServiceType
+     */
+    select?: ServiceTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ServiceType
+     */
+    omit?: ServiceTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ServiceTypeInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ServiceType to update in case it exists.
+     */
+    where: ServiceTypeWhereUniqueInput
+    /**
+     * In case the ServiceType found by the `where` argument doesn't exist, create a new ServiceType with this data.
+     */
+    create: XOR<ServiceTypeCreateInput, ServiceTypeUncheckedCreateInput>
+    /**
+     * In case the ServiceType was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ServiceTypeUpdateInput, ServiceTypeUncheckedUpdateInput>
+  }
+
+  /**
+   * ServiceType delete
+   */
+  export type ServiceTypeDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ServiceType
+     */
+    select?: ServiceTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ServiceType
+     */
+    omit?: ServiceTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ServiceTypeInclude<ExtArgs> | null
+    /**
+     * Filter which ServiceType to delete.
+     */
+    where: ServiceTypeWhereUniqueInput
+  }
+
+  /**
+   * ServiceType deleteMany
+   */
+  export type ServiceTypeDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ServiceTypes to delete
+     */
+    where?: ServiceTypeWhereInput
+    /**
+     * Limit how many ServiceTypes to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ServiceType.maintenanceRequests
+   */
+  export type ServiceType$maintenanceRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceRequest
+     */
+    select?: MaintenanceRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceRequest
+     */
+    omit?: MaintenanceRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceRequestInclude<ExtArgs> | null
+    where?: MaintenanceRequestWhereInput
+    orderBy?: MaintenanceRequestOrderByWithRelationInput | MaintenanceRequestOrderByWithRelationInput[]
+    cursor?: MaintenanceRequestWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MaintenanceRequestScalarFieldEnum | MaintenanceRequestScalarFieldEnum[]
+  }
+
+  /**
+   * ServiceType without action
+   */
+  export type ServiceTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ServiceType
+     */
+    select?: ServiceTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ServiceType
+     */
+    omit?: ServiceTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ServiceTypeInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Equipment
+   */
+
+  export type AggregateEquipment = {
+    _count: EquipmentCountAggregateOutputType | null
+    _avg: EquipmentAvgAggregateOutputType | null
+    _sum: EquipmentSumAggregateOutputType | null
+    _min: EquipmentMinAggregateOutputType | null
+    _max: EquipmentMaxAggregateOutputType | null
+  }
+
+  export type EquipmentAvgAggregateOutputType = {
+    id: number | null
+  }
+
+  export type EquipmentSumAggregateOutputType = {
+    id: number | null
+  }
+
+  export type EquipmentMinAggregateOutputType = {
+    id: number | null
+    patrimonyTag: string | null
+    name: string | null
+    description: string | null
+    location: string | null
+    serialNumber: string | null
+    manufacturer: string | null
+    model: string | null
+    acquisitionDate: Date | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type EquipmentMaxAggregateOutputType = {
+    id: number | null
+    patrimonyTag: string | null
+    name: string | null
+    description: string | null
+    location: string | null
+    serialNumber: string | null
+    manufacturer: string | null
+    model: string | null
+    acquisitionDate: Date | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type EquipmentCountAggregateOutputType = {
+    id: number
+    patrimonyTag: number
+    name: number
+    description: number
+    location: number
+    serialNumber: number
+    manufacturer: number
+    model: number
+    acquisitionDate: number
+    isActive: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type EquipmentAvgAggregateInputType = {
+    id?: true
+  }
+
+  export type EquipmentSumAggregateInputType = {
+    id?: true
+  }
+
+  export type EquipmentMinAggregateInputType = {
+    id?: true
+    patrimonyTag?: true
+    name?: true
+    description?: true
+    location?: true
+    serialNumber?: true
+    manufacturer?: true
+    model?: true
+    acquisitionDate?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type EquipmentMaxAggregateInputType = {
+    id?: true
+    patrimonyTag?: true
+    name?: true
+    description?: true
+    location?: true
+    serialNumber?: true
+    manufacturer?: true
+    model?: true
+    acquisitionDate?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type EquipmentCountAggregateInputType = {
+    id?: true
+    patrimonyTag?: true
+    name?: true
+    description?: true
+    location?: true
+    serialNumber?: true
+    manufacturer?: true
+    model?: true
+    acquisitionDate?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type EquipmentAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Equipment to aggregate.
+     */
+    where?: EquipmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Equipment to fetch.
+     */
+    orderBy?: EquipmentOrderByWithRelationInput | EquipmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: EquipmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Equipment from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Equipment.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Equipment
+    **/
+    _count?: true | EquipmentCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: EquipmentAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: EquipmentSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: EquipmentMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: EquipmentMaxAggregateInputType
+  }
+
+  export type GetEquipmentAggregateType<T extends EquipmentAggregateArgs> = {
+        [P in keyof T & keyof AggregateEquipment]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateEquipment[P]>
+      : GetScalarType<T[P], AggregateEquipment[P]>
+  }
+
+
+
+
+  export type EquipmentGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EquipmentWhereInput
+    orderBy?: EquipmentOrderByWithAggregationInput | EquipmentOrderByWithAggregationInput[]
+    by: EquipmentScalarFieldEnum[] | EquipmentScalarFieldEnum
+    having?: EquipmentScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: EquipmentCountAggregateInputType | true
+    _avg?: EquipmentAvgAggregateInputType
+    _sum?: EquipmentSumAggregateInputType
+    _min?: EquipmentMinAggregateInputType
+    _max?: EquipmentMaxAggregateInputType
+  }
+
+  export type EquipmentGroupByOutputType = {
+    id: number
+    patrimonyTag: string | null
+    name: string
+    description: string | null
+    location: string | null
+    serialNumber: string | null
+    manufacturer: string | null
+    model: string | null
+    acquisitionDate: Date | null
+    isActive: boolean
+    createdAt: Date
+    updatedAt: Date
+    _count: EquipmentCountAggregateOutputType | null
+    _avg: EquipmentAvgAggregateOutputType | null
+    _sum: EquipmentSumAggregateOutputType | null
+    _min: EquipmentMinAggregateOutputType | null
+    _max: EquipmentMaxAggregateOutputType | null
+  }
+
+  type GetEquipmentGroupByPayload<T extends EquipmentGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<EquipmentGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof EquipmentGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], EquipmentGroupByOutputType[P]>
+            : GetScalarType<T[P], EquipmentGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type EquipmentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    patrimonyTag?: boolean
+    name?: boolean
+    description?: boolean
+    location?: boolean
+    serialNumber?: boolean
+    manufacturer?: boolean
+    model?: boolean
+    acquisitionDate?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    maintenanceRequests?: boolean | Equipment$maintenanceRequestsArgs<ExtArgs>
+    _count?: boolean | EquipmentCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["equipment"]>
+
+
+
+  export type EquipmentSelectScalar = {
+    id?: boolean
+    patrimonyTag?: boolean
+    name?: boolean
+    description?: boolean
+    location?: boolean
+    serialNumber?: boolean
+    manufacturer?: boolean
+    model?: boolean
+    acquisitionDate?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type EquipmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "patrimonyTag" | "name" | "description" | "location" | "serialNumber" | "manufacturer" | "model" | "acquisitionDate" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["equipment"]>
+  export type EquipmentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    maintenanceRequests?: boolean | Equipment$maintenanceRequestsArgs<ExtArgs>
+    _count?: boolean | EquipmentCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $EquipmentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Equipment"
+    objects: {
+      maintenanceRequests: Prisma.$MaintenanceRequestPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      patrimonyTag: string | null
+      name: string
+      description: string | null
+      location: string | null
+      serialNumber: string | null
+      manufacturer: string | null
+      model: string | null
+      acquisitionDate: Date | null
+      isActive: boolean
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["equipment"]>
+    composites: {}
+  }
+
+  type EquipmentGetPayload<S extends boolean | null | undefined | EquipmentDefaultArgs> = $Result.GetResult<Prisma.$EquipmentPayload, S>
+
+  type EquipmentCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<EquipmentFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: EquipmentCountAggregateInputType | true
+    }
+
+  export interface EquipmentDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Equipment'], meta: { name: 'Equipment' } }
+    /**
+     * Find zero or one Equipment that matches the filter.
+     * @param {EquipmentFindUniqueArgs} args - Arguments to find a Equipment
+     * @example
+     * // Get one Equipment
+     * const equipment = await prisma.equipment.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends EquipmentFindUniqueArgs>(args: SelectSubset<T, EquipmentFindUniqueArgs<ExtArgs>>): Prisma__EquipmentClient<$Result.GetResult<Prisma.$EquipmentPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Equipment that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {EquipmentFindUniqueOrThrowArgs} args - Arguments to find a Equipment
+     * @example
+     * // Get one Equipment
+     * const equipment = await prisma.equipment.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends EquipmentFindUniqueOrThrowArgs>(args: SelectSubset<T, EquipmentFindUniqueOrThrowArgs<ExtArgs>>): Prisma__EquipmentClient<$Result.GetResult<Prisma.$EquipmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Equipment that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EquipmentFindFirstArgs} args - Arguments to find a Equipment
+     * @example
+     * // Get one Equipment
+     * const equipment = await prisma.equipment.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends EquipmentFindFirstArgs>(args?: SelectSubset<T, EquipmentFindFirstArgs<ExtArgs>>): Prisma__EquipmentClient<$Result.GetResult<Prisma.$EquipmentPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Equipment that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EquipmentFindFirstOrThrowArgs} args - Arguments to find a Equipment
+     * @example
+     * // Get one Equipment
+     * const equipment = await prisma.equipment.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends EquipmentFindFirstOrThrowArgs>(args?: SelectSubset<T, EquipmentFindFirstOrThrowArgs<ExtArgs>>): Prisma__EquipmentClient<$Result.GetResult<Prisma.$EquipmentPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Equipment that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EquipmentFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Equipment
+     * const equipment = await prisma.equipment.findMany()
+     * 
+     * // Get first 10 Equipment
+     * const equipment = await prisma.equipment.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const equipmentWithIdOnly = await prisma.equipment.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends EquipmentFindManyArgs>(args?: SelectSubset<T, EquipmentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EquipmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Equipment.
+     * @param {EquipmentCreateArgs} args - Arguments to create a Equipment.
+     * @example
+     * // Create one Equipment
+     * const Equipment = await prisma.equipment.create({
+     *   data: {
+     *     // ... data to create a Equipment
+     *   }
+     * })
+     * 
+     */
+    create<T extends EquipmentCreateArgs>(args: SelectSubset<T, EquipmentCreateArgs<ExtArgs>>): Prisma__EquipmentClient<$Result.GetResult<Prisma.$EquipmentPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Equipment.
+     * @param {EquipmentCreateManyArgs} args - Arguments to create many Equipment.
+     * @example
+     * // Create many Equipment
+     * const equipment = await prisma.equipment.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends EquipmentCreateManyArgs>(args?: SelectSubset<T, EquipmentCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Equipment.
+     * @param {EquipmentDeleteArgs} args - Arguments to delete one Equipment.
+     * @example
+     * // Delete one Equipment
+     * const Equipment = await prisma.equipment.delete({
+     *   where: {
+     *     // ... filter to delete one Equipment
+     *   }
+     * })
+     * 
+     */
+    delete<T extends EquipmentDeleteArgs>(args: SelectSubset<T, EquipmentDeleteArgs<ExtArgs>>): Prisma__EquipmentClient<$Result.GetResult<Prisma.$EquipmentPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Equipment.
+     * @param {EquipmentUpdateArgs} args - Arguments to update one Equipment.
+     * @example
+     * // Update one Equipment
+     * const equipment = await prisma.equipment.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends EquipmentUpdateArgs>(args: SelectSubset<T, EquipmentUpdateArgs<ExtArgs>>): Prisma__EquipmentClient<$Result.GetResult<Prisma.$EquipmentPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Equipment.
+     * @param {EquipmentDeleteManyArgs} args - Arguments to filter Equipment to delete.
+     * @example
+     * // Delete a few Equipment
+     * const { count } = await prisma.equipment.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends EquipmentDeleteManyArgs>(args?: SelectSubset<T, EquipmentDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Equipment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EquipmentUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Equipment
+     * const equipment = await prisma.equipment.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends EquipmentUpdateManyArgs>(args: SelectSubset<T, EquipmentUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Equipment.
+     * @param {EquipmentUpsertArgs} args - Arguments to update or create a Equipment.
+     * @example
+     * // Update or create a Equipment
+     * const equipment = await prisma.equipment.upsert({
+     *   create: {
+     *     // ... data to create a Equipment
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Equipment we want to update
+     *   }
+     * })
+     */
+    upsert<T extends EquipmentUpsertArgs>(args: SelectSubset<T, EquipmentUpsertArgs<ExtArgs>>): Prisma__EquipmentClient<$Result.GetResult<Prisma.$EquipmentPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Equipment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EquipmentCountArgs} args - Arguments to filter Equipment to count.
+     * @example
+     * // Count the number of Equipment
+     * const count = await prisma.equipment.count({
+     *   where: {
+     *     // ... the filter for the Equipment we want to count
+     *   }
+     * })
+    **/
+    count<T extends EquipmentCountArgs>(
+      args?: Subset<T, EquipmentCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], EquipmentCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Equipment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EquipmentAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends EquipmentAggregateArgs>(args: Subset<T, EquipmentAggregateArgs>): Prisma.PrismaPromise<GetEquipmentAggregateType<T>>
+
+    /**
+     * Group by Equipment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EquipmentGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends EquipmentGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: EquipmentGroupByArgs['orderBy'] }
+        : { orderBy?: EquipmentGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, EquipmentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetEquipmentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Equipment model
+   */
+  readonly fields: EquipmentFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Equipment.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__EquipmentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    maintenanceRequests<T extends Equipment$maintenanceRequestsArgs<ExtArgs> = {}>(args?: Subset<T, Equipment$maintenanceRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaintenanceRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Equipment model
+   */
+  interface EquipmentFieldRefs {
+    readonly id: FieldRef<"Equipment", 'Int'>
+    readonly patrimonyTag: FieldRef<"Equipment", 'String'>
+    readonly name: FieldRef<"Equipment", 'String'>
+    readonly description: FieldRef<"Equipment", 'String'>
+    readonly location: FieldRef<"Equipment", 'String'>
+    readonly serialNumber: FieldRef<"Equipment", 'String'>
+    readonly manufacturer: FieldRef<"Equipment", 'String'>
+    readonly model: FieldRef<"Equipment", 'String'>
+    readonly acquisitionDate: FieldRef<"Equipment", 'DateTime'>
+    readonly isActive: FieldRef<"Equipment", 'Boolean'>
+    readonly createdAt: FieldRef<"Equipment", 'DateTime'>
+    readonly updatedAt: FieldRef<"Equipment", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Equipment findUnique
+   */
+  export type EquipmentFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Equipment
+     */
+    select?: EquipmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Equipment
+     */
+    omit?: EquipmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EquipmentInclude<ExtArgs> | null
+    /**
+     * Filter, which Equipment to fetch.
+     */
+    where: EquipmentWhereUniqueInput
+  }
+
+  /**
+   * Equipment findUniqueOrThrow
+   */
+  export type EquipmentFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Equipment
+     */
+    select?: EquipmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Equipment
+     */
+    omit?: EquipmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EquipmentInclude<ExtArgs> | null
+    /**
+     * Filter, which Equipment to fetch.
+     */
+    where: EquipmentWhereUniqueInput
+  }
+
+  /**
+   * Equipment findFirst
+   */
+  export type EquipmentFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Equipment
+     */
+    select?: EquipmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Equipment
+     */
+    omit?: EquipmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EquipmentInclude<ExtArgs> | null
+    /**
+     * Filter, which Equipment to fetch.
+     */
+    where?: EquipmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Equipment to fetch.
+     */
+    orderBy?: EquipmentOrderByWithRelationInput | EquipmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Equipment.
+     */
+    cursor?: EquipmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Equipment from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Equipment.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Equipment.
+     */
+    distinct?: EquipmentScalarFieldEnum | EquipmentScalarFieldEnum[]
+  }
+
+  /**
+   * Equipment findFirstOrThrow
+   */
+  export type EquipmentFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Equipment
+     */
+    select?: EquipmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Equipment
+     */
+    omit?: EquipmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EquipmentInclude<ExtArgs> | null
+    /**
+     * Filter, which Equipment to fetch.
+     */
+    where?: EquipmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Equipment to fetch.
+     */
+    orderBy?: EquipmentOrderByWithRelationInput | EquipmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Equipment.
+     */
+    cursor?: EquipmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Equipment from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Equipment.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Equipment.
+     */
+    distinct?: EquipmentScalarFieldEnum | EquipmentScalarFieldEnum[]
+  }
+
+  /**
+   * Equipment findMany
+   */
+  export type EquipmentFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Equipment
+     */
+    select?: EquipmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Equipment
+     */
+    omit?: EquipmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EquipmentInclude<ExtArgs> | null
+    /**
+     * Filter, which Equipment to fetch.
+     */
+    where?: EquipmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Equipment to fetch.
+     */
+    orderBy?: EquipmentOrderByWithRelationInput | EquipmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Equipment.
+     */
+    cursor?: EquipmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Equipment from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Equipment.
+     */
+    skip?: number
+    distinct?: EquipmentScalarFieldEnum | EquipmentScalarFieldEnum[]
+  }
+
+  /**
+   * Equipment create
+   */
+  export type EquipmentCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Equipment
+     */
+    select?: EquipmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Equipment
+     */
+    omit?: EquipmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EquipmentInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Equipment.
+     */
+    data: XOR<EquipmentCreateInput, EquipmentUncheckedCreateInput>
+  }
+
+  /**
+   * Equipment createMany
+   */
+  export type EquipmentCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Equipment.
+     */
+    data: EquipmentCreateManyInput | EquipmentCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Equipment update
+   */
+  export type EquipmentUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Equipment
+     */
+    select?: EquipmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Equipment
+     */
+    omit?: EquipmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EquipmentInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Equipment.
+     */
+    data: XOR<EquipmentUpdateInput, EquipmentUncheckedUpdateInput>
+    /**
+     * Choose, which Equipment to update.
+     */
+    where: EquipmentWhereUniqueInput
+  }
+
+  /**
+   * Equipment updateMany
+   */
+  export type EquipmentUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Equipment.
+     */
+    data: XOR<EquipmentUpdateManyMutationInput, EquipmentUncheckedUpdateManyInput>
+    /**
+     * Filter which Equipment to update
+     */
+    where?: EquipmentWhereInput
+    /**
+     * Limit how many Equipment to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Equipment upsert
+   */
+  export type EquipmentUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Equipment
+     */
+    select?: EquipmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Equipment
+     */
+    omit?: EquipmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EquipmentInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Equipment to update in case it exists.
+     */
+    where: EquipmentWhereUniqueInput
+    /**
+     * In case the Equipment found by the `where` argument doesn't exist, create a new Equipment with this data.
+     */
+    create: XOR<EquipmentCreateInput, EquipmentUncheckedCreateInput>
+    /**
+     * In case the Equipment was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<EquipmentUpdateInput, EquipmentUncheckedUpdateInput>
+  }
+
+  /**
+   * Equipment delete
+   */
+  export type EquipmentDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Equipment
+     */
+    select?: EquipmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Equipment
+     */
+    omit?: EquipmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EquipmentInclude<ExtArgs> | null
+    /**
+     * Filter which Equipment to delete.
+     */
+    where: EquipmentWhereUniqueInput
+  }
+
+  /**
+   * Equipment deleteMany
+   */
+  export type EquipmentDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Equipment to delete
+     */
+    where?: EquipmentWhereInput
+    /**
+     * Limit how many Equipment to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Equipment.maintenanceRequests
+   */
+  export type Equipment$maintenanceRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceRequest
+     */
+    select?: MaintenanceRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceRequest
+     */
+    omit?: MaintenanceRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceRequestInclude<ExtArgs> | null
+    where?: MaintenanceRequestWhereInput
+    orderBy?: MaintenanceRequestOrderByWithRelationInput | MaintenanceRequestOrderByWithRelationInput[]
+    cursor?: MaintenanceRequestWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MaintenanceRequestScalarFieldEnum | MaintenanceRequestScalarFieldEnum[]
+  }
+
+  /**
+   * Equipment without action
+   */
+  export type EquipmentDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Equipment
+     */
+    select?: EquipmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Equipment
+     */
+    omit?: EquipmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EquipmentInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model InfrastructureOccurrence
+   */
+
+  export type AggregateInfrastructureOccurrence = {
+    _count: InfrastructureOccurrenceCountAggregateOutputType | null
+    _avg: InfrastructureOccurrenceAvgAggregateOutputType | null
+    _sum: InfrastructureOccurrenceSumAggregateOutputType | null
+    _min: InfrastructureOccurrenceMinAggregateOutputType | null
+    _max: InfrastructureOccurrenceMaxAggregateOutputType | null
+  }
+
+  export type InfrastructureOccurrenceAvgAggregateOutputType = {
+    id: number | null
+    reportedById: number | null
+    maintenanceRequestId: number | null
+  }
+
+  export type InfrastructureOccurrenceSumAggregateOutputType = {
+    id: number | null
+    reportedById: number | null
+    maintenanceRequestId: number | null
+  }
+
+  export type InfrastructureOccurrenceMinAggregateOutputType = {
+    id: number | null
+    title: string | null
+    description: string | null
+    locationDescription: string | null
+    reportedAt: Date | null
+    status: $Enums.InfrastructureOccurrenceStatus | null
+    resolutionNotes: string | null
+    reportedById: number | null
+    maintenanceRequestId: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type InfrastructureOccurrenceMaxAggregateOutputType = {
+    id: number | null
+    title: string | null
+    description: string | null
+    locationDescription: string | null
+    reportedAt: Date | null
+    status: $Enums.InfrastructureOccurrenceStatus | null
+    resolutionNotes: string | null
+    reportedById: number | null
+    maintenanceRequestId: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type InfrastructureOccurrenceCountAggregateOutputType = {
+    id: number
+    title: number
+    description: number
+    locationDescription: number
+    reportedAt: number
+    status: number
+    resolutionNotes: number
+    reportedById: number
+    maintenanceRequestId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type InfrastructureOccurrenceAvgAggregateInputType = {
+    id?: true
+    reportedById?: true
+    maintenanceRequestId?: true
+  }
+
+  export type InfrastructureOccurrenceSumAggregateInputType = {
+    id?: true
+    reportedById?: true
+    maintenanceRequestId?: true
+  }
+
+  export type InfrastructureOccurrenceMinAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    locationDescription?: true
+    reportedAt?: true
+    status?: true
+    resolutionNotes?: true
+    reportedById?: true
+    maintenanceRequestId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type InfrastructureOccurrenceMaxAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    locationDescription?: true
+    reportedAt?: true
+    status?: true
+    resolutionNotes?: true
+    reportedById?: true
+    maintenanceRequestId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type InfrastructureOccurrenceCountAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    locationDescription?: true
+    reportedAt?: true
+    status?: true
+    resolutionNotes?: true
+    reportedById?: true
+    maintenanceRequestId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type InfrastructureOccurrenceAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which InfrastructureOccurrence to aggregate.
+     */
+    where?: InfrastructureOccurrenceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of InfrastructureOccurrences to fetch.
+     */
+    orderBy?: InfrastructureOccurrenceOrderByWithRelationInput | InfrastructureOccurrenceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: InfrastructureOccurrenceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` InfrastructureOccurrences from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` InfrastructureOccurrences.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned InfrastructureOccurrences
+    **/
+    _count?: true | InfrastructureOccurrenceCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: InfrastructureOccurrenceAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: InfrastructureOccurrenceSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: InfrastructureOccurrenceMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: InfrastructureOccurrenceMaxAggregateInputType
+  }
+
+  export type GetInfrastructureOccurrenceAggregateType<T extends InfrastructureOccurrenceAggregateArgs> = {
+        [P in keyof T & keyof AggregateInfrastructureOccurrence]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateInfrastructureOccurrence[P]>
+      : GetScalarType<T[P], AggregateInfrastructureOccurrence[P]>
+  }
+
+
+
+
+  export type InfrastructureOccurrenceGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InfrastructureOccurrenceWhereInput
+    orderBy?: InfrastructureOccurrenceOrderByWithAggregationInput | InfrastructureOccurrenceOrderByWithAggregationInput[]
+    by: InfrastructureOccurrenceScalarFieldEnum[] | InfrastructureOccurrenceScalarFieldEnum
+    having?: InfrastructureOccurrenceScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: InfrastructureOccurrenceCountAggregateInputType | true
+    _avg?: InfrastructureOccurrenceAvgAggregateInputType
+    _sum?: InfrastructureOccurrenceSumAggregateInputType
+    _min?: InfrastructureOccurrenceMinAggregateInputType
+    _max?: InfrastructureOccurrenceMaxAggregateInputType
+  }
+
+  export type InfrastructureOccurrenceGroupByOutputType = {
+    id: number
+    title: string
+    description: string
+    locationDescription: string | null
+    reportedAt: Date
+    status: $Enums.InfrastructureOccurrenceStatus
+    resolutionNotes: string | null
+    reportedById: number
+    maintenanceRequestId: number | null
+    createdAt: Date
+    updatedAt: Date
+    _count: InfrastructureOccurrenceCountAggregateOutputType | null
+    _avg: InfrastructureOccurrenceAvgAggregateOutputType | null
+    _sum: InfrastructureOccurrenceSumAggregateOutputType | null
+    _min: InfrastructureOccurrenceMinAggregateOutputType | null
+    _max: InfrastructureOccurrenceMaxAggregateOutputType | null
+  }
+
+  type GetInfrastructureOccurrenceGroupByPayload<T extends InfrastructureOccurrenceGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<InfrastructureOccurrenceGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof InfrastructureOccurrenceGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], InfrastructureOccurrenceGroupByOutputType[P]>
+            : GetScalarType<T[P], InfrastructureOccurrenceGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type InfrastructureOccurrenceSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    locationDescription?: boolean
+    reportedAt?: boolean
+    status?: boolean
+    resolutionNotes?: boolean
+    reportedById?: boolean
+    maintenanceRequestId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    reportedBy?: boolean | UserDefaultArgs<ExtArgs>
+    maintenanceRequest?: boolean | InfrastructureOccurrence$maintenanceRequestArgs<ExtArgs>
+  }, ExtArgs["result"]["infrastructureOccurrence"]>
+
+
+
+  export type InfrastructureOccurrenceSelectScalar = {
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    locationDescription?: boolean
+    reportedAt?: boolean
+    status?: boolean
+    resolutionNotes?: boolean
+    reportedById?: boolean
+    maintenanceRequestId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type InfrastructureOccurrenceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "locationDescription" | "reportedAt" | "status" | "resolutionNotes" | "reportedById" | "maintenanceRequestId" | "createdAt" | "updatedAt", ExtArgs["result"]["infrastructureOccurrence"]>
+  export type InfrastructureOccurrenceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    reportedBy?: boolean | UserDefaultArgs<ExtArgs>
+    maintenanceRequest?: boolean | InfrastructureOccurrence$maintenanceRequestArgs<ExtArgs>
+  }
+
+  export type $InfrastructureOccurrencePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "InfrastructureOccurrence"
+    objects: {
+      reportedBy: Prisma.$UserPayload<ExtArgs>
+      maintenanceRequest: Prisma.$MaintenanceRequestPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      title: string
+      description: string
+      locationDescription: string | null
+      reportedAt: Date
+      status: $Enums.InfrastructureOccurrenceStatus
+      resolutionNotes: string | null
+      reportedById: number
+      maintenanceRequestId: number | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["infrastructureOccurrence"]>
+    composites: {}
+  }
+
+  type InfrastructureOccurrenceGetPayload<S extends boolean | null | undefined | InfrastructureOccurrenceDefaultArgs> = $Result.GetResult<Prisma.$InfrastructureOccurrencePayload, S>
+
+  type InfrastructureOccurrenceCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<InfrastructureOccurrenceFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: InfrastructureOccurrenceCountAggregateInputType | true
+    }
+
+  export interface InfrastructureOccurrenceDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['InfrastructureOccurrence'], meta: { name: 'InfrastructureOccurrence' } }
+    /**
+     * Find zero or one InfrastructureOccurrence that matches the filter.
+     * @param {InfrastructureOccurrenceFindUniqueArgs} args - Arguments to find a InfrastructureOccurrence
+     * @example
+     * // Get one InfrastructureOccurrence
+     * const infrastructureOccurrence = await prisma.infrastructureOccurrence.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends InfrastructureOccurrenceFindUniqueArgs>(args: SelectSubset<T, InfrastructureOccurrenceFindUniqueArgs<ExtArgs>>): Prisma__InfrastructureOccurrenceClient<$Result.GetResult<Prisma.$InfrastructureOccurrencePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one InfrastructureOccurrence that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {InfrastructureOccurrenceFindUniqueOrThrowArgs} args - Arguments to find a InfrastructureOccurrence
+     * @example
+     * // Get one InfrastructureOccurrence
+     * const infrastructureOccurrence = await prisma.infrastructureOccurrence.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends InfrastructureOccurrenceFindUniqueOrThrowArgs>(args: SelectSubset<T, InfrastructureOccurrenceFindUniqueOrThrowArgs<ExtArgs>>): Prisma__InfrastructureOccurrenceClient<$Result.GetResult<Prisma.$InfrastructureOccurrencePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first InfrastructureOccurrence that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InfrastructureOccurrenceFindFirstArgs} args - Arguments to find a InfrastructureOccurrence
+     * @example
+     * // Get one InfrastructureOccurrence
+     * const infrastructureOccurrence = await prisma.infrastructureOccurrence.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends InfrastructureOccurrenceFindFirstArgs>(args?: SelectSubset<T, InfrastructureOccurrenceFindFirstArgs<ExtArgs>>): Prisma__InfrastructureOccurrenceClient<$Result.GetResult<Prisma.$InfrastructureOccurrencePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first InfrastructureOccurrence that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InfrastructureOccurrenceFindFirstOrThrowArgs} args - Arguments to find a InfrastructureOccurrence
+     * @example
+     * // Get one InfrastructureOccurrence
+     * const infrastructureOccurrence = await prisma.infrastructureOccurrence.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends InfrastructureOccurrenceFindFirstOrThrowArgs>(args?: SelectSubset<T, InfrastructureOccurrenceFindFirstOrThrowArgs<ExtArgs>>): Prisma__InfrastructureOccurrenceClient<$Result.GetResult<Prisma.$InfrastructureOccurrencePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more InfrastructureOccurrences that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InfrastructureOccurrenceFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all InfrastructureOccurrences
+     * const infrastructureOccurrences = await prisma.infrastructureOccurrence.findMany()
+     * 
+     * // Get first 10 InfrastructureOccurrences
+     * const infrastructureOccurrences = await prisma.infrastructureOccurrence.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const infrastructureOccurrenceWithIdOnly = await prisma.infrastructureOccurrence.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends InfrastructureOccurrenceFindManyArgs>(args?: SelectSubset<T, InfrastructureOccurrenceFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InfrastructureOccurrencePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a InfrastructureOccurrence.
+     * @param {InfrastructureOccurrenceCreateArgs} args - Arguments to create a InfrastructureOccurrence.
+     * @example
+     * // Create one InfrastructureOccurrence
+     * const InfrastructureOccurrence = await prisma.infrastructureOccurrence.create({
+     *   data: {
+     *     // ... data to create a InfrastructureOccurrence
+     *   }
+     * })
+     * 
+     */
+    create<T extends InfrastructureOccurrenceCreateArgs>(args: SelectSubset<T, InfrastructureOccurrenceCreateArgs<ExtArgs>>): Prisma__InfrastructureOccurrenceClient<$Result.GetResult<Prisma.$InfrastructureOccurrencePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many InfrastructureOccurrences.
+     * @param {InfrastructureOccurrenceCreateManyArgs} args - Arguments to create many InfrastructureOccurrences.
+     * @example
+     * // Create many InfrastructureOccurrences
+     * const infrastructureOccurrence = await prisma.infrastructureOccurrence.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends InfrastructureOccurrenceCreateManyArgs>(args?: SelectSubset<T, InfrastructureOccurrenceCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a InfrastructureOccurrence.
+     * @param {InfrastructureOccurrenceDeleteArgs} args - Arguments to delete one InfrastructureOccurrence.
+     * @example
+     * // Delete one InfrastructureOccurrence
+     * const InfrastructureOccurrence = await prisma.infrastructureOccurrence.delete({
+     *   where: {
+     *     // ... filter to delete one InfrastructureOccurrence
+     *   }
+     * })
+     * 
+     */
+    delete<T extends InfrastructureOccurrenceDeleteArgs>(args: SelectSubset<T, InfrastructureOccurrenceDeleteArgs<ExtArgs>>): Prisma__InfrastructureOccurrenceClient<$Result.GetResult<Prisma.$InfrastructureOccurrencePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one InfrastructureOccurrence.
+     * @param {InfrastructureOccurrenceUpdateArgs} args - Arguments to update one InfrastructureOccurrence.
+     * @example
+     * // Update one InfrastructureOccurrence
+     * const infrastructureOccurrence = await prisma.infrastructureOccurrence.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends InfrastructureOccurrenceUpdateArgs>(args: SelectSubset<T, InfrastructureOccurrenceUpdateArgs<ExtArgs>>): Prisma__InfrastructureOccurrenceClient<$Result.GetResult<Prisma.$InfrastructureOccurrencePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more InfrastructureOccurrences.
+     * @param {InfrastructureOccurrenceDeleteManyArgs} args - Arguments to filter InfrastructureOccurrences to delete.
+     * @example
+     * // Delete a few InfrastructureOccurrences
+     * const { count } = await prisma.infrastructureOccurrence.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends InfrastructureOccurrenceDeleteManyArgs>(args?: SelectSubset<T, InfrastructureOccurrenceDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more InfrastructureOccurrences.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InfrastructureOccurrenceUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many InfrastructureOccurrences
+     * const infrastructureOccurrence = await prisma.infrastructureOccurrence.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends InfrastructureOccurrenceUpdateManyArgs>(args: SelectSubset<T, InfrastructureOccurrenceUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one InfrastructureOccurrence.
+     * @param {InfrastructureOccurrenceUpsertArgs} args - Arguments to update or create a InfrastructureOccurrence.
+     * @example
+     * // Update or create a InfrastructureOccurrence
+     * const infrastructureOccurrence = await prisma.infrastructureOccurrence.upsert({
+     *   create: {
+     *     // ... data to create a InfrastructureOccurrence
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the InfrastructureOccurrence we want to update
+     *   }
+     * })
+     */
+    upsert<T extends InfrastructureOccurrenceUpsertArgs>(args: SelectSubset<T, InfrastructureOccurrenceUpsertArgs<ExtArgs>>): Prisma__InfrastructureOccurrenceClient<$Result.GetResult<Prisma.$InfrastructureOccurrencePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of InfrastructureOccurrences.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InfrastructureOccurrenceCountArgs} args - Arguments to filter InfrastructureOccurrences to count.
+     * @example
+     * // Count the number of InfrastructureOccurrences
+     * const count = await prisma.infrastructureOccurrence.count({
+     *   where: {
+     *     // ... the filter for the InfrastructureOccurrences we want to count
+     *   }
+     * })
+    **/
+    count<T extends InfrastructureOccurrenceCountArgs>(
+      args?: Subset<T, InfrastructureOccurrenceCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], InfrastructureOccurrenceCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a InfrastructureOccurrence.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InfrastructureOccurrenceAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends InfrastructureOccurrenceAggregateArgs>(args: Subset<T, InfrastructureOccurrenceAggregateArgs>): Prisma.PrismaPromise<GetInfrastructureOccurrenceAggregateType<T>>
+
+    /**
+     * Group by InfrastructureOccurrence.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InfrastructureOccurrenceGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends InfrastructureOccurrenceGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: InfrastructureOccurrenceGroupByArgs['orderBy'] }
+        : { orderBy?: InfrastructureOccurrenceGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, InfrastructureOccurrenceGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetInfrastructureOccurrenceGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the InfrastructureOccurrence model
+   */
+  readonly fields: InfrastructureOccurrenceFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for InfrastructureOccurrence.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__InfrastructureOccurrenceClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    reportedBy<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    maintenanceRequest<T extends InfrastructureOccurrence$maintenanceRequestArgs<ExtArgs> = {}>(args?: Subset<T, InfrastructureOccurrence$maintenanceRequestArgs<ExtArgs>>): Prisma__MaintenanceRequestClient<$Result.GetResult<Prisma.$MaintenanceRequestPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the InfrastructureOccurrence model
+   */
+  interface InfrastructureOccurrenceFieldRefs {
+    readonly id: FieldRef<"InfrastructureOccurrence", 'Int'>
+    readonly title: FieldRef<"InfrastructureOccurrence", 'String'>
+    readonly description: FieldRef<"InfrastructureOccurrence", 'String'>
+    readonly locationDescription: FieldRef<"InfrastructureOccurrence", 'String'>
+    readonly reportedAt: FieldRef<"InfrastructureOccurrence", 'DateTime'>
+    readonly status: FieldRef<"InfrastructureOccurrence", 'InfrastructureOccurrenceStatus'>
+    readonly resolutionNotes: FieldRef<"InfrastructureOccurrence", 'String'>
+    readonly reportedById: FieldRef<"InfrastructureOccurrence", 'Int'>
+    readonly maintenanceRequestId: FieldRef<"InfrastructureOccurrence", 'Int'>
+    readonly createdAt: FieldRef<"InfrastructureOccurrence", 'DateTime'>
+    readonly updatedAt: FieldRef<"InfrastructureOccurrence", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * InfrastructureOccurrence findUnique
+   */
+  export type InfrastructureOccurrenceFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InfrastructureOccurrence
+     */
+    select?: InfrastructureOccurrenceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InfrastructureOccurrence
+     */
+    omit?: InfrastructureOccurrenceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InfrastructureOccurrenceInclude<ExtArgs> | null
+    /**
+     * Filter, which InfrastructureOccurrence to fetch.
+     */
+    where: InfrastructureOccurrenceWhereUniqueInput
+  }
+
+  /**
+   * InfrastructureOccurrence findUniqueOrThrow
+   */
+  export type InfrastructureOccurrenceFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InfrastructureOccurrence
+     */
+    select?: InfrastructureOccurrenceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InfrastructureOccurrence
+     */
+    omit?: InfrastructureOccurrenceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InfrastructureOccurrenceInclude<ExtArgs> | null
+    /**
+     * Filter, which InfrastructureOccurrence to fetch.
+     */
+    where: InfrastructureOccurrenceWhereUniqueInput
+  }
+
+  /**
+   * InfrastructureOccurrence findFirst
+   */
+  export type InfrastructureOccurrenceFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InfrastructureOccurrence
+     */
+    select?: InfrastructureOccurrenceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InfrastructureOccurrence
+     */
+    omit?: InfrastructureOccurrenceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InfrastructureOccurrenceInclude<ExtArgs> | null
+    /**
+     * Filter, which InfrastructureOccurrence to fetch.
+     */
+    where?: InfrastructureOccurrenceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of InfrastructureOccurrences to fetch.
+     */
+    orderBy?: InfrastructureOccurrenceOrderByWithRelationInput | InfrastructureOccurrenceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for InfrastructureOccurrences.
+     */
+    cursor?: InfrastructureOccurrenceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` InfrastructureOccurrences from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` InfrastructureOccurrences.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of InfrastructureOccurrences.
+     */
+    distinct?: InfrastructureOccurrenceScalarFieldEnum | InfrastructureOccurrenceScalarFieldEnum[]
+  }
+
+  /**
+   * InfrastructureOccurrence findFirstOrThrow
+   */
+  export type InfrastructureOccurrenceFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InfrastructureOccurrence
+     */
+    select?: InfrastructureOccurrenceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InfrastructureOccurrence
+     */
+    omit?: InfrastructureOccurrenceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InfrastructureOccurrenceInclude<ExtArgs> | null
+    /**
+     * Filter, which InfrastructureOccurrence to fetch.
+     */
+    where?: InfrastructureOccurrenceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of InfrastructureOccurrences to fetch.
+     */
+    orderBy?: InfrastructureOccurrenceOrderByWithRelationInput | InfrastructureOccurrenceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for InfrastructureOccurrences.
+     */
+    cursor?: InfrastructureOccurrenceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` InfrastructureOccurrences from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` InfrastructureOccurrences.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of InfrastructureOccurrences.
+     */
+    distinct?: InfrastructureOccurrenceScalarFieldEnum | InfrastructureOccurrenceScalarFieldEnum[]
+  }
+
+  /**
+   * InfrastructureOccurrence findMany
+   */
+  export type InfrastructureOccurrenceFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InfrastructureOccurrence
+     */
+    select?: InfrastructureOccurrenceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InfrastructureOccurrence
+     */
+    omit?: InfrastructureOccurrenceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InfrastructureOccurrenceInclude<ExtArgs> | null
+    /**
+     * Filter, which InfrastructureOccurrences to fetch.
+     */
+    where?: InfrastructureOccurrenceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of InfrastructureOccurrences to fetch.
+     */
+    orderBy?: InfrastructureOccurrenceOrderByWithRelationInput | InfrastructureOccurrenceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing InfrastructureOccurrences.
+     */
+    cursor?: InfrastructureOccurrenceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` InfrastructureOccurrences from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` InfrastructureOccurrences.
+     */
+    skip?: number
+    distinct?: InfrastructureOccurrenceScalarFieldEnum | InfrastructureOccurrenceScalarFieldEnum[]
+  }
+
+  /**
+   * InfrastructureOccurrence create
+   */
+  export type InfrastructureOccurrenceCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InfrastructureOccurrence
+     */
+    select?: InfrastructureOccurrenceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InfrastructureOccurrence
+     */
+    omit?: InfrastructureOccurrenceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InfrastructureOccurrenceInclude<ExtArgs> | null
+    /**
+     * The data needed to create a InfrastructureOccurrence.
+     */
+    data: XOR<InfrastructureOccurrenceCreateInput, InfrastructureOccurrenceUncheckedCreateInput>
+  }
+
+  /**
+   * InfrastructureOccurrence createMany
+   */
+  export type InfrastructureOccurrenceCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many InfrastructureOccurrences.
+     */
+    data: InfrastructureOccurrenceCreateManyInput | InfrastructureOccurrenceCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * InfrastructureOccurrence update
+   */
+  export type InfrastructureOccurrenceUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InfrastructureOccurrence
+     */
+    select?: InfrastructureOccurrenceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InfrastructureOccurrence
+     */
+    omit?: InfrastructureOccurrenceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InfrastructureOccurrenceInclude<ExtArgs> | null
+    /**
+     * The data needed to update a InfrastructureOccurrence.
+     */
+    data: XOR<InfrastructureOccurrenceUpdateInput, InfrastructureOccurrenceUncheckedUpdateInput>
+    /**
+     * Choose, which InfrastructureOccurrence to update.
+     */
+    where: InfrastructureOccurrenceWhereUniqueInput
+  }
+
+  /**
+   * InfrastructureOccurrence updateMany
+   */
+  export type InfrastructureOccurrenceUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update InfrastructureOccurrences.
+     */
+    data: XOR<InfrastructureOccurrenceUpdateManyMutationInput, InfrastructureOccurrenceUncheckedUpdateManyInput>
+    /**
+     * Filter which InfrastructureOccurrences to update
+     */
+    where?: InfrastructureOccurrenceWhereInput
+    /**
+     * Limit how many InfrastructureOccurrences to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * InfrastructureOccurrence upsert
+   */
+  export type InfrastructureOccurrenceUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InfrastructureOccurrence
+     */
+    select?: InfrastructureOccurrenceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InfrastructureOccurrence
+     */
+    omit?: InfrastructureOccurrenceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InfrastructureOccurrenceInclude<ExtArgs> | null
+    /**
+     * The filter to search for the InfrastructureOccurrence to update in case it exists.
+     */
+    where: InfrastructureOccurrenceWhereUniqueInput
+    /**
+     * In case the InfrastructureOccurrence found by the `where` argument doesn't exist, create a new InfrastructureOccurrence with this data.
+     */
+    create: XOR<InfrastructureOccurrenceCreateInput, InfrastructureOccurrenceUncheckedCreateInput>
+    /**
+     * In case the InfrastructureOccurrence was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<InfrastructureOccurrenceUpdateInput, InfrastructureOccurrenceUncheckedUpdateInput>
+  }
+
+  /**
+   * InfrastructureOccurrence delete
+   */
+  export type InfrastructureOccurrenceDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InfrastructureOccurrence
+     */
+    select?: InfrastructureOccurrenceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InfrastructureOccurrence
+     */
+    omit?: InfrastructureOccurrenceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InfrastructureOccurrenceInclude<ExtArgs> | null
+    /**
+     * Filter which InfrastructureOccurrence to delete.
+     */
+    where: InfrastructureOccurrenceWhereUniqueInput
+  }
+
+  /**
+   * InfrastructureOccurrence deleteMany
+   */
+  export type InfrastructureOccurrenceDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which InfrastructureOccurrences to delete
+     */
+    where?: InfrastructureOccurrenceWhereInput
+    /**
+     * Limit how many InfrastructureOccurrences to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * InfrastructureOccurrence.maintenanceRequest
+   */
+  export type InfrastructureOccurrence$maintenanceRequestArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceRequest
+     */
+    select?: MaintenanceRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceRequest
+     */
+    omit?: MaintenanceRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceRequestInclude<ExtArgs> | null
+    where?: MaintenanceRequestWhereInput
+  }
+
+  /**
+   * InfrastructureOccurrence without action
+   */
+  export type InfrastructureOccurrenceDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InfrastructureOccurrence
+     */
+    select?: InfrastructureOccurrenceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InfrastructureOccurrence
+     */
+    omit?: InfrastructureOccurrenceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InfrastructureOccurrenceInclude<ExtArgs> | null
   }
 
 
@@ -4317,80 +12026,96 @@ export namespace Prisma {
 
   export type MaterialAvgAggregateOutputType = {
     id: number | null
+    parentMaterialId: number | null
   }
 
   export type MaterialSumAggregateOutputType = {
-    id: bigint | null
+    id: number | null
+    parentMaterialId: number | null
   }
 
   export type MaterialMinAggregateOutputType = {
-    id: bigint | null
+    id: number | null
+    code: string | null
     name: string | null
-    specification: string | null
-    unit: string | null
+    description: string | null
+    unitOfMeasure: string | null
     isActive: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
+    parentMaterialId: number | null
   }
 
   export type MaterialMaxAggregateOutputType = {
-    id: bigint | null
+    id: number | null
+    code: string | null
     name: string | null
-    specification: string | null
-    unit: string | null
+    description: string | null
+    unitOfMeasure: string | null
     isActive: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
+    parentMaterialId: number | null
   }
 
   export type MaterialCountAggregateOutputType = {
     id: number
+    code: number
     name: number
-    specification: number
-    unit: number
+    description: number
+    unitOfMeasure: number
     isActive: number
     createdAt: number
     updatedAt: number
+    parentMaterialId: number
     _all: number
   }
 
 
   export type MaterialAvgAggregateInputType = {
     id?: true
+    parentMaterialId?: true
   }
 
   export type MaterialSumAggregateInputType = {
     id?: true
+    parentMaterialId?: true
   }
 
   export type MaterialMinAggregateInputType = {
     id?: true
+    code?: true
     name?: true
-    specification?: true
-    unit?: true
+    description?: true
+    unitOfMeasure?: true
     isActive?: true
     createdAt?: true
     updatedAt?: true
+    parentMaterialId?: true
   }
 
   export type MaterialMaxAggregateInputType = {
     id?: true
+    code?: true
     name?: true
-    specification?: true
-    unit?: true
+    description?: true
+    unitOfMeasure?: true
     isActive?: true
     createdAt?: true
     updatedAt?: true
+    parentMaterialId?: true
   }
 
   export type MaterialCountAggregateInputType = {
     id?: true
+    code?: true
     name?: true
-    specification?: true
-    unit?: true
+    description?: true
+    unitOfMeasure?: true
     isActive?: true
     createdAt?: true
     updatedAt?: true
+    parentMaterialId?: true
     _all?: true
   }
 
@@ -4481,13 +12206,15 @@ export namespace Prisma {
   }
 
   export type MaterialGroupByOutputType = {
-    id: bigint
+    id: number
+    code: string | null
     name: string
-    specification: string | null
-    unit: string
+    description: string | null
+    unitOfMeasure: string
     isActive: boolean
     createdAt: Date
     updatedAt: Date
+    parentMaterialId: number | null
     _count: MaterialCountAggregateOutputType | null
     _avg: MaterialAvgAggregateOutputType | null
     _sum: MaterialSumAggregateOutputType | null
@@ -4511,39 +12238,59 @@ export namespace Prisma {
 
   export type MaterialSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    code?: boolean
     name?: boolean
-    specification?: boolean
-    unit?: boolean
+    description?: boolean
+    unitOfMeasure?: boolean
     isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    parentMaterialId?: boolean
+    parentMaterial?: boolean | Material$parentMaterialArgs<ExtArgs>
+    childs?: boolean | Material$childsArgs<ExtArgs>
+    materialRequestItems?: boolean | Material$materialRequestItemsArgs<ExtArgs>
+    _count?: boolean | MaterialCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["material"]>
 
 
 
   export type MaterialSelectScalar = {
     id?: boolean
+    code?: boolean
     name?: boolean
-    specification?: boolean
-    unit?: boolean
+    description?: boolean
+    unitOfMeasure?: boolean
     isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    parentMaterialId?: boolean
   }
 
-  export type MaterialOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "specification" | "unit" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["material"]>
+  export type MaterialOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "code" | "name" | "description" | "unitOfMeasure" | "isActive" | "createdAt" | "updatedAt" | "parentMaterialId", ExtArgs["result"]["material"]>
+  export type MaterialInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    parentMaterial?: boolean | Material$parentMaterialArgs<ExtArgs>
+    childs?: boolean | Material$childsArgs<ExtArgs>
+    materialRequestItems?: boolean | Material$materialRequestItemsArgs<ExtArgs>
+    _count?: boolean | MaterialCountOutputTypeDefaultArgs<ExtArgs>
+  }
 
   export type $MaterialPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Material"
-    objects: {}
+    objects: {
+      parentMaterial: Prisma.$MaterialPayload<ExtArgs> | null
+      childs: Prisma.$MaterialPayload<ExtArgs>[]
+      materialRequestItems: Prisma.$MaterialRequestItemPayload<ExtArgs>[]
+    }
     scalars: $Extensions.GetPayloadResult<{
-      id: bigint
+      id: number
+      code: string | null
       name: string
-      specification: string | null
-      unit: string
+      description: string | null
+      unitOfMeasure: string
       isActive: boolean
       createdAt: Date
       updatedAt: Date
+      parentMaterialId: number | null
     }, ExtArgs["result"]["material"]>
     composites: {}
   }
@@ -4884,6 +12631,9 @@ export namespace Prisma {
    */
   export interface Prisma__MaterialClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    parentMaterial<T extends Material$parentMaterialArgs<ExtArgs> = {}>(args?: Subset<T, Material$parentMaterialArgs<ExtArgs>>): Prisma__MaterialClient<$Result.GetResult<Prisma.$MaterialPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    childs<T extends Material$childsArgs<ExtArgs> = {}>(args?: Subset<T, Material$childsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaterialPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    materialRequestItems<T extends Material$materialRequestItemsArgs<ExtArgs> = {}>(args?: Subset<T, Material$materialRequestItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaterialRequestItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4913,13 +12663,15 @@ export namespace Prisma {
    * Fields of the Material model
    */
   interface MaterialFieldRefs {
-    readonly id: FieldRef<"Material", 'BigInt'>
+    readonly id: FieldRef<"Material", 'Int'>
+    readonly code: FieldRef<"Material", 'String'>
     readonly name: FieldRef<"Material", 'String'>
-    readonly specification: FieldRef<"Material", 'String'>
-    readonly unit: FieldRef<"Material", 'String'>
+    readonly description: FieldRef<"Material", 'String'>
+    readonly unitOfMeasure: FieldRef<"Material", 'String'>
     readonly isActive: FieldRef<"Material", 'Boolean'>
     readonly createdAt: FieldRef<"Material", 'DateTime'>
     readonly updatedAt: FieldRef<"Material", 'DateTime'>
+    readonly parentMaterialId: FieldRef<"Material", 'Int'>
   }
     
 
@@ -4936,6 +12688,10 @@ export namespace Prisma {
      * Omit specific fields from the Material
      */
     omit?: MaterialOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialInclude<ExtArgs> | null
     /**
      * Filter, which Material to fetch.
      */
@@ -4955,6 +12711,10 @@ export namespace Prisma {
      */
     omit?: MaterialOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialInclude<ExtArgs> | null
+    /**
      * Filter, which Material to fetch.
      */
     where: MaterialWhereUniqueInput
@@ -4972,6 +12732,10 @@ export namespace Prisma {
      * Omit specific fields from the Material
      */
     omit?: MaterialOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialInclude<ExtArgs> | null
     /**
      * Filter, which Material to fetch.
      */
@@ -5021,6 +12785,10 @@ export namespace Prisma {
      */
     omit?: MaterialOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialInclude<ExtArgs> | null
+    /**
      * Filter, which Material to fetch.
      */
     where?: MaterialWhereInput
@@ -5069,6 +12837,10 @@ export namespace Prisma {
      */
     omit?: MaterialOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialInclude<ExtArgs> | null
+    /**
      * Filter, which Materials to fetch.
      */
     where?: MaterialWhereInput
@@ -5112,6 +12884,10 @@ export namespace Prisma {
      */
     omit?: MaterialOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialInclude<ExtArgs> | null
+    /**
      * The data needed to create a Material.
      */
     data: XOR<MaterialCreateInput, MaterialUncheckedCreateInput>
@@ -5140,6 +12916,10 @@ export namespace Prisma {
      * Omit specific fields from the Material
      */
     omit?: MaterialOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialInclude<ExtArgs> | null
     /**
      * The data needed to update a Material.
      */
@@ -5181,6 +12961,10 @@ export namespace Prisma {
      */
     omit?: MaterialOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialInclude<ExtArgs> | null
+    /**
      * The filter to search for the Material to update in case it exists.
      */
     where: MaterialWhereUniqueInput
@@ -5207,6 +12991,10 @@ export namespace Prisma {
      */
     omit?: MaterialOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialInclude<ExtArgs> | null
+    /**
      * Filter which Material to delete.
      */
     where: MaterialWhereUniqueInput
@@ -5227,6 +13015,73 @@ export namespace Prisma {
   }
 
   /**
+   * Material.parentMaterial
+   */
+  export type Material$parentMaterialArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Material
+     */
+    select?: MaterialSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Material
+     */
+    omit?: MaterialOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialInclude<ExtArgs> | null
+    where?: MaterialWhereInput
+  }
+
+  /**
+   * Material.childs
+   */
+  export type Material$childsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Material
+     */
+    select?: MaterialSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Material
+     */
+    omit?: MaterialOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialInclude<ExtArgs> | null
+    where?: MaterialWhereInput
+    orderBy?: MaterialOrderByWithRelationInput | MaterialOrderByWithRelationInput[]
+    cursor?: MaterialWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MaterialScalarFieldEnum | MaterialScalarFieldEnum[]
+  }
+
+  /**
+   * Material.materialRequestItems
+   */
+  export type Material$materialRequestItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialRequestItem
+     */
+    select?: MaterialRequestItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialRequestItem
+     */
+    omit?: MaterialRequestItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialRequestItemInclude<ExtArgs> | null
+    where?: MaterialRequestItemWhereInput
+    orderBy?: MaterialRequestItemOrderByWithRelationInput | MaterialRequestItemOrderByWithRelationInput[]
+    cursor?: MaterialRequestItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MaterialRequestItemScalarFieldEnum | MaterialRequestItemScalarFieldEnum[]
+  }
+
+  /**
    * Material without action
    */
   export type MaterialDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5238,6 +13093,2128 @@ export namespace Prisma {
      * Omit specific fields from the Material
      */
     omit?: MaterialOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model MaterialRequest
+   */
+
+  export type AggregateMaterialRequest = {
+    _count: MaterialRequestCountAggregateOutputType | null
+    _avg: MaterialRequestAvgAggregateOutputType | null
+    _sum: MaterialRequestSumAggregateOutputType | null
+    _min: MaterialRequestMinAggregateOutputType | null
+    _max: MaterialRequestMaxAggregateOutputType | null
+  }
+
+  export type MaterialRequestAvgAggregateOutputType = {
+    id: number | null
+    maintenanceRequestId: number | null
+    requestedById: number | null
+    approvedById: number | null
+  }
+
+  export type MaterialRequestSumAggregateOutputType = {
+    id: number | null
+    maintenanceRequestId: number | null
+    requestedById: number | null
+    approvedById: number | null
+  }
+
+  export type MaterialRequestMinAggregateOutputType = {
+    id: number | null
+    justification: string | null
+    requestDate: Date | null
+    status: $Enums.MaterialRequestStatus | null
+    maintenanceRequestId: number | null
+    requestedById: number | null
+    approvedById: number | null
+    approvalDate: Date | null
+    approvalNotes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MaterialRequestMaxAggregateOutputType = {
+    id: number | null
+    justification: string | null
+    requestDate: Date | null
+    status: $Enums.MaterialRequestStatus | null
+    maintenanceRequestId: number | null
+    requestedById: number | null
+    approvedById: number | null
+    approvalDate: Date | null
+    approvalNotes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MaterialRequestCountAggregateOutputType = {
+    id: number
+    justification: number
+    requestDate: number
+    status: number
+    maintenanceRequestId: number
+    requestedById: number
+    approvedById: number
+    approvalDate: number
+    approvalNotes: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type MaterialRequestAvgAggregateInputType = {
+    id?: true
+    maintenanceRequestId?: true
+    requestedById?: true
+    approvedById?: true
+  }
+
+  export type MaterialRequestSumAggregateInputType = {
+    id?: true
+    maintenanceRequestId?: true
+    requestedById?: true
+    approvedById?: true
+  }
+
+  export type MaterialRequestMinAggregateInputType = {
+    id?: true
+    justification?: true
+    requestDate?: true
+    status?: true
+    maintenanceRequestId?: true
+    requestedById?: true
+    approvedById?: true
+    approvalDate?: true
+    approvalNotes?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MaterialRequestMaxAggregateInputType = {
+    id?: true
+    justification?: true
+    requestDate?: true
+    status?: true
+    maintenanceRequestId?: true
+    requestedById?: true
+    approvedById?: true
+    approvalDate?: true
+    approvalNotes?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MaterialRequestCountAggregateInputType = {
+    id?: true
+    justification?: true
+    requestDate?: true
+    status?: true
+    maintenanceRequestId?: true
+    requestedById?: true
+    approvedById?: true
+    approvalDate?: true
+    approvalNotes?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type MaterialRequestAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MaterialRequest to aggregate.
+     */
+    where?: MaterialRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MaterialRequests to fetch.
+     */
+    orderBy?: MaterialRequestOrderByWithRelationInput | MaterialRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: MaterialRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MaterialRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MaterialRequests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned MaterialRequests
+    **/
+    _count?: true | MaterialRequestCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: MaterialRequestAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: MaterialRequestSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: MaterialRequestMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: MaterialRequestMaxAggregateInputType
+  }
+
+  export type GetMaterialRequestAggregateType<T extends MaterialRequestAggregateArgs> = {
+        [P in keyof T & keyof AggregateMaterialRequest]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMaterialRequest[P]>
+      : GetScalarType<T[P], AggregateMaterialRequest[P]>
+  }
+
+
+
+
+  export type MaterialRequestGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MaterialRequestWhereInput
+    orderBy?: MaterialRequestOrderByWithAggregationInput | MaterialRequestOrderByWithAggregationInput[]
+    by: MaterialRequestScalarFieldEnum[] | MaterialRequestScalarFieldEnum
+    having?: MaterialRequestScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: MaterialRequestCountAggregateInputType | true
+    _avg?: MaterialRequestAvgAggregateInputType
+    _sum?: MaterialRequestSumAggregateInputType
+    _min?: MaterialRequestMinAggregateInputType
+    _max?: MaterialRequestMaxAggregateInputType
+  }
+
+  export type MaterialRequestGroupByOutputType = {
+    id: number
+    justification: string | null
+    requestDate: Date
+    status: $Enums.MaterialRequestStatus
+    maintenanceRequestId: number
+    requestedById: number
+    approvedById: number | null
+    approvalDate: Date | null
+    approvalNotes: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: MaterialRequestCountAggregateOutputType | null
+    _avg: MaterialRequestAvgAggregateOutputType | null
+    _sum: MaterialRequestSumAggregateOutputType | null
+    _min: MaterialRequestMinAggregateOutputType | null
+    _max: MaterialRequestMaxAggregateOutputType | null
+  }
+
+  type GetMaterialRequestGroupByPayload<T extends MaterialRequestGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<MaterialRequestGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof MaterialRequestGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], MaterialRequestGroupByOutputType[P]>
+            : GetScalarType<T[P], MaterialRequestGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type MaterialRequestSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    justification?: boolean
+    requestDate?: boolean
+    status?: boolean
+    maintenanceRequestId?: boolean
+    requestedById?: boolean
+    approvedById?: boolean
+    approvalDate?: boolean
+    approvalNotes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    maintenanceRequest?: boolean | MaintenanceRequestDefaultArgs<ExtArgs>
+    requestedBy?: boolean | UserDefaultArgs<ExtArgs>
+    approvedBy?: boolean | MaterialRequest$approvedByArgs<ExtArgs>
+    items?: boolean | MaterialRequest$itemsArgs<ExtArgs>
+    _count?: boolean | MaterialRequestCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["materialRequest"]>
+
+
+
+  export type MaterialRequestSelectScalar = {
+    id?: boolean
+    justification?: boolean
+    requestDate?: boolean
+    status?: boolean
+    maintenanceRequestId?: boolean
+    requestedById?: boolean
+    approvedById?: boolean
+    approvalDate?: boolean
+    approvalNotes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type MaterialRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "justification" | "requestDate" | "status" | "maintenanceRequestId" | "requestedById" | "approvedById" | "approvalDate" | "approvalNotes" | "createdAt" | "updatedAt", ExtArgs["result"]["materialRequest"]>
+  export type MaterialRequestInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    maintenanceRequest?: boolean | MaintenanceRequestDefaultArgs<ExtArgs>
+    requestedBy?: boolean | UserDefaultArgs<ExtArgs>
+    approvedBy?: boolean | MaterialRequest$approvedByArgs<ExtArgs>
+    items?: boolean | MaterialRequest$itemsArgs<ExtArgs>
+    _count?: boolean | MaterialRequestCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $MaterialRequestPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "MaterialRequest"
+    objects: {
+      maintenanceRequest: Prisma.$MaintenanceRequestPayload<ExtArgs>
+      requestedBy: Prisma.$UserPayload<ExtArgs>
+      approvedBy: Prisma.$UserPayload<ExtArgs> | null
+      items: Prisma.$MaterialRequestItemPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      justification: string | null
+      requestDate: Date
+      status: $Enums.MaterialRequestStatus
+      maintenanceRequestId: number
+      requestedById: number
+      approvedById: number | null
+      approvalDate: Date | null
+      approvalNotes: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["materialRequest"]>
+    composites: {}
+  }
+
+  type MaterialRequestGetPayload<S extends boolean | null | undefined | MaterialRequestDefaultArgs> = $Result.GetResult<Prisma.$MaterialRequestPayload, S>
+
+  type MaterialRequestCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<MaterialRequestFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: MaterialRequestCountAggregateInputType | true
+    }
+
+  export interface MaterialRequestDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['MaterialRequest'], meta: { name: 'MaterialRequest' } }
+    /**
+     * Find zero or one MaterialRequest that matches the filter.
+     * @param {MaterialRequestFindUniqueArgs} args - Arguments to find a MaterialRequest
+     * @example
+     * // Get one MaterialRequest
+     * const materialRequest = await prisma.materialRequest.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends MaterialRequestFindUniqueArgs>(args: SelectSubset<T, MaterialRequestFindUniqueArgs<ExtArgs>>): Prisma__MaterialRequestClient<$Result.GetResult<Prisma.$MaterialRequestPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one MaterialRequest that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {MaterialRequestFindUniqueOrThrowArgs} args - Arguments to find a MaterialRequest
+     * @example
+     * // Get one MaterialRequest
+     * const materialRequest = await prisma.materialRequest.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends MaterialRequestFindUniqueOrThrowArgs>(args: SelectSubset<T, MaterialRequestFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MaterialRequestClient<$Result.GetResult<Prisma.$MaterialRequestPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MaterialRequest that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaterialRequestFindFirstArgs} args - Arguments to find a MaterialRequest
+     * @example
+     * // Get one MaterialRequest
+     * const materialRequest = await prisma.materialRequest.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends MaterialRequestFindFirstArgs>(args?: SelectSubset<T, MaterialRequestFindFirstArgs<ExtArgs>>): Prisma__MaterialRequestClient<$Result.GetResult<Prisma.$MaterialRequestPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MaterialRequest that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaterialRequestFindFirstOrThrowArgs} args - Arguments to find a MaterialRequest
+     * @example
+     * // Get one MaterialRequest
+     * const materialRequest = await prisma.materialRequest.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends MaterialRequestFindFirstOrThrowArgs>(args?: SelectSubset<T, MaterialRequestFindFirstOrThrowArgs<ExtArgs>>): Prisma__MaterialRequestClient<$Result.GetResult<Prisma.$MaterialRequestPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more MaterialRequests that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaterialRequestFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all MaterialRequests
+     * const materialRequests = await prisma.materialRequest.findMany()
+     * 
+     * // Get first 10 MaterialRequests
+     * const materialRequests = await prisma.materialRequest.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const materialRequestWithIdOnly = await prisma.materialRequest.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends MaterialRequestFindManyArgs>(args?: SelectSubset<T, MaterialRequestFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaterialRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a MaterialRequest.
+     * @param {MaterialRequestCreateArgs} args - Arguments to create a MaterialRequest.
+     * @example
+     * // Create one MaterialRequest
+     * const MaterialRequest = await prisma.materialRequest.create({
+     *   data: {
+     *     // ... data to create a MaterialRequest
+     *   }
+     * })
+     * 
+     */
+    create<T extends MaterialRequestCreateArgs>(args: SelectSubset<T, MaterialRequestCreateArgs<ExtArgs>>): Prisma__MaterialRequestClient<$Result.GetResult<Prisma.$MaterialRequestPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many MaterialRequests.
+     * @param {MaterialRequestCreateManyArgs} args - Arguments to create many MaterialRequests.
+     * @example
+     * // Create many MaterialRequests
+     * const materialRequest = await prisma.materialRequest.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends MaterialRequestCreateManyArgs>(args?: SelectSubset<T, MaterialRequestCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a MaterialRequest.
+     * @param {MaterialRequestDeleteArgs} args - Arguments to delete one MaterialRequest.
+     * @example
+     * // Delete one MaterialRequest
+     * const MaterialRequest = await prisma.materialRequest.delete({
+     *   where: {
+     *     // ... filter to delete one MaterialRequest
+     *   }
+     * })
+     * 
+     */
+    delete<T extends MaterialRequestDeleteArgs>(args: SelectSubset<T, MaterialRequestDeleteArgs<ExtArgs>>): Prisma__MaterialRequestClient<$Result.GetResult<Prisma.$MaterialRequestPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one MaterialRequest.
+     * @param {MaterialRequestUpdateArgs} args - Arguments to update one MaterialRequest.
+     * @example
+     * // Update one MaterialRequest
+     * const materialRequest = await prisma.materialRequest.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends MaterialRequestUpdateArgs>(args: SelectSubset<T, MaterialRequestUpdateArgs<ExtArgs>>): Prisma__MaterialRequestClient<$Result.GetResult<Prisma.$MaterialRequestPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more MaterialRequests.
+     * @param {MaterialRequestDeleteManyArgs} args - Arguments to filter MaterialRequests to delete.
+     * @example
+     * // Delete a few MaterialRequests
+     * const { count } = await prisma.materialRequest.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends MaterialRequestDeleteManyArgs>(args?: SelectSubset<T, MaterialRequestDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MaterialRequests.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaterialRequestUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many MaterialRequests
+     * const materialRequest = await prisma.materialRequest.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends MaterialRequestUpdateManyArgs>(args: SelectSubset<T, MaterialRequestUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one MaterialRequest.
+     * @param {MaterialRequestUpsertArgs} args - Arguments to update or create a MaterialRequest.
+     * @example
+     * // Update or create a MaterialRequest
+     * const materialRequest = await prisma.materialRequest.upsert({
+     *   create: {
+     *     // ... data to create a MaterialRequest
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the MaterialRequest we want to update
+     *   }
+     * })
+     */
+    upsert<T extends MaterialRequestUpsertArgs>(args: SelectSubset<T, MaterialRequestUpsertArgs<ExtArgs>>): Prisma__MaterialRequestClient<$Result.GetResult<Prisma.$MaterialRequestPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of MaterialRequests.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaterialRequestCountArgs} args - Arguments to filter MaterialRequests to count.
+     * @example
+     * // Count the number of MaterialRequests
+     * const count = await prisma.materialRequest.count({
+     *   where: {
+     *     // ... the filter for the MaterialRequests we want to count
+     *   }
+     * })
+    **/
+    count<T extends MaterialRequestCountArgs>(
+      args?: Subset<T, MaterialRequestCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], MaterialRequestCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a MaterialRequest.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaterialRequestAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MaterialRequestAggregateArgs>(args: Subset<T, MaterialRequestAggregateArgs>): Prisma.PrismaPromise<GetMaterialRequestAggregateType<T>>
+
+    /**
+     * Group by MaterialRequest.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaterialRequestGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends MaterialRequestGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: MaterialRequestGroupByArgs['orderBy'] }
+        : { orderBy?: MaterialRequestGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, MaterialRequestGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMaterialRequestGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the MaterialRequest model
+   */
+  readonly fields: MaterialRequestFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for MaterialRequest.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__MaterialRequestClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    maintenanceRequest<T extends MaintenanceRequestDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MaintenanceRequestDefaultArgs<ExtArgs>>): Prisma__MaintenanceRequestClient<$Result.GetResult<Prisma.$MaintenanceRequestPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    requestedBy<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    approvedBy<T extends MaterialRequest$approvedByArgs<ExtArgs> = {}>(args?: Subset<T, MaterialRequest$approvedByArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    items<T extends MaterialRequest$itemsArgs<ExtArgs> = {}>(args?: Subset<T, MaterialRequest$itemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaterialRequestItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the MaterialRequest model
+   */
+  interface MaterialRequestFieldRefs {
+    readonly id: FieldRef<"MaterialRequest", 'Int'>
+    readonly justification: FieldRef<"MaterialRequest", 'String'>
+    readonly requestDate: FieldRef<"MaterialRequest", 'DateTime'>
+    readonly status: FieldRef<"MaterialRequest", 'MaterialRequestStatus'>
+    readonly maintenanceRequestId: FieldRef<"MaterialRequest", 'Int'>
+    readonly requestedById: FieldRef<"MaterialRequest", 'Int'>
+    readonly approvedById: FieldRef<"MaterialRequest", 'Int'>
+    readonly approvalDate: FieldRef<"MaterialRequest", 'DateTime'>
+    readonly approvalNotes: FieldRef<"MaterialRequest", 'String'>
+    readonly createdAt: FieldRef<"MaterialRequest", 'DateTime'>
+    readonly updatedAt: FieldRef<"MaterialRequest", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * MaterialRequest findUnique
+   */
+  export type MaterialRequestFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialRequest
+     */
+    select?: MaterialRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialRequest
+     */
+    omit?: MaterialRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which MaterialRequest to fetch.
+     */
+    where: MaterialRequestWhereUniqueInput
+  }
+
+  /**
+   * MaterialRequest findUniqueOrThrow
+   */
+  export type MaterialRequestFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialRequest
+     */
+    select?: MaterialRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialRequest
+     */
+    omit?: MaterialRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which MaterialRequest to fetch.
+     */
+    where: MaterialRequestWhereUniqueInput
+  }
+
+  /**
+   * MaterialRequest findFirst
+   */
+  export type MaterialRequestFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialRequest
+     */
+    select?: MaterialRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialRequest
+     */
+    omit?: MaterialRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which MaterialRequest to fetch.
+     */
+    where?: MaterialRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MaterialRequests to fetch.
+     */
+    orderBy?: MaterialRequestOrderByWithRelationInput | MaterialRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MaterialRequests.
+     */
+    cursor?: MaterialRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MaterialRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MaterialRequests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MaterialRequests.
+     */
+    distinct?: MaterialRequestScalarFieldEnum | MaterialRequestScalarFieldEnum[]
+  }
+
+  /**
+   * MaterialRequest findFirstOrThrow
+   */
+  export type MaterialRequestFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialRequest
+     */
+    select?: MaterialRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialRequest
+     */
+    omit?: MaterialRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which MaterialRequest to fetch.
+     */
+    where?: MaterialRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MaterialRequests to fetch.
+     */
+    orderBy?: MaterialRequestOrderByWithRelationInput | MaterialRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MaterialRequests.
+     */
+    cursor?: MaterialRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MaterialRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MaterialRequests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MaterialRequests.
+     */
+    distinct?: MaterialRequestScalarFieldEnum | MaterialRequestScalarFieldEnum[]
+  }
+
+  /**
+   * MaterialRequest findMany
+   */
+  export type MaterialRequestFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialRequest
+     */
+    select?: MaterialRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialRequest
+     */
+    omit?: MaterialRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which MaterialRequests to fetch.
+     */
+    where?: MaterialRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MaterialRequests to fetch.
+     */
+    orderBy?: MaterialRequestOrderByWithRelationInput | MaterialRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing MaterialRequests.
+     */
+    cursor?: MaterialRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MaterialRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MaterialRequests.
+     */
+    skip?: number
+    distinct?: MaterialRequestScalarFieldEnum | MaterialRequestScalarFieldEnum[]
+  }
+
+  /**
+   * MaterialRequest create
+   */
+  export type MaterialRequestCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialRequest
+     */
+    select?: MaterialRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialRequest
+     */
+    omit?: MaterialRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialRequestInclude<ExtArgs> | null
+    /**
+     * The data needed to create a MaterialRequest.
+     */
+    data: XOR<MaterialRequestCreateInput, MaterialRequestUncheckedCreateInput>
+  }
+
+  /**
+   * MaterialRequest createMany
+   */
+  export type MaterialRequestCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many MaterialRequests.
+     */
+    data: MaterialRequestCreateManyInput | MaterialRequestCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * MaterialRequest update
+   */
+  export type MaterialRequestUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialRequest
+     */
+    select?: MaterialRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialRequest
+     */
+    omit?: MaterialRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialRequestInclude<ExtArgs> | null
+    /**
+     * The data needed to update a MaterialRequest.
+     */
+    data: XOR<MaterialRequestUpdateInput, MaterialRequestUncheckedUpdateInput>
+    /**
+     * Choose, which MaterialRequest to update.
+     */
+    where: MaterialRequestWhereUniqueInput
+  }
+
+  /**
+   * MaterialRequest updateMany
+   */
+  export type MaterialRequestUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update MaterialRequests.
+     */
+    data: XOR<MaterialRequestUpdateManyMutationInput, MaterialRequestUncheckedUpdateManyInput>
+    /**
+     * Filter which MaterialRequests to update
+     */
+    where?: MaterialRequestWhereInput
+    /**
+     * Limit how many MaterialRequests to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * MaterialRequest upsert
+   */
+  export type MaterialRequestUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialRequest
+     */
+    select?: MaterialRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialRequest
+     */
+    omit?: MaterialRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialRequestInclude<ExtArgs> | null
+    /**
+     * The filter to search for the MaterialRequest to update in case it exists.
+     */
+    where: MaterialRequestWhereUniqueInput
+    /**
+     * In case the MaterialRequest found by the `where` argument doesn't exist, create a new MaterialRequest with this data.
+     */
+    create: XOR<MaterialRequestCreateInput, MaterialRequestUncheckedCreateInput>
+    /**
+     * In case the MaterialRequest was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<MaterialRequestUpdateInput, MaterialRequestUncheckedUpdateInput>
+  }
+
+  /**
+   * MaterialRequest delete
+   */
+  export type MaterialRequestDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialRequest
+     */
+    select?: MaterialRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialRequest
+     */
+    omit?: MaterialRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialRequestInclude<ExtArgs> | null
+    /**
+     * Filter which MaterialRequest to delete.
+     */
+    where: MaterialRequestWhereUniqueInput
+  }
+
+  /**
+   * MaterialRequest deleteMany
+   */
+  export type MaterialRequestDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MaterialRequests to delete
+     */
+    where?: MaterialRequestWhereInput
+    /**
+     * Limit how many MaterialRequests to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * MaterialRequest.approvedBy
+   */
+  export type MaterialRequest$approvedByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * MaterialRequest.items
+   */
+  export type MaterialRequest$itemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialRequestItem
+     */
+    select?: MaterialRequestItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialRequestItem
+     */
+    omit?: MaterialRequestItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialRequestItemInclude<ExtArgs> | null
+    where?: MaterialRequestItemWhereInput
+    orderBy?: MaterialRequestItemOrderByWithRelationInput | MaterialRequestItemOrderByWithRelationInput[]
+    cursor?: MaterialRequestItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MaterialRequestItemScalarFieldEnum | MaterialRequestItemScalarFieldEnum[]
+  }
+
+  /**
+   * MaterialRequest without action
+   */
+  export type MaterialRequestDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialRequest
+     */
+    select?: MaterialRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialRequest
+     */
+    omit?: MaterialRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialRequestInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model MaterialRequestItem
+   */
+
+  export type AggregateMaterialRequestItem = {
+    _count: MaterialRequestItemCountAggregateOutputType | null
+    _avg: MaterialRequestItemAvgAggregateOutputType | null
+    _sum: MaterialRequestItemSumAggregateOutputType | null
+    _min: MaterialRequestItemMinAggregateOutputType | null
+    _max: MaterialRequestItemMaxAggregateOutputType | null
+  }
+
+  export type MaterialRequestItemAvgAggregateOutputType = {
+    id: number | null
+    quantityRequested: Decimal | null
+    quantityApproved: Decimal | null
+    quantityDelivered: Decimal | null
+    materialRequestId: number | null
+    materialId: number | null
+  }
+
+  export type MaterialRequestItemSumAggregateOutputType = {
+    id: number | null
+    quantityRequested: Decimal | null
+    quantityApproved: Decimal | null
+    quantityDelivered: Decimal | null
+    materialRequestId: number | null
+    materialId: number | null
+  }
+
+  export type MaterialRequestItemMinAggregateOutputType = {
+    id: number | null
+    quantityRequested: Decimal | null
+    quantityApproved: Decimal | null
+    quantityDelivered: Decimal | null
+    materialRequestId: number | null
+    materialId: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MaterialRequestItemMaxAggregateOutputType = {
+    id: number | null
+    quantityRequested: Decimal | null
+    quantityApproved: Decimal | null
+    quantityDelivered: Decimal | null
+    materialRequestId: number | null
+    materialId: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MaterialRequestItemCountAggregateOutputType = {
+    id: number
+    quantityRequested: number
+    quantityApproved: number
+    quantityDelivered: number
+    materialRequestId: number
+    materialId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type MaterialRequestItemAvgAggregateInputType = {
+    id?: true
+    quantityRequested?: true
+    quantityApproved?: true
+    quantityDelivered?: true
+    materialRequestId?: true
+    materialId?: true
+  }
+
+  export type MaterialRequestItemSumAggregateInputType = {
+    id?: true
+    quantityRequested?: true
+    quantityApproved?: true
+    quantityDelivered?: true
+    materialRequestId?: true
+    materialId?: true
+  }
+
+  export type MaterialRequestItemMinAggregateInputType = {
+    id?: true
+    quantityRequested?: true
+    quantityApproved?: true
+    quantityDelivered?: true
+    materialRequestId?: true
+    materialId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MaterialRequestItemMaxAggregateInputType = {
+    id?: true
+    quantityRequested?: true
+    quantityApproved?: true
+    quantityDelivered?: true
+    materialRequestId?: true
+    materialId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MaterialRequestItemCountAggregateInputType = {
+    id?: true
+    quantityRequested?: true
+    quantityApproved?: true
+    quantityDelivered?: true
+    materialRequestId?: true
+    materialId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type MaterialRequestItemAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MaterialRequestItem to aggregate.
+     */
+    where?: MaterialRequestItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MaterialRequestItems to fetch.
+     */
+    orderBy?: MaterialRequestItemOrderByWithRelationInput | MaterialRequestItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: MaterialRequestItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MaterialRequestItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MaterialRequestItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned MaterialRequestItems
+    **/
+    _count?: true | MaterialRequestItemCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: MaterialRequestItemAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: MaterialRequestItemSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: MaterialRequestItemMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: MaterialRequestItemMaxAggregateInputType
+  }
+
+  export type GetMaterialRequestItemAggregateType<T extends MaterialRequestItemAggregateArgs> = {
+        [P in keyof T & keyof AggregateMaterialRequestItem]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMaterialRequestItem[P]>
+      : GetScalarType<T[P], AggregateMaterialRequestItem[P]>
+  }
+
+
+
+
+  export type MaterialRequestItemGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MaterialRequestItemWhereInput
+    orderBy?: MaterialRequestItemOrderByWithAggregationInput | MaterialRequestItemOrderByWithAggregationInput[]
+    by: MaterialRequestItemScalarFieldEnum[] | MaterialRequestItemScalarFieldEnum
+    having?: MaterialRequestItemScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: MaterialRequestItemCountAggregateInputType | true
+    _avg?: MaterialRequestItemAvgAggregateInputType
+    _sum?: MaterialRequestItemSumAggregateInputType
+    _min?: MaterialRequestItemMinAggregateInputType
+    _max?: MaterialRequestItemMaxAggregateInputType
+  }
+
+  export type MaterialRequestItemGroupByOutputType = {
+    id: number
+    quantityRequested: Decimal
+    quantityApproved: Decimal | null
+    quantityDelivered: Decimal | null
+    materialRequestId: number
+    materialId: number
+    createdAt: Date
+    updatedAt: Date
+    _count: MaterialRequestItemCountAggregateOutputType | null
+    _avg: MaterialRequestItemAvgAggregateOutputType | null
+    _sum: MaterialRequestItemSumAggregateOutputType | null
+    _min: MaterialRequestItemMinAggregateOutputType | null
+    _max: MaterialRequestItemMaxAggregateOutputType | null
+  }
+
+  type GetMaterialRequestItemGroupByPayload<T extends MaterialRequestItemGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<MaterialRequestItemGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof MaterialRequestItemGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], MaterialRequestItemGroupByOutputType[P]>
+            : GetScalarType<T[P], MaterialRequestItemGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type MaterialRequestItemSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    quantityRequested?: boolean
+    quantityApproved?: boolean
+    quantityDelivered?: boolean
+    materialRequestId?: boolean
+    materialId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    materialRequest?: boolean | MaterialRequestDefaultArgs<ExtArgs>
+    material?: boolean | MaterialDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["materialRequestItem"]>
+
+
+
+  export type MaterialRequestItemSelectScalar = {
+    id?: boolean
+    quantityRequested?: boolean
+    quantityApproved?: boolean
+    quantityDelivered?: boolean
+    materialRequestId?: boolean
+    materialId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type MaterialRequestItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "quantityRequested" | "quantityApproved" | "quantityDelivered" | "materialRequestId" | "materialId" | "createdAt" | "updatedAt", ExtArgs["result"]["materialRequestItem"]>
+  export type MaterialRequestItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    materialRequest?: boolean | MaterialRequestDefaultArgs<ExtArgs>
+    material?: boolean | MaterialDefaultArgs<ExtArgs>
+  }
+
+  export type $MaterialRequestItemPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "MaterialRequestItem"
+    objects: {
+      materialRequest: Prisma.$MaterialRequestPayload<ExtArgs>
+      material: Prisma.$MaterialPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      quantityRequested: Prisma.Decimal
+      quantityApproved: Prisma.Decimal | null
+      quantityDelivered: Prisma.Decimal | null
+      materialRequestId: number
+      materialId: number
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["materialRequestItem"]>
+    composites: {}
+  }
+
+  type MaterialRequestItemGetPayload<S extends boolean | null | undefined | MaterialRequestItemDefaultArgs> = $Result.GetResult<Prisma.$MaterialRequestItemPayload, S>
+
+  type MaterialRequestItemCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<MaterialRequestItemFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: MaterialRequestItemCountAggregateInputType | true
+    }
+
+  export interface MaterialRequestItemDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['MaterialRequestItem'], meta: { name: 'MaterialRequestItem' } }
+    /**
+     * Find zero or one MaterialRequestItem that matches the filter.
+     * @param {MaterialRequestItemFindUniqueArgs} args - Arguments to find a MaterialRequestItem
+     * @example
+     * // Get one MaterialRequestItem
+     * const materialRequestItem = await prisma.materialRequestItem.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends MaterialRequestItemFindUniqueArgs>(args: SelectSubset<T, MaterialRequestItemFindUniqueArgs<ExtArgs>>): Prisma__MaterialRequestItemClient<$Result.GetResult<Prisma.$MaterialRequestItemPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one MaterialRequestItem that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {MaterialRequestItemFindUniqueOrThrowArgs} args - Arguments to find a MaterialRequestItem
+     * @example
+     * // Get one MaterialRequestItem
+     * const materialRequestItem = await prisma.materialRequestItem.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends MaterialRequestItemFindUniqueOrThrowArgs>(args: SelectSubset<T, MaterialRequestItemFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MaterialRequestItemClient<$Result.GetResult<Prisma.$MaterialRequestItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MaterialRequestItem that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaterialRequestItemFindFirstArgs} args - Arguments to find a MaterialRequestItem
+     * @example
+     * // Get one MaterialRequestItem
+     * const materialRequestItem = await prisma.materialRequestItem.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends MaterialRequestItemFindFirstArgs>(args?: SelectSubset<T, MaterialRequestItemFindFirstArgs<ExtArgs>>): Prisma__MaterialRequestItemClient<$Result.GetResult<Prisma.$MaterialRequestItemPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MaterialRequestItem that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaterialRequestItemFindFirstOrThrowArgs} args - Arguments to find a MaterialRequestItem
+     * @example
+     * // Get one MaterialRequestItem
+     * const materialRequestItem = await prisma.materialRequestItem.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends MaterialRequestItemFindFirstOrThrowArgs>(args?: SelectSubset<T, MaterialRequestItemFindFirstOrThrowArgs<ExtArgs>>): Prisma__MaterialRequestItemClient<$Result.GetResult<Prisma.$MaterialRequestItemPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more MaterialRequestItems that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaterialRequestItemFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all MaterialRequestItems
+     * const materialRequestItems = await prisma.materialRequestItem.findMany()
+     * 
+     * // Get first 10 MaterialRequestItems
+     * const materialRequestItems = await prisma.materialRequestItem.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const materialRequestItemWithIdOnly = await prisma.materialRequestItem.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends MaterialRequestItemFindManyArgs>(args?: SelectSubset<T, MaterialRequestItemFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaterialRequestItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a MaterialRequestItem.
+     * @param {MaterialRequestItemCreateArgs} args - Arguments to create a MaterialRequestItem.
+     * @example
+     * // Create one MaterialRequestItem
+     * const MaterialRequestItem = await prisma.materialRequestItem.create({
+     *   data: {
+     *     // ... data to create a MaterialRequestItem
+     *   }
+     * })
+     * 
+     */
+    create<T extends MaterialRequestItemCreateArgs>(args: SelectSubset<T, MaterialRequestItemCreateArgs<ExtArgs>>): Prisma__MaterialRequestItemClient<$Result.GetResult<Prisma.$MaterialRequestItemPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many MaterialRequestItems.
+     * @param {MaterialRequestItemCreateManyArgs} args - Arguments to create many MaterialRequestItems.
+     * @example
+     * // Create many MaterialRequestItems
+     * const materialRequestItem = await prisma.materialRequestItem.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends MaterialRequestItemCreateManyArgs>(args?: SelectSubset<T, MaterialRequestItemCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a MaterialRequestItem.
+     * @param {MaterialRequestItemDeleteArgs} args - Arguments to delete one MaterialRequestItem.
+     * @example
+     * // Delete one MaterialRequestItem
+     * const MaterialRequestItem = await prisma.materialRequestItem.delete({
+     *   where: {
+     *     // ... filter to delete one MaterialRequestItem
+     *   }
+     * })
+     * 
+     */
+    delete<T extends MaterialRequestItemDeleteArgs>(args: SelectSubset<T, MaterialRequestItemDeleteArgs<ExtArgs>>): Prisma__MaterialRequestItemClient<$Result.GetResult<Prisma.$MaterialRequestItemPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one MaterialRequestItem.
+     * @param {MaterialRequestItemUpdateArgs} args - Arguments to update one MaterialRequestItem.
+     * @example
+     * // Update one MaterialRequestItem
+     * const materialRequestItem = await prisma.materialRequestItem.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends MaterialRequestItemUpdateArgs>(args: SelectSubset<T, MaterialRequestItemUpdateArgs<ExtArgs>>): Prisma__MaterialRequestItemClient<$Result.GetResult<Prisma.$MaterialRequestItemPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more MaterialRequestItems.
+     * @param {MaterialRequestItemDeleteManyArgs} args - Arguments to filter MaterialRequestItems to delete.
+     * @example
+     * // Delete a few MaterialRequestItems
+     * const { count } = await prisma.materialRequestItem.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends MaterialRequestItemDeleteManyArgs>(args?: SelectSubset<T, MaterialRequestItemDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MaterialRequestItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaterialRequestItemUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many MaterialRequestItems
+     * const materialRequestItem = await prisma.materialRequestItem.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends MaterialRequestItemUpdateManyArgs>(args: SelectSubset<T, MaterialRequestItemUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one MaterialRequestItem.
+     * @param {MaterialRequestItemUpsertArgs} args - Arguments to update or create a MaterialRequestItem.
+     * @example
+     * // Update or create a MaterialRequestItem
+     * const materialRequestItem = await prisma.materialRequestItem.upsert({
+     *   create: {
+     *     // ... data to create a MaterialRequestItem
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the MaterialRequestItem we want to update
+     *   }
+     * })
+     */
+    upsert<T extends MaterialRequestItemUpsertArgs>(args: SelectSubset<T, MaterialRequestItemUpsertArgs<ExtArgs>>): Prisma__MaterialRequestItemClient<$Result.GetResult<Prisma.$MaterialRequestItemPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of MaterialRequestItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaterialRequestItemCountArgs} args - Arguments to filter MaterialRequestItems to count.
+     * @example
+     * // Count the number of MaterialRequestItems
+     * const count = await prisma.materialRequestItem.count({
+     *   where: {
+     *     // ... the filter for the MaterialRequestItems we want to count
+     *   }
+     * })
+    **/
+    count<T extends MaterialRequestItemCountArgs>(
+      args?: Subset<T, MaterialRequestItemCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], MaterialRequestItemCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a MaterialRequestItem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaterialRequestItemAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MaterialRequestItemAggregateArgs>(args: Subset<T, MaterialRequestItemAggregateArgs>): Prisma.PrismaPromise<GetMaterialRequestItemAggregateType<T>>
+
+    /**
+     * Group by MaterialRequestItem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaterialRequestItemGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends MaterialRequestItemGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: MaterialRequestItemGroupByArgs['orderBy'] }
+        : { orderBy?: MaterialRequestItemGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, MaterialRequestItemGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMaterialRequestItemGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the MaterialRequestItem model
+   */
+  readonly fields: MaterialRequestItemFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for MaterialRequestItem.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__MaterialRequestItemClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    materialRequest<T extends MaterialRequestDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MaterialRequestDefaultArgs<ExtArgs>>): Prisma__MaterialRequestClient<$Result.GetResult<Prisma.$MaterialRequestPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    material<T extends MaterialDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MaterialDefaultArgs<ExtArgs>>): Prisma__MaterialClient<$Result.GetResult<Prisma.$MaterialPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the MaterialRequestItem model
+   */
+  interface MaterialRequestItemFieldRefs {
+    readonly id: FieldRef<"MaterialRequestItem", 'Int'>
+    readonly quantityRequested: FieldRef<"MaterialRequestItem", 'Decimal'>
+    readonly quantityApproved: FieldRef<"MaterialRequestItem", 'Decimal'>
+    readonly quantityDelivered: FieldRef<"MaterialRequestItem", 'Decimal'>
+    readonly materialRequestId: FieldRef<"MaterialRequestItem", 'Int'>
+    readonly materialId: FieldRef<"MaterialRequestItem", 'Int'>
+    readonly createdAt: FieldRef<"MaterialRequestItem", 'DateTime'>
+    readonly updatedAt: FieldRef<"MaterialRequestItem", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * MaterialRequestItem findUnique
+   */
+  export type MaterialRequestItemFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialRequestItem
+     */
+    select?: MaterialRequestItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialRequestItem
+     */
+    omit?: MaterialRequestItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialRequestItemInclude<ExtArgs> | null
+    /**
+     * Filter, which MaterialRequestItem to fetch.
+     */
+    where: MaterialRequestItemWhereUniqueInput
+  }
+
+  /**
+   * MaterialRequestItem findUniqueOrThrow
+   */
+  export type MaterialRequestItemFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialRequestItem
+     */
+    select?: MaterialRequestItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialRequestItem
+     */
+    omit?: MaterialRequestItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialRequestItemInclude<ExtArgs> | null
+    /**
+     * Filter, which MaterialRequestItem to fetch.
+     */
+    where: MaterialRequestItemWhereUniqueInput
+  }
+
+  /**
+   * MaterialRequestItem findFirst
+   */
+  export type MaterialRequestItemFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialRequestItem
+     */
+    select?: MaterialRequestItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialRequestItem
+     */
+    omit?: MaterialRequestItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialRequestItemInclude<ExtArgs> | null
+    /**
+     * Filter, which MaterialRequestItem to fetch.
+     */
+    where?: MaterialRequestItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MaterialRequestItems to fetch.
+     */
+    orderBy?: MaterialRequestItemOrderByWithRelationInput | MaterialRequestItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MaterialRequestItems.
+     */
+    cursor?: MaterialRequestItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MaterialRequestItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MaterialRequestItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MaterialRequestItems.
+     */
+    distinct?: MaterialRequestItemScalarFieldEnum | MaterialRequestItemScalarFieldEnum[]
+  }
+
+  /**
+   * MaterialRequestItem findFirstOrThrow
+   */
+  export type MaterialRequestItemFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialRequestItem
+     */
+    select?: MaterialRequestItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialRequestItem
+     */
+    omit?: MaterialRequestItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialRequestItemInclude<ExtArgs> | null
+    /**
+     * Filter, which MaterialRequestItem to fetch.
+     */
+    where?: MaterialRequestItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MaterialRequestItems to fetch.
+     */
+    orderBy?: MaterialRequestItemOrderByWithRelationInput | MaterialRequestItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MaterialRequestItems.
+     */
+    cursor?: MaterialRequestItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MaterialRequestItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MaterialRequestItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MaterialRequestItems.
+     */
+    distinct?: MaterialRequestItemScalarFieldEnum | MaterialRequestItemScalarFieldEnum[]
+  }
+
+  /**
+   * MaterialRequestItem findMany
+   */
+  export type MaterialRequestItemFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialRequestItem
+     */
+    select?: MaterialRequestItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialRequestItem
+     */
+    omit?: MaterialRequestItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialRequestItemInclude<ExtArgs> | null
+    /**
+     * Filter, which MaterialRequestItems to fetch.
+     */
+    where?: MaterialRequestItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MaterialRequestItems to fetch.
+     */
+    orderBy?: MaterialRequestItemOrderByWithRelationInput | MaterialRequestItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing MaterialRequestItems.
+     */
+    cursor?: MaterialRequestItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MaterialRequestItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MaterialRequestItems.
+     */
+    skip?: number
+    distinct?: MaterialRequestItemScalarFieldEnum | MaterialRequestItemScalarFieldEnum[]
+  }
+
+  /**
+   * MaterialRequestItem create
+   */
+  export type MaterialRequestItemCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialRequestItem
+     */
+    select?: MaterialRequestItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialRequestItem
+     */
+    omit?: MaterialRequestItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialRequestItemInclude<ExtArgs> | null
+    /**
+     * The data needed to create a MaterialRequestItem.
+     */
+    data: XOR<MaterialRequestItemCreateInput, MaterialRequestItemUncheckedCreateInput>
+  }
+
+  /**
+   * MaterialRequestItem createMany
+   */
+  export type MaterialRequestItemCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many MaterialRequestItems.
+     */
+    data: MaterialRequestItemCreateManyInput | MaterialRequestItemCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * MaterialRequestItem update
+   */
+  export type MaterialRequestItemUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialRequestItem
+     */
+    select?: MaterialRequestItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialRequestItem
+     */
+    omit?: MaterialRequestItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialRequestItemInclude<ExtArgs> | null
+    /**
+     * The data needed to update a MaterialRequestItem.
+     */
+    data: XOR<MaterialRequestItemUpdateInput, MaterialRequestItemUncheckedUpdateInput>
+    /**
+     * Choose, which MaterialRequestItem to update.
+     */
+    where: MaterialRequestItemWhereUniqueInput
+  }
+
+  /**
+   * MaterialRequestItem updateMany
+   */
+  export type MaterialRequestItemUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update MaterialRequestItems.
+     */
+    data: XOR<MaterialRequestItemUpdateManyMutationInput, MaterialRequestItemUncheckedUpdateManyInput>
+    /**
+     * Filter which MaterialRequestItems to update
+     */
+    where?: MaterialRequestItemWhereInput
+    /**
+     * Limit how many MaterialRequestItems to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * MaterialRequestItem upsert
+   */
+  export type MaterialRequestItemUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialRequestItem
+     */
+    select?: MaterialRequestItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialRequestItem
+     */
+    omit?: MaterialRequestItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialRequestItemInclude<ExtArgs> | null
+    /**
+     * The filter to search for the MaterialRequestItem to update in case it exists.
+     */
+    where: MaterialRequestItemWhereUniqueInput
+    /**
+     * In case the MaterialRequestItem found by the `where` argument doesn't exist, create a new MaterialRequestItem with this data.
+     */
+    create: XOR<MaterialRequestItemCreateInput, MaterialRequestItemUncheckedCreateInput>
+    /**
+     * In case the MaterialRequestItem was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<MaterialRequestItemUpdateInput, MaterialRequestItemUncheckedUpdateInput>
+  }
+
+  /**
+   * MaterialRequestItem delete
+   */
+  export type MaterialRequestItemDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialRequestItem
+     */
+    select?: MaterialRequestItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialRequestItem
+     */
+    omit?: MaterialRequestItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialRequestItemInclude<ExtArgs> | null
+    /**
+     * Filter which MaterialRequestItem to delete.
+     */
+    where: MaterialRequestItemWhereUniqueInput
+  }
+
+  /**
+   * MaterialRequestItem deleteMany
+   */
+  export type MaterialRequestItemDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MaterialRequestItems to delete
+     */
+    where?: MaterialRequestItemWhereInput
+    /**
+     * Limit how many MaterialRequestItems to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * MaterialRequestItem without action
+   */
+  export type MaterialRequestItemDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialRequestItem
+     */
+    select?: MaterialRequestItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialRequestItem
+     */
+    omit?: MaterialRequestItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialRequestItemInclude<ExtArgs> | null
   }
 
 
@@ -5466,6 +15443,12 @@ export namespace Prisma {
     logLogin?: boolean | User$logLoginArgs<ExtArgs>
     roles?: boolean | User$rolesArgs<ExtArgs>
     magicLinks?: boolean | User$magicLinksArgs<ExtArgs>
+    reportedOccurrences?: boolean | User$reportedOccurrencesArgs<ExtArgs>
+    createdMaintenanceRequests?: boolean | User$createdMaintenanceRequestsArgs<ExtArgs>
+    assignedMaintenanceRequests?: boolean | User$assignedMaintenanceRequestsArgs<ExtArgs>
+    timelineEvents?: boolean | User$timelineEventsArgs<ExtArgs>
+    materialRequestsCreated?: boolean | User$materialRequestsCreatedArgs<ExtArgs>
+    materialRequestsApproved?: boolean | User$materialRequestsApprovedArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -5487,6 +15470,12 @@ export namespace Prisma {
     logLogin?: boolean | User$logLoginArgs<ExtArgs>
     roles?: boolean | User$rolesArgs<ExtArgs>
     magicLinks?: boolean | User$magicLinksArgs<ExtArgs>
+    reportedOccurrences?: boolean | User$reportedOccurrencesArgs<ExtArgs>
+    createdMaintenanceRequests?: boolean | User$createdMaintenanceRequestsArgs<ExtArgs>
+    assignedMaintenanceRequests?: boolean | User$assignedMaintenanceRequestsArgs<ExtArgs>
+    timelineEvents?: boolean | User$timelineEventsArgs<ExtArgs>
+    materialRequestsCreated?: boolean | User$materialRequestsCreatedArgs<ExtArgs>
+    materialRequestsApproved?: boolean | User$materialRequestsApprovedArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -5496,6 +15485,12 @@ export namespace Prisma {
       logLogin: Prisma.$LogLoginPayload<ExtArgs>[]
       roles: Prisma.$RolePayload<ExtArgs>[]
       magicLinks: Prisma.$MagicLinkPayload<ExtArgs>[]
+      reportedOccurrences: Prisma.$InfrastructureOccurrencePayload<ExtArgs>[]
+      createdMaintenanceRequests: Prisma.$MaintenanceRequestPayload<ExtArgs>[]
+      assignedMaintenanceRequests: Prisma.$MaintenanceRequestPayload<ExtArgs>[]
+      timelineEvents: Prisma.$MaintenanceTimelineEventPayload<ExtArgs>[]
+      materialRequestsCreated: Prisma.$MaterialRequestPayload<ExtArgs>[]
+      materialRequestsApproved: Prisma.$MaterialRequestPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -5849,6 +15844,12 @@ export namespace Prisma {
     logLogin<T extends User$logLoginArgs<ExtArgs> = {}>(args?: Subset<T, User$logLoginArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LogLoginPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     roles<T extends User$rolesArgs<ExtArgs> = {}>(args?: Subset<T, User$rolesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RolePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     magicLinks<T extends User$magicLinksArgs<ExtArgs> = {}>(args?: Subset<T, User$magicLinksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MagicLinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    reportedOccurrences<T extends User$reportedOccurrencesArgs<ExtArgs> = {}>(args?: Subset<T, User$reportedOccurrencesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InfrastructureOccurrencePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    createdMaintenanceRequests<T extends User$createdMaintenanceRequestsArgs<ExtArgs> = {}>(args?: Subset<T, User$createdMaintenanceRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaintenanceRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    assignedMaintenanceRequests<T extends User$assignedMaintenanceRequestsArgs<ExtArgs> = {}>(args?: Subset<T, User$assignedMaintenanceRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaintenanceRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    timelineEvents<T extends User$timelineEventsArgs<ExtArgs> = {}>(args?: Subset<T, User$timelineEventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaintenanceTimelineEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    materialRequestsCreated<T extends User$materialRequestsCreatedArgs<ExtArgs> = {}>(args?: Subset<T, User$materialRequestsCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaterialRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    materialRequestsApproved<T extends User$materialRequestsApprovedArgs<ExtArgs> = {}>(args?: Subset<T, User$materialRequestsApprovedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaterialRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6298,6 +16299,150 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: MagicLinkScalarFieldEnum | MagicLinkScalarFieldEnum[]
+  }
+
+  /**
+   * User.reportedOccurrences
+   */
+  export type User$reportedOccurrencesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InfrastructureOccurrence
+     */
+    select?: InfrastructureOccurrenceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InfrastructureOccurrence
+     */
+    omit?: InfrastructureOccurrenceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InfrastructureOccurrenceInclude<ExtArgs> | null
+    where?: InfrastructureOccurrenceWhereInput
+    orderBy?: InfrastructureOccurrenceOrderByWithRelationInput | InfrastructureOccurrenceOrderByWithRelationInput[]
+    cursor?: InfrastructureOccurrenceWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: InfrastructureOccurrenceScalarFieldEnum | InfrastructureOccurrenceScalarFieldEnum[]
+  }
+
+  /**
+   * User.createdMaintenanceRequests
+   */
+  export type User$createdMaintenanceRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceRequest
+     */
+    select?: MaintenanceRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceRequest
+     */
+    omit?: MaintenanceRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceRequestInclude<ExtArgs> | null
+    where?: MaintenanceRequestWhereInput
+    orderBy?: MaintenanceRequestOrderByWithRelationInput | MaintenanceRequestOrderByWithRelationInput[]
+    cursor?: MaintenanceRequestWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MaintenanceRequestScalarFieldEnum | MaintenanceRequestScalarFieldEnum[]
+  }
+
+  /**
+   * User.assignedMaintenanceRequests
+   */
+  export type User$assignedMaintenanceRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceRequest
+     */
+    select?: MaintenanceRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceRequest
+     */
+    omit?: MaintenanceRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceRequestInclude<ExtArgs> | null
+    where?: MaintenanceRequestWhereInput
+    orderBy?: MaintenanceRequestOrderByWithRelationInput | MaintenanceRequestOrderByWithRelationInput[]
+    cursor?: MaintenanceRequestWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MaintenanceRequestScalarFieldEnum | MaintenanceRequestScalarFieldEnum[]
+  }
+
+  /**
+   * User.timelineEvents
+   */
+  export type User$timelineEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceTimelineEvent
+     */
+    select?: MaintenanceTimelineEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceTimelineEvent
+     */
+    omit?: MaintenanceTimelineEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceTimelineEventInclude<ExtArgs> | null
+    where?: MaintenanceTimelineEventWhereInput
+    orderBy?: MaintenanceTimelineEventOrderByWithRelationInput | MaintenanceTimelineEventOrderByWithRelationInput[]
+    cursor?: MaintenanceTimelineEventWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MaintenanceTimelineEventScalarFieldEnum | MaintenanceTimelineEventScalarFieldEnum[]
+  }
+
+  /**
+   * User.materialRequestsCreated
+   */
+  export type User$materialRequestsCreatedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialRequest
+     */
+    select?: MaterialRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialRequest
+     */
+    omit?: MaterialRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialRequestInclude<ExtArgs> | null
+    where?: MaterialRequestWhereInput
+    orderBy?: MaterialRequestOrderByWithRelationInput | MaterialRequestOrderByWithRelationInput[]
+    cursor?: MaterialRequestWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MaterialRequestScalarFieldEnum | MaterialRequestScalarFieldEnum[]
+  }
+
+  /**
+   * User.materialRequestsApproved
+   */
+  export type User$materialRequestsApprovedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialRequest
+     */
+    select?: MaterialRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialRequest
+     */
+    omit?: MaterialRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialRequestInclude<ExtArgs> | null
+    where?: MaterialRequestWhereInput
+    orderBy?: MaterialRequestOrderByWithRelationInput | MaterialRequestOrderByWithRelationInput[]
+    cursor?: MaterialRequestWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MaterialRequestScalarFieldEnum | MaterialRequestScalarFieldEnum[]
   }
 
   /**
@@ -8324,10 +18469,64 @@ export namespace Prisma {
   export type LogLoginScalarFieldEnum = (typeof LogLoginScalarFieldEnum)[keyof typeof LogLoginScalarFieldEnum]
 
 
+  export const MaintenanceRequestScalarFieldEnum: {
+    id: 'id',
+    protocolNumber: 'protocolNumber',
+    title: 'title',
+    description: 'description',
+    priority: 'priority',
+    requestedAt: 'requestedAt',
+    deadline: 'deadline',
+    solutionDetails: 'solutionDetails',
+    completedAt: 'completedAt',
+    currentMaintenanceInstanceId: 'currentMaintenanceInstanceId',
+    createdById: 'createdById',
+    assignedToId: 'assignedToId',
+    equipmentId: 'equipmentId',
+    serviceTypeId: 'serviceTypeId',
+    statusId: 'statusId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type MaintenanceRequestScalarFieldEnum = (typeof MaintenanceRequestScalarFieldEnum)[keyof typeof MaintenanceRequestScalarFieldEnum]
+
+
+  export const MaintenanceRequestStatusScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    description: 'description',
+    isFinal: 'isFinal',
+    order: 'order',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type MaintenanceRequestStatusScalarFieldEnum = (typeof MaintenanceRequestStatusScalarFieldEnum)[keyof typeof MaintenanceRequestStatusScalarFieldEnum]
+
+
+  export const MaintenanceTimelineEventScalarFieldEnum: {
+    id: 'id',
+    type: 'type',
+    description: 'description',
+    eventData: 'eventData',
+    occurredAt: 'occurredAt',
+    maintenanceRequestId: 'maintenanceRequestId',
+    actionById: 'actionById',
+    transferredFromInstanceId: 'transferredFromInstanceId',
+    transferredToInstanceId: 'transferredToInstanceId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type MaintenanceTimelineEventScalarFieldEnum = (typeof MaintenanceTimelineEventScalarFieldEnum)[keyof typeof MaintenanceTimelineEventScalarFieldEnum]
+
+
   export const MaintenanceInstanceScalarFieldEnum: {
     id: 'id',
     sipacId: 'sipacId',
     name: 'name',
+    isActive: 'isActive',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -8335,17 +18534,97 @@ export namespace Prisma {
   export type MaintenanceInstanceScalarFieldEnum = (typeof MaintenanceInstanceScalarFieldEnum)[keyof typeof MaintenanceInstanceScalarFieldEnum]
 
 
-  export const MaterialScalarFieldEnum: {
+  export const ServiceTypeScalarFieldEnum: {
     id: 'id',
     name: 'name',
-    specification: 'specification',
-    unit: 'unit',
+    description: 'description',
     isActive: 'isActive',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
 
+  export type ServiceTypeScalarFieldEnum = (typeof ServiceTypeScalarFieldEnum)[keyof typeof ServiceTypeScalarFieldEnum]
+
+
+  export const EquipmentScalarFieldEnum: {
+    id: 'id',
+    patrimonyTag: 'patrimonyTag',
+    name: 'name',
+    description: 'description',
+    location: 'location',
+    serialNumber: 'serialNumber',
+    manufacturer: 'manufacturer',
+    model: 'model',
+    acquisitionDate: 'acquisitionDate',
+    isActive: 'isActive',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type EquipmentScalarFieldEnum = (typeof EquipmentScalarFieldEnum)[keyof typeof EquipmentScalarFieldEnum]
+
+
+  export const InfrastructureOccurrenceScalarFieldEnum: {
+    id: 'id',
+    title: 'title',
+    description: 'description',
+    locationDescription: 'locationDescription',
+    reportedAt: 'reportedAt',
+    status: 'status',
+    resolutionNotes: 'resolutionNotes',
+    reportedById: 'reportedById',
+    maintenanceRequestId: 'maintenanceRequestId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type InfrastructureOccurrenceScalarFieldEnum = (typeof InfrastructureOccurrenceScalarFieldEnum)[keyof typeof InfrastructureOccurrenceScalarFieldEnum]
+
+
+  export const MaterialScalarFieldEnum: {
+    id: 'id',
+    code: 'code',
+    name: 'name',
+    description: 'description',
+    unitOfMeasure: 'unitOfMeasure',
+    isActive: 'isActive',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    parentMaterialId: 'parentMaterialId'
+  };
+
   export type MaterialScalarFieldEnum = (typeof MaterialScalarFieldEnum)[keyof typeof MaterialScalarFieldEnum]
+
+
+  export const MaterialRequestScalarFieldEnum: {
+    id: 'id',
+    justification: 'justification',
+    requestDate: 'requestDate',
+    status: 'status',
+    maintenanceRequestId: 'maintenanceRequestId',
+    requestedById: 'requestedById',
+    approvedById: 'approvedById',
+    approvalDate: 'approvalDate',
+    approvalNotes: 'approvalNotes',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type MaterialRequestScalarFieldEnum = (typeof MaterialRequestScalarFieldEnum)[keyof typeof MaterialRequestScalarFieldEnum]
+
+
+  export const MaterialRequestItemScalarFieldEnum: {
+    id: 'id',
+    quantityRequested: 'quantityRequested',
+    quantityApproved: 'quantityApproved',
+    quantityDelivered: 'quantityDelivered',
+    materialRequestId: 'materialRequestId',
+    materialId: 'materialId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type MaterialRequestItemScalarFieldEnum = (typeof MaterialRequestItemScalarFieldEnum)[keyof typeof MaterialRequestItemScalarFieldEnum]
 
 
   export const UserScalarFieldEnum: {
@@ -8393,6 +18672,14 @@ export namespace Prisma {
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+  export const NullableJsonNullValueInput: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull
+  };
+
+  export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
   export const NullsOrder: {
     first: 'first',
     last: 'last'
@@ -8423,6 +18710,48 @@ export namespace Prisma {
   export type LogLoginOrderByRelevanceFieldEnum = (typeof LogLoginOrderByRelevanceFieldEnum)[keyof typeof LogLoginOrderByRelevanceFieldEnum]
 
 
+  export const MaintenanceRequestOrderByRelevanceFieldEnum: {
+    protocolNumber: 'protocolNumber',
+    title: 'title',
+    description: 'description',
+    solutionDetails: 'solutionDetails'
+  };
+
+  export type MaintenanceRequestOrderByRelevanceFieldEnum = (typeof MaintenanceRequestOrderByRelevanceFieldEnum)[keyof typeof MaintenanceRequestOrderByRelevanceFieldEnum]
+
+
+  export const MaintenanceRequestStatusOrderByRelevanceFieldEnum: {
+    name: 'name',
+    description: 'description'
+  };
+
+  export type MaintenanceRequestStatusOrderByRelevanceFieldEnum = (typeof MaintenanceRequestStatusOrderByRelevanceFieldEnum)[keyof typeof MaintenanceRequestStatusOrderByRelevanceFieldEnum]
+
+
+  export const JsonNullValueFilter: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull,
+    AnyNull: typeof AnyNull
+  };
+
+  export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
+
+
+  export const QueryMode: {
+    default: 'default',
+    insensitive: 'insensitive'
+  };
+
+  export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+  export const MaintenanceTimelineEventOrderByRelevanceFieldEnum: {
+    description: 'description'
+  };
+
+  export type MaintenanceTimelineEventOrderByRelevanceFieldEnum = (typeof MaintenanceTimelineEventOrderByRelevanceFieldEnum)[keyof typeof MaintenanceTimelineEventOrderByRelevanceFieldEnum]
+
+
   export const MaintenanceInstanceOrderByRelevanceFieldEnum: {
     sipacId: 'sipacId',
     name: 'name'
@@ -8431,13 +18760,53 @@ export namespace Prisma {
   export type MaintenanceInstanceOrderByRelevanceFieldEnum = (typeof MaintenanceInstanceOrderByRelevanceFieldEnum)[keyof typeof MaintenanceInstanceOrderByRelevanceFieldEnum]
 
 
-  export const MaterialOrderByRelevanceFieldEnum: {
+  export const ServiceTypeOrderByRelevanceFieldEnum: {
     name: 'name',
-    specification: 'specification',
-    unit: 'unit'
+    description: 'description'
+  };
+
+  export type ServiceTypeOrderByRelevanceFieldEnum = (typeof ServiceTypeOrderByRelevanceFieldEnum)[keyof typeof ServiceTypeOrderByRelevanceFieldEnum]
+
+
+  export const EquipmentOrderByRelevanceFieldEnum: {
+    patrimonyTag: 'patrimonyTag',
+    name: 'name',
+    description: 'description',
+    location: 'location',
+    serialNumber: 'serialNumber',
+    manufacturer: 'manufacturer',
+    model: 'model'
+  };
+
+  export type EquipmentOrderByRelevanceFieldEnum = (typeof EquipmentOrderByRelevanceFieldEnum)[keyof typeof EquipmentOrderByRelevanceFieldEnum]
+
+
+  export const InfrastructureOccurrenceOrderByRelevanceFieldEnum: {
+    title: 'title',
+    description: 'description',
+    locationDescription: 'locationDescription',
+    resolutionNotes: 'resolutionNotes'
+  };
+
+  export type InfrastructureOccurrenceOrderByRelevanceFieldEnum = (typeof InfrastructureOccurrenceOrderByRelevanceFieldEnum)[keyof typeof InfrastructureOccurrenceOrderByRelevanceFieldEnum]
+
+
+  export const MaterialOrderByRelevanceFieldEnum: {
+    code: 'code',
+    name: 'name',
+    description: 'description',
+    unitOfMeasure: 'unitOfMeasure'
   };
 
   export type MaterialOrderByRelevanceFieldEnum = (typeof MaterialOrderByRelevanceFieldEnum)[keyof typeof MaterialOrderByRelevanceFieldEnum]
+
+
+  export const MaterialRequestOrderByRelevanceFieldEnum: {
+    justification: 'justification',
+    approvalNotes: 'approvalNotes'
+  };
+
+  export type MaterialRequestOrderByRelevanceFieldEnum = (typeof MaterialRequestOrderByRelevanceFieldEnum)[keyof typeof MaterialRequestOrderByRelevanceFieldEnum]
 
 
   export const UserOrderByRelevanceFieldEnum: {
@@ -8500,9 +18869,51 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'BigInt'
+   * Reference to a field of type 'RequestPriority'
    */
-  export type BigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt'>
+  export type EnumRequestPriorityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RequestPriority'>
+    
+
+
+  /**
+   * Reference to a field of type 'TimelineEventType'
+   */
+  export type EnumTimelineEventTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TimelineEventType'>
+    
+
+
+  /**
+   * Reference to a field of type 'Json'
+   */
+  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+  /**
+   * Reference to a field of type 'QueryMode'
+   */
+  export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+  /**
+   * Reference to a field of type 'InfrastructureOccurrenceStatus'
+   */
+  export type EnumInfrastructureOccurrenceStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'InfrastructureOccurrenceStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'MaterialRequestStatus'
+   */
+  export type EnumMaterialRequestStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MaterialRequestStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'Decimal'
+   */
+  export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
     
 
 
@@ -8659,6 +19070,313 @@ export namespace Prisma {
     successful?: BoolWithAggregatesFilter<"LogLogin"> | boolean
   }
 
+  export type MaintenanceRequestWhereInput = {
+    AND?: MaintenanceRequestWhereInput | MaintenanceRequestWhereInput[]
+    OR?: MaintenanceRequestWhereInput[]
+    NOT?: MaintenanceRequestWhereInput | MaintenanceRequestWhereInput[]
+    id?: IntFilter<"MaintenanceRequest"> | number
+    protocolNumber?: StringFilter<"MaintenanceRequest"> | string
+    title?: StringFilter<"MaintenanceRequest"> | string
+    description?: StringFilter<"MaintenanceRequest"> | string
+    priority?: EnumRequestPriorityFilter<"MaintenanceRequest"> | $Enums.RequestPriority
+    requestedAt?: DateTimeFilter<"MaintenanceRequest"> | Date | string
+    deadline?: DateTimeNullableFilter<"MaintenanceRequest"> | Date | string | null
+    solutionDetails?: StringNullableFilter<"MaintenanceRequest"> | string | null
+    completedAt?: DateTimeNullableFilter<"MaintenanceRequest"> | Date | string | null
+    currentMaintenanceInstanceId?: IntFilter<"MaintenanceRequest"> | number
+    createdById?: IntFilter<"MaintenanceRequest"> | number
+    assignedToId?: IntNullableFilter<"MaintenanceRequest"> | number | null
+    equipmentId?: IntNullableFilter<"MaintenanceRequest"> | number | null
+    serviceTypeId?: IntNullableFilter<"MaintenanceRequest"> | number | null
+    statusId?: IntFilter<"MaintenanceRequest"> | number
+    createdAt?: DateTimeFilter<"MaintenanceRequest"> | Date | string
+    updatedAt?: DateTimeFilter<"MaintenanceRequest"> | Date | string
+    currentMaintenanceInstance?: XOR<MaintenanceInstanceScalarRelationFilter, MaintenanceInstanceWhereInput>
+    createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+    assignedTo?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    equipment?: XOR<EquipmentNullableScalarRelationFilter, EquipmentWhereInput> | null
+    serviceType?: XOR<ServiceTypeNullableScalarRelationFilter, ServiceTypeWhereInput> | null
+    status?: XOR<MaintenanceRequestStatusScalarRelationFilter, MaintenanceRequestStatusWhereInput>
+    originatingOccurrences?: InfrastructureOccurrenceListRelationFilter
+    timelineEvents?: MaintenanceTimelineEventListRelationFilter
+    materialRequests?: MaterialRequestListRelationFilter
+  }
+
+  export type MaintenanceRequestOrderByWithRelationInput = {
+    id?: SortOrder
+    protocolNumber?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    priority?: SortOrder
+    requestedAt?: SortOrder
+    deadline?: SortOrderInput | SortOrder
+    solutionDetails?: SortOrderInput | SortOrder
+    completedAt?: SortOrderInput | SortOrder
+    currentMaintenanceInstanceId?: SortOrder
+    createdById?: SortOrder
+    assignedToId?: SortOrderInput | SortOrder
+    equipmentId?: SortOrderInput | SortOrder
+    serviceTypeId?: SortOrderInput | SortOrder
+    statusId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    currentMaintenanceInstance?: MaintenanceInstanceOrderByWithRelationInput
+    createdBy?: UserOrderByWithRelationInput
+    assignedTo?: UserOrderByWithRelationInput
+    equipment?: EquipmentOrderByWithRelationInput
+    serviceType?: ServiceTypeOrderByWithRelationInput
+    status?: MaintenanceRequestStatusOrderByWithRelationInput
+    originatingOccurrences?: InfrastructureOccurrenceOrderByRelationAggregateInput
+    timelineEvents?: MaintenanceTimelineEventOrderByRelationAggregateInput
+    materialRequests?: MaterialRequestOrderByRelationAggregateInput
+    _relevance?: MaintenanceRequestOrderByRelevanceInput
+  }
+
+  export type MaintenanceRequestWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    protocolNumber?: string
+    AND?: MaintenanceRequestWhereInput | MaintenanceRequestWhereInput[]
+    OR?: MaintenanceRequestWhereInput[]
+    NOT?: MaintenanceRequestWhereInput | MaintenanceRequestWhereInput[]
+    title?: StringFilter<"MaintenanceRequest"> | string
+    description?: StringFilter<"MaintenanceRequest"> | string
+    priority?: EnumRequestPriorityFilter<"MaintenanceRequest"> | $Enums.RequestPriority
+    requestedAt?: DateTimeFilter<"MaintenanceRequest"> | Date | string
+    deadline?: DateTimeNullableFilter<"MaintenanceRequest"> | Date | string | null
+    solutionDetails?: StringNullableFilter<"MaintenanceRequest"> | string | null
+    completedAt?: DateTimeNullableFilter<"MaintenanceRequest"> | Date | string | null
+    currentMaintenanceInstanceId?: IntFilter<"MaintenanceRequest"> | number
+    createdById?: IntFilter<"MaintenanceRequest"> | number
+    assignedToId?: IntNullableFilter<"MaintenanceRequest"> | number | null
+    equipmentId?: IntNullableFilter<"MaintenanceRequest"> | number | null
+    serviceTypeId?: IntNullableFilter<"MaintenanceRequest"> | number | null
+    statusId?: IntFilter<"MaintenanceRequest"> | number
+    createdAt?: DateTimeFilter<"MaintenanceRequest"> | Date | string
+    updatedAt?: DateTimeFilter<"MaintenanceRequest"> | Date | string
+    currentMaintenanceInstance?: XOR<MaintenanceInstanceScalarRelationFilter, MaintenanceInstanceWhereInput>
+    createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+    assignedTo?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    equipment?: XOR<EquipmentNullableScalarRelationFilter, EquipmentWhereInput> | null
+    serviceType?: XOR<ServiceTypeNullableScalarRelationFilter, ServiceTypeWhereInput> | null
+    status?: XOR<MaintenanceRequestStatusScalarRelationFilter, MaintenanceRequestStatusWhereInput>
+    originatingOccurrences?: InfrastructureOccurrenceListRelationFilter
+    timelineEvents?: MaintenanceTimelineEventListRelationFilter
+    materialRequests?: MaterialRequestListRelationFilter
+  }, "id" | "protocolNumber">
+
+  export type MaintenanceRequestOrderByWithAggregationInput = {
+    id?: SortOrder
+    protocolNumber?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    priority?: SortOrder
+    requestedAt?: SortOrder
+    deadline?: SortOrderInput | SortOrder
+    solutionDetails?: SortOrderInput | SortOrder
+    completedAt?: SortOrderInput | SortOrder
+    currentMaintenanceInstanceId?: SortOrder
+    createdById?: SortOrder
+    assignedToId?: SortOrderInput | SortOrder
+    equipmentId?: SortOrderInput | SortOrder
+    serviceTypeId?: SortOrderInput | SortOrder
+    statusId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: MaintenanceRequestCountOrderByAggregateInput
+    _avg?: MaintenanceRequestAvgOrderByAggregateInput
+    _max?: MaintenanceRequestMaxOrderByAggregateInput
+    _min?: MaintenanceRequestMinOrderByAggregateInput
+    _sum?: MaintenanceRequestSumOrderByAggregateInput
+  }
+
+  export type MaintenanceRequestScalarWhereWithAggregatesInput = {
+    AND?: MaintenanceRequestScalarWhereWithAggregatesInput | MaintenanceRequestScalarWhereWithAggregatesInput[]
+    OR?: MaintenanceRequestScalarWhereWithAggregatesInput[]
+    NOT?: MaintenanceRequestScalarWhereWithAggregatesInput | MaintenanceRequestScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"MaintenanceRequest"> | number
+    protocolNumber?: StringWithAggregatesFilter<"MaintenanceRequest"> | string
+    title?: StringWithAggregatesFilter<"MaintenanceRequest"> | string
+    description?: StringWithAggregatesFilter<"MaintenanceRequest"> | string
+    priority?: EnumRequestPriorityWithAggregatesFilter<"MaintenanceRequest"> | $Enums.RequestPriority
+    requestedAt?: DateTimeWithAggregatesFilter<"MaintenanceRequest"> | Date | string
+    deadline?: DateTimeNullableWithAggregatesFilter<"MaintenanceRequest"> | Date | string | null
+    solutionDetails?: StringNullableWithAggregatesFilter<"MaintenanceRequest"> | string | null
+    completedAt?: DateTimeNullableWithAggregatesFilter<"MaintenanceRequest"> | Date | string | null
+    currentMaintenanceInstanceId?: IntWithAggregatesFilter<"MaintenanceRequest"> | number
+    createdById?: IntWithAggregatesFilter<"MaintenanceRequest"> | number
+    assignedToId?: IntNullableWithAggregatesFilter<"MaintenanceRequest"> | number | null
+    equipmentId?: IntNullableWithAggregatesFilter<"MaintenanceRequest"> | number | null
+    serviceTypeId?: IntNullableWithAggregatesFilter<"MaintenanceRequest"> | number | null
+    statusId?: IntWithAggregatesFilter<"MaintenanceRequest"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"MaintenanceRequest"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"MaintenanceRequest"> | Date | string
+  }
+
+  export type MaintenanceRequestStatusWhereInput = {
+    AND?: MaintenanceRequestStatusWhereInput | MaintenanceRequestStatusWhereInput[]
+    OR?: MaintenanceRequestStatusWhereInput[]
+    NOT?: MaintenanceRequestStatusWhereInput | MaintenanceRequestStatusWhereInput[]
+    id?: IntFilter<"MaintenanceRequestStatus"> | number
+    name?: StringFilter<"MaintenanceRequestStatus"> | string
+    description?: StringNullableFilter<"MaintenanceRequestStatus"> | string | null
+    isFinal?: BoolFilter<"MaintenanceRequestStatus"> | boolean
+    order?: IntFilter<"MaintenanceRequestStatus"> | number
+    createdAt?: DateTimeFilter<"MaintenanceRequestStatus"> | Date | string
+    updatedAt?: DateTimeFilter<"MaintenanceRequestStatus"> | Date | string
+    maintenanceRequests?: MaintenanceRequestListRelationFilter
+  }
+
+  export type MaintenanceRequestStatusOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    isFinal?: SortOrder
+    order?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    maintenanceRequests?: MaintenanceRequestOrderByRelationAggregateInput
+    _relevance?: MaintenanceRequestStatusOrderByRelevanceInput
+  }
+
+  export type MaintenanceRequestStatusWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    name?: string
+    AND?: MaintenanceRequestStatusWhereInput | MaintenanceRequestStatusWhereInput[]
+    OR?: MaintenanceRequestStatusWhereInput[]
+    NOT?: MaintenanceRequestStatusWhereInput | MaintenanceRequestStatusWhereInput[]
+    description?: StringNullableFilter<"MaintenanceRequestStatus"> | string | null
+    isFinal?: BoolFilter<"MaintenanceRequestStatus"> | boolean
+    order?: IntFilter<"MaintenanceRequestStatus"> | number
+    createdAt?: DateTimeFilter<"MaintenanceRequestStatus"> | Date | string
+    updatedAt?: DateTimeFilter<"MaintenanceRequestStatus"> | Date | string
+    maintenanceRequests?: MaintenanceRequestListRelationFilter
+  }, "id" | "name">
+
+  export type MaintenanceRequestStatusOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    isFinal?: SortOrder
+    order?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: MaintenanceRequestStatusCountOrderByAggregateInput
+    _avg?: MaintenanceRequestStatusAvgOrderByAggregateInput
+    _max?: MaintenanceRequestStatusMaxOrderByAggregateInput
+    _min?: MaintenanceRequestStatusMinOrderByAggregateInput
+    _sum?: MaintenanceRequestStatusSumOrderByAggregateInput
+  }
+
+  export type MaintenanceRequestStatusScalarWhereWithAggregatesInput = {
+    AND?: MaintenanceRequestStatusScalarWhereWithAggregatesInput | MaintenanceRequestStatusScalarWhereWithAggregatesInput[]
+    OR?: MaintenanceRequestStatusScalarWhereWithAggregatesInput[]
+    NOT?: MaintenanceRequestStatusScalarWhereWithAggregatesInput | MaintenanceRequestStatusScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"MaintenanceRequestStatus"> | number
+    name?: StringWithAggregatesFilter<"MaintenanceRequestStatus"> | string
+    description?: StringNullableWithAggregatesFilter<"MaintenanceRequestStatus"> | string | null
+    isFinal?: BoolWithAggregatesFilter<"MaintenanceRequestStatus"> | boolean
+    order?: IntWithAggregatesFilter<"MaintenanceRequestStatus"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"MaintenanceRequestStatus"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"MaintenanceRequestStatus"> | Date | string
+  }
+
+  export type MaintenanceTimelineEventWhereInput = {
+    AND?: MaintenanceTimelineEventWhereInput | MaintenanceTimelineEventWhereInput[]
+    OR?: MaintenanceTimelineEventWhereInput[]
+    NOT?: MaintenanceTimelineEventWhereInput | MaintenanceTimelineEventWhereInput[]
+    id?: IntFilter<"MaintenanceTimelineEvent"> | number
+    type?: EnumTimelineEventTypeFilter<"MaintenanceTimelineEvent"> | $Enums.TimelineEventType
+    description?: StringFilter<"MaintenanceTimelineEvent"> | string
+    eventData?: JsonNullableFilter<"MaintenanceTimelineEvent">
+    occurredAt?: DateTimeFilter<"MaintenanceTimelineEvent"> | Date | string
+    maintenanceRequestId?: IntFilter<"MaintenanceTimelineEvent"> | number
+    actionById?: IntFilter<"MaintenanceTimelineEvent"> | number
+    transferredFromInstanceId?: IntNullableFilter<"MaintenanceTimelineEvent"> | number | null
+    transferredToInstanceId?: IntNullableFilter<"MaintenanceTimelineEvent"> | number | null
+    createdAt?: DateTimeFilter<"MaintenanceTimelineEvent"> | Date | string
+    updatedAt?: DateTimeFilter<"MaintenanceTimelineEvent"> | Date | string
+    maintenanceRequest?: XOR<MaintenanceRequestScalarRelationFilter, MaintenanceRequestWhereInput>
+    actionBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+    transferredFromInstance?: XOR<MaintenanceInstanceNullableScalarRelationFilter, MaintenanceInstanceWhereInput> | null
+    transferredToInstance?: XOR<MaintenanceInstanceNullableScalarRelationFilter, MaintenanceInstanceWhereInput> | null
+  }
+
+  export type MaintenanceTimelineEventOrderByWithRelationInput = {
+    id?: SortOrder
+    type?: SortOrder
+    description?: SortOrder
+    eventData?: SortOrderInput | SortOrder
+    occurredAt?: SortOrder
+    maintenanceRequestId?: SortOrder
+    actionById?: SortOrder
+    transferredFromInstanceId?: SortOrderInput | SortOrder
+    transferredToInstanceId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    maintenanceRequest?: MaintenanceRequestOrderByWithRelationInput
+    actionBy?: UserOrderByWithRelationInput
+    transferredFromInstance?: MaintenanceInstanceOrderByWithRelationInput
+    transferredToInstance?: MaintenanceInstanceOrderByWithRelationInput
+    _relevance?: MaintenanceTimelineEventOrderByRelevanceInput
+  }
+
+  export type MaintenanceTimelineEventWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: MaintenanceTimelineEventWhereInput | MaintenanceTimelineEventWhereInput[]
+    OR?: MaintenanceTimelineEventWhereInput[]
+    NOT?: MaintenanceTimelineEventWhereInput | MaintenanceTimelineEventWhereInput[]
+    type?: EnumTimelineEventTypeFilter<"MaintenanceTimelineEvent"> | $Enums.TimelineEventType
+    description?: StringFilter<"MaintenanceTimelineEvent"> | string
+    eventData?: JsonNullableFilter<"MaintenanceTimelineEvent">
+    occurredAt?: DateTimeFilter<"MaintenanceTimelineEvent"> | Date | string
+    maintenanceRequestId?: IntFilter<"MaintenanceTimelineEvent"> | number
+    actionById?: IntFilter<"MaintenanceTimelineEvent"> | number
+    transferredFromInstanceId?: IntNullableFilter<"MaintenanceTimelineEvent"> | number | null
+    transferredToInstanceId?: IntNullableFilter<"MaintenanceTimelineEvent"> | number | null
+    createdAt?: DateTimeFilter<"MaintenanceTimelineEvent"> | Date | string
+    updatedAt?: DateTimeFilter<"MaintenanceTimelineEvent"> | Date | string
+    maintenanceRequest?: XOR<MaintenanceRequestScalarRelationFilter, MaintenanceRequestWhereInput>
+    actionBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+    transferredFromInstance?: XOR<MaintenanceInstanceNullableScalarRelationFilter, MaintenanceInstanceWhereInput> | null
+    transferredToInstance?: XOR<MaintenanceInstanceNullableScalarRelationFilter, MaintenanceInstanceWhereInput> | null
+  }, "id">
+
+  export type MaintenanceTimelineEventOrderByWithAggregationInput = {
+    id?: SortOrder
+    type?: SortOrder
+    description?: SortOrder
+    eventData?: SortOrderInput | SortOrder
+    occurredAt?: SortOrder
+    maintenanceRequestId?: SortOrder
+    actionById?: SortOrder
+    transferredFromInstanceId?: SortOrderInput | SortOrder
+    transferredToInstanceId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: MaintenanceTimelineEventCountOrderByAggregateInput
+    _avg?: MaintenanceTimelineEventAvgOrderByAggregateInput
+    _max?: MaintenanceTimelineEventMaxOrderByAggregateInput
+    _min?: MaintenanceTimelineEventMinOrderByAggregateInput
+    _sum?: MaintenanceTimelineEventSumOrderByAggregateInput
+  }
+
+  export type MaintenanceTimelineEventScalarWhereWithAggregatesInput = {
+    AND?: MaintenanceTimelineEventScalarWhereWithAggregatesInput | MaintenanceTimelineEventScalarWhereWithAggregatesInput[]
+    OR?: MaintenanceTimelineEventScalarWhereWithAggregatesInput[]
+    NOT?: MaintenanceTimelineEventScalarWhereWithAggregatesInput | MaintenanceTimelineEventScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"MaintenanceTimelineEvent"> | number
+    type?: EnumTimelineEventTypeWithAggregatesFilter<"MaintenanceTimelineEvent"> | $Enums.TimelineEventType
+    description?: StringWithAggregatesFilter<"MaintenanceTimelineEvent"> | string
+    eventData?: JsonNullableWithAggregatesFilter<"MaintenanceTimelineEvent">
+    occurredAt?: DateTimeWithAggregatesFilter<"MaintenanceTimelineEvent"> | Date | string
+    maintenanceRequestId?: IntWithAggregatesFilter<"MaintenanceTimelineEvent"> | number
+    actionById?: IntWithAggregatesFilter<"MaintenanceTimelineEvent"> | number
+    transferredFromInstanceId?: IntNullableWithAggregatesFilter<"MaintenanceTimelineEvent"> | number | null
+    transferredToInstanceId?: IntNullableWithAggregatesFilter<"MaintenanceTimelineEvent"> | number | null
+    createdAt?: DateTimeWithAggregatesFilter<"MaintenanceTimelineEvent"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"MaintenanceTimelineEvent"> | Date | string
+  }
+
   export type MaintenanceInstanceWhereInput = {
     AND?: MaintenanceInstanceWhereInput | MaintenanceInstanceWhereInput[]
     OR?: MaintenanceInstanceWhereInput[]
@@ -8666,34 +19384,47 @@ export namespace Prisma {
     id?: IntFilter<"MaintenanceInstance"> | number
     sipacId?: StringFilter<"MaintenanceInstance"> | string
     name?: StringFilter<"MaintenanceInstance"> | string
+    isActive?: BoolFilter<"MaintenanceInstance"> | boolean
     createdAt?: DateTimeFilter<"MaintenanceInstance"> | Date | string
     updatedAt?: DateTimeFilter<"MaintenanceInstance"> | Date | string
+    currentMaintenanceRequests?: MaintenanceRequestListRelationFilter
+    timelineEventsTransferredFrom?: MaintenanceTimelineEventListRelationFilter
+    timelineEventsTransferredTo?: MaintenanceTimelineEventListRelationFilter
   }
 
   export type MaintenanceInstanceOrderByWithRelationInput = {
     id?: SortOrder
     sipacId?: SortOrder
     name?: SortOrder
+    isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    currentMaintenanceRequests?: MaintenanceRequestOrderByRelationAggregateInput
+    timelineEventsTransferredFrom?: MaintenanceTimelineEventOrderByRelationAggregateInput
+    timelineEventsTransferredTo?: MaintenanceTimelineEventOrderByRelationAggregateInput
     _relevance?: MaintenanceInstanceOrderByRelevanceInput
   }
 
   export type MaintenanceInstanceWhereUniqueInput = Prisma.AtLeast<{
     id?: number
     sipacId?: string
+    name?: string
     AND?: MaintenanceInstanceWhereInput | MaintenanceInstanceWhereInput[]
     OR?: MaintenanceInstanceWhereInput[]
     NOT?: MaintenanceInstanceWhereInput | MaintenanceInstanceWhereInput[]
-    name?: StringFilter<"MaintenanceInstance"> | string
+    isActive?: BoolFilter<"MaintenanceInstance"> | boolean
     createdAt?: DateTimeFilter<"MaintenanceInstance"> | Date | string
     updatedAt?: DateTimeFilter<"MaintenanceInstance"> | Date | string
-  }, "id" | "sipacId">
+    currentMaintenanceRequests?: MaintenanceRequestListRelationFilter
+    timelineEventsTransferredFrom?: MaintenanceTimelineEventListRelationFilter
+    timelineEventsTransferredTo?: MaintenanceTimelineEventListRelationFilter
+  }, "id" | "sipacId" | "name">
 
   export type MaintenanceInstanceOrderByWithAggregationInput = {
     id?: SortOrder
     sipacId?: SortOrder
     name?: SortOrder
+    isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: MaintenanceInstanceCountOrderByAggregateInput
@@ -8710,55 +19441,320 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"MaintenanceInstance"> | number
     sipacId?: StringWithAggregatesFilter<"MaintenanceInstance"> | string
     name?: StringWithAggregatesFilter<"MaintenanceInstance"> | string
+    isActive?: BoolWithAggregatesFilter<"MaintenanceInstance"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"MaintenanceInstance"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"MaintenanceInstance"> | Date | string
+  }
+
+  export type ServiceTypeWhereInput = {
+    AND?: ServiceTypeWhereInput | ServiceTypeWhereInput[]
+    OR?: ServiceTypeWhereInput[]
+    NOT?: ServiceTypeWhereInput | ServiceTypeWhereInput[]
+    id?: IntFilter<"ServiceType"> | number
+    name?: StringFilter<"ServiceType"> | string
+    description?: StringNullableFilter<"ServiceType"> | string | null
+    isActive?: BoolFilter<"ServiceType"> | boolean
+    createdAt?: DateTimeFilter<"ServiceType"> | Date | string
+    updatedAt?: DateTimeFilter<"ServiceType"> | Date | string
+    maintenanceRequests?: MaintenanceRequestListRelationFilter
+  }
+
+  export type ServiceTypeOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    maintenanceRequests?: MaintenanceRequestOrderByRelationAggregateInput
+    _relevance?: ServiceTypeOrderByRelevanceInput
+  }
+
+  export type ServiceTypeWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    name?: string
+    AND?: ServiceTypeWhereInput | ServiceTypeWhereInput[]
+    OR?: ServiceTypeWhereInput[]
+    NOT?: ServiceTypeWhereInput | ServiceTypeWhereInput[]
+    description?: StringNullableFilter<"ServiceType"> | string | null
+    isActive?: BoolFilter<"ServiceType"> | boolean
+    createdAt?: DateTimeFilter<"ServiceType"> | Date | string
+    updatedAt?: DateTimeFilter<"ServiceType"> | Date | string
+    maintenanceRequests?: MaintenanceRequestListRelationFilter
+  }, "id" | "name">
+
+  export type ServiceTypeOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ServiceTypeCountOrderByAggregateInput
+    _avg?: ServiceTypeAvgOrderByAggregateInput
+    _max?: ServiceTypeMaxOrderByAggregateInput
+    _min?: ServiceTypeMinOrderByAggregateInput
+    _sum?: ServiceTypeSumOrderByAggregateInput
+  }
+
+  export type ServiceTypeScalarWhereWithAggregatesInput = {
+    AND?: ServiceTypeScalarWhereWithAggregatesInput | ServiceTypeScalarWhereWithAggregatesInput[]
+    OR?: ServiceTypeScalarWhereWithAggregatesInput[]
+    NOT?: ServiceTypeScalarWhereWithAggregatesInput | ServiceTypeScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"ServiceType"> | number
+    name?: StringWithAggregatesFilter<"ServiceType"> | string
+    description?: StringNullableWithAggregatesFilter<"ServiceType"> | string | null
+    isActive?: BoolWithAggregatesFilter<"ServiceType"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"ServiceType"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"ServiceType"> | Date | string
+  }
+
+  export type EquipmentWhereInput = {
+    AND?: EquipmentWhereInput | EquipmentWhereInput[]
+    OR?: EquipmentWhereInput[]
+    NOT?: EquipmentWhereInput | EquipmentWhereInput[]
+    id?: IntFilter<"Equipment"> | number
+    patrimonyTag?: StringNullableFilter<"Equipment"> | string | null
+    name?: StringFilter<"Equipment"> | string
+    description?: StringNullableFilter<"Equipment"> | string | null
+    location?: StringNullableFilter<"Equipment"> | string | null
+    serialNumber?: StringNullableFilter<"Equipment"> | string | null
+    manufacturer?: StringNullableFilter<"Equipment"> | string | null
+    model?: StringNullableFilter<"Equipment"> | string | null
+    acquisitionDate?: DateTimeNullableFilter<"Equipment"> | Date | string | null
+    isActive?: BoolFilter<"Equipment"> | boolean
+    createdAt?: DateTimeFilter<"Equipment"> | Date | string
+    updatedAt?: DateTimeFilter<"Equipment"> | Date | string
+    maintenanceRequests?: MaintenanceRequestListRelationFilter
+  }
+
+  export type EquipmentOrderByWithRelationInput = {
+    id?: SortOrder
+    patrimonyTag?: SortOrderInput | SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    location?: SortOrderInput | SortOrder
+    serialNumber?: SortOrderInput | SortOrder
+    manufacturer?: SortOrderInput | SortOrder
+    model?: SortOrderInput | SortOrder
+    acquisitionDate?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    maintenanceRequests?: MaintenanceRequestOrderByRelationAggregateInput
+    _relevance?: EquipmentOrderByRelevanceInput
+  }
+
+  export type EquipmentWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    patrimonyTag?: string
+    AND?: EquipmentWhereInput | EquipmentWhereInput[]
+    OR?: EquipmentWhereInput[]
+    NOT?: EquipmentWhereInput | EquipmentWhereInput[]
+    name?: StringFilter<"Equipment"> | string
+    description?: StringNullableFilter<"Equipment"> | string | null
+    location?: StringNullableFilter<"Equipment"> | string | null
+    serialNumber?: StringNullableFilter<"Equipment"> | string | null
+    manufacturer?: StringNullableFilter<"Equipment"> | string | null
+    model?: StringNullableFilter<"Equipment"> | string | null
+    acquisitionDate?: DateTimeNullableFilter<"Equipment"> | Date | string | null
+    isActive?: BoolFilter<"Equipment"> | boolean
+    createdAt?: DateTimeFilter<"Equipment"> | Date | string
+    updatedAt?: DateTimeFilter<"Equipment"> | Date | string
+    maintenanceRequests?: MaintenanceRequestListRelationFilter
+  }, "id" | "patrimonyTag">
+
+  export type EquipmentOrderByWithAggregationInput = {
+    id?: SortOrder
+    patrimonyTag?: SortOrderInput | SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    location?: SortOrderInput | SortOrder
+    serialNumber?: SortOrderInput | SortOrder
+    manufacturer?: SortOrderInput | SortOrder
+    model?: SortOrderInput | SortOrder
+    acquisitionDate?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: EquipmentCountOrderByAggregateInput
+    _avg?: EquipmentAvgOrderByAggregateInput
+    _max?: EquipmentMaxOrderByAggregateInput
+    _min?: EquipmentMinOrderByAggregateInput
+    _sum?: EquipmentSumOrderByAggregateInput
+  }
+
+  export type EquipmentScalarWhereWithAggregatesInput = {
+    AND?: EquipmentScalarWhereWithAggregatesInput | EquipmentScalarWhereWithAggregatesInput[]
+    OR?: EquipmentScalarWhereWithAggregatesInput[]
+    NOT?: EquipmentScalarWhereWithAggregatesInput | EquipmentScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"Equipment"> | number
+    patrimonyTag?: StringNullableWithAggregatesFilter<"Equipment"> | string | null
+    name?: StringWithAggregatesFilter<"Equipment"> | string
+    description?: StringNullableWithAggregatesFilter<"Equipment"> | string | null
+    location?: StringNullableWithAggregatesFilter<"Equipment"> | string | null
+    serialNumber?: StringNullableWithAggregatesFilter<"Equipment"> | string | null
+    manufacturer?: StringNullableWithAggregatesFilter<"Equipment"> | string | null
+    model?: StringNullableWithAggregatesFilter<"Equipment"> | string | null
+    acquisitionDate?: DateTimeNullableWithAggregatesFilter<"Equipment"> | Date | string | null
+    isActive?: BoolWithAggregatesFilter<"Equipment"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"Equipment"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Equipment"> | Date | string
+  }
+
+  export type InfrastructureOccurrenceWhereInput = {
+    AND?: InfrastructureOccurrenceWhereInput | InfrastructureOccurrenceWhereInput[]
+    OR?: InfrastructureOccurrenceWhereInput[]
+    NOT?: InfrastructureOccurrenceWhereInput | InfrastructureOccurrenceWhereInput[]
+    id?: IntFilter<"InfrastructureOccurrence"> | number
+    title?: StringFilter<"InfrastructureOccurrence"> | string
+    description?: StringFilter<"InfrastructureOccurrence"> | string
+    locationDescription?: StringNullableFilter<"InfrastructureOccurrence"> | string | null
+    reportedAt?: DateTimeFilter<"InfrastructureOccurrence"> | Date | string
+    status?: EnumInfrastructureOccurrenceStatusFilter<"InfrastructureOccurrence"> | $Enums.InfrastructureOccurrenceStatus
+    resolutionNotes?: StringNullableFilter<"InfrastructureOccurrence"> | string | null
+    reportedById?: IntFilter<"InfrastructureOccurrence"> | number
+    maintenanceRequestId?: IntNullableFilter<"InfrastructureOccurrence"> | number | null
+    createdAt?: DateTimeFilter<"InfrastructureOccurrence"> | Date | string
+    updatedAt?: DateTimeFilter<"InfrastructureOccurrence"> | Date | string
+    reportedBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+    maintenanceRequest?: XOR<MaintenanceRequestNullableScalarRelationFilter, MaintenanceRequestWhereInput> | null
+  }
+
+  export type InfrastructureOccurrenceOrderByWithRelationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    locationDescription?: SortOrderInput | SortOrder
+    reportedAt?: SortOrder
+    status?: SortOrder
+    resolutionNotes?: SortOrderInput | SortOrder
+    reportedById?: SortOrder
+    maintenanceRequestId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    reportedBy?: UserOrderByWithRelationInput
+    maintenanceRequest?: MaintenanceRequestOrderByWithRelationInput
+    _relevance?: InfrastructureOccurrenceOrderByRelevanceInput
+  }
+
+  export type InfrastructureOccurrenceWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: InfrastructureOccurrenceWhereInput | InfrastructureOccurrenceWhereInput[]
+    OR?: InfrastructureOccurrenceWhereInput[]
+    NOT?: InfrastructureOccurrenceWhereInput | InfrastructureOccurrenceWhereInput[]
+    title?: StringFilter<"InfrastructureOccurrence"> | string
+    description?: StringFilter<"InfrastructureOccurrence"> | string
+    locationDescription?: StringNullableFilter<"InfrastructureOccurrence"> | string | null
+    reportedAt?: DateTimeFilter<"InfrastructureOccurrence"> | Date | string
+    status?: EnumInfrastructureOccurrenceStatusFilter<"InfrastructureOccurrence"> | $Enums.InfrastructureOccurrenceStatus
+    resolutionNotes?: StringNullableFilter<"InfrastructureOccurrence"> | string | null
+    reportedById?: IntFilter<"InfrastructureOccurrence"> | number
+    maintenanceRequestId?: IntNullableFilter<"InfrastructureOccurrence"> | number | null
+    createdAt?: DateTimeFilter<"InfrastructureOccurrence"> | Date | string
+    updatedAt?: DateTimeFilter<"InfrastructureOccurrence"> | Date | string
+    reportedBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+    maintenanceRequest?: XOR<MaintenanceRequestNullableScalarRelationFilter, MaintenanceRequestWhereInput> | null
+  }, "id">
+
+  export type InfrastructureOccurrenceOrderByWithAggregationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    locationDescription?: SortOrderInput | SortOrder
+    reportedAt?: SortOrder
+    status?: SortOrder
+    resolutionNotes?: SortOrderInput | SortOrder
+    reportedById?: SortOrder
+    maintenanceRequestId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: InfrastructureOccurrenceCountOrderByAggregateInput
+    _avg?: InfrastructureOccurrenceAvgOrderByAggregateInput
+    _max?: InfrastructureOccurrenceMaxOrderByAggregateInput
+    _min?: InfrastructureOccurrenceMinOrderByAggregateInput
+    _sum?: InfrastructureOccurrenceSumOrderByAggregateInput
+  }
+
+  export type InfrastructureOccurrenceScalarWhereWithAggregatesInput = {
+    AND?: InfrastructureOccurrenceScalarWhereWithAggregatesInput | InfrastructureOccurrenceScalarWhereWithAggregatesInput[]
+    OR?: InfrastructureOccurrenceScalarWhereWithAggregatesInput[]
+    NOT?: InfrastructureOccurrenceScalarWhereWithAggregatesInput | InfrastructureOccurrenceScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"InfrastructureOccurrence"> | number
+    title?: StringWithAggregatesFilter<"InfrastructureOccurrence"> | string
+    description?: StringWithAggregatesFilter<"InfrastructureOccurrence"> | string
+    locationDescription?: StringNullableWithAggregatesFilter<"InfrastructureOccurrence"> | string | null
+    reportedAt?: DateTimeWithAggregatesFilter<"InfrastructureOccurrence"> | Date | string
+    status?: EnumInfrastructureOccurrenceStatusWithAggregatesFilter<"InfrastructureOccurrence"> | $Enums.InfrastructureOccurrenceStatus
+    resolutionNotes?: StringNullableWithAggregatesFilter<"InfrastructureOccurrence"> | string | null
+    reportedById?: IntWithAggregatesFilter<"InfrastructureOccurrence"> | number
+    maintenanceRequestId?: IntNullableWithAggregatesFilter<"InfrastructureOccurrence"> | number | null
+    createdAt?: DateTimeWithAggregatesFilter<"InfrastructureOccurrence"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"InfrastructureOccurrence"> | Date | string
   }
 
   export type MaterialWhereInput = {
     AND?: MaterialWhereInput | MaterialWhereInput[]
     OR?: MaterialWhereInput[]
     NOT?: MaterialWhereInput | MaterialWhereInput[]
-    id?: BigIntFilter<"Material"> | bigint | number
+    id?: IntFilter<"Material"> | number
+    code?: StringNullableFilter<"Material"> | string | null
     name?: StringFilter<"Material"> | string
-    specification?: StringNullableFilter<"Material"> | string | null
-    unit?: StringFilter<"Material"> | string
+    description?: StringNullableFilter<"Material"> | string | null
+    unitOfMeasure?: StringFilter<"Material"> | string
     isActive?: BoolFilter<"Material"> | boolean
     createdAt?: DateTimeFilter<"Material"> | Date | string
     updatedAt?: DateTimeFilter<"Material"> | Date | string
+    parentMaterialId?: IntNullableFilter<"Material"> | number | null
+    parentMaterial?: XOR<MaterialNullableScalarRelationFilter, MaterialWhereInput> | null
+    childs?: MaterialListRelationFilter
+    materialRequestItems?: MaterialRequestItemListRelationFilter
   }
 
   export type MaterialOrderByWithRelationInput = {
     id?: SortOrder
+    code?: SortOrderInput | SortOrder
     name?: SortOrder
-    specification?: SortOrderInput | SortOrder
-    unit?: SortOrder
+    description?: SortOrderInput | SortOrder
+    unitOfMeasure?: SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    parentMaterialId?: SortOrderInput | SortOrder
+    parentMaterial?: MaterialOrderByWithRelationInput
+    childs?: MaterialOrderByRelationAggregateInput
+    materialRequestItems?: MaterialRequestItemOrderByRelationAggregateInput
     _relevance?: MaterialOrderByRelevanceInput
   }
 
   export type MaterialWhereUniqueInput = Prisma.AtLeast<{
-    id?: bigint | number
+    id?: number
+    code?: string
     AND?: MaterialWhereInput | MaterialWhereInput[]
     OR?: MaterialWhereInput[]
     NOT?: MaterialWhereInput | MaterialWhereInput[]
     name?: StringFilter<"Material"> | string
-    specification?: StringNullableFilter<"Material"> | string | null
-    unit?: StringFilter<"Material"> | string
+    description?: StringNullableFilter<"Material"> | string | null
+    unitOfMeasure?: StringFilter<"Material"> | string
     isActive?: BoolFilter<"Material"> | boolean
     createdAt?: DateTimeFilter<"Material"> | Date | string
     updatedAt?: DateTimeFilter<"Material"> | Date | string
-  }, "id">
+    parentMaterialId?: IntNullableFilter<"Material"> | number | null
+    parentMaterial?: XOR<MaterialNullableScalarRelationFilter, MaterialWhereInput> | null
+    childs?: MaterialListRelationFilter
+    materialRequestItems?: MaterialRequestItemListRelationFilter
+  }, "id" | "code">
 
   export type MaterialOrderByWithAggregationInput = {
     id?: SortOrder
+    code?: SortOrderInput | SortOrder
     name?: SortOrder
-    specification?: SortOrderInput | SortOrder
-    unit?: SortOrder
+    description?: SortOrderInput | SortOrder
+    unitOfMeasure?: SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    parentMaterialId?: SortOrderInput | SortOrder
     _count?: MaterialCountOrderByAggregateInput
     _avg?: MaterialAvgOrderByAggregateInput
     _max?: MaterialMaxOrderByAggregateInput
@@ -8770,13 +19766,187 @@ export namespace Prisma {
     AND?: MaterialScalarWhereWithAggregatesInput | MaterialScalarWhereWithAggregatesInput[]
     OR?: MaterialScalarWhereWithAggregatesInput[]
     NOT?: MaterialScalarWhereWithAggregatesInput | MaterialScalarWhereWithAggregatesInput[]
-    id?: BigIntWithAggregatesFilter<"Material"> | bigint | number
+    id?: IntWithAggregatesFilter<"Material"> | number
+    code?: StringNullableWithAggregatesFilter<"Material"> | string | null
     name?: StringWithAggregatesFilter<"Material"> | string
-    specification?: StringNullableWithAggregatesFilter<"Material"> | string | null
-    unit?: StringWithAggregatesFilter<"Material"> | string
+    description?: StringNullableWithAggregatesFilter<"Material"> | string | null
+    unitOfMeasure?: StringWithAggregatesFilter<"Material"> | string
     isActive?: BoolWithAggregatesFilter<"Material"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Material"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Material"> | Date | string
+    parentMaterialId?: IntNullableWithAggregatesFilter<"Material"> | number | null
+  }
+
+  export type MaterialRequestWhereInput = {
+    AND?: MaterialRequestWhereInput | MaterialRequestWhereInput[]
+    OR?: MaterialRequestWhereInput[]
+    NOT?: MaterialRequestWhereInput | MaterialRequestWhereInput[]
+    id?: IntFilter<"MaterialRequest"> | number
+    justification?: StringNullableFilter<"MaterialRequest"> | string | null
+    requestDate?: DateTimeFilter<"MaterialRequest"> | Date | string
+    status?: EnumMaterialRequestStatusFilter<"MaterialRequest"> | $Enums.MaterialRequestStatus
+    maintenanceRequestId?: IntFilter<"MaterialRequest"> | number
+    requestedById?: IntFilter<"MaterialRequest"> | number
+    approvedById?: IntNullableFilter<"MaterialRequest"> | number | null
+    approvalDate?: DateTimeNullableFilter<"MaterialRequest"> | Date | string | null
+    approvalNotes?: StringNullableFilter<"MaterialRequest"> | string | null
+    createdAt?: DateTimeFilter<"MaterialRequest"> | Date | string
+    updatedAt?: DateTimeFilter<"MaterialRequest"> | Date | string
+    maintenanceRequest?: XOR<MaintenanceRequestScalarRelationFilter, MaintenanceRequestWhereInput>
+    requestedBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+    approvedBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    items?: MaterialRequestItemListRelationFilter
+  }
+
+  export type MaterialRequestOrderByWithRelationInput = {
+    id?: SortOrder
+    justification?: SortOrderInput | SortOrder
+    requestDate?: SortOrder
+    status?: SortOrder
+    maintenanceRequestId?: SortOrder
+    requestedById?: SortOrder
+    approvedById?: SortOrderInput | SortOrder
+    approvalDate?: SortOrderInput | SortOrder
+    approvalNotes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    maintenanceRequest?: MaintenanceRequestOrderByWithRelationInput
+    requestedBy?: UserOrderByWithRelationInput
+    approvedBy?: UserOrderByWithRelationInput
+    items?: MaterialRequestItemOrderByRelationAggregateInput
+    _relevance?: MaterialRequestOrderByRelevanceInput
+  }
+
+  export type MaterialRequestWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: MaterialRequestWhereInput | MaterialRequestWhereInput[]
+    OR?: MaterialRequestWhereInput[]
+    NOT?: MaterialRequestWhereInput | MaterialRequestWhereInput[]
+    justification?: StringNullableFilter<"MaterialRequest"> | string | null
+    requestDate?: DateTimeFilter<"MaterialRequest"> | Date | string
+    status?: EnumMaterialRequestStatusFilter<"MaterialRequest"> | $Enums.MaterialRequestStatus
+    maintenanceRequestId?: IntFilter<"MaterialRequest"> | number
+    requestedById?: IntFilter<"MaterialRequest"> | number
+    approvedById?: IntNullableFilter<"MaterialRequest"> | number | null
+    approvalDate?: DateTimeNullableFilter<"MaterialRequest"> | Date | string | null
+    approvalNotes?: StringNullableFilter<"MaterialRequest"> | string | null
+    createdAt?: DateTimeFilter<"MaterialRequest"> | Date | string
+    updatedAt?: DateTimeFilter<"MaterialRequest"> | Date | string
+    maintenanceRequest?: XOR<MaintenanceRequestScalarRelationFilter, MaintenanceRequestWhereInput>
+    requestedBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+    approvedBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    items?: MaterialRequestItemListRelationFilter
+  }, "id">
+
+  export type MaterialRequestOrderByWithAggregationInput = {
+    id?: SortOrder
+    justification?: SortOrderInput | SortOrder
+    requestDate?: SortOrder
+    status?: SortOrder
+    maintenanceRequestId?: SortOrder
+    requestedById?: SortOrder
+    approvedById?: SortOrderInput | SortOrder
+    approvalDate?: SortOrderInput | SortOrder
+    approvalNotes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: MaterialRequestCountOrderByAggregateInput
+    _avg?: MaterialRequestAvgOrderByAggregateInput
+    _max?: MaterialRequestMaxOrderByAggregateInput
+    _min?: MaterialRequestMinOrderByAggregateInput
+    _sum?: MaterialRequestSumOrderByAggregateInput
+  }
+
+  export type MaterialRequestScalarWhereWithAggregatesInput = {
+    AND?: MaterialRequestScalarWhereWithAggregatesInput | MaterialRequestScalarWhereWithAggregatesInput[]
+    OR?: MaterialRequestScalarWhereWithAggregatesInput[]
+    NOT?: MaterialRequestScalarWhereWithAggregatesInput | MaterialRequestScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"MaterialRequest"> | number
+    justification?: StringNullableWithAggregatesFilter<"MaterialRequest"> | string | null
+    requestDate?: DateTimeWithAggregatesFilter<"MaterialRequest"> | Date | string
+    status?: EnumMaterialRequestStatusWithAggregatesFilter<"MaterialRequest"> | $Enums.MaterialRequestStatus
+    maintenanceRequestId?: IntWithAggregatesFilter<"MaterialRequest"> | number
+    requestedById?: IntWithAggregatesFilter<"MaterialRequest"> | number
+    approvedById?: IntNullableWithAggregatesFilter<"MaterialRequest"> | number | null
+    approvalDate?: DateTimeNullableWithAggregatesFilter<"MaterialRequest"> | Date | string | null
+    approvalNotes?: StringNullableWithAggregatesFilter<"MaterialRequest"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"MaterialRequest"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"MaterialRequest"> | Date | string
+  }
+
+  export type MaterialRequestItemWhereInput = {
+    AND?: MaterialRequestItemWhereInput | MaterialRequestItemWhereInput[]
+    OR?: MaterialRequestItemWhereInput[]
+    NOT?: MaterialRequestItemWhereInput | MaterialRequestItemWhereInput[]
+    id?: IntFilter<"MaterialRequestItem"> | number
+    quantityRequested?: DecimalFilter<"MaterialRequestItem"> | Decimal | DecimalJsLike | number | string
+    quantityApproved?: DecimalNullableFilter<"MaterialRequestItem"> | Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: DecimalNullableFilter<"MaterialRequestItem"> | Decimal | DecimalJsLike | number | string | null
+    materialRequestId?: IntFilter<"MaterialRequestItem"> | number
+    materialId?: IntFilter<"MaterialRequestItem"> | number
+    createdAt?: DateTimeFilter<"MaterialRequestItem"> | Date | string
+    updatedAt?: DateTimeFilter<"MaterialRequestItem"> | Date | string
+    materialRequest?: XOR<MaterialRequestScalarRelationFilter, MaterialRequestWhereInput>
+    material?: XOR<MaterialScalarRelationFilter, MaterialWhereInput>
+  }
+
+  export type MaterialRequestItemOrderByWithRelationInput = {
+    id?: SortOrder
+    quantityRequested?: SortOrder
+    quantityApproved?: SortOrderInput | SortOrder
+    quantityDelivered?: SortOrderInput | SortOrder
+    materialRequestId?: SortOrder
+    materialId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    materialRequest?: MaterialRequestOrderByWithRelationInput
+    material?: MaterialOrderByWithRelationInput
+  }
+
+  export type MaterialRequestItemWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: MaterialRequestItemWhereInput | MaterialRequestItemWhereInput[]
+    OR?: MaterialRequestItemWhereInput[]
+    NOT?: MaterialRequestItemWhereInput | MaterialRequestItemWhereInput[]
+    quantityRequested?: DecimalFilter<"MaterialRequestItem"> | Decimal | DecimalJsLike | number | string
+    quantityApproved?: DecimalNullableFilter<"MaterialRequestItem"> | Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: DecimalNullableFilter<"MaterialRequestItem"> | Decimal | DecimalJsLike | number | string | null
+    materialRequestId?: IntFilter<"MaterialRequestItem"> | number
+    materialId?: IntFilter<"MaterialRequestItem"> | number
+    createdAt?: DateTimeFilter<"MaterialRequestItem"> | Date | string
+    updatedAt?: DateTimeFilter<"MaterialRequestItem"> | Date | string
+    materialRequest?: XOR<MaterialRequestScalarRelationFilter, MaterialRequestWhereInput>
+    material?: XOR<MaterialScalarRelationFilter, MaterialWhereInput>
+  }, "id">
+
+  export type MaterialRequestItemOrderByWithAggregationInput = {
+    id?: SortOrder
+    quantityRequested?: SortOrder
+    quantityApproved?: SortOrderInput | SortOrder
+    quantityDelivered?: SortOrderInput | SortOrder
+    materialRequestId?: SortOrder
+    materialId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: MaterialRequestItemCountOrderByAggregateInput
+    _avg?: MaterialRequestItemAvgOrderByAggregateInput
+    _max?: MaterialRequestItemMaxOrderByAggregateInput
+    _min?: MaterialRequestItemMinOrderByAggregateInput
+    _sum?: MaterialRequestItemSumOrderByAggregateInput
+  }
+
+  export type MaterialRequestItemScalarWhereWithAggregatesInput = {
+    AND?: MaterialRequestItemScalarWhereWithAggregatesInput | MaterialRequestItemScalarWhereWithAggregatesInput[]
+    OR?: MaterialRequestItemScalarWhereWithAggregatesInput[]
+    NOT?: MaterialRequestItemScalarWhereWithAggregatesInput | MaterialRequestItemScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"MaterialRequestItem"> | number
+    quantityRequested?: DecimalWithAggregatesFilter<"MaterialRequestItem"> | Decimal | DecimalJsLike | number | string
+    quantityApproved?: DecimalNullableWithAggregatesFilter<"MaterialRequestItem"> | Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: DecimalNullableWithAggregatesFilter<"MaterialRequestItem"> | Decimal | DecimalJsLike | number | string | null
+    materialRequestId?: IntWithAggregatesFilter<"MaterialRequestItem"> | number
+    materialId?: IntWithAggregatesFilter<"MaterialRequestItem"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"MaterialRequestItem"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"MaterialRequestItem"> | Date | string
   }
 
   export type UserWhereInput = {
@@ -8794,6 +19964,12 @@ export namespace Prisma {
     logLogin?: LogLoginListRelationFilter
     roles?: RoleListRelationFilter
     magicLinks?: MagicLinkListRelationFilter
+    reportedOccurrences?: InfrastructureOccurrenceListRelationFilter
+    createdMaintenanceRequests?: MaintenanceRequestListRelationFilter
+    assignedMaintenanceRequests?: MaintenanceRequestListRelationFilter
+    timelineEvents?: MaintenanceTimelineEventListRelationFilter
+    materialRequestsCreated?: MaterialRequestListRelationFilter
+    materialRequestsApproved?: MaterialRequestListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -8808,6 +19984,12 @@ export namespace Prisma {
     logLogin?: LogLoginOrderByRelationAggregateInput
     roles?: RoleOrderByRelationAggregateInput
     magicLinks?: MagicLinkOrderByRelationAggregateInput
+    reportedOccurrences?: InfrastructureOccurrenceOrderByRelationAggregateInput
+    createdMaintenanceRequests?: MaintenanceRequestOrderByRelationAggregateInput
+    assignedMaintenanceRequests?: MaintenanceRequestOrderByRelationAggregateInput
+    timelineEvents?: MaintenanceTimelineEventOrderByRelationAggregateInput
+    materialRequestsCreated?: MaterialRequestOrderByRelationAggregateInput
+    materialRequestsApproved?: MaterialRequestOrderByRelationAggregateInput
     _relevance?: UserOrderByRelevanceInput
   }
 
@@ -8826,6 +20008,12 @@ export namespace Prisma {
     logLogin?: LogLoginListRelationFilter
     roles?: RoleListRelationFilter
     magicLinks?: MagicLinkListRelationFilter
+    reportedOccurrences?: InfrastructureOccurrenceListRelationFilter
+    createdMaintenanceRequests?: MaintenanceRequestListRelationFilter
+    assignedMaintenanceRequests?: MaintenanceRequestListRelationFilter
+    timelineEvents?: MaintenanceTimelineEventListRelationFilter
+    materialRequestsCreated?: MaterialRequestListRelationFilter
+    materialRequestsApproved?: MaterialRequestListRelationFilter
   }, "id" | "login" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -9132,40 +20320,362 @@ export namespace Prisma {
     successful?: BoolFieldUpdateOperationsInput | boolean
   }
 
+  export type MaintenanceRequestCreateInput = {
+    protocolNumber?: string
+    title: string
+    description: string
+    priority?: $Enums.RequestPriority
+    requestedAt?: Date | string
+    deadline?: Date | string | null
+    solutionDetails?: string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    currentMaintenanceInstance: MaintenanceInstanceCreateNestedOneWithoutCurrentMaintenanceRequestsInput
+    createdBy: UserCreateNestedOneWithoutCreatedMaintenanceRequestsInput
+    assignedTo?: UserCreateNestedOneWithoutAssignedMaintenanceRequestsInput
+    equipment?: EquipmentCreateNestedOneWithoutMaintenanceRequestsInput
+    serviceType?: ServiceTypeCreateNestedOneWithoutMaintenanceRequestsInput
+    status: MaintenanceRequestStatusCreateNestedOneWithoutMaintenanceRequestsInput
+    originatingOccurrences?: InfrastructureOccurrenceCreateNestedManyWithoutMaintenanceRequestInput
+    timelineEvents?: MaintenanceTimelineEventCreateNestedManyWithoutMaintenanceRequestInput
+    materialRequests?: MaterialRequestCreateNestedManyWithoutMaintenanceRequestInput
+  }
+
+  export type MaintenanceRequestUncheckedCreateInput = {
+    id?: number
+    protocolNumber?: string
+    title: string
+    description: string
+    priority?: $Enums.RequestPriority
+    requestedAt?: Date | string
+    deadline?: Date | string | null
+    solutionDetails?: string | null
+    completedAt?: Date | string | null
+    currentMaintenanceInstanceId: number
+    createdById: number
+    assignedToId?: number | null
+    equipmentId?: number | null
+    serviceTypeId?: number | null
+    statusId: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    originatingOccurrences?: InfrastructureOccurrenceUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    timelineEvents?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    materialRequests?: MaterialRequestUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+  }
+
+  export type MaintenanceRequestUpdateInput = {
+    protocolNumber?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: EnumRequestPriorityFieldUpdateOperationsInput | $Enums.RequestPriority
+    requestedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    solutionDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    currentMaintenanceInstance?: MaintenanceInstanceUpdateOneRequiredWithoutCurrentMaintenanceRequestsNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutCreatedMaintenanceRequestsNestedInput
+    assignedTo?: UserUpdateOneWithoutAssignedMaintenanceRequestsNestedInput
+    equipment?: EquipmentUpdateOneWithoutMaintenanceRequestsNestedInput
+    serviceType?: ServiceTypeUpdateOneWithoutMaintenanceRequestsNestedInput
+    status?: MaintenanceRequestStatusUpdateOneRequiredWithoutMaintenanceRequestsNestedInput
+    originatingOccurrences?: InfrastructureOccurrenceUpdateManyWithoutMaintenanceRequestNestedInput
+    timelineEvents?: MaintenanceTimelineEventUpdateManyWithoutMaintenanceRequestNestedInput
+    materialRequests?: MaterialRequestUpdateManyWithoutMaintenanceRequestNestedInput
+  }
+
+  export type MaintenanceRequestUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    protocolNumber?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: EnumRequestPriorityFieldUpdateOperationsInput | $Enums.RequestPriority
+    requestedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    solutionDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    currentMaintenanceInstanceId?: IntFieldUpdateOperationsInput | number
+    createdById?: IntFieldUpdateOperationsInput | number
+    assignedToId?: NullableIntFieldUpdateOperationsInput | number | null
+    equipmentId?: NullableIntFieldUpdateOperationsInput | number | null
+    serviceTypeId?: NullableIntFieldUpdateOperationsInput | number | null
+    statusId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    originatingOccurrences?: InfrastructureOccurrenceUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    timelineEvents?: MaintenanceTimelineEventUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    materialRequests?: MaterialRequestUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+  }
+
+  export type MaintenanceRequestCreateManyInput = {
+    id?: number
+    protocolNumber?: string
+    title: string
+    description: string
+    priority?: $Enums.RequestPriority
+    requestedAt?: Date | string
+    deadline?: Date | string | null
+    solutionDetails?: string | null
+    completedAt?: Date | string | null
+    currentMaintenanceInstanceId: number
+    createdById: number
+    assignedToId?: number | null
+    equipmentId?: number | null
+    serviceTypeId?: number | null
+    statusId: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaintenanceRequestUpdateManyMutationInput = {
+    protocolNumber?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: EnumRequestPriorityFieldUpdateOperationsInput | $Enums.RequestPriority
+    requestedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    solutionDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaintenanceRequestUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    protocolNumber?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: EnumRequestPriorityFieldUpdateOperationsInput | $Enums.RequestPriority
+    requestedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    solutionDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    currentMaintenanceInstanceId?: IntFieldUpdateOperationsInput | number
+    createdById?: IntFieldUpdateOperationsInput | number
+    assignedToId?: NullableIntFieldUpdateOperationsInput | number | null
+    equipmentId?: NullableIntFieldUpdateOperationsInput | number | null
+    serviceTypeId?: NullableIntFieldUpdateOperationsInput | number | null
+    statusId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaintenanceRequestStatusCreateInput = {
+    name: string
+    description?: string | null
+    isFinal?: boolean
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    maintenanceRequests?: MaintenanceRequestCreateNestedManyWithoutStatusInput
+  }
+
+  export type MaintenanceRequestStatusUncheckedCreateInput = {
+    id?: number
+    name: string
+    description?: string | null
+    isFinal?: boolean
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    maintenanceRequests?: MaintenanceRequestUncheckedCreateNestedManyWithoutStatusInput
+  }
+
+  export type MaintenanceRequestStatusUpdateInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isFinal?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maintenanceRequests?: MaintenanceRequestUpdateManyWithoutStatusNestedInput
+  }
+
+  export type MaintenanceRequestStatusUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isFinal?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maintenanceRequests?: MaintenanceRequestUncheckedUpdateManyWithoutStatusNestedInput
+  }
+
+  export type MaintenanceRequestStatusCreateManyInput = {
+    id?: number
+    name: string
+    description?: string | null
+    isFinal?: boolean
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaintenanceRequestStatusUpdateManyMutationInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isFinal?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaintenanceRequestStatusUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isFinal?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaintenanceTimelineEventCreateInput = {
+    type?: $Enums.TimelineEventType
+    description: string
+    eventData?: NullableJsonNullValueInput | InputJsonValue
+    occurredAt?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    maintenanceRequest: MaintenanceRequestCreateNestedOneWithoutTimelineEventsInput
+    actionBy: UserCreateNestedOneWithoutTimelineEventsInput
+    transferredFromInstance?: MaintenanceInstanceCreateNestedOneWithoutTimelineEventsTransferredFromInput
+    transferredToInstance?: MaintenanceInstanceCreateNestedOneWithoutTimelineEventsTransferredToInput
+  }
+
+  export type MaintenanceTimelineEventUncheckedCreateInput = {
+    id?: number
+    type?: $Enums.TimelineEventType
+    description: string
+    eventData?: NullableJsonNullValueInput | InputJsonValue
+    occurredAt?: Date | string
+    maintenanceRequestId: number
+    actionById: number
+    transferredFromInstanceId?: number | null
+    transferredToInstanceId?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaintenanceTimelineEventUpdateInput = {
+    type?: EnumTimelineEventTypeFieldUpdateOperationsInput | $Enums.TimelineEventType
+    description?: StringFieldUpdateOperationsInput | string
+    eventData?: NullableJsonNullValueInput | InputJsonValue
+    occurredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maintenanceRequest?: MaintenanceRequestUpdateOneRequiredWithoutTimelineEventsNestedInput
+    actionBy?: UserUpdateOneRequiredWithoutTimelineEventsNestedInput
+    transferredFromInstance?: MaintenanceInstanceUpdateOneWithoutTimelineEventsTransferredFromNestedInput
+    transferredToInstance?: MaintenanceInstanceUpdateOneWithoutTimelineEventsTransferredToNestedInput
+  }
+
+  export type MaintenanceTimelineEventUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    type?: EnumTimelineEventTypeFieldUpdateOperationsInput | $Enums.TimelineEventType
+    description?: StringFieldUpdateOperationsInput | string
+    eventData?: NullableJsonNullValueInput | InputJsonValue
+    occurredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maintenanceRequestId?: IntFieldUpdateOperationsInput | number
+    actionById?: IntFieldUpdateOperationsInput | number
+    transferredFromInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
+    transferredToInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaintenanceTimelineEventCreateManyInput = {
+    id?: number
+    type?: $Enums.TimelineEventType
+    description: string
+    eventData?: NullableJsonNullValueInput | InputJsonValue
+    occurredAt?: Date | string
+    maintenanceRequestId: number
+    actionById: number
+    transferredFromInstanceId?: number | null
+    transferredToInstanceId?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaintenanceTimelineEventUpdateManyMutationInput = {
+    type?: EnumTimelineEventTypeFieldUpdateOperationsInput | $Enums.TimelineEventType
+    description?: StringFieldUpdateOperationsInput | string
+    eventData?: NullableJsonNullValueInput | InputJsonValue
+    occurredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaintenanceTimelineEventUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    type?: EnumTimelineEventTypeFieldUpdateOperationsInput | $Enums.TimelineEventType
+    description?: StringFieldUpdateOperationsInput | string
+    eventData?: NullableJsonNullValueInput | InputJsonValue
+    occurredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maintenanceRequestId?: IntFieldUpdateOperationsInput | number
+    actionById?: IntFieldUpdateOperationsInput | number
+    transferredFromInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
+    transferredToInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type MaintenanceInstanceCreateInput = {
     sipacId: string
     name: string
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    currentMaintenanceRequests?: MaintenanceRequestCreateNestedManyWithoutCurrentMaintenanceInstanceInput
+    timelineEventsTransferredFrom?: MaintenanceTimelineEventCreateNestedManyWithoutTransferredFromInstanceInput
+    timelineEventsTransferredTo?: MaintenanceTimelineEventCreateNestedManyWithoutTransferredToInstanceInput
   }
 
   export type MaintenanceInstanceUncheckedCreateInput = {
     id?: number
     sipacId: string
     name: string
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    currentMaintenanceRequests?: MaintenanceRequestUncheckedCreateNestedManyWithoutCurrentMaintenanceInstanceInput
+    timelineEventsTransferredFrom?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutTransferredFromInstanceInput
+    timelineEventsTransferredTo?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutTransferredToInstanceInput
   }
 
   export type MaintenanceInstanceUpdateInput = {
     sipacId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    currentMaintenanceRequests?: MaintenanceRequestUpdateManyWithoutCurrentMaintenanceInstanceNestedInput
+    timelineEventsTransferredFrom?: MaintenanceTimelineEventUpdateManyWithoutTransferredFromInstanceNestedInput
+    timelineEventsTransferredTo?: MaintenanceTimelineEventUpdateManyWithoutTransferredToInstanceNestedInput
   }
 
   export type MaintenanceInstanceUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     sipacId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    currentMaintenanceRequests?: MaintenanceRequestUncheckedUpdateManyWithoutCurrentMaintenanceInstanceNestedInput
+    timelineEventsTransferredFrom?: MaintenanceTimelineEventUncheckedUpdateManyWithoutTransferredFromInstanceNestedInput
+    timelineEventsTransferredTo?: MaintenanceTimelineEventUncheckedUpdateManyWithoutTransferredToInstanceNestedInput
   }
 
   export type MaintenanceInstanceCreateManyInput = {
     id?: number
     sipacId: string
     name: string
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -9173,6 +20683,7 @@ export namespace Prisma {
   export type MaintenanceInstanceUpdateManyMutationInput = {
     sipacId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -9181,76 +20692,526 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     sipacId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ServiceTypeCreateInput = {
+    name: string
+    description?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    maintenanceRequests?: MaintenanceRequestCreateNestedManyWithoutServiceTypeInput
+  }
+
+  export type ServiceTypeUncheckedCreateInput = {
+    id?: number
+    name: string
+    description?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    maintenanceRequests?: MaintenanceRequestUncheckedCreateNestedManyWithoutServiceTypeInput
+  }
+
+  export type ServiceTypeUpdateInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maintenanceRequests?: MaintenanceRequestUpdateManyWithoutServiceTypeNestedInput
+  }
+
+  export type ServiceTypeUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maintenanceRequests?: MaintenanceRequestUncheckedUpdateManyWithoutServiceTypeNestedInput
+  }
+
+  export type ServiceTypeCreateManyInput = {
+    id?: number
+    name: string
+    description?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ServiceTypeUpdateManyMutationInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ServiceTypeUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EquipmentCreateInput = {
+    patrimonyTag?: string | null
+    name: string
+    description?: string | null
+    location?: string | null
+    serialNumber?: string | null
+    manufacturer?: string | null
+    model?: string | null
+    acquisitionDate?: Date | string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    maintenanceRequests?: MaintenanceRequestCreateNestedManyWithoutEquipmentInput
+  }
+
+  export type EquipmentUncheckedCreateInput = {
+    id?: number
+    patrimonyTag?: string | null
+    name: string
+    description?: string | null
+    location?: string | null
+    serialNumber?: string | null
+    manufacturer?: string | null
+    model?: string | null
+    acquisitionDate?: Date | string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    maintenanceRequests?: MaintenanceRequestUncheckedCreateNestedManyWithoutEquipmentInput
+  }
+
+  export type EquipmentUpdateInput = {
+    patrimonyTag?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    serialNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    manufacturer?: NullableStringFieldUpdateOperationsInput | string | null
+    model?: NullableStringFieldUpdateOperationsInput | string | null
+    acquisitionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maintenanceRequests?: MaintenanceRequestUpdateManyWithoutEquipmentNestedInput
+  }
+
+  export type EquipmentUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    patrimonyTag?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    serialNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    manufacturer?: NullableStringFieldUpdateOperationsInput | string | null
+    model?: NullableStringFieldUpdateOperationsInput | string | null
+    acquisitionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maintenanceRequests?: MaintenanceRequestUncheckedUpdateManyWithoutEquipmentNestedInput
+  }
+
+  export type EquipmentCreateManyInput = {
+    id?: number
+    patrimonyTag?: string | null
+    name: string
+    description?: string | null
+    location?: string | null
+    serialNumber?: string | null
+    manufacturer?: string | null
+    model?: string | null
+    acquisitionDate?: Date | string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EquipmentUpdateManyMutationInput = {
+    patrimonyTag?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    serialNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    manufacturer?: NullableStringFieldUpdateOperationsInput | string | null
+    model?: NullableStringFieldUpdateOperationsInput | string | null
+    acquisitionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EquipmentUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    patrimonyTag?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    serialNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    manufacturer?: NullableStringFieldUpdateOperationsInput | string | null
+    model?: NullableStringFieldUpdateOperationsInput | string | null
+    acquisitionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InfrastructureOccurrenceCreateInput = {
+    title: string
+    description: string
+    locationDescription?: string | null
+    reportedAt?: Date | string
+    status?: $Enums.InfrastructureOccurrenceStatus
+    resolutionNotes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    reportedBy: UserCreateNestedOneWithoutReportedOccurrencesInput
+    maintenanceRequest?: MaintenanceRequestCreateNestedOneWithoutOriginatingOccurrencesInput
+  }
+
+  export type InfrastructureOccurrenceUncheckedCreateInput = {
+    id?: number
+    title: string
+    description: string
+    locationDescription?: string | null
+    reportedAt?: Date | string
+    status?: $Enums.InfrastructureOccurrenceStatus
+    resolutionNotes?: string | null
+    reportedById: number
+    maintenanceRequestId?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type InfrastructureOccurrenceUpdateInput = {
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    locationDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    reportedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumInfrastructureOccurrenceStatusFieldUpdateOperationsInput | $Enums.InfrastructureOccurrenceStatus
+    resolutionNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    reportedBy?: UserUpdateOneRequiredWithoutReportedOccurrencesNestedInput
+    maintenanceRequest?: MaintenanceRequestUpdateOneWithoutOriginatingOccurrencesNestedInput
+  }
+
+  export type InfrastructureOccurrenceUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    locationDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    reportedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumInfrastructureOccurrenceStatusFieldUpdateOperationsInput | $Enums.InfrastructureOccurrenceStatus
+    resolutionNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    reportedById?: IntFieldUpdateOperationsInput | number
+    maintenanceRequestId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InfrastructureOccurrenceCreateManyInput = {
+    id?: number
+    title: string
+    description: string
+    locationDescription?: string | null
+    reportedAt?: Date | string
+    status?: $Enums.InfrastructureOccurrenceStatus
+    resolutionNotes?: string | null
+    reportedById: number
+    maintenanceRequestId?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type InfrastructureOccurrenceUpdateManyMutationInput = {
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    locationDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    reportedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumInfrastructureOccurrenceStatusFieldUpdateOperationsInput | $Enums.InfrastructureOccurrenceStatus
+    resolutionNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InfrastructureOccurrenceUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    locationDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    reportedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumInfrastructureOccurrenceStatusFieldUpdateOperationsInput | $Enums.InfrastructureOccurrenceStatus
+    resolutionNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    reportedById?: IntFieldUpdateOperationsInput | number
+    maintenanceRequestId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type MaterialCreateInput = {
-    id: bigint | number
+    code?: string | null
     name: string
-    specification?: string | null
-    unit: string
+    description?: string | null
+    unitOfMeasure: string
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    parentMaterial?: MaterialCreateNestedOneWithoutChildsInput
+    childs?: MaterialCreateNestedManyWithoutParentMaterialInput
+    materialRequestItems?: MaterialRequestItemCreateNestedManyWithoutMaterialInput
   }
 
   export type MaterialUncheckedCreateInput = {
-    id: bigint | number
+    id?: number
+    code?: string | null
     name: string
-    specification?: string | null
-    unit: string
+    description?: string | null
+    unitOfMeasure: string
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    parentMaterialId?: number | null
+    childs?: MaterialUncheckedCreateNestedManyWithoutParentMaterialInput
+    materialRequestItems?: MaterialRequestItemUncheckedCreateNestedManyWithoutMaterialInput
   }
 
   export type MaterialUpdateInput = {
-    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    code?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
-    specification?: NullableStringFieldUpdateOperationsInput | string | null
-    unit?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    parentMaterial?: MaterialUpdateOneWithoutChildsNestedInput
+    childs?: MaterialUpdateManyWithoutParentMaterialNestedInput
+    materialRequestItems?: MaterialRequestItemUpdateManyWithoutMaterialNestedInput
   }
 
   export type MaterialUncheckedUpdateInput = {
-    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    id?: IntFieldUpdateOperationsInput | number
+    code?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
-    specification?: NullableStringFieldUpdateOperationsInput | string | null
-    unit?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    parentMaterialId?: NullableIntFieldUpdateOperationsInput | number | null
+    childs?: MaterialUncheckedUpdateManyWithoutParentMaterialNestedInput
+    materialRequestItems?: MaterialRequestItemUncheckedUpdateManyWithoutMaterialNestedInput
   }
 
   export type MaterialCreateManyInput = {
-    id: bigint | number
+    id?: number
+    code?: string | null
     name: string
-    specification?: string | null
-    unit: string
+    description?: string | null
+    unitOfMeasure: string
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    parentMaterialId?: number | null
   }
 
   export type MaterialUpdateManyMutationInput = {
-    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    code?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
-    specification?: NullableStringFieldUpdateOperationsInput | string | null
-    unit?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type MaterialUncheckedUpdateManyInput = {
-    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    id?: IntFieldUpdateOperationsInput | number
+    code?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
-    specification?: NullableStringFieldUpdateOperationsInput | string | null
-    unit?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    parentMaterialId?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type MaterialRequestCreateInput = {
+    justification?: string | null
+    requestDate?: Date | string
+    status?: $Enums.MaterialRequestStatus
+    approvalDate?: Date | string | null
+    approvalNotes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    maintenanceRequest: MaintenanceRequestCreateNestedOneWithoutMaterialRequestsInput
+    requestedBy: UserCreateNestedOneWithoutMaterialRequestsCreatedInput
+    approvedBy?: UserCreateNestedOneWithoutMaterialRequestsApprovedInput
+    items?: MaterialRequestItemCreateNestedManyWithoutMaterialRequestInput
+  }
+
+  export type MaterialRequestUncheckedCreateInput = {
+    id?: number
+    justification?: string | null
+    requestDate?: Date | string
+    status?: $Enums.MaterialRequestStatus
+    maintenanceRequestId: number
+    requestedById: number
+    approvedById?: number | null
+    approvalDate?: Date | string | null
+    approvalNotes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    items?: MaterialRequestItemUncheckedCreateNestedManyWithoutMaterialRequestInput
+  }
+
+  export type MaterialRequestUpdateInput = {
+    justification?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumMaterialRequestStatusFieldUpdateOperationsInput | $Enums.MaterialRequestStatus
+    approvalDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvalNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maintenanceRequest?: MaintenanceRequestUpdateOneRequiredWithoutMaterialRequestsNestedInput
+    requestedBy?: UserUpdateOneRequiredWithoutMaterialRequestsCreatedNestedInput
+    approvedBy?: UserUpdateOneWithoutMaterialRequestsApprovedNestedInput
+    items?: MaterialRequestItemUpdateManyWithoutMaterialRequestNestedInput
+  }
+
+  export type MaterialRequestUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    justification?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumMaterialRequestStatusFieldUpdateOperationsInput | $Enums.MaterialRequestStatus
+    maintenanceRequestId?: IntFieldUpdateOperationsInput | number
+    requestedById?: IntFieldUpdateOperationsInput | number
+    approvedById?: NullableIntFieldUpdateOperationsInput | number | null
+    approvalDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvalNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: MaterialRequestItemUncheckedUpdateManyWithoutMaterialRequestNestedInput
+  }
+
+  export type MaterialRequestCreateManyInput = {
+    id?: number
+    justification?: string | null
+    requestDate?: Date | string
+    status?: $Enums.MaterialRequestStatus
+    maintenanceRequestId: number
+    requestedById: number
+    approvedById?: number | null
+    approvalDate?: Date | string | null
+    approvalNotes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaterialRequestUpdateManyMutationInput = {
+    justification?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumMaterialRequestStatusFieldUpdateOperationsInput | $Enums.MaterialRequestStatus
+    approvalDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvalNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaterialRequestUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    justification?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumMaterialRequestStatusFieldUpdateOperationsInput | $Enums.MaterialRequestStatus
+    maintenanceRequestId?: IntFieldUpdateOperationsInput | number
+    requestedById?: IntFieldUpdateOperationsInput | number
+    approvedById?: NullableIntFieldUpdateOperationsInput | number | null
+    approvalDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvalNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaterialRequestItemCreateInput = {
+    quantityRequested: Decimal | DecimalJsLike | number | string
+    quantityApproved?: Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: Decimal | DecimalJsLike | number | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    materialRequest: MaterialRequestCreateNestedOneWithoutItemsInput
+    material: MaterialCreateNestedOneWithoutMaterialRequestItemsInput
+  }
+
+  export type MaterialRequestItemUncheckedCreateInput = {
+    id?: number
+    quantityRequested: Decimal | DecimalJsLike | number | string
+    quantityApproved?: Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: Decimal | DecimalJsLike | number | string | null
+    materialRequestId: number
+    materialId: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaterialRequestItemUpdateInput = {
+    quantityRequested?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    quantityApproved?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    materialRequest?: MaterialRequestUpdateOneRequiredWithoutItemsNestedInput
+    material?: MaterialUpdateOneRequiredWithoutMaterialRequestItemsNestedInput
+  }
+
+  export type MaterialRequestItemUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    quantityRequested?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    quantityApproved?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    materialRequestId?: IntFieldUpdateOperationsInput | number
+    materialId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaterialRequestItemCreateManyInput = {
+    id?: number
+    quantityRequested: Decimal | DecimalJsLike | number | string
+    quantityApproved?: Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: Decimal | DecimalJsLike | number | string | null
+    materialRequestId: number
+    materialId: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaterialRequestItemUpdateManyMutationInput = {
+    quantityRequested?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    quantityApproved?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaterialRequestItemUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    quantityRequested?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    quantityApproved?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    materialRequestId?: IntFieldUpdateOperationsInput | number
+    materialId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -9266,6 +21227,12 @@ export namespace Prisma {
     logLogin?: LogLoginCreateNestedManyWithoutUserInput
     roles?: RoleCreateNestedManyWithoutUsersInput
     magicLinks?: MagicLinkCreateNestedManyWithoutUserInput
+    reportedOccurrences?: InfrastructureOccurrenceCreateNestedManyWithoutReportedByInput
+    createdMaintenanceRequests?: MaintenanceRequestCreateNestedManyWithoutCreatedByInput
+    assignedMaintenanceRequests?: MaintenanceRequestCreateNestedManyWithoutAssignedToInput
+    timelineEvents?: MaintenanceTimelineEventCreateNestedManyWithoutActionByInput
+    materialRequestsCreated?: MaterialRequestCreateNestedManyWithoutRequestedByInput
+    materialRequestsApproved?: MaterialRequestCreateNestedManyWithoutApprovedByInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -9280,6 +21247,12 @@ export namespace Prisma {
     logLogin?: LogLoginUncheckedCreateNestedManyWithoutUserInput
     roles?: RoleUncheckedCreateNestedManyWithoutUsersInput
     magicLinks?: MagicLinkUncheckedCreateNestedManyWithoutUserInput
+    reportedOccurrences?: InfrastructureOccurrenceUncheckedCreateNestedManyWithoutReportedByInput
+    createdMaintenanceRequests?: MaintenanceRequestUncheckedCreateNestedManyWithoutCreatedByInput
+    assignedMaintenanceRequests?: MaintenanceRequestUncheckedCreateNestedManyWithoutAssignedToInput
+    timelineEvents?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutActionByInput
+    materialRequestsCreated?: MaterialRequestUncheckedCreateNestedManyWithoutRequestedByInput
+    materialRequestsApproved?: MaterialRequestUncheckedCreateNestedManyWithoutApprovedByInput
   }
 
   export type UserUpdateInput = {
@@ -9293,6 +21266,12 @@ export namespace Prisma {
     logLogin?: LogLoginUpdateManyWithoutUserNestedInput
     roles?: RoleUpdateManyWithoutUsersNestedInput
     magicLinks?: MagicLinkUpdateManyWithoutUserNestedInput
+    reportedOccurrences?: InfrastructureOccurrenceUpdateManyWithoutReportedByNestedInput
+    createdMaintenanceRequests?: MaintenanceRequestUpdateManyWithoutCreatedByNestedInput
+    assignedMaintenanceRequests?: MaintenanceRequestUpdateManyWithoutAssignedToNestedInput
+    timelineEvents?: MaintenanceTimelineEventUpdateManyWithoutActionByNestedInput
+    materialRequestsCreated?: MaterialRequestUpdateManyWithoutRequestedByNestedInput
+    materialRequestsApproved?: MaterialRequestUpdateManyWithoutApprovedByNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -9307,6 +21286,12 @@ export namespace Prisma {
     logLogin?: LogLoginUncheckedUpdateManyWithoutUserNestedInput
     roles?: RoleUncheckedUpdateManyWithoutUsersNestedInput
     magicLinks?: MagicLinkUncheckedUpdateManyWithoutUserNestedInput
+    reportedOccurrences?: InfrastructureOccurrenceUncheckedUpdateManyWithoutReportedByNestedInput
+    createdMaintenanceRequests?: MaintenanceRequestUncheckedUpdateManyWithoutCreatedByNestedInput
+    assignedMaintenanceRequests?: MaintenanceRequestUncheckedUpdateManyWithoutAssignedToNestedInput
+    timelineEvents?: MaintenanceTimelineEventUncheckedUpdateManyWithoutActionByNestedInput
+    materialRequestsCreated?: MaterialRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+    materialRequestsApproved?: MaterialRequestUncheckedUpdateManyWithoutApprovedByNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -9727,6 +21712,383 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
+  export type EnumRequestPriorityFilter<$PrismaModel = never> = {
+    equals?: $Enums.RequestPriority | EnumRequestPriorityFieldRefInput<$PrismaModel>
+    in?: $Enums.RequestPriority[]
+    notIn?: $Enums.RequestPriority[]
+    not?: NestedEnumRequestPriorityFilter<$PrismaModel> | $Enums.RequestPriority
+  }
+
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type MaintenanceInstanceScalarRelationFilter = {
+    is?: MaintenanceInstanceWhereInput
+    isNot?: MaintenanceInstanceWhereInput
+  }
+
+  export type UserNullableScalarRelationFilter = {
+    is?: UserWhereInput | null
+    isNot?: UserWhereInput | null
+  }
+
+  export type EquipmentNullableScalarRelationFilter = {
+    is?: EquipmentWhereInput | null
+    isNot?: EquipmentWhereInput | null
+  }
+
+  export type ServiceTypeNullableScalarRelationFilter = {
+    is?: ServiceTypeWhereInput | null
+    isNot?: ServiceTypeWhereInput | null
+  }
+
+  export type MaintenanceRequestStatusScalarRelationFilter = {
+    is?: MaintenanceRequestStatusWhereInput
+    isNot?: MaintenanceRequestStatusWhereInput
+  }
+
+  export type InfrastructureOccurrenceListRelationFilter = {
+    every?: InfrastructureOccurrenceWhereInput
+    some?: InfrastructureOccurrenceWhereInput
+    none?: InfrastructureOccurrenceWhereInput
+  }
+
+  export type MaintenanceTimelineEventListRelationFilter = {
+    every?: MaintenanceTimelineEventWhereInput
+    some?: MaintenanceTimelineEventWhereInput
+    none?: MaintenanceTimelineEventWhereInput
+  }
+
+  export type MaterialRequestListRelationFilter = {
+    every?: MaterialRequestWhereInput
+    some?: MaterialRequestWhereInput
+    none?: MaterialRequestWhereInput
+  }
+
+  export type InfrastructureOccurrenceOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type MaintenanceTimelineEventOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type MaterialRequestOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type MaintenanceRequestOrderByRelevanceInput = {
+    fields: MaintenanceRequestOrderByRelevanceFieldEnum | MaintenanceRequestOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type MaintenanceRequestCountOrderByAggregateInput = {
+    id?: SortOrder
+    protocolNumber?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    priority?: SortOrder
+    requestedAt?: SortOrder
+    deadline?: SortOrder
+    solutionDetails?: SortOrder
+    completedAt?: SortOrder
+    currentMaintenanceInstanceId?: SortOrder
+    createdById?: SortOrder
+    assignedToId?: SortOrder
+    equipmentId?: SortOrder
+    serviceTypeId?: SortOrder
+    statusId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MaintenanceRequestAvgOrderByAggregateInput = {
+    id?: SortOrder
+    currentMaintenanceInstanceId?: SortOrder
+    createdById?: SortOrder
+    assignedToId?: SortOrder
+    equipmentId?: SortOrder
+    serviceTypeId?: SortOrder
+    statusId?: SortOrder
+  }
+
+  export type MaintenanceRequestMaxOrderByAggregateInput = {
+    id?: SortOrder
+    protocolNumber?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    priority?: SortOrder
+    requestedAt?: SortOrder
+    deadline?: SortOrder
+    solutionDetails?: SortOrder
+    completedAt?: SortOrder
+    currentMaintenanceInstanceId?: SortOrder
+    createdById?: SortOrder
+    assignedToId?: SortOrder
+    equipmentId?: SortOrder
+    serviceTypeId?: SortOrder
+    statusId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MaintenanceRequestMinOrderByAggregateInput = {
+    id?: SortOrder
+    protocolNumber?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    priority?: SortOrder
+    requestedAt?: SortOrder
+    deadline?: SortOrder
+    solutionDetails?: SortOrder
+    completedAt?: SortOrder
+    currentMaintenanceInstanceId?: SortOrder
+    createdById?: SortOrder
+    assignedToId?: SortOrder
+    equipmentId?: SortOrder
+    serviceTypeId?: SortOrder
+    statusId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MaintenanceRequestSumOrderByAggregateInput = {
+    id?: SortOrder
+    currentMaintenanceInstanceId?: SortOrder
+    createdById?: SortOrder
+    assignedToId?: SortOrder
+    equipmentId?: SortOrder
+    serviceTypeId?: SortOrder
+    statusId?: SortOrder
+  }
+
+  export type EnumRequestPriorityWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.RequestPriority | EnumRequestPriorityFieldRefInput<$PrismaModel>
+    in?: $Enums.RequestPriority[]
+    notIn?: $Enums.RequestPriority[]
+    not?: NestedEnumRequestPriorityWithAggregatesFilter<$PrismaModel> | $Enums.RequestPriority
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumRequestPriorityFilter<$PrismaModel>
+    _max?: NestedEnumRequestPriorityFilter<$PrismaModel>
+  }
+
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type MaintenanceRequestListRelationFilter = {
+    every?: MaintenanceRequestWhereInput
+    some?: MaintenanceRequestWhereInput
+    none?: MaintenanceRequestWhereInput
+  }
+
+  export type MaintenanceRequestOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type MaintenanceRequestStatusOrderByRelevanceInput = {
+    fields: MaintenanceRequestStatusOrderByRelevanceFieldEnum | MaintenanceRequestStatusOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type MaintenanceRequestStatusCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    isFinal?: SortOrder
+    order?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MaintenanceRequestStatusAvgOrderByAggregateInput = {
+    id?: SortOrder
+    order?: SortOrder
+  }
+
+  export type MaintenanceRequestStatusMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    isFinal?: SortOrder
+    order?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MaintenanceRequestStatusMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    isFinal?: SortOrder
+    order?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MaintenanceRequestStatusSumOrderByAggregateInput = {
+    id?: SortOrder
+    order?: SortOrder
+  }
+
+  export type EnumTimelineEventTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.TimelineEventType | EnumTimelineEventTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.TimelineEventType[]
+    notIn?: $Enums.TimelineEventType[]
+    not?: NestedEnumTimelineEventTypeFilter<$PrismaModel> | $Enums.TimelineEventType
+  }
+  export type JsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue
+    lte?: InputJsonValue
+    gt?: InputJsonValue
+    gte?: InputJsonValue
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type MaintenanceRequestScalarRelationFilter = {
+    is?: MaintenanceRequestWhereInput
+    isNot?: MaintenanceRequestWhereInput
+  }
+
+  export type MaintenanceInstanceNullableScalarRelationFilter = {
+    is?: MaintenanceInstanceWhereInput | null
+    isNot?: MaintenanceInstanceWhereInput | null
+  }
+
+  export type MaintenanceTimelineEventOrderByRelevanceInput = {
+    fields: MaintenanceTimelineEventOrderByRelevanceFieldEnum | MaintenanceTimelineEventOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type MaintenanceTimelineEventCountOrderByAggregateInput = {
+    id?: SortOrder
+    type?: SortOrder
+    description?: SortOrder
+    eventData?: SortOrder
+    occurredAt?: SortOrder
+    maintenanceRequestId?: SortOrder
+    actionById?: SortOrder
+    transferredFromInstanceId?: SortOrder
+    transferredToInstanceId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MaintenanceTimelineEventAvgOrderByAggregateInput = {
+    id?: SortOrder
+    maintenanceRequestId?: SortOrder
+    actionById?: SortOrder
+    transferredFromInstanceId?: SortOrder
+    transferredToInstanceId?: SortOrder
+  }
+
+  export type MaintenanceTimelineEventMaxOrderByAggregateInput = {
+    id?: SortOrder
+    type?: SortOrder
+    description?: SortOrder
+    occurredAt?: SortOrder
+    maintenanceRequestId?: SortOrder
+    actionById?: SortOrder
+    transferredFromInstanceId?: SortOrder
+    transferredToInstanceId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MaintenanceTimelineEventMinOrderByAggregateInput = {
+    id?: SortOrder
+    type?: SortOrder
+    description?: SortOrder
+    occurredAt?: SortOrder
+    maintenanceRequestId?: SortOrder
+    actionById?: SortOrder
+    transferredFromInstanceId?: SortOrder
+    transferredToInstanceId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MaintenanceTimelineEventSumOrderByAggregateInput = {
+    id?: SortOrder
+    maintenanceRequestId?: SortOrder
+    actionById?: SortOrder
+    transferredFromInstanceId?: SortOrder
+    transferredToInstanceId?: SortOrder
+  }
+
+  export type EnumTimelineEventTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TimelineEventType | EnumTimelineEventTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.TimelineEventType[]
+    notIn?: $Enums.TimelineEventType[]
+    not?: NestedEnumTimelineEventTypeWithAggregatesFilter<$PrismaModel> | $Enums.TimelineEventType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumTimelineEventTypeFilter<$PrismaModel>
+    _max?: NestedEnumTimelineEventTypeFilter<$PrismaModel>
+  }
+  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue
+    lte?: InputJsonValue
+    gt?: InputJsonValue
+    gte?: InputJsonValue
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedJsonNullableFilter<$PrismaModel>
+    _max?: NestedJsonNullableFilter<$PrismaModel>
+  }
+
   export type MaintenanceInstanceOrderByRelevanceInput = {
     fields: MaintenanceInstanceOrderByRelevanceFieldEnum | MaintenanceInstanceOrderByRelevanceFieldEnum[]
     sort: SortOrder
@@ -9737,6 +22099,7 @@ export namespace Prisma {
     id?: SortOrder
     sipacId?: SortOrder
     name?: SortOrder
+    isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -9749,6 +22112,7 @@ export namespace Prisma {
     id?: SortOrder
     sipacId?: SortOrder
     name?: SortOrder
+    isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -9757,6 +22121,7 @@ export namespace Prisma {
     id?: SortOrder
     sipacId?: SortOrder
     name?: SortOrder
+    isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -9765,15 +22130,211 @@ export namespace Prisma {
     id?: SortOrder
   }
 
-  export type BigIntFilter<$PrismaModel = never> = {
-    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    in?: bigint[] | number[]
-    notIn?: bigint[] | number[]
-    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    not?: NestedBigIntFilter<$PrismaModel> | bigint | number
+  export type ServiceTypeOrderByRelevanceInput = {
+    fields: ServiceTypeOrderByRelevanceFieldEnum | ServiceTypeOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type ServiceTypeCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ServiceTypeAvgOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type ServiceTypeMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ServiceTypeMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ServiceTypeSumOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type EquipmentOrderByRelevanceInput = {
+    fields: EquipmentOrderByRelevanceFieldEnum | EquipmentOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type EquipmentCountOrderByAggregateInput = {
+    id?: SortOrder
+    patrimonyTag?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    location?: SortOrder
+    serialNumber?: SortOrder
+    manufacturer?: SortOrder
+    model?: SortOrder
+    acquisitionDate?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EquipmentAvgOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type EquipmentMaxOrderByAggregateInput = {
+    id?: SortOrder
+    patrimonyTag?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    location?: SortOrder
+    serialNumber?: SortOrder
+    manufacturer?: SortOrder
+    model?: SortOrder
+    acquisitionDate?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EquipmentMinOrderByAggregateInput = {
+    id?: SortOrder
+    patrimonyTag?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    location?: SortOrder
+    serialNumber?: SortOrder
+    manufacturer?: SortOrder
+    model?: SortOrder
+    acquisitionDate?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EquipmentSumOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type EnumInfrastructureOccurrenceStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.InfrastructureOccurrenceStatus | EnumInfrastructureOccurrenceStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.InfrastructureOccurrenceStatus[]
+    notIn?: $Enums.InfrastructureOccurrenceStatus[]
+    not?: NestedEnumInfrastructureOccurrenceStatusFilter<$PrismaModel> | $Enums.InfrastructureOccurrenceStatus
+  }
+
+  export type MaintenanceRequestNullableScalarRelationFilter = {
+    is?: MaintenanceRequestWhereInput | null
+    isNot?: MaintenanceRequestWhereInput | null
+  }
+
+  export type InfrastructureOccurrenceOrderByRelevanceInput = {
+    fields: InfrastructureOccurrenceOrderByRelevanceFieldEnum | InfrastructureOccurrenceOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type InfrastructureOccurrenceCountOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    locationDescription?: SortOrder
+    reportedAt?: SortOrder
+    status?: SortOrder
+    resolutionNotes?: SortOrder
+    reportedById?: SortOrder
+    maintenanceRequestId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type InfrastructureOccurrenceAvgOrderByAggregateInput = {
+    id?: SortOrder
+    reportedById?: SortOrder
+    maintenanceRequestId?: SortOrder
+  }
+
+  export type InfrastructureOccurrenceMaxOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    locationDescription?: SortOrder
+    reportedAt?: SortOrder
+    status?: SortOrder
+    resolutionNotes?: SortOrder
+    reportedById?: SortOrder
+    maintenanceRequestId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type InfrastructureOccurrenceMinOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    locationDescription?: SortOrder
+    reportedAt?: SortOrder
+    status?: SortOrder
+    resolutionNotes?: SortOrder
+    reportedById?: SortOrder
+    maintenanceRequestId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type InfrastructureOccurrenceSumOrderByAggregateInput = {
+    id?: SortOrder
+    reportedById?: SortOrder
+    maintenanceRequestId?: SortOrder
+  }
+
+  export type EnumInfrastructureOccurrenceStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.InfrastructureOccurrenceStatus | EnumInfrastructureOccurrenceStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.InfrastructureOccurrenceStatus[]
+    notIn?: $Enums.InfrastructureOccurrenceStatus[]
+    not?: NestedEnumInfrastructureOccurrenceStatusWithAggregatesFilter<$PrismaModel> | $Enums.InfrastructureOccurrenceStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumInfrastructureOccurrenceStatusFilter<$PrismaModel>
+    _max?: NestedEnumInfrastructureOccurrenceStatusFilter<$PrismaModel>
+  }
+
+  export type MaterialNullableScalarRelationFilter = {
+    is?: MaterialWhereInput | null
+    isNot?: MaterialWhereInput | null
+  }
+
+  export type MaterialListRelationFilter = {
+    every?: MaterialWhereInput
+    some?: MaterialWhereInput
+    none?: MaterialWhereInput
+  }
+
+  export type MaterialRequestItemListRelationFilter = {
+    every?: MaterialRequestItemWhereInput
+    some?: MaterialRequestItemWhereInput
+    none?: MaterialRequestItemWhereInput
+  }
+
+  export type MaterialOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type MaterialRequestItemOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type MaterialOrderByRelevanceInput = {
@@ -9784,56 +22345,242 @@ export namespace Prisma {
 
   export type MaterialCountOrderByAggregateInput = {
     id?: SortOrder
+    code?: SortOrder
     name?: SortOrder
-    specification?: SortOrder
-    unit?: SortOrder
+    description?: SortOrder
+    unitOfMeasure?: SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    parentMaterialId?: SortOrder
   }
 
   export type MaterialAvgOrderByAggregateInput = {
     id?: SortOrder
+    parentMaterialId?: SortOrder
   }
 
   export type MaterialMaxOrderByAggregateInput = {
     id?: SortOrder
+    code?: SortOrder
     name?: SortOrder
-    specification?: SortOrder
-    unit?: SortOrder
+    description?: SortOrder
+    unitOfMeasure?: SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    parentMaterialId?: SortOrder
   }
 
   export type MaterialMinOrderByAggregateInput = {
     id?: SortOrder
+    code?: SortOrder
     name?: SortOrder
-    specification?: SortOrder
-    unit?: SortOrder
+    description?: SortOrder
+    unitOfMeasure?: SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    parentMaterialId?: SortOrder
   }
 
   export type MaterialSumOrderByAggregateInput = {
     id?: SortOrder
+    parentMaterialId?: SortOrder
   }
 
-  export type BigIntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    in?: bigint[] | number[]
-    notIn?: bigint[] | number[]
-    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    not?: NestedBigIntWithAggregatesFilter<$PrismaModel> | bigint | number
+  export type EnumMaterialRequestStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.MaterialRequestStatus | EnumMaterialRequestStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.MaterialRequestStatus[]
+    notIn?: $Enums.MaterialRequestStatus[]
+    not?: NestedEnumMaterialRequestStatusFilter<$PrismaModel> | $Enums.MaterialRequestStatus
+  }
+
+  export type MaterialRequestOrderByRelevanceInput = {
+    fields: MaterialRequestOrderByRelevanceFieldEnum | MaterialRequestOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type MaterialRequestCountOrderByAggregateInput = {
+    id?: SortOrder
+    justification?: SortOrder
+    requestDate?: SortOrder
+    status?: SortOrder
+    maintenanceRequestId?: SortOrder
+    requestedById?: SortOrder
+    approvedById?: SortOrder
+    approvalDate?: SortOrder
+    approvalNotes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MaterialRequestAvgOrderByAggregateInput = {
+    id?: SortOrder
+    maintenanceRequestId?: SortOrder
+    requestedById?: SortOrder
+    approvedById?: SortOrder
+  }
+
+  export type MaterialRequestMaxOrderByAggregateInput = {
+    id?: SortOrder
+    justification?: SortOrder
+    requestDate?: SortOrder
+    status?: SortOrder
+    maintenanceRequestId?: SortOrder
+    requestedById?: SortOrder
+    approvedById?: SortOrder
+    approvalDate?: SortOrder
+    approvalNotes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MaterialRequestMinOrderByAggregateInput = {
+    id?: SortOrder
+    justification?: SortOrder
+    requestDate?: SortOrder
+    status?: SortOrder
+    maintenanceRequestId?: SortOrder
+    requestedById?: SortOrder
+    approvedById?: SortOrder
+    approvalDate?: SortOrder
+    approvalNotes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MaterialRequestSumOrderByAggregateInput = {
+    id?: SortOrder
+    maintenanceRequestId?: SortOrder
+    requestedById?: SortOrder
+    approvedById?: SortOrder
+  }
+
+  export type EnumMaterialRequestStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.MaterialRequestStatus | EnumMaterialRequestStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.MaterialRequestStatus[]
+    notIn?: $Enums.MaterialRequestStatus[]
+    not?: NestedEnumMaterialRequestStatusWithAggregatesFilter<$PrismaModel> | $Enums.MaterialRequestStatus
     _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedBigIntFilter<$PrismaModel>
-    _min?: NestedBigIntFilter<$PrismaModel>
-    _max?: NestedBigIntFilter<$PrismaModel>
+    _min?: NestedEnumMaterialRequestStatusFilter<$PrismaModel>
+    _max?: NestedEnumMaterialRequestStatusFilter<$PrismaModel>
+  }
+
+  export type DecimalFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[]
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[]
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
+  }
+
+  export type DecimalNullableFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+  }
+
+  export type MaterialRequestScalarRelationFilter = {
+    is?: MaterialRequestWhereInput
+    isNot?: MaterialRequestWhereInput
+  }
+
+  export type MaterialScalarRelationFilter = {
+    is?: MaterialWhereInput
+    isNot?: MaterialWhereInput
+  }
+
+  export type MaterialRequestItemCountOrderByAggregateInput = {
+    id?: SortOrder
+    quantityRequested?: SortOrder
+    quantityApproved?: SortOrder
+    quantityDelivered?: SortOrder
+    materialRequestId?: SortOrder
+    materialId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MaterialRequestItemAvgOrderByAggregateInput = {
+    id?: SortOrder
+    quantityRequested?: SortOrder
+    quantityApproved?: SortOrder
+    quantityDelivered?: SortOrder
+    materialRequestId?: SortOrder
+    materialId?: SortOrder
+  }
+
+  export type MaterialRequestItemMaxOrderByAggregateInput = {
+    id?: SortOrder
+    quantityRequested?: SortOrder
+    quantityApproved?: SortOrder
+    quantityDelivered?: SortOrder
+    materialRequestId?: SortOrder
+    materialId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MaterialRequestItemMinOrderByAggregateInput = {
+    id?: SortOrder
+    quantityRequested?: SortOrder
+    quantityApproved?: SortOrder
+    quantityDelivered?: SortOrder
+    materialRequestId?: SortOrder
+    materialId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MaterialRequestItemSumOrderByAggregateInput = {
+    id?: SortOrder
+    quantityRequested?: SortOrder
+    quantityApproved?: SortOrder
+    quantityDelivered?: SortOrder
+    materialRequestId?: SortOrder
+    materialId?: SortOrder
+  }
+
+  export type DecimalWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[]
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[]
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedDecimalFilter<$PrismaModel>
+    _sum?: NestedDecimalFilter<$PrismaModel>
+    _min?: NestedDecimalFilter<$PrismaModel>
+    _max?: NestedDecimalFilter<$PrismaModel>
+  }
+
+  export type DecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedDecimalNullableFilter<$PrismaModel>
+    _sum?: NestedDecimalNullableFilter<$PrismaModel>
+    _min?: NestedDecimalNullableFilter<$PrismaModel>
+    _max?: NestedDecimalNullableFilter<$PrismaModel>
   }
 
   export type LogLoginListRelationFilter = {
@@ -9913,17 +22660,6 @@ export namespace Prisma {
     id?: SortOrder
   }
 
-  export type DateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | null
-    notIn?: Date[] | string[] | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
   export type MagicLinkOrderByRelevanceInput = {
     fields: MagicLinkOrderByRelevanceFieldEnum | MagicLinkOrderByRelevanceFieldEnum[]
     sort: SortOrder
@@ -9963,20 +22699,6 @@ export namespace Prisma {
 
   export type MagicLinkSumOrderByAggregateInput = {
     userId?: SortOrder
-  }
-
-  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | null
-    notIn?: Date[] | string[] | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type UserListRelationFilter = {
@@ -10073,12 +22795,812 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type BigIntFieldUpdateOperationsInput = {
-    set?: bigint | number
-    increment?: bigint | number
-    decrement?: bigint | number
-    multiply?: bigint | number
-    divide?: bigint | number
+  export type MaintenanceInstanceCreateNestedOneWithoutCurrentMaintenanceRequestsInput = {
+    create?: XOR<MaintenanceInstanceCreateWithoutCurrentMaintenanceRequestsInput, MaintenanceInstanceUncheckedCreateWithoutCurrentMaintenanceRequestsInput>
+    connectOrCreate?: MaintenanceInstanceCreateOrConnectWithoutCurrentMaintenanceRequestsInput
+    connect?: MaintenanceInstanceWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutCreatedMaintenanceRequestsInput = {
+    create?: XOR<UserCreateWithoutCreatedMaintenanceRequestsInput, UserUncheckedCreateWithoutCreatedMaintenanceRequestsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCreatedMaintenanceRequestsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutAssignedMaintenanceRequestsInput = {
+    create?: XOR<UserCreateWithoutAssignedMaintenanceRequestsInput, UserUncheckedCreateWithoutAssignedMaintenanceRequestsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAssignedMaintenanceRequestsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EquipmentCreateNestedOneWithoutMaintenanceRequestsInput = {
+    create?: XOR<EquipmentCreateWithoutMaintenanceRequestsInput, EquipmentUncheckedCreateWithoutMaintenanceRequestsInput>
+    connectOrCreate?: EquipmentCreateOrConnectWithoutMaintenanceRequestsInput
+    connect?: EquipmentWhereUniqueInput
+  }
+
+  export type ServiceTypeCreateNestedOneWithoutMaintenanceRequestsInput = {
+    create?: XOR<ServiceTypeCreateWithoutMaintenanceRequestsInput, ServiceTypeUncheckedCreateWithoutMaintenanceRequestsInput>
+    connectOrCreate?: ServiceTypeCreateOrConnectWithoutMaintenanceRequestsInput
+    connect?: ServiceTypeWhereUniqueInput
+  }
+
+  export type MaintenanceRequestStatusCreateNestedOneWithoutMaintenanceRequestsInput = {
+    create?: XOR<MaintenanceRequestStatusCreateWithoutMaintenanceRequestsInput, MaintenanceRequestStatusUncheckedCreateWithoutMaintenanceRequestsInput>
+    connectOrCreate?: MaintenanceRequestStatusCreateOrConnectWithoutMaintenanceRequestsInput
+    connect?: MaintenanceRequestStatusWhereUniqueInput
+  }
+
+  export type InfrastructureOccurrenceCreateNestedManyWithoutMaintenanceRequestInput = {
+    create?: XOR<InfrastructureOccurrenceCreateWithoutMaintenanceRequestInput, InfrastructureOccurrenceUncheckedCreateWithoutMaintenanceRequestInput> | InfrastructureOccurrenceCreateWithoutMaintenanceRequestInput[] | InfrastructureOccurrenceUncheckedCreateWithoutMaintenanceRequestInput[]
+    connectOrCreate?: InfrastructureOccurrenceCreateOrConnectWithoutMaintenanceRequestInput | InfrastructureOccurrenceCreateOrConnectWithoutMaintenanceRequestInput[]
+    createMany?: InfrastructureOccurrenceCreateManyMaintenanceRequestInputEnvelope
+    connect?: InfrastructureOccurrenceWhereUniqueInput | InfrastructureOccurrenceWhereUniqueInput[]
+  }
+
+  export type MaintenanceTimelineEventCreateNestedManyWithoutMaintenanceRequestInput = {
+    create?: XOR<MaintenanceTimelineEventCreateWithoutMaintenanceRequestInput, MaintenanceTimelineEventUncheckedCreateWithoutMaintenanceRequestInput> | MaintenanceTimelineEventCreateWithoutMaintenanceRequestInput[] | MaintenanceTimelineEventUncheckedCreateWithoutMaintenanceRequestInput[]
+    connectOrCreate?: MaintenanceTimelineEventCreateOrConnectWithoutMaintenanceRequestInput | MaintenanceTimelineEventCreateOrConnectWithoutMaintenanceRequestInput[]
+    createMany?: MaintenanceTimelineEventCreateManyMaintenanceRequestInputEnvelope
+    connect?: MaintenanceTimelineEventWhereUniqueInput | MaintenanceTimelineEventWhereUniqueInput[]
+  }
+
+  export type MaterialRequestCreateNestedManyWithoutMaintenanceRequestInput = {
+    create?: XOR<MaterialRequestCreateWithoutMaintenanceRequestInput, MaterialRequestUncheckedCreateWithoutMaintenanceRequestInput> | MaterialRequestCreateWithoutMaintenanceRequestInput[] | MaterialRequestUncheckedCreateWithoutMaintenanceRequestInput[]
+    connectOrCreate?: MaterialRequestCreateOrConnectWithoutMaintenanceRequestInput | MaterialRequestCreateOrConnectWithoutMaintenanceRequestInput[]
+    createMany?: MaterialRequestCreateManyMaintenanceRequestInputEnvelope
+    connect?: MaterialRequestWhereUniqueInput | MaterialRequestWhereUniqueInput[]
+  }
+
+  export type InfrastructureOccurrenceUncheckedCreateNestedManyWithoutMaintenanceRequestInput = {
+    create?: XOR<InfrastructureOccurrenceCreateWithoutMaintenanceRequestInput, InfrastructureOccurrenceUncheckedCreateWithoutMaintenanceRequestInput> | InfrastructureOccurrenceCreateWithoutMaintenanceRequestInput[] | InfrastructureOccurrenceUncheckedCreateWithoutMaintenanceRequestInput[]
+    connectOrCreate?: InfrastructureOccurrenceCreateOrConnectWithoutMaintenanceRequestInput | InfrastructureOccurrenceCreateOrConnectWithoutMaintenanceRequestInput[]
+    createMany?: InfrastructureOccurrenceCreateManyMaintenanceRequestInputEnvelope
+    connect?: InfrastructureOccurrenceWhereUniqueInput | InfrastructureOccurrenceWhereUniqueInput[]
+  }
+
+  export type MaintenanceTimelineEventUncheckedCreateNestedManyWithoutMaintenanceRequestInput = {
+    create?: XOR<MaintenanceTimelineEventCreateWithoutMaintenanceRequestInput, MaintenanceTimelineEventUncheckedCreateWithoutMaintenanceRequestInput> | MaintenanceTimelineEventCreateWithoutMaintenanceRequestInput[] | MaintenanceTimelineEventUncheckedCreateWithoutMaintenanceRequestInput[]
+    connectOrCreate?: MaintenanceTimelineEventCreateOrConnectWithoutMaintenanceRequestInput | MaintenanceTimelineEventCreateOrConnectWithoutMaintenanceRequestInput[]
+    createMany?: MaintenanceTimelineEventCreateManyMaintenanceRequestInputEnvelope
+    connect?: MaintenanceTimelineEventWhereUniqueInput | MaintenanceTimelineEventWhereUniqueInput[]
+  }
+
+  export type MaterialRequestUncheckedCreateNestedManyWithoutMaintenanceRequestInput = {
+    create?: XOR<MaterialRequestCreateWithoutMaintenanceRequestInput, MaterialRequestUncheckedCreateWithoutMaintenanceRequestInput> | MaterialRequestCreateWithoutMaintenanceRequestInput[] | MaterialRequestUncheckedCreateWithoutMaintenanceRequestInput[]
+    connectOrCreate?: MaterialRequestCreateOrConnectWithoutMaintenanceRequestInput | MaterialRequestCreateOrConnectWithoutMaintenanceRequestInput[]
+    createMany?: MaterialRequestCreateManyMaintenanceRequestInputEnvelope
+    connect?: MaterialRequestWhereUniqueInput | MaterialRequestWhereUniqueInput[]
+  }
+
+  export type EnumRequestPriorityFieldUpdateOperationsInput = {
+    set?: $Enums.RequestPriority
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
+  }
+
+  export type MaintenanceInstanceUpdateOneRequiredWithoutCurrentMaintenanceRequestsNestedInput = {
+    create?: XOR<MaintenanceInstanceCreateWithoutCurrentMaintenanceRequestsInput, MaintenanceInstanceUncheckedCreateWithoutCurrentMaintenanceRequestsInput>
+    connectOrCreate?: MaintenanceInstanceCreateOrConnectWithoutCurrentMaintenanceRequestsInput
+    upsert?: MaintenanceInstanceUpsertWithoutCurrentMaintenanceRequestsInput
+    connect?: MaintenanceInstanceWhereUniqueInput
+    update?: XOR<XOR<MaintenanceInstanceUpdateToOneWithWhereWithoutCurrentMaintenanceRequestsInput, MaintenanceInstanceUpdateWithoutCurrentMaintenanceRequestsInput>, MaintenanceInstanceUncheckedUpdateWithoutCurrentMaintenanceRequestsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutCreatedMaintenanceRequestsNestedInput = {
+    create?: XOR<UserCreateWithoutCreatedMaintenanceRequestsInput, UserUncheckedCreateWithoutCreatedMaintenanceRequestsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCreatedMaintenanceRequestsInput
+    upsert?: UserUpsertWithoutCreatedMaintenanceRequestsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCreatedMaintenanceRequestsInput, UserUpdateWithoutCreatedMaintenanceRequestsInput>, UserUncheckedUpdateWithoutCreatedMaintenanceRequestsInput>
+  }
+
+  export type UserUpdateOneWithoutAssignedMaintenanceRequestsNestedInput = {
+    create?: XOR<UserCreateWithoutAssignedMaintenanceRequestsInput, UserUncheckedCreateWithoutAssignedMaintenanceRequestsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAssignedMaintenanceRequestsInput
+    upsert?: UserUpsertWithoutAssignedMaintenanceRequestsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAssignedMaintenanceRequestsInput, UserUpdateWithoutAssignedMaintenanceRequestsInput>, UserUncheckedUpdateWithoutAssignedMaintenanceRequestsInput>
+  }
+
+  export type EquipmentUpdateOneWithoutMaintenanceRequestsNestedInput = {
+    create?: XOR<EquipmentCreateWithoutMaintenanceRequestsInput, EquipmentUncheckedCreateWithoutMaintenanceRequestsInput>
+    connectOrCreate?: EquipmentCreateOrConnectWithoutMaintenanceRequestsInput
+    upsert?: EquipmentUpsertWithoutMaintenanceRequestsInput
+    disconnect?: EquipmentWhereInput | boolean
+    delete?: EquipmentWhereInput | boolean
+    connect?: EquipmentWhereUniqueInput
+    update?: XOR<XOR<EquipmentUpdateToOneWithWhereWithoutMaintenanceRequestsInput, EquipmentUpdateWithoutMaintenanceRequestsInput>, EquipmentUncheckedUpdateWithoutMaintenanceRequestsInput>
+  }
+
+  export type ServiceTypeUpdateOneWithoutMaintenanceRequestsNestedInput = {
+    create?: XOR<ServiceTypeCreateWithoutMaintenanceRequestsInput, ServiceTypeUncheckedCreateWithoutMaintenanceRequestsInput>
+    connectOrCreate?: ServiceTypeCreateOrConnectWithoutMaintenanceRequestsInput
+    upsert?: ServiceTypeUpsertWithoutMaintenanceRequestsInput
+    disconnect?: ServiceTypeWhereInput | boolean
+    delete?: ServiceTypeWhereInput | boolean
+    connect?: ServiceTypeWhereUniqueInput
+    update?: XOR<XOR<ServiceTypeUpdateToOneWithWhereWithoutMaintenanceRequestsInput, ServiceTypeUpdateWithoutMaintenanceRequestsInput>, ServiceTypeUncheckedUpdateWithoutMaintenanceRequestsInput>
+  }
+
+  export type MaintenanceRequestStatusUpdateOneRequiredWithoutMaintenanceRequestsNestedInput = {
+    create?: XOR<MaintenanceRequestStatusCreateWithoutMaintenanceRequestsInput, MaintenanceRequestStatusUncheckedCreateWithoutMaintenanceRequestsInput>
+    connectOrCreate?: MaintenanceRequestStatusCreateOrConnectWithoutMaintenanceRequestsInput
+    upsert?: MaintenanceRequestStatusUpsertWithoutMaintenanceRequestsInput
+    connect?: MaintenanceRequestStatusWhereUniqueInput
+    update?: XOR<XOR<MaintenanceRequestStatusUpdateToOneWithWhereWithoutMaintenanceRequestsInput, MaintenanceRequestStatusUpdateWithoutMaintenanceRequestsInput>, MaintenanceRequestStatusUncheckedUpdateWithoutMaintenanceRequestsInput>
+  }
+
+  export type InfrastructureOccurrenceUpdateManyWithoutMaintenanceRequestNestedInput = {
+    create?: XOR<InfrastructureOccurrenceCreateWithoutMaintenanceRequestInput, InfrastructureOccurrenceUncheckedCreateWithoutMaintenanceRequestInput> | InfrastructureOccurrenceCreateWithoutMaintenanceRequestInput[] | InfrastructureOccurrenceUncheckedCreateWithoutMaintenanceRequestInput[]
+    connectOrCreate?: InfrastructureOccurrenceCreateOrConnectWithoutMaintenanceRequestInput | InfrastructureOccurrenceCreateOrConnectWithoutMaintenanceRequestInput[]
+    upsert?: InfrastructureOccurrenceUpsertWithWhereUniqueWithoutMaintenanceRequestInput | InfrastructureOccurrenceUpsertWithWhereUniqueWithoutMaintenanceRequestInput[]
+    createMany?: InfrastructureOccurrenceCreateManyMaintenanceRequestInputEnvelope
+    set?: InfrastructureOccurrenceWhereUniqueInput | InfrastructureOccurrenceWhereUniqueInput[]
+    disconnect?: InfrastructureOccurrenceWhereUniqueInput | InfrastructureOccurrenceWhereUniqueInput[]
+    delete?: InfrastructureOccurrenceWhereUniqueInput | InfrastructureOccurrenceWhereUniqueInput[]
+    connect?: InfrastructureOccurrenceWhereUniqueInput | InfrastructureOccurrenceWhereUniqueInput[]
+    update?: InfrastructureOccurrenceUpdateWithWhereUniqueWithoutMaintenanceRequestInput | InfrastructureOccurrenceUpdateWithWhereUniqueWithoutMaintenanceRequestInput[]
+    updateMany?: InfrastructureOccurrenceUpdateManyWithWhereWithoutMaintenanceRequestInput | InfrastructureOccurrenceUpdateManyWithWhereWithoutMaintenanceRequestInput[]
+    deleteMany?: InfrastructureOccurrenceScalarWhereInput | InfrastructureOccurrenceScalarWhereInput[]
+  }
+
+  export type MaintenanceTimelineEventUpdateManyWithoutMaintenanceRequestNestedInput = {
+    create?: XOR<MaintenanceTimelineEventCreateWithoutMaintenanceRequestInput, MaintenanceTimelineEventUncheckedCreateWithoutMaintenanceRequestInput> | MaintenanceTimelineEventCreateWithoutMaintenanceRequestInput[] | MaintenanceTimelineEventUncheckedCreateWithoutMaintenanceRequestInput[]
+    connectOrCreate?: MaintenanceTimelineEventCreateOrConnectWithoutMaintenanceRequestInput | MaintenanceTimelineEventCreateOrConnectWithoutMaintenanceRequestInput[]
+    upsert?: MaintenanceTimelineEventUpsertWithWhereUniqueWithoutMaintenanceRequestInput | MaintenanceTimelineEventUpsertWithWhereUniqueWithoutMaintenanceRequestInput[]
+    createMany?: MaintenanceTimelineEventCreateManyMaintenanceRequestInputEnvelope
+    set?: MaintenanceTimelineEventWhereUniqueInput | MaintenanceTimelineEventWhereUniqueInput[]
+    disconnect?: MaintenanceTimelineEventWhereUniqueInput | MaintenanceTimelineEventWhereUniqueInput[]
+    delete?: MaintenanceTimelineEventWhereUniqueInput | MaintenanceTimelineEventWhereUniqueInput[]
+    connect?: MaintenanceTimelineEventWhereUniqueInput | MaintenanceTimelineEventWhereUniqueInput[]
+    update?: MaintenanceTimelineEventUpdateWithWhereUniqueWithoutMaintenanceRequestInput | MaintenanceTimelineEventUpdateWithWhereUniqueWithoutMaintenanceRequestInput[]
+    updateMany?: MaintenanceTimelineEventUpdateManyWithWhereWithoutMaintenanceRequestInput | MaintenanceTimelineEventUpdateManyWithWhereWithoutMaintenanceRequestInput[]
+    deleteMany?: MaintenanceTimelineEventScalarWhereInput | MaintenanceTimelineEventScalarWhereInput[]
+  }
+
+  export type MaterialRequestUpdateManyWithoutMaintenanceRequestNestedInput = {
+    create?: XOR<MaterialRequestCreateWithoutMaintenanceRequestInput, MaterialRequestUncheckedCreateWithoutMaintenanceRequestInput> | MaterialRequestCreateWithoutMaintenanceRequestInput[] | MaterialRequestUncheckedCreateWithoutMaintenanceRequestInput[]
+    connectOrCreate?: MaterialRequestCreateOrConnectWithoutMaintenanceRequestInput | MaterialRequestCreateOrConnectWithoutMaintenanceRequestInput[]
+    upsert?: MaterialRequestUpsertWithWhereUniqueWithoutMaintenanceRequestInput | MaterialRequestUpsertWithWhereUniqueWithoutMaintenanceRequestInput[]
+    createMany?: MaterialRequestCreateManyMaintenanceRequestInputEnvelope
+    set?: MaterialRequestWhereUniqueInput | MaterialRequestWhereUniqueInput[]
+    disconnect?: MaterialRequestWhereUniqueInput | MaterialRequestWhereUniqueInput[]
+    delete?: MaterialRequestWhereUniqueInput | MaterialRequestWhereUniqueInput[]
+    connect?: MaterialRequestWhereUniqueInput | MaterialRequestWhereUniqueInput[]
+    update?: MaterialRequestUpdateWithWhereUniqueWithoutMaintenanceRequestInput | MaterialRequestUpdateWithWhereUniqueWithoutMaintenanceRequestInput[]
+    updateMany?: MaterialRequestUpdateManyWithWhereWithoutMaintenanceRequestInput | MaterialRequestUpdateManyWithWhereWithoutMaintenanceRequestInput[]
+    deleteMany?: MaterialRequestScalarWhereInput | MaterialRequestScalarWhereInput[]
+  }
+
+  export type InfrastructureOccurrenceUncheckedUpdateManyWithoutMaintenanceRequestNestedInput = {
+    create?: XOR<InfrastructureOccurrenceCreateWithoutMaintenanceRequestInput, InfrastructureOccurrenceUncheckedCreateWithoutMaintenanceRequestInput> | InfrastructureOccurrenceCreateWithoutMaintenanceRequestInput[] | InfrastructureOccurrenceUncheckedCreateWithoutMaintenanceRequestInput[]
+    connectOrCreate?: InfrastructureOccurrenceCreateOrConnectWithoutMaintenanceRequestInput | InfrastructureOccurrenceCreateOrConnectWithoutMaintenanceRequestInput[]
+    upsert?: InfrastructureOccurrenceUpsertWithWhereUniqueWithoutMaintenanceRequestInput | InfrastructureOccurrenceUpsertWithWhereUniqueWithoutMaintenanceRequestInput[]
+    createMany?: InfrastructureOccurrenceCreateManyMaintenanceRequestInputEnvelope
+    set?: InfrastructureOccurrenceWhereUniqueInput | InfrastructureOccurrenceWhereUniqueInput[]
+    disconnect?: InfrastructureOccurrenceWhereUniqueInput | InfrastructureOccurrenceWhereUniqueInput[]
+    delete?: InfrastructureOccurrenceWhereUniqueInput | InfrastructureOccurrenceWhereUniqueInput[]
+    connect?: InfrastructureOccurrenceWhereUniqueInput | InfrastructureOccurrenceWhereUniqueInput[]
+    update?: InfrastructureOccurrenceUpdateWithWhereUniqueWithoutMaintenanceRequestInput | InfrastructureOccurrenceUpdateWithWhereUniqueWithoutMaintenanceRequestInput[]
+    updateMany?: InfrastructureOccurrenceUpdateManyWithWhereWithoutMaintenanceRequestInput | InfrastructureOccurrenceUpdateManyWithWhereWithoutMaintenanceRequestInput[]
+    deleteMany?: InfrastructureOccurrenceScalarWhereInput | InfrastructureOccurrenceScalarWhereInput[]
+  }
+
+  export type MaintenanceTimelineEventUncheckedUpdateManyWithoutMaintenanceRequestNestedInput = {
+    create?: XOR<MaintenanceTimelineEventCreateWithoutMaintenanceRequestInput, MaintenanceTimelineEventUncheckedCreateWithoutMaintenanceRequestInput> | MaintenanceTimelineEventCreateWithoutMaintenanceRequestInput[] | MaintenanceTimelineEventUncheckedCreateWithoutMaintenanceRequestInput[]
+    connectOrCreate?: MaintenanceTimelineEventCreateOrConnectWithoutMaintenanceRequestInput | MaintenanceTimelineEventCreateOrConnectWithoutMaintenanceRequestInput[]
+    upsert?: MaintenanceTimelineEventUpsertWithWhereUniqueWithoutMaintenanceRequestInput | MaintenanceTimelineEventUpsertWithWhereUniqueWithoutMaintenanceRequestInput[]
+    createMany?: MaintenanceTimelineEventCreateManyMaintenanceRequestInputEnvelope
+    set?: MaintenanceTimelineEventWhereUniqueInput | MaintenanceTimelineEventWhereUniqueInput[]
+    disconnect?: MaintenanceTimelineEventWhereUniqueInput | MaintenanceTimelineEventWhereUniqueInput[]
+    delete?: MaintenanceTimelineEventWhereUniqueInput | MaintenanceTimelineEventWhereUniqueInput[]
+    connect?: MaintenanceTimelineEventWhereUniqueInput | MaintenanceTimelineEventWhereUniqueInput[]
+    update?: MaintenanceTimelineEventUpdateWithWhereUniqueWithoutMaintenanceRequestInput | MaintenanceTimelineEventUpdateWithWhereUniqueWithoutMaintenanceRequestInput[]
+    updateMany?: MaintenanceTimelineEventUpdateManyWithWhereWithoutMaintenanceRequestInput | MaintenanceTimelineEventUpdateManyWithWhereWithoutMaintenanceRequestInput[]
+    deleteMany?: MaintenanceTimelineEventScalarWhereInput | MaintenanceTimelineEventScalarWhereInput[]
+  }
+
+  export type MaterialRequestUncheckedUpdateManyWithoutMaintenanceRequestNestedInput = {
+    create?: XOR<MaterialRequestCreateWithoutMaintenanceRequestInput, MaterialRequestUncheckedCreateWithoutMaintenanceRequestInput> | MaterialRequestCreateWithoutMaintenanceRequestInput[] | MaterialRequestUncheckedCreateWithoutMaintenanceRequestInput[]
+    connectOrCreate?: MaterialRequestCreateOrConnectWithoutMaintenanceRequestInput | MaterialRequestCreateOrConnectWithoutMaintenanceRequestInput[]
+    upsert?: MaterialRequestUpsertWithWhereUniqueWithoutMaintenanceRequestInput | MaterialRequestUpsertWithWhereUniqueWithoutMaintenanceRequestInput[]
+    createMany?: MaterialRequestCreateManyMaintenanceRequestInputEnvelope
+    set?: MaterialRequestWhereUniqueInput | MaterialRequestWhereUniqueInput[]
+    disconnect?: MaterialRequestWhereUniqueInput | MaterialRequestWhereUniqueInput[]
+    delete?: MaterialRequestWhereUniqueInput | MaterialRequestWhereUniqueInput[]
+    connect?: MaterialRequestWhereUniqueInput | MaterialRequestWhereUniqueInput[]
+    update?: MaterialRequestUpdateWithWhereUniqueWithoutMaintenanceRequestInput | MaterialRequestUpdateWithWhereUniqueWithoutMaintenanceRequestInput[]
+    updateMany?: MaterialRequestUpdateManyWithWhereWithoutMaintenanceRequestInput | MaterialRequestUpdateManyWithWhereWithoutMaintenanceRequestInput[]
+    deleteMany?: MaterialRequestScalarWhereInput | MaterialRequestScalarWhereInput[]
+  }
+
+  export type MaintenanceRequestCreateNestedManyWithoutStatusInput = {
+    create?: XOR<MaintenanceRequestCreateWithoutStatusInput, MaintenanceRequestUncheckedCreateWithoutStatusInput> | MaintenanceRequestCreateWithoutStatusInput[] | MaintenanceRequestUncheckedCreateWithoutStatusInput[]
+    connectOrCreate?: MaintenanceRequestCreateOrConnectWithoutStatusInput | MaintenanceRequestCreateOrConnectWithoutStatusInput[]
+    createMany?: MaintenanceRequestCreateManyStatusInputEnvelope
+    connect?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+  }
+
+  export type MaintenanceRequestUncheckedCreateNestedManyWithoutStatusInput = {
+    create?: XOR<MaintenanceRequestCreateWithoutStatusInput, MaintenanceRequestUncheckedCreateWithoutStatusInput> | MaintenanceRequestCreateWithoutStatusInput[] | MaintenanceRequestUncheckedCreateWithoutStatusInput[]
+    connectOrCreate?: MaintenanceRequestCreateOrConnectWithoutStatusInput | MaintenanceRequestCreateOrConnectWithoutStatusInput[]
+    createMany?: MaintenanceRequestCreateManyStatusInputEnvelope
+    connect?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+  }
+
+  export type MaintenanceRequestUpdateManyWithoutStatusNestedInput = {
+    create?: XOR<MaintenanceRequestCreateWithoutStatusInput, MaintenanceRequestUncheckedCreateWithoutStatusInput> | MaintenanceRequestCreateWithoutStatusInput[] | MaintenanceRequestUncheckedCreateWithoutStatusInput[]
+    connectOrCreate?: MaintenanceRequestCreateOrConnectWithoutStatusInput | MaintenanceRequestCreateOrConnectWithoutStatusInput[]
+    upsert?: MaintenanceRequestUpsertWithWhereUniqueWithoutStatusInput | MaintenanceRequestUpsertWithWhereUniqueWithoutStatusInput[]
+    createMany?: MaintenanceRequestCreateManyStatusInputEnvelope
+    set?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    disconnect?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    delete?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    connect?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    update?: MaintenanceRequestUpdateWithWhereUniqueWithoutStatusInput | MaintenanceRequestUpdateWithWhereUniqueWithoutStatusInput[]
+    updateMany?: MaintenanceRequestUpdateManyWithWhereWithoutStatusInput | MaintenanceRequestUpdateManyWithWhereWithoutStatusInput[]
+    deleteMany?: MaintenanceRequestScalarWhereInput | MaintenanceRequestScalarWhereInput[]
+  }
+
+  export type MaintenanceRequestUncheckedUpdateManyWithoutStatusNestedInput = {
+    create?: XOR<MaintenanceRequestCreateWithoutStatusInput, MaintenanceRequestUncheckedCreateWithoutStatusInput> | MaintenanceRequestCreateWithoutStatusInput[] | MaintenanceRequestUncheckedCreateWithoutStatusInput[]
+    connectOrCreate?: MaintenanceRequestCreateOrConnectWithoutStatusInput | MaintenanceRequestCreateOrConnectWithoutStatusInput[]
+    upsert?: MaintenanceRequestUpsertWithWhereUniqueWithoutStatusInput | MaintenanceRequestUpsertWithWhereUniqueWithoutStatusInput[]
+    createMany?: MaintenanceRequestCreateManyStatusInputEnvelope
+    set?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    disconnect?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    delete?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    connect?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    update?: MaintenanceRequestUpdateWithWhereUniqueWithoutStatusInput | MaintenanceRequestUpdateWithWhereUniqueWithoutStatusInput[]
+    updateMany?: MaintenanceRequestUpdateManyWithWhereWithoutStatusInput | MaintenanceRequestUpdateManyWithWhereWithoutStatusInput[]
+    deleteMany?: MaintenanceRequestScalarWhereInput | MaintenanceRequestScalarWhereInput[]
+  }
+
+  export type MaintenanceRequestCreateNestedOneWithoutTimelineEventsInput = {
+    create?: XOR<MaintenanceRequestCreateWithoutTimelineEventsInput, MaintenanceRequestUncheckedCreateWithoutTimelineEventsInput>
+    connectOrCreate?: MaintenanceRequestCreateOrConnectWithoutTimelineEventsInput
+    connect?: MaintenanceRequestWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutTimelineEventsInput = {
+    create?: XOR<UserCreateWithoutTimelineEventsInput, UserUncheckedCreateWithoutTimelineEventsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTimelineEventsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type MaintenanceInstanceCreateNestedOneWithoutTimelineEventsTransferredFromInput = {
+    create?: XOR<MaintenanceInstanceCreateWithoutTimelineEventsTransferredFromInput, MaintenanceInstanceUncheckedCreateWithoutTimelineEventsTransferredFromInput>
+    connectOrCreate?: MaintenanceInstanceCreateOrConnectWithoutTimelineEventsTransferredFromInput
+    connect?: MaintenanceInstanceWhereUniqueInput
+  }
+
+  export type MaintenanceInstanceCreateNestedOneWithoutTimelineEventsTransferredToInput = {
+    create?: XOR<MaintenanceInstanceCreateWithoutTimelineEventsTransferredToInput, MaintenanceInstanceUncheckedCreateWithoutTimelineEventsTransferredToInput>
+    connectOrCreate?: MaintenanceInstanceCreateOrConnectWithoutTimelineEventsTransferredToInput
+    connect?: MaintenanceInstanceWhereUniqueInput
+  }
+
+  export type EnumTimelineEventTypeFieldUpdateOperationsInput = {
+    set?: $Enums.TimelineEventType
+  }
+
+  export type MaintenanceRequestUpdateOneRequiredWithoutTimelineEventsNestedInput = {
+    create?: XOR<MaintenanceRequestCreateWithoutTimelineEventsInput, MaintenanceRequestUncheckedCreateWithoutTimelineEventsInput>
+    connectOrCreate?: MaintenanceRequestCreateOrConnectWithoutTimelineEventsInput
+    upsert?: MaintenanceRequestUpsertWithoutTimelineEventsInput
+    connect?: MaintenanceRequestWhereUniqueInput
+    update?: XOR<XOR<MaintenanceRequestUpdateToOneWithWhereWithoutTimelineEventsInput, MaintenanceRequestUpdateWithoutTimelineEventsInput>, MaintenanceRequestUncheckedUpdateWithoutTimelineEventsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutTimelineEventsNestedInput = {
+    create?: XOR<UserCreateWithoutTimelineEventsInput, UserUncheckedCreateWithoutTimelineEventsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTimelineEventsInput
+    upsert?: UserUpsertWithoutTimelineEventsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTimelineEventsInput, UserUpdateWithoutTimelineEventsInput>, UserUncheckedUpdateWithoutTimelineEventsInput>
+  }
+
+  export type MaintenanceInstanceUpdateOneWithoutTimelineEventsTransferredFromNestedInput = {
+    create?: XOR<MaintenanceInstanceCreateWithoutTimelineEventsTransferredFromInput, MaintenanceInstanceUncheckedCreateWithoutTimelineEventsTransferredFromInput>
+    connectOrCreate?: MaintenanceInstanceCreateOrConnectWithoutTimelineEventsTransferredFromInput
+    upsert?: MaintenanceInstanceUpsertWithoutTimelineEventsTransferredFromInput
+    disconnect?: MaintenanceInstanceWhereInput | boolean
+    delete?: MaintenanceInstanceWhereInput | boolean
+    connect?: MaintenanceInstanceWhereUniqueInput
+    update?: XOR<XOR<MaintenanceInstanceUpdateToOneWithWhereWithoutTimelineEventsTransferredFromInput, MaintenanceInstanceUpdateWithoutTimelineEventsTransferredFromInput>, MaintenanceInstanceUncheckedUpdateWithoutTimelineEventsTransferredFromInput>
+  }
+
+  export type MaintenanceInstanceUpdateOneWithoutTimelineEventsTransferredToNestedInput = {
+    create?: XOR<MaintenanceInstanceCreateWithoutTimelineEventsTransferredToInput, MaintenanceInstanceUncheckedCreateWithoutTimelineEventsTransferredToInput>
+    connectOrCreate?: MaintenanceInstanceCreateOrConnectWithoutTimelineEventsTransferredToInput
+    upsert?: MaintenanceInstanceUpsertWithoutTimelineEventsTransferredToInput
+    disconnect?: MaintenanceInstanceWhereInput | boolean
+    delete?: MaintenanceInstanceWhereInput | boolean
+    connect?: MaintenanceInstanceWhereUniqueInput
+    update?: XOR<XOR<MaintenanceInstanceUpdateToOneWithWhereWithoutTimelineEventsTransferredToInput, MaintenanceInstanceUpdateWithoutTimelineEventsTransferredToInput>, MaintenanceInstanceUncheckedUpdateWithoutTimelineEventsTransferredToInput>
+  }
+
+  export type MaintenanceRequestCreateNestedManyWithoutCurrentMaintenanceInstanceInput = {
+    create?: XOR<MaintenanceRequestCreateWithoutCurrentMaintenanceInstanceInput, MaintenanceRequestUncheckedCreateWithoutCurrentMaintenanceInstanceInput> | MaintenanceRequestCreateWithoutCurrentMaintenanceInstanceInput[] | MaintenanceRequestUncheckedCreateWithoutCurrentMaintenanceInstanceInput[]
+    connectOrCreate?: MaintenanceRequestCreateOrConnectWithoutCurrentMaintenanceInstanceInput | MaintenanceRequestCreateOrConnectWithoutCurrentMaintenanceInstanceInput[]
+    createMany?: MaintenanceRequestCreateManyCurrentMaintenanceInstanceInputEnvelope
+    connect?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+  }
+
+  export type MaintenanceTimelineEventCreateNestedManyWithoutTransferredFromInstanceInput = {
+    create?: XOR<MaintenanceTimelineEventCreateWithoutTransferredFromInstanceInput, MaintenanceTimelineEventUncheckedCreateWithoutTransferredFromInstanceInput> | MaintenanceTimelineEventCreateWithoutTransferredFromInstanceInput[] | MaintenanceTimelineEventUncheckedCreateWithoutTransferredFromInstanceInput[]
+    connectOrCreate?: MaintenanceTimelineEventCreateOrConnectWithoutTransferredFromInstanceInput | MaintenanceTimelineEventCreateOrConnectWithoutTransferredFromInstanceInput[]
+    createMany?: MaintenanceTimelineEventCreateManyTransferredFromInstanceInputEnvelope
+    connect?: MaintenanceTimelineEventWhereUniqueInput | MaintenanceTimelineEventWhereUniqueInput[]
+  }
+
+  export type MaintenanceTimelineEventCreateNestedManyWithoutTransferredToInstanceInput = {
+    create?: XOR<MaintenanceTimelineEventCreateWithoutTransferredToInstanceInput, MaintenanceTimelineEventUncheckedCreateWithoutTransferredToInstanceInput> | MaintenanceTimelineEventCreateWithoutTransferredToInstanceInput[] | MaintenanceTimelineEventUncheckedCreateWithoutTransferredToInstanceInput[]
+    connectOrCreate?: MaintenanceTimelineEventCreateOrConnectWithoutTransferredToInstanceInput | MaintenanceTimelineEventCreateOrConnectWithoutTransferredToInstanceInput[]
+    createMany?: MaintenanceTimelineEventCreateManyTransferredToInstanceInputEnvelope
+    connect?: MaintenanceTimelineEventWhereUniqueInput | MaintenanceTimelineEventWhereUniqueInput[]
+  }
+
+  export type MaintenanceRequestUncheckedCreateNestedManyWithoutCurrentMaintenanceInstanceInput = {
+    create?: XOR<MaintenanceRequestCreateWithoutCurrentMaintenanceInstanceInput, MaintenanceRequestUncheckedCreateWithoutCurrentMaintenanceInstanceInput> | MaintenanceRequestCreateWithoutCurrentMaintenanceInstanceInput[] | MaintenanceRequestUncheckedCreateWithoutCurrentMaintenanceInstanceInput[]
+    connectOrCreate?: MaintenanceRequestCreateOrConnectWithoutCurrentMaintenanceInstanceInput | MaintenanceRequestCreateOrConnectWithoutCurrentMaintenanceInstanceInput[]
+    createMany?: MaintenanceRequestCreateManyCurrentMaintenanceInstanceInputEnvelope
+    connect?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+  }
+
+  export type MaintenanceTimelineEventUncheckedCreateNestedManyWithoutTransferredFromInstanceInput = {
+    create?: XOR<MaintenanceTimelineEventCreateWithoutTransferredFromInstanceInput, MaintenanceTimelineEventUncheckedCreateWithoutTransferredFromInstanceInput> | MaintenanceTimelineEventCreateWithoutTransferredFromInstanceInput[] | MaintenanceTimelineEventUncheckedCreateWithoutTransferredFromInstanceInput[]
+    connectOrCreate?: MaintenanceTimelineEventCreateOrConnectWithoutTransferredFromInstanceInput | MaintenanceTimelineEventCreateOrConnectWithoutTransferredFromInstanceInput[]
+    createMany?: MaintenanceTimelineEventCreateManyTransferredFromInstanceInputEnvelope
+    connect?: MaintenanceTimelineEventWhereUniqueInput | MaintenanceTimelineEventWhereUniqueInput[]
+  }
+
+  export type MaintenanceTimelineEventUncheckedCreateNestedManyWithoutTransferredToInstanceInput = {
+    create?: XOR<MaintenanceTimelineEventCreateWithoutTransferredToInstanceInput, MaintenanceTimelineEventUncheckedCreateWithoutTransferredToInstanceInput> | MaintenanceTimelineEventCreateWithoutTransferredToInstanceInput[] | MaintenanceTimelineEventUncheckedCreateWithoutTransferredToInstanceInput[]
+    connectOrCreate?: MaintenanceTimelineEventCreateOrConnectWithoutTransferredToInstanceInput | MaintenanceTimelineEventCreateOrConnectWithoutTransferredToInstanceInput[]
+    createMany?: MaintenanceTimelineEventCreateManyTransferredToInstanceInputEnvelope
+    connect?: MaintenanceTimelineEventWhereUniqueInput | MaintenanceTimelineEventWhereUniqueInput[]
+  }
+
+  export type MaintenanceRequestUpdateManyWithoutCurrentMaintenanceInstanceNestedInput = {
+    create?: XOR<MaintenanceRequestCreateWithoutCurrentMaintenanceInstanceInput, MaintenanceRequestUncheckedCreateWithoutCurrentMaintenanceInstanceInput> | MaintenanceRequestCreateWithoutCurrentMaintenanceInstanceInput[] | MaintenanceRequestUncheckedCreateWithoutCurrentMaintenanceInstanceInput[]
+    connectOrCreate?: MaintenanceRequestCreateOrConnectWithoutCurrentMaintenanceInstanceInput | MaintenanceRequestCreateOrConnectWithoutCurrentMaintenanceInstanceInput[]
+    upsert?: MaintenanceRequestUpsertWithWhereUniqueWithoutCurrentMaintenanceInstanceInput | MaintenanceRequestUpsertWithWhereUniqueWithoutCurrentMaintenanceInstanceInput[]
+    createMany?: MaintenanceRequestCreateManyCurrentMaintenanceInstanceInputEnvelope
+    set?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    disconnect?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    delete?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    connect?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    update?: MaintenanceRequestUpdateWithWhereUniqueWithoutCurrentMaintenanceInstanceInput | MaintenanceRequestUpdateWithWhereUniqueWithoutCurrentMaintenanceInstanceInput[]
+    updateMany?: MaintenanceRequestUpdateManyWithWhereWithoutCurrentMaintenanceInstanceInput | MaintenanceRequestUpdateManyWithWhereWithoutCurrentMaintenanceInstanceInput[]
+    deleteMany?: MaintenanceRequestScalarWhereInput | MaintenanceRequestScalarWhereInput[]
+  }
+
+  export type MaintenanceTimelineEventUpdateManyWithoutTransferredFromInstanceNestedInput = {
+    create?: XOR<MaintenanceTimelineEventCreateWithoutTransferredFromInstanceInput, MaintenanceTimelineEventUncheckedCreateWithoutTransferredFromInstanceInput> | MaintenanceTimelineEventCreateWithoutTransferredFromInstanceInput[] | MaintenanceTimelineEventUncheckedCreateWithoutTransferredFromInstanceInput[]
+    connectOrCreate?: MaintenanceTimelineEventCreateOrConnectWithoutTransferredFromInstanceInput | MaintenanceTimelineEventCreateOrConnectWithoutTransferredFromInstanceInput[]
+    upsert?: MaintenanceTimelineEventUpsertWithWhereUniqueWithoutTransferredFromInstanceInput | MaintenanceTimelineEventUpsertWithWhereUniqueWithoutTransferredFromInstanceInput[]
+    createMany?: MaintenanceTimelineEventCreateManyTransferredFromInstanceInputEnvelope
+    set?: MaintenanceTimelineEventWhereUniqueInput | MaintenanceTimelineEventWhereUniqueInput[]
+    disconnect?: MaintenanceTimelineEventWhereUniqueInput | MaintenanceTimelineEventWhereUniqueInput[]
+    delete?: MaintenanceTimelineEventWhereUniqueInput | MaintenanceTimelineEventWhereUniqueInput[]
+    connect?: MaintenanceTimelineEventWhereUniqueInput | MaintenanceTimelineEventWhereUniqueInput[]
+    update?: MaintenanceTimelineEventUpdateWithWhereUniqueWithoutTransferredFromInstanceInput | MaintenanceTimelineEventUpdateWithWhereUniqueWithoutTransferredFromInstanceInput[]
+    updateMany?: MaintenanceTimelineEventUpdateManyWithWhereWithoutTransferredFromInstanceInput | MaintenanceTimelineEventUpdateManyWithWhereWithoutTransferredFromInstanceInput[]
+    deleteMany?: MaintenanceTimelineEventScalarWhereInput | MaintenanceTimelineEventScalarWhereInput[]
+  }
+
+  export type MaintenanceTimelineEventUpdateManyWithoutTransferredToInstanceNestedInput = {
+    create?: XOR<MaintenanceTimelineEventCreateWithoutTransferredToInstanceInput, MaintenanceTimelineEventUncheckedCreateWithoutTransferredToInstanceInput> | MaintenanceTimelineEventCreateWithoutTransferredToInstanceInput[] | MaintenanceTimelineEventUncheckedCreateWithoutTransferredToInstanceInput[]
+    connectOrCreate?: MaintenanceTimelineEventCreateOrConnectWithoutTransferredToInstanceInput | MaintenanceTimelineEventCreateOrConnectWithoutTransferredToInstanceInput[]
+    upsert?: MaintenanceTimelineEventUpsertWithWhereUniqueWithoutTransferredToInstanceInput | MaintenanceTimelineEventUpsertWithWhereUniqueWithoutTransferredToInstanceInput[]
+    createMany?: MaintenanceTimelineEventCreateManyTransferredToInstanceInputEnvelope
+    set?: MaintenanceTimelineEventWhereUniqueInput | MaintenanceTimelineEventWhereUniqueInput[]
+    disconnect?: MaintenanceTimelineEventWhereUniqueInput | MaintenanceTimelineEventWhereUniqueInput[]
+    delete?: MaintenanceTimelineEventWhereUniqueInput | MaintenanceTimelineEventWhereUniqueInput[]
+    connect?: MaintenanceTimelineEventWhereUniqueInput | MaintenanceTimelineEventWhereUniqueInput[]
+    update?: MaintenanceTimelineEventUpdateWithWhereUniqueWithoutTransferredToInstanceInput | MaintenanceTimelineEventUpdateWithWhereUniqueWithoutTransferredToInstanceInput[]
+    updateMany?: MaintenanceTimelineEventUpdateManyWithWhereWithoutTransferredToInstanceInput | MaintenanceTimelineEventUpdateManyWithWhereWithoutTransferredToInstanceInput[]
+    deleteMany?: MaintenanceTimelineEventScalarWhereInput | MaintenanceTimelineEventScalarWhereInput[]
+  }
+
+  export type MaintenanceRequestUncheckedUpdateManyWithoutCurrentMaintenanceInstanceNestedInput = {
+    create?: XOR<MaintenanceRequestCreateWithoutCurrentMaintenanceInstanceInput, MaintenanceRequestUncheckedCreateWithoutCurrentMaintenanceInstanceInput> | MaintenanceRequestCreateWithoutCurrentMaintenanceInstanceInput[] | MaintenanceRequestUncheckedCreateWithoutCurrentMaintenanceInstanceInput[]
+    connectOrCreate?: MaintenanceRequestCreateOrConnectWithoutCurrentMaintenanceInstanceInput | MaintenanceRequestCreateOrConnectWithoutCurrentMaintenanceInstanceInput[]
+    upsert?: MaintenanceRequestUpsertWithWhereUniqueWithoutCurrentMaintenanceInstanceInput | MaintenanceRequestUpsertWithWhereUniqueWithoutCurrentMaintenanceInstanceInput[]
+    createMany?: MaintenanceRequestCreateManyCurrentMaintenanceInstanceInputEnvelope
+    set?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    disconnect?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    delete?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    connect?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    update?: MaintenanceRequestUpdateWithWhereUniqueWithoutCurrentMaintenanceInstanceInput | MaintenanceRequestUpdateWithWhereUniqueWithoutCurrentMaintenanceInstanceInput[]
+    updateMany?: MaintenanceRequestUpdateManyWithWhereWithoutCurrentMaintenanceInstanceInput | MaintenanceRequestUpdateManyWithWhereWithoutCurrentMaintenanceInstanceInput[]
+    deleteMany?: MaintenanceRequestScalarWhereInput | MaintenanceRequestScalarWhereInput[]
+  }
+
+  export type MaintenanceTimelineEventUncheckedUpdateManyWithoutTransferredFromInstanceNestedInput = {
+    create?: XOR<MaintenanceTimelineEventCreateWithoutTransferredFromInstanceInput, MaintenanceTimelineEventUncheckedCreateWithoutTransferredFromInstanceInput> | MaintenanceTimelineEventCreateWithoutTransferredFromInstanceInput[] | MaintenanceTimelineEventUncheckedCreateWithoutTransferredFromInstanceInput[]
+    connectOrCreate?: MaintenanceTimelineEventCreateOrConnectWithoutTransferredFromInstanceInput | MaintenanceTimelineEventCreateOrConnectWithoutTransferredFromInstanceInput[]
+    upsert?: MaintenanceTimelineEventUpsertWithWhereUniqueWithoutTransferredFromInstanceInput | MaintenanceTimelineEventUpsertWithWhereUniqueWithoutTransferredFromInstanceInput[]
+    createMany?: MaintenanceTimelineEventCreateManyTransferredFromInstanceInputEnvelope
+    set?: MaintenanceTimelineEventWhereUniqueInput | MaintenanceTimelineEventWhereUniqueInput[]
+    disconnect?: MaintenanceTimelineEventWhereUniqueInput | MaintenanceTimelineEventWhereUniqueInput[]
+    delete?: MaintenanceTimelineEventWhereUniqueInput | MaintenanceTimelineEventWhereUniqueInput[]
+    connect?: MaintenanceTimelineEventWhereUniqueInput | MaintenanceTimelineEventWhereUniqueInput[]
+    update?: MaintenanceTimelineEventUpdateWithWhereUniqueWithoutTransferredFromInstanceInput | MaintenanceTimelineEventUpdateWithWhereUniqueWithoutTransferredFromInstanceInput[]
+    updateMany?: MaintenanceTimelineEventUpdateManyWithWhereWithoutTransferredFromInstanceInput | MaintenanceTimelineEventUpdateManyWithWhereWithoutTransferredFromInstanceInput[]
+    deleteMany?: MaintenanceTimelineEventScalarWhereInput | MaintenanceTimelineEventScalarWhereInput[]
+  }
+
+  export type MaintenanceTimelineEventUncheckedUpdateManyWithoutTransferredToInstanceNestedInput = {
+    create?: XOR<MaintenanceTimelineEventCreateWithoutTransferredToInstanceInput, MaintenanceTimelineEventUncheckedCreateWithoutTransferredToInstanceInput> | MaintenanceTimelineEventCreateWithoutTransferredToInstanceInput[] | MaintenanceTimelineEventUncheckedCreateWithoutTransferredToInstanceInput[]
+    connectOrCreate?: MaintenanceTimelineEventCreateOrConnectWithoutTransferredToInstanceInput | MaintenanceTimelineEventCreateOrConnectWithoutTransferredToInstanceInput[]
+    upsert?: MaintenanceTimelineEventUpsertWithWhereUniqueWithoutTransferredToInstanceInput | MaintenanceTimelineEventUpsertWithWhereUniqueWithoutTransferredToInstanceInput[]
+    createMany?: MaintenanceTimelineEventCreateManyTransferredToInstanceInputEnvelope
+    set?: MaintenanceTimelineEventWhereUniqueInput | MaintenanceTimelineEventWhereUniqueInput[]
+    disconnect?: MaintenanceTimelineEventWhereUniqueInput | MaintenanceTimelineEventWhereUniqueInput[]
+    delete?: MaintenanceTimelineEventWhereUniqueInput | MaintenanceTimelineEventWhereUniqueInput[]
+    connect?: MaintenanceTimelineEventWhereUniqueInput | MaintenanceTimelineEventWhereUniqueInput[]
+    update?: MaintenanceTimelineEventUpdateWithWhereUniqueWithoutTransferredToInstanceInput | MaintenanceTimelineEventUpdateWithWhereUniqueWithoutTransferredToInstanceInput[]
+    updateMany?: MaintenanceTimelineEventUpdateManyWithWhereWithoutTransferredToInstanceInput | MaintenanceTimelineEventUpdateManyWithWhereWithoutTransferredToInstanceInput[]
+    deleteMany?: MaintenanceTimelineEventScalarWhereInput | MaintenanceTimelineEventScalarWhereInput[]
+  }
+
+  export type MaintenanceRequestCreateNestedManyWithoutServiceTypeInput = {
+    create?: XOR<MaintenanceRequestCreateWithoutServiceTypeInput, MaintenanceRequestUncheckedCreateWithoutServiceTypeInput> | MaintenanceRequestCreateWithoutServiceTypeInput[] | MaintenanceRequestUncheckedCreateWithoutServiceTypeInput[]
+    connectOrCreate?: MaintenanceRequestCreateOrConnectWithoutServiceTypeInput | MaintenanceRequestCreateOrConnectWithoutServiceTypeInput[]
+    createMany?: MaintenanceRequestCreateManyServiceTypeInputEnvelope
+    connect?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+  }
+
+  export type MaintenanceRequestUncheckedCreateNestedManyWithoutServiceTypeInput = {
+    create?: XOR<MaintenanceRequestCreateWithoutServiceTypeInput, MaintenanceRequestUncheckedCreateWithoutServiceTypeInput> | MaintenanceRequestCreateWithoutServiceTypeInput[] | MaintenanceRequestUncheckedCreateWithoutServiceTypeInput[]
+    connectOrCreate?: MaintenanceRequestCreateOrConnectWithoutServiceTypeInput | MaintenanceRequestCreateOrConnectWithoutServiceTypeInput[]
+    createMany?: MaintenanceRequestCreateManyServiceTypeInputEnvelope
+    connect?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+  }
+
+  export type MaintenanceRequestUpdateManyWithoutServiceTypeNestedInput = {
+    create?: XOR<MaintenanceRequestCreateWithoutServiceTypeInput, MaintenanceRequestUncheckedCreateWithoutServiceTypeInput> | MaintenanceRequestCreateWithoutServiceTypeInput[] | MaintenanceRequestUncheckedCreateWithoutServiceTypeInput[]
+    connectOrCreate?: MaintenanceRequestCreateOrConnectWithoutServiceTypeInput | MaintenanceRequestCreateOrConnectWithoutServiceTypeInput[]
+    upsert?: MaintenanceRequestUpsertWithWhereUniqueWithoutServiceTypeInput | MaintenanceRequestUpsertWithWhereUniqueWithoutServiceTypeInput[]
+    createMany?: MaintenanceRequestCreateManyServiceTypeInputEnvelope
+    set?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    disconnect?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    delete?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    connect?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    update?: MaintenanceRequestUpdateWithWhereUniqueWithoutServiceTypeInput | MaintenanceRequestUpdateWithWhereUniqueWithoutServiceTypeInput[]
+    updateMany?: MaintenanceRequestUpdateManyWithWhereWithoutServiceTypeInput | MaintenanceRequestUpdateManyWithWhereWithoutServiceTypeInput[]
+    deleteMany?: MaintenanceRequestScalarWhereInput | MaintenanceRequestScalarWhereInput[]
+  }
+
+  export type MaintenanceRequestUncheckedUpdateManyWithoutServiceTypeNestedInput = {
+    create?: XOR<MaintenanceRequestCreateWithoutServiceTypeInput, MaintenanceRequestUncheckedCreateWithoutServiceTypeInput> | MaintenanceRequestCreateWithoutServiceTypeInput[] | MaintenanceRequestUncheckedCreateWithoutServiceTypeInput[]
+    connectOrCreate?: MaintenanceRequestCreateOrConnectWithoutServiceTypeInput | MaintenanceRequestCreateOrConnectWithoutServiceTypeInput[]
+    upsert?: MaintenanceRequestUpsertWithWhereUniqueWithoutServiceTypeInput | MaintenanceRequestUpsertWithWhereUniqueWithoutServiceTypeInput[]
+    createMany?: MaintenanceRequestCreateManyServiceTypeInputEnvelope
+    set?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    disconnect?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    delete?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    connect?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    update?: MaintenanceRequestUpdateWithWhereUniqueWithoutServiceTypeInput | MaintenanceRequestUpdateWithWhereUniqueWithoutServiceTypeInput[]
+    updateMany?: MaintenanceRequestUpdateManyWithWhereWithoutServiceTypeInput | MaintenanceRequestUpdateManyWithWhereWithoutServiceTypeInput[]
+    deleteMany?: MaintenanceRequestScalarWhereInput | MaintenanceRequestScalarWhereInput[]
+  }
+
+  export type MaintenanceRequestCreateNestedManyWithoutEquipmentInput = {
+    create?: XOR<MaintenanceRequestCreateWithoutEquipmentInput, MaintenanceRequestUncheckedCreateWithoutEquipmentInput> | MaintenanceRequestCreateWithoutEquipmentInput[] | MaintenanceRequestUncheckedCreateWithoutEquipmentInput[]
+    connectOrCreate?: MaintenanceRequestCreateOrConnectWithoutEquipmentInput | MaintenanceRequestCreateOrConnectWithoutEquipmentInput[]
+    createMany?: MaintenanceRequestCreateManyEquipmentInputEnvelope
+    connect?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+  }
+
+  export type MaintenanceRequestUncheckedCreateNestedManyWithoutEquipmentInput = {
+    create?: XOR<MaintenanceRequestCreateWithoutEquipmentInput, MaintenanceRequestUncheckedCreateWithoutEquipmentInput> | MaintenanceRequestCreateWithoutEquipmentInput[] | MaintenanceRequestUncheckedCreateWithoutEquipmentInput[]
+    connectOrCreate?: MaintenanceRequestCreateOrConnectWithoutEquipmentInput | MaintenanceRequestCreateOrConnectWithoutEquipmentInput[]
+    createMany?: MaintenanceRequestCreateManyEquipmentInputEnvelope
+    connect?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+  }
+
+  export type MaintenanceRequestUpdateManyWithoutEquipmentNestedInput = {
+    create?: XOR<MaintenanceRequestCreateWithoutEquipmentInput, MaintenanceRequestUncheckedCreateWithoutEquipmentInput> | MaintenanceRequestCreateWithoutEquipmentInput[] | MaintenanceRequestUncheckedCreateWithoutEquipmentInput[]
+    connectOrCreate?: MaintenanceRequestCreateOrConnectWithoutEquipmentInput | MaintenanceRequestCreateOrConnectWithoutEquipmentInput[]
+    upsert?: MaintenanceRequestUpsertWithWhereUniqueWithoutEquipmentInput | MaintenanceRequestUpsertWithWhereUniqueWithoutEquipmentInput[]
+    createMany?: MaintenanceRequestCreateManyEquipmentInputEnvelope
+    set?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    disconnect?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    delete?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    connect?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    update?: MaintenanceRequestUpdateWithWhereUniqueWithoutEquipmentInput | MaintenanceRequestUpdateWithWhereUniqueWithoutEquipmentInput[]
+    updateMany?: MaintenanceRequestUpdateManyWithWhereWithoutEquipmentInput | MaintenanceRequestUpdateManyWithWhereWithoutEquipmentInput[]
+    deleteMany?: MaintenanceRequestScalarWhereInput | MaintenanceRequestScalarWhereInput[]
+  }
+
+  export type MaintenanceRequestUncheckedUpdateManyWithoutEquipmentNestedInput = {
+    create?: XOR<MaintenanceRequestCreateWithoutEquipmentInput, MaintenanceRequestUncheckedCreateWithoutEquipmentInput> | MaintenanceRequestCreateWithoutEquipmentInput[] | MaintenanceRequestUncheckedCreateWithoutEquipmentInput[]
+    connectOrCreate?: MaintenanceRequestCreateOrConnectWithoutEquipmentInput | MaintenanceRequestCreateOrConnectWithoutEquipmentInput[]
+    upsert?: MaintenanceRequestUpsertWithWhereUniqueWithoutEquipmentInput | MaintenanceRequestUpsertWithWhereUniqueWithoutEquipmentInput[]
+    createMany?: MaintenanceRequestCreateManyEquipmentInputEnvelope
+    set?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    disconnect?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    delete?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    connect?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    update?: MaintenanceRequestUpdateWithWhereUniqueWithoutEquipmentInput | MaintenanceRequestUpdateWithWhereUniqueWithoutEquipmentInput[]
+    updateMany?: MaintenanceRequestUpdateManyWithWhereWithoutEquipmentInput | MaintenanceRequestUpdateManyWithWhereWithoutEquipmentInput[]
+    deleteMany?: MaintenanceRequestScalarWhereInput | MaintenanceRequestScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutReportedOccurrencesInput = {
+    create?: XOR<UserCreateWithoutReportedOccurrencesInput, UserUncheckedCreateWithoutReportedOccurrencesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutReportedOccurrencesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type MaintenanceRequestCreateNestedOneWithoutOriginatingOccurrencesInput = {
+    create?: XOR<MaintenanceRequestCreateWithoutOriginatingOccurrencesInput, MaintenanceRequestUncheckedCreateWithoutOriginatingOccurrencesInput>
+    connectOrCreate?: MaintenanceRequestCreateOrConnectWithoutOriginatingOccurrencesInput
+    connect?: MaintenanceRequestWhereUniqueInput
+  }
+
+  export type EnumInfrastructureOccurrenceStatusFieldUpdateOperationsInput = {
+    set?: $Enums.InfrastructureOccurrenceStatus
+  }
+
+  export type UserUpdateOneRequiredWithoutReportedOccurrencesNestedInput = {
+    create?: XOR<UserCreateWithoutReportedOccurrencesInput, UserUncheckedCreateWithoutReportedOccurrencesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutReportedOccurrencesInput
+    upsert?: UserUpsertWithoutReportedOccurrencesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutReportedOccurrencesInput, UserUpdateWithoutReportedOccurrencesInput>, UserUncheckedUpdateWithoutReportedOccurrencesInput>
+  }
+
+  export type MaintenanceRequestUpdateOneWithoutOriginatingOccurrencesNestedInput = {
+    create?: XOR<MaintenanceRequestCreateWithoutOriginatingOccurrencesInput, MaintenanceRequestUncheckedCreateWithoutOriginatingOccurrencesInput>
+    connectOrCreate?: MaintenanceRequestCreateOrConnectWithoutOriginatingOccurrencesInput
+    upsert?: MaintenanceRequestUpsertWithoutOriginatingOccurrencesInput
+    disconnect?: MaintenanceRequestWhereInput | boolean
+    delete?: MaintenanceRequestWhereInput | boolean
+    connect?: MaintenanceRequestWhereUniqueInput
+    update?: XOR<XOR<MaintenanceRequestUpdateToOneWithWhereWithoutOriginatingOccurrencesInput, MaintenanceRequestUpdateWithoutOriginatingOccurrencesInput>, MaintenanceRequestUncheckedUpdateWithoutOriginatingOccurrencesInput>
+  }
+
+  export type MaterialCreateNestedOneWithoutChildsInput = {
+    create?: XOR<MaterialCreateWithoutChildsInput, MaterialUncheckedCreateWithoutChildsInput>
+    connectOrCreate?: MaterialCreateOrConnectWithoutChildsInput
+    connect?: MaterialWhereUniqueInput
+  }
+
+  export type MaterialCreateNestedManyWithoutParentMaterialInput = {
+    create?: XOR<MaterialCreateWithoutParentMaterialInput, MaterialUncheckedCreateWithoutParentMaterialInput> | MaterialCreateWithoutParentMaterialInput[] | MaterialUncheckedCreateWithoutParentMaterialInput[]
+    connectOrCreate?: MaterialCreateOrConnectWithoutParentMaterialInput | MaterialCreateOrConnectWithoutParentMaterialInput[]
+    createMany?: MaterialCreateManyParentMaterialInputEnvelope
+    connect?: MaterialWhereUniqueInput | MaterialWhereUniqueInput[]
+  }
+
+  export type MaterialRequestItemCreateNestedManyWithoutMaterialInput = {
+    create?: XOR<MaterialRequestItemCreateWithoutMaterialInput, MaterialRequestItemUncheckedCreateWithoutMaterialInput> | MaterialRequestItemCreateWithoutMaterialInput[] | MaterialRequestItemUncheckedCreateWithoutMaterialInput[]
+    connectOrCreate?: MaterialRequestItemCreateOrConnectWithoutMaterialInput | MaterialRequestItemCreateOrConnectWithoutMaterialInput[]
+    createMany?: MaterialRequestItemCreateManyMaterialInputEnvelope
+    connect?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+  }
+
+  export type MaterialUncheckedCreateNestedManyWithoutParentMaterialInput = {
+    create?: XOR<MaterialCreateWithoutParentMaterialInput, MaterialUncheckedCreateWithoutParentMaterialInput> | MaterialCreateWithoutParentMaterialInput[] | MaterialUncheckedCreateWithoutParentMaterialInput[]
+    connectOrCreate?: MaterialCreateOrConnectWithoutParentMaterialInput | MaterialCreateOrConnectWithoutParentMaterialInput[]
+    createMany?: MaterialCreateManyParentMaterialInputEnvelope
+    connect?: MaterialWhereUniqueInput | MaterialWhereUniqueInput[]
+  }
+
+  export type MaterialRequestItemUncheckedCreateNestedManyWithoutMaterialInput = {
+    create?: XOR<MaterialRequestItemCreateWithoutMaterialInput, MaterialRequestItemUncheckedCreateWithoutMaterialInput> | MaterialRequestItemCreateWithoutMaterialInput[] | MaterialRequestItemUncheckedCreateWithoutMaterialInput[]
+    connectOrCreate?: MaterialRequestItemCreateOrConnectWithoutMaterialInput | MaterialRequestItemCreateOrConnectWithoutMaterialInput[]
+    createMany?: MaterialRequestItemCreateManyMaterialInputEnvelope
+    connect?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+  }
+
+  export type MaterialUpdateOneWithoutChildsNestedInput = {
+    create?: XOR<MaterialCreateWithoutChildsInput, MaterialUncheckedCreateWithoutChildsInput>
+    connectOrCreate?: MaterialCreateOrConnectWithoutChildsInput
+    upsert?: MaterialUpsertWithoutChildsInput
+    disconnect?: MaterialWhereInput | boolean
+    delete?: MaterialWhereInput | boolean
+    connect?: MaterialWhereUniqueInput
+    update?: XOR<XOR<MaterialUpdateToOneWithWhereWithoutChildsInput, MaterialUpdateWithoutChildsInput>, MaterialUncheckedUpdateWithoutChildsInput>
+  }
+
+  export type MaterialUpdateManyWithoutParentMaterialNestedInput = {
+    create?: XOR<MaterialCreateWithoutParentMaterialInput, MaterialUncheckedCreateWithoutParentMaterialInput> | MaterialCreateWithoutParentMaterialInput[] | MaterialUncheckedCreateWithoutParentMaterialInput[]
+    connectOrCreate?: MaterialCreateOrConnectWithoutParentMaterialInput | MaterialCreateOrConnectWithoutParentMaterialInput[]
+    upsert?: MaterialUpsertWithWhereUniqueWithoutParentMaterialInput | MaterialUpsertWithWhereUniqueWithoutParentMaterialInput[]
+    createMany?: MaterialCreateManyParentMaterialInputEnvelope
+    set?: MaterialWhereUniqueInput | MaterialWhereUniqueInput[]
+    disconnect?: MaterialWhereUniqueInput | MaterialWhereUniqueInput[]
+    delete?: MaterialWhereUniqueInput | MaterialWhereUniqueInput[]
+    connect?: MaterialWhereUniqueInput | MaterialWhereUniqueInput[]
+    update?: MaterialUpdateWithWhereUniqueWithoutParentMaterialInput | MaterialUpdateWithWhereUniqueWithoutParentMaterialInput[]
+    updateMany?: MaterialUpdateManyWithWhereWithoutParentMaterialInput | MaterialUpdateManyWithWhereWithoutParentMaterialInput[]
+    deleteMany?: MaterialScalarWhereInput | MaterialScalarWhereInput[]
+  }
+
+  export type MaterialRequestItemUpdateManyWithoutMaterialNestedInput = {
+    create?: XOR<MaterialRequestItemCreateWithoutMaterialInput, MaterialRequestItemUncheckedCreateWithoutMaterialInput> | MaterialRequestItemCreateWithoutMaterialInput[] | MaterialRequestItemUncheckedCreateWithoutMaterialInput[]
+    connectOrCreate?: MaterialRequestItemCreateOrConnectWithoutMaterialInput | MaterialRequestItemCreateOrConnectWithoutMaterialInput[]
+    upsert?: MaterialRequestItemUpsertWithWhereUniqueWithoutMaterialInput | MaterialRequestItemUpsertWithWhereUniqueWithoutMaterialInput[]
+    createMany?: MaterialRequestItemCreateManyMaterialInputEnvelope
+    set?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+    disconnect?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+    delete?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+    connect?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+    update?: MaterialRequestItemUpdateWithWhereUniqueWithoutMaterialInput | MaterialRequestItemUpdateWithWhereUniqueWithoutMaterialInput[]
+    updateMany?: MaterialRequestItemUpdateManyWithWhereWithoutMaterialInput | MaterialRequestItemUpdateManyWithWhereWithoutMaterialInput[]
+    deleteMany?: MaterialRequestItemScalarWhereInput | MaterialRequestItemScalarWhereInput[]
+  }
+
+  export type MaterialUncheckedUpdateManyWithoutParentMaterialNestedInput = {
+    create?: XOR<MaterialCreateWithoutParentMaterialInput, MaterialUncheckedCreateWithoutParentMaterialInput> | MaterialCreateWithoutParentMaterialInput[] | MaterialUncheckedCreateWithoutParentMaterialInput[]
+    connectOrCreate?: MaterialCreateOrConnectWithoutParentMaterialInput | MaterialCreateOrConnectWithoutParentMaterialInput[]
+    upsert?: MaterialUpsertWithWhereUniqueWithoutParentMaterialInput | MaterialUpsertWithWhereUniqueWithoutParentMaterialInput[]
+    createMany?: MaterialCreateManyParentMaterialInputEnvelope
+    set?: MaterialWhereUniqueInput | MaterialWhereUniqueInput[]
+    disconnect?: MaterialWhereUniqueInput | MaterialWhereUniqueInput[]
+    delete?: MaterialWhereUniqueInput | MaterialWhereUniqueInput[]
+    connect?: MaterialWhereUniqueInput | MaterialWhereUniqueInput[]
+    update?: MaterialUpdateWithWhereUniqueWithoutParentMaterialInput | MaterialUpdateWithWhereUniqueWithoutParentMaterialInput[]
+    updateMany?: MaterialUpdateManyWithWhereWithoutParentMaterialInput | MaterialUpdateManyWithWhereWithoutParentMaterialInput[]
+    deleteMany?: MaterialScalarWhereInput | MaterialScalarWhereInput[]
+  }
+
+  export type MaterialRequestItemUncheckedUpdateManyWithoutMaterialNestedInput = {
+    create?: XOR<MaterialRequestItemCreateWithoutMaterialInput, MaterialRequestItemUncheckedCreateWithoutMaterialInput> | MaterialRequestItemCreateWithoutMaterialInput[] | MaterialRequestItemUncheckedCreateWithoutMaterialInput[]
+    connectOrCreate?: MaterialRequestItemCreateOrConnectWithoutMaterialInput | MaterialRequestItemCreateOrConnectWithoutMaterialInput[]
+    upsert?: MaterialRequestItemUpsertWithWhereUniqueWithoutMaterialInput | MaterialRequestItemUpsertWithWhereUniqueWithoutMaterialInput[]
+    createMany?: MaterialRequestItemCreateManyMaterialInputEnvelope
+    set?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+    disconnect?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+    delete?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+    connect?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+    update?: MaterialRequestItemUpdateWithWhereUniqueWithoutMaterialInput | MaterialRequestItemUpdateWithWhereUniqueWithoutMaterialInput[]
+    updateMany?: MaterialRequestItemUpdateManyWithWhereWithoutMaterialInput | MaterialRequestItemUpdateManyWithWhereWithoutMaterialInput[]
+    deleteMany?: MaterialRequestItemScalarWhereInput | MaterialRequestItemScalarWhereInput[]
+  }
+
+  export type MaintenanceRequestCreateNestedOneWithoutMaterialRequestsInput = {
+    create?: XOR<MaintenanceRequestCreateWithoutMaterialRequestsInput, MaintenanceRequestUncheckedCreateWithoutMaterialRequestsInput>
+    connectOrCreate?: MaintenanceRequestCreateOrConnectWithoutMaterialRequestsInput
+    connect?: MaintenanceRequestWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutMaterialRequestsCreatedInput = {
+    create?: XOR<UserCreateWithoutMaterialRequestsCreatedInput, UserUncheckedCreateWithoutMaterialRequestsCreatedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutMaterialRequestsCreatedInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutMaterialRequestsApprovedInput = {
+    create?: XOR<UserCreateWithoutMaterialRequestsApprovedInput, UserUncheckedCreateWithoutMaterialRequestsApprovedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutMaterialRequestsApprovedInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type MaterialRequestItemCreateNestedManyWithoutMaterialRequestInput = {
+    create?: XOR<MaterialRequestItemCreateWithoutMaterialRequestInput, MaterialRequestItemUncheckedCreateWithoutMaterialRequestInput> | MaterialRequestItemCreateWithoutMaterialRequestInput[] | MaterialRequestItemUncheckedCreateWithoutMaterialRequestInput[]
+    connectOrCreate?: MaterialRequestItemCreateOrConnectWithoutMaterialRequestInput | MaterialRequestItemCreateOrConnectWithoutMaterialRequestInput[]
+    createMany?: MaterialRequestItemCreateManyMaterialRequestInputEnvelope
+    connect?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+  }
+
+  export type MaterialRequestItemUncheckedCreateNestedManyWithoutMaterialRequestInput = {
+    create?: XOR<MaterialRequestItemCreateWithoutMaterialRequestInput, MaterialRequestItemUncheckedCreateWithoutMaterialRequestInput> | MaterialRequestItemCreateWithoutMaterialRequestInput[] | MaterialRequestItemUncheckedCreateWithoutMaterialRequestInput[]
+    connectOrCreate?: MaterialRequestItemCreateOrConnectWithoutMaterialRequestInput | MaterialRequestItemCreateOrConnectWithoutMaterialRequestInput[]
+    createMany?: MaterialRequestItemCreateManyMaterialRequestInputEnvelope
+    connect?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+  }
+
+  export type EnumMaterialRequestStatusFieldUpdateOperationsInput = {
+    set?: $Enums.MaterialRequestStatus
+  }
+
+  export type MaintenanceRequestUpdateOneRequiredWithoutMaterialRequestsNestedInput = {
+    create?: XOR<MaintenanceRequestCreateWithoutMaterialRequestsInput, MaintenanceRequestUncheckedCreateWithoutMaterialRequestsInput>
+    connectOrCreate?: MaintenanceRequestCreateOrConnectWithoutMaterialRequestsInput
+    upsert?: MaintenanceRequestUpsertWithoutMaterialRequestsInput
+    connect?: MaintenanceRequestWhereUniqueInput
+    update?: XOR<XOR<MaintenanceRequestUpdateToOneWithWhereWithoutMaterialRequestsInput, MaintenanceRequestUpdateWithoutMaterialRequestsInput>, MaintenanceRequestUncheckedUpdateWithoutMaterialRequestsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutMaterialRequestsCreatedNestedInput = {
+    create?: XOR<UserCreateWithoutMaterialRequestsCreatedInput, UserUncheckedCreateWithoutMaterialRequestsCreatedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutMaterialRequestsCreatedInput
+    upsert?: UserUpsertWithoutMaterialRequestsCreatedInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutMaterialRequestsCreatedInput, UserUpdateWithoutMaterialRequestsCreatedInput>, UserUncheckedUpdateWithoutMaterialRequestsCreatedInput>
+  }
+
+  export type UserUpdateOneWithoutMaterialRequestsApprovedNestedInput = {
+    create?: XOR<UserCreateWithoutMaterialRequestsApprovedInput, UserUncheckedCreateWithoutMaterialRequestsApprovedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutMaterialRequestsApprovedInput
+    upsert?: UserUpsertWithoutMaterialRequestsApprovedInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutMaterialRequestsApprovedInput, UserUpdateWithoutMaterialRequestsApprovedInput>, UserUncheckedUpdateWithoutMaterialRequestsApprovedInput>
+  }
+
+  export type MaterialRequestItemUpdateManyWithoutMaterialRequestNestedInput = {
+    create?: XOR<MaterialRequestItemCreateWithoutMaterialRequestInput, MaterialRequestItemUncheckedCreateWithoutMaterialRequestInput> | MaterialRequestItemCreateWithoutMaterialRequestInput[] | MaterialRequestItemUncheckedCreateWithoutMaterialRequestInput[]
+    connectOrCreate?: MaterialRequestItemCreateOrConnectWithoutMaterialRequestInput | MaterialRequestItemCreateOrConnectWithoutMaterialRequestInput[]
+    upsert?: MaterialRequestItemUpsertWithWhereUniqueWithoutMaterialRequestInput | MaterialRequestItemUpsertWithWhereUniqueWithoutMaterialRequestInput[]
+    createMany?: MaterialRequestItemCreateManyMaterialRequestInputEnvelope
+    set?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+    disconnect?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+    delete?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+    connect?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+    update?: MaterialRequestItemUpdateWithWhereUniqueWithoutMaterialRequestInput | MaterialRequestItemUpdateWithWhereUniqueWithoutMaterialRequestInput[]
+    updateMany?: MaterialRequestItemUpdateManyWithWhereWithoutMaterialRequestInput | MaterialRequestItemUpdateManyWithWhereWithoutMaterialRequestInput[]
+    deleteMany?: MaterialRequestItemScalarWhereInput | MaterialRequestItemScalarWhereInput[]
+  }
+
+  export type MaterialRequestItemUncheckedUpdateManyWithoutMaterialRequestNestedInput = {
+    create?: XOR<MaterialRequestItemCreateWithoutMaterialRequestInput, MaterialRequestItemUncheckedCreateWithoutMaterialRequestInput> | MaterialRequestItemCreateWithoutMaterialRequestInput[] | MaterialRequestItemUncheckedCreateWithoutMaterialRequestInput[]
+    connectOrCreate?: MaterialRequestItemCreateOrConnectWithoutMaterialRequestInput | MaterialRequestItemCreateOrConnectWithoutMaterialRequestInput[]
+    upsert?: MaterialRequestItemUpsertWithWhereUniqueWithoutMaterialRequestInput | MaterialRequestItemUpsertWithWhereUniqueWithoutMaterialRequestInput[]
+    createMany?: MaterialRequestItemCreateManyMaterialRequestInputEnvelope
+    set?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+    disconnect?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+    delete?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+    connect?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+    update?: MaterialRequestItemUpdateWithWhereUniqueWithoutMaterialRequestInput | MaterialRequestItemUpdateWithWhereUniqueWithoutMaterialRequestInput[]
+    updateMany?: MaterialRequestItemUpdateManyWithWhereWithoutMaterialRequestInput | MaterialRequestItemUpdateManyWithWhereWithoutMaterialRequestInput[]
+    deleteMany?: MaterialRequestItemScalarWhereInput | MaterialRequestItemScalarWhereInput[]
+  }
+
+  export type MaterialRequestCreateNestedOneWithoutItemsInput = {
+    create?: XOR<MaterialRequestCreateWithoutItemsInput, MaterialRequestUncheckedCreateWithoutItemsInput>
+    connectOrCreate?: MaterialRequestCreateOrConnectWithoutItemsInput
+    connect?: MaterialRequestWhereUniqueInput
+  }
+
+  export type MaterialCreateNestedOneWithoutMaterialRequestItemsInput = {
+    create?: XOR<MaterialCreateWithoutMaterialRequestItemsInput, MaterialUncheckedCreateWithoutMaterialRequestItemsInput>
+    connectOrCreate?: MaterialCreateOrConnectWithoutMaterialRequestItemsInput
+    connect?: MaterialWhereUniqueInput
+  }
+
+  export type DecimalFieldUpdateOperationsInput = {
+    set?: Decimal | DecimalJsLike | number | string
+    increment?: Decimal | DecimalJsLike | number | string
+    decrement?: Decimal | DecimalJsLike | number | string
+    multiply?: Decimal | DecimalJsLike | number | string
+    divide?: Decimal | DecimalJsLike | number | string
+  }
+
+  export type NullableDecimalFieldUpdateOperationsInput = {
+    set?: Decimal | DecimalJsLike | number | string | null
+    increment?: Decimal | DecimalJsLike | number | string
+    decrement?: Decimal | DecimalJsLike | number | string
+    multiply?: Decimal | DecimalJsLike | number | string
+    divide?: Decimal | DecimalJsLike | number | string
+  }
+
+  export type MaterialRequestUpdateOneRequiredWithoutItemsNestedInput = {
+    create?: XOR<MaterialRequestCreateWithoutItemsInput, MaterialRequestUncheckedCreateWithoutItemsInput>
+    connectOrCreate?: MaterialRequestCreateOrConnectWithoutItemsInput
+    upsert?: MaterialRequestUpsertWithoutItemsInput
+    connect?: MaterialRequestWhereUniqueInput
+    update?: XOR<XOR<MaterialRequestUpdateToOneWithWhereWithoutItemsInput, MaterialRequestUpdateWithoutItemsInput>, MaterialRequestUncheckedUpdateWithoutItemsInput>
+  }
+
+  export type MaterialUpdateOneRequiredWithoutMaterialRequestItemsNestedInput = {
+    create?: XOR<MaterialCreateWithoutMaterialRequestItemsInput, MaterialUncheckedCreateWithoutMaterialRequestItemsInput>
+    connectOrCreate?: MaterialCreateOrConnectWithoutMaterialRequestItemsInput
+    upsert?: MaterialUpsertWithoutMaterialRequestItemsInput
+    connect?: MaterialWhereUniqueInput
+    update?: XOR<XOR<MaterialUpdateToOneWithWhereWithoutMaterialRequestItemsInput, MaterialUpdateWithoutMaterialRequestItemsInput>, MaterialUncheckedUpdateWithoutMaterialRequestItemsInput>
   }
 
   export type LogLoginCreateNestedManyWithoutUserInput = {
@@ -10101,6 +23623,48 @@ export namespace Prisma {
     connect?: MagicLinkWhereUniqueInput | MagicLinkWhereUniqueInput[]
   }
 
+  export type InfrastructureOccurrenceCreateNestedManyWithoutReportedByInput = {
+    create?: XOR<InfrastructureOccurrenceCreateWithoutReportedByInput, InfrastructureOccurrenceUncheckedCreateWithoutReportedByInput> | InfrastructureOccurrenceCreateWithoutReportedByInput[] | InfrastructureOccurrenceUncheckedCreateWithoutReportedByInput[]
+    connectOrCreate?: InfrastructureOccurrenceCreateOrConnectWithoutReportedByInput | InfrastructureOccurrenceCreateOrConnectWithoutReportedByInput[]
+    createMany?: InfrastructureOccurrenceCreateManyReportedByInputEnvelope
+    connect?: InfrastructureOccurrenceWhereUniqueInput | InfrastructureOccurrenceWhereUniqueInput[]
+  }
+
+  export type MaintenanceRequestCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<MaintenanceRequestCreateWithoutCreatedByInput, MaintenanceRequestUncheckedCreateWithoutCreatedByInput> | MaintenanceRequestCreateWithoutCreatedByInput[] | MaintenanceRequestUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: MaintenanceRequestCreateOrConnectWithoutCreatedByInput | MaintenanceRequestCreateOrConnectWithoutCreatedByInput[]
+    createMany?: MaintenanceRequestCreateManyCreatedByInputEnvelope
+    connect?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+  }
+
+  export type MaintenanceRequestCreateNestedManyWithoutAssignedToInput = {
+    create?: XOR<MaintenanceRequestCreateWithoutAssignedToInput, MaintenanceRequestUncheckedCreateWithoutAssignedToInput> | MaintenanceRequestCreateWithoutAssignedToInput[] | MaintenanceRequestUncheckedCreateWithoutAssignedToInput[]
+    connectOrCreate?: MaintenanceRequestCreateOrConnectWithoutAssignedToInput | MaintenanceRequestCreateOrConnectWithoutAssignedToInput[]
+    createMany?: MaintenanceRequestCreateManyAssignedToInputEnvelope
+    connect?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+  }
+
+  export type MaintenanceTimelineEventCreateNestedManyWithoutActionByInput = {
+    create?: XOR<MaintenanceTimelineEventCreateWithoutActionByInput, MaintenanceTimelineEventUncheckedCreateWithoutActionByInput> | MaintenanceTimelineEventCreateWithoutActionByInput[] | MaintenanceTimelineEventUncheckedCreateWithoutActionByInput[]
+    connectOrCreate?: MaintenanceTimelineEventCreateOrConnectWithoutActionByInput | MaintenanceTimelineEventCreateOrConnectWithoutActionByInput[]
+    createMany?: MaintenanceTimelineEventCreateManyActionByInputEnvelope
+    connect?: MaintenanceTimelineEventWhereUniqueInput | MaintenanceTimelineEventWhereUniqueInput[]
+  }
+
+  export type MaterialRequestCreateNestedManyWithoutRequestedByInput = {
+    create?: XOR<MaterialRequestCreateWithoutRequestedByInput, MaterialRequestUncheckedCreateWithoutRequestedByInput> | MaterialRequestCreateWithoutRequestedByInput[] | MaterialRequestUncheckedCreateWithoutRequestedByInput[]
+    connectOrCreate?: MaterialRequestCreateOrConnectWithoutRequestedByInput | MaterialRequestCreateOrConnectWithoutRequestedByInput[]
+    createMany?: MaterialRequestCreateManyRequestedByInputEnvelope
+    connect?: MaterialRequestWhereUniqueInput | MaterialRequestWhereUniqueInput[]
+  }
+
+  export type MaterialRequestCreateNestedManyWithoutApprovedByInput = {
+    create?: XOR<MaterialRequestCreateWithoutApprovedByInput, MaterialRequestUncheckedCreateWithoutApprovedByInput> | MaterialRequestCreateWithoutApprovedByInput[] | MaterialRequestUncheckedCreateWithoutApprovedByInput[]
+    connectOrCreate?: MaterialRequestCreateOrConnectWithoutApprovedByInput | MaterialRequestCreateOrConnectWithoutApprovedByInput[]
+    createMany?: MaterialRequestCreateManyApprovedByInputEnvelope
+    connect?: MaterialRequestWhereUniqueInput | MaterialRequestWhereUniqueInput[]
+  }
+
   export type LogLoginUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<LogLoginCreateWithoutUserInput, LogLoginUncheckedCreateWithoutUserInput> | LogLoginCreateWithoutUserInput[] | LogLoginUncheckedCreateWithoutUserInput[]
     connectOrCreate?: LogLoginCreateOrConnectWithoutUserInput | LogLoginCreateOrConnectWithoutUserInput[]
@@ -10119,6 +23683,48 @@ export namespace Prisma {
     connectOrCreate?: MagicLinkCreateOrConnectWithoutUserInput | MagicLinkCreateOrConnectWithoutUserInput[]
     createMany?: MagicLinkCreateManyUserInputEnvelope
     connect?: MagicLinkWhereUniqueInput | MagicLinkWhereUniqueInput[]
+  }
+
+  export type InfrastructureOccurrenceUncheckedCreateNestedManyWithoutReportedByInput = {
+    create?: XOR<InfrastructureOccurrenceCreateWithoutReportedByInput, InfrastructureOccurrenceUncheckedCreateWithoutReportedByInput> | InfrastructureOccurrenceCreateWithoutReportedByInput[] | InfrastructureOccurrenceUncheckedCreateWithoutReportedByInput[]
+    connectOrCreate?: InfrastructureOccurrenceCreateOrConnectWithoutReportedByInput | InfrastructureOccurrenceCreateOrConnectWithoutReportedByInput[]
+    createMany?: InfrastructureOccurrenceCreateManyReportedByInputEnvelope
+    connect?: InfrastructureOccurrenceWhereUniqueInput | InfrastructureOccurrenceWhereUniqueInput[]
+  }
+
+  export type MaintenanceRequestUncheckedCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<MaintenanceRequestCreateWithoutCreatedByInput, MaintenanceRequestUncheckedCreateWithoutCreatedByInput> | MaintenanceRequestCreateWithoutCreatedByInput[] | MaintenanceRequestUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: MaintenanceRequestCreateOrConnectWithoutCreatedByInput | MaintenanceRequestCreateOrConnectWithoutCreatedByInput[]
+    createMany?: MaintenanceRequestCreateManyCreatedByInputEnvelope
+    connect?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+  }
+
+  export type MaintenanceRequestUncheckedCreateNestedManyWithoutAssignedToInput = {
+    create?: XOR<MaintenanceRequestCreateWithoutAssignedToInput, MaintenanceRequestUncheckedCreateWithoutAssignedToInput> | MaintenanceRequestCreateWithoutAssignedToInput[] | MaintenanceRequestUncheckedCreateWithoutAssignedToInput[]
+    connectOrCreate?: MaintenanceRequestCreateOrConnectWithoutAssignedToInput | MaintenanceRequestCreateOrConnectWithoutAssignedToInput[]
+    createMany?: MaintenanceRequestCreateManyAssignedToInputEnvelope
+    connect?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+  }
+
+  export type MaintenanceTimelineEventUncheckedCreateNestedManyWithoutActionByInput = {
+    create?: XOR<MaintenanceTimelineEventCreateWithoutActionByInput, MaintenanceTimelineEventUncheckedCreateWithoutActionByInput> | MaintenanceTimelineEventCreateWithoutActionByInput[] | MaintenanceTimelineEventUncheckedCreateWithoutActionByInput[]
+    connectOrCreate?: MaintenanceTimelineEventCreateOrConnectWithoutActionByInput | MaintenanceTimelineEventCreateOrConnectWithoutActionByInput[]
+    createMany?: MaintenanceTimelineEventCreateManyActionByInputEnvelope
+    connect?: MaintenanceTimelineEventWhereUniqueInput | MaintenanceTimelineEventWhereUniqueInput[]
+  }
+
+  export type MaterialRequestUncheckedCreateNestedManyWithoutRequestedByInput = {
+    create?: XOR<MaterialRequestCreateWithoutRequestedByInput, MaterialRequestUncheckedCreateWithoutRequestedByInput> | MaterialRequestCreateWithoutRequestedByInput[] | MaterialRequestUncheckedCreateWithoutRequestedByInput[]
+    connectOrCreate?: MaterialRequestCreateOrConnectWithoutRequestedByInput | MaterialRequestCreateOrConnectWithoutRequestedByInput[]
+    createMany?: MaterialRequestCreateManyRequestedByInputEnvelope
+    connect?: MaterialRequestWhereUniqueInput | MaterialRequestWhereUniqueInput[]
+  }
+
+  export type MaterialRequestUncheckedCreateNestedManyWithoutApprovedByInput = {
+    create?: XOR<MaterialRequestCreateWithoutApprovedByInput, MaterialRequestUncheckedCreateWithoutApprovedByInput> | MaterialRequestCreateWithoutApprovedByInput[] | MaterialRequestUncheckedCreateWithoutApprovedByInput[]
+    connectOrCreate?: MaterialRequestCreateOrConnectWithoutApprovedByInput | MaterialRequestCreateOrConnectWithoutApprovedByInput[]
+    createMany?: MaterialRequestCreateManyApprovedByInputEnvelope
+    connect?: MaterialRequestWhereUniqueInput | MaterialRequestWhereUniqueInput[]
   }
 
   export type LogLoginUpdateManyWithoutUserNestedInput = {
@@ -10162,6 +23768,90 @@ export namespace Prisma {
     deleteMany?: MagicLinkScalarWhereInput | MagicLinkScalarWhereInput[]
   }
 
+  export type InfrastructureOccurrenceUpdateManyWithoutReportedByNestedInput = {
+    create?: XOR<InfrastructureOccurrenceCreateWithoutReportedByInput, InfrastructureOccurrenceUncheckedCreateWithoutReportedByInput> | InfrastructureOccurrenceCreateWithoutReportedByInput[] | InfrastructureOccurrenceUncheckedCreateWithoutReportedByInput[]
+    connectOrCreate?: InfrastructureOccurrenceCreateOrConnectWithoutReportedByInput | InfrastructureOccurrenceCreateOrConnectWithoutReportedByInput[]
+    upsert?: InfrastructureOccurrenceUpsertWithWhereUniqueWithoutReportedByInput | InfrastructureOccurrenceUpsertWithWhereUniqueWithoutReportedByInput[]
+    createMany?: InfrastructureOccurrenceCreateManyReportedByInputEnvelope
+    set?: InfrastructureOccurrenceWhereUniqueInput | InfrastructureOccurrenceWhereUniqueInput[]
+    disconnect?: InfrastructureOccurrenceWhereUniqueInput | InfrastructureOccurrenceWhereUniqueInput[]
+    delete?: InfrastructureOccurrenceWhereUniqueInput | InfrastructureOccurrenceWhereUniqueInput[]
+    connect?: InfrastructureOccurrenceWhereUniqueInput | InfrastructureOccurrenceWhereUniqueInput[]
+    update?: InfrastructureOccurrenceUpdateWithWhereUniqueWithoutReportedByInput | InfrastructureOccurrenceUpdateWithWhereUniqueWithoutReportedByInput[]
+    updateMany?: InfrastructureOccurrenceUpdateManyWithWhereWithoutReportedByInput | InfrastructureOccurrenceUpdateManyWithWhereWithoutReportedByInput[]
+    deleteMany?: InfrastructureOccurrenceScalarWhereInput | InfrastructureOccurrenceScalarWhereInput[]
+  }
+
+  export type MaintenanceRequestUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<MaintenanceRequestCreateWithoutCreatedByInput, MaintenanceRequestUncheckedCreateWithoutCreatedByInput> | MaintenanceRequestCreateWithoutCreatedByInput[] | MaintenanceRequestUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: MaintenanceRequestCreateOrConnectWithoutCreatedByInput | MaintenanceRequestCreateOrConnectWithoutCreatedByInput[]
+    upsert?: MaintenanceRequestUpsertWithWhereUniqueWithoutCreatedByInput | MaintenanceRequestUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: MaintenanceRequestCreateManyCreatedByInputEnvelope
+    set?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    disconnect?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    delete?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    connect?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    update?: MaintenanceRequestUpdateWithWhereUniqueWithoutCreatedByInput | MaintenanceRequestUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: MaintenanceRequestUpdateManyWithWhereWithoutCreatedByInput | MaintenanceRequestUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: MaintenanceRequestScalarWhereInput | MaintenanceRequestScalarWhereInput[]
+  }
+
+  export type MaintenanceRequestUpdateManyWithoutAssignedToNestedInput = {
+    create?: XOR<MaintenanceRequestCreateWithoutAssignedToInput, MaintenanceRequestUncheckedCreateWithoutAssignedToInput> | MaintenanceRequestCreateWithoutAssignedToInput[] | MaintenanceRequestUncheckedCreateWithoutAssignedToInput[]
+    connectOrCreate?: MaintenanceRequestCreateOrConnectWithoutAssignedToInput | MaintenanceRequestCreateOrConnectWithoutAssignedToInput[]
+    upsert?: MaintenanceRequestUpsertWithWhereUniqueWithoutAssignedToInput | MaintenanceRequestUpsertWithWhereUniqueWithoutAssignedToInput[]
+    createMany?: MaintenanceRequestCreateManyAssignedToInputEnvelope
+    set?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    disconnect?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    delete?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    connect?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    update?: MaintenanceRequestUpdateWithWhereUniqueWithoutAssignedToInput | MaintenanceRequestUpdateWithWhereUniqueWithoutAssignedToInput[]
+    updateMany?: MaintenanceRequestUpdateManyWithWhereWithoutAssignedToInput | MaintenanceRequestUpdateManyWithWhereWithoutAssignedToInput[]
+    deleteMany?: MaintenanceRequestScalarWhereInput | MaintenanceRequestScalarWhereInput[]
+  }
+
+  export type MaintenanceTimelineEventUpdateManyWithoutActionByNestedInput = {
+    create?: XOR<MaintenanceTimelineEventCreateWithoutActionByInput, MaintenanceTimelineEventUncheckedCreateWithoutActionByInput> | MaintenanceTimelineEventCreateWithoutActionByInput[] | MaintenanceTimelineEventUncheckedCreateWithoutActionByInput[]
+    connectOrCreate?: MaintenanceTimelineEventCreateOrConnectWithoutActionByInput | MaintenanceTimelineEventCreateOrConnectWithoutActionByInput[]
+    upsert?: MaintenanceTimelineEventUpsertWithWhereUniqueWithoutActionByInput | MaintenanceTimelineEventUpsertWithWhereUniqueWithoutActionByInput[]
+    createMany?: MaintenanceTimelineEventCreateManyActionByInputEnvelope
+    set?: MaintenanceTimelineEventWhereUniqueInput | MaintenanceTimelineEventWhereUniqueInput[]
+    disconnect?: MaintenanceTimelineEventWhereUniqueInput | MaintenanceTimelineEventWhereUniqueInput[]
+    delete?: MaintenanceTimelineEventWhereUniqueInput | MaintenanceTimelineEventWhereUniqueInput[]
+    connect?: MaintenanceTimelineEventWhereUniqueInput | MaintenanceTimelineEventWhereUniqueInput[]
+    update?: MaintenanceTimelineEventUpdateWithWhereUniqueWithoutActionByInput | MaintenanceTimelineEventUpdateWithWhereUniqueWithoutActionByInput[]
+    updateMany?: MaintenanceTimelineEventUpdateManyWithWhereWithoutActionByInput | MaintenanceTimelineEventUpdateManyWithWhereWithoutActionByInput[]
+    deleteMany?: MaintenanceTimelineEventScalarWhereInput | MaintenanceTimelineEventScalarWhereInput[]
+  }
+
+  export type MaterialRequestUpdateManyWithoutRequestedByNestedInput = {
+    create?: XOR<MaterialRequestCreateWithoutRequestedByInput, MaterialRequestUncheckedCreateWithoutRequestedByInput> | MaterialRequestCreateWithoutRequestedByInput[] | MaterialRequestUncheckedCreateWithoutRequestedByInput[]
+    connectOrCreate?: MaterialRequestCreateOrConnectWithoutRequestedByInput | MaterialRequestCreateOrConnectWithoutRequestedByInput[]
+    upsert?: MaterialRequestUpsertWithWhereUniqueWithoutRequestedByInput | MaterialRequestUpsertWithWhereUniqueWithoutRequestedByInput[]
+    createMany?: MaterialRequestCreateManyRequestedByInputEnvelope
+    set?: MaterialRequestWhereUniqueInput | MaterialRequestWhereUniqueInput[]
+    disconnect?: MaterialRequestWhereUniqueInput | MaterialRequestWhereUniqueInput[]
+    delete?: MaterialRequestWhereUniqueInput | MaterialRequestWhereUniqueInput[]
+    connect?: MaterialRequestWhereUniqueInput | MaterialRequestWhereUniqueInput[]
+    update?: MaterialRequestUpdateWithWhereUniqueWithoutRequestedByInput | MaterialRequestUpdateWithWhereUniqueWithoutRequestedByInput[]
+    updateMany?: MaterialRequestUpdateManyWithWhereWithoutRequestedByInput | MaterialRequestUpdateManyWithWhereWithoutRequestedByInput[]
+    deleteMany?: MaterialRequestScalarWhereInput | MaterialRequestScalarWhereInput[]
+  }
+
+  export type MaterialRequestUpdateManyWithoutApprovedByNestedInput = {
+    create?: XOR<MaterialRequestCreateWithoutApprovedByInput, MaterialRequestUncheckedCreateWithoutApprovedByInput> | MaterialRequestCreateWithoutApprovedByInput[] | MaterialRequestUncheckedCreateWithoutApprovedByInput[]
+    connectOrCreate?: MaterialRequestCreateOrConnectWithoutApprovedByInput | MaterialRequestCreateOrConnectWithoutApprovedByInput[]
+    upsert?: MaterialRequestUpsertWithWhereUniqueWithoutApprovedByInput | MaterialRequestUpsertWithWhereUniqueWithoutApprovedByInput[]
+    createMany?: MaterialRequestCreateManyApprovedByInputEnvelope
+    set?: MaterialRequestWhereUniqueInput | MaterialRequestWhereUniqueInput[]
+    disconnect?: MaterialRequestWhereUniqueInput | MaterialRequestWhereUniqueInput[]
+    delete?: MaterialRequestWhereUniqueInput | MaterialRequestWhereUniqueInput[]
+    connect?: MaterialRequestWhereUniqueInput | MaterialRequestWhereUniqueInput[]
+    update?: MaterialRequestUpdateWithWhereUniqueWithoutApprovedByInput | MaterialRequestUpdateWithWhereUniqueWithoutApprovedByInput[]
+    updateMany?: MaterialRequestUpdateManyWithWhereWithoutApprovedByInput | MaterialRequestUpdateManyWithWhereWithoutApprovedByInput[]
+    deleteMany?: MaterialRequestScalarWhereInput | MaterialRequestScalarWhereInput[]
+  }
+
   export type LogLoginUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<LogLoginCreateWithoutUserInput, LogLoginUncheckedCreateWithoutUserInput> | LogLoginCreateWithoutUserInput[] | LogLoginUncheckedCreateWithoutUserInput[]
     connectOrCreate?: LogLoginCreateOrConnectWithoutUserInput | LogLoginCreateOrConnectWithoutUserInput[]
@@ -10203,14 +23893,94 @@ export namespace Prisma {
     deleteMany?: MagicLinkScalarWhereInput | MagicLinkScalarWhereInput[]
   }
 
+  export type InfrastructureOccurrenceUncheckedUpdateManyWithoutReportedByNestedInput = {
+    create?: XOR<InfrastructureOccurrenceCreateWithoutReportedByInput, InfrastructureOccurrenceUncheckedCreateWithoutReportedByInput> | InfrastructureOccurrenceCreateWithoutReportedByInput[] | InfrastructureOccurrenceUncheckedCreateWithoutReportedByInput[]
+    connectOrCreate?: InfrastructureOccurrenceCreateOrConnectWithoutReportedByInput | InfrastructureOccurrenceCreateOrConnectWithoutReportedByInput[]
+    upsert?: InfrastructureOccurrenceUpsertWithWhereUniqueWithoutReportedByInput | InfrastructureOccurrenceUpsertWithWhereUniqueWithoutReportedByInput[]
+    createMany?: InfrastructureOccurrenceCreateManyReportedByInputEnvelope
+    set?: InfrastructureOccurrenceWhereUniqueInput | InfrastructureOccurrenceWhereUniqueInput[]
+    disconnect?: InfrastructureOccurrenceWhereUniqueInput | InfrastructureOccurrenceWhereUniqueInput[]
+    delete?: InfrastructureOccurrenceWhereUniqueInput | InfrastructureOccurrenceWhereUniqueInput[]
+    connect?: InfrastructureOccurrenceWhereUniqueInput | InfrastructureOccurrenceWhereUniqueInput[]
+    update?: InfrastructureOccurrenceUpdateWithWhereUniqueWithoutReportedByInput | InfrastructureOccurrenceUpdateWithWhereUniqueWithoutReportedByInput[]
+    updateMany?: InfrastructureOccurrenceUpdateManyWithWhereWithoutReportedByInput | InfrastructureOccurrenceUpdateManyWithWhereWithoutReportedByInput[]
+    deleteMany?: InfrastructureOccurrenceScalarWhereInput | InfrastructureOccurrenceScalarWhereInput[]
+  }
+
+  export type MaintenanceRequestUncheckedUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<MaintenanceRequestCreateWithoutCreatedByInput, MaintenanceRequestUncheckedCreateWithoutCreatedByInput> | MaintenanceRequestCreateWithoutCreatedByInput[] | MaintenanceRequestUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: MaintenanceRequestCreateOrConnectWithoutCreatedByInput | MaintenanceRequestCreateOrConnectWithoutCreatedByInput[]
+    upsert?: MaintenanceRequestUpsertWithWhereUniqueWithoutCreatedByInput | MaintenanceRequestUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: MaintenanceRequestCreateManyCreatedByInputEnvelope
+    set?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    disconnect?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    delete?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    connect?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    update?: MaintenanceRequestUpdateWithWhereUniqueWithoutCreatedByInput | MaintenanceRequestUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: MaintenanceRequestUpdateManyWithWhereWithoutCreatedByInput | MaintenanceRequestUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: MaintenanceRequestScalarWhereInput | MaintenanceRequestScalarWhereInput[]
+  }
+
+  export type MaintenanceRequestUncheckedUpdateManyWithoutAssignedToNestedInput = {
+    create?: XOR<MaintenanceRequestCreateWithoutAssignedToInput, MaintenanceRequestUncheckedCreateWithoutAssignedToInput> | MaintenanceRequestCreateWithoutAssignedToInput[] | MaintenanceRequestUncheckedCreateWithoutAssignedToInput[]
+    connectOrCreate?: MaintenanceRequestCreateOrConnectWithoutAssignedToInput | MaintenanceRequestCreateOrConnectWithoutAssignedToInput[]
+    upsert?: MaintenanceRequestUpsertWithWhereUniqueWithoutAssignedToInput | MaintenanceRequestUpsertWithWhereUniqueWithoutAssignedToInput[]
+    createMany?: MaintenanceRequestCreateManyAssignedToInputEnvelope
+    set?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    disconnect?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    delete?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    connect?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    update?: MaintenanceRequestUpdateWithWhereUniqueWithoutAssignedToInput | MaintenanceRequestUpdateWithWhereUniqueWithoutAssignedToInput[]
+    updateMany?: MaintenanceRequestUpdateManyWithWhereWithoutAssignedToInput | MaintenanceRequestUpdateManyWithWhereWithoutAssignedToInput[]
+    deleteMany?: MaintenanceRequestScalarWhereInput | MaintenanceRequestScalarWhereInput[]
+  }
+
+  export type MaintenanceTimelineEventUncheckedUpdateManyWithoutActionByNestedInput = {
+    create?: XOR<MaintenanceTimelineEventCreateWithoutActionByInput, MaintenanceTimelineEventUncheckedCreateWithoutActionByInput> | MaintenanceTimelineEventCreateWithoutActionByInput[] | MaintenanceTimelineEventUncheckedCreateWithoutActionByInput[]
+    connectOrCreate?: MaintenanceTimelineEventCreateOrConnectWithoutActionByInput | MaintenanceTimelineEventCreateOrConnectWithoutActionByInput[]
+    upsert?: MaintenanceTimelineEventUpsertWithWhereUniqueWithoutActionByInput | MaintenanceTimelineEventUpsertWithWhereUniqueWithoutActionByInput[]
+    createMany?: MaintenanceTimelineEventCreateManyActionByInputEnvelope
+    set?: MaintenanceTimelineEventWhereUniqueInput | MaintenanceTimelineEventWhereUniqueInput[]
+    disconnect?: MaintenanceTimelineEventWhereUniqueInput | MaintenanceTimelineEventWhereUniqueInput[]
+    delete?: MaintenanceTimelineEventWhereUniqueInput | MaintenanceTimelineEventWhereUniqueInput[]
+    connect?: MaintenanceTimelineEventWhereUniqueInput | MaintenanceTimelineEventWhereUniqueInput[]
+    update?: MaintenanceTimelineEventUpdateWithWhereUniqueWithoutActionByInput | MaintenanceTimelineEventUpdateWithWhereUniqueWithoutActionByInput[]
+    updateMany?: MaintenanceTimelineEventUpdateManyWithWhereWithoutActionByInput | MaintenanceTimelineEventUpdateManyWithWhereWithoutActionByInput[]
+    deleteMany?: MaintenanceTimelineEventScalarWhereInput | MaintenanceTimelineEventScalarWhereInput[]
+  }
+
+  export type MaterialRequestUncheckedUpdateManyWithoutRequestedByNestedInput = {
+    create?: XOR<MaterialRequestCreateWithoutRequestedByInput, MaterialRequestUncheckedCreateWithoutRequestedByInput> | MaterialRequestCreateWithoutRequestedByInput[] | MaterialRequestUncheckedCreateWithoutRequestedByInput[]
+    connectOrCreate?: MaterialRequestCreateOrConnectWithoutRequestedByInput | MaterialRequestCreateOrConnectWithoutRequestedByInput[]
+    upsert?: MaterialRequestUpsertWithWhereUniqueWithoutRequestedByInput | MaterialRequestUpsertWithWhereUniqueWithoutRequestedByInput[]
+    createMany?: MaterialRequestCreateManyRequestedByInputEnvelope
+    set?: MaterialRequestWhereUniqueInput | MaterialRequestWhereUniqueInput[]
+    disconnect?: MaterialRequestWhereUniqueInput | MaterialRequestWhereUniqueInput[]
+    delete?: MaterialRequestWhereUniqueInput | MaterialRequestWhereUniqueInput[]
+    connect?: MaterialRequestWhereUniqueInput | MaterialRequestWhereUniqueInput[]
+    update?: MaterialRequestUpdateWithWhereUniqueWithoutRequestedByInput | MaterialRequestUpdateWithWhereUniqueWithoutRequestedByInput[]
+    updateMany?: MaterialRequestUpdateManyWithWhereWithoutRequestedByInput | MaterialRequestUpdateManyWithWhereWithoutRequestedByInput[]
+    deleteMany?: MaterialRequestScalarWhereInput | MaterialRequestScalarWhereInput[]
+  }
+
+  export type MaterialRequestUncheckedUpdateManyWithoutApprovedByNestedInput = {
+    create?: XOR<MaterialRequestCreateWithoutApprovedByInput, MaterialRequestUncheckedCreateWithoutApprovedByInput> | MaterialRequestCreateWithoutApprovedByInput[] | MaterialRequestUncheckedCreateWithoutApprovedByInput[]
+    connectOrCreate?: MaterialRequestCreateOrConnectWithoutApprovedByInput | MaterialRequestCreateOrConnectWithoutApprovedByInput[]
+    upsert?: MaterialRequestUpsertWithWhereUniqueWithoutApprovedByInput | MaterialRequestUpsertWithWhereUniqueWithoutApprovedByInput[]
+    createMany?: MaterialRequestCreateManyApprovedByInputEnvelope
+    set?: MaterialRequestWhereUniqueInput | MaterialRequestWhereUniqueInput[]
+    disconnect?: MaterialRequestWhereUniqueInput | MaterialRequestWhereUniqueInput[]
+    delete?: MaterialRequestWhereUniqueInput | MaterialRequestWhereUniqueInput[]
+    connect?: MaterialRequestWhereUniqueInput | MaterialRequestWhereUniqueInput[]
+    update?: MaterialRequestUpdateWithWhereUniqueWithoutApprovedByInput | MaterialRequestUpdateWithWhereUniqueWithoutApprovedByInput[]
+    updateMany?: MaterialRequestUpdateManyWithWhereWithoutApprovedByInput | MaterialRequestUpdateManyWithWhereWithoutApprovedByInput[]
+    deleteMany?: MaterialRequestScalarWhereInput | MaterialRequestScalarWhereInput[]
+  }
+
   export type UserCreateNestedOneWithoutMagicLinksInput = {
     create?: XOR<UserCreateWithoutMagicLinksInput, UserUncheckedCreateWithoutMagicLinksInput>
     connectOrCreate?: UserCreateOrConnectWithoutMagicLinksInput
     connect?: UserWhereUniqueInput
-  }
-
-  export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null
   }
 
   export type UserUpdateOneRequiredWithoutMagicLinksNestedInput = {
@@ -10439,31 +24209,11 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
-  export type NestedBigIntFilter<$PrismaModel = never> = {
-    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    in?: bigint[] | number[]
-    notIn?: bigint[] | number[]
-    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    not?: NestedBigIntFilter<$PrismaModel> | bigint | number
-  }
-
-  export type NestedBigIntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    in?: bigint[] | number[]
-    notIn?: bigint[] | number[]
-    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    not?: NestedBigIntWithAggregatesFilter<$PrismaModel> | bigint | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedBigIntFilter<$PrismaModel>
-    _min?: NestedBigIntFilter<$PrismaModel>
-    _max?: NestedBigIntFilter<$PrismaModel>
+  export type NestedEnumRequestPriorityFilter<$PrismaModel = never> = {
+    equals?: $Enums.RequestPriority | EnumRequestPriorityFieldRefInput<$PrismaModel>
+    in?: $Enums.RequestPriority[]
+    notIn?: $Enums.RequestPriority[]
+    not?: NestedEnumRequestPriorityFilter<$PrismaModel> | $Enums.RequestPriority
   }
 
   export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
@@ -10475,6 +24225,16 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type NestedEnumRequestPriorityWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.RequestPriority | EnumRequestPriorityFieldRefInput<$PrismaModel>
+    in?: $Enums.RequestPriority[]
+    notIn?: $Enums.RequestPriority[]
+    not?: NestedEnumRequestPriorityWithAggregatesFilter<$PrismaModel> | $Enums.RequestPriority
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumRequestPriorityFilter<$PrismaModel>
+    _max?: NestedEnumRequestPriorityFilter<$PrismaModel>
   }
 
   export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -10491,6 +24251,134 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
+  export type NestedEnumTimelineEventTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.TimelineEventType | EnumTimelineEventTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.TimelineEventType[]
+    notIn?: $Enums.TimelineEventType[]
+    not?: NestedEnumTimelineEventTypeFilter<$PrismaModel> | $Enums.TimelineEventType
+  }
+
+  export type NestedEnumTimelineEventTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TimelineEventType | EnumTimelineEventTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.TimelineEventType[]
+    notIn?: $Enums.TimelineEventType[]
+    not?: NestedEnumTimelineEventTypeWithAggregatesFilter<$PrismaModel> | $Enums.TimelineEventType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumTimelineEventTypeFilter<$PrismaModel>
+    _max?: NestedEnumTimelineEventTypeFilter<$PrismaModel>
+  }
+  export type NestedJsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue
+    lte?: InputJsonValue
+    gt?: InputJsonValue
+    gte?: InputJsonValue
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type NestedEnumInfrastructureOccurrenceStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.InfrastructureOccurrenceStatus | EnumInfrastructureOccurrenceStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.InfrastructureOccurrenceStatus[]
+    notIn?: $Enums.InfrastructureOccurrenceStatus[]
+    not?: NestedEnumInfrastructureOccurrenceStatusFilter<$PrismaModel> | $Enums.InfrastructureOccurrenceStatus
+  }
+
+  export type NestedEnumInfrastructureOccurrenceStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.InfrastructureOccurrenceStatus | EnumInfrastructureOccurrenceStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.InfrastructureOccurrenceStatus[]
+    notIn?: $Enums.InfrastructureOccurrenceStatus[]
+    not?: NestedEnumInfrastructureOccurrenceStatusWithAggregatesFilter<$PrismaModel> | $Enums.InfrastructureOccurrenceStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumInfrastructureOccurrenceStatusFilter<$PrismaModel>
+    _max?: NestedEnumInfrastructureOccurrenceStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumMaterialRequestStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.MaterialRequestStatus | EnumMaterialRequestStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.MaterialRequestStatus[]
+    notIn?: $Enums.MaterialRequestStatus[]
+    not?: NestedEnumMaterialRequestStatusFilter<$PrismaModel> | $Enums.MaterialRequestStatus
+  }
+
+  export type NestedEnumMaterialRequestStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.MaterialRequestStatus | EnumMaterialRequestStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.MaterialRequestStatus[]
+    notIn?: $Enums.MaterialRequestStatus[]
+    not?: NestedEnumMaterialRequestStatusWithAggregatesFilter<$PrismaModel> | $Enums.MaterialRequestStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumMaterialRequestStatusFilter<$PrismaModel>
+    _max?: NestedEnumMaterialRequestStatusFilter<$PrismaModel>
+  }
+
+  export type NestedDecimalFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[]
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[]
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
+  }
+
+  export type NestedDecimalNullableFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+  }
+
+  export type NestedDecimalWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[]
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[]
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedDecimalFilter<$PrismaModel>
+    _sum?: NestedDecimalFilter<$PrismaModel>
+    _min?: NestedDecimalFilter<$PrismaModel>
+    _max?: NestedDecimalFilter<$PrismaModel>
+  }
+
+  export type NestedDecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedDecimalNullableFilter<$PrismaModel>
+    _sum?: NestedDecimalNullableFilter<$PrismaModel>
+    _min?: NestedDecimalNullableFilter<$PrismaModel>
+    _max?: NestedDecimalNullableFilter<$PrismaModel>
+  }
+
   export type UserCreateWithoutLogLoginInput = {
     name: string
     login: string
@@ -10501,6 +24389,12 @@ export namespace Prisma {
     updatedAt?: Date | string
     roles?: RoleCreateNestedManyWithoutUsersInput
     magicLinks?: MagicLinkCreateNestedManyWithoutUserInput
+    reportedOccurrences?: InfrastructureOccurrenceCreateNestedManyWithoutReportedByInput
+    createdMaintenanceRequests?: MaintenanceRequestCreateNestedManyWithoutCreatedByInput
+    assignedMaintenanceRequests?: MaintenanceRequestCreateNestedManyWithoutAssignedToInput
+    timelineEvents?: MaintenanceTimelineEventCreateNestedManyWithoutActionByInput
+    materialRequestsCreated?: MaterialRequestCreateNestedManyWithoutRequestedByInput
+    materialRequestsApproved?: MaterialRequestCreateNestedManyWithoutApprovedByInput
   }
 
   export type UserUncheckedCreateWithoutLogLoginInput = {
@@ -10514,6 +24408,12 @@ export namespace Prisma {
     updatedAt?: Date | string
     roles?: RoleUncheckedCreateNestedManyWithoutUsersInput
     magicLinks?: MagicLinkUncheckedCreateNestedManyWithoutUserInput
+    reportedOccurrences?: InfrastructureOccurrenceUncheckedCreateNestedManyWithoutReportedByInput
+    createdMaintenanceRequests?: MaintenanceRequestUncheckedCreateNestedManyWithoutCreatedByInput
+    assignedMaintenanceRequests?: MaintenanceRequestUncheckedCreateNestedManyWithoutAssignedToInput
+    timelineEvents?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutActionByInput
+    materialRequestsCreated?: MaterialRequestUncheckedCreateNestedManyWithoutRequestedByInput
+    materialRequestsApproved?: MaterialRequestUncheckedCreateNestedManyWithoutApprovedByInput
   }
 
   export type UserCreateOrConnectWithoutLogLoginInput = {
@@ -10542,6 +24442,12 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     roles?: RoleUpdateManyWithoutUsersNestedInput
     magicLinks?: MagicLinkUpdateManyWithoutUserNestedInput
+    reportedOccurrences?: InfrastructureOccurrenceUpdateManyWithoutReportedByNestedInput
+    createdMaintenanceRequests?: MaintenanceRequestUpdateManyWithoutCreatedByNestedInput
+    assignedMaintenanceRequests?: MaintenanceRequestUpdateManyWithoutAssignedToNestedInput
+    timelineEvents?: MaintenanceTimelineEventUpdateManyWithoutActionByNestedInput
+    materialRequestsCreated?: MaterialRequestUpdateManyWithoutRequestedByNestedInput
+    materialRequestsApproved?: MaterialRequestUpdateManyWithoutApprovedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLogLoginInput = {
@@ -10555,6 +24461,2189 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     roles?: RoleUncheckedUpdateManyWithoutUsersNestedInput
     magicLinks?: MagicLinkUncheckedUpdateManyWithoutUserNestedInput
+    reportedOccurrences?: InfrastructureOccurrenceUncheckedUpdateManyWithoutReportedByNestedInput
+    createdMaintenanceRequests?: MaintenanceRequestUncheckedUpdateManyWithoutCreatedByNestedInput
+    assignedMaintenanceRequests?: MaintenanceRequestUncheckedUpdateManyWithoutAssignedToNestedInput
+    timelineEvents?: MaintenanceTimelineEventUncheckedUpdateManyWithoutActionByNestedInput
+    materialRequestsCreated?: MaterialRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+    materialRequestsApproved?: MaterialRequestUncheckedUpdateManyWithoutApprovedByNestedInput
+  }
+
+  export type MaintenanceInstanceCreateWithoutCurrentMaintenanceRequestsInput = {
+    sipacId: string
+    name: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    timelineEventsTransferredFrom?: MaintenanceTimelineEventCreateNestedManyWithoutTransferredFromInstanceInput
+    timelineEventsTransferredTo?: MaintenanceTimelineEventCreateNestedManyWithoutTransferredToInstanceInput
+  }
+
+  export type MaintenanceInstanceUncheckedCreateWithoutCurrentMaintenanceRequestsInput = {
+    id?: number
+    sipacId: string
+    name: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    timelineEventsTransferredFrom?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutTransferredFromInstanceInput
+    timelineEventsTransferredTo?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutTransferredToInstanceInput
+  }
+
+  export type MaintenanceInstanceCreateOrConnectWithoutCurrentMaintenanceRequestsInput = {
+    where: MaintenanceInstanceWhereUniqueInput
+    create: XOR<MaintenanceInstanceCreateWithoutCurrentMaintenanceRequestsInput, MaintenanceInstanceUncheckedCreateWithoutCurrentMaintenanceRequestsInput>
+  }
+
+  export type UserCreateWithoutCreatedMaintenanceRequestsInput = {
+    name: string
+    login: string
+    email: string
+    image?: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    logLogin?: LogLoginCreateNestedManyWithoutUserInput
+    roles?: RoleCreateNestedManyWithoutUsersInput
+    magicLinks?: MagicLinkCreateNestedManyWithoutUserInput
+    reportedOccurrences?: InfrastructureOccurrenceCreateNestedManyWithoutReportedByInput
+    assignedMaintenanceRequests?: MaintenanceRequestCreateNestedManyWithoutAssignedToInput
+    timelineEvents?: MaintenanceTimelineEventCreateNestedManyWithoutActionByInput
+    materialRequestsCreated?: MaterialRequestCreateNestedManyWithoutRequestedByInput
+    materialRequestsApproved?: MaterialRequestCreateNestedManyWithoutApprovedByInput
+  }
+
+  export type UserUncheckedCreateWithoutCreatedMaintenanceRequestsInput = {
+    id?: number
+    name: string
+    login: string
+    email: string
+    image?: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    logLogin?: LogLoginUncheckedCreateNestedManyWithoutUserInput
+    roles?: RoleUncheckedCreateNestedManyWithoutUsersInput
+    magicLinks?: MagicLinkUncheckedCreateNestedManyWithoutUserInput
+    reportedOccurrences?: InfrastructureOccurrenceUncheckedCreateNestedManyWithoutReportedByInput
+    assignedMaintenanceRequests?: MaintenanceRequestUncheckedCreateNestedManyWithoutAssignedToInput
+    timelineEvents?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutActionByInput
+    materialRequestsCreated?: MaterialRequestUncheckedCreateNestedManyWithoutRequestedByInput
+    materialRequestsApproved?: MaterialRequestUncheckedCreateNestedManyWithoutApprovedByInput
+  }
+
+  export type UserCreateOrConnectWithoutCreatedMaintenanceRequestsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutCreatedMaintenanceRequestsInput, UserUncheckedCreateWithoutCreatedMaintenanceRequestsInput>
+  }
+
+  export type UserCreateWithoutAssignedMaintenanceRequestsInput = {
+    name: string
+    login: string
+    email: string
+    image?: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    logLogin?: LogLoginCreateNestedManyWithoutUserInput
+    roles?: RoleCreateNestedManyWithoutUsersInput
+    magicLinks?: MagicLinkCreateNestedManyWithoutUserInput
+    reportedOccurrences?: InfrastructureOccurrenceCreateNestedManyWithoutReportedByInput
+    createdMaintenanceRequests?: MaintenanceRequestCreateNestedManyWithoutCreatedByInput
+    timelineEvents?: MaintenanceTimelineEventCreateNestedManyWithoutActionByInput
+    materialRequestsCreated?: MaterialRequestCreateNestedManyWithoutRequestedByInput
+    materialRequestsApproved?: MaterialRequestCreateNestedManyWithoutApprovedByInput
+  }
+
+  export type UserUncheckedCreateWithoutAssignedMaintenanceRequestsInput = {
+    id?: number
+    name: string
+    login: string
+    email: string
+    image?: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    logLogin?: LogLoginUncheckedCreateNestedManyWithoutUserInput
+    roles?: RoleUncheckedCreateNestedManyWithoutUsersInput
+    magicLinks?: MagicLinkUncheckedCreateNestedManyWithoutUserInput
+    reportedOccurrences?: InfrastructureOccurrenceUncheckedCreateNestedManyWithoutReportedByInput
+    createdMaintenanceRequests?: MaintenanceRequestUncheckedCreateNestedManyWithoutCreatedByInput
+    timelineEvents?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutActionByInput
+    materialRequestsCreated?: MaterialRequestUncheckedCreateNestedManyWithoutRequestedByInput
+    materialRequestsApproved?: MaterialRequestUncheckedCreateNestedManyWithoutApprovedByInput
+  }
+
+  export type UserCreateOrConnectWithoutAssignedMaintenanceRequestsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAssignedMaintenanceRequestsInput, UserUncheckedCreateWithoutAssignedMaintenanceRequestsInput>
+  }
+
+  export type EquipmentCreateWithoutMaintenanceRequestsInput = {
+    patrimonyTag?: string | null
+    name: string
+    description?: string | null
+    location?: string | null
+    serialNumber?: string | null
+    manufacturer?: string | null
+    model?: string | null
+    acquisitionDate?: Date | string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EquipmentUncheckedCreateWithoutMaintenanceRequestsInput = {
+    id?: number
+    patrimonyTag?: string | null
+    name: string
+    description?: string | null
+    location?: string | null
+    serialNumber?: string | null
+    manufacturer?: string | null
+    model?: string | null
+    acquisitionDate?: Date | string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EquipmentCreateOrConnectWithoutMaintenanceRequestsInput = {
+    where: EquipmentWhereUniqueInput
+    create: XOR<EquipmentCreateWithoutMaintenanceRequestsInput, EquipmentUncheckedCreateWithoutMaintenanceRequestsInput>
+  }
+
+  export type ServiceTypeCreateWithoutMaintenanceRequestsInput = {
+    name: string
+    description?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ServiceTypeUncheckedCreateWithoutMaintenanceRequestsInput = {
+    id?: number
+    name: string
+    description?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ServiceTypeCreateOrConnectWithoutMaintenanceRequestsInput = {
+    where: ServiceTypeWhereUniqueInput
+    create: XOR<ServiceTypeCreateWithoutMaintenanceRequestsInput, ServiceTypeUncheckedCreateWithoutMaintenanceRequestsInput>
+  }
+
+  export type MaintenanceRequestStatusCreateWithoutMaintenanceRequestsInput = {
+    name: string
+    description?: string | null
+    isFinal?: boolean
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaintenanceRequestStatusUncheckedCreateWithoutMaintenanceRequestsInput = {
+    id?: number
+    name: string
+    description?: string | null
+    isFinal?: boolean
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaintenanceRequestStatusCreateOrConnectWithoutMaintenanceRequestsInput = {
+    where: MaintenanceRequestStatusWhereUniqueInput
+    create: XOR<MaintenanceRequestStatusCreateWithoutMaintenanceRequestsInput, MaintenanceRequestStatusUncheckedCreateWithoutMaintenanceRequestsInput>
+  }
+
+  export type InfrastructureOccurrenceCreateWithoutMaintenanceRequestInput = {
+    title: string
+    description: string
+    locationDescription?: string | null
+    reportedAt?: Date | string
+    status?: $Enums.InfrastructureOccurrenceStatus
+    resolutionNotes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    reportedBy: UserCreateNestedOneWithoutReportedOccurrencesInput
+  }
+
+  export type InfrastructureOccurrenceUncheckedCreateWithoutMaintenanceRequestInput = {
+    id?: number
+    title: string
+    description: string
+    locationDescription?: string | null
+    reportedAt?: Date | string
+    status?: $Enums.InfrastructureOccurrenceStatus
+    resolutionNotes?: string | null
+    reportedById: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type InfrastructureOccurrenceCreateOrConnectWithoutMaintenanceRequestInput = {
+    where: InfrastructureOccurrenceWhereUniqueInput
+    create: XOR<InfrastructureOccurrenceCreateWithoutMaintenanceRequestInput, InfrastructureOccurrenceUncheckedCreateWithoutMaintenanceRequestInput>
+  }
+
+  export type InfrastructureOccurrenceCreateManyMaintenanceRequestInputEnvelope = {
+    data: InfrastructureOccurrenceCreateManyMaintenanceRequestInput | InfrastructureOccurrenceCreateManyMaintenanceRequestInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MaintenanceTimelineEventCreateWithoutMaintenanceRequestInput = {
+    type?: $Enums.TimelineEventType
+    description: string
+    eventData?: NullableJsonNullValueInput | InputJsonValue
+    occurredAt?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    actionBy: UserCreateNestedOneWithoutTimelineEventsInput
+    transferredFromInstance?: MaintenanceInstanceCreateNestedOneWithoutTimelineEventsTransferredFromInput
+    transferredToInstance?: MaintenanceInstanceCreateNestedOneWithoutTimelineEventsTransferredToInput
+  }
+
+  export type MaintenanceTimelineEventUncheckedCreateWithoutMaintenanceRequestInput = {
+    id?: number
+    type?: $Enums.TimelineEventType
+    description: string
+    eventData?: NullableJsonNullValueInput | InputJsonValue
+    occurredAt?: Date | string
+    actionById: number
+    transferredFromInstanceId?: number | null
+    transferredToInstanceId?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaintenanceTimelineEventCreateOrConnectWithoutMaintenanceRequestInput = {
+    where: MaintenanceTimelineEventWhereUniqueInput
+    create: XOR<MaintenanceTimelineEventCreateWithoutMaintenanceRequestInput, MaintenanceTimelineEventUncheckedCreateWithoutMaintenanceRequestInput>
+  }
+
+  export type MaintenanceTimelineEventCreateManyMaintenanceRequestInputEnvelope = {
+    data: MaintenanceTimelineEventCreateManyMaintenanceRequestInput | MaintenanceTimelineEventCreateManyMaintenanceRequestInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MaterialRequestCreateWithoutMaintenanceRequestInput = {
+    justification?: string | null
+    requestDate?: Date | string
+    status?: $Enums.MaterialRequestStatus
+    approvalDate?: Date | string | null
+    approvalNotes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    requestedBy: UserCreateNestedOneWithoutMaterialRequestsCreatedInput
+    approvedBy?: UserCreateNestedOneWithoutMaterialRequestsApprovedInput
+    items?: MaterialRequestItemCreateNestedManyWithoutMaterialRequestInput
+  }
+
+  export type MaterialRequestUncheckedCreateWithoutMaintenanceRequestInput = {
+    id?: number
+    justification?: string | null
+    requestDate?: Date | string
+    status?: $Enums.MaterialRequestStatus
+    requestedById: number
+    approvedById?: number | null
+    approvalDate?: Date | string | null
+    approvalNotes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    items?: MaterialRequestItemUncheckedCreateNestedManyWithoutMaterialRequestInput
+  }
+
+  export type MaterialRequestCreateOrConnectWithoutMaintenanceRequestInput = {
+    where: MaterialRequestWhereUniqueInput
+    create: XOR<MaterialRequestCreateWithoutMaintenanceRequestInput, MaterialRequestUncheckedCreateWithoutMaintenanceRequestInput>
+  }
+
+  export type MaterialRequestCreateManyMaintenanceRequestInputEnvelope = {
+    data: MaterialRequestCreateManyMaintenanceRequestInput | MaterialRequestCreateManyMaintenanceRequestInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MaintenanceInstanceUpsertWithoutCurrentMaintenanceRequestsInput = {
+    update: XOR<MaintenanceInstanceUpdateWithoutCurrentMaintenanceRequestsInput, MaintenanceInstanceUncheckedUpdateWithoutCurrentMaintenanceRequestsInput>
+    create: XOR<MaintenanceInstanceCreateWithoutCurrentMaintenanceRequestsInput, MaintenanceInstanceUncheckedCreateWithoutCurrentMaintenanceRequestsInput>
+    where?: MaintenanceInstanceWhereInput
+  }
+
+  export type MaintenanceInstanceUpdateToOneWithWhereWithoutCurrentMaintenanceRequestsInput = {
+    where?: MaintenanceInstanceWhereInput
+    data: XOR<MaintenanceInstanceUpdateWithoutCurrentMaintenanceRequestsInput, MaintenanceInstanceUncheckedUpdateWithoutCurrentMaintenanceRequestsInput>
+  }
+
+  export type MaintenanceInstanceUpdateWithoutCurrentMaintenanceRequestsInput = {
+    sipacId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    timelineEventsTransferredFrom?: MaintenanceTimelineEventUpdateManyWithoutTransferredFromInstanceNestedInput
+    timelineEventsTransferredTo?: MaintenanceTimelineEventUpdateManyWithoutTransferredToInstanceNestedInput
+  }
+
+  export type MaintenanceInstanceUncheckedUpdateWithoutCurrentMaintenanceRequestsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    sipacId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    timelineEventsTransferredFrom?: MaintenanceTimelineEventUncheckedUpdateManyWithoutTransferredFromInstanceNestedInput
+    timelineEventsTransferredTo?: MaintenanceTimelineEventUncheckedUpdateManyWithoutTransferredToInstanceNestedInput
+  }
+
+  export type UserUpsertWithoutCreatedMaintenanceRequestsInput = {
+    update: XOR<UserUpdateWithoutCreatedMaintenanceRequestsInput, UserUncheckedUpdateWithoutCreatedMaintenanceRequestsInput>
+    create: XOR<UserCreateWithoutCreatedMaintenanceRequestsInput, UserUncheckedCreateWithoutCreatedMaintenanceRequestsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutCreatedMaintenanceRequestsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutCreatedMaintenanceRequestsInput, UserUncheckedUpdateWithoutCreatedMaintenanceRequestsInput>
+  }
+
+  export type UserUpdateWithoutCreatedMaintenanceRequestsInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    login?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    image?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    logLogin?: LogLoginUpdateManyWithoutUserNestedInput
+    roles?: RoleUpdateManyWithoutUsersNestedInput
+    magicLinks?: MagicLinkUpdateManyWithoutUserNestedInput
+    reportedOccurrences?: InfrastructureOccurrenceUpdateManyWithoutReportedByNestedInput
+    assignedMaintenanceRequests?: MaintenanceRequestUpdateManyWithoutAssignedToNestedInput
+    timelineEvents?: MaintenanceTimelineEventUpdateManyWithoutActionByNestedInput
+    materialRequestsCreated?: MaterialRequestUpdateManyWithoutRequestedByNestedInput
+    materialRequestsApproved?: MaterialRequestUpdateManyWithoutApprovedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutCreatedMaintenanceRequestsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    login?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    image?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    logLogin?: LogLoginUncheckedUpdateManyWithoutUserNestedInput
+    roles?: RoleUncheckedUpdateManyWithoutUsersNestedInput
+    magicLinks?: MagicLinkUncheckedUpdateManyWithoutUserNestedInput
+    reportedOccurrences?: InfrastructureOccurrenceUncheckedUpdateManyWithoutReportedByNestedInput
+    assignedMaintenanceRequests?: MaintenanceRequestUncheckedUpdateManyWithoutAssignedToNestedInput
+    timelineEvents?: MaintenanceTimelineEventUncheckedUpdateManyWithoutActionByNestedInput
+    materialRequestsCreated?: MaterialRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+    materialRequestsApproved?: MaterialRequestUncheckedUpdateManyWithoutApprovedByNestedInput
+  }
+
+  export type UserUpsertWithoutAssignedMaintenanceRequestsInput = {
+    update: XOR<UserUpdateWithoutAssignedMaintenanceRequestsInput, UserUncheckedUpdateWithoutAssignedMaintenanceRequestsInput>
+    create: XOR<UserCreateWithoutAssignedMaintenanceRequestsInput, UserUncheckedCreateWithoutAssignedMaintenanceRequestsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAssignedMaintenanceRequestsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAssignedMaintenanceRequestsInput, UserUncheckedUpdateWithoutAssignedMaintenanceRequestsInput>
+  }
+
+  export type UserUpdateWithoutAssignedMaintenanceRequestsInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    login?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    image?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    logLogin?: LogLoginUpdateManyWithoutUserNestedInput
+    roles?: RoleUpdateManyWithoutUsersNestedInput
+    magicLinks?: MagicLinkUpdateManyWithoutUserNestedInput
+    reportedOccurrences?: InfrastructureOccurrenceUpdateManyWithoutReportedByNestedInput
+    createdMaintenanceRequests?: MaintenanceRequestUpdateManyWithoutCreatedByNestedInput
+    timelineEvents?: MaintenanceTimelineEventUpdateManyWithoutActionByNestedInput
+    materialRequestsCreated?: MaterialRequestUpdateManyWithoutRequestedByNestedInput
+    materialRequestsApproved?: MaterialRequestUpdateManyWithoutApprovedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAssignedMaintenanceRequestsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    login?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    image?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    logLogin?: LogLoginUncheckedUpdateManyWithoutUserNestedInput
+    roles?: RoleUncheckedUpdateManyWithoutUsersNestedInput
+    magicLinks?: MagicLinkUncheckedUpdateManyWithoutUserNestedInput
+    reportedOccurrences?: InfrastructureOccurrenceUncheckedUpdateManyWithoutReportedByNestedInput
+    createdMaintenanceRequests?: MaintenanceRequestUncheckedUpdateManyWithoutCreatedByNestedInput
+    timelineEvents?: MaintenanceTimelineEventUncheckedUpdateManyWithoutActionByNestedInput
+    materialRequestsCreated?: MaterialRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+    materialRequestsApproved?: MaterialRequestUncheckedUpdateManyWithoutApprovedByNestedInput
+  }
+
+  export type EquipmentUpsertWithoutMaintenanceRequestsInput = {
+    update: XOR<EquipmentUpdateWithoutMaintenanceRequestsInput, EquipmentUncheckedUpdateWithoutMaintenanceRequestsInput>
+    create: XOR<EquipmentCreateWithoutMaintenanceRequestsInput, EquipmentUncheckedCreateWithoutMaintenanceRequestsInput>
+    where?: EquipmentWhereInput
+  }
+
+  export type EquipmentUpdateToOneWithWhereWithoutMaintenanceRequestsInput = {
+    where?: EquipmentWhereInput
+    data: XOR<EquipmentUpdateWithoutMaintenanceRequestsInput, EquipmentUncheckedUpdateWithoutMaintenanceRequestsInput>
+  }
+
+  export type EquipmentUpdateWithoutMaintenanceRequestsInput = {
+    patrimonyTag?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    serialNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    manufacturer?: NullableStringFieldUpdateOperationsInput | string | null
+    model?: NullableStringFieldUpdateOperationsInput | string | null
+    acquisitionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EquipmentUncheckedUpdateWithoutMaintenanceRequestsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    patrimonyTag?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    serialNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    manufacturer?: NullableStringFieldUpdateOperationsInput | string | null
+    model?: NullableStringFieldUpdateOperationsInput | string | null
+    acquisitionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ServiceTypeUpsertWithoutMaintenanceRequestsInput = {
+    update: XOR<ServiceTypeUpdateWithoutMaintenanceRequestsInput, ServiceTypeUncheckedUpdateWithoutMaintenanceRequestsInput>
+    create: XOR<ServiceTypeCreateWithoutMaintenanceRequestsInput, ServiceTypeUncheckedCreateWithoutMaintenanceRequestsInput>
+    where?: ServiceTypeWhereInput
+  }
+
+  export type ServiceTypeUpdateToOneWithWhereWithoutMaintenanceRequestsInput = {
+    where?: ServiceTypeWhereInput
+    data: XOR<ServiceTypeUpdateWithoutMaintenanceRequestsInput, ServiceTypeUncheckedUpdateWithoutMaintenanceRequestsInput>
+  }
+
+  export type ServiceTypeUpdateWithoutMaintenanceRequestsInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ServiceTypeUncheckedUpdateWithoutMaintenanceRequestsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaintenanceRequestStatusUpsertWithoutMaintenanceRequestsInput = {
+    update: XOR<MaintenanceRequestStatusUpdateWithoutMaintenanceRequestsInput, MaintenanceRequestStatusUncheckedUpdateWithoutMaintenanceRequestsInput>
+    create: XOR<MaintenanceRequestStatusCreateWithoutMaintenanceRequestsInput, MaintenanceRequestStatusUncheckedCreateWithoutMaintenanceRequestsInput>
+    where?: MaintenanceRequestStatusWhereInput
+  }
+
+  export type MaintenanceRequestStatusUpdateToOneWithWhereWithoutMaintenanceRequestsInput = {
+    where?: MaintenanceRequestStatusWhereInput
+    data: XOR<MaintenanceRequestStatusUpdateWithoutMaintenanceRequestsInput, MaintenanceRequestStatusUncheckedUpdateWithoutMaintenanceRequestsInput>
+  }
+
+  export type MaintenanceRequestStatusUpdateWithoutMaintenanceRequestsInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isFinal?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaintenanceRequestStatusUncheckedUpdateWithoutMaintenanceRequestsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isFinal?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InfrastructureOccurrenceUpsertWithWhereUniqueWithoutMaintenanceRequestInput = {
+    where: InfrastructureOccurrenceWhereUniqueInput
+    update: XOR<InfrastructureOccurrenceUpdateWithoutMaintenanceRequestInput, InfrastructureOccurrenceUncheckedUpdateWithoutMaintenanceRequestInput>
+    create: XOR<InfrastructureOccurrenceCreateWithoutMaintenanceRequestInput, InfrastructureOccurrenceUncheckedCreateWithoutMaintenanceRequestInput>
+  }
+
+  export type InfrastructureOccurrenceUpdateWithWhereUniqueWithoutMaintenanceRequestInput = {
+    where: InfrastructureOccurrenceWhereUniqueInput
+    data: XOR<InfrastructureOccurrenceUpdateWithoutMaintenanceRequestInput, InfrastructureOccurrenceUncheckedUpdateWithoutMaintenanceRequestInput>
+  }
+
+  export type InfrastructureOccurrenceUpdateManyWithWhereWithoutMaintenanceRequestInput = {
+    where: InfrastructureOccurrenceScalarWhereInput
+    data: XOR<InfrastructureOccurrenceUpdateManyMutationInput, InfrastructureOccurrenceUncheckedUpdateManyWithoutMaintenanceRequestInput>
+  }
+
+  export type InfrastructureOccurrenceScalarWhereInput = {
+    AND?: InfrastructureOccurrenceScalarWhereInput | InfrastructureOccurrenceScalarWhereInput[]
+    OR?: InfrastructureOccurrenceScalarWhereInput[]
+    NOT?: InfrastructureOccurrenceScalarWhereInput | InfrastructureOccurrenceScalarWhereInput[]
+    id?: IntFilter<"InfrastructureOccurrence"> | number
+    title?: StringFilter<"InfrastructureOccurrence"> | string
+    description?: StringFilter<"InfrastructureOccurrence"> | string
+    locationDescription?: StringNullableFilter<"InfrastructureOccurrence"> | string | null
+    reportedAt?: DateTimeFilter<"InfrastructureOccurrence"> | Date | string
+    status?: EnumInfrastructureOccurrenceStatusFilter<"InfrastructureOccurrence"> | $Enums.InfrastructureOccurrenceStatus
+    resolutionNotes?: StringNullableFilter<"InfrastructureOccurrence"> | string | null
+    reportedById?: IntFilter<"InfrastructureOccurrence"> | number
+    maintenanceRequestId?: IntNullableFilter<"InfrastructureOccurrence"> | number | null
+    createdAt?: DateTimeFilter<"InfrastructureOccurrence"> | Date | string
+    updatedAt?: DateTimeFilter<"InfrastructureOccurrence"> | Date | string
+  }
+
+  export type MaintenanceTimelineEventUpsertWithWhereUniqueWithoutMaintenanceRequestInput = {
+    where: MaintenanceTimelineEventWhereUniqueInput
+    update: XOR<MaintenanceTimelineEventUpdateWithoutMaintenanceRequestInput, MaintenanceTimelineEventUncheckedUpdateWithoutMaintenanceRequestInput>
+    create: XOR<MaintenanceTimelineEventCreateWithoutMaintenanceRequestInput, MaintenanceTimelineEventUncheckedCreateWithoutMaintenanceRequestInput>
+  }
+
+  export type MaintenanceTimelineEventUpdateWithWhereUniqueWithoutMaintenanceRequestInput = {
+    where: MaintenanceTimelineEventWhereUniqueInput
+    data: XOR<MaintenanceTimelineEventUpdateWithoutMaintenanceRequestInput, MaintenanceTimelineEventUncheckedUpdateWithoutMaintenanceRequestInput>
+  }
+
+  export type MaintenanceTimelineEventUpdateManyWithWhereWithoutMaintenanceRequestInput = {
+    where: MaintenanceTimelineEventScalarWhereInput
+    data: XOR<MaintenanceTimelineEventUpdateManyMutationInput, MaintenanceTimelineEventUncheckedUpdateManyWithoutMaintenanceRequestInput>
+  }
+
+  export type MaintenanceTimelineEventScalarWhereInput = {
+    AND?: MaintenanceTimelineEventScalarWhereInput | MaintenanceTimelineEventScalarWhereInput[]
+    OR?: MaintenanceTimelineEventScalarWhereInput[]
+    NOT?: MaintenanceTimelineEventScalarWhereInput | MaintenanceTimelineEventScalarWhereInput[]
+    id?: IntFilter<"MaintenanceTimelineEvent"> | number
+    type?: EnumTimelineEventTypeFilter<"MaintenanceTimelineEvent"> | $Enums.TimelineEventType
+    description?: StringFilter<"MaintenanceTimelineEvent"> | string
+    eventData?: JsonNullableFilter<"MaintenanceTimelineEvent">
+    occurredAt?: DateTimeFilter<"MaintenanceTimelineEvent"> | Date | string
+    maintenanceRequestId?: IntFilter<"MaintenanceTimelineEvent"> | number
+    actionById?: IntFilter<"MaintenanceTimelineEvent"> | number
+    transferredFromInstanceId?: IntNullableFilter<"MaintenanceTimelineEvent"> | number | null
+    transferredToInstanceId?: IntNullableFilter<"MaintenanceTimelineEvent"> | number | null
+    createdAt?: DateTimeFilter<"MaintenanceTimelineEvent"> | Date | string
+    updatedAt?: DateTimeFilter<"MaintenanceTimelineEvent"> | Date | string
+  }
+
+  export type MaterialRequestUpsertWithWhereUniqueWithoutMaintenanceRequestInput = {
+    where: MaterialRequestWhereUniqueInput
+    update: XOR<MaterialRequestUpdateWithoutMaintenanceRequestInput, MaterialRequestUncheckedUpdateWithoutMaintenanceRequestInput>
+    create: XOR<MaterialRequestCreateWithoutMaintenanceRequestInput, MaterialRequestUncheckedCreateWithoutMaintenanceRequestInput>
+  }
+
+  export type MaterialRequestUpdateWithWhereUniqueWithoutMaintenanceRequestInput = {
+    where: MaterialRequestWhereUniqueInput
+    data: XOR<MaterialRequestUpdateWithoutMaintenanceRequestInput, MaterialRequestUncheckedUpdateWithoutMaintenanceRequestInput>
+  }
+
+  export type MaterialRequestUpdateManyWithWhereWithoutMaintenanceRequestInput = {
+    where: MaterialRequestScalarWhereInput
+    data: XOR<MaterialRequestUpdateManyMutationInput, MaterialRequestUncheckedUpdateManyWithoutMaintenanceRequestInput>
+  }
+
+  export type MaterialRequestScalarWhereInput = {
+    AND?: MaterialRequestScalarWhereInput | MaterialRequestScalarWhereInput[]
+    OR?: MaterialRequestScalarWhereInput[]
+    NOT?: MaterialRequestScalarWhereInput | MaterialRequestScalarWhereInput[]
+    id?: IntFilter<"MaterialRequest"> | number
+    justification?: StringNullableFilter<"MaterialRequest"> | string | null
+    requestDate?: DateTimeFilter<"MaterialRequest"> | Date | string
+    status?: EnumMaterialRequestStatusFilter<"MaterialRequest"> | $Enums.MaterialRequestStatus
+    maintenanceRequestId?: IntFilter<"MaterialRequest"> | number
+    requestedById?: IntFilter<"MaterialRequest"> | number
+    approvedById?: IntNullableFilter<"MaterialRequest"> | number | null
+    approvalDate?: DateTimeNullableFilter<"MaterialRequest"> | Date | string | null
+    approvalNotes?: StringNullableFilter<"MaterialRequest"> | string | null
+    createdAt?: DateTimeFilter<"MaterialRequest"> | Date | string
+    updatedAt?: DateTimeFilter<"MaterialRequest"> | Date | string
+  }
+
+  export type MaintenanceRequestCreateWithoutStatusInput = {
+    protocolNumber?: string
+    title: string
+    description: string
+    priority?: $Enums.RequestPriority
+    requestedAt?: Date | string
+    deadline?: Date | string | null
+    solutionDetails?: string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    currentMaintenanceInstance: MaintenanceInstanceCreateNestedOneWithoutCurrentMaintenanceRequestsInput
+    createdBy: UserCreateNestedOneWithoutCreatedMaintenanceRequestsInput
+    assignedTo?: UserCreateNestedOneWithoutAssignedMaintenanceRequestsInput
+    equipment?: EquipmentCreateNestedOneWithoutMaintenanceRequestsInput
+    serviceType?: ServiceTypeCreateNestedOneWithoutMaintenanceRequestsInput
+    originatingOccurrences?: InfrastructureOccurrenceCreateNestedManyWithoutMaintenanceRequestInput
+    timelineEvents?: MaintenanceTimelineEventCreateNestedManyWithoutMaintenanceRequestInput
+    materialRequests?: MaterialRequestCreateNestedManyWithoutMaintenanceRequestInput
+  }
+
+  export type MaintenanceRequestUncheckedCreateWithoutStatusInput = {
+    id?: number
+    protocolNumber?: string
+    title: string
+    description: string
+    priority?: $Enums.RequestPriority
+    requestedAt?: Date | string
+    deadline?: Date | string | null
+    solutionDetails?: string | null
+    completedAt?: Date | string | null
+    currentMaintenanceInstanceId: number
+    createdById: number
+    assignedToId?: number | null
+    equipmentId?: number | null
+    serviceTypeId?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    originatingOccurrences?: InfrastructureOccurrenceUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    timelineEvents?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    materialRequests?: MaterialRequestUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+  }
+
+  export type MaintenanceRequestCreateOrConnectWithoutStatusInput = {
+    where: MaintenanceRequestWhereUniqueInput
+    create: XOR<MaintenanceRequestCreateWithoutStatusInput, MaintenanceRequestUncheckedCreateWithoutStatusInput>
+  }
+
+  export type MaintenanceRequestCreateManyStatusInputEnvelope = {
+    data: MaintenanceRequestCreateManyStatusInput | MaintenanceRequestCreateManyStatusInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MaintenanceRequestUpsertWithWhereUniqueWithoutStatusInput = {
+    where: MaintenanceRequestWhereUniqueInput
+    update: XOR<MaintenanceRequestUpdateWithoutStatusInput, MaintenanceRequestUncheckedUpdateWithoutStatusInput>
+    create: XOR<MaintenanceRequestCreateWithoutStatusInput, MaintenanceRequestUncheckedCreateWithoutStatusInput>
+  }
+
+  export type MaintenanceRequestUpdateWithWhereUniqueWithoutStatusInput = {
+    where: MaintenanceRequestWhereUniqueInput
+    data: XOR<MaintenanceRequestUpdateWithoutStatusInput, MaintenanceRequestUncheckedUpdateWithoutStatusInput>
+  }
+
+  export type MaintenanceRequestUpdateManyWithWhereWithoutStatusInput = {
+    where: MaintenanceRequestScalarWhereInput
+    data: XOR<MaintenanceRequestUpdateManyMutationInput, MaintenanceRequestUncheckedUpdateManyWithoutStatusInput>
+  }
+
+  export type MaintenanceRequestScalarWhereInput = {
+    AND?: MaintenanceRequestScalarWhereInput | MaintenanceRequestScalarWhereInput[]
+    OR?: MaintenanceRequestScalarWhereInput[]
+    NOT?: MaintenanceRequestScalarWhereInput | MaintenanceRequestScalarWhereInput[]
+    id?: IntFilter<"MaintenanceRequest"> | number
+    protocolNumber?: StringFilter<"MaintenanceRequest"> | string
+    title?: StringFilter<"MaintenanceRequest"> | string
+    description?: StringFilter<"MaintenanceRequest"> | string
+    priority?: EnumRequestPriorityFilter<"MaintenanceRequest"> | $Enums.RequestPriority
+    requestedAt?: DateTimeFilter<"MaintenanceRequest"> | Date | string
+    deadline?: DateTimeNullableFilter<"MaintenanceRequest"> | Date | string | null
+    solutionDetails?: StringNullableFilter<"MaintenanceRequest"> | string | null
+    completedAt?: DateTimeNullableFilter<"MaintenanceRequest"> | Date | string | null
+    currentMaintenanceInstanceId?: IntFilter<"MaintenanceRequest"> | number
+    createdById?: IntFilter<"MaintenanceRequest"> | number
+    assignedToId?: IntNullableFilter<"MaintenanceRequest"> | number | null
+    equipmentId?: IntNullableFilter<"MaintenanceRequest"> | number | null
+    serviceTypeId?: IntNullableFilter<"MaintenanceRequest"> | number | null
+    statusId?: IntFilter<"MaintenanceRequest"> | number
+    createdAt?: DateTimeFilter<"MaintenanceRequest"> | Date | string
+    updatedAt?: DateTimeFilter<"MaintenanceRequest"> | Date | string
+  }
+
+  export type MaintenanceRequestCreateWithoutTimelineEventsInput = {
+    protocolNumber?: string
+    title: string
+    description: string
+    priority?: $Enums.RequestPriority
+    requestedAt?: Date | string
+    deadline?: Date | string | null
+    solutionDetails?: string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    currentMaintenanceInstance: MaintenanceInstanceCreateNestedOneWithoutCurrentMaintenanceRequestsInput
+    createdBy: UserCreateNestedOneWithoutCreatedMaintenanceRequestsInput
+    assignedTo?: UserCreateNestedOneWithoutAssignedMaintenanceRequestsInput
+    equipment?: EquipmentCreateNestedOneWithoutMaintenanceRequestsInput
+    serviceType?: ServiceTypeCreateNestedOneWithoutMaintenanceRequestsInput
+    status: MaintenanceRequestStatusCreateNestedOneWithoutMaintenanceRequestsInput
+    originatingOccurrences?: InfrastructureOccurrenceCreateNestedManyWithoutMaintenanceRequestInput
+    materialRequests?: MaterialRequestCreateNestedManyWithoutMaintenanceRequestInput
+  }
+
+  export type MaintenanceRequestUncheckedCreateWithoutTimelineEventsInput = {
+    id?: number
+    protocolNumber?: string
+    title: string
+    description: string
+    priority?: $Enums.RequestPriority
+    requestedAt?: Date | string
+    deadline?: Date | string | null
+    solutionDetails?: string | null
+    completedAt?: Date | string | null
+    currentMaintenanceInstanceId: number
+    createdById: number
+    assignedToId?: number | null
+    equipmentId?: number | null
+    serviceTypeId?: number | null
+    statusId: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    originatingOccurrences?: InfrastructureOccurrenceUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    materialRequests?: MaterialRequestUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+  }
+
+  export type MaintenanceRequestCreateOrConnectWithoutTimelineEventsInput = {
+    where: MaintenanceRequestWhereUniqueInput
+    create: XOR<MaintenanceRequestCreateWithoutTimelineEventsInput, MaintenanceRequestUncheckedCreateWithoutTimelineEventsInput>
+  }
+
+  export type UserCreateWithoutTimelineEventsInput = {
+    name: string
+    login: string
+    email: string
+    image?: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    logLogin?: LogLoginCreateNestedManyWithoutUserInput
+    roles?: RoleCreateNestedManyWithoutUsersInput
+    magicLinks?: MagicLinkCreateNestedManyWithoutUserInput
+    reportedOccurrences?: InfrastructureOccurrenceCreateNestedManyWithoutReportedByInput
+    createdMaintenanceRequests?: MaintenanceRequestCreateNestedManyWithoutCreatedByInput
+    assignedMaintenanceRequests?: MaintenanceRequestCreateNestedManyWithoutAssignedToInput
+    materialRequestsCreated?: MaterialRequestCreateNestedManyWithoutRequestedByInput
+    materialRequestsApproved?: MaterialRequestCreateNestedManyWithoutApprovedByInput
+  }
+
+  export type UserUncheckedCreateWithoutTimelineEventsInput = {
+    id?: number
+    name: string
+    login: string
+    email: string
+    image?: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    logLogin?: LogLoginUncheckedCreateNestedManyWithoutUserInput
+    roles?: RoleUncheckedCreateNestedManyWithoutUsersInput
+    magicLinks?: MagicLinkUncheckedCreateNestedManyWithoutUserInput
+    reportedOccurrences?: InfrastructureOccurrenceUncheckedCreateNestedManyWithoutReportedByInput
+    createdMaintenanceRequests?: MaintenanceRequestUncheckedCreateNestedManyWithoutCreatedByInput
+    assignedMaintenanceRequests?: MaintenanceRequestUncheckedCreateNestedManyWithoutAssignedToInput
+    materialRequestsCreated?: MaterialRequestUncheckedCreateNestedManyWithoutRequestedByInput
+    materialRequestsApproved?: MaterialRequestUncheckedCreateNestedManyWithoutApprovedByInput
+  }
+
+  export type UserCreateOrConnectWithoutTimelineEventsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutTimelineEventsInput, UserUncheckedCreateWithoutTimelineEventsInput>
+  }
+
+  export type MaintenanceInstanceCreateWithoutTimelineEventsTransferredFromInput = {
+    sipacId: string
+    name: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    currentMaintenanceRequests?: MaintenanceRequestCreateNestedManyWithoutCurrentMaintenanceInstanceInput
+    timelineEventsTransferredTo?: MaintenanceTimelineEventCreateNestedManyWithoutTransferredToInstanceInput
+  }
+
+  export type MaintenanceInstanceUncheckedCreateWithoutTimelineEventsTransferredFromInput = {
+    id?: number
+    sipacId: string
+    name: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    currentMaintenanceRequests?: MaintenanceRequestUncheckedCreateNestedManyWithoutCurrentMaintenanceInstanceInput
+    timelineEventsTransferredTo?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutTransferredToInstanceInput
+  }
+
+  export type MaintenanceInstanceCreateOrConnectWithoutTimelineEventsTransferredFromInput = {
+    where: MaintenanceInstanceWhereUniqueInput
+    create: XOR<MaintenanceInstanceCreateWithoutTimelineEventsTransferredFromInput, MaintenanceInstanceUncheckedCreateWithoutTimelineEventsTransferredFromInput>
+  }
+
+  export type MaintenanceInstanceCreateWithoutTimelineEventsTransferredToInput = {
+    sipacId: string
+    name: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    currentMaintenanceRequests?: MaintenanceRequestCreateNestedManyWithoutCurrentMaintenanceInstanceInput
+    timelineEventsTransferredFrom?: MaintenanceTimelineEventCreateNestedManyWithoutTransferredFromInstanceInput
+  }
+
+  export type MaintenanceInstanceUncheckedCreateWithoutTimelineEventsTransferredToInput = {
+    id?: number
+    sipacId: string
+    name: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    currentMaintenanceRequests?: MaintenanceRequestUncheckedCreateNestedManyWithoutCurrentMaintenanceInstanceInput
+    timelineEventsTransferredFrom?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutTransferredFromInstanceInput
+  }
+
+  export type MaintenanceInstanceCreateOrConnectWithoutTimelineEventsTransferredToInput = {
+    where: MaintenanceInstanceWhereUniqueInput
+    create: XOR<MaintenanceInstanceCreateWithoutTimelineEventsTransferredToInput, MaintenanceInstanceUncheckedCreateWithoutTimelineEventsTransferredToInput>
+  }
+
+  export type MaintenanceRequestUpsertWithoutTimelineEventsInput = {
+    update: XOR<MaintenanceRequestUpdateWithoutTimelineEventsInput, MaintenanceRequestUncheckedUpdateWithoutTimelineEventsInput>
+    create: XOR<MaintenanceRequestCreateWithoutTimelineEventsInput, MaintenanceRequestUncheckedCreateWithoutTimelineEventsInput>
+    where?: MaintenanceRequestWhereInput
+  }
+
+  export type MaintenanceRequestUpdateToOneWithWhereWithoutTimelineEventsInput = {
+    where?: MaintenanceRequestWhereInput
+    data: XOR<MaintenanceRequestUpdateWithoutTimelineEventsInput, MaintenanceRequestUncheckedUpdateWithoutTimelineEventsInput>
+  }
+
+  export type MaintenanceRequestUpdateWithoutTimelineEventsInput = {
+    protocolNumber?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: EnumRequestPriorityFieldUpdateOperationsInput | $Enums.RequestPriority
+    requestedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    solutionDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    currentMaintenanceInstance?: MaintenanceInstanceUpdateOneRequiredWithoutCurrentMaintenanceRequestsNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutCreatedMaintenanceRequestsNestedInput
+    assignedTo?: UserUpdateOneWithoutAssignedMaintenanceRequestsNestedInput
+    equipment?: EquipmentUpdateOneWithoutMaintenanceRequestsNestedInput
+    serviceType?: ServiceTypeUpdateOneWithoutMaintenanceRequestsNestedInput
+    status?: MaintenanceRequestStatusUpdateOneRequiredWithoutMaintenanceRequestsNestedInput
+    originatingOccurrences?: InfrastructureOccurrenceUpdateManyWithoutMaintenanceRequestNestedInput
+    materialRequests?: MaterialRequestUpdateManyWithoutMaintenanceRequestNestedInput
+  }
+
+  export type MaintenanceRequestUncheckedUpdateWithoutTimelineEventsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    protocolNumber?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: EnumRequestPriorityFieldUpdateOperationsInput | $Enums.RequestPriority
+    requestedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    solutionDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    currentMaintenanceInstanceId?: IntFieldUpdateOperationsInput | number
+    createdById?: IntFieldUpdateOperationsInput | number
+    assignedToId?: NullableIntFieldUpdateOperationsInput | number | null
+    equipmentId?: NullableIntFieldUpdateOperationsInput | number | null
+    serviceTypeId?: NullableIntFieldUpdateOperationsInput | number | null
+    statusId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    originatingOccurrences?: InfrastructureOccurrenceUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    materialRequests?: MaterialRequestUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+  }
+
+  export type UserUpsertWithoutTimelineEventsInput = {
+    update: XOR<UserUpdateWithoutTimelineEventsInput, UserUncheckedUpdateWithoutTimelineEventsInput>
+    create: XOR<UserCreateWithoutTimelineEventsInput, UserUncheckedCreateWithoutTimelineEventsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutTimelineEventsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutTimelineEventsInput, UserUncheckedUpdateWithoutTimelineEventsInput>
+  }
+
+  export type UserUpdateWithoutTimelineEventsInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    login?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    image?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    logLogin?: LogLoginUpdateManyWithoutUserNestedInput
+    roles?: RoleUpdateManyWithoutUsersNestedInput
+    magicLinks?: MagicLinkUpdateManyWithoutUserNestedInput
+    reportedOccurrences?: InfrastructureOccurrenceUpdateManyWithoutReportedByNestedInput
+    createdMaintenanceRequests?: MaintenanceRequestUpdateManyWithoutCreatedByNestedInput
+    assignedMaintenanceRequests?: MaintenanceRequestUpdateManyWithoutAssignedToNestedInput
+    materialRequestsCreated?: MaterialRequestUpdateManyWithoutRequestedByNestedInput
+    materialRequestsApproved?: MaterialRequestUpdateManyWithoutApprovedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutTimelineEventsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    login?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    image?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    logLogin?: LogLoginUncheckedUpdateManyWithoutUserNestedInput
+    roles?: RoleUncheckedUpdateManyWithoutUsersNestedInput
+    magicLinks?: MagicLinkUncheckedUpdateManyWithoutUserNestedInput
+    reportedOccurrences?: InfrastructureOccurrenceUncheckedUpdateManyWithoutReportedByNestedInput
+    createdMaintenanceRequests?: MaintenanceRequestUncheckedUpdateManyWithoutCreatedByNestedInput
+    assignedMaintenanceRequests?: MaintenanceRequestUncheckedUpdateManyWithoutAssignedToNestedInput
+    materialRequestsCreated?: MaterialRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+    materialRequestsApproved?: MaterialRequestUncheckedUpdateManyWithoutApprovedByNestedInput
+  }
+
+  export type MaintenanceInstanceUpsertWithoutTimelineEventsTransferredFromInput = {
+    update: XOR<MaintenanceInstanceUpdateWithoutTimelineEventsTransferredFromInput, MaintenanceInstanceUncheckedUpdateWithoutTimelineEventsTransferredFromInput>
+    create: XOR<MaintenanceInstanceCreateWithoutTimelineEventsTransferredFromInput, MaintenanceInstanceUncheckedCreateWithoutTimelineEventsTransferredFromInput>
+    where?: MaintenanceInstanceWhereInput
+  }
+
+  export type MaintenanceInstanceUpdateToOneWithWhereWithoutTimelineEventsTransferredFromInput = {
+    where?: MaintenanceInstanceWhereInput
+    data: XOR<MaintenanceInstanceUpdateWithoutTimelineEventsTransferredFromInput, MaintenanceInstanceUncheckedUpdateWithoutTimelineEventsTransferredFromInput>
+  }
+
+  export type MaintenanceInstanceUpdateWithoutTimelineEventsTransferredFromInput = {
+    sipacId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    currentMaintenanceRequests?: MaintenanceRequestUpdateManyWithoutCurrentMaintenanceInstanceNestedInput
+    timelineEventsTransferredTo?: MaintenanceTimelineEventUpdateManyWithoutTransferredToInstanceNestedInput
+  }
+
+  export type MaintenanceInstanceUncheckedUpdateWithoutTimelineEventsTransferredFromInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    sipacId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    currentMaintenanceRequests?: MaintenanceRequestUncheckedUpdateManyWithoutCurrentMaintenanceInstanceNestedInput
+    timelineEventsTransferredTo?: MaintenanceTimelineEventUncheckedUpdateManyWithoutTransferredToInstanceNestedInput
+  }
+
+  export type MaintenanceInstanceUpsertWithoutTimelineEventsTransferredToInput = {
+    update: XOR<MaintenanceInstanceUpdateWithoutTimelineEventsTransferredToInput, MaintenanceInstanceUncheckedUpdateWithoutTimelineEventsTransferredToInput>
+    create: XOR<MaintenanceInstanceCreateWithoutTimelineEventsTransferredToInput, MaintenanceInstanceUncheckedCreateWithoutTimelineEventsTransferredToInput>
+    where?: MaintenanceInstanceWhereInput
+  }
+
+  export type MaintenanceInstanceUpdateToOneWithWhereWithoutTimelineEventsTransferredToInput = {
+    where?: MaintenanceInstanceWhereInput
+    data: XOR<MaintenanceInstanceUpdateWithoutTimelineEventsTransferredToInput, MaintenanceInstanceUncheckedUpdateWithoutTimelineEventsTransferredToInput>
+  }
+
+  export type MaintenanceInstanceUpdateWithoutTimelineEventsTransferredToInput = {
+    sipacId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    currentMaintenanceRequests?: MaintenanceRequestUpdateManyWithoutCurrentMaintenanceInstanceNestedInput
+    timelineEventsTransferredFrom?: MaintenanceTimelineEventUpdateManyWithoutTransferredFromInstanceNestedInput
+  }
+
+  export type MaintenanceInstanceUncheckedUpdateWithoutTimelineEventsTransferredToInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    sipacId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    currentMaintenanceRequests?: MaintenanceRequestUncheckedUpdateManyWithoutCurrentMaintenanceInstanceNestedInput
+    timelineEventsTransferredFrom?: MaintenanceTimelineEventUncheckedUpdateManyWithoutTransferredFromInstanceNestedInput
+  }
+
+  export type MaintenanceRequestCreateWithoutCurrentMaintenanceInstanceInput = {
+    protocolNumber?: string
+    title: string
+    description: string
+    priority?: $Enums.RequestPriority
+    requestedAt?: Date | string
+    deadline?: Date | string | null
+    solutionDetails?: string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    createdBy: UserCreateNestedOneWithoutCreatedMaintenanceRequestsInput
+    assignedTo?: UserCreateNestedOneWithoutAssignedMaintenanceRequestsInput
+    equipment?: EquipmentCreateNestedOneWithoutMaintenanceRequestsInput
+    serviceType?: ServiceTypeCreateNestedOneWithoutMaintenanceRequestsInput
+    status: MaintenanceRequestStatusCreateNestedOneWithoutMaintenanceRequestsInput
+    originatingOccurrences?: InfrastructureOccurrenceCreateNestedManyWithoutMaintenanceRequestInput
+    timelineEvents?: MaintenanceTimelineEventCreateNestedManyWithoutMaintenanceRequestInput
+    materialRequests?: MaterialRequestCreateNestedManyWithoutMaintenanceRequestInput
+  }
+
+  export type MaintenanceRequestUncheckedCreateWithoutCurrentMaintenanceInstanceInput = {
+    id?: number
+    protocolNumber?: string
+    title: string
+    description: string
+    priority?: $Enums.RequestPriority
+    requestedAt?: Date | string
+    deadline?: Date | string | null
+    solutionDetails?: string | null
+    completedAt?: Date | string | null
+    createdById: number
+    assignedToId?: number | null
+    equipmentId?: number | null
+    serviceTypeId?: number | null
+    statusId: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    originatingOccurrences?: InfrastructureOccurrenceUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    timelineEvents?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    materialRequests?: MaterialRequestUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+  }
+
+  export type MaintenanceRequestCreateOrConnectWithoutCurrentMaintenanceInstanceInput = {
+    where: MaintenanceRequestWhereUniqueInput
+    create: XOR<MaintenanceRequestCreateWithoutCurrentMaintenanceInstanceInput, MaintenanceRequestUncheckedCreateWithoutCurrentMaintenanceInstanceInput>
+  }
+
+  export type MaintenanceRequestCreateManyCurrentMaintenanceInstanceInputEnvelope = {
+    data: MaintenanceRequestCreateManyCurrentMaintenanceInstanceInput | MaintenanceRequestCreateManyCurrentMaintenanceInstanceInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MaintenanceTimelineEventCreateWithoutTransferredFromInstanceInput = {
+    type?: $Enums.TimelineEventType
+    description: string
+    eventData?: NullableJsonNullValueInput | InputJsonValue
+    occurredAt?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    maintenanceRequest: MaintenanceRequestCreateNestedOneWithoutTimelineEventsInput
+    actionBy: UserCreateNestedOneWithoutTimelineEventsInput
+    transferredToInstance?: MaintenanceInstanceCreateNestedOneWithoutTimelineEventsTransferredToInput
+  }
+
+  export type MaintenanceTimelineEventUncheckedCreateWithoutTransferredFromInstanceInput = {
+    id?: number
+    type?: $Enums.TimelineEventType
+    description: string
+    eventData?: NullableJsonNullValueInput | InputJsonValue
+    occurredAt?: Date | string
+    maintenanceRequestId: number
+    actionById: number
+    transferredToInstanceId?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaintenanceTimelineEventCreateOrConnectWithoutTransferredFromInstanceInput = {
+    where: MaintenanceTimelineEventWhereUniqueInput
+    create: XOR<MaintenanceTimelineEventCreateWithoutTransferredFromInstanceInput, MaintenanceTimelineEventUncheckedCreateWithoutTransferredFromInstanceInput>
+  }
+
+  export type MaintenanceTimelineEventCreateManyTransferredFromInstanceInputEnvelope = {
+    data: MaintenanceTimelineEventCreateManyTransferredFromInstanceInput | MaintenanceTimelineEventCreateManyTransferredFromInstanceInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MaintenanceTimelineEventCreateWithoutTransferredToInstanceInput = {
+    type?: $Enums.TimelineEventType
+    description: string
+    eventData?: NullableJsonNullValueInput | InputJsonValue
+    occurredAt?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    maintenanceRequest: MaintenanceRequestCreateNestedOneWithoutTimelineEventsInput
+    actionBy: UserCreateNestedOneWithoutTimelineEventsInput
+    transferredFromInstance?: MaintenanceInstanceCreateNestedOneWithoutTimelineEventsTransferredFromInput
+  }
+
+  export type MaintenanceTimelineEventUncheckedCreateWithoutTransferredToInstanceInput = {
+    id?: number
+    type?: $Enums.TimelineEventType
+    description: string
+    eventData?: NullableJsonNullValueInput | InputJsonValue
+    occurredAt?: Date | string
+    maintenanceRequestId: number
+    actionById: number
+    transferredFromInstanceId?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaintenanceTimelineEventCreateOrConnectWithoutTransferredToInstanceInput = {
+    where: MaintenanceTimelineEventWhereUniqueInput
+    create: XOR<MaintenanceTimelineEventCreateWithoutTransferredToInstanceInput, MaintenanceTimelineEventUncheckedCreateWithoutTransferredToInstanceInput>
+  }
+
+  export type MaintenanceTimelineEventCreateManyTransferredToInstanceInputEnvelope = {
+    data: MaintenanceTimelineEventCreateManyTransferredToInstanceInput | MaintenanceTimelineEventCreateManyTransferredToInstanceInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MaintenanceRequestUpsertWithWhereUniqueWithoutCurrentMaintenanceInstanceInput = {
+    where: MaintenanceRequestWhereUniqueInput
+    update: XOR<MaintenanceRequestUpdateWithoutCurrentMaintenanceInstanceInput, MaintenanceRequestUncheckedUpdateWithoutCurrentMaintenanceInstanceInput>
+    create: XOR<MaintenanceRequestCreateWithoutCurrentMaintenanceInstanceInput, MaintenanceRequestUncheckedCreateWithoutCurrentMaintenanceInstanceInput>
+  }
+
+  export type MaintenanceRequestUpdateWithWhereUniqueWithoutCurrentMaintenanceInstanceInput = {
+    where: MaintenanceRequestWhereUniqueInput
+    data: XOR<MaintenanceRequestUpdateWithoutCurrentMaintenanceInstanceInput, MaintenanceRequestUncheckedUpdateWithoutCurrentMaintenanceInstanceInput>
+  }
+
+  export type MaintenanceRequestUpdateManyWithWhereWithoutCurrentMaintenanceInstanceInput = {
+    where: MaintenanceRequestScalarWhereInput
+    data: XOR<MaintenanceRequestUpdateManyMutationInput, MaintenanceRequestUncheckedUpdateManyWithoutCurrentMaintenanceInstanceInput>
+  }
+
+  export type MaintenanceTimelineEventUpsertWithWhereUniqueWithoutTransferredFromInstanceInput = {
+    where: MaintenanceTimelineEventWhereUniqueInput
+    update: XOR<MaintenanceTimelineEventUpdateWithoutTransferredFromInstanceInput, MaintenanceTimelineEventUncheckedUpdateWithoutTransferredFromInstanceInput>
+    create: XOR<MaintenanceTimelineEventCreateWithoutTransferredFromInstanceInput, MaintenanceTimelineEventUncheckedCreateWithoutTransferredFromInstanceInput>
+  }
+
+  export type MaintenanceTimelineEventUpdateWithWhereUniqueWithoutTransferredFromInstanceInput = {
+    where: MaintenanceTimelineEventWhereUniqueInput
+    data: XOR<MaintenanceTimelineEventUpdateWithoutTransferredFromInstanceInput, MaintenanceTimelineEventUncheckedUpdateWithoutTransferredFromInstanceInput>
+  }
+
+  export type MaintenanceTimelineEventUpdateManyWithWhereWithoutTransferredFromInstanceInput = {
+    where: MaintenanceTimelineEventScalarWhereInput
+    data: XOR<MaintenanceTimelineEventUpdateManyMutationInput, MaintenanceTimelineEventUncheckedUpdateManyWithoutTransferredFromInstanceInput>
+  }
+
+  export type MaintenanceTimelineEventUpsertWithWhereUniqueWithoutTransferredToInstanceInput = {
+    where: MaintenanceTimelineEventWhereUniqueInput
+    update: XOR<MaintenanceTimelineEventUpdateWithoutTransferredToInstanceInput, MaintenanceTimelineEventUncheckedUpdateWithoutTransferredToInstanceInput>
+    create: XOR<MaintenanceTimelineEventCreateWithoutTransferredToInstanceInput, MaintenanceTimelineEventUncheckedCreateWithoutTransferredToInstanceInput>
+  }
+
+  export type MaintenanceTimelineEventUpdateWithWhereUniqueWithoutTransferredToInstanceInput = {
+    where: MaintenanceTimelineEventWhereUniqueInput
+    data: XOR<MaintenanceTimelineEventUpdateWithoutTransferredToInstanceInput, MaintenanceTimelineEventUncheckedUpdateWithoutTransferredToInstanceInput>
+  }
+
+  export type MaintenanceTimelineEventUpdateManyWithWhereWithoutTransferredToInstanceInput = {
+    where: MaintenanceTimelineEventScalarWhereInput
+    data: XOR<MaintenanceTimelineEventUpdateManyMutationInput, MaintenanceTimelineEventUncheckedUpdateManyWithoutTransferredToInstanceInput>
+  }
+
+  export type MaintenanceRequestCreateWithoutServiceTypeInput = {
+    protocolNumber?: string
+    title: string
+    description: string
+    priority?: $Enums.RequestPriority
+    requestedAt?: Date | string
+    deadline?: Date | string | null
+    solutionDetails?: string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    currentMaintenanceInstance: MaintenanceInstanceCreateNestedOneWithoutCurrentMaintenanceRequestsInput
+    createdBy: UserCreateNestedOneWithoutCreatedMaintenanceRequestsInput
+    assignedTo?: UserCreateNestedOneWithoutAssignedMaintenanceRequestsInput
+    equipment?: EquipmentCreateNestedOneWithoutMaintenanceRequestsInput
+    status: MaintenanceRequestStatusCreateNestedOneWithoutMaintenanceRequestsInput
+    originatingOccurrences?: InfrastructureOccurrenceCreateNestedManyWithoutMaintenanceRequestInput
+    timelineEvents?: MaintenanceTimelineEventCreateNestedManyWithoutMaintenanceRequestInput
+    materialRequests?: MaterialRequestCreateNestedManyWithoutMaintenanceRequestInput
+  }
+
+  export type MaintenanceRequestUncheckedCreateWithoutServiceTypeInput = {
+    id?: number
+    protocolNumber?: string
+    title: string
+    description: string
+    priority?: $Enums.RequestPriority
+    requestedAt?: Date | string
+    deadline?: Date | string | null
+    solutionDetails?: string | null
+    completedAt?: Date | string | null
+    currentMaintenanceInstanceId: number
+    createdById: number
+    assignedToId?: number | null
+    equipmentId?: number | null
+    statusId: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    originatingOccurrences?: InfrastructureOccurrenceUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    timelineEvents?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    materialRequests?: MaterialRequestUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+  }
+
+  export type MaintenanceRequestCreateOrConnectWithoutServiceTypeInput = {
+    where: MaintenanceRequestWhereUniqueInput
+    create: XOR<MaintenanceRequestCreateWithoutServiceTypeInput, MaintenanceRequestUncheckedCreateWithoutServiceTypeInput>
+  }
+
+  export type MaintenanceRequestCreateManyServiceTypeInputEnvelope = {
+    data: MaintenanceRequestCreateManyServiceTypeInput | MaintenanceRequestCreateManyServiceTypeInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MaintenanceRequestUpsertWithWhereUniqueWithoutServiceTypeInput = {
+    where: MaintenanceRequestWhereUniqueInput
+    update: XOR<MaintenanceRequestUpdateWithoutServiceTypeInput, MaintenanceRequestUncheckedUpdateWithoutServiceTypeInput>
+    create: XOR<MaintenanceRequestCreateWithoutServiceTypeInput, MaintenanceRequestUncheckedCreateWithoutServiceTypeInput>
+  }
+
+  export type MaintenanceRequestUpdateWithWhereUniqueWithoutServiceTypeInput = {
+    where: MaintenanceRequestWhereUniqueInput
+    data: XOR<MaintenanceRequestUpdateWithoutServiceTypeInput, MaintenanceRequestUncheckedUpdateWithoutServiceTypeInput>
+  }
+
+  export type MaintenanceRequestUpdateManyWithWhereWithoutServiceTypeInput = {
+    where: MaintenanceRequestScalarWhereInput
+    data: XOR<MaintenanceRequestUpdateManyMutationInput, MaintenanceRequestUncheckedUpdateManyWithoutServiceTypeInput>
+  }
+
+  export type MaintenanceRequestCreateWithoutEquipmentInput = {
+    protocolNumber?: string
+    title: string
+    description: string
+    priority?: $Enums.RequestPriority
+    requestedAt?: Date | string
+    deadline?: Date | string | null
+    solutionDetails?: string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    currentMaintenanceInstance: MaintenanceInstanceCreateNestedOneWithoutCurrentMaintenanceRequestsInput
+    createdBy: UserCreateNestedOneWithoutCreatedMaintenanceRequestsInput
+    assignedTo?: UserCreateNestedOneWithoutAssignedMaintenanceRequestsInput
+    serviceType?: ServiceTypeCreateNestedOneWithoutMaintenanceRequestsInput
+    status: MaintenanceRequestStatusCreateNestedOneWithoutMaintenanceRequestsInput
+    originatingOccurrences?: InfrastructureOccurrenceCreateNestedManyWithoutMaintenanceRequestInput
+    timelineEvents?: MaintenanceTimelineEventCreateNestedManyWithoutMaintenanceRequestInput
+    materialRequests?: MaterialRequestCreateNestedManyWithoutMaintenanceRequestInput
+  }
+
+  export type MaintenanceRequestUncheckedCreateWithoutEquipmentInput = {
+    id?: number
+    protocolNumber?: string
+    title: string
+    description: string
+    priority?: $Enums.RequestPriority
+    requestedAt?: Date | string
+    deadline?: Date | string | null
+    solutionDetails?: string | null
+    completedAt?: Date | string | null
+    currentMaintenanceInstanceId: number
+    createdById: number
+    assignedToId?: number | null
+    serviceTypeId?: number | null
+    statusId: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    originatingOccurrences?: InfrastructureOccurrenceUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    timelineEvents?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    materialRequests?: MaterialRequestUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+  }
+
+  export type MaintenanceRequestCreateOrConnectWithoutEquipmentInput = {
+    where: MaintenanceRequestWhereUniqueInput
+    create: XOR<MaintenanceRequestCreateWithoutEquipmentInput, MaintenanceRequestUncheckedCreateWithoutEquipmentInput>
+  }
+
+  export type MaintenanceRequestCreateManyEquipmentInputEnvelope = {
+    data: MaintenanceRequestCreateManyEquipmentInput | MaintenanceRequestCreateManyEquipmentInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MaintenanceRequestUpsertWithWhereUniqueWithoutEquipmentInput = {
+    where: MaintenanceRequestWhereUniqueInput
+    update: XOR<MaintenanceRequestUpdateWithoutEquipmentInput, MaintenanceRequestUncheckedUpdateWithoutEquipmentInput>
+    create: XOR<MaintenanceRequestCreateWithoutEquipmentInput, MaintenanceRequestUncheckedCreateWithoutEquipmentInput>
+  }
+
+  export type MaintenanceRequestUpdateWithWhereUniqueWithoutEquipmentInput = {
+    where: MaintenanceRequestWhereUniqueInput
+    data: XOR<MaintenanceRequestUpdateWithoutEquipmentInput, MaintenanceRequestUncheckedUpdateWithoutEquipmentInput>
+  }
+
+  export type MaintenanceRequestUpdateManyWithWhereWithoutEquipmentInput = {
+    where: MaintenanceRequestScalarWhereInput
+    data: XOR<MaintenanceRequestUpdateManyMutationInput, MaintenanceRequestUncheckedUpdateManyWithoutEquipmentInput>
+  }
+
+  export type UserCreateWithoutReportedOccurrencesInput = {
+    name: string
+    login: string
+    email: string
+    image?: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    logLogin?: LogLoginCreateNestedManyWithoutUserInput
+    roles?: RoleCreateNestedManyWithoutUsersInput
+    magicLinks?: MagicLinkCreateNestedManyWithoutUserInput
+    createdMaintenanceRequests?: MaintenanceRequestCreateNestedManyWithoutCreatedByInput
+    assignedMaintenanceRequests?: MaintenanceRequestCreateNestedManyWithoutAssignedToInput
+    timelineEvents?: MaintenanceTimelineEventCreateNestedManyWithoutActionByInput
+    materialRequestsCreated?: MaterialRequestCreateNestedManyWithoutRequestedByInput
+    materialRequestsApproved?: MaterialRequestCreateNestedManyWithoutApprovedByInput
+  }
+
+  export type UserUncheckedCreateWithoutReportedOccurrencesInput = {
+    id?: number
+    name: string
+    login: string
+    email: string
+    image?: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    logLogin?: LogLoginUncheckedCreateNestedManyWithoutUserInput
+    roles?: RoleUncheckedCreateNestedManyWithoutUsersInput
+    magicLinks?: MagicLinkUncheckedCreateNestedManyWithoutUserInput
+    createdMaintenanceRequests?: MaintenanceRequestUncheckedCreateNestedManyWithoutCreatedByInput
+    assignedMaintenanceRequests?: MaintenanceRequestUncheckedCreateNestedManyWithoutAssignedToInput
+    timelineEvents?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutActionByInput
+    materialRequestsCreated?: MaterialRequestUncheckedCreateNestedManyWithoutRequestedByInput
+    materialRequestsApproved?: MaterialRequestUncheckedCreateNestedManyWithoutApprovedByInput
+  }
+
+  export type UserCreateOrConnectWithoutReportedOccurrencesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutReportedOccurrencesInput, UserUncheckedCreateWithoutReportedOccurrencesInput>
+  }
+
+  export type MaintenanceRequestCreateWithoutOriginatingOccurrencesInput = {
+    protocolNumber?: string
+    title: string
+    description: string
+    priority?: $Enums.RequestPriority
+    requestedAt?: Date | string
+    deadline?: Date | string | null
+    solutionDetails?: string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    currentMaintenanceInstance: MaintenanceInstanceCreateNestedOneWithoutCurrentMaintenanceRequestsInput
+    createdBy: UserCreateNestedOneWithoutCreatedMaintenanceRequestsInput
+    assignedTo?: UserCreateNestedOneWithoutAssignedMaintenanceRequestsInput
+    equipment?: EquipmentCreateNestedOneWithoutMaintenanceRequestsInput
+    serviceType?: ServiceTypeCreateNestedOneWithoutMaintenanceRequestsInput
+    status: MaintenanceRequestStatusCreateNestedOneWithoutMaintenanceRequestsInput
+    timelineEvents?: MaintenanceTimelineEventCreateNestedManyWithoutMaintenanceRequestInput
+    materialRequests?: MaterialRequestCreateNestedManyWithoutMaintenanceRequestInput
+  }
+
+  export type MaintenanceRequestUncheckedCreateWithoutOriginatingOccurrencesInput = {
+    id?: number
+    protocolNumber?: string
+    title: string
+    description: string
+    priority?: $Enums.RequestPriority
+    requestedAt?: Date | string
+    deadline?: Date | string | null
+    solutionDetails?: string | null
+    completedAt?: Date | string | null
+    currentMaintenanceInstanceId: number
+    createdById: number
+    assignedToId?: number | null
+    equipmentId?: number | null
+    serviceTypeId?: number | null
+    statusId: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    timelineEvents?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    materialRequests?: MaterialRequestUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+  }
+
+  export type MaintenanceRequestCreateOrConnectWithoutOriginatingOccurrencesInput = {
+    where: MaintenanceRequestWhereUniqueInput
+    create: XOR<MaintenanceRequestCreateWithoutOriginatingOccurrencesInput, MaintenanceRequestUncheckedCreateWithoutOriginatingOccurrencesInput>
+  }
+
+  export type UserUpsertWithoutReportedOccurrencesInput = {
+    update: XOR<UserUpdateWithoutReportedOccurrencesInput, UserUncheckedUpdateWithoutReportedOccurrencesInput>
+    create: XOR<UserCreateWithoutReportedOccurrencesInput, UserUncheckedCreateWithoutReportedOccurrencesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutReportedOccurrencesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutReportedOccurrencesInput, UserUncheckedUpdateWithoutReportedOccurrencesInput>
+  }
+
+  export type UserUpdateWithoutReportedOccurrencesInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    login?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    image?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    logLogin?: LogLoginUpdateManyWithoutUserNestedInput
+    roles?: RoleUpdateManyWithoutUsersNestedInput
+    magicLinks?: MagicLinkUpdateManyWithoutUserNestedInput
+    createdMaintenanceRequests?: MaintenanceRequestUpdateManyWithoutCreatedByNestedInput
+    assignedMaintenanceRequests?: MaintenanceRequestUpdateManyWithoutAssignedToNestedInput
+    timelineEvents?: MaintenanceTimelineEventUpdateManyWithoutActionByNestedInput
+    materialRequestsCreated?: MaterialRequestUpdateManyWithoutRequestedByNestedInput
+    materialRequestsApproved?: MaterialRequestUpdateManyWithoutApprovedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutReportedOccurrencesInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    login?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    image?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    logLogin?: LogLoginUncheckedUpdateManyWithoutUserNestedInput
+    roles?: RoleUncheckedUpdateManyWithoutUsersNestedInput
+    magicLinks?: MagicLinkUncheckedUpdateManyWithoutUserNestedInput
+    createdMaintenanceRequests?: MaintenanceRequestUncheckedUpdateManyWithoutCreatedByNestedInput
+    assignedMaintenanceRequests?: MaintenanceRequestUncheckedUpdateManyWithoutAssignedToNestedInput
+    timelineEvents?: MaintenanceTimelineEventUncheckedUpdateManyWithoutActionByNestedInput
+    materialRequestsCreated?: MaterialRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+    materialRequestsApproved?: MaterialRequestUncheckedUpdateManyWithoutApprovedByNestedInput
+  }
+
+  export type MaintenanceRequestUpsertWithoutOriginatingOccurrencesInput = {
+    update: XOR<MaintenanceRequestUpdateWithoutOriginatingOccurrencesInput, MaintenanceRequestUncheckedUpdateWithoutOriginatingOccurrencesInput>
+    create: XOR<MaintenanceRequestCreateWithoutOriginatingOccurrencesInput, MaintenanceRequestUncheckedCreateWithoutOriginatingOccurrencesInput>
+    where?: MaintenanceRequestWhereInput
+  }
+
+  export type MaintenanceRequestUpdateToOneWithWhereWithoutOriginatingOccurrencesInput = {
+    where?: MaintenanceRequestWhereInput
+    data: XOR<MaintenanceRequestUpdateWithoutOriginatingOccurrencesInput, MaintenanceRequestUncheckedUpdateWithoutOriginatingOccurrencesInput>
+  }
+
+  export type MaintenanceRequestUpdateWithoutOriginatingOccurrencesInput = {
+    protocolNumber?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: EnumRequestPriorityFieldUpdateOperationsInput | $Enums.RequestPriority
+    requestedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    solutionDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    currentMaintenanceInstance?: MaintenanceInstanceUpdateOneRequiredWithoutCurrentMaintenanceRequestsNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutCreatedMaintenanceRequestsNestedInput
+    assignedTo?: UserUpdateOneWithoutAssignedMaintenanceRequestsNestedInput
+    equipment?: EquipmentUpdateOneWithoutMaintenanceRequestsNestedInput
+    serviceType?: ServiceTypeUpdateOneWithoutMaintenanceRequestsNestedInput
+    status?: MaintenanceRequestStatusUpdateOneRequiredWithoutMaintenanceRequestsNestedInput
+    timelineEvents?: MaintenanceTimelineEventUpdateManyWithoutMaintenanceRequestNestedInput
+    materialRequests?: MaterialRequestUpdateManyWithoutMaintenanceRequestNestedInput
+  }
+
+  export type MaintenanceRequestUncheckedUpdateWithoutOriginatingOccurrencesInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    protocolNumber?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: EnumRequestPriorityFieldUpdateOperationsInput | $Enums.RequestPriority
+    requestedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    solutionDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    currentMaintenanceInstanceId?: IntFieldUpdateOperationsInput | number
+    createdById?: IntFieldUpdateOperationsInput | number
+    assignedToId?: NullableIntFieldUpdateOperationsInput | number | null
+    equipmentId?: NullableIntFieldUpdateOperationsInput | number | null
+    serviceTypeId?: NullableIntFieldUpdateOperationsInput | number | null
+    statusId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    timelineEvents?: MaintenanceTimelineEventUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    materialRequests?: MaterialRequestUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+  }
+
+  export type MaterialCreateWithoutChildsInput = {
+    code?: string | null
+    name: string
+    description?: string | null
+    unitOfMeasure: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    parentMaterial?: MaterialCreateNestedOneWithoutChildsInput
+    materialRequestItems?: MaterialRequestItemCreateNestedManyWithoutMaterialInput
+  }
+
+  export type MaterialUncheckedCreateWithoutChildsInput = {
+    id?: number
+    code?: string | null
+    name: string
+    description?: string | null
+    unitOfMeasure: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    parentMaterialId?: number | null
+    materialRequestItems?: MaterialRequestItemUncheckedCreateNestedManyWithoutMaterialInput
+  }
+
+  export type MaterialCreateOrConnectWithoutChildsInput = {
+    where: MaterialWhereUniqueInput
+    create: XOR<MaterialCreateWithoutChildsInput, MaterialUncheckedCreateWithoutChildsInput>
+  }
+
+  export type MaterialCreateWithoutParentMaterialInput = {
+    code?: string | null
+    name: string
+    description?: string | null
+    unitOfMeasure: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    childs?: MaterialCreateNestedManyWithoutParentMaterialInput
+    materialRequestItems?: MaterialRequestItemCreateNestedManyWithoutMaterialInput
+  }
+
+  export type MaterialUncheckedCreateWithoutParentMaterialInput = {
+    id?: number
+    code?: string | null
+    name: string
+    description?: string | null
+    unitOfMeasure: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    childs?: MaterialUncheckedCreateNestedManyWithoutParentMaterialInput
+    materialRequestItems?: MaterialRequestItemUncheckedCreateNestedManyWithoutMaterialInput
+  }
+
+  export type MaterialCreateOrConnectWithoutParentMaterialInput = {
+    where: MaterialWhereUniqueInput
+    create: XOR<MaterialCreateWithoutParentMaterialInput, MaterialUncheckedCreateWithoutParentMaterialInput>
+  }
+
+  export type MaterialCreateManyParentMaterialInputEnvelope = {
+    data: MaterialCreateManyParentMaterialInput | MaterialCreateManyParentMaterialInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MaterialRequestItemCreateWithoutMaterialInput = {
+    quantityRequested: Decimal | DecimalJsLike | number | string
+    quantityApproved?: Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: Decimal | DecimalJsLike | number | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    materialRequest: MaterialRequestCreateNestedOneWithoutItemsInput
+  }
+
+  export type MaterialRequestItemUncheckedCreateWithoutMaterialInput = {
+    id?: number
+    quantityRequested: Decimal | DecimalJsLike | number | string
+    quantityApproved?: Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: Decimal | DecimalJsLike | number | string | null
+    materialRequestId: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaterialRequestItemCreateOrConnectWithoutMaterialInput = {
+    where: MaterialRequestItemWhereUniqueInput
+    create: XOR<MaterialRequestItemCreateWithoutMaterialInput, MaterialRequestItemUncheckedCreateWithoutMaterialInput>
+  }
+
+  export type MaterialRequestItemCreateManyMaterialInputEnvelope = {
+    data: MaterialRequestItemCreateManyMaterialInput | MaterialRequestItemCreateManyMaterialInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MaterialUpsertWithoutChildsInput = {
+    update: XOR<MaterialUpdateWithoutChildsInput, MaterialUncheckedUpdateWithoutChildsInput>
+    create: XOR<MaterialCreateWithoutChildsInput, MaterialUncheckedCreateWithoutChildsInput>
+    where?: MaterialWhereInput
+  }
+
+  export type MaterialUpdateToOneWithWhereWithoutChildsInput = {
+    where?: MaterialWhereInput
+    data: XOR<MaterialUpdateWithoutChildsInput, MaterialUncheckedUpdateWithoutChildsInput>
+  }
+
+  export type MaterialUpdateWithoutChildsInput = {
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    parentMaterial?: MaterialUpdateOneWithoutChildsNestedInput
+    materialRequestItems?: MaterialRequestItemUpdateManyWithoutMaterialNestedInput
+  }
+
+  export type MaterialUncheckedUpdateWithoutChildsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    parentMaterialId?: NullableIntFieldUpdateOperationsInput | number | null
+    materialRequestItems?: MaterialRequestItemUncheckedUpdateManyWithoutMaterialNestedInput
+  }
+
+  export type MaterialUpsertWithWhereUniqueWithoutParentMaterialInput = {
+    where: MaterialWhereUniqueInput
+    update: XOR<MaterialUpdateWithoutParentMaterialInput, MaterialUncheckedUpdateWithoutParentMaterialInput>
+    create: XOR<MaterialCreateWithoutParentMaterialInput, MaterialUncheckedCreateWithoutParentMaterialInput>
+  }
+
+  export type MaterialUpdateWithWhereUniqueWithoutParentMaterialInput = {
+    where: MaterialWhereUniqueInput
+    data: XOR<MaterialUpdateWithoutParentMaterialInput, MaterialUncheckedUpdateWithoutParentMaterialInput>
+  }
+
+  export type MaterialUpdateManyWithWhereWithoutParentMaterialInput = {
+    where: MaterialScalarWhereInput
+    data: XOR<MaterialUpdateManyMutationInput, MaterialUncheckedUpdateManyWithoutParentMaterialInput>
+  }
+
+  export type MaterialScalarWhereInput = {
+    AND?: MaterialScalarWhereInput | MaterialScalarWhereInput[]
+    OR?: MaterialScalarWhereInput[]
+    NOT?: MaterialScalarWhereInput | MaterialScalarWhereInput[]
+    id?: IntFilter<"Material"> | number
+    code?: StringNullableFilter<"Material"> | string | null
+    name?: StringFilter<"Material"> | string
+    description?: StringNullableFilter<"Material"> | string | null
+    unitOfMeasure?: StringFilter<"Material"> | string
+    isActive?: BoolFilter<"Material"> | boolean
+    createdAt?: DateTimeFilter<"Material"> | Date | string
+    updatedAt?: DateTimeFilter<"Material"> | Date | string
+    parentMaterialId?: IntNullableFilter<"Material"> | number | null
+  }
+
+  export type MaterialRequestItemUpsertWithWhereUniqueWithoutMaterialInput = {
+    where: MaterialRequestItemWhereUniqueInput
+    update: XOR<MaterialRequestItemUpdateWithoutMaterialInput, MaterialRequestItemUncheckedUpdateWithoutMaterialInput>
+    create: XOR<MaterialRequestItemCreateWithoutMaterialInput, MaterialRequestItemUncheckedCreateWithoutMaterialInput>
+  }
+
+  export type MaterialRequestItemUpdateWithWhereUniqueWithoutMaterialInput = {
+    where: MaterialRequestItemWhereUniqueInput
+    data: XOR<MaterialRequestItemUpdateWithoutMaterialInput, MaterialRequestItemUncheckedUpdateWithoutMaterialInput>
+  }
+
+  export type MaterialRequestItemUpdateManyWithWhereWithoutMaterialInput = {
+    where: MaterialRequestItemScalarWhereInput
+    data: XOR<MaterialRequestItemUpdateManyMutationInput, MaterialRequestItemUncheckedUpdateManyWithoutMaterialInput>
+  }
+
+  export type MaterialRequestItemScalarWhereInput = {
+    AND?: MaterialRequestItemScalarWhereInput | MaterialRequestItemScalarWhereInput[]
+    OR?: MaterialRequestItemScalarWhereInput[]
+    NOT?: MaterialRequestItemScalarWhereInput | MaterialRequestItemScalarWhereInput[]
+    id?: IntFilter<"MaterialRequestItem"> | number
+    quantityRequested?: DecimalFilter<"MaterialRequestItem"> | Decimal | DecimalJsLike | number | string
+    quantityApproved?: DecimalNullableFilter<"MaterialRequestItem"> | Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: DecimalNullableFilter<"MaterialRequestItem"> | Decimal | DecimalJsLike | number | string | null
+    materialRequestId?: IntFilter<"MaterialRequestItem"> | number
+    materialId?: IntFilter<"MaterialRequestItem"> | number
+    createdAt?: DateTimeFilter<"MaterialRequestItem"> | Date | string
+    updatedAt?: DateTimeFilter<"MaterialRequestItem"> | Date | string
+  }
+
+  export type MaintenanceRequestCreateWithoutMaterialRequestsInput = {
+    protocolNumber?: string
+    title: string
+    description: string
+    priority?: $Enums.RequestPriority
+    requestedAt?: Date | string
+    deadline?: Date | string | null
+    solutionDetails?: string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    currentMaintenanceInstance: MaintenanceInstanceCreateNestedOneWithoutCurrentMaintenanceRequestsInput
+    createdBy: UserCreateNestedOneWithoutCreatedMaintenanceRequestsInput
+    assignedTo?: UserCreateNestedOneWithoutAssignedMaintenanceRequestsInput
+    equipment?: EquipmentCreateNestedOneWithoutMaintenanceRequestsInput
+    serviceType?: ServiceTypeCreateNestedOneWithoutMaintenanceRequestsInput
+    status: MaintenanceRequestStatusCreateNestedOneWithoutMaintenanceRequestsInput
+    originatingOccurrences?: InfrastructureOccurrenceCreateNestedManyWithoutMaintenanceRequestInput
+    timelineEvents?: MaintenanceTimelineEventCreateNestedManyWithoutMaintenanceRequestInput
+  }
+
+  export type MaintenanceRequestUncheckedCreateWithoutMaterialRequestsInput = {
+    id?: number
+    protocolNumber?: string
+    title: string
+    description: string
+    priority?: $Enums.RequestPriority
+    requestedAt?: Date | string
+    deadline?: Date | string | null
+    solutionDetails?: string | null
+    completedAt?: Date | string | null
+    currentMaintenanceInstanceId: number
+    createdById: number
+    assignedToId?: number | null
+    equipmentId?: number | null
+    serviceTypeId?: number | null
+    statusId: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    originatingOccurrences?: InfrastructureOccurrenceUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    timelineEvents?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+  }
+
+  export type MaintenanceRequestCreateOrConnectWithoutMaterialRequestsInput = {
+    where: MaintenanceRequestWhereUniqueInput
+    create: XOR<MaintenanceRequestCreateWithoutMaterialRequestsInput, MaintenanceRequestUncheckedCreateWithoutMaterialRequestsInput>
+  }
+
+  export type UserCreateWithoutMaterialRequestsCreatedInput = {
+    name: string
+    login: string
+    email: string
+    image?: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    logLogin?: LogLoginCreateNestedManyWithoutUserInput
+    roles?: RoleCreateNestedManyWithoutUsersInput
+    magicLinks?: MagicLinkCreateNestedManyWithoutUserInput
+    reportedOccurrences?: InfrastructureOccurrenceCreateNestedManyWithoutReportedByInput
+    createdMaintenanceRequests?: MaintenanceRequestCreateNestedManyWithoutCreatedByInput
+    assignedMaintenanceRequests?: MaintenanceRequestCreateNestedManyWithoutAssignedToInput
+    timelineEvents?: MaintenanceTimelineEventCreateNestedManyWithoutActionByInput
+    materialRequestsApproved?: MaterialRequestCreateNestedManyWithoutApprovedByInput
+  }
+
+  export type UserUncheckedCreateWithoutMaterialRequestsCreatedInput = {
+    id?: number
+    name: string
+    login: string
+    email: string
+    image?: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    logLogin?: LogLoginUncheckedCreateNestedManyWithoutUserInput
+    roles?: RoleUncheckedCreateNestedManyWithoutUsersInput
+    magicLinks?: MagicLinkUncheckedCreateNestedManyWithoutUserInput
+    reportedOccurrences?: InfrastructureOccurrenceUncheckedCreateNestedManyWithoutReportedByInput
+    createdMaintenanceRequests?: MaintenanceRequestUncheckedCreateNestedManyWithoutCreatedByInput
+    assignedMaintenanceRequests?: MaintenanceRequestUncheckedCreateNestedManyWithoutAssignedToInput
+    timelineEvents?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutActionByInput
+    materialRequestsApproved?: MaterialRequestUncheckedCreateNestedManyWithoutApprovedByInput
+  }
+
+  export type UserCreateOrConnectWithoutMaterialRequestsCreatedInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutMaterialRequestsCreatedInput, UserUncheckedCreateWithoutMaterialRequestsCreatedInput>
+  }
+
+  export type UserCreateWithoutMaterialRequestsApprovedInput = {
+    name: string
+    login: string
+    email: string
+    image?: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    logLogin?: LogLoginCreateNestedManyWithoutUserInput
+    roles?: RoleCreateNestedManyWithoutUsersInput
+    magicLinks?: MagicLinkCreateNestedManyWithoutUserInput
+    reportedOccurrences?: InfrastructureOccurrenceCreateNestedManyWithoutReportedByInput
+    createdMaintenanceRequests?: MaintenanceRequestCreateNestedManyWithoutCreatedByInput
+    assignedMaintenanceRequests?: MaintenanceRequestCreateNestedManyWithoutAssignedToInput
+    timelineEvents?: MaintenanceTimelineEventCreateNestedManyWithoutActionByInput
+    materialRequestsCreated?: MaterialRequestCreateNestedManyWithoutRequestedByInput
+  }
+
+  export type UserUncheckedCreateWithoutMaterialRequestsApprovedInput = {
+    id?: number
+    name: string
+    login: string
+    email: string
+    image?: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    logLogin?: LogLoginUncheckedCreateNestedManyWithoutUserInput
+    roles?: RoleUncheckedCreateNestedManyWithoutUsersInput
+    magicLinks?: MagicLinkUncheckedCreateNestedManyWithoutUserInput
+    reportedOccurrences?: InfrastructureOccurrenceUncheckedCreateNestedManyWithoutReportedByInput
+    createdMaintenanceRequests?: MaintenanceRequestUncheckedCreateNestedManyWithoutCreatedByInput
+    assignedMaintenanceRequests?: MaintenanceRequestUncheckedCreateNestedManyWithoutAssignedToInput
+    timelineEvents?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutActionByInput
+    materialRequestsCreated?: MaterialRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  }
+
+  export type UserCreateOrConnectWithoutMaterialRequestsApprovedInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutMaterialRequestsApprovedInput, UserUncheckedCreateWithoutMaterialRequestsApprovedInput>
+  }
+
+  export type MaterialRequestItemCreateWithoutMaterialRequestInput = {
+    quantityRequested: Decimal | DecimalJsLike | number | string
+    quantityApproved?: Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: Decimal | DecimalJsLike | number | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    material: MaterialCreateNestedOneWithoutMaterialRequestItemsInput
+  }
+
+  export type MaterialRequestItemUncheckedCreateWithoutMaterialRequestInput = {
+    id?: number
+    quantityRequested: Decimal | DecimalJsLike | number | string
+    quantityApproved?: Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: Decimal | DecimalJsLike | number | string | null
+    materialId: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaterialRequestItemCreateOrConnectWithoutMaterialRequestInput = {
+    where: MaterialRequestItemWhereUniqueInput
+    create: XOR<MaterialRequestItemCreateWithoutMaterialRequestInput, MaterialRequestItemUncheckedCreateWithoutMaterialRequestInput>
+  }
+
+  export type MaterialRequestItemCreateManyMaterialRequestInputEnvelope = {
+    data: MaterialRequestItemCreateManyMaterialRequestInput | MaterialRequestItemCreateManyMaterialRequestInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MaintenanceRequestUpsertWithoutMaterialRequestsInput = {
+    update: XOR<MaintenanceRequestUpdateWithoutMaterialRequestsInput, MaintenanceRequestUncheckedUpdateWithoutMaterialRequestsInput>
+    create: XOR<MaintenanceRequestCreateWithoutMaterialRequestsInput, MaintenanceRequestUncheckedCreateWithoutMaterialRequestsInput>
+    where?: MaintenanceRequestWhereInput
+  }
+
+  export type MaintenanceRequestUpdateToOneWithWhereWithoutMaterialRequestsInput = {
+    where?: MaintenanceRequestWhereInput
+    data: XOR<MaintenanceRequestUpdateWithoutMaterialRequestsInput, MaintenanceRequestUncheckedUpdateWithoutMaterialRequestsInput>
+  }
+
+  export type MaintenanceRequestUpdateWithoutMaterialRequestsInput = {
+    protocolNumber?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: EnumRequestPriorityFieldUpdateOperationsInput | $Enums.RequestPriority
+    requestedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    solutionDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    currentMaintenanceInstance?: MaintenanceInstanceUpdateOneRequiredWithoutCurrentMaintenanceRequestsNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutCreatedMaintenanceRequestsNestedInput
+    assignedTo?: UserUpdateOneWithoutAssignedMaintenanceRequestsNestedInput
+    equipment?: EquipmentUpdateOneWithoutMaintenanceRequestsNestedInput
+    serviceType?: ServiceTypeUpdateOneWithoutMaintenanceRequestsNestedInput
+    status?: MaintenanceRequestStatusUpdateOneRequiredWithoutMaintenanceRequestsNestedInput
+    originatingOccurrences?: InfrastructureOccurrenceUpdateManyWithoutMaintenanceRequestNestedInput
+    timelineEvents?: MaintenanceTimelineEventUpdateManyWithoutMaintenanceRequestNestedInput
+  }
+
+  export type MaintenanceRequestUncheckedUpdateWithoutMaterialRequestsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    protocolNumber?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: EnumRequestPriorityFieldUpdateOperationsInput | $Enums.RequestPriority
+    requestedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    solutionDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    currentMaintenanceInstanceId?: IntFieldUpdateOperationsInput | number
+    createdById?: IntFieldUpdateOperationsInput | number
+    assignedToId?: NullableIntFieldUpdateOperationsInput | number | null
+    equipmentId?: NullableIntFieldUpdateOperationsInput | number | null
+    serviceTypeId?: NullableIntFieldUpdateOperationsInput | number | null
+    statusId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    originatingOccurrences?: InfrastructureOccurrenceUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    timelineEvents?: MaintenanceTimelineEventUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+  }
+
+  export type UserUpsertWithoutMaterialRequestsCreatedInput = {
+    update: XOR<UserUpdateWithoutMaterialRequestsCreatedInput, UserUncheckedUpdateWithoutMaterialRequestsCreatedInput>
+    create: XOR<UserCreateWithoutMaterialRequestsCreatedInput, UserUncheckedCreateWithoutMaterialRequestsCreatedInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutMaterialRequestsCreatedInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutMaterialRequestsCreatedInput, UserUncheckedUpdateWithoutMaterialRequestsCreatedInput>
+  }
+
+  export type UserUpdateWithoutMaterialRequestsCreatedInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    login?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    image?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    logLogin?: LogLoginUpdateManyWithoutUserNestedInput
+    roles?: RoleUpdateManyWithoutUsersNestedInput
+    magicLinks?: MagicLinkUpdateManyWithoutUserNestedInput
+    reportedOccurrences?: InfrastructureOccurrenceUpdateManyWithoutReportedByNestedInput
+    createdMaintenanceRequests?: MaintenanceRequestUpdateManyWithoutCreatedByNestedInput
+    assignedMaintenanceRequests?: MaintenanceRequestUpdateManyWithoutAssignedToNestedInput
+    timelineEvents?: MaintenanceTimelineEventUpdateManyWithoutActionByNestedInput
+    materialRequestsApproved?: MaterialRequestUpdateManyWithoutApprovedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutMaterialRequestsCreatedInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    login?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    image?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    logLogin?: LogLoginUncheckedUpdateManyWithoutUserNestedInput
+    roles?: RoleUncheckedUpdateManyWithoutUsersNestedInput
+    magicLinks?: MagicLinkUncheckedUpdateManyWithoutUserNestedInput
+    reportedOccurrences?: InfrastructureOccurrenceUncheckedUpdateManyWithoutReportedByNestedInput
+    createdMaintenanceRequests?: MaintenanceRequestUncheckedUpdateManyWithoutCreatedByNestedInput
+    assignedMaintenanceRequests?: MaintenanceRequestUncheckedUpdateManyWithoutAssignedToNestedInput
+    timelineEvents?: MaintenanceTimelineEventUncheckedUpdateManyWithoutActionByNestedInput
+    materialRequestsApproved?: MaterialRequestUncheckedUpdateManyWithoutApprovedByNestedInput
+  }
+
+  export type UserUpsertWithoutMaterialRequestsApprovedInput = {
+    update: XOR<UserUpdateWithoutMaterialRequestsApprovedInput, UserUncheckedUpdateWithoutMaterialRequestsApprovedInput>
+    create: XOR<UserCreateWithoutMaterialRequestsApprovedInput, UserUncheckedCreateWithoutMaterialRequestsApprovedInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutMaterialRequestsApprovedInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutMaterialRequestsApprovedInput, UserUncheckedUpdateWithoutMaterialRequestsApprovedInput>
+  }
+
+  export type UserUpdateWithoutMaterialRequestsApprovedInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    login?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    image?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    logLogin?: LogLoginUpdateManyWithoutUserNestedInput
+    roles?: RoleUpdateManyWithoutUsersNestedInput
+    magicLinks?: MagicLinkUpdateManyWithoutUserNestedInput
+    reportedOccurrences?: InfrastructureOccurrenceUpdateManyWithoutReportedByNestedInput
+    createdMaintenanceRequests?: MaintenanceRequestUpdateManyWithoutCreatedByNestedInput
+    assignedMaintenanceRequests?: MaintenanceRequestUpdateManyWithoutAssignedToNestedInput
+    timelineEvents?: MaintenanceTimelineEventUpdateManyWithoutActionByNestedInput
+    materialRequestsCreated?: MaterialRequestUpdateManyWithoutRequestedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutMaterialRequestsApprovedInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    login?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    image?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    logLogin?: LogLoginUncheckedUpdateManyWithoutUserNestedInput
+    roles?: RoleUncheckedUpdateManyWithoutUsersNestedInput
+    magicLinks?: MagicLinkUncheckedUpdateManyWithoutUserNestedInput
+    reportedOccurrences?: InfrastructureOccurrenceUncheckedUpdateManyWithoutReportedByNestedInput
+    createdMaintenanceRequests?: MaintenanceRequestUncheckedUpdateManyWithoutCreatedByNestedInput
+    assignedMaintenanceRequests?: MaintenanceRequestUncheckedUpdateManyWithoutAssignedToNestedInput
+    timelineEvents?: MaintenanceTimelineEventUncheckedUpdateManyWithoutActionByNestedInput
+    materialRequestsCreated?: MaterialRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  }
+
+  export type MaterialRequestItemUpsertWithWhereUniqueWithoutMaterialRequestInput = {
+    where: MaterialRequestItemWhereUniqueInput
+    update: XOR<MaterialRequestItemUpdateWithoutMaterialRequestInput, MaterialRequestItemUncheckedUpdateWithoutMaterialRequestInput>
+    create: XOR<MaterialRequestItemCreateWithoutMaterialRequestInput, MaterialRequestItemUncheckedCreateWithoutMaterialRequestInput>
+  }
+
+  export type MaterialRequestItemUpdateWithWhereUniqueWithoutMaterialRequestInput = {
+    where: MaterialRequestItemWhereUniqueInput
+    data: XOR<MaterialRequestItemUpdateWithoutMaterialRequestInput, MaterialRequestItemUncheckedUpdateWithoutMaterialRequestInput>
+  }
+
+  export type MaterialRequestItemUpdateManyWithWhereWithoutMaterialRequestInput = {
+    where: MaterialRequestItemScalarWhereInput
+    data: XOR<MaterialRequestItemUpdateManyMutationInput, MaterialRequestItemUncheckedUpdateManyWithoutMaterialRequestInput>
+  }
+
+  export type MaterialRequestCreateWithoutItemsInput = {
+    justification?: string | null
+    requestDate?: Date | string
+    status?: $Enums.MaterialRequestStatus
+    approvalDate?: Date | string | null
+    approvalNotes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    maintenanceRequest: MaintenanceRequestCreateNestedOneWithoutMaterialRequestsInput
+    requestedBy: UserCreateNestedOneWithoutMaterialRequestsCreatedInput
+    approvedBy?: UserCreateNestedOneWithoutMaterialRequestsApprovedInput
+  }
+
+  export type MaterialRequestUncheckedCreateWithoutItemsInput = {
+    id?: number
+    justification?: string | null
+    requestDate?: Date | string
+    status?: $Enums.MaterialRequestStatus
+    maintenanceRequestId: number
+    requestedById: number
+    approvedById?: number | null
+    approvalDate?: Date | string | null
+    approvalNotes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaterialRequestCreateOrConnectWithoutItemsInput = {
+    where: MaterialRequestWhereUniqueInput
+    create: XOR<MaterialRequestCreateWithoutItemsInput, MaterialRequestUncheckedCreateWithoutItemsInput>
+  }
+
+  export type MaterialCreateWithoutMaterialRequestItemsInput = {
+    code?: string | null
+    name: string
+    description?: string | null
+    unitOfMeasure: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    parentMaterial?: MaterialCreateNestedOneWithoutChildsInput
+    childs?: MaterialCreateNestedManyWithoutParentMaterialInput
+  }
+
+  export type MaterialUncheckedCreateWithoutMaterialRequestItemsInput = {
+    id?: number
+    code?: string | null
+    name: string
+    description?: string | null
+    unitOfMeasure: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    parentMaterialId?: number | null
+    childs?: MaterialUncheckedCreateNestedManyWithoutParentMaterialInput
+  }
+
+  export type MaterialCreateOrConnectWithoutMaterialRequestItemsInput = {
+    where: MaterialWhereUniqueInput
+    create: XOR<MaterialCreateWithoutMaterialRequestItemsInput, MaterialUncheckedCreateWithoutMaterialRequestItemsInput>
+  }
+
+  export type MaterialRequestUpsertWithoutItemsInput = {
+    update: XOR<MaterialRequestUpdateWithoutItemsInput, MaterialRequestUncheckedUpdateWithoutItemsInput>
+    create: XOR<MaterialRequestCreateWithoutItemsInput, MaterialRequestUncheckedCreateWithoutItemsInput>
+    where?: MaterialRequestWhereInput
+  }
+
+  export type MaterialRequestUpdateToOneWithWhereWithoutItemsInput = {
+    where?: MaterialRequestWhereInput
+    data: XOR<MaterialRequestUpdateWithoutItemsInput, MaterialRequestUncheckedUpdateWithoutItemsInput>
+  }
+
+  export type MaterialRequestUpdateWithoutItemsInput = {
+    justification?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumMaterialRequestStatusFieldUpdateOperationsInput | $Enums.MaterialRequestStatus
+    approvalDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvalNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maintenanceRequest?: MaintenanceRequestUpdateOneRequiredWithoutMaterialRequestsNestedInput
+    requestedBy?: UserUpdateOneRequiredWithoutMaterialRequestsCreatedNestedInput
+    approvedBy?: UserUpdateOneWithoutMaterialRequestsApprovedNestedInput
+  }
+
+  export type MaterialRequestUncheckedUpdateWithoutItemsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    justification?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumMaterialRequestStatusFieldUpdateOperationsInput | $Enums.MaterialRequestStatus
+    maintenanceRequestId?: IntFieldUpdateOperationsInput | number
+    requestedById?: IntFieldUpdateOperationsInput | number
+    approvedById?: NullableIntFieldUpdateOperationsInput | number | null
+    approvalDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvalNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaterialUpsertWithoutMaterialRequestItemsInput = {
+    update: XOR<MaterialUpdateWithoutMaterialRequestItemsInput, MaterialUncheckedUpdateWithoutMaterialRequestItemsInput>
+    create: XOR<MaterialCreateWithoutMaterialRequestItemsInput, MaterialUncheckedCreateWithoutMaterialRequestItemsInput>
+    where?: MaterialWhereInput
+  }
+
+  export type MaterialUpdateToOneWithWhereWithoutMaterialRequestItemsInput = {
+    where?: MaterialWhereInput
+    data: XOR<MaterialUpdateWithoutMaterialRequestItemsInput, MaterialUncheckedUpdateWithoutMaterialRequestItemsInput>
+  }
+
+  export type MaterialUpdateWithoutMaterialRequestItemsInput = {
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    parentMaterial?: MaterialUpdateOneWithoutChildsNestedInput
+    childs?: MaterialUpdateManyWithoutParentMaterialNestedInput
+  }
+
+  export type MaterialUncheckedUpdateWithoutMaterialRequestItemsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    parentMaterialId?: NullableIntFieldUpdateOperationsInput | number | null
+    childs?: MaterialUncheckedUpdateManyWithoutParentMaterialNestedInput
   }
 
   export type LogLoginCreateWithoutUserInput = {
@@ -10627,6 +26716,256 @@ export namespace Prisma {
 
   export type MagicLinkCreateManyUserInputEnvelope = {
     data: MagicLinkCreateManyUserInput | MagicLinkCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type InfrastructureOccurrenceCreateWithoutReportedByInput = {
+    title: string
+    description: string
+    locationDescription?: string | null
+    reportedAt?: Date | string
+    status?: $Enums.InfrastructureOccurrenceStatus
+    resolutionNotes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    maintenanceRequest?: MaintenanceRequestCreateNestedOneWithoutOriginatingOccurrencesInput
+  }
+
+  export type InfrastructureOccurrenceUncheckedCreateWithoutReportedByInput = {
+    id?: number
+    title: string
+    description: string
+    locationDescription?: string | null
+    reportedAt?: Date | string
+    status?: $Enums.InfrastructureOccurrenceStatus
+    resolutionNotes?: string | null
+    maintenanceRequestId?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type InfrastructureOccurrenceCreateOrConnectWithoutReportedByInput = {
+    where: InfrastructureOccurrenceWhereUniqueInput
+    create: XOR<InfrastructureOccurrenceCreateWithoutReportedByInput, InfrastructureOccurrenceUncheckedCreateWithoutReportedByInput>
+  }
+
+  export type InfrastructureOccurrenceCreateManyReportedByInputEnvelope = {
+    data: InfrastructureOccurrenceCreateManyReportedByInput | InfrastructureOccurrenceCreateManyReportedByInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MaintenanceRequestCreateWithoutCreatedByInput = {
+    protocolNumber?: string
+    title: string
+    description: string
+    priority?: $Enums.RequestPriority
+    requestedAt?: Date | string
+    deadline?: Date | string | null
+    solutionDetails?: string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    currentMaintenanceInstance: MaintenanceInstanceCreateNestedOneWithoutCurrentMaintenanceRequestsInput
+    assignedTo?: UserCreateNestedOneWithoutAssignedMaintenanceRequestsInput
+    equipment?: EquipmentCreateNestedOneWithoutMaintenanceRequestsInput
+    serviceType?: ServiceTypeCreateNestedOneWithoutMaintenanceRequestsInput
+    status: MaintenanceRequestStatusCreateNestedOneWithoutMaintenanceRequestsInput
+    originatingOccurrences?: InfrastructureOccurrenceCreateNestedManyWithoutMaintenanceRequestInput
+    timelineEvents?: MaintenanceTimelineEventCreateNestedManyWithoutMaintenanceRequestInput
+    materialRequests?: MaterialRequestCreateNestedManyWithoutMaintenanceRequestInput
+  }
+
+  export type MaintenanceRequestUncheckedCreateWithoutCreatedByInput = {
+    id?: number
+    protocolNumber?: string
+    title: string
+    description: string
+    priority?: $Enums.RequestPriority
+    requestedAt?: Date | string
+    deadline?: Date | string | null
+    solutionDetails?: string | null
+    completedAt?: Date | string | null
+    currentMaintenanceInstanceId: number
+    assignedToId?: number | null
+    equipmentId?: number | null
+    serviceTypeId?: number | null
+    statusId: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    originatingOccurrences?: InfrastructureOccurrenceUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    timelineEvents?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    materialRequests?: MaterialRequestUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+  }
+
+  export type MaintenanceRequestCreateOrConnectWithoutCreatedByInput = {
+    where: MaintenanceRequestWhereUniqueInput
+    create: XOR<MaintenanceRequestCreateWithoutCreatedByInput, MaintenanceRequestUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type MaintenanceRequestCreateManyCreatedByInputEnvelope = {
+    data: MaintenanceRequestCreateManyCreatedByInput | MaintenanceRequestCreateManyCreatedByInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MaintenanceRequestCreateWithoutAssignedToInput = {
+    protocolNumber?: string
+    title: string
+    description: string
+    priority?: $Enums.RequestPriority
+    requestedAt?: Date | string
+    deadline?: Date | string | null
+    solutionDetails?: string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    currentMaintenanceInstance: MaintenanceInstanceCreateNestedOneWithoutCurrentMaintenanceRequestsInput
+    createdBy: UserCreateNestedOneWithoutCreatedMaintenanceRequestsInput
+    equipment?: EquipmentCreateNestedOneWithoutMaintenanceRequestsInput
+    serviceType?: ServiceTypeCreateNestedOneWithoutMaintenanceRequestsInput
+    status: MaintenanceRequestStatusCreateNestedOneWithoutMaintenanceRequestsInput
+    originatingOccurrences?: InfrastructureOccurrenceCreateNestedManyWithoutMaintenanceRequestInput
+    timelineEvents?: MaintenanceTimelineEventCreateNestedManyWithoutMaintenanceRequestInput
+    materialRequests?: MaterialRequestCreateNestedManyWithoutMaintenanceRequestInput
+  }
+
+  export type MaintenanceRequestUncheckedCreateWithoutAssignedToInput = {
+    id?: number
+    protocolNumber?: string
+    title: string
+    description: string
+    priority?: $Enums.RequestPriority
+    requestedAt?: Date | string
+    deadline?: Date | string | null
+    solutionDetails?: string | null
+    completedAt?: Date | string | null
+    currentMaintenanceInstanceId: number
+    createdById: number
+    equipmentId?: number | null
+    serviceTypeId?: number | null
+    statusId: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    originatingOccurrences?: InfrastructureOccurrenceUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    timelineEvents?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    materialRequests?: MaterialRequestUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+  }
+
+  export type MaintenanceRequestCreateOrConnectWithoutAssignedToInput = {
+    where: MaintenanceRequestWhereUniqueInput
+    create: XOR<MaintenanceRequestCreateWithoutAssignedToInput, MaintenanceRequestUncheckedCreateWithoutAssignedToInput>
+  }
+
+  export type MaintenanceRequestCreateManyAssignedToInputEnvelope = {
+    data: MaintenanceRequestCreateManyAssignedToInput | MaintenanceRequestCreateManyAssignedToInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MaintenanceTimelineEventCreateWithoutActionByInput = {
+    type?: $Enums.TimelineEventType
+    description: string
+    eventData?: NullableJsonNullValueInput | InputJsonValue
+    occurredAt?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    maintenanceRequest: MaintenanceRequestCreateNestedOneWithoutTimelineEventsInput
+    transferredFromInstance?: MaintenanceInstanceCreateNestedOneWithoutTimelineEventsTransferredFromInput
+    transferredToInstance?: MaintenanceInstanceCreateNestedOneWithoutTimelineEventsTransferredToInput
+  }
+
+  export type MaintenanceTimelineEventUncheckedCreateWithoutActionByInput = {
+    id?: number
+    type?: $Enums.TimelineEventType
+    description: string
+    eventData?: NullableJsonNullValueInput | InputJsonValue
+    occurredAt?: Date | string
+    maintenanceRequestId: number
+    transferredFromInstanceId?: number | null
+    transferredToInstanceId?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaintenanceTimelineEventCreateOrConnectWithoutActionByInput = {
+    where: MaintenanceTimelineEventWhereUniqueInput
+    create: XOR<MaintenanceTimelineEventCreateWithoutActionByInput, MaintenanceTimelineEventUncheckedCreateWithoutActionByInput>
+  }
+
+  export type MaintenanceTimelineEventCreateManyActionByInputEnvelope = {
+    data: MaintenanceTimelineEventCreateManyActionByInput | MaintenanceTimelineEventCreateManyActionByInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MaterialRequestCreateWithoutRequestedByInput = {
+    justification?: string | null
+    requestDate?: Date | string
+    status?: $Enums.MaterialRequestStatus
+    approvalDate?: Date | string | null
+    approvalNotes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    maintenanceRequest: MaintenanceRequestCreateNestedOneWithoutMaterialRequestsInput
+    approvedBy?: UserCreateNestedOneWithoutMaterialRequestsApprovedInput
+    items?: MaterialRequestItemCreateNestedManyWithoutMaterialRequestInput
+  }
+
+  export type MaterialRequestUncheckedCreateWithoutRequestedByInput = {
+    id?: number
+    justification?: string | null
+    requestDate?: Date | string
+    status?: $Enums.MaterialRequestStatus
+    maintenanceRequestId: number
+    approvedById?: number | null
+    approvalDate?: Date | string | null
+    approvalNotes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    items?: MaterialRequestItemUncheckedCreateNestedManyWithoutMaterialRequestInput
+  }
+
+  export type MaterialRequestCreateOrConnectWithoutRequestedByInput = {
+    where: MaterialRequestWhereUniqueInput
+    create: XOR<MaterialRequestCreateWithoutRequestedByInput, MaterialRequestUncheckedCreateWithoutRequestedByInput>
+  }
+
+  export type MaterialRequestCreateManyRequestedByInputEnvelope = {
+    data: MaterialRequestCreateManyRequestedByInput | MaterialRequestCreateManyRequestedByInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MaterialRequestCreateWithoutApprovedByInput = {
+    justification?: string | null
+    requestDate?: Date | string
+    status?: $Enums.MaterialRequestStatus
+    approvalDate?: Date | string | null
+    approvalNotes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    maintenanceRequest: MaintenanceRequestCreateNestedOneWithoutMaterialRequestsInput
+    requestedBy: UserCreateNestedOneWithoutMaterialRequestsCreatedInput
+    items?: MaterialRequestItemCreateNestedManyWithoutMaterialRequestInput
+  }
+
+  export type MaterialRequestUncheckedCreateWithoutApprovedByInput = {
+    id?: number
+    justification?: string | null
+    requestDate?: Date | string
+    status?: $Enums.MaterialRequestStatus
+    maintenanceRequestId: number
+    requestedById: number
+    approvalDate?: Date | string | null
+    approvalNotes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    items?: MaterialRequestItemUncheckedCreateNestedManyWithoutMaterialRequestInput
+  }
+
+  export type MaterialRequestCreateOrConnectWithoutApprovedByInput = {
+    where: MaterialRequestWhereUniqueInput
+    create: XOR<MaterialRequestCreateWithoutApprovedByInput, MaterialRequestUncheckedCreateWithoutApprovedByInput>
+  }
+
+  export type MaterialRequestCreateManyApprovedByInputEnvelope = {
+    data: MaterialRequestCreateManyApprovedByInput | MaterialRequestCreateManyApprovedByInput[]
     skipDuplicates?: boolean
   }
 
@@ -10713,6 +27052,102 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"MagicLink"> | Date | string
   }
 
+  export type InfrastructureOccurrenceUpsertWithWhereUniqueWithoutReportedByInput = {
+    where: InfrastructureOccurrenceWhereUniqueInput
+    update: XOR<InfrastructureOccurrenceUpdateWithoutReportedByInput, InfrastructureOccurrenceUncheckedUpdateWithoutReportedByInput>
+    create: XOR<InfrastructureOccurrenceCreateWithoutReportedByInput, InfrastructureOccurrenceUncheckedCreateWithoutReportedByInput>
+  }
+
+  export type InfrastructureOccurrenceUpdateWithWhereUniqueWithoutReportedByInput = {
+    where: InfrastructureOccurrenceWhereUniqueInput
+    data: XOR<InfrastructureOccurrenceUpdateWithoutReportedByInput, InfrastructureOccurrenceUncheckedUpdateWithoutReportedByInput>
+  }
+
+  export type InfrastructureOccurrenceUpdateManyWithWhereWithoutReportedByInput = {
+    where: InfrastructureOccurrenceScalarWhereInput
+    data: XOR<InfrastructureOccurrenceUpdateManyMutationInput, InfrastructureOccurrenceUncheckedUpdateManyWithoutReportedByInput>
+  }
+
+  export type MaintenanceRequestUpsertWithWhereUniqueWithoutCreatedByInput = {
+    where: MaintenanceRequestWhereUniqueInput
+    update: XOR<MaintenanceRequestUpdateWithoutCreatedByInput, MaintenanceRequestUncheckedUpdateWithoutCreatedByInput>
+    create: XOR<MaintenanceRequestCreateWithoutCreatedByInput, MaintenanceRequestUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type MaintenanceRequestUpdateWithWhereUniqueWithoutCreatedByInput = {
+    where: MaintenanceRequestWhereUniqueInput
+    data: XOR<MaintenanceRequestUpdateWithoutCreatedByInput, MaintenanceRequestUncheckedUpdateWithoutCreatedByInput>
+  }
+
+  export type MaintenanceRequestUpdateManyWithWhereWithoutCreatedByInput = {
+    where: MaintenanceRequestScalarWhereInput
+    data: XOR<MaintenanceRequestUpdateManyMutationInput, MaintenanceRequestUncheckedUpdateManyWithoutCreatedByInput>
+  }
+
+  export type MaintenanceRequestUpsertWithWhereUniqueWithoutAssignedToInput = {
+    where: MaintenanceRequestWhereUniqueInput
+    update: XOR<MaintenanceRequestUpdateWithoutAssignedToInput, MaintenanceRequestUncheckedUpdateWithoutAssignedToInput>
+    create: XOR<MaintenanceRequestCreateWithoutAssignedToInput, MaintenanceRequestUncheckedCreateWithoutAssignedToInput>
+  }
+
+  export type MaintenanceRequestUpdateWithWhereUniqueWithoutAssignedToInput = {
+    where: MaintenanceRequestWhereUniqueInput
+    data: XOR<MaintenanceRequestUpdateWithoutAssignedToInput, MaintenanceRequestUncheckedUpdateWithoutAssignedToInput>
+  }
+
+  export type MaintenanceRequestUpdateManyWithWhereWithoutAssignedToInput = {
+    where: MaintenanceRequestScalarWhereInput
+    data: XOR<MaintenanceRequestUpdateManyMutationInput, MaintenanceRequestUncheckedUpdateManyWithoutAssignedToInput>
+  }
+
+  export type MaintenanceTimelineEventUpsertWithWhereUniqueWithoutActionByInput = {
+    where: MaintenanceTimelineEventWhereUniqueInput
+    update: XOR<MaintenanceTimelineEventUpdateWithoutActionByInput, MaintenanceTimelineEventUncheckedUpdateWithoutActionByInput>
+    create: XOR<MaintenanceTimelineEventCreateWithoutActionByInput, MaintenanceTimelineEventUncheckedCreateWithoutActionByInput>
+  }
+
+  export type MaintenanceTimelineEventUpdateWithWhereUniqueWithoutActionByInput = {
+    where: MaintenanceTimelineEventWhereUniqueInput
+    data: XOR<MaintenanceTimelineEventUpdateWithoutActionByInput, MaintenanceTimelineEventUncheckedUpdateWithoutActionByInput>
+  }
+
+  export type MaintenanceTimelineEventUpdateManyWithWhereWithoutActionByInput = {
+    where: MaintenanceTimelineEventScalarWhereInput
+    data: XOR<MaintenanceTimelineEventUpdateManyMutationInput, MaintenanceTimelineEventUncheckedUpdateManyWithoutActionByInput>
+  }
+
+  export type MaterialRequestUpsertWithWhereUniqueWithoutRequestedByInput = {
+    where: MaterialRequestWhereUniqueInput
+    update: XOR<MaterialRequestUpdateWithoutRequestedByInput, MaterialRequestUncheckedUpdateWithoutRequestedByInput>
+    create: XOR<MaterialRequestCreateWithoutRequestedByInput, MaterialRequestUncheckedCreateWithoutRequestedByInput>
+  }
+
+  export type MaterialRequestUpdateWithWhereUniqueWithoutRequestedByInput = {
+    where: MaterialRequestWhereUniqueInput
+    data: XOR<MaterialRequestUpdateWithoutRequestedByInput, MaterialRequestUncheckedUpdateWithoutRequestedByInput>
+  }
+
+  export type MaterialRequestUpdateManyWithWhereWithoutRequestedByInput = {
+    where: MaterialRequestScalarWhereInput
+    data: XOR<MaterialRequestUpdateManyMutationInput, MaterialRequestUncheckedUpdateManyWithoutRequestedByInput>
+  }
+
+  export type MaterialRequestUpsertWithWhereUniqueWithoutApprovedByInput = {
+    where: MaterialRequestWhereUniqueInput
+    update: XOR<MaterialRequestUpdateWithoutApprovedByInput, MaterialRequestUncheckedUpdateWithoutApprovedByInput>
+    create: XOR<MaterialRequestCreateWithoutApprovedByInput, MaterialRequestUncheckedCreateWithoutApprovedByInput>
+  }
+
+  export type MaterialRequestUpdateWithWhereUniqueWithoutApprovedByInput = {
+    where: MaterialRequestWhereUniqueInput
+    data: XOR<MaterialRequestUpdateWithoutApprovedByInput, MaterialRequestUncheckedUpdateWithoutApprovedByInput>
+  }
+
+  export type MaterialRequestUpdateManyWithWhereWithoutApprovedByInput = {
+    where: MaterialRequestScalarWhereInput
+    data: XOR<MaterialRequestUpdateManyMutationInput, MaterialRequestUncheckedUpdateManyWithoutApprovedByInput>
+  }
+
   export type UserCreateWithoutMagicLinksInput = {
     name: string
     login: string
@@ -10723,6 +27158,12 @@ export namespace Prisma {
     updatedAt?: Date | string
     logLogin?: LogLoginCreateNestedManyWithoutUserInput
     roles?: RoleCreateNestedManyWithoutUsersInput
+    reportedOccurrences?: InfrastructureOccurrenceCreateNestedManyWithoutReportedByInput
+    createdMaintenanceRequests?: MaintenanceRequestCreateNestedManyWithoutCreatedByInput
+    assignedMaintenanceRequests?: MaintenanceRequestCreateNestedManyWithoutAssignedToInput
+    timelineEvents?: MaintenanceTimelineEventCreateNestedManyWithoutActionByInput
+    materialRequestsCreated?: MaterialRequestCreateNestedManyWithoutRequestedByInput
+    materialRequestsApproved?: MaterialRequestCreateNestedManyWithoutApprovedByInput
   }
 
   export type UserUncheckedCreateWithoutMagicLinksInput = {
@@ -10736,6 +27177,12 @@ export namespace Prisma {
     updatedAt?: Date | string
     logLogin?: LogLoginUncheckedCreateNestedManyWithoutUserInput
     roles?: RoleUncheckedCreateNestedManyWithoutUsersInput
+    reportedOccurrences?: InfrastructureOccurrenceUncheckedCreateNestedManyWithoutReportedByInput
+    createdMaintenanceRequests?: MaintenanceRequestUncheckedCreateNestedManyWithoutCreatedByInput
+    assignedMaintenanceRequests?: MaintenanceRequestUncheckedCreateNestedManyWithoutAssignedToInput
+    timelineEvents?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutActionByInput
+    materialRequestsCreated?: MaterialRequestUncheckedCreateNestedManyWithoutRequestedByInput
+    materialRequestsApproved?: MaterialRequestUncheckedCreateNestedManyWithoutApprovedByInput
   }
 
   export type UserCreateOrConnectWithoutMagicLinksInput = {
@@ -10764,6 +27211,12 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     logLogin?: LogLoginUpdateManyWithoutUserNestedInput
     roles?: RoleUpdateManyWithoutUsersNestedInput
+    reportedOccurrences?: InfrastructureOccurrenceUpdateManyWithoutReportedByNestedInput
+    createdMaintenanceRequests?: MaintenanceRequestUpdateManyWithoutCreatedByNestedInput
+    assignedMaintenanceRequests?: MaintenanceRequestUpdateManyWithoutAssignedToNestedInput
+    timelineEvents?: MaintenanceTimelineEventUpdateManyWithoutActionByNestedInput
+    materialRequestsCreated?: MaterialRequestUpdateManyWithoutRequestedByNestedInput
+    materialRequestsApproved?: MaterialRequestUpdateManyWithoutApprovedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMagicLinksInput = {
@@ -10777,6 +27230,12 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     logLogin?: LogLoginUncheckedUpdateManyWithoutUserNestedInput
     roles?: RoleUncheckedUpdateManyWithoutUsersNestedInput
+    reportedOccurrences?: InfrastructureOccurrenceUncheckedUpdateManyWithoutReportedByNestedInput
+    createdMaintenanceRequests?: MaintenanceRequestUncheckedUpdateManyWithoutCreatedByNestedInput
+    assignedMaintenanceRequests?: MaintenanceRequestUncheckedUpdateManyWithoutAssignedToNestedInput
+    timelineEvents?: MaintenanceTimelineEventUncheckedUpdateManyWithoutActionByNestedInput
+    materialRequestsCreated?: MaterialRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+    materialRequestsApproved?: MaterialRequestUncheckedUpdateManyWithoutApprovedByNestedInput
   }
 
   export type UserCreateWithoutRolesInput = {
@@ -10789,6 +27248,12 @@ export namespace Prisma {
     updatedAt?: Date | string
     logLogin?: LogLoginCreateNestedManyWithoutUserInput
     magicLinks?: MagicLinkCreateNestedManyWithoutUserInput
+    reportedOccurrences?: InfrastructureOccurrenceCreateNestedManyWithoutReportedByInput
+    createdMaintenanceRequests?: MaintenanceRequestCreateNestedManyWithoutCreatedByInput
+    assignedMaintenanceRequests?: MaintenanceRequestCreateNestedManyWithoutAssignedToInput
+    timelineEvents?: MaintenanceTimelineEventCreateNestedManyWithoutActionByInput
+    materialRequestsCreated?: MaterialRequestCreateNestedManyWithoutRequestedByInput
+    materialRequestsApproved?: MaterialRequestCreateNestedManyWithoutApprovedByInput
   }
 
   export type UserUncheckedCreateWithoutRolesInput = {
@@ -10802,6 +27267,12 @@ export namespace Prisma {
     updatedAt?: Date | string
     logLogin?: LogLoginUncheckedCreateNestedManyWithoutUserInput
     magicLinks?: MagicLinkUncheckedCreateNestedManyWithoutUserInput
+    reportedOccurrences?: InfrastructureOccurrenceUncheckedCreateNestedManyWithoutReportedByInput
+    createdMaintenanceRequests?: MaintenanceRequestUncheckedCreateNestedManyWithoutCreatedByInput
+    assignedMaintenanceRequests?: MaintenanceRequestUncheckedCreateNestedManyWithoutAssignedToInput
+    timelineEvents?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutActionByInput
+    materialRequestsCreated?: MaterialRequestUncheckedCreateNestedManyWithoutRequestedByInput
+    materialRequestsApproved?: MaterialRequestUncheckedCreateNestedManyWithoutApprovedByInput
   }
 
   export type UserCreateOrConnectWithoutRolesInput = {
@@ -10839,6 +27310,712 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"User"> | Date | string
   }
 
+  export type InfrastructureOccurrenceCreateManyMaintenanceRequestInput = {
+    id?: number
+    title: string
+    description: string
+    locationDescription?: string | null
+    reportedAt?: Date | string
+    status?: $Enums.InfrastructureOccurrenceStatus
+    resolutionNotes?: string | null
+    reportedById: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaintenanceTimelineEventCreateManyMaintenanceRequestInput = {
+    id?: number
+    type?: $Enums.TimelineEventType
+    description: string
+    eventData?: NullableJsonNullValueInput | InputJsonValue
+    occurredAt?: Date | string
+    actionById: number
+    transferredFromInstanceId?: number | null
+    transferredToInstanceId?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaterialRequestCreateManyMaintenanceRequestInput = {
+    id?: number
+    justification?: string | null
+    requestDate?: Date | string
+    status?: $Enums.MaterialRequestStatus
+    requestedById: number
+    approvedById?: number | null
+    approvalDate?: Date | string | null
+    approvalNotes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type InfrastructureOccurrenceUpdateWithoutMaintenanceRequestInput = {
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    locationDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    reportedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumInfrastructureOccurrenceStatusFieldUpdateOperationsInput | $Enums.InfrastructureOccurrenceStatus
+    resolutionNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    reportedBy?: UserUpdateOneRequiredWithoutReportedOccurrencesNestedInput
+  }
+
+  export type InfrastructureOccurrenceUncheckedUpdateWithoutMaintenanceRequestInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    locationDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    reportedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumInfrastructureOccurrenceStatusFieldUpdateOperationsInput | $Enums.InfrastructureOccurrenceStatus
+    resolutionNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    reportedById?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InfrastructureOccurrenceUncheckedUpdateManyWithoutMaintenanceRequestInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    locationDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    reportedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumInfrastructureOccurrenceStatusFieldUpdateOperationsInput | $Enums.InfrastructureOccurrenceStatus
+    resolutionNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    reportedById?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaintenanceTimelineEventUpdateWithoutMaintenanceRequestInput = {
+    type?: EnumTimelineEventTypeFieldUpdateOperationsInput | $Enums.TimelineEventType
+    description?: StringFieldUpdateOperationsInput | string
+    eventData?: NullableJsonNullValueInput | InputJsonValue
+    occurredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    actionBy?: UserUpdateOneRequiredWithoutTimelineEventsNestedInput
+    transferredFromInstance?: MaintenanceInstanceUpdateOneWithoutTimelineEventsTransferredFromNestedInput
+    transferredToInstance?: MaintenanceInstanceUpdateOneWithoutTimelineEventsTransferredToNestedInput
+  }
+
+  export type MaintenanceTimelineEventUncheckedUpdateWithoutMaintenanceRequestInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    type?: EnumTimelineEventTypeFieldUpdateOperationsInput | $Enums.TimelineEventType
+    description?: StringFieldUpdateOperationsInput | string
+    eventData?: NullableJsonNullValueInput | InputJsonValue
+    occurredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    actionById?: IntFieldUpdateOperationsInput | number
+    transferredFromInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
+    transferredToInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaintenanceTimelineEventUncheckedUpdateManyWithoutMaintenanceRequestInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    type?: EnumTimelineEventTypeFieldUpdateOperationsInput | $Enums.TimelineEventType
+    description?: StringFieldUpdateOperationsInput | string
+    eventData?: NullableJsonNullValueInput | InputJsonValue
+    occurredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    actionById?: IntFieldUpdateOperationsInput | number
+    transferredFromInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
+    transferredToInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaterialRequestUpdateWithoutMaintenanceRequestInput = {
+    justification?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumMaterialRequestStatusFieldUpdateOperationsInput | $Enums.MaterialRequestStatus
+    approvalDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvalNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    requestedBy?: UserUpdateOneRequiredWithoutMaterialRequestsCreatedNestedInput
+    approvedBy?: UserUpdateOneWithoutMaterialRequestsApprovedNestedInput
+    items?: MaterialRequestItemUpdateManyWithoutMaterialRequestNestedInput
+  }
+
+  export type MaterialRequestUncheckedUpdateWithoutMaintenanceRequestInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    justification?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumMaterialRequestStatusFieldUpdateOperationsInput | $Enums.MaterialRequestStatus
+    requestedById?: IntFieldUpdateOperationsInput | number
+    approvedById?: NullableIntFieldUpdateOperationsInput | number | null
+    approvalDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvalNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: MaterialRequestItemUncheckedUpdateManyWithoutMaterialRequestNestedInput
+  }
+
+  export type MaterialRequestUncheckedUpdateManyWithoutMaintenanceRequestInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    justification?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumMaterialRequestStatusFieldUpdateOperationsInput | $Enums.MaterialRequestStatus
+    requestedById?: IntFieldUpdateOperationsInput | number
+    approvedById?: NullableIntFieldUpdateOperationsInput | number | null
+    approvalDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvalNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaintenanceRequestCreateManyStatusInput = {
+    id?: number
+    protocolNumber?: string
+    title: string
+    description: string
+    priority?: $Enums.RequestPriority
+    requestedAt?: Date | string
+    deadline?: Date | string | null
+    solutionDetails?: string | null
+    completedAt?: Date | string | null
+    currentMaintenanceInstanceId: number
+    createdById: number
+    assignedToId?: number | null
+    equipmentId?: number | null
+    serviceTypeId?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaintenanceRequestUpdateWithoutStatusInput = {
+    protocolNumber?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: EnumRequestPriorityFieldUpdateOperationsInput | $Enums.RequestPriority
+    requestedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    solutionDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    currentMaintenanceInstance?: MaintenanceInstanceUpdateOneRequiredWithoutCurrentMaintenanceRequestsNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutCreatedMaintenanceRequestsNestedInput
+    assignedTo?: UserUpdateOneWithoutAssignedMaintenanceRequestsNestedInput
+    equipment?: EquipmentUpdateOneWithoutMaintenanceRequestsNestedInput
+    serviceType?: ServiceTypeUpdateOneWithoutMaintenanceRequestsNestedInput
+    originatingOccurrences?: InfrastructureOccurrenceUpdateManyWithoutMaintenanceRequestNestedInput
+    timelineEvents?: MaintenanceTimelineEventUpdateManyWithoutMaintenanceRequestNestedInput
+    materialRequests?: MaterialRequestUpdateManyWithoutMaintenanceRequestNestedInput
+  }
+
+  export type MaintenanceRequestUncheckedUpdateWithoutStatusInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    protocolNumber?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: EnumRequestPriorityFieldUpdateOperationsInput | $Enums.RequestPriority
+    requestedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    solutionDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    currentMaintenanceInstanceId?: IntFieldUpdateOperationsInput | number
+    createdById?: IntFieldUpdateOperationsInput | number
+    assignedToId?: NullableIntFieldUpdateOperationsInput | number | null
+    equipmentId?: NullableIntFieldUpdateOperationsInput | number | null
+    serviceTypeId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    originatingOccurrences?: InfrastructureOccurrenceUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    timelineEvents?: MaintenanceTimelineEventUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    materialRequests?: MaterialRequestUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+  }
+
+  export type MaintenanceRequestUncheckedUpdateManyWithoutStatusInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    protocolNumber?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: EnumRequestPriorityFieldUpdateOperationsInput | $Enums.RequestPriority
+    requestedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    solutionDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    currentMaintenanceInstanceId?: IntFieldUpdateOperationsInput | number
+    createdById?: IntFieldUpdateOperationsInput | number
+    assignedToId?: NullableIntFieldUpdateOperationsInput | number | null
+    equipmentId?: NullableIntFieldUpdateOperationsInput | number | null
+    serviceTypeId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaintenanceRequestCreateManyCurrentMaintenanceInstanceInput = {
+    id?: number
+    protocolNumber?: string
+    title: string
+    description: string
+    priority?: $Enums.RequestPriority
+    requestedAt?: Date | string
+    deadline?: Date | string | null
+    solutionDetails?: string | null
+    completedAt?: Date | string | null
+    createdById: number
+    assignedToId?: number | null
+    equipmentId?: number | null
+    serviceTypeId?: number | null
+    statusId: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaintenanceTimelineEventCreateManyTransferredFromInstanceInput = {
+    id?: number
+    type?: $Enums.TimelineEventType
+    description: string
+    eventData?: NullableJsonNullValueInput | InputJsonValue
+    occurredAt?: Date | string
+    maintenanceRequestId: number
+    actionById: number
+    transferredToInstanceId?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaintenanceTimelineEventCreateManyTransferredToInstanceInput = {
+    id?: number
+    type?: $Enums.TimelineEventType
+    description: string
+    eventData?: NullableJsonNullValueInput | InputJsonValue
+    occurredAt?: Date | string
+    maintenanceRequestId: number
+    actionById: number
+    transferredFromInstanceId?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaintenanceRequestUpdateWithoutCurrentMaintenanceInstanceInput = {
+    protocolNumber?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: EnumRequestPriorityFieldUpdateOperationsInput | $Enums.RequestPriority
+    requestedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    solutionDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: UserUpdateOneRequiredWithoutCreatedMaintenanceRequestsNestedInput
+    assignedTo?: UserUpdateOneWithoutAssignedMaintenanceRequestsNestedInput
+    equipment?: EquipmentUpdateOneWithoutMaintenanceRequestsNestedInput
+    serviceType?: ServiceTypeUpdateOneWithoutMaintenanceRequestsNestedInput
+    status?: MaintenanceRequestStatusUpdateOneRequiredWithoutMaintenanceRequestsNestedInput
+    originatingOccurrences?: InfrastructureOccurrenceUpdateManyWithoutMaintenanceRequestNestedInput
+    timelineEvents?: MaintenanceTimelineEventUpdateManyWithoutMaintenanceRequestNestedInput
+    materialRequests?: MaterialRequestUpdateManyWithoutMaintenanceRequestNestedInput
+  }
+
+  export type MaintenanceRequestUncheckedUpdateWithoutCurrentMaintenanceInstanceInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    protocolNumber?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: EnumRequestPriorityFieldUpdateOperationsInput | $Enums.RequestPriority
+    requestedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    solutionDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdById?: IntFieldUpdateOperationsInput | number
+    assignedToId?: NullableIntFieldUpdateOperationsInput | number | null
+    equipmentId?: NullableIntFieldUpdateOperationsInput | number | null
+    serviceTypeId?: NullableIntFieldUpdateOperationsInput | number | null
+    statusId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    originatingOccurrences?: InfrastructureOccurrenceUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    timelineEvents?: MaintenanceTimelineEventUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    materialRequests?: MaterialRequestUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+  }
+
+  export type MaintenanceRequestUncheckedUpdateManyWithoutCurrentMaintenanceInstanceInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    protocolNumber?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: EnumRequestPriorityFieldUpdateOperationsInput | $Enums.RequestPriority
+    requestedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    solutionDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdById?: IntFieldUpdateOperationsInput | number
+    assignedToId?: NullableIntFieldUpdateOperationsInput | number | null
+    equipmentId?: NullableIntFieldUpdateOperationsInput | number | null
+    serviceTypeId?: NullableIntFieldUpdateOperationsInput | number | null
+    statusId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaintenanceTimelineEventUpdateWithoutTransferredFromInstanceInput = {
+    type?: EnumTimelineEventTypeFieldUpdateOperationsInput | $Enums.TimelineEventType
+    description?: StringFieldUpdateOperationsInput | string
+    eventData?: NullableJsonNullValueInput | InputJsonValue
+    occurredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maintenanceRequest?: MaintenanceRequestUpdateOneRequiredWithoutTimelineEventsNestedInput
+    actionBy?: UserUpdateOneRequiredWithoutTimelineEventsNestedInput
+    transferredToInstance?: MaintenanceInstanceUpdateOneWithoutTimelineEventsTransferredToNestedInput
+  }
+
+  export type MaintenanceTimelineEventUncheckedUpdateWithoutTransferredFromInstanceInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    type?: EnumTimelineEventTypeFieldUpdateOperationsInput | $Enums.TimelineEventType
+    description?: StringFieldUpdateOperationsInput | string
+    eventData?: NullableJsonNullValueInput | InputJsonValue
+    occurredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maintenanceRequestId?: IntFieldUpdateOperationsInput | number
+    actionById?: IntFieldUpdateOperationsInput | number
+    transferredToInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaintenanceTimelineEventUncheckedUpdateManyWithoutTransferredFromInstanceInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    type?: EnumTimelineEventTypeFieldUpdateOperationsInput | $Enums.TimelineEventType
+    description?: StringFieldUpdateOperationsInput | string
+    eventData?: NullableJsonNullValueInput | InputJsonValue
+    occurredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maintenanceRequestId?: IntFieldUpdateOperationsInput | number
+    actionById?: IntFieldUpdateOperationsInput | number
+    transferredToInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaintenanceTimelineEventUpdateWithoutTransferredToInstanceInput = {
+    type?: EnumTimelineEventTypeFieldUpdateOperationsInput | $Enums.TimelineEventType
+    description?: StringFieldUpdateOperationsInput | string
+    eventData?: NullableJsonNullValueInput | InputJsonValue
+    occurredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maintenanceRequest?: MaintenanceRequestUpdateOneRequiredWithoutTimelineEventsNestedInput
+    actionBy?: UserUpdateOneRequiredWithoutTimelineEventsNestedInput
+    transferredFromInstance?: MaintenanceInstanceUpdateOneWithoutTimelineEventsTransferredFromNestedInput
+  }
+
+  export type MaintenanceTimelineEventUncheckedUpdateWithoutTransferredToInstanceInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    type?: EnumTimelineEventTypeFieldUpdateOperationsInput | $Enums.TimelineEventType
+    description?: StringFieldUpdateOperationsInput | string
+    eventData?: NullableJsonNullValueInput | InputJsonValue
+    occurredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maintenanceRequestId?: IntFieldUpdateOperationsInput | number
+    actionById?: IntFieldUpdateOperationsInput | number
+    transferredFromInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaintenanceTimelineEventUncheckedUpdateManyWithoutTransferredToInstanceInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    type?: EnumTimelineEventTypeFieldUpdateOperationsInput | $Enums.TimelineEventType
+    description?: StringFieldUpdateOperationsInput | string
+    eventData?: NullableJsonNullValueInput | InputJsonValue
+    occurredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maintenanceRequestId?: IntFieldUpdateOperationsInput | number
+    actionById?: IntFieldUpdateOperationsInput | number
+    transferredFromInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaintenanceRequestCreateManyServiceTypeInput = {
+    id?: number
+    protocolNumber?: string
+    title: string
+    description: string
+    priority?: $Enums.RequestPriority
+    requestedAt?: Date | string
+    deadline?: Date | string | null
+    solutionDetails?: string | null
+    completedAt?: Date | string | null
+    currentMaintenanceInstanceId: number
+    createdById: number
+    assignedToId?: number | null
+    equipmentId?: number | null
+    statusId: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaintenanceRequestUpdateWithoutServiceTypeInput = {
+    protocolNumber?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: EnumRequestPriorityFieldUpdateOperationsInput | $Enums.RequestPriority
+    requestedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    solutionDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    currentMaintenanceInstance?: MaintenanceInstanceUpdateOneRequiredWithoutCurrentMaintenanceRequestsNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutCreatedMaintenanceRequestsNestedInput
+    assignedTo?: UserUpdateOneWithoutAssignedMaintenanceRequestsNestedInput
+    equipment?: EquipmentUpdateOneWithoutMaintenanceRequestsNestedInput
+    status?: MaintenanceRequestStatusUpdateOneRequiredWithoutMaintenanceRequestsNestedInput
+    originatingOccurrences?: InfrastructureOccurrenceUpdateManyWithoutMaintenanceRequestNestedInput
+    timelineEvents?: MaintenanceTimelineEventUpdateManyWithoutMaintenanceRequestNestedInput
+    materialRequests?: MaterialRequestUpdateManyWithoutMaintenanceRequestNestedInput
+  }
+
+  export type MaintenanceRequestUncheckedUpdateWithoutServiceTypeInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    protocolNumber?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: EnumRequestPriorityFieldUpdateOperationsInput | $Enums.RequestPriority
+    requestedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    solutionDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    currentMaintenanceInstanceId?: IntFieldUpdateOperationsInput | number
+    createdById?: IntFieldUpdateOperationsInput | number
+    assignedToId?: NullableIntFieldUpdateOperationsInput | number | null
+    equipmentId?: NullableIntFieldUpdateOperationsInput | number | null
+    statusId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    originatingOccurrences?: InfrastructureOccurrenceUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    timelineEvents?: MaintenanceTimelineEventUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    materialRequests?: MaterialRequestUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+  }
+
+  export type MaintenanceRequestUncheckedUpdateManyWithoutServiceTypeInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    protocolNumber?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: EnumRequestPriorityFieldUpdateOperationsInput | $Enums.RequestPriority
+    requestedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    solutionDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    currentMaintenanceInstanceId?: IntFieldUpdateOperationsInput | number
+    createdById?: IntFieldUpdateOperationsInput | number
+    assignedToId?: NullableIntFieldUpdateOperationsInput | number | null
+    equipmentId?: NullableIntFieldUpdateOperationsInput | number | null
+    statusId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaintenanceRequestCreateManyEquipmentInput = {
+    id?: number
+    protocolNumber?: string
+    title: string
+    description: string
+    priority?: $Enums.RequestPriority
+    requestedAt?: Date | string
+    deadline?: Date | string | null
+    solutionDetails?: string | null
+    completedAt?: Date | string | null
+    currentMaintenanceInstanceId: number
+    createdById: number
+    assignedToId?: number | null
+    serviceTypeId?: number | null
+    statusId: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaintenanceRequestUpdateWithoutEquipmentInput = {
+    protocolNumber?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: EnumRequestPriorityFieldUpdateOperationsInput | $Enums.RequestPriority
+    requestedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    solutionDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    currentMaintenanceInstance?: MaintenanceInstanceUpdateOneRequiredWithoutCurrentMaintenanceRequestsNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutCreatedMaintenanceRequestsNestedInput
+    assignedTo?: UserUpdateOneWithoutAssignedMaintenanceRequestsNestedInput
+    serviceType?: ServiceTypeUpdateOneWithoutMaintenanceRequestsNestedInput
+    status?: MaintenanceRequestStatusUpdateOneRequiredWithoutMaintenanceRequestsNestedInput
+    originatingOccurrences?: InfrastructureOccurrenceUpdateManyWithoutMaintenanceRequestNestedInput
+    timelineEvents?: MaintenanceTimelineEventUpdateManyWithoutMaintenanceRequestNestedInput
+    materialRequests?: MaterialRequestUpdateManyWithoutMaintenanceRequestNestedInput
+  }
+
+  export type MaintenanceRequestUncheckedUpdateWithoutEquipmentInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    protocolNumber?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: EnumRequestPriorityFieldUpdateOperationsInput | $Enums.RequestPriority
+    requestedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    solutionDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    currentMaintenanceInstanceId?: IntFieldUpdateOperationsInput | number
+    createdById?: IntFieldUpdateOperationsInput | number
+    assignedToId?: NullableIntFieldUpdateOperationsInput | number | null
+    serviceTypeId?: NullableIntFieldUpdateOperationsInput | number | null
+    statusId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    originatingOccurrences?: InfrastructureOccurrenceUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    timelineEvents?: MaintenanceTimelineEventUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    materialRequests?: MaterialRequestUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+  }
+
+  export type MaintenanceRequestUncheckedUpdateManyWithoutEquipmentInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    protocolNumber?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: EnumRequestPriorityFieldUpdateOperationsInput | $Enums.RequestPriority
+    requestedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    solutionDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    currentMaintenanceInstanceId?: IntFieldUpdateOperationsInput | number
+    createdById?: IntFieldUpdateOperationsInput | number
+    assignedToId?: NullableIntFieldUpdateOperationsInput | number | null
+    serviceTypeId?: NullableIntFieldUpdateOperationsInput | number | null
+    statusId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaterialCreateManyParentMaterialInput = {
+    id?: number
+    code?: string | null
+    name: string
+    description?: string | null
+    unitOfMeasure: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaterialRequestItemCreateManyMaterialInput = {
+    id?: number
+    quantityRequested: Decimal | DecimalJsLike | number | string
+    quantityApproved?: Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: Decimal | DecimalJsLike | number | string | null
+    materialRequestId: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaterialUpdateWithoutParentMaterialInput = {
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    childs?: MaterialUpdateManyWithoutParentMaterialNestedInput
+    materialRequestItems?: MaterialRequestItemUpdateManyWithoutMaterialNestedInput
+  }
+
+  export type MaterialUncheckedUpdateWithoutParentMaterialInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    childs?: MaterialUncheckedUpdateManyWithoutParentMaterialNestedInput
+    materialRequestItems?: MaterialRequestItemUncheckedUpdateManyWithoutMaterialNestedInput
+  }
+
+  export type MaterialUncheckedUpdateManyWithoutParentMaterialInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaterialRequestItemUpdateWithoutMaterialInput = {
+    quantityRequested?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    quantityApproved?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    materialRequest?: MaterialRequestUpdateOneRequiredWithoutItemsNestedInput
+  }
+
+  export type MaterialRequestItemUncheckedUpdateWithoutMaterialInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    quantityRequested?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    quantityApproved?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    materialRequestId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaterialRequestItemUncheckedUpdateManyWithoutMaterialInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    quantityRequested?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    quantityApproved?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    materialRequestId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaterialRequestItemCreateManyMaterialRequestInput = {
+    id?: number
+    quantityRequested: Decimal | DecimalJsLike | number | string
+    quantityApproved?: Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: Decimal | DecimalJsLike | number | string | null
+    materialId: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaterialRequestItemUpdateWithoutMaterialRequestInput = {
+    quantityRequested?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    quantityApproved?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    material?: MaterialUpdateOneRequiredWithoutMaterialRequestItemsNestedInput
+  }
+
+  export type MaterialRequestItemUncheckedUpdateWithoutMaterialRequestInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    quantityRequested?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    quantityApproved?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    materialId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaterialRequestItemUncheckedUpdateManyWithoutMaterialRequestInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    quantityRequested?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    quantityApproved?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    materialId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type LogLoginCreateManyUserInput = {
     id?: string
     timestamp?: Date | string
@@ -10853,6 +28030,96 @@ export namespace Prisma {
     expiresAt: Date | string
     usedAt?: Date | string | null
     createdAt?: Date | string
+  }
+
+  export type InfrastructureOccurrenceCreateManyReportedByInput = {
+    id?: number
+    title: string
+    description: string
+    locationDescription?: string | null
+    reportedAt?: Date | string
+    status?: $Enums.InfrastructureOccurrenceStatus
+    resolutionNotes?: string | null
+    maintenanceRequestId?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaintenanceRequestCreateManyCreatedByInput = {
+    id?: number
+    protocolNumber?: string
+    title: string
+    description: string
+    priority?: $Enums.RequestPriority
+    requestedAt?: Date | string
+    deadline?: Date | string | null
+    solutionDetails?: string | null
+    completedAt?: Date | string | null
+    currentMaintenanceInstanceId: number
+    assignedToId?: number | null
+    equipmentId?: number | null
+    serviceTypeId?: number | null
+    statusId: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaintenanceRequestCreateManyAssignedToInput = {
+    id?: number
+    protocolNumber?: string
+    title: string
+    description: string
+    priority?: $Enums.RequestPriority
+    requestedAt?: Date | string
+    deadline?: Date | string | null
+    solutionDetails?: string | null
+    completedAt?: Date | string | null
+    currentMaintenanceInstanceId: number
+    createdById: number
+    equipmentId?: number | null
+    serviceTypeId?: number | null
+    statusId: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaintenanceTimelineEventCreateManyActionByInput = {
+    id?: number
+    type?: $Enums.TimelineEventType
+    description: string
+    eventData?: NullableJsonNullValueInput | InputJsonValue
+    occurredAt?: Date | string
+    maintenanceRequestId: number
+    transferredFromInstanceId?: number | null
+    transferredToInstanceId?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaterialRequestCreateManyRequestedByInput = {
+    id?: number
+    justification?: string | null
+    requestDate?: Date | string
+    status?: $Enums.MaterialRequestStatus
+    maintenanceRequestId: number
+    approvedById?: number | null
+    approvalDate?: Date | string | null
+    approvalNotes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaterialRequestCreateManyApprovedByInput = {
+    id?: number
+    justification?: string | null
+    requestDate?: Date | string
+    status?: $Enums.MaterialRequestStatus
+    maintenanceRequestId: number
+    requestedById: number
+    approvalDate?: Date | string | null
+    approvalNotes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type LogLoginUpdateWithoutUserInput = {
@@ -10927,6 +28194,286 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type InfrastructureOccurrenceUpdateWithoutReportedByInput = {
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    locationDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    reportedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumInfrastructureOccurrenceStatusFieldUpdateOperationsInput | $Enums.InfrastructureOccurrenceStatus
+    resolutionNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maintenanceRequest?: MaintenanceRequestUpdateOneWithoutOriginatingOccurrencesNestedInput
+  }
+
+  export type InfrastructureOccurrenceUncheckedUpdateWithoutReportedByInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    locationDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    reportedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumInfrastructureOccurrenceStatusFieldUpdateOperationsInput | $Enums.InfrastructureOccurrenceStatus
+    resolutionNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    maintenanceRequestId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InfrastructureOccurrenceUncheckedUpdateManyWithoutReportedByInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    locationDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    reportedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumInfrastructureOccurrenceStatusFieldUpdateOperationsInput | $Enums.InfrastructureOccurrenceStatus
+    resolutionNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    maintenanceRequestId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaintenanceRequestUpdateWithoutCreatedByInput = {
+    protocolNumber?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: EnumRequestPriorityFieldUpdateOperationsInput | $Enums.RequestPriority
+    requestedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    solutionDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    currentMaintenanceInstance?: MaintenanceInstanceUpdateOneRequiredWithoutCurrentMaintenanceRequestsNestedInput
+    assignedTo?: UserUpdateOneWithoutAssignedMaintenanceRequestsNestedInput
+    equipment?: EquipmentUpdateOneWithoutMaintenanceRequestsNestedInput
+    serviceType?: ServiceTypeUpdateOneWithoutMaintenanceRequestsNestedInput
+    status?: MaintenanceRequestStatusUpdateOneRequiredWithoutMaintenanceRequestsNestedInput
+    originatingOccurrences?: InfrastructureOccurrenceUpdateManyWithoutMaintenanceRequestNestedInput
+    timelineEvents?: MaintenanceTimelineEventUpdateManyWithoutMaintenanceRequestNestedInput
+    materialRequests?: MaterialRequestUpdateManyWithoutMaintenanceRequestNestedInput
+  }
+
+  export type MaintenanceRequestUncheckedUpdateWithoutCreatedByInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    protocolNumber?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: EnumRequestPriorityFieldUpdateOperationsInput | $Enums.RequestPriority
+    requestedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    solutionDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    currentMaintenanceInstanceId?: IntFieldUpdateOperationsInput | number
+    assignedToId?: NullableIntFieldUpdateOperationsInput | number | null
+    equipmentId?: NullableIntFieldUpdateOperationsInput | number | null
+    serviceTypeId?: NullableIntFieldUpdateOperationsInput | number | null
+    statusId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    originatingOccurrences?: InfrastructureOccurrenceUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    timelineEvents?: MaintenanceTimelineEventUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    materialRequests?: MaterialRequestUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+  }
+
+  export type MaintenanceRequestUncheckedUpdateManyWithoutCreatedByInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    protocolNumber?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: EnumRequestPriorityFieldUpdateOperationsInput | $Enums.RequestPriority
+    requestedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    solutionDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    currentMaintenanceInstanceId?: IntFieldUpdateOperationsInput | number
+    assignedToId?: NullableIntFieldUpdateOperationsInput | number | null
+    equipmentId?: NullableIntFieldUpdateOperationsInput | number | null
+    serviceTypeId?: NullableIntFieldUpdateOperationsInput | number | null
+    statusId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaintenanceRequestUpdateWithoutAssignedToInput = {
+    protocolNumber?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: EnumRequestPriorityFieldUpdateOperationsInput | $Enums.RequestPriority
+    requestedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    solutionDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    currentMaintenanceInstance?: MaintenanceInstanceUpdateOneRequiredWithoutCurrentMaintenanceRequestsNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutCreatedMaintenanceRequestsNestedInput
+    equipment?: EquipmentUpdateOneWithoutMaintenanceRequestsNestedInput
+    serviceType?: ServiceTypeUpdateOneWithoutMaintenanceRequestsNestedInput
+    status?: MaintenanceRequestStatusUpdateOneRequiredWithoutMaintenanceRequestsNestedInput
+    originatingOccurrences?: InfrastructureOccurrenceUpdateManyWithoutMaintenanceRequestNestedInput
+    timelineEvents?: MaintenanceTimelineEventUpdateManyWithoutMaintenanceRequestNestedInput
+    materialRequests?: MaterialRequestUpdateManyWithoutMaintenanceRequestNestedInput
+  }
+
+  export type MaintenanceRequestUncheckedUpdateWithoutAssignedToInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    protocolNumber?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: EnumRequestPriorityFieldUpdateOperationsInput | $Enums.RequestPriority
+    requestedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    solutionDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    currentMaintenanceInstanceId?: IntFieldUpdateOperationsInput | number
+    createdById?: IntFieldUpdateOperationsInput | number
+    equipmentId?: NullableIntFieldUpdateOperationsInput | number | null
+    serviceTypeId?: NullableIntFieldUpdateOperationsInput | number | null
+    statusId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    originatingOccurrences?: InfrastructureOccurrenceUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    timelineEvents?: MaintenanceTimelineEventUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    materialRequests?: MaterialRequestUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+  }
+
+  export type MaintenanceRequestUncheckedUpdateManyWithoutAssignedToInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    protocolNumber?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: EnumRequestPriorityFieldUpdateOperationsInput | $Enums.RequestPriority
+    requestedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    solutionDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    currentMaintenanceInstanceId?: IntFieldUpdateOperationsInput | number
+    createdById?: IntFieldUpdateOperationsInput | number
+    equipmentId?: NullableIntFieldUpdateOperationsInput | number | null
+    serviceTypeId?: NullableIntFieldUpdateOperationsInput | number | null
+    statusId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaintenanceTimelineEventUpdateWithoutActionByInput = {
+    type?: EnumTimelineEventTypeFieldUpdateOperationsInput | $Enums.TimelineEventType
+    description?: StringFieldUpdateOperationsInput | string
+    eventData?: NullableJsonNullValueInput | InputJsonValue
+    occurredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maintenanceRequest?: MaintenanceRequestUpdateOneRequiredWithoutTimelineEventsNestedInput
+    transferredFromInstance?: MaintenanceInstanceUpdateOneWithoutTimelineEventsTransferredFromNestedInput
+    transferredToInstance?: MaintenanceInstanceUpdateOneWithoutTimelineEventsTransferredToNestedInput
+  }
+
+  export type MaintenanceTimelineEventUncheckedUpdateWithoutActionByInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    type?: EnumTimelineEventTypeFieldUpdateOperationsInput | $Enums.TimelineEventType
+    description?: StringFieldUpdateOperationsInput | string
+    eventData?: NullableJsonNullValueInput | InputJsonValue
+    occurredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maintenanceRequestId?: IntFieldUpdateOperationsInput | number
+    transferredFromInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
+    transferredToInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaintenanceTimelineEventUncheckedUpdateManyWithoutActionByInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    type?: EnumTimelineEventTypeFieldUpdateOperationsInput | $Enums.TimelineEventType
+    description?: StringFieldUpdateOperationsInput | string
+    eventData?: NullableJsonNullValueInput | InputJsonValue
+    occurredAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maintenanceRequestId?: IntFieldUpdateOperationsInput | number
+    transferredFromInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
+    transferredToInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaterialRequestUpdateWithoutRequestedByInput = {
+    justification?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumMaterialRequestStatusFieldUpdateOperationsInput | $Enums.MaterialRequestStatus
+    approvalDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvalNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maintenanceRequest?: MaintenanceRequestUpdateOneRequiredWithoutMaterialRequestsNestedInput
+    approvedBy?: UserUpdateOneWithoutMaterialRequestsApprovedNestedInput
+    items?: MaterialRequestItemUpdateManyWithoutMaterialRequestNestedInput
+  }
+
+  export type MaterialRequestUncheckedUpdateWithoutRequestedByInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    justification?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumMaterialRequestStatusFieldUpdateOperationsInput | $Enums.MaterialRequestStatus
+    maintenanceRequestId?: IntFieldUpdateOperationsInput | number
+    approvedById?: NullableIntFieldUpdateOperationsInput | number | null
+    approvalDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvalNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: MaterialRequestItemUncheckedUpdateManyWithoutMaterialRequestNestedInput
+  }
+
+  export type MaterialRequestUncheckedUpdateManyWithoutRequestedByInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    justification?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumMaterialRequestStatusFieldUpdateOperationsInput | $Enums.MaterialRequestStatus
+    maintenanceRequestId?: IntFieldUpdateOperationsInput | number
+    approvedById?: NullableIntFieldUpdateOperationsInput | number | null
+    approvalDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvalNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaterialRequestUpdateWithoutApprovedByInput = {
+    justification?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumMaterialRequestStatusFieldUpdateOperationsInput | $Enums.MaterialRequestStatus
+    approvalDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvalNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maintenanceRequest?: MaintenanceRequestUpdateOneRequiredWithoutMaterialRequestsNestedInput
+    requestedBy?: UserUpdateOneRequiredWithoutMaterialRequestsCreatedNestedInput
+    items?: MaterialRequestItemUpdateManyWithoutMaterialRequestNestedInput
+  }
+
+  export type MaterialRequestUncheckedUpdateWithoutApprovedByInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    justification?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumMaterialRequestStatusFieldUpdateOperationsInput | $Enums.MaterialRequestStatus
+    maintenanceRequestId?: IntFieldUpdateOperationsInput | number
+    requestedById?: IntFieldUpdateOperationsInput | number
+    approvalDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvalNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: MaterialRequestItemUncheckedUpdateManyWithoutMaterialRequestNestedInput
+  }
+
+  export type MaterialRequestUncheckedUpdateManyWithoutApprovedByInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    justification?: NullableStringFieldUpdateOperationsInput | string | null
+    requestDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumMaterialRequestStatusFieldUpdateOperationsInput | $Enums.MaterialRequestStatus
+    maintenanceRequestId?: IntFieldUpdateOperationsInput | number
+    requestedById?: IntFieldUpdateOperationsInput | number
+    approvalDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvalNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type UserUpdateWithoutRolesInput = {
     name?: StringFieldUpdateOperationsInput | string
     login?: StringFieldUpdateOperationsInput | string
@@ -10937,6 +28484,12 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     logLogin?: LogLoginUpdateManyWithoutUserNestedInput
     magicLinks?: MagicLinkUpdateManyWithoutUserNestedInput
+    reportedOccurrences?: InfrastructureOccurrenceUpdateManyWithoutReportedByNestedInput
+    createdMaintenanceRequests?: MaintenanceRequestUpdateManyWithoutCreatedByNestedInput
+    assignedMaintenanceRequests?: MaintenanceRequestUpdateManyWithoutAssignedToNestedInput
+    timelineEvents?: MaintenanceTimelineEventUpdateManyWithoutActionByNestedInput
+    materialRequestsCreated?: MaterialRequestUpdateManyWithoutRequestedByNestedInput
+    materialRequestsApproved?: MaterialRequestUpdateManyWithoutApprovedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRolesInput = {
@@ -10950,6 +28503,12 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     logLogin?: LogLoginUncheckedUpdateManyWithoutUserNestedInput
     magicLinks?: MagicLinkUncheckedUpdateManyWithoutUserNestedInput
+    reportedOccurrences?: InfrastructureOccurrenceUncheckedUpdateManyWithoutReportedByNestedInput
+    createdMaintenanceRequests?: MaintenanceRequestUncheckedUpdateManyWithoutCreatedByNestedInput
+    assignedMaintenanceRequests?: MaintenanceRequestUncheckedUpdateManyWithoutAssignedToNestedInput
+    timelineEvents?: MaintenanceTimelineEventUncheckedUpdateManyWithoutActionByNestedInput
+    materialRequestsCreated?: MaterialRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+    materialRequestsApproved?: MaterialRequestUncheckedUpdateManyWithoutApprovedByNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutRolesInput = {
