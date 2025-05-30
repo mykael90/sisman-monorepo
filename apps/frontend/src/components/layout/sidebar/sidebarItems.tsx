@@ -9,7 +9,8 @@ import {
   Truck,
   Store,
   Settings,
-  Construction,
+  Construction, // Assuming this is for Maintenance
+  Database, // Assuming this is for API SIPAC
   PackagePlus
 } from 'lucide-react';
 
@@ -126,6 +127,14 @@ export const sidebarItems: SidebarItem[] = [
     children: [
       { label: 'Usuários', href: '/user' },
       { label: 'Tipos de Permissões', href: '/role' }
+    ]
+  },
+  {
+    label: 'API SIPAC',
+    icon: <Database className='h-6 w-6' />,
+    children: [
+      { label: 'Servidores', href: '/sipac/servidores' },
+      { label: 'Tipos de Permissões', href: '/sipac/role' }
     ]
   },
   {
