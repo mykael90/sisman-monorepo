@@ -50,7 +50,7 @@ export const columns = (
       const loginValue = servidor.email; // Acesso à propriedade 'login' da mesma linha
 
       return (
-        <div className='flex items-center gap-2'>
+        <div className='flex items-center gap-2 py-0.5'>
           <Avatar className='h-10 w-10'>
             <AvatarImage
               src={servidor['url-foto']}
