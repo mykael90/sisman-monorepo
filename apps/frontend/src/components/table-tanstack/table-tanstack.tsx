@@ -95,10 +95,7 @@ export function TableTanstack<TData>({
               <TableRow key={row.id}>
                 {row.getVisibleCells().map((cell) => (
                   // Aplica a classe específica apenas na célula 'name' para manter o layout do Avatar
-                  <TableCell
-                    key={cell.id}
-                    className={`${cell.column.id === 'name' ? 'flex items-center gap-2' : ''} py-2.5`}
-                  >
+                  <TableCell key={cell.id}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
