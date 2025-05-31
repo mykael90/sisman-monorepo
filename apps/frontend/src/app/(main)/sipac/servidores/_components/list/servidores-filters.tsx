@@ -18,7 +18,6 @@ const fieldLabels: Partial<IServidor> = {
 
 // Usando desestruturação nas props para clareza
 const ServidoresFilters = memo(function ServidoresFilters({
-  servidores,
   setServidores,
   onClearFilters // Recebe a função de limpar
 }) {

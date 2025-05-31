@@ -102,7 +102,6 @@ export function ServidoresListPage(
         {/* Ajuste altura se necessário */}
         <ServidoresFilters
           // Passa os valores e setters para o componente filho
-          servidores={servidores}
           setServidores={setServidores}
           onClearFilters={handleClearFilters} // Passa a função de limpar
         />
