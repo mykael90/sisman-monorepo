@@ -42,16 +42,16 @@ The MVP will focus on core maintenance management functionalities, providing a f
     *   Forms for inputting new assets, work orders, material usage.
     *   Search and filter capabilities for assets and work orders.
 
-**3.2. Non-Functional Requirements:**
-*   **Usability:** Intuitive and user-friendly interface, minimizing training needs. The design should be familiar, not necessarily innovative.
-*   **Accessibility:** Web-based, accessible via standard internet browsers on various devices.
-*   **Performance:** Adequate response times for typical operations within the pilot context.
-*   **Reliability:** System should be stable and consistently available during operational hours.
-*   **Security:** Basic data protection and secure user authentication.
-*   **Maintainability:** Modular, well-documented, and legible code (following principles like MVC).
-*   **Scalability (Architectural consideration for future):** While an MVP, the architecture should not inherently prevent future scaling.
-*   **Open-Source:** The system will be developed using open-source technologies and the resulting code should be open.
-*   **Interoperability (Future Goal):** Potential for future integration with existing IFES systems (e.g., SIPAC, SUAP, GLPI as mentioned in the survey).
+**3.2. Non-Functional Requirements:**  
+Comprehensive specifications including performance, security, and compliance requirements are documented in [nonFunctionalRequirements.md](./nonFunctionalRequirements.md).  
+
+*Summary of Key Areas:*
+- Usability (NFR09-NFR13)
+- Security (NFR14-NFR19)
+- Reliability (NFR05-NFR08)
+- Maintainability (NFR20-NFR23)
+- Scalability (NFR24-NFR25)
+- Interoperability (NFR29-NFR30)
 
 **3.3. Constraints:**
 *   **Time & Resources:** Development within the timeframe of a Master's dissertation, primarily by a single developer.
