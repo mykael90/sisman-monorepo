@@ -17,7 +17,6 @@ import { Request as RequestExpress } from 'express'; // <-- Importe Request
 import { randomInt } from 'crypto';
 import { MagicLinkLoginDto } from './dto/magic-link-login.dto';
 import { VerifyCodeDto } from './dto/verify-code-magic-link.dto';
-import { EmailService } from '../notifications/email/email.service';
 import { ConfigType } from '@nestjs/config';
 import generalConfig from '../../config/general.config';
 import { EventEmitter2 } from '@nestjs/event-emitter';
@@ -27,6 +26,7 @@ import {
   UserLoginFailureEvent,
   UserRegisteredEvent
 } from './events/auth.events';
+import { SendEmailEvent } from '../notifications/events/notification.events';
 
 type UserWithRoles = Prisma.UserGetPayload<{
   include: { roles: true };
@@ -42,7 +42,6 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly prisma: PrismaService,
     private readonly usersService: UsersService,
-    private readonly emailService: EmailService,
     private readonly eventEmitter: EventEmitter2,
     @Inject(generalConfig.KEY)
     private gnConfig: ConfigType<typeof generalConfig>
@@ -335,19 +334,22 @@ export class AuthService {
       }
     });
 
-    await this.emailService.sendEmail(
-      email,
-      `Código de acesso - SISMAN: ${code}`,
-      `magic-link`,
-      {
-        appName: this.gnConfig.appName,
-        code,
-        link: `${this.gnConfig.magicLinkCallbackUrl}?code=${code}&email=${email}&callbackUrl=${encodeURIComponent(callbackUrl)}`,
-        expiresInMinutes: this.gnConfig.magicLinkExpiresMinutes,
-        projectPrimaryColor: this.gnConfig.appPrimaryColor,
-        //TODO: inserir logo sisman em variável global
-        logoUrl: this.gnConfig.appLogoUrl
-      }
+    this.eventEmitter.emit(
+      'send.email',
+      new SendEmailEvent(
+        email,
+        `Código de acesso - SISMAN: ${code}`,
+        `magic-link`,
+        {
+          appName: this.gnConfig.appName,
+          code,
+          link: `${this.gnConfig.magicLinkCallbackUrl}?code=${code}&email=${email}&callbackUrl=${encodeURIComponent(callbackUrl)}`,
+          expiresInMinutes: this.gnConfig.magicLinkExpiresMinutes,
+          projectPrimaryColor: this.gnConfig.appPrimaryColor,
+          //TODO: inserir logo sisman em variável global
+          logoUrl: this.gnConfig.appLogoUrl
+        }
+      )
     );
     return { message: 'Código de acesso enviado para seu e-mail.' };
   }
