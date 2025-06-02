@@ -10,7 +10,7 @@ export default async function page(props: {
     email: string;
   };
 }) {
-  const { name, login, email } = await props.searchParams;
+  const { name, login, email } = props.searchParams;
   const preDefaultData = { name, login, email };
 
   const accessTokenSisman = await getSismanAccessToken();
