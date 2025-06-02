@@ -1,7 +1,7 @@
 import { ColumnDef, createColumnHelper, Row } from '@tanstack/react-table';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { Edit, Trash2 } from 'lucide-react';
+import { UserPlus } from 'lucide-react';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { IUsuario } from '../../usuario-types';
 
@@ -19,22 +19,11 @@ type ActionHandlers<TData> = {
 export const createActions = (
   router: AppRouterInstance // Recebe a função de navegação
 ): ActionHandlers<IUsuario> => ({
-  onEdit: (row: Row<IUsuario>) => {
-    console.log('Edit usuario', row.original);
-    // Certifique-se que row.original.id existe e é o identificador correto.
-    // Se seu ID estiver em outra propriedade (ex: _id, usuarioId), ajuste abaixo.
-    if (row.original['id-institucional']) {
-      // Navega para a rota de edição, passando o ID do usuário
-      // Ajuste o caminho '/admin/usuarios/edit/' conforme sua estrutura de rotas
-      router.push(`usuario/edit/${row.original['id-institucional']}`);
-    } else {
-      console.error('Usuario ID is missing, cannot navigate to edit page.');
-      // Poderia também navegar para uma página de erro ou mostrar um alerta
-      throw new Error('Usuario ID is missing, cannot navigate to edit page.');
-    }
-  },
-  onDelete: (row: Row<IUsuario>) => {
-    console.log('Delete usuario', row.original);
+  onAdd: (row: Row<IUsuario>) => {
+    console.log('Add usuario', row.original);
+    router.push(
+      `/user/add?name=${row.original['nome-pessoa']}&login=${row.original.login}&email=${row.original.email}`
+    );
     // Implemente sua lógica de deleção aqui (ex: modal de confirmação, chamada de API)
   }
 });
@@ -81,10 +70,6 @@ export const columns = (
     header: 'ID SIG',
     cell: (props) => props.getValue()
   }),
-  columnHelper.accessor('ativo', {
-    header: 'Ativo',
-    cell: (props) => props.getValue()
-  }),
 
   columnHelper.display({
     id: 'actions',
@@ -95,16 +80,9 @@ export const columns = (
         <Button
           variant='ghost'
           size='icon'
-          onClick={() => configuredActions.onEdit(row)}
+          onClick={() => configuredActions.onAdd(row)}
         >
-          <Edit className='h-4 w-4' />
-        </Button>
-        <Button
-          variant='ghost'
-          size='icon'
-          onClick={() => configuredActions.onDelete(row)}
-        >
-          <Trash2 className='h-4 w-4 text-red-500' />
+          <UserPlus className='h-4 w-4' />
         </Button>
       </div>
     )

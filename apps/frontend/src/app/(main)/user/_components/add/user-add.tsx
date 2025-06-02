@@ -17,16 +17,19 @@ import { useRouter } from 'next/navigation';
 // The page will manage its own state and submission logic.
 export default function UserAdd({
   possibleRoles,
-  isInDialog = false
+  isInDialog = false,
+  preDefaultData = {}
 }: {
   possibleRoles: IRoleList[];
   isInDialog?: boolean;
+  preDefaultData?: Partial<IUserAdd>;
 }) {
   const defaultData: IUserAdd = {
     name: '',
     login: '',
     email: '',
-    roles: []
+    roles: [],
+    ...preDefaultData
   };
 
   const fieldLabels: Record<NonOptionalKeys<IUserAdd>, string> = {
