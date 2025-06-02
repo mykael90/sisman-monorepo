@@ -6,6 +6,9 @@ import { UsersModule } from 'src/modules/users/users.module';
 import { PrismaModule } from 'src/shared/prisma/prisma.module';
 import { FilesModule } from 'src/shared/files/files.module';
 import { LogLoginModule } from '../log-login/log-login.module';
+import { ObservabilityModule } from '../observability/observability.module';
+import { AuthMetricsListener } from './listeners/auth-metrics.listener';
+import { AuthLoggingListener } from './listeners/auth-logging.listener';
 
 @Global()
 @Module({
@@ -14,10 +17,11 @@ import { LogLoginModule } from '../log-login/log-login.module';
     forwardRef(() => UsersModule),
     PrismaModule,
     FilesModule,
-    LogLoginModule
+    LogLoginModule,
+    ObservabilityModule
   ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, AuthMetricsListener, AuthLoggingListener],
   exports: [AuthService]
 })
 export class AuthModule {}

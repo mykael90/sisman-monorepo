@@ -21,9 +21,11 @@ import databaseConfig from './config/database.config';
 import generalConfig from './config/general.config';
 import { RolesModule } from './modules/roles/roles.module';
 import { MaintenanceInstancesModule } from './modules/maintenance-instances/maintenance-instances.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [
+    EventEmitterModule.forRoot(), // Adicione esta linha
     ConfigModule.forRoot({
       isGlobal: true,
       load: [generalConfig, mailerConfig, databaseConfig],

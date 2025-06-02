@@ -13,8 +13,6 @@ import { AuthRegisterDTO } from './dto/auth-register.dto';
 import { UsersService } from 'src/modules/users/users.service';
 import { AuthRegisterAuthorizationTokenDTO } from './dto/auth-register-authorization-token.dto';
 import { AuthLoginAuthorizationTokenDTO } from './dto/auth-login-authorization-token.dto';
-import { MetricsService } from '../observability/metrics.service'; // Ajuste o caminho
-import { LogLoginService } from '../log-login/log-login.service';
 import { Request as RequestExpress } from 'express'; // <-- Importe Request
 import { randomInt } from 'crypto';
 import { MagicLinkLoginDto } from './dto/magic-link-login.dto';
@@ -22,6 +20,13 @@ import { VerifyCodeDto } from './dto/verify-code-magic-link.dto';
 import { EmailService } from '../notifications/email/email.service';
 import { ConfigType } from '@nestjs/config';
 import generalConfig from '../../config/general.config';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import {
+  UserLoginAttemptEvent,
+  UserLoginSuccessEvent,
+  UserLoginFailureEvent,
+  UserRegisteredEvent
+} from './events/auth.events';
 
 type UserWithRoles = Prisma.UserGetPayload<{
   include: { roles: true };
@@ -38,8 +43,7 @@ export class AuthService {
     private readonly prisma: PrismaService,
     private readonly usersService: UsersService,
     private readonly emailService: EmailService,
-    private readonly metricsService: MetricsService, // Injete o serviço de métricas
-    private readonly logLoginService: LogLoginService, // Injete o serviço de métricas
+    private readonly eventEmitter: EventEmitter2,
     @Inject(generalConfig.KEY)
     private gnConfig: ConfigType<typeof generalConfig>
   ) {}
@@ -158,8 +162,10 @@ export class AuthService {
       userId = user.id;
       loginSuccess = true;
 
-      // >>> Incrementa o contador de login BEM-SUCEDIDO AQUI <<<
-      this.metricsService.userLoginCounter.inc(); // Pode adicionar labels aqui se definiu algum
+      this.eventEmitter.emit(
+        'user.login.success',
+        new UserLoginSuccessEvent(user)
+      );
 
       const roles = user.roles;
 
@@ -169,35 +175,30 @@ export class AuthService {
     } catch (error) {
       // Se o erro não for Unauthorized, é algo inesperado, relance
       if (!(error instanceof UnauthorizedException)) {
+        this.eventEmitter.emit(
+          'user.login.attempt',
+          new UserLoginAttemptEvent(userId, ipAddress, userAgent, false, error)
+        );
         throw error;
       }
       // Se for Unauthorized, já tratamos acima (loginSuccess = false)
+      this.eventEmitter.emit(
+        'user.login.attempt',
+        new UserLoginAttemptEvent(userId, ipAddress, userAgent, false, error)
+      );
       throw error; // Relança para o NestJS tratar e retornar 401
     } finally {
       // SEMPRE registra a tentativa no banco de dados, independente do sucesso
-      if (userId) {
-        // Só registra se conseguimos identificar o usuário
-        // Não use await aqui para não bloquear a resposta - "fire-and-forget"
-        this.logLoginService
-          .recordLoginAttempt({
-            userId: userId,
-            ipAddress: ipAddress,
-            userAgent: userAgent,
-            successful: loginSuccess
-          })
-          .catch((logError) => {
-            // Log interno caso a gravação do histórico falhe
-            console.error(
-              'Failed background task: recordLoginAttempt',
-              logError
-            );
-          });
-      } else if (!loginSuccess) {
-        // Opcional: Registrar tentativas com email inválido (sem userId)
-        // Poderia ter um campo 'attemptedEmail' na tabela LoginHistory
-        // console.warn(
-        //   `Failed login attempt for non-existent email: ${authLoginDto.email} from IP: ${ipAddress}`,
-        // );
+      if (userId && loginSuccess) {
+        this.eventEmitter.emit(
+          'user.login.attempt',
+          new UserLoginAttemptEvent(userId, ipAddress, userAgent, true)
+        );
+      } else if (!loginSuccess && userId) {
+        this.eventEmitter.emit(
+          'user.login.attempt',
+          new UserLoginAttemptEvent(userId, ipAddress, userAgent, false)
+        );
       }
     }
   }
@@ -223,41 +224,36 @@ export class AuthService {
       userId = user.id;
       loginSuccess = true;
 
-      // >>> Incrementa o contador de login BEM-SUCEDIDO AQUI <<<
-      this.metricsService.userLoginCounter.inc(); // Pode adicionar labels aqui se definiu algum
+      this.eventEmitter.emit('user.registered', new UserRegisteredEvent(user));
+      this.eventEmitter.emit(
+        'user.login.success',
+        new UserLoginSuccessEvent(user)
+      );
       return this.createToken(user);
     } catch (error) {
-      // Se o erro não for Unauthorized, é algo inesperado, relance
       if (!(error instanceof UnauthorizedException)) {
+        this.eventEmitter.emit(
+          'user.login.attempt',
+          new UserLoginAttemptEvent(userId, ipAddress, userAgent, false, error)
+        );
         throw error;
       }
-      // Se for Unauthorized, já tratamos acima (loginSuccess = false)
-      throw error; // Relança para o NestJS tratar e retornar 401
+      this.eventEmitter.emit(
+        'user.login.attempt',
+        new UserLoginAttemptEvent(userId, ipAddress, userAgent, false, error)
+      );
+      throw error;
     } finally {
-      // SEMPRE registra a tentativa no banco de dados, independente do sucesso
-      if (userId) {
-        // Só registra se conseguimos identificar o usuário
-        // Não use await aqui para não bloquear a resposta - "fire-and-forget"
-        this.logLoginService
-          .recordLoginAttempt({
-            userId: userId,
-            ipAddress: ipAddress,
-            userAgent: userAgent,
-            successful: loginSuccess
-          })
-          .catch((logError) => {
-            // Log interno caso a gravação do histórico falhe
-            console.error(
-              'Failed background task: recordLoginAttempt',
-              logError
-            );
-          });
-      } else if (!loginSuccess) {
-        // Opcional: Registrar tentativas com email inválido (sem userId)
-        // Poderia ter um campo 'attemptedEmail' na tabela LoginHistory
-        // console.warn(
-        //   `Failed login attempt for non-existent email: ${authLoginDto.email} from IP: ${ipAddress}`,
-        // );
+      if (userId && loginSuccess) {
+        this.eventEmitter.emit(
+          'user.login.attempt',
+          new UserLoginAttemptEvent(userId, ipAddress, userAgent, true)
+        );
+      } else if (!loginSuccess && userId) {
+        this.eventEmitter.emit(
+          'user.login.attempt',
+          new UserLoginAttemptEvent(userId, ipAddress, userAgent, false)
+        );
       }
     }
   }
@@ -406,57 +402,38 @@ export class AuthService {
       userId = user.id;
       loginSuccess = true;
 
-      // >>> Incrementa o contador de login BEM-SUCEDIDO AQUI <<<
-      this.metricsService.userLoginCounter.inc(); // Pode adicionar labels aqui se definiu algum
-
-      // const roles = await this.prisma.role.findMany({
-      //   where: {
-      //     users: {
-      //       some: {
-      //         id: userId
-      //       }
-      //     }
-      //   }
-      // });
+      this.eventEmitter.emit(
+        'user.login.success',
+        new UserLoginSuccessEvent(user)
+      );
 
       const roles = user.roles;
 
       return this.createToken(user, roles);
     } catch (error) {
-      // Se o erro não for Unauthorized, é algo inesperado, relance
-
       if (!(error instanceof UnauthorizedException)) {
+        this.eventEmitter.emit(
+          'user.login.attempt',
+          new UserLoginAttemptEvent(userId, ipAddress, userAgent, false, error)
+        );
         throw error;
       }
-
-      // Se for Unauthorized, já tratamos acima (loginSuccess = false)
-
-      throw error; // Relança para o NestJS tratar e retornar 401
+      this.eventEmitter.emit(
+        'user.login.attempt',
+        new UserLoginAttemptEvent(userId, ipAddress, userAgent, false, error)
+      );
+      throw error;
     } finally {
-      // SEMPRE registra a tentativa no banco de dados, independente do sucesso
-      if (userId) {
-        // Só registra se conseguimos identificar o usuário
-        // Não use await aqui para não bloquear a resposta - "fire-and-forget"
-        this.logLoginService
-          .recordLoginAttempt({
-            userId: userId,
-            ipAddress: ipAddress,
-            userAgent: userAgent,
-            successful: loginSuccess
-          })
-          .catch((logError) => {
-            // Log interno caso a gravação do histórico falhe
-            console.error(
-              'Failed background task: recordLoginAttempt',
-              logError
-            );
-          });
-      } else if (!loginSuccess) {
-        // Opcional: Registrar tentativas com email inválido (sem userId)
-        // Poderia ter um campo 'attemptedEmail' na tabela LoginHistory
-        // console.warn(
-        //   `Failed login attempt for non-existent email: ${authLoginDto.email} from IP: ${ipAddress}`,
-        // );
+      if (userId && loginSuccess) {
+        this.eventEmitter.emit(
+          'user.login.attempt',
+          new UserLoginAttemptEvent(userId, ipAddress, userAgent, true)
+        );
+      } else if (!loginSuccess && userId) {
+        this.eventEmitter.emit(
+          'user.login.attempt',
+          new UserLoginAttemptEvent(userId, ipAddress, userAgent, false)
+        );
       }
     }
   }

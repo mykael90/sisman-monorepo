@@ -5,7 +5,7 @@ import {
   collectDefaultMetrics,
   Counter,
   Histogram,
-  register, // Usa o registro global padrão do prom-client
+  register // Usa o registro global padrão do prom-client
 } from 'prom-client';
 
 @Injectable()
@@ -19,6 +19,8 @@ export class MetricsService {
 
   // Métrica de Login
   public readonly userLoginCounter: Counter<string>;
+  // Métrica de Registro de Usuário
+  public readonly userRegisteredCounter: Counter<string>;
 
   constructor() {
     this.logger.log('Initializing Metrics Service...');
@@ -35,7 +37,7 @@ export class MetricsService {
       name: `${this.serviceName}_http_requests_total`,
       help: 'Total number of HTTP requests handled',
       labelNames: ['method', 'route', 'status_code'], // Labels para detalhamento
-      registers: [register],
+      registers: [register]
     });
     this.logger.log('HTTP Request Counter registered.');
 
@@ -45,7 +47,7 @@ export class MetricsService {
       help: 'Duration of HTTP requests in seconds',
       labelNames: ['method', 'route', 'status_code'],
       buckets: [0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10], // Buckets em segundos (ajuste conforme necessário)
-      registers: [register],
+      registers: [register]
     });
     this.logger.log('HTTP Request Duration Histogram registered.');
 
@@ -55,9 +57,17 @@ export class MetricsService {
       help: 'Total number of successful user logins',
       // Pode adicionar labels se tiver diferentes tipos de login (ex: 'type: password', 'type: google')
       // labelNames: ['type'],
-      registers: [register],
+      registers: [register]
     });
     this.logger.log('User Login Counter registered.');
+
+    // --- Métrica: Contador de Registros de Usuário Bem-sucedidos ---
+    this.userRegisteredCounter = new Counter({
+      name: `${this.serviceName}_user_registered_total`,
+      help: 'Total number of successful user registrations',
+      registers: [register]
+    });
+    this.logger.log('User Registered Counter registered.');
 
     this.logger.log('Metrics Service Initialized.');
   }

@@ -59,7 +59,8 @@
 			"meganrogge.template-string-converter",
 			"editorconfig.editorconfig",
 			"formulahendry.code-runner",
-			"mxsdev.typescript-explorer"
+			"mxsdev.typescript-explorer",
+			"saoudrizwan.claude-dev"
 		  ]
 		}
 	  },
