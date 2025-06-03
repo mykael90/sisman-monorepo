@@ -51,7 +51,7 @@ const transformAndValidateMaterial: TransformValidateFn<
 
   // --- 4. Construct Prisma Create Input (using validated DTO data) ---
   const createInput: Prisma.MaterialCreateInput = {
-    code: materialDto.code, // Use BigInt ID
+    globalCode: materialDto.globalCode, // Use BigInt ID
     name: materialDto.name,
     unitOfMeasure: materialDto.unitOfMeasure,
     // Use os campos do DTO validado. Se forem opcionais no DTO e não existirem, não serão incluídos.
@@ -79,6 +79,6 @@ export async function main(prisma: PrismaClient): Promise<void> {
     jsonFilePath: materialsJsonPath,
     prismaDelegate: prisma.material, // Pass the material delegate
     transformAndValidate: transformAndValidateMaterial,
-    uniqueKey: 'code' // For specific duplicate logging
+    uniqueKey: 'globalCode' // For specific duplicate logging
   });
 }

@@ -1,1 +1,2 @@
-
+// This file is reserved for Prisma models related to SIPAC (Sistema Integrado de Patrimônio, Administração e Contratos) integration.
+// Models defined here will handle data structures specific to SIPAC, if and when integration is implemented.

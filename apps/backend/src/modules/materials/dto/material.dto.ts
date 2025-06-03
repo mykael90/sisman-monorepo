@@ -15,7 +15,7 @@ export class CreateMaterialDto implements Prisma.MaterialCreateManyInput {
   name: string;
 
   @IsOptional()
-  code: string;
+  globalCode: string;
 
   @IsString()
   @IsOptional()

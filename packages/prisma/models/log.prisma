@@ -1,28 +1,30 @@
+// Defines the structure for logging application errors.
 model LogError {
-    id          String   @id @default(uuid())
-    timestamp   DateTime @default(now()) @db.Timestamp(0)
-    statusCode  Int?
-    path        String?
-    method      String?
-    message     String   @db.Text
-    stackTrace  String?  @db.Text
-    ipAddress   String?
-    userId      Int?
-    requestBody String?  @db.Text
+    id          String   @id @default(uuid()) // Unique identifier for the error log.
+    timestamp   DateTime @default(now()) @db.Timestamp(0) // The date and time when the error occurred.
+    statusCode  Int? // HTTP status code associated with the error, if applicable.
+    path        String? // The request path that caused the error.
+    method      String? // The HTTP method of the request (e.g., GET, POST).
+    message     String   @db.Text // A descriptive message of the error.
+    stackTrace  String?  @db.Text // The stack trace of the error for debugging.
+    ipAddress   String? // The IP address of the client that made the request.
+    userId      Int? // The ID of the user who was logged in when the error occurred.
+    requestBody String?  @db.Text // The request body, if available and relevant.
 
-    @@map("logErrors")
+    @@map("log_errors") // Maps this model to the 'log_errors' table in the database.
 }
 
+// Records login attempts, both successful and unsuccessful.
 model LogLogin {
-    id         String   @id @default(uuid())
-    userId     Int
-    timestamp  DateTime @default(now()) @db.Timestamp(0)
-    ipAddress  String?
-    userAgent  String?  @db.Text
-    successful Boolean
-    user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    id         String   @id @default(uuid()) // Unique identifier for the login log.
+    userId     Int // The ID of the user attempting to log in.
+    timestamp  DateTime @default(now()) @db.Timestamp(0) // The date and time of the login attempt.
+    ipAddress  String? // The IP address from which the login attempt was made.
+    userAgent  String?  @db.Text // The user agent string of the client.
+    successful Boolean // Indicates if the login attempt was successful (true) or failed (false).
+    user       User     @relation(fields: [userId], references: [id], onDelete: Cascade) // Establishes a relation to the User model.
 
-    @@index([userId])
-    @@index([timestamp])
-    @@map("logLogins")
+    @@index([userId]) // Creates an index on the userId field for faster lookups.
+    @@index([timestamp]) // Creates an index on the timestamp field for chronological queries.
+    @@map("log_logins") // Maps this model to the 'log_logins' table in the database.
 }

@@ -1,47 +1,53 @@
+// Represents a user of the system.
 model User {
-  id         Int         @id @default(autoincrement())
-  name       String      @db.VarChar(63)
-  login      String      @unique @db.VarChar(63)
-  email      String      @unique @db.VarChar(127)
-  image      String      @default("") @db.VarChar(255)
-  isActive   Boolean     @default(true)
-  createdAt  DateTime    @default(now()) @db.Timestamp(0)
-  updatedAt  DateTime    @updatedAt @db.Timestamp(0)
-  logLogin   LogLogin[]
-  roles      Role[]
-  magicLinks MagicLink[]
+  id         Int         @id @default(autoincrement()) // Unique identifier for the user.
+  name       String      @db.VarChar(63) // The full name of the user.
+  login      String      @unique @db.VarChar(63) // Unique login username for the user.
+  email      String      @unique @db.VarChar(127) // Unique email address of the user.
+  image      String      @default("") @db.VarChar(255) // URL to the user's profile image.
+  isActive   Boolean     @default(true) // Indicates if the user account is active.
+  createdAt  DateTime    @default(now()) @db.Timestamp(0) // Timestamp for when the user record was created.
+  updatedAt  DateTime    @updatedAt @db.Timestamp(0) // Timestamp for the last update of the user record.
+  logLogin   LogLogin[] // Related login logs for this user.
+  roles      Role[] // Roles assigned to this user.
+  magicLinks MagicLink[] // Magic links generated for this user.
 
-  // Relações: maintenance.prisma
-  reportedOccurrences         InfrastructureOccurrence[] @relation("ReportedOccurrences") // Ocorrências de infra reportadas por este usuário
-  createdMaintenanceRequests  MaintenanceRequest[]       @relation("CreatedByUser")
-  assignedMaintenanceRequests MaintenanceRequest[]       @relation("AssignedToUser")
-  timelineEvents              MaintenanceTimelineEvent[] @relation("ActionByUser") // Eventos/ações realizadas por este usuário
-  materialRequestsCreated     MaterialRequest[]          @relation("MaterialRequestedByUser")
-  materialRequestsApproved    MaterialRequest[]          @relation("MaterialApprovedByUser")
+  // Relations: maintenance.prisma
+  reportedOccurrences         InfrastructureOccurrence[] @relation("ReportedOccurrences") // Infrastructure occurrences reported by this user.
+  createdMaintenanceRequests  MaintenanceRequest[]       @relation("CreatedByUser") // Maintenance requests created by this user.
+  assignedMaintenanceRequests MaintenanceRequest[]       @relation("AssignedToUser") // Maintenance requests assigned to this user.
+  timelineEvents              MaintenanceTimelineEvent[] @relation("ActionByUser") // Timeline events/actions performed by this user.
+  materialRequestsCreated     MaterialRequest[]          @relation("MaterialRequestedByUser") // Material requests created by this user.
+  materialRequestsApproved    MaterialRequest[]          @relation("MaterialApprovedByUser") // Material requests approved by this user.
+  withdrawalsRequested        MaterialWithdrawalOrder[]  @relation("WithdrawalsRequestedBy")
+  withdrawalsPicked           MaterialWithdrawalOrder[]  @relation("WithdrawalsPickedBy")
+  withdrawalsCollected        MaterialWithdrawalOrder[]  @relation("WithdrawalsCollectedBy")
 
-  @@map("users")
+  @@map("users") // Maps this model to the 'users' table.
 }
 
+// Represents a magic link used for passwordless authentication or account verification.
 model MagicLink {
-  id        String    @id @default(cuid())
-  code      String    @unique // Para garantir que o código seja único
-  userId    Int
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  expiresAt DateTime  @db.Timestamp(0)
-  usedAt    DateTime? // Para marcar se o código já foi usado
-  createdAt DateTime  @default(now()) @db.Timestamp(0)
+  id        String    @id @default(cuid()) // Unique identifier for the magic link.
+  code      String    @unique // The unique code embedded in the magic link URL.
+  userId    Int // Foreign key to the user associated with this magic link.
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade) // Relation to the User model.
+  expiresAt DateTime  @db.Timestamp(0) // The expiration date and time of the magic link.
+  usedAt    DateTime? // Timestamp for when the magic link was used.
+  createdAt DateTime  @default(now()) @db.Timestamp(0) // Timestamp for when the magic link was created.
 
-  @@index([userId, code]) // Índice para busca rápida
-  @@map("magicLinks")
+  @@index([userId, code]) // Index for faster lookups by user ID and code.
+  @@map("magic_links") // Maps this model to the 'magic_links' table.
 }
 
+// Defines user roles within the system, controlling access and permissions.
 model Role {
-  id          Int      @id
-  role        String   @db.VarChar(255)
-  description String   @db.Text
-  createdAt   DateTime @default(now()) @db.Timestamp(0)
-  updatedAt   DateTime @updatedAt @db.Timestamp(0)
-  users       User[]
+  id          Int      @id // Unique identifier for the role.
+  role        String   @db.VarChar(255) // The name of the role (e.g., "Administrator", "Technician").
+  description String   @db.Text // A detailed description of the role's permissions.
+  createdAt   DateTime @default(now()) @db.Timestamp(0) // Timestamp for when the role record was created.
+  updatedAt   DateTime @updatedAt @db.Timestamp(0) // Timestamp for the last update of the role record.
+  users       User[] // Users assigned to this role.
 
-  @@map("roles")
+  @@map("roles") // Maps this model to the 'roles' table.
 }

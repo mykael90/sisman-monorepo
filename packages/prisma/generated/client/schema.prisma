@@ -10,7 +10,7 @@ model LogError {
   userId      Int?
   requestBody String?  @db.Text
 
-  @@map("logErrors")
+  @@map("log_errors")
 }
 
 model LogLogin {
@@ -24,7 +24,7 @@ model LogLogin {
 
   @@index([userId])
   @@index([timestamp])
-  @@map("logLogins")
+  @@map("log_logins")
 }
 
 // --------------- REQUISIÇÃO DE MANUTENÇÃO ---------------
@@ -73,7 +73,7 @@ model MaintenanceRequest {
   @@index([createdById])
   @@index([assignedToId])
   @@index([statusId])
-  @@map("maintenanceRequests")
+  @@map("maintenance_requests")
 }
 
 enum RequestPriority {
@@ -97,7 +97,7 @@ model MaintenanceRequestStatus {
 
   maintenanceRequests MaintenanceRequest[]
 
-  @@map("maintenanceRequestStatuses")
+  @@map("maintenance_request_statuses")
 }
 
 // --------------- EVENTOS DA LINHA DO TEMPO DA REQUISIÇÃO DE MANUTENÇÃO ---------------
@@ -132,7 +132,7 @@ model MaintenanceTimelineEvent {
   @@index([type])
   @@index([transferredFromInstanceId])
   @@index([transferredToInstanceId])
-  @@map("maintenanceTimelineEvents")
+  @@map("maintenance_timeline_events")
 }
 
 enum TimelineEventType {
@@ -171,7 +171,7 @@ model MaintenanceInstance {
   warehouses                    Warehouse[]
 
   @@index([sipacId])
-  @@map("maintenanceInstances")
+  @@map("maintenance_instances")
 }
 
 // --------------- TIPOS DE SERVIÇO (Opcional, para categorização) ---------------
@@ -185,7 +185,7 @@ model ServiceType {
 
   maintenanceRequests MaintenanceRequest[]
 
-  @@map("serviceTypes")
+  @@map("service_types")
 }
 
 // --------------- EQUIPAMENTOS (Opcional, mas comum) ---------------
@@ -243,7 +243,7 @@ model InfrastructureOccurrence {
   // @@index([equipmentId])
   @@index([maintenanceRequestId])
   @@index([status])
-  @@map("infrastructureOccurrences")
+  @@map("infrastructure_occurrences")
 }
 
 // --------------- STATUS DA OCORRÊNCIA DE INFRAESTRUTURA ---------------
@@ -366,7 +366,7 @@ model WarehouseMaterialStock {
   // A material can only have one stock record per warehouse.
   @@unique([warehouseId, materialId], name: "unique_warehouse_material_standard_stock")
   @@index([materialId])
-  @@map("warehouse_standard_material_stocks")
+  @@map("warehouse_material_stocks")
 }
 
 model MaterialRequest {
@@ -699,7 +699,7 @@ model MagicLink {
   createdAt DateTime  @default(now()) @db.Timestamp(0)
 
   @@index([userId, code]) // Índice para busca rápida
-  @@map("magicLinks")
+  @@map("magic_links")
 }
 
 model Role {

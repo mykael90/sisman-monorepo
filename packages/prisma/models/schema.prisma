@@ -1,9 +1,11 @@
+// Defines the Prisma client generator.
 generator client {
-  provider = "prisma-client-js"
-  output   = "../generated/client"
+  provider = "prisma-client-js" // Specifies the Prisma client provider (JavaScript/TypeScript).
+  output   = "../generated/client" // The output directory for the generated Prisma client.
 }
 
+// Defines the database connection.
 datasource db {
-  provider = "mysql"
-  url      = env("DB_URL")
+  provider = "mysql" // Specifies the database provider (MySQL in this case).
+  url      = env("DB_URL") // The connection URL to the database, loaded from environment variables.
 }
