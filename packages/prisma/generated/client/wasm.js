@@ -233,20 +233,52 @@ exports.Prisma.InfrastructureOccurrenceScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.WarehouseScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  code: 'code',
+  location: 'location',
+  isActive: 'isActive',
+  maintenanceInstanceId: 'maintenanceInstanceId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.MaterialScalarFieldEnum = {
   id: 'id',
-  code: 'code',
+  globalCode: 'globalCode',
   name: 'name',
   description: 'description',
   unitOfMeasure: 'unitOfMeasure',
+  category: 'category',
+  manufacturer: 'manufacturer',
+  partNumber: 'partNumber',
   isActive: 'isActive',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  parentMaterialId: 'parentMaterialId'
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.WarehouseMaterialStockScalarFieldEnum = {
+  id: 'id',
+  warehouseId: 'warehouseId',
+  materialId: 'materialId',
+  physicalOnHandQuantity: 'physicalOnHandQuantity',
+  initialStockQuantity: 'initialStockQuantity',
+  restrictedQuantity: 'restrictedQuantity',
+  reservedQuantity: 'reservedQuantity',
+  locationInWarehouse: 'locationInWarehouse',
+  minStockLevel: 'minStockLevel',
+  maxStockLevel: 'maxStockLevel',
+  lastStockCountDate: 'lastStockCountDate',
+  averageCost: 'averageCost',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.MaterialRequestScalarFieldEnum = {
   id: 'id',
+  protocolNumber: 'protocolNumber',
+  requestType: 'requestType',
   justification: 'justification',
   requestDate: 'requestDate',
   status: 'status',
@@ -261,11 +293,72 @@ exports.Prisma.MaterialRequestScalarFieldEnum = {
 
 exports.Prisma.MaterialRequestItemScalarFieldEnum = {
   id: 'id',
+  materialRequestId: 'materialRequestId',
+  requestType: 'requestType',
+  requestedGlobalMaterialId: 'requestedGlobalMaterialId',
+  requestedDerivedName: 'requestedDerivedName',
+  requestedDerivedConditionId: 'requestedDerivedConditionId',
   quantityRequested: 'quantityRequested',
   quantityApproved: 'quantityApproved',
   quantityDelivered: 'quantityDelivered',
-  materialRequestId: 'materialRequestId',
-  materialId: 'materialId',
+  unitOfMeasure: 'unitOfMeasure',
+  fulfilledByInstanceId: 'fulfilledByInstanceId',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  materialInstanceConditionId: 'materialInstanceConditionId'
+};
+
+exports.Prisma.StockMovementTypeScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  name: 'name',
+  description: 'description',
+  operation: 'operation',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.MaterialStockMovementScalarFieldEnum = {
+  id: 'id',
+  warehouseId: 'warehouseId',
+  globalMaterialId: 'globalMaterialId',
+  materialInstanceId: 'materialInstanceId',
+  movementTypeId: 'movementTypeId',
+  quantity: 'quantity',
+  unitOfMeasure: 'unitOfMeasure',
+  movementDate: 'movementDate',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  warehouseMaterialStockId: 'warehouseMaterialStockId',
+  materialRequestItemId: 'materialRequestItemId'
+};
+
+exports.Prisma.MaterialInstanceConditionScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  name: 'name',
+  description: 'description',
+  isUsable: 'isUsable',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.MaterialInstanceScalarFieldEnum = {
+  id: 'id',
+  instanceIdentifier: 'instanceIdentifier',
+  globalMaterialId: 'globalMaterialId',
+  derivedName: 'derivedName',
+  derivedDescription: 'derivedDescription',
+  derivedUnitOfMeasure: 'derivedUnitOfMeasure',
+  warehouseId: 'warehouseId',
+  conditionId: 'conditionId',
+  quantity: 'quantity',
+  locationInWarehouse: 'locationInWarehouse',
+  sourceNotes: 'sourceNotes',
+  reservedQuantity: 'reservedQuantity',
+  restrictedQuantity: 'restrictedQuantity',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -383,16 +476,61 @@ exports.Prisma.InfrastructureOccurrenceOrderByRelevanceFieldEnum = {
   resolutionNotes: 'resolutionNotes'
 };
 
-exports.Prisma.MaterialOrderByRelevanceFieldEnum = {
+exports.Prisma.WarehouseOrderByRelevanceFieldEnum = {
+  name: 'name',
   code: 'code',
+  location: 'location'
+};
+
+exports.Prisma.MaterialOrderByRelevanceFieldEnum = {
+  globalCode: 'globalCode',
   name: 'name',
   description: 'description',
-  unitOfMeasure: 'unitOfMeasure'
+  unitOfMeasure: 'unitOfMeasure',
+  category: 'category',
+  manufacturer: 'manufacturer',
+  partNumber: 'partNumber'
+};
+
+exports.Prisma.WarehouseMaterialStockOrderByRelevanceFieldEnum = {
+  locationInWarehouse: 'locationInWarehouse'
 };
 
 exports.Prisma.MaterialRequestOrderByRelevanceFieldEnum = {
+  protocolNumber: 'protocolNumber',
   justification: 'justification',
   approvalNotes: 'approvalNotes'
+};
+
+exports.Prisma.MaterialRequestItemOrderByRelevanceFieldEnum = {
+  requestedDerivedName: 'requestedDerivedName',
+  unitOfMeasure: 'unitOfMeasure',
+  notes: 'notes'
+};
+
+exports.Prisma.StockMovementTypeOrderByRelevanceFieldEnum = {
+  code: 'code',
+  name: 'name',
+  description: 'description'
+};
+
+exports.Prisma.MaterialStockMovementOrderByRelevanceFieldEnum = {
+  unitOfMeasure: 'unitOfMeasure'
+};
+
+exports.Prisma.MaterialInstanceConditionOrderByRelevanceFieldEnum = {
+  code: 'code',
+  name: 'name',
+  description: 'description'
+};
+
+exports.Prisma.MaterialInstanceOrderByRelevanceFieldEnum = {
+  instanceIdentifier: 'instanceIdentifier',
+  derivedName: 'derivedName',
+  derivedDescription: 'derivedDescription',
+  derivedUnitOfMeasure: 'derivedUnitOfMeasure',
+  locationInWarehouse: 'locationInWarehouse',
+  sourceNotes: 'sourceNotes'
 };
 
 exports.Prisma.UserOrderByRelevanceFieldEnum = {
@@ -444,13 +582,30 @@ exports.InfrastructureOccurrenceStatus = exports.$Enums.InfrastructureOccurrence
   RESOLVED: 'RESOLVED'
 };
 
+exports.MaterialRequestType = exports.$Enums.MaterialRequestType = {
+  NEW_MATERIALS: 'NEW_MATERIALS',
+  DERIVED_MATERIALS: 'DERIVED_MATERIALS'
+};
+
 exports.MaterialRequestStatus = exports.$Enums.MaterialRequestStatus = {
   PENDING: 'PENDING',
   APPROVED: 'APPROVED',
+  PARTIALLY_ATTENDED: 'PARTIALLY_ATTENDED',
+  FULLY_ATTENDED: 'FULLY_ATTENDED',
   REJECTED: 'REJECTED',
-  PARTIALLY_DELIVERED: 'PARTIALLY_DELIVERED',
-  DELIVERED: 'DELIVERED',
   CANCELLED: 'CANCELLED'
+};
+
+exports.MaterialRequestItemType = exports.$Enums.MaterialRequestItemType = {
+  GLOBAL_CATALOG: 'GLOBAL_CATALOG',
+  DERIVED_MATERIAL: 'DERIVED_MATERIAL'
+};
+
+exports.StockOperationType = exports.$Enums.StockOperationType = {
+  IN: 'IN',
+  OUT: 'OUT',
+  ADJUSTMENT: 'ADJUSTMENT',
+  RESERVATION: 'RESERVATION'
 };
 
 exports.Prisma.ModelName = {
@@ -463,9 +618,15 @@ exports.Prisma.ModelName = {
   ServiceType: 'ServiceType',
   Equipment: 'Equipment',
   InfrastructureOccurrence: 'InfrastructureOccurrence',
+  Warehouse: 'Warehouse',
   Material: 'Material',
+  WarehouseMaterialStock: 'WarehouseMaterialStock',
   MaterialRequest: 'MaterialRequest',
   MaterialRequestItem: 'MaterialRequestItem',
+  StockMovementType: 'StockMovementType',
+  MaterialStockMovement: 'MaterialStockMovement',
+  MaterialInstanceCondition: 'MaterialInstanceCondition',
+  MaterialInstance: 'MaterialInstance',
   User: 'User',
   MagicLink: 'MagicLink',
   Role: 'Role'

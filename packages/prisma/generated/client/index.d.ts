@@ -59,10 +59,20 @@ export type Equipment = $Result.DefaultSelection<Prisma.$EquipmentPayload>
  */
 export type InfrastructureOccurrence = $Result.DefaultSelection<Prisma.$InfrastructureOccurrencePayload>
 /**
+ * Model Warehouse
+ * 
+ */
+export type Warehouse = $Result.DefaultSelection<Prisma.$WarehousePayload>
+/**
  * Model Material
  * 
  */
 export type Material = $Result.DefaultSelection<Prisma.$MaterialPayload>
+/**
+ * Model WarehouseMaterialStock
+ * 
+ */
+export type WarehouseMaterialStock = $Result.DefaultSelection<Prisma.$WarehouseMaterialStockPayload>
 /**
  * Model MaterialRequest
  * 
@@ -73,6 +83,26 @@ export type MaterialRequest = $Result.DefaultSelection<Prisma.$MaterialRequestPa
  * 
  */
 export type MaterialRequestItem = $Result.DefaultSelection<Prisma.$MaterialRequestItemPayload>
+/**
+ * Model StockMovementType
+ * 
+ */
+export type StockMovementType = $Result.DefaultSelection<Prisma.$StockMovementTypePayload>
+/**
+ * Model MaterialStockMovement
+ * 
+ */
+export type MaterialStockMovement = $Result.DefaultSelection<Prisma.$MaterialStockMovementPayload>
+/**
+ * Model MaterialInstanceCondition
+ * 
+ */
+export type MaterialInstanceCondition = $Result.DefaultSelection<Prisma.$MaterialInstanceConditionPayload>
+/**
+ * Model MaterialInstance
+ * 
+ */
+export type MaterialInstance = $Result.DefaultSelection<Prisma.$MaterialInstancePayload>
 /**
  * Model User
  * 
@@ -124,18 +154,6 @@ export const TimelineEventType: {
 export type TimelineEventType = (typeof TimelineEventType)[keyof typeof TimelineEventType]
 
 
-export const MaterialRequestStatus: {
-  PENDING: 'PENDING',
-  APPROVED: 'APPROVED',
-  REJECTED: 'REJECTED',
-  PARTIALLY_DELIVERED: 'PARTIALLY_DELIVERED',
-  DELIVERED: 'DELIVERED',
-  CANCELLED: 'CANCELLED'
-};
-
-export type MaterialRequestStatus = (typeof MaterialRequestStatus)[keyof typeof MaterialRequestStatus]
-
-
 export const InfrastructureOccurrenceStatus: {
   REPORTED: 'REPORTED',
   ANALYZING: 'ANALYZING',
@@ -145,6 +163,44 @@ export const InfrastructureOccurrenceStatus: {
 };
 
 export type InfrastructureOccurrenceStatus = (typeof InfrastructureOccurrenceStatus)[keyof typeof InfrastructureOccurrenceStatus]
+
+
+export const MaterialRequestType: {
+  NEW_MATERIALS: 'NEW_MATERIALS',
+  DERIVED_MATERIALS: 'DERIVED_MATERIALS'
+};
+
+export type MaterialRequestType = (typeof MaterialRequestType)[keyof typeof MaterialRequestType]
+
+
+export const MaterialRequestStatus: {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  PARTIALLY_ATTENDED: 'PARTIALLY_ATTENDED',
+  FULLY_ATTENDED: 'FULLY_ATTENDED',
+  REJECTED: 'REJECTED',
+  CANCELLED: 'CANCELLED'
+};
+
+export type MaterialRequestStatus = (typeof MaterialRequestStatus)[keyof typeof MaterialRequestStatus]
+
+
+export const MaterialRequestItemType: {
+  GLOBAL_CATALOG: 'GLOBAL_CATALOG',
+  DERIVED_MATERIAL: 'DERIVED_MATERIAL'
+};
+
+export type MaterialRequestItemType = (typeof MaterialRequestItemType)[keyof typeof MaterialRequestItemType]
+
+
+export const StockOperationType: {
+  IN: 'IN',
+  OUT: 'OUT',
+  ADJUSTMENT: 'ADJUSTMENT',
+  RESERVATION: 'RESERVATION'
+};
+
+export type StockOperationType = (typeof StockOperationType)[keyof typeof StockOperationType]
 
 }
 
@@ -156,13 +212,25 @@ export type TimelineEventType = $Enums.TimelineEventType
 
 export const TimelineEventType: typeof $Enums.TimelineEventType
 
+export type InfrastructureOccurrenceStatus = $Enums.InfrastructureOccurrenceStatus
+
+export const InfrastructureOccurrenceStatus: typeof $Enums.InfrastructureOccurrenceStatus
+
+export type MaterialRequestType = $Enums.MaterialRequestType
+
+export const MaterialRequestType: typeof $Enums.MaterialRequestType
+
 export type MaterialRequestStatus = $Enums.MaterialRequestStatus
 
 export const MaterialRequestStatus: typeof $Enums.MaterialRequestStatus
 
-export type InfrastructureOccurrenceStatus = $Enums.InfrastructureOccurrenceStatus
+export type MaterialRequestItemType = $Enums.MaterialRequestItemType
 
-export const InfrastructureOccurrenceStatus: typeof $Enums.InfrastructureOccurrenceStatus
+export const MaterialRequestItemType: typeof $Enums.MaterialRequestItemType
+
+export type StockOperationType = $Enums.StockOperationType
+
+export const StockOperationType: typeof $Enums.StockOperationType
 
 /**
  * ##  Prisma Client ʲˢ
@@ -380,6 +448,16 @@ export class PrismaClient<
   get infrastructureOccurrence(): Prisma.InfrastructureOccurrenceDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.warehouse`: Exposes CRUD operations for the **Warehouse** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Warehouses
+    * const warehouses = await prisma.warehouse.findMany()
+    * ```
+    */
+  get warehouse(): Prisma.WarehouseDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.material`: Exposes CRUD operations for the **Material** model.
     * Example usage:
     * ```ts
@@ -388,6 +466,16 @@ export class PrismaClient<
     * ```
     */
   get material(): Prisma.MaterialDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.warehouseMaterialStock`: Exposes CRUD operations for the **WarehouseMaterialStock** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more WarehouseMaterialStocks
+    * const warehouseMaterialStocks = await prisma.warehouseMaterialStock.findMany()
+    * ```
+    */
+  get warehouseMaterialStock(): Prisma.WarehouseMaterialStockDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.materialRequest`: Exposes CRUD operations for the **MaterialRequest** model.
@@ -408,6 +496,46 @@ export class PrismaClient<
     * ```
     */
   get materialRequestItem(): Prisma.MaterialRequestItemDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.stockMovementType`: Exposes CRUD operations for the **StockMovementType** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more StockMovementTypes
+    * const stockMovementTypes = await prisma.stockMovementType.findMany()
+    * ```
+    */
+  get stockMovementType(): Prisma.StockMovementTypeDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.materialStockMovement`: Exposes CRUD operations for the **MaterialStockMovement** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more MaterialStockMovements
+    * const materialStockMovements = await prisma.materialStockMovement.findMany()
+    * ```
+    */
+  get materialStockMovement(): Prisma.MaterialStockMovementDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.materialInstanceCondition`: Exposes CRUD operations for the **MaterialInstanceCondition** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more MaterialInstanceConditions
+    * const materialInstanceConditions = await prisma.materialInstanceCondition.findMany()
+    * ```
+    */
+  get materialInstanceCondition(): Prisma.MaterialInstanceConditionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.materialInstance`: Exposes CRUD operations for the **MaterialInstance** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more MaterialInstances
+    * const materialInstances = await prisma.materialInstance.findMany()
+    * ```
+    */
+  get materialInstance(): Prisma.MaterialInstanceDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.user`: Exposes CRUD operations for the **User** model.
@@ -887,9 +1015,15 @@ export namespace Prisma {
     ServiceType: 'ServiceType',
     Equipment: 'Equipment',
     InfrastructureOccurrence: 'InfrastructureOccurrence',
+    Warehouse: 'Warehouse',
     Material: 'Material',
+    WarehouseMaterialStock: 'WarehouseMaterialStock',
     MaterialRequest: 'MaterialRequest',
     MaterialRequestItem: 'MaterialRequestItem',
+    StockMovementType: 'StockMovementType',
+    MaterialStockMovement: 'MaterialStockMovement',
+    MaterialInstanceCondition: 'MaterialInstanceCondition',
+    MaterialInstance: 'MaterialInstance',
     User: 'User',
     MagicLink: 'MagicLink',
     Role: 'Role'
@@ -911,7 +1045,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "logError" | "logLogin" | "maintenanceRequest" | "maintenanceRequestStatus" | "maintenanceTimelineEvent" | "maintenanceInstance" | "serviceType" | "equipment" | "infrastructureOccurrence" | "material" | "materialRequest" | "materialRequestItem" | "user" | "magicLink" | "role"
+      modelProps: "logError" | "logLogin" | "maintenanceRequest" | "maintenanceRequestStatus" | "maintenanceTimelineEvent" | "maintenanceInstance" | "serviceType" | "equipment" | "infrastructureOccurrence" | "warehouse" | "material" | "warehouseMaterialStock" | "materialRequest" | "materialRequestItem" | "stockMovementType" | "materialStockMovement" | "materialInstanceCondition" | "materialInstance" | "user" | "magicLink" | "role"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1509,6 +1643,72 @@ export namespace Prisma {
           }
         }
       }
+      Warehouse: {
+        payload: Prisma.$WarehousePayload<ExtArgs>
+        fields: Prisma.WarehouseFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.WarehouseFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WarehousePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.WarehouseFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WarehousePayload>
+          }
+          findFirst: {
+            args: Prisma.WarehouseFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WarehousePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.WarehouseFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WarehousePayload>
+          }
+          findMany: {
+            args: Prisma.WarehouseFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WarehousePayload>[]
+          }
+          create: {
+            args: Prisma.WarehouseCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WarehousePayload>
+          }
+          createMany: {
+            args: Prisma.WarehouseCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.WarehouseDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WarehousePayload>
+          }
+          update: {
+            args: Prisma.WarehouseUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WarehousePayload>
+          }
+          deleteMany: {
+            args: Prisma.WarehouseDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.WarehouseUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.WarehouseUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WarehousePayload>
+          }
+          aggregate: {
+            args: Prisma.WarehouseAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateWarehouse>
+          }
+          groupBy: {
+            args: Prisma.WarehouseGroupByArgs<ExtArgs>
+            result: $Utils.Optional<WarehouseGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.WarehouseCountArgs<ExtArgs>
+            result: $Utils.Optional<WarehouseCountAggregateOutputType> | number
+          }
+        }
+      }
       Material: {
         payload: Prisma.$MaterialPayload<ExtArgs>
         fields: Prisma.MaterialFieldRefs
@@ -1572,6 +1772,72 @@ export namespace Prisma {
           count: {
             args: Prisma.MaterialCountArgs<ExtArgs>
             result: $Utils.Optional<MaterialCountAggregateOutputType> | number
+          }
+        }
+      }
+      WarehouseMaterialStock: {
+        payload: Prisma.$WarehouseMaterialStockPayload<ExtArgs>
+        fields: Prisma.WarehouseMaterialStockFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.WarehouseMaterialStockFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WarehouseMaterialStockPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.WarehouseMaterialStockFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WarehouseMaterialStockPayload>
+          }
+          findFirst: {
+            args: Prisma.WarehouseMaterialStockFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WarehouseMaterialStockPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.WarehouseMaterialStockFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WarehouseMaterialStockPayload>
+          }
+          findMany: {
+            args: Prisma.WarehouseMaterialStockFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WarehouseMaterialStockPayload>[]
+          }
+          create: {
+            args: Prisma.WarehouseMaterialStockCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WarehouseMaterialStockPayload>
+          }
+          createMany: {
+            args: Prisma.WarehouseMaterialStockCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.WarehouseMaterialStockDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WarehouseMaterialStockPayload>
+          }
+          update: {
+            args: Prisma.WarehouseMaterialStockUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WarehouseMaterialStockPayload>
+          }
+          deleteMany: {
+            args: Prisma.WarehouseMaterialStockDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.WarehouseMaterialStockUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.WarehouseMaterialStockUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WarehouseMaterialStockPayload>
+          }
+          aggregate: {
+            args: Prisma.WarehouseMaterialStockAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateWarehouseMaterialStock>
+          }
+          groupBy: {
+            args: Prisma.WarehouseMaterialStockGroupByArgs<ExtArgs>
+            result: $Utils.Optional<WarehouseMaterialStockGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.WarehouseMaterialStockCountArgs<ExtArgs>
+            result: $Utils.Optional<WarehouseMaterialStockCountAggregateOutputType> | number
           }
         }
       }
@@ -1704,6 +1970,270 @@ export namespace Prisma {
           count: {
             args: Prisma.MaterialRequestItemCountArgs<ExtArgs>
             result: $Utils.Optional<MaterialRequestItemCountAggregateOutputType> | number
+          }
+        }
+      }
+      StockMovementType: {
+        payload: Prisma.$StockMovementTypePayload<ExtArgs>
+        fields: Prisma.StockMovementTypeFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.StockMovementTypeFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StockMovementTypePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.StockMovementTypeFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StockMovementTypePayload>
+          }
+          findFirst: {
+            args: Prisma.StockMovementTypeFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StockMovementTypePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.StockMovementTypeFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StockMovementTypePayload>
+          }
+          findMany: {
+            args: Prisma.StockMovementTypeFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StockMovementTypePayload>[]
+          }
+          create: {
+            args: Prisma.StockMovementTypeCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StockMovementTypePayload>
+          }
+          createMany: {
+            args: Prisma.StockMovementTypeCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.StockMovementTypeDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StockMovementTypePayload>
+          }
+          update: {
+            args: Prisma.StockMovementTypeUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StockMovementTypePayload>
+          }
+          deleteMany: {
+            args: Prisma.StockMovementTypeDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.StockMovementTypeUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.StockMovementTypeUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StockMovementTypePayload>
+          }
+          aggregate: {
+            args: Prisma.StockMovementTypeAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateStockMovementType>
+          }
+          groupBy: {
+            args: Prisma.StockMovementTypeGroupByArgs<ExtArgs>
+            result: $Utils.Optional<StockMovementTypeGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.StockMovementTypeCountArgs<ExtArgs>
+            result: $Utils.Optional<StockMovementTypeCountAggregateOutputType> | number
+          }
+        }
+      }
+      MaterialStockMovement: {
+        payload: Prisma.$MaterialStockMovementPayload<ExtArgs>
+        fields: Prisma.MaterialStockMovementFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.MaterialStockMovementFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialStockMovementPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.MaterialStockMovementFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialStockMovementPayload>
+          }
+          findFirst: {
+            args: Prisma.MaterialStockMovementFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialStockMovementPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.MaterialStockMovementFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialStockMovementPayload>
+          }
+          findMany: {
+            args: Prisma.MaterialStockMovementFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialStockMovementPayload>[]
+          }
+          create: {
+            args: Prisma.MaterialStockMovementCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialStockMovementPayload>
+          }
+          createMany: {
+            args: Prisma.MaterialStockMovementCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.MaterialStockMovementDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialStockMovementPayload>
+          }
+          update: {
+            args: Prisma.MaterialStockMovementUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialStockMovementPayload>
+          }
+          deleteMany: {
+            args: Prisma.MaterialStockMovementDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.MaterialStockMovementUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.MaterialStockMovementUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialStockMovementPayload>
+          }
+          aggregate: {
+            args: Prisma.MaterialStockMovementAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMaterialStockMovement>
+          }
+          groupBy: {
+            args: Prisma.MaterialStockMovementGroupByArgs<ExtArgs>
+            result: $Utils.Optional<MaterialStockMovementGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.MaterialStockMovementCountArgs<ExtArgs>
+            result: $Utils.Optional<MaterialStockMovementCountAggregateOutputType> | number
+          }
+        }
+      }
+      MaterialInstanceCondition: {
+        payload: Prisma.$MaterialInstanceConditionPayload<ExtArgs>
+        fields: Prisma.MaterialInstanceConditionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.MaterialInstanceConditionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialInstanceConditionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.MaterialInstanceConditionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialInstanceConditionPayload>
+          }
+          findFirst: {
+            args: Prisma.MaterialInstanceConditionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialInstanceConditionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.MaterialInstanceConditionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialInstanceConditionPayload>
+          }
+          findMany: {
+            args: Prisma.MaterialInstanceConditionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialInstanceConditionPayload>[]
+          }
+          create: {
+            args: Prisma.MaterialInstanceConditionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialInstanceConditionPayload>
+          }
+          createMany: {
+            args: Prisma.MaterialInstanceConditionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.MaterialInstanceConditionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialInstanceConditionPayload>
+          }
+          update: {
+            args: Prisma.MaterialInstanceConditionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialInstanceConditionPayload>
+          }
+          deleteMany: {
+            args: Prisma.MaterialInstanceConditionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.MaterialInstanceConditionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.MaterialInstanceConditionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialInstanceConditionPayload>
+          }
+          aggregate: {
+            args: Prisma.MaterialInstanceConditionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMaterialInstanceCondition>
+          }
+          groupBy: {
+            args: Prisma.MaterialInstanceConditionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<MaterialInstanceConditionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.MaterialInstanceConditionCountArgs<ExtArgs>
+            result: $Utils.Optional<MaterialInstanceConditionCountAggregateOutputType> | number
+          }
+        }
+      }
+      MaterialInstance: {
+        payload: Prisma.$MaterialInstancePayload<ExtArgs>
+        fields: Prisma.MaterialInstanceFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.MaterialInstanceFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialInstancePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.MaterialInstanceFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialInstancePayload>
+          }
+          findFirst: {
+            args: Prisma.MaterialInstanceFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialInstancePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.MaterialInstanceFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialInstancePayload>
+          }
+          findMany: {
+            args: Prisma.MaterialInstanceFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialInstancePayload>[]
+          }
+          create: {
+            args: Prisma.MaterialInstanceCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialInstancePayload>
+          }
+          createMany: {
+            args: Prisma.MaterialInstanceCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.MaterialInstanceDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialInstancePayload>
+          }
+          update: {
+            args: Prisma.MaterialInstanceUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialInstancePayload>
+          }
+          deleteMany: {
+            args: Prisma.MaterialInstanceDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.MaterialInstanceUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.MaterialInstanceUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaterialInstancePayload>
+          }
+          aggregate: {
+            args: Prisma.MaterialInstanceAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMaterialInstance>
+          }
+          groupBy: {
+            args: Prisma.MaterialInstanceGroupByArgs<ExtArgs>
+            result: $Utils.Optional<MaterialInstanceGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.MaterialInstanceCountArgs<ExtArgs>
+            result: $Utils.Optional<MaterialInstanceCountAggregateOutputType> | number
           }
         }
       }
@@ -1998,9 +2528,15 @@ export namespace Prisma {
     serviceType?: ServiceTypeOmit
     equipment?: EquipmentOmit
     infrastructureOccurrence?: InfrastructureOccurrenceOmit
+    warehouse?: WarehouseOmit
     material?: MaterialOmit
+    warehouseMaterialStock?: WarehouseMaterialStockOmit
     materialRequest?: MaterialRequestOmit
     materialRequestItem?: MaterialRequestItemOmit
+    stockMovementType?: StockMovementTypeOmit
+    materialStockMovement?: MaterialStockMovementOmit
+    materialInstanceCondition?: MaterialInstanceConditionOmit
+    materialInstance?: MaterialInstanceOmit
     user?: UserOmit
     magicLink?: MagicLinkOmit
     role?: RoleOmit
@@ -2181,12 +2717,14 @@ export namespace Prisma {
     currentMaintenanceRequests: number
     timelineEventsTransferredFrom: number
     timelineEventsTransferredTo: number
+    warehouses: number
   }
 
   export type MaintenanceInstanceCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     currentMaintenanceRequests?: boolean | MaintenanceInstanceCountOutputTypeCountCurrentMaintenanceRequestsArgs
     timelineEventsTransferredFrom?: boolean | MaintenanceInstanceCountOutputTypeCountTimelineEventsTransferredFromArgs
     timelineEventsTransferredTo?: boolean | MaintenanceInstanceCountOutputTypeCountTimelineEventsTransferredToArgs
+    warehouses?: boolean | MaintenanceInstanceCountOutputTypeCountWarehousesArgs
   }
 
   // Custom InputTypes
@@ -2219,6 +2757,13 @@ export namespace Prisma {
    */
   export type MaintenanceInstanceCountOutputTypeCountTimelineEventsTransferredToArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: MaintenanceTimelineEventWhereInput
+  }
+
+  /**
+   * MaintenanceInstanceCountOutputType without action
+   */
+  export type MaintenanceInstanceCountOutputTypeCountWarehousesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: WarehouseWhereInput
   }
 
 
@@ -2285,17 +2830,70 @@ export namespace Prisma {
 
 
   /**
+   * Count Type WarehouseCountOutputType
+   */
+
+  export type WarehouseCountOutputType = {
+    standardMaterialStocks: number
+    materialInstances: number
+    stockMovements: number
+  }
+
+  export type WarehouseCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    standardMaterialStocks?: boolean | WarehouseCountOutputTypeCountStandardMaterialStocksArgs
+    materialInstances?: boolean | WarehouseCountOutputTypeCountMaterialInstancesArgs
+    stockMovements?: boolean | WarehouseCountOutputTypeCountStockMovementsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * WarehouseCountOutputType without action
+   */
+  export type WarehouseCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WarehouseCountOutputType
+     */
+    select?: WarehouseCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * WarehouseCountOutputType without action
+   */
+  export type WarehouseCountOutputTypeCountStandardMaterialStocksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: WarehouseMaterialStockWhereInput
+  }
+
+  /**
+   * WarehouseCountOutputType without action
+   */
+  export type WarehouseCountOutputTypeCountMaterialInstancesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MaterialInstanceWhereInput
+  }
+
+  /**
+   * WarehouseCountOutputType without action
+   */
+  export type WarehouseCountOutputTypeCountStockMovementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MaterialStockMovementWhereInput
+  }
+
+
+  /**
    * Count Type MaterialCountOutputType
    */
 
   export type MaterialCountOutputType = {
-    childs: number
-    materialRequestItems: number
+    warehouseStandardStocks: number
+    relatedMaterialInstances: number
+    standardMaterialRequestItems: number
+    stockMovements: number
   }
 
   export type MaterialCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    childs?: boolean | MaterialCountOutputTypeCountChildsArgs
-    materialRequestItems?: boolean | MaterialCountOutputTypeCountMaterialRequestItemsArgs
+    warehouseStandardStocks?: boolean | MaterialCountOutputTypeCountWarehouseStandardStocksArgs
+    relatedMaterialInstances?: boolean | MaterialCountOutputTypeCountRelatedMaterialInstancesArgs
+    standardMaterialRequestItems?: boolean | MaterialCountOutputTypeCountStandardMaterialRequestItemsArgs
+    stockMovements?: boolean | MaterialCountOutputTypeCountStockMovementsArgs
   }
 
   // Custom InputTypes
@@ -2312,15 +2910,60 @@ export namespace Prisma {
   /**
    * MaterialCountOutputType without action
    */
-  export type MaterialCountOutputTypeCountChildsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: MaterialWhereInput
+  export type MaterialCountOutputTypeCountWarehouseStandardStocksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: WarehouseMaterialStockWhereInput
   }
 
   /**
    * MaterialCountOutputType without action
    */
-  export type MaterialCountOutputTypeCountMaterialRequestItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type MaterialCountOutputTypeCountRelatedMaterialInstancesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MaterialInstanceWhereInput
+  }
+
+  /**
+   * MaterialCountOutputType without action
+   */
+  export type MaterialCountOutputTypeCountStandardMaterialRequestItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: MaterialRequestItemWhereInput
+  }
+
+  /**
+   * MaterialCountOutputType without action
+   */
+  export type MaterialCountOutputTypeCountStockMovementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MaterialStockMovementWhereInput
+  }
+
+
+  /**
+   * Count Type WarehouseMaterialStockCountOutputType
+   */
+
+  export type WarehouseMaterialStockCountOutputType = {
+    stockMovements: number
+  }
+
+  export type WarehouseMaterialStockCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    stockMovements?: boolean | WarehouseMaterialStockCountOutputTypeCountStockMovementsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * WarehouseMaterialStockCountOutputType without action
+   */
+  export type WarehouseMaterialStockCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WarehouseMaterialStockCountOutputType
+     */
+    select?: WarehouseMaterialStockCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * WarehouseMaterialStockCountOutputType without action
+   */
+  export type WarehouseMaterialStockCountOutputTypeCountStockMovementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MaterialStockMovementWhereInput
   }
 
 
@@ -2351,6 +2994,157 @@ export namespace Prisma {
    * MaterialRequestCountOutputType without action
    */
   export type MaterialRequestCountOutputTypeCountItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MaterialRequestItemWhereInput
+  }
+
+
+  /**
+   * Count Type MaterialRequestItemCountOutputType
+   */
+
+  export type MaterialRequestItemCountOutputType = {
+    stockMovements: number
+  }
+
+  export type MaterialRequestItemCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    stockMovements?: boolean | MaterialRequestItemCountOutputTypeCountStockMovementsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * MaterialRequestItemCountOutputType without action
+   */
+  export type MaterialRequestItemCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialRequestItemCountOutputType
+     */
+    select?: MaterialRequestItemCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * MaterialRequestItemCountOutputType without action
+   */
+  export type MaterialRequestItemCountOutputTypeCountStockMovementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MaterialStockMovementWhereInput
+  }
+
+
+  /**
+   * Count Type StockMovementTypeCountOutputType
+   */
+
+  export type StockMovementTypeCountOutputType = {
+    stockMovements: number
+  }
+
+  export type StockMovementTypeCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    stockMovements?: boolean | StockMovementTypeCountOutputTypeCountStockMovementsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * StockMovementTypeCountOutputType without action
+   */
+  export type StockMovementTypeCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StockMovementTypeCountOutputType
+     */
+    select?: StockMovementTypeCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * StockMovementTypeCountOutputType without action
+   */
+  export type StockMovementTypeCountOutputTypeCountStockMovementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MaterialStockMovementWhereInput
+  }
+
+
+  /**
+   * Count Type MaterialInstanceConditionCountOutputType
+   */
+
+  export type MaterialInstanceConditionCountOutputType = {
+    materialInstances: number
+    requestedInItems: number
+    MaterialRequestItem: number
+  }
+
+  export type MaterialInstanceConditionCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    materialInstances?: boolean | MaterialInstanceConditionCountOutputTypeCountMaterialInstancesArgs
+    requestedInItems?: boolean | MaterialInstanceConditionCountOutputTypeCountRequestedInItemsArgs
+    MaterialRequestItem?: boolean | MaterialInstanceConditionCountOutputTypeCountMaterialRequestItemArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * MaterialInstanceConditionCountOutputType without action
+   */
+  export type MaterialInstanceConditionCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialInstanceConditionCountOutputType
+     */
+    select?: MaterialInstanceConditionCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * MaterialInstanceConditionCountOutputType without action
+   */
+  export type MaterialInstanceConditionCountOutputTypeCountMaterialInstancesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MaterialInstanceWhereInput
+  }
+
+  /**
+   * MaterialInstanceConditionCountOutputType without action
+   */
+  export type MaterialInstanceConditionCountOutputTypeCountRequestedInItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MaterialRequestItemWhereInput
+  }
+
+  /**
+   * MaterialInstanceConditionCountOutputType without action
+   */
+  export type MaterialInstanceConditionCountOutputTypeCountMaterialRequestItemArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MaterialRequestItemWhereInput
+  }
+
+
+  /**
+   * Count Type MaterialInstanceCountOutputType
+   */
+
+  export type MaterialInstanceCountOutputType = {
+    stockMovements: number
+    fulfilledRequestItems: number
+  }
+
+  export type MaterialInstanceCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    stockMovements?: boolean | MaterialInstanceCountOutputTypeCountStockMovementsArgs
+    fulfilledRequestItems?: boolean | MaterialInstanceCountOutputTypeCountFulfilledRequestItemsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * MaterialInstanceCountOutputType without action
+   */
+  export type MaterialInstanceCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialInstanceCountOutputType
+     */
+    select?: MaterialInstanceCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * MaterialInstanceCountOutputType without action
+   */
+  export type MaterialInstanceCountOutputTypeCountStockMovementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MaterialStockMovementWhereInput
+  }
+
+  /**
+   * MaterialInstanceCountOutputType without action
+   */
+  export type MaterialInstanceCountOutputTypeCountFulfilledRequestItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: MaterialRequestItemWhereInput
   }
 
@@ -8039,6 +8833,7 @@ export namespace Prisma {
     currentMaintenanceRequests?: boolean | MaintenanceInstance$currentMaintenanceRequestsArgs<ExtArgs>
     timelineEventsTransferredFrom?: boolean | MaintenanceInstance$timelineEventsTransferredFromArgs<ExtArgs>
     timelineEventsTransferredTo?: boolean | MaintenanceInstance$timelineEventsTransferredToArgs<ExtArgs>
+    warehouses?: boolean | MaintenanceInstance$warehousesArgs<ExtArgs>
     _count?: boolean | MaintenanceInstanceCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["maintenanceInstance"]>
 
@@ -8058,6 +8853,7 @@ export namespace Prisma {
     currentMaintenanceRequests?: boolean | MaintenanceInstance$currentMaintenanceRequestsArgs<ExtArgs>
     timelineEventsTransferredFrom?: boolean | MaintenanceInstance$timelineEventsTransferredFromArgs<ExtArgs>
     timelineEventsTransferredTo?: boolean | MaintenanceInstance$timelineEventsTransferredToArgs<ExtArgs>
+    warehouses?: boolean | MaintenanceInstance$warehousesArgs<ExtArgs>
     _count?: boolean | MaintenanceInstanceCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -8067,6 +8863,7 @@ export namespace Prisma {
       currentMaintenanceRequests: Prisma.$MaintenanceRequestPayload<ExtArgs>[]
       timelineEventsTransferredFrom: Prisma.$MaintenanceTimelineEventPayload<ExtArgs>[]
       timelineEventsTransferredTo: Prisma.$MaintenanceTimelineEventPayload<ExtArgs>[]
+      warehouses: Prisma.$WarehousePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -8418,6 +9215,7 @@ export namespace Prisma {
     currentMaintenanceRequests<T extends MaintenanceInstance$currentMaintenanceRequestsArgs<ExtArgs> = {}>(args?: Subset<T, MaintenanceInstance$currentMaintenanceRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaintenanceRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     timelineEventsTransferredFrom<T extends MaintenanceInstance$timelineEventsTransferredFromArgs<ExtArgs> = {}>(args?: Subset<T, MaintenanceInstance$timelineEventsTransferredFromArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaintenanceTimelineEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     timelineEventsTransferredTo<T extends MaintenanceInstance$timelineEventsTransferredToArgs<ExtArgs> = {}>(args?: Subset<T, MaintenanceInstance$timelineEventsTransferredToArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaintenanceTimelineEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    warehouses<T extends MaintenanceInstance$warehousesArgs<ExtArgs> = {}>(args?: Subset<T, MaintenanceInstance$warehousesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WarehousePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8865,6 +9663,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: MaintenanceTimelineEventScalarFieldEnum | MaintenanceTimelineEventScalarFieldEnum[]
+  }
+
+  /**
+   * MaintenanceInstance.warehouses
+   */
+  export type MaintenanceInstance$warehousesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Warehouse
+     */
+    select?: WarehouseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Warehouse
+     */
+    omit?: WarehouseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WarehouseInclude<ExtArgs> | null
+    where?: WarehouseWhereInput
+    orderBy?: WarehouseOrderByWithRelationInput | WarehouseOrderByWithRelationInput[]
+    cursor?: WarehouseWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: WarehouseScalarFieldEnum | WarehouseScalarFieldEnum[]
   }
 
   /**
@@ -12013,6 +12835,1092 @@ export namespace Prisma {
 
 
   /**
+   * Model Warehouse
+   */
+
+  export type AggregateWarehouse = {
+    _count: WarehouseCountAggregateOutputType | null
+    _avg: WarehouseAvgAggregateOutputType | null
+    _sum: WarehouseSumAggregateOutputType | null
+    _min: WarehouseMinAggregateOutputType | null
+    _max: WarehouseMaxAggregateOutputType | null
+  }
+
+  export type WarehouseAvgAggregateOutputType = {
+    id: number | null
+    maintenanceInstanceId: number | null
+  }
+
+  export type WarehouseSumAggregateOutputType = {
+    id: number | null
+    maintenanceInstanceId: number | null
+  }
+
+  export type WarehouseMinAggregateOutputType = {
+    id: number | null
+    name: string | null
+    code: string | null
+    location: string | null
+    isActive: boolean | null
+    maintenanceInstanceId: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type WarehouseMaxAggregateOutputType = {
+    id: number | null
+    name: string | null
+    code: string | null
+    location: string | null
+    isActive: boolean | null
+    maintenanceInstanceId: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type WarehouseCountAggregateOutputType = {
+    id: number
+    name: number
+    code: number
+    location: number
+    isActive: number
+    maintenanceInstanceId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type WarehouseAvgAggregateInputType = {
+    id?: true
+    maintenanceInstanceId?: true
+  }
+
+  export type WarehouseSumAggregateInputType = {
+    id?: true
+    maintenanceInstanceId?: true
+  }
+
+  export type WarehouseMinAggregateInputType = {
+    id?: true
+    name?: true
+    code?: true
+    location?: true
+    isActive?: true
+    maintenanceInstanceId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type WarehouseMaxAggregateInputType = {
+    id?: true
+    name?: true
+    code?: true
+    location?: true
+    isActive?: true
+    maintenanceInstanceId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type WarehouseCountAggregateInputType = {
+    id?: true
+    name?: true
+    code?: true
+    location?: true
+    isActive?: true
+    maintenanceInstanceId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type WarehouseAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Warehouse to aggregate.
+     */
+    where?: WarehouseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Warehouses to fetch.
+     */
+    orderBy?: WarehouseOrderByWithRelationInput | WarehouseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: WarehouseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Warehouses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Warehouses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Warehouses
+    **/
+    _count?: true | WarehouseCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: WarehouseAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: WarehouseSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: WarehouseMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: WarehouseMaxAggregateInputType
+  }
+
+  export type GetWarehouseAggregateType<T extends WarehouseAggregateArgs> = {
+        [P in keyof T & keyof AggregateWarehouse]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateWarehouse[P]>
+      : GetScalarType<T[P], AggregateWarehouse[P]>
+  }
+
+
+
+
+  export type WarehouseGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: WarehouseWhereInput
+    orderBy?: WarehouseOrderByWithAggregationInput | WarehouseOrderByWithAggregationInput[]
+    by: WarehouseScalarFieldEnum[] | WarehouseScalarFieldEnum
+    having?: WarehouseScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: WarehouseCountAggregateInputType | true
+    _avg?: WarehouseAvgAggregateInputType
+    _sum?: WarehouseSumAggregateInputType
+    _min?: WarehouseMinAggregateInputType
+    _max?: WarehouseMaxAggregateInputType
+  }
+
+  export type WarehouseGroupByOutputType = {
+    id: number
+    name: string
+    code: string | null
+    location: string | null
+    isActive: boolean
+    maintenanceInstanceId: number
+    createdAt: Date
+    updatedAt: Date
+    _count: WarehouseCountAggregateOutputType | null
+    _avg: WarehouseAvgAggregateOutputType | null
+    _sum: WarehouseSumAggregateOutputType | null
+    _min: WarehouseMinAggregateOutputType | null
+    _max: WarehouseMaxAggregateOutputType | null
+  }
+
+  type GetWarehouseGroupByPayload<T extends WarehouseGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<WarehouseGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof WarehouseGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], WarehouseGroupByOutputType[P]>
+            : GetScalarType<T[P], WarehouseGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type WarehouseSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    code?: boolean
+    location?: boolean
+    isActive?: boolean
+    maintenanceInstanceId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    maintenanceInstance?: boolean | MaintenanceInstanceDefaultArgs<ExtArgs>
+    standardMaterialStocks?: boolean | Warehouse$standardMaterialStocksArgs<ExtArgs>
+    materialInstances?: boolean | Warehouse$materialInstancesArgs<ExtArgs>
+    stockMovements?: boolean | Warehouse$stockMovementsArgs<ExtArgs>
+    _count?: boolean | WarehouseCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["warehouse"]>
+
+
+
+  export type WarehouseSelectScalar = {
+    id?: boolean
+    name?: boolean
+    code?: boolean
+    location?: boolean
+    isActive?: boolean
+    maintenanceInstanceId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type WarehouseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "code" | "location" | "isActive" | "maintenanceInstanceId" | "createdAt" | "updatedAt", ExtArgs["result"]["warehouse"]>
+  export type WarehouseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    maintenanceInstance?: boolean | MaintenanceInstanceDefaultArgs<ExtArgs>
+    standardMaterialStocks?: boolean | Warehouse$standardMaterialStocksArgs<ExtArgs>
+    materialInstances?: boolean | Warehouse$materialInstancesArgs<ExtArgs>
+    stockMovements?: boolean | Warehouse$stockMovementsArgs<ExtArgs>
+    _count?: boolean | WarehouseCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $WarehousePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Warehouse"
+    objects: {
+      maintenanceInstance: Prisma.$MaintenanceInstancePayload<ExtArgs>
+      standardMaterialStocks: Prisma.$WarehouseMaterialStockPayload<ExtArgs>[]
+      materialInstances: Prisma.$MaterialInstancePayload<ExtArgs>[]
+      stockMovements: Prisma.$MaterialStockMovementPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      name: string
+      code: string | null
+      location: string | null
+      isActive: boolean
+      maintenanceInstanceId: number
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["warehouse"]>
+    composites: {}
+  }
+
+  type WarehouseGetPayload<S extends boolean | null | undefined | WarehouseDefaultArgs> = $Result.GetResult<Prisma.$WarehousePayload, S>
+
+  type WarehouseCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<WarehouseFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: WarehouseCountAggregateInputType | true
+    }
+
+  export interface WarehouseDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Warehouse'], meta: { name: 'Warehouse' } }
+    /**
+     * Find zero or one Warehouse that matches the filter.
+     * @param {WarehouseFindUniqueArgs} args - Arguments to find a Warehouse
+     * @example
+     * // Get one Warehouse
+     * const warehouse = await prisma.warehouse.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends WarehouseFindUniqueArgs>(args: SelectSubset<T, WarehouseFindUniqueArgs<ExtArgs>>): Prisma__WarehouseClient<$Result.GetResult<Prisma.$WarehousePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Warehouse that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {WarehouseFindUniqueOrThrowArgs} args - Arguments to find a Warehouse
+     * @example
+     * // Get one Warehouse
+     * const warehouse = await prisma.warehouse.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends WarehouseFindUniqueOrThrowArgs>(args: SelectSubset<T, WarehouseFindUniqueOrThrowArgs<ExtArgs>>): Prisma__WarehouseClient<$Result.GetResult<Prisma.$WarehousePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Warehouse that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WarehouseFindFirstArgs} args - Arguments to find a Warehouse
+     * @example
+     * // Get one Warehouse
+     * const warehouse = await prisma.warehouse.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends WarehouseFindFirstArgs>(args?: SelectSubset<T, WarehouseFindFirstArgs<ExtArgs>>): Prisma__WarehouseClient<$Result.GetResult<Prisma.$WarehousePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Warehouse that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WarehouseFindFirstOrThrowArgs} args - Arguments to find a Warehouse
+     * @example
+     * // Get one Warehouse
+     * const warehouse = await prisma.warehouse.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends WarehouseFindFirstOrThrowArgs>(args?: SelectSubset<T, WarehouseFindFirstOrThrowArgs<ExtArgs>>): Prisma__WarehouseClient<$Result.GetResult<Prisma.$WarehousePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Warehouses that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WarehouseFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Warehouses
+     * const warehouses = await prisma.warehouse.findMany()
+     * 
+     * // Get first 10 Warehouses
+     * const warehouses = await prisma.warehouse.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const warehouseWithIdOnly = await prisma.warehouse.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends WarehouseFindManyArgs>(args?: SelectSubset<T, WarehouseFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WarehousePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Warehouse.
+     * @param {WarehouseCreateArgs} args - Arguments to create a Warehouse.
+     * @example
+     * // Create one Warehouse
+     * const Warehouse = await prisma.warehouse.create({
+     *   data: {
+     *     // ... data to create a Warehouse
+     *   }
+     * })
+     * 
+     */
+    create<T extends WarehouseCreateArgs>(args: SelectSubset<T, WarehouseCreateArgs<ExtArgs>>): Prisma__WarehouseClient<$Result.GetResult<Prisma.$WarehousePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Warehouses.
+     * @param {WarehouseCreateManyArgs} args - Arguments to create many Warehouses.
+     * @example
+     * // Create many Warehouses
+     * const warehouse = await prisma.warehouse.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends WarehouseCreateManyArgs>(args?: SelectSubset<T, WarehouseCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Warehouse.
+     * @param {WarehouseDeleteArgs} args - Arguments to delete one Warehouse.
+     * @example
+     * // Delete one Warehouse
+     * const Warehouse = await prisma.warehouse.delete({
+     *   where: {
+     *     // ... filter to delete one Warehouse
+     *   }
+     * })
+     * 
+     */
+    delete<T extends WarehouseDeleteArgs>(args: SelectSubset<T, WarehouseDeleteArgs<ExtArgs>>): Prisma__WarehouseClient<$Result.GetResult<Prisma.$WarehousePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Warehouse.
+     * @param {WarehouseUpdateArgs} args - Arguments to update one Warehouse.
+     * @example
+     * // Update one Warehouse
+     * const warehouse = await prisma.warehouse.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends WarehouseUpdateArgs>(args: SelectSubset<T, WarehouseUpdateArgs<ExtArgs>>): Prisma__WarehouseClient<$Result.GetResult<Prisma.$WarehousePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Warehouses.
+     * @param {WarehouseDeleteManyArgs} args - Arguments to filter Warehouses to delete.
+     * @example
+     * // Delete a few Warehouses
+     * const { count } = await prisma.warehouse.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends WarehouseDeleteManyArgs>(args?: SelectSubset<T, WarehouseDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Warehouses.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WarehouseUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Warehouses
+     * const warehouse = await prisma.warehouse.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends WarehouseUpdateManyArgs>(args: SelectSubset<T, WarehouseUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Warehouse.
+     * @param {WarehouseUpsertArgs} args - Arguments to update or create a Warehouse.
+     * @example
+     * // Update or create a Warehouse
+     * const warehouse = await prisma.warehouse.upsert({
+     *   create: {
+     *     // ... data to create a Warehouse
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Warehouse we want to update
+     *   }
+     * })
+     */
+    upsert<T extends WarehouseUpsertArgs>(args: SelectSubset<T, WarehouseUpsertArgs<ExtArgs>>): Prisma__WarehouseClient<$Result.GetResult<Prisma.$WarehousePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Warehouses.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WarehouseCountArgs} args - Arguments to filter Warehouses to count.
+     * @example
+     * // Count the number of Warehouses
+     * const count = await prisma.warehouse.count({
+     *   where: {
+     *     // ... the filter for the Warehouses we want to count
+     *   }
+     * })
+    **/
+    count<T extends WarehouseCountArgs>(
+      args?: Subset<T, WarehouseCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], WarehouseCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Warehouse.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WarehouseAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends WarehouseAggregateArgs>(args: Subset<T, WarehouseAggregateArgs>): Prisma.PrismaPromise<GetWarehouseAggregateType<T>>
+
+    /**
+     * Group by Warehouse.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WarehouseGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends WarehouseGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: WarehouseGroupByArgs['orderBy'] }
+        : { orderBy?: WarehouseGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, WarehouseGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetWarehouseGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Warehouse model
+   */
+  readonly fields: WarehouseFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Warehouse.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__WarehouseClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    maintenanceInstance<T extends MaintenanceInstanceDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MaintenanceInstanceDefaultArgs<ExtArgs>>): Prisma__MaintenanceInstanceClient<$Result.GetResult<Prisma.$MaintenanceInstancePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    standardMaterialStocks<T extends Warehouse$standardMaterialStocksArgs<ExtArgs> = {}>(args?: Subset<T, Warehouse$standardMaterialStocksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WarehouseMaterialStockPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    materialInstances<T extends Warehouse$materialInstancesArgs<ExtArgs> = {}>(args?: Subset<T, Warehouse$materialInstancesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaterialInstancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    stockMovements<T extends Warehouse$stockMovementsArgs<ExtArgs> = {}>(args?: Subset<T, Warehouse$stockMovementsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaterialStockMovementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Warehouse model
+   */
+  interface WarehouseFieldRefs {
+    readonly id: FieldRef<"Warehouse", 'Int'>
+    readonly name: FieldRef<"Warehouse", 'String'>
+    readonly code: FieldRef<"Warehouse", 'String'>
+    readonly location: FieldRef<"Warehouse", 'String'>
+    readonly isActive: FieldRef<"Warehouse", 'Boolean'>
+    readonly maintenanceInstanceId: FieldRef<"Warehouse", 'Int'>
+    readonly createdAt: FieldRef<"Warehouse", 'DateTime'>
+    readonly updatedAt: FieldRef<"Warehouse", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Warehouse findUnique
+   */
+  export type WarehouseFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Warehouse
+     */
+    select?: WarehouseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Warehouse
+     */
+    omit?: WarehouseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WarehouseInclude<ExtArgs> | null
+    /**
+     * Filter, which Warehouse to fetch.
+     */
+    where: WarehouseWhereUniqueInput
+  }
+
+  /**
+   * Warehouse findUniqueOrThrow
+   */
+  export type WarehouseFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Warehouse
+     */
+    select?: WarehouseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Warehouse
+     */
+    omit?: WarehouseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WarehouseInclude<ExtArgs> | null
+    /**
+     * Filter, which Warehouse to fetch.
+     */
+    where: WarehouseWhereUniqueInput
+  }
+
+  /**
+   * Warehouse findFirst
+   */
+  export type WarehouseFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Warehouse
+     */
+    select?: WarehouseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Warehouse
+     */
+    omit?: WarehouseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WarehouseInclude<ExtArgs> | null
+    /**
+     * Filter, which Warehouse to fetch.
+     */
+    where?: WarehouseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Warehouses to fetch.
+     */
+    orderBy?: WarehouseOrderByWithRelationInput | WarehouseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Warehouses.
+     */
+    cursor?: WarehouseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Warehouses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Warehouses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Warehouses.
+     */
+    distinct?: WarehouseScalarFieldEnum | WarehouseScalarFieldEnum[]
+  }
+
+  /**
+   * Warehouse findFirstOrThrow
+   */
+  export type WarehouseFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Warehouse
+     */
+    select?: WarehouseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Warehouse
+     */
+    omit?: WarehouseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WarehouseInclude<ExtArgs> | null
+    /**
+     * Filter, which Warehouse to fetch.
+     */
+    where?: WarehouseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Warehouses to fetch.
+     */
+    orderBy?: WarehouseOrderByWithRelationInput | WarehouseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Warehouses.
+     */
+    cursor?: WarehouseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Warehouses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Warehouses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Warehouses.
+     */
+    distinct?: WarehouseScalarFieldEnum | WarehouseScalarFieldEnum[]
+  }
+
+  /**
+   * Warehouse findMany
+   */
+  export type WarehouseFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Warehouse
+     */
+    select?: WarehouseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Warehouse
+     */
+    omit?: WarehouseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WarehouseInclude<ExtArgs> | null
+    /**
+     * Filter, which Warehouses to fetch.
+     */
+    where?: WarehouseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Warehouses to fetch.
+     */
+    orderBy?: WarehouseOrderByWithRelationInput | WarehouseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Warehouses.
+     */
+    cursor?: WarehouseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Warehouses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Warehouses.
+     */
+    skip?: number
+    distinct?: WarehouseScalarFieldEnum | WarehouseScalarFieldEnum[]
+  }
+
+  /**
+   * Warehouse create
+   */
+  export type WarehouseCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Warehouse
+     */
+    select?: WarehouseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Warehouse
+     */
+    omit?: WarehouseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WarehouseInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Warehouse.
+     */
+    data: XOR<WarehouseCreateInput, WarehouseUncheckedCreateInput>
+  }
+
+  /**
+   * Warehouse createMany
+   */
+  export type WarehouseCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Warehouses.
+     */
+    data: WarehouseCreateManyInput | WarehouseCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Warehouse update
+   */
+  export type WarehouseUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Warehouse
+     */
+    select?: WarehouseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Warehouse
+     */
+    omit?: WarehouseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WarehouseInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Warehouse.
+     */
+    data: XOR<WarehouseUpdateInput, WarehouseUncheckedUpdateInput>
+    /**
+     * Choose, which Warehouse to update.
+     */
+    where: WarehouseWhereUniqueInput
+  }
+
+  /**
+   * Warehouse updateMany
+   */
+  export type WarehouseUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Warehouses.
+     */
+    data: XOR<WarehouseUpdateManyMutationInput, WarehouseUncheckedUpdateManyInput>
+    /**
+     * Filter which Warehouses to update
+     */
+    where?: WarehouseWhereInput
+    /**
+     * Limit how many Warehouses to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Warehouse upsert
+   */
+  export type WarehouseUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Warehouse
+     */
+    select?: WarehouseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Warehouse
+     */
+    omit?: WarehouseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WarehouseInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Warehouse to update in case it exists.
+     */
+    where: WarehouseWhereUniqueInput
+    /**
+     * In case the Warehouse found by the `where` argument doesn't exist, create a new Warehouse with this data.
+     */
+    create: XOR<WarehouseCreateInput, WarehouseUncheckedCreateInput>
+    /**
+     * In case the Warehouse was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<WarehouseUpdateInput, WarehouseUncheckedUpdateInput>
+  }
+
+  /**
+   * Warehouse delete
+   */
+  export type WarehouseDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Warehouse
+     */
+    select?: WarehouseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Warehouse
+     */
+    omit?: WarehouseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WarehouseInclude<ExtArgs> | null
+    /**
+     * Filter which Warehouse to delete.
+     */
+    where: WarehouseWhereUniqueInput
+  }
+
+  /**
+   * Warehouse deleteMany
+   */
+  export type WarehouseDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Warehouses to delete
+     */
+    where?: WarehouseWhereInput
+    /**
+     * Limit how many Warehouses to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Warehouse.standardMaterialStocks
+   */
+  export type Warehouse$standardMaterialStocksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WarehouseMaterialStock
+     */
+    select?: WarehouseMaterialStockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WarehouseMaterialStock
+     */
+    omit?: WarehouseMaterialStockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WarehouseMaterialStockInclude<ExtArgs> | null
+    where?: WarehouseMaterialStockWhereInput
+    orderBy?: WarehouseMaterialStockOrderByWithRelationInput | WarehouseMaterialStockOrderByWithRelationInput[]
+    cursor?: WarehouseMaterialStockWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: WarehouseMaterialStockScalarFieldEnum | WarehouseMaterialStockScalarFieldEnum[]
+  }
+
+  /**
+   * Warehouse.materialInstances
+   */
+  export type Warehouse$materialInstancesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialInstance
+     */
+    select?: MaterialInstanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialInstance
+     */
+    omit?: MaterialInstanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialInstanceInclude<ExtArgs> | null
+    where?: MaterialInstanceWhereInput
+    orderBy?: MaterialInstanceOrderByWithRelationInput | MaterialInstanceOrderByWithRelationInput[]
+    cursor?: MaterialInstanceWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MaterialInstanceScalarFieldEnum | MaterialInstanceScalarFieldEnum[]
+  }
+
+  /**
+   * Warehouse.stockMovements
+   */
+  export type Warehouse$stockMovementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialStockMovement
+     */
+    select?: MaterialStockMovementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialStockMovement
+     */
+    omit?: MaterialStockMovementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialStockMovementInclude<ExtArgs> | null
+    where?: MaterialStockMovementWhereInput
+    orderBy?: MaterialStockMovementOrderByWithRelationInput | MaterialStockMovementOrderByWithRelationInput[]
+    cursor?: MaterialStockMovementWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MaterialStockMovementScalarFieldEnum | MaterialStockMovementScalarFieldEnum[]
+  }
+
+  /**
+   * Warehouse without action
+   */
+  export type WarehouseDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Warehouse
+     */
+    select?: WarehouseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Warehouse
+     */
+    omit?: WarehouseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WarehouseInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model Material
    */
 
@@ -12026,96 +13934,104 @@ export namespace Prisma {
 
   export type MaterialAvgAggregateOutputType = {
     id: number | null
-    parentMaterialId: number | null
   }
 
   export type MaterialSumAggregateOutputType = {
     id: number | null
-    parentMaterialId: number | null
   }
 
   export type MaterialMinAggregateOutputType = {
     id: number | null
-    code: string | null
+    globalCode: string | null
     name: string | null
     description: string | null
     unitOfMeasure: string | null
+    category: string | null
+    manufacturer: string | null
+    partNumber: string | null
     isActive: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
-    parentMaterialId: number | null
   }
 
   export type MaterialMaxAggregateOutputType = {
     id: number | null
-    code: string | null
+    globalCode: string | null
     name: string | null
     description: string | null
     unitOfMeasure: string | null
+    category: string | null
+    manufacturer: string | null
+    partNumber: string | null
     isActive: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
-    parentMaterialId: number | null
   }
 
   export type MaterialCountAggregateOutputType = {
     id: number
-    code: number
+    globalCode: number
     name: number
     description: number
     unitOfMeasure: number
+    category: number
+    manufacturer: number
+    partNumber: number
     isActive: number
     createdAt: number
     updatedAt: number
-    parentMaterialId: number
     _all: number
   }
 
 
   export type MaterialAvgAggregateInputType = {
     id?: true
-    parentMaterialId?: true
   }
 
   export type MaterialSumAggregateInputType = {
     id?: true
-    parentMaterialId?: true
   }
 
   export type MaterialMinAggregateInputType = {
     id?: true
-    code?: true
+    globalCode?: true
     name?: true
     description?: true
     unitOfMeasure?: true
+    category?: true
+    manufacturer?: true
+    partNumber?: true
     isActive?: true
     createdAt?: true
     updatedAt?: true
-    parentMaterialId?: true
   }
 
   export type MaterialMaxAggregateInputType = {
     id?: true
-    code?: true
+    globalCode?: true
     name?: true
     description?: true
     unitOfMeasure?: true
+    category?: true
+    manufacturer?: true
+    partNumber?: true
     isActive?: true
     createdAt?: true
     updatedAt?: true
-    parentMaterialId?: true
   }
 
   export type MaterialCountAggregateInputType = {
     id?: true
-    code?: true
+    globalCode?: true
     name?: true
     description?: true
     unitOfMeasure?: true
+    category?: true
+    manufacturer?: true
+    partNumber?: true
     isActive?: true
     createdAt?: true
     updatedAt?: true
-    parentMaterialId?: true
     _all?: true
   }
 
@@ -12207,14 +14123,16 @@ export namespace Prisma {
 
   export type MaterialGroupByOutputType = {
     id: number
-    code: string | null
+    globalCode: string
     name: string
     description: string | null
     unitOfMeasure: string
+    category: string | null
+    manufacturer: string | null
+    partNumber: string | null
     isActive: boolean
     createdAt: Date
     updatedAt: Date
-    parentMaterialId: number | null
     _count: MaterialCountAggregateOutputType | null
     _avg: MaterialAvgAggregateOutputType | null
     _sum: MaterialSumAggregateOutputType | null
@@ -12238,17 +14156,20 @@ export namespace Prisma {
 
   export type MaterialSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    code?: boolean
+    globalCode?: boolean
     name?: boolean
     description?: boolean
     unitOfMeasure?: boolean
+    category?: boolean
+    manufacturer?: boolean
+    partNumber?: boolean
     isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    parentMaterialId?: boolean
-    parentMaterial?: boolean | Material$parentMaterialArgs<ExtArgs>
-    childs?: boolean | Material$childsArgs<ExtArgs>
-    materialRequestItems?: boolean | Material$materialRequestItemsArgs<ExtArgs>
+    warehouseStandardStocks?: boolean | Material$warehouseStandardStocksArgs<ExtArgs>
+    relatedMaterialInstances?: boolean | Material$relatedMaterialInstancesArgs<ExtArgs>
+    standardMaterialRequestItems?: boolean | Material$standardMaterialRequestItemsArgs<ExtArgs>
+    stockMovements?: boolean | Material$stockMovementsArgs<ExtArgs>
     _count?: boolean | MaterialCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["material"]>
 
@@ -12256,41 +14177,47 @@ export namespace Prisma {
 
   export type MaterialSelectScalar = {
     id?: boolean
-    code?: boolean
+    globalCode?: boolean
     name?: boolean
     description?: boolean
     unitOfMeasure?: boolean
+    category?: boolean
+    manufacturer?: boolean
+    partNumber?: boolean
     isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    parentMaterialId?: boolean
   }
 
-  export type MaterialOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "code" | "name" | "description" | "unitOfMeasure" | "isActive" | "createdAt" | "updatedAt" | "parentMaterialId", ExtArgs["result"]["material"]>
+  export type MaterialOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "globalCode" | "name" | "description" | "unitOfMeasure" | "category" | "manufacturer" | "partNumber" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["material"]>
   export type MaterialInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    parentMaterial?: boolean | Material$parentMaterialArgs<ExtArgs>
-    childs?: boolean | Material$childsArgs<ExtArgs>
-    materialRequestItems?: boolean | Material$materialRequestItemsArgs<ExtArgs>
+    warehouseStandardStocks?: boolean | Material$warehouseStandardStocksArgs<ExtArgs>
+    relatedMaterialInstances?: boolean | Material$relatedMaterialInstancesArgs<ExtArgs>
+    standardMaterialRequestItems?: boolean | Material$standardMaterialRequestItemsArgs<ExtArgs>
+    stockMovements?: boolean | Material$stockMovementsArgs<ExtArgs>
     _count?: boolean | MaterialCountOutputTypeDefaultArgs<ExtArgs>
   }
 
   export type $MaterialPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Material"
     objects: {
-      parentMaterial: Prisma.$MaterialPayload<ExtArgs> | null
-      childs: Prisma.$MaterialPayload<ExtArgs>[]
-      materialRequestItems: Prisma.$MaterialRequestItemPayload<ExtArgs>[]
+      warehouseStandardStocks: Prisma.$WarehouseMaterialStockPayload<ExtArgs>[]
+      relatedMaterialInstances: Prisma.$MaterialInstancePayload<ExtArgs>[]
+      standardMaterialRequestItems: Prisma.$MaterialRequestItemPayload<ExtArgs>[]
+      stockMovements: Prisma.$MaterialStockMovementPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
-      code: string | null
+      globalCode: string
       name: string
       description: string | null
       unitOfMeasure: string
+      category: string | null
+      manufacturer: string | null
+      partNumber: string | null
       isActive: boolean
       createdAt: Date
       updatedAt: Date
-      parentMaterialId: number | null
     }, ExtArgs["result"]["material"]>
     composites: {}
   }
@@ -12631,9 +14558,10 @@ export namespace Prisma {
    */
   export interface Prisma__MaterialClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    parentMaterial<T extends Material$parentMaterialArgs<ExtArgs> = {}>(args?: Subset<T, Material$parentMaterialArgs<ExtArgs>>): Prisma__MaterialClient<$Result.GetResult<Prisma.$MaterialPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    childs<T extends Material$childsArgs<ExtArgs> = {}>(args?: Subset<T, Material$childsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaterialPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    materialRequestItems<T extends Material$materialRequestItemsArgs<ExtArgs> = {}>(args?: Subset<T, Material$materialRequestItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaterialRequestItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    warehouseStandardStocks<T extends Material$warehouseStandardStocksArgs<ExtArgs> = {}>(args?: Subset<T, Material$warehouseStandardStocksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WarehouseMaterialStockPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    relatedMaterialInstances<T extends Material$relatedMaterialInstancesArgs<ExtArgs> = {}>(args?: Subset<T, Material$relatedMaterialInstancesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaterialInstancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    standardMaterialRequestItems<T extends Material$standardMaterialRequestItemsArgs<ExtArgs> = {}>(args?: Subset<T, Material$standardMaterialRequestItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaterialRequestItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    stockMovements<T extends Material$stockMovementsArgs<ExtArgs> = {}>(args?: Subset<T, Material$stockMovementsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaterialStockMovementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -12664,14 +14592,16 @@ export namespace Prisma {
    */
   interface MaterialFieldRefs {
     readonly id: FieldRef<"Material", 'Int'>
-    readonly code: FieldRef<"Material", 'String'>
+    readonly globalCode: FieldRef<"Material", 'String'>
     readonly name: FieldRef<"Material", 'String'>
     readonly description: FieldRef<"Material", 'String'>
     readonly unitOfMeasure: FieldRef<"Material", 'String'>
+    readonly category: FieldRef<"Material", 'String'>
+    readonly manufacturer: FieldRef<"Material", 'String'>
+    readonly partNumber: FieldRef<"Material", 'String'>
     readonly isActive: FieldRef<"Material", 'Boolean'>
     readonly createdAt: FieldRef<"Material", 'DateTime'>
     readonly updatedAt: FieldRef<"Material", 'DateTime'>
-    readonly parentMaterialId: FieldRef<"Material", 'Int'>
   }
     
 
@@ -13015,52 +14945,57 @@ export namespace Prisma {
   }
 
   /**
-   * Material.parentMaterial
+   * Material.warehouseStandardStocks
    */
-  export type Material$parentMaterialArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Material$warehouseStandardStocksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Material
+     * Select specific fields to fetch from the WarehouseMaterialStock
      */
-    select?: MaterialSelect<ExtArgs> | null
+    select?: WarehouseMaterialStockSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Material
+     * Omit specific fields from the WarehouseMaterialStock
      */
-    omit?: MaterialOmit<ExtArgs> | null
+    omit?: WarehouseMaterialStockOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: MaterialInclude<ExtArgs> | null
-    where?: MaterialWhereInput
-  }
-
-  /**
-   * Material.childs
-   */
-  export type Material$childsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Material
-     */
-    select?: MaterialSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Material
-     */
-    omit?: MaterialOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: MaterialInclude<ExtArgs> | null
-    where?: MaterialWhereInput
-    orderBy?: MaterialOrderByWithRelationInput | MaterialOrderByWithRelationInput[]
-    cursor?: MaterialWhereUniqueInput
+    include?: WarehouseMaterialStockInclude<ExtArgs> | null
+    where?: WarehouseMaterialStockWhereInput
+    orderBy?: WarehouseMaterialStockOrderByWithRelationInput | WarehouseMaterialStockOrderByWithRelationInput[]
+    cursor?: WarehouseMaterialStockWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: MaterialScalarFieldEnum | MaterialScalarFieldEnum[]
+    distinct?: WarehouseMaterialStockScalarFieldEnum | WarehouseMaterialStockScalarFieldEnum[]
   }
 
   /**
-   * Material.materialRequestItems
+   * Material.relatedMaterialInstances
    */
-  export type Material$materialRequestItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Material$relatedMaterialInstancesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialInstance
+     */
+    select?: MaterialInstanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialInstance
+     */
+    omit?: MaterialInstanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialInstanceInclude<ExtArgs> | null
+    where?: MaterialInstanceWhereInput
+    orderBy?: MaterialInstanceOrderByWithRelationInput | MaterialInstanceOrderByWithRelationInput[]
+    cursor?: MaterialInstanceWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MaterialInstanceScalarFieldEnum | MaterialInstanceScalarFieldEnum[]
+  }
+
+  /**
+   * Material.standardMaterialRequestItems
+   */
+  export type Material$standardMaterialRequestItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the MaterialRequestItem
      */
@@ -13082,6 +15017,30 @@ export namespace Prisma {
   }
 
   /**
+   * Material.stockMovements
+   */
+  export type Material$stockMovementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialStockMovement
+     */
+    select?: MaterialStockMovementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialStockMovement
+     */
+    omit?: MaterialStockMovementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialStockMovementInclude<ExtArgs> | null
+    where?: MaterialStockMovementWhereInput
+    orderBy?: MaterialStockMovementOrderByWithRelationInput | MaterialStockMovementOrderByWithRelationInput[]
+    cursor?: MaterialStockMovementWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MaterialStockMovementScalarFieldEnum | MaterialStockMovementScalarFieldEnum[]
+  }
+
+  /**
    * Material without action
    */
   export type MaterialDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -13097,6 +15056,1138 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: MaterialInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model WarehouseMaterialStock
+   */
+
+  export type AggregateWarehouseMaterialStock = {
+    _count: WarehouseMaterialStockCountAggregateOutputType | null
+    _avg: WarehouseMaterialStockAvgAggregateOutputType | null
+    _sum: WarehouseMaterialStockSumAggregateOutputType | null
+    _min: WarehouseMaterialStockMinAggregateOutputType | null
+    _max: WarehouseMaterialStockMaxAggregateOutputType | null
+  }
+
+  export type WarehouseMaterialStockAvgAggregateOutputType = {
+    id: number | null
+    warehouseId: number | null
+    materialId: number | null
+    physicalOnHandQuantity: Decimal | null
+    initialStockQuantity: Decimal | null
+    restrictedQuantity: Decimal | null
+    reservedQuantity: Decimal | null
+    minStockLevel: Decimal | null
+    maxStockLevel: Decimal | null
+    averageCost: Decimal | null
+  }
+
+  export type WarehouseMaterialStockSumAggregateOutputType = {
+    id: number | null
+    warehouseId: number | null
+    materialId: number | null
+    physicalOnHandQuantity: Decimal | null
+    initialStockQuantity: Decimal | null
+    restrictedQuantity: Decimal | null
+    reservedQuantity: Decimal | null
+    minStockLevel: Decimal | null
+    maxStockLevel: Decimal | null
+    averageCost: Decimal | null
+  }
+
+  export type WarehouseMaterialStockMinAggregateOutputType = {
+    id: number | null
+    warehouseId: number | null
+    materialId: number | null
+    physicalOnHandQuantity: Decimal | null
+    initialStockQuantity: Decimal | null
+    restrictedQuantity: Decimal | null
+    reservedQuantity: Decimal | null
+    locationInWarehouse: string | null
+    minStockLevel: Decimal | null
+    maxStockLevel: Decimal | null
+    lastStockCountDate: Date | null
+    averageCost: Decimal | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type WarehouseMaterialStockMaxAggregateOutputType = {
+    id: number | null
+    warehouseId: number | null
+    materialId: number | null
+    physicalOnHandQuantity: Decimal | null
+    initialStockQuantity: Decimal | null
+    restrictedQuantity: Decimal | null
+    reservedQuantity: Decimal | null
+    locationInWarehouse: string | null
+    minStockLevel: Decimal | null
+    maxStockLevel: Decimal | null
+    lastStockCountDate: Date | null
+    averageCost: Decimal | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type WarehouseMaterialStockCountAggregateOutputType = {
+    id: number
+    warehouseId: number
+    materialId: number
+    physicalOnHandQuantity: number
+    initialStockQuantity: number
+    restrictedQuantity: number
+    reservedQuantity: number
+    locationInWarehouse: number
+    minStockLevel: number
+    maxStockLevel: number
+    lastStockCountDate: number
+    averageCost: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type WarehouseMaterialStockAvgAggregateInputType = {
+    id?: true
+    warehouseId?: true
+    materialId?: true
+    physicalOnHandQuantity?: true
+    initialStockQuantity?: true
+    restrictedQuantity?: true
+    reservedQuantity?: true
+    minStockLevel?: true
+    maxStockLevel?: true
+    averageCost?: true
+  }
+
+  export type WarehouseMaterialStockSumAggregateInputType = {
+    id?: true
+    warehouseId?: true
+    materialId?: true
+    physicalOnHandQuantity?: true
+    initialStockQuantity?: true
+    restrictedQuantity?: true
+    reservedQuantity?: true
+    minStockLevel?: true
+    maxStockLevel?: true
+    averageCost?: true
+  }
+
+  export type WarehouseMaterialStockMinAggregateInputType = {
+    id?: true
+    warehouseId?: true
+    materialId?: true
+    physicalOnHandQuantity?: true
+    initialStockQuantity?: true
+    restrictedQuantity?: true
+    reservedQuantity?: true
+    locationInWarehouse?: true
+    minStockLevel?: true
+    maxStockLevel?: true
+    lastStockCountDate?: true
+    averageCost?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type WarehouseMaterialStockMaxAggregateInputType = {
+    id?: true
+    warehouseId?: true
+    materialId?: true
+    physicalOnHandQuantity?: true
+    initialStockQuantity?: true
+    restrictedQuantity?: true
+    reservedQuantity?: true
+    locationInWarehouse?: true
+    minStockLevel?: true
+    maxStockLevel?: true
+    lastStockCountDate?: true
+    averageCost?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type WarehouseMaterialStockCountAggregateInputType = {
+    id?: true
+    warehouseId?: true
+    materialId?: true
+    physicalOnHandQuantity?: true
+    initialStockQuantity?: true
+    restrictedQuantity?: true
+    reservedQuantity?: true
+    locationInWarehouse?: true
+    minStockLevel?: true
+    maxStockLevel?: true
+    lastStockCountDate?: true
+    averageCost?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type WarehouseMaterialStockAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which WarehouseMaterialStock to aggregate.
+     */
+    where?: WarehouseMaterialStockWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of WarehouseMaterialStocks to fetch.
+     */
+    orderBy?: WarehouseMaterialStockOrderByWithRelationInput | WarehouseMaterialStockOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: WarehouseMaterialStockWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` WarehouseMaterialStocks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` WarehouseMaterialStocks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned WarehouseMaterialStocks
+    **/
+    _count?: true | WarehouseMaterialStockCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: WarehouseMaterialStockAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: WarehouseMaterialStockSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: WarehouseMaterialStockMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: WarehouseMaterialStockMaxAggregateInputType
+  }
+
+  export type GetWarehouseMaterialStockAggregateType<T extends WarehouseMaterialStockAggregateArgs> = {
+        [P in keyof T & keyof AggregateWarehouseMaterialStock]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateWarehouseMaterialStock[P]>
+      : GetScalarType<T[P], AggregateWarehouseMaterialStock[P]>
+  }
+
+
+
+
+  export type WarehouseMaterialStockGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: WarehouseMaterialStockWhereInput
+    orderBy?: WarehouseMaterialStockOrderByWithAggregationInput | WarehouseMaterialStockOrderByWithAggregationInput[]
+    by: WarehouseMaterialStockScalarFieldEnum[] | WarehouseMaterialStockScalarFieldEnum
+    having?: WarehouseMaterialStockScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: WarehouseMaterialStockCountAggregateInputType | true
+    _avg?: WarehouseMaterialStockAvgAggregateInputType
+    _sum?: WarehouseMaterialStockSumAggregateInputType
+    _min?: WarehouseMaterialStockMinAggregateInputType
+    _max?: WarehouseMaterialStockMaxAggregateInputType
+  }
+
+  export type WarehouseMaterialStockGroupByOutputType = {
+    id: number
+    warehouseId: number
+    materialId: number
+    physicalOnHandQuantity: Decimal
+    initialStockQuantity: Decimal | null
+    restrictedQuantity: Decimal
+    reservedQuantity: Decimal
+    locationInWarehouse: string | null
+    minStockLevel: Decimal | null
+    maxStockLevel: Decimal | null
+    lastStockCountDate: Date | null
+    averageCost: Decimal | null
+    createdAt: Date
+    updatedAt: Date
+    _count: WarehouseMaterialStockCountAggregateOutputType | null
+    _avg: WarehouseMaterialStockAvgAggregateOutputType | null
+    _sum: WarehouseMaterialStockSumAggregateOutputType | null
+    _min: WarehouseMaterialStockMinAggregateOutputType | null
+    _max: WarehouseMaterialStockMaxAggregateOutputType | null
+  }
+
+  type GetWarehouseMaterialStockGroupByPayload<T extends WarehouseMaterialStockGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<WarehouseMaterialStockGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof WarehouseMaterialStockGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], WarehouseMaterialStockGroupByOutputType[P]>
+            : GetScalarType<T[P], WarehouseMaterialStockGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type WarehouseMaterialStockSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    warehouseId?: boolean
+    materialId?: boolean
+    physicalOnHandQuantity?: boolean
+    initialStockQuantity?: boolean
+    restrictedQuantity?: boolean
+    reservedQuantity?: boolean
+    locationInWarehouse?: boolean
+    minStockLevel?: boolean
+    maxStockLevel?: boolean
+    lastStockCountDate?: boolean
+    averageCost?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    warehouse?: boolean | WarehouseDefaultArgs<ExtArgs>
+    material?: boolean | MaterialDefaultArgs<ExtArgs>
+    stockMovements?: boolean | WarehouseMaterialStock$stockMovementsArgs<ExtArgs>
+    _count?: boolean | WarehouseMaterialStockCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["warehouseMaterialStock"]>
+
+
+
+  export type WarehouseMaterialStockSelectScalar = {
+    id?: boolean
+    warehouseId?: boolean
+    materialId?: boolean
+    physicalOnHandQuantity?: boolean
+    initialStockQuantity?: boolean
+    restrictedQuantity?: boolean
+    reservedQuantity?: boolean
+    locationInWarehouse?: boolean
+    minStockLevel?: boolean
+    maxStockLevel?: boolean
+    lastStockCountDate?: boolean
+    averageCost?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type WarehouseMaterialStockOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "warehouseId" | "materialId" | "physicalOnHandQuantity" | "initialStockQuantity" | "restrictedQuantity" | "reservedQuantity" | "locationInWarehouse" | "minStockLevel" | "maxStockLevel" | "lastStockCountDate" | "averageCost" | "createdAt" | "updatedAt", ExtArgs["result"]["warehouseMaterialStock"]>
+  export type WarehouseMaterialStockInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    warehouse?: boolean | WarehouseDefaultArgs<ExtArgs>
+    material?: boolean | MaterialDefaultArgs<ExtArgs>
+    stockMovements?: boolean | WarehouseMaterialStock$stockMovementsArgs<ExtArgs>
+    _count?: boolean | WarehouseMaterialStockCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $WarehouseMaterialStockPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "WarehouseMaterialStock"
+    objects: {
+      warehouse: Prisma.$WarehousePayload<ExtArgs>
+      material: Prisma.$MaterialPayload<ExtArgs>
+      stockMovements: Prisma.$MaterialStockMovementPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      warehouseId: number
+      materialId: number
+      physicalOnHandQuantity: Prisma.Decimal
+      initialStockQuantity: Prisma.Decimal | null
+      restrictedQuantity: Prisma.Decimal
+      reservedQuantity: Prisma.Decimal
+      locationInWarehouse: string | null
+      minStockLevel: Prisma.Decimal | null
+      maxStockLevel: Prisma.Decimal | null
+      lastStockCountDate: Date | null
+      averageCost: Prisma.Decimal | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["warehouseMaterialStock"]>
+    composites: {}
+  }
+
+  type WarehouseMaterialStockGetPayload<S extends boolean | null | undefined | WarehouseMaterialStockDefaultArgs> = $Result.GetResult<Prisma.$WarehouseMaterialStockPayload, S>
+
+  type WarehouseMaterialStockCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<WarehouseMaterialStockFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: WarehouseMaterialStockCountAggregateInputType | true
+    }
+
+  export interface WarehouseMaterialStockDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['WarehouseMaterialStock'], meta: { name: 'WarehouseMaterialStock' } }
+    /**
+     * Find zero or one WarehouseMaterialStock that matches the filter.
+     * @param {WarehouseMaterialStockFindUniqueArgs} args - Arguments to find a WarehouseMaterialStock
+     * @example
+     * // Get one WarehouseMaterialStock
+     * const warehouseMaterialStock = await prisma.warehouseMaterialStock.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends WarehouseMaterialStockFindUniqueArgs>(args: SelectSubset<T, WarehouseMaterialStockFindUniqueArgs<ExtArgs>>): Prisma__WarehouseMaterialStockClient<$Result.GetResult<Prisma.$WarehouseMaterialStockPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one WarehouseMaterialStock that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {WarehouseMaterialStockFindUniqueOrThrowArgs} args - Arguments to find a WarehouseMaterialStock
+     * @example
+     * // Get one WarehouseMaterialStock
+     * const warehouseMaterialStock = await prisma.warehouseMaterialStock.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends WarehouseMaterialStockFindUniqueOrThrowArgs>(args: SelectSubset<T, WarehouseMaterialStockFindUniqueOrThrowArgs<ExtArgs>>): Prisma__WarehouseMaterialStockClient<$Result.GetResult<Prisma.$WarehouseMaterialStockPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first WarehouseMaterialStock that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WarehouseMaterialStockFindFirstArgs} args - Arguments to find a WarehouseMaterialStock
+     * @example
+     * // Get one WarehouseMaterialStock
+     * const warehouseMaterialStock = await prisma.warehouseMaterialStock.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends WarehouseMaterialStockFindFirstArgs>(args?: SelectSubset<T, WarehouseMaterialStockFindFirstArgs<ExtArgs>>): Prisma__WarehouseMaterialStockClient<$Result.GetResult<Prisma.$WarehouseMaterialStockPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first WarehouseMaterialStock that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WarehouseMaterialStockFindFirstOrThrowArgs} args - Arguments to find a WarehouseMaterialStock
+     * @example
+     * // Get one WarehouseMaterialStock
+     * const warehouseMaterialStock = await prisma.warehouseMaterialStock.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends WarehouseMaterialStockFindFirstOrThrowArgs>(args?: SelectSubset<T, WarehouseMaterialStockFindFirstOrThrowArgs<ExtArgs>>): Prisma__WarehouseMaterialStockClient<$Result.GetResult<Prisma.$WarehouseMaterialStockPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more WarehouseMaterialStocks that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WarehouseMaterialStockFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all WarehouseMaterialStocks
+     * const warehouseMaterialStocks = await prisma.warehouseMaterialStock.findMany()
+     * 
+     * // Get first 10 WarehouseMaterialStocks
+     * const warehouseMaterialStocks = await prisma.warehouseMaterialStock.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const warehouseMaterialStockWithIdOnly = await prisma.warehouseMaterialStock.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends WarehouseMaterialStockFindManyArgs>(args?: SelectSubset<T, WarehouseMaterialStockFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WarehouseMaterialStockPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a WarehouseMaterialStock.
+     * @param {WarehouseMaterialStockCreateArgs} args - Arguments to create a WarehouseMaterialStock.
+     * @example
+     * // Create one WarehouseMaterialStock
+     * const WarehouseMaterialStock = await prisma.warehouseMaterialStock.create({
+     *   data: {
+     *     // ... data to create a WarehouseMaterialStock
+     *   }
+     * })
+     * 
+     */
+    create<T extends WarehouseMaterialStockCreateArgs>(args: SelectSubset<T, WarehouseMaterialStockCreateArgs<ExtArgs>>): Prisma__WarehouseMaterialStockClient<$Result.GetResult<Prisma.$WarehouseMaterialStockPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many WarehouseMaterialStocks.
+     * @param {WarehouseMaterialStockCreateManyArgs} args - Arguments to create many WarehouseMaterialStocks.
+     * @example
+     * // Create many WarehouseMaterialStocks
+     * const warehouseMaterialStock = await prisma.warehouseMaterialStock.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends WarehouseMaterialStockCreateManyArgs>(args?: SelectSubset<T, WarehouseMaterialStockCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a WarehouseMaterialStock.
+     * @param {WarehouseMaterialStockDeleteArgs} args - Arguments to delete one WarehouseMaterialStock.
+     * @example
+     * // Delete one WarehouseMaterialStock
+     * const WarehouseMaterialStock = await prisma.warehouseMaterialStock.delete({
+     *   where: {
+     *     // ... filter to delete one WarehouseMaterialStock
+     *   }
+     * })
+     * 
+     */
+    delete<T extends WarehouseMaterialStockDeleteArgs>(args: SelectSubset<T, WarehouseMaterialStockDeleteArgs<ExtArgs>>): Prisma__WarehouseMaterialStockClient<$Result.GetResult<Prisma.$WarehouseMaterialStockPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one WarehouseMaterialStock.
+     * @param {WarehouseMaterialStockUpdateArgs} args - Arguments to update one WarehouseMaterialStock.
+     * @example
+     * // Update one WarehouseMaterialStock
+     * const warehouseMaterialStock = await prisma.warehouseMaterialStock.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends WarehouseMaterialStockUpdateArgs>(args: SelectSubset<T, WarehouseMaterialStockUpdateArgs<ExtArgs>>): Prisma__WarehouseMaterialStockClient<$Result.GetResult<Prisma.$WarehouseMaterialStockPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more WarehouseMaterialStocks.
+     * @param {WarehouseMaterialStockDeleteManyArgs} args - Arguments to filter WarehouseMaterialStocks to delete.
+     * @example
+     * // Delete a few WarehouseMaterialStocks
+     * const { count } = await prisma.warehouseMaterialStock.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends WarehouseMaterialStockDeleteManyArgs>(args?: SelectSubset<T, WarehouseMaterialStockDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more WarehouseMaterialStocks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WarehouseMaterialStockUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many WarehouseMaterialStocks
+     * const warehouseMaterialStock = await prisma.warehouseMaterialStock.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends WarehouseMaterialStockUpdateManyArgs>(args: SelectSubset<T, WarehouseMaterialStockUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one WarehouseMaterialStock.
+     * @param {WarehouseMaterialStockUpsertArgs} args - Arguments to update or create a WarehouseMaterialStock.
+     * @example
+     * // Update or create a WarehouseMaterialStock
+     * const warehouseMaterialStock = await prisma.warehouseMaterialStock.upsert({
+     *   create: {
+     *     // ... data to create a WarehouseMaterialStock
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the WarehouseMaterialStock we want to update
+     *   }
+     * })
+     */
+    upsert<T extends WarehouseMaterialStockUpsertArgs>(args: SelectSubset<T, WarehouseMaterialStockUpsertArgs<ExtArgs>>): Prisma__WarehouseMaterialStockClient<$Result.GetResult<Prisma.$WarehouseMaterialStockPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of WarehouseMaterialStocks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WarehouseMaterialStockCountArgs} args - Arguments to filter WarehouseMaterialStocks to count.
+     * @example
+     * // Count the number of WarehouseMaterialStocks
+     * const count = await prisma.warehouseMaterialStock.count({
+     *   where: {
+     *     // ... the filter for the WarehouseMaterialStocks we want to count
+     *   }
+     * })
+    **/
+    count<T extends WarehouseMaterialStockCountArgs>(
+      args?: Subset<T, WarehouseMaterialStockCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], WarehouseMaterialStockCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a WarehouseMaterialStock.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WarehouseMaterialStockAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends WarehouseMaterialStockAggregateArgs>(args: Subset<T, WarehouseMaterialStockAggregateArgs>): Prisma.PrismaPromise<GetWarehouseMaterialStockAggregateType<T>>
+
+    /**
+     * Group by WarehouseMaterialStock.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WarehouseMaterialStockGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends WarehouseMaterialStockGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: WarehouseMaterialStockGroupByArgs['orderBy'] }
+        : { orderBy?: WarehouseMaterialStockGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, WarehouseMaterialStockGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetWarehouseMaterialStockGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the WarehouseMaterialStock model
+   */
+  readonly fields: WarehouseMaterialStockFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for WarehouseMaterialStock.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__WarehouseMaterialStockClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    warehouse<T extends WarehouseDefaultArgs<ExtArgs> = {}>(args?: Subset<T, WarehouseDefaultArgs<ExtArgs>>): Prisma__WarehouseClient<$Result.GetResult<Prisma.$WarehousePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    material<T extends MaterialDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MaterialDefaultArgs<ExtArgs>>): Prisma__MaterialClient<$Result.GetResult<Prisma.$MaterialPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    stockMovements<T extends WarehouseMaterialStock$stockMovementsArgs<ExtArgs> = {}>(args?: Subset<T, WarehouseMaterialStock$stockMovementsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaterialStockMovementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the WarehouseMaterialStock model
+   */
+  interface WarehouseMaterialStockFieldRefs {
+    readonly id: FieldRef<"WarehouseMaterialStock", 'Int'>
+    readonly warehouseId: FieldRef<"WarehouseMaterialStock", 'Int'>
+    readonly materialId: FieldRef<"WarehouseMaterialStock", 'Int'>
+    readonly physicalOnHandQuantity: FieldRef<"WarehouseMaterialStock", 'Decimal'>
+    readonly initialStockQuantity: FieldRef<"WarehouseMaterialStock", 'Decimal'>
+    readonly restrictedQuantity: FieldRef<"WarehouseMaterialStock", 'Decimal'>
+    readonly reservedQuantity: FieldRef<"WarehouseMaterialStock", 'Decimal'>
+    readonly locationInWarehouse: FieldRef<"WarehouseMaterialStock", 'String'>
+    readonly minStockLevel: FieldRef<"WarehouseMaterialStock", 'Decimal'>
+    readonly maxStockLevel: FieldRef<"WarehouseMaterialStock", 'Decimal'>
+    readonly lastStockCountDate: FieldRef<"WarehouseMaterialStock", 'DateTime'>
+    readonly averageCost: FieldRef<"WarehouseMaterialStock", 'Decimal'>
+    readonly createdAt: FieldRef<"WarehouseMaterialStock", 'DateTime'>
+    readonly updatedAt: FieldRef<"WarehouseMaterialStock", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * WarehouseMaterialStock findUnique
+   */
+  export type WarehouseMaterialStockFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WarehouseMaterialStock
+     */
+    select?: WarehouseMaterialStockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WarehouseMaterialStock
+     */
+    omit?: WarehouseMaterialStockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WarehouseMaterialStockInclude<ExtArgs> | null
+    /**
+     * Filter, which WarehouseMaterialStock to fetch.
+     */
+    where: WarehouseMaterialStockWhereUniqueInput
+  }
+
+  /**
+   * WarehouseMaterialStock findUniqueOrThrow
+   */
+  export type WarehouseMaterialStockFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WarehouseMaterialStock
+     */
+    select?: WarehouseMaterialStockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WarehouseMaterialStock
+     */
+    omit?: WarehouseMaterialStockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WarehouseMaterialStockInclude<ExtArgs> | null
+    /**
+     * Filter, which WarehouseMaterialStock to fetch.
+     */
+    where: WarehouseMaterialStockWhereUniqueInput
+  }
+
+  /**
+   * WarehouseMaterialStock findFirst
+   */
+  export type WarehouseMaterialStockFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WarehouseMaterialStock
+     */
+    select?: WarehouseMaterialStockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WarehouseMaterialStock
+     */
+    omit?: WarehouseMaterialStockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WarehouseMaterialStockInclude<ExtArgs> | null
+    /**
+     * Filter, which WarehouseMaterialStock to fetch.
+     */
+    where?: WarehouseMaterialStockWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of WarehouseMaterialStocks to fetch.
+     */
+    orderBy?: WarehouseMaterialStockOrderByWithRelationInput | WarehouseMaterialStockOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for WarehouseMaterialStocks.
+     */
+    cursor?: WarehouseMaterialStockWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` WarehouseMaterialStocks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` WarehouseMaterialStocks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of WarehouseMaterialStocks.
+     */
+    distinct?: WarehouseMaterialStockScalarFieldEnum | WarehouseMaterialStockScalarFieldEnum[]
+  }
+
+  /**
+   * WarehouseMaterialStock findFirstOrThrow
+   */
+  export type WarehouseMaterialStockFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WarehouseMaterialStock
+     */
+    select?: WarehouseMaterialStockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WarehouseMaterialStock
+     */
+    omit?: WarehouseMaterialStockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WarehouseMaterialStockInclude<ExtArgs> | null
+    /**
+     * Filter, which WarehouseMaterialStock to fetch.
+     */
+    where?: WarehouseMaterialStockWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of WarehouseMaterialStocks to fetch.
+     */
+    orderBy?: WarehouseMaterialStockOrderByWithRelationInput | WarehouseMaterialStockOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for WarehouseMaterialStocks.
+     */
+    cursor?: WarehouseMaterialStockWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` WarehouseMaterialStocks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` WarehouseMaterialStocks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of WarehouseMaterialStocks.
+     */
+    distinct?: WarehouseMaterialStockScalarFieldEnum | WarehouseMaterialStockScalarFieldEnum[]
+  }
+
+  /**
+   * WarehouseMaterialStock findMany
+   */
+  export type WarehouseMaterialStockFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WarehouseMaterialStock
+     */
+    select?: WarehouseMaterialStockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WarehouseMaterialStock
+     */
+    omit?: WarehouseMaterialStockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WarehouseMaterialStockInclude<ExtArgs> | null
+    /**
+     * Filter, which WarehouseMaterialStocks to fetch.
+     */
+    where?: WarehouseMaterialStockWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of WarehouseMaterialStocks to fetch.
+     */
+    orderBy?: WarehouseMaterialStockOrderByWithRelationInput | WarehouseMaterialStockOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing WarehouseMaterialStocks.
+     */
+    cursor?: WarehouseMaterialStockWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` WarehouseMaterialStocks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` WarehouseMaterialStocks.
+     */
+    skip?: number
+    distinct?: WarehouseMaterialStockScalarFieldEnum | WarehouseMaterialStockScalarFieldEnum[]
+  }
+
+  /**
+   * WarehouseMaterialStock create
+   */
+  export type WarehouseMaterialStockCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WarehouseMaterialStock
+     */
+    select?: WarehouseMaterialStockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WarehouseMaterialStock
+     */
+    omit?: WarehouseMaterialStockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WarehouseMaterialStockInclude<ExtArgs> | null
+    /**
+     * The data needed to create a WarehouseMaterialStock.
+     */
+    data: XOR<WarehouseMaterialStockCreateInput, WarehouseMaterialStockUncheckedCreateInput>
+  }
+
+  /**
+   * WarehouseMaterialStock createMany
+   */
+  export type WarehouseMaterialStockCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many WarehouseMaterialStocks.
+     */
+    data: WarehouseMaterialStockCreateManyInput | WarehouseMaterialStockCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * WarehouseMaterialStock update
+   */
+  export type WarehouseMaterialStockUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WarehouseMaterialStock
+     */
+    select?: WarehouseMaterialStockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WarehouseMaterialStock
+     */
+    omit?: WarehouseMaterialStockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WarehouseMaterialStockInclude<ExtArgs> | null
+    /**
+     * The data needed to update a WarehouseMaterialStock.
+     */
+    data: XOR<WarehouseMaterialStockUpdateInput, WarehouseMaterialStockUncheckedUpdateInput>
+    /**
+     * Choose, which WarehouseMaterialStock to update.
+     */
+    where: WarehouseMaterialStockWhereUniqueInput
+  }
+
+  /**
+   * WarehouseMaterialStock updateMany
+   */
+  export type WarehouseMaterialStockUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update WarehouseMaterialStocks.
+     */
+    data: XOR<WarehouseMaterialStockUpdateManyMutationInput, WarehouseMaterialStockUncheckedUpdateManyInput>
+    /**
+     * Filter which WarehouseMaterialStocks to update
+     */
+    where?: WarehouseMaterialStockWhereInput
+    /**
+     * Limit how many WarehouseMaterialStocks to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * WarehouseMaterialStock upsert
+   */
+  export type WarehouseMaterialStockUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WarehouseMaterialStock
+     */
+    select?: WarehouseMaterialStockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WarehouseMaterialStock
+     */
+    omit?: WarehouseMaterialStockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WarehouseMaterialStockInclude<ExtArgs> | null
+    /**
+     * The filter to search for the WarehouseMaterialStock to update in case it exists.
+     */
+    where: WarehouseMaterialStockWhereUniqueInput
+    /**
+     * In case the WarehouseMaterialStock found by the `where` argument doesn't exist, create a new WarehouseMaterialStock with this data.
+     */
+    create: XOR<WarehouseMaterialStockCreateInput, WarehouseMaterialStockUncheckedCreateInput>
+    /**
+     * In case the WarehouseMaterialStock was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<WarehouseMaterialStockUpdateInput, WarehouseMaterialStockUncheckedUpdateInput>
+  }
+
+  /**
+   * WarehouseMaterialStock delete
+   */
+  export type WarehouseMaterialStockDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WarehouseMaterialStock
+     */
+    select?: WarehouseMaterialStockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WarehouseMaterialStock
+     */
+    omit?: WarehouseMaterialStockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WarehouseMaterialStockInclude<ExtArgs> | null
+    /**
+     * Filter which WarehouseMaterialStock to delete.
+     */
+    where: WarehouseMaterialStockWhereUniqueInput
+  }
+
+  /**
+   * WarehouseMaterialStock deleteMany
+   */
+  export type WarehouseMaterialStockDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which WarehouseMaterialStocks to delete
+     */
+    where?: WarehouseMaterialStockWhereInput
+    /**
+     * Limit how many WarehouseMaterialStocks to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * WarehouseMaterialStock.stockMovements
+   */
+  export type WarehouseMaterialStock$stockMovementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialStockMovement
+     */
+    select?: MaterialStockMovementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialStockMovement
+     */
+    omit?: MaterialStockMovementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialStockMovementInclude<ExtArgs> | null
+    where?: MaterialStockMovementWhereInput
+    orderBy?: MaterialStockMovementOrderByWithRelationInput | MaterialStockMovementOrderByWithRelationInput[]
+    cursor?: MaterialStockMovementWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MaterialStockMovementScalarFieldEnum | MaterialStockMovementScalarFieldEnum[]
+  }
+
+  /**
+   * WarehouseMaterialStock without action
+   */
+  export type WarehouseMaterialStockDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WarehouseMaterialStock
+     */
+    select?: WarehouseMaterialStockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WarehouseMaterialStock
+     */
+    omit?: WarehouseMaterialStockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WarehouseMaterialStockInclude<ExtArgs> | null
   }
 
 
@@ -13128,6 +16219,8 @@ export namespace Prisma {
 
   export type MaterialRequestMinAggregateOutputType = {
     id: number | null
+    protocolNumber: string | null
+    requestType: $Enums.MaterialRequestType | null
     justification: string | null
     requestDate: Date | null
     status: $Enums.MaterialRequestStatus | null
@@ -13142,6 +16235,8 @@ export namespace Prisma {
 
   export type MaterialRequestMaxAggregateOutputType = {
     id: number | null
+    protocolNumber: string | null
+    requestType: $Enums.MaterialRequestType | null
     justification: string | null
     requestDate: Date | null
     status: $Enums.MaterialRequestStatus | null
@@ -13156,6 +16251,8 @@ export namespace Prisma {
 
   export type MaterialRequestCountAggregateOutputType = {
     id: number
+    protocolNumber: number
+    requestType: number
     justification: number
     requestDate: number
     status: number
@@ -13186,6 +16283,8 @@ export namespace Prisma {
 
   export type MaterialRequestMinAggregateInputType = {
     id?: true
+    protocolNumber?: true
+    requestType?: true
     justification?: true
     requestDate?: true
     status?: true
@@ -13200,6 +16299,8 @@ export namespace Prisma {
 
   export type MaterialRequestMaxAggregateInputType = {
     id?: true
+    protocolNumber?: true
+    requestType?: true
     justification?: true
     requestDate?: true
     status?: true
@@ -13214,6 +16315,8 @@ export namespace Prisma {
 
   export type MaterialRequestCountAggregateInputType = {
     id?: true
+    protocolNumber?: true
+    requestType?: true
     justification?: true
     requestDate?: true
     status?: true
@@ -13315,6 +16418,8 @@ export namespace Prisma {
 
   export type MaterialRequestGroupByOutputType = {
     id: number
+    protocolNumber: string
+    requestType: $Enums.MaterialRequestType
     justification: string | null
     requestDate: Date
     status: $Enums.MaterialRequestStatus
@@ -13348,6 +16453,8 @@ export namespace Prisma {
 
   export type MaterialRequestSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    protocolNumber?: boolean
+    requestType?: boolean
     justification?: boolean
     requestDate?: boolean
     status?: boolean
@@ -13369,6 +16476,8 @@ export namespace Prisma {
 
   export type MaterialRequestSelectScalar = {
     id?: boolean
+    protocolNumber?: boolean
+    requestType?: boolean
     justification?: boolean
     requestDate?: boolean
     status?: boolean
@@ -13381,7 +16490,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type MaterialRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "justification" | "requestDate" | "status" | "maintenanceRequestId" | "requestedById" | "approvedById" | "approvalDate" | "approvalNotes" | "createdAt" | "updatedAt", ExtArgs["result"]["materialRequest"]>
+  export type MaterialRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "protocolNumber" | "requestType" | "justification" | "requestDate" | "status" | "maintenanceRequestId" | "requestedById" | "approvedById" | "approvalDate" | "approvalNotes" | "createdAt" | "updatedAt", ExtArgs["result"]["materialRequest"]>
   export type MaterialRequestInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     maintenanceRequest?: boolean | MaintenanceRequestDefaultArgs<ExtArgs>
     requestedBy?: boolean | UserDefaultArgs<ExtArgs>
@@ -13400,6 +16509,8 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
+      protocolNumber: string
+      requestType: $Enums.MaterialRequestType
       justification: string | null
       requestDate: Date
       status: $Enums.MaterialRequestStatus
@@ -13784,6 +16895,8 @@ export namespace Prisma {
    */
   interface MaterialRequestFieldRefs {
     readonly id: FieldRef<"MaterialRequest", 'Int'>
+    readonly protocolNumber: FieldRef<"MaterialRequest", 'String'>
+    readonly requestType: FieldRef<"MaterialRequest", 'MaterialRequestType'>
     readonly justification: FieldRef<"MaterialRequest", 'String'>
     readonly requestDate: FieldRef<"MaterialRequest", 'DateTime'>
     readonly status: FieldRef<"MaterialRequest", 'MaterialRequestStatus'>
@@ -14212,106 +17325,160 @@ export namespace Prisma {
 
   export type MaterialRequestItemAvgAggregateOutputType = {
     id: number | null
+    materialRequestId: number | null
+    requestedGlobalMaterialId: number | null
+    requestedDerivedConditionId: number | null
     quantityRequested: Decimal | null
     quantityApproved: Decimal | null
     quantityDelivered: Decimal | null
-    materialRequestId: number | null
-    materialId: number | null
+    fulfilledByInstanceId: number | null
+    materialInstanceConditionId: number | null
   }
 
   export type MaterialRequestItemSumAggregateOutputType = {
     id: number | null
+    materialRequestId: number | null
+    requestedGlobalMaterialId: number | null
+    requestedDerivedConditionId: number | null
     quantityRequested: Decimal | null
     quantityApproved: Decimal | null
     quantityDelivered: Decimal | null
-    materialRequestId: number | null
-    materialId: number | null
+    fulfilledByInstanceId: number | null
+    materialInstanceConditionId: number | null
   }
 
   export type MaterialRequestItemMinAggregateOutputType = {
     id: number | null
+    materialRequestId: number | null
+    requestType: $Enums.MaterialRequestItemType | null
+    requestedGlobalMaterialId: number | null
+    requestedDerivedName: string | null
+    requestedDerivedConditionId: number | null
     quantityRequested: Decimal | null
     quantityApproved: Decimal | null
     quantityDelivered: Decimal | null
-    materialRequestId: number | null
-    materialId: number | null
+    unitOfMeasure: string | null
+    fulfilledByInstanceId: number | null
+    notes: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    materialInstanceConditionId: number | null
   }
 
   export type MaterialRequestItemMaxAggregateOutputType = {
     id: number | null
+    materialRequestId: number | null
+    requestType: $Enums.MaterialRequestItemType | null
+    requestedGlobalMaterialId: number | null
+    requestedDerivedName: string | null
+    requestedDerivedConditionId: number | null
     quantityRequested: Decimal | null
     quantityApproved: Decimal | null
     quantityDelivered: Decimal | null
-    materialRequestId: number | null
-    materialId: number | null
+    unitOfMeasure: string | null
+    fulfilledByInstanceId: number | null
+    notes: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    materialInstanceConditionId: number | null
   }
 
   export type MaterialRequestItemCountAggregateOutputType = {
     id: number
+    materialRequestId: number
+    requestType: number
+    requestedGlobalMaterialId: number
+    requestedDerivedName: number
+    requestedDerivedConditionId: number
     quantityRequested: number
     quantityApproved: number
     quantityDelivered: number
-    materialRequestId: number
-    materialId: number
+    unitOfMeasure: number
+    fulfilledByInstanceId: number
+    notes: number
     createdAt: number
     updatedAt: number
+    materialInstanceConditionId: number
     _all: number
   }
 
 
   export type MaterialRequestItemAvgAggregateInputType = {
     id?: true
+    materialRequestId?: true
+    requestedGlobalMaterialId?: true
+    requestedDerivedConditionId?: true
     quantityRequested?: true
     quantityApproved?: true
     quantityDelivered?: true
-    materialRequestId?: true
-    materialId?: true
+    fulfilledByInstanceId?: true
+    materialInstanceConditionId?: true
   }
 
   export type MaterialRequestItemSumAggregateInputType = {
     id?: true
+    materialRequestId?: true
+    requestedGlobalMaterialId?: true
+    requestedDerivedConditionId?: true
     quantityRequested?: true
     quantityApproved?: true
     quantityDelivered?: true
-    materialRequestId?: true
-    materialId?: true
+    fulfilledByInstanceId?: true
+    materialInstanceConditionId?: true
   }
 
   export type MaterialRequestItemMinAggregateInputType = {
     id?: true
+    materialRequestId?: true
+    requestType?: true
+    requestedGlobalMaterialId?: true
+    requestedDerivedName?: true
+    requestedDerivedConditionId?: true
     quantityRequested?: true
     quantityApproved?: true
     quantityDelivered?: true
-    materialRequestId?: true
-    materialId?: true
+    unitOfMeasure?: true
+    fulfilledByInstanceId?: true
+    notes?: true
     createdAt?: true
     updatedAt?: true
+    materialInstanceConditionId?: true
   }
 
   export type MaterialRequestItemMaxAggregateInputType = {
     id?: true
+    materialRequestId?: true
+    requestType?: true
+    requestedGlobalMaterialId?: true
+    requestedDerivedName?: true
+    requestedDerivedConditionId?: true
     quantityRequested?: true
     quantityApproved?: true
     quantityDelivered?: true
-    materialRequestId?: true
-    materialId?: true
+    unitOfMeasure?: true
+    fulfilledByInstanceId?: true
+    notes?: true
     createdAt?: true
     updatedAt?: true
+    materialInstanceConditionId?: true
   }
 
   export type MaterialRequestItemCountAggregateInputType = {
     id?: true
+    materialRequestId?: true
+    requestType?: true
+    requestedGlobalMaterialId?: true
+    requestedDerivedName?: true
+    requestedDerivedConditionId?: true
     quantityRequested?: true
     quantityApproved?: true
     quantityDelivered?: true
-    materialRequestId?: true
-    materialId?: true
+    unitOfMeasure?: true
+    fulfilledByInstanceId?: true
+    notes?: true
     createdAt?: true
     updatedAt?: true
+    materialInstanceConditionId?: true
     _all?: true
   }
 
@@ -14403,13 +17570,20 @@ export namespace Prisma {
 
   export type MaterialRequestItemGroupByOutputType = {
     id: number
+    materialRequestId: number
+    requestType: $Enums.MaterialRequestItemType
+    requestedGlobalMaterialId: number | null
+    requestedDerivedName: string | null
+    requestedDerivedConditionId: number | null
     quantityRequested: Decimal
     quantityApproved: Decimal | null
-    quantityDelivered: Decimal | null
-    materialRequestId: number
-    materialId: number
+    quantityDelivered: Decimal
+    unitOfMeasure: string
+    fulfilledByInstanceId: number | null
+    notes: string | null
     createdAt: Date
     updatedAt: Date
+    materialInstanceConditionId: number | null
     _count: MaterialRequestItemCountAggregateOutputType | null
     _avg: MaterialRequestItemAvgAggregateOutputType | null
     _sum: MaterialRequestItemSumAggregateOutputType | null
@@ -14433,51 +17607,86 @@ export namespace Prisma {
 
   export type MaterialRequestItemSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    materialRequestId?: boolean
+    requestType?: boolean
+    requestedGlobalMaterialId?: boolean
+    requestedDerivedName?: boolean
+    requestedDerivedConditionId?: boolean
     quantityRequested?: boolean
     quantityApproved?: boolean
     quantityDelivered?: boolean
-    materialRequestId?: boolean
-    materialId?: boolean
+    unitOfMeasure?: boolean
+    fulfilledByInstanceId?: boolean
+    notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    materialInstanceConditionId?: boolean
     materialRequest?: boolean | MaterialRequestDefaultArgs<ExtArgs>
-    material?: boolean | MaterialDefaultArgs<ExtArgs>
+    requestedGlobalMaterial?: boolean | MaterialRequestItem$requestedGlobalMaterialArgs<ExtArgs>
+    requestedDerivedCondition?: boolean | MaterialRequestItem$requestedDerivedConditionArgs<ExtArgs>
+    fulfilledByInstance?: boolean | MaterialRequestItem$fulfilledByInstanceArgs<ExtArgs>
+    stockMovements?: boolean | MaterialRequestItem$stockMovementsArgs<ExtArgs>
+    MaterialInstanceCondition?: boolean | MaterialRequestItem$MaterialInstanceConditionArgs<ExtArgs>
+    _count?: boolean | MaterialRequestItemCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["materialRequestItem"]>
 
 
 
   export type MaterialRequestItemSelectScalar = {
     id?: boolean
+    materialRequestId?: boolean
+    requestType?: boolean
+    requestedGlobalMaterialId?: boolean
+    requestedDerivedName?: boolean
+    requestedDerivedConditionId?: boolean
     quantityRequested?: boolean
     quantityApproved?: boolean
     quantityDelivered?: boolean
-    materialRequestId?: boolean
-    materialId?: boolean
+    unitOfMeasure?: boolean
+    fulfilledByInstanceId?: boolean
+    notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    materialInstanceConditionId?: boolean
   }
 
-  export type MaterialRequestItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "quantityRequested" | "quantityApproved" | "quantityDelivered" | "materialRequestId" | "materialId" | "createdAt" | "updatedAt", ExtArgs["result"]["materialRequestItem"]>
+  export type MaterialRequestItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "materialRequestId" | "requestType" | "requestedGlobalMaterialId" | "requestedDerivedName" | "requestedDerivedConditionId" | "quantityRequested" | "quantityApproved" | "quantityDelivered" | "unitOfMeasure" | "fulfilledByInstanceId" | "notes" | "createdAt" | "updatedAt" | "materialInstanceConditionId", ExtArgs["result"]["materialRequestItem"]>
   export type MaterialRequestItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     materialRequest?: boolean | MaterialRequestDefaultArgs<ExtArgs>
-    material?: boolean | MaterialDefaultArgs<ExtArgs>
+    requestedGlobalMaterial?: boolean | MaterialRequestItem$requestedGlobalMaterialArgs<ExtArgs>
+    requestedDerivedCondition?: boolean | MaterialRequestItem$requestedDerivedConditionArgs<ExtArgs>
+    fulfilledByInstance?: boolean | MaterialRequestItem$fulfilledByInstanceArgs<ExtArgs>
+    stockMovements?: boolean | MaterialRequestItem$stockMovementsArgs<ExtArgs>
+    MaterialInstanceCondition?: boolean | MaterialRequestItem$MaterialInstanceConditionArgs<ExtArgs>
+    _count?: boolean | MaterialRequestItemCountOutputTypeDefaultArgs<ExtArgs>
   }
 
   export type $MaterialRequestItemPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "MaterialRequestItem"
     objects: {
       materialRequest: Prisma.$MaterialRequestPayload<ExtArgs>
-      material: Prisma.$MaterialPayload<ExtArgs>
+      requestedGlobalMaterial: Prisma.$MaterialPayload<ExtArgs> | null
+      requestedDerivedCondition: Prisma.$MaterialInstanceConditionPayload<ExtArgs> | null
+      fulfilledByInstance: Prisma.$MaterialInstancePayload<ExtArgs> | null
+      stockMovements: Prisma.$MaterialStockMovementPayload<ExtArgs>[]
+      MaterialInstanceCondition: Prisma.$MaterialInstanceConditionPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
+      materialRequestId: number
+      requestType: $Enums.MaterialRequestItemType
+      requestedGlobalMaterialId: number | null
+      requestedDerivedName: string | null
+      requestedDerivedConditionId: number | null
       quantityRequested: Prisma.Decimal
       quantityApproved: Prisma.Decimal | null
-      quantityDelivered: Prisma.Decimal | null
-      materialRequestId: number
-      materialId: number
+      quantityDelivered: Prisma.Decimal
+      unitOfMeasure: string
+      fulfilledByInstanceId: number | null
+      notes: string | null
       createdAt: Date
       updatedAt: Date
+      materialInstanceConditionId: number | null
     }, ExtArgs["result"]["materialRequestItem"]>
     composites: {}
   }
@@ -14819,7 +18028,11 @@ export namespace Prisma {
   export interface Prisma__MaterialRequestItemClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     materialRequest<T extends MaterialRequestDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MaterialRequestDefaultArgs<ExtArgs>>): Prisma__MaterialRequestClient<$Result.GetResult<Prisma.$MaterialRequestPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    material<T extends MaterialDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MaterialDefaultArgs<ExtArgs>>): Prisma__MaterialClient<$Result.GetResult<Prisma.$MaterialPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    requestedGlobalMaterial<T extends MaterialRequestItem$requestedGlobalMaterialArgs<ExtArgs> = {}>(args?: Subset<T, MaterialRequestItem$requestedGlobalMaterialArgs<ExtArgs>>): Prisma__MaterialClient<$Result.GetResult<Prisma.$MaterialPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    requestedDerivedCondition<T extends MaterialRequestItem$requestedDerivedConditionArgs<ExtArgs> = {}>(args?: Subset<T, MaterialRequestItem$requestedDerivedConditionArgs<ExtArgs>>): Prisma__MaterialInstanceConditionClient<$Result.GetResult<Prisma.$MaterialInstanceConditionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    fulfilledByInstance<T extends MaterialRequestItem$fulfilledByInstanceArgs<ExtArgs> = {}>(args?: Subset<T, MaterialRequestItem$fulfilledByInstanceArgs<ExtArgs>>): Prisma__MaterialInstanceClient<$Result.GetResult<Prisma.$MaterialInstancePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    stockMovements<T extends MaterialRequestItem$stockMovementsArgs<ExtArgs> = {}>(args?: Subset<T, MaterialRequestItem$stockMovementsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaterialStockMovementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    MaterialInstanceCondition<T extends MaterialRequestItem$MaterialInstanceConditionArgs<ExtArgs> = {}>(args?: Subset<T, MaterialRequestItem$MaterialInstanceConditionArgs<ExtArgs>>): Prisma__MaterialInstanceConditionClient<$Result.GetResult<Prisma.$MaterialInstanceConditionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -14850,13 +18063,20 @@ export namespace Prisma {
    */
   interface MaterialRequestItemFieldRefs {
     readonly id: FieldRef<"MaterialRequestItem", 'Int'>
+    readonly materialRequestId: FieldRef<"MaterialRequestItem", 'Int'>
+    readonly requestType: FieldRef<"MaterialRequestItem", 'MaterialRequestItemType'>
+    readonly requestedGlobalMaterialId: FieldRef<"MaterialRequestItem", 'Int'>
+    readonly requestedDerivedName: FieldRef<"MaterialRequestItem", 'String'>
+    readonly requestedDerivedConditionId: FieldRef<"MaterialRequestItem", 'Int'>
     readonly quantityRequested: FieldRef<"MaterialRequestItem", 'Decimal'>
     readonly quantityApproved: FieldRef<"MaterialRequestItem", 'Decimal'>
     readonly quantityDelivered: FieldRef<"MaterialRequestItem", 'Decimal'>
-    readonly materialRequestId: FieldRef<"MaterialRequestItem", 'Int'>
-    readonly materialId: FieldRef<"MaterialRequestItem", 'Int'>
+    readonly unitOfMeasure: FieldRef<"MaterialRequestItem", 'String'>
+    readonly fulfilledByInstanceId: FieldRef<"MaterialRequestItem", 'Int'>
+    readonly notes: FieldRef<"MaterialRequestItem", 'String'>
     readonly createdAt: FieldRef<"MaterialRequestItem", 'DateTime'>
     readonly updatedAt: FieldRef<"MaterialRequestItem", 'DateTime'>
+    readonly materialInstanceConditionId: FieldRef<"MaterialRequestItem", 'Int'>
   }
     
 
@@ -15200,6 +18420,106 @@ export namespace Prisma {
   }
 
   /**
+   * MaterialRequestItem.requestedGlobalMaterial
+   */
+  export type MaterialRequestItem$requestedGlobalMaterialArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Material
+     */
+    select?: MaterialSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Material
+     */
+    omit?: MaterialOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialInclude<ExtArgs> | null
+    where?: MaterialWhereInput
+  }
+
+  /**
+   * MaterialRequestItem.requestedDerivedCondition
+   */
+  export type MaterialRequestItem$requestedDerivedConditionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialInstanceCondition
+     */
+    select?: MaterialInstanceConditionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialInstanceCondition
+     */
+    omit?: MaterialInstanceConditionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialInstanceConditionInclude<ExtArgs> | null
+    where?: MaterialInstanceConditionWhereInput
+  }
+
+  /**
+   * MaterialRequestItem.fulfilledByInstance
+   */
+  export type MaterialRequestItem$fulfilledByInstanceArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialInstance
+     */
+    select?: MaterialInstanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialInstance
+     */
+    omit?: MaterialInstanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialInstanceInclude<ExtArgs> | null
+    where?: MaterialInstanceWhereInput
+  }
+
+  /**
+   * MaterialRequestItem.stockMovements
+   */
+  export type MaterialRequestItem$stockMovementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialStockMovement
+     */
+    select?: MaterialStockMovementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialStockMovement
+     */
+    omit?: MaterialStockMovementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialStockMovementInclude<ExtArgs> | null
+    where?: MaterialStockMovementWhereInput
+    orderBy?: MaterialStockMovementOrderByWithRelationInput | MaterialStockMovementOrderByWithRelationInput[]
+    cursor?: MaterialStockMovementWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MaterialStockMovementScalarFieldEnum | MaterialStockMovementScalarFieldEnum[]
+  }
+
+  /**
+   * MaterialRequestItem.MaterialInstanceCondition
+   */
+  export type MaterialRequestItem$MaterialInstanceConditionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialInstanceCondition
+     */
+    select?: MaterialInstanceConditionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialInstanceCondition
+     */
+    omit?: MaterialInstanceConditionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialInstanceConditionInclude<ExtArgs> | null
+    where?: MaterialInstanceConditionWhereInput
+  }
+
+  /**
    * MaterialRequestItem without action
    */
   export type MaterialRequestItemDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -15215,6 +18535,4441 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: MaterialRequestItemInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model StockMovementType
+   */
+
+  export type AggregateStockMovementType = {
+    _count: StockMovementTypeCountAggregateOutputType | null
+    _avg: StockMovementTypeAvgAggregateOutputType | null
+    _sum: StockMovementTypeSumAggregateOutputType | null
+    _min: StockMovementTypeMinAggregateOutputType | null
+    _max: StockMovementTypeMaxAggregateOutputType | null
+  }
+
+  export type StockMovementTypeAvgAggregateOutputType = {
+    id: number | null
+  }
+
+  export type StockMovementTypeSumAggregateOutputType = {
+    id: number | null
+  }
+
+  export type StockMovementTypeMinAggregateOutputType = {
+    id: number | null
+    code: string | null
+    name: string | null
+    description: string | null
+    operation: $Enums.StockOperationType | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type StockMovementTypeMaxAggregateOutputType = {
+    id: number | null
+    code: string | null
+    name: string | null
+    description: string | null
+    operation: $Enums.StockOperationType | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type StockMovementTypeCountAggregateOutputType = {
+    id: number
+    code: number
+    name: number
+    description: number
+    operation: number
+    isActive: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type StockMovementTypeAvgAggregateInputType = {
+    id?: true
+  }
+
+  export type StockMovementTypeSumAggregateInputType = {
+    id?: true
+  }
+
+  export type StockMovementTypeMinAggregateInputType = {
+    id?: true
+    code?: true
+    name?: true
+    description?: true
+    operation?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type StockMovementTypeMaxAggregateInputType = {
+    id?: true
+    code?: true
+    name?: true
+    description?: true
+    operation?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type StockMovementTypeCountAggregateInputType = {
+    id?: true
+    code?: true
+    name?: true
+    description?: true
+    operation?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type StockMovementTypeAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which StockMovementType to aggregate.
+     */
+    where?: StockMovementTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of StockMovementTypes to fetch.
+     */
+    orderBy?: StockMovementTypeOrderByWithRelationInput | StockMovementTypeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: StockMovementTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` StockMovementTypes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` StockMovementTypes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned StockMovementTypes
+    **/
+    _count?: true | StockMovementTypeCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: StockMovementTypeAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: StockMovementTypeSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: StockMovementTypeMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: StockMovementTypeMaxAggregateInputType
+  }
+
+  export type GetStockMovementTypeAggregateType<T extends StockMovementTypeAggregateArgs> = {
+        [P in keyof T & keyof AggregateStockMovementType]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateStockMovementType[P]>
+      : GetScalarType<T[P], AggregateStockMovementType[P]>
+  }
+
+
+
+
+  export type StockMovementTypeGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: StockMovementTypeWhereInput
+    orderBy?: StockMovementTypeOrderByWithAggregationInput | StockMovementTypeOrderByWithAggregationInput[]
+    by: StockMovementTypeScalarFieldEnum[] | StockMovementTypeScalarFieldEnum
+    having?: StockMovementTypeScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: StockMovementTypeCountAggregateInputType | true
+    _avg?: StockMovementTypeAvgAggregateInputType
+    _sum?: StockMovementTypeSumAggregateInputType
+    _min?: StockMovementTypeMinAggregateInputType
+    _max?: StockMovementTypeMaxAggregateInputType
+  }
+
+  export type StockMovementTypeGroupByOutputType = {
+    id: number
+    code: string
+    name: string
+    description: string | null
+    operation: $Enums.StockOperationType
+    isActive: boolean
+    createdAt: Date
+    updatedAt: Date
+    _count: StockMovementTypeCountAggregateOutputType | null
+    _avg: StockMovementTypeAvgAggregateOutputType | null
+    _sum: StockMovementTypeSumAggregateOutputType | null
+    _min: StockMovementTypeMinAggregateOutputType | null
+    _max: StockMovementTypeMaxAggregateOutputType | null
+  }
+
+  type GetStockMovementTypeGroupByPayload<T extends StockMovementTypeGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<StockMovementTypeGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof StockMovementTypeGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], StockMovementTypeGroupByOutputType[P]>
+            : GetScalarType<T[P], StockMovementTypeGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type StockMovementTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    code?: boolean
+    name?: boolean
+    description?: boolean
+    operation?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    stockMovements?: boolean | StockMovementType$stockMovementsArgs<ExtArgs>
+    _count?: boolean | StockMovementTypeCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["stockMovementType"]>
+
+
+
+  export type StockMovementTypeSelectScalar = {
+    id?: boolean
+    code?: boolean
+    name?: boolean
+    description?: boolean
+    operation?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type StockMovementTypeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "code" | "name" | "description" | "operation" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["stockMovementType"]>
+  export type StockMovementTypeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    stockMovements?: boolean | StockMovementType$stockMovementsArgs<ExtArgs>
+    _count?: boolean | StockMovementTypeCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $StockMovementTypePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "StockMovementType"
+    objects: {
+      stockMovements: Prisma.$MaterialStockMovementPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      code: string
+      name: string
+      description: string | null
+      operation: $Enums.StockOperationType
+      isActive: boolean
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["stockMovementType"]>
+    composites: {}
+  }
+
+  type StockMovementTypeGetPayload<S extends boolean | null | undefined | StockMovementTypeDefaultArgs> = $Result.GetResult<Prisma.$StockMovementTypePayload, S>
+
+  type StockMovementTypeCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<StockMovementTypeFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: StockMovementTypeCountAggregateInputType | true
+    }
+
+  export interface StockMovementTypeDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['StockMovementType'], meta: { name: 'StockMovementType' } }
+    /**
+     * Find zero or one StockMovementType that matches the filter.
+     * @param {StockMovementTypeFindUniqueArgs} args - Arguments to find a StockMovementType
+     * @example
+     * // Get one StockMovementType
+     * const stockMovementType = await prisma.stockMovementType.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends StockMovementTypeFindUniqueArgs>(args: SelectSubset<T, StockMovementTypeFindUniqueArgs<ExtArgs>>): Prisma__StockMovementTypeClient<$Result.GetResult<Prisma.$StockMovementTypePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one StockMovementType that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {StockMovementTypeFindUniqueOrThrowArgs} args - Arguments to find a StockMovementType
+     * @example
+     * // Get one StockMovementType
+     * const stockMovementType = await prisma.stockMovementType.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends StockMovementTypeFindUniqueOrThrowArgs>(args: SelectSubset<T, StockMovementTypeFindUniqueOrThrowArgs<ExtArgs>>): Prisma__StockMovementTypeClient<$Result.GetResult<Prisma.$StockMovementTypePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first StockMovementType that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StockMovementTypeFindFirstArgs} args - Arguments to find a StockMovementType
+     * @example
+     * // Get one StockMovementType
+     * const stockMovementType = await prisma.stockMovementType.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends StockMovementTypeFindFirstArgs>(args?: SelectSubset<T, StockMovementTypeFindFirstArgs<ExtArgs>>): Prisma__StockMovementTypeClient<$Result.GetResult<Prisma.$StockMovementTypePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first StockMovementType that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StockMovementTypeFindFirstOrThrowArgs} args - Arguments to find a StockMovementType
+     * @example
+     * // Get one StockMovementType
+     * const stockMovementType = await prisma.stockMovementType.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends StockMovementTypeFindFirstOrThrowArgs>(args?: SelectSubset<T, StockMovementTypeFindFirstOrThrowArgs<ExtArgs>>): Prisma__StockMovementTypeClient<$Result.GetResult<Prisma.$StockMovementTypePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more StockMovementTypes that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StockMovementTypeFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all StockMovementTypes
+     * const stockMovementTypes = await prisma.stockMovementType.findMany()
+     * 
+     * // Get first 10 StockMovementTypes
+     * const stockMovementTypes = await prisma.stockMovementType.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const stockMovementTypeWithIdOnly = await prisma.stockMovementType.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends StockMovementTypeFindManyArgs>(args?: SelectSubset<T, StockMovementTypeFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StockMovementTypePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a StockMovementType.
+     * @param {StockMovementTypeCreateArgs} args - Arguments to create a StockMovementType.
+     * @example
+     * // Create one StockMovementType
+     * const StockMovementType = await prisma.stockMovementType.create({
+     *   data: {
+     *     // ... data to create a StockMovementType
+     *   }
+     * })
+     * 
+     */
+    create<T extends StockMovementTypeCreateArgs>(args: SelectSubset<T, StockMovementTypeCreateArgs<ExtArgs>>): Prisma__StockMovementTypeClient<$Result.GetResult<Prisma.$StockMovementTypePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many StockMovementTypes.
+     * @param {StockMovementTypeCreateManyArgs} args - Arguments to create many StockMovementTypes.
+     * @example
+     * // Create many StockMovementTypes
+     * const stockMovementType = await prisma.stockMovementType.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends StockMovementTypeCreateManyArgs>(args?: SelectSubset<T, StockMovementTypeCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a StockMovementType.
+     * @param {StockMovementTypeDeleteArgs} args - Arguments to delete one StockMovementType.
+     * @example
+     * // Delete one StockMovementType
+     * const StockMovementType = await prisma.stockMovementType.delete({
+     *   where: {
+     *     // ... filter to delete one StockMovementType
+     *   }
+     * })
+     * 
+     */
+    delete<T extends StockMovementTypeDeleteArgs>(args: SelectSubset<T, StockMovementTypeDeleteArgs<ExtArgs>>): Prisma__StockMovementTypeClient<$Result.GetResult<Prisma.$StockMovementTypePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one StockMovementType.
+     * @param {StockMovementTypeUpdateArgs} args - Arguments to update one StockMovementType.
+     * @example
+     * // Update one StockMovementType
+     * const stockMovementType = await prisma.stockMovementType.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends StockMovementTypeUpdateArgs>(args: SelectSubset<T, StockMovementTypeUpdateArgs<ExtArgs>>): Prisma__StockMovementTypeClient<$Result.GetResult<Prisma.$StockMovementTypePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more StockMovementTypes.
+     * @param {StockMovementTypeDeleteManyArgs} args - Arguments to filter StockMovementTypes to delete.
+     * @example
+     * // Delete a few StockMovementTypes
+     * const { count } = await prisma.stockMovementType.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends StockMovementTypeDeleteManyArgs>(args?: SelectSubset<T, StockMovementTypeDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more StockMovementTypes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StockMovementTypeUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many StockMovementTypes
+     * const stockMovementType = await prisma.stockMovementType.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends StockMovementTypeUpdateManyArgs>(args: SelectSubset<T, StockMovementTypeUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one StockMovementType.
+     * @param {StockMovementTypeUpsertArgs} args - Arguments to update or create a StockMovementType.
+     * @example
+     * // Update or create a StockMovementType
+     * const stockMovementType = await prisma.stockMovementType.upsert({
+     *   create: {
+     *     // ... data to create a StockMovementType
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the StockMovementType we want to update
+     *   }
+     * })
+     */
+    upsert<T extends StockMovementTypeUpsertArgs>(args: SelectSubset<T, StockMovementTypeUpsertArgs<ExtArgs>>): Prisma__StockMovementTypeClient<$Result.GetResult<Prisma.$StockMovementTypePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of StockMovementTypes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StockMovementTypeCountArgs} args - Arguments to filter StockMovementTypes to count.
+     * @example
+     * // Count the number of StockMovementTypes
+     * const count = await prisma.stockMovementType.count({
+     *   where: {
+     *     // ... the filter for the StockMovementTypes we want to count
+     *   }
+     * })
+    **/
+    count<T extends StockMovementTypeCountArgs>(
+      args?: Subset<T, StockMovementTypeCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], StockMovementTypeCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a StockMovementType.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StockMovementTypeAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends StockMovementTypeAggregateArgs>(args: Subset<T, StockMovementTypeAggregateArgs>): Prisma.PrismaPromise<GetStockMovementTypeAggregateType<T>>
+
+    /**
+     * Group by StockMovementType.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StockMovementTypeGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends StockMovementTypeGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: StockMovementTypeGroupByArgs['orderBy'] }
+        : { orderBy?: StockMovementTypeGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, StockMovementTypeGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetStockMovementTypeGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the StockMovementType model
+   */
+  readonly fields: StockMovementTypeFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for StockMovementType.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__StockMovementTypeClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    stockMovements<T extends StockMovementType$stockMovementsArgs<ExtArgs> = {}>(args?: Subset<T, StockMovementType$stockMovementsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaterialStockMovementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the StockMovementType model
+   */
+  interface StockMovementTypeFieldRefs {
+    readonly id: FieldRef<"StockMovementType", 'Int'>
+    readonly code: FieldRef<"StockMovementType", 'String'>
+    readonly name: FieldRef<"StockMovementType", 'String'>
+    readonly description: FieldRef<"StockMovementType", 'String'>
+    readonly operation: FieldRef<"StockMovementType", 'StockOperationType'>
+    readonly isActive: FieldRef<"StockMovementType", 'Boolean'>
+    readonly createdAt: FieldRef<"StockMovementType", 'DateTime'>
+    readonly updatedAt: FieldRef<"StockMovementType", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * StockMovementType findUnique
+   */
+  export type StockMovementTypeFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StockMovementType
+     */
+    select?: StockMovementTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StockMovementType
+     */
+    omit?: StockMovementTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StockMovementTypeInclude<ExtArgs> | null
+    /**
+     * Filter, which StockMovementType to fetch.
+     */
+    where: StockMovementTypeWhereUniqueInput
+  }
+
+  /**
+   * StockMovementType findUniqueOrThrow
+   */
+  export type StockMovementTypeFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StockMovementType
+     */
+    select?: StockMovementTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StockMovementType
+     */
+    omit?: StockMovementTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StockMovementTypeInclude<ExtArgs> | null
+    /**
+     * Filter, which StockMovementType to fetch.
+     */
+    where: StockMovementTypeWhereUniqueInput
+  }
+
+  /**
+   * StockMovementType findFirst
+   */
+  export type StockMovementTypeFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StockMovementType
+     */
+    select?: StockMovementTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StockMovementType
+     */
+    omit?: StockMovementTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StockMovementTypeInclude<ExtArgs> | null
+    /**
+     * Filter, which StockMovementType to fetch.
+     */
+    where?: StockMovementTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of StockMovementTypes to fetch.
+     */
+    orderBy?: StockMovementTypeOrderByWithRelationInput | StockMovementTypeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for StockMovementTypes.
+     */
+    cursor?: StockMovementTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` StockMovementTypes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` StockMovementTypes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of StockMovementTypes.
+     */
+    distinct?: StockMovementTypeScalarFieldEnum | StockMovementTypeScalarFieldEnum[]
+  }
+
+  /**
+   * StockMovementType findFirstOrThrow
+   */
+  export type StockMovementTypeFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StockMovementType
+     */
+    select?: StockMovementTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StockMovementType
+     */
+    omit?: StockMovementTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StockMovementTypeInclude<ExtArgs> | null
+    /**
+     * Filter, which StockMovementType to fetch.
+     */
+    where?: StockMovementTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of StockMovementTypes to fetch.
+     */
+    orderBy?: StockMovementTypeOrderByWithRelationInput | StockMovementTypeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for StockMovementTypes.
+     */
+    cursor?: StockMovementTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` StockMovementTypes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` StockMovementTypes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of StockMovementTypes.
+     */
+    distinct?: StockMovementTypeScalarFieldEnum | StockMovementTypeScalarFieldEnum[]
+  }
+
+  /**
+   * StockMovementType findMany
+   */
+  export type StockMovementTypeFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StockMovementType
+     */
+    select?: StockMovementTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StockMovementType
+     */
+    omit?: StockMovementTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StockMovementTypeInclude<ExtArgs> | null
+    /**
+     * Filter, which StockMovementTypes to fetch.
+     */
+    where?: StockMovementTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of StockMovementTypes to fetch.
+     */
+    orderBy?: StockMovementTypeOrderByWithRelationInput | StockMovementTypeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing StockMovementTypes.
+     */
+    cursor?: StockMovementTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` StockMovementTypes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` StockMovementTypes.
+     */
+    skip?: number
+    distinct?: StockMovementTypeScalarFieldEnum | StockMovementTypeScalarFieldEnum[]
+  }
+
+  /**
+   * StockMovementType create
+   */
+  export type StockMovementTypeCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StockMovementType
+     */
+    select?: StockMovementTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StockMovementType
+     */
+    omit?: StockMovementTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StockMovementTypeInclude<ExtArgs> | null
+    /**
+     * The data needed to create a StockMovementType.
+     */
+    data: XOR<StockMovementTypeCreateInput, StockMovementTypeUncheckedCreateInput>
+  }
+
+  /**
+   * StockMovementType createMany
+   */
+  export type StockMovementTypeCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many StockMovementTypes.
+     */
+    data: StockMovementTypeCreateManyInput | StockMovementTypeCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * StockMovementType update
+   */
+  export type StockMovementTypeUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StockMovementType
+     */
+    select?: StockMovementTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StockMovementType
+     */
+    omit?: StockMovementTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StockMovementTypeInclude<ExtArgs> | null
+    /**
+     * The data needed to update a StockMovementType.
+     */
+    data: XOR<StockMovementTypeUpdateInput, StockMovementTypeUncheckedUpdateInput>
+    /**
+     * Choose, which StockMovementType to update.
+     */
+    where: StockMovementTypeWhereUniqueInput
+  }
+
+  /**
+   * StockMovementType updateMany
+   */
+  export type StockMovementTypeUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update StockMovementTypes.
+     */
+    data: XOR<StockMovementTypeUpdateManyMutationInput, StockMovementTypeUncheckedUpdateManyInput>
+    /**
+     * Filter which StockMovementTypes to update
+     */
+    where?: StockMovementTypeWhereInput
+    /**
+     * Limit how many StockMovementTypes to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * StockMovementType upsert
+   */
+  export type StockMovementTypeUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StockMovementType
+     */
+    select?: StockMovementTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StockMovementType
+     */
+    omit?: StockMovementTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StockMovementTypeInclude<ExtArgs> | null
+    /**
+     * The filter to search for the StockMovementType to update in case it exists.
+     */
+    where: StockMovementTypeWhereUniqueInput
+    /**
+     * In case the StockMovementType found by the `where` argument doesn't exist, create a new StockMovementType with this data.
+     */
+    create: XOR<StockMovementTypeCreateInput, StockMovementTypeUncheckedCreateInput>
+    /**
+     * In case the StockMovementType was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<StockMovementTypeUpdateInput, StockMovementTypeUncheckedUpdateInput>
+  }
+
+  /**
+   * StockMovementType delete
+   */
+  export type StockMovementTypeDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StockMovementType
+     */
+    select?: StockMovementTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StockMovementType
+     */
+    omit?: StockMovementTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StockMovementTypeInclude<ExtArgs> | null
+    /**
+     * Filter which StockMovementType to delete.
+     */
+    where: StockMovementTypeWhereUniqueInput
+  }
+
+  /**
+   * StockMovementType deleteMany
+   */
+  export type StockMovementTypeDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which StockMovementTypes to delete
+     */
+    where?: StockMovementTypeWhereInput
+    /**
+     * Limit how many StockMovementTypes to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * StockMovementType.stockMovements
+   */
+  export type StockMovementType$stockMovementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialStockMovement
+     */
+    select?: MaterialStockMovementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialStockMovement
+     */
+    omit?: MaterialStockMovementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialStockMovementInclude<ExtArgs> | null
+    where?: MaterialStockMovementWhereInput
+    orderBy?: MaterialStockMovementOrderByWithRelationInput | MaterialStockMovementOrderByWithRelationInput[]
+    cursor?: MaterialStockMovementWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MaterialStockMovementScalarFieldEnum | MaterialStockMovementScalarFieldEnum[]
+  }
+
+  /**
+   * StockMovementType without action
+   */
+  export type StockMovementTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StockMovementType
+     */
+    select?: StockMovementTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StockMovementType
+     */
+    omit?: StockMovementTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StockMovementTypeInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model MaterialStockMovement
+   */
+
+  export type AggregateMaterialStockMovement = {
+    _count: MaterialStockMovementCountAggregateOutputType | null
+    _avg: MaterialStockMovementAvgAggregateOutputType | null
+    _sum: MaterialStockMovementSumAggregateOutputType | null
+    _min: MaterialStockMovementMinAggregateOutputType | null
+    _max: MaterialStockMovementMaxAggregateOutputType | null
+  }
+
+  export type MaterialStockMovementAvgAggregateOutputType = {
+    id: number | null
+    warehouseId: number | null
+    globalMaterialId: number | null
+    materialInstanceId: number | null
+    movementTypeId: number | null
+    quantity: Decimal | null
+    warehouseMaterialStockId: number | null
+    materialRequestItemId: number | null
+  }
+
+  export type MaterialStockMovementSumAggregateOutputType = {
+    id: number | null
+    warehouseId: number | null
+    globalMaterialId: number | null
+    materialInstanceId: number | null
+    movementTypeId: number | null
+    quantity: Decimal | null
+    warehouseMaterialStockId: number | null
+    materialRequestItemId: number | null
+  }
+
+  export type MaterialStockMovementMinAggregateOutputType = {
+    id: number | null
+    warehouseId: number | null
+    globalMaterialId: number | null
+    materialInstanceId: number | null
+    movementTypeId: number | null
+    quantity: Decimal | null
+    unitOfMeasure: string | null
+    movementDate: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    warehouseMaterialStockId: number | null
+    materialRequestItemId: number | null
+  }
+
+  export type MaterialStockMovementMaxAggregateOutputType = {
+    id: number | null
+    warehouseId: number | null
+    globalMaterialId: number | null
+    materialInstanceId: number | null
+    movementTypeId: number | null
+    quantity: Decimal | null
+    unitOfMeasure: string | null
+    movementDate: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    warehouseMaterialStockId: number | null
+    materialRequestItemId: number | null
+  }
+
+  export type MaterialStockMovementCountAggregateOutputType = {
+    id: number
+    warehouseId: number
+    globalMaterialId: number
+    materialInstanceId: number
+    movementTypeId: number
+    quantity: number
+    unitOfMeasure: number
+    movementDate: number
+    createdAt: number
+    updatedAt: number
+    warehouseMaterialStockId: number
+    materialRequestItemId: number
+    _all: number
+  }
+
+
+  export type MaterialStockMovementAvgAggregateInputType = {
+    id?: true
+    warehouseId?: true
+    globalMaterialId?: true
+    materialInstanceId?: true
+    movementTypeId?: true
+    quantity?: true
+    warehouseMaterialStockId?: true
+    materialRequestItemId?: true
+  }
+
+  export type MaterialStockMovementSumAggregateInputType = {
+    id?: true
+    warehouseId?: true
+    globalMaterialId?: true
+    materialInstanceId?: true
+    movementTypeId?: true
+    quantity?: true
+    warehouseMaterialStockId?: true
+    materialRequestItemId?: true
+  }
+
+  export type MaterialStockMovementMinAggregateInputType = {
+    id?: true
+    warehouseId?: true
+    globalMaterialId?: true
+    materialInstanceId?: true
+    movementTypeId?: true
+    quantity?: true
+    unitOfMeasure?: true
+    movementDate?: true
+    createdAt?: true
+    updatedAt?: true
+    warehouseMaterialStockId?: true
+    materialRequestItemId?: true
+  }
+
+  export type MaterialStockMovementMaxAggregateInputType = {
+    id?: true
+    warehouseId?: true
+    globalMaterialId?: true
+    materialInstanceId?: true
+    movementTypeId?: true
+    quantity?: true
+    unitOfMeasure?: true
+    movementDate?: true
+    createdAt?: true
+    updatedAt?: true
+    warehouseMaterialStockId?: true
+    materialRequestItemId?: true
+  }
+
+  export type MaterialStockMovementCountAggregateInputType = {
+    id?: true
+    warehouseId?: true
+    globalMaterialId?: true
+    materialInstanceId?: true
+    movementTypeId?: true
+    quantity?: true
+    unitOfMeasure?: true
+    movementDate?: true
+    createdAt?: true
+    updatedAt?: true
+    warehouseMaterialStockId?: true
+    materialRequestItemId?: true
+    _all?: true
+  }
+
+  export type MaterialStockMovementAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MaterialStockMovement to aggregate.
+     */
+    where?: MaterialStockMovementWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MaterialStockMovements to fetch.
+     */
+    orderBy?: MaterialStockMovementOrderByWithRelationInput | MaterialStockMovementOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: MaterialStockMovementWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MaterialStockMovements from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MaterialStockMovements.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned MaterialStockMovements
+    **/
+    _count?: true | MaterialStockMovementCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: MaterialStockMovementAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: MaterialStockMovementSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: MaterialStockMovementMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: MaterialStockMovementMaxAggregateInputType
+  }
+
+  export type GetMaterialStockMovementAggregateType<T extends MaterialStockMovementAggregateArgs> = {
+        [P in keyof T & keyof AggregateMaterialStockMovement]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMaterialStockMovement[P]>
+      : GetScalarType<T[P], AggregateMaterialStockMovement[P]>
+  }
+
+
+
+
+  export type MaterialStockMovementGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MaterialStockMovementWhereInput
+    orderBy?: MaterialStockMovementOrderByWithAggregationInput | MaterialStockMovementOrderByWithAggregationInput[]
+    by: MaterialStockMovementScalarFieldEnum[] | MaterialStockMovementScalarFieldEnum
+    having?: MaterialStockMovementScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: MaterialStockMovementCountAggregateInputType | true
+    _avg?: MaterialStockMovementAvgAggregateInputType
+    _sum?: MaterialStockMovementSumAggregateInputType
+    _min?: MaterialStockMovementMinAggregateInputType
+    _max?: MaterialStockMovementMaxAggregateInputType
+  }
+
+  export type MaterialStockMovementGroupByOutputType = {
+    id: number
+    warehouseId: number
+    globalMaterialId: number | null
+    materialInstanceId: number | null
+    movementTypeId: number
+    quantity: Decimal
+    unitOfMeasure: string
+    movementDate: Date
+    createdAt: Date
+    updatedAt: Date
+    warehouseMaterialStockId: number | null
+    materialRequestItemId: number | null
+    _count: MaterialStockMovementCountAggregateOutputType | null
+    _avg: MaterialStockMovementAvgAggregateOutputType | null
+    _sum: MaterialStockMovementSumAggregateOutputType | null
+    _min: MaterialStockMovementMinAggregateOutputType | null
+    _max: MaterialStockMovementMaxAggregateOutputType | null
+  }
+
+  type GetMaterialStockMovementGroupByPayload<T extends MaterialStockMovementGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<MaterialStockMovementGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof MaterialStockMovementGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], MaterialStockMovementGroupByOutputType[P]>
+            : GetScalarType<T[P], MaterialStockMovementGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type MaterialStockMovementSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    warehouseId?: boolean
+    globalMaterialId?: boolean
+    materialInstanceId?: boolean
+    movementTypeId?: boolean
+    quantity?: boolean
+    unitOfMeasure?: boolean
+    movementDate?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    warehouseMaterialStockId?: boolean
+    materialRequestItemId?: boolean
+    warehouse?: boolean | WarehouseDefaultArgs<ExtArgs>
+    globalMaterial?: boolean | MaterialStockMovement$globalMaterialArgs<ExtArgs>
+    materialInstance?: boolean | MaterialStockMovement$materialInstanceArgs<ExtArgs>
+    movementType?: boolean | StockMovementTypeDefaultArgs<ExtArgs>
+    WarehouseMaterialStock?: boolean | MaterialStockMovement$WarehouseMaterialStockArgs<ExtArgs>
+    MaterialRequestItem?: boolean | MaterialStockMovement$MaterialRequestItemArgs<ExtArgs>
+  }, ExtArgs["result"]["materialStockMovement"]>
+
+
+
+  export type MaterialStockMovementSelectScalar = {
+    id?: boolean
+    warehouseId?: boolean
+    globalMaterialId?: boolean
+    materialInstanceId?: boolean
+    movementTypeId?: boolean
+    quantity?: boolean
+    unitOfMeasure?: boolean
+    movementDate?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    warehouseMaterialStockId?: boolean
+    materialRequestItemId?: boolean
+  }
+
+  export type MaterialStockMovementOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "warehouseId" | "globalMaterialId" | "materialInstanceId" | "movementTypeId" | "quantity" | "unitOfMeasure" | "movementDate" | "createdAt" | "updatedAt" | "warehouseMaterialStockId" | "materialRequestItemId", ExtArgs["result"]["materialStockMovement"]>
+  export type MaterialStockMovementInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    warehouse?: boolean | WarehouseDefaultArgs<ExtArgs>
+    globalMaterial?: boolean | MaterialStockMovement$globalMaterialArgs<ExtArgs>
+    materialInstance?: boolean | MaterialStockMovement$materialInstanceArgs<ExtArgs>
+    movementType?: boolean | StockMovementTypeDefaultArgs<ExtArgs>
+    WarehouseMaterialStock?: boolean | MaterialStockMovement$WarehouseMaterialStockArgs<ExtArgs>
+    MaterialRequestItem?: boolean | MaterialStockMovement$MaterialRequestItemArgs<ExtArgs>
+  }
+
+  export type $MaterialStockMovementPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "MaterialStockMovement"
+    objects: {
+      warehouse: Prisma.$WarehousePayload<ExtArgs>
+      globalMaterial: Prisma.$MaterialPayload<ExtArgs> | null
+      materialInstance: Prisma.$MaterialInstancePayload<ExtArgs> | null
+      movementType: Prisma.$StockMovementTypePayload<ExtArgs>
+      WarehouseMaterialStock: Prisma.$WarehouseMaterialStockPayload<ExtArgs> | null
+      MaterialRequestItem: Prisma.$MaterialRequestItemPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      warehouseId: number
+      globalMaterialId: number | null
+      materialInstanceId: number | null
+      movementTypeId: number
+      quantity: Prisma.Decimal
+      unitOfMeasure: string
+      movementDate: Date
+      createdAt: Date
+      updatedAt: Date
+      warehouseMaterialStockId: number | null
+      materialRequestItemId: number | null
+    }, ExtArgs["result"]["materialStockMovement"]>
+    composites: {}
+  }
+
+  type MaterialStockMovementGetPayload<S extends boolean | null | undefined | MaterialStockMovementDefaultArgs> = $Result.GetResult<Prisma.$MaterialStockMovementPayload, S>
+
+  type MaterialStockMovementCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<MaterialStockMovementFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: MaterialStockMovementCountAggregateInputType | true
+    }
+
+  export interface MaterialStockMovementDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['MaterialStockMovement'], meta: { name: 'MaterialStockMovement' } }
+    /**
+     * Find zero or one MaterialStockMovement that matches the filter.
+     * @param {MaterialStockMovementFindUniqueArgs} args - Arguments to find a MaterialStockMovement
+     * @example
+     * // Get one MaterialStockMovement
+     * const materialStockMovement = await prisma.materialStockMovement.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends MaterialStockMovementFindUniqueArgs>(args: SelectSubset<T, MaterialStockMovementFindUniqueArgs<ExtArgs>>): Prisma__MaterialStockMovementClient<$Result.GetResult<Prisma.$MaterialStockMovementPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one MaterialStockMovement that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {MaterialStockMovementFindUniqueOrThrowArgs} args - Arguments to find a MaterialStockMovement
+     * @example
+     * // Get one MaterialStockMovement
+     * const materialStockMovement = await prisma.materialStockMovement.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends MaterialStockMovementFindUniqueOrThrowArgs>(args: SelectSubset<T, MaterialStockMovementFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MaterialStockMovementClient<$Result.GetResult<Prisma.$MaterialStockMovementPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MaterialStockMovement that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaterialStockMovementFindFirstArgs} args - Arguments to find a MaterialStockMovement
+     * @example
+     * // Get one MaterialStockMovement
+     * const materialStockMovement = await prisma.materialStockMovement.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends MaterialStockMovementFindFirstArgs>(args?: SelectSubset<T, MaterialStockMovementFindFirstArgs<ExtArgs>>): Prisma__MaterialStockMovementClient<$Result.GetResult<Prisma.$MaterialStockMovementPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MaterialStockMovement that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaterialStockMovementFindFirstOrThrowArgs} args - Arguments to find a MaterialStockMovement
+     * @example
+     * // Get one MaterialStockMovement
+     * const materialStockMovement = await prisma.materialStockMovement.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends MaterialStockMovementFindFirstOrThrowArgs>(args?: SelectSubset<T, MaterialStockMovementFindFirstOrThrowArgs<ExtArgs>>): Prisma__MaterialStockMovementClient<$Result.GetResult<Prisma.$MaterialStockMovementPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more MaterialStockMovements that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaterialStockMovementFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all MaterialStockMovements
+     * const materialStockMovements = await prisma.materialStockMovement.findMany()
+     * 
+     * // Get first 10 MaterialStockMovements
+     * const materialStockMovements = await prisma.materialStockMovement.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const materialStockMovementWithIdOnly = await prisma.materialStockMovement.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends MaterialStockMovementFindManyArgs>(args?: SelectSubset<T, MaterialStockMovementFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaterialStockMovementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a MaterialStockMovement.
+     * @param {MaterialStockMovementCreateArgs} args - Arguments to create a MaterialStockMovement.
+     * @example
+     * // Create one MaterialStockMovement
+     * const MaterialStockMovement = await prisma.materialStockMovement.create({
+     *   data: {
+     *     // ... data to create a MaterialStockMovement
+     *   }
+     * })
+     * 
+     */
+    create<T extends MaterialStockMovementCreateArgs>(args: SelectSubset<T, MaterialStockMovementCreateArgs<ExtArgs>>): Prisma__MaterialStockMovementClient<$Result.GetResult<Prisma.$MaterialStockMovementPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many MaterialStockMovements.
+     * @param {MaterialStockMovementCreateManyArgs} args - Arguments to create many MaterialStockMovements.
+     * @example
+     * // Create many MaterialStockMovements
+     * const materialStockMovement = await prisma.materialStockMovement.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends MaterialStockMovementCreateManyArgs>(args?: SelectSubset<T, MaterialStockMovementCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a MaterialStockMovement.
+     * @param {MaterialStockMovementDeleteArgs} args - Arguments to delete one MaterialStockMovement.
+     * @example
+     * // Delete one MaterialStockMovement
+     * const MaterialStockMovement = await prisma.materialStockMovement.delete({
+     *   where: {
+     *     // ... filter to delete one MaterialStockMovement
+     *   }
+     * })
+     * 
+     */
+    delete<T extends MaterialStockMovementDeleteArgs>(args: SelectSubset<T, MaterialStockMovementDeleteArgs<ExtArgs>>): Prisma__MaterialStockMovementClient<$Result.GetResult<Prisma.$MaterialStockMovementPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one MaterialStockMovement.
+     * @param {MaterialStockMovementUpdateArgs} args - Arguments to update one MaterialStockMovement.
+     * @example
+     * // Update one MaterialStockMovement
+     * const materialStockMovement = await prisma.materialStockMovement.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends MaterialStockMovementUpdateArgs>(args: SelectSubset<T, MaterialStockMovementUpdateArgs<ExtArgs>>): Prisma__MaterialStockMovementClient<$Result.GetResult<Prisma.$MaterialStockMovementPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more MaterialStockMovements.
+     * @param {MaterialStockMovementDeleteManyArgs} args - Arguments to filter MaterialStockMovements to delete.
+     * @example
+     * // Delete a few MaterialStockMovements
+     * const { count } = await prisma.materialStockMovement.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends MaterialStockMovementDeleteManyArgs>(args?: SelectSubset<T, MaterialStockMovementDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MaterialStockMovements.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaterialStockMovementUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many MaterialStockMovements
+     * const materialStockMovement = await prisma.materialStockMovement.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends MaterialStockMovementUpdateManyArgs>(args: SelectSubset<T, MaterialStockMovementUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one MaterialStockMovement.
+     * @param {MaterialStockMovementUpsertArgs} args - Arguments to update or create a MaterialStockMovement.
+     * @example
+     * // Update or create a MaterialStockMovement
+     * const materialStockMovement = await prisma.materialStockMovement.upsert({
+     *   create: {
+     *     // ... data to create a MaterialStockMovement
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the MaterialStockMovement we want to update
+     *   }
+     * })
+     */
+    upsert<T extends MaterialStockMovementUpsertArgs>(args: SelectSubset<T, MaterialStockMovementUpsertArgs<ExtArgs>>): Prisma__MaterialStockMovementClient<$Result.GetResult<Prisma.$MaterialStockMovementPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of MaterialStockMovements.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaterialStockMovementCountArgs} args - Arguments to filter MaterialStockMovements to count.
+     * @example
+     * // Count the number of MaterialStockMovements
+     * const count = await prisma.materialStockMovement.count({
+     *   where: {
+     *     // ... the filter for the MaterialStockMovements we want to count
+     *   }
+     * })
+    **/
+    count<T extends MaterialStockMovementCountArgs>(
+      args?: Subset<T, MaterialStockMovementCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], MaterialStockMovementCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a MaterialStockMovement.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaterialStockMovementAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MaterialStockMovementAggregateArgs>(args: Subset<T, MaterialStockMovementAggregateArgs>): Prisma.PrismaPromise<GetMaterialStockMovementAggregateType<T>>
+
+    /**
+     * Group by MaterialStockMovement.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaterialStockMovementGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends MaterialStockMovementGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: MaterialStockMovementGroupByArgs['orderBy'] }
+        : { orderBy?: MaterialStockMovementGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, MaterialStockMovementGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMaterialStockMovementGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the MaterialStockMovement model
+   */
+  readonly fields: MaterialStockMovementFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for MaterialStockMovement.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__MaterialStockMovementClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    warehouse<T extends WarehouseDefaultArgs<ExtArgs> = {}>(args?: Subset<T, WarehouseDefaultArgs<ExtArgs>>): Prisma__WarehouseClient<$Result.GetResult<Prisma.$WarehousePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    globalMaterial<T extends MaterialStockMovement$globalMaterialArgs<ExtArgs> = {}>(args?: Subset<T, MaterialStockMovement$globalMaterialArgs<ExtArgs>>): Prisma__MaterialClient<$Result.GetResult<Prisma.$MaterialPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    materialInstance<T extends MaterialStockMovement$materialInstanceArgs<ExtArgs> = {}>(args?: Subset<T, MaterialStockMovement$materialInstanceArgs<ExtArgs>>): Prisma__MaterialInstanceClient<$Result.GetResult<Prisma.$MaterialInstancePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    movementType<T extends StockMovementTypeDefaultArgs<ExtArgs> = {}>(args?: Subset<T, StockMovementTypeDefaultArgs<ExtArgs>>): Prisma__StockMovementTypeClient<$Result.GetResult<Prisma.$StockMovementTypePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    WarehouseMaterialStock<T extends MaterialStockMovement$WarehouseMaterialStockArgs<ExtArgs> = {}>(args?: Subset<T, MaterialStockMovement$WarehouseMaterialStockArgs<ExtArgs>>): Prisma__WarehouseMaterialStockClient<$Result.GetResult<Prisma.$WarehouseMaterialStockPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    MaterialRequestItem<T extends MaterialStockMovement$MaterialRequestItemArgs<ExtArgs> = {}>(args?: Subset<T, MaterialStockMovement$MaterialRequestItemArgs<ExtArgs>>): Prisma__MaterialRequestItemClient<$Result.GetResult<Prisma.$MaterialRequestItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the MaterialStockMovement model
+   */
+  interface MaterialStockMovementFieldRefs {
+    readonly id: FieldRef<"MaterialStockMovement", 'Int'>
+    readonly warehouseId: FieldRef<"MaterialStockMovement", 'Int'>
+    readonly globalMaterialId: FieldRef<"MaterialStockMovement", 'Int'>
+    readonly materialInstanceId: FieldRef<"MaterialStockMovement", 'Int'>
+    readonly movementTypeId: FieldRef<"MaterialStockMovement", 'Int'>
+    readonly quantity: FieldRef<"MaterialStockMovement", 'Decimal'>
+    readonly unitOfMeasure: FieldRef<"MaterialStockMovement", 'String'>
+    readonly movementDate: FieldRef<"MaterialStockMovement", 'DateTime'>
+    readonly createdAt: FieldRef<"MaterialStockMovement", 'DateTime'>
+    readonly updatedAt: FieldRef<"MaterialStockMovement", 'DateTime'>
+    readonly warehouseMaterialStockId: FieldRef<"MaterialStockMovement", 'Int'>
+    readonly materialRequestItemId: FieldRef<"MaterialStockMovement", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * MaterialStockMovement findUnique
+   */
+  export type MaterialStockMovementFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialStockMovement
+     */
+    select?: MaterialStockMovementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialStockMovement
+     */
+    omit?: MaterialStockMovementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialStockMovementInclude<ExtArgs> | null
+    /**
+     * Filter, which MaterialStockMovement to fetch.
+     */
+    where: MaterialStockMovementWhereUniqueInput
+  }
+
+  /**
+   * MaterialStockMovement findUniqueOrThrow
+   */
+  export type MaterialStockMovementFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialStockMovement
+     */
+    select?: MaterialStockMovementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialStockMovement
+     */
+    omit?: MaterialStockMovementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialStockMovementInclude<ExtArgs> | null
+    /**
+     * Filter, which MaterialStockMovement to fetch.
+     */
+    where: MaterialStockMovementWhereUniqueInput
+  }
+
+  /**
+   * MaterialStockMovement findFirst
+   */
+  export type MaterialStockMovementFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialStockMovement
+     */
+    select?: MaterialStockMovementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialStockMovement
+     */
+    omit?: MaterialStockMovementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialStockMovementInclude<ExtArgs> | null
+    /**
+     * Filter, which MaterialStockMovement to fetch.
+     */
+    where?: MaterialStockMovementWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MaterialStockMovements to fetch.
+     */
+    orderBy?: MaterialStockMovementOrderByWithRelationInput | MaterialStockMovementOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MaterialStockMovements.
+     */
+    cursor?: MaterialStockMovementWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MaterialStockMovements from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MaterialStockMovements.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MaterialStockMovements.
+     */
+    distinct?: MaterialStockMovementScalarFieldEnum | MaterialStockMovementScalarFieldEnum[]
+  }
+
+  /**
+   * MaterialStockMovement findFirstOrThrow
+   */
+  export type MaterialStockMovementFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialStockMovement
+     */
+    select?: MaterialStockMovementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialStockMovement
+     */
+    omit?: MaterialStockMovementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialStockMovementInclude<ExtArgs> | null
+    /**
+     * Filter, which MaterialStockMovement to fetch.
+     */
+    where?: MaterialStockMovementWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MaterialStockMovements to fetch.
+     */
+    orderBy?: MaterialStockMovementOrderByWithRelationInput | MaterialStockMovementOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MaterialStockMovements.
+     */
+    cursor?: MaterialStockMovementWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MaterialStockMovements from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MaterialStockMovements.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MaterialStockMovements.
+     */
+    distinct?: MaterialStockMovementScalarFieldEnum | MaterialStockMovementScalarFieldEnum[]
+  }
+
+  /**
+   * MaterialStockMovement findMany
+   */
+  export type MaterialStockMovementFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialStockMovement
+     */
+    select?: MaterialStockMovementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialStockMovement
+     */
+    omit?: MaterialStockMovementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialStockMovementInclude<ExtArgs> | null
+    /**
+     * Filter, which MaterialStockMovements to fetch.
+     */
+    where?: MaterialStockMovementWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MaterialStockMovements to fetch.
+     */
+    orderBy?: MaterialStockMovementOrderByWithRelationInput | MaterialStockMovementOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing MaterialStockMovements.
+     */
+    cursor?: MaterialStockMovementWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MaterialStockMovements from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MaterialStockMovements.
+     */
+    skip?: number
+    distinct?: MaterialStockMovementScalarFieldEnum | MaterialStockMovementScalarFieldEnum[]
+  }
+
+  /**
+   * MaterialStockMovement create
+   */
+  export type MaterialStockMovementCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialStockMovement
+     */
+    select?: MaterialStockMovementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialStockMovement
+     */
+    omit?: MaterialStockMovementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialStockMovementInclude<ExtArgs> | null
+    /**
+     * The data needed to create a MaterialStockMovement.
+     */
+    data: XOR<MaterialStockMovementCreateInput, MaterialStockMovementUncheckedCreateInput>
+  }
+
+  /**
+   * MaterialStockMovement createMany
+   */
+  export type MaterialStockMovementCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many MaterialStockMovements.
+     */
+    data: MaterialStockMovementCreateManyInput | MaterialStockMovementCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * MaterialStockMovement update
+   */
+  export type MaterialStockMovementUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialStockMovement
+     */
+    select?: MaterialStockMovementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialStockMovement
+     */
+    omit?: MaterialStockMovementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialStockMovementInclude<ExtArgs> | null
+    /**
+     * The data needed to update a MaterialStockMovement.
+     */
+    data: XOR<MaterialStockMovementUpdateInput, MaterialStockMovementUncheckedUpdateInput>
+    /**
+     * Choose, which MaterialStockMovement to update.
+     */
+    where: MaterialStockMovementWhereUniqueInput
+  }
+
+  /**
+   * MaterialStockMovement updateMany
+   */
+  export type MaterialStockMovementUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update MaterialStockMovements.
+     */
+    data: XOR<MaterialStockMovementUpdateManyMutationInput, MaterialStockMovementUncheckedUpdateManyInput>
+    /**
+     * Filter which MaterialStockMovements to update
+     */
+    where?: MaterialStockMovementWhereInput
+    /**
+     * Limit how many MaterialStockMovements to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * MaterialStockMovement upsert
+   */
+  export type MaterialStockMovementUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialStockMovement
+     */
+    select?: MaterialStockMovementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialStockMovement
+     */
+    omit?: MaterialStockMovementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialStockMovementInclude<ExtArgs> | null
+    /**
+     * The filter to search for the MaterialStockMovement to update in case it exists.
+     */
+    where: MaterialStockMovementWhereUniqueInput
+    /**
+     * In case the MaterialStockMovement found by the `where` argument doesn't exist, create a new MaterialStockMovement with this data.
+     */
+    create: XOR<MaterialStockMovementCreateInput, MaterialStockMovementUncheckedCreateInput>
+    /**
+     * In case the MaterialStockMovement was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<MaterialStockMovementUpdateInput, MaterialStockMovementUncheckedUpdateInput>
+  }
+
+  /**
+   * MaterialStockMovement delete
+   */
+  export type MaterialStockMovementDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialStockMovement
+     */
+    select?: MaterialStockMovementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialStockMovement
+     */
+    omit?: MaterialStockMovementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialStockMovementInclude<ExtArgs> | null
+    /**
+     * Filter which MaterialStockMovement to delete.
+     */
+    where: MaterialStockMovementWhereUniqueInput
+  }
+
+  /**
+   * MaterialStockMovement deleteMany
+   */
+  export type MaterialStockMovementDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MaterialStockMovements to delete
+     */
+    where?: MaterialStockMovementWhereInput
+    /**
+     * Limit how many MaterialStockMovements to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * MaterialStockMovement.globalMaterial
+   */
+  export type MaterialStockMovement$globalMaterialArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Material
+     */
+    select?: MaterialSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Material
+     */
+    omit?: MaterialOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialInclude<ExtArgs> | null
+    where?: MaterialWhereInput
+  }
+
+  /**
+   * MaterialStockMovement.materialInstance
+   */
+  export type MaterialStockMovement$materialInstanceArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialInstance
+     */
+    select?: MaterialInstanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialInstance
+     */
+    omit?: MaterialInstanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialInstanceInclude<ExtArgs> | null
+    where?: MaterialInstanceWhereInput
+  }
+
+  /**
+   * MaterialStockMovement.WarehouseMaterialStock
+   */
+  export type MaterialStockMovement$WarehouseMaterialStockArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WarehouseMaterialStock
+     */
+    select?: WarehouseMaterialStockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WarehouseMaterialStock
+     */
+    omit?: WarehouseMaterialStockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WarehouseMaterialStockInclude<ExtArgs> | null
+    where?: WarehouseMaterialStockWhereInput
+  }
+
+  /**
+   * MaterialStockMovement.MaterialRequestItem
+   */
+  export type MaterialStockMovement$MaterialRequestItemArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialRequestItem
+     */
+    select?: MaterialRequestItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialRequestItem
+     */
+    omit?: MaterialRequestItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialRequestItemInclude<ExtArgs> | null
+    where?: MaterialRequestItemWhereInput
+  }
+
+  /**
+   * MaterialStockMovement without action
+   */
+  export type MaterialStockMovementDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialStockMovement
+     */
+    select?: MaterialStockMovementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialStockMovement
+     */
+    omit?: MaterialStockMovementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialStockMovementInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model MaterialInstanceCondition
+   */
+
+  export type AggregateMaterialInstanceCondition = {
+    _count: MaterialInstanceConditionCountAggregateOutputType | null
+    _avg: MaterialInstanceConditionAvgAggregateOutputType | null
+    _sum: MaterialInstanceConditionSumAggregateOutputType | null
+    _min: MaterialInstanceConditionMinAggregateOutputType | null
+    _max: MaterialInstanceConditionMaxAggregateOutputType | null
+  }
+
+  export type MaterialInstanceConditionAvgAggregateOutputType = {
+    id: number | null
+  }
+
+  export type MaterialInstanceConditionSumAggregateOutputType = {
+    id: number | null
+  }
+
+  export type MaterialInstanceConditionMinAggregateOutputType = {
+    id: number | null
+    code: string | null
+    name: string | null
+    description: string | null
+    isUsable: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MaterialInstanceConditionMaxAggregateOutputType = {
+    id: number | null
+    code: string | null
+    name: string | null
+    description: string | null
+    isUsable: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MaterialInstanceConditionCountAggregateOutputType = {
+    id: number
+    code: number
+    name: number
+    description: number
+    isUsable: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type MaterialInstanceConditionAvgAggregateInputType = {
+    id?: true
+  }
+
+  export type MaterialInstanceConditionSumAggregateInputType = {
+    id?: true
+  }
+
+  export type MaterialInstanceConditionMinAggregateInputType = {
+    id?: true
+    code?: true
+    name?: true
+    description?: true
+    isUsable?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MaterialInstanceConditionMaxAggregateInputType = {
+    id?: true
+    code?: true
+    name?: true
+    description?: true
+    isUsable?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MaterialInstanceConditionCountAggregateInputType = {
+    id?: true
+    code?: true
+    name?: true
+    description?: true
+    isUsable?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type MaterialInstanceConditionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MaterialInstanceCondition to aggregate.
+     */
+    where?: MaterialInstanceConditionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MaterialInstanceConditions to fetch.
+     */
+    orderBy?: MaterialInstanceConditionOrderByWithRelationInput | MaterialInstanceConditionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: MaterialInstanceConditionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MaterialInstanceConditions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MaterialInstanceConditions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned MaterialInstanceConditions
+    **/
+    _count?: true | MaterialInstanceConditionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: MaterialInstanceConditionAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: MaterialInstanceConditionSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: MaterialInstanceConditionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: MaterialInstanceConditionMaxAggregateInputType
+  }
+
+  export type GetMaterialInstanceConditionAggregateType<T extends MaterialInstanceConditionAggregateArgs> = {
+        [P in keyof T & keyof AggregateMaterialInstanceCondition]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMaterialInstanceCondition[P]>
+      : GetScalarType<T[P], AggregateMaterialInstanceCondition[P]>
+  }
+
+
+
+
+  export type MaterialInstanceConditionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MaterialInstanceConditionWhereInput
+    orderBy?: MaterialInstanceConditionOrderByWithAggregationInput | MaterialInstanceConditionOrderByWithAggregationInput[]
+    by: MaterialInstanceConditionScalarFieldEnum[] | MaterialInstanceConditionScalarFieldEnum
+    having?: MaterialInstanceConditionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: MaterialInstanceConditionCountAggregateInputType | true
+    _avg?: MaterialInstanceConditionAvgAggregateInputType
+    _sum?: MaterialInstanceConditionSumAggregateInputType
+    _min?: MaterialInstanceConditionMinAggregateInputType
+    _max?: MaterialInstanceConditionMaxAggregateInputType
+  }
+
+  export type MaterialInstanceConditionGroupByOutputType = {
+    id: number
+    code: string
+    name: string
+    description: string | null
+    isUsable: boolean
+    createdAt: Date
+    updatedAt: Date
+    _count: MaterialInstanceConditionCountAggregateOutputType | null
+    _avg: MaterialInstanceConditionAvgAggregateOutputType | null
+    _sum: MaterialInstanceConditionSumAggregateOutputType | null
+    _min: MaterialInstanceConditionMinAggregateOutputType | null
+    _max: MaterialInstanceConditionMaxAggregateOutputType | null
+  }
+
+  type GetMaterialInstanceConditionGroupByPayload<T extends MaterialInstanceConditionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<MaterialInstanceConditionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof MaterialInstanceConditionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], MaterialInstanceConditionGroupByOutputType[P]>
+            : GetScalarType<T[P], MaterialInstanceConditionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type MaterialInstanceConditionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    code?: boolean
+    name?: boolean
+    description?: boolean
+    isUsable?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    materialInstances?: boolean | MaterialInstanceCondition$materialInstancesArgs<ExtArgs>
+    requestedInItems?: boolean | MaterialInstanceCondition$requestedInItemsArgs<ExtArgs>
+    MaterialRequestItem?: boolean | MaterialInstanceCondition$MaterialRequestItemArgs<ExtArgs>
+    _count?: boolean | MaterialInstanceConditionCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["materialInstanceCondition"]>
+
+
+
+  export type MaterialInstanceConditionSelectScalar = {
+    id?: boolean
+    code?: boolean
+    name?: boolean
+    description?: boolean
+    isUsable?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type MaterialInstanceConditionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "code" | "name" | "description" | "isUsable" | "createdAt" | "updatedAt", ExtArgs["result"]["materialInstanceCondition"]>
+  export type MaterialInstanceConditionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    materialInstances?: boolean | MaterialInstanceCondition$materialInstancesArgs<ExtArgs>
+    requestedInItems?: boolean | MaterialInstanceCondition$requestedInItemsArgs<ExtArgs>
+    MaterialRequestItem?: boolean | MaterialInstanceCondition$MaterialRequestItemArgs<ExtArgs>
+    _count?: boolean | MaterialInstanceConditionCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $MaterialInstanceConditionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "MaterialInstanceCondition"
+    objects: {
+      materialInstances: Prisma.$MaterialInstancePayload<ExtArgs>[]
+      requestedInItems: Prisma.$MaterialRequestItemPayload<ExtArgs>[]
+      MaterialRequestItem: Prisma.$MaterialRequestItemPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      code: string
+      name: string
+      description: string | null
+      isUsable: boolean
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["materialInstanceCondition"]>
+    composites: {}
+  }
+
+  type MaterialInstanceConditionGetPayload<S extends boolean | null | undefined | MaterialInstanceConditionDefaultArgs> = $Result.GetResult<Prisma.$MaterialInstanceConditionPayload, S>
+
+  type MaterialInstanceConditionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<MaterialInstanceConditionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: MaterialInstanceConditionCountAggregateInputType | true
+    }
+
+  export interface MaterialInstanceConditionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['MaterialInstanceCondition'], meta: { name: 'MaterialInstanceCondition' } }
+    /**
+     * Find zero or one MaterialInstanceCondition that matches the filter.
+     * @param {MaterialInstanceConditionFindUniqueArgs} args - Arguments to find a MaterialInstanceCondition
+     * @example
+     * // Get one MaterialInstanceCondition
+     * const materialInstanceCondition = await prisma.materialInstanceCondition.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends MaterialInstanceConditionFindUniqueArgs>(args: SelectSubset<T, MaterialInstanceConditionFindUniqueArgs<ExtArgs>>): Prisma__MaterialInstanceConditionClient<$Result.GetResult<Prisma.$MaterialInstanceConditionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one MaterialInstanceCondition that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {MaterialInstanceConditionFindUniqueOrThrowArgs} args - Arguments to find a MaterialInstanceCondition
+     * @example
+     * // Get one MaterialInstanceCondition
+     * const materialInstanceCondition = await prisma.materialInstanceCondition.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends MaterialInstanceConditionFindUniqueOrThrowArgs>(args: SelectSubset<T, MaterialInstanceConditionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MaterialInstanceConditionClient<$Result.GetResult<Prisma.$MaterialInstanceConditionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MaterialInstanceCondition that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaterialInstanceConditionFindFirstArgs} args - Arguments to find a MaterialInstanceCondition
+     * @example
+     * // Get one MaterialInstanceCondition
+     * const materialInstanceCondition = await prisma.materialInstanceCondition.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends MaterialInstanceConditionFindFirstArgs>(args?: SelectSubset<T, MaterialInstanceConditionFindFirstArgs<ExtArgs>>): Prisma__MaterialInstanceConditionClient<$Result.GetResult<Prisma.$MaterialInstanceConditionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MaterialInstanceCondition that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaterialInstanceConditionFindFirstOrThrowArgs} args - Arguments to find a MaterialInstanceCondition
+     * @example
+     * // Get one MaterialInstanceCondition
+     * const materialInstanceCondition = await prisma.materialInstanceCondition.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends MaterialInstanceConditionFindFirstOrThrowArgs>(args?: SelectSubset<T, MaterialInstanceConditionFindFirstOrThrowArgs<ExtArgs>>): Prisma__MaterialInstanceConditionClient<$Result.GetResult<Prisma.$MaterialInstanceConditionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more MaterialInstanceConditions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaterialInstanceConditionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all MaterialInstanceConditions
+     * const materialInstanceConditions = await prisma.materialInstanceCondition.findMany()
+     * 
+     * // Get first 10 MaterialInstanceConditions
+     * const materialInstanceConditions = await prisma.materialInstanceCondition.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const materialInstanceConditionWithIdOnly = await prisma.materialInstanceCondition.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends MaterialInstanceConditionFindManyArgs>(args?: SelectSubset<T, MaterialInstanceConditionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaterialInstanceConditionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a MaterialInstanceCondition.
+     * @param {MaterialInstanceConditionCreateArgs} args - Arguments to create a MaterialInstanceCondition.
+     * @example
+     * // Create one MaterialInstanceCondition
+     * const MaterialInstanceCondition = await prisma.materialInstanceCondition.create({
+     *   data: {
+     *     // ... data to create a MaterialInstanceCondition
+     *   }
+     * })
+     * 
+     */
+    create<T extends MaterialInstanceConditionCreateArgs>(args: SelectSubset<T, MaterialInstanceConditionCreateArgs<ExtArgs>>): Prisma__MaterialInstanceConditionClient<$Result.GetResult<Prisma.$MaterialInstanceConditionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many MaterialInstanceConditions.
+     * @param {MaterialInstanceConditionCreateManyArgs} args - Arguments to create many MaterialInstanceConditions.
+     * @example
+     * // Create many MaterialInstanceConditions
+     * const materialInstanceCondition = await prisma.materialInstanceCondition.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends MaterialInstanceConditionCreateManyArgs>(args?: SelectSubset<T, MaterialInstanceConditionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a MaterialInstanceCondition.
+     * @param {MaterialInstanceConditionDeleteArgs} args - Arguments to delete one MaterialInstanceCondition.
+     * @example
+     * // Delete one MaterialInstanceCondition
+     * const MaterialInstanceCondition = await prisma.materialInstanceCondition.delete({
+     *   where: {
+     *     // ... filter to delete one MaterialInstanceCondition
+     *   }
+     * })
+     * 
+     */
+    delete<T extends MaterialInstanceConditionDeleteArgs>(args: SelectSubset<T, MaterialInstanceConditionDeleteArgs<ExtArgs>>): Prisma__MaterialInstanceConditionClient<$Result.GetResult<Prisma.$MaterialInstanceConditionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one MaterialInstanceCondition.
+     * @param {MaterialInstanceConditionUpdateArgs} args - Arguments to update one MaterialInstanceCondition.
+     * @example
+     * // Update one MaterialInstanceCondition
+     * const materialInstanceCondition = await prisma.materialInstanceCondition.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends MaterialInstanceConditionUpdateArgs>(args: SelectSubset<T, MaterialInstanceConditionUpdateArgs<ExtArgs>>): Prisma__MaterialInstanceConditionClient<$Result.GetResult<Prisma.$MaterialInstanceConditionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more MaterialInstanceConditions.
+     * @param {MaterialInstanceConditionDeleteManyArgs} args - Arguments to filter MaterialInstanceConditions to delete.
+     * @example
+     * // Delete a few MaterialInstanceConditions
+     * const { count } = await prisma.materialInstanceCondition.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends MaterialInstanceConditionDeleteManyArgs>(args?: SelectSubset<T, MaterialInstanceConditionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MaterialInstanceConditions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaterialInstanceConditionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many MaterialInstanceConditions
+     * const materialInstanceCondition = await prisma.materialInstanceCondition.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends MaterialInstanceConditionUpdateManyArgs>(args: SelectSubset<T, MaterialInstanceConditionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one MaterialInstanceCondition.
+     * @param {MaterialInstanceConditionUpsertArgs} args - Arguments to update or create a MaterialInstanceCondition.
+     * @example
+     * // Update or create a MaterialInstanceCondition
+     * const materialInstanceCondition = await prisma.materialInstanceCondition.upsert({
+     *   create: {
+     *     // ... data to create a MaterialInstanceCondition
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the MaterialInstanceCondition we want to update
+     *   }
+     * })
+     */
+    upsert<T extends MaterialInstanceConditionUpsertArgs>(args: SelectSubset<T, MaterialInstanceConditionUpsertArgs<ExtArgs>>): Prisma__MaterialInstanceConditionClient<$Result.GetResult<Prisma.$MaterialInstanceConditionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of MaterialInstanceConditions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaterialInstanceConditionCountArgs} args - Arguments to filter MaterialInstanceConditions to count.
+     * @example
+     * // Count the number of MaterialInstanceConditions
+     * const count = await prisma.materialInstanceCondition.count({
+     *   where: {
+     *     // ... the filter for the MaterialInstanceConditions we want to count
+     *   }
+     * })
+    **/
+    count<T extends MaterialInstanceConditionCountArgs>(
+      args?: Subset<T, MaterialInstanceConditionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], MaterialInstanceConditionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a MaterialInstanceCondition.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaterialInstanceConditionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MaterialInstanceConditionAggregateArgs>(args: Subset<T, MaterialInstanceConditionAggregateArgs>): Prisma.PrismaPromise<GetMaterialInstanceConditionAggregateType<T>>
+
+    /**
+     * Group by MaterialInstanceCondition.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaterialInstanceConditionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends MaterialInstanceConditionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: MaterialInstanceConditionGroupByArgs['orderBy'] }
+        : { orderBy?: MaterialInstanceConditionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, MaterialInstanceConditionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMaterialInstanceConditionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the MaterialInstanceCondition model
+   */
+  readonly fields: MaterialInstanceConditionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for MaterialInstanceCondition.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__MaterialInstanceConditionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    materialInstances<T extends MaterialInstanceCondition$materialInstancesArgs<ExtArgs> = {}>(args?: Subset<T, MaterialInstanceCondition$materialInstancesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaterialInstancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    requestedInItems<T extends MaterialInstanceCondition$requestedInItemsArgs<ExtArgs> = {}>(args?: Subset<T, MaterialInstanceCondition$requestedInItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaterialRequestItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    MaterialRequestItem<T extends MaterialInstanceCondition$MaterialRequestItemArgs<ExtArgs> = {}>(args?: Subset<T, MaterialInstanceCondition$MaterialRequestItemArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaterialRequestItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the MaterialInstanceCondition model
+   */
+  interface MaterialInstanceConditionFieldRefs {
+    readonly id: FieldRef<"MaterialInstanceCondition", 'Int'>
+    readonly code: FieldRef<"MaterialInstanceCondition", 'String'>
+    readonly name: FieldRef<"MaterialInstanceCondition", 'String'>
+    readonly description: FieldRef<"MaterialInstanceCondition", 'String'>
+    readonly isUsable: FieldRef<"MaterialInstanceCondition", 'Boolean'>
+    readonly createdAt: FieldRef<"MaterialInstanceCondition", 'DateTime'>
+    readonly updatedAt: FieldRef<"MaterialInstanceCondition", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * MaterialInstanceCondition findUnique
+   */
+  export type MaterialInstanceConditionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialInstanceCondition
+     */
+    select?: MaterialInstanceConditionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialInstanceCondition
+     */
+    omit?: MaterialInstanceConditionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialInstanceConditionInclude<ExtArgs> | null
+    /**
+     * Filter, which MaterialInstanceCondition to fetch.
+     */
+    where: MaterialInstanceConditionWhereUniqueInput
+  }
+
+  /**
+   * MaterialInstanceCondition findUniqueOrThrow
+   */
+  export type MaterialInstanceConditionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialInstanceCondition
+     */
+    select?: MaterialInstanceConditionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialInstanceCondition
+     */
+    omit?: MaterialInstanceConditionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialInstanceConditionInclude<ExtArgs> | null
+    /**
+     * Filter, which MaterialInstanceCondition to fetch.
+     */
+    where: MaterialInstanceConditionWhereUniqueInput
+  }
+
+  /**
+   * MaterialInstanceCondition findFirst
+   */
+  export type MaterialInstanceConditionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialInstanceCondition
+     */
+    select?: MaterialInstanceConditionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialInstanceCondition
+     */
+    omit?: MaterialInstanceConditionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialInstanceConditionInclude<ExtArgs> | null
+    /**
+     * Filter, which MaterialInstanceCondition to fetch.
+     */
+    where?: MaterialInstanceConditionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MaterialInstanceConditions to fetch.
+     */
+    orderBy?: MaterialInstanceConditionOrderByWithRelationInput | MaterialInstanceConditionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MaterialInstanceConditions.
+     */
+    cursor?: MaterialInstanceConditionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MaterialInstanceConditions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MaterialInstanceConditions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MaterialInstanceConditions.
+     */
+    distinct?: MaterialInstanceConditionScalarFieldEnum | MaterialInstanceConditionScalarFieldEnum[]
+  }
+
+  /**
+   * MaterialInstanceCondition findFirstOrThrow
+   */
+  export type MaterialInstanceConditionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialInstanceCondition
+     */
+    select?: MaterialInstanceConditionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialInstanceCondition
+     */
+    omit?: MaterialInstanceConditionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialInstanceConditionInclude<ExtArgs> | null
+    /**
+     * Filter, which MaterialInstanceCondition to fetch.
+     */
+    where?: MaterialInstanceConditionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MaterialInstanceConditions to fetch.
+     */
+    orderBy?: MaterialInstanceConditionOrderByWithRelationInput | MaterialInstanceConditionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MaterialInstanceConditions.
+     */
+    cursor?: MaterialInstanceConditionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MaterialInstanceConditions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MaterialInstanceConditions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MaterialInstanceConditions.
+     */
+    distinct?: MaterialInstanceConditionScalarFieldEnum | MaterialInstanceConditionScalarFieldEnum[]
+  }
+
+  /**
+   * MaterialInstanceCondition findMany
+   */
+  export type MaterialInstanceConditionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialInstanceCondition
+     */
+    select?: MaterialInstanceConditionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialInstanceCondition
+     */
+    omit?: MaterialInstanceConditionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialInstanceConditionInclude<ExtArgs> | null
+    /**
+     * Filter, which MaterialInstanceConditions to fetch.
+     */
+    where?: MaterialInstanceConditionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MaterialInstanceConditions to fetch.
+     */
+    orderBy?: MaterialInstanceConditionOrderByWithRelationInput | MaterialInstanceConditionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing MaterialInstanceConditions.
+     */
+    cursor?: MaterialInstanceConditionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MaterialInstanceConditions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MaterialInstanceConditions.
+     */
+    skip?: number
+    distinct?: MaterialInstanceConditionScalarFieldEnum | MaterialInstanceConditionScalarFieldEnum[]
+  }
+
+  /**
+   * MaterialInstanceCondition create
+   */
+  export type MaterialInstanceConditionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialInstanceCondition
+     */
+    select?: MaterialInstanceConditionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialInstanceCondition
+     */
+    omit?: MaterialInstanceConditionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialInstanceConditionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a MaterialInstanceCondition.
+     */
+    data: XOR<MaterialInstanceConditionCreateInput, MaterialInstanceConditionUncheckedCreateInput>
+  }
+
+  /**
+   * MaterialInstanceCondition createMany
+   */
+  export type MaterialInstanceConditionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many MaterialInstanceConditions.
+     */
+    data: MaterialInstanceConditionCreateManyInput | MaterialInstanceConditionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * MaterialInstanceCondition update
+   */
+  export type MaterialInstanceConditionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialInstanceCondition
+     */
+    select?: MaterialInstanceConditionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialInstanceCondition
+     */
+    omit?: MaterialInstanceConditionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialInstanceConditionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a MaterialInstanceCondition.
+     */
+    data: XOR<MaterialInstanceConditionUpdateInput, MaterialInstanceConditionUncheckedUpdateInput>
+    /**
+     * Choose, which MaterialInstanceCondition to update.
+     */
+    where: MaterialInstanceConditionWhereUniqueInput
+  }
+
+  /**
+   * MaterialInstanceCondition updateMany
+   */
+  export type MaterialInstanceConditionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update MaterialInstanceConditions.
+     */
+    data: XOR<MaterialInstanceConditionUpdateManyMutationInput, MaterialInstanceConditionUncheckedUpdateManyInput>
+    /**
+     * Filter which MaterialInstanceConditions to update
+     */
+    where?: MaterialInstanceConditionWhereInput
+    /**
+     * Limit how many MaterialInstanceConditions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * MaterialInstanceCondition upsert
+   */
+  export type MaterialInstanceConditionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialInstanceCondition
+     */
+    select?: MaterialInstanceConditionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialInstanceCondition
+     */
+    omit?: MaterialInstanceConditionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialInstanceConditionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the MaterialInstanceCondition to update in case it exists.
+     */
+    where: MaterialInstanceConditionWhereUniqueInput
+    /**
+     * In case the MaterialInstanceCondition found by the `where` argument doesn't exist, create a new MaterialInstanceCondition with this data.
+     */
+    create: XOR<MaterialInstanceConditionCreateInput, MaterialInstanceConditionUncheckedCreateInput>
+    /**
+     * In case the MaterialInstanceCondition was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<MaterialInstanceConditionUpdateInput, MaterialInstanceConditionUncheckedUpdateInput>
+  }
+
+  /**
+   * MaterialInstanceCondition delete
+   */
+  export type MaterialInstanceConditionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialInstanceCondition
+     */
+    select?: MaterialInstanceConditionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialInstanceCondition
+     */
+    omit?: MaterialInstanceConditionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialInstanceConditionInclude<ExtArgs> | null
+    /**
+     * Filter which MaterialInstanceCondition to delete.
+     */
+    where: MaterialInstanceConditionWhereUniqueInput
+  }
+
+  /**
+   * MaterialInstanceCondition deleteMany
+   */
+  export type MaterialInstanceConditionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MaterialInstanceConditions to delete
+     */
+    where?: MaterialInstanceConditionWhereInput
+    /**
+     * Limit how many MaterialInstanceConditions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * MaterialInstanceCondition.materialInstances
+   */
+  export type MaterialInstanceCondition$materialInstancesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialInstance
+     */
+    select?: MaterialInstanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialInstance
+     */
+    omit?: MaterialInstanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialInstanceInclude<ExtArgs> | null
+    where?: MaterialInstanceWhereInput
+    orderBy?: MaterialInstanceOrderByWithRelationInput | MaterialInstanceOrderByWithRelationInput[]
+    cursor?: MaterialInstanceWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MaterialInstanceScalarFieldEnum | MaterialInstanceScalarFieldEnum[]
+  }
+
+  /**
+   * MaterialInstanceCondition.requestedInItems
+   */
+  export type MaterialInstanceCondition$requestedInItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialRequestItem
+     */
+    select?: MaterialRequestItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialRequestItem
+     */
+    omit?: MaterialRequestItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialRequestItemInclude<ExtArgs> | null
+    where?: MaterialRequestItemWhereInput
+    orderBy?: MaterialRequestItemOrderByWithRelationInput | MaterialRequestItemOrderByWithRelationInput[]
+    cursor?: MaterialRequestItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MaterialRequestItemScalarFieldEnum | MaterialRequestItemScalarFieldEnum[]
+  }
+
+  /**
+   * MaterialInstanceCondition.MaterialRequestItem
+   */
+  export type MaterialInstanceCondition$MaterialRequestItemArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialRequestItem
+     */
+    select?: MaterialRequestItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialRequestItem
+     */
+    omit?: MaterialRequestItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialRequestItemInclude<ExtArgs> | null
+    where?: MaterialRequestItemWhereInput
+    orderBy?: MaterialRequestItemOrderByWithRelationInput | MaterialRequestItemOrderByWithRelationInput[]
+    cursor?: MaterialRequestItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MaterialRequestItemScalarFieldEnum | MaterialRequestItemScalarFieldEnum[]
+  }
+
+  /**
+   * MaterialInstanceCondition without action
+   */
+  export type MaterialInstanceConditionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialInstanceCondition
+     */
+    select?: MaterialInstanceConditionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialInstanceCondition
+     */
+    omit?: MaterialInstanceConditionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialInstanceConditionInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model MaterialInstance
+   */
+
+  export type AggregateMaterialInstance = {
+    _count: MaterialInstanceCountAggregateOutputType | null
+    _avg: MaterialInstanceAvgAggregateOutputType | null
+    _sum: MaterialInstanceSumAggregateOutputType | null
+    _min: MaterialInstanceMinAggregateOutputType | null
+    _max: MaterialInstanceMaxAggregateOutputType | null
+  }
+
+  export type MaterialInstanceAvgAggregateOutputType = {
+    id: number | null
+    globalMaterialId: number | null
+    warehouseId: number | null
+    conditionId: number | null
+    quantity: Decimal | null
+    reservedQuantity: Decimal | null
+    restrictedQuantity: Decimal | null
+  }
+
+  export type MaterialInstanceSumAggregateOutputType = {
+    id: number | null
+    globalMaterialId: number | null
+    warehouseId: number | null
+    conditionId: number | null
+    quantity: Decimal | null
+    reservedQuantity: Decimal | null
+    restrictedQuantity: Decimal | null
+  }
+
+  export type MaterialInstanceMinAggregateOutputType = {
+    id: number | null
+    instanceIdentifier: string | null
+    globalMaterialId: number | null
+    derivedName: string | null
+    derivedDescription: string | null
+    derivedUnitOfMeasure: string | null
+    warehouseId: number | null
+    conditionId: number | null
+    quantity: Decimal | null
+    locationInWarehouse: string | null
+    sourceNotes: string | null
+    reservedQuantity: Decimal | null
+    restrictedQuantity: Decimal | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MaterialInstanceMaxAggregateOutputType = {
+    id: number | null
+    instanceIdentifier: string | null
+    globalMaterialId: number | null
+    derivedName: string | null
+    derivedDescription: string | null
+    derivedUnitOfMeasure: string | null
+    warehouseId: number | null
+    conditionId: number | null
+    quantity: Decimal | null
+    locationInWarehouse: string | null
+    sourceNotes: string | null
+    reservedQuantity: Decimal | null
+    restrictedQuantity: Decimal | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MaterialInstanceCountAggregateOutputType = {
+    id: number
+    instanceIdentifier: number
+    globalMaterialId: number
+    derivedName: number
+    derivedDescription: number
+    derivedUnitOfMeasure: number
+    warehouseId: number
+    conditionId: number
+    quantity: number
+    locationInWarehouse: number
+    sourceNotes: number
+    reservedQuantity: number
+    restrictedQuantity: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type MaterialInstanceAvgAggregateInputType = {
+    id?: true
+    globalMaterialId?: true
+    warehouseId?: true
+    conditionId?: true
+    quantity?: true
+    reservedQuantity?: true
+    restrictedQuantity?: true
+  }
+
+  export type MaterialInstanceSumAggregateInputType = {
+    id?: true
+    globalMaterialId?: true
+    warehouseId?: true
+    conditionId?: true
+    quantity?: true
+    reservedQuantity?: true
+    restrictedQuantity?: true
+  }
+
+  export type MaterialInstanceMinAggregateInputType = {
+    id?: true
+    instanceIdentifier?: true
+    globalMaterialId?: true
+    derivedName?: true
+    derivedDescription?: true
+    derivedUnitOfMeasure?: true
+    warehouseId?: true
+    conditionId?: true
+    quantity?: true
+    locationInWarehouse?: true
+    sourceNotes?: true
+    reservedQuantity?: true
+    restrictedQuantity?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MaterialInstanceMaxAggregateInputType = {
+    id?: true
+    instanceIdentifier?: true
+    globalMaterialId?: true
+    derivedName?: true
+    derivedDescription?: true
+    derivedUnitOfMeasure?: true
+    warehouseId?: true
+    conditionId?: true
+    quantity?: true
+    locationInWarehouse?: true
+    sourceNotes?: true
+    reservedQuantity?: true
+    restrictedQuantity?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MaterialInstanceCountAggregateInputType = {
+    id?: true
+    instanceIdentifier?: true
+    globalMaterialId?: true
+    derivedName?: true
+    derivedDescription?: true
+    derivedUnitOfMeasure?: true
+    warehouseId?: true
+    conditionId?: true
+    quantity?: true
+    locationInWarehouse?: true
+    sourceNotes?: true
+    reservedQuantity?: true
+    restrictedQuantity?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type MaterialInstanceAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MaterialInstance to aggregate.
+     */
+    where?: MaterialInstanceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MaterialInstances to fetch.
+     */
+    orderBy?: MaterialInstanceOrderByWithRelationInput | MaterialInstanceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: MaterialInstanceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MaterialInstances from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MaterialInstances.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned MaterialInstances
+    **/
+    _count?: true | MaterialInstanceCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: MaterialInstanceAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: MaterialInstanceSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: MaterialInstanceMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: MaterialInstanceMaxAggregateInputType
+  }
+
+  export type GetMaterialInstanceAggregateType<T extends MaterialInstanceAggregateArgs> = {
+        [P in keyof T & keyof AggregateMaterialInstance]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMaterialInstance[P]>
+      : GetScalarType<T[P], AggregateMaterialInstance[P]>
+  }
+
+
+
+
+  export type MaterialInstanceGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MaterialInstanceWhereInput
+    orderBy?: MaterialInstanceOrderByWithAggregationInput | MaterialInstanceOrderByWithAggregationInput[]
+    by: MaterialInstanceScalarFieldEnum[] | MaterialInstanceScalarFieldEnum
+    having?: MaterialInstanceScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: MaterialInstanceCountAggregateInputType | true
+    _avg?: MaterialInstanceAvgAggregateInputType
+    _sum?: MaterialInstanceSumAggregateInputType
+    _min?: MaterialInstanceMinAggregateInputType
+    _max?: MaterialInstanceMaxAggregateInputType
+  }
+
+  export type MaterialInstanceGroupByOutputType = {
+    id: number
+    instanceIdentifier: string
+    globalMaterialId: number | null
+    derivedName: string
+    derivedDescription: string | null
+    derivedUnitOfMeasure: string
+    warehouseId: number
+    conditionId: number
+    quantity: Decimal
+    locationInWarehouse: string | null
+    sourceNotes: string | null
+    reservedQuantity: Decimal
+    restrictedQuantity: Decimal
+    createdAt: Date
+    updatedAt: Date
+    _count: MaterialInstanceCountAggregateOutputType | null
+    _avg: MaterialInstanceAvgAggregateOutputType | null
+    _sum: MaterialInstanceSumAggregateOutputType | null
+    _min: MaterialInstanceMinAggregateOutputType | null
+    _max: MaterialInstanceMaxAggregateOutputType | null
+  }
+
+  type GetMaterialInstanceGroupByPayload<T extends MaterialInstanceGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<MaterialInstanceGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof MaterialInstanceGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], MaterialInstanceGroupByOutputType[P]>
+            : GetScalarType<T[P], MaterialInstanceGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type MaterialInstanceSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    instanceIdentifier?: boolean
+    globalMaterialId?: boolean
+    derivedName?: boolean
+    derivedDescription?: boolean
+    derivedUnitOfMeasure?: boolean
+    warehouseId?: boolean
+    conditionId?: boolean
+    quantity?: boolean
+    locationInWarehouse?: boolean
+    sourceNotes?: boolean
+    reservedQuantity?: boolean
+    restrictedQuantity?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    globalMaterial?: boolean | MaterialInstance$globalMaterialArgs<ExtArgs>
+    warehouse?: boolean | WarehouseDefaultArgs<ExtArgs>
+    condition?: boolean | MaterialInstanceConditionDefaultArgs<ExtArgs>
+    stockMovements?: boolean | MaterialInstance$stockMovementsArgs<ExtArgs>
+    fulfilledRequestItems?: boolean | MaterialInstance$fulfilledRequestItemsArgs<ExtArgs>
+    _count?: boolean | MaterialInstanceCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["materialInstance"]>
+
+
+
+  export type MaterialInstanceSelectScalar = {
+    id?: boolean
+    instanceIdentifier?: boolean
+    globalMaterialId?: boolean
+    derivedName?: boolean
+    derivedDescription?: boolean
+    derivedUnitOfMeasure?: boolean
+    warehouseId?: boolean
+    conditionId?: boolean
+    quantity?: boolean
+    locationInWarehouse?: boolean
+    sourceNotes?: boolean
+    reservedQuantity?: boolean
+    restrictedQuantity?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type MaterialInstanceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "instanceIdentifier" | "globalMaterialId" | "derivedName" | "derivedDescription" | "derivedUnitOfMeasure" | "warehouseId" | "conditionId" | "quantity" | "locationInWarehouse" | "sourceNotes" | "reservedQuantity" | "restrictedQuantity" | "createdAt" | "updatedAt", ExtArgs["result"]["materialInstance"]>
+  export type MaterialInstanceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    globalMaterial?: boolean | MaterialInstance$globalMaterialArgs<ExtArgs>
+    warehouse?: boolean | WarehouseDefaultArgs<ExtArgs>
+    condition?: boolean | MaterialInstanceConditionDefaultArgs<ExtArgs>
+    stockMovements?: boolean | MaterialInstance$stockMovementsArgs<ExtArgs>
+    fulfilledRequestItems?: boolean | MaterialInstance$fulfilledRequestItemsArgs<ExtArgs>
+    _count?: boolean | MaterialInstanceCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $MaterialInstancePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "MaterialInstance"
+    objects: {
+      globalMaterial: Prisma.$MaterialPayload<ExtArgs> | null
+      warehouse: Prisma.$WarehousePayload<ExtArgs>
+      condition: Prisma.$MaterialInstanceConditionPayload<ExtArgs>
+      stockMovements: Prisma.$MaterialStockMovementPayload<ExtArgs>[]
+      fulfilledRequestItems: Prisma.$MaterialRequestItemPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      instanceIdentifier: string
+      globalMaterialId: number | null
+      derivedName: string
+      derivedDescription: string | null
+      derivedUnitOfMeasure: string
+      warehouseId: number
+      conditionId: number
+      quantity: Prisma.Decimal
+      locationInWarehouse: string | null
+      sourceNotes: string | null
+      reservedQuantity: Prisma.Decimal
+      restrictedQuantity: Prisma.Decimal
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["materialInstance"]>
+    composites: {}
+  }
+
+  type MaterialInstanceGetPayload<S extends boolean | null | undefined | MaterialInstanceDefaultArgs> = $Result.GetResult<Prisma.$MaterialInstancePayload, S>
+
+  type MaterialInstanceCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<MaterialInstanceFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: MaterialInstanceCountAggregateInputType | true
+    }
+
+  export interface MaterialInstanceDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['MaterialInstance'], meta: { name: 'MaterialInstance' } }
+    /**
+     * Find zero or one MaterialInstance that matches the filter.
+     * @param {MaterialInstanceFindUniqueArgs} args - Arguments to find a MaterialInstance
+     * @example
+     * // Get one MaterialInstance
+     * const materialInstance = await prisma.materialInstance.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends MaterialInstanceFindUniqueArgs>(args: SelectSubset<T, MaterialInstanceFindUniqueArgs<ExtArgs>>): Prisma__MaterialInstanceClient<$Result.GetResult<Prisma.$MaterialInstancePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one MaterialInstance that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {MaterialInstanceFindUniqueOrThrowArgs} args - Arguments to find a MaterialInstance
+     * @example
+     * // Get one MaterialInstance
+     * const materialInstance = await prisma.materialInstance.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends MaterialInstanceFindUniqueOrThrowArgs>(args: SelectSubset<T, MaterialInstanceFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MaterialInstanceClient<$Result.GetResult<Prisma.$MaterialInstancePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MaterialInstance that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaterialInstanceFindFirstArgs} args - Arguments to find a MaterialInstance
+     * @example
+     * // Get one MaterialInstance
+     * const materialInstance = await prisma.materialInstance.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends MaterialInstanceFindFirstArgs>(args?: SelectSubset<T, MaterialInstanceFindFirstArgs<ExtArgs>>): Prisma__MaterialInstanceClient<$Result.GetResult<Prisma.$MaterialInstancePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MaterialInstance that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaterialInstanceFindFirstOrThrowArgs} args - Arguments to find a MaterialInstance
+     * @example
+     * // Get one MaterialInstance
+     * const materialInstance = await prisma.materialInstance.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends MaterialInstanceFindFirstOrThrowArgs>(args?: SelectSubset<T, MaterialInstanceFindFirstOrThrowArgs<ExtArgs>>): Prisma__MaterialInstanceClient<$Result.GetResult<Prisma.$MaterialInstancePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more MaterialInstances that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaterialInstanceFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all MaterialInstances
+     * const materialInstances = await prisma.materialInstance.findMany()
+     * 
+     * // Get first 10 MaterialInstances
+     * const materialInstances = await prisma.materialInstance.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const materialInstanceWithIdOnly = await prisma.materialInstance.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends MaterialInstanceFindManyArgs>(args?: SelectSubset<T, MaterialInstanceFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaterialInstancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a MaterialInstance.
+     * @param {MaterialInstanceCreateArgs} args - Arguments to create a MaterialInstance.
+     * @example
+     * // Create one MaterialInstance
+     * const MaterialInstance = await prisma.materialInstance.create({
+     *   data: {
+     *     // ... data to create a MaterialInstance
+     *   }
+     * })
+     * 
+     */
+    create<T extends MaterialInstanceCreateArgs>(args: SelectSubset<T, MaterialInstanceCreateArgs<ExtArgs>>): Prisma__MaterialInstanceClient<$Result.GetResult<Prisma.$MaterialInstancePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many MaterialInstances.
+     * @param {MaterialInstanceCreateManyArgs} args - Arguments to create many MaterialInstances.
+     * @example
+     * // Create many MaterialInstances
+     * const materialInstance = await prisma.materialInstance.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends MaterialInstanceCreateManyArgs>(args?: SelectSubset<T, MaterialInstanceCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a MaterialInstance.
+     * @param {MaterialInstanceDeleteArgs} args - Arguments to delete one MaterialInstance.
+     * @example
+     * // Delete one MaterialInstance
+     * const MaterialInstance = await prisma.materialInstance.delete({
+     *   where: {
+     *     // ... filter to delete one MaterialInstance
+     *   }
+     * })
+     * 
+     */
+    delete<T extends MaterialInstanceDeleteArgs>(args: SelectSubset<T, MaterialInstanceDeleteArgs<ExtArgs>>): Prisma__MaterialInstanceClient<$Result.GetResult<Prisma.$MaterialInstancePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one MaterialInstance.
+     * @param {MaterialInstanceUpdateArgs} args - Arguments to update one MaterialInstance.
+     * @example
+     * // Update one MaterialInstance
+     * const materialInstance = await prisma.materialInstance.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends MaterialInstanceUpdateArgs>(args: SelectSubset<T, MaterialInstanceUpdateArgs<ExtArgs>>): Prisma__MaterialInstanceClient<$Result.GetResult<Prisma.$MaterialInstancePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more MaterialInstances.
+     * @param {MaterialInstanceDeleteManyArgs} args - Arguments to filter MaterialInstances to delete.
+     * @example
+     * // Delete a few MaterialInstances
+     * const { count } = await prisma.materialInstance.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends MaterialInstanceDeleteManyArgs>(args?: SelectSubset<T, MaterialInstanceDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MaterialInstances.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaterialInstanceUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many MaterialInstances
+     * const materialInstance = await prisma.materialInstance.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends MaterialInstanceUpdateManyArgs>(args: SelectSubset<T, MaterialInstanceUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one MaterialInstance.
+     * @param {MaterialInstanceUpsertArgs} args - Arguments to update or create a MaterialInstance.
+     * @example
+     * // Update or create a MaterialInstance
+     * const materialInstance = await prisma.materialInstance.upsert({
+     *   create: {
+     *     // ... data to create a MaterialInstance
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the MaterialInstance we want to update
+     *   }
+     * })
+     */
+    upsert<T extends MaterialInstanceUpsertArgs>(args: SelectSubset<T, MaterialInstanceUpsertArgs<ExtArgs>>): Prisma__MaterialInstanceClient<$Result.GetResult<Prisma.$MaterialInstancePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of MaterialInstances.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaterialInstanceCountArgs} args - Arguments to filter MaterialInstances to count.
+     * @example
+     * // Count the number of MaterialInstances
+     * const count = await prisma.materialInstance.count({
+     *   where: {
+     *     // ... the filter for the MaterialInstances we want to count
+     *   }
+     * })
+    **/
+    count<T extends MaterialInstanceCountArgs>(
+      args?: Subset<T, MaterialInstanceCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], MaterialInstanceCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a MaterialInstance.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaterialInstanceAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MaterialInstanceAggregateArgs>(args: Subset<T, MaterialInstanceAggregateArgs>): Prisma.PrismaPromise<GetMaterialInstanceAggregateType<T>>
+
+    /**
+     * Group by MaterialInstance.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaterialInstanceGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends MaterialInstanceGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: MaterialInstanceGroupByArgs['orderBy'] }
+        : { orderBy?: MaterialInstanceGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, MaterialInstanceGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMaterialInstanceGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the MaterialInstance model
+   */
+  readonly fields: MaterialInstanceFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for MaterialInstance.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__MaterialInstanceClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    globalMaterial<T extends MaterialInstance$globalMaterialArgs<ExtArgs> = {}>(args?: Subset<T, MaterialInstance$globalMaterialArgs<ExtArgs>>): Prisma__MaterialClient<$Result.GetResult<Prisma.$MaterialPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    warehouse<T extends WarehouseDefaultArgs<ExtArgs> = {}>(args?: Subset<T, WarehouseDefaultArgs<ExtArgs>>): Prisma__WarehouseClient<$Result.GetResult<Prisma.$WarehousePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    condition<T extends MaterialInstanceConditionDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MaterialInstanceConditionDefaultArgs<ExtArgs>>): Prisma__MaterialInstanceConditionClient<$Result.GetResult<Prisma.$MaterialInstanceConditionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    stockMovements<T extends MaterialInstance$stockMovementsArgs<ExtArgs> = {}>(args?: Subset<T, MaterialInstance$stockMovementsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaterialStockMovementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    fulfilledRequestItems<T extends MaterialInstance$fulfilledRequestItemsArgs<ExtArgs> = {}>(args?: Subset<T, MaterialInstance$fulfilledRequestItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaterialRequestItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the MaterialInstance model
+   */
+  interface MaterialInstanceFieldRefs {
+    readonly id: FieldRef<"MaterialInstance", 'Int'>
+    readonly instanceIdentifier: FieldRef<"MaterialInstance", 'String'>
+    readonly globalMaterialId: FieldRef<"MaterialInstance", 'Int'>
+    readonly derivedName: FieldRef<"MaterialInstance", 'String'>
+    readonly derivedDescription: FieldRef<"MaterialInstance", 'String'>
+    readonly derivedUnitOfMeasure: FieldRef<"MaterialInstance", 'String'>
+    readonly warehouseId: FieldRef<"MaterialInstance", 'Int'>
+    readonly conditionId: FieldRef<"MaterialInstance", 'Int'>
+    readonly quantity: FieldRef<"MaterialInstance", 'Decimal'>
+    readonly locationInWarehouse: FieldRef<"MaterialInstance", 'String'>
+    readonly sourceNotes: FieldRef<"MaterialInstance", 'String'>
+    readonly reservedQuantity: FieldRef<"MaterialInstance", 'Decimal'>
+    readonly restrictedQuantity: FieldRef<"MaterialInstance", 'Decimal'>
+    readonly createdAt: FieldRef<"MaterialInstance", 'DateTime'>
+    readonly updatedAt: FieldRef<"MaterialInstance", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * MaterialInstance findUnique
+   */
+  export type MaterialInstanceFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialInstance
+     */
+    select?: MaterialInstanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialInstance
+     */
+    omit?: MaterialInstanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialInstanceInclude<ExtArgs> | null
+    /**
+     * Filter, which MaterialInstance to fetch.
+     */
+    where: MaterialInstanceWhereUniqueInput
+  }
+
+  /**
+   * MaterialInstance findUniqueOrThrow
+   */
+  export type MaterialInstanceFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialInstance
+     */
+    select?: MaterialInstanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialInstance
+     */
+    omit?: MaterialInstanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialInstanceInclude<ExtArgs> | null
+    /**
+     * Filter, which MaterialInstance to fetch.
+     */
+    where: MaterialInstanceWhereUniqueInput
+  }
+
+  /**
+   * MaterialInstance findFirst
+   */
+  export type MaterialInstanceFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialInstance
+     */
+    select?: MaterialInstanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialInstance
+     */
+    omit?: MaterialInstanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialInstanceInclude<ExtArgs> | null
+    /**
+     * Filter, which MaterialInstance to fetch.
+     */
+    where?: MaterialInstanceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MaterialInstances to fetch.
+     */
+    orderBy?: MaterialInstanceOrderByWithRelationInput | MaterialInstanceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MaterialInstances.
+     */
+    cursor?: MaterialInstanceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MaterialInstances from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MaterialInstances.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MaterialInstances.
+     */
+    distinct?: MaterialInstanceScalarFieldEnum | MaterialInstanceScalarFieldEnum[]
+  }
+
+  /**
+   * MaterialInstance findFirstOrThrow
+   */
+  export type MaterialInstanceFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialInstance
+     */
+    select?: MaterialInstanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialInstance
+     */
+    omit?: MaterialInstanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialInstanceInclude<ExtArgs> | null
+    /**
+     * Filter, which MaterialInstance to fetch.
+     */
+    where?: MaterialInstanceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MaterialInstances to fetch.
+     */
+    orderBy?: MaterialInstanceOrderByWithRelationInput | MaterialInstanceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MaterialInstances.
+     */
+    cursor?: MaterialInstanceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MaterialInstances from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MaterialInstances.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MaterialInstances.
+     */
+    distinct?: MaterialInstanceScalarFieldEnum | MaterialInstanceScalarFieldEnum[]
+  }
+
+  /**
+   * MaterialInstance findMany
+   */
+  export type MaterialInstanceFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialInstance
+     */
+    select?: MaterialInstanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialInstance
+     */
+    omit?: MaterialInstanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialInstanceInclude<ExtArgs> | null
+    /**
+     * Filter, which MaterialInstances to fetch.
+     */
+    where?: MaterialInstanceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MaterialInstances to fetch.
+     */
+    orderBy?: MaterialInstanceOrderByWithRelationInput | MaterialInstanceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing MaterialInstances.
+     */
+    cursor?: MaterialInstanceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MaterialInstances from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MaterialInstances.
+     */
+    skip?: number
+    distinct?: MaterialInstanceScalarFieldEnum | MaterialInstanceScalarFieldEnum[]
+  }
+
+  /**
+   * MaterialInstance create
+   */
+  export type MaterialInstanceCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialInstance
+     */
+    select?: MaterialInstanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialInstance
+     */
+    omit?: MaterialInstanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialInstanceInclude<ExtArgs> | null
+    /**
+     * The data needed to create a MaterialInstance.
+     */
+    data: XOR<MaterialInstanceCreateInput, MaterialInstanceUncheckedCreateInput>
+  }
+
+  /**
+   * MaterialInstance createMany
+   */
+  export type MaterialInstanceCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many MaterialInstances.
+     */
+    data: MaterialInstanceCreateManyInput | MaterialInstanceCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * MaterialInstance update
+   */
+  export type MaterialInstanceUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialInstance
+     */
+    select?: MaterialInstanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialInstance
+     */
+    omit?: MaterialInstanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialInstanceInclude<ExtArgs> | null
+    /**
+     * The data needed to update a MaterialInstance.
+     */
+    data: XOR<MaterialInstanceUpdateInput, MaterialInstanceUncheckedUpdateInput>
+    /**
+     * Choose, which MaterialInstance to update.
+     */
+    where: MaterialInstanceWhereUniqueInput
+  }
+
+  /**
+   * MaterialInstance updateMany
+   */
+  export type MaterialInstanceUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update MaterialInstances.
+     */
+    data: XOR<MaterialInstanceUpdateManyMutationInput, MaterialInstanceUncheckedUpdateManyInput>
+    /**
+     * Filter which MaterialInstances to update
+     */
+    where?: MaterialInstanceWhereInput
+    /**
+     * Limit how many MaterialInstances to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * MaterialInstance upsert
+   */
+  export type MaterialInstanceUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialInstance
+     */
+    select?: MaterialInstanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialInstance
+     */
+    omit?: MaterialInstanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialInstanceInclude<ExtArgs> | null
+    /**
+     * The filter to search for the MaterialInstance to update in case it exists.
+     */
+    where: MaterialInstanceWhereUniqueInput
+    /**
+     * In case the MaterialInstance found by the `where` argument doesn't exist, create a new MaterialInstance with this data.
+     */
+    create: XOR<MaterialInstanceCreateInput, MaterialInstanceUncheckedCreateInput>
+    /**
+     * In case the MaterialInstance was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<MaterialInstanceUpdateInput, MaterialInstanceUncheckedUpdateInput>
+  }
+
+  /**
+   * MaterialInstance delete
+   */
+  export type MaterialInstanceDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialInstance
+     */
+    select?: MaterialInstanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialInstance
+     */
+    omit?: MaterialInstanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialInstanceInclude<ExtArgs> | null
+    /**
+     * Filter which MaterialInstance to delete.
+     */
+    where: MaterialInstanceWhereUniqueInput
+  }
+
+  /**
+   * MaterialInstance deleteMany
+   */
+  export type MaterialInstanceDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MaterialInstances to delete
+     */
+    where?: MaterialInstanceWhereInput
+    /**
+     * Limit how many MaterialInstances to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * MaterialInstance.globalMaterial
+   */
+  export type MaterialInstance$globalMaterialArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Material
+     */
+    select?: MaterialSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Material
+     */
+    omit?: MaterialOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialInclude<ExtArgs> | null
+    where?: MaterialWhereInput
+  }
+
+  /**
+   * MaterialInstance.stockMovements
+   */
+  export type MaterialInstance$stockMovementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialStockMovement
+     */
+    select?: MaterialStockMovementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialStockMovement
+     */
+    omit?: MaterialStockMovementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialStockMovementInclude<ExtArgs> | null
+    where?: MaterialStockMovementWhereInput
+    orderBy?: MaterialStockMovementOrderByWithRelationInput | MaterialStockMovementOrderByWithRelationInput[]
+    cursor?: MaterialStockMovementWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MaterialStockMovementScalarFieldEnum | MaterialStockMovementScalarFieldEnum[]
+  }
+
+  /**
+   * MaterialInstance.fulfilledRequestItems
+   */
+  export type MaterialInstance$fulfilledRequestItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialRequestItem
+     */
+    select?: MaterialRequestItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialRequestItem
+     */
+    omit?: MaterialRequestItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialRequestItemInclude<ExtArgs> | null
+    where?: MaterialRequestItemWhereInput
+    orderBy?: MaterialRequestItemOrderByWithRelationInput | MaterialRequestItemOrderByWithRelationInput[]
+    cursor?: MaterialRequestItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MaterialRequestItemScalarFieldEnum | MaterialRequestItemScalarFieldEnum[]
+  }
+
+  /**
+   * MaterialInstance without action
+   */
+  export type MaterialInstanceDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaterialInstance
+     */
+    select?: MaterialInstanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaterialInstance
+     */
+    omit?: MaterialInstanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaterialInstanceInclude<ExtArgs> | null
   }
 
 
@@ -18581,23 +26336,61 @@ export namespace Prisma {
   export type InfrastructureOccurrenceScalarFieldEnum = (typeof InfrastructureOccurrenceScalarFieldEnum)[keyof typeof InfrastructureOccurrenceScalarFieldEnum]
 
 
+  export const WarehouseScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    code: 'code',
+    location: 'location',
+    isActive: 'isActive',
+    maintenanceInstanceId: 'maintenanceInstanceId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type WarehouseScalarFieldEnum = (typeof WarehouseScalarFieldEnum)[keyof typeof WarehouseScalarFieldEnum]
+
+
   export const MaterialScalarFieldEnum: {
     id: 'id',
-    code: 'code',
+    globalCode: 'globalCode',
     name: 'name',
     description: 'description',
     unitOfMeasure: 'unitOfMeasure',
+    category: 'category',
+    manufacturer: 'manufacturer',
+    partNumber: 'partNumber',
     isActive: 'isActive',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt',
-    parentMaterialId: 'parentMaterialId'
+    updatedAt: 'updatedAt'
   };
 
   export type MaterialScalarFieldEnum = (typeof MaterialScalarFieldEnum)[keyof typeof MaterialScalarFieldEnum]
 
 
+  export const WarehouseMaterialStockScalarFieldEnum: {
+    id: 'id',
+    warehouseId: 'warehouseId',
+    materialId: 'materialId',
+    physicalOnHandQuantity: 'physicalOnHandQuantity',
+    initialStockQuantity: 'initialStockQuantity',
+    restrictedQuantity: 'restrictedQuantity',
+    reservedQuantity: 'reservedQuantity',
+    locationInWarehouse: 'locationInWarehouse',
+    minStockLevel: 'minStockLevel',
+    maxStockLevel: 'maxStockLevel',
+    lastStockCountDate: 'lastStockCountDate',
+    averageCost: 'averageCost',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type WarehouseMaterialStockScalarFieldEnum = (typeof WarehouseMaterialStockScalarFieldEnum)[keyof typeof WarehouseMaterialStockScalarFieldEnum]
+
+
   export const MaterialRequestScalarFieldEnum: {
     id: 'id',
+    protocolNumber: 'protocolNumber',
+    requestType: 'requestType',
     justification: 'justification',
     requestDate: 'requestDate',
     status: 'status',
@@ -18615,16 +26408,89 @@ export namespace Prisma {
 
   export const MaterialRequestItemScalarFieldEnum: {
     id: 'id',
+    materialRequestId: 'materialRequestId',
+    requestType: 'requestType',
+    requestedGlobalMaterialId: 'requestedGlobalMaterialId',
+    requestedDerivedName: 'requestedDerivedName',
+    requestedDerivedConditionId: 'requestedDerivedConditionId',
     quantityRequested: 'quantityRequested',
     quantityApproved: 'quantityApproved',
     quantityDelivered: 'quantityDelivered',
-    materialRequestId: 'materialRequestId',
-    materialId: 'materialId',
+    unitOfMeasure: 'unitOfMeasure',
+    fulfilledByInstanceId: 'fulfilledByInstanceId',
+    notes: 'notes',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    materialInstanceConditionId: 'materialInstanceConditionId'
+  };
+
+  export type MaterialRequestItemScalarFieldEnum = (typeof MaterialRequestItemScalarFieldEnum)[keyof typeof MaterialRequestItemScalarFieldEnum]
+
+
+  export const StockMovementTypeScalarFieldEnum: {
+    id: 'id',
+    code: 'code',
+    name: 'name',
+    description: 'description',
+    operation: 'operation',
+    isActive: 'isActive',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
 
-  export type MaterialRequestItemScalarFieldEnum = (typeof MaterialRequestItemScalarFieldEnum)[keyof typeof MaterialRequestItemScalarFieldEnum]
+  export type StockMovementTypeScalarFieldEnum = (typeof StockMovementTypeScalarFieldEnum)[keyof typeof StockMovementTypeScalarFieldEnum]
+
+
+  export const MaterialStockMovementScalarFieldEnum: {
+    id: 'id',
+    warehouseId: 'warehouseId',
+    globalMaterialId: 'globalMaterialId',
+    materialInstanceId: 'materialInstanceId',
+    movementTypeId: 'movementTypeId',
+    quantity: 'quantity',
+    unitOfMeasure: 'unitOfMeasure',
+    movementDate: 'movementDate',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    warehouseMaterialStockId: 'warehouseMaterialStockId',
+    materialRequestItemId: 'materialRequestItemId'
+  };
+
+  export type MaterialStockMovementScalarFieldEnum = (typeof MaterialStockMovementScalarFieldEnum)[keyof typeof MaterialStockMovementScalarFieldEnum]
+
+
+  export const MaterialInstanceConditionScalarFieldEnum: {
+    id: 'id',
+    code: 'code',
+    name: 'name',
+    description: 'description',
+    isUsable: 'isUsable',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type MaterialInstanceConditionScalarFieldEnum = (typeof MaterialInstanceConditionScalarFieldEnum)[keyof typeof MaterialInstanceConditionScalarFieldEnum]
+
+
+  export const MaterialInstanceScalarFieldEnum: {
+    id: 'id',
+    instanceIdentifier: 'instanceIdentifier',
+    globalMaterialId: 'globalMaterialId',
+    derivedName: 'derivedName',
+    derivedDescription: 'derivedDescription',
+    derivedUnitOfMeasure: 'derivedUnitOfMeasure',
+    warehouseId: 'warehouseId',
+    conditionId: 'conditionId',
+    quantity: 'quantity',
+    locationInWarehouse: 'locationInWarehouse',
+    sourceNotes: 'sourceNotes',
+    reservedQuantity: 'reservedQuantity',
+    restrictedQuantity: 'restrictedQuantity',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type MaterialInstanceScalarFieldEnum = (typeof MaterialInstanceScalarFieldEnum)[keyof typeof MaterialInstanceScalarFieldEnum]
 
 
   export const UserScalarFieldEnum: {
@@ -18791,22 +26657,88 @@ export namespace Prisma {
   export type InfrastructureOccurrenceOrderByRelevanceFieldEnum = (typeof InfrastructureOccurrenceOrderByRelevanceFieldEnum)[keyof typeof InfrastructureOccurrenceOrderByRelevanceFieldEnum]
 
 
-  export const MaterialOrderByRelevanceFieldEnum: {
+  export const WarehouseOrderByRelevanceFieldEnum: {
+    name: 'name',
     code: 'code',
+    location: 'location'
+  };
+
+  export type WarehouseOrderByRelevanceFieldEnum = (typeof WarehouseOrderByRelevanceFieldEnum)[keyof typeof WarehouseOrderByRelevanceFieldEnum]
+
+
+  export const MaterialOrderByRelevanceFieldEnum: {
+    globalCode: 'globalCode',
     name: 'name',
     description: 'description',
-    unitOfMeasure: 'unitOfMeasure'
+    unitOfMeasure: 'unitOfMeasure',
+    category: 'category',
+    manufacturer: 'manufacturer',
+    partNumber: 'partNumber'
   };
 
   export type MaterialOrderByRelevanceFieldEnum = (typeof MaterialOrderByRelevanceFieldEnum)[keyof typeof MaterialOrderByRelevanceFieldEnum]
 
 
+  export const WarehouseMaterialStockOrderByRelevanceFieldEnum: {
+    locationInWarehouse: 'locationInWarehouse'
+  };
+
+  export type WarehouseMaterialStockOrderByRelevanceFieldEnum = (typeof WarehouseMaterialStockOrderByRelevanceFieldEnum)[keyof typeof WarehouseMaterialStockOrderByRelevanceFieldEnum]
+
+
   export const MaterialRequestOrderByRelevanceFieldEnum: {
+    protocolNumber: 'protocolNumber',
     justification: 'justification',
     approvalNotes: 'approvalNotes'
   };
 
   export type MaterialRequestOrderByRelevanceFieldEnum = (typeof MaterialRequestOrderByRelevanceFieldEnum)[keyof typeof MaterialRequestOrderByRelevanceFieldEnum]
+
+
+  export const MaterialRequestItemOrderByRelevanceFieldEnum: {
+    requestedDerivedName: 'requestedDerivedName',
+    unitOfMeasure: 'unitOfMeasure',
+    notes: 'notes'
+  };
+
+  export type MaterialRequestItemOrderByRelevanceFieldEnum = (typeof MaterialRequestItemOrderByRelevanceFieldEnum)[keyof typeof MaterialRequestItemOrderByRelevanceFieldEnum]
+
+
+  export const StockMovementTypeOrderByRelevanceFieldEnum: {
+    code: 'code',
+    name: 'name',
+    description: 'description'
+  };
+
+  export type StockMovementTypeOrderByRelevanceFieldEnum = (typeof StockMovementTypeOrderByRelevanceFieldEnum)[keyof typeof StockMovementTypeOrderByRelevanceFieldEnum]
+
+
+  export const MaterialStockMovementOrderByRelevanceFieldEnum: {
+    unitOfMeasure: 'unitOfMeasure'
+  };
+
+  export type MaterialStockMovementOrderByRelevanceFieldEnum = (typeof MaterialStockMovementOrderByRelevanceFieldEnum)[keyof typeof MaterialStockMovementOrderByRelevanceFieldEnum]
+
+
+  export const MaterialInstanceConditionOrderByRelevanceFieldEnum: {
+    code: 'code',
+    name: 'name',
+    description: 'description'
+  };
+
+  export type MaterialInstanceConditionOrderByRelevanceFieldEnum = (typeof MaterialInstanceConditionOrderByRelevanceFieldEnum)[keyof typeof MaterialInstanceConditionOrderByRelevanceFieldEnum]
+
+
+  export const MaterialInstanceOrderByRelevanceFieldEnum: {
+    instanceIdentifier: 'instanceIdentifier',
+    derivedName: 'derivedName',
+    derivedDescription: 'derivedDescription',
+    derivedUnitOfMeasure: 'derivedUnitOfMeasure',
+    locationInWarehouse: 'locationInWarehouse',
+    sourceNotes: 'sourceNotes'
+  };
+
+  export type MaterialInstanceOrderByRelevanceFieldEnum = (typeof MaterialInstanceOrderByRelevanceFieldEnum)[keyof typeof MaterialInstanceOrderByRelevanceFieldEnum]
 
 
   export const UserOrderByRelevanceFieldEnum: {
@@ -18904,6 +26836,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Decimal'
+   */
+  export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
+    
+
+
+  /**
+   * Reference to a field of type 'MaterialRequestType'
+   */
+  export type EnumMaterialRequestTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MaterialRequestType'>
+    
+
+
+  /**
    * Reference to a field of type 'MaterialRequestStatus'
    */
   export type EnumMaterialRequestStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MaterialRequestStatus'>
@@ -18911,9 +26857,16 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Decimal'
+   * Reference to a field of type 'MaterialRequestItemType'
    */
-  export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
+  export type EnumMaterialRequestItemTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MaterialRequestItemType'>
+    
+
+
+  /**
+   * Reference to a field of type 'StockOperationType'
+   */
+  export type EnumStockOperationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StockOperationType'>
     
 
 
@@ -19390,6 +27343,7 @@ export namespace Prisma {
     currentMaintenanceRequests?: MaintenanceRequestListRelationFilter
     timelineEventsTransferredFrom?: MaintenanceTimelineEventListRelationFilter
     timelineEventsTransferredTo?: MaintenanceTimelineEventListRelationFilter
+    warehouses?: WarehouseListRelationFilter
   }
 
   export type MaintenanceInstanceOrderByWithRelationInput = {
@@ -19402,6 +27356,7 @@ export namespace Prisma {
     currentMaintenanceRequests?: MaintenanceRequestOrderByRelationAggregateInput
     timelineEventsTransferredFrom?: MaintenanceTimelineEventOrderByRelationAggregateInput
     timelineEventsTransferredTo?: MaintenanceTimelineEventOrderByRelationAggregateInput
+    warehouses?: WarehouseOrderByRelationAggregateInput
     _relevance?: MaintenanceInstanceOrderByRelevanceInput
   }
 
@@ -19418,6 +27373,7 @@ export namespace Prisma {
     currentMaintenanceRequests?: MaintenanceRequestListRelationFilter
     timelineEventsTransferredFrom?: MaintenanceTimelineEventListRelationFilter
     timelineEventsTransferredTo?: MaintenanceTimelineEventListRelationFilter
+    warehouses?: WarehouseListRelationFilter
   }, "id" | "sipacId" | "name">
 
   export type MaintenanceInstanceOrderByWithAggregationInput = {
@@ -19693,68 +27649,161 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"InfrastructureOccurrence"> | Date | string
   }
 
+  export type WarehouseWhereInput = {
+    AND?: WarehouseWhereInput | WarehouseWhereInput[]
+    OR?: WarehouseWhereInput[]
+    NOT?: WarehouseWhereInput | WarehouseWhereInput[]
+    id?: IntFilter<"Warehouse"> | number
+    name?: StringFilter<"Warehouse"> | string
+    code?: StringNullableFilter<"Warehouse"> | string | null
+    location?: StringNullableFilter<"Warehouse"> | string | null
+    isActive?: BoolFilter<"Warehouse"> | boolean
+    maintenanceInstanceId?: IntFilter<"Warehouse"> | number
+    createdAt?: DateTimeFilter<"Warehouse"> | Date | string
+    updatedAt?: DateTimeFilter<"Warehouse"> | Date | string
+    maintenanceInstance?: XOR<MaintenanceInstanceScalarRelationFilter, MaintenanceInstanceWhereInput>
+    standardMaterialStocks?: WarehouseMaterialStockListRelationFilter
+    materialInstances?: MaterialInstanceListRelationFilter
+    stockMovements?: MaterialStockMovementListRelationFilter
+  }
+
+  export type WarehouseOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    code?: SortOrderInput | SortOrder
+    location?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    maintenanceInstanceId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    maintenanceInstance?: MaintenanceInstanceOrderByWithRelationInput
+    standardMaterialStocks?: WarehouseMaterialStockOrderByRelationAggregateInput
+    materialInstances?: MaterialInstanceOrderByRelationAggregateInput
+    stockMovements?: MaterialStockMovementOrderByRelationAggregateInput
+    _relevance?: WarehouseOrderByRelevanceInput
+  }
+
+  export type WarehouseWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    name?: string
+    code?: string
+    AND?: WarehouseWhereInput | WarehouseWhereInput[]
+    OR?: WarehouseWhereInput[]
+    NOT?: WarehouseWhereInput | WarehouseWhereInput[]
+    location?: StringNullableFilter<"Warehouse"> | string | null
+    isActive?: BoolFilter<"Warehouse"> | boolean
+    maintenanceInstanceId?: IntFilter<"Warehouse"> | number
+    createdAt?: DateTimeFilter<"Warehouse"> | Date | string
+    updatedAt?: DateTimeFilter<"Warehouse"> | Date | string
+    maintenanceInstance?: XOR<MaintenanceInstanceScalarRelationFilter, MaintenanceInstanceWhereInput>
+    standardMaterialStocks?: WarehouseMaterialStockListRelationFilter
+    materialInstances?: MaterialInstanceListRelationFilter
+    stockMovements?: MaterialStockMovementListRelationFilter
+  }, "id" | "name" | "code">
+
+  export type WarehouseOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    code?: SortOrderInput | SortOrder
+    location?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    maintenanceInstanceId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: WarehouseCountOrderByAggregateInput
+    _avg?: WarehouseAvgOrderByAggregateInput
+    _max?: WarehouseMaxOrderByAggregateInput
+    _min?: WarehouseMinOrderByAggregateInput
+    _sum?: WarehouseSumOrderByAggregateInput
+  }
+
+  export type WarehouseScalarWhereWithAggregatesInput = {
+    AND?: WarehouseScalarWhereWithAggregatesInput | WarehouseScalarWhereWithAggregatesInput[]
+    OR?: WarehouseScalarWhereWithAggregatesInput[]
+    NOT?: WarehouseScalarWhereWithAggregatesInput | WarehouseScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"Warehouse"> | number
+    name?: StringWithAggregatesFilter<"Warehouse"> | string
+    code?: StringNullableWithAggregatesFilter<"Warehouse"> | string | null
+    location?: StringNullableWithAggregatesFilter<"Warehouse"> | string | null
+    isActive?: BoolWithAggregatesFilter<"Warehouse"> | boolean
+    maintenanceInstanceId?: IntWithAggregatesFilter<"Warehouse"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"Warehouse"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Warehouse"> | Date | string
+  }
+
   export type MaterialWhereInput = {
     AND?: MaterialWhereInput | MaterialWhereInput[]
     OR?: MaterialWhereInput[]
     NOT?: MaterialWhereInput | MaterialWhereInput[]
     id?: IntFilter<"Material"> | number
-    code?: StringNullableFilter<"Material"> | string | null
+    globalCode?: StringFilter<"Material"> | string
     name?: StringFilter<"Material"> | string
     description?: StringNullableFilter<"Material"> | string | null
     unitOfMeasure?: StringFilter<"Material"> | string
+    category?: StringNullableFilter<"Material"> | string | null
+    manufacturer?: StringNullableFilter<"Material"> | string | null
+    partNumber?: StringNullableFilter<"Material"> | string | null
     isActive?: BoolFilter<"Material"> | boolean
     createdAt?: DateTimeFilter<"Material"> | Date | string
     updatedAt?: DateTimeFilter<"Material"> | Date | string
-    parentMaterialId?: IntNullableFilter<"Material"> | number | null
-    parentMaterial?: XOR<MaterialNullableScalarRelationFilter, MaterialWhereInput> | null
-    childs?: MaterialListRelationFilter
-    materialRequestItems?: MaterialRequestItemListRelationFilter
+    warehouseStandardStocks?: WarehouseMaterialStockListRelationFilter
+    relatedMaterialInstances?: MaterialInstanceListRelationFilter
+    standardMaterialRequestItems?: MaterialRequestItemListRelationFilter
+    stockMovements?: MaterialStockMovementListRelationFilter
   }
 
   export type MaterialOrderByWithRelationInput = {
     id?: SortOrder
-    code?: SortOrderInput | SortOrder
+    globalCode?: SortOrder
     name?: SortOrder
     description?: SortOrderInput | SortOrder
     unitOfMeasure?: SortOrder
+    category?: SortOrderInput | SortOrder
+    manufacturer?: SortOrderInput | SortOrder
+    partNumber?: SortOrderInput | SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    parentMaterialId?: SortOrderInput | SortOrder
-    parentMaterial?: MaterialOrderByWithRelationInput
-    childs?: MaterialOrderByRelationAggregateInput
-    materialRequestItems?: MaterialRequestItemOrderByRelationAggregateInput
+    warehouseStandardStocks?: WarehouseMaterialStockOrderByRelationAggregateInput
+    relatedMaterialInstances?: MaterialInstanceOrderByRelationAggregateInput
+    standardMaterialRequestItems?: MaterialRequestItemOrderByRelationAggregateInput
+    stockMovements?: MaterialStockMovementOrderByRelationAggregateInput
     _relevance?: MaterialOrderByRelevanceInput
   }
 
   export type MaterialWhereUniqueInput = Prisma.AtLeast<{
     id?: number
-    code?: string
+    globalCode?: string
     AND?: MaterialWhereInput | MaterialWhereInput[]
     OR?: MaterialWhereInput[]
     NOT?: MaterialWhereInput | MaterialWhereInput[]
     name?: StringFilter<"Material"> | string
     description?: StringNullableFilter<"Material"> | string | null
     unitOfMeasure?: StringFilter<"Material"> | string
+    category?: StringNullableFilter<"Material"> | string | null
+    manufacturer?: StringNullableFilter<"Material"> | string | null
+    partNumber?: StringNullableFilter<"Material"> | string | null
     isActive?: BoolFilter<"Material"> | boolean
     createdAt?: DateTimeFilter<"Material"> | Date | string
     updatedAt?: DateTimeFilter<"Material"> | Date | string
-    parentMaterialId?: IntNullableFilter<"Material"> | number | null
-    parentMaterial?: XOR<MaterialNullableScalarRelationFilter, MaterialWhereInput> | null
-    childs?: MaterialListRelationFilter
-    materialRequestItems?: MaterialRequestItemListRelationFilter
-  }, "id" | "code">
+    warehouseStandardStocks?: WarehouseMaterialStockListRelationFilter
+    relatedMaterialInstances?: MaterialInstanceListRelationFilter
+    standardMaterialRequestItems?: MaterialRequestItemListRelationFilter
+    stockMovements?: MaterialStockMovementListRelationFilter
+  }, "id" | "globalCode">
 
   export type MaterialOrderByWithAggregationInput = {
     id?: SortOrder
-    code?: SortOrderInput | SortOrder
+    globalCode?: SortOrder
     name?: SortOrder
     description?: SortOrderInput | SortOrder
     unitOfMeasure?: SortOrder
+    category?: SortOrderInput | SortOrder
+    manufacturer?: SortOrderInput | SortOrder
+    partNumber?: SortOrderInput | SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    parentMaterialId?: SortOrderInput | SortOrder
     _count?: MaterialCountOrderByAggregateInput
     _avg?: MaterialAvgOrderByAggregateInput
     _max?: MaterialMaxOrderByAggregateInput
@@ -19767,14 +27816,126 @@ export namespace Prisma {
     OR?: MaterialScalarWhereWithAggregatesInput[]
     NOT?: MaterialScalarWhereWithAggregatesInput | MaterialScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Material"> | number
-    code?: StringNullableWithAggregatesFilter<"Material"> | string | null
+    globalCode?: StringWithAggregatesFilter<"Material"> | string
     name?: StringWithAggregatesFilter<"Material"> | string
     description?: StringNullableWithAggregatesFilter<"Material"> | string | null
     unitOfMeasure?: StringWithAggregatesFilter<"Material"> | string
+    category?: StringNullableWithAggregatesFilter<"Material"> | string | null
+    manufacturer?: StringNullableWithAggregatesFilter<"Material"> | string | null
+    partNumber?: StringNullableWithAggregatesFilter<"Material"> | string | null
     isActive?: BoolWithAggregatesFilter<"Material"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Material"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Material"> | Date | string
-    parentMaterialId?: IntNullableWithAggregatesFilter<"Material"> | number | null
+  }
+
+  export type WarehouseMaterialStockWhereInput = {
+    AND?: WarehouseMaterialStockWhereInput | WarehouseMaterialStockWhereInput[]
+    OR?: WarehouseMaterialStockWhereInput[]
+    NOT?: WarehouseMaterialStockWhereInput | WarehouseMaterialStockWhereInput[]
+    id?: IntFilter<"WarehouseMaterialStock"> | number
+    warehouseId?: IntFilter<"WarehouseMaterialStock"> | number
+    materialId?: IntFilter<"WarehouseMaterialStock"> | number
+    physicalOnHandQuantity?: DecimalFilter<"WarehouseMaterialStock"> | Decimal | DecimalJsLike | number | string
+    initialStockQuantity?: DecimalNullableFilter<"WarehouseMaterialStock"> | Decimal | DecimalJsLike | number | string | null
+    restrictedQuantity?: DecimalFilter<"WarehouseMaterialStock"> | Decimal | DecimalJsLike | number | string
+    reservedQuantity?: DecimalFilter<"WarehouseMaterialStock"> | Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: StringNullableFilter<"WarehouseMaterialStock"> | string | null
+    minStockLevel?: DecimalNullableFilter<"WarehouseMaterialStock"> | Decimal | DecimalJsLike | number | string | null
+    maxStockLevel?: DecimalNullableFilter<"WarehouseMaterialStock"> | Decimal | DecimalJsLike | number | string | null
+    lastStockCountDate?: DateTimeNullableFilter<"WarehouseMaterialStock"> | Date | string | null
+    averageCost?: DecimalNullableFilter<"WarehouseMaterialStock"> | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFilter<"WarehouseMaterialStock"> | Date | string
+    updatedAt?: DateTimeFilter<"WarehouseMaterialStock"> | Date | string
+    warehouse?: XOR<WarehouseScalarRelationFilter, WarehouseWhereInput>
+    material?: XOR<MaterialScalarRelationFilter, MaterialWhereInput>
+    stockMovements?: MaterialStockMovementListRelationFilter
+  }
+
+  export type WarehouseMaterialStockOrderByWithRelationInput = {
+    id?: SortOrder
+    warehouseId?: SortOrder
+    materialId?: SortOrder
+    physicalOnHandQuantity?: SortOrder
+    initialStockQuantity?: SortOrderInput | SortOrder
+    restrictedQuantity?: SortOrder
+    reservedQuantity?: SortOrder
+    locationInWarehouse?: SortOrderInput | SortOrder
+    minStockLevel?: SortOrderInput | SortOrder
+    maxStockLevel?: SortOrderInput | SortOrder
+    lastStockCountDate?: SortOrderInput | SortOrder
+    averageCost?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    warehouse?: WarehouseOrderByWithRelationInput
+    material?: MaterialOrderByWithRelationInput
+    stockMovements?: MaterialStockMovementOrderByRelationAggregateInput
+    _relevance?: WarehouseMaterialStockOrderByRelevanceInput
+  }
+
+  export type WarehouseMaterialStockWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    unique_warehouse_material_standard_stock?: WarehouseMaterialStockUnique_warehouse_material_standard_stockCompoundUniqueInput
+    AND?: WarehouseMaterialStockWhereInput | WarehouseMaterialStockWhereInput[]
+    OR?: WarehouseMaterialStockWhereInput[]
+    NOT?: WarehouseMaterialStockWhereInput | WarehouseMaterialStockWhereInput[]
+    warehouseId?: IntFilter<"WarehouseMaterialStock"> | number
+    materialId?: IntFilter<"WarehouseMaterialStock"> | number
+    physicalOnHandQuantity?: DecimalFilter<"WarehouseMaterialStock"> | Decimal | DecimalJsLike | number | string
+    initialStockQuantity?: DecimalNullableFilter<"WarehouseMaterialStock"> | Decimal | DecimalJsLike | number | string | null
+    restrictedQuantity?: DecimalFilter<"WarehouseMaterialStock"> | Decimal | DecimalJsLike | number | string
+    reservedQuantity?: DecimalFilter<"WarehouseMaterialStock"> | Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: StringNullableFilter<"WarehouseMaterialStock"> | string | null
+    minStockLevel?: DecimalNullableFilter<"WarehouseMaterialStock"> | Decimal | DecimalJsLike | number | string | null
+    maxStockLevel?: DecimalNullableFilter<"WarehouseMaterialStock"> | Decimal | DecimalJsLike | number | string | null
+    lastStockCountDate?: DateTimeNullableFilter<"WarehouseMaterialStock"> | Date | string | null
+    averageCost?: DecimalNullableFilter<"WarehouseMaterialStock"> | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFilter<"WarehouseMaterialStock"> | Date | string
+    updatedAt?: DateTimeFilter<"WarehouseMaterialStock"> | Date | string
+    warehouse?: XOR<WarehouseScalarRelationFilter, WarehouseWhereInput>
+    material?: XOR<MaterialScalarRelationFilter, MaterialWhereInput>
+    stockMovements?: MaterialStockMovementListRelationFilter
+  }, "id" | "unique_warehouse_material_standard_stock">
+
+  export type WarehouseMaterialStockOrderByWithAggregationInput = {
+    id?: SortOrder
+    warehouseId?: SortOrder
+    materialId?: SortOrder
+    physicalOnHandQuantity?: SortOrder
+    initialStockQuantity?: SortOrderInput | SortOrder
+    restrictedQuantity?: SortOrder
+    reservedQuantity?: SortOrder
+    locationInWarehouse?: SortOrderInput | SortOrder
+    minStockLevel?: SortOrderInput | SortOrder
+    maxStockLevel?: SortOrderInput | SortOrder
+    lastStockCountDate?: SortOrderInput | SortOrder
+    averageCost?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: WarehouseMaterialStockCountOrderByAggregateInput
+    _avg?: WarehouseMaterialStockAvgOrderByAggregateInput
+    _max?: WarehouseMaterialStockMaxOrderByAggregateInput
+    _min?: WarehouseMaterialStockMinOrderByAggregateInput
+    _sum?: WarehouseMaterialStockSumOrderByAggregateInput
+  }
+
+  export type WarehouseMaterialStockScalarWhereWithAggregatesInput = {
+    AND?: WarehouseMaterialStockScalarWhereWithAggregatesInput | WarehouseMaterialStockScalarWhereWithAggregatesInput[]
+    OR?: WarehouseMaterialStockScalarWhereWithAggregatesInput[]
+    NOT?: WarehouseMaterialStockScalarWhereWithAggregatesInput | WarehouseMaterialStockScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"WarehouseMaterialStock"> | number
+    warehouseId?: IntWithAggregatesFilter<"WarehouseMaterialStock"> | number
+    materialId?: IntWithAggregatesFilter<"WarehouseMaterialStock"> | number
+    physicalOnHandQuantity?: DecimalWithAggregatesFilter<"WarehouseMaterialStock"> | Decimal | DecimalJsLike | number | string
+    initialStockQuantity?: DecimalNullableWithAggregatesFilter<"WarehouseMaterialStock"> | Decimal | DecimalJsLike | number | string | null
+    restrictedQuantity?: DecimalWithAggregatesFilter<"WarehouseMaterialStock"> | Decimal | DecimalJsLike | number | string
+    reservedQuantity?: DecimalWithAggregatesFilter<"WarehouseMaterialStock"> | Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: StringNullableWithAggregatesFilter<"WarehouseMaterialStock"> | string | null
+    minStockLevel?: DecimalNullableWithAggregatesFilter<"WarehouseMaterialStock"> | Decimal | DecimalJsLike | number | string | null
+    maxStockLevel?: DecimalNullableWithAggregatesFilter<"WarehouseMaterialStock"> | Decimal | DecimalJsLike | number | string | null
+    lastStockCountDate?: DateTimeNullableWithAggregatesFilter<"WarehouseMaterialStock"> | Date | string | null
+    averageCost?: DecimalNullableWithAggregatesFilter<"WarehouseMaterialStock"> | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"WarehouseMaterialStock"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"WarehouseMaterialStock"> | Date | string
   }
 
   export type MaterialRequestWhereInput = {
@@ -19782,6 +27943,8 @@ export namespace Prisma {
     OR?: MaterialRequestWhereInput[]
     NOT?: MaterialRequestWhereInput | MaterialRequestWhereInput[]
     id?: IntFilter<"MaterialRequest"> | number
+    protocolNumber?: StringFilter<"MaterialRequest"> | string
+    requestType?: EnumMaterialRequestTypeFilter<"MaterialRequest"> | $Enums.MaterialRequestType
     justification?: StringNullableFilter<"MaterialRequest"> | string | null
     requestDate?: DateTimeFilter<"MaterialRequest"> | Date | string
     status?: EnumMaterialRequestStatusFilter<"MaterialRequest"> | $Enums.MaterialRequestStatus
@@ -19800,6 +27963,8 @@ export namespace Prisma {
 
   export type MaterialRequestOrderByWithRelationInput = {
     id?: SortOrder
+    protocolNumber?: SortOrder
+    requestType?: SortOrder
     justification?: SortOrderInput | SortOrder
     requestDate?: SortOrder
     status?: SortOrder
@@ -19819,9 +27984,11 @@ export namespace Prisma {
 
   export type MaterialRequestWhereUniqueInput = Prisma.AtLeast<{
     id?: number
+    protocolNumber?: string
     AND?: MaterialRequestWhereInput | MaterialRequestWhereInput[]
     OR?: MaterialRequestWhereInput[]
     NOT?: MaterialRequestWhereInput | MaterialRequestWhereInput[]
+    requestType?: EnumMaterialRequestTypeFilter<"MaterialRequest"> | $Enums.MaterialRequestType
     justification?: StringNullableFilter<"MaterialRequest"> | string | null
     requestDate?: DateTimeFilter<"MaterialRequest"> | Date | string
     status?: EnumMaterialRequestStatusFilter<"MaterialRequest"> | $Enums.MaterialRequestStatus
@@ -19836,10 +28003,12 @@ export namespace Prisma {
     requestedBy?: XOR<UserScalarRelationFilter, UserWhereInput>
     approvedBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     items?: MaterialRequestItemListRelationFilter
-  }, "id">
+  }, "id" | "protocolNumber">
 
   export type MaterialRequestOrderByWithAggregationInput = {
     id?: SortOrder
+    protocolNumber?: SortOrder
+    requestType?: SortOrder
     justification?: SortOrderInput | SortOrder
     requestDate?: SortOrder
     status?: SortOrder
@@ -19862,6 +28031,8 @@ export namespace Prisma {
     OR?: MaterialRequestScalarWhereWithAggregatesInput[]
     NOT?: MaterialRequestScalarWhereWithAggregatesInput | MaterialRequestScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"MaterialRequest"> | number
+    protocolNumber?: StringWithAggregatesFilter<"MaterialRequest"> | string
+    requestType?: EnumMaterialRequestTypeWithAggregatesFilter<"MaterialRequest"> | $Enums.MaterialRequestType
     justification?: StringNullableWithAggregatesFilter<"MaterialRequest"> | string | null
     requestDate?: DateTimeWithAggregatesFilter<"MaterialRequest"> | Date | string
     status?: EnumMaterialRequestStatusWithAggregatesFilter<"MaterialRequest"> | $Enums.MaterialRequestStatus
@@ -19879,28 +28050,51 @@ export namespace Prisma {
     OR?: MaterialRequestItemWhereInput[]
     NOT?: MaterialRequestItemWhereInput | MaterialRequestItemWhereInput[]
     id?: IntFilter<"MaterialRequestItem"> | number
+    materialRequestId?: IntFilter<"MaterialRequestItem"> | number
+    requestType?: EnumMaterialRequestItemTypeFilter<"MaterialRequestItem"> | $Enums.MaterialRequestItemType
+    requestedGlobalMaterialId?: IntNullableFilter<"MaterialRequestItem"> | number | null
+    requestedDerivedName?: StringNullableFilter<"MaterialRequestItem"> | string | null
+    requestedDerivedConditionId?: IntNullableFilter<"MaterialRequestItem"> | number | null
     quantityRequested?: DecimalFilter<"MaterialRequestItem"> | Decimal | DecimalJsLike | number | string
     quantityApproved?: DecimalNullableFilter<"MaterialRequestItem"> | Decimal | DecimalJsLike | number | string | null
-    quantityDelivered?: DecimalNullableFilter<"MaterialRequestItem"> | Decimal | DecimalJsLike | number | string | null
-    materialRequestId?: IntFilter<"MaterialRequestItem"> | number
-    materialId?: IntFilter<"MaterialRequestItem"> | number
+    quantityDelivered?: DecimalFilter<"MaterialRequestItem"> | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringFilter<"MaterialRequestItem"> | string
+    fulfilledByInstanceId?: IntNullableFilter<"MaterialRequestItem"> | number | null
+    notes?: StringNullableFilter<"MaterialRequestItem"> | string | null
     createdAt?: DateTimeFilter<"MaterialRequestItem"> | Date | string
     updatedAt?: DateTimeFilter<"MaterialRequestItem"> | Date | string
+    materialInstanceConditionId?: IntNullableFilter<"MaterialRequestItem"> | number | null
     materialRequest?: XOR<MaterialRequestScalarRelationFilter, MaterialRequestWhereInput>
-    material?: XOR<MaterialScalarRelationFilter, MaterialWhereInput>
+    requestedGlobalMaterial?: XOR<MaterialNullableScalarRelationFilter, MaterialWhereInput> | null
+    requestedDerivedCondition?: XOR<MaterialInstanceConditionNullableScalarRelationFilter, MaterialInstanceConditionWhereInput> | null
+    fulfilledByInstance?: XOR<MaterialInstanceNullableScalarRelationFilter, MaterialInstanceWhereInput> | null
+    stockMovements?: MaterialStockMovementListRelationFilter
+    MaterialInstanceCondition?: XOR<MaterialInstanceConditionNullableScalarRelationFilter, MaterialInstanceConditionWhereInput> | null
   }
 
   export type MaterialRequestItemOrderByWithRelationInput = {
     id?: SortOrder
+    materialRequestId?: SortOrder
+    requestType?: SortOrder
+    requestedGlobalMaterialId?: SortOrderInput | SortOrder
+    requestedDerivedName?: SortOrderInput | SortOrder
+    requestedDerivedConditionId?: SortOrderInput | SortOrder
     quantityRequested?: SortOrder
     quantityApproved?: SortOrderInput | SortOrder
-    quantityDelivered?: SortOrderInput | SortOrder
-    materialRequestId?: SortOrder
-    materialId?: SortOrder
+    quantityDelivered?: SortOrder
+    unitOfMeasure?: SortOrder
+    fulfilledByInstanceId?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    materialInstanceConditionId?: SortOrderInput | SortOrder
     materialRequest?: MaterialRequestOrderByWithRelationInput
-    material?: MaterialOrderByWithRelationInput
+    requestedGlobalMaterial?: MaterialOrderByWithRelationInput
+    requestedDerivedCondition?: MaterialInstanceConditionOrderByWithRelationInput
+    fulfilledByInstance?: MaterialInstanceOrderByWithRelationInput
+    stockMovements?: MaterialStockMovementOrderByRelationAggregateInput
+    MaterialInstanceCondition?: MaterialInstanceConditionOrderByWithRelationInput
+    _relevance?: MaterialRequestItemOrderByRelevanceInput
   }
 
   export type MaterialRequestItemWhereUniqueInput = Prisma.AtLeast<{
@@ -19908,26 +28102,44 @@ export namespace Prisma {
     AND?: MaterialRequestItemWhereInput | MaterialRequestItemWhereInput[]
     OR?: MaterialRequestItemWhereInput[]
     NOT?: MaterialRequestItemWhereInput | MaterialRequestItemWhereInput[]
+    materialRequestId?: IntFilter<"MaterialRequestItem"> | number
+    requestType?: EnumMaterialRequestItemTypeFilter<"MaterialRequestItem"> | $Enums.MaterialRequestItemType
+    requestedGlobalMaterialId?: IntNullableFilter<"MaterialRequestItem"> | number | null
+    requestedDerivedName?: StringNullableFilter<"MaterialRequestItem"> | string | null
+    requestedDerivedConditionId?: IntNullableFilter<"MaterialRequestItem"> | number | null
     quantityRequested?: DecimalFilter<"MaterialRequestItem"> | Decimal | DecimalJsLike | number | string
     quantityApproved?: DecimalNullableFilter<"MaterialRequestItem"> | Decimal | DecimalJsLike | number | string | null
-    quantityDelivered?: DecimalNullableFilter<"MaterialRequestItem"> | Decimal | DecimalJsLike | number | string | null
-    materialRequestId?: IntFilter<"MaterialRequestItem"> | number
-    materialId?: IntFilter<"MaterialRequestItem"> | number
+    quantityDelivered?: DecimalFilter<"MaterialRequestItem"> | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringFilter<"MaterialRequestItem"> | string
+    fulfilledByInstanceId?: IntNullableFilter<"MaterialRequestItem"> | number | null
+    notes?: StringNullableFilter<"MaterialRequestItem"> | string | null
     createdAt?: DateTimeFilter<"MaterialRequestItem"> | Date | string
     updatedAt?: DateTimeFilter<"MaterialRequestItem"> | Date | string
+    materialInstanceConditionId?: IntNullableFilter<"MaterialRequestItem"> | number | null
     materialRequest?: XOR<MaterialRequestScalarRelationFilter, MaterialRequestWhereInput>
-    material?: XOR<MaterialScalarRelationFilter, MaterialWhereInput>
+    requestedGlobalMaterial?: XOR<MaterialNullableScalarRelationFilter, MaterialWhereInput> | null
+    requestedDerivedCondition?: XOR<MaterialInstanceConditionNullableScalarRelationFilter, MaterialInstanceConditionWhereInput> | null
+    fulfilledByInstance?: XOR<MaterialInstanceNullableScalarRelationFilter, MaterialInstanceWhereInput> | null
+    stockMovements?: MaterialStockMovementListRelationFilter
+    MaterialInstanceCondition?: XOR<MaterialInstanceConditionNullableScalarRelationFilter, MaterialInstanceConditionWhereInput> | null
   }, "id">
 
   export type MaterialRequestItemOrderByWithAggregationInput = {
     id?: SortOrder
+    materialRequestId?: SortOrder
+    requestType?: SortOrder
+    requestedGlobalMaterialId?: SortOrderInput | SortOrder
+    requestedDerivedName?: SortOrderInput | SortOrder
+    requestedDerivedConditionId?: SortOrderInput | SortOrder
     quantityRequested?: SortOrder
     quantityApproved?: SortOrderInput | SortOrder
-    quantityDelivered?: SortOrderInput | SortOrder
-    materialRequestId?: SortOrder
-    materialId?: SortOrder
+    quantityDelivered?: SortOrder
+    unitOfMeasure?: SortOrder
+    fulfilledByInstanceId?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    materialInstanceConditionId?: SortOrderInput | SortOrder
     _count?: MaterialRequestItemCountOrderByAggregateInput
     _avg?: MaterialRequestItemAvgOrderByAggregateInput
     _max?: MaterialRequestItemMaxOrderByAggregateInput
@@ -19940,13 +28152,395 @@ export namespace Prisma {
     OR?: MaterialRequestItemScalarWhereWithAggregatesInput[]
     NOT?: MaterialRequestItemScalarWhereWithAggregatesInput | MaterialRequestItemScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"MaterialRequestItem"> | number
+    materialRequestId?: IntWithAggregatesFilter<"MaterialRequestItem"> | number
+    requestType?: EnumMaterialRequestItemTypeWithAggregatesFilter<"MaterialRequestItem"> | $Enums.MaterialRequestItemType
+    requestedGlobalMaterialId?: IntNullableWithAggregatesFilter<"MaterialRequestItem"> | number | null
+    requestedDerivedName?: StringNullableWithAggregatesFilter<"MaterialRequestItem"> | string | null
+    requestedDerivedConditionId?: IntNullableWithAggregatesFilter<"MaterialRequestItem"> | number | null
     quantityRequested?: DecimalWithAggregatesFilter<"MaterialRequestItem"> | Decimal | DecimalJsLike | number | string
     quantityApproved?: DecimalNullableWithAggregatesFilter<"MaterialRequestItem"> | Decimal | DecimalJsLike | number | string | null
-    quantityDelivered?: DecimalNullableWithAggregatesFilter<"MaterialRequestItem"> | Decimal | DecimalJsLike | number | string | null
-    materialRequestId?: IntWithAggregatesFilter<"MaterialRequestItem"> | number
-    materialId?: IntWithAggregatesFilter<"MaterialRequestItem"> | number
+    quantityDelivered?: DecimalWithAggregatesFilter<"MaterialRequestItem"> | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringWithAggregatesFilter<"MaterialRequestItem"> | string
+    fulfilledByInstanceId?: IntNullableWithAggregatesFilter<"MaterialRequestItem"> | number | null
+    notes?: StringNullableWithAggregatesFilter<"MaterialRequestItem"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"MaterialRequestItem"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"MaterialRequestItem"> | Date | string
+    materialInstanceConditionId?: IntNullableWithAggregatesFilter<"MaterialRequestItem"> | number | null
+  }
+
+  export type StockMovementTypeWhereInput = {
+    AND?: StockMovementTypeWhereInput | StockMovementTypeWhereInput[]
+    OR?: StockMovementTypeWhereInput[]
+    NOT?: StockMovementTypeWhereInput | StockMovementTypeWhereInput[]
+    id?: IntFilter<"StockMovementType"> | number
+    code?: StringFilter<"StockMovementType"> | string
+    name?: StringFilter<"StockMovementType"> | string
+    description?: StringNullableFilter<"StockMovementType"> | string | null
+    operation?: EnumStockOperationTypeFilter<"StockMovementType"> | $Enums.StockOperationType
+    isActive?: BoolFilter<"StockMovementType"> | boolean
+    createdAt?: DateTimeFilter<"StockMovementType"> | Date | string
+    updatedAt?: DateTimeFilter<"StockMovementType"> | Date | string
+    stockMovements?: MaterialStockMovementListRelationFilter
+  }
+
+  export type StockMovementTypeOrderByWithRelationInput = {
+    id?: SortOrder
+    code?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    operation?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    stockMovements?: MaterialStockMovementOrderByRelationAggregateInput
+    _relevance?: StockMovementTypeOrderByRelevanceInput
+  }
+
+  export type StockMovementTypeWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    code?: string
+    AND?: StockMovementTypeWhereInput | StockMovementTypeWhereInput[]
+    OR?: StockMovementTypeWhereInput[]
+    NOT?: StockMovementTypeWhereInput | StockMovementTypeWhereInput[]
+    name?: StringFilter<"StockMovementType"> | string
+    description?: StringNullableFilter<"StockMovementType"> | string | null
+    operation?: EnumStockOperationTypeFilter<"StockMovementType"> | $Enums.StockOperationType
+    isActive?: BoolFilter<"StockMovementType"> | boolean
+    createdAt?: DateTimeFilter<"StockMovementType"> | Date | string
+    updatedAt?: DateTimeFilter<"StockMovementType"> | Date | string
+    stockMovements?: MaterialStockMovementListRelationFilter
+  }, "id" | "code">
+
+  export type StockMovementTypeOrderByWithAggregationInput = {
+    id?: SortOrder
+    code?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    operation?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: StockMovementTypeCountOrderByAggregateInput
+    _avg?: StockMovementTypeAvgOrderByAggregateInput
+    _max?: StockMovementTypeMaxOrderByAggregateInput
+    _min?: StockMovementTypeMinOrderByAggregateInput
+    _sum?: StockMovementTypeSumOrderByAggregateInput
+  }
+
+  export type StockMovementTypeScalarWhereWithAggregatesInput = {
+    AND?: StockMovementTypeScalarWhereWithAggregatesInput | StockMovementTypeScalarWhereWithAggregatesInput[]
+    OR?: StockMovementTypeScalarWhereWithAggregatesInput[]
+    NOT?: StockMovementTypeScalarWhereWithAggregatesInput | StockMovementTypeScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"StockMovementType"> | number
+    code?: StringWithAggregatesFilter<"StockMovementType"> | string
+    name?: StringWithAggregatesFilter<"StockMovementType"> | string
+    description?: StringNullableWithAggregatesFilter<"StockMovementType"> | string | null
+    operation?: EnumStockOperationTypeWithAggregatesFilter<"StockMovementType"> | $Enums.StockOperationType
+    isActive?: BoolWithAggregatesFilter<"StockMovementType"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"StockMovementType"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"StockMovementType"> | Date | string
+  }
+
+  export type MaterialStockMovementWhereInput = {
+    AND?: MaterialStockMovementWhereInput | MaterialStockMovementWhereInput[]
+    OR?: MaterialStockMovementWhereInput[]
+    NOT?: MaterialStockMovementWhereInput | MaterialStockMovementWhereInput[]
+    id?: IntFilter<"MaterialStockMovement"> | number
+    warehouseId?: IntFilter<"MaterialStockMovement"> | number
+    globalMaterialId?: IntNullableFilter<"MaterialStockMovement"> | number | null
+    materialInstanceId?: IntNullableFilter<"MaterialStockMovement"> | number | null
+    movementTypeId?: IntFilter<"MaterialStockMovement"> | number
+    quantity?: DecimalFilter<"MaterialStockMovement"> | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringFilter<"MaterialStockMovement"> | string
+    movementDate?: DateTimeFilter<"MaterialStockMovement"> | Date | string
+    createdAt?: DateTimeFilter<"MaterialStockMovement"> | Date | string
+    updatedAt?: DateTimeFilter<"MaterialStockMovement"> | Date | string
+    warehouseMaterialStockId?: IntNullableFilter<"MaterialStockMovement"> | number | null
+    materialRequestItemId?: IntNullableFilter<"MaterialStockMovement"> | number | null
+    warehouse?: XOR<WarehouseScalarRelationFilter, WarehouseWhereInput>
+    globalMaterial?: XOR<MaterialNullableScalarRelationFilter, MaterialWhereInput> | null
+    materialInstance?: XOR<MaterialInstanceNullableScalarRelationFilter, MaterialInstanceWhereInput> | null
+    movementType?: XOR<StockMovementTypeScalarRelationFilter, StockMovementTypeWhereInput>
+    WarehouseMaterialStock?: XOR<WarehouseMaterialStockNullableScalarRelationFilter, WarehouseMaterialStockWhereInput> | null
+    MaterialRequestItem?: XOR<MaterialRequestItemNullableScalarRelationFilter, MaterialRequestItemWhereInput> | null
+  }
+
+  export type MaterialStockMovementOrderByWithRelationInput = {
+    id?: SortOrder
+    warehouseId?: SortOrder
+    globalMaterialId?: SortOrderInput | SortOrder
+    materialInstanceId?: SortOrderInput | SortOrder
+    movementTypeId?: SortOrder
+    quantity?: SortOrder
+    unitOfMeasure?: SortOrder
+    movementDate?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    warehouseMaterialStockId?: SortOrderInput | SortOrder
+    materialRequestItemId?: SortOrderInput | SortOrder
+    warehouse?: WarehouseOrderByWithRelationInput
+    globalMaterial?: MaterialOrderByWithRelationInput
+    materialInstance?: MaterialInstanceOrderByWithRelationInput
+    movementType?: StockMovementTypeOrderByWithRelationInput
+    WarehouseMaterialStock?: WarehouseMaterialStockOrderByWithRelationInput
+    MaterialRequestItem?: MaterialRequestItemOrderByWithRelationInput
+    _relevance?: MaterialStockMovementOrderByRelevanceInput
+  }
+
+  export type MaterialStockMovementWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: MaterialStockMovementWhereInput | MaterialStockMovementWhereInput[]
+    OR?: MaterialStockMovementWhereInput[]
+    NOT?: MaterialStockMovementWhereInput | MaterialStockMovementWhereInput[]
+    warehouseId?: IntFilter<"MaterialStockMovement"> | number
+    globalMaterialId?: IntNullableFilter<"MaterialStockMovement"> | number | null
+    materialInstanceId?: IntNullableFilter<"MaterialStockMovement"> | number | null
+    movementTypeId?: IntFilter<"MaterialStockMovement"> | number
+    quantity?: DecimalFilter<"MaterialStockMovement"> | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringFilter<"MaterialStockMovement"> | string
+    movementDate?: DateTimeFilter<"MaterialStockMovement"> | Date | string
+    createdAt?: DateTimeFilter<"MaterialStockMovement"> | Date | string
+    updatedAt?: DateTimeFilter<"MaterialStockMovement"> | Date | string
+    warehouseMaterialStockId?: IntNullableFilter<"MaterialStockMovement"> | number | null
+    materialRequestItemId?: IntNullableFilter<"MaterialStockMovement"> | number | null
+    warehouse?: XOR<WarehouseScalarRelationFilter, WarehouseWhereInput>
+    globalMaterial?: XOR<MaterialNullableScalarRelationFilter, MaterialWhereInput> | null
+    materialInstance?: XOR<MaterialInstanceNullableScalarRelationFilter, MaterialInstanceWhereInput> | null
+    movementType?: XOR<StockMovementTypeScalarRelationFilter, StockMovementTypeWhereInput>
+    WarehouseMaterialStock?: XOR<WarehouseMaterialStockNullableScalarRelationFilter, WarehouseMaterialStockWhereInput> | null
+    MaterialRequestItem?: XOR<MaterialRequestItemNullableScalarRelationFilter, MaterialRequestItemWhereInput> | null
+  }, "id">
+
+  export type MaterialStockMovementOrderByWithAggregationInput = {
+    id?: SortOrder
+    warehouseId?: SortOrder
+    globalMaterialId?: SortOrderInput | SortOrder
+    materialInstanceId?: SortOrderInput | SortOrder
+    movementTypeId?: SortOrder
+    quantity?: SortOrder
+    unitOfMeasure?: SortOrder
+    movementDate?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    warehouseMaterialStockId?: SortOrderInput | SortOrder
+    materialRequestItemId?: SortOrderInput | SortOrder
+    _count?: MaterialStockMovementCountOrderByAggregateInput
+    _avg?: MaterialStockMovementAvgOrderByAggregateInput
+    _max?: MaterialStockMovementMaxOrderByAggregateInput
+    _min?: MaterialStockMovementMinOrderByAggregateInput
+    _sum?: MaterialStockMovementSumOrderByAggregateInput
+  }
+
+  export type MaterialStockMovementScalarWhereWithAggregatesInput = {
+    AND?: MaterialStockMovementScalarWhereWithAggregatesInput | MaterialStockMovementScalarWhereWithAggregatesInput[]
+    OR?: MaterialStockMovementScalarWhereWithAggregatesInput[]
+    NOT?: MaterialStockMovementScalarWhereWithAggregatesInput | MaterialStockMovementScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"MaterialStockMovement"> | number
+    warehouseId?: IntWithAggregatesFilter<"MaterialStockMovement"> | number
+    globalMaterialId?: IntNullableWithAggregatesFilter<"MaterialStockMovement"> | number | null
+    materialInstanceId?: IntNullableWithAggregatesFilter<"MaterialStockMovement"> | number | null
+    movementTypeId?: IntWithAggregatesFilter<"MaterialStockMovement"> | number
+    quantity?: DecimalWithAggregatesFilter<"MaterialStockMovement"> | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringWithAggregatesFilter<"MaterialStockMovement"> | string
+    movementDate?: DateTimeWithAggregatesFilter<"MaterialStockMovement"> | Date | string
+    createdAt?: DateTimeWithAggregatesFilter<"MaterialStockMovement"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"MaterialStockMovement"> | Date | string
+    warehouseMaterialStockId?: IntNullableWithAggregatesFilter<"MaterialStockMovement"> | number | null
+    materialRequestItemId?: IntNullableWithAggregatesFilter<"MaterialStockMovement"> | number | null
+  }
+
+  export type MaterialInstanceConditionWhereInput = {
+    AND?: MaterialInstanceConditionWhereInput | MaterialInstanceConditionWhereInput[]
+    OR?: MaterialInstanceConditionWhereInput[]
+    NOT?: MaterialInstanceConditionWhereInput | MaterialInstanceConditionWhereInput[]
+    id?: IntFilter<"MaterialInstanceCondition"> | number
+    code?: StringFilter<"MaterialInstanceCondition"> | string
+    name?: StringFilter<"MaterialInstanceCondition"> | string
+    description?: StringNullableFilter<"MaterialInstanceCondition"> | string | null
+    isUsable?: BoolFilter<"MaterialInstanceCondition"> | boolean
+    createdAt?: DateTimeFilter<"MaterialInstanceCondition"> | Date | string
+    updatedAt?: DateTimeFilter<"MaterialInstanceCondition"> | Date | string
+    materialInstances?: MaterialInstanceListRelationFilter
+    requestedInItems?: MaterialRequestItemListRelationFilter
+    MaterialRequestItem?: MaterialRequestItemListRelationFilter
+  }
+
+  export type MaterialInstanceConditionOrderByWithRelationInput = {
+    id?: SortOrder
+    code?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    isUsable?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    materialInstances?: MaterialInstanceOrderByRelationAggregateInput
+    requestedInItems?: MaterialRequestItemOrderByRelationAggregateInput
+    MaterialRequestItem?: MaterialRequestItemOrderByRelationAggregateInput
+    _relevance?: MaterialInstanceConditionOrderByRelevanceInput
+  }
+
+  export type MaterialInstanceConditionWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    code?: string
+    AND?: MaterialInstanceConditionWhereInput | MaterialInstanceConditionWhereInput[]
+    OR?: MaterialInstanceConditionWhereInput[]
+    NOT?: MaterialInstanceConditionWhereInput | MaterialInstanceConditionWhereInput[]
+    name?: StringFilter<"MaterialInstanceCondition"> | string
+    description?: StringNullableFilter<"MaterialInstanceCondition"> | string | null
+    isUsable?: BoolFilter<"MaterialInstanceCondition"> | boolean
+    createdAt?: DateTimeFilter<"MaterialInstanceCondition"> | Date | string
+    updatedAt?: DateTimeFilter<"MaterialInstanceCondition"> | Date | string
+    materialInstances?: MaterialInstanceListRelationFilter
+    requestedInItems?: MaterialRequestItemListRelationFilter
+    MaterialRequestItem?: MaterialRequestItemListRelationFilter
+  }, "id" | "code">
+
+  export type MaterialInstanceConditionOrderByWithAggregationInput = {
+    id?: SortOrder
+    code?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    isUsable?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: MaterialInstanceConditionCountOrderByAggregateInput
+    _avg?: MaterialInstanceConditionAvgOrderByAggregateInput
+    _max?: MaterialInstanceConditionMaxOrderByAggregateInput
+    _min?: MaterialInstanceConditionMinOrderByAggregateInput
+    _sum?: MaterialInstanceConditionSumOrderByAggregateInput
+  }
+
+  export type MaterialInstanceConditionScalarWhereWithAggregatesInput = {
+    AND?: MaterialInstanceConditionScalarWhereWithAggregatesInput | MaterialInstanceConditionScalarWhereWithAggregatesInput[]
+    OR?: MaterialInstanceConditionScalarWhereWithAggregatesInput[]
+    NOT?: MaterialInstanceConditionScalarWhereWithAggregatesInput | MaterialInstanceConditionScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"MaterialInstanceCondition"> | number
+    code?: StringWithAggregatesFilter<"MaterialInstanceCondition"> | string
+    name?: StringWithAggregatesFilter<"MaterialInstanceCondition"> | string
+    description?: StringNullableWithAggregatesFilter<"MaterialInstanceCondition"> | string | null
+    isUsable?: BoolWithAggregatesFilter<"MaterialInstanceCondition"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"MaterialInstanceCondition"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"MaterialInstanceCondition"> | Date | string
+  }
+
+  export type MaterialInstanceWhereInput = {
+    AND?: MaterialInstanceWhereInput | MaterialInstanceWhereInput[]
+    OR?: MaterialInstanceWhereInput[]
+    NOT?: MaterialInstanceWhereInput | MaterialInstanceWhereInput[]
+    id?: IntFilter<"MaterialInstance"> | number
+    instanceIdentifier?: StringFilter<"MaterialInstance"> | string
+    globalMaterialId?: IntNullableFilter<"MaterialInstance"> | number | null
+    derivedName?: StringFilter<"MaterialInstance"> | string
+    derivedDescription?: StringNullableFilter<"MaterialInstance"> | string | null
+    derivedUnitOfMeasure?: StringFilter<"MaterialInstance"> | string
+    warehouseId?: IntFilter<"MaterialInstance"> | number
+    conditionId?: IntFilter<"MaterialInstance"> | number
+    quantity?: DecimalFilter<"MaterialInstance"> | Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: StringNullableFilter<"MaterialInstance"> | string | null
+    sourceNotes?: StringNullableFilter<"MaterialInstance"> | string | null
+    reservedQuantity?: DecimalFilter<"MaterialInstance"> | Decimal | DecimalJsLike | number | string
+    restrictedQuantity?: DecimalFilter<"MaterialInstance"> | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFilter<"MaterialInstance"> | Date | string
+    updatedAt?: DateTimeFilter<"MaterialInstance"> | Date | string
+    globalMaterial?: XOR<MaterialNullableScalarRelationFilter, MaterialWhereInput> | null
+    warehouse?: XOR<WarehouseScalarRelationFilter, WarehouseWhereInput>
+    condition?: XOR<MaterialInstanceConditionScalarRelationFilter, MaterialInstanceConditionWhereInput>
+    stockMovements?: MaterialStockMovementListRelationFilter
+    fulfilledRequestItems?: MaterialRequestItemListRelationFilter
+  }
+
+  export type MaterialInstanceOrderByWithRelationInput = {
+    id?: SortOrder
+    instanceIdentifier?: SortOrder
+    globalMaterialId?: SortOrderInput | SortOrder
+    derivedName?: SortOrder
+    derivedDescription?: SortOrderInput | SortOrder
+    derivedUnitOfMeasure?: SortOrder
+    warehouseId?: SortOrder
+    conditionId?: SortOrder
+    quantity?: SortOrder
+    locationInWarehouse?: SortOrderInput | SortOrder
+    sourceNotes?: SortOrderInput | SortOrder
+    reservedQuantity?: SortOrder
+    restrictedQuantity?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    globalMaterial?: MaterialOrderByWithRelationInput
+    warehouse?: WarehouseOrderByWithRelationInput
+    condition?: MaterialInstanceConditionOrderByWithRelationInput
+    stockMovements?: MaterialStockMovementOrderByRelationAggregateInput
+    fulfilledRequestItems?: MaterialRequestItemOrderByRelationAggregateInput
+    _relevance?: MaterialInstanceOrderByRelevanceInput
+  }
+
+  export type MaterialInstanceWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    instanceIdentifier?: string
+    AND?: MaterialInstanceWhereInput | MaterialInstanceWhereInput[]
+    OR?: MaterialInstanceWhereInput[]
+    NOT?: MaterialInstanceWhereInput | MaterialInstanceWhereInput[]
+    globalMaterialId?: IntNullableFilter<"MaterialInstance"> | number | null
+    derivedName?: StringFilter<"MaterialInstance"> | string
+    derivedDescription?: StringNullableFilter<"MaterialInstance"> | string | null
+    derivedUnitOfMeasure?: StringFilter<"MaterialInstance"> | string
+    warehouseId?: IntFilter<"MaterialInstance"> | number
+    conditionId?: IntFilter<"MaterialInstance"> | number
+    quantity?: DecimalFilter<"MaterialInstance"> | Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: StringNullableFilter<"MaterialInstance"> | string | null
+    sourceNotes?: StringNullableFilter<"MaterialInstance"> | string | null
+    reservedQuantity?: DecimalFilter<"MaterialInstance"> | Decimal | DecimalJsLike | number | string
+    restrictedQuantity?: DecimalFilter<"MaterialInstance"> | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFilter<"MaterialInstance"> | Date | string
+    updatedAt?: DateTimeFilter<"MaterialInstance"> | Date | string
+    globalMaterial?: XOR<MaterialNullableScalarRelationFilter, MaterialWhereInput> | null
+    warehouse?: XOR<WarehouseScalarRelationFilter, WarehouseWhereInput>
+    condition?: XOR<MaterialInstanceConditionScalarRelationFilter, MaterialInstanceConditionWhereInput>
+    stockMovements?: MaterialStockMovementListRelationFilter
+    fulfilledRequestItems?: MaterialRequestItemListRelationFilter
+  }, "id" | "instanceIdentifier">
+
+  export type MaterialInstanceOrderByWithAggregationInput = {
+    id?: SortOrder
+    instanceIdentifier?: SortOrder
+    globalMaterialId?: SortOrderInput | SortOrder
+    derivedName?: SortOrder
+    derivedDescription?: SortOrderInput | SortOrder
+    derivedUnitOfMeasure?: SortOrder
+    warehouseId?: SortOrder
+    conditionId?: SortOrder
+    quantity?: SortOrder
+    locationInWarehouse?: SortOrderInput | SortOrder
+    sourceNotes?: SortOrderInput | SortOrder
+    reservedQuantity?: SortOrder
+    restrictedQuantity?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: MaterialInstanceCountOrderByAggregateInput
+    _avg?: MaterialInstanceAvgOrderByAggregateInput
+    _max?: MaterialInstanceMaxOrderByAggregateInput
+    _min?: MaterialInstanceMinOrderByAggregateInput
+    _sum?: MaterialInstanceSumOrderByAggregateInput
+  }
+
+  export type MaterialInstanceScalarWhereWithAggregatesInput = {
+    AND?: MaterialInstanceScalarWhereWithAggregatesInput | MaterialInstanceScalarWhereWithAggregatesInput[]
+    OR?: MaterialInstanceScalarWhereWithAggregatesInput[]
+    NOT?: MaterialInstanceScalarWhereWithAggregatesInput | MaterialInstanceScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"MaterialInstance"> | number
+    instanceIdentifier?: StringWithAggregatesFilter<"MaterialInstance"> | string
+    globalMaterialId?: IntNullableWithAggregatesFilter<"MaterialInstance"> | number | null
+    derivedName?: StringWithAggregatesFilter<"MaterialInstance"> | string
+    derivedDescription?: StringNullableWithAggregatesFilter<"MaterialInstance"> | string | null
+    derivedUnitOfMeasure?: StringWithAggregatesFilter<"MaterialInstance"> | string
+    warehouseId?: IntWithAggregatesFilter<"MaterialInstance"> | number
+    conditionId?: IntWithAggregatesFilter<"MaterialInstance"> | number
+    quantity?: DecimalWithAggregatesFilter<"MaterialInstance"> | Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: StringNullableWithAggregatesFilter<"MaterialInstance"> | string | null
+    sourceNotes?: StringNullableWithAggregatesFilter<"MaterialInstance"> | string | null
+    reservedQuantity?: DecimalWithAggregatesFilter<"MaterialInstance"> | Decimal | DecimalJsLike | number | string
+    restrictedQuantity?: DecimalWithAggregatesFilter<"MaterialInstance"> | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeWithAggregatesFilter<"MaterialInstance"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"MaterialInstance"> | Date | string
   }
 
   export type UserWhereInput = {
@@ -20634,6 +29228,7 @@ export namespace Prisma {
     currentMaintenanceRequests?: MaintenanceRequestCreateNestedManyWithoutCurrentMaintenanceInstanceInput
     timelineEventsTransferredFrom?: MaintenanceTimelineEventCreateNestedManyWithoutTransferredFromInstanceInput
     timelineEventsTransferredTo?: MaintenanceTimelineEventCreateNestedManyWithoutTransferredToInstanceInput
+    warehouses?: WarehouseCreateNestedManyWithoutMaintenanceInstanceInput
   }
 
   export type MaintenanceInstanceUncheckedCreateInput = {
@@ -20646,6 +29241,7 @@ export namespace Prisma {
     currentMaintenanceRequests?: MaintenanceRequestUncheckedCreateNestedManyWithoutCurrentMaintenanceInstanceInput
     timelineEventsTransferredFrom?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutTransferredFromInstanceInput
     timelineEventsTransferredTo?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutTransferredToInstanceInput
+    warehouses?: WarehouseUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
   }
 
   export type MaintenanceInstanceUpdateInput = {
@@ -20657,6 +29253,7 @@ export namespace Prisma {
     currentMaintenanceRequests?: MaintenanceRequestUpdateManyWithoutCurrentMaintenanceInstanceNestedInput
     timelineEventsTransferredFrom?: MaintenanceTimelineEventUpdateManyWithoutTransferredFromInstanceNestedInput
     timelineEventsTransferredTo?: MaintenanceTimelineEventUpdateManyWithoutTransferredToInstanceNestedInput
+    warehouses?: WarehouseUpdateManyWithoutMaintenanceInstanceNestedInput
   }
 
   export type MaintenanceInstanceUncheckedUpdateInput = {
@@ -20669,6 +29266,7 @@ export namespace Prisma {
     currentMaintenanceRequests?: MaintenanceRequestUncheckedUpdateManyWithoutCurrentMaintenanceInstanceNestedInput
     timelineEventsTransferredFrom?: MaintenanceTimelineEventUncheckedUpdateManyWithoutTransferredFromInstanceNestedInput
     timelineEventsTransferredTo?: MaintenanceTimelineEventUncheckedUpdateManyWithoutTransferredToInstanceNestedInput
+    warehouses?: WarehouseUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
   }
 
   export type MaintenanceInstanceCreateManyInput = {
@@ -20960,77 +29558,183 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type MaterialCreateInput = {
-    code?: string | null
+  export type WarehouseCreateInput = {
     name: string
-    description?: string | null
-    unitOfMeasure: string
+    code?: string | null
+    location?: string | null
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    parentMaterial?: MaterialCreateNestedOneWithoutChildsInput
-    childs?: MaterialCreateNestedManyWithoutParentMaterialInput
-    materialRequestItems?: MaterialRequestItemCreateNestedManyWithoutMaterialInput
+    maintenanceInstance: MaintenanceInstanceCreateNestedOneWithoutWarehousesInput
+    standardMaterialStocks?: WarehouseMaterialStockCreateNestedManyWithoutWarehouseInput
+    materialInstances?: MaterialInstanceCreateNestedManyWithoutWarehouseInput
+    stockMovements?: MaterialStockMovementCreateNestedManyWithoutWarehouseInput
+  }
+
+  export type WarehouseUncheckedCreateInput = {
+    id?: number
+    name: string
+    code?: string | null
+    location?: string | null
+    isActive?: boolean
+    maintenanceInstanceId: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    standardMaterialStocks?: WarehouseMaterialStockUncheckedCreateNestedManyWithoutWarehouseInput
+    materialInstances?: MaterialInstanceUncheckedCreateNestedManyWithoutWarehouseInput
+    stockMovements?: MaterialStockMovementUncheckedCreateNestedManyWithoutWarehouseInput
+  }
+
+  export type WarehouseUpdateInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maintenanceInstance?: MaintenanceInstanceUpdateOneRequiredWithoutWarehousesNestedInput
+    standardMaterialStocks?: WarehouseMaterialStockUpdateManyWithoutWarehouseNestedInput
+    materialInstances?: MaterialInstanceUpdateManyWithoutWarehouseNestedInput
+    stockMovements?: MaterialStockMovementUpdateManyWithoutWarehouseNestedInput
+  }
+
+  export type WarehouseUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    maintenanceInstanceId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    standardMaterialStocks?: WarehouseMaterialStockUncheckedUpdateManyWithoutWarehouseNestedInput
+    materialInstances?: MaterialInstanceUncheckedUpdateManyWithoutWarehouseNestedInput
+    stockMovements?: MaterialStockMovementUncheckedUpdateManyWithoutWarehouseNestedInput
+  }
+
+  export type WarehouseCreateManyInput = {
+    id?: number
+    name: string
+    code?: string | null
+    location?: string | null
+    isActive?: boolean
+    maintenanceInstanceId: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type WarehouseUpdateManyMutationInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type WarehouseUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    maintenanceInstanceId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaterialCreateInput = {
+    globalCode: string
+    name: string
+    description?: string | null
+    unitOfMeasure: string
+    category?: string | null
+    manufacturer?: string | null
+    partNumber?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    warehouseStandardStocks?: WarehouseMaterialStockCreateNestedManyWithoutMaterialInput
+    relatedMaterialInstances?: MaterialInstanceCreateNestedManyWithoutGlobalMaterialInput
+    standardMaterialRequestItems?: MaterialRequestItemCreateNestedManyWithoutRequestedGlobalMaterialInput
+    stockMovements?: MaterialStockMovementCreateNestedManyWithoutGlobalMaterialInput
   }
 
   export type MaterialUncheckedCreateInput = {
     id?: number
-    code?: string | null
+    globalCode: string
     name: string
     description?: string | null
     unitOfMeasure: string
+    category?: string | null
+    manufacturer?: string | null
+    partNumber?: string | null
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    parentMaterialId?: number | null
-    childs?: MaterialUncheckedCreateNestedManyWithoutParentMaterialInput
-    materialRequestItems?: MaterialRequestItemUncheckedCreateNestedManyWithoutMaterialInput
+    warehouseStandardStocks?: WarehouseMaterialStockUncheckedCreateNestedManyWithoutMaterialInput
+    relatedMaterialInstances?: MaterialInstanceUncheckedCreateNestedManyWithoutGlobalMaterialInput
+    standardMaterialRequestItems?: MaterialRequestItemUncheckedCreateNestedManyWithoutRequestedGlobalMaterialInput
+    stockMovements?: MaterialStockMovementUncheckedCreateNestedManyWithoutGlobalMaterialInput
   }
 
   export type MaterialUpdateInput = {
-    code?: NullableStringFieldUpdateOperationsInput | string | null
+    globalCode?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    manufacturer?: NullableStringFieldUpdateOperationsInput | string | null
+    partNumber?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    parentMaterial?: MaterialUpdateOneWithoutChildsNestedInput
-    childs?: MaterialUpdateManyWithoutParentMaterialNestedInput
-    materialRequestItems?: MaterialRequestItemUpdateManyWithoutMaterialNestedInput
+    warehouseStandardStocks?: WarehouseMaterialStockUpdateManyWithoutMaterialNestedInput
+    relatedMaterialInstances?: MaterialInstanceUpdateManyWithoutGlobalMaterialNestedInput
+    standardMaterialRequestItems?: MaterialRequestItemUpdateManyWithoutRequestedGlobalMaterialNestedInput
+    stockMovements?: MaterialStockMovementUpdateManyWithoutGlobalMaterialNestedInput
   }
 
   export type MaterialUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
-    code?: NullableStringFieldUpdateOperationsInput | string | null
+    globalCode?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    manufacturer?: NullableStringFieldUpdateOperationsInput | string | null
+    partNumber?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    parentMaterialId?: NullableIntFieldUpdateOperationsInput | number | null
-    childs?: MaterialUncheckedUpdateManyWithoutParentMaterialNestedInput
-    materialRequestItems?: MaterialRequestItemUncheckedUpdateManyWithoutMaterialNestedInput
+    warehouseStandardStocks?: WarehouseMaterialStockUncheckedUpdateManyWithoutMaterialNestedInput
+    relatedMaterialInstances?: MaterialInstanceUncheckedUpdateManyWithoutGlobalMaterialNestedInput
+    standardMaterialRequestItems?: MaterialRequestItemUncheckedUpdateManyWithoutRequestedGlobalMaterialNestedInput
+    stockMovements?: MaterialStockMovementUncheckedUpdateManyWithoutGlobalMaterialNestedInput
   }
 
   export type MaterialCreateManyInput = {
     id?: number
-    code?: string | null
+    globalCode: string
     name: string
     description?: string | null
     unitOfMeasure: string
+    category?: string | null
+    manufacturer?: string | null
+    partNumber?: string | null
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    parentMaterialId?: number | null
   }
 
   export type MaterialUpdateManyMutationInput = {
-    code?: NullableStringFieldUpdateOperationsInput | string | null
+    globalCode?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    manufacturer?: NullableStringFieldUpdateOperationsInput | string | null
+    partNumber?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -21038,17 +29742,139 @@ export namespace Prisma {
 
   export type MaterialUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
-    code?: NullableStringFieldUpdateOperationsInput | string | null
+    globalCode?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    manufacturer?: NullableStringFieldUpdateOperationsInput | string | null
+    partNumber?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    parentMaterialId?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type WarehouseMaterialStockCreateInput = {
+    physicalOnHandQuantity?: Decimal | DecimalJsLike | number | string
+    initialStockQuantity?: Decimal | DecimalJsLike | number | string | null
+    restrictedQuantity?: Decimal | DecimalJsLike | number | string
+    reservedQuantity?: Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: string | null
+    minStockLevel?: Decimal | DecimalJsLike | number | string | null
+    maxStockLevel?: Decimal | DecimalJsLike | number | string | null
+    lastStockCountDate?: Date | string | null
+    averageCost?: Decimal | DecimalJsLike | number | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    warehouse: WarehouseCreateNestedOneWithoutStandardMaterialStocksInput
+    material: MaterialCreateNestedOneWithoutWarehouseStandardStocksInput
+    stockMovements?: MaterialStockMovementCreateNestedManyWithoutWarehouseMaterialStockInput
+  }
+
+  export type WarehouseMaterialStockUncheckedCreateInput = {
+    id?: number
+    warehouseId: number
+    materialId: number
+    physicalOnHandQuantity?: Decimal | DecimalJsLike | number | string
+    initialStockQuantity?: Decimal | DecimalJsLike | number | string | null
+    restrictedQuantity?: Decimal | DecimalJsLike | number | string
+    reservedQuantity?: Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: string | null
+    minStockLevel?: Decimal | DecimalJsLike | number | string | null
+    maxStockLevel?: Decimal | DecimalJsLike | number | string | null
+    lastStockCountDate?: Date | string | null
+    averageCost?: Decimal | DecimalJsLike | number | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    stockMovements?: MaterialStockMovementUncheckedCreateNestedManyWithoutWarehouseMaterialStockInput
+  }
+
+  export type WarehouseMaterialStockUpdateInput = {
+    physicalOnHandQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    initialStockQuantity?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    restrictedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    reservedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: NullableStringFieldUpdateOperationsInput | string | null
+    minStockLevel?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    maxStockLevel?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    lastStockCountDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    averageCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    warehouse?: WarehouseUpdateOneRequiredWithoutStandardMaterialStocksNestedInput
+    material?: MaterialUpdateOneRequiredWithoutWarehouseStandardStocksNestedInput
+    stockMovements?: MaterialStockMovementUpdateManyWithoutWarehouseMaterialStockNestedInput
+  }
+
+  export type WarehouseMaterialStockUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    warehouseId?: IntFieldUpdateOperationsInput | number
+    materialId?: IntFieldUpdateOperationsInput | number
+    physicalOnHandQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    initialStockQuantity?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    restrictedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    reservedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: NullableStringFieldUpdateOperationsInput | string | null
+    minStockLevel?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    maxStockLevel?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    lastStockCountDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    averageCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    stockMovements?: MaterialStockMovementUncheckedUpdateManyWithoutWarehouseMaterialStockNestedInput
+  }
+
+  export type WarehouseMaterialStockCreateManyInput = {
+    id?: number
+    warehouseId: number
+    materialId: number
+    physicalOnHandQuantity?: Decimal | DecimalJsLike | number | string
+    initialStockQuantity?: Decimal | DecimalJsLike | number | string | null
+    restrictedQuantity?: Decimal | DecimalJsLike | number | string
+    reservedQuantity?: Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: string | null
+    minStockLevel?: Decimal | DecimalJsLike | number | string | null
+    maxStockLevel?: Decimal | DecimalJsLike | number | string | null
+    lastStockCountDate?: Date | string | null
+    averageCost?: Decimal | DecimalJsLike | number | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type WarehouseMaterialStockUpdateManyMutationInput = {
+    physicalOnHandQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    initialStockQuantity?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    restrictedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    reservedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: NullableStringFieldUpdateOperationsInput | string | null
+    minStockLevel?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    maxStockLevel?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    lastStockCountDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    averageCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type WarehouseMaterialStockUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    warehouseId?: IntFieldUpdateOperationsInput | number
+    materialId?: IntFieldUpdateOperationsInput | number
+    physicalOnHandQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    initialStockQuantity?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    restrictedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    reservedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: NullableStringFieldUpdateOperationsInput | string | null
+    minStockLevel?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    maxStockLevel?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    lastStockCountDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    averageCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type MaterialRequestCreateInput = {
+    protocolNumber?: string
+    requestType?: $Enums.MaterialRequestType
     justification?: string | null
     requestDate?: Date | string
     status?: $Enums.MaterialRequestStatus
@@ -21064,6 +29890,8 @@ export namespace Prisma {
 
   export type MaterialRequestUncheckedCreateInput = {
     id?: number
+    protocolNumber?: string
+    requestType?: $Enums.MaterialRequestType
     justification?: string | null
     requestDate?: Date | string
     status?: $Enums.MaterialRequestStatus
@@ -21078,6 +29906,8 @@ export namespace Prisma {
   }
 
   export type MaterialRequestUpdateInput = {
+    protocolNumber?: StringFieldUpdateOperationsInput | string
+    requestType?: EnumMaterialRequestTypeFieldUpdateOperationsInput | $Enums.MaterialRequestType
     justification?: NullableStringFieldUpdateOperationsInput | string | null
     requestDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumMaterialRequestStatusFieldUpdateOperationsInput | $Enums.MaterialRequestStatus
@@ -21093,6 +29923,8 @@ export namespace Prisma {
 
   export type MaterialRequestUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
+    protocolNumber?: StringFieldUpdateOperationsInput | string
+    requestType?: EnumMaterialRequestTypeFieldUpdateOperationsInput | $Enums.MaterialRequestType
     justification?: NullableStringFieldUpdateOperationsInput | string | null
     requestDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumMaterialRequestStatusFieldUpdateOperationsInput | $Enums.MaterialRequestStatus
@@ -21108,6 +29940,8 @@ export namespace Prisma {
 
   export type MaterialRequestCreateManyInput = {
     id?: number
+    protocolNumber?: string
+    requestType?: $Enums.MaterialRequestType
     justification?: string | null
     requestDate?: Date | string
     status?: $Enums.MaterialRequestStatus
@@ -21121,6 +29955,8 @@ export namespace Prisma {
   }
 
   export type MaterialRequestUpdateManyMutationInput = {
+    protocolNumber?: StringFieldUpdateOperationsInput | string
+    requestType?: EnumMaterialRequestTypeFieldUpdateOperationsInput | $Enums.MaterialRequestType
     justification?: NullableStringFieldUpdateOperationsInput | string | null
     requestDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumMaterialRequestStatusFieldUpdateOperationsInput | $Enums.MaterialRequestStatus
@@ -21132,6 +29968,8 @@ export namespace Prisma {
 
   export type MaterialRequestUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
+    protocolNumber?: StringFieldUpdateOperationsInput | string
+    requestType?: EnumMaterialRequestTypeFieldUpdateOperationsInput | $Enums.MaterialRequestType
     justification?: NullableStringFieldUpdateOperationsInput | string | null
     requestDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumMaterialRequestStatusFieldUpdateOperationsInput | $Enums.MaterialRequestStatus
@@ -21145,73 +29983,504 @@ export namespace Prisma {
   }
 
   export type MaterialRequestItemCreateInput = {
+    requestType?: $Enums.MaterialRequestItemType
+    requestedDerivedName?: string | null
     quantityRequested: Decimal | DecimalJsLike | number | string
     quantityApproved?: Decimal | DecimalJsLike | number | string | null
-    quantityDelivered?: Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: Decimal | DecimalJsLike | number | string
+    unitOfMeasure: string
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     materialRequest: MaterialRequestCreateNestedOneWithoutItemsInput
-    material: MaterialCreateNestedOneWithoutMaterialRequestItemsInput
+    requestedGlobalMaterial?: MaterialCreateNestedOneWithoutStandardMaterialRequestItemsInput
+    requestedDerivedCondition?: MaterialInstanceConditionCreateNestedOneWithoutRequestedInItemsInput
+    fulfilledByInstance?: MaterialInstanceCreateNestedOneWithoutFulfilledRequestItemsInput
+    stockMovements?: MaterialStockMovementCreateNestedManyWithoutMaterialRequestItemInput
+    MaterialInstanceCondition?: MaterialInstanceConditionCreateNestedOneWithoutMaterialRequestItemInput
   }
 
   export type MaterialRequestItemUncheckedCreateInput = {
     id?: number
+    materialRequestId: number
+    requestType?: $Enums.MaterialRequestItemType
+    requestedGlobalMaterialId?: number | null
+    requestedDerivedName?: string | null
+    requestedDerivedConditionId?: number | null
     quantityRequested: Decimal | DecimalJsLike | number | string
     quantityApproved?: Decimal | DecimalJsLike | number | string | null
-    quantityDelivered?: Decimal | DecimalJsLike | number | string | null
-    materialRequestId: number
-    materialId: number
+    quantityDelivered?: Decimal | DecimalJsLike | number | string
+    unitOfMeasure: string
+    fulfilledByInstanceId?: number | null
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    materialInstanceConditionId?: number | null
+    stockMovements?: MaterialStockMovementUncheckedCreateNestedManyWithoutMaterialRequestItemInput
   }
 
   export type MaterialRequestItemUpdateInput = {
+    requestType?: EnumMaterialRequestItemTypeFieldUpdateOperationsInput | $Enums.MaterialRequestItemType
+    requestedDerivedName?: NullableStringFieldUpdateOperationsInput | string | null
     quantityRequested?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     quantityApproved?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    quantityDelivered?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     materialRequest?: MaterialRequestUpdateOneRequiredWithoutItemsNestedInput
-    material?: MaterialUpdateOneRequiredWithoutMaterialRequestItemsNestedInput
+    requestedGlobalMaterial?: MaterialUpdateOneWithoutStandardMaterialRequestItemsNestedInput
+    requestedDerivedCondition?: MaterialInstanceConditionUpdateOneWithoutRequestedInItemsNestedInput
+    fulfilledByInstance?: MaterialInstanceUpdateOneWithoutFulfilledRequestItemsNestedInput
+    stockMovements?: MaterialStockMovementUpdateManyWithoutMaterialRequestItemNestedInput
+    MaterialInstanceCondition?: MaterialInstanceConditionUpdateOneWithoutMaterialRequestItemNestedInput
   }
 
   export type MaterialRequestItemUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
+    materialRequestId?: IntFieldUpdateOperationsInput | number
+    requestType?: EnumMaterialRequestItemTypeFieldUpdateOperationsInput | $Enums.MaterialRequestItemType
+    requestedGlobalMaterialId?: NullableIntFieldUpdateOperationsInput | number | null
+    requestedDerivedName?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedDerivedConditionId?: NullableIntFieldUpdateOperationsInput | number | null
     quantityRequested?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     quantityApproved?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    quantityDelivered?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    materialRequestId?: IntFieldUpdateOperationsInput | number
-    materialId?: IntFieldUpdateOperationsInput | number
+    quantityDelivered?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    fulfilledByInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    materialInstanceConditionId?: NullableIntFieldUpdateOperationsInput | number | null
+    stockMovements?: MaterialStockMovementUncheckedUpdateManyWithoutMaterialRequestItemNestedInput
   }
 
   export type MaterialRequestItemCreateManyInput = {
     id?: number
+    materialRequestId: number
+    requestType?: $Enums.MaterialRequestItemType
+    requestedGlobalMaterialId?: number | null
+    requestedDerivedName?: string | null
+    requestedDerivedConditionId?: number | null
     quantityRequested: Decimal | DecimalJsLike | number | string
     quantityApproved?: Decimal | DecimalJsLike | number | string | null
-    quantityDelivered?: Decimal | DecimalJsLike | number | string | null
-    materialRequestId: number
-    materialId: number
+    quantityDelivered?: Decimal | DecimalJsLike | number | string
+    unitOfMeasure: string
+    fulfilledByInstanceId?: number | null
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    materialInstanceConditionId?: number | null
   }
 
   export type MaterialRequestItemUpdateManyMutationInput = {
+    requestType?: EnumMaterialRequestItemTypeFieldUpdateOperationsInput | $Enums.MaterialRequestItemType
+    requestedDerivedName?: NullableStringFieldUpdateOperationsInput | string | null
     quantityRequested?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     quantityApproved?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    quantityDelivered?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type MaterialRequestItemUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
+    materialRequestId?: IntFieldUpdateOperationsInput | number
+    requestType?: EnumMaterialRequestItemTypeFieldUpdateOperationsInput | $Enums.MaterialRequestItemType
+    requestedGlobalMaterialId?: NullableIntFieldUpdateOperationsInput | number | null
+    requestedDerivedName?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedDerivedConditionId?: NullableIntFieldUpdateOperationsInput | number | null
     quantityRequested?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     quantityApproved?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    quantityDelivered?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    materialRequestId?: IntFieldUpdateOperationsInput | number
-    materialId?: IntFieldUpdateOperationsInput | number
+    quantityDelivered?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    fulfilledByInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    materialInstanceConditionId?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type StockMovementTypeCreateInput = {
+    code: string
+    name: string
+    description?: string | null
+    operation: $Enums.StockOperationType
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    stockMovements?: MaterialStockMovementCreateNestedManyWithoutMovementTypeInput
+  }
+
+  export type StockMovementTypeUncheckedCreateInput = {
+    id?: number
+    code: string
+    name: string
+    description?: string | null
+    operation: $Enums.StockOperationType
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    stockMovements?: MaterialStockMovementUncheckedCreateNestedManyWithoutMovementTypeInput
+  }
+
+  export type StockMovementTypeUpdateInput = {
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    operation?: EnumStockOperationTypeFieldUpdateOperationsInput | $Enums.StockOperationType
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    stockMovements?: MaterialStockMovementUpdateManyWithoutMovementTypeNestedInput
+  }
+
+  export type StockMovementTypeUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    operation?: EnumStockOperationTypeFieldUpdateOperationsInput | $Enums.StockOperationType
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    stockMovements?: MaterialStockMovementUncheckedUpdateManyWithoutMovementTypeNestedInput
+  }
+
+  export type StockMovementTypeCreateManyInput = {
+    id?: number
+    code: string
+    name: string
+    description?: string | null
+    operation: $Enums.StockOperationType
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type StockMovementTypeUpdateManyMutationInput = {
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    operation?: EnumStockOperationTypeFieldUpdateOperationsInput | $Enums.StockOperationType
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StockMovementTypeUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    operation?: EnumStockOperationTypeFieldUpdateOperationsInput | $Enums.StockOperationType
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaterialStockMovementCreateInput = {
+    quantity: Decimal | DecimalJsLike | number | string
+    unitOfMeasure: string
+    movementDate?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    warehouse: WarehouseCreateNestedOneWithoutStockMovementsInput
+    globalMaterial?: MaterialCreateNestedOneWithoutStockMovementsInput
+    materialInstance?: MaterialInstanceCreateNestedOneWithoutStockMovementsInput
+    movementType: StockMovementTypeCreateNestedOneWithoutStockMovementsInput
+    WarehouseMaterialStock?: WarehouseMaterialStockCreateNestedOneWithoutStockMovementsInput
+    MaterialRequestItem?: MaterialRequestItemCreateNestedOneWithoutStockMovementsInput
+  }
+
+  export type MaterialStockMovementUncheckedCreateInput = {
+    id?: number
+    warehouseId: number
+    globalMaterialId?: number | null
+    materialInstanceId?: number | null
+    movementTypeId: number
+    quantity: Decimal | DecimalJsLike | number | string
+    unitOfMeasure: string
+    movementDate?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    warehouseMaterialStockId?: number | null
+    materialRequestItemId?: number | null
+  }
+
+  export type MaterialStockMovementUpdateInput = {
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    movementDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    warehouse?: WarehouseUpdateOneRequiredWithoutStockMovementsNestedInput
+    globalMaterial?: MaterialUpdateOneWithoutStockMovementsNestedInput
+    materialInstance?: MaterialInstanceUpdateOneWithoutStockMovementsNestedInput
+    movementType?: StockMovementTypeUpdateOneRequiredWithoutStockMovementsNestedInput
+    WarehouseMaterialStock?: WarehouseMaterialStockUpdateOneWithoutStockMovementsNestedInput
+    MaterialRequestItem?: MaterialRequestItemUpdateOneWithoutStockMovementsNestedInput
+  }
+
+  export type MaterialStockMovementUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    warehouseId?: IntFieldUpdateOperationsInput | number
+    globalMaterialId?: NullableIntFieldUpdateOperationsInput | number | null
+    materialInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
+    movementTypeId?: IntFieldUpdateOperationsInput | number
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    movementDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    warehouseMaterialStockId?: NullableIntFieldUpdateOperationsInput | number | null
+    materialRequestItemId?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type MaterialStockMovementCreateManyInput = {
+    id?: number
+    warehouseId: number
+    globalMaterialId?: number | null
+    materialInstanceId?: number | null
+    movementTypeId: number
+    quantity: Decimal | DecimalJsLike | number | string
+    unitOfMeasure: string
+    movementDate?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    warehouseMaterialStockId?: number | null
+    materialRequestItemId?: number | null
+  }
+
+  export type MaterialStockMovementUpdateManyMutationInput = {
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    movementDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaterialStockMovementUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    warehouseId?: IntFieldUpdateOperationsInput | number
+    globalMaterialId?: NullableIntFieldUpdateOperationsInput | number | null
+    materialInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
+    movementTypeId?: IntFieldUpdateOperationsInput | number
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    movementDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    warehouseMaterialStockId?: NullableIntFieldUpdateOperationsInput | number | null
+    materialRequestItemId?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type MaterialInstanceConditionCreateInput = {
+    code: string
+    name: string
+    description?: string | null
+    isUsable?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    materialInstances?: MaterialInstanceCreateNestedManyWithoutConditionInput
+    requestedInItems?: MaterialRequestItemCreateNestedManyWithoutRequestedDerivedConditionInput
+    MaterialRequestItem?: MaterialRequestItemCreateNestedManyWithoutMaterialInstanceConditionInput
+  }
+
+  export type MaterialInstanceConditionUncheckedCreateInput = {
+    id?: number
+    code: string
+    name: string
+    description?: string | null
+    isUsable?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    materialInstances?: MaterialInstanceUncheckedCreateNestedManyWithoutConditionInput
+    requestedInItems?: MaterialRequestItemUncheckedCreateNestedManyWithoutRequestedDerivedConditionInput
+    MaterialRequestItem?: MaterialRequestItemUncheckedCreateNestedManyWithoutMaterialInstanceConditionInput
+  }
+
+  export type MaterialInstanceConditionUpdateInput = {
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isUsable?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    materialInstances?: MaterialInstanceUpdateManyWithoutConditionNestedInput
+    requestedInItems?: MaterialRequestItemUpdateManyWithoutRequestedDerivedConditionNestedInput
+    MaterialRequestItem?: MaterialRequestItemUpdateManyWithoutMaterialInstanceConditionNestedInput
+  }
+
+  export type MaterialInstanceConditionUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isUsable?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    materialInstances?: MaterialInstanceUncheckedUpdateManyWithoutConditionNestedInput
+    requestedInItems?: MaterialRequestItemUncheckedUpdateManyWithoutRequestedDerivedConditionNestedInput
+    MaterialRequestItem?: MaterialRequestItemUncheckedUpdateManyWithoutMaterialInstanceConditionNestedInput
+  }
+
+  export type MaterialInstanceConditionCreateManyInput = {
+    id?: number
+    code: string
+    name: string
+    description?: string | null
+    isUsable?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaterialInstanceConditionUpdateManyMutationInput = {
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isUsable?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaterialInstanceConditionUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isUsable?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaterialInstanceCreateInput = {
+    instanceIdentifier?: string
+    derivedName: string
+    derivedDescription?: string | null
+    derivedUnitOfMeasure: string
+    quantity: Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: string | null
+    sourceNotes?: string | null
+    reservedQuantity?: Decimal | DecimalJsLike | number | string
+    restrictedQuantity?: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    globalMaterial?: MaterialCreateNestedOneWithoutRelatedMaterialInstancesInput
+    warehouse: WarehouseCreateNestedOneWithoutMaterialInstancesInput
+    condition: MaterialInstanceConditionCreateNestedOneWithoutMaterialInstancesInput
+    stockMovements?: MaterialStockMovementCreateNestedManyWithoutMaterialInstanceInput
+    fulfilledRequestItems?: MaterialRequestItemCreateNestedManyWithoutFulfilledByInstanceInput
+  }
+
+  export type MaterialInstanceUncheckedCreateInput = {
+    id?: number
+    instanceIdentifier?: string
+    globalMaterialId?: number | null
+    derivedName: string
+    derivedDescription?: string | null
+    derivedUnitOfMeasure: string
+    warehouseId: number
+    conditionId: number
+    quantity: Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: string | null
+    sourceNotes?: string | null
+    reservedQuantity?: Decimal | DecimalJsLike | number | string
+    restrictedQuantity?: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    stockMovements?: MaterialStockMovementUncheckedCreateNestedManyWithoutMaterialInstanceInput
+    fulfilledRequestItems?: MaterialRequestItemUncheckedCreateNestedManyWithoutFulfilledByInstanceInput
+  }
+
+  export type MaterialInstanceUpdateInput = {
+    instanceIdentifier?: StringFieldUpdateOperationsInput | string
+    derivedName?: StringFieldUpdateOperationsInput | string
+    derivedDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    derivedUnitOfMeasure?: StringFieldUpdateOperationsInput | string
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    reservedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    restrictedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    globalMaterial?: MaterialUpdateOneWithoutRelatedMaterialInstancesNestedInput
+    warehouse?: WarehouseUpdateOneRequiredWithoutMaterialInstancesNestedInput
+    condition?: MaterialInstanceConditionUpdateOneRequiredWithoutMaterialInstancesNestedInput
+    stockMovements?: MaterialStockMovementUpdateManyWithoutMaterialInstanceNestedInput
+    fulfilledRequestItems?: MaterialRequestItemUpdateManyWithoutFulfilledByInstanceNestedInput
+  }
+
+  export type MaterialInstanceUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    instanceIdentifier?: StringFieldUpdateOperationsInput | string
+    globalMaterialId?: NullableIntFieldUpdateOperationsInput | number | null
+    derivedName?: StringFieldUpdateOperationsInput | string
+    derivedDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    derivedUnitOfMeasure?: StringFieldUpdateOperationsInput | string
+    warehouseId?: IntFieldUpdateOperationsInput | number
+    conditionId?: IntFieldUpdateOperationsInput | number
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    reservedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    restrictedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    stockMovements?: MaterialStockMovementUncheckedUpdateManyWithoutMaterialInstanceNestedInput
+    fulfilledRequestItems?: MaterialRequestItemUncheckedUpdateManyWithoutFulfilledByInstanceNestedInput
+  }
+
+  export type MaterialInstanceCreateManyInput = {
+    id?: number
+    instanceIdentifier?: string
+    globalMaterialId?: number | null
+    derivedName: string
+    derivedDescription?: string | null
+    derivedUnitOfMeasure: string
+    warehouseId: number
+    conditionId: number
+    quantity: Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: string | null
+    sourceNotes?: string | null
+    reservedQuantity?: Decimal | DecimalJsLike | number | string
+    restrictedQuantity?: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaterialInstanceUpdateManyMutationInput = {
+    instanceIdentifier?: StringFieldUpdateOperationsInput | string
+    derivedName?: StringFieldUpdateOperationsInput | string
+    derivedDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    derivedUnitOfMeasure?: StringFieldUpdateOperationsInput | string
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    reservedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    restrictedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaterialInstanceUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    instanceIdentifier?: StringFieldUpdateOperationsInput | string
+    globalMaterialId?: NullableIntFieldUpdateOperationsInput | number | null
+    derivedName?: StringFieldUpdateOperationsInput | string
+    derivedDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    derivedUnitOfMeasure?: StringFieldUpdateOperationsInput | string
+    warehouseId?: IntFieldUpdateOperationsInput | number
+    conditionId?: IntFieldUpdateOperationsInput | number
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    reservedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    restrictedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -22089,6 +31358,16 @@ export namespace Prisma {
     _max?: NestedJsonNullableFilter<$PrismaModel>
   }
 
+  export type WarehouseListRelationFilter = {
+    every?: WarehouseWhereInput
+    some?: WarehouseWhereInput
+    none?: WarehouseWhereInput
+  }
+
+  export type WarehouseOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type MaintenanceInstanceOrderByRelevanceInput = {
     fields: MaintenanceInstanceOrderByRelevanceFieldEnum | MaintenanceInstanceOrderByRelevanceFieldEnum[]
     sort: SortOrder
@@ -22312,25 +31591,89 @@ export namespace Prisma {
     _max?: NestedEnumInfrastructureOccurrenceStatusFilter<$PrismaModel>
   }
 
-  export type MaterialNullableScalarRelationFilter = {
-    is?: MaterialWhereInput | null
-    isNot?: MaterialWhereInput | null
+  export type WarehouseMaterialStockListRelationFilter = {
+    every?: WarehouseMaterialStockWhereInput
+    some?: WarehouseMaterialStockWhereInput
+    none?: WarehouseMaterialStockWhereInput
   }
 
-  export type MaterialListRelationFilter = {
-    every?: MaterialWhereInput
-    some?: MaterialWhereInput
-    none?: MaterialWhereInput
+  export type MaterialInstanceListRelationFilter = {
+    every?: MaterialInstanceWhereInput
+    some?: MaterialInstanceWhereInput
+    none?: MaterialInstanceWhereInput
+  }
+
+  export type MaterialStockMovementListRelationFilter = {
+    every?: MaterialStockMovementWhereInput
+    some?: MaterialStockMovementWhereInput
+    none?: MaterialStockMovementWhereInput
+  }
+
+  export type WarehouseMaterialStockOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type MaterialInstanceOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type MaterialStockMovementOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type WarehouseOrderByRelevanceInput = {
+    fields: WarehouseOrderByRelevanceFieldEnum | WarehouseOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type WarehouseCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    code?: SortOrder
+    location?: SortOrder
+    isActive?: SortOrder
+    maintenanceInstanceId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type WarehouseAvgOrderByAggregateInput = {
+    id?: SortOrder
+    maintenanceInstanceId?: SortOrder
+  }
+
+  export type WarehouseMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    code?: SortOrder
+    location?: SortOrder
+    isActive?: SortOrder
+    maintenanceInstanceId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type WarehouseMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    code?: SortOrder
+    location?: SortOrder
+    isActive?: SortOrder
+    maintenanceInstanceId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type WarehouseSumOrderByAggregateInput = {
+    id?: SortOrder
+    maintenanceInstanceId?: SortOrder
   }
 
   export type MaterialRequestItemListRelationFilter = {
     every?: MaterialRequestItemWhereInput
     some?: MaterialRequestItemWhereInput
     none?: MaterialRequestItemWhereInput
-  }
-
-  export type MaterialOrderByRelationAggregateInput = {
-    _count?: SortOrder
   }
 
   export type MaterialRequestItemOrderByRelationAggregateInput = {
@@ -22345,127 +31688,52 @@ export namespace Prisma {
 
   export type MaterialCountOrderByAggregateInput = {
     id?: SortOrder
-    code?: SortOrder
+    globalCode?: SortOrder
     name?: SortOrder
     description?: SortOrder
     unitOfMeasure?: SortOrder
+    category?: SortOrder
+    manufacturer?: SortOrder
+    partNumber?: SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    parentMaterialId?: SortOrder
   }
 
   export type MaterialAvgOrderByAggregateInput = {
     id?: SortOrder
-    parentMaterialId?: SortOrder
   }
 
   export type MaterialMaxOrderByAggregateInput = {
     id?: SortOrder
-    code?: SortOrder
+    globalCode?: SortOrder
     name?: SortOrder
     description?: SortOrder
     unitOfMeasure?: SortOrder
+    category?: SortOrder
+    manufacturer?: SortOrder
+    partNumber?: SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    parentMaterialId?: SortOrder
   }
 
   export type MaterialMinOrderByAggregateInput = {
     id?: SortOrder
-    code?: SortOrder
+    globalCode?: SortOrder
     name?: SortOrder
     description?: SortOrder
     unitOfMeasure?: SortOrder
+    category?: SortOrder
+    manufacturer?: SortOrder
+    partNumber?: SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    parentMaterialId?: SortOrder
   }
 
   export type MaterialSumOrderByAggregateInput = {
     id?: SortOrder
-    parentMaterialId?: SortOrder
-  }
-
-  export type EnumMaterialRequestStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.MaterialRequestStatus | EnumMaterialRequestStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.MaterialRequestStatus[]
-    notIn?: $Enums.MaterialRequestStatus[]
-    not?: NestedEnumMaterialRequestStatusFilter<$PrismaModel> | $Enums.MaterialRequestStatus
-  }
-
-  export type MaterialRequestOrderByRelevanceInput = {
-    fields: MaterialRequestOrderByRelevanceFieldEnum | MaterialRequestOrderByRelevanceFieldEnum[]
-    sort: SortOrder
-    search: string
-  }
-
-  export type MaterialRequestCountOrderByAggregateInput = {
-    id?: SortOrder
-    justification?: SortOrder
-    requestDate?: SortOrder
-    status?: SortOrder
-    maintenanceRequestId?: SortOrder
-    requestedById?: SortOrder
-    approvedById?: SortOrder
-    approvalDate?: SortOrder
-    approvalNotes?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type MaterialRequestAvgOrderByAggregateInput = {
-    id?: SortOrder
-    maintenanceRequestId?: SortOrder
-    requestedById?: SortOrder
-    approvedById?: SortOrder
-  }
-
-  export type MaterialRequestMaxOrderByAggregateInput = {
-    id?: SortOrder
-    justification?: SortOrder
-    requestDate?: SortOrder
-    status?: SortOrder
-    maintenanceRequestId?: SortOrder
-    requestedById?: SortOrder
-    approvedById?: SortOrder
-    approvalDate?: SortOrder
-    approvalNotes?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type MaterialRequestMinOrderByAggregateInput = {
-    id?: SortOrder
-    justification?: SortOrder
-    requestDate?: SortOrder
-    status?: SortOrder
-    maintenanceRequestId?: SortOrder
-    requestedById?: SortOrder
-    approvedById?: SortOrder
-    approvalDate?: SortOrder
-    approvalNotes?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type MaterialRequestSumOrderByAggregateInput = {
-    id?: SortOrder
-    maintenanceRequestId?: SortOrder
-    requestedById?: SortOrder
-    approvedById?: SortOrder
-  }
-
-  export type EnumMaterialRequestStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.MaterialRequestStatus | EnumMaterialRequestStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.MaterialRequestStatus[]
-    notIn?: $Enums.MaterialRequestStatus[]
-    not?: NestedEnumMaterialRequestStatusWithAggregatesFilter<$PrismaModel> | $Enums.MaterialRequestStatus
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumMaterialRequestStatusFilter<$PrismaModel>
-    _max?: NestedEnumMaterialRequestStatusFilter<$PrismaModel>
   }
 
   export type DecimalFilter<$PrismaModel = never> = {
@@ -22490,9 +31758,9 @@ export namespace Prisma {
     not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
   }
 
-  export type MaterialRequestScalarRelationFilter = {
-    is?: MaterialRequestWhereInput
-    isNot?: MaterialRequestWhereInput
+  export type WarehouseScalarRelationFilter = {
+    is?: WarehouseWhereInput
+    isNot?: WarehouseWhereInput
   }
 
   export type MaterialScalarRelationFilter = {
@@ -22500,55 +31768,92 @@ export namespace Prisma {
     isNot?: MaterialWhereInput
   }
 
-  export type MaterialRequestItemCountOrderByAggregateInput = {
+  export type WarehouseMaterialStockOrderByRelevanceInput = {
+    fields: WarehouseMaterialStockOrderByRelevanceFieldEnum | WarehouseMaterialStockOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type WarehouseMaterialStockUnique_warehouse_material_standard_stockCompoundUniqueInput = {
+    warehouseId: number
+    materialId: number
+  }
+
+  export type WarehouseMaterialStockCountOrderByAggregateInput = {
     id?: SortOrder
-    quantityRequested?: SortOrder
-    quantityApproved?: SortOrder
-    quantityDelivered?: SortOrder
-    materialRequestId?: SortOrder
+    warehouseId?: SortOrder
     materialId?: SortOrder
+    physicalOnHandQuantity?: SortOrder
+    initialStockQuantity?: SortOrder
+    restrictedQuantity?: SortOrder
+    reservedQuantity?: SortOrder
+    locationInWarehouse?: SortOrder
+    minStockLevel?: SortOrder
+    maxStockLevel?: SortOrder
+    lastStockCountDate?: SortOrder
+    averageCost?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
-  export type MaterialRequestItemAvgOrderByAggregateInput = {
+  export type WarehouseMaterialStockAvgOrderByAggregateInput = {
     id?: SortOrder
-    quantityRequested?: SortOrder
-    quantityApproved?: SortOrder
-    quantityDelivered?: SortOrder
-    materialRequestId?: SortOrder
+    warehouseId?: SortOrder
     materialId?: SortOrder
+    physicalOnHandQuantity?: SortOrder
+    initialStockQuantity?: SortOrder
+    restrictedQuantity?: SortOrder
+    reservedQuantity?: SortOrder
+    minStockLevel?: SortOrder
+    maxStockLevel?: SortOrder
+    averageCost?: SortOrder
   }
 
-  export type MaterialRequestItemMaxOrderByAggregateInput = {
+  export type WarehouseMaterialStockMaxOrderByAggregateInput = {
     id?: SortOrder
-    quantityRequested?: SortOrder
-    quantityApproved?: SortOrder
-    quantityDelivered?: SortOrder
-    materialRequestId?: SortOrder
+    warehouseId?: SortOrder
     materialId?: SortOrder
+    physicalOnHandQuantity?: SortOrder
+    initialStockQuantity?: SortOrder
+    restrictedQuantity?: SortOrder
+    reservedQuantity?: SortOrder
+    locationInWarehouse?: SortOrder
+    minStockLevel?: SortOrder
+    maxStockLevel?: SortOrder
+    lastStockCountDate?: SortOrder
+    averageCost?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
-  export type MaterialRequestItemMinOrderByAggregateInput = {
+  export type WarehouseMaterialStockMinOrderByAggregateInput = {
     id?: SortOrder
-    quantityRequested?: SortOrder
-    quantityApproved?: SortOrder
-    quantityDelivered?: SortOrder
-    materialRequestId?: SortOrder
+    warehouseId?: SortOrder
     materialId?: SortOrder
+    physicalOnHandQuantity?: SortOrder
+    initialStockQuantity?: SortOrder
+    restrictedQuantity?: SortOrder
+    reservedQuantity?: SortOrder
+    locationInWarehouse?: SortOrder
+    minStockLevel?: SortOrder
+    maxStockLevel?: SortOrder
+    lastStockCountDate?: SortOrder
+    averageCost?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
-  export type MaterialRequestItemSumOrderByAggregateInput = {
+  export type WarehouseMaterialStockSumOrderByAggregateInput = {
     id?: SortOrder
-    quantityRequested?: SortOrder
-    quantityApproved?: SortOrder
-    quantityDelivered?: SortOrder
-    materialRequestId?: SortOrder
+    warehouseId?: SortOrder
     materialId?: SortOrder
+    physicalOnHandQuantity?: SortOrder
+    initialStockQuantity?: SortOrder
+    restrictedQuantity?: SortOrder
+    reservedQuantity?: SortOrder
+    minStockLevel?: SortOrder
+    maxStockLevel?: SortOrder
+    averageCost?: SortOrder
   }
 
   export type DecimalWithAggregatesFilter<$PrismaModel = never> = {
@@ -22581,6 +31886,510 @@ export namespace Prisma {
     _sum?: NestedDecimalNullableFilter<$PrismaModel>
     _min?: NestedDecimalNullableFilter<$PrismaModel>
     _max?: NestedDecimalNullableFilter<$PrismaModel>
+  }
+
+  export type EnumMaterialRequestTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.MaterialRequestType | EnumMaterialRequestTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.MaterialRequestType[]
+    notIn?: $Enums.MaterialRequestType[]
+    not?: NestedEnumMaterialRequestTypeFilter<$PrismaModel> | $Enums.MaterialRequestType
+  }
+
+  export type EnumMaterialRequestStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.MaterialRequestStatus | EnumMaterialRequestStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.MaterialRequestStatus[]
+    notIn?: $Enums.MaterialRequestStatus[]
+    not?: NestedEnumMaterialRequestStatusFilter<$PrismaModel> | $Enums.MaterialRequestStatus
+  }
+
+  export type MaterialRequestOrderByRelevanceInput = {
+    fields: MaterialRequestOrderByRelevanceFieldEnum | MaterialRequestOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type MaterialRequestCountOrderByAggregateInput = {
+    id?: SortOrder
+    protocolNumber?: SortOrder
+    requestType?: SortOrder
+    justification?: SortOrder
+    requestDate?: SortOrder
+    status?: SortOrder
+    maintenanceRequestId?: SortOrder
+    requestedById?: SortOrder
+    approvedById?: SortOrder
+    approvalDate?: SortOrder
+    approvalNotes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MaterialRequestAvgOrderByAggregateInput = {
+    id?: SortOrder
+    maintenanceRequestId?: SortOrder
+    requestedById?: SortOrder
+    approvedById?: SortOrder
+  }
+
+  export type MaterialRequestMaxOrderByAggregateInput = {
+    id?: SortOrder
+    protocolNumber?: SortOrder
+    requestType?: SortOrder
+    justification?: SortOrder
+    requestDate?: SortOrder
+    status?: SortOrder
+    maintenanceRequestId?: SortOrder
+    requestedById?: SortOrder
+    approvedById?: SortOrder
+    approvalDate?: SortOrder
+    approvalNotes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MaterialRequestMinOrderByAggregateInput = {
+    id?: SortOrder
+    protocolNumber?: SortOrder
+    requestType?: SortOrder
+    justification?: SortOrder
+    requestDate?: SortOrder
+    status?: SortOrder
+    maintenanceRequestId?: SortOrder
+    requestedById?: SortOrder
+    approvedById?: SortOrder
+    approvalDate?: SortOrder
+    approvalNotes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MaterialRequestSumOrderByAggregateInput = {
+    id?: SortOrder
+    maintenanceRequestId?: SortOrder
+    requestedById?: SortOrder
+    approvedById?: SortOrder
+  }
+
+  export type EnumMaterialRequestTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.MaterialRequestType | EnumMaterialRequestTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.MaterialRequestType[]
+    notIn?: $Enums.MaterialRequestType[]
+    not?: NestedEnumMaterialRequestTypeWithAggregatesFilter<$PrismaModel> | $Enums.MaterialRequestType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumMaterialRequestTypeFilter<$PrismaModel>
+    _max?: NestedEnumMaterialRequestTypeFilter<$PrismaModel>
+  }
+
+  export type EnumMaterialRequestStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.MaterialRequestStatus | EnumMaterialRequestStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.MaterialRequestStatus[]
+    notIn?: $Enums.MaterialRequestStatus[]
+    not?: NestedEnumMaterialRequestStatusWithAggregatesFilter<$PrismaModel> | $Enums.MaterialRequestStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumMaterialRequestStatusFilter<$PrismaModel>
+    _max?: NestedEnumMaterialRequestStatusFilter<$PrismaModel>
+  }
+
+  export type EnumMaterialRequestItemTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.MaterialRequestItemType | EnumMaterialRequestItemTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.MaterialRequestItemType[]
+    notIn?: $Enums.MaterialRequestItemType[]
+    not?: NestedEnumMaterialRequestItemTypeFilter<$PrismaModel> | $Enums.MaterialRequestItemType
+  }
+
+  export type MaterialRequestScalarRelationFilter = {
+    is?: MaterialRequestWhereInput
+    isNot?: MaterialRequestWhereInput
+  }
+
+  export type MaterialNullableScalarRelationFilter = {
+    is?: MaterialWhereInput | null
+    isNot?: MaterialWhereInput | null
+  }
+
+  export type MaterialInstanceConditionNullableScalarRelationFilter = {
+    is?: MaterialInstanceConditionWhereInput | null
+    isNot?: MaterialInstanceConditionWhereInput | null
+  }
+
+  export type MaterialInstanceNullableScalarRelationFilter = {
+    is?: MaterialInstanceWhereInput | null
+    isNot?: MaterialInstanceWhereInput | null
+  }
+
+  export type MaterialRequestItemOrderByRelevanceInput = {
+    fields: MaterialRequestItemOrderByRelevanceFieldEnum | MaterialRequestItemOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type MaterialRequestItemCountOrderByAggregateInput = {
+    id?: SortOrder
+    materialRequestId?: SortOrder
+    requestType?: SortOrder
+    requestedGlobalMaterialId?: SortOrder
+    requestedDerivedName?: SortOrder
+    requestedDerivedConditionId?: SortOrder
+    quantityRequested?: SortOrder
+    quantityApproved?: SortOrder
+    quantityDelivered?: SortOrder
+    unitOfMeasure?: SortOrder
+    fulfilledByInstanceId?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    materialInstanceConditionId?: SortOrder
+  }
+
+  export type MaterialRequestItemAvgOrderByAggregateInput = {
+    id?: SortOrder
+    materialRequestId?: SortOrder
+    requestedGlobalMaterialId?: SortOrder
+    requestedDerivedConditionId?: SortOrder
+    quantityRequested?: SortOrder
+    quantityApproved?: SortOrder
+    quantityDelivered?: SortOrder
+    fulfilledByInstanceId?: SortOrder
+    materialInstanceConditionId?: SortOrder
+  }
+
+  export type MaterialRequestItemMaxOrderByAggregateInput = {
+    id?: SortOrder
+    materialRequestId?: SortOrder
+    requestType?: SortOrder
+    requestedGlobalMaterialId?: SortOrder
+    requestedDerivedName?: SortOrder
+    requestedDerivedConditionId?: SortOrder
+    quantityRequested?: SortOrder
+    quantityApproved?: SortOrder
+    quantityDelivered?: SortOrder
+    unitOfMeasure?: SortOrder
+    fulfilledByInstanceId?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    materialInstanceConditionId?: SortOrder
+  }
+
+  export type MaterialRequestItemMinOrderByAggregateInput = {
+    id?: SortOrder
+    materialRequestId?: SortOrder
+    requestType?: SortOrder
+    requestedGlobalMaterialId?: SortOrder
+    requestedDerivedName?: SortOrder
+    requestedDerivedConditionId?: SortOrder
+    quantityRequested?: SortOrder
+    quantityApproved?: SortOrder
+    quantityDelivered?: SortOrder
+    unitOfMeasure?: SortOrder
+    fulfilledByInstanceId?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    materialInstanceConditionId?: SortOrder
+  }
+
+  export type MaterialRequestItemSumOrderByAggregateInput = {
+    id?: SortOrder
+    materialRequestId?: SortOrder
+    requestedGlobalMaterialId?: SortOrder
+    requestedDerivedConditionId?: SortOrder
+    quantityRequested?: SortOrder
+    quantityApproved?: SortOrder
+    quantityDelivered?: SortOrder
+    fulfilledByInstanceId?: SortOrder
+    materialInstanceConditionId?: SortOrder
+  }
+
+  export type EnumMaterialRequestItemTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.MaterialRequestItemType | EnumMaterialRequestItemTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.MaterialRequestItemType[]
+    notIn?: $Enums.MaterialRequestItemType[]
+    not?: NestedEnumMaterialRequestItemTypeWithAggregatesFilter<$PrismaModel> | $Enums.MaterialRequestItemType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumMaterialRequestItemTypeFilter<$PrismaModel>
+    _max?: NestedEnumMaterialRequestItemTypeFilter<$PrismaModel>
+  }
+
+  export type EnumStockOperationTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.StockOperationType | EnumStockOperationTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.StockOperationType[]
+    notIn?: $Enums.StockOperationType[]
+    not?: NestedEnumStockOperationTypeFilter<$PrismaModel> | $Enums.StockOperationType
+  }
+
+  export type StockMovementTypeOrderByRelevanceInput = {
+    fields: StockMovementTypeOrderByRelevanceFieldEnum | StockMovementTypeOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type StockMovementTypeCountOrderByAggregateInput = {
+    id?: SortOrder
+    code?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    operation?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type StockMovementTypeAvgOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type StockMovementTypeMaxOrderByAggregateInput = {
+    id?: SortOrder
+    code?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    operation?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type StockMovementTypeMinOrderByAggregateInput = {
+    id?: SortOrder
+    code?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    operation?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type StockMovementTypeSumOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type EnumStockOperationTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.StockOperationType | EnumStockOperationTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.StockOperationType[]
+    notIn?: $Enums.StockOperationType[]
+    not?: NestedEnumStockOperationTypeWithAggregatesFilter<$PrismaModel> | $Enums.StockOperationType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumStockOperationTypeFilter<$PrismaModel>
+    _max?: NestedEnumStockOperationTypeFilter<$PrismaModel>
+  }
+
+  export type StockMovementTypeScalarRelationFilter = {
+    is?: StockMovementTypeWhereInput
+    isNot?: StockMovementTypeWhereInput
+  }
+
+  export type WarehouseMaterialStockNullableScalarRelationFilter = {
+    is?: WarehouseMaterialStockWhereInput | null
+    isNot?: WarehouseMaterialStockWhereInput | null
+  }
+
+  export type MaterialRequestItemNullableScalarRelationFilter = {
+    is?: MaterialRequestItemWhereInput | null
+    isNot?: MaterialRequestItemWhereInput | null
+  }
+
+  export type MaterialStockMovementOrderByRelevanceInput = {
+    fields: MaterialStockMovementOrderByRelevanceFieldEnum | MaterialStockMovementOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type MaterialStockMovementCountOrderByAggregateInput = {
+    id?: SortOrder
+    warehouseId?: SortOrder
+    globalMaterialId?: SortOrder
+    materialInstanceId?: SortOrder
+    movementTypeId?: SortOrder
+    quantity?: SortOrder
+    unitOfMeasure?: SortOrder
+    movementDate?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    warehouseMaterialStockId?: SortOrder
+    materialRequestItemId?: SortOrder
+  }
+
+  export type MaterialStockMovementAvgOrderByAggregateInput = {
+    id?: SortOrder
+    warehouseId?: SortOrder
+    globalMaterialId?: SortOrder
+    materialInstanceId?: SortOrder
+    movementTypeId?: SortOrder
+    quantity?: SortOrder
+    warehouseMaterialStockId?: SortOrder
+    materialRequestItemId?: SortOrder
+  }
+
+  export type MaterialStockMovementMaxOrderByAggregateInput = {
+    id?: SortOrder
+    warehouseId?: SortOrder
+    globalMaterialId?: SortOrder
+    materialInstanceId?: SortOrder
+    movementTypeId?: SortOrder
+    quantity?: SortOrder
+    unitOfMeasure?: SortOrder
+    movementDate?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    warehouseMaterialStockId?: SortOrder
+    materialRequestItemId?: SortOrder
+  }
+
+  export type MaterialStockMovementMinOrderByAggregateInput = {
+    id?: SortOrder
+    warehouseId?: SortOrder
+    globalMaterialId?: SortOrder
+    materialInstanceId?: SortOrder
+    movementTypeId?: SortOrder
+    quantity?: SortOrder
+    unitOfMeasure?: SortOrder
+    movementDate?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    warehouseMaterialStockId?: SortOrder
+    materialRequestItemId?: SortOrder
+  }
+
+  export type MaterialStockMovementSumOrderByAggregateInput = {
+    id?: SortOrder
+    warehouseId?: SortOrder
+    globalMaterialId?: SortOrder
+    materialInstanceId?: SortOrder
+    movementTypeId?: SortOrder
+    quantity?: SortOrder
+    warehouseMaterialStockId?: SortOrder
+    materialRequestItemId?: SortOrder
+  }
+
+  export type MaterialInstanceConditionOrderByRelevanceInput = {
+    fields: MaterialInstanceConditionOrderByRelevanceFieldEnum | MaterialInstanceConditionOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type MaterialInstanceConditionCountOrderByAggregateInput = {
+    id?: SortOrder
+    code?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    isUsable?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MaterialInstanceConditionAvgOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type MaterialInstanceConditionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    code?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    isUsable?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MaterialInstanceConditionMinOrderByAggregateInput = {
+    id?: SortOrder
+    code?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    isUsable?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MaterialInstanceConditionSumOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type MaterialInstanceConditionScalarRelationFilter = {
+    is?: MaterialInstanceConditionWhereInput
+    isNot?: MaterialInstanceConditionWhereInput
+  }
+
+  export type MaterialInstanceOrderByRelevanceInput = {
+    fields: MaterialInstanceOrderByRelevanceFieldEnum | MaterialInstanceOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type MaterialInstanceCountOrderByAggregateInput = {
+    id?: SortOrder
+    instanceIdentifier?: SortOrder
+    globalMaterialId?: SortOrder
+    derivedName?: SortOrder
+    derivedDescription?: SortOrder
+    derivedUnitOfMeasure?: SortOrder
+    warehouseId?: SortOrder
+    conditionId?: SortOrder
+    quantity?: SortOrder
+    locationInWarehouse?: SortOrder
+    sourceNotes?: SortOrder
+    reservedQuantity?: SortOrder
+    restrictedQuantity?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MaterialInstanceAvgOrderByAggregateInput = {
+    id?: SortOrder
+    globalMaterialId?: SortOrder
+    warehouseId?: SortOrder
+    conditionId?: SortOrder
+    quantity?: SortOrder
+    reservedQuantity?: SortOrder
+    restrictedQuantity?: SortOrder
+  }
+
+  export type MaterialInstanceMaxOrderByAggregateInput = {
+    id?: SortOrder
+    instanceIdentifier?: SortOrder
+    globalMaterialId?: SortOrder
+    derivedName?: SortOrder
+    derivedDescription?: SortOrder
+    derivedUnitOfMeasure?: SortOrder
+    warehouseId?: SortOrder
+    conditionId?: SortOrder
+    quantity?: SortOrder
+    locationInWarehouse?: SortOrder
+    sourceNotes?: SortOrder
+    reservedQuantity?: SortOrder
+    restrictedQuantity?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MaterialInstanceMinOrderByAggregateInput = {
+    id?: SortOrder
+    instanceIdentifier?: SortOrder
+    globalMaterialId?: SortOrder
+    derivedName?: SortOrder
+    derivedDescription?: SortOrder
+    derivedUnitOfMeasure?: SortOrder
+    warehouseId?: SortOrder
+    conditionId?: SortOrder
+    quantity?: SortOrder
+    locationInWarehouse?: SortOrder
+    sourceNotes?: SortOrder
+    reservedQuantity?: SortOrder
+    restrictedQuantity?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MaterialInstanceSumOrderByAggregateInput = {
+    id?: SortOrder
+    globalMaterialId?: SortOrder
+    warehouseId?: SortOrder
+    conditionId?: SortOrder
+    quantity?: SortOrder
+    reservedQuantity?: SortOrder
+    restrictedQuantity?: SortOrder
   }
 
   export type LogLoginListRelationFilter = {
@@ -23146,6 +32955,13 @@ export namespace Prisma {
     connect?: MaintenanceTimelineEventWhereUniqueInput | MaintenanceTimelineEventWhereUniqueInput[]
   }
 
+  export type WarehouseCreateNestedManyWithoutMaintenanceInstanceInput = {
+    create?: XOR<WarehouseCreateWithoutMaintenanceInstanceInput, WarehouseUncheckedCreateWithoutMaintenanceInstanceInput> | WarehouseCreateWithoutMaintenanceInstanceInput[] | WarehouseUncheckedCreateWithoutMaintenanceInstanceInput[]
+    connectOrCreate?: WarehouseCreateOrConnectWithoutMaintenanceInstanceInput | WarehouseCreateOrConnectWithoutMaintenanceInstanceInput[]
+    createMany?: WarehouseCreateManyMaintenanceInstanceInputEnvelope
+    connect?: WarehouseWhereUniqueInput | WarehouseWhereUniqueInput[]
+  }
+
   export type MaintenanceRequestUncheckedCreateNestedManyWithoutCurrentMaintenanceInstanceInput = {
     create?: XOR<MaintenanceRequestCreateWithoutCurrentMaintenanceInstanceInput, MaintenanceRequestUncheckedCreateWithoutCurrentMaintenanceInstanceInput> | MaintenanceRequestCreateWithoutCurrentMaintenanceInstanceInput[] | MaintenanceRequestUncheckedCreateWithoutCurrentMaintenanceInstanceInput[]
     connectOrCreate?: MaintenanceRequestCreateOrConnectWithoutCurrentMaintenanceInstanceInput | MaintenanceRequestCreateOrConnectWithoutCurrentMaintenanceInstanceInput[]
@@ -23165,6 +32981,13 @@ export namespace Prisma {
     connectOrCreate?: MaintenanceTimelineEventCreateOrConnectWithoutTransferredToInstanceInput | MaintenanceTimelineEventCreateOrConnectWithoutTransferredToInstanceInput[]
     createMany?: MaintenanceTimelineEventCreateManyTransferredToInstanceInputEnvelope
     connect?: MaintenanceTimelineEventWhereUniqueInput | MaintenanceTimelineEventWhereUniqueInput[]
+  }
+
+  export type WarehouseUncheckedCreateNestedManyWithoutMaintenanceInstanceInput = {
+    create?: XOR<WarehouseCreateWithoutMaintenanceInstanceInput, WarehouseUncheckedCreateWithoutMaintenanceInstanceInput> | WarehouseCreateWithoutMaintenanceInstanceInput[] | WarehouseUncheckedCreateWithoutMaintenanceInstanceInput[]
+    connectOrCreate?: WarehouseCreateOrConnectWithoutMaintenanceInstanceInput | WarehouseCreateOrConnectWithoutMaintenanceInstanceInput[]
+    createMany?: WarehouseCreateManyMaintenanceInstanceInputEnvelope
+    connect?: WarehouseWhereUniqueInput | WarehouseWhereUniqueInput[]
   }
 
   export type MaintenanceRequestUpdateManyWithoutCurrentMaintenanceInstanceNestedInput = {
@@ -23209,6 +33032,20 @@ export namespace Prisma {
     deleteMany?: MaintenanceTimelineEventScalarWhereInput | MaintenanceTimelineEventScalarWhereInput[]
   }
 
+  export type WarehouseUpdateManyWithoutMaintenanceInstanceNestedInput = {
+    create?: XOR<WarehouseCreateWithoutMaintenanceInstanceInput, WarehouseUncheckedCreateWithoutMaintenanceInstanceInput> | WarehouseCreateWithoutMaintenanceInstanceInput[] | WarehouseUncheckedCreateWithoutMaintenanceInstanceInput[]
+    connectOrCreate?: WarehouseCreateOrConnectWithoutMaintenanceInstanceInput | WarehouseCreateOrConnectWithoutMaintenanceInstanceInput[]
+    upsert?: WarehouseUpsertWithWhereUniqueWithoutMaintenanceInstanceInput | WarehouseUpsertWithWhereUniqueWithoutMaintenanceInstanceInput[]
+    createMany?: WarehouseCreateManyMaintenanceInstanceInputEnvelope
+    set?: WarehouseWhereUniqueInput | WarehouseWhereUniqueInput[]
+    disconnect?: WarehouseWhereUniqueInput | WarehouseWhereUniqueInput[]
+    delete?: WarehouseWhereUniqueInput | WarehouseWhereUniqueInput[]
+    connect?: WarehouseWhereUniqueInput | WarehouseWhereUniqueInput[]
+    update?: WarehouseUpdateWithWhereUniqueWithoutMaintenanceInstanceInput | WarehouseUpdateWithWhereUniqueWithoutMaintenanceInstanceInput[]
+    updateMany?: WarehouseUpdateManyWithWhereWithoutMaintenanceInstanceInput | WarehouseUpdateManyWithWhereWithoutMaintenanceInstanceInput[]
+    deleteMany?: WarehouseScalarWhereInput | WarehouseScalarWhereInput[]
+  }
+
   export type MaintenanceRequestUncheckedUpdateManyWithoutCurrentMaintenanceInstanceNestedInput = {
     create?: XOR<MaintenanceRequestCreateWithoutCurrentMaintenanceInstanceInput, MaintenanceRequestUncheckedCreateWithoutCurrentMaintenanceInstanceInput> | MaintenanceRequestCreateWithoutCurrentMaintenanceInstanceInput[] | MaintenanceRequestUncheckedCreateWithoutCurrentMaintenanceInstanceInput[]
     connectOrCreate?: MaintenanceRequestCreateOrConnectWithoutCurrentMaintenanceInstanceInput | MaintenanceRequestCreateOrConnectWithoutCurrentMaintenanceInstanceInput[]
@@ -23249,6 +33086,20 @@ export namespace Prisma {
     update?: MaintenanceTimelineEventUpdateWithWhereUniqueWithoutTransferredToInstanceInput | MaintenanceTimelineEventUpdateWithWhereUniqueWithoutTransferredToInstanceInput[]
     updateMany?: MaintenanceTimelineEventUpdateManyWithWhereWithoutTransferredToInstanceInput | MaintenanceTimelineEventUpdateManyWithWhereWithoutTransferredToInstanceInput[]
     deleteMany?: MaintenanceTimelineEventScalarWhereInput | MaintenanceTimelineEventScalarWhereInput[]
+  }
+
+  export type WarehouseUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput = {
+    create?: XOR<WarehouseCreateWithoutMaintenanceInstanceInput, WarehouseUncheckedCreateWithoutMaintenanceInstanceInput> | WarehouseCreateWithoutMaintenanceInstanceInput[] | WarehouseUncheckedCreateWithoutMaintenanceInstanceInput[]
+    connectOrCreate?: WarehouseCreateOrConnectWithoutMaintenanceInstanceInput | WarehouseCreateOrConnectWithoutMaintenanceInstanceInput[]
+    upsert?: WarehouseUpsertWithWhereUniqueWithoutMaintenanceInstanceInput | WarehouseUpsertWithWhereUniqueWithoutMaintenanceInstanceInput[]
+    createMany?: WarehouseCreateManyMaintenanceInstanceInputEnvelope
+    set?: WarehouseWhereUniqueInput | WarehouseWhereUniqueInput[]
+    disconnect?: WarehouseWhereUniqueInput | WarehouseWhereUniqueInput[]
+    delete?: WarehouseWhereUniqueInput | WarehouseWhereUniqueInput[]
+    connect?: WarehouseWhereUniqueInput | WarehouseWhereUniqueInput[]
+    update?: WarehouseUpdateWithWhereUniqueWithoutMaintenanceInstanceInput | WarehouseUpdateWithWhereUniqueWithoutMaintenanceInstanceInput[]
+    updateMany?: WarehouseUpdateManyWithWhereWithoutMaintenanceInstanceInput | WarehouseUpdateManyWithWhereWithoutMaintenanceInstanceInput[]
+    deleteMany?: WarehouseScalarWhereInput | WarehouseScalarWhereInput[]
   }
 
   export type MaintenanceRequestCreateNestedManyWithoutServiceTypeInput = {
@@ -23369,104 +33220,398 @@ export namespace Prisma {
     update?: XOR<XOR<MaintenanceRequestUpdateToOneWithWhereWithoutOriginatingOccurrencesInput, MaintenanceRequestUpdateWithoutOriginatingOccurrencesInput>, MaintenanceRequestUncheckedUpdateWithoutOriginatingOccurrencesInput>
   }
 
-  export type MaterialCreateNestedOneWithoutChildsInput = {
-    create?: XOR<MaterialCreateWithoutChildsInput, MaterialUncheckedCreateWithoutChildsInput>
-    connectOrCreate?: MaterialCreateOrConnectWithoutChildsInput
-    connect?: MaterialWhereUniqueInput
+  export type MaintenanceInstanceCreateNestedOneWithoutWarehousesInput = {
+    create?: XOR<MaintenanceInstanceCreateWithoutWarehousesInput, MaintenanceInstanceUncheckedCreateWithoutWarehousesInput>
+    connectOrCreate?: MaintenanceInstanceCreateOrConnectWithoutWarehousesInput
+    connect?: MaintenanceInstanceWhereUniqueInput
   }
 
-  export type MaterialCreateNestedManyWithoutParentMaterialInput = {
-    create?: XOR<MaterialCreateWithoutParentMaterialInput, MaterialUncheckedCreateWithoutParentMaterialInput> | MaterialCreateWithoutParentMaterialInput[] | MaterialUncheckedCreateWithoutParentMaterialInput[]
-    connectOrCreate?: MaterialCreateOrConnectWithoutParentMaterialInput | MaterialCreateOrConnectWithoutParentMaterialInput[]
-    createMany?: MaterialCreateManyParentMaterialInputEnvelope
-    connect?: MaterialWhereUniqueInput | MaterialWhereUniqueInput[]
+  export type WarehouseMaterialStockCreateNestedManyWithoutWarehouseInput = {
+    create?: XOR<WarehouseMaterialStockCreateWithoutWarehouseInput, WarehouseMaterialStockUncheckedCreateWithoutWarehouseInput> | WarehouseMaterialStockCreateWithoutWarehouseInput[] | WarehouseMaterialStockUncheckedCreateWithoutWarehouseInput[]
+    connectOrCreate?: WarehouseMaterialStockCreateOrConnectWithoutWarehouseInput | WarehouseMaterialStockCreateOrConnectWithoutWarehouseInput[]
+    createMany?: WarehouseMaterialStockCreateManyWarehouseInputEnvelope
+    connect?: WarehouseMaterialStockWhereUniqueInput | WarehouseMaterialStockWhereUniqueInput[]
   }
 
-  export type MaterialRequestItemCreateNestedManyWithoutMaterialInput = {
-    create?: XOR<MaterialRequestItemCreateWithoutMaterialInput, MaterialRequestItemUncheckedCreateWithoutMaterialInput> | MaterialRequestItemCreateWithoutMaterialInput[] | MaterialRequestItemUncheckedCreateWithoutMaterialInput[]
-    connectOrCreate?: MaterialRequestItemCreateOrConnectWithoutMaterialInput | MaterialRequestItemCreateOrConnectWithoutMaterialInput[]
-    createMany?: MaterialRequestItemCreateManyMaterialInputEnvelope
+  export type MaterialInstanceCreateNestedManyWithoutWarehouseInput = {
+    create?: XOR<MaterialInstanceCreateWithoutWarehouseInput, MaterialInstanceUncheckedCreateWithoutWarehouseInput> | MaterialInstanceCreateWithoutWarehouseInput[] | MaterialInstanceUncheckedCreateWithoutWarehouseInput[]
+    connectOrCreate?: MaterialInstanceCreateOrConnectWithoutWarehouseInput | MaterialInstanceCreateOrConnectWithoutWarehouseInput[]
+    createMany?: MaterialInstanceCreateManyWarehouseInputEnvelope
+    connect?: MaterialInstanceWhereUniqueInput | MaterialInstanceWhereUniqueInput[]
+  }
+
+  export type MaterialStockMovementCreateNestedManyWithoutWarehouseInput = {
+    create?: XOR<MaterialStockMovementCreateWithoutWarehouseInput, MaterialStockMovementUncheckedCreateWithoutWarehouseInput> | MaterialStockMovementCreateWithoutWarehouseInput[] | MaterialStockMovementUncheckedCreateWithoutWarehouseInput[]
+    connectOrCreate?: MaterialStockMovementCreateOrConnectWithoutWarehouseInput | MaterialStockMovementCreateOrConnectWithoutWarehouseInput[]
+    createMany?: MaterialStockMovementCreateManyWarehouseInputEnvelope
+    connect?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+  }
+
+  export type WarehouseMaterialStockUncheckedCreateNestedManyWithoutWarehouseInput = {
+    create?: XOR<WarehouseMaterialStockCreateWithoutWarehouseInput, WarehouseMaterialStockUncheckedCreateWithoutWarehouseInput> | WarehouseMaterialStockCreateWithoutWarehouseInput[] | WarehouseMaterialStockUncheckedCreateWithoutWarehouseInput[]
+    connectOrCreate?: WarehouseMaterialStockCreateOrConnectWithoutWarehouseInput | WarehouseMaterialStockCreateOrConnectWithoutWarehouseInput[]
+    createMany?: WarehouseMaterialStockCreateManyWarehouseInputEnvelope
+    connect?: WarehouseMaterialStockWhereUniqueInput | WarehouseMaterialStockWhereUniqueInput[]
+  }
+
+  export type MaterialInstanceUncheckedCreateNestedManyWithoutWarehouseInput = {
+    create?: XOR<MaterialInstanceCreateWithoutWarehouseInput, MaterialInstanceUncheckedCreateWithoutWarehouseInput> | MaterialInstanceCreateWithoutWarehouseInput[] | MaterialInstanceUncheckedCreateWithoutWarehouseInput[]
+    connectOrCreate?: MaterialInstanceCreateOrConnectWithoutWarehouseInput | MaterialInstanceCreateOrConnectWithoutWarehouseInput[]
+    createMany?: MaterialInstanceCreateManyWarehouseInputEnvelope
+    connect?: MaterialInstanceWhereUniqueInput | MaterialInstanceWhereUniqueInput[]
+  }
+
+  export type MaterialStockMovementUncheckedCreateNestedManyWithoutWarehouseInput = {
+    create?: XOR<MaterialStockMovementCreateWithoutWarehouseInput, MaterialStockMovementUncheckedCreateWithoutWarehouseInput> | MaterialStockMovementCreateWithoutWarehouseInput[] | MaterialStockMovementUncheckedCreateWithoutWarehouseInput[]
+    connectOrCreate?: MaterialStockMovementCreateOrConnectWithoutWarehouseInput | MaterialStockMovementCreateOrConnectWithoutWarehouseInput[]
+    createMany?: MaterialStockMovementCreateManyWarehouseInputEnvelope
+    connect?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+  }
+
+  export type MaintenanceInstanceUpdateOneRequiredWithoutWarehousesNestedInput = {
+    create?: XOR<MaintenanceInstanceCreateWithoutWarehousesInput, MaintenanceInstanceUncheckedCreateWithoutWarehousesInput>
+    connectOrCreate?: MaintenanceInstanceCreateOrConnectWithoutWarehousesInput
+    upsert?: MaintenanceInstanceUpsertWithoutWarehousesInput
+    connect?: MaintenanceInstanceWhereUniqueInput
+    update?: XOR<XOR<MaintenanceInstanceUpdateToOneWithWhereWithoutWarehousesInput, MaintenanceInstanceUpdateWithoutWarehousesInput>, MaintenanceInstanceUncheckedUpdateWithoutWarehousesInput>
+  }
+
+  export type WarehouseMaterialStockUpdateManyWithoutWarehouseNestedInput = {
+    create?: XOR<WarehouseMaterialStockCreateWithoutWarehouseInput, WarehouseMaterialStockUncheckedCreateWithoutWarehouseInput> | WarehouseMaterialStockCreateWithoutWarehouseInput[] | WarehouseMaterialStockUncheckedCreateWithoutWarehouseInput[]
+    connectOrCreate?: WarehouseMaterialStockCreateOrConnectWithoutWarehouseInput | WarehouseMaterialStockCreateOrConnectWithoutWarehouseInput[]
+    upsert?: WarehouseMaterialStockUpsertWithWhereUniqueWithoutWarehouseInput | WarehouseMaterialStockUpsertWithWhereUniqueWithoutWarehouseInput[]
+    createMany?: WarehouseMaterialStockCreateManyWarehouseInputEnvelope
+    set?: WarehouseMaterialStockWhereUniqueInput | WarehouseMaterialStockWhereUniqueInput[]
+    disconnect?: WarehouseMaterialStockWhereUniqueInput | WarehouseMaterialStockWhereUniqueInput[]
+    delete?: WarehouseMaterialStockWhereUniqueInput | WarehouseMaterialStockWhereUniqueInput[]
+    connect?: WarehouseMaterialStockWhereUniqueInput | WarehouseMaterialStockWhereUniqueInput[]
+    update?: WarehouseMaterialStockUpdateWithWhereUniqueWithoutWarehouseInput | WarehouseMaterialStockUpdateWithWhereUniqueWithoutWarehouseInput[]
+    updateMany?: WarehouseMaterialStockUpdateManyWithWhereWithoutWarehouseInput | WarehouseMaterialStockUpdateManyWithWhereWithoutWarehouseInput[]
+    deleteMany?: WarehouseMaterialStockScalarWhereInput | WarehouseMaterialStockScalarWhereInput[]
+  }
+
+  export type MaterialInstanceUpdateManyWithoutWarehouseNestedInput = {
+    create?: XOR<MaterialInstanceCreateWithoutWarehouseInput, MaterialInstanceUncheckedCreateWithoutWarehouseInput> | MaterialInstanceCreateWithoutWarehouseInput[] | MaterialInstanceUncheckedCreateWithoutWarehouseInput[]
+    connectOrCreate?: MaterialInstanceCreateOrConnectWithoutWarehouseInput | MaterialInstanceCreateOrConnectWithoutWarehouseInput[]
+    upsert?: MaterialInstanceUpsertWithWhereUniqueWithoutWarehouseInput | MaterialInstanceUpsertWithWhereUniqueWithoutWarehouseInput[]
+    createMany?: MaterialInstanceCreateManyWarehouseInputEnvelope
+    set?: MaterialInstanceWhereUniqueInput | MaterialInstanceWhereUniqueInput[]
+    disconnect?: MaterialInstanceWhereUniqueInput | MaterialInstanceWhereUniqueInput[]
+    delete?: MaterialInstanceWhereUniqueInput | MaterialInstanceWhereUniqueInput[]
+    connect?: MaterialInstanceWhereUniqueInput | MaterialInstanceWhereUniqueInput[]
+    update?: MaterialInstanceUpdateWithWhereUniqueWithoutWarehouseInput | MaterialInstanceUpdateWithWhereUniqueWithoutWarehouseInput[]
+    updateMany?: MaterialInstanceUpdateManyWithWhereWithoutWarehouseInput | MaterialInstanceUpdateManyWithWhereWithoutWarehouseInput[]
+    deleteMany?: MaterialInstanceScalarWhereInput | MaterialInstanceScalarWhereInput[]
+  }
+
+  export type MaterialStockMovementUpdateManyWithoutWarehouseNestedInput = {
+    create?: XOR<MaterialStockMovementCreateWithoutWarehouseInput, MaterialStockMovementUncheckedCreateWithoutWarehouseInput> | MaterialStockMovementCreateWithoutWarehouseInput[] | MaterialStockMovementUncheckedCreateWithoutWarehouseInput[]
+    connectOrCreate?: MaterialStockMovementCreateOrConnectWithoutWarehouseInput | MaterialStockMovementCreateOrConnectWithoutWarehouseInput[]
+    upsert?: MaterialStockMovementUpsertWithWhereUniqueWithoutWarehouseInput | MaterialStockMovementUpsertWithWhereUniqueWithoutWarehouseInput[]
+    createMany?: MaterialStockMovementCreateManyWarehouseInputEnvelope
+    set?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+    disconnect?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+    delete?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+    connect?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+    update?: MaterialStockMovementUpdateWithWhereUniqueWithoutWarehouseInput | MaterialStockMovementUpdateWithWhereUniqueWithoutWarehouseInput[]
+    updateMany?: MaterialStockMovementUpdateManyWithWhereWithoutWarehouseInput | MaterialStockMovementUpdateManyWithWhereWithoutWarehouseInput[]
+    deleteMany?: MaterialStockMovementScalarWhereInput | MaterialStockMovementScalarWhereInput[]
+  }
+
+  export type WarehouseMaterialStockUncheckedUpdateManyWithoutWarehouseNestedInput = {
+    create?: XOR<WarehouseMaterialStockCreateWithoutWarehouseInput, WarehouseMaterialStockUncheckedCreateWithoutWarehouseInput> | WarehouseMaterialStockCreateWithoutWarehouseInput[] | WarehouseMaterialStockUncheckedCreateWithoutWarehouseInput[]
+    connectOrCreate?: WarehouseMaterialStockCreateOrConnectWithoutWarehouseInput | WarehouseMaterialStockCreateOrConnectWithoutWarehouseInput[]
+    upsert?: WarehouseMaterialStockUpsertWithWhereUniqueWithoutWarehouseInput | WarehouseMaterialStockUpsertWithWhereUniqueWithoutWarehouseInput[]
+    createMany?: WarehouseMaterialStockCreateManyWarehouseInputEnvelope
+    set?: WarehouseMaterialStockWhereUniqueInput | WarehouseMaterialStockWhereUniqueInput[]
+    disconnect?: WarehouseMaterialStockWhereUniqueInput | WarehouseMaterialStockWhereUniqueInput[]
+    delete?: WarehouseMaterialStockWhereUniqueInput | WarehouseMaterialStockWhereUniqueInput[]
+    connect?: WarehouseMaterialStockWhereUniqueInput | WarehouseMaterialStockWhereUniqueInput[]
+    update?: WarehouseMaterialStockUpdateWithWhereUniqueWithoutWarehouseInput | WarehouseMaterialStockUpdateWithWhereUniqueWithoutWarehouseInput[]
+    updateMany?: WarehouseMaterialStockUpdateManyWithWhereWithoutWarehouseInput | WarehouseMaterialStockUpdateManyWithWhereWithoutWarehouseInput[]
+    deleteMany?: WarehouseMaterialStockScalarWhereInput | WarehouseMaterialStockScalarWhereInput[]
+  }
+
+  export type MaterialInstanceUncheckedUpdateManyWithoutWarehouseNestedInput = {
+    create?: XOR<MaterialInstanceCreateWithoutWarehouseInput, MaterialInstanceUncheckedCreateWithoutWarehouseInput> | MaterialInstanceCreateWithoutWarehouseInput[] | MaterialInstanceUncheckedCreateWithoutWarehouseInput[]
+    connectOrCreate?: MaterialInstanceCreateOrConnectWithoutWarehouseInput | MaterialInstanceCreateOrConnectWithoutWarehouseInput[]
+    upsert?: MaterialInstanceUpsertWithWhereUniqueWithoutWarehouseInput | MaterialInstanceUpsertWithWhereUniqueWithoutWarehouseInput[]
+    createMany?: MaterialInstanceCreateManyWarehouseInputEnvelope
+    set?: MaterialInstanceWhereUniqueInput | MaterialInstanceWhereUniqueInput[]
+    disconnect?: MaterialInstanceWhereUniqueInput | MaterialInstanceWhereUniqueInput[]
+    delete?: MaterialInstanceWhereUniqueInput | MaterialInstanceWhereUniqueInput[]
+    connect?: MaterialInstanceWhereUniqueInput | MaterialInstanceWhereUniqueInput[]
+    update?: MaterialInstanceUpdateWithWhereUniqueWithoutWarehouseInput | MaterialInstanceUpdateWithWhereUniqueWithoutWarehouseInput[]
+    updateMany?: MaterialInstanceUpdateManyWithWhereWithoutWarehouseInput | MaterialInstanceUpdateManyWithWhereWithoutWarehouseInput[]
+    deleteMany?: MaterialInstanceScalarWhereInput | MaterialInstanceScalarWhereInput[]
+  }
+
+  export type MaterialStockMovementUncheckedUpdateManyWithoutWarehouseNestedInput = {
+    create?: XOR<MaterialStockMovementCreateWithoutWarehouseInput, MaterialStockMovementUncheckedCreateWithoutWarehouseInput> | MaterialStockMovementCreateWithoutWarehouseInput[] | MaterialStockMovementUncheckedCreateWithoutWarehouseInput[]
+    connectOrCreate?: MaterialStockMovementCreateOrConnectWithoutWarehouseInput | MaterialStockMovementCreateOrConnectWithoutWarehouseInput[]
+    upsert?: MaterialStockMovementUpsertWithWhereUniqueWithoutWarehouseInput | MaterialStockMovementUpsertWithWhereUniqueWithoutWarehouseInput[]
+    createMany?: MaterialStockMovementCreateManyWarehouseInputEnvelope
+    set?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+    disconnect?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+    delete?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+    connect?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+    update?: MaterialStockMovementUpdateWithWhereUniqueWithoutWarehouseInput | MaterialStockMovementUpdateWithWhereUniqueWithoutWarehouseInput[]
+    updateMany?: MaterialStockMovementUpdateManyWithWhereWithoutWarehouseInput | MaterialStockMovementUpdateManyWithWhereWithoutWarehouseInput[]
+    deleteMany?: MaterialStockMovementScalarWhereInput | MaterialStockMovementScalarWhereInput[]
+  }
+
+  export type WarehouseMaterialStockCreateNestedManyWithoutMaterialInput = {
+    create?: XOR<WarehouseMaterialStockCreateWithoutMaterialInput, WarehouseMaterialStockUncheckedCreateWithoutMaterialInput> | WarehouseMaterialStockCreateWithoutMaterialInput[] | WarehouseMaterialStockUncheckedCreateWithoutMaterialInput[]
+    connectOrCreate?: WarehouseMaterialStockCreateOrConnectWithoutMaterialInput | WarehouseMaterialStockCreateOrConnectWithoutMaterialInput[]
+    createMany?: WarehouseMaterialStockCreateManyMaterialInputEnvelope
+    connect?: WarehouseMaterialStockWhereUniqueInput | WarehouseMaterialStockWhereUniqueInput[]
+  }
+
+  export type MaterialInstanceCreateNestedManyWithoutGlobalMaterialInput = {
+    create?: XOR<MaterialInstanceCreateWithoutGlobalMaterialInput, MaterialInstanceUncheckedCreateWithoutGlobalMaterialInput> | MaterialInstanceCreateWithoutGlobalMaterialInput[] | MaterialInstanceUncheckedCreateWithoutGlobalMaterialInput[]
+    connectOrCreate?: MaterialInstanceCreateOrConnectWithoutGlobalMaterialInput | MaterialInstanceCreateOrConnectWithoutGlobalMaterialInput[]
+    createMany?: MaterialInstanceCreateManyGlobalMaterialInputEnvelope
+    connect?: MaterialInstanceWhereUniqueInput | MaterialInstanceWhereUniqueInput[]
+  }
+
+  export type MaterialRequestItemCreateNestedManyWithoutRequestedGlobalMaterialInput = {
+    create?: XOR<MaterialRequestItemCreateWithoutRequestedGlobalMaterialInput, MaterialRequestItemUncheckedCreateWithoutRequestedGlobalMaterialInput> | MaterialRequestItemCreateWithoutRequestedGlobalMaterialInput[] | MaterialRequestItemUncheckedCreateWithoutRequestedGlobalMaterialInput[]
+    connectOrCreate?: MaterialRequestItemCreateOrConnectWithoutRequestedGlobalMaterialInput | MaterialRequestItemCreateOrConnectWithoutRequestedGlobalMaterialInput[]
+    createMany?: MaterialRequestItemCreateManyRequestedGlobalMaterialInputEnvelope
     connect?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
   }
 
-  export type MaterialUncheckedCreateNestedManyWithoutParentMaterialInput = {
-    create?: XOR<MaterialCreateWithoutParentMaterialInput, MaterialUncheckedCreateWithoutParentMaterialInput> | MaterialCreateWithoutParentMaterialInput[] | MaterialUncheckedCreateWithoutParentMaterialInput[]
-    connectOrCreate?: MaterialCreateOrConnectWithoutParentMaterialInput | MaterialCreateOrConnectWithoutParentMaterialInput[]
-    createMany?: MaterialCreateManyParentMaterialInputEnvelope
-    connect?: MaterialWhereUniqueInput | MaterialWhereUniqueInput[]
+  export type MaterialStockMovementCreateNestedManyWithoutGlobalMaterialInput = {
+    create?: XOR<MaterialStockMovementCreateWithoutGlobalMaterialInput, MaterialStockMovementUncheckedCreateWithoutGlobalMaterialInput> | MaterialStockMovementCreateWithoutGlobalMaterialInput[] | MaterialStockMovementUncheckedCreateWithoutGlobalMaterialInput[]
+    connectOrCreate?: MaterialStockMovementCreateOrConnectWithoutGlobalMaterialInput | MaterialStockMovementCreateOrConnectWithoutGlobalMaterialInput[]
+    createMany?: MaterialStockMovementCreateManyGlobalMaterialInputEnvelope
+    connect?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
   }
 
-  export type MaterialRequestItemUncheckedCreateNestedManyWithoutMaterialInput = {
-    create?: XOR<MaterialRequestItemCreateWithoutMaterialInput, MaterialRequestItemUncheckedCreateWithoutMaterialInput> | MaterialRequestItemCreateWithoutMaterialInput[] | MaterialRequestItemUncheckedCreateWithoutMaterialInput[]
-    connectOrCreate?: MaterialRequestItemCreateOrConnectWithoutMaterialInput | MaterialRequestItemCreateOrConnectWithoutMaterialInput[]
-    createMany?: MaterialRequestItemCreateManyMaterialInputEnvelope
+  export type WarehouseMaterialStockUncheckedCreateNestedManyWithoutMaterialInput = {
+    create?: XOR<WarehouseMaterialStockCreateWithoutMaterialInput, WarehouseMaterialStockUncheckedCreateWithoutMaterialInput> | WarehouseMaterialStockCreateWithoutMaterialInput[] | WarehouseMaterialStockUncheckedCreateWithoutMaterialInput[]
+    connectOrCreate?: WarehouseMaterialStockCreateOrConnectWithoutMaterialInput | WarehouseMaterialStockCreateOrConnectWithoutMaterialInput[]
+    createMany?: WarehouseMaterialStockCreateManyMaterialInputEnvelope
+    connect?: WarehouseMaterialStockWhereUniqueInput | WarehouseMaterialStockWhereUniqueInput[]
+  }
+
+  export type MaterialInstanceUncheckedCreateNestedManyWithoutGlobalMaterialInput = {
+    create?: XOR<MaterialInstanceCreateWithoutGlobalMaterialInput, MaterialInstanceUncheckedCreateWithoutGlobalMaterialInput> | MaterialInstanceCreateWithoutGlobalMaterialInput[] | MaterialInstanceUncheckedCreateWithoutGlobalMaterialInput[]
+    connectOrCreate?: MaterialInstanceCreateOrConnectWithoutGlobalMaterialInput | MaterialInstanceCreateOrConnectWithoutGlobalMaterialInput[]
+    createMany?: MaterialInstanceCreateManyGlobalMaterialInputEnvelope
+    connect?: MaterialInstanceWhereUniqueInput | MaterialInstanceWhereUniqueInput[]
+  }
+
+  export type MaterialRequestItemUncheckedCreateNestedManyWithoutRequestedGlobalMaterialInput = {
+    create?: XOR<MaterialRequestItemCreateWithoutRequestedGlobalMaterialInput, MaterialRequestItemUncheckedCreateWithoutRequestedGlobalMaterialInput> | MaterialRequestItemCreateWithoutRequestedGlobalMaterialInput[] | MaterialRequestItemUncheckedCreateWithoutRequestedGlobalMaterialInput[]
+    connectOrCreate?: MaterialRequestItemCreateOrConnectWithoutRequestedGlobalMaterialInput | MaterialRequestItemCreateOrConnectWithoutRequestedGlobalMaterialInput[]
+    createMany?: MaterialRequestItemCreateManyRequestedGlobalMaterialInputEnvelope
     connect?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
   }
 
-  export type MaterialUpdateOneWithoutChildsNestedInput = {
-    create?: XOR<MaterialCreateWithoutChildsInput, MaterialUncheckedCreateWithoutChildsInput>
-    connectOrCreate?: MaterialCreateOrConnectWithoutChildsInput
-    upsert?: MaterialUpsertWithoutChildsInput
-    disconnect?: MaterialWhereInput | boolean
-    delete?: MaterialWhereInput | boolean
-    connect?: MaterialWhereUniqueInput
-    update?: XOR<XOR<MaterialUpdateToOneWithWhereWithoutChildsInput, MaterialUpdateWithoutChildsInput>, MaterialUncheckedUpdateWithoutChildsInput>
+  export type MaterialStockMovementUncheckedCreateNestedManyWithoutGlobalMaterialInput = {
+    create?: XOR<MaterialStockMovementCreateWithoutGlobalMaterialInput, MaterialStockMovementUncheckedCreateWithoutGlobalMaterialInput> | MaterialStockMovementCreateWithoutGlobalMaterialInput[] | MaterialStockMovementUncheckedCreateWithoutGlobalMaterialInput[]
+    connectOrCreate?: MaterialStockMovementCreateOrConnectWithoutGlobalMaterialInput | MaterialStockMovementCreateOrConnectWithoutGlobalMaterialInput[]
+    createMany?: MaterialStockMovementCreateManyGlobalMaterialInputEnvelope
+    connect?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
   }
 
-  export type MaterialUpdateManyWithoutParentMaterialNestedInput = {
-    create?: XOR<MaterialCreateWithoutParentMaterialInput, MaterialUncheckedCreateWithoutParentMaterialInput> | MaterialCreateWithoutParentMaterialInput[] | MaterialUncheckedCreateWithoutParentMaterialInput[]
-    connectOrCreate?: MaterialCreateOrConnectWithoutParentMaterialInput | MaterialCreateOrConnectWithoutParentMaterialInput[]
-    upsert?: MaterialUpsertWithWhereUniqueWithoutParentMaterialInput | MaterialUpsertWithWhereUniqueWithoutParentMaterialInput[]
-    createMany?: MaterialCreateManyParentMaterialInputEnvelope
-    set?: MaterialWhereUniqueInput | MaterialWhereUniqueInput[]
-    disconnect?: MaterialWhereUniqueInput | MaterialWhereUniqueInput[]
-    delete?: MaterialWhereUniqueInput | MaterialWhereUniqueInput[]
-    connect?: MaterialWhereUniqueInput | MaterialWhereUniqueInput[]
-    update?: MaterialUpdateWithWhereUniqueWithoutParentMaterialInput | MaterialUpdateWithWhereUniqueWithoutParentMaterialInput[]
-    updateMany?: MaterialUpdateManyWithWhereWithoutParentMaterialInput | MaterialUpdateManyWithWhereWithoutParentMaterialInput[]
-    deleteMany?: MaterialScalarWhereInput | MaterialScalarWhereInput[]
+  export type WarehouseMaterialStockUpdateManyWithoutMaterialNestedInput = {
+    create?: XOR<WarehouseMaterialStockCreateWithoutMaterialInput, WarehouseMaterialStockUncheckedCreateWithoutMaterialInput> | WarehouseMaterialStockCreateWithoutMaterialInput[] | WarehouseMaterialStockUncheckedCreateWithoutMaterialInput[]
+    connectOrCreate?: WarehouseMaterialStockCreateOrConnectWithoutMaterialInput | WarehouseMaterialStockCreateOrConnectWithoutMaterialInput[]
+    upsert?: WarehouseMaterialStockUpsertWithWhereUniqueWithoutMaterialInput | WarehouseMaterialStockUpsertWithWhereUniqueWithoutMaterialInput[]
+    createMany?: WarehouseMaterialStockCreateManyMaterialInputEnvelope
+    set?: WarehouseMaterialStockWhereUniqueInput | WarehouseMaterialStockWhereUniqueInput[]
+    disconnect?: WarehouseMaterialStockWhereUniqueInput | WarehouseMaterialStockWhereUniqueInput[]
+    delete?: WarehouseMaterialStockWhereUniqueInput | WarehouseMaterialStockWhereUniqueInput[]
+    connect?: WarehouseMaterialStockWhereUniqueInput | WarehouseMaterialStockWhereUniqueInput[]
+    update?: WarehouseMaterialStockUpdateWithWhereUniqueWithoutMaterialInput | WarehouseMaterialStockUpdateWithWhereUniqueWithoutMaterialInput[]
+    updateMany?: WarehouseMaterialStockUpdateManyWithWhereWithoutMaterialInput | WarehouseMaterialStockUpdateManyWithWhereWithoutMaterialInput[]
+    deleteMany?: WarehouseMaterialStockScalarWhereInput | WarehouseMaterialStockScalarWhereInput[]
   }
 
-  export type MaterialRequestItemUpdateManyWithoutMaterialNestedInput = {
-    create?: XOR<MaterialRequestItemCreateWithoutMaterialInput, MaterialRequestItemUncheckedCreateWithoutMaterialInput> | MaterialRequestItemCreateWithoutMaterialInput[] | MaterialRequestItemUncheckedCreateWithoutMaterialInput[]
-    connectOrCreate?: MaterialRequestItemCreateOrConnectWithoutMaterialInput | MaterialRequestItemCreateOrConnectWithoutMaterialInput[]
-    upsert?: MaterialRequestItemUpsertWithWhereUniqueWithoutMaterialInput | MaterialRequestItemUpsertWithWhereUniqueWithoutMaterialInput[]
-    createMany?: MaterialRequestItemCreateManyMaterialInputEnvelope
+  export type MaterialInstanceUpdateManyWithoutGlobalMaterialNestedInput = {
+    create?: XOR<MaterialInstanceCreateWithoutGlobalMaterialInput, MaterialInstanceUncheckedCreateWithoutGlobalMaterialInput> | MaterialInstanceCreateWithoutGlobalMaterialInput[] | MaterialInstanceUncheckedCreateWithoutGlobalMaterialInput[]
+    connectOrCreate?: MaterialInstanceCreateOrConnectWithoutGlobalMaterialInput | MaterialInstanceCreateOrConnectWithoutGlobalMaterialInput[]
+    upsert?: MaterialInstanceUpsertWithWhereUniqueWithoutGlobalMaterialInput | MaterialInstanceUpsertWithWhereUniqueWithoutGlobalMaterialInput[]
+    createMany?: MaterialInstanceCreateManyGlobalMaterialInputEnvelope
+    set?: MaterialInstanceWhereUniqueInput | MaterialInstanceWhereUniqueInput[]
+    disconnect?: MaterialInstanceWhereUniqueInput | MaterialInstanceWhereUniqueInput[]
+    delete?: MaterialInstanceWhereUniqueInput | MaterialInstanceWhereUniqueInput[]
+    connect?: MaterialInstanceWhereUniqueInput | MaterialInstanceWhereUniqueInput[]
+    update?: MaterialInstanceUpdateWithWhereUniqueWithoutGlobalMaterialInput | MaterialInstanceUpdateWithWhereUniqueWithoutGlobalMaterialInput[]
+    updateMany?: MaterialInstanceUpdateManyWithWhereWithoutGlobalMaterialInput | MaterialInstanceUpdateManyWithWhereWithoutGlobalMaterialInput[]
+    deleteMany?: MaterialInstanceScalarWhereInput | MaterialInstanceScalarWhereInput[]
+  }
+
+  export type MaterialRequestItemUpdateManyWithoutRequestedGlobalMaterialNestedInput = {
+    create?: XOR<MaterialRequestItemCreateWithoutRequestedGlobalMaterialInput, MaterialRequestItemUncheckedCreateWithoutRequestedGlobalMaterialInput> | MaterialRequestItemCreateWithoutRequestedGlobalMaterialInput[] | MaterialRequestItemUncheckedCreateWithoutRequestedGlobalMaterialInput[]
+    connectOrCreate?: MaterialRequestItemCreateOrConnectWithoutRequestedGlobalMaterialInput | MaterialRequestItemCreateOrConnectWithoutRequestedGlobalMaterialInput[]
+    upsert?: MaterialRequestItemUpsertWithWhereUniqueWithoutRequestedGlobalMaterialInput | MaterialRequestItemUpsertWithWhereUniqueWithoutRequestedGlobalMaterialInput[]
+    createMany?: MaterialRequestItemCreateManyRequestedGlobalMaterialInputEnvelope
     set?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
     disconnect?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
     delete?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
     connect?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
-    update?: MaterialRequestItemUpdateWithWhereUniqueWithoutMaterialInput | MaterialRequestItemUpdateWithWhereUniqueWithoutMaterialInput[]
-    updateMany?: MaterialRequestItemUpdateManyWithWhereWithoutMaterialInput | MaterialRequestItemUpdateManyWithWhereWithoutMaterialInput[]
+    update?: MaterialRequestItemUpdateWithWhereUniqueWithoutRequestedGlobalMaterialInput | MaterialRequestItemUpdateWithWhereUniqueWithoutRequestedGlobalMaterialInput[]
+    updateMany?: MaterialRequestItemUpdateManyWithWhereWithoutRequestedGlobalMaterialInput | MaterialRequestItemUpdateManyWithWhereWithoutRequestedGlobalMaterialInput[]
     deleteMany?: MaterialRequestItemScalarWhereInput | MaterialRequestItemScalarWhereInput[]
   }
 
-  export type MaterialUncheckedUpdateManyWithoutParentMaterialNestedInput = {
-    create?: XOR<MaterialCreateWithoutParentMaterialInput, MaterialUncheckedCreateWithoutParentMaterialInput> | MaterialCreateWithoutParentMaterialInput[] | MaterialUncheckedCreateWithoutParentMaterialInput[]
-    connectOrCreate?: MaterialCreateOrConnectWithoutParentMaterialInput | MaterialCreateOrConnectWithoutParentMaterialInput[]
-    upsert?: MaterialUpsertWithWhereUniqueWithoutParentMaterialInput | MaterialUpsertWithWhereUniqueWithoutParentMaterialInput[]
-    createMany?: MaterialCreateManyParentMaterialInputEnvelope
-    set?: MaterialWhereUniqueInput | MaterialWhereUniqueInput[]
-    disconnect?: MaterialWhereUniqueInput | MaterialWhereUniqueInput[]
-    delete?: MaterialWhereUniqueInput | MaterialWhereUniqueInput[]
-    connect?: MaterialWhereUniqueInput | MaterialWhereUniqueInput[]
-    update?: MaterialUpdateWithWhereUniqueWithoutParentMaterialInput | MaterialUpdateWithWhereUniqueWithoutParentMaterialInput[]
-    updateMany?: MaterialUpdateManyWithWhereWithoutParentMaterialInput | MaterialUpdateManyWithWhereWithoutParentMaterialInput[]
-    deleteMany?: MaterialScalarWhereInput | MaterialScalarWhereInput[]
+  export type MaterialStockMovementUpdateManyWithoutGlobalMaterialNestedInput = {
+    create?: XOR<MaterialStockMovementCreateWithoutGlobalMaterialInput, MaterialStockMovementUncheckedCreateWithoutGlobalMaterialInput> | MaterialStockMovementCreateWithoutGlobalMaterialInput[] | MaterialStockMovementUncheckedCreateWithoutGlobalMaterialInput[]
+    connectOrCreate?: MaterialStockMovementCreateOrConnectWithoutGlobalMaterialInput | MaterialStockMovementCreateOrConnectWithoutGlobalMaterialInput[]
+    upsert?: MaterialStockMovementUpsertWithWhereUniqueWithoutGlobalMaterialInput | MaterialStockMovementUpsertWithWhereUniqueWithoutGlobalMaterialInput[]
+    createMany?: MaterialStockMovementCreateManyGlobalMaterialInputEnvelope
+    set?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+    disconnect?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+    delete?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+    connect?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+    update?: MaterialStockMovementUpdateWithWhereUniqueWithoutGlobalMaterialInput | MaterialStockMovementUpdateWithWhereUniqueWithoutGlobalMaterialInput[]
+    updateMany?: MaterialStockMovementUpdateManyWithWhereWithoutGlobalMaterialInput | MaterialStockMovementUpdateManyWithWhereWithoutGlobalMaterialInput[]
+    deleteMany?: MaterialStockMovementScalarWhereInput | MaterialStockMovementScalarWhereInput[]
   }
 
-  export type MaterialRequestItemUncheckedUpdateManyWithoutMaterialNestedInput = {
-    create?: XOR<MaterialRequestItemCreateWithoutMaterialInput, MaterialRequestItemUncheckedCreateWithoutMaterialInput> | MaterialRequestItemCreateWithoutMaterialInput[] | MaterialRequestItemUncheckedCreateWithoutMaterialInput[]
-    connectOrCreate?: MaterialRequestItemCreateOrConnectWithoutMaterialInput | MaterialRequestItemCreateOrConnectWithoutMaterialInput[]
-    upsert?: MaterialRequestItemUpsertWithWhereUniqueWithoutMaterialInput | MaterialRequestItemUpsertWithWhereUniqueWithoutMaterialInput[]
-    createMany?: MaterialRequestItemCreateManyMaterialInputEnvelope
+  export type WarehouseMaterialStockUncheckedUpdateManyWithoutMaterialNestedInput = {
+    create?: XOR<WarehouseMaterialStockCreateWithoutMaterialInput, WarehouseMaterialStockUncheckedCreateWithoutMaterialInput> | WarehouseMaterialStockCreateWithoutMaterialInput[] | WarehouseMaterialStockUncheckedCreateWithoutMaterialInput[]
+    connectOrCreate?: WarehouseMaterialStockCreateOrConnectWithoutMaterialInput | WarehouseMaterialStockCreateOrConnectWithoutMaterialInput[]
+    upsert?: WarehouseMaterialStockUpsertWithWhereUniqueWithoutMaterialInput | WarehouseMaterialStockUpsertWithWhereUniqueWithoutMaterialInput[]
+    createMany?: WarehouseMaterialStockCreateManyMaterialInputEnvelope
+    set?: WarehouseMaterialStockWhereUniqueInput | WarehouseMaterialStockWhereUniqueInput[]
+    disconnect?: WarehouseMaterialStockWhereUniqueInput | WarehouseMaterialStockWhereUniqueInput[]
+    delete?: WarehouseMaterialStockWhereUniqueInput | WarehouseMaterialStockWhereUniqueInput[]
+    connect?: WarehouseMaterialStockWhereUniqueInput | WarehouseMaterialStockWhereUniqueInput[]
+    update?: WarehouseMaterialStockUpdateWithWhereUniqueWithoutMaterialInput | WarehouseMaterialStockUpdateWithWhereUniqueWithoutMaterialInput[]
+    updateMany?: WarehouseMaterialStockUpdateManyWithWhereWithoutMaterialInput | WarehouseMaterialStockUpdateManyWithWhereWithoutMaterialInput[]
+    deleteMany?: WarehouseMaterialStockScalarWhereInput | WarehouseMaterialStockScalarWhereInput[]
+  }
+
+  export type MaterialInstanceUncheckedUpdateManyWithoutGlobalMaterialNestedInput = {
+    create?: XOR<MaterialInstanceCreateWithoutGlobalMaterialInput, MaterialInstanceUncheckedCreateWithoutGlobalMaterialInput> | MaterialInstanceCreateWithoutGlobalMaterialInput[] | MaterialInstanceUncheckedCreateWithoutGlobalMaterialInput[]
+    connectOrCreate?: MaterialInstanceCreateOrConnectWithoutGlobalMaterialInput | MaterialInstanceCreateOrConnectWithoutGlobalMaterialInput[]
+    upsert?: MaterialInstanceUpsertWithWhereUniqueWithoutGlobalMaterialInput | MaterialInstanceUpsertWithWhereUniqueWithoutGlobalMaterialInput[]
+    createMany?: MaterialInstanceCreateManyGlobalMaterialInputEnvelope
+    set?: MaterialInstanceWhereUniqueInput | MaterialInstanceWhereUniqueInput[]
+    disconnect?: MaterialInstanceWhereUniqueInput | MaterialInstanceWhereUniqueInput[]
+    delete?: MaterialInstanceWhereUniqueInput | MaterialInstanceWhereUniqueInput[]
+    connect?: MaterialInstanceWhereUniqueInput | MaterialInstanceWhereUniqueInput[]
+    update?: MaterialInstanceUpdateWithWhereUniqueWithoutGlobalMaterialInput | MaterialInstanceUpdateWithWhereUniqueWithoutGlobalMaterialInput[]
+    updateMany?: MaterialInstanceUpdateManyWithWhereWithoutGlobalMaterialInput | MaterialInstanceUpdateManyWithWhereWithoutGlobalMaterialInput[]
+    deleteMany?: MaterialInstanceScalarWhereInput | MaterialInstanceScalarWhereInput[]
+  }
+
+  export type MaterialRequestItemUncheckedUpdateManyWithoutRequestedGlobalMaterialNestedInput = {
+    create?: XOR<MaterialRequestItemCreateWithoutRequestedGlobalMaterialInput, MaterialRequestItemUncheckedCreateWithoutRequestedGlobalMaterialInput> | MaterialRequestItemCreateWithoutRequestedGlobalMaterialInput[] | MaterialRequestItemUncheckedCreateWithoutRequestedGlobalMaterialInput[]
+    connectOrCreate?: MaterialRequestItemCreateOrConnectWithoutRequestedGlobalMaterialInput | MaterialRequestItemCreateOrConnectWithoutRequestedGlobalMaterialInput[]
+    upsert?: MaterialRequestItemUpsertWithWhereUniqueWithoutRequestedGlobalMaterialInput | MaterialRequestItemUpsertWithWhereUniqueWithoutRequestedGlobalMaterialInput[]
+    createMany?: MaterialRequestItemCreateManyRequestedGlobalMaterialInputEnvelope
     set?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
     disconnect?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
     delete?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
     connect?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
-    update?: MaterialRequestItemUpdateWithWhereUniqueWithoutMaterialInput | MaterialRequestItemUpdateWithWhereUniqueWithoutMaterialInput[]
-    updateMany?: MaterialRequestItemUpdateManyWithWhereWithoutMaterialInput | MaterialRequestItemUpdateManyWithWhereWithoutMaterialInput[]
+    update?: MaterialRequestItemUpdateWithWhereUniqueWithoutRequestedGlobalMaterialInput | MaterialRequestItemUpdateWithWhereUniqueWithoutRequestedGlobalMaterialInput[]
+    updateMany?: MaterialRequestItemUpdateManyWithWhereWithoutRequestedGlobalMaterialInput | MaterialRequestItemUpdateManyWithWhereWithoutRequestedGlobalMaterialInput[]
     deleteMany?: MaterialRequestItemScalarWhereInput | MaterialRequestItemScalarWhereInput[]
+  }
+
+  export type MaterialStockMovementUncheckedUpdateManyWithoutGlobalMaterialNestedInput = {
+    create?: XOR<MaterialStockMovementCreateWithoutGlobalMaterialInput, MaterialStockMovementUncheckedCreateWithoutGlobalMaterialInput> | MaterialStockMovementCreateWithoutGlobalMaterialInput[] | MaterialStockMovementUncheckedCreateWithoutGlobalMaterialInput[]
+    connectOrCreate?: MaterialStockMovementCreateOrConnectWithoutGlobalMaterialInput | MaterialStockMovementCreateOrConnectWithoutGlobalMaterialInput[]
+    upsert?: MaterialStockMovementUpsertWithWhereUniqueWithoutGlobalMaterialInput | MaterialStockMovementUpsertWithWhereUniqueWithoutGlobalMaterialInput[]
+    createMany?: MaterialStockMovementCreateManyGlobalMaterialInputEnvelope
+    set?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+    disconnect?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+    delete?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+    connect?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+    update?: MaterialStockMovementUpdateWithWhereUniqueWithoutGlobalMaterialInput | MaterialStockMovementUpdateWithWhereUniqueWithoutGlobalMaterialInput[]
+    updateMany?: MaterialStockMovementUpdateManyWithWhereWithoutGlobalMaterialInput | MaterialStockMovementUpdateManyWithWhereWithoutGlobalMaterialInput[]
+    deleteMany?: MaterialStockMovementScalarWhereInput | MaterialStockMovementScalarWhereInput[]
+  }
+
+  export type WarehouseCreateNestedOneWithoutStandardMaterialStocksInput = {
+    create?: XOR<WarehouseCreateWithoutStandardMaterialStocksInput, WarehouseUncheckedCreateWithoutStandardMaterialStocksInput>
+    connectOrCreate?: WarehouseCreateOrConnectWithoutStandardMaterialStocksInput
+    connect?: WarehouseWhereUniqueInput
+  }
+
+  export type MaterialCreateNestedOneWithoutWarehouseStandardStocksInput = {
+    create?: XOR<MaterialCreateWithoutWarehouseStandardStocksInput, MaterialUncheckedCreateWithoutWarehouseStandardStocksInput>
+    connectOrCreate?: MaterialCreateOrConnectWithoutWarehouseStandardStocksInput
+    connect?: MaterialWhereUniqueInput
+  }
+
+  export type MaterialStockMovementCreateNestedManyWithoutWarehouseMaterialStockInput = {
+    create?: XOR<MaterialStockMovementCreateWithoutWarehouseMaterialStockInput, MaterialStockMovementUncheckedCreateWithoutWarehouseMaterialStockInput> | MaterialStockMovementCreateWithoutWarehouseMaterialStockInput[] | MaterialStockMovementUncheckedCreateWithoutWarehouseMaterialStockInput[]
+    connectOrCreate?: MaterialStockMovementCreateOrConnectWithoutWarehouseMaterialStockInput | MaterialStockMovementCreateOrConnectWithoutWarehouseMaterialStockInput[]
+    createMany?: MaterialStockMovementCreateManyWarehouseMaterialStockInputEnvelope
+    connect?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+  }
+
+  export type MaterialStockMovementUncheckedCreateNestedManyWithoutWarehouseMaterialStockInput = {
+    create?: XOR<MaterialStockMovementCreateWithoutWarehouseMaterialStockInput, MaterialStockMovementUncheckedCreateWithoutWarehouseMaterialStockInput> | MaterialStockMovementCreateWithoutWarehouseMaterialStockInput[] | MaterialStockMovementUncheckedCreateWithoutWarehouseMaterialStockInput[]
+    connectOrCreate?: MaterialStockMovementCreateOrConnectWithoutWarehouseMaterialStockInput | MaterialStockMovementCreateOrConnectWithoutWarehouseMaterialStockInput[]
+    createMany?: MaterialStockMovementCreateManyWarehouseMaterialStockInputEnvelope
+    connect?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+  }
+
+  export type DecimalFieldUpdateOperationsInput = {
+    set?: Decimal | DecimalJsLike | number | string
+    increment?: Decimal | DecimalJsLike | number | string
+    decrement?: Decimal | DecimalJsLike | number | string
+    multiply?: Decimal | DecimalJsLike | number | string
+    divide?: Decimal | DecimalJsLike | number | string
+  }
+
+  export type NullableDecimalFieldUpdateOperationsInput = {
+    set?: Decimal | DecimalJsLike | number | string | null
+    increment?: Decimal | DecimalJsLike | number | string
+    decrement?: Decimal | DecimalJsLike | number | string
+    multiply?: Decimal | DecimalJsLike | number | string
+    divide?: Decimal | DecimalJsLike | number | string
+  }
+
+  export type WarehouseUpdateOneRequiredWithoutStandardMaterialStocksNestedInput = {
+    create?: XOR<WarehouseCreateWithoutStandardMaterialStocksInput, WarehouseUncheckedCreateWithoutStandardMaterialStocksInput>
+    connectOrCreate?: WarehouseCreateOrConnectWithoutStandardMaterialStocksInput
+    upsert?: WarehouseUpsertWithoutStandardMaterialStocksInput
+    connect?: WarehouseWhereUniqueInput
+    update?: XOR<XOR<WarehouseUpdateToOneWithWhereWithoutStandardMaterialStocksInput, WarehouseUpdateWithoutStandardMaterialStocksInput>, WarehouseUncheckedUpdateWithoutStandardMaterialStocksInput>
+  }
+
+  export type MaterialUpdateOneRequiredWithoutWarehouseStandardStocksNestedInput = {
+    create?: XOR<MaterialCreateWithoutWarehouseStandardStocksInput, MaterialUncheckedCreateWithoutWarehouseStandardStocksInput>
+    connectOrCreate?: MaterialCreateOrConnectWithoutWarehouseStandardStocksInput
+    upsert?: MaterialUpsertWithoutWarehouseStandardStocksInput
+    connect?: MaterialWhereUniqueInput
+    update?: XOR<XOR<MaterialUpdateToOneWithWhereWithoutWarehouseStandardStocksInput, MaterialUpdateWithoutWarehouseStandardStocksInput>, MaterialUncheckedUpdateWithoutWarehouseStandardStocksInput>
+  }
+
+  export type MaterialStockMovementUpdateManyWithoutWarehouseMaterialStockNestedInput = {
+    create?: XOR<MaterialStockMovementCreateWithoutWarehouseMaterialStockInput, MaterialStockMovementUncheckedCreateWithoutWarehouseMaterialStockInput> | MaterialStockMovementCreateWithoutWarehouseMaterialStockInput[] | MaterialStockMovementUncheckedCreateWithoutWarehouseMaterialStockInput[]
+    connectOrCreate?: MaterialStockMovementCreateOrConnectWithoutWarehouseMaterialStockInput | MaterialStockMovementCreateOrConnectWithoutWarehouseMaterialStockInput[]
+    upsert?: MaterialStockMovementUpsertWithWhereUniqueWithoutWarehouseMaterialStockInput | MaterialStockMovementUpsertWithWhereUniqueWithoutWarehouseMaterialStockInput[]
+    createMany?: MaterialStockMovementCreateManyWarehouseMaterialStockInputEnvelope
+    set?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+    disconnect?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+    delete?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+    connect?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+    update?: MaterialStockMovementUpdateWithWhereUniqueWithoutWarehouseMaterialStockInput | MaterialStockMovementUpdateWithWhereUniqueWithoutWarehouseMaterialStockInput[]
+    updateMany?: MaterialStockMovementUpdateManyWithWhereWithoutWarehouseMaterialStockInput | MaterialStockMovementUpdateManyWithWhereWithoutWarehouseMaterialStockInput[]
+    deleteMany?: MaterialStockMovementScalarWhereInput | MaterialStockMovementScalarWhereInput[]
+  }
+
+  export type MaterialStockMovementUncheckedUpdateManyWithoutWarehouseMaterialStockNestedInput = {
+    create?: XOR<MaterialStockMovementCreateWithoutWarehouseMaterialStockInput, MaterialStockMovementUncheckedCreateWithoutWarehouseMaterialStockInput> | MaterialStockMovementCreateWithoutWarehouseMaterialStockInput[] | MaterialStockMovementUncheckedCreateWithoutWarehouseMaterialStockInput[]
+    connectOrCreate?: MaterialStockMovementCreateOrConnectWithoutWarehouseMaterialStockInput | MaterialStockMovementCreateOrConnectWithoutWarehouseMaterialStockInput[]
+    upsert?: MaterialStockMovementUpsertWithWhereUniqueWithoutWarehouseMaterialStockInput | MaterialStockMovementUpsertWithWhereUniqueWithoutWarehouseMaterialStockInput[]
+    createMany?: MaterialStockMovementCreateManyWarehouseMaterialStockInputEnvelope
+    set?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+    disconnect?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+    delete?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+    connect?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+    update?: MaterialStockMovementUpdateWithWhereUniqueWithoutWarehouseMaterialStockInput | MaterialStockMovementUpdateWithWhereUniqueWithoutWarehouseMaterialStockInput[]
+    updateMany?: MaterialStockMovementUpdateManyWithWhereWithoutWarehouseMaterialStockInput | MaterialStockMovementUpdateManyWithWhereWithoutWarehouseMaterialStockInput[]
+    deleteMany?: MaterialStockMovementScalarWhereInput | MaterialStockMovementScalarWhereInput[]
   }
 
   export type MaintenanceRequestCreateNestedOneWithoutMaterialRequestsInput = {
@@ -23499,6 +33644,10 @@ export namespace Prisma {
     connectOrCreate?: MaterialRequestItemCreateOrConnectWithoutMaterialRequestInput | MaterialRequestItemCreateOrConnectWithoutMaterialRequestInput[]
     createMany?: MaterialRequestItemCreateManyMaterialRequestInputEnvelope
     connect?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+  }
+
+  export type EnumMaterialRequestTypeFieldUpdateOperationsInput = {
+    set?: $Enums.MaterialRequestType
   }
 
   export type EnumMaterialRequestStatusFieldUpdateOperationsInput = {
@@ -23565,26 +33714,46 @@ export namespace Prisma {
     connect?: MaterialRequestWhereUniqueInput
   }
 
-  export type MaterialCreateNestedOneWithoutMaterialRequestItemsInput = {
-    create?: XOR<MaterialCreateWithoutMaterialRequestItemsInput, MaterialUncheckedCreateWithoutMaterialRequestItemsInput>
-    connectOrCreate?: MaterialCreateOrConnectWithoutMaterialRequestItemsInput
+  export type MaterialCreateNestedOneWithoutStandardMaterialRequestItemsInput = {
+    create?: XOR<MaterialCreateWithoutStandardMaterialRequestItemsInput, MaterialUncheckedCreateWithoutStandardMaterialRequestItemsInput>
+    connectOrCreate?: MaterialCreateOrConnectWithoutStandardMaterialRequestItemsInput
     connect?: MaterialWhereUniqueInput
   }
 
-  export type DecimalFieldUpdateOperationsInput = {
-    set?: Decimal | DecimalJsLike | number | string
-    increment?: Decimal | DecimalJsLike | number | string
-    decrement?: Decimal | DecimalJsLike | number | string
-    multiply?: Decimal | DecimalJsLike | number | string
-    divide?: Decimal | DecimalJsLike | number | string
+  export type MaterialInstanceConditionCreateNestedOneWithoutRequestedInItemsInput = {
+    create?: XOR<MaterialInstanceConditionCreateWithoutRequestedInItemsInput, MaterialInstanceConditionUncheckedCreateWithoutRequestedInItemsInput>
+    connectOrCreate?: MaterialInstanceConditionCreateOrConnectWithoutRequestedInItemsInput
+    connect?: MaterialInstanceConditionWhereUniqueInput
   }
 
-  export type NullableDecimalFieldUpdateOperationsInput = {
-    set?: Decimal | DecimalJsLike | number | string | null
-    increment?: Decimal | DecimalJsLike | number | string
-    decrement?: Decimal | DecimalJsLike | number | string
-    multiply?: Decimal | DecimalJsLike | number | string
-    divide?: Decimal | DecimalJsLike | number | string
+  export type MaterialInstanceCreateNestedOneWithoutFulfilledRequestItemsInput = {
+    create?: XOR<MaterialInstanceCreateWithoutFulfilledRequestItemsInput, MaterialInstanceUncheckedCreateWithoutFulfilledRequestItemsInput>
+    connectOrCreate?: MaterialInstanceCreateOrConnectWithoutFulfilledRequestItemsInput
+    connect?: MaterialInstanceWhereUniqueInput
+  }
+
+  export type MaterialStockMovementCreateNestedManyWithoutMaterialRequestItemInput = {
+    create?: XOR<MaterialStockMovementCreateWithoutMaterialRequestItemInput, MaterialStockMovementUncheckedCreateWithoutMaterialRequestItemInput> | MaterialStockMovementCreateWithoutMaterialRequestItemInput[] | MaterialStockMovementUncheckedCreateWithoutMaterialRequestItemInput[]
+    connectOrCreate?: MaterialStockMovementCreateOrConnectWithoutMaterialRequestItemInput | MaterialStockMovementCreateOrConnectWithoutMaterialRequestItemInput[]
+    createMany?: MaterialStockMovementCreateManyMaterialRequestItemInputEnvelope
+    connect?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+  }
+
+  export type MaterialInstanceConditionCreateNestedOneWithoutMaterialRequestItemInput = {
+    create?: XOR<MaterialInstanceConditionCreateWithoutMaterialRequestItemInput, MaterialInstanceConditionUncheckedCreateWithoutMaterialRequestItemInput>
+    connectOrCreate?: MaterialInstanceConditionCreateOrConnectWithoutMaterialRequestItemInput
+    connect?: MaterialInstanceConditionWhereUniqueInput
+  }
+
+  export type MaterialStockMovementUncheckedCreateNestedManyWithoutMaterialRequestItemInput = {
+    create?: XOR<MaterialStockMovementCreateWithoutMaterialRequestItemInput, MaterialStockMovementUncheckedCreateWithoutMaterialRequestItemInput> | MaterialStockMovementCreateWithoutMaterialRequestItemInput[] | MaterialStockMovementUncheckedCreateWithoutMaterialRequestItemInput[]
+    connectOrCreate?: MaterialStockMovementCreateOrConnectWithoutMaterialRequestItemInput | MaterialStockMovementCreateOrConnectWithoutMaterialRequestItemInput[]
+    createMany?: MaterialStockMovementCreateManyMaterialRequestItemInputEnvelope
+    connect?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+  }
+
+  export type EnumMaterialRequestItemTypeFieldUpdateOperationsInput = {
+    set?: $Enums.MaterialRequestItemType
   }
 
   export type MaterialRequestUpdateOneRequiredWithoutItemsNestedInput = {
@@ -23595,12 +33764,464 @@ export namespace Prisma {
     update?: XOR<XOR<MaterialRequestUpdateToOneWithWhereWithoutItemsInput, MaterialRequestUpdateWithoutItemsInput>, MaterialRequestUncheckedUpdateWithoutItemsInput>
   }
 
-  export type MaterialUpdateOneRequiredWithoutMaterialRequestItemsNestedInput = {
-    create?: XOR<MaterialCreateWithoutMaterialRequestItemsInput, MaterialUncheckedCreateWithoutMaterialRequestItemsInput>
-    connectOrCreate?: MaterialCreateOrConnectWithoutMaterialRequestItemsInput
-    upsert?: MaterialUpsertWithoutMaterialRequestItemsInput
+  export type MaterialUpdateOneWithoutStandardMaterialRequestItemsNestedInput = {
+    create?: XOR<MaterialCreateWithoutStandardMaterialRequestItemsInput, MaterialUncheckedCreateWithoutStandardMaterialRequestItemsInput>
+    connectOrCreate?: MaterialCreateOrConnectWithoutStandardMaterialRequestItemsInput
+    upsert?: MaterialUpsertWithoutStandardMaterialRequestItemsInput
+    disconnect?: MaterialWhereInput | boolean
+    delete?: MaterialWhereInput | boolean
     connect?: MaterialWhereUniqueInput
-    update?: XOR<XOR<MaterialUpdateToOneWithWhereWithoutMaterialRequestItemsInput, MaterialUpdateWithoutMaterialRequestItemsInput>, MaterialUncheckedUpdateWithoutMaterialRequestItemsInput>
+    update?: XOR<XOR<MaterialUpdateToOneWithWhereWithoutStandardMaterialRequestItemsInput, MaterialUpdateWithoutStandardMaterialRequestItemsInput>, MaterialUncheckedUpdateWithoutStandardMaterialRequestItemsInput>
+  }
+
+  export type MaterialInstanceConditionUpdateOneWithoutRequestedInItemsNestedInput = {
+    create?: XOR<MaterialInstanceConditionCreateWithoutRequestedInItemsInput, MaterialInstanceConditionUncheckedCreateWithoutRequestedInItemsInput>
+    connectOrCreate?: MaterialInstanceConditionCreateOrConnectWithoutRequestedInItemsInput
+    upsert?: MaterialInstanceConditionUpsertWithoutRequestedInItemsInput
+    disconnect?: MaterialInstanceConditionWhereInput | boolean
+    delete?: MaterialInstanceConditionWhereInput | boolean
+    connect?: MaterialInstanceConditionWhereUniqueInput
+    update?: XOR<XOR<MaterialInstanceConditionUpdateToOneWithWhereWithoutRequestedInItemsInput, MaterialInstanceConditionUpdateWithoutRequestedInItemsInput>, MaterialInstanceConditionUncheckedUpdateWithoutRequestedInItemsInput>
+  }
+
+  export type MaterialInstanceUpdateOneWithoutFulfilledRequestItemsNestedInput = {
+    create?: XOR<MaterialInstanceCreateWithoutFulfilledRequestItemsInput, MaterialInstanceUncheckedCreateWithoutFulfilledRequestItemsInput>
+    connectOrCreate?: MaterialInstanceCreateOrConnectWithoutFulfilledRequestItemsInput
+    upsert?: MaterialInstanceUpsertWithoutFulfilledRequestItemsInput
+    disconnect?: MaterialInstanceWhereInput | boolean
+    delete?: MaterialInstanceWhereInput | boolean
+    connect?: MaterialInstanceWhereUniqueInput
+    update?: XOR<XOR<MaterialInstanceUpdateToOneWithWhereWithoutFulfilledRequestItemsInput, MaterialInstanceUpdateWithoutFulfilledRequestItemsInput>, MaterialInstanceUncheckedUpdateWithoutFulfilledRequestItemsInput>
+  }
+
+  export type MaterialStockMovementUpdateManyWithoutMaterialRequestItemNestedInput = {
+    create?: XOR<MaterialStockMovementCreateWithoutMaterialRequestItemInput, MaterialStockMovementUncheckedCreateWithoutMaterialRequestItemInput> | MaterialStockMovementCreateWithoutMaterialRequestItemInput[] | MaterialStockMovementUncheckedCreateWithoutMaterialRequestItemInput[]
+    connectOrCreate?: MaterialStockMovementCreateOrConnectWithoutMaterialRequestItemInput | MaterialStockMovementCreateOrConnectWithoutMaterialRequestItemInput[]
+    upsert?: MaterialStockMovementUpsertWithWhereUniqueWithoutMaterialRequestItemInput | MaterialStockMovementUpsertWithWhereUniqueWithoutMaterialRequestItemInput[]
+    createMany?: MaterialStockMovementCreateManyMaterialRequestItemInputEnvelope
+    set?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+    disconnect?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+    delete?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+    connect?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+    update?: MaterialStockMovementUpdateWithWhereUniqueWithoutMaterialRequestItemInput | MaterialStockMovementUpdateWithWhereUniqueWithoutMaterialRequestItemInput[]
+    updateMany?: MaterialStockMovementUpdateManyWithWhereWithoutMaterialRequestItemInput | MaterialStockMovementUpdateManyWithWhereWithoutMaterialRequestItemInput[]
+    deleteMany?: MaterialStockMovementScalarWhereInput | MaterialStockMovementScalarWhereInput[]
+  }
+
+  export type MaterialInstanceConditionUpdateOneWithoutMaterialRequestItemNestedInput = {
+    create?: XOR<MaterialInstanceConditionCreateWithoutMaterialRequestItemInput, MaterialInstanceConditionUncheckedCreateWithoutMaterialRequestItemInput>
+    connectOrCreate?: MaterialInstanceConditionCreateOrConnectWithoutMaterialRequestItemInput
+    upsert?: MaterialInstanceConditionUpsertWithoutMaterialRequestItemInput
+    disconnect?: MaterialInstanceConditionWhereInput | boolean
+    delete?: MaterialInstanceConditionWhereInput | boolean
+    connect?: MaterialInstanceConditionWhereUniqueInput
+    update?: XOR<XOR<MaterialInstanceConditionUpdateToOneWithWhereWithoutMaterialRequestItemInput, MaterialInstanceConditionUpdateWithoutMaterialRequestItemInput>, MaterialInstanceConditionUncheckedUpdateWithoutMaterialRequestItemInput>
+  }
+
+  export type MaterialStockMovementUncheckedUpdateManyWithoutMaterialRequestItemNestedInput = {
+    create?: XOR<MaterialStockMovementCreateWithoutMaterialRequestItemInput, MaterialStockMovementUncheckedCreateWithoutMaterialRequestItemInput> | MaterialStockMovementCreateWithoutMaterialRequestItemInput[] | MaterialStockMovementUncheckedCreateWithoutMaterialRequestItemInput[]
+    connectOrCreate?: MaterialStockMovementCreateOrConnectWithoutMaterialRequestItemInput | MaterialStockMovementCreateOrConnectWithoutMaterialRequestItemInput[]
+    upsert?: MaterialStockMovementUpsertWithWhereUniqueWithoutMaterialRequestItemInput | MaterialStockMovementUpsertWithWhereUniqueWithoutMaterialRequestItemInput[]
+    createMany?: MaterialStockMovementCreateManyMaterialRequestItemInputEnvelope
+    set?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+    disconnect?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+    delete?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+    connect?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+    update?: MaterialStockMovementUpdateWithWhereUniqueWithoutMaterialRequestItemInput | MaterialStockMovementUpdateWithWhereUniqueWithoutMaterialRequestItemInput[]
+    updateMany?: MaterialStockMovementUpdateManyWithWhereWithoutMaterialRequestItemInput | MaterialStockMovementUpdateManyWithWhereWithoutMaterialRequestItemInput[]
+    deleteMany?: MaterialStockMovementScalarWhereInput | MaterialStockMovementScalarWhereInput[]
+  }
+
+  export type MaterialStockMovementCreateNestedManyWithoutMovementTypeInput = {
+    create?: XOR<MaterialStockMovementCreateWithoutMovementTypeInput, MaterialStockMovementUncheckedCreateWithoutMovementTypeInput> | MaterialStockMovementCreateWithoutMovementTypeInput[] | MaterialStockMovementUncheckedCreateWithoutMovementTypeInput[]
+    connectOrCreate?: MaterialStockMovementCreateOrConnectWithoutMovementTypeInput | MaterialStockMovementCreateOrConnectWithoutMovementTypeInput[]
+    createMany?: MaterialStockMovementCreateManyMovementTypeInputEnvelope
+    connect?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+  }
+
+  export type MaterialStockMovementUncheckedCreateNestedManyWithoutMovementTypeInput = {
+    create?: XOR<MaterialStockMovementCreateWithoutMovementTypeInput, MaterialStockMovementUncheckedCreateWithoutMovementTypeInput> | MaterialStockMovementCreateWithoutMovementTypeInput[] | MaterialStockMovementUncheckedCreateWithoutMovementTypeInput[]
+    connectOrCreate?: MaterialStockMovementCreateOrConnectWithoutMovementTypeInput | MaterialStockMovementCreateOrConnectWithoutMovementTypeInput[]
+    createMany?: MaterialStockMovementCreateManyMovementTypeInputEnvelope
+    connect?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+  }
+
+  export type EnumStockOperationTypeFieldUpdateOperationsInput = {
+    set?: $Enums.StockOperationType
+  }
+
+  export type MaterialStockMovementUpdateManyWithoutMovementTypeNestedInput = {
+    create?: XOR<MaterialStockMovementCreateWithoutMovementTypeInput, MaterialStockMovementUncheckedCreateWithoutMovementTypeInput> | MaterialStockMovementCreateWithoutMovementTypeInput[] | MaterialStockMovementUncheckedCreateWithoutMovementTypeInput[]
+    connectOrCreate?: MaterialStockMovementCreateOrConnectWithoutMovementTypeInput | MaterialStockMovementCreateOrConnectWithoutMovementTypeInput[]
+    upsert?: MaterialStockMovementUpsertWithWhereUniqueWithoutMovementTypeInput | MaterialStockMovementUpsertWithWhereUniqueWithoutMovementTypeInput[]
+    createMany?: MaterialStockMovementCreateManyMovementTypeInputEnvelope
+    set?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+    disconnect?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+    delete?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+    connect?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+    update?: MaterialStockMovementUpdateWithWhereUniqueWithoutMovementTypeInput | MaterialStockMovementUpdateWithWhereUniqueWithoutMovementTypeInput[]
+    updateMany?: MaterialStockMovementUpdateManyWithWhereWithoutMovementTypeInput | MaterialStockMovementUpdateManyWithWhereWithoutMovementTypeInput[]
+    deleteMany?: MaterialStockMovementScalarWhereInput | MaterialStockMovementScalarWhereInput[]
+  }
+
+  export type MaterialStockMovementUncheckedUpdateManyWithoutMovementTypeNestedInput = {
+    create?: XOR<MaterialStockMovementCreateWithoutMovementTypeInput, MaterialStockMovementUncheckedCreateWithoutMovementTypeInput> | MaterialStockMovementCreateWithoutMovementTypeInput[] | MaterialStockMovementUncheckedCreateWithoutMovementTypeInput[]
+    connectOrCreate?: MaterialStockMovementCreateOrConnectWithoutMovementTypeInput | MaterialStockMovementCreateOrConnectWithoutMovementTypeInput[]
+    upsert?: MaterialStockMovementUpsertWithWhereUniqueWithoutMovementTypeInput | MaterialStockMovementUpsertWithWhereUniqueWithoutMovementTypeInput[]
+    createMany?: MaterialStockMovementCreateManyMovementTypeInputEnvelope
+    set?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+    disconnect?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+    delete?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+    connect?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+    update?: MaterialStockMovementUpdateWithWhereUniqueWithoutMovementTypeInput | MaterialStockMovementUpdateWithWhereUniqueWithoutMovementTypeInput[]
+    updateMany?: MaterialStockMovementUpdateManyWithWhereWithoutMovementTypeInput | MaterialStockMovementUpdateManyWithWhereWithoutMovementTypeInput[]
+    deleteMany?: MaterialStockMovementScalarWhereInput | MaterialStockMovementScalarWhereInput[]
+  }
+
+  export type WarehouseCreateNestedOneWithoutStockMovementsInput = {
+    create?: XOR<WarehouseCreateWithoutStockMovementsInput, WarehouseUncheckedCreateWithoutStockMovementsInput>
+    connectOrCreate?: WarehouseCreateOrConnectWithoutStockMovementsInput
+    connect?: WarehouseWhereUniqueInput
+  }
+
+  export type MaterialCreateNestedOneWithoutStockMovementsInput = {
+    create?: XOR<MaterialCreateWithoutStockMovementsInput, MaterialUncheckedCreateWithoutStockMovementsInput>
+    connectOrCreate?: MaterialCreateOrConnectWithoutStockMovementsInput
+    connect?: MaterialWhereUniqueInput
+  }
+
+  export type MaterialInstanceCreateNestedOneWithoutStockMovementsInput = {
+    create?: XOR<MaterialInstanceCreateWithoutStockMovementsInput, MaterialInstanceUncheckedCreateWithoutStockMovementsInput>
+    connectOrCreate?: MaterialInstanceCreateOrConnectWithoutStockMovementsInput
+    connect?: MaterialInstanceWhereUniqueInput
+  }
+
+  export type StockMovementTypeCreateNestedOneWithoutStockMovementsInput = {
+    create?: XOR<StockMovementTypeCreateWithoutStockMovementsInput, StockMovementTypeUncheckedCreateWithoutStockMovementsInput>
+    connectOrCreate?: StockMovementTypeCreateOrConnectWithoutStockMovementsInput
+    connect?: StockMovementTypeWhereUniqueInput
+  }
+
+  export type WarehouseMaterialStockCreateNestedOneWithoutStockMovementsInput = {
+    create?: XOR<WarehouseMaterialStockCreateWithoutStockMovementsInput, WarehouseMaterialStockUncheckedCreateWithoutStockMovementsInput>
+    connectOrCreate?: WarehouseMaterialStockCreateOrConnectWithoutStockMovementsInput
+    connect?: WarehouseMaterialStockWhereUniqueInput
+  }
+
+  export type MaterialRequestItemCreateNestedOneWithoutStockMovementsInput = {
+    create?: XOR<MaterialRequestItemCreateWithoutStockMovementsInput, MaterialRequestItemUncheckedCreateWithoutStockMovementsInput>
+    connectOrCreate?: MaterialRequestItemCreateOrConnectWithoutStockMovementsInput
+    connect?: MaterialRequestItemWhereUniqueInput
+  }
+
+  export type WarehouseUpdateOneRequiredWithoutStockMovementsNestedInput = {
+    create?: XOR<WarehouseCreateWithoutStockMovementsInput, WarehouseUncheckedCreateWithoutStockMovementsInput>
+    connectOrCreate?: WarehouseCreateOrConnectWithoutStockMovementsInput
+    upsert?: WarehouseUpsertWithoutStockMovementsInput
+    connect?: WarehouseWhereUniqueInput
+    update?: XOR<XOR<WarehouseUpdateToOneWithWhereWithoutStockMovementsInput, WarehouseUpdateWithoutStockMovementsInput>, WarehouseUncheckedUpdateWithoutStockMovementsInput>
+  }
+
+  export type MaterialUpdateOneWithoutStockMovementsNestedInput = {
+    create?: XOR<MaterialCreateWithoutStockMovementsInput, MaterialUncheckedCreateWithoutStockMovementsInput>
+    connectOrCreate?: MaterialCreateOrConnectWithoutStockMovementsInput
+    upsert?: MaterialUpsertWithoutStockMovementsInput
+    disconnect?: MaterialWhereInput | boolean
+    delete?: MaterialWhereInput | boolean
+    connect?: MaterialWhereUniqueInput
+    update?: XOR<XOR<MaterialUpdateToOneWithWhereWithoutStockMovementsInput, MaterialUpdateWithoutStockMovementsInput>, MaterialUncheckedUpdateWithoutStockMovementsInput>
+  }
+
+  export type MaterialInstanceUpdateOneWithoutStockMovementsNestedInput = {
+    create?: XOR<MaterialInstanceCreateWithoutStockMovementsInput, MaterialInstanceUncheckedCreateWithoutStockMovementsInput>
+    connectOrCreate?: MaterialInstanceCreateOrConnectWithoutStockMovementsInput
+    upsert?: MaterialInstanceUpsertWithoutStockMovementsInput
+    disconnect?: MaterialInstanceWhereInput | boolean
+    delete?: MaterialInstanceWhereInput | boolean
+    connect?: MaterialInstanceWhereUniqueInput
+    update?: XOR<XOR<MaterialInstanceUpdateToOneWithWhereWithoutStockMovementsInput, MaterialInstanceUpdateWithoutStockMovementsInput>, MaterialInstanceUncheckedUpdateWithoutStockMovementsInput>
+  }
+
+  export type StockMovementTypeUpdateOneRequiredWithoutStockMovementsNestedInput = {
+    create?: XOR<StockMovementTypeCreateWithoutStockMovementsInput, StockMovementTypeUncheckedCreateWithoutStockMovementsInput>
+    connectOrCreate?: StockMovementTypeCreateOrConnectWithoutStockMovementsInput
+    upsert?: StockMovementTypeUpsertWithoutStockMovementsInput
+    connect?: StockMovementTypeWhereUniqueInput
+    update?: XOR<XOR<StockMovementTypeUpdateToOneWithWhereWithoutStockMovementsInput, StockMovementTypeUpdateWithoutStockMovementsInput>, StockMovementTypeUncheckedUpdateWithoutStockMovementsInput>
+  }
+
+  export type WarehouseMaterialStockUpdateOneWithoutStockMovementsNestedInput = {
+    create?: XOR<WarehouseMaterialStockCreateWithoutStockMovementsInput, WarehouseMaterialStockUncheckedCreateWithoutStockMovementsInput>
+    connectOrCreate?: WarehouseMaterialStockCreateOrConnectWithoutStockMovementsInput
+    upsert?: WarehouseMaterialStockUpsertWithoutStockMovementsInput
+    disconnect?: WarehouseMaterialStockWhereInput | boolean
+    delete?: WarehouseMaterialStockWhereInput | boolean
+    connect?: WarehouseMaterialStockWhereUniqueInput
+    update?: XOR<XOR<WarehouseMaterialStockUpdateToOneWithWhereWithoutStockMovementsInput, WarehouseMaterialStockUpdateWithoutStockMovementsInput>, WarehouseMaterialStockUncheckedUpdateWithoutStockMovementsInput>
+  }
+
+  export type MaterialRequestItemUpdateOneWithoutStockMovementsNestedInput = {
+    create?: XOR<MaterialRequestItemCreateWithoutStockMovementsInput, MaterialRequestItemUncheckedCreateWithoutStockMovementsInput>
+    connectOrCreate?: MaterialRequestItemCreateOrConnectWithoutStockMovementsInput
+    upsert?: MaterialRequestItemUpsertWithoutStockMovementsInput
+    disconnect?: MaterialRequestItemWhereInput | boolean
+    delete?: MaterialRequestItemWhereInput | boolean
+    connect?: MaterialRequestItemWhereUniqueInput
+    update?: XOR<XOR<MaterialRequestItemUpdateToOneWithWhereWithoutStockMovementsInput, MaterialRequestItemUpdateWithoutStockMovementsInput>, MaterialRequestItemUncheckedUpdateWithoutStockMovementsInput>
+  }
+
+  export type MaterialInstanceCreateNestedManyWithoutConditionInput = {
+    create?: XOR<MaterialInstanceCreateWithoutConditionInput, MaterialInstanceUncheckedCreateWithoutConditionInput> | MaterialInstanceCreateWithoutConditionInput[] | MaterialInstanceUncheckedCreateWithoutConditionInput[]
+    connectOrCreate?: MaterialInstanceCreateOrConnectWithoutConditionInput | MaterialInstanceCreateOrConnectWithoutConditionInput[]
+    createMany?: MaterialInstanceCreateManyConditionInputEnvelope
+    connect?: MaterialInstanceWhereUniqueInput | MaterialInstanceWhereUniqueInput[]
+  }
+
+  export type MaterialRequestItemCreateNestedManyWithoutRequestedDerivedConditionInput = {
+    create?: XOR<MaterialRequestItemCreateWithoutRequestedDerivedConditionInput, MaterialRequestItemUncheckedCreateWithoutRequestedDerivedConditionInput> | MaterialRequestItemCreateWithoutRequestedDerivedConditionInput[] | MaterialRequestItemUncheckedCreateWithoutRequestedDerivedConditionInput[]
+    connectOrCreate?: MaterialRequestItemCreateOrConnectWithoutRequestedDerivedConditionInput | MaterialRequestItemCreateOrConnectWithoutRequestedDerivedConditionInput[]
+    createMany?: MaterialRequestItemCreateManyRequestedDerivedConditionInputEnvelope
+    connect?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+  }
+
+  export type MaterialRequestItemCreateNestedManyWithoutMaterialInstanceConditionInput = {
+    create?: XOR<MaterialRequestItemCreateWithoutMaterialInstanceConditionInput, MaterialRequestItemUncheckedCreateWithoutMaterialInstanceConditionInput> | MaterialRequestItemCreateWithoutMaterialInstanceConditionInput[] | MaterialRequestItemUncheckedCreateWithoutMaterialInstanceConditionInput[]
+    connectOrCreate?: MaterialRequestItemCreateOrConnectWithoutMaterialInstanceConditionInput | MaterialRequestItemCreateOrConnectWithoutMaterialInstanceConditionInput[]
+    createMany?: MaterialRequestItemCreateManyMaterialInstanceConditionInputEnvelope
+    connect?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+  }
+
+  export type MaterialInstanceUncheckedCreateNestedManyWithoutConditionInput = {
+    create?: XOR<MaterialInstanceCreateWithoutConditionInput, MaterialInstanceUncheckedCreateWithoutConditionInput> | MaterialInstanceCreateWithoutConditionInput[] | MaterialInstanceUncheckedCreateWithoutConditionInput[]
+    connectOrCreate?: MaterialInstanceCreateOrConnectWithoutConditionInput | MaterialInstanceCreateOrConnectWithoutConditionInput[]
+    createMany?: MaterialInstanceCreateManyConditionInputEnvelope
+    connect?: MaterialInstanceWhereUniqueInput | MaterialInstanceWhereUniqueInput[]
+  }
+
+  export type MaterialRequestItemUncheckedCreateNestedManyWithoutRequestedDerivedConditionInput = {
+    create?: XOR<MaterialRequestItemCreateWithoutRequestedDerivedConditionInput, MaterialRequestItemUncheckedCreateWithoutRequestedDerivedConditionInput> | MaterialRequestItemCreateWithoutRequestedDerivedConditionInput[] | MaterialRequestItemUncheckedCreateWithoutRequestedDerivedConditionInput[]
+    connectOrCreate?: MaterialRequestItemCreateOrConnectWithoutRequestedDerivedConditionInput | MaterialRequestItemCreateOrConnectWithoutRequestedDerivedConditionInput[]
+    createMany?: MaterialRequestItemCreateManyRequestedDerivedConditionInputEnvelope
+    connect?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+  }
+
+  export type MaterialRequestItemUncheckedCreateNestedManyWithoutMaterialInstanceConditionInput = {
+    create?: XOR<MaterialRequestItemCreateWithoutMaterialInstanceConditionInput, MaterialRequestItemUncheckedCreateWithoutMaterialInstanceConditionInput> | MaterialRequestItemCreateWithoutMaterialInstanceConditionInput[] | MaterialRequestItemUncheckedCreateWithoutMaterialInstanceConditionInput[]
+    connectOrCreate?: MaterialRequestItemCreateOrConnectWithoutMaterialInstanceConditionInput | MaterialRequestItemCreateOrConnectWithoutMaterialInstanceConditionInput[]
+    createMany?: MaterialRequestItemCreateManyMaterialInstanceConditionInputEnvelope
+    connect?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+  }
+
+  export type MaterialInstanceUpdateManyWithoutConditionNestedInput = {
+    create?: XOR<MaterialInstanceCreateWithoutConditionInput, MaterialInstanceUncheckedCreateWithoutConditionInput> | MaterialInstanceCreateWithoutConditionInput[] | MaterialInstanceUncheckedCreateWithoutConditionInput[]
+    connectOrCreate?: MaterialInstanceCreateOrConnectWithoutConditionInput | MaterialInstanceCreateOrConnectWithoutConditionInput[]
+    upsert?: MaterialInstanceUpsertWithWhereUniqueWithoutConditionInput | MaterialInstanceUpsertWithWhereUniqueWithoutConditionInput[]
+    createMany?: MaterialInstanceCreateManyConditionInputEnvelope
+    set?: MaterialInstanceWhereUniqueInput | MaterialInstanceWhereUniqueInput[]
+    disconnect?: MaterialInstanceWhereUniqueInput | MaterialInstanceWhereUniqueInput[]
+    delete?: MaterialInstanceWhereUniqueInput | MaterialInstanceWhereUniqueInput[]
+    connect?: MaterialInstanceWhereUniqueInput | MaterialInstanceWhereUniqueInput[]
+    update?: MaterialInstanceUpdateWithWhereUniqueWithoutConditionInput | MaterialInstanceUpdateWithWhereUniqueWithoutConditionInput[]
+    updateMany?: MaterialInstanceUpdateManyWithWhereWithoutConditionInput | MaterialInstanceUpdateManyWithWhereWithoutConditionInput[]
+    deleteMany?: MaterialInstanceScalarWhereInput | MaterialInstanceScalarWhereInput[]
+  }
+
+  export type MaterialRequestItemUpdateManyWithoutRequestedDerivedConditionNestedInput = {
+    create?: XOR<MaterialRequestItemCreateWithoutRequestedDerivedConditionInput, MaterialRequestItemUncheckedCreateWithoutRequestedDerivedConditionInput> | MaterialRequestItemCreateWithoutRequestedDerivedConditionInput[] | MaterialRequestItemUncheckedCreateWithoutRequestedDerivedConditionInput[]
+    connectOrCreate?: MaterialRequestItemCreateOrConnectWithoutRequestedDerivedConditionInput | MaterialRequestItemCreateOrConnectWithoutRequestedDerivedConditionInput[]
+    upsert?: MaterialRequestItemUpsertWithWhereUniqueWithoutRequestedDerivedConditionInput | MaterialRequestItemUpsertWithWhereUniqueWithoutRequestedDerivedConditionInput[]
+    createMany?: MaterialRequestItemCreateManyRequestedDerivedConditionInputEnvelope
+    set?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+    disconnect?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+    delete?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+    connect?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+    update?: MaterialRequestItemUpdateWithWhereUniqueWithoutRequestedDerivedConditionInput | MaterialRequestItemUpdateWithWhereUniqueWithoutRequestedDerivedConditionInput[]
+    updateMany?: MaterialRequestItemUpdateManyWithWhereWithoutRequestedDerivedConditionInput | MaterialRequestItemUpdateManyWithWhereWithoutRequestedDerivedConditionInput[]
+    deleteMany?: MaterialRequestItemScalarWhereInput | MaterialRequestItemScalarWhereInput[]
+  }
+
+  export type MaterialRequestItemUpdateManyWithoutMaterialInstanceConditionNestedInput = {
+    create?: XOR<MaterialRequestItemCreateWithoutMaterialInstanceConditionInput, MaterialRequestItemUncheckedCreateWithoutMaterialInstanceConditionInput> | MaterialRequestItemCreateWithoutMaterialInstanceConditionInput[] | MaterialRequestItemUncheckedCreateWithoutMaterialInstanceConditionInput[]
+    connectOrCreate?: MaterialRequestItemCreateOrConnectWithoutMaterialInstanceConditionInput | MaterialRequestItemCreateOrConnectWithoutMaterialInstanceConditionInput[]
+    upsert?: MaterialRequestItemUpsertWithWhereUniqueWithoutMaterialInstanceConditionInput | MaterialRequestItemUpsertWithWhereUniqueWithoutMaterialInstanceConditionInput[]
+    createMany?: MaterialRequestItemCreateManyMaterialInstanceConditionInputEnvelope
+    set?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+    disconnect?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+    delete?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+    connect?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+    update?: MaterialRequestItemUpdateWithWhereUniqueWithoutMaterialInstanceConditionInput | MaterialRequestItemUpdateWithWhereUniqueWithoutMaterialInstanceConditionInput[]
+    updateMany?: MaterialRequestItemUpdateManyWithWhereWithoutMaterialInstanceConditionInput | MaterialRequestItemUpdateManyWithWhereWithoutMaterialInstanceConditionInput[]
+    deleteMany?: MaterialRequestItemScalarWhereInput | MaterialRequestItemScalarWhereInput[]
+  }
+
+  export type MaterialInstanceUncheckedUpdateManyWithoutConditionNestedInput = {
+    create?: XOR<MaterialInstanceCreateWithoutConditionInput, MaterialInstanceUncheckedCreateWithoutConditionInput> | MaterialInstanceCreateWithoutConditionInput[] | MaterialInstanceUncheckedCreateWithoutConditionInput[]
+    connectOrCreate?: MaterialInstanceCreateOrConnectWithoutConditionInput | MaterialInstanceCreateOrConnectWithoutConditionInput[]
+    upsert?: MaterialInstanceUpsertWithWhereUniqueWithoutConditionInput | MaterialInstanceUpsertWithWhereUniqueWithoutConditionInput[]
+    createMany?: MaterialInstanceCreateManyConditionInputEnvelope
+    set?: MaterialInstanceWhereUniqueInput | MaterialInstanceWhereUniqueInput[]
+    disconnect?: MaterialInstanceWhereUniqueInput | MaterialInstanceWhereUniqueInput[]
+    delete?: MaterialInstanceWhereUniqueInput | MaterialInstanceWhereUniqueInput[]
+    connect?: MaterialInstanceWhereUniqueInput | MaterialInstanceWhereUniqueInput[]
+    update?: MaterialInstanceUpdateWithWhereUniqueWithoutConditionInput | MaterialInstanceUpdateWithWhereUniqueWithoutConditionInput[]
+    updateMany?: MaterialInstanceUpdateManyWithWhereWithoutConditionInput | MaterialInstanceUpdateManyWithWhereWithoutConditionInput[]
+    deleteMany?: MaterialInstanceScalarWhereInput | MaterialInstanceScalarWhereInput[]
+  }
+
+  export type MaterialRequestItemUncheckedUpdateManyWithoutRequestedDerivedConditionNestedInput = {
+    create?: XOR<MaterialRequestItemCreateWithoutRequestedDerivedConditionInput, MaterialRequestItemUncheckedCreateWithoutRequestedDerivedConditionInput> | MaterialRequestItemCreateWithoutRequestedDerivedConditionInput[] | MaterialRequestItemUncheckedCreateWithoutRequestedDerivedConditionInput[]
+    connectOrCreate?: MaterialRequestItemCreateOrConnectWithoutRequestedDerivedConditionInput | MaterialRequestItemCreateOrConnectWithoutRequestedDerivedConditionInput[]
+    upsert?: MaterialRequestItemUpsertWithWhereUniqueWithoutRequestedDerivedConditionInput | MaterialRequestItemUpsertWithWhereUniqueWithoutRequestedDerivedConditionInput[]
+    createMany?: MaterialRequestItemCreateManyRequestedDerivedConditionInputEnvelope
+    set?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+    disconnect?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+    delete?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+    connect?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+    update?: MaterialRequestItemUpdateWithWhereUniqueWithoutRequestedDerivedConditionInput | MaterialRequestItemUpdateWithWhereUniqueWithoutRequestedDerivedConditionInput[]
+    updateMany?: MaterialRequestItemUpdateManyWithWhereWithoutRequestedDerivedConditionInput | MaterialRequestItemUpdateManyWithWhereWithoutRequestedDerivedConditionInput[]
+    deleteMany?: MaterialRequestItemScalarWhereInput | MaterialRequestItemScalarWhereInput[]
+  }
+
+  export type MaterialRequestItemUncheckedUpdateManyWithoutMaterialInstanceConditionNestedInput = {
+    create?: XOR<MaterialRequestItemCreateWithoutMaterialInstanceConditionInput, MaterialRequestItemUncheckedCreateWithoutMaterialInstanceConditionInput> | MaterialRequestItemCreateWithoutMaterialInstanceConditionInput[] | MaterialRequestItemUncheckedCreateWithoutMaterialInstanceConditionInput[]
+    connectOrCreate?: MaterialRequestItemCreateOrConnectWithoutMaterialInstanceConditionInput | MaterialRequestItemCreateOrConnectWithoutMaterialInstanceConditionInput[]
+    upsert?: MaterialRequestItemUpsertWithWhereUniqueWithoutMaterialInstanceConditionInput | MaterialRequestItemUpsertWithWhereUniqueWithoutMaterialInstanceConditionInput[]
+    createMany?: MaterialRequestItemCreateManyMaterialInstanceConditionInputEnvelope
+    set?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+    disconnect?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+    delete?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+    connect?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+    update?: MaterialRequestItemUpdateWithWhereUniqueWithoutMaterialInstanceConditionInput | MaterialRequestItemUpdateWithWhereUniqueWithoutMaterialInstanceConditionInput[]
+    updateMany?: MaterialRequestItemUpdateManyWithWhereWithoutMaterialInstanceConditionInput | MaterialRequestItemUpdateManyWithWhereWithoutMaterialInstanceConditionInput[]
+    deleteMany?: MaterialRequestItemScalarWhereInput | MaterialRequestItemScalarWhereInput[]
+  }
+
+  export type MaterialCreateNestedOneWithoutRelatedMaterialInstancesInput = {
+    create?: XOR<MaterialCreateWithoutRelatedMaterialInstancesInput, MaterialUncheckedCreateWithoutRelatedMaterialInstancesInput>
+    connectOrCreate?: MaterialCreateOrConnectWithoutRelatedMaterialInstancesInput
+    connect?: MaterialWhereUniqueInput
+  }
+
+  export type WarehouseCreateNestedOneWithoutMaterialInstancesInput = {
+    create?: XOR<WarehouseCreateWithoutMaterialInstancesInput, WarehouseUncheckedCreateWithoutMaterialInstancesInput>
+    connectOrCreate?: WarehouseCreateOrConnectWithoutMaterialInstancesInput
+    connect?: WarehouseWhereUniqueInput
+  }
+
+  export type MaterialInstanceConditionCreateNestedOneWithoutMaterialInstancesInput = {
+    create?: XOR<MaterialInstanceConditionCreateWithoutMaterialInstancesInput, MaterialInstanceConditionUncheckedCreateWithoutMaterialInstancesInput>
+    connectOrCreate?: MaterialInstanceConditionCreateOrConnectWithoutMaterialInstancesInput
+    connect?: MaterialInstanceConditionWhereUniqueInput
+  }
+
+  export type MaterialStockMovementCreateNestedManyWithoutMaterialInstanceInput = {
+    create?: XOR<MaterialStockMovementCreateWithoutMaterialInstanceInput, MaterialStockMovementUncheckedCreateWithoutMaterialInstanceInput> | MaterialStockMovementCreateWithoutMaterialInstanceInput[] | MaterialStockMovementUncheckedCreateWithoutMaterialInstanceInput[]
+    connectOrCreate?: MaterialStockMovementCreateOrConnectWithoutMaterialInstanceInput | MaterialStockMovementCreateOrConnectWithoutMaterialInstanceInput[]
+    createMany?: MaterialStockMovementCreateManyMaterialInstanceInputEnvelope
+    connect?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+  }
+
+  export type MaterialRequestItemCreateNestedManyWithoutFulfilledByInstanceInput = {
+    create?: XOR<MaterialRequestItemCreateWithoutFulfilledByInstanceInput, MaterialRequestItemUncheckedCreateWithoutFulfilledByInstanceInput> | MaterialRequestItemCreateWithoutFulfilledByInstanceInput[] | MaterialRequestItemUncheckedCreateWithoutFulfilledByInstanceInput[]
+    connectOrCreate?: MaterialRequestItemCreateOrConnectWithoutFulfilledByInstanceInput | MaterialRequestItemCreateOrConnectWithoutFulfilledByInstanceInput[]
+    createMany?: MaterialRequestItemCreateManyFulfilledByInstanceInputEnvelope
+    connect?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+  }
+
+  export type MaterialStockMovementUncheckedCreateNestedManyWithoutMaterialInstanceInput = {
+    create?: XOR<MaterialStockMovementCreateWithoutMaterialInstanceInput, MaterialStockMovementUncheckedCreateWithoutMaterialInstanceInput> | MaterialStockMovementCreateWithoutMaterialInstanceInput[] | MaterialStockMovementUncheckedCreateWithoutMaterialInstanceInput[]
+    connectOrCreate?: MaterialStockMovementCreateOrConnectWithoutMaterialInstanceInput | MaterialStockMovementCreateOrConnectWithoutMaterialInstanceInput[]
+    createMany?: MaterialStockMovementCreateManyMaterialInstanceInputEnvelope
+    connect?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+  }
+
+  export type MaterialRequestItemUncheckedCreateNestedManyWithoutFulfilledByInstanceInput = {
+    create?: XOR<MaterialRequestItemCreateWithoutFulfilledByInstanceInput, MaterialRequestItemUncheckedCreateWithoutFulfilledByInstanceInput> | MaterialRequestItemCreateWithoutFulfilledByInstanceInput[] | MaterialRequestItemUncheckedCreateWithoutFulfilledByInstanceInput[]
+    connectOrCreate?: MaterialRequestItemCreateOrConnectWithoutFulfilledByInstanceInput | MaterialRequestItemCreateOrConnectWithoutFulfilledByInstanceInput[]
+    createMany?: MaterialRequestItemCreateManyFulfilledByInstanceInputEnvelope
+    connect?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+  }
+
+  export type MaterialUpdateOneWithoutRelatedMaterialInstancesNestedInput = {
+    create?: XOR<MaterialCreateWithoutRelatedMaterialInstancesInput, MaterialUncheckedCreateWithoutRelatedMaterialInstancesInput>
+    connectOrCreate?: MaterialCreateOrConnectWithoutRelatedMaterialInstancesInput
+    upsert?: MaterialUpsertWithoutRelatedMaterialInstancesInput
+    disconnect?: MaterialWhereInput | boolean
+    delete?: MaterialWhereInput | boolean
+    connect?: MaterialWhereUniqueInput
+    update?: XOR<XOR<MaterialUpdateToOneWithWhereWithoutRelatedMaterialInstancesInput, MaterialUpdateWithoutRelatedMaterialInstancesInput>, MaterialUncheckedUpdateWithoutRelatedMaterialInstancesInput>
+  }
+
+  export type WarehouseUpdateOneRequiredWithoutMaterialInstancesNestedInput = {
+    create?: XOR<WarehouseCreateWithoutMaterialInstancesInput, WarehouseUncheckedCreateWithoutMaterialInstancesInput>
+    connectOrCreate?: WarehouseCreateOrConnectWithoutMaterialInstancesInput
+    upsert?: WarehouseUpsertWithoutMaterialInstancesInput
+    connect?: WarehouseWhereUniqueInput
+    update?: XOR<XOR<WarehouseUpdateToOneWithWhereWithoutMaterialInstancesInput, WarehouseUpdateWithoutMaterialInstancesInput>, WarehouseUncheckedUpdateWithoutMaterialInstancesInput>
+  }
+
+  export type MaterialInstanceConditionUpdateOneRequiredWithoutMaterialInstancesNestedInput = {
+    create?: XOR<MaterialInstanceConditionCreateWithoutMaterialInstancesInput, MaterialInstanceConditionUncheckedCreateWithoutMaterialInstancesInput>
+    connectOrCreate?: MaterialInstanceConditionCreateOrConnectWithoutMaterialInstancesInput
+    upsert?: MaterialInstanceConditionUpsertWithoutMaterialInstancesInput
+    connect?: MaterialInstanceConditionWhereUniqueInput
+    update?: XOR<XOR<MaterialInstanceConditionUpdateToOneWithWhereWithoutMaterialInstancesInput, MaterialInstanceConditionUpdateWithoutMaterialInstancesInput>, MaterialInstanceConditionUncheckedUpdateWithoutMaterialInstancesInput>
+  }
+
+  export type MaterialStockMovementUpdateManyWithoutMaterialInstanceNestedInput = {
+    create?: XOR<MaterialStockMovementCreateWithoutMaterialInstanceInput, MaterialStockMovementUncheckedCreateWithoutMaterialInstanceInput> | MaterialStockMovementCreateWithoutMaterialInstanceInput[] | MaterialStockMovementUncheckedCreateWithoutMaterialInstanceInput[]
+    connectOrCreate?: MaterialStockMovementCreateOrConnectWithoutMaterialInstanceInput | MaterialStockMovementCreateOrConnectWithoutMaterialInstanceInput[]
+    upsert?: MaterialStockMovementUpsertWithWhereUniqueWithoutMaterialInstanceInput | MaterialStockMovementUpsertWithWhereUniqueWithoutMaterialInstanceInput[]
+    createMany?: MaterialStockMovementCreateManyMaterialInstanceInputEnvelope
+    set?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+    disconnect?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+    delete?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+    connect?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+    update?: MaterialStockMovementUpdateWithWhereUniqueWithoutMaterialInstanceInput | MaterialStockMovementUpdateWithWhereUniqueWithoutMaterialInstanceInput[]
+    updateMany?: MaterialStockMovementUpdateManyWithWhereWithoutMaterialInstanceInput | MaterialStockMovementUpdateManyWithWhereWithoutMaterialInstanceInput[]
+    deleteMany?: MaterialStockMovementScalarWhereInput | MaterialStockMovementScalarWhereInput[]
+  }
+
+  export type MaterialRequestItemUpdateManyWithoutFulfilledByInstanceNestedInput = {
+    create?: XOR<MaterialRequestItemCreateWithoutFulfilledByInstanceInput, MaterialRequestItemUncheckedCreateWithoutFulfilledByInstanceInput> | MaterialRequestItemCreateWithoutFulfilledByInstanceInput[] | MaterialRequestItemUncheckedCreateWithoutFulfilledByInstanceInput[]
+    connectOrCreate?: MaterialRequestItemCreateOrConnectWithoutFulfilledByInstanceInput | MaterialRequestItemCreateOrConnectWithoutFulfilledByInstanceInput[]
+    upsert?: MaterialRequestItemUpsertWithWhereUniqueWithoutFulfilledByInstanceInput | MaterialRequestItemUpsertWithWhereUniqueWithoutFulfilledByInstanceInput[]
+    createMany?: MaterialRequestItemCreateManyFulfilledByInstanceInputEnvelope
+    set?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+    disconnect?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+    delete?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+    connect?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+    update?: MaterialRequestItemUpdateWithWhereUniqueWithoutFulfilledByInstanceInput | MaterialRequestItemUpdateWithWhereUniqueWithoutFulfilledByInstanceInput[]
+    updateMany?: MaterialRequestItemUpdateManyWithWhereWithoutFulfilledByInstanceInput | MaterialRequestItemUpdateManyWithWhereWithoutFulfilledByInstanceInput[]
+    deleteMany?: MaterialRequestItemScalarWhereInput | MaterialRequestItemScalarWhereInput[]
+  }
+
+  export type MaterialStockMovementUncheckedUpdateManyWithoutMaterialInstanceNestedInput = {
+    create?: XOR<MaterialStockMovementCreateWithoutMaterialInstanceInput, MaterialStockMovementUncheckedCreateWithoutMaterialInstanceInput> | MaterialStockMovementCreateWithoutMaterialInstanceInput[] | MaterialStockMovementUncheckedCreateWithoutMaterialInstanceInput[]
+    connectOrCreate?: MaterialStockMovementCreateOrConnectWithoutMaterialInstanceInput | MaterialStockMovementCreateOrConnectWithoutMaterialInstanceInput[]
+    upsert?: MaterialStockMovementUpsertWithWhereUniqueWithoutMaterialInstanceInput | MaterialStockMovementUpsertWithWhereUniqueWithoutMaterialInstanceInput[]
+    createMany?: MaterialStockMovementCreateManyMaterialInstanceInputEnvelope
+    set?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+    disconnect?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+    delete?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+    connect?: MaterialStockMovementWhereUniqueInput | MaterialStockMovementWhereUniqueInput[]
+    update?: MaterialStockMovementUpdateWithWhereUniqueWithoutMaterialInstanceInput | MaterialStockMovementUpdateWithWhereUniqueWithoutMaterialInstanceInput[]
+    updateMany?: MaterialStockMovementUpdateManyWithWhereWithoutMaterialInstanceInput | MaterialStockMovementUpdateManyWithWhereWithoutMaterialInstanceInput[]
+    deleteMany?: MaterialStockMovementScalarWhereInput | MaterialStockMovementScalarWhereInput[]
+  }
+
+  export type MaterialRequestItemUncheckedUpdateManyWithoutFulfilledByInstanceNestedInput = {
+    create?: XOR<MaterialRequestItemCreateWithoutFulfilledByInstanceInput, MaterialRequestItemUncheckedCreateWithoutFulfilledByInstanceInput> | MaterialRequestItemCreateWithoutFulfilledByInstanceInput[] | MaterialRequestItemUncheckedCreateWithoutFulfilledByInstanceInput[]
+    connectOrCreate?: MaterialRequestItemCreateOrConnectWithoutFulfilledByInstanceInput | MaterialRequestItemCreateOrConnectWithoutFulfilledByInstanceInput[]
+    upsert?: MaterialRequestItemUpsertWithWhereUniqueWithoutFulfilledByInstanceInput | MaterialRequestItemUpsertWithWhereUniqueWithoutFulfilledByInstanceInput[]
+    createMany?: MaterialRequestItemCreateManyFulfilledByInstanceInputEnvelope
+    set?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+    disconnect?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+    delete?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+    connect?: MaterialRequestItemWhereUniqueInput | MaterialRequestItemWhereUniqueInput[]
+    update?: MaterialRequestItemUpdateWithWhereUniqueWithoutFulfilledByInstanceInput | MaterialRequestItemUpdateWithWhereUniqueWithoutFulfilledByInstanceInput[]
+    updateMany?: MaterialRequestItemUpdateManyWithWhereWithoutFulfilledByInstanceInput | MaterialRequestItemUpdateManyWithWhereWithoutFulfilledByInstanceInput[]
+    deleteMany?: MaterialRequestItemScalarWhereInput | MaterialRequestItemScalarWhereInput[]
   }
 
   export type LogLoginCreateNestedManyWithoutUserInput = {
@@ -24308,23 +34929,6 @@ export namespace Prisma {
     _max?: NestedEnumInfrastructureOccurrenceStatusFilter<$PrismaModel>
   }
 
-  export type NestedEnumMaterialRequestStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.MaterialRequestStatus | EnumMaterialRequestStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.MaterialRequestStatus[]
-    notIn?: $Enums.MaterialRequestStatus[]
-    not?: NestedEnumMaterialRequestStatusFilter<$PrismaModel> | $Enums.MaterialRequestStatus
-  }
-
-  export type NestedEnumMaterialRequestStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.MaterialRequestStatus | EnumMaterialRequestStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.MaterialRequestStatus[]
-    notIn?: $Enums.MaterialRequestStatus[]
-    not?: NestedEnumMaterialRequestStatusWithAggregatesFilter<$PrismaModel> | $Enums.MaterialRequestStatus
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumMaterialRequestStatusFilter<$PrismaModel>
-    _max?: NestedEnumMaterialRequestStatusFilter<$PrismaModel>
-  }
-
   export type NestedDecimalFilter<$PrismaModel = never> = {
     equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     in?: Decimal[] | DecimalJsLike[] | number[] | string[]
@@ -24377,6 +34981,74 @@ export namespace Prisma {
     _sum?: NestedDecimalNullableFilter<$PrismaModel>
     _min?: NestedDecimalNullableFilter<$PrismaModel>
     _max?: NestedDecimalNullableFilter<$PrismaModel>
+  }
+
+  export type NestedEnumMaterialRequestTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.MaterialRequestType | EnumMaterialRequestTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.MaterialRequestType[]
+    notIn?: $Enums.MaterialRequestType[]
+    not?: NestedEnumMaterialRequestTypeFilter<$PrismaModel> | $Enums.MaterialRequestType
+  }
+
+  export type NestedEnumMaterialRequestStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.MaterialRequestStatus | EnumMaterialRequestStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.MaterialRequestStatus[]
+    notIn?: $Enums.MaterialRequestStatus[]
+    not?: NestedEnumMaterialRequestStatusFilter<$PrismaModel> | $Enums.MaterialRequestStatus
+  }
+
+  export type NestedEnumMaterialRequestTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.MaterialRequestType | EnumMaterialRequestTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.MaterialRequestType[]
+    notIn?: $Enums.MaterialRequestType[]
+    not?: NestedEnumMaterialRequestTypeWithAggregatesFilter<$PrismaModel> | $Enums.MaterialRequestType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumMaterialRequestTypeFilter<$PrismaModel>
+    _max?: NestedEnumMaterialRequestTypeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumMaterialRequestStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.MaterialRequestStatus | EnumMaterialRequestStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.MaterialRequestStatus[]
+    notIn?: $Enums.MaterialRequestStatus[]
+    not?: NestedEnumMaterialRequestStatusWithAggregatesFilter<$PrismaModel> | $Enums.MaterialRequestStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumMaterialRequestStatusFilter<$PrismaModel>
+    _max?: NestedEnumMaterialRequestStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumMaterialRequestItemTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.MaterialRequestItemType | EnumMaterialRequestItemTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.MaterialRequestItemType[]
+    notIn?: $Enums.MaterialRequestItemType[]
+    not?: NestedEnumMaterialRequestItemTypeFilter<$PrismaModel> | $Enums.MaterialRequestItemType
+  }
+
+  export type NestedEnumMaterialRequestItemTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.MaterialRequestItemType | EnumMaterialRequestItemTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.MaterialRequestItemType[]
+    notIn?: $Enums.MaterialRequestItemType[]
+    not?: NestedEnumMaterialRequestItemTypeWithAggregatesFilter<$PrismaModel> | $Enums.MaterialRequestItemType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumMaterialRequestItemTypeFilter<$PrismaModel>
+    _max?: NestedEnumMaterialRequestItemTypeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumStockOperationTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.StockOperationType | EnumStockOperationTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.StockOperationType[]
+    notIn?: $Enums.StockOperationType[]
+    not?: NestedEnumStockOperationTypeFilter<$PrismaModel> | $Enums.StockOperationType
+  }
+
+  export type NestedEnumStockOperationTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.StockOperationType | EnumStockOperationTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.StockOperationType[]
+    notIn?: $Enums.StockOperationType[]
+    not?: NestedEnumStockOperationTypeWithAggregatesFilter<$PrismaModel> | $Enums.StockOperationType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumStockOperationTypeFilter<$PrismaModel>
+    _max?: NestedEnumStockOperationTypeFilter<$PrismaModel>
   }
 
   export type UserCreateWithoutLogLoginInput = {
@@ -24477,6 +35149,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     timelineEventsTransferredFrom?: MaintenanceTimelineEventCreateNestedManyWithoutTransferredFromInstanceInput
     timelineEventsTransferredTo?: MaintenanceTimelineEventCreateNestedManyWithoutTransferredToInstanceInput
+    warehouses?: WarehouseCreateNestedManyWithoutMaintenanceInstanceInput
   }
 
   export type MaintenanceInstanceUncheckedCreateWithoutCurrentMaintenanceRequestsInput = {
@@ -24488,6 +35161,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     timelineEventsTransferredFrom?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutTransferredFromInstanceInput
     timelineEventsTransferredTo?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutTransferredToInstanceInput
+    warehouses?: WarehouseUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
   }
 
   export type MaintenanceInstanceCreateOrConnectWithoutCurrentMaintenanceRequestsInput = {
@@ -24730,6 +35404,8 @@ export namespace Prisma {
   }
 
   export type MaterialRequestCreateWithoutMaintenanceRequestInput = {
+    protocolNumber?: string
+    requestType?: $Enums.MaterialRequestType
     justification?: string | null
     requestDate?: Date | string
     status?: $Enums.MaterialRequestStatus
@@ -24744,6 +35420,8 @@ export namespace Prisma {
 
   export type MaterialRequestUncheckedCreateWithoutMaintenanceRequestInput = {
     id?: number
+    protocolNumber?: string
+    requestType?: $Enums.MaterialRequestType
     justification?: string | null
     requestDate?: Date | string
     status?: $Enums.MaterialRequestStatus
@@ -24785,6 +35463,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     timelineEventsTransferredFrom?: MaintenanceTimelineEventUpdateManyWithoutTransferredFromInstanceNestedInput
     timelineEventsTransferredTo?: MaintenanceTimelineEventUpdateManyWithoutTransferredToInstanceNestedInput
+    warehouses?: WarehouseUpdateManyWithoutMaintenanceInstanceNestedInput
   }
 
   export type MaintenanceInstanceUncheckedUpdateWithoutCurrentMaintenanceRequestsInput = {
@@ -24796,6 +35475,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     timelineEventsTransferredFrom?: MaintenanceTimelineEventUncheckedUpdateManyWithoutTransferredFromInstanceNestedInput
     timelineEventsTransferredTo?: MaintenanceTimelineEventUncheckedUpdateManyWithoutTransferredToInstanceNestedInput
+    warehouses?: WarehouseUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
   }
 
   export type UserUpsertWithoutCreatedMaintenanceRequestsInput = {
@@ -25079,6 +35759,8 @@ export namespace Prisma {
     OR?: MaterialRequestScalarWhereInput[]
     NOT?: MaterialRequestScalarWhereInput | MaterialRequestScalarWhereInput[]
     id?: IntFilter<"MaterialRequest"> | number
+    protocolNumber?: StringFilter<"MaterialRequest"> | string
+    requestType?: EnumMaterialRequestTypeFilter<"MaterialRequest"> | $Enums.MaterialRequestType
     justification?: StringNullableFilter<"MaterialRequest"> | string | null
     requestDate?: DateTimeFilter<"MaterialRequest"> | Date | string
     status?: EnumMaterialRequestStatusFilter<"MaterialRequest"> | $Enums.MaterialRequestStatus
@@ -25281,6 +35963,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     currentMaintenanceRequests?: MaintenanceRequestCreateNestedManyWithoutCurrentMaintenanceInstanceInput
     timelineEventsTransferredTo?: MaintenanceTimelineEventCreateNestedManyWithoutTransferredToInstanceInput
+    warehouses?: WarehouseCreateNestedManyWithoutMaintenanceInstanceInput
   }
 
   export type MaintenanceInstanceUncheckedCreateWithoutTimelineEventsTransferredFromInput = {
@@ -25292,6 +35975,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     currentMaintenanceRequests?: MaintenanceRequestUncheckedCreateNestedManyWithoutCurrentMaintenanceInstanceInput
     timelineEventsTransferredTo?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutTransferredToInstanceInput
+    warehouses?: WarehouseUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
   }
 
   export type MaintenanceInstanceCreateOrConnectWithoutTimelineEventsTransferredFromInput = {
@@ -25307,6 +35991,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     currentMaintenanceRequests?: MaintenanceRequestCreateNestedManyWithoutCurrentMaintenanceInstanceInput
     timelineEventsTransferredFrom?: MaintenanceTimelineEventCreateNestedManyWithoutTransferredFromInstanceInput
+    warehouses?: WarehouseCreateNestedManyWithoutMaintenanceInstanceInput
   }
 
   export type MaintenanceInstanceUncheckedCreateWithoutTimelineEventsTransferredToInput = {
@@ -25318,6 +36003,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     currentMaintenanceRequests?: MaintenanceRequestUncheckedCreateNestedManyWithoutCurrentMaintenanceInstanceInput
     timelineEventsTransferredFrom?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutTransferredFromInstanceInput
+    warehouses?: WarehouseUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
   }
 
   export type MaintenanceInstanceCreateOrConnectWithoutTimelineEventsTransferredToInput = {
@@ -25446,6 +36132,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     currentMaintenanceRequests?: MaintenanceRequestUpdateManyWithoutCurrentMaintenanceInstanceNestedInput
     timelineEventsTransferredTo?: MaintenanceTimelineEventUpdateManyWithoutTransferredToInstanceNestedInput
+    warehouses?: WarehouseUpdateManyWithoutMaintenanceInstanceNestedInput
   }
 
   export type MaintenanceInstanceUncheckedUpdateWithoutTimelineEventsTransferredFromInput = {
@@ -25457,6 +36144,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     currentMaintenanceRequests?: MaintenanceRequestUncheckedUpdateManyWithoutCurrentMaintenanceInstanceNestedInput
     timelineEventsTransferredTo?: MaintenanceTimelineEventUncheckedUpdateManyWithoutTransferredToInstanceNestedInput
+    warehouses?: WarehouseUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
   }
 
   export type MaintenanceInstanceUpsertWithoutTimelineEventsTransferredToInput = {
@@ -25478,6 +36166,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     currentMaintenanceRequests?: MaintenanceRequestUpdateManyWithoutCurrentMaintenanceInstanceNestedInput
     timelineEventsTransferredFrom?: MaintenanceTimelineEventUpdateManyWithoutTransferredFromInstanceNestedInput
+    warehouses?: WarehouseUpdateManyWithoutMaintenanceInstanceNestedInput
   }
 
   export type MaintenanceInstanceUncheckedUpdateWithoutTimelineEventsTransferredToInput = {
@@ -25489,6 +36178,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     currentMaintenanceRequests?: MaintenanceRequestUncheckedUpdateManyWithoutCurrentMaintenanceInstanceNestedInput
     timelineEventsTransferredFrom?: MaintenanceTimelineEventUncheckedUpdateManyWithoutTransferredFromInstanceNestedInput
+    warehouses?: WarehouseUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
   }
 
   export type MaintenanceRequestCreateWithoutCurrentMaintenanceInstanceInput = {
@@ -25614,6 +36304,41 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type WarehouseCreateWithoutMaintenanceInstanceInput = {
+    name: string
+    code?: string | null
+    location?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    standardMaterialStocks?: WarehouseMaterialStockCreateNestedManyWithoutWarehouseInput
+    materialInstances?: MaterialInstanceCreateNestedManyWithoutWarehouseInput
+    stockMovements?: MaterialStockMovementCreateNestedManyWithoutWarehouseInput
+  }
+
+  export type WarehouseUncheckedCreateWithoutMaintenanceInstanceInput = {
+    id?: number
+    name: string
+    code?: string | null
+    location?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    standardMaterialStocks?: WarehouseMaterialStockUncheckedCreateNestedManyWithoutWarehouseInput
+    materialInstances?: MaterialInstanceUncheckedCreateNestedManyWithoutWarehouseInput
+    stockMovements?: MaterialStockMovementUncheckedCreateNestedManyWithoutWarehouseInput
+  }
+
+  export type WarehouseCreateOrConnectWithoutMaintenanceInstanceInput = {
+    where: WarehouseWhereUniqueInput
+    create: XOR<WarehouseCreateWithoutMaintenanceInstanceInput, WarehouseUncheckedCreateWithoutMaintenanceInstanceInput>
+  }
+
+  export type WarehouseCreateManyMaintenanceInstanceInputEnvelope = {
+    data: WarehouseCreateManyMaintenanceInstanceInput | WarehouseCreateManyMaintenanceInstanceInput[]
+    skipDuplicates?: boolean
+  }
+
   export type MaintenanceRequestUpsertWithWhereUniqueWithoutCurrentMaintenanceInstanceInput = {
     where: MaintenanceRequestWhereUniqueInput
     update: XOR<MaintenanceRequestUpdateWithoutCurrentMaintenanceInstanceInput, MaintenanceRequestUncheckedUpdateWithoutCurrentMaintenanceInstanceInput>
@@ -25660,6 +36385,36 @@ export namespace Prisma {
   export type MaintenanceTimelineEventUpdateManyWithWhereWithoutTransferredToInstanceInput = {
     where: MaintenanceTimelineEventScalarWhereInput
     data: XOR<MaintenanceTimelineEventUpdateManyMutationInput, MaintenanceTimelineEventUncheckedUpdateManyWithoutTransferredToInstanceInput>
+  }
+
+  export type WarehouseUpsertWithWhereUniqueWithoutMaintenanceInstanceInput = {
+    where: WarehouseWhereUniqueInput
+    update: XOR<WarehouseUpdateWithoutMaintenanceInstanceInput, WarehouseUncheckedUpdateWithoutMaintenanceInstanceInput>
+    create: XOR<WarehouseCreateWithoutMaintenanceInstanceInput, WarehouseUncheckedCreateWithoutMaintenanceInstanceInput>
+  }
+
+  export type WarehouseUpdateWithWhereUniqueWithoutMaintenanceInstanceInput = {
+    where: WarehouseWhereUniqueInput
+    data: XOR<WarehouseUpdateWithoutMaintenanceInstanceInput, WarehouseUncheckedUpdateWithoutMaintenanceInstanceInput>
+  }
+
+  export type WarehouseUpdateManyWithWhereWithoutMaintenanceInstanceInput = {
+    where: WarehouseScalarWhereInput
+    data: XOR<WarehouseUpdateManyMutationInput, WarehouseUncheckedUpdateManyWithoutMaintenanceInstanceInput>
+  }
+
+  export type WarehouseScalarWhereInput = {
+    AND?: WarehouseScalarWhereInput | WarehouseScalarWhereInput[]
+    OR?: WarehouseScalarWhereInput[]
+    NOT?: WarehouseScalarWhereInput | WarehouseScalarWhereInput[]
+    id?: IntFilter<"Warehouse"> | number
+    name?: StringFilter<"Warehouse"> | string
+    code?: StringNullableFilter<"Warehouse"> | string | null
+    location?: StringNullableFilter<"Warehouse"> | string | null
+    isActive?: BoolFilter<"Warehouse"> | boolean
+    maintenanceInstanceId?: IntFilter<"Warehouse"> | number
+    createdAt?: DateTimeFilter<"Warehouse"> | Date | string
+    updatedAt?: DateTimeFilter<"Warehouse"> | Date | string
   }
 
   export type MaintenanceRequestCreateWithoutServiceTypeInput = {
@@ -25992,181 +36747,520 @@ export namespace Prisma {
     materialRequests?: MaterialRequestUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
   }
 
-  export type MaterialCreateWithoutChildsInput = {
-    code?: string | null
+  export type MaintenanceInstanceCreateWithoutWarehousesInput = {
+    sipacId: string
     name: string
-    description?: string | null
-    unitOfMeasure: string
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    parentMaterial?: MaterialCreateNestedOneWithoutChildsInput
-    materialRequestItems?: MaterialRequestItemCreateNestedManyWithoutMaterialInput
+    currentMaintenanceRequests?: MaintenanceRequestCreateNestedManyWithoutCurrentMaintenanceInstanceInput
+    timelineEventsTransferredFrom?: MaintenanceTimelineEventCreateNestedManyWithoutTransferredFromInstanceInput
+    timelineEventsTransferredTo?: MaintenanceTimelineEventCreateNestedManyWithoutTransferredToInstanceInput
   }
 
-  export type MaterialUncheckedCreateWithoutChildsInput = {
+  export type MaintenanceInstanceUncheckedCreateWithoutWarehousesInput = {
     id?: number
-    code?: string | null
+    sipacId: string
     name: string
-    description?: string | null
-    unitOfMeasure: string
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    parentMaterialId?: number | null
-    materialRequestItems?: MaterialRequestItemUncheckedCreateNestedManyWithoutMaterialInput
+    currentMaintenanceRequests?: MaintenanceRequestUncheckedCreateNestedManyWithoutCurrentMaintenanceInstanceInput
+    timelineEventsTransferredFrom?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutTransferredFromInstanceInput
+    timelineEventsTransferredTo?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutTransferredToInstanceInput
   }
 
-  export type MaterialCreateOrConnectWithoutChildsInput = {
-    where: MaterialWhereUniqueInput
-    create: XOR<MaterialCreateWithoutChildsInput, MaterialUncheckedCreateWithoutChildsInput>
+  export type MaintenanceInstanceCreateOrConnectWithoutWarehousesInput = {
+    where: MaintenanceInstanceWhereUniqueInput
+    create: XOR<MaintenanceInstanceCreateWithoutWarehousesInput, MaintenanceInstanceUncheckedCreateWithoutWarehousesInput>
   }
 
-  export type MaterialCreateWithoutParentMaterialInput = {
-    code?: string | null
-    name: string
-    description?: string | null
-    unitOfMeasure: string
-    isActive?: boolean
+  export type WarehouseMaterialStockCreateWithoutWarehouseInput = {
+    physicalOnHandQuantity?: Decimal | DecimalJsLike | number | string
+    initialStockQuantity?: Decimal | DecimalJsLike | number | string | null
+    restrictedQuantity?: Decimal | DecimalJsLike | number | string
+    reservedQuantity?: Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: string | null
+    minStockLevel?: Decimal | DecimalJsLike | number | string | null
+    maxStockLevel?: Decimal | DecimalJsLike | number | string | null
+    lastStockCountDate?: Date | string | null
+    averageCost?: Decimal | DecimalJsLike | number | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    childs?: MaterialCreateNestedManyWithoutParentMaterialInput
-    materialRequestItems?: MaterialRequestItemCreateNestedManyWithoutMaterialInput
+    material: MaterialCreateNestedOneWithoutWarehouseStandardStocksInput
+    stockMovements?: MaterialStockMovementCreateNestedManyWithoutWarehouseMaterialStockInput
   }
 
-  export type MaterialUncheckedCreateWithoutParentMaterialInput = {
+  export type WarehouseMaterialStockUncheckedCreateWithoutWarehouseInput = {
     id?: number
-    code?: string | null
-    name: string
-    description?: string | null
-    unitOfMeasure: string
-    isActive?: boolean
+    materialId: number
+    physicalOnHandQuantity?: Decimal | DecimalJsLike | number | string
+    initialStockQuantity?: Decimal | DecimalJsLike | number | string | null
+    restrictedQuantity?: Decimal | DecimalJsLike | number | string
+    reservedQuantity?: Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: string | null
+    minStockLevel?: Decimal | DecimalJsLike | number | string | null
+    maxStockLevel?: Decimal | DecimalJsLike | number | string | null
+    lastStockCountDate?: Date | string | null
+    averageCost?: Decimal | DecimalJsLike | number | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    childs?: MaterialUncheckedCreateNestedManyWithoutParentMaterialInput
-    materialRequestItems?: MaterialRequestItemUncheckedCreateNestedManyWithoutMaterialInput
+    stockMovements?: MaterialStockMovementUncheckedCreateNestedManyWithoutWarehouseMaterialStockInput
   }
 
-  export type MaterialCreateOrConnectWithoutParentMaterialInput = {
-    where: MaterialWhereUniqueInput
-    create: XOR<MaterialCreateWithoutParentMaterialInput, MaterialUncheckedCreateWithoutParentMaterialInput>
+  export type WarehouseMaterialStockCreateOrConnectWithoutWarehouseInput = {
+    where: WarehouseMaterialStockWhereUniqueInput
+    create: XOR<WarehouseMaterialStockCreateWithoutWarehouseInput, WarehouseMaterialStockUncheckedCreateWithoutWarehouseInput>
   }
 
-  export type MaterialCreateManyParentMaterialInputEnvelope = {
-    data: MaterialCreateManyParentMaterialInput | MaterialCreateManyParentMaterialInput[]
+  export type WarehouseMaterialStockCreateManyWarehouseInputEnvelope = {
+    data: WarehouseMaterialStockCreateManyWarehouseInput | WarehouseMaterialStockCreateManyWarehouseInput[]
     skipDuplicates?: boolean
   }
 
-  export type MaterialRequestItemCreateWithoutMaterialInput = {
+  export type MaterialInstanceCreateWithoutWarehouseInput = {
+    instanceIdentifier?: string
+    derivedName: string
+    derivedDescription?: string | null
+    derivedUnitOfMeasure: string
+    quantity: Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: string | null
+    sourceNotes?: string | null
+    reservedQuantity?: Decimal | DecimalJsLike | number | string
+    restrictedQuantity?: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    globalMaterial?: MaterialCreateNestedOneWithoutRelatedMaterialInstancesInput
+    condition: MaterialInstanceConditionCreateNestedOneWithoutMaterialInstancesInput
+    stockMovements?: MaterialStockMovementCreateNestedManyWithoutMaterialInstanceInput
+    fulfilledRequestItems?: MaterialRequestItemCreateNestedManyWithoutFulfilledByInstanceInput
+  }
+
+  export type MaterialInstanceUncheckedCreateWithoutWarehouseInput = {
+    id?: number
+    instanceIdentifier?: string
+    globalMaterialId?: number | null
+    derivedName: string
+    derivedDescription?: string | null
+    derivedUnitOfMeasure: string
+    conditionId: number
+    quantity: Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: string | null
+    sourceNotes?: string | null
+    reservedQuantity?: Decimal | DecimalJsLike | number | string
+    restrictedQuantity?: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    stockMovements?: MaterialStockMovementUncheckedCreateNestedManyWithoutMaterialInstanceInput
+    fulfilledRequestItems?: MaterialRequestItemUncheckedCreateNestedManyWithoutFulfilledByInstanceInput
+  }
+
+  export type MaterialInstanceCreateOrConnectWithoutWarehouseInput = {
+    where: MaterialInstanceWhereUniqueInput
+    create: XOR<MaterialInstanceCreateWithoutWarehouseInput, MaterialInstanceUncheckedCreateWithoutWarehouseInput>
+  }
+
+  export type MaterialInstanceCreateManyWarehouseInputEnvelope = {
+    data: MaterialInstanceCreateManyWarehouseInput | MaterialInstanceCreateManyWarehouseInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MaterialStockMovementCreateWithoutWarehouseInput = {
+    quantity: Decimal | DecimalJsLike | number | string
+    unitOfMeasure: string
+    movementDate?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    globalMaterial?: MaterialCreateNestedOneWithoutStockMovementsInput
+    materialInstance?: MaterialInstanceCreateNestedOneWithoutStockMovementsInput
+    movementType: StockMovementTypeCreateNestedOneWithoutStockMovementsInput
+    WarehouseMaterialStock?: WarehouseMaterialStockCreateNestedOneWithoutStockMovementsInput
+    MaterialRequestItem?: MaterialRequestItemCreateNestedOneWithoutStockMovementsInput
+  }
+
+  export type MaterialStockMovementUncheckedCreateWithoutWarehouseInput = {
+    id?: number
+    globalMaterialId?: number | null
+    materialInstanceId?: number | null
+    movementTypeId: number
+    quantity: Decimal | DecimalJsLike | number | string
+    unitOfMeasure: string
+    movementDate?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    warehouseMaterialStockId?: number | null
+    materialRequestItemId?: number | null
+  }
+
+  export type MaterialStockMovementCreateOrConnectWithoutWarehouseInput = {
+    where: MaterialStockMovementWhereUniqueInput
+    create: XOR<MaterialStockMovementCreateWithoutWarehouseInput, MaterialStockMovementUncheckedCreateWithoutWarehouseInput>
+  }
+
+  export type MaterialStockMovementCreateManyWarehouseInputEnvelope = {
+    data: MaterialStockMovementCreateManyWarehouseInput | MaterialStockMovementCreateManyWarehouseInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MaintenanceInstanceUpsertWithoutWarehousesInput = {
+    update: XOR<MaintenanceInstanceUpdateWithoutWarehousesInput, MaintenanceInstanceUncheckedUpdateWithoutWarehousesInput>
+    create: XOR<MaintenanceInstanceCreateWithoutWarehousesInput, MaintenanceInstanceUncheckedCreateWithoutWarehousesInput>
+    where?: MaintenanceInstanceWhereInput
+  }
+
+  export type MaintenanceInstanceUpdateToOneWithWhereWithoutWarehousesInput = {
+    where?: MaintenanceInstanceWhereInput
+    data: XOR<MaintenanceInstanceUpdateWithoutWarehousesInput, MaintenanceInstanceUncheckedUpdateWithoutWarehousesInput>
+  }
+
+  export type MaintenanceInstanceUpdateWithoutWarehousesInput = {
+    sipacId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    currentMaintenanceRequests?: MaintenanceRequestUpdateManyWithoutCurrentMaintenanceInstanceNestedInput
+    timelineEventsTransferredFrom?: MaintenanceTimelineEventUpdateManyWithoutTransferredFromInstanceNestedInput
+    timelineEventsTransferredTo?: MaintenanceTimelineEventUpdateManyWithoutTransferredToInstanceNestedInput
+  }
+
+  export type MaintenanceInstanceUncheckedUpdateWithoutWarehousesInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    sipacId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    currentMaintenanceRequests?: MaintenanceRequestUncheckedUpdateManyWithoutCurrentMaintenanceInstanceNestedInput
+    timelineEventsTransferredFrom?: MaintenanceTimelineEventUncheckedUpdateManyWithoutTransferredFromInstanceNestedInput
+    timelineEventsTransferredTo?: MaintenanceTimelineEventUncheckedUpdateManyWithoutTransferredToInstanceNestedInput
+  }
+
+  export type WarehouseMaterialStockUpsertWithWhereUniqueWithoutWarehouseInput = {
+    where: WarehouseMaterialStockWhereUniqueInput
+    update: XOR<WarehouseMaterialStockUpdateWithoutWarehouseInput, WarehouseMaterialStockUncheckedUpdateWithoutWarehouseInput>
+    create: XOR<WarehouseMaterialStockCreateWithoutWarehouseInput, WarehouseMaterialStockUncheckedCreateWithoutWarehouseInput>
+  }
+
+  export type WarehouseMaterialStockUpdateWithWhereUniqueWithoutWarehouseInput = {
+    where: WarehouseMaterialStockWhereUniqueInput
+    data: XOR<WarehouseMaterialStockUpdateWithoutWarehouseInput, WarehouseMaterialStockUncheckedUpdateWithoutWarehouseInput>
+  }
+
+  export type WarehouseMaterialStockUpdateManyWithWhereWithoutWarehouseInput = {
+    where: WarehouseMaterialStockScalarWhereInput
+    data: XOR<WarehouseMaterialStockUpdateManyMutationInput, WarehouseMaterialStockUncheckedUpdateManyWithoutWarehouseInput>
+  }
+
+  export type WarehouseMaterialStockScalarWhereInput = {
+    AND?: WarehouseMaterialStockScalarWhereInput | WarehouseMaterialStockScalarWhereInput[]
+    OR?: WarehouseMaterialStockScalarWhereInput[]
+    NOT?: WarehouseMaterialStockScalarWhereInput | WarehouseMaterialStockScalarWhereInput[]
+    id?: IntFilter<"WarehouseMaterialStock"> | number
+    warehouseId?: IntFilter<"WarehouseMaterialStock"> | number
+    materialId?: IntFilter<"WarehouseMaterialStock"> | number
+    physicalOnHandQuantity?: DecimalFilter<"WarehouseMaterialStock"> | Decimal | DecimalJsLike | number | string
+    initialStockQuantity?: DecimalNullableFilter<"WarehouseMaterialStock"> | Decimal | DecimalJsLike | number | string | null
+    restrictedQuantity?: DecimalFilter<"WarehouseMaterialStock"> | Decimal | DecimalJsLike | number | string
+    reservedQuantity?: DecimalFilter<"WarehouseMaterialStock"> | Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: StringNullableFilter<"WarehouseMaterialStock"> | string | null
+    minStockLevel?: DecimalNullableFilter<"WarehouseMaterialStock"> | Decimal | DecimalJsLike | number | string | null
+    maxStockLevel?: DecimalNullableFilter<"WarehouseMaterialStock"> | Decimal | DecimalJsLike | number | string | null
+    lastStockCountDate?: DateTimeNullableFilter<"WarehouseMaterialStock"> | Date | string | null
+    averageCost?: DecimalNullableFilter<"WarehouseMaterialStock"> | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFilter<"WarehouseMaterialStock"> | Date | string
+    updatedAt?: DateTimeFilter<"WarehouseMaterialStock"> | Date | string
+  }
+
+  export type MaterialInstanceUpsertWithWhereUniqueWithoutWarehouseInput = {
+    where: MaterialInstanceWhereUniqueInput
+    update: XOR<MaterialInstanceUpdateWithoutWarehouseInput, MaterialInstanceUncheckedUpdateWithoutWarehouseInput>
+    create: XOR<MaterialInstanceCreateWithoutWarehouseInput, MaterialInstanceUncheckedCreateWithoutWarehouseInput>
+  }
+
+  export type MaterialInstanceUpdateWithWhereUniqueWithoutWarehouseInput = {
+    where: MaterialInstanceWhereUniqueInput
+    data: XOR<MaterialInstanceUpdateWithoutWarehouseInput, MaterialInstanceUncheckedUpdateWithoutWarehouseInput>
+  }
+
+  export type MaterialInstanceUpdateManyWithWhereWithoutWarehouseInput = {
+    where: MaterialInstanceScalarWhereInput
+    data: XOR<MaterialInstanceUpdateManyMutationInput, MaterialInstanceUncheckedUpdateManyWithoutWarehouseInput>
+  }
+
+  export type MaterialInstanceScalarWhereInput = {
+    AND?: MaterialInstanceScalarWhereInput | MaterialInstanceScalarWhereInput[]
+    OR?: MaterialInstanceScalarWhereInput[]
+    NOT?: MaterialInstanceScalarWhereInput | MaterialInstanceScalarWhereInput[]
+    id?: IntFilter<"MaterialInstance"> | number
+    instanceIdentifier?: StringFilter<"MaterialInstance"> | string
+    globalMaterialId?: IntNullableFilter<"MaterialInstance"> | number | null
+    derivedName?: StringFilter<"MaterialInstance"> | string
+    derivedDescription?: StringNullableFilter<"MaterialInstance"> | string | null
+    derivedUnitOfMeasure?: StringFilter<"MaterialInstance"> | string
+    warehouseId?: IntFilter<"MaterialInstance"> | number
+    conditionId?: IntFilter<"MaterialInstance"> | number
+    quantity?: DecimalFilter<"MaterialInstance"> | Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: StringNullableFilter<"MaterialInstance"> | string | null
+    sourceNotes?: StringNullableFilter<"MaterialInstance"> | string | null
+    reservedQuantity?: DecimalFilter<"MaterialInstance"> | Decimal | DecimalJsLike | number | string
+    restrictedQuantity?: DecimalFilter<"MaterialInstance"> | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFilter<"MaterialInstance"> | Date | string
+    updatedAt?: DateTimeFilter<"MaterialInstance"> | Date | string
+  }
+
+  export type MaterialStockMovementUpsertWithWhereUniqueWithoutWarehouseInput = {
+    where: MaterialStockMovementWhereUniqueInput
+    update: XOR<MaterialStockMovementUpdateWithoutWarehouseInput, MaterialStockMovementUncheckedUpdateWithoutWarehouseInput>
+    create: XOR<MaterialStockMovementCreateWithoutWarehouseInput, MaterialStockMovementUncheckedCreateWithoutWarehouseInput>
+  }
+
+  export type MaterialStockMovementUpdateWithWhereUniqueWithoutWarehouseInput = {
+    where: MaterialStockMovementWhereUniqueInput
+    data: XOR<MaterialStockMovementUpdateWithoutWarehouseInput, MaterialStockMovementUncheckedUpdateWithoutWarehouseInput>
+  }
+
+  export type MaterialStockMovementUpdateManyWithWhereWithoutWarehouseInput = {
+    where: MaterialStockMovementScalarWhereInput
+    data: XOR<MaterialStockMovementUpdateManyMutationInput, MaterialStockMovementUncheckedUpdateManyWithoutWarehouseInput>
+  }
+
+  export type MaterialStockMovementScalarWhereInput = {
+    AND?: MaterialStockMovementScalarWhereInput | MaterialStockMovementScalarWhereInput[]
+    OR?: MaterialStockMovementScalarWhereInput[]
+    NOT?: MaterialStockMovementScalarWhereInput | MaterialStockMovementScalarWhereInput[]
+    id?: IntFilter<"MaterialStockMovement"> | number
+    warehouseId?: IntFilter<"MaterialStockMovement"> | number
+    globalMaterialId?: IntNullableFilter<"MaterialStockMovement"> | number | null
+    materialInstanceId?: IntNullableFilter<"MaterialStockMovement"> | number | null
+    movementTypeId?: IntFilter<"MaterialStockMovement"> | number
+    quantity?: DecimalFilter<"MaterialStockMovement"> | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringFilter<"MaterialStockMovement"> | string
+    movementDate?: DateTimeFilter<"MaterialStockMovement"> | Date | string
+    createdAt?: DateTimeFilter<"MaterialStockMovement"> | Date | string
+    updatedAt?: DateTimeFilter<"MaterialStockMovement"> | Date | string
+    warehouseMaterialStockId?: IntNullableFilter<"MaterialStockMovement"> | number | null
+    materialRequestItemId?: IntNullableFilter<"MaterialStockMovement"> | number | null
+  }
+
+  export type WarehouseMaterialStockCreateWithoutMaterialInput = {
+    physicalOnHandQuantity?: Decimal | DecimalJsLike | number | string
+    initialStockQuantity?: Decimal | DecimalJsLike | number | string | null
+    restrictedQuantity?: Decimal | DecimalJsLike | number | string
+    reservedQuantity?: Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: string | null
+    minStockLevel?: Decimal | DecimalJsLike | number | string | null
+    maxStockLevel?: Decimal | DecimalJsLike | number | string | null
+    lastStockCountDate?: Date | string | null
+    averageCost?: Decimal | DecimalJsLike | number | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    warehouse: WarehouseCreateNestedOneWithoutStandardMaterialStocksInput
+    stockMovements?: MaterialStockMovementCreateNestedManyWithoutWarehouseMaterialStockInput
+  }
+
+  export type WarehouseMaterialStockUncheckedCreateWithoutMaterialInput = {
+    id?: number
+    warehouseId: number
+    physicalOnHandQuantity?: Decimal | DecimalJsLike | number | string
+    initialStockQuantity?: Decimal | DecimalJsLike | number | string | null
+    restrictedQuantity?: Decimal | DecimalJsLike | number | string
+    reservedQuantity?: Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: string | null
+    minStockLevel?: Decimal | DecimalJsLike | number | string | null
+    maxStockLevel?: Decimal | DecimalJsLike | number | string | null
+    lastStockCountDate?: Date | string | null
+    averageCost?: Decimal | DecimalJsLike | number | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    stockMovements?: MaterialStockMovementUncheckedCreateNestedManyWithoutWarehouseMaterialStockInput
+  }
+
+  export type WarehouseMaterialStockCreateOrConnectWithoutMaterialInput = {
+    where: WarehouseMaterialStockWhereUniqueInput
+    create: XOR<WarehouseMaterialStockCreateWithoutMaterialInput, WarehouseMaterialStockUncheckedCreateWithoutMaterialInput>
+  }
+
+  export type WarehouseMaterialStockCreateManyMaterialInputEnvelope = {
+    data: WarehouseMaterialStockCreateManyMaterialInput | WarehouseMaterialStockCreateManyMaterialInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MaterialInstanceCreateWithoutGlobalMaterialInput = {
+    instanceIdentifier?: string
+    derivedName: string
+    derivedDescription?: string | null
+    derivedUnitOfMeasure: string
+    quantity: Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: string | null
+    sourceNotes?: string | null
+    reservedQuantity?: Decimal | DecimalJsLike | number | string
+    restrictedQuantity?: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    warehouse: WarehouseCreateNestedOneWithoutMaterialInstancesInput
+    condition: MaterialInstanceConditionCreateNestedOneWithoutMaterialInstancesInput
+    stockMovements?: MaterialStockMovementCreateNestedManyWithoutMaterialInstanceInput
+    fulfilledRequestItems?: MaterialRequestItemCreateNestedManyWithoutFulfilledByInstanceInput
+  }
+
+  export type MaterialInstanceUncheckedCreateWithoutGlobalMaterialInput = {
+    id?: number
+    instanceIdentifier?: string
+    derivedName: string
+    derivedDescription?: string | null
+    derivedUnitOfMeasure: string
+    warehouseId: number
+    conditionId: number
+    quantity: Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: string | null
+    sourceNotes?: string | null
+    reservedQuantity?: Decimal | DecimalJsLike | number | string
+    restrictedQuantity?: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    stockMovements?: MaterialStockMovementUncheckedCreateNestedManyWithoutMaterialInstanceInput
+    fulfilledRequestItems?: MaterialRequestItemUncheckedCreateNestedManyWithoutFulfilledByInstanceInput
+  }
+
+  export type MaterialInstanceCreateOrConnectWithoutGlobalMaterialInput = {
+    where: MaterialInstanceWhereUniqueInput
+    create: XOR<MaterialInstanceCreateWithoutGlobalMaterialInput, MaterialInstanceUncheckedCreateWithoutGlobalMaterialInput>
+  }
+
+  export type MaterialInstanceCreateManyGlobalMaterialInputEnvelope = {
+    data: MaterialInstanceCreateManyGlobalMaterialInput | MaterialInstanceCreateManyGlobalMaterialInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MaterialRequestItemCreateWithoutRequestedGlobalMaterialInput = {
+    requestType?: $Enums.MaterialRequestItemType
+    requestedDerivedName?: string | null
     quantityRequested: Decimal | DecimalJsLike | number | string
     quantityApproved?: Decimal | DecimalJsLike | number | string | null
-    quantityDelivered?: Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: Decimal | DecimalJsLike | number | string
+    unitOfMeasure: string
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     materialRequest: MaterialRequestCreateNestedOneWithoutItemsInput
+    requestedDerivedCondition?: MaterialInstanceConditionCreateNestedOneWithoutRequestedInItemsInput
+    fulfilledByInstance?: MaterialInstanceCreateNestedOneWithoutFulfilledRequestItemsInput
+    stockMovements?: MaterialStockMovementCreateNestedManyWithoutMaterialRequestItemInput
+    MaterialInstanceCondition?: MaterialInstanceConditionCreateNestedOneWithoutMaterialRequestItemInput
   }
 
-  export type MaterialRequestItemUncheckedCreateWithoutMaterialInput = {
+  export type MaterialRequestItemUncheckedCreateWithoutRequestedGlobalMaterialInput = {
     id?: number
+    materialRequestId: number
+    requestType?: $Enums.MaterialRequestItemType
+    requestedDerivedName?: string | null
+    requestedDerivedConditionId?: number | null
     quantityRequested: Decimal | DecimalJsLike | number | string
     quantityApproved?: Decimal | DecimalJsLike | number | string | null
-    quantityDelivered?: Decimal | DecimalJsLike | number | string | null
-    materialRequestId: number
+    quantityDelivered?: Decimal | DecimalJsLike | number | string
+    unitOfMeasure: string
+    fulfilledByInstanceId?: number | null
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    materialInstanceConditionId?: number | null
+    stockMovements?: MaterialStockMovementUncheckedCreateNestedManyWithoutMaterialRequestItemInput
   }
 
-  export type MaterialRequestItemCreateOrConnectWithoutMaterialInput = {
+  export type MaterialRequestItemCreateOrConnectWithoutRequestedGlobalMaterialInput = {
     where: MaterialRequestItemWhereUniqueInput
-    create: XOR<MaterialRequestItemCreateWithoutMaterialInput, MaterialRequestItemUncheckedCreateWithoutMaterialInput>
+    create: XOR<MaterialRequestItemCreateWithoutRequestedGlobalMaterialInput, MaterialRequestItemUncheckedCreateWithoutRequestedGlobalMaterialInput>
   }
 
-  export type MaterialRequestItemCreateManyMaterialInputEnvelope = {
-    data: MaterialRequestItemCreateManyMaterialInput | MaterialRequestItemCreateManyMaterialInput[]
+  export type MaterialRequestItemCreateManyRequestedGlobalMaterialInputEnvelope = {
+    data: MaterialRequestItemCreateManyRequestedGlobalMaterialInput | MaterialRequestItemCreateManyRequestedGlobalMaterialInput[]
     skipDuplicates?: boolean
   }
 
-  export type MaterialUpsertWithoutChildsInput = {
-    update: XOR<MaterialUpdateWithoutChildsInput, MaterialUncheckedUpdateWithoutChildsInput>
-    create: XOR<MaterialCreateWithoutChildsInput, MaterialUncheckedCreateWithoutChildsInput>
-    where?: MaterialWhereInput
+  export type MaterialStockMovementCreateWithoutGlobalMaterialInput = {
+    quantity: Decimal | DecimalJsLike | number | string
+    unitOfMeasure: string
+    movementDate?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    warehouse: WarehouseCreateNestedOneWithoutStockMovementsInput
+    materialInstance?: MaterialInstanceCreateNestedOneWithoutStockMovementsInput
+    movementType: StockMovementTypeCreateNestedOneWithoutStockMovementsInput
+    WarehouseMaterialStock?: WarehouseMaterialStockCreateNestedOneWithoutStockMovementsInput
+    MaterialRequestItem?: MaterialRequestItemCreateNestedOneWithoutStockMovementsInput
   }
 
-  export type MaterialUpdateToOneWithWhereWithoutChildsInput = {
-    where?: MaterialWhereInput
-    data: XOR<MaterialUpdateWithoutChildsInput, MaterialUncheckedUpdateWithoutChildsInput>
+  export type MaterialStockMovementUncheckedCreateWithoutGlobalMaterialInput = {
+    id?: number
+    warehouseId: number
+    materialInstanceId?: number | null
+    movementTypeId: number
+    quantity: Decimal | DecimalJsLike | number | string
+    unitOfMeasure: string
+    movementDate?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    warehouseMaterialStockId?: number | null
+    materialRequestItemId?: number | null
   }
 
-  export type MaterialUpdateWithoutChildsInput = {
-    code?: NullableStringFieldUpdateOperationsInput | string | null
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    unitOfMeasure?: StringFieldUpdateOperationsInput | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    parentMaterial?: MaterialUpdateOneWithoutChildsNestedInput
-    materialRequestItems?: MaterialRequestItemUpdateManyWithoutMaterialNestedInput
+  export type MaterialStockMovementCreateOrConnectWithoutGlobalMaterialInput = {
+    where: MaterialStockMovementWhereUniqueInput
+    create: XOR<MaterialStockMovementCreateWithoutGlobalMaterialInput, MaterialStockMovementUncheckedCreateWithoutGlobalMaterialInput>
   }
 
-  export type MaterialUncheckedUpdateWithoutChildsInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    code?: NullableStringFieldUpdateOperationsInput | string | null
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    unitOfMeasure?: StringFieldUpdateOperationsInput | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    parentMaterialId?: NullableIntFieldUpdateOperationsInput | number | null
-    materialRequestItems?: MaterialRequestItemUncheckedUpdateManyWithoutMaterialNestedInput
+  export type MaterialStockMovementCreateManyGlobalMaterialInputEnvelope = {
+    data: MaterialStockMovementCreateManyGlobalMaterialInput | MaterialStockMovementCreateManyGlobalMaterialInput[]
+    skipDuplicates?: boolean
   }
 
-  export type MaterialUpsertWithWhereUniqueWithoutParentMaterialInput = {
-    where: MaterialWhereUniqueInput
-    update: XOR<MaterialUpdateWithoutParentMaterialInput, MaterialUncheckedUpdateWithoutParentMaterialInput>
-    create: XOR<MaterialCreateWithoutParentMaterialInput, MaterialUncheckedCreateWithoutParentMaterialInput>
+  export type WarehouseMaterialStockUpsertWithWhereUniqueWithoutMaterialInput = {
+    where: WarehouseMaterialStockWhereUniqueInput
+    update: XOR<WarehouseMaterialStockUpdateWithoutMaterialInput, WarehouseMaterialStockUncheckedUpdateWithoutMaterialInput>
+    create: XOR<WarehouseMaterialStockCreateWithoutMaterialInput, WarehouseMaterialStockUncheckedCreateWithoutMaterialInput>
   }
 
-  export type MaterialUpdateWithWhereUniqueWithoutParentMaterialInput = {
-    where: MaterialWhereUniqueInput
-    data: XOR<MaterialUpdateWithoutParentMaterialInput, MaterialUncheckedUpdateWithoutParentMaterialInput>
+  export type WarehouseMaterialStockUpdateWithWhereUniqueWithoutMaterialInput = {
+    where: WarehouseMaterialStockWhereUniqueInput
+    data: XOR<WarehouseMaterialStockUpdateWithoutMaterialInput, WarehouseMaterialStockUncheckedUpdateWithoutMaterialInput>
   }
 
-  export type MaterialUpdateManyWithWhereWithoutParentMaterialInput = {
-    where: MaterialScalarWhereInput
-    data: XOR<MaterialUpdateManyMutationInput, MaterialUncheckedUpdateManyWithoutParentMaterialInput>
+  export type WarehouseMaterialStockUpdateManyWithWhereWithoutMaterialInput = {
+    where: WarehouseMaterialStockScalarWhereInput
+    data: XOR<WarehouseMaterialStockUpdateManyMutationInput, WarehouseMaterialStockUncheckedUpdateManyWithoutMaterialInput>
   }
 
-  export type MaterialScalarWhereInput = {
-    AND?: MaterialScalarWhereInput | MaterialScalarWhereInput[]
-    OR?: MaterialScalarWhereInput[]
-    NOT?: MaterialScalarWhereInput | MaterialScalarWhereInput[]
-    id?: IntFilter<"Material"> | number
-    code?: StringNullableFilter<"Material"> | string | null
-    name?: StringFilter<"Material"> | string
-    description?: StringNullableFilter<"Material"> | string | null
-    unitOfMeasure?: StringFilter<"Material"> | string
-    isActive?: BoolFilter<"Material"> | boolean
-    createdAt?: DateTimeFilter<"Material"> | Date | string
-    updatedAt?: DateTimeFilter<"Material"> | Date | string
-    parentMaterialId?: IntNullableFilter<"Material"> | number | null
+  export type MaterialInstanceUpsertWithWhereUniqueWithoutGlobalMaterialInput = {
+    where: MaterialInstanceWhereUniqueInput
+    update: XOR<MaterialInstanceUpdateWithoutGlobalMaterialInput, MaterialInstanceUncheckedUpdateWithoutGlobalMaterialInput>
+    create: XOR<MaterialInstanceCreateWithoutGlobalMaterialInput, MaterialInstanceUncheckedCreateWithoutGlobalMaterialInput>
   }
 
-  export type MaterialRequestItemUpsertWithWhereUniqueWithoutMaterialInput = {
+  export type MaterialInstanceUpdateWithWhereUniqueWithoutGlobalMaterialInput = {
+    where: MaterialInstanceWhereUniqueInput
+    data: XOR<MaterialInstanceUpdateWithoutGlobalMaterialInput, MaterialInstanceUncheckedUpdateWithoutGlobalMaterialInput>
+  }
+
+  export type MaterialInstanceUpdateManyWithWhereWithoutGlobalMaterialInput = {
+    where: MaterialInstanceScalarWhereInput
+    data: XOR<MaterialInstanceUpdateManyMutationInput, MaterialInstanceUncheckedUpdateManyWithoutGlobalMaterialInput>
+  }
+
+  export type MaterialRequestItemUpsertWithWhereUniqueWithoutRequestedGlobalMaterialInput = {
     where: MaterialRequestItemWhereUniqueInput
-    update: XOR<MaterialRequestItemUpdateWithoutMaterialInput, MaterialRequestItemUncheckedUpdateWithoutMaterialInput>
-    create: XOR<MaterialRequestItemCreateWithoutMaterialInput, MaterialRequestItemUncheckedCreateWithoutMaterialInput>
+    update: XOR<MaterialRequestItemUpdateWithoutRequestedGlobalMaterialInput, MaterialRequestItemUncheckedUpdateWithoutRequestedGlobalMaterialInput>
+    create: XOR<MaterialRequestItemCreateWithoutRequestedGlobalMaterialInput, MaterialRequestItemUncheckedCreateWithoutRequestedGlobalMaterialInput>
   }
 
-  export type MaterialRequestItemUpdateWithWhereUniqueWithoutMaterialInput = {
+  export type MaterialRequestItemUpdateWithWhereUniqueWithoutRequestedGlobalMaterialInput = {
     where: MaterialRequestItemWhereUniqueInput
-    data: XOR<MaterialRequestItemUpdateWithoutMaterialInput, MaterialRequestItemUncheckedUpdateWithoutMaterialInput>
+    data: XOR<MaterialRequestItemUpdateWithoutRequestedGlobalMaterialInput, MaterialRequestItemUncheckedUpdateWithoutRequestedGlobalMaterialInput>
   }
 
-  export type MaterialRequestItemUpdateManyWithWhereWithoutMaterialInput = {
+  export type MaterialRequestItemUpdateManyWithWhereWithoutRequestedGlobalMaterialInput = {
     where: MaterialRequestItemScalarWhereInput
-    data: XOR<MaterialRequestItemUpdateManyMutationInput, MaterialRequestItemUncheckedUpdateManyWithoutMaterialInput>
+    data: XOR<MaterialRequestItemUpdateManyMutationInput, MaterialRequestItemUncheckedUpdateManyWithoutRequestedGlobalMaterialInput>
   }
 
   export type MaterialRequestItemScalarWhereInput = {
@@ -26174,13 +37268,237 @@ export namespace Prisma {
     OR?: MaterialRequestItemScalarWhereInput[]
     NOT?: MaterialRequestItemScalarWhereInput | MaterialRequestItemScalarWhereInput[]
     id?: IntFilter<"MaterialRequestItem"> | number
+    materialRequestId?: IntFilter<"MaterialRequestItem"> | number
+    requestType?: EnumMaterialRequestItemTypeFilter<"MaterialRequestItem"> | $Enums.MaterialRequestItemType
+    requestedGlobalMaterialId?: IntNullableFilter<"MaterialRequestItem"> | number | null
+    requestedDerivedName?: StringNullableFilter<"MaterialRequestItem"> | string | null
+    requestedDerivedConditionId?: IntNullableFilter<"MaterialRequestItem"> | number | null
     quantityRequested?: DecimalFilter<"MaterialRequestItem"> | Decimal | DecimalJsLike | number | string
     quantityApproved?: DecimalNullableFilter<"MaterialRequestItem"> | Decimal | DecimalJsLike | number | string | null
-    quantityDelivered?: DecimalNullableFilter<"MaterialRequestItem"> | Decimal | DecimalJsLike | number | string | null
-    materialRequestId?: IntFilter<"MaterialRequestItem"> | number
-    materialId?: IntFilter<"MaterialRequestItem"> | number
+    quantityDelivered?: DecimalFilter<"MaterialRequestItem"> | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringFilter<"MaterialRequestItem"> | string
+    fulfilledByInstanceId?: IntNullableFilter<"MaterialRequestItem"> | number | null
+    notes?: StringNullableFilter<"MaterialRequestItem"> | string | null
     createdAt?: DateTimeFilter<"MaterialRequestItem"> | Date | string
     updatedAt?: DateTimeFilter<"MaterialRequestItem"> | Date | string
+    materialInstanceConditionId?: IntNullableFilter<"MaterialRequestItem"> | number | null
+  }
+
+  export type MaterialStockMovementUpsertWithWhereUniqueWithoutGlobalMaterialInput = {
+    where: MaterialStockMovementWhereUniqueInput
+    update: XOR<MaterialStockMovementUpdateWithoutGlobalMaterialInput, MaterialStockMovementUncheckedUpdateWithoutGlobalMaterialInput>
+    create: XOR<MaterialStockMovementCreateWithoutGlobalMaterialInput, MaterialStockMovementUncheckedCreateWithoutGlobalMaterialInput>
+  }
+
+  export type MaterialStockMovementUpdateWithWhereUniqueWithoutGlobalMaterialInput = {
+    where: MaterialStockMovementWhereUniqueInput
+    data: XOR<MaterialStockMovementUpdateWithoutGlobalMaterialInput, MaterialStockMovementUncheckedUpdateWithoutGlobalMaterialInput>
+  }
+
+  export type MaterialStockMovementUpdateManyWithWhereWithoutGlobalMaterialInput = {
+    where: MaterialStockMovementScalarWhereInput
+    data: XOR<MaterialStockMovementUpdateManyMutationInput, MaterialStockMovementUncheckedUpdateManyWithoutGlobalMaterialInput>
+  }
+
+  export type WarehouseCreateWithoutStandardMaterialStocksInput = {
+    name: string
+    code?: string | null
+    location?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    maintenanceInstance: MaintenanceInstanceCreateNestedOneWithoutWarehousesInput
+    materialInstances?: MaterialInstanceCreateNestedManyWithoutWarehouseInput
+    stockMovements?: MaterialStockMovementCreateNestedManyWithoutWarehouseInput
+  }
+
+  export type WarehouseUncheckedCreateWithoutStandardMaterialStocksInput = {
+    id?: number
+    name: string
+    code?: string | null
+    location?: string | null
+    isActive?: boolean
+    maintenanceInstanceId: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    materialInstances?: MaterialInstanceUncheckedCreateNestedManyWithoutWarehouseInput
+    stockMovements?: MaterialStockMovementUncheckedCreateNestedManyWithoutWarehouseInput
+  }
+
+  export type WarehouseCreateOrConnectWithoutStandardMaterialStocksInput = {
+    where: WarehouseWhereUniqueInput
+    create: XOR<WarehouseCreateWithoutStandardMaterialStocksInput, WarehouseUncheckedCreateWithoutStandardMaterialStocksInput>
+  }
+
+  export type MaterialCreateWithoutWarehouseStandardStocksInput = {
+    globalCode: string
+    name: string
+    description?: string | null
+    unitOfMeasure: string
+    category?: string | null
+    manufacturer?: string | null
+    partNumber?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    relatedMaterialInstances?: MaterialInstanceCreateNestedManyWithoutGlobalMaterialInput
+    standardMaterialRequestItems?: MaterialRequestItemCreateNestedManyWithoutRequestedGlobalMaterialInput
+    stockMovements?: MaterialStockMovementCreateNestedManyWithoutGlobalMaterialInput
+  }
+
+  export type MaterialUncheckedCreateWithoutWarehouseStandardStocksInput = {
+    id?: number
+    globalCode: string
+    name: string
+    description?: string | null
+    unitOfMeasure: string
+    category?: string | null
+    manufacturer?: string | null
+    partNumber?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    relatedMaterialInstances?: MaterialInstanceUncheckedCreateNestedManyWithoutGlobalMaterialInput
+    standardMaterialRequestItems?: MaterialRequestItemUncheckedCreateNestedManyWithoutRequestedGlobalMaterialInput
+    stockMovements?: MaterialStockMovementUncheckedCreateNestedManyWithoutGlobalMaterialInput
+  }
+
+  export type MaterialCreateOrConnectWithoutWarehouseStandardStocksInput = {
+    where: MaterialWhereUniqueInput
+    create: XOR<MaterialCreateWithoutWarehouseStandardStocksInput, MaterialUncheckedCreateWithoutWarehouseStandardStocksInput>
+  }
+
+  export type MaterialStockMovementCreateWithoutWarehouseMaterialStockInput = {
+    quantity: Decimal | DecimalJsLike | number | string
+    unitOfMeasure: string
+    movementDate?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    warehouse: WarehouseCreateNestedOneWithoutStockMovementsInput
+    globalMaterial?: MaterialCreateNestedOneWithoutStockMovementsInput
+    materialInstance?: MaterialInstanceCreateNestedOneWithoutStockMovementsInput
+    movementType: StockMovementTypeCreateNestedOneWithoutStockMovementsInput
+    MaterialRequestItem?: MaterialRequestItemCreateNestedOneWithoutStockMovementsInput
+  }
+
+  export type MaterialStockMovementUncheckedCreateWithoutWarehouseMaterialStockInput = {
+    id?: number
+    warehouseId: number
+    globalMaterialId?: number | null
+    materialInstanceId?: number | null
+    movementTypeId: number
+    quantity: Decimal | DecimalJsLike | number | string
+    unitOfMeasure: string
+    movementDate?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    materialRequestItemId?: number | null
+  }
+
+  export type MaterialStockMovementCreateOrConnectWithoutWarehouseMaterialStockInput = {
+    where: MaterialStockMovementWhereUniqueInput
+    create: XOR<MaterialStockMovementCreateWithoutWarehouseMaterialStockInput, MaterialStockMovementUncheckedCreateWithoutWarehouseMaterialStockInput>
+  }
+
+  export type MaterialStockMovementCreateManyWarehouseMaterialStockInputEnvelope = {
+    data: MaterialStockMovementCreateManyWarehouseMaterialStockInput | MaterialStockMovementCreateManyWarehouseMaterialStockInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type WarehouseUpsertWithoutStandardMaterialStocksInput = {
+    update: XOR<WarehouseUpdateWithoutStandardMaterialStocksInput, WarehouseUncheckedUpdateWithoutStandardMaterialStocksInput>
+    create: XOR<WarehouseCreateWithoutStandardMaterialStocksInput, WarehouseUncheckedCreateWithoutStandardMaterialStocksInput>
+    where?: WarehouseWhereInput
+  }
+
+  export type WarehouseUpdateToOneWithWhereWithoutStandardMaterialStocksInput = {
+    where?: WarehouseWhereInput
+    data: XOR<WarehouseUpdateWithoutStandardMaterialStocksInput, WarehouseUncheckedUpdateWithoutStandardMaterialStocksInput>
+  }
+
+  export type WarehouseUpdateWithoutStandardMaterialStocksInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maintenanceInstance?: MaintenanceInstanceUpdateOneRequiredWithoutWarehousesNestedInput
+    materialInstances?: MaterialInstanceUpdateManyWithoutWarehouseNestedInput
+    stockMovements?: MaterialStockMovementUpdateManyWithoutWarehouseNestedInput
+  }
+
+  export type WarehouseUncheckedUpdateWithoutStandardMaterialStocksInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    maintenanceInstanceId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    materialInstances?: MaterialInstanceUncheckedUpdateManyWithoutWarehouseNestedInput
+    stockMovements?: MaterialStockMovementUncheckedUpdateManyWithoutWarehouseNestedInput
+  }
+
+  export type MaterialUpsertWithoutWarehouseStandardStocksInput = {
+    update: XOR<MaterialUpdateWithoutWarehouseStandardStocksInput, MaterialUncheckedUpdateWithoutWarehouseStandardStocksInput>
+    create: XOR<MaterialCreateWithoutWarehouseStandardStocksInput, MaterialUncheckedCreateWithoutWarehouseStandardStocksInput>
+    where?: MaterialWhereInput
+  }
+
+  export type MaterialUpdateToOneWithWhereWithoutWarehouseStandardStocksInput = {
+    where?: MaterialWhereInput
+    data: XOR<MaterialUpdateWithoutWarehouseStandardStocksInput, MaterialUncheckedUpdateWithoutWarehouseStandardStocksInput>
+  }
+
+  export type MaterialUpdateWithoutWarehouseStandardStocksInput = {
+    globalCode?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    manufacturer?: NullableStringFieldUpdateOperationsInput | string | null
+    partNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    relatedMaterialInstances?: MaterialInstanceUpdateManyWithoutGlobalMaterialNestedInput
+    standardMaterialRequestItems?: MaterialRequestItemUpdateManyWithoutRequestedGlobalMaterialNestedInput
+    stockMovements?: MaterialStockMovementUpdateManyWithoutGlobalMaterialNestedInput
+  }
+
+  export type MaterialUncheckedUpdateWithoutWarehouseStandardStocksInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    globalCode?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    manufacturer?: NullableStringFieldUpdateOperationsInput | string | null
+    partNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    relatedMaterialInstances?: MaterialInstanceUncheckedUpdateManyWithoutGlobalMaterialNestedInput
+    standardMaterialRequestItems?: MaterialRequestItemUncheckedUpdateManyWithoutRequestedGlobalMaterialNestedInput
+    stockMovements?: MaterialStockMovementUncheckedUpdateManyWithoutGlobalMaterialNestedInput
+  }
+
+  export type MaterialStockMovementUpsertWithWhereUniqueWithoutWarehouseMaterialStockInput = {
+    where: MaterialStockMovementWhereUniqueInput
+    update: XOR<MaterialStockMovementUpdateWithoutWarehouseMaterialStockInput, MaterialStockMovementUncheckedUpdateWithoutWarehouseMaterialStockInput>
+    create: XOR<MaterialStockMovementCreateWithoutWarehouseMaterialStockInput, MaterialStockMovementUncheckedCreateWithoutWarehouseMaterialStockInput>
+  }
+
+  export type MaterialStockMovementUpdateWithWhereUniqueWithoutWarehouseMaterialStockInput = {
+    where: MaterialStockMovementWhereUniqueInput
+    data: XOR<MaterialStockMovementUpdateWithoutWarehouseMaterialStockInput, MaterialStockMovementUncheckedUpdateWithoutWarehouseMaterialStockInput>
+  }
+
+  export type MaterialStockMovementUpdateManyWithWhereWithoutWarehouseMaterialStockInput = {
+    where: MaterialStockMovementScalarWhereInput
+    data: XOR<MaterialStockMovementUpdateManyMutationInput, MaterialStockMovementUncheckedUpdateManyWithoutWarehouseMaterialStockInput>
   }
 
   export type MaintenanceRequestCreateWithoutMaterialRequestsInput = {
@@ -26316,22 +37634,38 @@ export namespace Prisma {
   }
 
   export type MaterialRequestItemCreateWithoutMaterialRequestInput = {
+    requestType?: $Enums.MaterialRequestItemType
+    requestedDerivedName?: string | null
     quantityRequested: Decimal | DecimalJsLike | number | string
     quantityApproved?: Decimal | DecimalJsLike | number | string | null
-    quantityDelivered?: Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: Decimal | DecimalJsLike | number | string
+    unitOfMeasure: string
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    material: MaterialCreateNestedOneWithoutMaterialRequestItemsInput
+    requestedGlobalMaterial?: MaterialCreateNestedOneWithoutStandardMaterialRequestItemsInput
+    requestedDerivedCondition?: MaterialInstanceConditionCreateNestedOneWithoutRequestedInItemsInput
+    fulfilledByInstance?: MaterialInstanceCreateNestedOneWithoutFulfilledRequestItemsInput
+    stockMovements?: MaterialStockMovementCreateNestedManyWithoutMaterialRequestItemInput
+    MaterialInstanceCondition?: MaterialInstanceConditionCreateNestedOneWithoutMaterialRequestItemInput
   }
 
   export type MaterialRequestItemUncheckedCreateWithoutMaterialRequestInput = {
     id?: number
+    requestType?: $Enums.MaterialRequestItemType
+    requestedGlobalMaterialId?: number | null
+    requestedDerivedName?: string | null
+    requestedDerivedConditionId?: number | null
     quantityRequested: Decimal | DecimalJsLike | number | string
     quantityApproved?: Decimal | DecimalJsLike | number | string | null
-    quantityDelivered?: Decimal | DecimalJsLike | number | string | null
-    materialId: number
+    quantityDelivered?: Decimal | DecimalJsLike | number | string
+    unitOfMeasure: string
+    fulfilledByInstanceId?: number | null
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    materialInstanceConditionId?: number | null
+    stockMovements?: MaterialStockMovementUncheckedCreateNestedManyWithoutMaterialRequestItemInput
   }
 
   export type MaterialRequestItemCreateOrConnectWithoutMaterialRequestInput = {
@@ -26511,6 +37845,8 @@ export namespace Prisma {
   }
 
   export type MaterialRequestCreateWithoutItemsInput = {
+    protocolNumber?: string
+    requestType?: $Enums.MaterialRequestType
     justification?: string | null
     requestDate?: Date | string
     status?: $Enums.MaterialRequestStatus
@@ -26525,6 +37861,8 @@ export namespace Prisma {
 
   export type MaterialRequestUncheckedCreateWithoutItemsInput = {
     id?: number
+    protocolNumber?: string
+    requestType?: $Enums.MaterialRequestType
     justification?: string | null
     requestDate?: Date | string
     status?: $Enums.MaterialRequestStatus
@@ -26542,34 +37880,177 @@ export namespace Prisma {
     create: XOR<MaterialRequestCreateWithoutItemsInput, MaterialRequestUncheckedCreateWithoutItemsInput>
   }
 
-  export type MaterialCreateWithoutMaterialRequestItemsInput = {
-    code?: string | null
+  export type MaterialCreateWithoutStandardMaterialRequestItemsInput = {
+    globalCode: string
     name: string
     description?: string | null
     unitOfMeasure: string
+    category?: string | null
+    manufacturer?: string | null
+    partNumber?: string | null
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    parentMaterial?: MaterialCreateNestedOneWithoutChildsInput
-    childs?: MaterialCreateNestedManyWithoutParentMaterialInput
+    warehouseStandardStocks?: WarehouseMaterialStockCreateNestedManyWithoutMaterialInput
+    relatedMaterialInstances?: MaterialInstanceCreateNestedManyWithoutGlobalMaterialInput
+    stockMovements?: MaterialStockMovementCreateNestedManyWithoutGlobalMaterialInput
   }
 
-  export type MaterialUncheckedCreateWithoutMaterialRequestItemsInput = {
+  export type MaterialUncheckedCreateWithoutStandardMaterialRequestItemsInput = {
     id?: number
-    code?: string | null
+    globalCode: string
     name: string
     description?: string | null
     unitOfMeasure: string
+    category?: string | null
+    manufacturer?: string | null
+    partNumber?: string | null
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    parentMaterialId?: number | null
-    childs?: MaterialUncheckedCreateNestedManyWithoutParentMaterialInput
+    warehouseStandardStocks?: WarehouseMaterialStockUncheckedCreateNestedManyWithoutMaterialInput
+    relatedMaterialInstances?: MaterialInstanceUncheckedCreateNestedManyWithoutGlobalMaterialInput
+    stockMovements?: MaterialStockMovementUncheckedCreateNestedManyWithoutGlobalMaterialInput
   }
 
-  export type MaterialCreateOrConnectWithoutMaterialRequestItemsInput = {
+  export type MaterialCreateOrConnectWithoutStandardMaterialRequestItemsInput = {
     where: MaterialWhereUniqueInput
-    create: XOR<MaterialCreateWithoutMaterialRequestItemsInput, MaterialUncheckedCreateWithoutMaterialRequestItemsInput>
+    create: XOR<MaterialCreateWithoutStandardMaterialRequestItemsInput, MaterialUncheckedCreateWithoutStandardMaterialRequestItemsInput>
+  }
+
+  export type MaterialInstanceConditionCreateWithoutRequestedInItemsInput = {
+    code: string
+    name: string
+    description?: string | null
+    isUsable?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    materialInstances?: MaterialInstanceCreateNestedManyWithoutConditionInput
+    MaterialRequestItem?: MaterialRequestItemCreateNestedManyWithoutMaterialInstanceConditionInput
+  }
+
+  export type MaterialInstanceConditionUncheckedCreateWithoutRequestedInItemsInput = {
+    id?: number
+    code: string
+    name: string
+    description?: string | null
+    isUsable?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    materialInstances?: MaterialInstanceUncheckedCreateNestedManyWithoutConditionInput
+    MaterialRequestItem?: MaterialRequestItemUncheckedCreateNestedManyWithoutMaterialInstanceConditionInput
+  }
+
+  export type MaterialInstanceConditionCreateOrConnectWithoutRequestedInItemsInput = {
+    where: MaterialInstanceConditionWhereUniqueInput
+    create: XOR<MaterialInstanceConditionCreateWithoutRequestedInItemsInput, MaterialInstanceConditionUncheckedCreateWithoutRequestedInItemsInput>
+  }
+
+  export type MaterialInstanceCreateWithoutFulfilledRequestItemsInput = {
+    instanceIdentifier?: string
+    derivedName: string
+    derivedDescription?: string | null
+    derivedUnitOfMeasure: string
+    quantity: Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: string | null
+    sourceNotes?: string | null
+    reservedQuantity?: Decimal | DecimalJsLike | number | string
+    restrictedQuantity?: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    globalMaterial?: MaterialCreateNestedOneWithoutRelatedMaterialInstancesInput
+    warehouse: WarehouseCreateNestedOneWithoutMaterialInstancesInput
+    condition: MaterialInstanceConditionCreateNestedOneWithoutMaterialInstancesInput
+    stockMovements?: MaterialStockMovementCreateNestedManyWithoutMaterialInstanceInput
+  }
+
+  export type MaterialInstanceUncheckedCreateWithoutFulfilledRequestItemsInput = {
+    id?: number
+    instanceIdentifier?: string
+    globalMaterialId?: number | null
+    derivedName: string
+    derivedDescription?: string | null
+    derivedUnitOfMeasure: string
+    warehouseId: number
+    conditionId: number
+    quantity: Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: string | null
+    sourceNotes?: string | null
+    reservedQuantity?: Decimal | DecimalJsLike | number | string
+    restrictedQuantity?: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    stockMovements?: MaterialStockMovementUncheckedCreateNestedManyWithoutMaterialInstanceInput
+  }
+
+  export type MaterialInstanceCreateOrConnectWithoutFulfilledRequestItemsInput = {
+    where: MaterialInstanceWhereUniqueInput
+    create: XOR<MaterialInstanceCreateWithoutFulfilledRequestItemsInput, MaterialInstanceUncheckedCreateWithoutFulfilledRequestItemsInput>
+  }
+
+  export type MaterialStockMovementCreateWithoutMaterialRequestItemInput = {
+    quantity: Decimal | DecimalJsLike | number | string
+    unitOfMeasure: string
+    movementDate?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    warehouse: WarehouseCreateNestedOneWithoutStockMovementsInput
+    globalMaterial?: MaterialCreateNestedOneWithoutStockMovementsInput
+    materialInstance?: MaterialInstanceCreateNestedOneWithoutStockMovementsInput
+    movementType: StockMovementTypeCreateNestedOneWithoutStockMovementsInput
+    WarehouseMaterialStock?: WarehouseMaterialStockCreateNestedOneWithoutStockMovementsInput
+  }
+
+  export type MaterialStockMovementUncheckedCreateWithoutMaterialRequestItemInput = {
+    id?: number
+    warehouseId: number
+    globalMaterialId?: number | null
+    materialInstanceId?: number | null
+    movementTypeId: number
+    quantity: Decimal | DecimalJsLike | number | string
+    unitOfMeasure: string
+    movementDate?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    warehouseMaterialStockId?: number | null
+  }
+
+  export type MaterialStockMovementCreateOrConnectWithoutMaterialRequestItemInput = {
+    where: MaterialStockMovementWhereUniqueInput
+    create: XOR<MaterialStockMovementCreateWithoutMaterialRequestItemInput, MaterialStockMovementUncheckedCreateWithoutMaterialRequestItemInput>
+  }
+
+  export type MaterialStockMovementCreateManyMaterialRequestItemInputEnvelope = {
+    data: MaterialStockMovementCreateManyMaterialRequestItemInput | MaterialStockMovementCreateManyMaterialRequestItemInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MaterialInstanceConditionCreateWithoutMaterialRequestItemInput = {
+    code: string
+    name: string
+    description?: string | null
+    isUsable?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    materialInstances?: MaterialInstanceCreateNestedManyWithoutConditionInput
+    requestedInItems?: MaterialRequestItemCreateNestedManyWithoutRequestedDerivedConditionInput
+  }
+
+  export type MaterialInstanceConditionUncheckedCreateWithoutMaterialRequestItemInput = {
+    id?: number
+    code: string
+    name: string
+    description?: string | null
+    isUsable?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    materialInstances?: MaterialInstanceUncheckedCreateNestedManyWithoutConditionInput
+    requestedInItems?: MaterialRequestItemUncheckedCreateNestedManyWithoutRequestedDerivedConditionInput
+  }
+
+  export type MaterialInstanceConditionCreateOrConnectWithoutMaterialRequestItemInput = {
+    where: MaterialInstanceConditionWhereUniqueInput
+    create: XOR<MaterialInstanceConditionCreateWithoutMaterialRequestItemInput, MaterialInstanceConditionUncheckedCreateWithoutMaterialRequestItemInput>
   }
 
   export type MaterialRequestUpsertWithoutItemsInput = {
@@ -26584,6 +38065,8 @@ export namespace Prisma {
   }
 
   export type MaterialRequestUpdateWithoutItemsInput = {
+    protocolNumber?: StringFieldUpdateOperationsInput | string
+    requestType?: EnumMaterialRequestTypeFieldUpdateOperationsInput | $Enums.MaterialRequestType
     justification?: NullableStringFieldUpdateOperationsInput | string | null
     requestDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumMaterialRequestStatusFieldUpdateOperationsInput | $Enums.MaterialRequestStatus
@@ -26598,6 +38081,8 @@ export namespace Prisma {
 
   export type MaterialRequestUncheckedUpdateWithoutItemsInput = {
     id?: IntFieldUpdateOperationsInput | number
+    protocolNumber?: StringFieldUpdateOperationsInput | string
+    requestType?: EnumMaterialRequestTypeFieldUpdateOperationsInput | $Enums.MaterialRequestType
     justification?: NullableStringFieldUpdateOperationsInput | string | null
     requestDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumMaterialRequestStatusFieldUpdateOperationsInput | $Enums.MaterialRequestStatus
@@ -26610,40 +38095,1206 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type MaterialUpsertWithoutMaterialRequestItemsInput = {
-    update: XOR<MaterialUpdateWithoutMaterialRequestItemsInput, MaterialUncheckedUpdateWithoutMaterialRequestItemsInput>
-    create: XOR<MaterialCreateWithoutMaterialRequestItemsInput, MaterialUncheckedCreateWithoutMaterialRequestItemsInput>
+  export type MaterialUpsertWithoutStandardMaterialRequestItemsInput = {
+    update: XOR<MaterialUpdateWithoutStandardMaterialRequestItemsInput, MaterialUncheckedUpdateWithoutStandardMaterialRequestItemsInput>
+    create: XOR<MaterialCreateWithoutStandardMaterialRequestItemsInput, MaterialUncheckedCreateWithoutStandardMaterialRequestItemsInput>
     where?: MaterialWhereInput
   }
 
-  export type MaterialUpdateToOneWithWhereWithoutMaterialRequestItemsInput = {
+  export type MaterialUpdateToOneWithWhereWithoutStandardMaterialRequestItemsInput = {
     where?: MaterialWhereInput
-    data: XOR<MaterialUpdateWithoutMaterialRequestItemsInput, MaterialUncheckedUpdateWithoutMaterialRequestItemsInput>
+    data: XOR<MaterialUpdateWithoutStandardMaterialRequestItemsInput, MaterialUncheckedUpdateWithoutStandardMaterialRequestItemsInput>
   }
 
-  export type MaterialUpdateWithoutMaterialRequestItemsInput = {
-    code?: NullableStringFieldUpdateOperationsInput | string | null
+  export type MaterialUpdateWithoutStandardMaterialRequestItemsInput = {
+    globalCode?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    manufacturer?: NullableStringFieldUpdateOperationsInput | string | null
+    partNumber?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    parentMaterial?: MaterialUpdateOneWithoutChildsNestedInput
-    childs?: MaterialUpdateManyWithoutParentMaterialNestedInput
+    warehouseStandardStocks?: WarehouseMaterialStockUpdateManyWithoutMaterialNestedInput
+    relatedMaterialInstances?: MaterialInstanceUpdateManyWithoutGlobalMaterialNestedInput
+    stockMovements?: MaterialStockMovementUpdateManyWithoutGlobalMaterialNestedInput
   }
 
-  export type MaterialUncheckedUpdateWithoutMaterialRequestItemsInput = {
+  export type MaterialUncheckedUpdateWithoutStandardMaterialRequestItemsInput = {
     id?: IntFieldUpdateOperationsInput | number
-    code?: NullableStringFieldUpdateOperationsInput | string | null
+    globalCode?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    manufacturer?: NullableStringFieldUpdateOperationsInput | string | null
+    partNumber?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    parentMaterialId?: NullableIntFieldUpdateOperationsInput | number | null
-    childs?: MaterialUncheckedUpdateManyWithoutParentMaterialNestedInput
+    warehouseStandardStocks?: WarehouseMaterialStockUncheckedUpdateManyWithoutMaterialNestedInput
+    relatedMaterialInstances?: MaterialInstanceUncheckedUpdateManyWithoutGlobalMaterialNestedInput
+    stockMovements?: MaterialStockMovementUncheckedUpdateManyWithoutGlobalMaterialNestedInput
+  }
+
+  export type MaterialInstanceConditionUpsertWithoutRequestedInItemsInput = {
+    update: XOR<MaterialInstanceConditionUpdateWithoutRequestedInItemsInput, MaterialInstanceConditionUncheckedUpdateWithoutRequestedInItemsInput>
+    create: XOR<MaterialInstanceConditionCreateWithoutRequestedInItemsInput, MaterialInstanceConditionUncheckedCreateWithoutRequestedInItemsInput>
+    where?: MaterialInstanceConditionWhereInput
+  }
+
+  export type MaterialInstanceConditionUpdateToOneWithWhereWithoutRequestedInItemsInput = {
+    where?: MaterialInstanceConditionWhereInput
+    data: XOR<MaterialInstanceConditionUpdateWithoutRequestedInItemsInput, MaterialInstanceConditionUncheckedUpdateWithoutRequestedInItemsInput>
+  }
+
+  export type MaterialInstanceConditionUpdateWithoutRequestedInItemsInput = {
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isUsable?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    materialInstances?: MaterialInstanceUpdateManyWithoutConditionNestedInput
+    MaterialRequestItem?: MaterialRequestItemUpdateManyWithoutMaterialInstanceConditionNestedInput
+  }
+
+  export type MaterialInstanceConditionUncheckedUpdateWithoutRequestedInItemsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isUsable?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    materialInstances?: MaterialInstanceUncheckedUpdateManyWithoutConditionNestedInput
+    MaterialRequestItem?: MaterialRequestItemUncheckedUpdateManyWithoutMaterialInstanceConditionNestedInput
+  }
+
+  export type MaterialInstanceUpsertWithoutFulfilledRequestItemsInput = {
+    update: XOR<MaterialInstanceUpdateWithoutFulfilledRequestItemsInput, MaterialInstanceUncheckedUpdateWithoutFulfilledRequestItemsInput>
+    create: XOR<MaterialInstanceCreateWithoutFulfilledRequestItemsInput, MaterialInstanceUncheckedCreateWithoutFulfilledRequestItemsInput>
+    where?: MaterialInstanceWhereInput
+  }
+
+  export type MaterialInstanceUpdateToOneWithWhereWithoutFulfilledRequestItemsInput = {
+    where?: MaterialInstanceWhereInput
+    data: XOR<MaterialInstanceUpdateWithoutFulfilledRequestItemsInput, MaterialInstanceUncheckedUpdateWithoutFulfilledRequestItemsInput>
+  }
+
+  export type MaterialInstanceUpdateWithoutFulfilledRequestItemsInput = {
+    instanceIdentifier?: StringFieldUpdateOperationsInput | string
+    derivedName?: StringFieldUpdateOperationsInput | string
+    derivedDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    derivedUnitOfMeasure?: StringFieldUpdateOperationsInput | string
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    reservedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    restrictedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    globalMaterial?: MaterialUpdateOneWithoutRelatedMaterialInstancesNestedInput
+    warehouse?: WarehouseUpdateOneRequiredWithoutMaterialInstancesNestedInput
+    condition?: MaterialInstanceConditionUpdateOneRequiredWithoutMaterialInstancesNestedInput
+    stockMovements?: MaterialStockMovementUpdateManyWithoutMaterialInstanceNestedInput
+  }
+
+  export type MaterialInstanceUncheckedUpdateWithoutFulfilledRequestItemsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    instanceIdentifier?: StringFieldUpdateOperationsInput | string
+    globalMaterialId?: NullableIntFieldUpdateOperationsInput | number | null
+    derivedName?: StringFieldUpdateOperationsInput | string
+    derivedDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    derivedUnitOfMeasure?: StringFieldUpdateOperationsInput | string
+    warehouseId?: IntFieldUpdateOperationsInput | number
+    conditionId?: IntFieldUpdateOperationsInput | number
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    reservedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    restrictedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    stockMovements?: MaterialStockMovementUncheckedUpdateManyWithoutMaterialInstanceNestedInput
+  }
+
+  export type MaterialStockMovementUpsertWithWhereUniqueWithoutMaterialRequestItemInput = {
+    where: MaterialStockMovementWhereUniqueInput
+    update: XOR<MaterialStockMovementUpdateWithoutMaterialRequestItemInput, MaterialStockMovementUncheckedUpdateWithoutMaterialRequestItemInput>
+    create: XOR<MaterialStockMovementCreateWithoutMaterialRequestItemInput, MaterialStockMovementUncheckedCreateWithoutMaterialRequestItemInput>
+  }
+
+  export type MaterialStockMovementUpdateWithWhereUniqueWithoutMaterialRequestItemInput = {
+    where: MaterialStockMovementWhereUniqueInput
+    data: XOR<MaterialStockMovementUpdateWithoutMaterialRequestItemInput, MaterialStockMovementUncheckedUpdateWithoutMaterialRequestItemInput>
+  }
+
+  export type MaterialStockMovementUpdateManyWithWhereWithoutMaterialRequestItemInput = {
+    where: MaterialStockMovementScalarWhereInput
+    data: XOR<MaterialStockMovementUpdateManyMutationInput, MaterialStockMovementUncheckedUpdateManyWithoutMaterialRequestItemInput>
+  }
+
+  export type MaterialInstanceConditionUpsertWithoutMaterialRequestItemInput = {
+    update: XOR<MaterialInstanceConditionUpdateWithoutMaterialRequestItemInput, MaterialInstanceConditionUncheckedUpdateWithoutMaterialRequestItemInput>
+    create: XOR<MaterialInstanceConditionCreateWithoutMaterialRequestItemInput, MaterialInstanceConditionUncheckedCreateWithoutMaterialRequestItemInput>
+    where?: MaterialInstanceConditionWhereInput
+  }
+
+  export type MaterialInstanceConditionUpdateToOneWithWhereWithoutMaterialRequestItemInput = {
+    where?: MaterialInstanceConditionWhereInput
+    data: XOR<MaterialInstanceConditionUpdateWithoutMaterialRequestItemInput, MaterialInstanceConditionUncheckedUpdateWithoutMaterialRequestItemInput>
+  }
+
+  export type MaterialInstanceConditionUpdateWithoutMaterialRequestItemInput = {
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isUsable?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    materialInstances?: MaterialInstanceUpdateManyWithoutConditionNestedInput
+    requestedInItems?: MaterialRequestItemUpdateManyWithoutRequestedDerivedConditionNestedInput
+  }
+
+  export type MaterialInstanceConditionUncheckedUpdateWithoutMaterialRequestItemInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isUsable?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    materialInstances?: MaterialInstanceUncheckedUpdateManyWithoutConditionNestedInput
+    requestedInItems?: MaterialRequestItemUncheckedUpdateManyWithoutRequestedDerivedConditionNestedInput
+  }
+
+  export type MaterialStockMovementCreateWithoutMovementTypeInput = {
+    quantity: Decimal | DecimalJsLike | number | string
+    unitOfMeasure: string
+    movementDate?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    warehouse: WarehouseCreateNestedOneWithoutStockMovementsInput
+    globalMaterial?: MaterialCreateNestedOneWithoutStockMovementsInput
+    materialInstance?: MaterialInstanceCreateNestedOneWithoutStockMovementsInput
+    WarehouseMaterialStock?: WarehouseMaterialStockCreateNestedOneWithoutStockMovementsInput
+    MaterialRequestItem?: MaterialRequestItemCreateNestedOneWithoutStockMovementsInput
+  }
+
+  export type MaterialStockMovementUncheckedCreateWithoutMovementTypeInput = {
+    id?: number
+    warehouseId: number
+    globalMaterialId?: number | null
+    materialInstanceId?: number | null
+    quantity: Decimal | DecimalJsLike | number | string
+    unitOfMeasure: string
+    movementDate?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    warehouseMaterialStockId?: number | null
+    materialRequestItemId?: number | null
+  }
+
+  export type MaterialStockMovementCreateOrConnectWithoutMovementTypeInput = {
+    where: MaterialStockMovementWhereUniqueInput
+    create: XOR<MaterialStockMovementCreateWithoutMovementTypeInput, MaterialStockMovementUncheckedCreateWithoutMovementTypeInput>
+  }
+
+  export type MaterialStockMovementCreateManyMovementTypeInputEnvelope = {
+    data: MaterialStockMovementCreateManyMovementTypeInput | MaterialStockMovementCreateManyMovementTypeInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MaterialStockMovementUpsertWithWhereUniqueWithoutMovementTypeInput = {
+    where: MaterialStockMovementWhereUniqueInput
+    update: XOR<MaterialStockMovementUpdateWithoutMovementTypeInput, MaterialStockMovementUncheckedUpdateWithoutMovementTypeInput>
+    create: XOR<MaterialStockMovementCreateWithoutMovementTypeInput, MaterialStockMovementUncheckedCreateWithoutMovementTypeInput>
+  }
+
+  export type MaterialStockMovementUpdateWithWhereUniqueWithoutMovementTypeInput = {
+    where: MaterialStockMovementWhereUniqueInput
+    data: XOR<MaterialStockMovementUpdateWithoutMovementTypeInput, MaterialStockMovementUncheckedUpdateWithoutMovementTypeInput>
+  }
+
+  export type MaterialStockMovementUpdateManyWithWhereWithoutMovementTypeInput = {
+    where: MaterialStockMovementScalarWhereInput
+    data: XOR<MaterialStockMovementUpdateManyMutationInput, MaterialStockMovementUncheckedUpdateManyWithoutMovementTypeInput>
+  }
+
+  export type WarehouseCreateWithoutStockMovementsInput = {
+    name: string
+    code?: string | null
+    location?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    maintenanceInstance: MaintenanceInstanceCreateNestedOneWithoutWarehousesInput
+    standardMaterialStocks?: WarehouseMaterialStockCreateNestedManyWithoutWarehouseInput
+    materialInstances?: MaterialInstanceCreateNestedManyWithoutWarehouseInput
+  }
+
+  export type WarehouseUncheckedCreateWithoutStockMovementsInput = {
+    id?: number
+    name: string
+    code?: string | null
+    location?: string | null
+    isActive?: boolean
+    maintenanceInstanceId: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    standardMaterialStocks?: WarehouseMaterialStockUncheckedCreateNestedManyWithoutWarehouseInput
+    materialInstances?: MaterialInstanceUncheckedCreateNestedManyWithoutWarehouseInput
+  }
+
+  export type WarehouseCreateOrConnectWithoutStockMovementsInput = {
+    where: WarehouseWhereUniqueInput
+    create: XOR<WarehouseCreateWithoutStockMovementsInput, WarehouseUncheckedCreateWithoutStockMovementsInput>
+  }
+
+  export type MaterialCreateWithoutStockMovementsInput = {
+    globalCode: string
+    name: string
+    description?: string | null
+    unitOfMeasure: string
+    category?: string | null
+    manufacturer?: string | null
+    partNumber?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    warehouseStandardStocks?: WarehouseMaterialStockCreateNestedManyWithoutMaterialInput
+    relatedMaterialInstances?: MaterialInstanceCreateNestedManyWithoutGlobalMaterialInput
+    standardMaterialRequestItems?: MaterialRequestItemCreateNestedManyWithoutRequestedGlobalMaterialInput
+  }
+
+  export type MaterialUncheckedCreateWithoutStockMovementsInput = {
+    id?: number
+    globalCode: string
+    name: string
+    description?: string | null
+    unitOfMeasure: string
+    category?: string | null
+    manufacturer?: string | null
+    partNumber?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    warehouseStandardStocks?: WarehouseMaterialStockUncheckedCreateNestedManyWithoutMaterialInput
+    relatedMaterialInstances?: MaterialInstanceUncheckedCreateNestedManyWithoutGlobalMaterialInput
+    standardMaterialRequestItems?: MaterialRequestItemUncheckedCreateNestedManyWithoutRequestedGlobalMaterialInput
+  }
+
+  export type MaterialCreateOrConnectWithoutStockMovementsInput = {
+    where: MaterialWhereUniqueInput
+    create: XOR<MaterialCreateWithoutStockMovementsInput, MaterialUncheckedCreateWithoutStockMovementsInput>
+  }
+
+  export type MaterialInstanceCreateWithoutStockMovementsInput = {
+    instanceIdentifier?: string
+    derivedName: string
+    derivedDescription?: string | null
+    derivedUnitOfMeasure: string
+    quantity: Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: string | null
+    sourceNotes?: string | null
+    reservedQuantity?: Decimal | DecimalJsLike | number | string
+    restrictedQuantity?: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    globalMaterial?: MaterialCreateNestedOneWithoutRelatedMaterialInstancesInput
+    warehouse: WarehouseCreateNestedOneWithoutMaterialInstancesInput
+    condition: MaterialInstanceConditionCreateNestedOneWithoutMaterialInstancesInput
+    fulfilledRequestItems?: MaterialRequestItemCreateNestedManyWithoutFulfilledByInstanceInput
+  }
+
+  export type MaterialInstanceUncheckedCreateWithoutStockMovementsInput = {
+    id?: number
+    instanceIdentifier?: string
+    globalMaterialId?: number | null
+    derivedName: string
+    derivedDescription?: string | null
+    derivedUnitOfMeasure: string
+    warehouseId: number
+    conditionId: number
+    quantity: Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: string | null
+    sourceNotes?: string | null
+    reservedQuantity?: Decimal | DecimalJsLike | number | string
+    restrictedQuantity?: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    fulfilledRequestItems?: MaterialRequestItemUncheckedCreateNestedManyWithoutFulfilledByInstanceInput
+  }
+
+  export type MaterialInstanceCreateOrConnectWithoutStockMovementsInput = {
+    where: MaterialInstanceWhereUniqueInput
+    create: XOR<MaterialInstanceCreateWithoutStockMovementsInput, MaterialInstanceUncheckedCreateWithoutStockMovementsInput>
+  }
+
+  export type StockMovementTypeCreateWithoutStockMovementsInput = {
+    code: string
+    name: string
+    description?: string | null
+    operation: $Enums.StockOperationType
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type StockMovementTypeUncheckedCreateWithoutStockMovementsInput = {
+    id?: number
+    code: string
+    name: string
+    description?: string | null
+    operation: $Enums.StockOperationType
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type StockMovementTypeCreateOrConnectWithoutStockMovementsInput = {
+    where: StockMovementTypeWhereUniqueInput
+    create: XOR<StockMovementTypeCreateWithoutStockMovementsInput, StockMovementTypeUncheckedCreateWithoutStockMovementsInput>
+  }
+
+  export type WarehouseMaterialStockCreateWithoutStockMovementsInput = {
+    physicalOnHandQuantity?: Decimal | DecimalJsLike | number | string
+    initialStockQuantity?: Decimal | DecimalJsLike | number | string | null
+    restrictedQuantity?: Decimal | DecimalJsLike | number | string
+    reservedQuantity?: Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: string | null
+    minStockLevel?: Decimal | DecimalJsLike | number | string | null
+    maxStockLevel?: Decimal | DecimalJsLike | number | string | null
+    lastStockCountDate?: Date | string | null
+    averageCost?: Decimal | DecimalJsLike | number | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    warehouse: WarehouseCreateNestedOneWithoutStandardMaterialStocksInput
+    material: MaterialCreateNestedOneWithoutWarehouseStandardStocksInput
+  }
+
+  export type WarehouseMaterialStockUncheckedCreateWithoutStockMovementsInput = {
+    id?: number
+    warehouseId: number
+    materialId: number
+    physicalOnHandQuantity?: Decimal | DecimalJsLike | number | string
+    initialStockQuantity?: Decimal | DecimalJsLike | number | string | null
+    restrictedQuantity?: Decimal | DecimalJsLike | number | string
+    reservedQuantity?: Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: string | null
+    minStockLevel?: Decimal | DecimalJsLike | number | string | null
+    maxStockLevel?: Decimal | DecimalJsLike | number | string | null
+    lastStockCountDate?: Date | string | null
+    averageCost?: Decimal | DecimalJsLike | number | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type WarehouseMaterialStockCreateOrConnectWithoutStockMovementsInput = {
+    where: WarehouseMaterialStockWhereUniqueInput
+    create: XOR<WarehouseMaterialStockCreateWithoutStockMovementsInput, WarehouseMaterialStockUncheckedCreateWithoutStockMovementsInput>
+  }
+
+  export type MaterialRequestItemCreateWithoutStockMovementsInput = {
+    requestType?: $Enums.MaterialRequestItemType
+    requestedDerivedName?: string | null
+    quantityRequested: Decimal | DecimalJsLike | number | string
+    quantityApproved?: Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: Decimal | DecimalJsLike | number | string
+    unitOfMeasure: string
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    materialRequest: MaterialRequestCreateNestedOneWithoutItemsInput
+    requestedGlobalMaterial?: MaterialCreateNestedOneWithoutStandardMaterialRequestItemsInput
+    requestedDerivedCondition?: MaterialInstanceConditionCreateNestedOneWithoutRequestedInItemsInput
+    fulfilledByInstance?: MaterialInstanceCreateNestedOneWithoutFulfilledRequestItemsInput
+    MaterialInstanceCondition?: MaterialInstanceConditionCreateNestedOneWithoutMaterialRequestItemInput
+  }
+
+  export type MaterialRequestItemUncheckedCreateWithoutStockMovementsInput = {
+    id?: number
+    materialRequestId: number
+    requestType?: $Enums.MaterialRequestItemType
+    requestedGlobalMaterialId?: number | null
+    requestedDerivedName?: string | null
+    requestedDerivedConditionId?: number | null
+    quantityRequested: Decimal | DecimalJsLike | number | string
+    quantityApproved?: Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: Decimal | DecimalJsLike | number | string
+    unitOfMeasure: string
+    fulfilledByInstanceId?: number | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    materialInstanceConditionId?: number | null
+  }
+
+  export type MaterialRequestItemCreateOrConnectWithoutStockMovementsInput = {
+    where: MaterialRequestItemWhereUniqueInput
+    create: XOR<MaterialRequestItemCreateWithoutStockMovementsInput, MaterialRequestItemUncheckedCreateWithoutStockMovementsInput>
+  }
+
+  export type WarehouseUpsertWithoutStockMovementsInput = {
+    update: XOR<WarehouseUpdateWithoutStockMovementsInput, WarehouseUncheckedUpdateWithoutStockMovementsInput>
+    create: XOR<WarehouseCreateWithoutStockMovementsInput, WarehouseUncheckedCreateWithoutStockMovementsInput>
+    where?: WarehouseWhereInput
+  }
+
+  export type WarehouseUpdateToOneWithWhereWithoutStockMovementsInput = {
+    where?: WarehouseWhereInput
+    data: XOR<WarehouseUpdateWithoutStockMovementsInput, WarehouseUncheckedUpdateWithoutStockMovementsInput>
+  }
+
+  export type WarehouseUpdateWithoutStockMovementsInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maintenanceInstance?: MaintenanceInstanceUpdateOneRequiredWithoutWarehousesNestedInput
+    standardMaterialStocks?: WarehouseMaterialStockUpdateManyWithoutWarehouseNestedInput
+    materialInstances?: MaterialInstanceUpdateManyWithoutWarehouseNestedInput
+  }
+
+  export type WarehouseUncheckedUpdateWithoutStockMovementsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    maintenanceInstanceId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    standardMaterialStocks?: WarehouseMaterialStockUncheckedUpdateManyWithoutWarehouseNestedInput
+    materialInstances?: MaterialInstanceUncheckedUpdateManyWithoutWarehouseNestedInput
+  }
+
+  export type MaterialUpsertWithoutStockMovementsInput = {
+    update: XOR<MaterialUpdateWithoutStockMovementsInput, MaterialUncheckedUpdateWithoutStockMovementsInput>
+    create: XOR<MaterialCreateWithoutStockMovementsInput, MaterialUncheckedCreateWithoutStockMovementsInput>
+    where?: MaterialWhereInput
+  }
+
+  export type MaterialUpdateToOneWithWhereWithoutStockMovementsInput = {
+    where?: MaterialWhereInput
+    data: XOR<MaterialUpdateWithoutStockMovementsInput, MaterialUncheckedUpdateWithoutStockMovementsInput>
+  }
+
+  export type MaterialUpdateWithoutStockMovementsInput = {
+    globalCode?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    manufacturer?: NullableStringFieldUpdateOperationsInput | string | null
+    partNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    warehouseStandardStocks?: WarehouseMaterialStockUpdateManyWithoutMaterialNestedInput
+    relatedMaterialInstances?: MaterialInstanceUpdateManyWithoutGlobalMaterialNestedInput
+    standardMaterialRequestItems?: MaterialRequestItemUpdateManyWithoutRequestedGlobalMaterialNestedInput
+  }
+
+  export type MaterialUncheckedUpdateWithoutStockMovementsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    globalCode?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    manufacturer?: NullableStringFieldUpdateOperationsInput | string | null
+    partNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    warehouseStandardStocks?: WarehouseMaterialStockUncheckedUpdateManyWithoutMaterialNestedInput
+    relatedMaterialInstances?: MaterialInstanceUncheckedUpdateManyWithoutGlobalMaterialNestedInput
+    standardMaterialRequestItems?: MaterialRequestItemUncheckedUpdateManyWithoutRequestedGlobalMaterialNestedInput
+  }
+
+  export type MaterialInstanceUpsertWithoutStockMovementsInput = {
+    update: XOR<MaterialInstanceUpdateWithoutStockMovementsInput, MaterialInstanceUncheckedUpdateWithoutStockMovementsInput>
+    create: XOR<MaterialInstanceCreateWithoutStockMovementsInput, MaterialInstanceUncheckedCreateWithoutStockMovementsInput>
+    where?: MaterialInstanceWhereInput
+  }
+
+  export type MaterialInstanceUpdateToOneWithWhereWithoutStockMovementsInput = {
+    where?: MaterialInstanceWhereInput
+    data: XOR<MaterialInstanceUpdateWithoutStockMovementsInput, MaterialInstanceUncheckedUpdateWithoutStockMovementsInput>
+  }
+
+  export type MaterialInstanceUpdateWithoutStockMovementsInput = {
+    instanceIdentifier?: StringFieldUpdateOperationsInput | string
+    derivedName?: StringFieldUpdateOperationsInput | string
+    derivedDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    derivedUnitOfMeasure?: StringFieldUpdateOperationsInput | string
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    reservedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    restrictedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    globalMaterial?: MaterialUpdateOneWithoutRelatedMaterialInstancesNestedInput
+    warehouse?: WarehouseUpdateOneRequiredWithoutMaterialInstancesNestedInput
+    condition?: MaterialInstanceConditionUpdateOneRequiredWithoutMaterialInstancesNestedInput
+    fulfilledRequestItems?: MaterialRequestItemUpdateManyWithoutFulfilledByInstanceNestedInput
+  }
+
+  export type MaterialInstanceUncheckedUpdateWithoutStockMovementsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    instanceIdentifier?: StringFieldUpdateOperationsInput | string
+    globalMaterialId?: NullableIntFieldUpdateOperationsInput | number | null
+    derivedName?: StringFieldUpdateOperationsInput | string
+    derivedDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    derivedUnitOfMeasure?: StringFieldUpdateOperationsInput | string
+    warehouseId?: IntFieldUpdateOperationsInput | number
+    conditionId?: IntFieldUpdateOperationsInput | number
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    reservedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    restrictedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    fulfilledRequestItems?: MaterialRequestItemUncheckedUpdateManyWithoutFulfilledByInstanceNestedInput
+  }
+
+  export type StockMovementTypeUpsertWithoutStockMovementsInput = {
+    update: XOR<StockMovementTypeUpdateWithoutStockMovementsInput, StockMovementTypeUncheckedUpdateWithoutStockMovementsInput>
+    create: XOR<StockMovementTypeCreateWithoutStockMovementsInput, StockMovementTypeUncheckedCreateWithoutStockMovementsInput>
+    where?: StockMovementTypeWhereInput
+  }
+
+  export type StockMovementTypeUpdateToOneWithWhereWithoutStockMovementsInput = {
+    where?: StockMovementTypeWhereInput
+    data: XOR<StockMovementTypeUpdateWithoutStockMovementsInput, StockMovementTypeUncheckedUpdateWithoutStockMovementsInput>
+  }
+
+  export type StockMovementTypeUpdateWithoutStockMovementsInput = {
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    operation?: EnumStockOperationTypeFieldUpdateOperationsInput | $Enums.StockOperationType
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StockMovementTypeUncheckedUpdateWithoutStockMovementsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    operation?: EnumStockOperationTypeFieldUpdateOperationsInput | $Enums.StockOperationType
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type WarehouseMaterialStockUpsertWithoutStockMovementsInput = {
+    update: XOR<WarehouseMaterialStockUpdateWithoutStockMovementsInput, WarehouseMaterialStockUncheckedUpdateWithoutStockMovementsInput>
+    create: XOR<WarehouseMaterialStockCreateWithoutStockMovementsInput, WarehouseMaterialStockUncheckedCreateWithoutStockMovementsInput>
+    where?: WarehouseMaterialStockWhereInput
+  }
+
+  export type WarehouseMaterialStockUpdateToOneWithWhereWithoutStockMovementsInput = {
+    where?: WarehouseMaterialStockWhereInput
+    data: XOR<WarehouseMaterialStockUpdateWithoutStockMovementsInput, WarehouseMaterialStockUncheckedUpdateWithoutStockMovementsInput>
+  }
+
+  export type WarehouseMaterialStockUpdateWithoutStockMovementsInput = {
+    physicalOnHandQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    initialStockQuantity?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    restrictedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    reservedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: NullableStringFieldUpdateOperationsInput | string | null
+    minStockLevel?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    maxStockLevel?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    lastStockCountDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    averageCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    warehouse?: WarehouseUpdateOneRequiredWithoutStandardMaterialStocksNestedInput
+    material?: MaterialUpdateOneRequiredWithoutWarehouseStandardStocksNestedInput
+  }
+
+  export type WarehouseMaterialStockUncheckedUpdateWithoutStockMovementsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    warehouseId?: IntFieldUpdateOperationsInput | number
+    materialId?: IntFieldUpdateOperationsInput | number
+    physicalOnHandQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    initialStockQuantity?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    restrictedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    reservedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: NullableStringFieldUpdateOperationsInput | string | null
+    minStockLevel?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    maxStockLevel?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    lastStockCountDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    averageCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaterialRequestItemUpsertWithoutStockMovementsInput = {
+    update: XOR<MaterialRequestItemUpdateWithoutStockMovementsInput, MaterialRequestItemUncheckedUpdateWithoutStockMovementsInput>
+    create: XOR<MaterialRequestItemCreateWithoutStockMovementsInput, MaterialRequestItemUncheckedCreateWithoutStockMovementsInput>
+    where?: MaterialRequestItemWhereInput
+  }
+
+  export type MaterialRequestItemUpdateToOneWithWhereWithoutStockMovementsInput = {
+    where?: MaterialRequestItemWhereInput
+    data: XOR<MaterialRequestItemUpdateWithoutStockMovementsInput, MaterialRequestItemUncheckedUpdateWithoutStockMovementsInput>
+  }
+
+  export type MaterialRequestItemUpdateWithoutStockMovementsInput = {
+    requestType?: EnumMaterialRequestItemTypeFieldUpdateOperationsInput | $Enums.MaterialRequestItemType
+    requestedDerivedName?: NullableStringFieldUpdateOperationsInput | string | null
+    quantityRequested?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    quantityApproved?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    materialRequest?: MaterialRequestUpdateOneRequiredWithoutItemsNestedInput
+    requestedGlobalMaterial?: MaterialUpdateOneWithoutStandardMaterialRequestItemsNestedInput
+    requestedDerivedCondition?: MaterialInstanceConditionUpdateOneWithoutRequestedInItemsNestedInput
+    fulfilledByInstance?: MaterialInstanceUpdateOneWithoutFulfilledRequestItemsNestedInput
+    MaterialInstanceCondition?: MaterialInstanceConditionUpdateOneWithoutMaterialRequestItemNestedInput
+  }
+
+  export type MaterialRequestItemUncheckedUpdateWithoutStockMovementsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    materialRequestId?: IntFieldUpdateOperationsInput | number
+    requestType?: EnumMaterialRequestItemTypeFieldUpdateOperationsInput | $Enums.MaterialRequestItemType
+    requestedGlobalMaterialId?: NullableIntFieldUpdateOperationsInput | number | null
+    requestedDerivedName?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedDerivedConditionId?: NullableIntFieldUpdateOperationsInput | number | null
+    quantityRequested?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    quantityApproved?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    fulfilledByInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    materialInstanceConditionId?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type MaterialInstanceCreateWithoutConditionInput = {
+    instanceIdentifier?: string
+    derivedName: string
+    derivedDescription?: string | null
+    derivedUnitOfMeasure: string
+    quantity: Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: string | null
+    sourceNotes?: string | null
+    reservedQuantity?: Decimal | DecimalJsLike | number | string
+    restrictedQuantity?: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    globalMaterial?: MaterialCreateNestedOneWithoutRelatedMaterialInstancesInput
+    warehouse: WarehouseCreateNestedOneWithoutMaterialInstancesInput
+    stockMovements?: MaterialStockMovementCreateNestedManyWithoutMaterialInstanceInput
+    fulfilledRequestItems?: MaterialRequestItemCreateNestedManyWithoutFulfilledByInstanceInput
+  }
+
+  export type MaterialInstanceUncheckedCreateWithoutConditionInput = {
+    id?: number
+    instanceIdentifier?: string
+    globalMaterialId?: number | null
+    derivedName: string
+    derivedDescription?: string | null
+    derivedUnitOfMeasure: string
+    warehouseId: number
+    quantity: Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: string | null
+    sourceNotes?: string | null
+    reservedQuantity?: Decimal | DecimalJsLike | number | string
+    restrictedQuantity?: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    stockMovements?: MaterialStockMovementUncheckedCreateNestedManyWithoutMaterialInstanceInput
+    fulfilledRequestItems?: MaterialRequestItemUncheckedCreateNestedManyWithoutFulfilledByInstanceInput
+  }
+
+  export type MaterialInstanceCreateOrConnectWithoutConditionInput = {
+    where: MaterialInstanceWhereUniqueInput
+    create: XOR<MaterialInstanceCreateWithoutConditionInput, MaterialInstanceUncheckedCreateWithoutConditionInput>
+  }
+
+  export type MaterialInstanceCreateManyConditionInputEnvelope = {
+    data: MaterialInstanceCreateManyConditionInput | MaterialInstanceCreateManyConditionInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MaterialRequestItemCreateWithoutRequestedDerivedConditionInput = {
+    requestType?: $Enums.MaterialRequestItemType
+    requestedDerivedName?: string | null
+    quantityRequested: Decimal | DecimalJsLike | number | string
+    quantityApproved?: Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: Decimal | DecimalJsLike | number | string
+    unitOfMeasure: string
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    materialRequest: MaterialRequestCreateNestedOneWithoutItemsInput
+    requestedGlobalMaterial?: MaterialCreateNestedOneWithoutStandardMaterialRequestItemsInput
+    fulfilledByInstance?: MaterialInstanceCreateNestedOneWithoutFulfilledRequestItemsInput
+    stockMovements?: MaterialStockMovementCreateNestedManyWithoutMaterialRequestItemInput
+    MaterialInstanceCondition?: MaterialInstanceConditionCreateNestedOneWithoutMaterialRequestItemInput
+  }
+
+  export type MaterialRequestItemUncheckedCreateWithoutRequestedDerivedConditionInput = {
+    id?: number
+    materialRequestId: number
+    requestType?: $Enums.MaterialRequestItemType
+    requestedGlobalMaterialId?: number | null
+    requestedDerivedName?: string | null
+    quantityRequested: Decimal | DecimalJsLike | number | string
+    quantityApproved?: Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: Decimal | DecimalJsLike | number | string
+    unitOfMeasure: string
+    fulfilledByInstanceId?: number | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    materialInstanceConditionId?: number | null
+    stockMovements?: MaterialStockMovementUncheckedCreateNestedManyWithoutMaterialRequestItemInput
+  }
+
+  export type MaterialRequestItemCreateOrConnectWithoutRequestedDerivedConditionInput = {
+    where: MaterialRequestItemWhereUniqueInput
+    create: XOR<MaterialRequestItemCreateWithoutRequestedDerivedConditionInput, MaterialRequestItemUncheckedCreateWithoutRequestedDerivedConditionInput>
+  }
+
+  export type MaterialRequestItemCreateManyRequestedDerivedConditionInputEnvelope = {
+    data: MaterialRequestItemCreateManyRequestedDerivedConditionInput | MaterialRequestItemCreateManyRequestedDerivedConditionInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MaterialRequestItemCreateWithoutMaterialInstanceConditionInput = {
+    requestType?: $Enums.MaterialRequestItemType
+    requestedDerivedName?: string | null
+    quantityRequested: Decimal | DecimalJsLike | number | string
+    quantityApproved?: Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: Decimal | DecimalJsLike | number | string
+    unitOfMeasure: string
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    materialRequest: MaterialRequestCreateNestedOneWithoutItemsInput
+    requestedGlobalMaterial?: MaterialCreateNestedOneWithoutStandardMaterialRequestItemsInput
+    requestedDerivedCondition?: MaterialInstanceConditionCreateNestedOneWithoutRequestedInItemsInput
+    fulfilledByInstance?: MaterialInstanceCreateNestedOneWithoutFulfilledRequestItemsInput
+    stockMovements?: MaterialStockMovementCreateNestedManyWithoutMaterialRequestItemInput
+  }
+
+  export type MaterialRequestItemUncheckedCreateWithoutMaterialInstanceConditionInput = {
+    id?: number
+    materialRequestId: number
+    requestType?: $Enums.MaterialRequestItemType
+    requestedGlobalMaterialId?: number | null
+    requestedDerivedName?: string | null
+    requestedDerivedConditionId?: number | null
+    quantityRequested: Decimal | DecimalJsLike | number | string
+    quantityApproved?: Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: Decimal | DecimalJsLike | number | string
+    unitOfMeasure: string
+    fulfilledByInstanceId?: number | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    stockMovements?: MaterialStockMovementUncheckedCreateNestedManyWithoutMaterialRequestItemInput
+  }
+
+  export type MaterialRequestItemCreateOrConnectWithoutMaterialInstanceConditionInput = {
+    where: MaterialRequestItemWhereUniqueInput
+    create: XOR<MaterialRequestItemCreateWithoutMaterialInstanceConditionInput, MaterialRequestItemUncheckedCreateWithoutMaterialInstanceConditionInput>
+  }
+
+  export type MaterialRequestItemCreateManyMaterialInstanceConditionInputEnvelope = {
+    data: MaterialRequestItemCreateManyMaterialInstanceConditionInput | MaterialRequestItemCreateManyMaterialInstanceConditionInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MaterialInstanceUpsertWithWhereUniqueWithoutConditionInput = {
+    where: MaterialInstanceWhereUniqueInput
+    update: XOR<MaterialInstanceUpdateWithoutConditionInput, MaterialInstanceUncheckedUpdateWithoutConditionInput>
+    create: XOR<MaterialInstanceCreateWithoutConditionInput, MaterialInstanceUncheckedCreateWithoutConditionInput>
+  }
+
+  export type MaterialInstanceUpdateWithWhereUniqueWithoutConditionInput = {
+    where: MaterialInstanceWhereUniqueInput
+    data: XOR<MaterialInstanceUpdateWithoutConditionInput, MaterialInstanceUncheckedUpdateWithoutConditionInput>
+  }
+
+  export type MaterialInstanceUpdateManyWithWhereWithoutConditionInput = {
+    where: MaterialInstanceScalarWhereInput
+    data: XOR<MaterialInstanceUpdateManyMutationInput, MaterialInstanceUncheckedUpdateManyWithoutConditionInput>
+  }
+
+  export type MaterialRequestItemUpsertWithWhereUniqueWithoutRequestedDerivedConditionInput = {
+    where: MaterialRequestItemWhereUniqueInput
+    update: XOR<MaterialRequestItemUpdateWithoutRequestedDerivedConditionInput, MaterialRequestItemUncheckedUpdateWithoutRequestedDerivedConditionInput>
+    create: XOR<MaterialRequestItemCreateWithoutRequestedDerivedConditionInput, MaterialRequestItemUncheckedCreateWithoutRequestedDerivedConditionInput>
+  }
+
+  export type MaterialRequestItemUpdateWithWhereUniqueWithoutRequestedDerivedConditionInput = {
+    where: MaterialRequestItemWhereUniqueInput
+    data: XOR<MaterialRequestItemUpdateWithoutRequestedDerivedConditionInput, MaterialRequestItemUncheckedUpdateWithoutRequestedDerivedConditionInput>
+  }
+
+  export type MaterialRequestItemUpdateManyWithWhereWithoutRequestedDerivedConditionInput = {
+    where: MaterialRequestItemScalarWhereInput
+    data: XOR<MaterialRequestItemUpdateManyMutationInput, MaterialRequestItemUncheckedUpdateManyWithoutRequestedDerivedConditionInput>
+  }
+
+  export type MaterialRequestItemUpsertWithWhereUniqueWithoutMaterialInstanceConditionInput = {
+    where: MaterialRequestItemWhereUniqueInput
+    update: XOR<MaterialRequestItemUpdateWithoutMaterialInstanceConditionInput, MaterialRequestItemUncheckedUpdateWithoutMaterialInstanceConditionInput>
+    create: XOR<MaterialRequestItemCreateWithoutMaterialInstanceConditionInput, MaterialRequestItemUncheckedCreateWithoutMaterialInstanceConditionInput>
+  }
+
+  export type MaterialRequestItemUpdateWithWhereUniqueWithoutMaterialInstanceConditionInput = {
+    where: MaterialRequestItemWhereUniqueInput
+    data: XOR<MaterialRequestItemUpdateWithoutMaterialInstanceConditionInput, MaterialRequestItemUncheckedUpdateWithoutMaterialInstanceConditionInput>
+  }
+
+  export type MaterialRequestItemUpdateManyWithWhereWithoutMaterialInstanceConditionInput = {
+    where: MaterialRequestItemScalarWhereInput
+    data: XOR<MaterialRequestItemUpdateManyMutationInput, MaterialRequestItemUncheckedUpdateManyWithoutMaterialInstanceConditionInput>
+  }
+
+  export type MaterialCreateWithoutRelatedMaterialInstancesInput = {
+    globalCode: string
+    name: string
+    description?: string | null
+    unitOfMeasure: string
+    category?: string | null
+    manufacturer?: string | null
+    partNumber?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    warehouseStandardStocks?: WarehouseMaterialStockCreateNestedManyWithoutMaterialInput
+    standardMaterialRequestItems?: MaterialRequestItemCreateNestedManyWithoutRequestedGlobalMaterialInput
+    stockMovements?: MaterialStockMovementCreateNestedManyWithoutGlobalMaterialInput
+  }
+
+  export type MaterialUncheckedCreateWithoutRelatedMaterialInstancesInput = {
+    id?: number
+    globalCode: string
+    name: string
+    description?: string | null
+    unitOfMeasure: string
+    category?: string | null
+    manufacturer?: string | null
+    partNumber?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    warehouseStandardStocks?: WarehouseMaterialStockUncheckedCreateNestedManyWithoutMaterialInput
+    standardMaterialRequestItems?: MaterialRequestItemUncheckedCreateNestedManyWithoutRequestedGlobalMaterialInput
+    stockMovements?: MaterialStockMovementUncheckedCreateNestedManyWithoutGlobalMaterialInput
+  }
+
+  export type MaterialCreateOrConnectWithoutRelatedMaterialInstancesInput = {
+    where: MaterialWhereUniqueInput
+    create: XOR<MaterialCreateWithoutRelatedMaterialInstancesInput, MaterialUncheckedCreateWithoutRelatedMaterialInstancesInput>
+  }
+
+  export type WarehouseCreateWithoutMaterialInstancesInput = {
+    name: string
+    code?: string | null
+    location?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    maintenanceInstance: MaintenanceInstanceCreateNestedOneWithoutWarehousesInput
+    standardMaterialStocks?: WarehouseMaterialStockCreateNestedManyWithoutWarehouseInput
+    stockMovements?: MaterialStockMovementCreateNestedManyWithoutWarehouseInput
+  }
+
+  export type WarehouseUncheckedCreateWithoutMaterialInstancesInput = {
+    id?: number
+    name: string
+    code?: string | null
+    location?: string | null
+    isActive?: boolean
+    maintenanceInstanceId: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    standardMaterialStocks?: WarehouseMaterialStockUncheckedCreateNestedManyWithoutWarehouseInput
+    stockMovements?: MaterialStockMovementUncheckedCreateNestedManyWithoutWarehouseInput
+  }
+
+  export type WarehouseCreateOrConnectWithoutMaterialInstancesInput = {
+    where: WarehouseWhereUniqueInput
+    create: XOR<WarehouseCreateWithoutMaterialInstancesInput, WarehouseUncheckedCreateWithoutMaterialInstancesInput>
+  }
+
+  export type MaterialInstanceConditionCreateWithoutMaterialInstancesInput = {
+    code: string
+    name: string
+    description?: string | null
+    isUsable?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    requestedInItems?: MaterialRequestItemCreateNestedManyWithoutRequestedDerivedConditionInput
+    MaterialRequestItem?: MaterialRequestItemCreateNestedManyWithoutMaterialInstanceConditionInput
+  }
+
+  export type MaterialInstanceConditionUncheckedCreateWithoutMaterialInstancesInput = {
+    id?: number
+    code: string
+    name: string
+    description?: string | null
+    isUsable?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    requestedInItems?: MaterialRequestItemUncheckedCreateNestedManyWithoutRequestedDerivedConditionInput
+    MaterialRequestItem?: MaterialRequestItemUncheckedCreateNestedManyWithoutMaterialInstanceConditionInput
+  }
+
+  export type MaterialInstanceConditionCreateOrConnectWithoutMaterialInstancesInput = {
+    where: MaterialInstanceConditionWhereUniqueInput
+    create: XOR<MaterialInstanceConditionCreateWithoutMaterialInstancesInput, MaterialInstanceConditionUncheckedCreateWithoutMaterialInstancesInput>
+  }
+
+  export type MaterialStockMovementCreateWithoutMaterialInstanceInput = {
+    quantity: Decimal | DecimalJsLike | number | string
+    unitOfMeasure: string
+    movementDate?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    warehouse: WarehouseCreateNestedOneWithoutStockMovementsInput
+    globalMaterial?: MaterialCreateNestedOneWithoutStockMovementsInput
+    movementType: StockMovementTypeCreateNestedOneWithoutStockMovementsInput
+    WarehouseMaterialStock?: WarehouseMaterialStockCreateNestedOneWithoutStockMovementsInput
+    MaterialRequestItem?: MaterialRequestItemCreateNestedOneWithoutStockMovementsInput
+  }
+
+  export type MaterialStockMovementUncheckedCreateWithoutMaterialInstanceInput = {
+    id?: number
+    warehouseId: number
+    globalMaterialId?: number | null
+    movementTypeId: number
+    quantity: Decimal | DecimalJsLike | number | string
+    unitOfMeasure: string
+    movementDate?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    warehouseMaterialStockId?: number | null
+    materialRequestItemId?: number | null
+  }
+
+  export type MaterialStockMovementCreateOrConnectWithoutMaterialInstanceInput = {
+    where: MaterialStockMovementWhereUniqueInput
+    create: XOR<MaterialStockMovementCreateWithoutMaterialInstanceInput, MaterialStockMovementUncheckedCreateWithoutMaterialInstanceInput>
+  }
+
+  export type MaterialStockMovementCreateManyMaterialInstanceInputEnvelope = {
+    data: MaterialStockMovementCreateManyMaterialInstanceInput | MaterialStockMovementCreateManyMaterialInstanceInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MaterialRequestItemCreateWithoutFulfilledByInstanceInput = {
+    requestType?: $Enums.MaterialRequestItemType
+    requestedDerivedName?: string | null
+    quantityRequested: Decimal | DecimalJsLike | number | string
+    quantityApproved?: Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: Decimal | DecimalJsLike | number | string
+    unitOfMeasure: string
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    materialRequest: MaterialRequestCreateNestedOneWithoutItemsInput
+    requestedGlobalMaterial?: MaterialCreateNestedOneWithoutStandardMaterialRequestItemsInput
+    requestedDerivedCondition?: MaterialInstanceConditionCreateNestedOneWithoutRequestedInItemsInput
+    stockMovements?: MaterialStockMovementCreateNestedManyWithoutMaterialRequestItemInput
+    MaterialInstanceCondition?: MaterialInstanceConditionCreateNestedOneWithoutMaterialRequestItemInput
+  }
+
+  export type MaterialRequestItemUncheckedCreateWithoutFulfilledByInstanceInput = {
+    id?: number
+    materialRequestId: number
+    requestType?: $Enums.MaterialRequestItemType
+    requestedGlobalMaterialId?: number | null
+    requestedDerivedName?: string | null
+    requestedDerivedConditionId?: number | null
+    quantityRequested: Decimal | DecimalJsLike | number | string
+    quantityApproved?: Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: Decimal | DecimalJsLike | number | string
+    unitOfMeasure: string
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    materialInstanceConditionId?: number | null
+    stockMovements?: MaterialStockMovementUncheckedCreateNestedManyWithoutMaterialRequestItemInput
+  }
+
+  export type MaterialRequestItemCreateOrConnectWithoutFulfilledByInstanceInput = {
+    where: MaterialRequestItemWhereUniqueInput
+    create: XOR<MaterialRequestItemCreateWithoutFulfilledByInstanceInput, MaterialRequestItemUncheckedCreateWithoutFulfilledByInstanceInput>
+  }
+
+  export type MaterialRequestItemCreateManyFulfilledByInstanceInputEnvelope = {
+    data: MaterialRequestItemCreateManyFulfilledByInstanceInput | MaterialRequestItemCreateManyFulfilledByInstanceInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MaterialUpsertWithoutRelatedMaterialInstancesInput = {
+    update: XOR<MaterialUpdateWithoutRelatedMaterialInstancesInput, MaterialUncheckedUpdateWithoutRelatedMaterialInstancesInput>
+    create: XOR<MaterialCreateWithoutRelatedMaterialInstancesInput, MaterialUncheckedCreateWithoutRelatedMaterialInstancesInput>
+    where?: MaterialWhereInput
+  }
+
+  export type MaterialUpdateToOneWithWhereWithoutRelatedMaterialInstancesInput = {
+    where?: MaterialWhereInput
+    data: XOR<MaterialUpdateWithoutRelatedMaterialInstancesInput, MaterialUncheckedUpdateWithoutRelatedMaterialInstancesInput>
+  }
+
+  export type MaterialUpdateWithoutRelatedMaterialInstancesInput = {
+    globalCode?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    manufacturer?: NullableStringFieldUpdateOperationsInput | string | null
+    partNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    warehouseStandardStocks?: WarehouseMaterialStockUpdateManyWithoutMaterialNestedInput
+    standardMaterialRequestItems?: MaterialRequestItemUpdateManyWithoutRequestedGlobalMaterialNestedInput
+    stockMovements?: MaterialStockMovementUpdateManyWithoutGlobalMaterialNestedInput
+  }
+
+  export type MaterialUncheckedUpdateWithoutRelatedMaterialInstancesInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    globalCode?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    manufacturer?: NullableStringFieldUpdateOperationsInput | string | null
+    partNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    warehouseStandardStocks?: WarehouseMaterialStockUncheckedUpdateManyWithoutMaterialNestedInput
+    standardMaterialRequestItems?: MaterialRequestItemUncheckedUpdateManyWithoutRequestedGlobalMaterialNestedInput
+    stockMovements?: MaterialStockMovementUncheckedUpdateManyWithoutGlobalMaterialNestedInput
+  }
+
+  export type WarehouseUpsertWithoutMaterialInstancesInput = {
+    update: XOR<WarehouseUpdateWithoutMaterialInstancesInput, WarehouseUncheckedUpdateWithoutMaterialInstancesInput>
+    create: XOR<WarehouseCreateWithoutMaterialInstancesInput, WarehouseUncheckedCreateWithoutMaterialInstancesInput>
+    where?: WarehouseWhereInput
+  }
+
+  export type WarehouseUpdateToOneWithWhereWithoutMaterialInstancesInput = {
+    where?: WarehouseWhereInput
+    data: XOR<WarehouseUpdateWithoutMaterialInstancesInput, WarehouseUncheckedUpdateWithoutMaterialInstancesInput>
+  }
+
+  export type WarehouseUpdateWithoutMaterialInstancesInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maintenanceInstance?: MaintenanceInstanceUpdateOneRequiredWithoutWarehousesNestedInput
+    standardMaterialStocks?: WarehouseMaterialStockUpdateManyWithoutWarehouseNestedInput
+    stockMovements?: MaterialStockMovementUpdateManyWithoutWarehouseNestedInput
+  }
+
+  export type WarehouseUncheckedUpdateWithoutMaterialInstancesInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    maintenanceInstanceId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    standardMaterialStocks?: WarehouseMaterialStockUncheckedUpdateManyWithoutWarehouseNestedInput
+    stockMovements?: MaterialStockMovementUncheckedUpdateManyWithoutWarehouseNestedInput
+  }
+
+  export type MaterialInstanceConditionUpsertWithoutMaterialInstancesInput = {
+    update: XOR<MaterialInstanceConditionUpdateWithoutMaterialInstancesInput, MaterialInstanceConditionUncheckedUpdateWithoutMaterialInstancesInput>
+    create: XOR<MaterialInstanceConditionCreateWithoutMaterialInstancesInput, MaterialInstanceConditionUncheckedCreateWithoutMaterialInstancesInput>
+    where?: MaterialInstanceConditionWhereInput
+  }
+
+  export type MaterialInstanceConditionUpdateToOneWithWhereWithoutMaterialInstancesInput = {
+    where?: MaterialInstanceConditionWhereInput
+    data: XOR<MaterialInstanceConditionUpdateWithoutMaterialInstancesInput, MaterialInstanceConditionUncheckedUpdateWithoutMaterialInstancesInput>
+  }
+
+  export type MaterialInstanceConditionUpdateWithoutMaterialInstancesInput = {
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isUsable?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    requestedInItems?: MaterialRequestItemUpdateManyWithoutRequestedDerivedConditionNestedInput
+    MaterialRequestItem?: MaterialRequestItemUpdateManyWithoutMaterialInstanceConditionNestedInput
+  }
+
+  export type MaterialInstanceConditionUncheckedUpdateWithoutMaterialInstancesInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isUsable?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    requestedInItems?: MaterialRequestItemUncheckedUpdateManyWithoutRequestedDerivedConditionNestedInput
+    MaterialRequestItem?: MaterialRequestItemUncheckedUpdateManyWithoutMaterialInstanceConditionNestedInput
+  }
+
+  export type MaterialStockMovementUpsertWithWhereUniqueWithoutMaterialInstanceInput = {
+    where: MaterialStockMovementWhereUniqueInput
+    update: XOR<MaterialStockMovementUpdateWithoutMaterialInstanceInput, MaterialStockMovementUncheckedUpdateWithoutMaterialInstanceInput>
+    create: XOR<MaterialStockMovementCreateWithoutMaterialInstanceInput, MaterialStockMovementUncheckedCreateWithoutMaterialInstanceInput>
+  }
+
+  export type MaterialStockMovementUpdateWithWhereUniqueWithoutMaterialInstanceInput = {
+    where: MaterialStockMovementWhereUniqueInput
+    data: XOR<MaterialStockMovementUpdateWithoutMaterialInstanceInput, MaterialStockMovementUncheckedUpdateWithoutMaterialInstanceInput>
+  }
+
+  export type MaterialStockMovementUpdateManyWithWhereWithoutMaterialInstanceInput = {
+    where: MaterialStockMovementScalarWhereInput
+    data: XOR<MaterialStockMovementUpdateManyMutationInput, MaterialStockMovementUncheckedUpdateManyWithoutMaterialInstanceInput>
+  }
+
+  export type MaterialRequestItemUpsertWithWhereUniqueWithoutFulfilledByInstanceInput = {
+    where: MaterialRequestItemWhereUniqueInput
+    update: XOR<MaterialRequestItemUpdateWithoutFulfilledByInstanceInput, MaterialRequestItemUncheckedUpdateWithoutFulfilledByInstanceInput>
+    create: XOR<MaterialRequestItemCreateWithoutFulfilledByInstanceInput, MaterialRequestItemUncheckedCreateWithoutFulfilledByInstanceInput>
+  }
+
+  export type MaterialRequestItemUpdateWithWhereUniqueWithoutFulfilledByInstanceInput = {
+    where: MaterialRequestItemWhereUniqueInput
+    data: XOR<MaterialRequestItemUpdateWithoutFulfilledByInstanceInput, MaterialRequestItemUncheckedUpdateWithoutFulfilledByInstanceInput>
+  }
+
+  export type MaterialRequestItemUpdateManyWithWhereWithoutFulfilledByInstanceInput = {
+    where: MaterialRequestItemScalarWhereInput
+    data: XOR<MaterialRequestItemUpdateManyMutationInput, MaterialRequestItemUncheckedUpdateManyWithoutFulfilledByInstanceInput>
   }
 
   export type LogLoginCreateWithoutUserInput = {
@@ -26896,6 +39547,8 @@ export namespace Prisma {
   }
 
   export type MaterialRequestCreateWithoutRequestedByInput = {
+    protocolNumber?: string
+    requestType?: $Enums.MaterialRequestType
     justification?: string | null
     requestDate?: Date | string
     status?: $Enums.MaterialRequestStatus
@@ -26910,6 +39563,8 @@ export namespace Prisma {
 
   export type MaterialRequestUncheckedCreateWithoutRequestedByInput = {
     id?: number
+    protocolNumber?: string
+    requestType?: $Enums.MaterialRequestType
     justification?: string | null
     requestDate?: Date | string
     status?: $Enums.MaterialRequestStatus
@@ -26933,6 +39588,8 @@ export namespace Prisma {
   }
 
   export type MaterialRequestCreateWithoutApprovedByInput = {
+    protocolNumber?: string
+    requestType?: $Enums.MaterialRequestType
     justification?: string | null
     requestDate?: Date | string
     status?: $Enums.MaterialRequestStatus
@@ -26947,6 +39604,8 @@ export namespace Prisma {
 
   export type MaterialRequestUncheckedCreateWithoutApprovedByInput = {
     id?: number
+    protocolNumber?: string
+    requestType?: $Enums.MaterialRequestType
     justification?: string | null
     requestDate?: Date | string
     status?: $Enums.MaterialRequestStatus
@@ -27338,6 +39997,8 @@ export namespace Prisma {
 
   export type MaterialRequestCreateManyMaintenanceRequestInput = {
     id?: number
+    protocolNumber?: string
+    requestType?: $Enums.MaterialRequestType
     justification?: string | null
     requestDate?: Date | string
     status?: $Enums.MaterialRequestStatus
@@ -27426,6 +40087,8 @@ export namespace Prisma {
   }
 
   export type MaterialRequestUpdateWithoutMaintenanceRequestInput = {
+    protocolNumber?: StringFieldUpdateOperationsInput | string
+    requestType?: EnumMaterialRequestTypeFieldUpdateOperationsInput | $Enums.MaterialRequestType
     justification?: NullableStringFieldUpdateOperationsInput | string | null
     requestDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumMaterialRequestStatusFieldUpdateOperationsInput | $Enums.MaterialRequestStatus
@@ -27440,6 +40103,8 @@ export namespace Prisma {
 
   export type MaterialRequestUncheckedUpdateWithoutMaintenanceRequestInput = {
     id?: IntFieldUpdateOperationsInput | number
+    protocolNumber?: StringFieldUpdateOperationsInput | string
+    requestType?: EnumMaterialRequestTypeFieldUpdateOperationsInput | $Enums.MaterialRequestType
     justification?: NullableStringFieldUpdateOperationsInput | string | null
     requestDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumMaterialRequestStatusFieldUpdateOperationsInput | $Enums.MaterialRequestStatus
@@ -27454,6 +40119,8 @@ export namespace Prisma {
 
   export type MaterialRequestUncheckedUpdateManyWithoutMaintenanceRequestInput = {
     id?: IntFieldUpdateOperationsInput | number
+    protocolNumber?: StringFieldUpdateOperationsInput | string
+    requestType?: EnumMaterialRequestTypeFieldUpdateOperationsInput | $Enums.MaterialRequestType
     justification?: NullableStringFieldUpdateOperationsInput | string | null
     requestDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumMaterialRequestStatusFieldUpdateOperationsInput | $Enums.MaterialRequestStatus
@@ -27587,6 +40254,16 @@ export namespace Prisma {
     maintenanceRequestId: number
     actionById: number
     transferredFromInstanceId?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type WarehouseCreateManyMaintenanceInstanceInput = {
+    id?: number
+    name: string
+    code?: string | null
+    location?: string | null
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -27725,6 +40402,41 @@ export namespace Prisma {
     maintenanceRequestId?: IntFieldUpdateOperationsInput | number
     actionById?: IntFieldUpdateOperationsInput | number
     transferredFromInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type WarehouseUpdateWithoutMaintenanceInstanceInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    standardMaterialStocks?: WarehouseMaterialStockUpdateManyWithoutWarehouseNestedInput
+    materialInstances?: MaterialInstanceUpdateManyWithoutWarehouseNestedInput
+    stockMovements?: MaterialStockMovementUpdateManyWithoutWarehouseNestedInput
+  }
+
+  export type WarehouseUncheckedUpdateWithoutMaintenanceInstanceInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    standardMaterialStocks?: WarehouseMaterialStockUncheckedUpdateManyWithoutWarehouseNestedInput
+    materialInstances?: MaterialInstanceUncheckedUpdateManyWithoutWarehouseNestedInput
+    stockMovements?: MaterialStockMovementUncheckedUpdateManyWithoutWarehouseNestedInput
+  }
+
+  export type WarehouseUncheckedUpdateManyWithoutMaintenanceInstanceInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -27891,129 +40603,1022 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type MaterialCreateManyParentMaterialInput = {
+  export type WarehouseMaterialStockCreateManyWarehouseInput = {
     id?: number
-    code?: string | null
-    name: string
-    description?: string | null
-    unitOfMeasure: string
-    isActive?: boolean
+    materialId: number
+    physicalOnHandQuantity?: Decimal | DecimalJsLike | number | string
+    initialStockQuantity?: Decimal | DecimalJsLike | number | string | null
+    restrictedQuantity?: Decimal | DecimalJsLike | number | string
+    reservedQuantity?: Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: string | null
+    minStockLevel?: Decimal | DecimalJsLike | number | string | null
+    maxStockLevel?: Decimal | DecimalJsLike | number | string | null
+    lastStockCountDate?: Date | string | null
+    averageCost?: Decimal | DecimalJsLike | number | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
-  export type MaterialRequestItemCreateManyMaterialInput = {
+  export type MaterialInstanceCreateManyWarehouseInput = {
     id?: number
+    instanceIdentifier?: string
+    globalMaterialId?: number | null
+    derivedName: string
+    derivedDescription?: string | null
+    derivedUnitOfMeasure: string
+    conditionId: number
+    quantity: Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: string | null
+    sourceNotes?: string | null
+    reservedQuantity?: Decimal | DecimalJsLike | number | string
+    restrictedQuantity?: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaterialStockMovementCreateManyWarehouseInput = {
+    id?: number
+    globalMaterialId?: number | null
+    materialInstanceId?: number | null
+    movementTypeId: number
+    quantity: Decimal | DecimalJsLike | number | string
+    unitOfMeasure: string
+    movementDate?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    warehouseMaterialStockId?: number | null
+    materialRequestItemId?: number | null
+  }
+
+  export type WarehouseMaterialStockUpdateWithoutWarehouseInput = {
+    physicalOnHandQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    initialStockQuantity?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    restrictedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    reservedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: NullableStringFieldUpdateOperationsInput | string | null
+    minStockLevel?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    maxStockLevel?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    lastStockCountDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    averageCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    material?: MaterialUpdateOneRequiredWithoutWarehouseStandardStocksNestedInput
+    stockMovements?: MaterialStockMovementUpdateManyWithoutWarehouseMaterialStockNestedInput
+  }
+
+  export type WarehouseMaterialStockUncheckedUpdateWithoutWarehouseInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    materialId?: IntFieldUpdateOperationsInput | number
+    physicalOnHandQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    initialStockQuantity?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    restrictedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    reservedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: NullableStringFieldUpdateOperationsInput | string | null
+    minStockLevel?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    maxStockLevel?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    lastStockCountDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    averageCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    stockMovements?: MaterialStockMovementUncheckedUpdateManyWithoutWarehouseMaterialStockNestedInput
+  }
+
+  export type WarehouseMaterialStockUncheckedUpdateManyWithoutWarehouseInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    materialId?: IntFieldUpdateOperationsInput | number
+    physicalOnHandQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    initialStockQuantity?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    restrictedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    reservedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: NullableStringFieldUpdateOperationsInput | string | null
+    minStockLevel?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    maxStockLevel?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    lastStockCountDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    averageCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaterialInstanceUpdateWithoutWarehouseInput = {
+    instanceIdentifier?: StringFieldUpdateOperationsInput | string
+    derivedName?: StringFieldUpdateOperationsInput | string
+    derivedDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    derivedUnitOfMeasure?: StringFieldUpdateOperationsInput | string
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    reservedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    restrictedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    globalMaterial?: MaterialUpdateOneWithoutRelatedMaterialInstancesNestedInput
+    condition?: MaterialInstanceConditionUpdateOneRequiredWithoutMaterialInstancesNestedInput
+    stockMovements?: MaterialStockMovementUpdateManyWithoutMaterialInstanceNestedInput
+    fulfilledRequestItems?: MaterialRequestItemUpdateManyWithoutFulfilledByInstanceNestedInput
+  }
+
+  export type MaterialInstanceUncheckedUpdateWithoutWarehouseInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    instanceIdentifier?: StringFieldUpdateOperationsInput | string
+    globalMaterialId?: NullableIntFieldUpdateOperationsInput | number | null
+    derivedName?: StringFieldUpdateOperationsInput | string
+    derivedDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    derivedUnitOfMeasure?: StringFieldUpdateOperationsInput | string
+    conditionId?: IntFieldUpdateOperationsInput | number
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    reservedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    restrictedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    stockMovements?: MaterialStockMovementUncheckedUpdateManyWithoutMaterialInstanceNestedInput
+    fulfilledRequestItems?: MaterialRequestItemUncheckedUpdateManyWithoutFulfilledByInstanceNestedInput
+  }
+
+  export type MaterialInstanceUncheckedUpdateManyWithoutWarehouseInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    instanceIdentifier?: StringFieldUpdateOperationsInput | string
+    globalMaterialId?: NullableIntFieldUpdateOperationsInput | number | null
+    derivedName?: StringFieldUpdateOperationsInput | string
+    derivedDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    derivedUnitOfMeasure?: StringFieldUpdateOperationsInput | string
+    conditionId?: IntFieldUpdateOperationsInput | number
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    reservedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    restrictedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaterialStockMovementUpdateWithoutWarehouseInput = {
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    movementDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    globalMaterial?: MaterialUpdateOneWithoutStockMovementsNestedInput
+    materialInstance?: MaterialInstanceUpdateOneWithoutStockMovementsNestedInput
+    movementType?: StockMovementTypeUpdateOneRequiredWithoutStockMovementsNestedInput
+    WarehouseMaterialStock?: WarehouseMaterialStockUpdateOneWithoutStockMovementsNestedInput
+    MaterialRequestItem?: MaterialRequestItemUpdateOneWithoutStockMovementsNestedInput
+  }
+
+  export type MaterialStockMovementUncheckedUpdateWithoutWarehouseInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    globalMaterialId?: NullableIntFieldUpdateOperationsInput | number | null
+    materialInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
+    movementTypeId?: IntFieldUpdateOperationsInput | number
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    movementDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    warehouseMaterialStockId?: NullableIntFieldUpdateOperationsInput | number | null
+    materialRequestItemId?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type MaterialStockMovementUncheckedUpdateManyWithoutWarehouseInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    globalMaterialId?: NullableIntFieldUpdateOperationsInput | number | null
+    materialInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
+    movementTypeId?: IntFieldUpdateOperationsInput | number
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    movementDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    warehouseMaterialStockId?: NullableIntFieldUpdateOperationsInput | number | null
+    materialRequestItemId?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type WarehouseMaterialStockCreateManyMaterialInput = {
+    id?: number
+    warehouseId: number
+    physicalOnHandQuantity?: Decimal | DecimalJsLike | number | string
+    initialStockQuantity?: Decimal | DecimalJsLike | number | string | null
+    restrictedQuantity?: Decimal | DecimalJsLike | number | string
+    reservedQuantity?: Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: string | null
+    minStockLevel?: Decimal | DecimalJsLike | number | string | null
+    maxStockLevel?: Decimal | DecimalJsLike | number | string | null
+    lastStockCountDate?: Date | string | null
+    averageCost?: Decimal | DecimalJsLike | number | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaterialInstanceCreateManyGlobalMaterialInput = {
+    id?: number
+    instanceIdentifier?: string
+    derivedName: string
+    derivedDescription?: string | null
+    derivedUnitOfMeasure: string
+    warehouseId: number
+    conditionId: number
+    quantity: Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: string | null
+    sourceNotes?: string | null
+    reservedQuantity?: Decimal | DecimalJsLike | number | string
+    restrictedQuantity?: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaterialRequestItemCreateManyRequestedGlobalMaterialInput = {
+    id?: number
+    materialRequestId: number
+    requestType?: $Enums.MaterialRequestItemType
+    requestedDerivedName?: string | null
+    requestedDerivedConditionId?: number | null
     quantityRequested: Decimal | DecimalJsLike | number | string
     quantityApproved?: Decimal | DecimalJsLike | number | string | null
-    quantityDelivered?: Decimal | DecimalJsLike | number | string | null
-    materialRequestId: number
+    quantityDelivered?: Decimal | DecimalJsLike | number | string
+    unitOfMeasure: string
+    fulfilledByInstanceId?: number | null
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    materialInstanceConditionId?: number | null
   }
 
-  export type MaterialUpdateWithoutParentMaterialInput = {
-    code?: NullableStringFieldUpdateOperationsInput | string | null
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    unitOfMeasure?: StringFieldUpdateOperationsInput | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
+  export type MaterialStockMovementCreateManyGlobalMaterialInput = {
+    id?: number
+    warehouseId: number
+    materialInstanceId?: number | null
+    movementTypeId: number
+    quantity: Decimal | DecimalJsLike | number | string
+    unitOfMeasure: string
+    movementDate?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    warehouseMaterialStockId?: number | null
+    materialRequestItemId?: number | null
+  }
+
+  export type WarehouseMaterialStockUpdateWithoutMaterialInput = {
+    physicalOnHandQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    initialStockQuantity?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    restrictedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    reservedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: NullableStringFieldUpdateOperationsInput | string | null
+    minStockLevel?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    maxStockLevel?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    lastStockCountDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    averageCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    childs?: MaterialUpdateManyWithoutParentMaterialNestedInput
-    materialRequestItems?: MaterialRequestItemUpdateManyWithoutMaterialNestedInput
+    warehouse?: WarehouseUpdateOneRequiredWithoutStandardMaterialStocksNestedInput
+    stockMovements?: MaterialStockMovementUpdateManyWithoutWarehouseMaterialStockNestedInput
   }
 
-  export type MaterialUncheckedUpdateWithoutParentMaterialInput = {
+  export type WarehouseMaterialStockUncheckedUpdateWithoutMaterialInput = {
     id?: IntFieldUpdateOperationsInput | number
-    code?: NullableStringFieldUpdateOperationsInput | string | null
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    unitOfMeasure?: StringFieldUpdateOperationsInput | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
+    warehouseId?: IntFieldUpdateOperationsInput | number
+    physicalOnHandQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    initialStockQuantity?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    restrictedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    reservedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: NullableStringFieldUpdateOperationsInput | string | null
+    minStockLevel?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    maxStockLevel?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    lastStockCountDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    averageCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    childs?: MaterialUncheckedUpdateManyWithoutParentMaterialNestedInput
-    materialRequestItems?: MaterialRequestItemUncheckedUpdateManyWithoutMaterialNestedInput
+    stockMovements?: MaterialStockMovementUncheckedUpdateManyWithoutWarehouseMaterialStockNestedInput
   }
 
-  export type MaterialUncheckedUpdateManyWithoutParentMaterialInput = {
+  export type WarehouseMaterialStockUncheckedUpdateManyWithoutMaterialInput = {
     id?: IntFieldUpdateOperationsInput | number
-    code?: NullableStringFieldUpdateOperationsInput | string | null
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    unitOfMeasure?: StringFieldUpdateOperationsInput | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
+    warehouseId?: IntFieldUpdateOperationsInput | number
+    physicalOnHandQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    initialStockQuantity?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    restrictedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    reservedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: NullableStringFieldUpdateOperationsInput | string | null
+    minStockLevel?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    maxStockLevel?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    lastStockCountDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    averageCost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type MaterialRequestItemUpdateWithoutMaterialInput = {
+  export type MaterialInstanceUpdateWithoutGlobalMaterialInput = {
+    instanceIdentifier?: StringFieldUpdateOperationsInput | string
+    derivedName?: StringFieldUpdateOperationsInput | string
+    derivedDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    derivedUnitOfMeasure?: StringFieldUpdateOperationsInput | string
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    reservedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    restrictedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    warehouse?: WarehouseUpdateOneRequiredWithoutMaterialInstancesNestedInput
+    condition?: MaterialInstanceConditionUpdateOneRequiredWithoutMaterialInstancesNestedInput
+    stockMovements?: MaterialStockMovementUpdateManyWithoutMaterialInstanceNestedInput
+    fulfilledRequestItems?: MaterialRequestItemUpdateManyWithoutFulfilledByInstanceNestedInput
+  }
+
+  export type MaterialInstanceUncheckedUpdateWithoutGlobalMaterialInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    instanceIdentifier?: StringFieldUpdateOperationsInput | string
+    derivedName?: StringFieldUpdateOperationsInput | string
+    derivedDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    derivedUnitOfMeasure?: StringFieldUpdateOperationsInput | string
+    warehouseId?: IntFieldUpdateOperationsInput | number
+    conditionId?: IntFieldUpdateOperationsInput | number
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    reservedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    restrictedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    stockMovements?: MaterialStockMovementUncheckedUpdateManyWithoutMaterialInstanceNestedInput
+    fulfilledRequestItems?: MaterialRequestItemUncheckedUpdateManyWithoutFulfilledByInstanceNestedInput
+  }
+
+  export type MaterialInstanceUncheckedUpdateManyWithoutGlobalMaterialInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    instanceIdentifier?: StringFieldUpdateOperationsInput | string
+    derivedName?: StringFieldUpdateOperationsInput | string
+    derivedDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    derivedUnitOfMeasure?: StringFieldUpdateOperationsInput | string
+    warehouseId?: IntFieldUpdateOperationsInput | number
+    conditionId?: IntFieldUpdateOperationsInput | number
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    reservedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    restrictedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaterialRequestItemUpdateWithoutRequestedGlobalMaterialInput = {
+    requestType?: EnumMaterialRequestItemTypeFieldUpdateOperationsInput | $Enums.MaterialRequestItemType
+    requestedDerivedName?: NullableStringFieldUpdateOperationsInput | string | null
     quantityRequested?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     quantityApproved?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    quantityDelivered?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     materialRequest?: MaterialRequestUpdateOneRequiredWithoutItemsNestedInput
+    requestedDerivedCondition?: MaterialInstanceConditionUpdateOneWithoutRequestedInItemsNestedInput
+    fulfilledByInstance?: MaterialInstanceUpdateOneWithoutFulfilledRequestItemsNestedInput
+    stockMovements?: MaterialStockMovementUpdateManyWithoutMaterialRequestItemNestedInput
+    MaterialInstanceCondition?: MaterialInstanceConditionUpdateOneWithoutMaterialRequestItemNestedInput
   }
 
-  export type MaterialRequestItemUncheckedUpdateWithoutMaterialInput = {
+  export type MaterialRequestItemUncheckedUpdateWithoutRequestedGlobalMaterialInput = {
     id?: IntFieldUpdateOperationsInput | number
+    materialRequestId?: IntFieldUpdateOperationsInput | number
+    requestType?: EnumMaterialRequestItemTypeFieldUpdateOperationsInput | $Enums.MaterialRequestItemType
+    requestedDerivedName?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedDerivedConditionId?: NullableIntFieldUpdateOperationsInput | number | null
     quantityRequested?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     quantityApproved?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    quantityDelivered?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    materialRequestId?: IntFieldUpdateOperationsInput | number
+    quantityDelivered?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    fulfilledByInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    materialInstanceConditionId?: NullableIntFieldUpdateOperationsInput | number | null
+    stockMovements?: MaterialStockMovementUncheckedUpdateManyWithoutMaterialRequestItemNestedInput
   }
 
-  export type MaterialRequestItemUncheckedUpdateManyWithoutMaterialInput = {
+  export type MaterialRequestItemUncheckedUpdateManyWithoutRequestedGlobalMaterialInput = {
     id?: IntFieldUpdateOperationsInput | number
+    materialRequestId?: IntFieldUpdateOperationsInput | number
+    requestType?: EnumMaterialRequestItemTypeFieldUpdateOperationsInput | $Enums.MaterialRequestItemType
+    requestedDerivedName?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedDerivedConditionId?: NullableIntFieldUpdateOperationsInput | number | null
     quantityRequested?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     quantityApproved?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    quantityDelivered?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    materialRequestId?: IntFieldUpdateOperationsInput | number
+    quantityDelivered?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    fulfilledByInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    materialInstanceConditionId?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type MaterialStockMovementUpdateWithoutGlobalMaterialInput = {
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    movementDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    warehouse?: WarehouseUpdateOneRequiredWithoutStockMovementsNestedInput
+    materialInstance?: MaterialInstanceUpdateOneWithoutStockMovementsNestedInput
+    movementType?: StockMovementTypeUpdateOneRequiredWithoutStockMovementsNestedInput
+    WarehouseMaterialStock?: WarehouseMaterialStockUpdateOneWithoutStockMovementsNestedInput
+    MaterialRequestItem?: MaterialRequestItemUpdateOneWithoutStockMovementsNestedInput
+  }
+
+  export type MaterialStockMovementUncheckedUpdateWithoutGlobalMaterialInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    warehouseId?: IntFieldUpdateOperationsInput | number
+    materialInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
+    movementTypeId?: IntFieldUpdateOperationsInput | number
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    movementDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    warehouseMaterialStockId?: NullableIntFieldUpdateOperationsInput | number | null
+    materialRequestItemId?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type MaterialStockMovementUncheckedUpdateManyWithoutGlobalMaterialInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    warehouseId?: IntFieldUpdateOperationsInput | number
+    materialInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
+    movementTypeId?: IntFieldUpdateOperationsInput | number
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    movementDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    warehouseMaterialStockId?: NullableIntFieldUpdateOperationsInput | number | null
+    materialRequestItemId?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type MaterialStockMovementCreateManyWarehouseMaterialStockInput = {
+    id?: number
+    warehouseId: number
+    globalMaterialId?: number | null
+    materialInstanceId?: number | null
+    movementTypeId: number
+    quantity: Decimal | DecimalJsLike | number | string
+    unitOfMeasure: string
+    movementDate?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    materialRequestItemId?: number | null
+  }
+
+  export type MaterialStockMovementUpdateWithoutWarehouseMaterialStockInput = {
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    movementDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    warehouse?: WarehouseUpdateOneRequiredWithoutStockMovementsNestedInput
+    globalMaterial?: MaterialUpdateOneWithoutStockMovementsNestedInput
+    materialInstance?: MaterialInstanceUpdateOneWithoutStockMovementsNestedInput
+    movementType?: StockMovementTypeUpdateOneRequiredWithoutStockMovementsNestedInput
+    MaterialRequestItem?: MaterialRequestItemUpdateOneWithoutStockMovementsNestedInput
+  }
+
+  export type MaterialStockMovementUncheckedUpdateWithoutWarehouseMaterialStockInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    warehouseId?: IntFieldUpdateOperationsInput | number
+    globalMaterialId?: NullableIntFieldUpdateOperationsInput | number | null
+    materialInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
+    movementTypeId?: IntFieldUpdateOperationsInput | number
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    movementDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    materialRequestItemId?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type MaterialStockMovementUncheckedUpdateManyWithoutWarehouseMaterialStockInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    warehouseId?: IntFieldUpdateOperationsInput | number
+    globalMaterialId?: NullableIntFieldUpdateOperationsInput | number | null
+    materialInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
+    movementTypeId?: IntFieldUpdateOperationsInput | number
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    movementDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    materialRequestItemId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type MaterialRequestItemCreateManyMaterialRequestInput = {
     id?: number
+    requestType?: $Enums.MaterialRequestItemType
+    requestedGlobalMaterialId?: number | null
+    requestedDerivedName?: string | null
+    requestedDerivedConditionId?: number | null
     quantityRequested: Decimal | DecimalJsLike | number | string
     quantityApproved?: Decimal | DecimalJsLike | number | string | null
-    quantityDelivered?: Decimal | DecimalJsLike | number | string | null
-    materialId: number
+    quantityDelivered?: Decimal | DecimalJsLike | number | string
+    unitOfMeasure: string
+    fulfilledByInstanceId?: number | null
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    materialInstanceConditionId?: number | null
   }
 
   export type MaterialRequestItemUpdateWithoutMaterialRequestInput = {
+    requestType?: EnumMaterialRequestItemTypeFieldUpdateOperationsInput | $Enums.MaterialRequestItemType
+    requestedDerivedName?: NullableStringFieldUpdateOperationsInput | string | null
     quantityRequested?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     quantityApproved?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    quantityDelivered?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    material?: MaterialUpdateOneRequiredWithoutMaterialRequestItemsNestedInput
+    requestedGlobalMaterial?: MaterialUpdateOneWithoutStandardMaterialRequestItemsNestedInput
+    requestedDerivedCondition?: MaterialInstanceConditionUpdateOneWithoutRequestedInItemsNestedInput
+    fulfilledByInstance?: MaterialInstanceUpdateOneWithoutFulfilledRequestItemsNestedInput
+    stockMovements?: MaterialStockMovementUpdateManyWithoutMaterialRequestItemNestedInput
+    MaterialInstanceCondition?: MaterialInstanceConditionUpdateOneWithoutMaterialRequestItemNestedInput
   }
 
   export type MaterialRequestItemUncheckedUpdateWithoutMaterialRequestInput = {
     id?: IntFieldUpdateOperationsInput | number
+    requestType?: EnumMaterialRequestItemTypeFieldUpdateOperationsInput | $Enums.MaterialRequestItemType
+    requestedGlobalMaterialId?: NullableIntFieldUpdateOperationsInput | number | null
+    requestedDerivedName?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedDerivedConditionId?: NullableIntFieldUpdateOperationsInput | number | null
     quantityRequested?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     quantityApproved?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    quantityDelivered?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    materialId?: IntFieldUpdateOperationsInput | number
+    quantityDelivered?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    fulfilledByInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    materialInstanceConditionId?: NullableIntFieldUpdateOperationsInput | number | null
+    stockMovements?: MaterialStockMovementUncheckedUpdateManyWithoutMaterialRequestItemNestedInput
   }
 
   export type MaterialRequestItemUncheckedUpdateManyWithoutMaterialRequestInput = {
     id?: IntFieldUpdateOperationsInput | number
+    requestType?: EnumMaterialRequestItemTypeFieldUpdateOperationsInput | $Enums.MaterialRequestItemType
+    requestedGlobalMaterialId?: NullableIntFieldUpdateOperationsInput | number | null
+    requestedDerivedName?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedDerivedConditionId?: NullableIntFieldUpdateOperationsInput | number | null
     quantityRequested?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     quantityApproved?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    quantityDelivered?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    materialId?: IntFieldUpdateOperationsInput | number
+    quantityDelivered?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    fulfilledByInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    materialInstanceConditionId?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type MaterialStockMovementCreateManyMaterialRequestItemInput = {
+    id?: number
+    warehouseId: number
+    globalMaterialId?: number | null
+    materialInstanceId?: number | null
+    movementTypeId: number
+    quantity: Decimal | DecimalJsLike | number | string
+    unitOfMeasure: string
+    movementDate?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    warehouseMaterialStockId?: number | null
+  }
+
+  export type MaterialStockMovementUpdateWithoutMaterialRequestItemInput = {
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    movementDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    warehouse?: WarehouseUpdateOneRequiredWithoutStockMovementsNestedInput
+    globalMaterial?: MaterialUpdateOneWithoutStockMovementsNestedInput
+    materialInstance?: MaterialInstanceUpdateOneWithoutStockMovementsNestedInput
+    movementType?: StockMovementTypeUpdateOneRequiredWithoutStockMovementsNestedInput
+    WarehouseMaterialStock?: WarehouseMaterialStockUpdateOneWithoutStockMovementsNestedInput
+  }
+
+  export type MaterialStockMovementUncheckedUpdateWithoutMaterialRequestItemInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    warehouseId?: IntFieldUpdateOperationsInput | number
+    globalMaterialId?: NullableIntFieldUpdateOperationsInput | number | null
+    materialInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
+    movementTypeId?: IntFieldUpdateOperationsInput | number
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    movementDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    warehouseMaterialStockId?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type MaterialStockMovementUncheckedUpdateManyWithoutMaterialRequestItemInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    warehouseId?: IntFieldUpdateOperationsInput | number
+    globalMaterialId?: NullableIntFieldUpdateOperationsInput | number | null
+    materialInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
+    movementTypeId?: IntFieldUpdateOperationsInput | number
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    movementDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    warehouseMaterialStockId?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type MaterialStockMovementCreateManyMovementTypeInput = {
+    id?: number
+    warehouseId: number
+    globalMaterialId?: number | null
+    materialInstanceId?: number | null
+    quantity: Decimal | DecimalJsLike | number | string
+    unitOfMeasure: string
+    movementDate?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    warehouseMaterialStockId?: number | null
+    materialRequestItemId?: number | null
+  }
+
+  export type MaterialStockMovementUpdateWithoutMovementTypeInput = {
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    movementDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    warehouse?: WarehouseUpdateOneRequiredWithoutStockMovementsNestedInput
+    globalMaterial?: MaterialUpdateOneWithoutStockMovementsNestedInput
+    materialInstance?: MaterialInstanceUpdateOneWithoutStockMovementsNestedInput
+    WarehouseMaterialStock?: WarehouseMaterialStockUpdateOneWithoutStockMovementsNestedInput
+    MaterialRequestItem?: MaterialRequestItemUpdateOneWithoutStockMovementsNestedInput
+  }
+
+  export type MaterialStockMovementUncheckedUpdateWithoutMovementTypeInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    warehouseId?: IntFieldUpdateOperationsInput | number
+    globalMaterialId?: NullableIntFieldUpdateOperationsInput | number | null
+    materialInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    movementDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    warehouseMaterialStockId?: NullableIntFieldUpdateOperationsInput | number | null
+    materialRequestItemId?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type MaterialStockMovementUncheckedUpdateManyWithoutMovementTypeInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    warehouseId?: IntFieldUpdateOperationsInput | number
+    globalMaterialId?: NullableIntFieldUpdateOperationsInput | number | null
+    materialInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    movementDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    warehouseMaterialStockId?: NullableIntFieldUpdateOperationsInput | number | null
+    materialRequestItemId?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type MaterialInstanceCreateManyConditionInput = {
+    id?: number
+    instanceIdentifier?: string
+    globalMaterialId?: number | null
+    derivedName: string
+    derivedDescription?: string | null
+    derivedUnitOfMeasure: string
+    warehouseId: number
+    quantity: Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: string | null
+    sourceNotes?: string | null
+    reservedQuantity?: Decimal | DecimalJsLike | number | string
+    restrictedQuantity?: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaterialRequestItemCreateManyRequestedDerivedConditionInput = {
+    id?: number
+    materialRequestId: number
+    requestType?: $Enums.MaterialRequestItemType
+    requestedGlobalMaterialId?: number | null
+    requestedDerivedName?: string | null
+    quantityRequested: Decimal | DecimalJsLike | number | string
+    quantityApproved?: Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: Decimal | DecimalJsLike | number | string
+    unitOfMeasure: string
+    fulfilledByInstanceId?: number | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    materialInstanceConditionId?: number | null
+  }
+
+  export type MaterialRequestItemCreateManyMaterialInstanceConditionInput = {
+    id?: number
+    materialRequestId: number
+    requestType?: $Enums.MaterialRequestItemType
+    requestedGlobalMaterialId?: number | null
+    requestedDerivedName?: string | null
+    requestedDerivedConditionId?: number | null
+    quantityRequested: Decimal | DecimalJsLike | number | string
+    quantityApproved?: Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: Decimal | DecimalJsLike | number | string
+    unitOfMeasure: string
+    fulfilledByInstanceId?: number | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaterialInstanceUpdateWithoutConditionInput = {
+    instanceIdentifier?: StringFieldUpdateOperationsInput | string
+    derivedName?: StringFieldUpdateOperationsInput | string
+    derivedDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    derivedUnitOfMeasure?: StringFieldUpdateOperationsInput | string
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    reservedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    restrictedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    globalMaterial?: MaterialUpdateOneWithoutRelatedMaterialInstancesNestedInput
+    warehouse?: WarehouseUpdateOneRequiredWithoutMaterialInstancesNestedInput
+    stockMovements?: MaterialStockMovementUpdateManyWithoutMaterialInstanceNestedInput
+    fulfilledRequestItems?: MaterialRequestItemUpdateManyWithoutFulfilledByInstanceNestedInput
+  }
+
+  export type MaterialInstanceUncheckedUpdateWithoutConditionInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    instanceIdentifier?: StringFieldUpdateOperationsInput | string
+    globalMaterialId?: NullableIntFieldUpdateOperationsInput | number | null
+    derivedName?: StringFieldUpdateOperationsInput | string
+    derivedDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    derivedUnitOfMeasure?: StringFieldUpdateOperationsInput | string
+    warehouseId?: IntFieldUpdateOperationsInput | number
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    reservedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    restrictedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    stockMovements?: MaterialStockMovementUncheckedUpdateManyWithoutMaterialInstanceNestedInput
+    fulfilledRequestItems?: MaterialRequestItemUncheckedUpdateManyWithoutFulfilledByInstanceNestedInput
+  }
+
+  export type MaterialInstanceUncheckedUpdateManyWithoutConditionInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    instanceIdentifier?: StringFieldUpdateOperationsInput | string
+    globalMaterialId?: NullableIntFieldUpdateOperationsInput | number | null
+    derivedName?: StringFieldUpdateOperationsInput | string
+    derivedDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    derivedUnitOfMeasure?: StringFieldUpdateOperationsInput | string
+    warehouseId?: IntFieldUpdateOperationsInput | number
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    locationInWarehouse?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    reservedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    restrictedQuantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaterialRequestItemUpdateWithoutRequestedDerivedConditionInput = {
+    requestType?: EnumMaterialRequestItemTypeFieldUpdateOperationsInput | $Enums.MaterialRequestItemType
+    requestedDerivedName?: NullableStringFieldUpdateOperationsInput | string | null
+    quantityRequested?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    quantityApproved?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    materialRequest?: MaterialRequestUpdateOneRequiredWithoutItemsNestedInput
+    requestedGlobalMaterial?: MaterialUpdateOneWithoutStandardMaterialRequestItemsNestedInput
+    fulfilledByInstance?: MaterialInstanceUpdateOneWithoutFulfilledRequestItemsNestedInput
+    stockMovements?: MaterialStockMovementUpdateManyWithoutMaterialRequestItemNestedInput
+    MaterialInstanceCondition?: MaterialInstanceConditionUpdateOneWithoutMaterialRequestItemNestedInput
+  }
+
+  export type MaterialRequestItemUncheckedUpdateWithoutRequestedDerivedConditionInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    materialRequestId?: IntFieldUpdateOperationsInput | number
+    requestType?: EnumMaterialRequestItemTypeFieldUpdateOperationsInput | $Enums.MaterialRequestItemType
+    requestedGlobalMaterialId?: NullableIntFieldUpdateOperationsInput | number | null
+    requestedDerivedName?: NullableStringFieldUpdateOperationsInput | string | null
+    quantityRequested?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    quantityApproved?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    fulfilledByInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    materialInstanceConditionId?: NullableIntFieldUpdateOperationsInput | number | null
+    stockMovements?: MaterialStockMovementUncheckedUpdateManyWithoutMaterialRequestItemNestedInput
+  }
+
+  export type MaterialRequestItemUncheckedUpdateManyWithoutRequestedDerivedConditionInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    materialRequestId?: IntFieldUpdateOperationsInput | number
+    requestType?: EnumMaterialRequestItemTypeFieldUpdateOperationsInput | $Enums.MaterialRequestItemType
+    requestedGlobalMaterialId?: NullableIntFieldUpdateOperationsInput | number | null
+    requestedDerivedName?: NullableStringFieldUpdateOperationsInput | string | null
+    quantityRequested?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    quantityApproved?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    fulfilledByInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    materialInstanceConditionId?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type MaterialRequestItemUpdateWithoutMaterialInstanceConditionInput = {
+    requestType?: EnumMaterialRequestItemTypeFieldUpdateOperationsInput | $Enums.MaterialRequestItemType
+    requestedDerivedName?: NullableStringFieldUpdateOperationsInput | string | null
+    quantityRequested?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    quantityApproved?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    materialRequest?: MaterialRequestUpdateOneRequiredWithoutItemsNestedInput
+    requestedGlobalMaterial?: MaterialUpdateOneWithoutStandardMaterialRequestItemsNestedInput
+    requestedDerivedCondition?: MaterialInstanceConditionUpdateOneWithoutRequestedInItemsNestedInput
+    fulfilledByInstance?: MaterialInstanceUpdateOneWithoutFulfilledRequestItemsNestedInput
+    stockMovements?: MaterialStockMovementUpdateManyWithoutMaterialRequestItemNestedInput
+  }
+
+  export type MaterialRequestItemUncheckedUpdateWithoutMaterialInstanceConditionInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    materialRequestId?: IntFieldUpdateOperationsInput | number
+    requestType?: EnumMaterialRequestItemTypeFieldUpdateOperationsInput | $Enums.MaterialRequestItemType
+    requestedGlobalMaterialId?: NullableIntFieldUpdateOperationsInput | number | null
+    requestedDerivedName?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedDerivedConditionId?: NullableIntFieldUpdateOperationsInput | number | null
+    quantityRequested?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    quantityApproved?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    fulfilledByInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    stockMovements?: MaterialStockMovementUncheckedUpdateManyWithoutMaterialRequestItemNestedInput
+  }
+
+  export type MaterialRequestItemUncheckedUpdateManyWithoutMaterialInstanceConditionInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    materialRequestId?: IntFieldUpdateOperationsInput | number
+    requestType?: EnumMaterialRequestItemTypeFieldUpdateOperationsInput | $Enums.MaterialRequestItemType
+    requestedGlobalMaterialId?: NullableIntFieldUpdateOperationsInput | number | null
+    requestedDerivedName?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedDerivedConditionId?: NullableIntFieldUpdateOperationsInput | number | null
+    quantityRequested?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    quantityApproved?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    fulfilledByInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaterialStockMovementCreateManyMaterialInstanceInput = {
+    id?: number
+    warehouseId: number
+    globalMaterialId?: number | null
+    movementTypeId: number
+    quantity: Decimal | DecimalJsLike | number | string
+    unitOfMeasure: string
+    movementDate?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    warehouseMaterialStockId?: number | null
+    materialRequestItemId?: number | null
+  }
+
+  export type MaterialRequestItemCreateManyFulfilledByInstanceInput = {
+    id?: number
+    materialRequestId: number
+    requestType?: $Enums.MaterialRequestItemType
+    requestedGlobalMaterialId?: number | null
+    requestedDerivedName?: string | null
+    requestedDerivedConditionId?: number | null
+    quantityRequested: Decimal | DecimalJsLike | number | string
+    quantityApproved?: Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: Decimal | DecimalJsLike | number | string
+    unitOfMeasure: string
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    materialInstanceConditionId?: number | null
+  }
+
+  export type MaterialStockMovementUpdateWithoutMaterialInstanceInput = {
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    movementDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    warehouse?: WarehouseUpdateOneRequiredWithoutStockMovementsNestedInput
+    globalMaterial?: MaterialUpdateOneWithoutStockMovementsNestedInput
+    movementType?: StockMovementTypeUpdateOneRequiredWithoutStockMovementsNestedInput
+    WarehouseMaterialStock?: WarehouseMaterialStockUpdateOneWithoutStockMovementsNestedInput
+    MaterialRequestItem?: MaterialRequestItemUpdateOneWithoutStockMovementsNestedInput
+  }
+
+  export type MaterialStockMovementUncheckedUpdateWithoutMaterialInstanceInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    warehouseId?: IntFieldUpdateOperationsInput | number
+    globalMaterialId?: NullableIntFieldUpdateOperationsInput | number | null
+    movementTypeId?: IntFieldUpdateOperationsInput | number
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    movementDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    warehouseMaterialStockId?: NullableIntFieldUpdateOperationsInput | number | null
+    materialRequestItemId?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type MaterialStockMovementUncheckedUpdateManyWithoutMaterialInstanceInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    warehouseId?: IntFieldUpdateOperationsInput | number
+    globalMaterialId?: NullableIntFieldUpdateOperationsInput | number | null
+    movementTypeId?: IntFieldUpdateOperationsInput | number
+    quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    movementDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    warehouseMaterialStockId?: NullableIntFieldUpdateOperationsInput | number | null
+    materialRequestItemId?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type MaterialRequestItemUpdateWithoutFulfilledByInstanceInput = {
+    requestType?: EnumMaterialRequestItemTypeFieldUpdateOperationsInput | $Enums.MaterialRequestItemType
+    requestedDerivedName?: NullableStringFieldUpdateOperationsInput | string | null
+    quantityRequested?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    quantityApproved?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    materialRequest?: MaterialRequestUpdateOneRequiredWithoutItemsNestedInput
+    requestedGlobalMaterial?: MaterialUpdateOneWithoutStandardMaterialRequestItemsNestedInput
+    requestedDerivedCondition?: MaterialInstanceConditionUpdateOneWithoutRequestedInItemsNestedInput
+    stockMovements?: MaterialStockMovementUpdateManyWithoutMaterialRequestItemNestedInput
+    MaterialInstanceCondition?: MaterialInstanceConditionUpdateOneWithoutMaterialRequestItemNestedInput
+  }
+
+  export type MaterialRequestItemUncheckedUpdateWithoutFulfilledByInstanceInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    materialRequestId?: IntFieldUpdateOperationsInput | number
+    requestType?: EnumMaterialRequestItemTypeFieldUpdateOperationsInput | $Enums.MaterialRequestItemType
+    requestedGlobalMaterialId?: NullableIntFieldUpdateOperationsInput | number | null
+    requestedDerivedName?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedDerivedConditionId?: NullableIntFieldUpdateOperationsInput | number | null
+    quantityRequested?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    quantityApproved?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    materialInstanceConditionId?: NullableIntFieldUpdateOperationsInput | number | null
+    stockMovements?: MaterialStockMovementUncheckedUpdateManyWithoutMaterialRequestItemNestedInput
+  }
+
+  export type MaterialRequestItemUncheckedUpdateManyWithoutFulfilledByInstanceInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    materialRequestId?: IntFieldUpdateOperationsInput | number
+    requestType?: EnumMaterialRequestItemTypeFieldUpdateOperationsInput | $Enums.MaterialRequestItemType
+    requestedGlobalMaterialId?: NullableIntFieldUpdateOperationsInput | number | null
+    requestedDerivedName?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedDerivedConditionId?: NullableIntFieldUpdateOperationsInput | number | null
+    quantityRequested?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    quantityApproved?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    quantityDelivered?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    unitOfMeasure?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    materialInstanceConditionId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type LogLoginCreateManyUserInput = {
@@ -28098,6 +41703,8 @@ export namespace Prisma {
 
   export type MaterialRequestCreateManyRequestedByInput = {
     id?: number
+    protocolNumber?: string
+    requestType?: $Enums.MaterialRequestType
     justification?: string | null
     requestDate?: Date | string
     status?: $Enums.MaterialRequestStatus
@@ -28111,6 +41718,8 @@ export namespace Prisma {
 
   export type MaterialRequestCreateManyApprovedByInput = {
     id?: number
+    protocolNumber?: string
+    requestType?: $Enums.MaterialRequestType
     justification?: string | null
     requestDate?: Date | string
     status?: $Enums.MaterialRequestStatus
@@ -28395,6 +42004,8 @@ export namespace Prisma {
   }
 
   export type MaterialRequestUpdateWithoutRequestedByInput = {
+    protocolNumber?: StringFieldUpdateOperationsInput | string
+    requestType?: EnumMaterialRequestTypeFieldUpdateOperationsInput | $Enums.MaterialRequestType
     justification?: NullableStringFieldUpdateOperationsInput | string | null
     requestDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumMaterialRequestStatusFieldUpdateOperationsInput | $Enums.MaterialRequestStatus
@@ -28409,6 +42020,8 @@ export namespace Prisma {
 
   export type MaterialRequestUncheckedUpdateWithoutRequestedByInput = {
     id?: IntFieldUpdateOperationsInput | number
+    protocolNumber?: StringFieldUpdateOperationsInput | string
+    requestType?: EnumMaterialRequestTypeFieldUpdateOperationsInput | $Enums.MaterialRequestType
     justification?: NullableStringFieldUpdateOperationsInput | string | null
     requestDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumMaterialRequestStatusFieldUpdateOperationsInput | $Enums.MaterialRequestStatus
@@ -28423,6 +42036,8 @@ export namespace Prisma {
 
   export type MaterialRequestUncheckedUpdateManyWithoutRequestedByInput = {
     id?: IntFieldUpdateOperationsInput | number
+    protocolNumber?: StringFieldUpdateOperationsInput | string
+    requestType?: EnumMaterialRequestTypeFieldUpdateOperationsInput | $Enums.MaterialRequestType
     justification?: NullableStringFieldUpdateOperationsInput | string | null
     requestDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumMaterialRequestStatusFieldUpdateOperationsInput | $Enums.MaterialRequestStatus
@@ -28435,6 +42050,8 @@ export namespace Prisma {
   }
 
   export type MaterialRequestUpdateWithoutApprovedByInput = {
+    protocolNumber?: StringFieldUpdateOperationsInput | string
+    requestType?: EnumMaterialRequestTypeFieldUpdateOperationsInput | $Enums.MaterialRequestType
     justification?: NullableStringFieldUpdateOperationsInput | string | null
     requestDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumMaterialRequestStatusFieldUpdateOperationsInput | $Enums.MaterialRequestStatus
@@ -28449,6 +42066,8 @@ export namespace Prisma {
 
   export type MaterialRequestUncheckedUpdateWithoutApprovedByInput = {
     id?: IntFieldUpdateOperationsInput | number
+    protocolNumber?: StringFieldUpdateOperationsInput | string
+    requestType?: EnumMaterialRequestTypeFieldUpdateOperationsInput | $Enums.MaterialRequestType
     justification?: NullableStringFieldUpdateOperationsInput | string | null
     requestDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumMaterialRequestStatusFieldUpdateOperationsInput | $Enums.MaterialRequestStatus
@@ -28463,6 +42082,8 @@ export namespace Prisma {
 
   export type MaterialRequestUncheckedUpdateManyWithoutApprovedByInput = {
     id?: IntFieldUpdateOperationsInput | number
+    protocolNumber?: StringFieldUpdateOperationsInput | string
+    requestType?: EnumMaterialRequestTypeFieldUpdateOperationsInput | $Enums.MaterialRequestType
     justification?: NullableStringFieldUpdateOperationsInput | string | null
     requestDate?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumMaterialRequestStatusFieldUpdateOperationsInput | $Enums.MaterialRequestStatus

@@ -138,18 +138,11 @@ model MaintenanceInstance {
     currentMaintenanceRequests    MaintenanceRequest[]       @relation("CurrentInstanceRequests")
     timelineEventsTransferredFrom MaintenanceTimelineEvent[] @relation("TransferredFromInstanceEvents") // Atualizado
     timelineEventsTransferredTo   MaintenanceTimelineEvent[] @relation("TransferredToInstanceEvents") // Atualizado
+    // A maintenance instance can have multiple warehouses.
+    warehouses                    Warehouse[]
 
     @@index([sipacId])
     @@map("maintenanceInstances")
-}
-
-enum MaterialRequestStatus {
-    PENDING // Aguardando aprovação
-    APPROVED // Aprovada, aguardando retirada/entrega
-    REJECTED // Rejeitada
-    PARTIALLY_DELIVERED // Parcialmente entregue
-    DELIVERED // Totalmente entregue/utilizado
-    CANCELLED // Cancelada
 }
 
 // --------------- TIPOS DE SERVIÇO (Opcional, para categorização) ---------------

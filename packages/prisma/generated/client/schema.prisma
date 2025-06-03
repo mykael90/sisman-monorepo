@@ -167,18 +167,11 @@ model MaintenanceInstance {
   currentMaintenanceRequests    MaintenanceRequest[]       @relation("CurrentInstanceRequests")
   timelineEventsTransferredFrom MaintenanceTimelineEvent[] @relation("TransferredFromInstanceEvents") // Atualizado
   timelineEventsTransferredTo   MaintenanceTimelineEvent[] @relation("TransferredToInstanceEvents") // Atualizado
+  // A maintenance instance can have multiple warehouses.
+  warehouses                    Warehouse[]
 
   @@index([sipacId])
   @@map("maintenanceInstances")
-}
-
-enum MaterialRequestStatus {
-  PENDING // Aguardando aprovação
-  APPROVED // Aprovada, aguardando retirada/entrega
-  REJECTED // Rejeitada
-  PARTIALLY_DELIVERED // Parcialmente entregue
-  DELIVERED // Totalmente entregue/utilizado
-  CANCELLED // Cancelada
 }
 
 // --------------- TIPOS DE SERVIÇO (Opcional, para categorização) ---------------
@@ -262,86 +255,404 @@ enum InfrastructureOccurrenceStatus {
   RESOLVED // Resolvida sem necessidade de RM formal (ação rápida)
 }
 
-// --------------- MATERIAIS (Catálogo) ---------------
-model Material {
-  id            Int      @id @default(autoincrement())
-  code          String?  @unique // Código interno do material
-  name          String
-  description   String?  @db.Text
-  unitOfMeasure String // Ex: "un", "m", "kg", "L"
-  // currentStock   Decimal? @db.Decimal(10,2) // Se for controlar estoque aqui
-  // minStock       Decimal? @db.Decimal(10,2)
-  // costPrice      Decimal? @db.Decimal(10,2)
-  isActive      Boolean  @default(true)
-  createdAt     DateTime @default(now()) @db.Timestamp(0)
-  updatedAt     DateTime @updatedAt @db.Timestamp(0)
+// --- Warehouse ---
+// Represents a physical or logical location where materials are stored.
+model Warehouse {
+  id       Int     @id @default(autoincrement())
+  name     String  @unique // e.g., "Central Warehouse Block A", "Mechanical Workshop Depot"
+  code     String? @unique
+  location String?
+  isActive Boolean @default(true)
 
-  // One-to-many self relations: Referenciar materiais com diferentes unidades de medida gerados por um material pai
-  parentMaterialId Int?
-  parentMaterial   Material?  @relation("ParentChilds", fields: [parentMaterialId], references: [id])
-  childs           Material[] @relation("ParentChilds")
+  // Each warehouse belongs to one maintenance instance.
+  maintenanceInstanceId Int
+  maintenanceInstance   MaintenanceInstance @relation(fields: [maintenanceInstanceId], references: [id])
 
-  materialRequestItems MaterialRequestItem[]
+  createdAt DateTime @default(now()) @db.Timestamp(0)
+  updatedAt DateTime @updatedAt @db.Timestamp(0)
 
-  @@map("materials")
+  // Relations
+  // Saldos de material "novo"
+  standardMaterialStocks WarehouseMaterialStock[]
+  // Instâncias/lotes de material derivado/com estado neste almoxarifado
+  materialInstances      MaterialInstance[]
+  // Movimentações de estoque
+  stockMovements         MaterialStockMovement[]
+
+  @@index([maintenanceInstanceId])
+  @@map("warehouses")
 }
 
-// --------------- REQUISIÇÃO DE MATERIAL (Cabeçalho) ---------------
-model MaterialRequest {
-  id            Int                   @id @default(autoincrement())
-  justification String?               @db.Text // Justificativa para a requisição
-  requestDate   DateTime              @default(now())
-  status        MaterialRequestStatus @default(PENDING)
+// --- Global Materials Catalog ---
+// A global, system-wide catalog of all possible materials.
+// Only system administrators can modify this table.
+model Material {
+  id            Int     @id @default(autoincrement())
+  globalCode    String  @unique
+  name          String
+  description   String? @db.Text
+  unitOfMeasure String // e.g., "UNIT", "PC", "M", "KG", "L"
+  category      String? // e.g., "Electrical", "Hydraulic", "Office"
+  manufacturer  String?
+  partNumber    String?
+  isActive      Boolean @default(true) // If the material is active in the global catalog.
 
-  // --- Chaves Estrangeiras ---
+  createdAt DateTime @default(now()) @db.Timestamp(0)
+  updatedAt DateTime @updatedAt @db.Timestamp(0)
+
+  // Relations
+  // Saldos de material "novo" nos almoxarifados
+  warehouseStandardStocks  WarehouseMaterialStock[]
+  // Instâncias/lotes de material derivado que AINDA SÃO identificáveis com este item global
+  // (Ex: uma sobra deste material, um pedaço deste material)
+  relatedMaterialInstances MaterialInstance[]       @relation("GlobalMaterialLink")
+
+  // Itens de requisição que pedem este tipo de material (novo)
+  standardMaterialRequestItems MaterialRequestItem[]   @relation("RequestedGlobalMaterial")
+  // Movimentações de estoque (para material novo ou para instâncias derivadas COM link global)
+  stockMovements               MaterialStockMovement[] @relation("GlobalMaterialMovements")
+
+  @@index([globalCode])
+  @@map("materials_global_catalog")
+}
+
+// --- Warehouse Material Stock ---
+// --- WarehouseMaterialStock (Para materiais "novos" e não diferenciados - Pode ser simplificado ou usado como saldo principal) ---
+// This is your dynamic stock level table and also serves as the "local material catalog".
+// A record here means a global Material "exists" (has or had stock) in a specific Warehouse.
+model WarehouseMaterialStock {
+  id Int @id @default(autoincrement())
+
+  // Foreign keys identifying the material and the warehouse.
+  warehouseId Int
+  warehouse   Warehouse @relation(fields: [warehouseId], references: [id], onDelete: Cascade)
+
+  materialId Int
+  material   Material @relation(fields: [materialId], references: [id], onDelete: Restrict)
+
+  // --- Stock Level Types ---
+  // Saldo de material "novo" / "padrão"
+  // Total physical quantity of the material in this warehouse.
+  // This is the primary field updated by inbound/outbound movements.
+  physicalOnHandQuantity Decimal @default(0) @db.Decimal(12, 3)
+
+  // Initial stock, recorded on system implementation or the material's first entry.
+  // This should only be set once and is useful for auditing.
+  initialStockQuantity Decimal? @db.Decimal(12, 3)
+
+  // Quantity committed to a specific, paid-for maintenance request.
+  restrictedQuantity Decimal @default(0) @db.Decimal(12, 3)
+
+  // Quantity allocated for a specific demand (paid or not), making it unavailable for others.
+  reservedQuantity Decimal @default(0) @db.Decimal(12, 3)
+
+  // Available Quantity (Calculated): physicalOnHandQuantity - restrictedQuantity - reservedQuantity
+  // This field will NOT be stored in the database. It will be calculated in your NestJS service.
+
+  // --- Other local information ---
+  locationInWarehouse String? // Specific location within the warehouse (e.g., "Shelf A, Aisle 3")
+  minStockLevel       Decimal?  @db.Decimal(12, 3) // Reorder point
+  maxStockLevel       Decimal?  @db.Decimal(12, 3)
+  lastStockCountDate  DateTime?
+  averageCost         Decimal?  @db.Decimal(12, 4)
+
+  createdAt DateTime @default(now()) @db.Timestamp(0)
+  updatedAt DateTime @updatedAt @db.Timestamp(0) // Updated whenever stock levels change.
+
+  // Relations
+  // Movimentações que afetam o estoque "novo"
+  stockMovements MaterialStockMovement[]
+
+  // A material can only have one stock record per warehouse.
+  @@unique([warehouseId, materialId], name: "unique_warehouse_material_standard_stock")
+  @@index([materialId])
+  @@map("warehouse_standard_material_stocks")
+}
+
+model MaterialRequest {
+  id             Int    @id @default(autoincrement())
+  protocolNumber String @unique @default(uuid()) // Adicionado para rastreabilidade
+
+  // TIPO DA REQUISIÇÃO: Define se é para materiais novos ou derivados.
+  // Esta escolha é feita ao criar a requisição e NÃO MUDA.
+  requestType MaterialRequestType @default(NEW_MATERIALS)
+
+  justification String?               @db.Text
+  requestDate   DateTime              @default(now())
+  status        MaterialRequestStatus @default(PENDING) // Enum for this status
+
   maintenanceRequestId Int
   maintenanceRequest   MaintenanceRequest @relation(fields: [maintenanceRequestId], references: [id], onDelete: Cascade)
 
-  // Quem solicitou o material
   requestedById Int
   requestedBy   User @relation("MaterialRequestedByUser", fields: [requestedById], references: [id])
 
-  // Quem aprovou/rejeitou (opcional)
   approvedById  Int?
   approvedBy    User?     @relation("MaterialApprovedByUser", fields: [approvedById], references: [id])
   approvalDate  DateTime?
   approvalNotes String?   @db.Text
 
+  // Almoxarifado de destino/origem (se aplicável no cabeçalho)
+  // targetWarehouseId    Int?
+  // targetWarehouse      Warehouse? @relation(fields: [targetWarehouseId], references: [id])
+
   createdAt DateTime @default(now()) @db.Timestamp(0)
   updatedAt DateTime @updatedAt @db.Timestamp(0)
 
-  // Relações
+  // Itens desta requisição. TODOS os itens devem respeitar o requestType do cabeçalho.
   items MaterialRequestItem[]
 
   @@index([maintenanceRequestId])
   @@index([requestedById])
-  @@index([approvedById])
-  @@map("materialRequests")
+  @@index([status])
+  @@index([requestType])
+  @@map("material_requests")
 }
 
-// --------------- ITENS DA REQUISIÇÃO DE MATERIAL (Detalhe) ---------------
-model MaterialRequestItem {
-  id                Int      @id @default(autoincrement())
-  quantityRequested Decimal  @db.Decimal(10, 2)
-  quantityApproved  Decimal? @db.Decimal(10, 2) // Quantidade aprovada (pode ser menor que a solicitada)
-  quantityDelivered Decimal? @db.Decimal(10, 2) // Quantidade efetivamente entregue/utilizada
+// Novo Enum para o TIPO no cabeçalho da MaterialRequest
+enum MaterialRequestType {
+  NEW_MATERIALS // Esta requisição é EXCLUSIVAMENTE para materiais novos do catálogo global.
+  DERIVED_MATERIALS // Esta requisição é EXCLUSIVAMENTE para materiais derivados/reaproveitados.
+}
 
-  // --- Chaves Estrangeiras ---
+// Enum para Status da MaterialRequest (Exemplo)
+enum MaterialRequestStatus {
+  PENDING
+  APPROVED
+  PARTIALLY_ATTENDED
+  FULLY_ATTENDED
+  REJECTED
+  CANCELLED
+}
+
+// --- MaterialRequestItem (Item da Requisição de Material - Simplificado) ---
+// A lógica de "novo" vs "derivado" agora é IMPLÍCITA pelo MaterialRequest.requestType
+model MaterialRequestItem {
+  id Int @id @default(autoincrement())
+
   materialRequestId Int
   materialRequest   MaterialRequest @relation(fields: [materialRequestId], references: [id], onDelete: Cascade)
 
-  materialId Int
-  material   Material @relation(fields: [materialId], references: [id])
+  requestType MaterialRequestItemType @default(GLOBAL_CATALOG) // Indica o tipo de solicitação
 
-  // unitPrice        Decimal? @db.Decimal(10,2) // Preço unitário no momento da requisição (histórico)
-  // totalPrice       Decimal? @db.Decimal(10,2) // Calculado
+  // --- Se MaterialRequest.requestType = NEW_MATERIALS ---
+  // O item DEVE referenciar um material do catálogo global.
+  requestedGlobalMaterialId Int? // FK para Material
+  requestedGlobalMaterial   Material? @relation("RequestedGlobalMaterial", fields: [requestedGlobalMaterialId], references: [id])
+
+  // --- Se MaterialRequest.requestType = DERIVED_MATERIALS ---
+  // O item DEVE descrever o material derivado desejado.
+  requestedDerivedName        String? // Nome do material derivado
+  requestedDerivedConditionId Int? // Condição desejada para o material derivado
+  requestedDerivedCondition   MaterialInstanceCondition? @relation("RequestedDerivedCondition", fields: [requestedDerivedConditionId], references: [id])
+  // Pode-se até considerar uma FK para MaterialInstance aqui se o usuário puder
+  // solicitar uma INSTÂNCIA ESPECÍFICA de derivado, mas geralmente se pede um "tipo" de derivado.
+  // requestedSpecificInstanceId Int?
+  // requestedSpecificInstance   MaterialInstance? @relation("RequestedSpecificInstance", fields: [requestedSpecificInstanceId], references: [id])
+
+  quantityRequested Decimal  @db.Decimal(10, 3)
+  quantityApproved  Decimal? @db.Decimal(10, 3) // Quantidade aprovada pelo gestor
+  quantityDelivered Decimal  @default(0) @db.Decimal(10, 3) // Quantidade efetivamente entregue
+  unitOfMeasure     String // Unidade de medida da SOLICITAÇÃO
+
+  // --- Informações de Atendimento (preenchido pelo almoxarifado) ---
+  // Se uma instância específica foi usada para atender este item (mesmo que a requisição seja de NEW_MATERIALS, o atendimento pode ser com uma instância se a política permitir e o item global for compatível - PONTO A REVISAR)
+  // OU, se a requisição é de DERIVED_MATERIALS, este campo será preenchido com a instância que atendeu.
+  fulfilledByInstanceId Int?
+  fulfilledByInstance   MaterialInstance? @relation("FulfilledByInstance", fields: [fulfilledByInstanceId], references: [id], onDelete: SetNull)
+  // Se um material NOVO do WarehouseStandardStock foi usado (especialmente para NEW_MATERIALS)
+  // (Pode ser inferido se fulfilledByInstanceId for nulo e requestedGlobalMaterialId estiver preenchido na MaterialRequest)
+
+  notes String? @db.Text // Observações do solicitante ou do almoxarife para este item
+
+  stockMovements MaterialStockMovement[] // Movimentações que atenderam este item
+
+  createdAt                   DateTime                   @default(now()) @db.Timestamp(0)
+  updatedAt                   DateTime                   @updatedAt @db.Timestamp(0)
+  MaterialInstanceCondition   MaterialInstanceCondition? @relation(fields: [materialInstanceConditionId], references: [id])
+  materialInstanceConditionId Int?
+
+  // VALIDAÇÕES NA APLICAÇÃO (NestJS Service):
+  // 1. Se MaterialRequest.requestType = NEW_MATERIALS:
+  //    - MaterialRequestItem.requestedGlobalMaterialId DEVE ser preenchido.
+  //    - MaterialRequestItem.requestedDerivedName e requestedDerivedConditionId DEVEM ser nulos.
+  // 2. Se MaterialRequest.requestType = DERIVED_MATERIALS:
+  //    - MaterialRequestItem.requestedDerivedName DEVE ser preenchido.
+  //    - MaterialRequestItem.requestedGlobalMaterialId DEVE ser nulo.
+  @@map("material_request_items")
+}
+
+enum MaterialRequestItemType {
+  GLOBAL_CATALOG // Solicitação de um item novo/padrão do catálogo global.
+  DERIVED_MATERIAL // Solicitação de um material derivado (sobra, beneficiado, etc.).
+}
+
+// --- Stock Movement Type ---
+// Table to define different types of stock movements, offering more flexibility than an enum.
+model StockMovementType {
+  id          Int                @id @default(autoincrement())
+  code        String             @unique // Short code for the type, e.g., "ENTRY_PURCHASE", "EXIT_USAGE"
+  name        String // User-friendly name, e.g., "Entrada por Compra", "Saída para Uso"
+  description String?            @db.Text
+  operation   StockOperationType // Defines if it's an IN (entrada), OUT (saída), or ADJUSTMENT
+  // You could add more fields here if needed:
+  // isSystemGenerated Boolean @default(false) // If this type is typically system-generated vs. manual
+  // affectsCost       Boolean @default(true)  // If this movement type impacts average cost calculation
+  isActive    Boolean            @default(true)
 
   createdAt DateTime @default(now()) @db.Timestamp(0)
   updatedAt DateTime @updatedAt @db.Timestamp(0)
 
-  @@index([materialRequestId])
-  @@index([materialId])
-  @@map("materialRequestItems")
+  // Relation
+  stockMovements MaterialStockMovement[]
+
+  @@map("stock_movement_types")
+}
+
+// Enum to classify the general operation of a StockMovementType
+enum StockOperationType {
+  IN // Represents an increase in stock (e.g., purchase, return)
+  OUT // Represents a decrease in stock (e.g., usage, disposal)
+  ADJUSTMENT // Represents an adjustment that could be positive or negative (e.g., stock count)
+  RESERVATION // Represents a change in reserved/restricted quantity, not physical stock
+}
+
+// --- Material Stock Movement (Transaction Log) ---
+// --- MaterialStockMovement (Atualizado) ---
+model MaterialStockMovement {
+  id Int @id @default(autoincrement())
+
+  warehouseId Int
+  warehouse   Warehouse @relation(fields: [warehouseId], references: [id], onDelete: Cascade)
+
+  // Vínculo ao Material GLOBAL (SEMPRE PRESENTE se a movimentação for de um item que *tem* um tipo global)
+  // Para um derivado totalmente novo sem análogo global, este PODE ser nulo,
+  // mas é mais robusto que mesmo derivados tenham um "tipo" genérico global se possível,
+  // ou que a movimentação sempre referencie o globalMaterialId da MaterialInstance, se houver.
+  // Para simplificar: vamos manter que toda movimentação tem um materialId global, mesmo que seja um "genérico".
+  // Se a instância não tem globalMaterialId, a movimentação usaria um materialId global "DIVERSOS_DERIVADOS" ou similar?
+  // Ou, mais pragmaticamente, se movement afeta uma instância, o materialId aqui é o globalMaterialId da instância.
+  // Se a instância NÃO TEM globalMaterialId, então este campo na movimentação seria NULO? Isso complica relatórios.
+  // SOLUÇÃO MAIS LIMPA: materialId na movimentação é o globalMaterialId da instância se houver, SENÃO, é nulo.
+  // A movimentação DEVE ter ou materialId (global) ou materialInstanceId (que PODE ter um globalMaterialId).
+  // Para rastreabilidade, é melhor que a MaterialStockMovement tenha um `materialId` opcional,
+  // e um `materialInstanceId` opcional. Pelo menos um deles deve estar preenchido.
+  // E a MaterialInstance terá seu próprio `derivedName` e `derivedUnitOfMeasure`.
+
+  // O tipo de material GLOBAL envolvido, se aplicável.
+  globalMaterialId Int?
+  globalMaterial   Material? @relation("GlobalMaterialMovements", fields: [globalMaterialId], references: [id], onDelete: Restrict)
+
+  // A instância específica envolvida, se aplicável.
+  materialInstanceId Int?
+  materialInstance   MaterialInstance? @relation("InstanceStockMovements", fields: [materialInstanceId], references: [id], onDelete: Restrict)
+
+  movementTypeId Int
+  movementType   StockMovementType @relation(fields: [movementTypeId], references: [id])
+
+  quantity      Decimal  @db.Decimal(12, 3) // Quantidade na unidade da instância ou do material global
+  unitOfMeasure String // Unidade da movimentação
+  movementDate  DateTime @default(now())
+  // ... (userId, materialRequestItemId, notes, etc.) ...
+
+  createdAt DateTime @default(now()) @db.Timestamp(0)
+  updatedAt DateTime @updatedAt @db.Timestamp(0)
+
+  // Lógica de validação: Pelo menos globalMaterialId OU materialInstanceId deve ser preenchido.
+  // Se materialInstanceId estiver preenchido, o globalMaterialId aqui DEVERIA ser o mesmo
+  // que materialInstance.globalMaterialId, se este existir.
+  WarehouseMaterialStock   WarehouseMaterialStock? @relation(fields: [warehouseMaterialStockId], references: [id])
+  warehouseMaterialStockId Int?
+  MaterialRequestItem      MaterialRequestItem?    @relation(fields: [materialRequestItemId], references: [id])
+  materialRequestItemId    Int?
+
+  @@index([globalMaterialId])
+  @@index([materialInstanceId])
+  @@map("material_stock_movements")
+}
+
+// --- Exemplo de como popular a tabela StockMovementType inicialmente (seeding) ---
+// Você faria isso via script de seed do Prisma ou diretamente no DB.
+
+// ID | CODE                | NAME                       | OPERATION   | DESCRIPTION
+// ---|---------------------|----------------------------|-------------|------------
+// 1  | INITIAL_STOCK_LOAD  | Initial Stock Load         | IN          | Carga inicial de saldo no sistema.
+// 2  | ENTRY_PURCHASE      | Entry from Purchase        | IN          | Entrada por compra de fornecedor.
+// 3  | ENTRY_TRANSFER      | Entry from Transfer        | IN          | Entrada por transferência de outro depósito.
+// 4  | ENTRY_RETURN        | Entry from Return          | IN          | Devolução de material não utilizado em OS.
+// 5  | EXIT_USAGE          | Exit for Usage             | OUT         | Saída para uso em Requisição de Manutenção.
+// 6  | EXIT_TRANSFER       | Exit for Transfer          | OUT         | Saída por transferência para outro depósito.
+// 7  | EXIT_DISPOSAL       | Exit for Disposal          | OUT         | Saída por descarte, perda ou obsolescência.
+// 8  | ADJUSTMENT_POSITIVE | Positive Stock Adjustment  | ADJUSTMENT  | Ajuste de contagem de estoque (aumento).
+// 9  | ADJUSTMENT_NEGATIVE | Negative Stock Adjustment  | ADJUSTMENT  | Ajuste de contagem de estoque (diminuição).
+// 10 | RESERVE             | Reserve Stock              | RESERVATION | Marcar uma quantidade como reservada.
+// 11 | RELEASE_RESERVATION | Release Reserved Stock     | RESERVATION | Liberar uma quantidade reservada.
+// 12 | RESTRICT            | Restrict Stock (Paid)      | RESERVATION | Marcar quantidade como restrita (paga).
+// 13 | RELEASE_RESTRICTION | Release Restricted Stock   | RESERVATION | Liberar uma quantidade restrita.
+
+// --- Material Instance State/Condition ---
+// Define os possíveis estados ou condições de um material derivado/usado.
+model MaterialInstanceCondition {
+  id                  Int                   @id @default(autoincrement())
+  code                String                @unique
+  name                String
+  description         String?               @db.Text
+  isUsable            Boolean               @default(true)
+  createdAt           DateTime              @default(now()) @db.Timestamp(0)
+  updatedAt           DateTime              @updatedAt @db.Timestamp(0)
+  materialInstances   MaterialInstance[]
+  requestedInItems    MaterialRequestItem[] @relation("RequestedDerivedCondition")
+  MaterialRequestItem MaterialRequestItem[]
+
+  @@map("material_instance_conditions")
+}
+
+// --- Material Instance (Material Derivado / Com Estado / Lote Específico) ---
+model MaterialInstance {
+  id                 Int    @id @default(autoincrement())
+  instanceIdentifier String @unique @default(uuid()) // Identificador único da instância/lote
+
+  // VÍNCULO OPCIONAL ao catálogo global de materiais
+  // Preenchido se esta instância for uma sobra/beneficiamento de um item global conhecido.
+  // Nulo se for um novo item gerado localmente sem correspondente global.
+  globalMaterialId Int?
+  globalMaterial   Material? @relation("GlobalMaterialLink", fields: [globalMaterialId], references: [id], onDelete: SetNull)
+
+  // DESCRIÇÃO PRÓPRIA DA INSTÂNCIA (especialmente se globalMaterialId for nulo)
+  // Se globalMaterialId estiver preenchido, estes podem complementar ou ser redundantes (decisão de UI/UX).
+  derivedName          String // Nome específico desta instância/tipo derivado (Ex: "Chapa de Aço Recortada 30x50cm", "Tubo Cobre Usado 1m")
+  derivedDescription   String? @db.Text
+  derivedUnitOfMeasure String // Unidade de medida DESTA instância (pode diferir do globalMaterial)
+
+  warehouseId Int
+  warehouse   Warehouse @relation(fields: [warehouseId], references: [id], onDelete: Cascade)
+
+  conditionId Int
+  condition   MaterialInstanceCondition @relation(fields: [conditionId], references: [id])
+
+  quantity            Decimal @db.Decimal(12, 3)
+  locationInWarehouse String?
+
+  sourceNotes String? @db.Text // "Sobra OS-123", "Beneficiado do item X"
+  // ... outros campos como serialNumber, lotNumber, expirationDate, dateCreated ...
+
+  // Saldo Reservado/Restrito ESPECÍFICO para esta instância
+  reservedQuantity   Decimal @default(0) @db.Decimal(12, 3)
+  restrictedQuantity Decimal @default(0) @db.Decimal(12, 3)
+
+  // Relações
+  stockMovements        MaterialStockMovement[] @relation("InstanceStockMovements")
+  // Se esta instância específica foi usada para atender um item de requisição
+  fulfilledRequestItems MaterialRequestItem[]   @relation("FulfilledByInstance")
+
+  createdAt DateTime @default(now()) @db.Timestamp(0)
+  updatedAt DateTime @updatedAt @db.Timestamp(0)
+
+  @@index([globalMaterialId])
+  @@index([warehouseId])
+  @@index([conditionId])
+  @@index([derivedName]) // Para buscar por nome derivado
+  @@map("material_instances")
 }
 
 generator client {
