@@ -28,9 +28,9 @@ export interface SipacMaterialResponseItem {
 
 export interface SipacPaginatedResponse<T> {
   items: T[];
+  offset: number;
+  limit: number;
   totalItems: number;
-  currentPage: number;
-  itemsPerPage: number;
   totalPages: number;
 }
 
@@ -177,7 +177,10 @@ export class MateriaisService {
         'material/v1/materiais',
         {
           offset,
-          limit
+          limit,
+          ativo: true,
+          codigo: 3024000000359
+          // precisa ser o código completo, não pega só uma parte
         },
         {
           paginado: 'true'
@@ -191,8 +194,8 @@ export class MateriaisService {
       const response: SipacPaginatedResponse<SipacMaterialResponseItem> = {
         items: data,
         totalItems: headers['x-total'],
-        currentPage: offset,
-        itemsPerPage: limit,
+        offset: offset,
+        limit: limit,
         totalPages: headers['x-pages']
       };
 
