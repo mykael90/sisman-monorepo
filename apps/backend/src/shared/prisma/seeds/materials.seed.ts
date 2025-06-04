@@ -16,8 +16,10 @@ const materialsJsonPath = '../data/materials.json';
 // --- Define the Transformation and Validation Logic ---
 const transformAndValidateMaterial: TransformValidateFn<
   any,
-  Prisma.MaterialCreateInput
-> = async (rawMaterial): Promise<Prisma.MaterialCreateInput | null> => {
+  Prisma.MaterialGlobalCatalogCreateInput
+> = async (
+  rawMaterial
+): Promise<Prisma.MaterialGlobalCatalogCreateInput | null> => {
   // --- 1. Pre-process Raw Data using the generic function ---
   const processedRawMaterial = removeNullOrEmptyStringProps(rawMaterial);
   // logger.debug(`Raw material after cleaning null/empty: ${JSON.stringify(processedRawMaterial)}`);
@@ -50,8 +52,8 @@ const transformAndValidateMaterial: TransformValidateFn<
   // }
 
   // --- 4. Construct Prisma Create Input (using validated DTO data) ---
-  const createInput: Prisma.MaterialCreateInput = {
-    globalCode: materialDto.globalCode, // Use BigInt ID
+  const createInput: Prisma.MaterialGlobalCatalogCreateInput = {
+    sipacCode: materialDto.sipacCode, // Use BigInt ID
     name: materialDto.name,
     unitOfMeasure: materialDto.unitOfMeasure,
     // Use os campos do DTO validado. Se forem opcionais no DTO e não existirem, não serão incluídos.
@@ -77,8 +79,8 @@ export async function main(prisma: PrismaClient): Promise<void> {
     prisma,
     modelName: 'Material',
     jsonFilePath: materialsJsonPath,
-    prismaDelegate: prisma.material, // Pass the material delegate
+    prismaDelegate: prisma.materialGlobalCatalog, // Pass the material delegate
     transformAndValidate: transformAndValidateMaterial,
-    uniqueKey: 'globalCode' // For specific duplicate logging
+    uniqueKey: 'sipacCode' // For specific duplicate logging
   });
 }

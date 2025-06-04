@@ -22,13 +22,17 @@ import generalConfig from './config/general.config';
 import { RolesModule } from './modules/roles/roles.module';
 import { MaintenanceInstancesModule } from './modules/maintenance-instances/maintenance-instances.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { SipacModule } from './modules/sipac/sipac.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import sipacApiConfig from './config/sipac-api.config';
+import { MateriaisModule } from './modules/sipac/materiais/materiais.module';
 
 @Module({
   imports: [
     EventEmitterModule.forRoot(), // Adicione esta linha
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [generalConfig, mailerConfig, databaseConfig],
+      load: [generalConfig, mailerConfig, databaseConfig, sipacApiConfig],
       expandVariables: true,
       validationSchema,
       validationOptions: {
@@ -45,6 +49,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
       ],
       ignoreUserAgents: [/Googlebot/gi]
     }),
+    ScheduleModule.forRoot(), // Habilita o agendador de tarefas
     LogErrorModule,
     LogLoginModule,
     ObservabilityModule,
@@ -54,7 +59,9 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
     FilesModule,
     MaterialsModule,
     NotificationsModule,
-    MaintenanceInstancesModule
+    MaintenanceInstancesModule,
+    SipacModule,
+    MateriaisModule
   ],
   controllers: [AppController],
   providers: [

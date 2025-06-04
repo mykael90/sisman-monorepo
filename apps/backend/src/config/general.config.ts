@@ -3,14 +3,6 @@
 // JWT_SECRET=.Y+u!+=j8_XVUT27<?Dc9x].cKjf5wEY
 // NEXTAUTH_SECRET=&Iv4fB00f~C<b£E2W&pL
 // SISMAN_API_URL=http://localhost:3080
-// UFRN_API_URL=https://api.info.ufrn.br
-// UFRN_AUTH_BASE_URL=https://autenticacao.info.ufrn.br
-// UFRN_AUTH_URL=https://autenticacao.info.ufrn.br/authz-server/oauth/authorize
-// UFRN_CLIENT_ID=sisman-PiSE5Cd8xVL5XdtX
-// UFRN_CLIENT_SECRET=0OIPKWMhModROWylZSof3DFCuKOzG6YU
-// UFRN_TOKEN_URL=https://autenticacao.info.ufrn.br/authz-server/oauth/token
-// UFRN_USERINFO_URL=https://api.info.ufrn.br/usuario/v1/usuarios/info
-// UFRN_XAPI_KEY=0lEW7j70BfvWRpUGuB3NmYZbyQ5L43PK
 
 import { registerAs } from '@nestjs/config';
 

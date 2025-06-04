@@ -246,13 +246,13 @@ exports.Prisma.WarehouseScalarFieldEnum = {
 
 exports.Prisma.MaterialGlobalCatalogScalarFieldEnum = {
   id: 'id',
-  globalCode: 'globalCode',
+  sipacCode: 'sipacCode',
+  catmatCode: 'catmatCode',
   name: 'name',
   description: 'description',
   unitOfMeasure: 'unitOfMeasure',
-  category: 'category',
-  manufacturer: 'manufacturer',
-  partNumber: 'partNumber',
+  categoryId: 'categoryId',
+  photoUrl: 'photoUrl',
   isActive: 'isActive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -306,7 +306,7 @@ exports.Prisma.MaterialRequestItemScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
-exports.Prisma.StockMovementTypeScalarFieldEnum = {
+exports.Prisma.MaterialStockMovementTypeScalarFieldEnum = {
   id: 'id',
   code: 'code',
   name: 'name',
@@ -373,6 +373,8 @@ exports.Prisma.MaterialPickingOrderScalarFieldEnum = {
   warehouseId: 'warehouseId',
   requestedByUserId: 'requestedByUserId',
   requestedAt: 'requestedAt',
+  beCollectedByUserId: 'beCollectedByUserId',
+  beCollectedByWorkerId: 'beCollectedByWorkerId',
   desiredPickupDate: 'desiredPickupDate',
   status: 'status',
   notes: 'notes',
@@ -398,6 +400,7 @@ exports.Prisma.MaterialWithdrawalScalarFieldEnum = {
   warehouseId: 'warehouseId',
   processedByUserId: 'processedByUserId',
   collectedByUserId: 'collectedByUserId',
+  collectedByWorkerId: 'collectedByWorkerId',
   withdrawalDate: 'withdrawalDate',
   maintenanceRequestId: 'maintenanceRequestId',
   materialRequestId: 'materialRequestId',
@@ -510,6 +513,28 @@ exports.Prisma.MaterialRestrictionOrderItemScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.SipacMaterialScalarFieldEnum = {
+  idMaterial: 'idMaterial',
+  ativo: 'ativo',
+  codigo: 'codigo',
+  codigoSidec: 'codigoSidec',
+  consumoEnergia: 'consumoEnergia',
+  dataUltimaCompra: 'dataUltimaCompra',
+  denominacaoGrupo: 'denominacaoGrupo',
+  denominacaoMaterial: 'denominacaoMaterial',
+  denominacaoMaterialAscii: 'denominacaoMaterialAscii',
+  denominacaoSubGrupo: 'denominacaoSubGrupo',
+  denominacaoUnidade: 'denominacaoUnidade',
+  especificacao: 'especificacao',
+  especificacaoAscii: 'especificacaoAscii',
+  idGrupo: 'idGrupo',
+  idSubGrupo: 'idSubGrupo',
+  precoCompra: 'precoCompra',
+  valorEstimado: 'valorEstimado',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -536,6 +561,10 @@ exports.Prisma.RoleScalarFieldEnum = {
   description: 'description',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.WorkerScalarFieldEnum = {
+  id: 'id'
 };
 
 exports.Prisma.SortOrder = {
@@ -630,13 +659,12 @@ exports.Prisma.WarehouseOrderByRelevanceFieldEnum = {
 };
 
 exports.Prisma.MaterialGlobalCatalogOrderByRelevanceFieldEnum = {
-  globalCode: 'globalCode',
+  sipacCode: 'sipacCode',
+  catmatCode: 'catmatCode',
   name: 'name',
   description: 'description',
   unitOfMeasure: 'unitOfMeasure',
-  category: 'category',
-  manufacturer: 'manufacturer',
-  partNumber: 'partNumber'
+  photoUrl: 'photoUrl'
 };
 
 exports.Prisma.MaterialWarehouseStockOrderByRelevanceFieldEnum = {
@@ -654,7 +682,7 @@ exports.Prisma.MaterialRequestItemOrderByRelevanceFieldEnum = {
   notes: 'notes'
 };
 
-exports.Prisma.StockMovementTypeOrderByRelevanceFieldEnum = {
+exports.Prisma.MaterialStockMovementTypeOrderByRelevanceFieldEnum = {
   code: 'code',
   name: 'name',
   description: 'description'
@@ -728,6 +756,18 @@ exports.Prisma.MaterialRestrictionOrderItemOrderByRelevanceFieldEnum = {
   unitOfMeasure: 'unitOfMeasure'
 };
 
+exports.Prisma.SipacMaterialOrderByRelevanceFieldEnum = {
+  codigo: 'codigo',
+  codigoSidec: 'codigoSidec',
+  denominacaoGrupo: 'denominacaoGrupo',
+  denominacaoMaterial: 'denominacaoMaterial',
+  denominacaoMaterialAscii: 'denominacaoMaterialAscii',
+  denominacaoSubGrupo: 'denominacaoSubGrupo',
+  denominacaoUnidade: 'denominacaoUnidade',
+  especificacao: 'especificacao',
+  especificacaoAscii: 'especificacaoAscii'
+};
+
 exports.Prisma.UserOrderByRelevanceFieldEnum = {
   name: 'name',
   login: 'login',
@@ -796,14 +836,14 @@ exports.MaterialRequestItemType = exports.$Enums.MaterialRequestItemType = {
   DERIVED_MATERIAL: 'DERIVED_MATERIAL'
 };
 
-exports.StockOperationType = exports.$Enums.StockOperationType = {
+exports.MaterialStockOperationType = exports.$Enums.MaterialStockOperationType = {
   IN: 'IN',
   OUT: 'OUT',
   ADJUSTMENT: 'ADJUSTMENT',
   RESERVATION: 'RESERVATION'
 };
 
-exports.PickingOrderStatus = exports.$Enums.PickingOrderStatus = {
+exports.MaterialPickingOrderStatus = exports.$Enums.MaterialPickingOrderStatus = {
   PENDING_PREPARATION: 'PENDING_PREPARATION',
   IN_PREPARATION: 'IN_PREPARATION',
   READY_FOR_PICKUP: 'READY_FOR_PICKUP',
@@ -859,7 +899,7 @@ exports.Prisma.ModelName = {
   MaterialWarehouseStock: 'MaterialWarehouseStock',
   MaterialRequest: 'MaterialRequest',
   MaterialRequestItem: 'MaterialRequestItem',
-  StockMovementType: 'StockMovementType',
+  MaterialStockMovementType: 'MaterialStockMovementType',
   MaterialStockMovement: 'MaterialStockMovement',
   MaterialDerivedCondition: 'MaterialDerivedCondition',
   MaterialDerived: 'MaterialDerived',
@@ -873,9 +913,11 @@ exports.Prisma.ModelName = {
   MaterialReceiptItem: 'MaterialReceiptItem',
   MaterialRestrictionOrder: 'MaterialRestrictionOrder',
   MaterialRestrictionOrderItem: 'MaterialRestrictionOrderItem',
+  SipacMaterial: 'SipacMaterial',
   User: 'User',
   MagicLink: 'MagicLink',
-  Role: 'Role'
+  Role: 'Role',
+  Worker: 'Worker'
 };
 
 /**

@@ -1,0 +1,11 @@
+model Worker {
+    id Int @id @default(autoincrement())
+
+    // Relations: material.prisma (for MaterialPickingOrder)
+    pickingOrdersBeCollected MaterialPickingOrder[] @relation("PickingOrdersBeCollectedByWorker") // Material picking orders to be collected by this worker.
+
+    // Relations: material.prisma (for MaterialWithdrawal)
+    withdrawalsCollected MaterialWithdrawal[] @relation("WithdrawalsCollectedByWorker") // Material picking orders to be collected by this worker.
+
+    @@map("workers")
+}

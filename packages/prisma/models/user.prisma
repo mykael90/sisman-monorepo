@@ -8,19 +8,25 @@ model User {
   isActive   Boolean     @default(true) // Indicates if the user account is active.
   createdAt  DateTime    @default(now()) @db.Timestamp(0) // Timestamp for when the user record was created.
   updatedAt  DateTime    @updatedAt @db.Timestamp(0) // Timestamp for the last update of the user record.
-  logLogin   LogLogin[] // Related login logs for this user.
   roles      Role[] // Roles assigned to this user.
   magicLinks MagicLink[] // Magic links generated for this user.
+
+  // Relations: log.prisma
+  logLogin LogLogin[] // Related login logs for this user.
 
   // Relations: maintenance.prisma
   reportedOccurrences         InfrastructureOccurrence[] @relation("ReportedOccurrences") // Infrastructure occurrences reported by this user.
   createdMaintenanceRequests  MaintenanceRequest[]       @relation("CreatedByUser") // Maintenance requests created by this user.
   assignedMaintenanceRequests MaintenanceRequest[]       @relation("AssignedToUser") // Maintenance requests assigned to this user.
   timelineEvents              MaintenanceTimelineEvent[] @relation("ActionByUser") // Timeline events/actions performed by this user.
-  materialRequestsCreated     MaterialRequest[]          @relation("MaterialRequestedByUser") // Material requests created by this user.
-  materialRequestsApproved    MaterialRequest[]          @relation("MaterialApprovedByUser") // Material requests approved by this user.
-  withdrawalsProcessed        MaterialWithdrawal[]       @relation("WithdrawalsProcessedBy") // Withdrawals processed by this user.
-  withdrawalsCollected        MaterialWithdrawal[]       @relation("WithdrawalsCollectedBy") // Withdrawals collected by this user.
+
+  // Relations: material.prisma (for MaterialRequest)
+  materialRequestsCreated  MaterialRequest[] @relation("MaterialRequestedByUser") // Material requests created by this user.
+  materialRequestsApproved MaterialRequest[] @relation("MaterialApprovedByUser") // Material requests approved by this user.
+
+  // Relations: material.prisma (for MaterialWithdrawal)
+  withdrawalsProcessed MaterialWithdrawal[] @relation("WithdrawalsProcessedBy") // Withdrawals processed by this user.
+  withdrawalsCollected MaterialWithdrawal[] @relation("WithdrawalsCollectedByUser") // Withdrawals collected by this user.
 
   // Relations: material.prisma (for MaterialReceipt)
   receiptsProcessed MaterialReceipt[] @relation("ReceiptsProcessedBy") // Material receipts processed by this user.
@@ -32,7 +38,8 @@ model User {
   transferOrdersReceived  MaterialTransferOrder[] @relation("TransferOrdersReceivedBy") // Stock transfer orders received by this user.
 
   // Relations: material.prisma (for MaterialPickingOrder)
-  pickingOrdersRequested MaterialPickingOrder[] @relation("PickingOrdersRequestedBy") // Material picking orders requested by this user.
+  pickingOrdersRequested   MaterialPickingOrder[] @relation("PickingOrdersRequestedBy") // Material picking orders requested by this user.
+  pickingOrdersBeCollected MaterialPickingOrder[] @relation("PickingOrdersBeCollectedByUser") // Material picking orders to be collected by this user.
 
   // Relations: material.prisma (for MaterialRestrictionOrder)
   restrictionOrdersProcessed      MaterialRestrictionOrder[] @relation("RestrictionOrdersProcessedBy") // Material restriction orders processed by this user.

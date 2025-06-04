@@ -9,13 +9,15 @@ import {
   IsString
 } from 'class-validator';
 
-export class CreateMaterialDto implements Prisma.MaterialCreateManyInput {
+export class CreateMaterialDto
+  implements Prisma.MaterialGlobalCatalogCreateManyInput
+{
   @IsNotEmpty()
   @IsString()
   name: string;
 
   @IsOptional()
-  globalCode: string;
+  sipacCode: string;
 
   @IsString()
   @IsOptional()

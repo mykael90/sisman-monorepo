@@ -1,0 +1,8 @@
+### Variables
+@urlLocal = {{apiUrl}}/sipac/materiais
+@contentType = application/json
+
+
+### GET all
+GET {{urlLocal}}
+
