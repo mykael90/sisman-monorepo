@@ -19,9 +19,25 @@ model User {
   timelineEvents              MaintenanceTimelineEvent[] @relation("ActionByUser") // Timeline events/actions performed by this user.
   materialRequestsCreated     MaterialRequest[]          @relation("MaterialRequestedByUser") // Material requests created by this user.
   materialRequestsApproved    MaterialRequest[]          @relation("MaterialApprovedByUser") // Material requests approved by this user.
-  withdrawalsRequested        MaterialWithdrawalOrder[]  @relation("WithdrawalsRequestedBy")
-  withdrawalsPicked           MaterialWithdrawalOrder[]  @relation("WithdrawalsPickedBy")
-  withdrawalsCollected        MaterialWithdrawalOrder[]  @relation("WithdrawalsCollectedBy")
+  withdrawalsProcessed        MaterialWithdrawal[]       @relation("WithdrawalsProcessedBy") // Withdrawals processed by this user.
+  withdrawalsCollected        MaterialWithdrawal[]       @relation("WithdrawalsCollectedBy") // Withdrawals collected by this user.
+
+  // Relations: material.prisma (for MaterialReceipt)
+  receiptsProcessed MaterialReceipt[] @relation("ReceiptsProcessedBy") // Material receipts processed by this user.
+
+  // Relations: material.prisma (for StockTransferOrder)
+  transferOrdersRequested MaterialTransferOrder[] @relation("TransferOrdersRequestedBy") // Stock transfer orders requested by this user.
+  transferOrdersApproved  MaterialTransferOrder[] @relation("TransferOrdersApprovedBy") // Stock transfer orders approved by this user.
+  transferOrdersShipped   MaterialTransferOrder[] @relation("TransferOrdersShippedBy") // Stock transfer orders shipped by this user.
+  transferOrdersReceived  MaterialTransferOrder[] @relation("TransferOrdersReceivedBy") // Stock transfer orders received by this user.
+
+  // Relations: material.prisma (for MaterialPickingOrder)
+  pickingOrdersRequested MaterialPickingOrder[] @relation("PickingOrdersRequestedBy") // Material picking orders requested by this user.
+
+  // Relations: material.prisma (for MaterialRestrictionOrder)
+  restrictionOrdersProcessed      MaterialRestrictionOrder[] @relation("RestrictionOrdersProcessedBy") // Material restriction orders processed by this user.
+  materialStockMovementsProcessed MaterialStockMovement[]    @relation("StockMovementsProcessedBy")
+  materialStockMovementsCollected MaterialStockMovement[]    @relation("StockMovementsCollectedBy")
 
   @@map("users") // Maps this model to the 'users' table.
 }

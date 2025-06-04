@@ -39,7 +39,9 @@ model MaintenanceRequest {
     timelineEvents MaintenanceTimelineEvent[]
 
     // Material requests associated with this maintenance request.
-    materialRequests MaterialRequest[]
+    materialRequests       MaterialRequest[]
+    materialStockMovements MaterialStockMovement[]
+    materialWithdrawals    MaterialWithdrawal[]
 
     @@index([currentMaintenanceInstanceId]) // Index for faster lookups by maintenance instance.
     @@index([createdById]) // Index for faster lookups by creator.
