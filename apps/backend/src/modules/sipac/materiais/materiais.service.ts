@@ -178,8 +178,8 @@ export class MateriaisService {
         {
           offset,
           limit,
-          ativo: true,
-          codigo: 3024000000359
+          ativo: true
+          // codigo: 3024000000359,
           // precisa ser o código completo, não pega só uma parte
         },
         {

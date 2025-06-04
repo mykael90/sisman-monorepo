@@ -362,9 +362,6 @@ importers:
       '@types/cheerio':
         specifier: ^0.22.35
         version: 0.22.35
-      '@types/cron':
-        specifier: ^2.0.1
-        version: 2.4.3
       '@types/express':
         specifier: ^4.17.17
         version: 4.17.21
@@ -2427,10 +2424,6 @@ packages:
   '@types/cookiejar@2.1.5':
     resolution: {integrity: sha512-he+DHOWReW0nghN24E1WUqM0efK4kI9oTqDm6XmK8ZPe2djZ90BSNdGnIyCLzCPw7/pogPlGbzI2wHGGmi4O/Q==}
 
-  '@types/cron@2.4.3':
-    resolution: {integrity: sha512-ViRBkoZD9Rk0hGeMdd2GHGaOaZuH9mDmwsE5/Zo53Ftwcvh7h9VJc8lIt2wdgEwS4EW5lbtTX6vlE0idCLPOyA==}
-    deprecated: This is a stub types definition. cron provides its own type definitions, so you do not need this installed.
-
   '@types/ejs@3.1.5':
     resolution: {integrity: sha512-nv+GSx77ZtXiJzwKdsASqi+YQ5Z7vwHsTP0JY2SiQgjGckkBRKZnk8nIM+7oUZ1VCtuTz0+By4qVR7fqzp/Dfg==}
 
@@ -2487,9 +2480,6 @@ packages:
 
   '@types/luxon@3.4.2':
     resolution: {integrity: sha512-TifLZlFudklWlMBfhubvgqTXRzLDI5pCbGa4P8a3wPyUQSW+1xQ5eDsreP9DWHX3tjq1ke96uYG/nwundroWcA==}
-
-  '@types/luxon@3.6.2':
-    resolution: {integrity: sha512-R/BdP7OxEMc44l2Ex5lSXHoIXTB2JLNa3y2QISIbr58U/YcsffyQrYW//hZSdrfxrjRZj3GcUoxMPGdO8gSYuw==}
 
   '@types/methods@1.1.4':
     resolution: {integrity: sha512-ymXWVrDiCxTBE3+RIrrP533E70eA+9qu7zdWoHuOmGujkYtzf4HQF96b8nwHLqhuf4ykX61IGRIB38CC6/sImQ==}
@@ -3395,10 +3385,6 @@ packages:
 
   cron@3.5.0:
     resolution: {integrity: sha512-0eYZqCnapmxYcV06uktql93wNWdlTmmBFP2iYz+JPVcQqlyFYcn1lFuIk4R54pkOmE7mcldTAPZv6X5XA4Q46A==}
-
-  cron@4.3.0:
-    resolution: {integrity: sha512-ciiYNLfSlF9MrDqnbMdRWFiA6oizSF7kA1osPP9lRzNu0Uu+AWog1UKy7SkckiDY2irrNjeO6qLyKnXC8oxmrw==}
-    engines: {node: '>=18.x'}
 
   cross-spawn@6.0.6:
     resolution: {integrity: sha512-VqCUuhcd1iB+dsv8gxPttb5iZh/D0iubSP21g36KXdEuf6I5JiioesUVjpCdHV9MZRUfVFlvwtIUyPfxo5trtw==}
@@ -5114,10 +5100,6 @@ packages:
 
   luxon@3.5.0:
     resolution: {integrity: sha512-rh+Zjr6DNfUYR3bPwJEnuwDdqMbxZW7LOQfUN4B54+Cl+0o5zaU9RJ6bcidfDtC1cWCZXQ+nvX8bf6bAji37QQ==}
-    engines: {node: '>=12'}
-
-  luxon@3.6.1:
-    resolution: {integrity: sha512-tJLxrKJhO2ukZ5z0gyjY1zPh3Rh88Ej9P7jNrZiHMUXHae1yvI2imgOZtL1TO8TW6biMMKfTtAOoEJANgtWBMQ==}
     engines: {node: '>=12'}
 
   magic-string@0.30.17:
@@ -9153,10 +9135,6 @@ snapshots:
 
   '@types/cookiejar@2.1.5': {}
 
-  '@types/cron@2.4.3':
-    dependencies:
-      cron: 4.3.0
-
   '@types/ejs@3.1.5':
     optional: true
 
@@ -9231,8 +9209,6 @@ snapshots:
   '@types/lodash@4.17.16': {}
 
   '@types/luxon@3.4.2': {}
-
-  '@types/luxon@3.6.2': {}
 
   '@types/methods@1.1.4': {}
 
@@ -10354,11 +10330,6 @@ snapshots:
     dependencies:
       '@types/luxon': 3.4.2
       luxon: 3.5.0
-
-  cron@4.3.0:
-    dependencies:
-      '@types/luxon': 3.6.2
-      luxon: 3.6.1
 
   cross-spawn@6.0.6:
     dependencies:
@@ -12693,8 +12664,6 @@ snapshots:
       react: 19.1.0
 
   luxon@3.5.0: {}
-
-  luxon@3.6.1: {}
 
   magic-string@0.30.17:
     dependencies:

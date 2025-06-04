@@ -1,8 +1,8 @@
 ### Variables
-@urlLocal = {{apiUrl}}/sipac/materiais
+@urlLocal = {{apiUrl}}/sipac
 @contentType = application/json
 
 
-### GET all
-GET {{urlLocal}}
+### GET all materiais
+GET {{urlLocal}}/materiais
 
