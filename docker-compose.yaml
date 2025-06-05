@@ -10,6 +10,7 @@ services:
       # - 9229:9229  # Porta para o debug do Visual Studio Code, fechar se em produção ou debug no proprio conteiner
     environment:
       ENV: ${ENV}
+      TZ: America/Sao_Paulo
       # DEBUG_MODE: ${DEBUG_MODE}
     env_file:
       .env
