@@ -36,10 +36,12 @@ export class SipacHttpService implements OnModuleInit {
     @Inject(sipacApiConfig.KEY)
     private apiConfig: ConfigType<typeof sipacApiConfig>
   ) {
-    // Configura o throttler: `requestsPerHour` chamadas por 1000ms*60s (1 hora)
+    // Configura o throttler: Isso garantirá que não exceda 5000 requisições por hora e, por consequência, também estará bem abaixo das 1000 requisições por minuto. É uma abordagem conservadora e simples que atende aos requisitos usando p-throttle. Interval com folga de 1% e arredondado para inteiro superior.
     this.throttler = pThrottle({
-      limit: apiConfig.requestsPerHour,
-      interval: 1000 * 60
+      limit: 1,
+      interval: Math.ceil(
+        (3600 / Number(apiConfig.requestsPerHour)) * 1000 * 1.01
+      )
     });
 
     // Função throttled para fazer a requisição de DADOS
