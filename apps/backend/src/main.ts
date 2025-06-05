@@ -6,15 +6,10 @@ import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import 'src/shared/utils/bigint-tojson';
 import 'src/shared/utils/date-tojson';
-import { WinstonModule } from 'nest-winston';
-import { winstonConfig } from './config/winston.config';
 
 async function bootstrap() {
-  const logger = WinstonModule.createLogger(winstonConfig); // Crie a instância do logger
-  const app = await NestFactory.create(AppModule, {
-    // Substitua o logger padrão do NestJS
-    logger: logger
-  });
+  const app = await NestFactory.create(AppModule);
+  const logger = new Logger('Bootstrap');
 
   app.enableCors({
     origin: ['http://10.10.10.10:3002', 'http://localhost:3090']
