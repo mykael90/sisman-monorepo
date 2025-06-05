@@ -605,6 +605,14 @@ export class SipacService {
     if (result && typeof result === 'object' && 'rawHtml' in result) {
       delete result.rawHtml;
     }
+
+    //including more metadata (second update)
+    result.metadata = {
+      ...result.metadata,
+      method: fetchParams.targetMethod,
+      body: fetchParams.targetBody,
+    };
+
     return result;
   }
 
@@ -800,8 +808,13 @@ export class SipacService {
       `Finished fetching all ${totalPages} pages. Total items collected: ${allItems.length}`,
     );
 
+    //including more metadata (second update)
     const finalResult = {
-      metadata: firstPageResult.metadata, // Metadata from the first page
+      metadata: {
+        ...firstPageResult.metadata,
+        method: initialFetchParams.targetMethod,
+        body: initialFetchParams.targetBody,
+      }, // Metadata from the first page
       data: {
         items: allItems, // Aggregated items
         pagination: pagination, // Pagination info from the first page (as returned by parser)

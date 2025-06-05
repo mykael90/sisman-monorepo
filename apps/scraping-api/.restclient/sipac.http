@@ -13,7 +13,7 @@ GET {{urlLocal}}/requisicao/material
 &acao=200
 Content-Type: {{contentType}}
 
-### GET requisição de material
+### GET requisição de manutencao
 GET {{urlLocal}}/requisicao/manutencao
 ?id=2153960
 Content-Type: {{contentType}}
