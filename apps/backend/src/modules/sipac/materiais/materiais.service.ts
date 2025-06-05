@@ -2,165 +2,280 @@ import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
+import { Prisma } from '@sisman/prisma';
 import { SipacHttpService } from '../sipac.service';
-
-// import { SipacMaterialDto } from './dto/sipac-material.dto'; // Se criar DTOs
-
-export interface SipacMaterialResponseItem {
-  ativo: boolean;
-  codigo: number; // Anteriormente string, agora number conforme a tabela
-  'codigo-sidec': number;
-  'consumo-energia': number;
-  'data-ultima-compra': number; // Timestamp (integer)
-  'denominacao-grupo': string;
-  'denominacao-material': string; // Corresponde à antiga 'descricao'
-  'denominacao-material-ascii': string;
-  'denominacao-sub-grupo': string;
-  'denominacao-unidade': string; // Corresponde à antiga 'unidadeMedida'
-  especificacao: string;
-  'especificacao-ascii': string;
-  'id-grupo': number;
-  'id-material': number; // Corresponde à antiga 'id'
-  'id-sub-grupo': number;
-  'preco-compra': number;
-  'valor-estimado': number;
-}
-
-export interface SipacPaginatedResponse<T> {
-  items: T[];
-  offset: number;
-  limit: number;
-  totalItems: number;
-  totalPages: number;
-}
+import {
+  SipacMaterialResponseItem,
+  SipacPaginatedResponse,
+  SyncResult
+} from '../sipac.interfaces';
+import {
+  CreateManySipacMaterialDto,
+  CreateSipacMaterialDto
+} from './dto/sipac-material.dto';
+import { SipacMaterialMapper } from './mappers/sipac-material.mapper';
 
 @Injectable()
 export class MateriaisService {
   private readonly logger = new Logger(MateriaisService.name);
   private readonly ITEMS_PER_PAGE = 100; // Limite da API externa
+  private readonly URL_PATH = 'material/v1/materiais';
 
   constructor(
     private readonly prisma: PrismaService,
-    private readonly sipacHttp: SipacHttpService,
-    private readonly configService: ConfigService
+    private readonly sipacHttp: SipacHttpService
   ) {}
 
   // @Cron(
-  //   process.env.CRON_SIPAC_MATERIAIS_SYNC || CronExpression.DAILY_AT_MIDNIGHT
+  //   process.env.CRON_SIPAC_MATERIAIS_SYNC || '0 0 * * *' // Daily at midnight
   // )
   // async handleCronSyncMateriais() {
   //   this.logger.log(
   //     'Iniciando sincronização agendada de materiais do SIPAC...'
   //   );
-  //   await this.fetchAllAndPersistMateriais();
-  //   this.logger.log('Sincronização agendada de materiais do SIPAC concluída.');
-  // }
-
-  // async fetchAllAndPersistMateriais(): Promise<void> {
-  //   this.logger.log('Buscando todos os materiais do SIPAC...');
-  //   let currentPage = 1;
-  //   let hasMorePages = true;
-  //   let totalMateriaisProcessados = 0;
-
-  //   while (hasMorePages) {
-  //     try {
-  //       this.logger.log(`Buscando materiais - Página: ${currentPage}`);
-  //       const response = await this.sipacHttp.get<
-  //         SipacPaginatedResponse<SipacMaterialResponseItem>
-  //       >(
-  //         'materiais', // Endpoint específico para materiais
-  //         {
-  //           page: currentPage,
-  //           limit: this.ITEMS_PER_PAGE
-  //         }
-  //       );
-
-  //       const materiaisDaPagina = response.data.items;
-  //       if (materiaisDaPagina && materiaisDaPagina.length > 0) {
-  //         this.logger.log(
-  //           `Recebidos ${materiaisDaPagina.length} materiais na página ${currentPage}. Persistindo...`
-  //         );
-  //         await this.persistMateriais(materiaisDaPagina);
-  //         totalMateriaisProcessados += materiaisDaPagina.length;
-
-  //         // Verifica se há mais páginas
-  //         // A API deve informar o total de páginas ou se é a última
-  //         // Exemplo: hasMorePages = response.data.currentPage < response.data.totalPages;
-  //         // Ou: hasMorePages = materiaisDaPagina.length === this.ITEMS_PER_PAGE; (supõe que se vier menos, acabou)
-  //         hasMorePages = response.data.currentPage < response.data.totalPages; // Ajuste conforme a API real
-  //         if (hasMorePages) {
-  //           currentPage++;
-  //         }
-  //       } else {
-  //         this.logger.log(
-  //           `Nenhum material encontrado na página ${currentPage}. Finalizando busca.`
-  //         );
-  //         hasMorePages = false;
-  //       }
-  //     } catch (error) {
-  //       this.logger.error(
-  //         `Erro ao buscar ou persistir materiais na página ${currentPage}: ${error.message}`,
-  //         error.stack
-  //       );
-  //       // Decidir se quer parar ou tentar a próxima página (cuidado com loops infinitos)
-  //       hasMorePages = false; // Parar em caso de erro para evitar problemas maiores
-  //     }
-  //   }
+  //   const result = await this.fetchAllAndPersistMateriais();
   //   this.logger.log(
-  //     `Total de ${totalMateriaisProcessados} materiais processados do SIPAC.`
+  //     `Sincronização agendada de materiais do SIPAC concluída. Total processado: ${result.totalProcessed}, Sucesso: ${result.successful}, Falhas: ${result.failed}.`
   //   );
   // }
 
-  // private async persistMateriais(
-  //   materiais: SipacMaterialResponseItem[]
-  // ): Promise<void> {
-  //   if (!materiais || materiais.length === 0) {
-  //     return;
-  //   }
+  private async persistManyMateriais(
+    data: CreateManySipacMaterialDto
+  ): Promise<void> {
+    try {
+      const result = await this.prisma.sipacMaterial.createMany({
+        data: data.items,
+        skipDuplicates: true
+      });
+      this.logger.log(`Materiais persistidos/atualizados com sucesso.`);
 
-  //   // Exemplo de como persistir/atualizar. Adapte à sua lógica (upsert).
-  //   // Idealmente, você terá um ID único vindo da API para usar como chave.
-  //   const operations = materiais.map((material) => {
-  //     return this.prisma.sipacMaterial.upsert({
-  //       // Supondo que seu model no Prisma se chama 'material'
-  //       where: { codigoSipac: material.codigo }, // Use um campo único do SIPAC
-  //       update: {
-  //         descricao: material.descricao,
-  //         unidadeMedida: material.unidadeMedida
-  //         // ... mapear outros campos
-  //       },
-  //       create: {
-  //         codigoSipac: material.codigo,
-  //         descricao: material.descricao,
-  //         unidadeMedida: material.unidadeMedida
-  //         // ... mapear outros campos
-  //       }
-  //     });
-  //   });
+      const response = {
+        created: result.count,
+        skipped: data.items.length - result.count
+      };
 
-  //   try {
-  //     await this.prisma.$transaction(operations);
-  //     this.logger.log(
-  //       `${materiais.length} materiais persistidos/atualizados com sucesso.`
-  //     );
-  //   } catch (error) {
-  //     this.logger.error(
-  //       `Erro ao persistir lote de materiais: ${error.message}`,
-  //       error.stack
-  //     );
-  //     // Tratar erros de transação, talvez individualmente se necessário.
-  //   }
-  // }
+      this.logger.log(
+        `${response.created} materiais criados e ${response.skipped} já existentes`
+      );
 
-  // // Método para trigger manual (opcional, via controller)
-  // async triggerSync(): Promise<{ message: string; count?: number }> {
-  //   this.logger.log('Sincronização manual de materiais do SIPAC iniciada.');
-  //   await this.fetchAllAndPersistMateriais();
-  //   // Poderia retornar a contagem de itens processados se o fetchAllAndPersistMateriais retornasse isso.
-  //   return {
-  //     message: 'Sincronização de materiais do SIPAC concluída com sucesso.'
-  //   };
-  // }
+      return;
+    } catch (error) {
+      this.logger.error(
+        `Erro ao persistir lote de materiais: ${error.message}`,
+        error.stack
+      );
+      // Tratar erros de transação, talvez individualmente se necessário.
+    }
+  }
+
+  async fetchAllAndPersistMateriais(): Promise<SyncResult> {
+    this.logger.log('Buscando todos os materiais do SIPAC...');
+    let currentPage = 1;
+    let offset = 0;
+    let totalPages = 1;
+    let successfulPersists = 0;
+    let failedPersists = 0;
+
+    try {
+      // First request to get total pages
+      this.logger.log(`Buscando materiais - Página: ${currentPage}`);
+      const initialResponse = await this.sipacHttp.get<
+        SipacMaterialResponseItem[]
+      >(
+        this.URL_PATH,
+        {
+          offset,
+          limit: this.ITEMS_PER_PAGE,
+          ativo: true
+        },
+        {
+          paginado: 'true'
+        }
+      );
+
+      const initialHeaders = initialResponse.headers;
+      totalPages = parseInt(initialHeaders['x-pages'], 10) || 1;
+      this.logger.log(`Total de páginas a processar: ${totalPages}`);
+
+      const materiaisDaPagina = initialResponse.data;
+      if (materiaisDaPagina && materiaisDaPagina.length > 0) {
+        this.logger.log(
+          `Recebidos ${materiaisDaPagina.length} materiais na página ${currentPage}. Persistindo...`
+        );
+        const createManyDto: CreateManySipacMaterialDto = {
+          items: materiaisDaPagina.map((item) =>
+            SipacMaterialMapper.toCreateDto(item)
+          )
+        };
+        try {
+          await this.persistManyMateriais(createManyDto);
+          successfulPersists += materiaisDaPagina.length;
+        } catch (persistError) {
+          this.logger.error(
+            `Erro ao persistir materiais da página ${currentPage}: ${persistError.message}`,
+            persistError.stack
+          );
+          failedPersists += materiaisDaPagina.length;
+        }
+      } else {
+        this.logger.log(
+          `Nenhum material encontrado na página ${currentPage}. Finalizando busca.`
+        );
+      }
+
+      currentPage++;
+      offset = (currentPage - 1) * this.ITEMS_PER_PAGE;
+
+      // Loop for subsequent pages
+      while (currentPage <= totalPages) {
+        this.logger.log(`Buscando materiais - Página: ${currentPage}`);
+        const response = await this.sipacHttp.get<SipacMaterialResponseItem[]>(
+          this.URL_PATH,
+          {
+            offset,
+            limit: this.ITEMS_PER_PAGE,
+            ativo: true
+          },
+          {
+            paginado: 'true'
+          }
+        );
+
+        const materiaisSubsequentes = response.data;
+        if (materiaisSubsequentes && materiaisSubsequentes.length > 0) {
+          this.logger.log(
+            `Recebidos ${materiaisSubsequentes.length} materiais na página ${currentPage}. Persistindo...`
+          );
+          const createManyDto: CreateManySipacMaterialDto = {
+            items: materiaisSubsequentes.map((item) =>
+              SipacMaterialMapper.toCreateDto(item)
+            )
+          };
+          try {
+            await this.persistManyMateriais(createManyDto);
+            successfulPersists += materiaisSubsequentes.length;
+          } catch (persistError) {
+            this.logger.error(
+              `Erro ao persistir materiais da página ${currentPage}: ${persistError.message}`,
+              persistError.stack
+            );
+            failedPersists += materiaisSubsequentes.length;
+          }
+        } else {
+          this.logger.log(
+            `Nenhum material encontrado na página ${currentPage}. Finalizando busca.`
+          );
+        }
+        currentPage++;
+        offset = (currentPage - 1) * this.ITEMS_PER_PAGE;
+      }
+    } catch (error) {
+      this.logger.error(
+        `Erro geral ao buscar ou persistir materiais: ${error.message}`,
+        error.stack
+      );
+      // If a general error occurs, we can't determine successful/failed counts accurately for the whole process
+      // So we'll just return what we have so far, or 0 if it failed before any processing.
+      return {
+        totalProcessed: successfulPersists + failedPersists,
+        successful: successfulPersists,
+        failed: failedPersists
+      };
+    }
+    this.logger.log(
+      `Sincronização de materiais do SIPAC concluída. Total processado: ${successfulPersists + failedPersists}, Sucesso: ${successfulPersists}, Falhas: ${failedPersists}.`
+    );
+    return {
+      totalProcessed: successfulPersists + failedPersists,
+      successful: successfulPersists,
+      failed: failedPersists
+    };
+  }
+
+  async fetchManyByCodesAndPersistMaterials(
+    codigos: string[]
+  ): Promise<SyncResult> {
+    this.logger.log(
+      `Iniciando busca e persistência de múltiplos materiais por código do SIPAC. Total de códigos: ${codigos.length}`
+    );
+    let totalProcessed = 0;
+    let successful = 0;
+    let failed = 0;
+
+    for (const code of codigos) {
+      const result = await this.fetchByCodeAndPersistMaterial(code);
+      totalProcessed += result.totalProcessed;
+      successful += result.successful;
+      failed += result.failed;
+    }
+    this.logger.log(
+      `Concluída a busca e persistência de múltiplos materiais por código do SIPAC. Total processado: ${totalProcessed}, Sucesso: ${successful}, Falhas: ${failed}.`
+    );
+    return {
+      totalProcessed,
+      successful,
+      failed
+    };
+  }
+
+  async fetchByCodeAndPersistMaterial(codigo: string): Promise<SyncResult> {
+    this.logger.log(
+      `Buscando e persistindo material do SIPAC com código: ${codigo}...`
+    );
+    let successfulPersists = 0;
+    let failedPersists = 0;
+
+    try {
+      const response = await this.sipacHttp.get<SipacMaterialResponseItem[]>(
+        this.URL_PATH,
+        {
+          offset: 0, // Always 0 for a single code search
+          limit: 1, // Only expect one item
+          ativo: true,
+          codigo: codigo
+        },
+        {
+          paginado: 'true'
+        }
+      );
+
+      const material = response.data[0]; // Expecting a single item in the array
+      if (material) {
+        this.logger.log(
+          `Material com código ${codigo} encontrado. Persistindo...`
+        );
+        const createManyDto: CreateManySipacMaterialDto = {
+          items: [SipacMaterialMapper.toCreateDto(material)]
+        };
+        try {
+          await this.persistManyMateriais(createManyDto);
+          successfulPersists++;
+          this.logger.log(
+            `Material com código ${codigo} persistido com sucesso.`
+          );
+        } catch (persistError) {
+          this.logger.error(
+            `Erro ao persistir material com código ${codigo}: ${persistError.message}`,
+            persistError.stack
+          );
+          failedPersists++;
+        }
+      } else {
+        this.logger.log(`Nenhum material encontrado para o código ${codigo}.`);
+      }
+    } catch (error) {
+      this.logger.error(
+        `Erro ao buscar ou persistir material com código ${codigo}: ${error.message}`,
+        error.stack
+      );
+      failedPersists++; // Mark as failed if the fetch itself fails
+    }
+    return {
+      totalProcessed: successfulPersists + failedPersists,
+      successful: successfulPersists,
+      failed: failedPersists
+    };
+  }
 
   /**
    * Busca uma pequena quantidade de materiais da API do SIPAC para teste de conexão.
@@ -174,7 +289,7 @@ export class MateriaisService {
     this.logger.log('Iniciando teste de busca de materiais do SIPAC...');
     try {
       const result = await this.sipacHttp.get<SipacMaterialResponseItem[]>(
-        'material/v1/materiais',
+        this.URL_PATH,
         {
           offset,
           limit,
@@ -199,7 +314,19 @@ export class MateriaisService {
         totalPages: headers['x-pages']
       };
 
-      return response;
+      const createDto: CreateSipacMaterialDto = SipacMaterialMapper.toCreateDto(
+        response.items[0]
+      );
+
+      const createManyDto: CreateManySipacMaterialDto = {
+        items: response.items.map((item) => {
+          return SipacMaterialMapper.toCreateDto(item);
+        })
+      };
+
+      // await this.persistManyMateriais(createManyDto);
+
+      return createManyDto;
     } catch (error) {
       this.logger.error(
         'Erro durante o teste de busca de materiais do SIPAC.',

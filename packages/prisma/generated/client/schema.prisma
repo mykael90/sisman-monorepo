@@ -1065,9 +1065,48 @@ model SipacMaterial {
   createdAt DateTime @default(now()) @db.Timestamp(0)
   updatedAt DateTime @updatedAt @db.Timestamp(0)
 
+  //Relations
+  grupo    SipacGrupoMaterial?    @relation(fields: [idGrupo], references: [idGrupoMaterial])
+  subGrupo SipacSubGrupoMaterial? @relation(fields: [idSubGrupo], references: [idSubGrupoMaterial])
+
   @@index([codigo])
   @@index([idGrupo])
   @@map("sipac_materiais")
+}
+
+// Representa um grupo de material do sistema.
+model SipacGrupoMaterial {
+  idGrupoMaterial   Int     @id // Identificador do grupo.
+  ativo             Boolean // Indica se um grupo material está ativo ou não.
+  codigo            BigInt  @unique // Código do grupo.
+  denominacao       String // Nome do grupo.
+  descricao         String? // Descrição detalhada do grupo de material.
+  idElementoDespesa Int? // Identificador do elemento de despesa associado ao grupo de material.
+
+  createdAt      DateTime                @default(now()) @db.Timestamp(0)
+  updatedAt      DateTime                @updatedAt @db.Timestamp(0)
+  sipacMateriais SipacMaterial[]
+  subGrupos      SipacSubGrupoMaterial[]
+
+  @@index([codigo])
+  @@map("sipac_grupos_materiais")
+}
+
+// Representa um sub-grupo de material do sistema.
+model SipacSubGrupoMaterial {
+  idSubGrupoMaterial Int    @id // Identificador do subgrupo.
+  codigo             BigInt @unique // Código identificador do subgrupo. Junção do código do grupo mais um sequencial.
+  denominacao        String // Descrição resumida do subgrupo.
+  idGrupoMaterial    Int // Identificador do grupo.
+
+  createdAt          DateTime            @default(now()) @db.Timestamp(0)
+  updatedAt          DateTime            @updatedAt @db.Timestamp(0)
+  sipacMateriais     SipacMaterial[]
+  SipacGrupoMaterial SipacGrupoMaterial? @relation(fields: [idGrupoMaterial], references: [idGrupoMaterial])
+
+  @@index([codigo])
+  @@index([idGrupoMaterial])
+  @@map("sipac_sub_grupos_materiais")
 }
 
 // Represents a user of the system.

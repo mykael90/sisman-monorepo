@@ -159,6 +159,16 @@ export type MaterialRestrictionOrderItem = $Result.DefaultSelection<Prisma.$Mate
  */
 export type SipacMaterial = $Result.DefaultSelection<Prisma.$SipacMaterialPayload>
 /**
+ * Model SipacGrupoMaterial
+ * 
+ */
+export type SipacGrupoMaterial = $Result.DefaultSelection<Prisma.$SipacGrupoMaterialPayload>
+/**
+ * Model SipacSubGrupoMaterial
+ * 
+ */
+export type SipacSubGrupoMaterial = $Result.DefaultSelection<Prisma.$SipacSubGrupoMaterialPayload>
+/**
  * Model User
  * 
  */
@@ -784,6 +794,26 @@ export class PrismaClient<
   get sipacMaterial(): Prisma.SipacMaterialDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.sipacGrupoMaterial`: Exposes CRUD operations for the **SipacGrupoMaterial** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SipacGrupoMaterials
+    * const sipacGrupoMaterials = await prisma.sipacGrupoMaterial.findMany()
+    * ```
+    */
+  get sipacGrupoMaterial(): Prisma.SipacGrupoMaterialDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.sipacSubGrupoMaterial`: Exposes CRUD operations for the **SipacSubGrupoMaterial** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SipacSubGrupoMaterials
+    * const sipacSubGrupoMaterials = await prisma.sipacSubGrupoMaterial.findMany()
+    * ```
+    */
+  get sipacSubGrupoMaterial(): Prisma.SipacSubGrupoMaterialDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.user`: Exposes CRUD operations for the **User** model.
     * Example usage:
     * ```ts
@@ -1291,6 +1321,8 @@ export namespace Prisma {
     MaterialRestrictionOrder: 'MaterialRestrictionOrder',
     MaterialRestrictionOrderItem: 'MaterialRestrictionOrderItem',
     SipacMaterial: 'SipacMaterial',
+    SipacGrupoMaterial: 'SipacGrupoMaterial',
+    SipacSubGrupoMaterial: 'SipacSubGrupoMaterial',
     User: 'User',
     MagicLink: 'MagicLink',
     Role: 'Role',
@@ -1313,7 +1345,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "logError" | "logLogin" | "maintenanceRequest" | "maintenanceRequestStatus" | "maintenanceTimelineEvent" | "maintenanceInstance" | "serviceType" | "equipment" | "infrastructureOccurrence" | "warehouse" | "materialGlobalCatalog" | "materialWarehouseStock" | "materialRequest" | "materialRequestItem" | "materialStockMovementType" | "materialStockMovement" | "materialDerivedCondition" | "materialDerived" | "materialPickingOrder" | "materialPickingOrderItem" | "materialWithdrawal" | "materialWithdrawalItem" | "materialTransferOrder" | "materialTransferOrderItem" | "materialReceipt" | "materialReceiptItem" | "materialRestrictionOrder" | "materialRestrictionOrderItem" | "sipacMaterial" | "user" | "magicLink" | "role" | "worker"
+      modelProps: "logError" | "logLogin" | "maintenanceRequest" | "maintenanceRequestStatus" | "maintenanceTimelineEvent" | "maintenanceInstance" | "serviceType" | "equipment" | "infrastructureOccurrence" | "warehouse" | "materialGlobalCatalog" | "materialWarehouseStock" | "materialRequest" | "materialRequestItem" | "materialStockMovementType" | "materialStockMovement" | "materialDerivedCondition" | "materialDerived" | "materialPickingOrder" | "materialPickingOrderItem" | "materialWithdrawal" | "materialWithdrawalItem" | "materialTransferOrder" | "materialTransferOrderItem" | "materialReceipt" | "materialReceiptItem" | "materialRestrictionOrder" | "materialRestrictionOrderItem" | "sipacMaterial" | "sipacGrupoMaterial" | "sipacSubGrupoMaterial" | "user" | "magicLink" | "role" | "worker"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -3231,6 +3263,138 @@ export namespace Prisma {
           }
         }
       }
+      SipacGrupoMaterial: {
+        payload: Prisma.$SipacGrupoMaterialPayload<ExtArgs>
+        fields: Prisma.SipacGrupoMaterialFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SipacGrupoMaterialFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SipacGrupoMaterialPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SipacGrupoMaterialFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SipacGrupoMaterialPayload>
+          }
+          findFirst: {
+            args: Prisma.SipacGrupoMaterialFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SipacGrupoMaterialPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SipacGrupoMaterialFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SipacGrupoMaterialPayload>
+          }
+          findMany: {
+            args: Prisma.SipacGrupoMaterialFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SipacGrupoMaterialPayload>[]
+          }
+          create: {
+            args: Prisma.SipacGrupoMaterialCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SipacGrupoMaterialPayload>
+          }
+          createMany: {
+            args: Prisma.SipacGrupoMaterialCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.SipacGrupoMaterialDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SipacGrupoMaterialPayload>
+          }
+          update: {
+            args: Prisma.SipacGrupoMaterialUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SipacGrupoMaterialPayload>
+          }
+          deleteMany: {
+            args: Prisma.SipacGrupoMaterialDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SipacGrupoMaterialUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.SipacGrupoMaterialUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SipacGrupoMaterialPayload>
+          }
+          aggregate: {
+            args: Prisma.SipacGrupoMaterialAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSipacGrupoMaterial>
+          }
+          groupBy: {
+            args: Prisma.SipacGrupoMaterialGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SipacGrupoMaterialGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SipacGrupoMaterialCountArgs<ExtArgs>
+            result: $Utils.Optional<SipacGrupoMaterialCountAggregateOutputType> | number
+          }
+        }
+      }
+      SipacSubGrupoMaterial: {
+        payload: Prisma.$SipacSubGrupoMaterialPayload<ExtArgs>
+        fields: Prisma.SipacSubGrupoMaterialFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SipacSubGrupoMaterialFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SipacSubGrupoMaterialPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SipacSubGrupoMaterialFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SipacSubGrupoMaterialPayload>
+          }
+          findFirst: {
+            args: Prisma.SipacSubGrupoMaterialFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SipacSubGrupoMaterialPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SipacSubGrupoMaterialFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SipacSubGrupoMaterialPayload>
+          }
+          findMany: {
+            args: Prisma.SipacSubGrupoMaterialFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SipacSubGrupoMaterialPayload>[]
+          }
+          create: {
+            args: Prisma.SipacSubGrupoMaterialCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SipacSubGrupoMaterialPayload>
+          }
+          createMany: {
+            args: Prisma.SipacSubGrupoMaterialCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.SipacSubGrupoMaterialDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SipacSubGrupoMaterialPayload>
+          }
+          update: {
+            args: Prisma.SipacSubGrupoMaterialUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SipacSubGrupoMaterialPayload>
+          }
+          deleteMany: {
+            args: Prisma.SipacSubGrupoMaterialDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SipacSubGrupoMaterialUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.SipacSubGrupoMaterialUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SipacSubGrupoMaterialPayload>
+          }
+          aggregate: {
+            args: Prisma.SipacSubGrupoMaterialAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSipacSubGrupoMaterial>
+          }
+          groupBy: {
+            args: Prisma.SipacSubGrupoMaterialGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SipacSubGrupoMaterialGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SipacSubGrupoMaterialCountArgs<ExtArgs>
+            result: $Utils.Optional<SipacSubGrupoMaterialCountAggregateOutputType> | number
+          }
+        }
+      }
       User: {
         payload: Prisma.$UserPayload<ExtArgs>
         fields: Prisma.UserFieldRefs
@@ -3608,6 +3772,8 @@ export namespace Prisma {
     materialRestrictionOrder?: MaterialRestrictionOrderOmit
     materialRestrictionOrderItem?: MaterialRestrictionOrderItemOmit
     sipacMaterial?: SipacMaterialOmit
+    sipacGrupoMaterial?: SipacGrupoMaterialOmit
+    sipacSubGrupoMaterial?: SipacSubGrupoMaterialOmit
     user?: UserOmit
     magicLink?: MagicLinkOmit
     role?: RoleOmit
@@ -4611,6 +4777,77 @@ export namespace Prisma {
    */
   export type MaterialRestrictionOrderCountOutputTypeCountItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: MaterialRestrictionOrderItemWhereInput
+  }
+
+
+  /**
+   * Count Type SipacGrupoMaterialCountOutputType
+   */
+
+  export type SipacGrupoMaterialCountOutputType = {
+    sipacMateriais: number
+    subGrupos: number
+  }
+
+  export type SipacGrupoMaterialCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    sipacMateriais?: boolean | SipacGrupoMaterialCountOutputTypeCountSipacMateriaisArgs
+    subGrupos?: boolean | SipacGrupoMaterialCountOutputTypeCountSubGruposArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * SipacGrupoMaterialCountOutputType without action
+   */
+  export type SipacGrupoMaterialCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SipacGrupoMaterialCountOutputType
+     */
+    select?: SipacGrupoMaterialCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * SipacGrupoMaterialCountOutputType without action
+   */
+  export type SipacGrupoMaterialCountOutputTypeCountSipacMateriaisArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SipacMaterialWhereInput
+  }
+
+  /**
+   * SipacGrupoMaterialCountOutputType without action
+   */
+  export type SipacGrupoMaterialCountOutputTypeCountSubGruposArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SipacSubGrupoMaterialWhereInput
+  }
+
+
+  /**
+   * Count Type SipacSubGrupoMaterialCountOutputType
+   */
+
+  export type SipacSubGrupoMaterialCountOutputType = {
+    sipacMateriais: number
+  }
+
+  export type SipacSubGrupoMaterialCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    sipacMateriais?: boolean | SipacSubGrupoMaterialCountOutputTypeCountSipacMateriaisArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * SipacSubGrupoMaterialCountOutputType without action
+   */
+  export type SipacSubGrupoMaterialCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SipacSubGrupoMaterialCountOutputType
+     */
+    select?: SipacSubGrupoMaterialCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * SipacSubGrupoMaterialCountOutputType without action
+   */
+  export type SipacSubGrupoMaterialCountOutputTypeCountSipacMateriaisArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SipacMaterialWhereInput
   }
 
 
@@ -37014,6 +37251,8 @@ export namespace Prisma {
     valorEstimado?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    grupo?: boolean | SipacMaterial$grupoArgs<ExtArgs>
+    subGrupo?: boolean | SipacMaterial$subGrupoArgs<ExtArgs>
   }, ExtArgs["result"]["sipacMaterial"]>
 
 
@@ -37041,10 +37280,17 @@ export namespace Prisma {
   }
 
   export type SipacMaterialOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"idMaterial" | "ativo" | "codigo" | "codigoSidec" | "consumoEnergia" | "dataUltimaCompra" | "denominacaoGrupo" | "denominacaoMaterial" | "denominacaoMaterialAscii" | "denominacaoSubGrupo" | "denominacaoUnidade" | "especificacao" | "especificacaoAscii" | "idGrupo" | "idSubGrupo" | "precoCompra" | "valorEstimado" | "createdAt" | "updatedAt", ExtArgs["result"]["sipacMaterial"]>
+  export type SipacMaterialInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    grupo?: boolean | SipacMaterial$grupoArgs<ExtArgs>
+    subGrupo?: boolean | SipacMaterial$subGrupoArgs<ExtArgs>
+  }
 
   export type $SipacMaterialPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "SipacMaterial"
-    objects: {}
+    objects: {
+      grupo: Prisma.$SipacGrupoMaterialPayload<ExtArgs> | null
+      subGrupo: Prisma.$SipacSubGrupoMaterialPayload<ExtArgs> | null
+    }
     scalars: $Extensions.GetPayloadResult<{
       idMaterial: number
       ativo: boolean
@@ -37405,6 +37651,8 @@ export namespace Prisma {
    */
   export interface Prisma__SipacMaterialClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    grupo<T extends SipacMaterial$grupoArgs<ExtArgs> = {}>(args?: Subset<T, SipacMaterial$grupoArgs<ExtArgs>>): Prisma__SipacGrupoMaterialClient<$Result.GetResult<Prisma.$SipacGrupoMaterialPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    subGrupo<T extends SipacMaterial$subGrupoArgs<ExtArgs> = {}>(args?: Subset<T, SipacMaterial$subGrupoArgs<ExtArgs>>): Prisma__SipacSubGrupoMaterialClient<$Result.GetResult<Prisma.$SipacSubGrupoMaterialPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -37470,6 +37718,10 @@ export namespace Prisma {
      */
     omit?: SipacMaterialOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SipacMaterialInclude<ExtArgs> | null
+    /**
      * Filter, which SipacMaterial to fetch.
      */
     where: SipacMaterialWhereUniqueInput
@@ -37488,6 +37740,10 @@ export namespace Prisma {
      */
     omit?: SipacMaterialOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SipacMaterialInclude<ExtArgs> | null
+    /**
      * Filter, which SipacMaterial to fetch.
      */
     where: SipacMaterialWhereUniqueInput
@@ -37505,6 +37761,10 @@ export namespace Prisma {
      * Omit specific fields from the SipacMaterial
      */
     omit?: SipacMaterialOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SipacMaterialInclude<ExtArgs> | null
     /**
      * Filter, which SipacMaterial to fetch.
      */
@@ -37554,6 +37814,10 @@ export namespace Prisma {
      */
     omit?: SipacMaterialOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SipacMaterialInclude<ExtArgs> | null
+    /**
      * Filter, which SipacMaterial to fetch.
      */
     where?: SipacMaterialWhereInput
@@ -37602,6 +37866,10 @@ export namespace Prisma {
      */
     omit?: SipacMaterialOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SipacMaterialInclude<ExtArgs> | null
+    /**
      * Filter, which SipacMaterials to fetch.
      */
     where?: SipacMaterialWhereInput
@@ -37645,6 +37913,10 @@ export namespace Prisma {
      */
     omit?: SipacMaterialOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SipacMaterialInclude<ExtArgs> | null
+    /**
      * The data needed to create a SipacMaterial.
      */
     data: XOR<SipacMaterialCreateInput, SipacMaterialUncheckedCreateInput>
@@ -37673,6 +37945,10 @@ export namespace Prisma {
      * Omit specific fields from the SipacMaterial
      */
     omit?: SipacMaterialOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SipacMaterialInclude<ExtArgs> | null
     /**
      * The data needed to update a SipacMaterial.
      */
@@ -37714,6 +37990,10 @@ export namespace Prisma {
      */
     omit?: SipacMaterialOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SipacMaterialInclude<ExtArgs> | null
+    /**
      * The filter to search for the SipacMaterial to update in case it exists.
      */
     where: SipacMaterialWhereUniqueInput
@@ -37740,6 +38020,10 @@ export namespace Prisma {
      */
     omit?: SipacMaterialOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SipacMaterialInclude<ExtArgs> | null
+    /**
      * Filter which SipacMaterial to delete.
      */
     where: SipacMaterialWhereUniqueInput
@@ -37760,6 +38044,44 @@ export namespace Prisma {
   }
 
   /**
+   * SipacMaterial.grupo
+   */
+  export type SipacMaterial$grupoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SipacGrupoMaterial
+     */
+    select?: SipacGrupoMaterialSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SipacGrupoMaterial
+     */
+    omit?: SipacGrupoMaterialOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SipacGrupoMaterialInclude<ExtArgs> | null
+    where?: SipacGrupoMaterialWhereInput
+  }
+
+  /**
+   * SipacMaterial.subGrupo
+   */
+  export type SipacMaterial$subGrupoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SipacSubGrupoMaterial
+     */
+    select?: SipacSubGrupoMaterialSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SipacSubGrupoMaterial
+     */
+    omit?: SipacSubGrupoMaterialOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SipacSubGrupoMaterialInclude<ExtArgs> | null
+    where?: SipacSubGrupoMaterialWhereInput
+  }
+
+  /**
    * SipacMaterial without action
    */
   export type SipacMaterialDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -37771,6 +38093,2099 @@ export namespace Prisma {
      * Omit specific fields from the SipacMaterial
      */
     omit?: SipacMaterialOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SipacMaterialInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model SipacGrupoMaterial
+   */
+
+  export type AggregateSipacGrupoMaterial = {
+    _count: SipacGrupoMaterialCountAggregateOutputType | null
+    _avg: SipacGrupoMaterialAvgAggregateOutputType | null
+    _sum: SipacGrupoMaterialSumAggregateOutputType | null
+    _min: SipacGrupoMaterialMinAggregateOutputType | null
+    _max: SipacGrupoMaterialMaxAggregateOutputType | null
+  }
+
+  export type SipacGrupoMaterialAvgAggregateOutputType = {
+    idGrupoMaterial: number | null
+    codigo: number | null
+    idElementoDespesa: number | null
+  }
+
+  export type SipacGrupoMaterialSumAggregateOutputType = {
+    idGrupoMaterial: number | null
+    codigo: bigint | null
+    idElementoDespesa: number | null
+  }
+
+  export type SipacGrupoMaterialMinAggregateOutputType = {
+    idGrupoMaterial: number | null
+    ativo: boolean | null
+    codigo: bigint | null
+    denominacao: string | null
+    descricao: string | null
+    idElementoDespesa: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SipacGrupoMaterialMaxAggregateOutputType = {
+    idGrupoMaterial: number | null
+    ativo: boolean | null
+    codigo: bigint | null
+    denominacao: string | null
+    descricao: string | null
+    idElementoDespesa: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SipacGrupoMaterialCountAggregateOutputType = {
+    idGrupoMaterial: number
+    ativo: number
+    codigo: number
+    denominacao: number
+    descricao: number
+    idElementoDespesa: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type SipacGrupoMaterialAvgAggregateInputType = {
+    idGrupoMaterial?: true
+    codigo?: true
+    idElementoDespesa?: true
+  }
+
+  export type SipacGrupoMaterialSumAggregateInputType = {
+    idGrupoMaterial?: true
+    codigo?: true
+    idElementoDespesa?: true
+  }
+
+  export type SipacGrupoMaterialMinAggregateInputType = {
+    idGrupoMaterial?: true
+    ativo?: true
+    codigo?: true
+    denominacao?: true
+    descricao?: true
+    idElementoDespesa?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SipacGrupoMaterialMaxAggregateInputType = {
+    idGrupoMaterial?: true
+    ativo?: true
+    codigo?: true
+    denominacao?: true
+    descricao?: true
+    idElementoDespesa?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SipacGrupoMaterialCountAggregateInputType = {
+    idGrupoMaterial?: true
+    ativo?: true
+    codigo?: true
+    denominacao?: true
+    descricao?: true
+    idElementoDespesa?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type SipacGrupoMaterialAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SipacGrupoMaterial to aggregate.
+     */
+    where?: SipacGrupoMaterialWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SipacGrupoMaterials to fetch.
+     */
+    orderBy?: SipacGrupoMaterialOrderByWithRelationInput | SipacGrupoMaterialOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SipacGrupoMaterialWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SipacGrupoMaterials from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SipacGrupoMaterials.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SipacGrupoMaterials
+    **/
+    _count?: true | SipacGrupoMaterialCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: SipacGrupoMaterialAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: SipacGrupoMaterialSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SipacGrupoMaterialMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SipacGrupoMaterialMaxAggregateInputType
+  }
+
+  export type GetSipacGrupoMaterialAggregateType<T extends SipacGrupoMaterialAggregateArgs> = {
+        [P in keyof T & keyof AggregateSipacGrupoMaterial]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSipacGrupoMaterial[P]>
+      : GetScalarType<T[P], AggregateSipacGrupoMaterial[P]>
+  }
+
+
+
+
+  export type SipacGrupoMaterialGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SipacGrupoMaterialWhereInput
+    orderBy?: SipacGrupoMaterialOrderByWithAggregationInput | SipacGrupoMaterialOrderByWithAggregationInput[]
+    by: SipacGrupoMaterialScalarFieldEnum[] | SipacGrupoMaterialScalarFieldEnum
+    having?: SipacGrupoMaterialScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SipacGrupoMaterialCountAggregateInputType | true
+    _avg?: SipacGrupoMaterialAvgAggregateInputType
+    _sum?: SipacGrupoMaterialSumAggregateInputType
+    _min?: SipacGrupoMaterialMinAggregateInputType
+    _max?: SipacGrupoMaterialMaxAggregateInputType
+  }
+
+  export type SipacGrupoMaterialGroupByOutputType = {
+    idGrupoMaterial: number
+    ativo: boolean
+    codigo: bigint
+    denominacao: string
+    descricao: string | null
+    idElementoDespesa: number | null
+    createdAt: Date
+    updatedAt: Date
+    _count: SipacGrupoMaterialCountAggregateOutputType | null
+    _avg: SipacGrupoMaterialAvgAggregateOutputType | null
+    _sum: SipacGrupoMaterialSumAggregateOutputType | null
+    _min: SipacGrupoMaterialMinAggregateOutputType | null
+    _max: SipacGrupoMaterialMaxAggregateOutputType | null
+  }
+
+  type GetSipacGrupoMaterialGroupByPayload<T extends SipacGrupoMaterialGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SipacGrupoMaterialGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SipacGrupoMaterialGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SipacGrupoMaterialGroupByOutputType[P]>
+            : GetScalarType<T[P], SipacGrupoMaterialGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SipacGrupoMaterialSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    idGrupoMaterial?: boolean
+    ativo?: boolean
+    codigo?: boolean
+    denominacao?: boolean
+    descricao?: boolean
+    idElementoDespesa?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    sipacMateriais?: boolean | SipacGrupoMaterial$sipacMateriaisArgs<ExtArgs>
+    subGrupos?: boolean | SipacGrupoMaterial$subGruposArgs<ExtArgs>
+    _count?: boolean | SipacGrupoMaterialCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["sipacGrupoMaterial"]>
+
+
+
+  export type SipacGrupoMaterialSelectScalar = {
+    idGrupoMaterial?: boolean
+    ativo?: boolean
+    codigo?: boolean
+    denominacao?: boolean
+    descricao?: boolean
+    idElementoDespesa?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type SipacGrupoMaterialOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"idGrupoMaterial" | "ativo" | "codigo" | "denominacao" | "descricao" | "idElementoDespesa" | "createdAt" | "updatedAt", ExtArgs["result"]["sipacGrupoMaterial"]>
+  export type SipacGrupoMaterialInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    sipacMateriais?: boolean | SipacGrupoMaterial$sipacMateriaisArgs<ExtArgs>
+    subGrupos?: boolean | SipacGrupoMaterial$subGruposArgs<ExtArgs>
+    _count?: boolean | SipacGrupoMaterialCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $SipacGrupoMaterialPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SipacGrupoMaterial"
+    objects: {
+      sipacMateriais: Prisma.$SipacMaterialPayload<ExtArgs>[]
+      subGrupos: Prisma.$SipacSubGrupoMaterialPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      idGrupoMaterial: number
+      ativo: boolean
+      codigo: bigint
+      denominacao: string
+      descricao: string | null
+      idElementoDespesa: number | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["sipacGrupoMaterial"]>
+    composites: {}
+  }
+
+  type SipacGrupoMaterialGetPayload<S extends boolean | null | undefined | SipacGrupoMaterialDefaultArgs> = $Result.GetResult<Prisma.$SipacGrupoMaterialPayload, S>
+
+  type SipacGrupoMaterialCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SipacGrupoMaterialFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SipacGrupoMaterialCountAggregateInputType | true
+    }
+
+  export interface SipacGrupoMaterialDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SipacGrupoMaterial'], meta: { name: 'SipacGrupoMaterial' } }
+    /**
+     * Find zero or one SipacGrupoMaterial that matches the filter.
+     * @param {SipacGrupoMaterialFindUniqueArgs} args - Arguments to find a SipacGrupoMaterial
+     * @example
+     * // Get one SipacGrupoMaterial
+     * const sipacGrupoMaterial = await prisma.sipacGrupoMaterial.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SipacGrupoMaterialFindUniqueArgs>(args: SelectSubset<T, SipacGrupoMaterialFindUniqueArgs<ExtArgs>>): Prisma__SipacGrupoMaterialClient<$Result.GetResult<Prisma.$SipacGrupoMaterialPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SipacGrupoMaterial that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SipacGrupoMaterialFindUniqueOrThrowArgs} args - Arguments to find a SipacGrupoMaterial
+     * @example
+     * // Get one SipacGrupoMaterial
+     * const sipacGrupoMaterial = await prisma.sipacGrupoMaterial.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SipacGrupoMaterialFindUniqueOrThrowArgs>(args: SelectSubset<T, SipacGrupoMaterialFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SipacGrupoMaterialClient<$Result.GetResult<Prisma.$SipacGrupoMaterialPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SipacGrupoMaterial that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SipacGrupoMaterialFindFirstArgs} args - Arguments to find a SipacGrupoMaterial
+     * @example
+     * // Get one SipacGrupoMaterial
+     * const sipacGrupoMaterial = await prisma.sipacGrupoMaterial.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SipacGrupoMaterialFindFirstArgs>(args?: SelectSubset<T, SipacGrupoMaterialFindFirstArgs<ExtArgs>>): Prisma__SipacGrupoMaterialClient<$Result.GetResult<Prisma.$SipacGrupoMaterialPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SipacGrupoMaterial that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SipacGrupoMaterialFindFirstOrThrowArgs} args - Arguments to find a SipacGrupoMaterial
+     * @example
+     * // Get one SipacGrupoMaterial
+     * const sipacGrupoMaterial = await prisma.sipacGrupoMaterial.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SipacGrupoMaterialFindFirstOrThrowArgs>(args?: SelectSubset<T, SipacGrupoMaterialFindFirstOrThrowArgs<ExtArgs>>): Prisma__SipacGrupoMaterialClient<$Result.GetResult<Prisma.$SipacGrupoMaterialPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SipacGrupoMaterials that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SipacGrupoMaterialFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SipacGrupoMaterials
+     * const sipacGrupoMaterials = await prisma.sipacGrupoMaterial.findMany()
+     * 
+     * // Get first 10 SipacGrupoMaterials
+     * const sipacGrupoMaterials = await prisma.sipacGrupoMaterial.findMany({ take: 10 })
+     * 
+     * // Only select the `idGrupoMaterial`
+     * const sipacGrupoMaterialWithIdGrupoMaterialOnly = await prisma.sipacGrupoMaterial.findMany({ select: { idGrupoMaterial: true } })
+     * 
+     */
+    findMany<T extends SipacGrupoMaterialFindManyArgs>(args?: SelectSubset<T, SipacGrupoMaterialFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SipacGrupoMaterialPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SipacGrupoMaterial.
+     * @param {SipacGrupoMaterialCreateArgs} args - Arguments to create a SipacGrupoMaterial.
+     * @example
+     * // Create one SipacGrupoMaterial
+     * const SipacGrupoMaterial = await prisma.sipacGrupoMaterial.create({
+     *   data: {
+     *     // ... data to create a SipacGrupoMaterial
+     *   }
+     * })
+     * 
+     */
+    create<T extends SipacGrupoMaterialCreateArgs>(args: SelectSubset<T, SipacGrupoMaterialCreateArgs<ExtArgs>>): Prisma__SipacGrupoMaterialClient<$Result.GetResult<Prisma.$SipacGrupoMaterialPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SipacGrupoMaterials.
+     * @param {SipacGrupoMaterialCreateManyArgs} args - Arguments to create many SipacGrupoMaterials.
+     * @example
+     * // Create many SipacGrupoMaterials
+     * const sipacGrupoMaterial = await prisma.sipacGrupoMaterial.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SipacGrupoMaterialCreateManyArgs>(args?: SelectSubset<T, SipacGrupoMaterialCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a SipacGrupoMaterial.
+     * @param {SipacGrupoMaterialDeleteArgs} args - Arguments to delete one SipacGrupoMaterial.
+     * @example
+     * // Delete one SipacGrupoMaterial
+     * const SipacGrupoMaterial = await prisma.sipacGrupoMaterial.delete({
+     *   where: {
+     *     // ... filter to delete one SipacGrupoMaterial
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SipacGrupoMaterialDeleteArgs>(args: SelectSubset<T, SipacGrupoMaterialDeleteArgs<ExtArgs>>): Prisma__SipacGrupoMaterialClient<$Result.GetResult<Prisma.$SipacGrupoMaterialPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SipacGrupoMaterial.
+     * @param {SipacGrupoMaterialUpdateArgs} args - Arguments to update one SipacGrupoMaterial.
+     * @example
+     * // Update one SipacGrupoMaterial
+     * const sipacGrupoMaterial = await prisma.sipacGrupoMaterial.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SipacGrupoMaterialUpdateArgs>(args: SelectSubset<T, SipacGrupoMaterialUpdateArgs<ExtArgs>>): Prisma__SipacGrupoMaterialClient<$Result.GetResult<Prisma.$SipacGrupoMaterialPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SipacGrupoMaterials.
+     * @param {SipacGrupoMaterialDeleteManyArgs} args - Arguments to filter SipacGrupoMaterials to delete.
+     * @example
+     * // Delete a few SipacGrupoMaterials
+     * const { count } = await prisma.sipacGrupoMaterial.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SipacGrupoMaterialDeleteManyArgs>(args?: SelectSubset<T, SipacGrupoMaterialDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SipacGrupoMaterials.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SipacGrupoMaterialUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SipacGrupoMaterials
+     * const sipacGrupoMaterial = await prisma.sipacGrupoMaterial.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SipacGrupoMaterialUpdateManyArgs>(args: SelectSubset<T, SipacGrupoMaterialUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one SipacGrupoMaterial.
+     * @param {SipacGrupoMaterialUpsertArgs} args - Arguments to update or create a SipacGrupoMaterial.
+     * @example
+     * // Update or create a SipacGrupoMaterial
+     * const sipacGrupoMaterial = await prisma.sipacGrupoMaterial.upsert({
+     *   create: {
+     *     // ... data to create a SipacGrupoMaterial
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SipacGrupoMaterial we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SipacGrupoMaterialUpsertArgs>(args: SelectSubset<T, SipacGrupoMaterialUpsertArgs<ExtArgs>>): Prisma__SipacGrupoMaterialClient<$Result.GetResult<Prisma.$SipacGrupoMaterialPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SipacGrupoMaterials.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SipacGrupoMaterialCountArgs} args - Arguments to filter SipacGrupoMaterials to count.
+     * @example
+     * // Count the number of SipacGrupoMaterials
+     * const count = await prisma.sipacGrupoMaterial.count({
+     *   where: {
+     *     // ... the filter for the SipacGrupoMaterials we want to count
+     *   }
+     * })
+    **/
+    count<T extends SipacGrupoMaterialCountArgs>(
+      args?: Subset<T, SipacGrupoMaterialCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SipacGrupoMaterialCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SipacGrupoMaterial.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SipacGrupoMaterialAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SipacGrupoMaterialAggregateArgs>(args: Subset<T, SipacGrupoMaterialAggregateArgs>): Prisma.PrismaPromise<GetSipacGrupoMaterialAggregateType<T>>
+
+    /**
+     * Group by SipacGrupoMaterial.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SipacGrupoMaterialGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SipacGrupoMaterialGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SipacGrupoMaterialGroupByArgs['orderBy'] }
+        : { orderBy?: SipacGrupoMaterialGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SipacGrupoMaterialGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSipacGrupoMaterialGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SipacGrupoMaterial model
+   */
+  readonly fields: SipacGrupoMaterialFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SipacGrupoMaterial.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SipacGrupoMaterialClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    sipacMateriais<T extends SipacGrupoMaterial$sipacMateriaisArgs<ExtArgs> = {}>(args?: Subset<T, SipacGrupoMaterial$sipacMateriaisArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SipacMaterialPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    subGrupos<T extends SipacGrupoMaterial$subGruposArgs<ExtArgs> = {}>(args?: Subset<T, SipacGrupoMaterial$subGruposArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SipacSubGrupoMaterialPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SipacGrupoMaterial model
+   */
+  interface SipacGrupoMaterialFieldRefs {
+    readonly idGrupoMaterial: FieldRef<"SipacGrupoMaterial", 'Int'>
+    readonly ativo: FieldRef<"SipacGrupoMaterial", 'Boolean'>
+    readonly codigo: FieldRef<"SipacGrupoMaterial", 'BigInt'>
+    readonly denominacao: FieldRef<"SipacGrupoMaterial", 'String'>
+    readonly descricao: FieldRef<"SipacGrupoMaterial", 'String'>
+    readonly idElementoDespesa: FieldRef<"SipacGrupoMaterial", 'Int'>
+    readonly createdAt: FieldRef<"SipacGrupoMaterial", 'DateTime'>
+    readonly updatedAt: FieldRef<"SipacGrupoMaterial", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SipacGrupoMaterial findUnique
+   */
+  export type SipacGrupoMaterialFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SipacGrupoMaterial
+     */
+    select?: SipacGrupoMaterialSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SipacGrupoMaterial
+     */
+    omit?: SipacGrupoMaterialOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SipacGrupoMaterialInclude<ExtArgs> | null
+    /**
+     * Filter, which SipacGrupoMaterial to fetch.
+     */
+    where: SipacGrupoMaterialWhereUniqueInput
+  }
+
+  /**
+   * SipacGrupoMaterial findUniqueOrThrow
+   */
+  export type SipacGrupoMaterialFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SipacGrupoMaterial
+     */
+    select?: SipacGrupoMaterialSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SipacGrupoMaterial
+     */
+    omit?: SipacGrupoMaterialOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SipacGrupoMaterialInclude<ExtArgs> | null
+    /**
+     * Filter, which SipacGrupoMaterial to fetch.
+     */
+    where: SipacGrupoMaterialWhereUniqueInput
+  }
+
+  /**
+   * SipacGrupoMaterial findFirst
+   */
+  export type SipacGrupoMaterialFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SipacGrupoMaterial
+     */
+    select?: SipacGrupoMaterialSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SipacGrupoMaterial
+     */
+    omit?: SipacGrupoMaterialOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SipacGrupoMaterialInclude<ExtArgs> | null
+    /**
+     * Filter, which SipacGrupoMaterial to fetch.
+     */
+    where?: SipacGrupoMaterialWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SipacGrupoMaterials to fetch.
+     */
+    orderBy?: SipacGrupoMaterialOrderByWithRelationInput | SipacGrupoMaterialOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SipacGrupoMaterials.
+     */
+    cursor?: SipacGrupoMaterialWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SipacGrupoMaterials from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SipacGrupoMaterials.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SipacGrupoMaterials.
+     */
+    distinct?: SipacGrupoMaterialScalarFieldEnum | SipacGrupoMaterialScalarFieldEnum[]
+  }
+
+  /**
+   * SipacGrupoMaterial findFirstOrThrow
+   */
+  export type SipacGrupoMaterialFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SipacGrupoMaterial
+     */
+    select?: SipacGrupoMaterialSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SipacGrupoMaterial
+     */
+    omit?: SipacGrupoMaterialOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SipacGrupoMaterialInclude<ExtArgs> | null
+    /**
+     * Filter, which SipacGrupoMaterial to fetch.
+     */
+    where?: SipacGrupoMaterialWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SipacGrupoMaterials to fetch.
+     */
+    orderBy?: SipacGrupoMaterialOrderByWithRelationInput | SipacGrupoMaterialOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SipacGrupoMaterials.
+     */
+    cursor?: SipacGrupoMaterialWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SipacGrupoMaterials from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SipacGrupoMaterials.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SipacGrupoMaterials.
+     */
+    distinct?: SipacGrupoMaterialScalarFieldEnum | SipacGrupoMaterialScalarFieldEnum[]
+  }
+
+  /**
+   * SipacGrupoMaterial findMany
+   */
+  export type SipacGrupoMaterialFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SipacGrupoMaterial
+     */
+    select?: SipacGrupoMaterialSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SipacGrupoMaterial
+     */
+    omit?: SipacGrupoMaterialOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SipacGrupoMaterialInclude<ExtArgs> | null
+    /**
+     * Filter, which SipacGrupoMaterials to fetch.
+     */
+    where?: SipacGrupoMaterialWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SipacGrupoMaterials to fetch.
+     */
+    orderBy?: SipacGrupoMaterialOrderByWithRelationInput | SipacGrupoMaterialOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SipacGrupoMaterials.
+     */
+    cursor?: SipacGrupoMaterialWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SipacGrupoMaterials from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SipacGrupoMaterials.
+     */
+    skip?: number
+    distinct?: SipacGrupoMaterialScalarFieldEnum | SipacGrupoMaterialScalarFieldEnum[]
+  }
+
+  /**
+   * SipacGrupoMaterial create
+   */
+  export type SipacGrupoMaterialCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SipacGrupoMaterial
+     */
+    select?: SipacGrupoMaterialSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SipacGrupoMaterial
+     */
+    omit?: SipacGrupoMaterialOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SipacGrupoMaterialInclude<ExtArgs> | null
+    /**
+     * The data needed to create a SipacGrupoMaterial.
+     */
+    data: XOR<SipacGrupoMaterialCreateInput, SipacGrupoMaterialUncheckedCreateInput>
+  }
+
+  /**
+   * SipacGrupoMaterial createMany
+   */
+  export type SipacGrupoMaterialCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SipacGrupoMaterials.
+     */
+    data: SipacGrupoMaterialCreateManyInput | SipacGrupoMaterialCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SipacGrupoMaterial update
+   */
+  export type SipacGrupoMaterialUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SipacGrupoMaterial
+     */
+    select?: SipacGrupoMaterialSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SipacGrupoMaterial
+     */
+    omit?: SipacGrupoMaterialOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SipacGrupoMaterialInclude<ExtArgs> | null
+    /**
+     * The data needed to update a SipacGrupoMaterial.
+     */
+    data: XOR<SipacGrupoMaterialUpdateInput, SipacGrupoMaterialUncheckedUpdateInput>
+    /**
+     * Choose, which SipacGrupoMaterial to update.
+     */
+    where: SipacGrupoMaterialWhereUniqueInput
+  }
+
+  /**
+   * SipacGrupoMaterial updateMany
+   */
+  export type SipacGrupoMaterialUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SipacGrupoMaterials.
+     */
+    data: XOR<SipacGrupoMaterialUpdateManyMutationInput, SipacGrupoMaterialUncheckedUpdateManyInput>
+    /**
+     * Filter which SipacGrupoMaterials to update
+     */
+    where?: SipacGrupoMaterialWhereInput
+    /**
+     * Limit how many SipacGrupoMaterials to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SipacGrupoMaterial upsert
+   */
+  export type SipacGrupoMaterialUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SipacGrupoMaterial
+     */
+    select?: SipacGrupoMaterialSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SipacGrupoMaterial
+     */
+    omit?: SipacGrupoMaterialOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SipacGrupoMaterialInclude<ExtArgs> | null
+    /**
+     * The filter to search for the SipacGrupoMaterial to update in case it exists.
+     */
+    where: SipacGrupoMaterialWhereUniqueInput
+    /**
+     * In case the SipacGrupoMaterial found by the `where` argument doesn't exist, create a new SipacGrupoMaterial with this data.
+     */
+    create: XOR<SipacGrupoMaterialCreateInput, SipacGrupoMaterialUncheckedCreateInput>
+    /**
+     * In case the SipacGrupoMaterial was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SipacGrupoMaterialUpdateInput, SipacGrupoMaterialUncheckedUpdateInput>
+  }
+
+  /**
+   * SipacGrupoMaterial delete
+   */
+  export type SipacGrupoMaterialDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SipacGrupoMaterial
+     */
+    select?: SipacGrupoMaterialSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SipacGrupoMaterial
+     */
+    omit?: SipacGrupoMaterialOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SipacGrupoMaterialInclude<ExtArgs> | null
+    /**
+     * Filter which SipacGrupoMaterial to delete.
+     */
+    where: SipacGrupoMaterialWhereUniqueInput
+  }
+
+  /**
+   * SipacGrupoMaterial deleteMany
+   */
+  export type SipacGrupoMaterialDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SipacGrupoMaterials to delete
+     */
+    where?: SipacGrupoMaterialWhereInput
+    /**
+     * Limit how many SipacGrupoMaterials to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SipacGrupoMaterial.sipacMateriais
+   */
+  export type SipacGrupoMaterial$sipacMateriaisArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SipacMaterial
+     */
+    select?: SipacMaterialSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SipacMaterial
+     */
+    omit?: SipacMaterialOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SipacMaterialInclude<ExtArgs> | null
+    where?: SipacMaterialWhereInput
+    orderBy?: SipacMaterialOrderByWithRelationInput | SipacMaterialOrderByWithRelationInput[]
+    cursor?: SipacMaterialWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SipacMaterialScalarFieldEnum | SipacMaterialScalarFieldEnum[]
+  }
+
+  /**
+   * SipacGrupoMaterial.subGrupos
+   */
+  export type SipacGrupoMaterial$subGruposArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SipacSubGrupoMaterial
+     */
+    select?: SipacSubGrupoMaterialSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SipacSubGrupoMaterial
+     */
+    omit?: SipacSubGrupoMaterialOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SipacSubGrupoMaterialInclude<ExtArgs> | null
+    where?: SipacSubGrupoMaterialWhereInput
+    orderBy?: SipacSubGrupoMaterialOrderByWithRelationInput | SipacSubGrupoMaterialOrderByWithRelationInput[]
+    cursor?: SipacSubGrupoMaterialWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SipacSubGrupoMaterialScalarFieldEnum | SipacSubGrupoMaterialScalarFieldEnum[]
+  }
+
+  /**
+   * SipacGrupoMaterial without action
+   */
+  export type SipacGrupoMaterialDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SipacGrupoMaterial
+     */
+    select?: SipacGrupoMaterialSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SipacGrupoMaterial
+     */
+    omit?: SipacGrupoMaterialOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SipacGrupoMaterialInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model SipacSubGrupoMaterial
+   */
+
+  export type AggregateSipacSubGrupoMaterial = {
+    _count: SipacSubGrupoMaterialCountAggregateOutputType | null
+    _avg: SipacSubGrupoMaterialAvgAggregateOutputType | null
+    _sum: SipacSubGrupoMaterialSumAggregateOutputType | null
+    _min: SipacSubGrupoMaterialMinAggregateOutputType | null
+    _max: SipacSubGrupoMaterialMaxAggregateOutputType | null
+  }
+
+  export type SipacSubGrupoMaterialAvgAggregateOutputType = {
+    idSubGrupoMaterial: number | null
+    codigo: number | null
+    idGrupoMaterial: number | null
+  }
+
+  export type SipacSubGrupoMaterialSumAggregateOutputType = {
+    idSubGrupoMaterial: number | null
+    codigo: bigint | null
+    idGrupoMaterial: number | null
+  }
+
+  export type SipacSubGrupoMaterialMinAggregateOutputType = {
+    idSubGrupoMaterial: number | null
+    codigo: bigint | null
+    denominacao: string | null
+    idGrupoMaterial: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SipacSubGrupoMaterialMaxAggregateOutputType = {
+    idSubGrupoMaterial: number | null
+    codigo: bigint | null
+    denominacao: string | null
+    idGrupoMaterial: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SipacSubGrupoMaterialCountAggregateOutputType = {
+    idSubGrupoMaterial: number
+    codigo: number
+    denominacao: number
+    idGrupoMaterial: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type SipacSubGrupoMaterialAvgAggregateInputType = {
+    idSubGrupoMaterial?: true
+    codigo?: true
+    idGrupoMaterial?: true
+  }
+
+  export type SipacSubGrupoMaterialSumAggregateInputType = {
+    idSubGrupoMaterial?: true
+    codigo?: true
+    idGrupoMaterial?: true
+  }
+
+  export type SipacSubGrupoMaterialMinAggregateInputType = {
+    idSubGrupoMaterial?: true
+    codigo?: true
+    denominacao?: true
+    idGrupoMaterial?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SipacSubGrupoMaterialMaxAggregateInputType = {
+    idSubGrupoMaterial?: true
+    codigo?: true
+    denominacao?: true
+    idGrupoMaterial?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SipacSubGrupoMaterialCountAggregateInputType = {
+    idSubGrupoMaterial?: true
+    codigo?: true
+    denominacao?: true
+    idGrupoMaterial?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type SipacSubGrupoMaterialAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SipacSubGrupoMaterial to aggregate.
+     */
+    where?: SipacSubGrupoMaterialWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SipacSubGrupoMaterials to fetch.
+     */
+    orderBy?: SipacSubGrupoMaterialOrderByWithRelationInput | SipacSubGrupoMaterialOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SipacSubGrupoMaterialWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SipacSubGrupoMaterials from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SipacSubGrupoMaterials.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SipacSubGrupoMaterials
+    **/
+    _count?: true | SipacSubGrupoMaterialCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: SipacSubGrupoMaterialAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: SipacSubGrupoMaterialSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SipacSubGrupoMaterialMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SipacSubGrupoMaterialMaxAggregateInputType
+  }
+
+  export type GetSipacSubGrupoMaterialAggregateType<T extends SipacSubGrupoMaterialAggregateArgs> = {
+        [P in keyof T & keyof AggregateSipacSubGrupoMaterial]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSipacSubGrupoMaterial[P]>
+      : GetScalarType<T[P], AggregateSipacSubGrupoMaterial[P]>
+  }
+
+
+
+
+  export type SipacSubGrupoMaterialGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SipacSubGrupoMaterialWhereInput
+    orderBy?: SipacSubGrupoMaterialOrderByWithAggregationInput | SipacSubGrupoMaterialOrderByWithAggregationInput[]
+    by: SipacSubGrupoMaterialScalarFieldEnum[] | SipacSubGrupoMaterialScalarFieldEnum
+    having?: SipacSubGrupoMaterialScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SipacSubGrupoMaterialCountAggregateInputType | true
+    _avg?: SipacSubGrupoMaterialAvgAggregateInputType
+    _sum?: SipacSubGrupoMaterialSumAggregateInputType
+    _min?: SipacSubGrupoMaterialMinAggregateInputType
+    _max?: SipacSubGrupoMaterialMaxAggregateInputType
+  }
+
+  export type SipacSubGrupoMaterialGroupByOutputType = {
+    idSubGrupoMaterial: number
+    codigo: bigint
+    denominacao: string
+    idGrupoMaterial: number
+    createdAt: Date
+    updatedAt: Date
+    _count: SipacSubGrupoMaterialCountAggregateOutputType | null
+    _avg: SipacSubGrupoMaterialAvgAggregateOutputType | null
+    _sum: SipacSubGrupoMaterialSumAggregateOutputType | null
+    _min: SipacSubGrupoMaterialMinAggregateOutputType | null
+    _max: SipacSubGrupoMaterialMaxAggregateOutputType | null
+  }
+
+  type GetSipacSubGrupoMaterialGroupByPayload<T extends SipacSubGrupoMaterialGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SipacSubGrupoMaterialGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SipacSubGrupoMaterialGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SipacSubGrupoMaterialGroupByOutputType[P]>
+            : GetScalarType<T[P], SipacSubGrupoMaterialGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SipacSubGrupoMaterialSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    idSubGrupoMaterial?: boolean
+    codigo?: boolean
+    denominacao?: boolean
+    idGrupoMaterial?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    sipacMateriais?: boolean | SipacSubGrupoMaterial$sipacMateriaisArgs<ExtArgs>
+    SipacGrupoMaterial?: boolean | SipacSubGrupoMaterial$SipacGrupoMaterialArgs<ExtArgs>
+    _count?: boolean | SipacSubGrupoMaterialCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["sipacSubGrupoMaterial"]>
+
+
+
+  export type SipacSubGrupoMaterialSelectScalar = {
+    idSubGrupoMaterial?: boolean
+    codigo?: boolean
+    denominacao?: boolean
+    idGrupoMaterial?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type SipacSubGrupoMaterialOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"idSubGrupoMaterial" | "codigo" | "denominacao" | "idGrupoMaterial" | "createdAt" | "updatedAt", ExtArgs["result"]["sipacSubGrupoMaterial"]>
+  export type SipacSubGrupoMaterialInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    sipacMateriais?: boolean | SipacSubGrupoMaterial$sipacMateriaisArgs<ExtArgs>
+    SipacGrupoMaterial?: boolean | SipacSubGrupoMaterial$SipacGrupoMaterialArgs<ExtArgs>
+    _count?: boolean | SipacSubGrupoMaterialCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $SipacSubGrupoMaterialPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SipacSubGrupoMaterial"
+    objects: {
+      sipacMateriais: Prisma.$SipacMaterialPayload<ExtArgs>[]
+      SipacGrupoMaterial: Prisma.$SipacGrupoMaterialPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      idSubGrupoMaterial: number
+      codigo: bigint
+      denominacao: string
+      idGrupoMaterial: number
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["sipacSubGrupoMaterial"]>
+    composites: {}
+  }
+
+  type SipacSubGrupoMaterialGetPayload<S extends boolean | null | undefined | SipacSubGrupoMaterialDefaultArgs> = $Result.GetResult<Prisma.$SipacSubGrupoMaterialPayload, S>
+
+  type SipacSubGrupoMaterialCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SipacSubGrupoMaterialFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SipacSubGrupoMaterialCountAggregateInputType | true
+    }
+
+  export interface SipacSubGrupoMaterialDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SipacSubGrupoMaterial'], meta: { name: 'SipacSubGrupoMaterial' } }
+    /**
+     * Find zero or one SipacSubGrupoMaterial that matches the filter.
+     * @param {SipacSubGrupoMaterialFindUniqueArgs} args - Arguments to find a SipacSubGrupoMaterial
+     * @example
+     * // Get one SipacSubGrupoMaterial
+     * const sipacSubGrupoMaterial = await prisma.sipacSubGrupoMaterial.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SipacSubGrupoMaterialFindUniqueArgs>(args: SelectSubset<T, SipacSubGrupoMaterialFindUniqueArgs<ExtArgs>>): Prisma__SipacSubGrupoMaterialClient<$Result.GetResult<Prisma.$SipacSubGrupoMaterialPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SipacSubGrupoMaterial that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SipacSubGrupoMaterialFindUniqueOrThrowArgs} args - Arguments to find a SipacSubGrupoMaterial
+     * @example
+     * // Get one SipacSubGrupoMaterial
+     * const sipacSubGrupoMaterial = await prisma.sipacSubGrupoMaterial.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SipacSubGrupoMaterialFindUniqueOrThrowArgs>(args: SelectSubset<T, SipacSubGrupoMaterialFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SipacSubGrupoMaterialClient<$Result.GetResult<Prisma.$SipacSubGrupoMaterialPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SipacSubGrupoMaterial that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SipacSubGrupoMaterialFindFirstArgs} args - Arguments to find a SipacSubGrupoMaterial
+     * @example
+     * // Get one SipacSubGrupoMaterial
+     * const sipacSubGrupoMaterial = await prisma.sipacSubGrupoMaterial.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SipacSubGrupoMaterialFindFirstArgs>(args?: SelectSubset<T, SipacSubGrupoMaterialFindFirstArgs<ExtArgs>>): Prisma__SipacSubGrupoMaterialClient<$Result.GetResult<Prisma.$SipacSubGrupoMaterialPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SipacSubGrupoMaterial that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SipacSubGrupoMaterialFindFirstOrThrowArgs} args - Arguments to find a SipacSubGrupoMaterial
+     * @example
+     * // Get one SipacSubGrupoMaterial
+     * const sipacSubGrupoMaterial = await prisma.sipacSubGrupoMaterial.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SipacSubGrupoMaterialFindFirstOrThrowArgs>(args?: SelectSubset<T, SipacSubGrupoMaterialFindFirstOrThrowArgs<ExtArgs>>): Prisma__SipacSubGrupoMaterialClient<$Result.GetResult<Prisma.$SipacSubGrupoMaterialPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SipacSubGrupoMaterials that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SipacSubGrupoMaterialFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SipacSubGrupoMaterials
+     * const sipacSubGrupoMaterials = await prisma.sipacSubGrupoMaterial.findMany()
+     * 
+     * // Get first 10 SipacSubGrupoMaterials
+     * const sipacSubGrupoMaterials = await prisma.sipacSubGrupoMaterial.findMany({ take: 10 })
+     * 
+     * // Only select the `idSubGrupoMaterial`
+     * const sipacSubGrupoMaterialWithIdSubGrupoMaterialOnly = await prisma.sipacSubGrupoMaterial.findMany({ select: { idSubGrupoMaterial: true } })
+     * 
+     */
+    findMany<T extends SipacSubGrupoMaterialFindManyArgs>(args?: SelectSubset<T, SipacSubGrupoMaterialFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SipacSubGrupoMaterialPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SipacSubGrupoMaterial.
+     * @param {SipacSubGrupoMaterialCreateArgs} args - Arguments to create a SipacSubGrupoMaterial.
+     * @example
+     * // Create one SipacSubGrupoMaterial
+     * const SipacSubGrupoMaterial = await prisma.sipacSubGrupoMaterial.create({
+     *   data: {
+     *     // ... data to create a SipacSubGrupoMaterial
+     *   }
+     * })
+     * 
+     */
+    create<T extends SipacSubGrupoMaterialCreateArgs>(args: SelectSubset<T, SipacSubGrupoMaterialCreateArgs<ExtArgs>>): Prisma__SipacSubGrupoMaterialClient<$Result.GetResult<Prisma.$SipacSubGrupoMaterialPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SipacSubGrupoMaterials.
+     * @param {SipacSubGrupoMaterialCreateManyArgs} args - Arguments to create many SipacSubGrupoMaterials.
+     * @example
+     * // Create many SipacSubGrupoMaterials
+     * const sipacSubGrupoMaterial = await prisma.sipacSubGrupoMaterial.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SipacSubGrupoMaterialCreateManyArgs>(args?: SelectSubset<T, SipacSubGrupoMaterialCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a SipacSubGrupoMaterial.
+     * @param {SipacSubGrupoMaterialDeleteArgs} args - Arguments to delete one SipacSubGrupoMaterial.
+     * @example
+     * // Delete one SipacSubGrupoMaterial
+     * const SipacSubGrupoMaterial = await prisma.sipacSubGrupoMaterial.delete({
+     *   where: {
+     *     // ... filter to delete one SipacSubGrupoMaterial
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SipacSubGrupoMaterialDeleteArgs>(args: SelectSubset<T, SipacSubGrupoMaterialDeleteArgs<ExtArgs>>): Prisma__SipacSubGrupoMaterialClient<$Result.GetResult<Prisma.$SipacSubGrupoMaterialPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SipacSubGrupoMaterial.
+     * @param {SipacSubGrupoMaterialUpdateArgs} args - Arguments to update one SipacSubGrupoMaterial.
+     * @example
+     * // Update one SipacSubGrupoMaterial
+     * const sipacSubGrupoMaterial = await prisma.sipacSubGrupoMaterial.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SipacSubGrupoMaterialUpdateArgs>(args: SelectSubset<T, SipacSubGrupoMaterialUpdateArgs<ExtArgs>>): Prisma__SipacSubGrupoMaterialClient<$Result.GetResult<Prisma.$SipacSubGrupoMaterialPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SipacSubGrupoMaterials.
+     * @param {SipacSubGrupoMaterialDeleteManyArgs} args - Arguments to filter SipacSubGrupoMaterials to delete.
+     * @example
+     * // Delete a few SipacSubGrupoMaterials
+     * const { count } = await prisma.sipacSubGrupoMaterial.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SipacSubGrupoMaterialDeleteManyArgs>(args?: SelectSubset<T, SipacSubGrupoMaterialDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SipacSubGrupoMaterials.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SipacSubGrupoMaterialUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SipacSubGrupoMaterials
+     * const sipacSubGrupoMaterial = await prisma.sipacSubGrupoMaterial.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SipacSubGrupoMaterialUpdateManyArgs>(args: SelectSubset<T, SipacSubGrupoMaterialUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one SipacSubGrupoMaterial.
+     * @param {SipacSubGrupoMaterialUpsertArgs} args - Arguments to update or create a SipacSubGrupoMaterial.
+     * @example
+     * // Update or create a SipacSubGrupoMaterial
+     * const sipacSubGrupoMaterial = await prisma.sipacSubGrupoMaterial.upsert({
+     *   create: {
+     *     // ... data to create a SipacSubGrupoMaterial
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SipacSubGrupoMaterial we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SipacSubGrupoMaterialUpsertArgs>(args: SelectSubset<T, SipacSubGrupoMaterialUpsertArgs<ExtArgs>>): Prisma__SipacSubGrupoMaterialClient<$Result.GetResult<Prisma.$SipacSubGrupoMaterialPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SipacSubGrupoMaterials.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SipacSubGrupoMaterialCountArgs} args - Arguments to filter SipacSubGrupoMaterials to count.
+     * @example
+     * // Count the number of SipacSubGrupoMaterials
+     * const count = await prisma.sipacSubGrupoMaterial.count({
+     *   where: {
+     *     // ... the filter for the SipacSubGrupoMaterials we want to count
+     *   }
+     * })
+    **/
+    count<T extends SipacSubGrupoMaterialCountArgs>(
+      args?: Subset<T, SipacSubGrupoMaterialCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SipacSubGrupoMaterialCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SipacSubGrupoMaterial.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SipacSubGrupoMaterialAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SipacSubGrupoMaterialAggregateArgs>(args: Subset<T, SipacSubGrupoMaterialAggregateArgs>): Prisma.PrismaPromise<GetSipacSubGrupoMaterialAggregateType<T>>
+
+    /**
+     * Group by SipacSubGrupoMaterial.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SipacSubGrupoMaterialGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SipacSubGrupoMaterialGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SipacSubGrupoMaterialGroupByArgs['orderBy'] }
+        : { orderBy?: SipacSubGrupoMaterialGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SipacSubGrupoMaterialGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSipacSubGrupoMaterialGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SipacSubGrupoMaterial model
+   */
+  readonly fields: SipacSubGrupoMaterialFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SipacSubGrupoMaterial.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SipacSubGrupoMaterialClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    sipacMateriais<T extends SipacSubGrupoMaterial$sipacMateriaisArgs<ExtArgs> = {}>(args?: Subset<T, SipacSubGrupoMaterial$sipacMateriaisArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SipacMaterialPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    SipacGrupoMaterial<T extends SipacSubGrupoMaterial$SipacGrupoMaterialArgs<ExtArgs> = {}>(args?: Subset<T, SipacSubGrupoMaterial$SipacGrupoMaterialArgs<ExtArgs>>): Prisma__SipacGrupoMaterialClient<$Result.GetResult<Prisma.$SipacGrupoMaterialPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SipacSubGrupoMaterial model
+   */
+  interface SipacSubGrupoMaterialFieldRefs {
+    readonly idSubGrupoMaterial: FieldRef<"SipacSubGrupoMaterial", 'Int'>
+    readonly codigo: FieldRef<"SipacSubGrupoMaterial", 'BigInt'>
+    readonly denominacao: FieldRef<"SipacSubGrupoMaterial", 'String'>
+    readonly idGrupoMaterial: FieldRef<"SipacSubGrupoMaterial", 'Int'>
+    readonly createdAt: FieldRef<"SipacSubGrupoMaterial", 'DateTime'>
+    readonly updatedAt: FieldRef<"SipacSubGrupoMaterial", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SipacSubGrupoMaterial findUnique
+   */
+  export type SipacSubGrupoMaterialFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SipacSubGrupoMaterial
+     */
+    select?: SipacSubGrupoMaterialSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SipacSubGrupoMaterial
+     */
+    omit?: SipacSubGrupoMaterialOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SipacSubGrupoMaterialInclude<ExtArgs> | null
+    /**
+     * Filter, which SipacSubGrupoMaterial to fetch.
+     */
+    where: SipacSubGrupoMaterialWhereUniqueInput
+  }
+
+  /**
+   * SipacSubGrupoMaterial findUniqueOrThrow
+   */
+  export type SipacSubGrupoMaterialFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SipacSubGrupoMaterial
+     */
+    select?: SipacSubGrupoMaterialSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SipacSubGrupoMaterial
+     */
+    omit?: SipacSubGrupoMaterialOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SipacSubGrupoMaterialInclude<ExtArgs> | null
+    /**
+     * Filter, which SipacSubGrupoMaterial to fetch.
+     */
+    where: SipacSubGrupoMaterialWhereUniqueInput
+  }
+
+  /**
+   * SipacSubGrupoMaterial findFirst
+   */
+  export type SipacSubGrupoMaterialFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SipacSubGrupoMaterial
+     */
+    select?: SipacSubGrupoMaterialSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SipacSubGrupoMaterial
+     */
+    omit?: SipacSubGrupoMaterialOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SipacSubGrupoMaterialInclude<ExtArgs> | null
+    /**
+     * Filter, which SipacSubGrupoMaterial to fetch.
+     */
+    where?: SipacSubGrupoMaterialWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SipacSubGrupoMaterials to fetch.
+     */
+    orderBy?: SipacSubGrupoMaterialOrderByWithRelationInput | SipacSubGrupoMaterialOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SipacSubGrupoMaterials.
+     */
+    cursor?: SipacSubGrupoMaterialWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SipacSubGrupoMaterials from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SipacSubGrupoMaterials.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SipacSubGrupoMaterials.
+     */
+    distinct?: SipacSubGrupoMaterialScalarFieldEnum | SipacSubGrupoMaterialScalarFieldEnum[]
+  }
+
+  /**
+   * SipacSubGrupoMaterial findFirstOrThrow
+   */
+  export type SipacSubGrupoMaterialFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SipacSubGrupoMaterial
+     */
+    select?: SipacSubGrupoMaterialSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SipacSubGrupoMaterial
+     */
+    omit?: SipacSubGrupoMaterialOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SipacSubGrupoMaterialInclude<ExtArgs> | null
+    /**
+     * Filter, which SipacSubGrupoMaterial to fetch.
+     */
+    where?: SipacSubGrupoMaterialWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SipacSubGrupoMaterials to fetch.
+     */
+    orderBy?: SipacSubGrupoMaterialOrderByWithRelationInput | SipacSubGrupoMaterialOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SipacSubGrupoMaterials.
+     */
+    cursor?: SipacSubGrupoMaterialWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SipacSubGrupoMaterials from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SipacSubGrupoMaterials.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SipacSubGrupoMaterials.
+     */
+    distinct?: SipacSubGrupoMaterialScalarFieldEnum | SipacSubGrupoMaterialScalarFieldEnum[]
+  }
+
+  /**
+   * SipacSubGrupoMaterial findMany
+   */
+  export type SipacSubGrupoMaterialFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SipacSubGrupoMaterial
+     */
+    select?: SipacSubGrupoMaterialSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SipacSubGrupoMaterial
+     */
+    omit?: SipacSubGrupoMaterialOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SipacSubGrupoMaterialInclude<ExtArgs> | null
+    /**
+     * Filter, which SipacSubGrupoMaterials to fetch.
+     */
+    where?: SipacSubGrupoMaterialWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SipacSubGrupoMaterials to fetch.
+     */
+    orderBy?: SipacSubGrupoMaterialOrderByWithRelationInput | SipacSubGrupoMaterialOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SipacSubGrupoMaterials.
+     */
+    cursor?: SipacSubGrupoMaterialWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SipacSubGrupoMaterials from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SipacSubGrupoMaterials.
+     */
+    skip?: number
+    distinct?: SipacSubGrupoMaterialScalarFieldEnum | SipacSubGrupoMaterialScalarFieldEnum[]
+  }
+
+  /**
+   * SipacSubGrupoMaterial create
+   */
+  export type SipacSubGrupoMaterialCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SipacSubGrupoMaterial
+     */
+    select?: SipacSubGrupoMaterialSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SipacSubGrupoMaterial
+     */
+    omit?: SipacSubGrupoMaterialOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SipacSubGrupoMaterialInclude<ExtArgs> | null
+    /**
+     * The data needed to create a SipacSubGrupoMaterial.
+     */
+    data: XOR<SipacSubGrupoMaterialCreateInput, SipacSubGrupoMaterialUncheckedCreateInput>
+  }
+
+  /**
+   * SipacSubGrupoMaterial createMany
+   */
+  export type SipacSubGrupoMaterialCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SipacSubGrupoMaterials.
+     */
+    data: SipacSubGrupoMaterialCreateManyInput | SipacSubGrupoMaterialCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SipacSubGrupoMaterial update
+   */
+  export type SipacSubGrupoMaterialUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SipacSubGrupoMaterial
+     */
+    select?: SipacSubGrupoMaterialSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SipacSubGrupoMaterial
+     */
+    omit?: SipacSubGrupoMaterialOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SipacSubGrupoMaterialInclude<ExtArgs> | null
+    /**
+     * The data needed to update a SipacSubGrupoMaterial.
+     */
+    data: XOR<SipacSubGrupoMaterialUpdateInput, SipacSubGrupoMaterialUncheckedUpdateInput>
+    /**
+     * Choose, which SipacSubGrupoMaterial to update.
+     */
+    where: SipacSubGrupoMaterialWhereUniqueInput
+  }
+
+  /**
+   * SipacSubGrupoMaterial updateMany
+   */
+  export type SipacSubGrupoMaterialUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SipacSubGrupoMaterials.
+     */
+    data: XOR<SipacSubGrupoMaterialUpdateManyMutationInput, SipacSubGrupoMaterialUncheckedUpdateManyInput>
+    /**
+     * Filter which SipacSubGrupoMaterials to update
+     */
+    where?: SipacSubGrupoMaterialWhereInput
+    /**
+     * Limit how many SipacSubGrupoMaterials to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SipacSubGrupoMaterial upsert
+   */
+  export type SipacSubGrupoMaterialUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SipacSubGrupoMaterial
+     */
+    select?: SipacSubGrupoMaterialSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SipacSubGrupoMaterial
+     */
+    omit?: SipacSubGrupoMaterialOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SipacSubGrupoMaterialInclude<ExtArgs> | null
+    /**
+     * The filter to search for the SipacSubGrupoMaterial to update in case it exists.
+     */
+    where: SipacSubGrupoMaterialWhereUniqueInput
+    /**
+     * In case the SipacSubGrupoMaterial found by the `where` argument doesn't exist, create a new SipacSubGrupoMaterial with this data.
+     */
+    create: XOR<SipacSubGrupoMaterialCreateInput, SipacSubGrupoMaterialUncheckedCreateInput>
+    /**
+     * In case the SipacSubGrupoMaterial was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SipacSubGrupoMaterialUpdateInput, SipacSubGrupoMaterialUncheckedUpdateInput>
+  }
+
+  /**
+   * SipacSubGrupoMaterial delete
+   */
+  export type SipacSubGrupoMaterialDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SipacSubGrupoMaterial
+     */
+    select?: SipacSubGrupoMaterialSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SipacSubGrupoMaterial
+     */
+    omit?: SipacSubGrupoMaterialOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SipacSubGrupoMaterialInclude<ExtArgs> | null
+    /**
+     * Filter which SipacSubGrupoMaterial to delete.
+     */
+    where: SipacSubGrupoMaterialWhereUniqueInput
+  }
+
+  /**
+   * SipacSubGrupoMaterial deleteMany
+   */
+  export type SipacSubGrupoMaterialDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SipacSubGrupoMaterials to delete
+     */
+    where?: SipacSubGrupoMaterialWhereInput
+    /**
+     * Limit how many SipacSubGrupoMaterials to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SipacSubGrupoMaterial.sipacMateriais
+   */
+  export type SipacSubGrupoMaterial$sipacMateriaisArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SipacMaterial
+     */
+    select?: SipacMaterialSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SipacMaterial
+     */
+    omit?: SipacMaterialOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SipacMaterialInclude<ExtArgs> | null
+    where?: SipacMaterialWhereInput
+    orderBy?: SipacMaterialOrderByWithRelationInput | SipacMaterialOrderByWithRelationInput[]
+    cursor?: SipacMaterialWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SipacMaterialScalarFieldEnum | SipacMaterialScalarFieldEnum[]
+  }
+
+  /**
+   * SipacSubGrupoMaterial.SipacGrupoMaterial
+   */
+  export type SipacSubGrupoMaterial$SipacGrupoMaterialArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SipacGrupoMaterial
+     */
+    select?: SipacGrupoMaterialSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SipacGrupoMaterial
+     */
+    omit?: SipacGrupoMaterialOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SipacGrupoMaterialInclude<ExtArgs> | null
+    where?: SipacGrupoMaterialWhereInput
+  }
+
+  /**
+   * SipacSubGrupoMaterial without action
+   */
+  export type SipacSubGrupoMaterialDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SipacSubGrupoMaterial
+     */
+    select?: SipacSubGrupoMaterialSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SipacSubGrupoMaterial
+     */
+    omit?: SipacSubGrupoMaterialOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SipacSubGrupoMaterialInclude<ExtArgs> | null
   }
 
 
@@ -42808,6 +45223,32 @@ export namespace Prisma {
   export type SipacMaterialScalarFieldEnum = (typeof SipacMaterialScalarFieldEnum)[keyof typeof SipacMaterialScalarFieldEnum]
 
 
+  export const SipacGrupoMaterialScalarFieldEnum: {
+    idGrupoMaterial: 'idGrupoMaterial',
+    ativo: 'ativo',
+    codigo: 'codigo',
+    denominacao: 'denominacao',
+    descricao: 'descricao',
+    idElementoDespesa: 'idElementoDespesa',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type SipacGrupoMaterialScalarFieldEnum = (typeof SipacGrupoMaterialScalarFieldEnum)[keyof typeof SipacGrupoMaterialScalarFieldEnum]
+
+
+  export const SipacSubGrupoMaterialScalarFieldEnum: {
+    idSubGrupoMaterial: 'idSubGrupoMaterial',
+    codigo: 'codigo',
+    denominacao: 'denominacao',
+    idGrupoMaterial: 'idGrupoMaterial',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type SipacSubGrupoMaterialScalarFieldEnum = (typeof SipacSubGrupoMaterialScalarFieldEnum)[keyof typeof SipacSubGrupoMaterialScalarFieldEnum]
+
+
   export const UserScalarFieldEnum: {
     id: 'id',
     name: 'name',
@@ -43155,6 +45596,21 @@ export namespace Prisma {
   export type SipacMaterialOrderByRelevanceFieldEnum = (typeof SipacMaterialOrderByRelevanceFieldEnum)[keyof typeof SipacMaterialOrderByRelevanceFieldEnum]
 
 
+  export const SipacGrupoMaterialOrderByRelevanceFieldEnum: {
+    denominacao: 'denominacao',
+    descricao: 'descricao'
+  };
+
+  export type SipacGrupoMaterialOrderByRelevanceFieldEnum = (typeof SipacGrupoMaterialOrderByRelevanceFieldEnum)[keyof typeof SipacGrupoMaterialOrderByRelevanceFieldEnum]
+
+
+  export const SipacSubGrupoMaterialOrderByRelevanceFieldEnum: {
+    denominacao: 'denominacao'
+  };
+
+  export type SipacSubGrupoMaterialOrderByRelevanceFieldEnum = (typeof SipacSubGrupoMaterialOrderByRelevanceFieldEnum)[keyof typeof SipacSubGrupoMaterialOrderByRelevanceFieldEnum]
+
+
   export const UserOrderByRelevanceFieldEnum: {
     name: 'name',
     login: 'login',
@@ -43316,6 +45772,13 @@ export namespace Prisma {
    * Reference to a field of type 'RestrictionOrderStatus'
    */
   export type EnumRestrictionOrderStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RestrictionOrderStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'BigInt'
+   */
+  export type BigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt'>
     
 
 
@@ -46143,6 +48606,8 @@ export namespace Prisma {
     valorEstimado?: DecimalNullableFilter<"SipacMaterial"> | Decimal | DecimalJsLike | number | string | null
     createdAt?: DateTimeFilter<"SipacMaterial"> | Date | string
     updatedAt?: DateTimeFilter<"SipacMaterial"> | Date | string
+    grupo?: XOR<SipacGrupoMaterialNullableScalarRelationFilter, SipacGrupoMaterialWhereInput> | null
+    subGrupo?: XOR<SipacSubGrupoMaterialNullableScalarRelationFilter, SipacSubGrupoMaterialWhereInput> | null
   }
 
   export type SipacMaterialOrderByWithRelationInput = {
@@ -46165,6 +48630,8 @@ export namespace Prisma {
     valorEstimado?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    grupo?: SipacGrupoMaterialOrderByWithRelationInput
+    subGrupo?: SipacSubGrupoMaterialOrderByWithRelationInput
     _relevance?: SipacMaterialOrderByRelevanceInput
   }
 
@@ -46191,6 +48658,8 @@ export namespace Prisma {
     valorEstimado?: DecimalNullableFilter<"SipacMaterial"> | Decimal | DecimalJsLike | number | string | null
     createdAt?: DateTimeFilter<"SipacMaterial"> | Date | string
     updatedAt?: DateTimeFilter<"SipacMaterial"> | Date | string
+    grupo?: XOR<SipacGrupoMaterialNullableScalarRelationFilter, SipacGrupoMaterialWhereInput> | null
+    subGrupo?: XOR<SipacSubGrupoMaterialNullableScalarRelationFilter, SipacSubGrupoMaterialWhereInput> | null
   }, "idMaterial" | "codigo">
 
   export type SipacMaterialOrderByWithAggregationInput = {
@@ -46243,6 +48712,148 @@ export namespace Prisma {
     valorEstimado?: DecimalNullableWithAggregatesFilter<"SipacMaterial"> | Decimal | DecimalJsLike | number | string | null
     createdAt?: DateTimeWithAggregatesFilter<"SipacMaterial"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"SipacMaterial"> | Date | string
+  }
+
+  export type SipacGrupoMaterialWhereInput = {
+    AND?: SipacGrupoMaterialWhereInput | SipacGrupoMaterialWhereInput[]
+    OR?: SipacGrupoMaterialWhereInput[]
+    NOT?: SipacGrupoMaterialWhereInput | SipacGrupoMaterialWhereInput[]
+    idGrupoMaterial?: IntFilter<"SipacGrupoMaterial"> | number
+    ativo?: BoolFilter<"SipacGrupoMaterial"> | boolean
+    codigo?: BigIntFilter<"SipacGrupoMaterial"> | bigint | number
+    denominacao?: StringFilter<"SipacGrupoMaterial"> | string
+    descricao?: StringNullableFilter<"SipacGrupoMaterial"> | string | null
+    idElementoDespesa?: IntNullableFilter<"SipacGrupoMaterial"> | number | null
+    createdAt?: DateTimeFilter<"SipacGrupoMaterial"> | Date | string
+    updatedAt?: DateTimeFilter<"SipacGrupoMaterial"> | Date | string
+    sipacMateriais?: SipacMaterialListRelationFilter
+    subGrupos?: SipacSubGrupoMaterialListRelationFilter
+  }
+
+  export type SipacGrupoMaterialOrderByWithRelationInput = {
+    idGrupoMaterial?: SortOrder
+    ativo?: SortOrder
+    codigo?: SortOrder
+    denominacao?: SortOrder
+    descricao?: SortOrderInput | SortOrder
+    idElementoDespesa?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    sipacMateriais?: SipacMaterialOrderByRelationAggregateInput
+    subGrupos?: SipacSubGrupoMaterialOrderByRelationAggregateInput
+    _relevance?: SipacGrupoMaterialOrderByRelevanceInput
+  }
+
+  export type SipacGrupoMaterialWhereUniqueInput = Prisma.AtLeast<{
+    idGrupoMaterial?: number
+    codigo?: bigint | number
+    AND?: SipacGrupoMaterialWhereInput | SipacGrupoMaterialWhereInput[]
+    OR?: SipacGrupoMaterialWhereInput[]
+    NOT?: SipacGrupoMaterialWhereInput | SipacGrupoMaterialWhereInput[]
+    ativo?: BoolFilter<"SipacGrupoMaterial"> | boolean
+    denominacao?: StringFilter<"SipacGrupoMaterial"> | string
+    descricao?: StringNullableFilter<"SipacGrupoMaterial"> | string | null
+    idElementoDespesa?: IntNullableFilter<"SipacGrupoMaterial"> | number | null
+    createdAt?: DateTimeFilter<"SipacGrupoMaterial"> | Date | string
+    updatedAt?: DateTimeFilter<"SipacGrupoMaterial"> | Date | string
+    sipacMateriais?: SipacMaterialListRelationFilter
+    subGrupos?: SipacSubGrupoMaterialListRelationFilter
+  }, "idGrupoMaterial" | "codigo">
+
+  export type SipacGrupoMaterialOrderByWithAggregationInput = {
+    idGrupoMaterial?: SortOrder
+    ativo?: SortOrder
+    codigo?: SortOrder
+    denominacao?: SortOrder
+    descricao?: SortOrderInput | SortOrder
+    idElementoDespesa?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: SipacGrupoMaterialCountOrderByAggregateInput
+    _avg?: SipacGrupoMaterialAvgOrderByAggregateInput
+    _max?: SipacGrupoMaterialMaxOrderByAggregateInput
+    _min?: SipacGrupoMaterialMinOrderByAggregateInput
+    _sum?: SipacGrupoMaterialSumOrderByAggregateInput
+  }
+
+  export type SipacGrupoMaterialScalarWhereWithAggregatesInput = {
+    AND?: SipacGrupoMaterialScalarWhereWithAggregatesInput | SipacGrupoMaterialScalarWhereWithAggregatesInput[]
+    OR?: SipacGrupoMaterialScalarWhereWithAggregatesInput[]
+    NOT?: SipacGrupoMaterialScalarWhereWithAggregatesInput | SipacGrupoMaterialScalarWhereWithAggregatesInput[]
+    idGrupoMaterial?: IntWithAggregatesFilter<"SipacGrupoMaterial"> | number
+    ativo?: BoolWithAggregatesFilter<"SipacGrupoMaterial"> | boolean
+    codigo?: BigIntWithAggregatesFilter<"SipacGrupoMaterial"> | bigint | number
+    denominacao?: StringWithAggregatesFilter<"SipacGrupoMaterial"> | string
+    descricao?: StringNullableWithAggregatesFilter<"SipacGrupoMaterial"> | string | null
+    idElementoDespesa?: IntNullableWithAggregatesFilter<"SipacGrupoMaterial"> | number | null
+    createdAt?: DateTimeWithAggregatesFilter<"SipacGrupoMaterial"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"SipacGrupoMaterial"> | Date | string
+  }
+
+  export type SipacSubGrupoMaterialWhereInput = {
+    AND?: SipacSubGrupoMaterialWhereInput | SipacSubGrupoMaterialWhereInput[]
+    OR?: SipacSubGrupoMaterialWhereInput[]
+    NOT?: SipacSubGrupoMaterialWhereInput | SipacSubGrupoMaterialWhereInput[]
+    idSubGrupoMaterial?: IntFilter<"SipacSubGrupoMaterial"> | number
+    codigo?: BigIntFilter<"SipacSubGrupoMaterial"> | bigint | number
+    denominacao?: StringFilter<"SipacSubGrupoMaterial"> | string
+    idGrupoMaterial?: IntFilter<"SipacSubGrupoMaterial"> | number
+    createdAt?: DateTimeFilter<"SipacSubGrupoMaterial"> | Date | string
+    updatedAt?: DateTimeFilter<"SipacSubGrupoMaterial"> | Date | string
+    sipacMateriais?: SipacMaterialListRelationFilter
+    SipacGrupoMaterial?: XOR<SipacGrupoMaterialNullableScalarRelationFilter, SipacGrupoMaterialWhereInput> | null
+  }
+
+  export type SipacSubGrupoMaterialOrderByWithRelationInput = {
+    idSubGrupoMaterial?: SortOrder
+    codigo?: SortOrder
+    denominacao?: SortOrder
+    idGrupoMaterial?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    sipacMateriais?: SipacMaterialOrderByRelationAggregateInput
+    SipacGrupoMaterial?: SipacGrupoMaterialOrderByWithRelationInput
+    _relevance?: SipacSubGrupoMaterialOrderByRelevanceInput
+  }
+
+  export type SipacSubGrupoMaterialWhereUniqueInput = Prisma.AtLeast<{
+    idSubGrupoMaterial?: number
+    codigo?: bigint | number
+    AND?: SipacSubGrupoMaterialWhereInput | SipacSubGrupoMaterialWhereInput[]
+    OR?: SipacSubGrupoMaterialWhereInput[]
+    NOT?: SipacSubGrupoMaterialWhereInput | SipacSubGrupoMaterialWhereInput[]
+    denominacao?: StringFilter<"SipacSubGrupoMaterial"> | string
+    idGrupoMaterial?: IntFilter<"SipacSubGrupoMaterial"> | number
+    createdAt?: DateTimeFilter<"SipacSubGrupoMaterial"> | Date | string
+    updatedAt?: DateTimeFilter<"SipacSubGrupoMaterial"> | Date | string
+    sipacMateriais?: SipacMaterialListRelationFilter
+    SipacGrupoMaterial?: XOR<SipacGrupoMaterialNullableScalarRelationFilter, SipacGrupoMaterialWhereInput> | null
+  }, "idSubGrupoMaterial" | "codigo">
+
+  export type SipacSubGrupoMaterialOrderByWithAggregationInput = {
+    idSubGrupoMaterial?: SortOrder
+    codigo?: SortOrder
+    denominacao?: SortOrder
+    idGrupoMaterial?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: SipacSubGrupoMaterialCountOrderByAggregateInput
+    _avg?: SipacSubGrupoMaterialAvgOrderByAggregateInput
+    _max?: SipacSubGrupoMaterialMaxOrderByAggregateInput
+    _min?: SipacSubGrupoMaterialMinOrderByAggregateInput
+    _sum?: SipacSubGrupoMaterialSumOrderByAggregateInput
+  }
+
+  export type SipacSubGrupoMaterialScalarWhereWithAggregatesInput = {
+    AND?: SipacSubGrupoMaterialScalarWhereWithAggregatesInput | SipacSubGrupoMaterialScalarWhereWithAggregatesInput[]
+    OR?: SipacSubGrupoMaterialScalarWhereWithAggregatesInput[]
+    NOT?: SipacSubGrupoMaterialScalarWhereWithAggregatesInput | SipacSubGrupoMaterialScalarWhereWithAggregatesInput[]
+    idSubGrupoMaterial?: IntWithAggregatesFilter<"SipacSubGrupoMaterial"> | number
+    codigo?: BigIntWithAggregatesFilter<"SipacSubGrupoMaterial"> | bigint | number
+    denominacao?: StringWithAggregatesFilter<"SipacSubGrupoMaterial"> | string
+    idGrupoMaterial?: IntWithAggregatesFilter<"SipacSubGrupoMaterial"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"SipacSubGrupoMaterial"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"SipacSubGrupoMaterial"> | Date | string
   }
 
   export type UserWhereInput = {
@@ -49376,12 +51987,12 @@ export namespace Prisma {
     denominacaoUnidade?: string | null
     especificacao?: string | null
     especificacaoAscii?: string | null
-    idGrupo?: number | null
-    idSubGrupo?: number | null
     precoCompra?: Decimal | DecimalJsLike | number | string | null
     valorEstimado?: Decimal | DecimalJsLike | number | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    grupo?: SipacGrupoMaterialCreateNestedOneWithoutSipacMateriaisInput
+    subGrupo?: SipacSubGrupoMaterialCreateNestedOneWithoutSipacMateriaisInput
   }
 
   export type SipacMaterialUncheckedCreateInput = {
@@ -49420,12 +52031,12 @@ export namespace Prisma {
     denominacaoUnidade?: NullableStringFieldUpdateOperationsInput | string | null
     especificacao?: NullableStringFieldUpdateOperationsInput | string | null
     especificacaoAscii?: NullableStringFieldUpdateOperationsInput | string | null
-    idGrupo?: NullableIntFieldUpdateOperationsInput | number | null
-    idSubGrupo?: NullableIntFieldUpdateOperationsInput | number | null
     precoCompra?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     valorEstimado?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    grupo?: SipacGrupoMaterialUpdateOneWithoutSipacMateriaisNestedInput
+    subGrupo?: SipacSubGrupoMaterialUpdateOneWithoutSipacMateriaisNestedInput
   }
 
   export type SipacMaterialUncheckedUpdateInput = {
@@ -49486,8 +52097,6 @@ export namespace Prisma {
     denominacaoUnidade?: NullableStringFieldUpdateOperationsInput | string | null
     especificacao?: NullableStringFieldUpdateOperationsInput | string | null
     especificacaoAscii?: NullableStringFieldUpdateOperationsInput | string | null
-    idGrupo?: NullableIntFieldUpdateOperationsInput | number | null
-    idSubGrupo?: NullableIntFieldUpdateOperationsInput | number | null
     precoCompra?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     valorEstimado?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -49512,6 +52121,157 @@ export namespace Prisma {
     idSubGrupo?: NullableIntFieldUpdateOperationsInput | number | null
     precoCompra?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     valorEstimado?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SipacGrupoMaterialCreateInput = {
+    idGrupoMaterial: number
+    ativo: boolean
+    codigo: bigint | number
+    denominacao: string
+    descricao?: string | null
+    idElementoDespesa?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sipacMateriais?: SipacMaterialCreateNestedManyWithoutGrupoInput
+    subGrupos?: SipacSubGrupoMaterialCreateNestedManyWithoutSipacGrupoMaterialInput
+  }
+
+  export type SipacGrupoMaterialUncheckedCreateInput = {
+    idGrupoMaterial: number
+    ativo: boolean
+    codigo: bigint | number
+    denominacao: string
+    descricao?: string | null
+    idElementoDespesa?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sipacMateriais?: SipacMaterialUncheckedCreateNestedManyWithoutGrupoInput
+    subGrupos?: SipacSubGrupoMaterialUncheckedCreateNestedManyWithoutSipacGrupoMaterialInput
+  }
+
+  export type SipacGrupoMaterialUpdateInput = {
+    idGrupoMaterial?: IntFieldUpdateOperationsInput | number
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    codigo?: BigIntFieldUpdateOperationsInput | bigint | number
+    denominacao?: StringFieldUpdateOperationsInput | string
+    descricao?: NullableStringFieldUpdateOperationsInput | string | null
+    idElementoDespesa?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sipacMateriais?: SipacMaterialUpdateManyWithoutGrupoNestedInput
+    subGrupos?: SipacSubGrupoMaterialUpdateManyWithoutSipacGrupoMaterialNestedInput
+  }
+
+  export type SipacGrupoMaterialUncheckedUpdateInput = {
+    idGrupoMaterial?: IntFieldUpdateOperationsInput | number
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    codigo?: BigIntFieldUpdateOperationsInput | bigint | number
+    denominacao?: StringFieldUpdateOperationsInput | string
+    descricao?: NullableStringFieldUpdateOperationsInput | string | null
+    idElementoDespesa?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sipacMateriais?: SipacMaterialUncheckedUpdateManyWithoutGrupoNestedInput
+    subGrupos?: SipacSubGrupoMaterialUncheckedUpdateManyWithoutSipacGrupoMaterialNestedInput
+  }
+
+  export type SipacGrupoMaterialCreateManyInput = {
+    idGrupoMaterial: number
+    ativo: boolean
+    codigo: bigint | number
+    denominacao: string
+    descricao?: string | null
+    idElementoDespesa?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SipacGrupoMaterialUpdateManyMutationInput = {
+    idGrupoMaterial?: IntFieldUpdateOperationsInput | number
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    codigo?: BigIntFieldUpdateOperationsInput | bigint | number
+    denominacao?: StringFieldUpdateOperationsInput | string
+    descricao?: NullableStringFieldUpdateOperationsInput | string | null
+    idElementoDespesa?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SipacGrupoMaterialUncheckedUpdateManyInput = {
+    idGrupoMaterial?: IntFieldUpdateOperationsInput | number
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    codigo?: BigIntFieldUpdateOperationsInput | bigint | number
+    denominacao?: StringFieldUpdateOperationsInput | string
+    descricao?: NullableStringFieldUpdateOperationsInput | string | null
+    idElementoDespesa?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SipacSubGrupoMaterialCreateInput = {
+    idSubGrupoMaterial: number
+    codigo: bigint | number
+    denominacao: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sipacMateriais?: SipacMaterialCreateNestedManyWithoutSubGrupoInput
+    SipacGrupoMaterial?: SipacGrupoMaterialCreateNestedOneWithoutSubGruposInput
+  }
+
+  export type SipacSubGrupoMaterialUncheckedCreateInput = {
+    idSubGrupoMaterial: number
+    codigo: bigint | number
+    denominacao: string
+    idGrupoMaterial: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sipacMateriais?: SipacMaterialUncheckedCreateNestedManyWithoutSubGrupoInput
+  }
+
+  export type SipacSubGrupoMaterialUpdateInput = {
+    idSubGrupoMaterial?: IntFieldUpdateOperationsInput | number
+    codigo?: BigIntFieldUpdateOperationsInput | bigint | number
+    denominacao?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sipacMateriais?: SipacMaterialUpdateManyWithoutSubGrupoNestedInput
+    SipacGrupoMaterial?: SipacGrupoMaterialUpdateOneWithoutSubGruposNestedInput
+  }
+
+  export type SipacSubGrupoMaterialUncheckedUpdateInput = {
+    idSubGrupoMaterial?: IntFieldUpdateOperationsInput | number
+    codigo?: BigIntFieldUpdateOperationsInput | bigint | number
+    denominacao?: StringFieldUpdateOperationsInput | string
+    idGrupoMaterial?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sipacMateriais?: SipacMaterialUncheckedUpdateManyWithoutSubGrupoNestedInput
+  }
+
+  export type SipacSubGrupoMaterialCreateManyInput = {
+    idSubGrupoMaterial: number
+    codigo: bigint | number
+    denominacao: string
+    idGrupoMaterial: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SipacSubGrupoMaterialUpdateManyMutationInput = {
+    idSubGrupoMaterial?: IntFieldUpdateOperationsInput | number
+    codigo?: BigIntFieldUpdateOperationsInput | bigint | number
+    denominacao?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SipacSubGrupoMaterialUncheckedUpdateManyInput = {
+    idSubGrupoMaterial?: IntFieldUpdateOperationsInput | number
+    codigo?: BigIntFieldUpdateOperationsInput | bigint | number
+    denominacao?: StringFieldUpdateOperationsInput | string
+    idGrupoMaterial?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -52456,6 +55216,16 @@ export namespace Prisma {
     targetMaterialRequestItemId?: SortOrder
   }
 
+  export type SipacGrupoMaterialNullableScalarRelationFilter = {
+    is?: SipacGrupoMaterialWhereInput | null
+    isNot?: SipacGrupoMaterialWhereInput | null
+  }
+
+  export type SipacSubGrupoMaterialNullableScalarRelationFilter = {
+    is?: SipacSubGrupoMaterialWhereInput | null
+    isNot?: SipacSubGrupoMaterialWhereInput | null
+  }
+
   export type SipacMaterialOrderByRelevanceInput = {
     fields: SipacMaterialOrderByRelevanceFieldEnum | SipacMaterialOrderByRelevanceFieldEnum[]
     sort: SortOrder
@@ -52544,6 +55314,149 @@ export namespace Prisma {
     idSubGrupo?: SortOrder
     precoCompra?: SortOrder
     valorEstimado?: SortOrder
+  }
+
+  export type BigIntFilter<$PrismaModel = never> = {
+    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    in?: bigint[] | number[]
+    notIn?: bigint[] | number[]
+    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    not?: NestedBigIntFilter<$PrismaModel> | bigint | number
+  }
+
+  export type SipacMaterialListRelationFilter = {
+    every?: SipacMaterialWhereInput
+    some?: SipacMaterialWhereInput
+    none?: SipacMaterialWhereInput
+  }
+
+  export type SipacSubGrupoMaterialListRelationFilter = {
+    every?: SipacSubGrupoMaterialWhereInput
+    some?: SipacSubGrupoMaterialWhereInput
+    none?: SipacSubGrupoMaterialWhereInput
+  }
+
+  export type SipacMaterialOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SipacSubGrupoMaterialOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SipacGrupoMaterialOrderByRelevanceInput = {
+    fields: SipacGrupoMaterialOrderByRelevanceFieldEnum | SipacGrupoMaterialOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type SipacGrupoMaterialCountOrderByAggregateInput = {
+    idGrupoMaterial?: SortOrder
+    ativo?: SortOrder
+    codigo?: SortOrder
+    denominacao?: SortOrder
+    descricao?: SortOrder
+    idElementoDespesa?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SipacGrupoMaterialAvgOrderByAggregateInput = {
+    idGrupoMaterial?: SortOrder
+    codigo?: SortOrder
+    idElementoDespesa?: SortOrder
+  }
+
+  export type SipacGrupoMaterialMaxOrderByAggregateInput = {
+    idGrupoMaterial?: SortOrder
+    ativo?: SortOrder
+    codigo?: SortOrder
+    denominacao?: SortOrder
+    descricao?: SortOrder
+    idElementoDespesa?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SipacGrupoMaterialMinOrderByAggregateInput = {
+    idGrupoMaterial?: SortOrder
+    ativo?: SortOrder
+    codigo?: SortOrder
+    denominacao?: SortOrder
+    descricao?: SortOrder
+    idElementoDespesa?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SipacGrupoMaterialSumOrderByAggregateInput = {
+    idGrupoMaterial?: SortOrder
+    codigo?: SortOrder
+    idElementoDespesa?: SortOrder
+  }
+
+  export type BigIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    in?: bigint[] | number[]
+    notIn?: bigint[] | number[]
+    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    not?: NestedBigIntWithAggregatesFilter<$PrismaModel> | bigint | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedBigIntFilter<$PrismaModel>
+    _min?: NestedBigIntFilter<$PrismaModel>
+    _max?: NestedBigIntFilter<$PrismaModel>
+  }
+
+  export type SipacSubGrupoMaterialOrderByRelevanceInput = {
+    fields: SipacSubGrupoMaterialOrderByRelevanceFieldEnum | SipacSubGrupoMaterialOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type SipacSubGrupoMaterialCountOrderByAggregateInput = {
+    idSubGrupoMaterial?: SortOrder
+    codigo?: SortOrder
+    denominacao?: SortOrder
+    idGrupoMaterial?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SipacSubGrupoMaterialAvgOrderByAggregateInput = {
+    idSubGrupoMaterial?: SortOrder
+    codigo?: SortOrder
+    idGrupoMaterial?: SortOrder
+  }
+
+  export type SipacSubGrupoMaterialMaxOrderByAggregateInput = {
+    idSubGrupoMaterial?: SortOrder
+    codigo?: SortOrder
+    denominacao?: SortOrder
+    idGrupoMaterial?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SipacSubGrupoMaterialMinOrderByAggregateInput = {
+    idSubGrupoMaterial?: SortOrder
+    codigo?: SortOrder
+    denominacao?: SortOrder
+    idGrupoMaterial?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SipacSubGrupoMaterialSumOrderByAggregateInput = {
+    idSubGrupoMaterial?: SortOrder
+    codigo?: SortOrder
+    idGrupoMaterial?: SortOrder
   }
 
   export type RoleListRelationFilter = {
@@ -56378,6 +59291,188 @@ export namespace Prisma {
     update?: XOR<XOR<MaterialRequestItemUpdateToOneWithWhereWithoutMaterialRestrictionOrderItemsInput, MaterialRequestItemUpdateWithoutMaterialRestrictionOrderItemsInput>, MaterialRequestItemUncheckedUpdateWithoutMaterialRestrictionOrderItemsInput>
   }
 
+  export type SipacGrupoMaterialCreateNestedOneWithoutSipacMateriaisInput = {
+    create?: XOR<SipacGrupoMaterialCreateWithoutSipacMateriaisInput, SipacGrupoMaterialUncheckedCreateWithoutSipacMateriaisInput>
+    connectOrCreate?: SipacGrupoMaterialCreateOrConnectWithoutSipacMateriaisInput
+    connect?: SipacGrupoMaterialWhereUniqueInput
+  }
+
+  export type SipacSubGrupoMaterialCreateNestedOneWithoutSipacMateriaisInput = {
+    create?: XOR<SipacSubGrupoMaterialCreateWithoutSipacMateriaisInput, SipacSubGrupoMaterialUncheckedCreateWithoutSipacMateriaisInput>
+    connectOrCreate?: SipacSubGrupoMaterialCreateOrConnectWithoutSipacMateriaisInput
+    connect?: SipacSubGrupoMaterialWhereUniqueInput
+  }
+
+  export type SipacGrupoMaterialUpdateOneWithoutSipacMateriaisNestedInput = {
+    create?: XOR<SipacGrupoMaterialCreateWithoutSipacMateriaisInput, SipacGrupoMaterialUncheckedCreateWithoutSipacMateriaisInput>
+    connectOrCreate?: SipacGrupoMaterialCreateOrConnectWithoutSipacMateriaisInput
+    upsert?: SipacGrupoMaterialUpsertWithoutSipacMateriaisInput
+    disconnect?: SipacGrupoMaterialWhereInput | boolean
+    delete?: SipacGrupoMaterialWhereInput | boolean
+    connect?: SipacGrupoMaterialWhereUniqueInput
+    update?: XOR<XOR<SipacGrupoMaterialUpdateToOneWithWhereWithoutSipacMateriaisInput, SipacGrupoMaterialUpdateWithoutSipacMateriaisInput>, SipacGrupoMaterialUncheckedUpdateWithoutSipacMateriaisInput>
+  }
+
+  export type SipacSubGrupoMaterialUpdateOneWithoutSipacMateriaisNestedInput = {
+    create?: XOR<SipacSubGrupoMaterialCreateWithoutSipacMateriaisInput, SipacSubGrupoMaterialUncheckedCreateWithoutSipacMateriaisInput>
+    connectOrCreate?: SipacSubGrupoMaterialCreateOrConnectWithoutSipacMateriaisInput
+    upsert?: SipacSubGrupoMaterialUpsertWithoutSipacMateriaisInput
+    disconnect?: SipacSubGrupoMaterialWhereInput | boolean
+    delete?: SipacSubGrupoMaterialWhereInput | boolean
+    connect?: SipacSubGrupoMaterialWhereUniqueInput
+    update?: XOR<XOR<SipacSubGrupoMaterialUpdateToOneWithWhereWithoutSipacMateriaisInput, SipacSubGrupoMaterialUpdateWithoutSipacMateriaisInput>, SipacSubGrupoMaterialUncheckedUpdateWithoutSipacMateriaisInput>
+  }
+
+  export type SipacMaterialCreateNestedManyWithoutGrupoInput = {
+    create?: XOR<SipacMaterialCreateWithoutGrupoInput, SipacMaterialUncheckedCreateWithoutGrupoInput> | SipacMaterialCreateWithoutGrupoInput[] | SipacMaterialUncheckedCreateWithoutGrupoInput[]
+    connectOrCreate?: SipacMaterialCreateOrConnectWithoutGrupoInput | SipacMaterialCreateOrConnectWithoutGrupoInput[]
+    createMany?: SipacMaterialCreateManyGrupoInputEnvelope
+    connect?: SipacMaterialWhereUniqueInput | SipacMaterialWhereUniqueInput[]
+  }
+
+  export type SipacSubGrupoMaterialCreateNestedManyWithoutSipacGrupoMaterialInput = {
+    create?: XOR<SipacSubGrupoMaterialCreateWithoutSipacGrupoMaterialInput, SipacSubGrupoMaterialUncheckedCreateWithoutSipacGrupoMaterialInput> | SipacSubGrupoMaterialCreateWithoutSipacGrupoMaterialInput[] | SipacSubGrupoMaterialUncheckedCreateWithoutSipacGrupoMaterialInput[]
+    connectOrCreate?: SipacSubGrupoMaterialCreateOrConnectWithoutSipacGrupoMaterialInput | SipacSubGrupoMaterialCreateOrConnectWithoutSipacGrupoMaterialInput[]
+    createMany?: SipacSubGrupoMaterialCreateManySipacGrupoMaterialInputEnvelope
+    connect?: SipacSubGrupoMaterialWhereUniqueInput | SipacSubGrupoMaterialWhereUniqueInput[]
+  }
+
+  export type SipacMaterialUncheckedCreateNestedManyWithoutGrupoInput = {
+    create?: XOR<SipacMaterialCreateWithoutGrupoInput, SipacMaterialUncheckedCreateWithoutGrupoInput> | SipacMaterialCreateWithoutGrupoInput[] | SipacMaterialUncheckedCreateWithoutGrupoInput[]
+    connectOrCreate?: SipacMaterialCreateOrConnectWithoutGrupoInput | SipacMaterialCreateOrConnectWithoutGrupoInput[]
+    createMany?: SipacMaterialCreateManyGrupoInputEnvelope
+    connect?: SipacMaterialWhereUniqueInput | SipacMaterialWhereUniqueInput[]
+  }
+
+  export type SipacSubGrupoMaterialUncheckedCreateNestedManyWithoutSipacGrupoMaterialInput = {
+    create?: XOR<SipacSubGrupoMaterialCreateWithoutSipacGrupoMaterialInput, SipacSubGrupoMaterialUncheckedCreateWithoutSipacGrupoMaterialInput> | SipacSubGrupoMaterialCreateWithoutSipacGrupoMaterialInput[] | SipacSubGrupoMaterialUncheckedCreateWithoutSipacGrupoMaterialInput[]
+    connectOrCreate?: SipacSubGrupoMaterialCreateOrConnectWithoutSipacGrupoMaterialInput | SipacSubGrupoMaterialCreateOrConnectWithoutSipacGrupoMaterialInput[]
+    createMany?: SipacSubGrupoMaterialCreateManySipacGrupoMaterialInputEnvelope
+    connect?: SipacSubGrupoMaterialWhereUniqueInput | SipacSubGrupoMaterialWhereUniqueInput[]
+  }
+
+  export type BigIntFieldUpdateOperationsInput = {
+    set?: bigint | number
+    increment?: bigint | number
+    decrement?: bigint | number
+    multiply?: bigint | number
+    divide?: bigint | number
+  }
+
+  export type SipacMaterialUpdateManyWithoutGrupoNestedInput = {
+    create?: XOR<SipacMaterialCreateWithoutGrupoInput, SipacMaterialUncheckedCreateWithoutGrupoInput> | SipacMaterialCreateWithoutGrupoInput[] | SipacMaterialUncheckedCreateWithoutGrupoInput[]
+    connectOrCreate?: SipacMaterialCreateOrConnectWithoutGrupoInput | SipacMaterialCreateOrConnectWithoutGrupoInput[]
+    upsert?: SipacMaterialUpsertWithWhereUniqueWithoutGrupoInput | SipacMaterialUpsertWithWhereUniqueWithoutGrupoInput[]
+    createMany?: SipacMaterialCreateManyGrupoInputEnvelope
+    set?: SipacMaterialWhereUniqueInput | SipacMaterialWhereUniqueInput[]
+    disconnect?: SipacMaterialWhereUniqueInput | SipacMaterialWhereUniqueInput[]
+    delete?: SipacMaterialWhereUniqueInput | SipacMaterialWhereUniqueInput[]
+    connect?: SipacMaterialWhereUniqueInput | SipacMaterialWhereUniqueInput[]
+    update?: SipacMaterialUpdateWithWhereUniqueWithoutGrupoInput | SipacMaterialUpdateWithWhereUniqueWithoutGrupoInput[]
+    updateMany?: SipacMaterialUpdateManyWithWhereWithoutGrupoInput | SipacMaterialUpdateManyWithWhereWithoutGrupoInput[]
+    deleteMany?: SipacMaterialScalarWhereInput | SipacMaterialScalarWhereInput[]
+  }
+
+  export type SipacSubGrupoMaterialUpdateManyWithoutSipacGrupoMaterialNestedInput = {
+    create?: XOR<SipacSubGrupoMaterialCreateWithoutSipacGrupoMaterialInput, SipacSubGrupoMaterialUncheckedCreateWithoutSipacGrupoMaterialInput> | SipacSubGrupoMaterialCreateWithoutSipacGrupoMaterialInput[] | SipacSubGrupoMaterialUncheckedCreateWithoutSipacGrupoMaterialInput[]
+    connectOrCreate?: SipacSubGrupoMaterialCreateOrConnectWithoutSipacGrupoMaterialInput | SipacSubGrupoMaterialCreateOrConnectWithoutSipacGrupoMaterialInput[]
+    upsert?: SipacSubGrupoMaterialUpsertWithWhereUniqueWithoutSipacGrupoMaterialInput | SipacSubGrupoMaterialUpsertWithWhereUniqueWithoutSipacGrupoMaterialInput[]
+    createMany?: SipacSubGrupoMaterialCreateManySipacGrupoMaterialInputEnvelope
+    set?: SipacSubGrupoMaterialWhereUniqueInput | SipacSubGrupoMaterialWhereUniqueInput[]
+    disconnect?: SipacSubGrupoMaterialWhereUniqueInput | SipacSubGrupoMaterialWhereUniqueInput[]
+    delete?: SipacSubGrupoMaterialWhereUniqueInput | SipacSubGrupoMaterialWhereUniqueInput[]
+    connect?: SipacSubGrupoMaterialWhereUniqueInput | SipacSubGrupoMaterialWhereUniqueInput[]
+    update?: SipacSubGrupoMaterialUpdateWithWhereUniqueWithoutSipacGrupoMaterialInput | SipacSubGrupoMaterialUpdateWithWhereUniqueWithoutSipacGrupoMaterialInput[]
+    updateMany?: SipacSubGrupoMaterialUpdateManyWithWhereWithoutSipacGrupoMaterialInput | SipacSubGrupoMaterialUpdateManyWithWhereWithoutSipacGrupoMaterialInput[]
+    deleteMany?: SipacSubGrupoMaterialScalarWhereInput | SipacSubGrupoMaterialScalarWhereInput[]
+  }
+
+  export type SipacMaterialUncheckedUpdateManyWithoutGrupoNestedInput = {
+    create?: XOR<SipacMaterialCreateWithoutGrupoInput, SipacMaterialUncheckedCreateWithoutGrupoInput> | SipacMaterialCreateWithoutGrupoInput[] | SipacMaterialUncheckedCreateWithoutGrupoInput[]
+    connectOrCreate?: SipacMaterialCreateOrConnectWithoutGrupoInput | SipacMaterialCreateOrConnectWithoutGrupoInput[]
+    upsert?: SipacMaterialUpsertWithWhereUniqueWithoutGrupoInput | SipacMaterialUpsertWithWhereUniqueWithoutGrupoInput[]
+    createMany?: SipacMaterialCreateManyGrupoInputEnvelope
+    set?: SipacMaterialWhereUniqueInput | SipacMaterialWhereUniqueInput[]
+    disconnect?: SipacMaterialWhereUniqueInput | SipacMaterialWhereUniqueInput[]
+    delete?: SipacMaterialWhereUniqueInput | SipacMaterialWhereUniqueInput[]
+    connect?: SipacMaterialWhereUniqueInput | SipacMaterialWhereUniqueInput[]
+    update?: SipacMaterialUpdateWithWhereUniqueWithoutGrupoInput | SipacMaterialUpdateWithWhereUniqueWithoutGrupoInput[]
+    updateMany?: SipacMaterialUpdateManyWithWhereWithoutGrupoInput | SipacMaterialUpdateManyWithWhereWithoutGrupoInput[]
+    deleteMany?: SipacMaterialScalarWhereInput | SipacMaterialScalarWhereInput[]
+  }
+
+  export type SipacSubGrupoMaterialUncheckedUpdateManyWithoutSipacGrupoMaterialNestedInput = {
+    create?: XOR<SipacSubGrupoMaterialCreateWithoutSipacGrupoMaterialInput, SipacSubGrupoMaterialUncheckedCreateWithoutSipacGrupoMaterialInput> | SipacSubGrupoMaterialCreateWithoutSipacGrupoMaterialInput[] | SipacSubGrupoMaterialUncheckedCreateWithoutSipacGrupoMaterialInput[]
+    connectOrCreate?: SipacSubGrupoMaterialCreateOrConnectWithoutSipacGrupoMaterialInput | SipacSubGrupoMaterialCreateOrConnectWithoutSipacGrupoMaterialInput[]
+    upsert?: SipacSubGrupoMaterialUpsertWithWhereUniqueWithoutSipacGrupoMaterialInput | SipacSubGrupoMaterialUpsertWithWhereUniqueWithoutSipacGrupoMaterialInput[]
+    createMany?: SipacSubGrupoMaterialCreateManySipacGrupoMaterialInputEnvelope
+    set?: SipacSubGrupoMaterialWhereUniqueInput | SipacSubGrupoMaterialWhereUniqueInput[]
+    disconnect?: SipacSubGrupoMaterialWhereUniqueInput | SipacSubGrupoMaterialWhereUniqueInput[]
+    delete?: SipacSubGrupoMaterialWhereUniqueInput | SipacSubGrupoMaterialWhereUniqueInput[]
+    connect?: SipacSubGrupoMaterialWhereUniqueInput | SipacSubGrupoMaterialWhereUniqueInput[]
+    update?: SipacSubGrupoMaterialUpdateWithWhereUniqueWithoutSipacGrupoMaterialInput | SipacSubGrupoMaterialUpdateWithWhereUniqueWithoutSipacGrupoMaterialInput[]
+    updateMany?: SipacSubGrupoMaterialUpdateManyWithWhereWithoutSipacGrupoMaterialInput | SipacSubGrupoMaterialUpdateManyWithWhereWithoutSipacGrupoMaterialInput[]
+    deleteMany?: SipacSubGrupoMaterialScalarWhereInput | SipacSubGrupoMaterialScalarWhereInput[]
+  }
+
+  export type SipacMaterialCreateNestedManyWithoutSubGrupoInput = {
+    create?: XOR<SipacMaterialCreateWithoutSubGrupoInput, SipacMaterialUncheckedCreateWithoutSubGrupoInput> | SipacMaterialCreateWithoutSubGrupoInput[] | SipacMaterialUncheckedCreateWithoutSubGrupoInput[]
+    connectOrCreate?: SipacMaterialCreateOrConnectWithoutSubGrupoInput | SipacMaterialCreateOrConnectWithoutSubGrupoInput[]
+    createMany?: SipacMaterialCreateManySubGrupoInputEnvelope
+    connect?: SipacMaterialWhereUniqueInput | SipacMaterialWhereUniqueInput[]
+  }
+
+  export type SipacGrupoMaterialCreateNestedOneWithoutSubGruposInput = {
+    create?: XOR<SipacGrupoMaterialCreateWithoutSubGruposInput, SipacGrupoMaterialUncheckedCreateWithoutSubGruposInput>
+    connectOrCreate?: SipacGrupoMaterialCreateOrConnectWithoutSubGruposInput
+    connect?: SipacGrupoMaterialWhereUniqueInput
+  }
+
+  export type SipacMaterialUncheckedCreateNestedManyWithoutSubGrupoInput = {
+    create?: XOR<SipacMaterialCreateWithoutSubGrupoInput, SipacMaterialUncheckedCreateWithoutSubGrupoInput> | SipacMaterialCreateWithoutSubGrupoInput[] | SipacMaterialUncheckedCreateWithoutSubGrupoInput[]
+    connectOrCreate?: SipacMaterialCreateOrConnectWithoutSubGrupoInput | SipacMaterialCreateOrConnectWithoutSubGrupoInput[]
+    createMany?: SipacMaterialCreateManySubGrupoInputEnvelope
+    connect?: SipacMaterialWhereUniqueInput | SipacMaterialWhereUniqueInput[]
+  }
+
+  export type SipacMaterialUpdateManyWithoutSubGrupoNestedInput = {
+    create?: XOR<SipacMaterialCreateWithoutSubGrupoInput, SipacMaterialUncheckedCreateWithoutSubGrupoInput> | SipacMaterialCreateWithoutSubGrupoInput[] | SipacMaterialUncheckedCreateWithoutSubGrupoInput[]
+    connectOrCreate?: SipacMaterialCreateOrConnectWithoutSubGrupoInput | SipacMaterialCreateOrConnectWithoutSubGrupoInput[]
+    upsert?: SipacMaterialUpsertWithWhereUniqueWithoutSubGrupoInput | SipacMaterialUpsertWithWhereUniqueWithoutSubGrupoInput[]
+    createMany?: SipacMaterialCreateManySubGrupoInputEnvelope
+    set?: SipacMaterialWhereUniqueInput | SipacMaterialWhereUniqueInput[]
+    disconnect?: SipacMaterialWhereUniqueInput | SipacMaterialWhereUniqueInput[]
+    delete?: SipacMaterialWhereUniqueInput | SipacMaterialWhereUniqueInput[]
+    connect?: SipacMaterialWhereUniqueInput | SipacMaterialWhereUniqueInput[]
+    update?: SipacMaterialUpdateWithWhereUniqueWithoutSubGrupoInput | SipacMaterialUpdateWithWhereUniqueWithoutSubGrupoInput[]
+    updateMany?: SipacMaterialUpdateManyWithWhereWithoutSubGrupoInput | SipacMaterialUpdateManyWithWhereWithoutSubGrupoInput[]
+    deleteMany?: SipacMaterialScalarWhereInput | SipacMaterialScalarWhereInput[]
+  }
+
+  export type SipacGrupoMaterialUpdateOneWithoutSubGruposNestedInput = {
+    create?: XOR<SipacGrupoMaterialCreateWithoutSubGruposInput, SipacGrupoMaterialUncheckedCreateWithoutSubGruposInput>
+    connectOrCreate?: SipacGrupoMaterialCreateOrConnectWithoutSubGruposInput
+    upsert?: SipacGrupoMaterialUpsertWithoutSubGruposInput
+    disconnect?: SipacGrupoMaterialWhereInput | boolean
+    delete?: SipacGrupoMaterialWhereInput | boolean
+    connect?: SipacGrupoMaterialWhereUniqueInput
+    update?: XOR<XOR<SipacGrupoMaterialUpdateToOneWithWhereWithoutSubGruposInput, SipacGrupoMaterialUpdateWithoutSubGruposInput>, SipacGrupoMaterialUncheckedUpdateWithoutSubGruposInput>
+  }
+
+  export type SipacMaterialUncheckedUpdateManyWithoutSubGrupoNestedInput = {
+    create?: XOR<SipacMaterialCreateWithoutSubGrupoInput, SipacMaterialUncheckedCreateWithoutSubGrupoInput> | SipacMaterialCreateWithoutSubGrupoInput[] | SipacMaterialUncheckedCreateWithoutSubGrupoInput[]
+    connectOrCreate?: SipacMaterialCreateOrConnectWithoutSubGrupoInput | SipacMaterialCreateOrConnectWithoutSubGrupoInput[]
+    upsert?: SipacMaterialUpsertWithWhereUniqueWithoutSubGrupoInput | SipacMaterialUpsertWithWhereUniqueWithoutSubGrupoInput[]
+    createMany?: SipacMaterialCreateManySubGrupoInputEnvelope
+    set?: SipacMaterialWhereUniqueInput | SipacMaterialWhereUniqueInput[]
+    disconnect?: SipacMaterialWhereUniqueInput | SipacMaterialWhereUniqueInput[]
+    delete?: SipacMaterialWhereUniqueInput | SipacMaterialWhereUniqueInput[]
+    connect?: SipacMaterialWhereUniqueInput | SipacMaterialWhereUniqueInput[]
+    update?: SipacMaterialUpdateWithWhereUniqueWithoutSubGrupoInput | SipacMaterialUpdateWithWhereUniqueWithoutSubGrupoInput[]
+    updateMany?: SipacMaterialUpdateManyWithWhereWithoutSubGrupoInput | SipacMaterialUpdateManyWithWhereWithoutSubGrupoInput[]
+    deleteMany?: SipacMaterialScalarWhereInput | SipacMaterialScalarWhereInput[]
+  }
+
   export type RoleCreateNestedManyWithoutUsersInput = {
     create?: XOR<RoleCreateWithoutUsersInput, RoleUncheckedCreateWithoutUsersInput> | RoleCreateWithoutUsersInput[] | RoleUncheckedCreateWithoutUsersInput[]
     connectOrCreate?: RoleCreateOrConnectWithoutUsersInput | RoleCreateOrConnectWithoutUsersInput[]
@@ -57876,6 +60971,33 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumRestrictionOrderStatusFilter<$PrismaModel>
     _max?: NestedEnumRestrictionOrderStatusFilter<$PrismaModel>
+  }
+
+  export type NestedBigIntFilter<$PrismaModel = never> = {
+    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    in?: bigint[] | number[]
+    notIn?: bigint[] | number[]
+    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    not?: NestedBigIntFilter<$PrismaModel> | bigint | number
+  }
+
+  export type NestedBigIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    in?: bigint[] | number[]
+    notIn?: bigint[] | number[]
+    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    not?: NestedBigIntWithAggregatesFilter<$PrismaModel> | bigint | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedBigIntFilter<$PrismaModel>
+    _min?: NestedBigIntFilter<$PrismaModel>
+    _max?: NestedBigIntFilter<$PrismaModel>
   }
 
   export type UserCreateWithoutLogLoginInput = {
@@ -69249,6 +72371,403 @@ export namespace Prisma {
     materialWithdrawalsItems?: MaterialWithdrawalItemUncheckedUpdateManyWithoutMaterialRequestItemNestedInput
   }
 
+  export type SipacGrupoMaterialCreateWithoutSipacMateriaisInput = {
+    idGrupoMaterial: number
+    ativo: boolean
+    codigo: bigint | number
+    denominacao: string
+    descricao?: string | null
+    idElementoDespesa?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    subGrupos?: SipacSubGrupoMaterialCreateNestedManyWithoutSipacGrupoMaterialInput
+  }
+
+  export type SipacGrupoMaterialUncheckedCreateWithoutSipacMateriaisInput = {
+    idGrupoMaterial: number
+    ativo: boolean
+    codigo: bigint | number
+    denominacao: string
+    descricao?: string | null
+    idElementoDespesa?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    subGrupos?: SipacSubGrupoMaterialUncheckedCreateNestedManyWithoutSipacGrupoMaterialInput
+  }
+
+  export type SipacGrupoMaterialCreateOrConnectWithoutSipacMateriaisInput = {
+    where: SipacGrupoMaterialWhereUniqueInput
+    create: XOR<SipacGrupoMaterialCreateWithoutSipacMateriaisInput, SipacGrupoMaterialUncheckedCreateWithoutSipacMateriaisInput>
+  }
+
+  export type SipacSubGrupoMaterialCreateWithoutSipacMateriaisInput = {
+    idSubGrupoMaterial: number
+    codigo: bigint | number
+    denominacao: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    SipacGrupoMaterial?: SipacGrupoMaterialCreateNestedOneWithoutSubGruposInput
+  }
+
+  export type SipacSubGrupoMaterialUncheckedCreateWithoutSipacMateriaisInput = {
+    idSubGrupoMaterial: number
+    codigo: bigint | number
+    denominacao: string
+    idGrupoMaterial: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SipacSubGrupoMaterialCreateOrConnectWithoutSipacMateriaisInput = {
+    where: SipacSubGrupoMaterialWhereUniqueInput
+    create: XOR<SipacSubGrupoMaterialCreateWithoutSipacMateriaisInput, SipacSubGrupoMaterialUncheckedCreateWithoutSipacMateriaisInput>
+  }
+
+  export type SipacGrupoMaterialUpsertWithoutSipacMateriaisInput = {
+    update: XOR<SipacGrupoMaterialUpdateWithoutSipacMateriaisInput, SipacGrupoMaterialUncheckedUpdateWithoutSipacMateriaisInput>
+    create: XOR<SipacGrupoMaterialCreateWithoutSipacMateriaisInput, SipacGrupoMaterialUncheckedCreateWithoutSipacMateriaisInput>
+    where?: SipacGrupoMaterialWhereInput
+  }
+
+  export type SipacGrupoMaterialUpdateToOneWithWhereWithoutSipacMateriaisInput = {
+    where?: SipacGrupoMaterialWhereInput
+    data: XOR<SipacGrupoMaterialUpdateWithoutSipacMateriaisInput, SipacGrupoMaterialUncheckedUpdateWithoutSipacMateriaisInput>
+  }
+
+  export type SipacGrupoMaterialUpdateWithoutSipacMateriaisInput = {
+    idGrupoMaterial?: IntFieldUpdateOperationsInput | number
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    codigo?: BigIntFieldUpdateOperationsInput | bigint | number
+    denominacao?: StringFieldUpdateOperationsInput | string
+    descricao?: NullableStringFieldUpdateOperationsInput | string | null
+    idElementoDespesa?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    subGrupos?: SipacSubGrupoMaterialUpdateManyWithoutSipacGrupoMaterialNestedInput
+  }
+
+  export type SipacGrupoMaterialUncheckedUpdateWithoutSipacMateriaisInput = {
+    idGrupoMaterial?: IntFieldUpdateOperationsInput | number
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    codigo?: BigIntFieldUpdateOperationsInput | bigint | number
+    denominacao?: StringFieldUpdateOperationsInput | string
+    descricao?: NullableStringFieldUpdateOperationsInput | string | null
+    idElementoDespesa?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    subGrupos?: SipacSubGrupoMaterialUncheckedUpdateManyWithoutSipacGrupoMaterialNestedInput
+  }
+
+  export type SipacSubGrupoMaterialUpsertWithoutSipacMateriaisInput = {
+    update: XOR<SipacSubGrupoMaterialUpdateWithoutSipacMateriaisInput, SipacSubGrupoMaterialUncheckedUpdateWithoutSipacMateriaisInput>
+    create: XOR<SipacSubGrupoMaterialCreateWithoutSipacMateriaisInput, SipacSubGrupoMaterialUncheckedCreateWithoutSipacMateriaisInput>
+    where?: SipacSubGrupoMaterialWhereInput
+  }
+
+  export type SipacSubGrupoMaterialUpdateToOneWithWhereWithoutSipacMateriaisInput = {
+    where?: SipacSubGrupoMaterialWhereInput
+    data: XOR<SipacSubGrupoMaterialUpdateWithoutSipacMateriaisInput, SipacSubGrupoMaterialUncheckedUpdateWithoutSipacMateriaisInput>
+  }
+
+  export type SipacSubGrupoMaterialUpdateWithoutSipacMateriaisInput = {
+    idSubGrupoMaterial?: IntFieldUpdateOperationsInput | number
+    codigo?: BigIntFieldUpdateOperationsInput | bigint | number
+    denominacao?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    SipacGrupoMaterial?: SipacGrupoMaterialUpdateOneWithoutSubGruposNestedInput
+  }
+
+  export type SipacSubGrupoMaterialUncheckedUpdateWithoutSipacMateriaisInput = {
+    idSubGrupoMaterial?: IntFieldUpdateOperationsInput | number
+    codigo?: BigIntFieldUpdateOperationsInput | bigint | number
+    denominacao?: StringFieldUpdateOperationsInput | string
+    idGrupoMaterial?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SipacMaterialCreateWithoutGrupoInput = {
+    idMaterial: number
+    ativo: boolean
+    codigo: string
+    codigoSidec?: string | null
+    consumoEnergia?: Decimal | DecimalJsLike | number | string | null
+    dataUltimaCompra: Date | string
+    denominacaoGrupo?: string | null
+    denominacaoMaterial: string
+    denominacaoMaterialAscii?: string | null
+    denominacaoSubGrupo?: string | null
+    denominacaoUnidade?: string | null
+    especificacao?: string | null
+    especificacaoAscii?: string | null
+    precoCompra?: Decimal | DecimalJsLike | number | string | null
+    valorEstimado?: Decimal | DecimalJsLike | number | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    subGrupo?: SipacSubGrupoMaterialCreateNestedOneWithoutSipacMateriaisInput
+  }
+
+  export type SipacMaterialUncheckedCreateWithoutGrupoInput = {
+    idMaterial: number
+    ativo: boolean
+    codigo: string
+    codigoSidec?: string | null
+    consumoEnergia?: Decimal | DecimalJsLike | number | string | null
+    dataUltimaCompra: Date | string
+    denominacaoGrupo?: string | null
+    denominacaoMaterial: string
+    denominacaoMaterialAscii?: string | null
+    denominacaoSubGrupo?: string | null
+    denominacaoUnidade?: string | null
+    especificacao?: string | null
+    especificacaoAscii?: string | null
+    idSubGrupo?: number | null
+    precoCompra?: Decimal | DecimalJsLike | number | string | null
+    valorEstimado?: Decimal | DecimalJsLike | number | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SipacMaterialCreateOrConnectWithoutGrupoInput = {
+    where: SipacMaterialWhereUniqueInput
+    create: XOR<SipacMaterialCreateWithoutGrupoInput, SipacMaterialUncheckedCreateWithoutGrupoInput>
+  }
+
+  export type SipacMaterialCreateManyGrupoInputEnvelope = {
+    data: SipacMaterialCreateManyGrupoInput | SipacMaterialCreateManyGrupoInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type SipacSubGrupoMaterialCreateWithoutSipacGrupoMaterialInput = {
+    idSubGrupoMaterial: number
+    codigo: bigint | number
+    denominacao: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sipacMateriais?: SipacMaterialCreateNestedManyWithoutSubGrupoInput
+  }
+
+  export type SipacSubGrupoMaterialUncheckedCreateWithoutSipacGrupoMaterialInput = {
+    idSubGrupoMaterial: number
+    codigo: bigint | number
+    denominacao: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sipacMateriais?: SipacMaterialUncheckedCreateNestedManyWithoutSubGrupoInput
+  }
+
+  export type SipacSubGrupoMaterialCreateOrConnectWithoutSipacGrupoMaterialInput = {
+    where: SipacSubGrupoMaterialWhereUniqueInput
+    create: XOR<SipacSubGrupoMaterialCreateWithoutSipacGrupoMaterialInput, SipacSubGrupoMaterialUncheckedCreateWithoutSipacGrupoMaterialInput>
+  }
+
+  export type SipacSubGrupoMaterialCreateManySipacGrupoMaterialInputEnvelope = {
+    data: SipacSubGrupoMaterialCreateManySipacGrupoMaterialInput | SipacSubGrupoMaterialCreateManySipacGrupoMaterialInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type SipacMaterialUpsertWithWhereUniqueWithoutGrupoInput = {
+    where: SipacMaterialWhereUniqueInput
+    update: XOR<SipacMaterialUpdateWithoutGrupoInput, SipacMaterialUncheckedUpdateWithoutGrupoInput>
+    create: XOR<SipacMaterialCreateWithoutGrupoInput, SipacMaterialUncheckedCreateWithoutGrupoInput>
+  }
+
+  export type SipacMaterialUpdateWithWhereUniqueWithoutGrupoInput = {
+    where: SipacMaterialWhereUniqueInput
+    data: XOR<SipacMaterialUpdateWithoutGrupoInput, SipacMaterialUncheckedUpdateWithoutGrupoInput>
+  }
+
+  export type SipacMaterialUpdateManyWithWhereWithoutGrupoInput = {
+    where: SipacMaterialScalarWhereInput
+    data: XOR<SipacMaterialUpdateManyMutationInput, SipacMaterialUncheckedUpdateManyWithoutGrupoInput>
+  }
+
+  export type SipacMaterialScalarWhereInput = {
+    AND?: SipacMaterialScalarWhereInput | SipacMaterialScalarWhereInput[]
+    OR?: SipacMaterialScalarWhereInput[]
+    NOT?: SipacMaterialScalarWhereInput | SipacMaterialScalarWhereInput[]
+    idMaterial?: IntFilter<"SipacMaterial"> | number
+    ativo?: BoolFilter<"SipacMaterial"> | boolean
+    codigo?: StringFilter<"SipacMaterial"> | string
+    codigoSidec?: StringNullableFilter<"SipacMaterial"> | string | null
+    consumoEnergia?: DecimalNullableFilter<"SipacMaterial"> | Decimal | DecimalJsLike | number | string | null
+    dataUltimaCompra?: DateTimeFilter<"SipacMaterial"> | Date | string
+    denominacaoGrupo?: StringNullableFilter<"SipacMaterial"> | string | null
+    denominacaoMaterial?: StringFilter<"SipacMaterial"> | string
+    denominacaoMaterialAscii?: StringNullableFilter<"SipacMaterial"> | string | null
+    denominacaoSubGrupo?: StringNullableFilter<"SipacMaterial"> | string | null
+    denominacaoUnidade?: StringNullableFilter<"SipacMaterial"> | string | null
+    especificacao?: StringNullableFilter<"SipacMaterial"> | string | null
+    especificacaoAscii?: StringNullableFilter<"SipacMaterial"> | string | null
+    idGrupo?: IntNullableFilter<"SipacMaterial"> | number | null
+    idSubGrupo?: IntNullableFilter<"SipacMaterial"> | number | null
+    precoCompra?: DecimalNullableFilter<"SipacMaterial"> | Decimal | DecimalJsLike | number | string | null
+    valorEstimado?: DecimalNullableFilter<"SipacMaterial"> | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFilter<"SipacMaterial"> | Date | string
+    updatedAt?: DateTimeFilter<"SipacMaterial"> | Date | string
+  }
+
+  export type SipacSubGrupoMaterialUpsertWithWhereUniqueWithoutSipacGrupoMaterialInput = {
+    where: SipacSubGrupoMaterialWhereUniqueInput
+    update: XOR<SipacSubGrupoMaterialUpdateWithoutSipacGrupoMaterialInput, SipacSubGrupoMaterialUncheckedUpdateWithoutSipacGrupoMaterialInput>
+    create: XOR<SipacSubGrupoMaterialCreateWithoutSipacGrupoMaterialInput, SipacSubGrupoMaterialUncheckedCreateWithoutSipacGrupoMaterialInput>
+  }
+
+  export type SipacSubGrupoMaterialUpdateWithWhereUniqueWithoutSipacGrupoMaterialInput = {
+    where: SipacSubGrupoMaterialWhereUniqueInput
+    data: XOR<SipacSubGrupoMaterialUpdateWithoutSipacGrupoMaterialInput, SipacSubGrupoMaterialUncheckedUpdateWithoutSipacGrupoMaterialInput>
+  }
+
+  export type SipacSubGrupoMaterialUpdateManyWithWhereWithoutSipacGrupoMaterialInput = {
+    where: SipacSubGrupoMaterialScalarWhereInput
+    data: XOR<SipacSubGrupoMaterialUpdateManyMutationInput, SipacSubGrupoMaterialUncheckedUpdateManyWithoutSipacGrupoMaterialInput>
+  }
+
+  export type SipacSubGrupoMaterialScalarWhereInput = {
+    AND?: SipacSubGrupoMaterialScalarWhereInput | SipacSubGrupoMaterialScalarWhereInput[]
+    OR?: SipacSubGrupoMaterialScalarWhereInput[]
+    NOT?: SipacSubGrupoMaterialScalarWhereInput | SipacSubGrupoMaterialScalarWhereInput[]
+    idSubGrupoMaterial?: IntFilter<"SipacSubGrupoMaterial"> | number
+    codigo?: BigIntFilter<"SipacSubGrupoMaterial"> | bigint | number
+    denominacao?: StringFilter<"SipacSubGrupoMaterial"> | string
+    idGrupoMaterial?: IntFilter<"SipacSubGrupoMaterial"> | number
+    createdAt?: DateTimeFilter<"SipacSubGrupoMaterial"> | Date | string
+    updatedAt?: DateTimeFilter<"SipacSubGrupoMaterial"> | Date | string
+  }
+
+  export type SipacMaterialCreateWithoutSubGrupoInput = {
+    idMaterial: number
+    ativo: boolean
+    codigo: string
+    codigoSidec?: string | null
+    consumoEnergia?: Decimal | DecimalJsLike | number | string | null
+    dataUltimaCompra: Date | string
+    denominacaoGrupo?: string | null
+    denominacaoMaterial: string
+    denominacaoMaterialAscii?: string | null
+    denominacaoSubGrupo?: string | null
+    denominacaoUnidade?: string | null
+    especificacao?: string | null
+    especificacaoAscii?: string | null
+    precoCompra?: Decimal | DecimalJsLike | number | string | null
+    valorEstimado?: Decimal | DecimalJsLike | number | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    grupo?: SipacGrupoMaterialCreateNestedOneWithoutSipacMateriaisInput
+  }
+
+  export type SipacMaterialUncheckedCreateWithoutSubGrupoInput = {
+    idMaterial: number
+    ativo: boolean
+    codigo: string
+    codigoSidec?: string | null
+    consumoEnergia?: Decimal | DecimalJsLike | number | string | null
+    dataUltimaCompra: Date | string
+    denominacaoGrupo?: string | null
+    denominacaoMaterial: string
+    denominacaoMaterialAscii?: string | null
+    denominacaoSubGrupo?: string | null
+    denominacaoUnidade?: string | null
+    especificacao?: string | null
+    especificacaoAscii?: string | null
+    idGrupo?: number | null
+    precoCompra?: Decimal | DecimalJsLike | number | string | null
+    valorEstimado?: Decimal | DecimalJsLike | number | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SipacMaterialCreateOrConnectWithoutSubGrupoInput = {
+    where: SipacMaterialWhereUniqueInput
+    create: XOR<SipacMaterialCreateWithoutSubGrupoInput, SipacMaterialUncheckedCreateWithoutSubGrupoInput>
+  }
+
+  export type SipacMaterialCreateManySubGrupoInputEnvelope = {
+    data: SipacMaterialCreateManySubGrupoInput | SipacMaterialCreateManySubGrupoInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type SipacGrupoMaterialCreateWithoutSubGruposInput = {
+    idGrupoMaterial: number
+    ativo: boolean
+    codigo: bigint | number
+    denominacao: string
+    descricao?: string | null
+    idElementoDespesa?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sipacMateriais?: SipacMaterialCreateNestedManyWithoutGrupoInput
+  }
+
+  export type SipacGrupoMaterialUncheckedCreateWithoutSubGruposInput = {
+    idGrupoMaterial: number
+    ativo: boolean
+    codigo: bigint | number
+    denominacao: string
+    descricao?: string | null
+    idElementoDespesa?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sipacMateriais?: SipacMaterialUncheckedCreateNestedManyWithoutGrupoInput
+  }
+
+  export type SipacGrupoMaterialCreateOrConnectWithoutSubGruposInput = {
+    where: SipacGrupoMaterialWhereUniqueInput
+    create: XOR<SipacGrupoMaterialCreateWithoutSubGruposInput, SipacGrupoMaterialUncheckedCreateWithoutSubGruposInput>
+  }
+
+  export type SipacMaterialUpsertWithWhereUniqueWithoutSubGrupoInput = {
+    where: SipacMaterialWhereUniqueInput
+    update: XOR<SipacMaterialUpdateWithoutSubGrupoInput, SipacMaterialUncheckedUpdateWithoutSubGrupoInput>
+    create: XOR<SipacMaterialCreateWithoutSubGrupoInput, SipacMaterialUncheckedCreateWithoutSubGrupoInput>
+  }
+
+  export type SipacMaterialUpdateWithWhereUniqueWithoutSubGrupoInput = {
+    where: SipacMaterialWhereUniqueInput
+    data: XOR<SipacMaterialUpdateWithoutSubGrupoInput, SipacMaterialUncheckedUpdateWithoutSubGrupoInput>
+  }
+
+  export type SipacMaterialUpdateManyWithWhereWithoutSubGrupoInput = {
+    where: SipacMaterialScalarWhereInput
+    data: XOR<SipacMaterialUpdateManyMutationInput, SipacMaterialUncheckedUpdateManyWithoutSubGrupoInput>
+  }
+
+  export type SipacGrupoMaterialUpsertWithoutSubGruposInput = {
+    update: XOR<SipacGrupoMaterialUpdateWithoutSubGruposInput, SipacGrupoMaterialUncheckedUpdateWithoutSubGruposInput>
+    create: XOR<SipacGrupoMaterialCreateWithoutSubGruposInput, SipacGrupoMaterialUncheckedCreateWithoutSubGruposInput>
+    where?: SipacGrupoMaterialWhereInput
+  }
+
+  export type SipacGrupoMaterialUpdateToOneWithWhereWithoutSubGruposInput = {
+    where?: SipacGrupoMaterialWhereInput
+    data: XOR<SipacGrupoMaterialUpdateWithoutSubGruposInput, SipacGrupoMaterialUncheckedUpdateWithoutSubGruposInput>
+  }
+
+  export type SipacGrupoMaterialUpdateWithoutSubGruposInput = {
+    idGrupoMaterial?: IntFieldUpdateOperationsInput | number
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    codigo?: BigIntFieldUpdateOperationsInput | bigint | number
+    denominacao?: StringFieldUpdateOperationsInput | string
+    descricao?: NullableStringFieldUpdateOperationsInput | string | null
+    idElementoDespesa?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sipacMateriais?: SipacMaterialUpdateManyWithoutGrupoNestedInput
+  }
+
+  export type SipacGrupoMaterialUncheckedUpdateWithoutSubGruposInput = {
+    idGrupoMaterial?: IntFieldUpdateOperationsInput | number
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    codigo?: BigIntFieldUpdateOperationsInput | bigint | number
+    denominacao?: StringFieldUpdateOperationsInput | string
+    descricao?: NullableStringFieldUpdateOperationsInput | string | null
+    idElementoDespesa?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sipacMateriais?: SipacMaterialUncheckedUpdateManyWithoutGrupoNestedInput
+  }
+
   export type RoleCreateWithoutUsersInput = {
     id: number
     role: string
@@ -74314,6 +77833,208 @@ export namespace Prisma {
     quantity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     unitOfMeasure?: StringFieldUpdateOperationsInput | string
     targetMaterialRequestItemId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SipacMaterialCreateManyGrupoInput = {
+    idMaterial: number
+    ativo: boolean
+    codigo: string
+    codigoSidec?: string | null
+    consumoEnergia?: Decimal | DecimalJsLike | number | string | null
+    dataUltimaCompra: Date | string
+    denominacaoGrupo?: string | null
+    denominacaoMaterial: string
+    denominacaoMaterialAscii?: string | null
+    denominacaoSubGrupo?: string | null
+    denominacaoUnidade?: string | null
+    especificacao?: string | null
+    especificacaoAscii?: string | null
+    idSubGrupo?: number | null
+    precoCompra?: Decimal | DecimalJsLike | number | string | null
+    valorEstimado?: Decimal | DecimalJsLike | number | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SipacSubGrupoMaterialCreateManySipacGrupoMaterialInput = {
+    idSubGrupoMaterial: number
+    codigo: bigint | number
+    denominacao: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SipacMaterialUpdateWithoutGrupoInput = {
+    idMaterial?: IntFieldUpdateOperationsInput | number
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    codigo?: StringFieldUpdateOperationsInput | string
+    codigoSidec?: NullableStringFieldUpdateOperationsInput | string | null
+    consumoEnergia?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dataUltimaCompra?: DateTimeFieldUpdateOperationsInput | Date | string
+    denominacaoGrupo?: NullableStringFieldUpdateOperationsInput | string | null
+    denominacaoMaterial?: StringFieldUpdateOperationsInput | string
+    denominacaoMaterialAscii?: NullableStringFieldUpdateOperationsInput | string | null
+    denominacaoSubGrupo?: NullableStringFieldUpdateOperationsInput | string | null
+    denominacaoUnidade?: NullableStringFieldUpdateOperationsInput | string | null
+    especificacao?: NullableStringFieldUpdateOperationsInput | string | null
+    especificacaoAscii?: NullableStringFieldUpdateOperationsInput | string | null
+    precoCompra?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    valorEstimado?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    subGrupo?: SipacSubGrupoMaterialUpdateOneWithoutSipacMateriaisNestedInput
+  }
+
+  export type SipacMaterialUncheckedUpdateWithoutGrupoInput = {
+    idMaterial?: IntFieldUpdateOperationsInput | number
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    codigo?: StringFieldUpdateOperationsInput | string
+    codigoSidec?: NullableStringFieldUpdateOperationsInput | string | null
+    consumoEnergia?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dataUltimaCompra?: DateTimeFieldUpdateOperationsInput | Date | string
+    denominacaoGrupo?: NullableStringFieldUpdateOperationsInput | string | null
+    denominacaoMaterial?: StringFieldUpdateOperationsInput | string
+    denominacaoMaterialAscii?: NullableStringFieldUpdateOperationsInput | string | null
+    denominacaoSubGrupo?: NullableStringFieldUpdateOperationsInput | string | null
+    denominacaoUnidade?: NullableStringFieldUpdateOperationsInput | string | null
+    especificacao?: NullableStringFieldUpdateOperationsInput | string | null
+    especificacaoAscii?: NullableStringFieldUpdateOperationsInput | string | null
+    idSubGrupo?: NullableIntFieldUpdateOperationsInput | number | null
+    precoCompra?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    valorEstimado?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SipacMaterialUncheckedUpdateManyWithoutGrupoInput = {
+    idMaterial?: IntFieldUpdateOperationsInput | number
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    codigo?: StringFieldUpdateOperationsInput | string
+    codigoSidec?: NullableStringFieldUpdateOperationsInput | string | null
+    consumoEnergia?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dataUltimaCompra?: DateTimeFieldUpdateOperationsInput | Date | string
+    denominacaoGrupo?: NullableStringFieldUpdateOperationsInput | string | null
+    denominacaoMaterial?: StringFieldUpdateOperationsInput | string
+    denominacaoMaterialAscii?: NullableStringFieldUpdateOperationsInput | string | null
+    denominacaoSubGrupo?: NullableStringFieldUpdateOperationsInput | string | null
+    denominacaoUnidade?: NullableStringFieldUpdateOperationsInput | string | null
+    especificacao?: NullableStringFieldUpdateOperationsInput | string | null
+    especificacaoAscii?: NullableStringFieldUpdateOperationsInput | string | null
+    idSubGrupo?: NullableIntFieldUpdateOperationsInput | number | null
+    precoCompra?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    valorEstimado?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SipacSubGrupoMaterialUpdateWithoutSipacGrupoMaterialInput = {
+    idSubGrupoMaterial?: IntFieldUpdateOperationsInput | number
+    codigo?: BigIntFieldUpdateOperationsInput | bigint | number
+    denominacao?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sipacMateriais?: SipacMaterialUpdateManyWithoutSubGrupoNestedInput
+  }
+
+  export type SipacSubGrupoMaterialUncheckedUpdateWithoutSipacGrupoMaterialInput = {
+    idSubGrupoMaterial?: IntFieldUpdateOperationsInput | number
+    codigo?: BigIntFieldUpdateOperationsInput | bigint | number
+    denominacao?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sipacMateriais?: SipacMaterialUncheckedUpdateManyWithoutSubGrupoNestedInput
+  }
+
+  export type SipacSubGrupoMaterialUncheckedUpdateManyWithoutSipacGrupoMaterialInput = {
+    idSubGrupoMaterial?: IntFieldUpdateOperationsInput | number
+    codigo?: BigIntFieldUpdateOperationsInput | bigint | number
+    denominacao?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SipacMaterialCreateManySubGrupoInput = {
+    idMaterial: number
+    ativo: boolean
+    codigo: string
+    codigoSidec?: string | null
+    consumoEnergia?: Decimal | DecimalJsLike | number | string | null
+    dataUltimaCompra: Date | string
+    denominacaoGrupo?: string | null
+    denominacaoMaterial: string
+    denominacaoMaterialAscii?: string | null
+    denominacaoSubGrupo?: string | null
+    denominacaoUnidade?: string | null
+    especificacao?: string | null
+    especificacaoAscii?: string | null
+    idGrupo?: number | null
+    precoCompra?: Decimal | DecimalJsLike | number | string | null
+    valorEstimado?: Decimal | DecimalJsLike | number | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SipacMaterialUpdateWithoutSubGrupoInput = {
+    idMaterial?: IntFieldUpdateOperationsInput | number
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    codigo?: StringFieldUpdateOperationsInput | string
+    codigoSidec?: NullableStringFieldUpdateOperationsInput | string | null
+    consumoEnergia?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dataUltimaCompra?: DateTimeFieldUpdateOperationsInput | Date | string
+    denominacaoGrupo?: NullableStringFieldUpdateOperationsInput | string | null
+    denominacaoMaterial?: StringFieldUpdateOperationsInput | string
+    denominacaoMaterialAscii?: NullableStringFieldUpdateOperationsInput | string | null
+    denominacaoSubGrupo?: NullableStringFieldUpdateOperationsInput | string | null
+    denominacaoUnidade?: NullableStringFieldUpdateOperationsInput | string | null
+    especificacao?: NullableStringFieldUpdateOperationsInput | string | null
+    especificacaoAscii?: NullableStringFieldUpdateOperationsInput | string | null
+    precoCompra?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    valorEstimado?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    grupo?: SipacGrupoMaterialUpdateOneWithoutSipacMateriaisNestedInput
+  }
+
+  export type SipacMaterialUncheckedUpdateWithoutSubGrupoInput = {
+    idMaterial?: IntFieldUpdateOperationsInput | number
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    codigo?: StringFieldUpdateOperationsInput | string
+    codigoSidec?: NullableStringFieldUpdateOperationsInput | string | null
+    consumoEnergia?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dataUltimaCompra?: DateTimeFieldUpdateOperationsInput | Date | string
+    denominacaoGrupo?: NullableStringFieldUpdateOperationsInput | string | null
+    denominacaoMaterial?: StringFieldUpdateOperationsInput | string
+    denominacaoMaterialAscii?: NullableStringFieldUpdateOperationsInput | string | null
+    denominacaoSubGrupo?: NullableStringFieldUpdateOperationsInput | string | null
+    denominacaoUnidade?: NullableStringFieldUpdateOperationsInput | string | null
+    especificacao?: NullableStringFieldUpdateOperationsInput | string | null
+    especificacaoAscii?: NullableStringFieldUpdateOperationsInput | string | null
+    idGrupo?: NullableIntFieldUpdateOperationsInput | number | null
+    precoCompra?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    valorEstimado?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SipacMaterialUncheckedUpdateManyWithoutSubGrupoInput = {
+    idMaterial?: IntFieldUpdateOperationsInput | number
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    codigo?: StringFieldUpdateOperationsInput | string
+    codigoSidec?: NullableStringFieldUpdateOperationsInput | string | null
+    consumoEnergia?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    dataUltimaCompra?: DateTimeFieldUpdateOperationsInput | Date | string
+    denominacaoGrupo?: NullableStringFieldUpdateOperationsInput | string | null
+    denominacaoMaterial?: StringFieldUpdateOperationsInput | string
+    denominacaoMaterialAscii?: NullableStringFieldUpdateOperationsInput | string | null
+    denominacaoSubGrupo?: NullableStringFieldUpdateOperationsInput | string | null
+    denominacaoUnidade?: NullableStringFieldUpdateOperationsInput | string | null
+    especificacao?: NullableStringFieldUpdateOperationsInput | string | null
+    especificacaoAscii?: NullableStringFieldUpdateOperationsInput | string | null
+    idGrupo?: NullableIntFieldUpdateOperationsInput | number | null
+    precoCompra?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    valorEstimado?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

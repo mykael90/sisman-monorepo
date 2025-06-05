@@ -535,6 +535,26 @@ exports.Prisma.SipacMaterialScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.SipacGrupoMaterialScalarFieldEnum = {
+  idGrupoMaterial: 'idGrupoMaterial',
+  ativo: 'ativo',
+  codigo: 'codigo',
+  denominacao: 'denominacao',
+  descricao: 'descricao',
+  idElementoDespesa: 'idElementoDespesa',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SipacSubGrupoMaterialScalarFieldEnum = {
+  idSubGrupoMaterial: 'idSubGrupoMaterial',
+  codigo: 'codigo',
+  denominacao: 'denominacao',
+  idGrupoMaterial: 'idGrupoMaterial',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -768,6 +788,15 @@ exports.Prisma.SipacMaterialOrderByRelevanceFieldEnum = {
   especificacaoAscii: 'especificacaoAscii'
 };
 
+exports.Prisma.SipacGrupoMaterialOrderByRelevanceFieldEnum = {
+  denominacao: 'denominacao',
+  descricao: 'descricao'
+};
+
+exports.Prisma.SipacSubGrupoMaterialOrderByRelevanceFieldEnum = {
+  denominacao: 'denominacao'
+};
+
 exports.Prisma.UserOrderByRelevanceFieldEnum = {
   name: 'name',
   login: 'login',
@@ -914,6 +943,8 @@ exports.Prisma.ModelName = {
   MaterialRestrictionOrder: 'MaterialRestrictionOrder',
   MaterialRestrictionOrderItem: 'MaterialRestrictionOrderItem',
   SipacMaterial: 'SipacMaterial',
+  SipacGrupoMaterial: 'SipacGrupoMaterial',
+  SipacSubGrupoMaterial: 'SipacSubGrupoMaterial',
   User: 'User',
   MagicLink: 'MagicLink',
   Role: 'Role',

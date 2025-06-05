@@ -25,7 +25,6 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import { SipacModule } from './modules/sipac/sipac.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import sipacApiConfig from './config/sipac-api.config';
-import { MateriaisModule } from './modules/sipac/materiais/materiais.module';
 
 @Module({
   imports: [
@@ -43,7 +42,7 @@ import { MateriaisModule } from './modules/sipac/materiais/materiais.module';
     ThrottlerModule.forRoot({
       throttlers: [
         {
-          limit: 100,
+          limit: 200,
           ttl: 60 * 1000
         }
       ],
@@ -60,8 +59,7 @@ import { MateriaisModule } from './modules/sipac/materiais/materiais.module';
     MaterialsModule,
     NotificationsModule,
     MaintenanceInstancesModule,
-    SipacModule,
-    MateriaisModule
+    SipacModule
   ],
   controllers: [AppController],
   providers: [
