@@ -1,4 +1,4 @@
-import { SipacGrupoMaterialResponseItem } from '../../sipac.interfaces';
+import { SipacGrupoMaterialResponseItem } from '../../sipac-api.interfaces';
 import { CreateSipacGrupoMaterialDto } from '../dto/sipac-grupo-material.dto';
 
 export class SipacGrupoMaterialMapper {

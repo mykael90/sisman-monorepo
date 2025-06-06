@@ -3,12 +3,12 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
 import { Prisma } from '@sisman/prisma';
-import { SipacHttpService } from '../sipac.service';
+import { SipacApiService } from '../sipac-api.service';
 import {
   SipacSubGrupoMaterialResponseItem,
   SipacPaginatedResponse,
   SyncResult
-} from '../sipac.interfaces';
+} from '../sipac-api.interfaces';
 import {
   CreateManySipacSubGrupoMaterialDto,
   CreateSipacSubGrupoMaterialDto
@@ -23,7 +23,7 @@ export class SubGruposMateriaisService {
 
   constructor(
     private readonly prisma: PrismaService,
-    private readonly sipacHttp: SipacHttpService
+    private readonly sipacHttp: SipacApiService
   ) {}
 
   // @Cron(

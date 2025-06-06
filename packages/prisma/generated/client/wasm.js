@@ -555,6 +555,83 @@ exports.Prisma.SipacSubGrupoMaterialScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.SipacRequisicaoMaterialScalarFieldEnum = {
+  id: 'id',
+  numeroDaRequisicao: 'numeroDaRequisicao',
+  tipoDaRequisicao: 'tipoDaRequisicao',
+  tipoId: 'tipoId',
+  convenio: 'convenio',
+  grupoDeMaterial: 'grupoDeMaterial',
+  grupoMaterialId: 'grupoMaterialId',
+  unidadeDeCusto: 'unidadeDeCusto',
+  unidadeRequisitante: 'unidadeRequisitante',
+  destinoDaRequisicao: 'destinoDaRequisicao',
+  usuarioLogin: 'usuarioLogin',
+  usuarioId: 'usuarioId',
+  dataDeCadastro: 'dataDeCadastro',
+  dataDeEnvio: 'dataDeEnvio',
+  valorDaRequisicao: 'valorDaRequisicao',
+  valorDoTotalAtendido: 'valorDoTotalAtendido',
+  opcaoOrcamentaria: 'opcaoOrcamentaria',
+  numeroDaRequisicaoRelacionada: 'numeroDaRequisicaoRelacionada',
+  local: 'local',
+  observacoes: 'observacoes',
+  statusAtual: 'statusAtual',
+  almoxarifado: 'almoxarifado',
+  almoxarifadoId: 'almoxarifadoId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SipacItemRequisicaoMaterialScalarFieldEnum = {
+  id: 'id',
+  numeroItem: 'numeroItem',
+  codigo: 'codigo',
+  quantidade: 'quantidade',
+  valor: 'valor',
+  total: 'total',
+  quantidadeAtendida: 'quantidadeAtendida',
+  quantidadeDevolvida: 'quantidadeDevolvida',
+  quantidadeEmCompra: 'quantidadeEmCompra',
+  valorAtendimento: 'valorAtendimento',
+  totalAtendimento: 'totalAtendimento',
+  status: 'status',
+  requisicaoId: 'requisicaoId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SipacHistoricoRequisicaoMaterialScalarFieldEnum = {
+  id: 'id',
+  dataHora: 'dataHora',
+  status: 'status',
+  usuario: 'usuario',
+  observacoes: 'observacoes',
+  requisicaoId: 'requisicaoId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SipacTotalizacaoElementoDespesaMaterialScalarFieldEnum = {
+  id: 'id',
+  grupoDeMaterial: 'grupoDeMaterial',
+  total: 'total',
+  requisicaoId: 'requisicaoId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SipacDetalheAquisicaoItemMaterialScalarFieldEnum = {
+  id: 'id',
+  compras: 'compras',
+  empenhos: 'empenhos',
+  notasFiscais: 'notasFiscais',
+  processosDePagamento: 'processosDePagamento',
+  requisicaoId: 'requisicaoId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -797,6 +874,45 @@ exports.Prisma.SipacSubGrupoMaterialOrderByRelevanceFieldEnum = {
   denominacao: 'denominacao'
 };
 
+exports.Prisma.SipacRequisicaoMaterialOrderByRelevanceFieldEnum = {
+  numeroDaRequisicao: 'numeroDaRequisicao',
+  tipoDaRequisicao: 'tipoDaRequisicao',
+  convenio: 'convenio',
+  grupoDeMaterial: 'grupoDeMaterial',
+  unidadeDeCusto: 'unidadeDeCusto',
+  unidadeRequisitante: 'unidadeRequisitante',
+  destinoDaRequisicao: 'destinoDaRequisicao',
+  usuarioLogin: 'usuarioLogin',
+  opcaoOrcamentaria: 'opcaoOrcamentaria',
+  numeroDaRequisicaoRelacionada: 'numeroDaRequisicaoRelacionada',
+  local: 'local',
+  observacoes: 'observacoes',
+  statusAtual: 'statusAtual',
+  almoxarifado: 'almoxarifado'
+};
+
+exports.Prisma.SipacItemRequisicaoMaterialOrderByRelevanceFieldEnum = {
+  codigo: 'codigo',
+  status: 'status'
+};
+
+exports.Prisma.SipacHistoricoRequisicaoMaterialOrderByRelevanceFieldEnum = {
+  status: 'status',
+  usuario: 'usuario',
+  observacoes: 'observacoes'
+};
+
+exports.Prisma.SipacTotalizacaoElementoDespesaMaterialOrderByRelevanceFieldEnum = {
+  grupoDeMaterial: 'grupoDeMaterial'
+};
+
+exports.Prisma.SipacDetalheAquisicaoItemMaterialOrderByRelevanceFieldEnum = {
+  compras: 'compras',
+  empenhos: 'empenhos',
+  notasFiscais: 'notasFiscais',
+  processosDePagamento: 'processosDePagamento'
+};
+
 exports.Prisma.UserOrderByRelevanceFieldEnum = {
   name: 'name',
   login: 'login',
@@ -945,6 +1061,11 @@ exports.Prisma.ModelName = {
   SipacMaterial: 'SipacMaterial',
   SipacGrupoMaterial: 'SipacGrupoMaterial',
   SipacSubGrupoMaterial: 'SipacSubGrupoMaterial',
+  SipacRequisicaoMaterial: 'SipacRequisicaoMaterial',
+  SipacItemRequisicaoMaterial: 'SipacItemRequisicaoMaterial',
+  SipacHistoricoRequisicaoMaterial: 'SipacHistoricoRequisicaoMaterial',
+  SipacTotalizacaoElementoDespesaMaterial: 'SipacTotalizacaoElementoDespesaMaterial',
+  SipacDetalheAquisicaoItemMaterial: 'SipacDetalheAquisicaoItemMaterial',
   User: 'User',
   MagicLink: 'MagicLink',
   Role: 'Role',

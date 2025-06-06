@@ -25,13 +25,20 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import { SipacModule } from './modules/sipac/sipac.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import sipacApiConfig from './config/sipac-api.config';
+import sipacScrapingConfig from './config/sipac-scraping.config';
 
 @Module({
   imports: [
     EventEmitterModule.forRoot(), // Adicione esta linha
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [generalConfig, mailerConfig, databaseConfig, sipacApiConfig],
+      load: [
+        generalConfig,
+        mailerConfig,
+        databaseConfig,
+        sipacApiConfig,
+        sipacScrapingConfig
+      ],
       expandVariables: true,
       validationSchema,
       validationOptions: {

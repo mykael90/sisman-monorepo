@@ -3,7 +3,7 @@
 @contentType = application/json
 
 
-### GET all materiais
+### GET materiais
 GET {{urlLocal}}/materiais
 
 ### GET one material by code
@@ -25,4 +25,30 @@ GET {{urlLocal}}/grupos-materiais/sync-all
 
 ### GET and SYNC all materiais to server database
 GET {{urlLocal}}/subgrupos-materiais/sync-all
+
+### GET materiais
+GET {{urlLocal}}/requisicoes-materiais
+?dataInicial=01/01/2025
+&dataFinal=05/01/2025
+
+### GET materiais
+GET {{urlLocal}}/requisicoes-materiais/list/sync-all
+?dataInicial=01/01/2025
+&dataFinal=05/01/2025
+
+### POST
+POST {{urlLocal}}/requisicoes-materiais/list/sync-one
+Content-Type: {{contentType}}
+
+{
+    "numeroAno": "12751/2025"
+}
+
+### POST
+POST {{urlLocal}}/requisicoes-materiais/list/sync-many
+Content-Type: {{contentType}}
+
+{
+    "numeroAnoArray": ["12751/2025","12752/2025","12753/2025"]
+}
 

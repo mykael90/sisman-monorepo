@@ -1,10 +1,12 @@
 import { Module } from '@nestjs/common';
 import { HttpModule } from '@nestjs/axios';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { SipacHttpService } from './sipac.service';
+import { SipacApiService } from './sipac-api.service';
 import { MateriaisModule } from './materiais/materiais.module';
 import { GruposMateriaisModule } from './grupos-materiais/grupos-materiais.module';
 import { SubGruposMateriaisModule } from './subgrupo-materiais/subgrupos-materiais.module';
+import { RequisicoesMateriaisModule } from './requisicoes-materiais/requisicoes-materiais.module';
+import { SipacScrapingService } from './sipac-scraping.service';
 // import { UnidadesModule } from './unidades/unidades.module'; // Exemplo
 
 @Module({
@@ -23,9 +25,10 @@ import { SubGruposMateriaisModule } from './subgrupo-materiais/subgrupos-materia
     }),
     MateriaisModule,
     GruposMateriaisModule,
-    SubGruposMateriaisModule
+    SubGruposMateriaisModule,
+    RequisicoesMateriaisModule
   ],
-  providers: [SipacHttpService], // Logger pode ser útil aqui também
-  exports: [SipacHttpService] // Exporta para uso nos submódulos
+  providers: [SipacApiService, SipacScrapingService], // Logger pode ser útil aqui também
+  exports: [SipacApiService, SipacScrapingService] // Exporta para uso nos submódulos
 })
 export class SipacModule {}

@@ -1,5 +1,5 @@
 import { CreateSipacMaterialDto } from '../dto/sipac-material.dto';
-import { SipacMaterialResponseItem } from '../../sipac.interfaces';
+import { SipacMaterialResponseItem } from '../../sipac-api.interfaces';
 
 export class SipacMaterialMapper {
   static toCreateDto(

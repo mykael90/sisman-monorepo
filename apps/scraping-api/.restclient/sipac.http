@@ -47,39 +47,39 @@ Content-Type: {{contentType}}
 
 ### GET lista de material
 GET {{urlLocal}}/lista/requisicao/material
-?pageNum=1 
-&tipoReq.id=1
+# ?pageNum=1 
+?tipoReq.id=1
 &subTipoReq.id=1
 &grupo.codigo=5244
-&buscaAlmoxarifado=true
-&idAlmoxarifado=3
-&status=-1
-&grupoStatus=0
-&proponente.siape=0
+# &buscaAlmoxarifado=true
+# &idAlmoxarifado=3
+# &status=-1
+# &grupoStatus=0
+# &proponente.siape=0
 &grupoManutencao.id=7
-&gestora_comboUnidadeCusto=0
-&unidadeCusto.id=0
-&acao=13
-&tipo=1
-&buscaNumAno=false
-&buscaTipo=true
-&buscaStatus=false
-&buscaUsuario=false
-&buscaProponente=false
-&buscaProposto=false
-&buscaFornecedor=false
-&fornecedor.id=0
+# &gestora_comboUnidadeCusto=0
+# &unidadeCusto.id=0
+# &acao=13
+# &tipo=1
+# &buscaNumAno=false
+# &buscaTipo=true
+# &buscaStatus=false
+# &buscaUsuario=false
+# &buscaProponente=false
+# &buscaProposto=false
+# &buscaFornecedor=false
+# &fornecedor.id=0
 &buscaData=true
-&buscaUnidadeReq=false
-&buscaUnidadeCusto=false
+# &buscaUnidadeReq=false
+# &buscaUnidadeCusto=false
 &dataInicial=01/01/2025
-&dataFinal=10/01/2025
-&proposto.cpf_cnpj=-1
-&usuario.id=0
-&numero=0
+&dataFinal=05/01/2025
+# &proposto.cpf_cnpj=-1
+# &usuario.id=0
+# &numero=0
 # &ano=2025
-&unidade.id=0
-&buscaUnidadesSubordinadas=false
+# &unidade.id=0
+# &buscaUnidadesSubordinadas=false
 Content-Type: {{contentType}}
 
 
