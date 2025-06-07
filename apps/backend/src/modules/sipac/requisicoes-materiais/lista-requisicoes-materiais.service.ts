@@ -102,14 +102,19 @@ export class ListaRequisicoesMateriaisService {
     try {
       const response = await this.sipacScraping.get<
         SipacPaginatedScrapingResponse<SipacListaRequisicaoMaterialResponseItem>
-      >(this.URL_PATH, {
-        ...this.CONSTANT_PARAMS,
-        buscaAlmoxarifado: true,
-        idAlmoxarifado: 3, //deixar a sincronização específica um almoxarifado específico, pra não acumular tantos dados
-        buscaData: true,
-        dataInicial,
-        dataFinal
-      });
+      >(
+        this.URL_PATH,
+        {
+          ...this.CONSTANT_PARAMS,
+          buscaAlmoxarifado: true,
+          idAlmoxarifado: 3, //deixar a sincronização específica um almoxarifado específico, pra não acumular tantos dados
+          buscaData: true,
+          dataInicial,
+          dataFinal
+        },
+        undefined, // headers
+        { timeout: 10 * 60 * 1000 } // chamada demorada, permitir até 10 minutos inicialmente, depois revisa
+      );
 
       const requisicoes = response.data.data.items;
       itemsFetched = requisicoes ? requisicoes.length : 0;
