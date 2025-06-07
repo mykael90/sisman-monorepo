@@ -209,12 +209,12 @@ export class ListaRequisicoesMateriaisService {
         this.URL_PATH,
         {
           ...this.CONSTANT_PARAMS,
-          // buscaNumAno: true,
+          buscaNumAno: true,
           numero,
           ano
         },
         undefined, // headers
-        { timeout: 10000 } // options: Define timeout como 10000ms (10 segundos) para esta chamada específica
+        undefined // options
       );
 
       const requisicao = response.data.data.items[0]; // Expecting a single item in the array

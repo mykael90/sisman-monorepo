@@ -1132,7 +1132,7 @@ model SipacRequisicaoMaterial {
   opcaoOrcamentaria             String? // Opção orçamentária (ex: "SOLICITAR AUTORIZAÇÃO ORÇAMENTÁRIA").
   numeroDaRequisicaoRelacionada String? // Número da requisição relacionada (ex: "1164/ 2025 (REQUISIÇÃO DE MANUTENÇÃO)").
   local                         String? // Local da requisição (ex: "INSTITUTO METROPOLE DIGITAL - CIVT").
-  observacoes                   String? // Observações gerais da requisição.
+  observacoes                   String?   @db.Text // Observações gerais da requisição.
   statusAtual                   String // Status atual da requisição (ex: "FINALIZADA").
   almoxarifado                  String // Identificação do almoxarifado
   almoxarifadoId                Int?
@@ -1166,8 +1166,8 @@ model SipacItemRequisicaoMaterial {
   totalAtendimento    Decimal? @db.Decimal(12, 2) // Valor total do atendimento.
   status              String // Status do item (ex: "ATENDIDO").
 
-  requisicaoId Int // Chave estrangeira para SipacRequisicaoMaterial.
-  requisicao   SipacRequisicaoMaterial @relation(fields: [requisicaoId], references: [id], onDelete: Cascade)
+  requisicaoId Int? // Chave estrangeira para SipacRequisicaoMaterial.
+  requisicao   SipacRequisicaoMaterial? @relation(fields: [requisicaoId], references: [id], onDelete: Cascade)
 
   material SipacMaterial @relation(fields: [codigo], references: [codigo])
 
@@ -1184,7 +1184,7 @@ model SipacHistoricoRequisicaoMaterial {
   dataHora    DateTime @db.Timestamp(0) // Data e hora do evento.
   status      String // Status atribuído no evento (ex: "CADASTRADA", "AUTORIZADA").
   usuario     String // Usuário responsável pelo evento.
-  observacoes String? // Observações do evento.
+  observacoes String?  @db.Text // Observações do evento.
 
   requisicaoId Int // Chave estrangeira para SipacRequisicaoMaterial.
   requisicao   SipacRequisicaoMaterial @relation(fields: [requisicaoId], references: [id], onDelete: Cascade)
@@ -1202,8 +1202,8 @@ model SipacTotalizacaoElementoDespesaMaterial {
   grupoDeMaterial String // Descrição do grupo de material e elemento de despesa.
   total           Decimal @db.Decimal(12, 2) // Valor total para o grupo.
 
-  requisicaoId Int // Chave estrangeira para SipacRequisicaoMaterial.
-  requisicao   SipacRequisicaoMaterial @relation(fields: [requisicaoId], references: [id], onDelete: Cascade)
+  requisicaoId Int? // Chave estrangeira para SipacRequisicaoMaterial.
+  requisicao   SipacRequisicaoMaterial? @relation(fields: [requisicaoId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now()) @db.Timestamp(0)
   updatedAt DateTime @updatedAt @db.Timestamp(0)

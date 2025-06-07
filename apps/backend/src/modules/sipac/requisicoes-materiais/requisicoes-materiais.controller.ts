@@ -7,32 +7,41 @@ import {
   Get,
   Param,
   Body,
-  Query
+  Query,
+  Put,
+  ParseIntPipe
 } from '@nestjs/common';
 import { ListaRequisicoesMateriaisService } from './lista-requisicoes-materiais.service';
+import { RequisicoesMateriaisService } from './requisicoes-materiais.service';
 
 @Controller('sipac/requisicoes-materiais') // Exemplo de rota
 export class RequisicoesMateriaisController {
   private readonly logger = new Logger(RequisicoesMateriaisController.name);
 
   constructor(
-    private readonly requisicoesMateriaisService: ListaRequisicoesMateriaisService
+    private readonly listaRequisicoesMateriaisService: ListaRequisicoesMateriaisService,
+    private readonly requisicoesMateriaisService: RequisicoesMateriaisService
   ) {}
 
-  //inserir um GET para retornar os registros, apenas para testes
-  @Get() // GET /sipac/requisicoes-materiais
-  async findAll(
-    @Query('dataInicial') dataInicial: string,
-    @Query('dataFinal') dataFinal: string
-  ) {
-    // Implemente a busca no seu banco de dados local
-    // return this.requisicoesMateriaisService.findAllFromDb();
-
-    return this.requisicoesMateriaisService.testFetchListaRequisicoesMateriais(
-      dataInicial,
-      dataFinal
-    );
+  @Get()
+  async findAll() {
+    return this.requisicoesMateriaisService.list();
   }
+
+  //inserir um GET para retornar os registros, apenas para testes
+  // @Get() // GET /sipac/requisicoes-materiais
+  // async findAll(
+  //   @Query('dataInicial') dataInicial: string,
+  //   @Query('dataFinal') dataFinal: string
+  // ) {
+  //   // Implemente a busca no seu banco de dados local
+  //   // return this.requisicoesMateriaisService.findAllFromDb();
+
+  //   return this.listaRequisicoesMateriaisService.testFetchListaRequisicoesMateriais(
+  //     dataInicial,
+  //     dataFinal
+  //   );
+  // }
 
   @Get('list/sync-all') // GET /sipac/requisicoes-materiais/sync-all
   @HttpCode(HttpStatus.ACCEPTED) // Retorna 202 Accepted, pois é uma tarefa demorada
@@ -45,7 +54,7 @@ export class RequisicoesMateriaisController {
     );
     // Não aguardar a conclusão para responder rapidamente à requisição.
     // A tarefa rodará em background.
-    this.requisicoesMateriaisService
+    this.listaRequisicoesMateriaisService
       .fetchAllAndPersistListaRequisicoesMateriais(dataInicial, dataFinal)
       .then((value) => {
         this.logger.log(`${JSON.stringify(value, null, 2)}`);
@@ -65,15 +74,22 @@ export class RequisicoesMateriaisController {
 
   @Post('list/sync-one')
   async triggerSyncOne(@Body('numeroAno') numeroAno: string) {
-    return await this.requisicoesMateriaisService.fetchByNumeroAnoAndPersistListaRequisicaoMaterial(
+    return await this.listaRequisicoesMateriaisService.fetchByNumeroAnoAndPersistListaRequisicaoMaterial(
       numeroAno
     );
   }
 
   @Post('list/sync-many') // POST /sipac/requisicoes-materiais/sync-many
   async triggerSyncMany(@Body('numeroAnoArray') numeroAnoArray: string[]) {
-    return await this.requisicoesMateriaisService.fetchManyByNumeroAnoAndPersistListaRequisicoesMateriais(
+    return await this.listaRequisicoesMateriaisService.fetchManyByNumeroAnoAndPersistListaRequisicoesMateriais(
       numeroAnoArray
+    );
+  }
+
+  @Put(':id')
+  async updateOne(@Param('id', ParseIntPipe) id: number) {
+    return await this.requisicoesMateriaisService.fetchAndPersistUpdateRequisicaoMaterial(
+      id
     );
   }
 }

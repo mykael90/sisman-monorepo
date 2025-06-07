@@ -72,6 +72,7 @@ export class SipacScrapingService implements OnModuleInit {
         ...headers
       },
       params,
+      timeout: 30000, // options: Define timeout como 30000ms (30 segundos) para esta chamada específica
       ...options // Mescla as opções adicionais, como o timeout
     };
     return this.throttledDataRequest<T>(config);
