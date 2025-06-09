@@ -17,26 +17,35 @@ import {
 } from '../dto/sipac-requisicao-material.dto';
 
 export class SipacListaRequisicaoMaterialMapper {
+  // Helper to parse date string (DD/MM/YYYY) to Date or undefined
+  static parseDateString(value: string | undefined | null): Date | undefined {
+    if (value === null || value === undefined || String(value).trim() === '') {
+      return undefined;
+    }
+    const parts = String(value).split('/');
+    if (parts.length !== 3) return undefined;
+
+    const [dia, mes, ano] = parts.map(Number);
+    if (isNaN(dia) || isNaN(mes) || isNaN(ano)) return undefined;
+
+    const date = new Date(ano, mes - 1, dia);
+    return isNaN(date.getTime()) ? undefined : date;
+  }
+
   static toCreateDto(
     item: SipacListaRequisicaoMaterialResponseItem
   ): CreateSipacListaRequisicaoMaterialDto {
     //Transforma id em inteiro
     const idFormatado = parseInt(item.id.toString(), 10);
-
-    // Transforma o valor monetário de "R$ 1.234,56" para 1234.56
-    const valorFormatado = parseFloat(
-      item.valor.replace('R$', '').replace(/\./g, '').replace(',', '.').trim()
-    ) as unknown as Prisma.Decimal; // Cast to Prisma.Decimal
-
-    // Transforma a data de "DD/MM/YYYY" para um objeto Date
-    const [dia, mes, ano] = item.data.split('/').map(Number);
-    const dataFormatada = new Date(ano, mes - 1, dia);
+    const valorFormatado = SipacRequisicaoMaterialMapper.parseDecimal(
+      item.valor
+    ) as Prisma.Decimal; // Reutilizando o helper da outra classe
 
     return {
       id: idFormatado,
       numeroDaRequisicao: item.requisicao,
       tipoDaRequisicao: item.tipoDaRequisicao,
-      dataDeCadastro: dataFormatada,
+      dataDeCadastro: this.parseDateString(item.data) as Date,
       unidadeDeCusto: item.unidadeCusto,
       unidadeRequisitante: item.unidadeRequisitante,
       grupoDeMaterial: item.grupoMaterial,
@@ -50,7 +59,8 @@ export class SipacListaRequisicaoMaterialMapper {
 
 export class SipacRequisicaoMaterialMapper {
   // Helper to parse string to Prisma.Decimal or undefined
-  private static parseDecimal(
+  static parseDecimal(
+    // Tornando público para ser acessível por SipacListaRequisicaoMaterialMapper
     value: string | undefined | null
   ): Prisma.Decimal | undefined {
     if (
@@ -145,9 +155,13 @@ export class SipacRequisicaoMaterialMapper {
       unidadeDeCusto: dados.unidadeDeCusto,
       unidadeRequisitante: dados.unidadeRequisitante,
       destinoDaRequisicao: dados.destinoDaRequisicao,
-      // usuarioLogin: dados.usuario, // Mapping 'usuario' to 'usuarioLogin'
-      dataDeCadastro: this.parseDate(dados.dataDeCadastro),
-      dataDeEnvio: this.parseDate(dados.dataDeEnvio),
+      usuarioLogin: dados.usuario, // Mapping 'usuario' to 'usuarioLogin'
+      dataDeCadastro: SipacListaRequisicaoMaterialMapper.parseDateString(
+        dados.dataDeCadastro
+      ),
+      dataDeEnvio: SipacListaRequisicaoMaterialMapper.parseDateString(
+        dados.dataDeEnvio
+      ),
       valorDaRequisicao: this.parseDecimal(dados.valorDaRequisicao),
       valorDoTotalAtendido: this.parseDecimal(dados.valorDoTotalAtendido),
       opcaoOrcamentaria: dados.opcaoOrcamentaria,
