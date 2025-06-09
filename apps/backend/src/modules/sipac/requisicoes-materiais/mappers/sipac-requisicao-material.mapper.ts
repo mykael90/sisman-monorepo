@@ -155,7 +155,7 @@ export class SipacRequisicaoMaterialMapper {
       unidadeDeCusto: dados.unidadeDeCusto,
       unidadeRequisitante: dados.unidadeRequisitante,
       destinoDaRequisicao: dados.destinoDaRequisicao,
-      usuarioLogin: dados.usuario, // Mapping 'usuario' to 'usuarioLogin'
+      // usuarioLogin: dados.usuario, // Mapping 'usuario' to 'usuarioLogin'
       dataDeCadastro: SipacListaRequisicaoMaterialMapper.parseDateString(
         dados.dataDeCadastro
       ),
