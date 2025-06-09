@@ -1141,11 +1141,11 @@ model SipacRequisicaoMaterial {
   updatedAt DateTime @updatedAt @db.Timestamp(0)
 
   // Relations
-  itensDaRequisicao           SipacItemRequisicaoMaterial[]
-  historicoDaRequisicao       SipacHistoricoRequisicaoMaterial[]
-  totalizacaoElementosDespesa SipacTotalizacaoElementoDespesaMaterial[]
-  detalhesAquisicao           SipacDetalheAquisicaoItemMaterial[]
-  grupoMaterial               SipacGrupoMaterial?                       @relation(fields: [grupoMaterialId], references: [idGrupoMaterial])
+  itensDaRequisicao                          SipacItemRequisicaoMaterial[]
+  historicoDaRequisicao                      SipacHistoricoRequisicaoMaterial[]
+  totalizacaoPorElementoDeDespesasDetalhados SipacTotalizacaoElementoDespesaMaterial[]
+  detalhesDaAquisicao                        SipacDetalheAquisicaoItemMaterial[]
+  grupoMaterial                              SipacGrupoMaterial?                       @relation(fields: [grupoMaterialId], references: [idGrupoMaterial])
 
   @@index([numeroDaRequisicao])
   @@map("sipac_requisicoes_materiais")
