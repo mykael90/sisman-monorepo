@@ -8,8 +8,8 @@ Content-Type: {{contentType}}
 
 ### GET requisição de material
 GET {{urlLocal}}/requisicao/material
-?id=2156665
-&requisicao=2156665
+?id=2141648
+&requisicao=2141648
 &acao=200
 Content-Type: {{contentType}}
 
@@ -72,8 +72,8 @@ GET {{urlLocal}}/lista/requisicao/material
 &buscaData=true
 # &buscaUnidadeReq=false
 # &buscaUnidadeCusto=false
-&dataInicial=01/01/2025
-&dataFinal=05/01/2025
+&dataInicial=01/01/2023
+&dataFinal=05/01/2023
 # &proposto.cpf_cnpj=-1
 # &usuario.id=0
 # &numero=0

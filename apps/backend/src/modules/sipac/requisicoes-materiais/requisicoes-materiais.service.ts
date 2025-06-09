@@ -58,7 +58,7 @@ export class RequisicoesMateriaisService {
   //   );
   // }
 
-  private async persistUpdateRequisicaoMaterial(
+  private async persistUpsertRequisicaoMaterial(
     id: number,
     data: UpdateSipacRequisicaoMaterialDto
   ) {
@@ -101,7 +101,8 @@ export class RequisicoesMateriaisService {
 
           // Usar 'set' para criar completamente as conexões existentes
           (prismaUpdateInput as any)[typedKey] = {
-            set: relationDataToSet
+            deleteMany: {}, // Delete all existing items
+            create: relationDataToSet // Create the new items
           };
           (relationsToInclude as any)[typedKey] = true;
         } else if (
@@ -163,7 +164,7 @@ export class RequisicoesMateriaisService {
    * @param id O ID da requisição de material a ser buscada e atualizada.
    * @returns A resposta paginada da API do SIPAC contendo as requisições de materiais.
    */
-  async fetchAndPersistUpdateRequisicaoMaterial(id: number) {
+  async fetchAndPersistUpsertRequisicaoMaterial(id: number) {
     this.logger.log(
       `Iniciando busca e persistência da requisição de material do SIPAC com ID: ${id}...`
     );
@@ -175,10 +176,10 @@ export class RequisicoesMateriaisService {
         id,
         requisicao: id
       });
-      this.logger.log(
-        `Busca e persistência da requisição de material do SIPAC com ID: ${id} concluída com sucesso.`
-      );
       const { data } = request;
+      this.logger.log(
+        `Busca da requisição de material do SIPAC com ID: ${id} concluída com sucesso.`
+      );
 
       const result: SipacSingleScrapingResponse<SipacRequisicaoMaterialResponseItem> =
         {
@@ -191,11 +192,15 @@ export class RequisicoesMateriaisService {
           }
         };
 
-      const updateDto: UpdateSipacRequisicaoMaterialDto =
+      const updateDtoFormat: UpdateSipacRequisicaoMaterialDto =
         SipacRequisicaoMaterialMapper.toUpdateDto(result.data);
 
       const updateRequisicaoMaterial =
-        await this.persistUpdateRequisicaoMaterial(id, updateDto);
+        await this.persistUpsertRequisicaoMaterial(id, updateDtoFormat);
+
+      this.logger.log(
+        `Persistência da requisição de material do SIPAC com ID: ${id} concluída com sucesso.`
+      );
 
       return updateRequisicaoMaterial;
     } catch (error) {

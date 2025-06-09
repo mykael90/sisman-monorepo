@@ -31,8 +31,8 @@ GET {{urlLocal}}/requisicoes-materiais
 
 ### GET materiais
 GET {{urlLocal}}/requisicoes-materiais/list/sync-all
-?dataInicial=01/01/2023
-&dataFinal=31/03/2023
+?dataInicial=31/03/2023
+&dataFinal=31/12/2023
 
 ### POST
 POST {{urlLocal}}/requisicoes-materiais/list/sync-one
@@ -51,6 +51,6 @@ Content-Type: {{contentType}}
 }
 
 ### PUT
-PUT {{urlLocal}}/requisicoes-materiais/2141648
+PUT {{urlLocal}}/requisicoes-materiais/2033086
 Content-Type: {{contentType}}
 
