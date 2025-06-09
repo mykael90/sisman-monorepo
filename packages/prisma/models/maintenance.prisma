@@ -23,7 +23,7 @@ model MaintenanceRequest {
     equipment   Equipment? @relation(fields: [equipmentId], references: [id], onDelete: SetNull) // Relation to the Equipment model.
 
     serviceTypeId Int? // Foreign key to the type of service required for this request.
-    serviceType   ServiceType? @relation(fields: [serviceTypeId], references: [id], onDelete: SetNull) // Relation to the ServiceType model.
+    serviceType   SipacServiceTypeManutencao? @relation(fields: [serviceTypeId], references: [id], onDelete: SetNull) // Relation to the SipacServiceTypeManutencao model.
 
     statusId Int // Foreign key to the current status of the maintenance request.
     status   MaintenanceRequestStatus @relation(fields: [statusId], references: [id]) // Relation to the MaintenanceRequestStatus model.
@@ -144,7 +144,7 @@ model MaintenanceInstance {
 }
 
 // Defines types of services that can be requested for maintenance.
-model ServiceType {
+model SipacServiceTypeManutencao {
     id          Int      @id @default(autoincrement()) // Unique identifier for the service type.
     name        String   @unique // Name of the service type (e.g., "Electrical", "Plumbing").
     description String? // Description of the service type.
@@ -154,7 +154,7 @@ model ServiceType {
 
     maintenanceRequests MaintenanceRequest[] // Maintenance requests associated with this service type.
 
-    @@map("service_types") // Maps this model to the 'service_types' table.
+    @@map("sipac_service_types_manutencao") // Maps this model to the 'service_types' table.
 }
 
 // Represents an equipment asset that may require maintenance.

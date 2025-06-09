@@ -106,7 +106,12 @@ model SipacRequisicaoMaterial {
     detalhesDaAquisicao                        SipacDetalheAquisicaoItemMaterial[]
     grupoMaterial                              SipacGrupoMaterial?                       @relation(fields: [grupoMaterialId], references: [idGrupoMaterial])
 
+    // Relation to SipacRequisicaoManutencao
+    sipacRequisicaoManutencaoId Int?
+    sipacRequisicaoManutencao   SipacRequisicaoManutencao? @relation(fields: [sipacRequisicaoManutencaoId], references: [id], onDelete: SetNull)
+
     @@index([numeroDaRequisicao])
+    @@index([sipacRequisicaoManutencaoId])
     @@map("sipac_requisicoes_materiais")
 }
 
@@ -187,4 +192,99 @@ model SipacDetalheAquisicaoItemMaterial {
 
     @@index([requisicaoId])
     @@map("sipac_detalhe_aquisicao_item_material")
+}
+
+// Representa uma requisição de manutenção do SIPAC.
+model SipacRequisicaoManutencao {
+    id                             Int      @id // Identificador único da requisição de manutenção.
+    numeroRequisicao               String   @unique // Número da requisição (ex: "2124/2025").
+    tipoDaRequisicao               String? // Tipo da requisição (ex: "REQUISIÇÃO DE MANUTENÇÃO").
+    divisao                        String? // Divisão (ex: "Serviços Gerais").
+    usuarioGravacao                String // Usuário que gravou a requisição (ex: "JOAO PAULO FELIPE PINTO").
+    status                         String // Status da requisição (ex: "PEDIDO DE MATERIAL REALIZADO").
+    dataDeCadastro                 DateTime @db.Timestamp(0) // Data de cadastro da requisição.
+    unidadeRequisitante            String // Unidade requisitante.
+    unidadeDeCusto                 String // Unidade de custo.
+    descricao                      String   @db.Text // Descrição da requisição.
+    local                          String? // Local da requisição.
+    representanteDaUnidadeDeOrigem String?
+    telefonesDoRepresentante       String?
+    ramal                          String?
+    email                          String?
+    horarioParaAtendimento         String?
+    observacao                     String?  @db.Text
+
+    createdAt DateTime @default(now()) @db.Timestamp(0)
+    updatedAt DateTime @updatedAt @db.Timestamp(0)
+
+    // Relations
+    informacoesServico              SipacInformacaoServicoManutencao[]
+    // Requisições de manutenção que esta requisição lista como associadas
+    associadasCom                   SipacRequisicaoManutencao[]        @relation("RequisicaoManutencaoAssociacao")
+    // Requisições de manutenção que listam esta requisição como associada
+    associadaPor                    SipacRequisicaoManutencao[]        @relation("RequisicaoManutencaoAssociacao")
+    requisicoesDeMaterialAssociadas SipacRequisicaoMaterial[] // Requisições de material vinculadas a esta requisição de manutenção
+    imoveisPredios                  SipacImovelPredioManutencao[]
+    historico                       SipacHistoricoManutencao[]
+
+    @@index([numeroRequisicao])
+    @@map("sipac_requisicoes_manutencao")
+}
+
+// Representa informações do serviço de uma requisição de manutenção.
+model SipacInformacaoServicoManutencao {
+    id                 Int      @id @default(autoincrement())
+    diagnostico        String?
+    executante         String?
+    dataDeCadastro     DateTime @db.Timestamp(0)
+    tecnicoResponsavel String?
+
+    requisicaoManutencaoId Int
+    requisicaoManutencao   SipacRequisicaoManutencao @relation(fields: [requisicaoManutencaoId], references: [id], onDelete: Cascade)
+
+    createdAt DateTime @default(now()) @db.Timestamp(0)
+    updatedAt DateTime @updatedAt @db.Timestamp(0)
+
+    @@index([requisicaoManutencaoId])
+    @@map("sipac_informacoes_servico_manutencao")
+}
+
+// Representa imóveis/prédios associados a uma requisição de manutenção.
+model SipacImovelPredioManutencao {
+    id            Int     @id @default(autoincrement())
+    tipo          String?
+    municipio     String?
+    campus        String?
+    rip           String?
+    imovelTerreno String? // Mapeado de "imovel/terreno" do JSON
+    predio        String?
+    zona          String?
+
+    requisicaoManutencaoId Int
+    requisicaoManutencao   SipacRequisicaoManutencao @relation(fields: [requisicaoManutencaoId], references: [id], onDelete: Cascade)
+
+    createdAt DateTime @default(now()) @db.Timestamp(0)
+    updatedAt DateTime @updatedAt @db.Timestamp(0)
+
+    @@index([requisicaoManutencaoId])
+    @@map("sipac_imoveis_predios_manutencao")
+}
+
+// Representa o histórico de uma requisição de manutenção.
+model SipacHistoricoManutencao {
+    id          Int      @id @default(autoincrement())
+    data        DateTime @db.Timestamp(0) // Data do evento no histórico.
+    status      String // Status atribuído no evento.
+    usuario     String // Usuário responsável pelo evento.
+    ramal       String? // Ramal do usuário.
+    observacoes String?  @db.Text // Observações do evento.
+
+    requisicaoManutencaoId Int
+    requisicaoManutencao   SipacRequisicaoManutencao @relation(fields: [requisicaoManutencaoId], references: [id], onDelete: Cascade)
+
+    createdAt DateTime @default(now()) @db.Timestamp(0)
+    updatedAt DateTime @updatedAt @db.Timestamp(0)
+
+    @@index([requisicaoManutencaoId])
+    @@map("sipac_historico_manutencao")
 }

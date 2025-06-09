@@ -195,7 +195,7 @@ exports.Prisma.MaintenanceInstanceScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
-exports.Prisma.ServiceTypeScalarFieldEnum = {
+exports.Prisma.SipacServiceTypeManutencaoScalarFieldEnum = {
   id: 'id',
   name: 'name',
   description: 'description',
@@ -580,7 +580,8 @@ exports.Prisma.SipacRequisicaoMaterialScalarFieldEnum = {
   almoxarifado: 'almoxarifado',
   almoxarifadoId: 'almoxarifadoId',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  sipacRequisicaoManutencaoId: 'sipacRequisicaoManutencaoId'
 };
 
 exports.Prisma.SipacItemRequisicaoMaterialScalarFieldEnum = {
@@ -628,6 +629,65 @@ exports.Prisma.SipacDetalheAquisicaoItemMaterialScalarFieldEnum = {
   notasFiscais: 'notasFiscais',
   processosDePagamento: 'processosDePagamento',
   requisicaoId: 'requisicaoId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SipacRequisicaoManutencaoScalarFieldEnum = {
+  id: 'id',
+  numeroRequisicao: 'numeroRequisicao',
+  tipoDaRequisicao: 'tipoDaRequisicao',
+  divisao: 'divisao',
+  usuarioGravacao: 'usuarioGravacao',
+  status: 'status',
+  dataDeCadastro: 'dataDeCadastro',
+  unidadeRequisitante: 'unidadeRequisitante',
+  unidadeDeCusto: 'unidadeDeCusto',
+  descricao: 'descricao',
+  local: 'local',
+  representanteDaUnidadeDeOrigem: 'representanteDaUnidadeDeOrigem',
+  telefonesDoRepresentante: 'telefonesDoRepresentante',
+  ramal: 'ramal',
+  email: 'email',
+  horarioParaAtendimento: 'horarioParaAtendimento',
+  observacao: 'observacao',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SipacInformacaoServicoManutencaoScalarFieldEnum = {
+  id: 'id',
+  diagnostico: 'diagnostico',
+  executante: 'executante',
+  dataDeCadastro: 'dataDeCadastro',
+  tecnicoResponsavel: 'tecnicoResponsavel',
+  requisicaoManutencaoId: 'requisicaoManutencaoId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SipacImovelPredioManutencaoScalarFieldEnum = {
+  id: 'id',
+  tipo: 'tipo',
+  municipio: 'municipio',
+  campus: 'campus',
+  rip: 'rip',
+  imovelTerreno: 'imovelTerreno',
+  predio: 'predio',
+  zona: 'zona',
+  requisicaoManutencaoId: 'requisicaoManutencaoId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SipacHistoricoManutencaoScalarFieldEnum = {
+  id: 'id',
+  data: 'data',
+  status: 'status',
+  usuario: 'usuario',
+  ramal: 'ramal',
+  observacoes: 'observacoes',
+  requisicaoManutencaoId: 'requisicaoManutencaoId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -727,7 +787,7 @@ exports.Prisma.MaintenanceInstanceOrderByRelevanceFieldEnum = {
   name: 'name'
 };
 
-exports.Prisma.ServiceTypeOrderByRelevanceFieldEnum = {
+exports.Prisma.SipacServiceTypeManutencaoOrderByRelevanceFieldEnum = {
   name: 'name',
   description: 'description'
 };
@@ -913,6 +973,47 @@ exports.Prisma.SipacDetalheAquisicaoItemMaterialOrderByRelevanceFieldEnum = {
   processosDePagamento: 'processosDePagamento'
 };
 
+exports.Prisma.SipacRequisicaoManutencaoOrderByRelevanceFieldEnum = {
+  numeroRequisicao: 'numeroRequisicao',
+  tipoDaRequisicao: 'tipoDaRequisicao',
+  divisao: 'divisao',
+  usuarioGravacao: 'usuarioGravacao',
+  status: 'status',
+  unidadeRequisitante: 'unidadeRequisitante',
+  unidadeDeCusto: 'unidadeDeCusto',
+  descricao: 'descricao',
+  local: 'local',
+  representanteDaUnidadeDeOrigem: 'representanteDaUnidadeDeOrigem',
+  telefonesDoRepresentante: 'telefonesDoRepresentante',
+  ramal: 'ramal',
+  email: 'email',
+  horarioParaAtendimento: 'horarioParaAtendimento',
+  observacao: 'observacao'
+};
+
+exports.Prisma.SipacInformacaoServicoManutencaoOrderByRelevanceFieldEnum = {
+  diagnostico: 'diagnostico',
+  executante: 'executante',
+  tecnicoResponsavel: 'tecnicoResponsavel'
+};
+
+exports.Prisma.SipacImovelPredioManutencaoOrderByRelevanceFieldEnum = {
+  tipo: 'tipo',
+  municipio: 'municipio',
+  campus: 'campus',
+  rip: 'rip',
+  imovelTerreno: 'imovelTerreno',
+  predio: 'predio',
+  zona: 'zona'
+};
+
+exports.Prisma.SipacHistoricoManutencaoOrderByRelevanceFieldEnum = {
+  status: 'status',
+  usuario: 'usuario',
+  ramal: 'ramal',
+  observacoes: 'observacoes'
+};
+
 exports.Prisma.UserOrderByRelevanceFieldEnum = {
   name: 'name',
   login: 'login',
@@ -1036,7 +1137,7 @@ exports.Prisma.ModelName = {
   MaintenanceRequestStatus: 'MaintenanceRequestStatus',
   MaintenanceTimelineEvent: 'MaintenanceTimelineEvent',
   MaintenanceInstance: 'MaintenanceInstance',
-  ServiceType: 'ServiceType',
+  SipacServiceTypeManutencao: 'SipacServiceTypeManutencao',
   Equipment: 'Equipment',
   InfrastructureOccurrence: 'InfrastructureOccurrence',
   Warehouse: 'Warehouse',
@@ -1066,6 +1167,10 @@ exports.Prisma.ModelName = {
   SipacHistoricoRequisicaoMaterial: 'SipacHistoricoRequisicaoMaterial',
   SipacTotalizacaoElementoDespesaMaterial: 'SipacTotalizacaoElementoDespesaMaterial',
   SipacDetalheAquisicaoItemMaterial: 'SipacDetalheAquisicaoItemMaterial',
+  SipacRequisicaoManutencao: 'SipacRequisicaoManutencao',
+  SipacInformacaoServicoManutencao: 'SipacInformacaoServicoManutencao',
+  SipacImovelPredioManutencao: 'SipacImovelPredioManutencao',
+  SipacHistoricoManutencao: 'SipacHistoricoManutencao',
   User: 'User',
   MagicLink: 'MagicLink',
   Role: 'Role',
