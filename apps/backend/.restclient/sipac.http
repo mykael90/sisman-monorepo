@@ -43,6 +43,14 @@ Content-Type: {{contentType}}
 }
 
 ### POST
+POST {{urlLocal}}/requisicoes-materiais/list/fetch-one
+Content-Type: {{contentType}}
+
+{
+    "numeroAno": "12751/2025"
+}
+
+### POST
 POST {{urlLocal}}/requisicoes-materiais/list/sync-many
 Content-Type: {{contentType}}
 
@@ -50,7 +58,35 @@ Content-Type: {{contentType}}
     "numeroAnoArray": ["12851/2025","12852/2025","12853/2025"]
 }
 
-### PUT
-PUT {{urlLocal}}/requisicoes-materiais/2033086
+### GET
+GET {{urlLocal}}/requisicoes-materiais/fetch-one/2032630
 Content-Type: {{contentType}}
+
+### PUT
+PUT {{urlLocal}}/requisicoes-materiais/2032630
+Content-Type: {{contentType}}
+
+### POST
+POST {{urlLocal}}/requisicoes-materiais/fetch-one-complete
+Content-Type: {{contentType}}
+
+{
+    "numeroAno": "16656/2025"
+}
+
+### POST
+POST {{urlLocal}}/requisicoes-materiais/fetch-one-complete-and-persist
+Content-Type: {{contentType}}
+
+{
+    "numeroAno": "16656/2025"
+}
+
+### POST
+POST {{urlLocal}}/requisicoes-materiais/fetch-many-complete-and-persist
+Content-Type: {{contentType}}
+
+{
+    "numeroAnoArray": ["16656/2025","16656/2025","16656/2025"]
+}
 

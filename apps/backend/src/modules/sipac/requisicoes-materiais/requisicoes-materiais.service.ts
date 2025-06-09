@@ -19,6 +19,7 @@ import {
 import {
   CreateManySipacListaRequisicaoMaterialDto as CreateManySipacRequisicaoMaterialDto,
   CreateSipacListaRequisicaoMaterialDto,
+  CreateSipacRequisicaoMaterialCompletoDto,
   UpdateSipacRequisicaoMaterialDto
 } from './dto/sipac-requisicao-material.dto';
 import {
@@ -27,6 +28,7 @@ import {
 } from './mappers/sipac-requisicao-material.mapper';
 import { AxiosRequestConfig } from 'axios';
 import { handlePrismaError } from '../../../shared/utils/prisma-error-handler';
+import { ListaRequisicoesMateriaisService } from './lista-requisicoes-materiais.service';
 
 @Injectable()
 export class RequisicoesMateriaisService {
@@ -40,6 +42,7 @@ export class RequisicoesMateriaisService {
 
   constructor(
     private readonly prisma: PrismaService,
+    private readonly listaRequisicoesMateriaisService: ListaRequisicoesMateriaisService,
     private readonly sipacScraping: SipacScrapingService
   ) {}
 
@@ -140,6 +143,7 @@ export class RequisicoesMateriaisService {
     }
 
     try {
+      this.logger.log(`Persistindo a atualização de requisição de material...`);
       return await this.prisma.sipacRequisicaoMaterial.update({
         where: { id },
         data: prismaUpdateInput,
@@ -159,6 +163,72 @@ export class RequisicoesMateriaisService {
     }
   }
 
+  private async persistCreateRequisicaoMateiral(
+    data: CreateSipacRequisicaoMaterialCompletoDto
+  ) {
+    const sipacRequisicaoMaterialModel = Prisma.dmmf.datamodel.models.find(
+      (model) => model.name === 'SipacRequisicaoMaterial'
+    );
+
+    let relationalKeysFromDMMF: string[] = [];
+    const relationsToInclude: Prisma.SipacRequisicaoMaterialInclude = {};
+
+    if (sipacRequisicaoMaterialModel) {
+      relationalKeysFromDMMF = sipacRequisicaoMaterialModel.fields
+        .filter((field) => field.kind === 'object' && field.relationName)
+        .map((field) => field.name);
+    } else {
+      this.logger.error(
+        'Modelo SipacRequisicaoMaterial não encontrado no DMMF.'
+      );
+    }
+
+    const prismaCreateInput = {};
+
+    for (const key in data) {
+      if (Object.prototype.hasOwnProperty.call(data, key)) {
+        const typedKey = key as keyof CreateSipacRequisicaoMaterialCompletoDto;
+        const value = data[typedKey];
+
+        if (relationalKeysFromDMMF.includes(typedKey)) {
+          // If it's a relational field, wrap in 'create'
+          if (Array.isArray(value)) {
+            (prismaCreateInput as any)[typedKey] = {
+              create: value
+            };
+            (relationsToInclude as any)[typedKey] = true;
+          } else if (value !== null && typeof value === 'object') {
+            // Handle single nested object relations if any
+            (prismaCreateInput as any)[typedKey] = {
+              create: value
+            };
+            (relationsToInclude as any)[typedKey] = true;
+          }
+        } else {
+          // Assume it's a scalar field and assign directly
+          (prismaCreateInput as any)[typedKey] = value;
+        }
+      }
+    }
+
+    try {
+      this.logger.log(`Persistindo a criação da requisição de material...`);
+      return await this.prisma.sipacRequisicaoMaterial.create({
+        data: { ...(prismaCreateInput as any) },
+        include:
+          Object.keys(relationsToInclude).length > 0
+            ? relationsToInclude
+            : undefined
+      });
+    } catch (error) {
+      handlePrismaError(error, this.logger, 'Requisição de Material SIPAC', {
+        operation: 'create',
+        data
+      });
+      throw error;
+    }
+  }
+
   /**
    * Busca e persiste os detalhes de uma requisição de material específica da API do SIPAC.
    * @param id O ID da requisição de material a ser buscada e atualizada.
@@ -167,6 +237,31 @@ export class RequisicoesMateriaisService {
   async fetchAndPersistUpdateRequisicaoMaterial(id: number) {
     this.logger.log(
       `Iniciando busca e persistência da requisição de material do SIPAC com ID: ${id}...`
+    );
+    try {
+      const updateDtoFormat: UpdateSipacRequisicaoMaterialDto =
+        await this.fetchAndReturnRequisicaoMaterial(id);
+
+      const updateRequisicaoMaterial =
+        await this.persistUpdateRequisicaoMaterial(id, updateDtoFormat);
+
+      this.logger.log(
+        `Persistência da requisição de material do SIPAC com ID: ${id} concluída com sucesso.`
+      );
+
+      return updateRequisicaoMaterial;
+    } catch (error) {
+      this.logger.error(
+        `Erro durante a busca e persistência da requisição de material do SIPAC com ID: ${id}.`,
+        error.stack
+      );
+      throw error;
+    }
+  }
+
+  async fetchAndReturnRequisicaoMaterial(id: number) {
+    this.logger.log(
+      `Iniciando busca da requisição de material do SIPAC com ID: ${id}...`
     );
     try {
       const request = await this.sipacScraping.get<
@@ -192,23 +287,62 @@ export class RequisicoesMateriaisService {
           }
         };
 
-      const updateDtoFormat: UpdateSipacRequisicaoMaterialDto =
+      const requisicaoMaterialDtoFormat: UpdateSipacRequisicaoMaterialDto =
         SipacRequisicaoMaterialMapper.toUpdateDto(result.data);
 
-      const updateRequisicaoMaterial =
-        await this.persistUpdateRequisicaoMaterial(id, updateDtoFormat);
-
       this.logger.log(
-        `Persistência da requisição de material do SIPAC com ID: ${id} concluída com sucesso.`
+        `Retornando requisição de material do SIPAC com ID: ${id}`
       );
 
-      return updateRequisicaoMaterial;
+      return requisicaoMaterialDtoFormat;
     } catch (error) {
       this.logger.error(
         `Erro durante a busca e persistência da requisição de material do SIPAC com ID: ${id}.`,
         error.stack
       );
       throw error;
+    }
+  }
+
+  async fetchByNumeroAnoAndReturnRequisicaoMaterialComplete(numeroAno: string) {
+    const infoFromList =
+      await this.listaRequisicoesMateriaisService.fetchByNumeroAnoAndReturnListaRequisicaoMaterial(
+        numeroAno
+      );
+    const infoFromDetail = await this.fetchAndReturnRequisicaoMaterial(
+      infoFromList.id
+    );
+
+    const infoComplete = {
+      ...infoFromList,
+      ...infoFromDetail
+    };
+
+    return infoComplete;
+  }
+
+  async fetchCompleteAndPersistCreateOrUpdateRequisicaoMaterial(
+    numeroAno: string
+  ) {
+    {
+      const exists = await this.prisma.sipacRequisicaoMaterial.findFirst({
+        where: {
+          numeroDaRequisicao: numeroAno
+        }
+      });
+
+      if (exists) {
+        this.logger.log(`A requisição de material já existe. Atualizando...`);
+        const newData = await this.fetchAndReturnRequisicaoMaterial(exists.id);
+        return await this.persistUpdateRequisicaoMaterial(exists.id, newData);
+      } else {
+        this.logger.log(`A requisição de material não existe. Criando...`);
+        const createData =
+          await this.fetchByNumeroAnoAndReturnRequisicaoMaterialComplete(
+            numeroAno
+          );
+        return await this.persistCreateRequisicaoMateiral(createData);
+      }
     }
   }
 
@@ -222,5 +356,30 @@ export class RequisicoesMateriaisService {
         }
       }
     });
+  }
+
+  async fetchCompleteAndPersistCreateOrUpdateRequisicaoMaterialArray(
+    numeroAnoArray: string[]
+  ): Promise<{ totalProcessed: number; successful: number; failed: number }> {
+    let totalProcessed = 0;
+    let successful = 0;
+    let failed = 0;
+
+    for (const numeroAno of numeroAnoArray) {
+      totalProcessed++;
+      try {
+        await this.fetchCompleteAndPersistCreateOrUpdateRequisicaoMaterial(
+          numeroAno
+        );
+        successful++;
+      } catch (error) {
+        failed++;
+        this.logger.error(
+          `Falha ao processar requisição de material com numeroAno: ${numeroAno}. Erro: ${error.message}`
+        );
+      }
+    }
+
+    return { totalProcessed, successful, failed };
   }
 }

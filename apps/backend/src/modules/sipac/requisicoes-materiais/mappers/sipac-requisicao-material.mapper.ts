@@ -206,7 +206,7 @@ export class SipacRequisicaoMaterialMapper {
           }) as CreateSipacHistoricoRequisicaoMaterialDto // Type assertion
       ),
 
-      totalizacaoPorElementoDeDespesa:
+      totalizacaoPorElementoDeDespesasDetalhados:
         item.totalizacaoPorElementosDeDespesasDetalhados?.map(
           (
             totItem: SipacTotalizacaoElementoDespesaMaterial

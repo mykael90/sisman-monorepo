@@ -79,10 +79,49 @@ export class RequisicoesMateriaisController {
     );
   }
 
+  @Post('list/fetch-one')
+  async triggerListFetchOne(@Body('numeroAno') numeroAno: string) {
+    return await this.listaRequisicoesMateriaisService.fetchByNumeroAnoAndReturnListaRequisicaoMaterial(
+      numeroAno
+    );
+  }
+
   @Post('list/sync-many') // POST /sipac/requisicoes-materiais/sync-many
   async triggerSyncMany(@Body('numeroAnoArray') numeroAnoArray: string[]) {
     return await this.listaRequisicoesMateriaisService.fetchManyByNumeroAnoAndPersistListaRequisicoesMateriais(
       numeroAnoArray
+    );
+  }
+
+  @Post('fetch-one-complete')
+  async triggerFetchOneComplete(@Body('numeroAno') numeroAno: string) {
+    return await this.requisicoesMateriaisService.fetchByNumeroAnoAndReturnRequisicaoMaterialComplete(
+      numeroAno
+    );
+  }
+
+  @Post('fetch-one-complete-and-persist')
+  async triggerFetchOneCompleteAndPersist(
+    @Body('numeroAno') numeroAno: string
+  ) {
+    return await this.requisicoesMateriaisService.fetchCompleteAndPersistCreateOrUpdateRequisicaoMaterial(
+      numeroAno
+    );
+  }
+
+  @Post('fetch-many-complete-and-persist')
+  async triggerFetchManyCompleteAndPersist(
+    @Body('numeroAnoArray') numeroAnoArray: string[]
+  ) {
+    return await this.requisicoesMateriaisService.fetchCompleteAndPersistCreateOrUpdateRequisicaoMaterialArray(
+      numeroAnoArray
+    );
+  }
+
+  @Get('fetch-one/:id')
+  async triggerFetchOne(@Param('id', ParseIntPipe) id: number) {
+    return await this.requisicoesMateriaisService.fetchAndReturnRequisicaoMaterial(
+      id
     );
   }
 

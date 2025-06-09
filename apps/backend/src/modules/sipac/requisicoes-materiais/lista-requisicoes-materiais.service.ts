@@ -267,6 +267,52 @@ export class ListaRequisicoesMateriaisService {
     };
   }
 
+  async fetchByNumeroAnoAndReturnListaRequisicaoMaterial(numeroAno: string) {
+    //TODO: check pattern numeroAno
+    const numero = numeroAno.split('/')[0];
+    const ano = numeroAno.split('/')[1];
+    this.logger.log(
+      `Buscando e retornando requisição de material do SIPAC com numero: ${numero}/${ano}...`
+    );
+
+    try {
+      const request = await this.sipacScraping.get<
+        SipacPaginatedScrapingResponse<SipacListaRequisicaoMaterialResponseItem>
+      >(
+        this.URL_PATH,
+        {
+          ...this.CONSTANT_PARAMS,
+          buscaNumAno: true,
+          numero,
+          ano
+        },
+        undefined, // headers
+        undefined // options
+      );
+
+      const result = request.data.data.items[0]; // Expecting a single item in the array
+
+      if (!result) {
+        throw new Error(
+          `Requisição de material com numero ${numero}/${ano} não encontrada.`
+        );
+      }
+
+      const listaRequisicaoMaterialDtoFormat: CreateManySipacListaRequisicaoMaterialDto =
+        {
+          items: [SipacListaRequisicaoMaterialMapper.toCreateDto(result)]
+        };
+
+      return listaRequisicaoMaterialDtoFormat.items[0];
+    } catch (error) {
+      this.logger.error(
+        `Erro ao buscar ou processar requisição de material com numero ${numero}/${ano}: ${error.message}`,
+        error.stack
+      );
+      throw error;
+    }
+  }
+
   /**
    * Busca uma pequena quantidade de requisições de materiais da API do SIPAC para teste de conexão.
    * Não persiste os dados.

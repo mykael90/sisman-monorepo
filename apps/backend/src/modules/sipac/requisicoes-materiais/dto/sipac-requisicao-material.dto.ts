@@ -582,7 +582,7 @@ export class CreateSipacRequisicaoMaterialCompletoDto extends CreateSipacListaRe
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => CreateSipacTotalizacaoElementoDespesaMaterialDto)
-  totalizacaoPorElementoDeDespesa?: CreateSipacTotalizacaoElementoDespesaMaterialDto[];
+  totalizacaoPorElementoDeDespesasDetalhados?: CreateSipacTotalizacaoElementoDespesaMaterialDto[];
 
   @ApiProperty({
     type: () => [CreateSipacDetalheAquisicaoItemMaterialDto],
