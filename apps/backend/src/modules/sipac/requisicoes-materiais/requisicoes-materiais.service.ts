@@ -14,7 +14,8 @@ import {
   SipacPaginatedScrapingResponse,
   SipacRequisicaoMaterialResponseItem,
   SipacSingleScrapingResponse,
-  SyncResult
+  SyncResult,
+  SipacItemDaRequisicaoMaterial
 } from '../sipac-scraping.interfaces';
 import {
   CreateManySipacListaRequisicaoMaterialDto as CreateManySipacRequisicaoMaterialDto,
@@ -29,6 +30,7 @@ import {
 import { AxiosRequestConfig } from 'axios';
 import { handlePrismaError } from '../../../shared/utils/prisma-error-handler';
 import { ListaRequisicoesMateriaisService } from './lista-requisicoes-materiais.service';
+import { MateriaisService } from '../materiais/materiais.service';
 
 @Injectable()
 export class RequisicoesMateriaisService {
@@ -43,6 +45,7 @@ export class RequisicoesMateriaisService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly listaRequisicoesMateriaisService: ListaRequisicoesMateriaisService,
+    private readonly materiaisService: MateriaisService,
     private readonly sipacScraping: SipacScrapingService
   ) {}
 
@@ -75,6 +78,13 @@ export class RequisicoesMateriaisService {
     let hasUpdates = false;
 
     if (sipacRequisicaoMaterialModel) {
+      // Antes de processar as atualizações, garantir que os materiais dos itens existem
+      if (data.itensDaRequisicao && data.itensDaRequisicao.length > 0) {
+        const itensParaVerificar = data.itensDaRequisicao.map((item) => ({
+          codigo: item.codigo // Supondo que o DTO de update tenha `codigo` nos itens
+        }));
+        await this.ensureMateriaisExistentes(itensParaVerificar as any); // `as any` para simplificar, idealmente tipar corretamente
+      }
       relationalKeysFromDMMF = sipacRequisicaoMaterialModel.fields
         .filter((field) => field.kind === 'object' && field.relationName) // Filtra apenas campos que são objetos (outros modelos) e têm um nome de relação
         .map((field) => field.name);
@@ -211,6 +221,10 @@ export class RequisicoesMateriaisService {
       }
     }
 
+    // Garante que os materiais referenciados nos itens da requisição existam
+    if (data.itensDaRequisicao && data.itensDaRequisicao.length > 0) {
+      await this.ensureMateriaisExistentes(data.itensDaRequisicao);
+    }
     try {
       this.logger.log(`Persistindo a criação da requisição de material...`);
       return await this.prisma.sipacRequisicaoMaterial.create({
@@ -226,6 +240,42 @@ export class RequisicoesMateriaisService {
         data
       });
       throw error;
+    }
+  }
+
+  private async ensureMateriaisExistentes(
+    itensRequisicao: Array<{ codigo: string; [key: string]: any }>
+  ): Promise<void> {
+    if (!itensRequisicao || itensRequisicao.length === 0) {
+      return;
+    }
+
+    this.logger.log(
+      `Verificando a necessidade de cadastrar materiais da requisição que ainda não existam no banco de dados.`
+    );
+
+    const codigos = itensRequisicao.map((item) => item.codigo);
+
+    const registeredItems = await this.prisma.sipacMaterial.findMany({
+      where: { codigo: { in: codigos } },
+      select: { codigo: true }
+    });
+
+    const codigosEncontrados = registeredItems.map(
+      (register) => register.codigo
+    );
+
+    const codigosNaoEncontrados = codigos.filter(
+      (codigo) => !codigosEncontrados.includes(codigo)
+    );
+
+    if (codigosNaoEncontrados.length > 0) {
+      this.logger.warn(
+        `Códigos ausentes: ${codigosNaoEncontrados.join(', ')}. Cadastrando...`
+      );
+      await this.materiaisService.fetchManyByCodesAndPersistMaterials(
+        codigosNaoEncontrados
+      );
     }
   }
 
