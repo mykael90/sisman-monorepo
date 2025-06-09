@@ -360,26 +360,44 @@ export class RequisicoesMateriaisService {
 
   async fetchCompleteAndPersistCreateOrUpdateRequisicaoMaterialArray(
     numeroAnoArray: string[]
-  ): Promise<{ totalProcessed: number; successful: number; failed: number }> {
-    let totalProcessed = 0;
-    let successful = 0;
-    let failed = 0;
+  ): Promise<{
+    summary: { totalProcessed: number; successful: number; failed: number };
+    details: ProcessNumeroAnoResult[];
+  }> {
+    const results: ProcessNumeroAnoResult[] = [];
+    let successfulCount = 0;
+    let failedCount = 0;
 
     for (const numeroAno of numeroAnoArray) {
-      totalProcessed++;
       try {
         await this.fetchCompleteAndPersistCreateOrUpdateRequisicaoMaterial(
           numeroAno
         );
-        successful++;
+        results.push({ numeroAno, status: 'success' });
+        successfulCount++;
       } catch (error) {
-        failed++;
+        const errorMessage =
+          error instanceof Error ? error.message : 'Erro desconhecido';
         this.logger.error(
-          `Falha ao processar requisição de material com numeroAno: ${numeroAno}. Erro: ${error.message}`
+          `Falha ao processar requisição de material com numeroAno: ${numeroAno}. Erro: ${errorMessage}`
         );
+        results.push({ numeroAno, status: 'failed', message: errorMessage });
+        failedCount++;
       }
     }
 
-    return { totalProcessed, successful, failed };
+    return {
+      summary: {
+        totalProcessed: numeroAnoArray.length,
+        successful: successfulCount,
+        failed: failedCount
+      },
+      details: results
+    };
   }
+}
+export interface ProcessNumeroAnoResult {
+  numeroAno: string;
+  status: 'success' | 'failed';
+  message?: string;
 }
