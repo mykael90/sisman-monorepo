@@ -88,7 +88,7 @@ export class RequisicoesMateriaisController {
 
   @Put(':id')
   async updateOne(@Param('id', ParseIntPipe) id: number) {
-    return await this.requisicoesMateriaisService.fetchAndPersistUpsertRequisicaoMaterial(
+    return await this.requisicoesMateriaisService.fetchAndPersistUpdateRequisicaoMaterial(
       id
     );
   }

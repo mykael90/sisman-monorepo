@@ -58,7 +58,7 @@ export class RequisicoesMateriaisService {
   //   );
   // }
 
-  private async persistUpsertRequisicaoMaterial(
+  private async persistUpdateRequisicaoMaterial(
     id: number,
     data: UpdateSipacRequisicaoMaterialDto
   ) {
@@ -164,7 +164,7 @@ export class RequisicoesMateriaisService {
    * @param id O ID da requisição de material a ser buscada e atualizada.
    * @returns A resposta paginada da API do SIPAC contendo as requisições de materiais.
    */
-  async fetchAndPersistUpsertRequisicaoMaterial(id: number) {
+  async fetchAndPersistUpdateRequisicaoMaterial(id: number) {
     this.logger.log(
       `Iniciando busca e persistência da requisição de material do SIPAC com ID: ${id}...`
     );
@@ -196,7 +196,7 @@ export class RequisicoesMateriaisService {
         SipacRequisicaoMaterialMapper.toUpdateDto(result.data);
 
       const updateRequisicaoMaterial =
-        await this.persistUpsertRequisicaoMaterial(id, updateDtoFormat);
+        await this.persistUpdateRequisicaoMaterial(id, updateDtoFormat);
 
       this.logger.log(
         `Persistência da requisição de material do SIPAC com ID: ${id} concluída com sucesso.`
