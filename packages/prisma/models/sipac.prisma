@@ -198,9 +198,13 @@ model SipacDetalheAquisicaoItemMaterial {
 model SipacRequisicaoManutencao {
     id                             Int      @id // Identificador único da requisição de manutenção.
     numeroRequisicao               String   @unique // Número da requisição (ex: "2124/2025").
+    categoriaRequisicao            String? // Categoria da requisição (ex: "Manutenção Corretiva"; "Manutenção Preventiva"; "Meio Ambiente").
+    idCategoria                    Int?
     tipoDaRequisicao               String? // Tipo da requisição (ex: "REQUISIÇÃO DE MANUTENÇÃO").
+    idTipo                         Int? // Identificador do tipo da requisição.
     divisao                        String? // Divisão (ex: "Serviços Gerais").
     usuarioGravacao                String // Usuário que gravou a requisição (ex: "JOAO PAULO FELIPE PINTO").
+    idUsuarioGravacao              Int? // Identificador do usuário que gravou a requisição.
     status                         String // Status da requisição (ex: "PEDIDO DE MATERIAL REALIZADO").
     dataDeCadastro                 DateTime @db.Timestamp(0) // Data de cadastro da requisição.
     unidadeRequisitante            String // Unidade requisitante.
@@ -213,6 +217,12 @@ model SipacRequisicaoManutencao {
     email                          String?
     horarioParaAtendimento         String?
     observacao                     String?  @db.Text
+    justificativa                  String?  @db.Text
+    valorRequisicao                Decimal  @db.Decimal(12, 2) // Valor total da requisição.
+    valorAutorizacao               Decimal  @db.Decimal(12, 2)
+    dataAutorizacaoResponsavel     DateTime @db.Timestamp(0)
+    dataFinalizacao                DateTime @db.Timestamp(0)
+    emailRepresentante             String?
 
     createdAt DateTime @default(now()) @db.Timestamp(0)
     updatedAt DateTime @updatedAt @db.Timestamp(0)
@@ -287,4 +297,33 @@ model SipacHistoricoManutencao {
 
     @@index([requisicaoManutencaoId])
     @@map("sipac_historico_manutencao")
+}
+
+// Defines the possible statuses for a MaterialRequest.
+enum SipacRequisicaoManutencaoStatus {
+    AGUARDANDO_AVALIACAO_REQUISITANTE
+    AGUARDANDO_PEDIDO_MATERIAL
+    AGUARDANDO_VISITA
+    AUTORIZADA
+    CADASTRADA
+    EM_ROTA_VISITA
+    EM_EXECUCAO
+    ENVIADA
+    ESTORNADA
+    FINALIZADA
+    MATERIAL_RECEBIDO
+    NEGADA
+    PEDIDO_MATERIAL_REALIZADO
+    RETORNADA
+    SERVICO_AVALIADO
+    SERVICO_NAO_EXECUTADO
+}
+
+enum SipacRequisicaoManutencaoDivisoes {
+    AR_CONDICIONADO
+    INSTALACOES_ELETRICAS_E_TELECOMUNICACOES
+    INSTALACOES_HIDRAULICAS_E_SANITARIAS
+    OUTROS
+    SERVICOS_GERAIS
+    VIARIO
 }

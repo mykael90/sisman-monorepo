@@ -655,6 +655,12 @@ export class SipacService {
       this.logger.warn(
         `Pagination data not found in parser result for key '${parserKey}'. Assuming single page or parser issue.`,
       );
+      // including more metadata
+      firstPageResult.metadata = {
+        ...firstPageResult.metadata,
+        method: initialFetchParams.targetMethod,
+        body: initialFetchParams.targetBody,
+      };
       return firstPageResult; // Retorna o resultado da primeira página
     }
 
@@ -665,6 +671,12 @@ export class SipacService {
       this.logger.log(
         `List has no pagination or only one page based on parser data. Total Pages: ${totalPages ?? 'N/A'}`,
       );
+      // including more metadata
+      firstPageResult.metadata = {
+        ...firstPageResult.metadata,
+        method: initialFetchParams.targetMethod,
+        body: initialFetchParams.targetBody,
+      };
       return firstPageResult; // Retorna o resultado da primeira página
     }
 

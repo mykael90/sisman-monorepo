@@ -8,7 +8,11 @@ export interface metadataScraping {
   body: string;
 }
 
-export interface SipacPaginatedScrapingResponse<T> {
+export interface SipacPaginatedScrapingResponse<
+  T extends
+    | SipacListaRequisicaoMaterialResponseItem
+    | SipacListaRequisicaoManutencaoResponseItem
+> {
   metadata: metadataScraping;
   data: {
     items: T[];
@@ -19,7 +23,11 @@ export interface SipacPaginatedScrapingResponse<T> {
     };
   };
 }
-export interface SipacSingleScrapingResponse<T> {
+export interface SipacSingleScrapingResponse<
+  T extends
+    | SipacRequisicaoMaterialResponseItem
+    | SipacRequisicaoManutencaoResponseItem
+> {
   metadata: metadataScraping;
   data: T;
 }
@@ -78,6 +86,43 @@ export interface SipacHistoricoDaRequisicaoMaterial {
 }
 
 /**
+ * Represents the 'data' field of the detailed maintenance requisition response from SIPAC.
+ */
+export interface SipacRequisicaoManutencaoResponseItem {
+  dadosDaRequisicao: {
+    detalhesAninhados: SipacDadosDaRequisicaoManutencaoResponse;
+  };
+  informacoesDoServico: SipacInformacoesDoServicoManutencaoResponse[];
+  requisicoesDeManutencaoAssociadas: SipacRequisicaoManutencaoAssociadaResponse[];
+  requisicoesAssociadasDeMateriais: SipacRequisicaoMaterialAssociadaManutencaoResponse[];
+  'imoveis/prediosInseridos': SipacImovelPredioManutencaoResponse[];
+  historico: SipacHistoricoManutencaoResponse[];
+}
+
+/**
+ * Represents an item in the list response for maintenance requisitions.
+ */
+export interface SipacListaRequisicaoManutencaoResponseItem {
+  id: number;
+  requisicao: string;
+  tipoDaRequisicao: string;
+  divisao: string;
+  requisicaoGravadaPeloUsuario: string;
+  status: string;
+  dataDeCadastro: string;
+  unidadeRequisitante: string;
+  unidadeDeCusto: string;
+  descricao: string;
+  local: string;
+  representanteDaUnidadeDeOrigem: string;
+  telefonesDoRepresentante: string;
+  ramal: string;
+  email: string;
+  horarioParaAtendimento: string;
+  observacao: string;
+}
+
+/**
  * Represents the "dadosDaRequisicao" object within a detailed material requisition response.
  */
 export interface SipacDadosDaRequisicaoMaterial {
@@ -131,4 +176,97 @@ export interface SipacRequisicaoMaterialResponseItem {
   dadosDaRequisicao: SipacDadosDaRequisicaoMaterial;
   totalizacaoPorElementosDeDespesasDetalhados: SipacTotalizacaoElementoDespesaMaterial[];
   detalhesDaAquisicaoDosItens: SipacDetalheAquisicaoItemMaterial[];
+}
+
+// --- Interfaces for Detailed Maintenance Requisition Response ---
+
+/**
+ * Represents the nested details within the "dadosDaRequisicao" object of a maintenance requisition.
+ */
+export interface SipacDadosDaRequisicaoManutencaoResponse {
+  requisicao: string;
+  tipoDaRequisicao: string;
+  divisao: string;
+  requisicaoGravadaPeloUsuario: string;
+  status: string;
+  dataDeCadastro: string;
+  unidadeRequisitante: string;
+  unidadeDeCusto: string;
+  descricao: string;
+  local: string;
+  representanteDaUnidadeDeOrigem: string;
+  telefonesDoRepresentante: string;
+  ramal: string;
+  email: string;
+  horarioParaAtendimento: string;
+  observacao: string;
+}
+
+/**
+ * Represents an item in the "informacoesDoServico" array of a maintenance requisition.
+ */
+export interface SipacInformacoesDoServicoManutencaoResponse {
+  diagnostico: string;
+  executante: string;
+  dataDeCadastro: string;
+  tecnicoResponsavel: string;
+}
+
+/**
+ * Represents an item in the "requisicoesDeManutencaoAssociadas" array of a maintenance requisition.
+ */
+export interface SipacRequisicaoManutencaoAssociadaResponse {
+  'numero/ano': string;
+  descricao: string;
+  status: string;
+  dataDeCadastro: string;
+  usuario: string;
+}
+
+/**
+ * Represents an item within the "itens" array of an associated material requisition in a maintenance requisition response.
+ */
+export interface SipacItemRequisicaoMaterialManutencaoResponse {
+  material: string;
+  quantidade: string;
+  valor: string;
+  valorTotal: string;
+}
+
+/**
+ * Represents an item in the "requisicoesAssociadasDeMateriais" array of a maintenance requisition response.
+ */
+export interface SipacRequisicaoMaterialAssociadaManutencaoResponse {
+  requisicao: string;
+  grupo: string;
+  dataCadastro: string;
+  status: string;
+  itens: SipacItemRequisicaoMaterialManutencaoResponse[];
+  totalGrupoQuantidade: string;
+  totalGrupoValorCalculado: string;
+  totalGrupoValorTotal: string;
+}
+
+/**
+ * Represents an item in the "imoveis/prediosInseridos" array of a maintenance requisition response.
+ */
+export interface SipacImovelPredioManutencaoResponse {
+  tipo: string;
+  municipio: string;
+  campus: string;
+  rip: string;
+  'imovel/terreno': string;
+  predio: string;
+  zona: string;
+}
+
+/**
+ * Represents an item in the "historico" array of a maintenance requisition response.
+ */
+export interface SipacHistoricoManutencaoResponse {
+  data: string;
+  status: string;
+  usuario: string;
+  ramal: string;
+  observacoes: string;
 }

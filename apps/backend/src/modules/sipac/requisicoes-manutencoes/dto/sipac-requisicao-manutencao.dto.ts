@@ -1,0 +1,825 @@
+import { PartialType } from '@nestjs/mapped-types';
+import { ApiProperty } from '@nestjs/swagger';
+import {
+  IsString,
+  IsNotEmpty,
+  IsOptional,
+  IsArray,
+  ValidateNested,
+  IsDate,
+  IsDecimal,
+  IsNumber,
+  Min
+} from 'class-validator';
+import { Type } from 'class-transformer';
+import { Prisma } from '@sisman/prisma';
+import { DecimalJsLike } from '@sisman/prisma/generated/client/runtime/library';
+
+/**
+ * DTO for the nested details of a maintenance requisition.
+ * This DTO maps directly to fields of the main SipacRequisicaoManutencao Prisma model.
+ */
+export class SipacDadosDaRequisicaoManutencaoDto {
+  @ApiProperty({
+    description: 'Número da requisição (ex: "2124/2025")',
+    example: '2124/2025'
+  })
+  @IsNotEmpty()
+  @IsString()
+  requisicao: string;
+
+  @ApiProperty({
+    description: 'Tipo da requisição (ex: "REQUISIÇÃO DE MANUTENÇÃO")',
+    example: 'REQUISIÇÃO DE MANUTENÇÃO'
+  })
+  @IsNotEmpty()
+  @IsString()
+  tipoDaRequisicao: string;
+
+  @ApiProperty({
+    description: 'Divisão (ex: "Serviços Gerais")',
+    example: 'Serviços Gerais'
+  })
+  @IsNotEmpty()
+  @IsString()
+  divisao: string;
+
+  @ApiProperty({
+    description:
+      'Usuário que gravou a requisição (ex: "JOAO PAULO FELIPE PINTO")',
+    example: 'JOAO PAULO FELIPE PINTO'
+  })
+  @IsNotEmpty()
+  @IsString()
+  requisicaoGravadaPeloUsuario: string;
+
+  @ApiProperty({
+    description: 'Status da requisição (ex: "PEDIDO DE MATERIAL REALIZADO")',
+    example: 'PEDIDO DE MATERIAL REALIZADO'
+  })
+  @IsNotEmpty()
+  @IsString()
+  status: string;
+
+  @ApiProperty({
+    description: 'Data de cadastro (ex: "27/03/2025")',
+    example: '2025-03-27T00:00:00.000Z'
+  })
+  @IsNotEmpty()
+  @Type(() => Date)
+  @IsDate()
+  dataDeCadastro: Date;
+
+  @ApiProperty({
+    description:
+      'Unidade requisitante (ex: "DIRETORIA DE MANUTENÇÃO DE INSTALAÇÕES FÍSICAS")',
+    example: 'DIRETORIA DE MANUTENÇÃO DE INSTALAÇÕES FÍSICAS'
+  })
+  @IsNotEmpty()
+  @IsString()
+  unidadeRequisitante: string;
+
+  @ApiProperty({
+    description:
+      'Unidade de custo (ex: "MANUTENÇÃO E CONSERVAÇÃO DA INFRA-ESTRUTURA FÍSICA")',
+    example: 'MANUTENÇÃO E CONSERVAÇÃO DA INFRA-ESTRUTURA FÍSICA'
+  })
+  @IsNotEmpty()
+  @IsString()
+  unidadeDeCusto: string;
+
+  @ApiProperty({
+    description: 'Descrição da requisição',
+    example: 'Acessórios e ferramentas necessários...'
+  })
+  @IsNotEmpty()
+  @IsString()
+  descricao: string;
+
+  @ApiProperty({ description: 'Local (ex: "Diman")', example: 'Diman' })
+  @IsNotEmpty()
+  @IsString()
+  local: string;
+
+  @ApiProperty({
+    description:
+      'Representante da unidade de origem (ex: "JONATAS HENRIQUE CAMARA DA SILVA")',
+    example: 'JONATAS HENRIQUE CAMARA DA SILVA'
+  })
+  @IsNotEmpty()
+  @IsString()
+  representanteDaUnidadeDeOrigem: string;
+
+  @ApiProperty({
+    description: 'Telefones do representante (ex: "84991676560")',
+    example: '84991676560'
+  })
+  @IsNotEmpty()
+  @IsString()
+  telefonesDoRepresentante: string;
+
+  @ApiProperty({ description: 'Ramal (ex: "0")', example: '0' })
+  @IsNotEmpty()
+  @IsString()
+  ramal: string;
+
+  @ApiProperty({
+    description: 'Email do representante (ex: "jonatasufrn@yahoo.com")',
+    example: 'jonatasufrn@yahoo.com'
+  })
+  @IsNotEmpty()
+  @IsString()
+  email: string;
+
+  @ApiProperty({
+    description: 'Horário para atendimento (ex: "07H00-16H00")',
+    example: '07H00-16H00'
+  })
+  @IsNotEmpty()
+  @IsString()
+  horarioParaAtendimento: string;
+
+  @ApiProperty({ description: 'Observação (ex: "-")', example: '-' })
+  @IsNotEmpty()
+  @IsString()
+  observacao: string;
+}
+
+/**
+ * DTO for information about a service related to a maintenance requisition.
+ * Corresponds to the `SipacInformacaoServicoManutencao` Prisma model.
+ */
+export class SipacInformacoesDoServicoManutencaoDto {
+  @ApiProperty({
+    description: 'ID da requisição de manutenção pai',
+    example: 1
+  })
+  @IsOptional() // Made optional as it will be set by parent
+  @IsNumber()
+  requisicaoManutencaoId?: number;
+
+  @ApiProperty({
+    description: 'Diagnóstico do serviço (ex: "-")',
+    example: '-'
+  })
+  @IsNotEmpty()
+  @IsString()
+  diagnostico: string;
+
+  @ApiProperty({
+    description: 'Executante do serviço (ex: "(Engenheiro )")',
+    example: '(Engenheiro )'
+  })
+  @IsNotEmpty()
+  @IsString()
+  executante: string;
+
+  @ApiProperty({
+    description: 'Data de cadastro do serviço (ex: "27/03/2025")',
+    example: '2025-03-27T00:00:00.000Z'
+  })
+  @IsNotEmpty()
+  @Type(() => Date)
+  @IsDate()
+  dataDeCadastro: Date;
+
+  @ApiProperty({
+    description: 'Técnico responsável (ex: "JOAO PAULO FELIPE PINTO")',
+    example: 'JOAO PAULO FELIPE PINTO'
+  })
+  @IsNotEmpty()
+  @IsString()
+  tecnicoResponsavel: string;
+}
+
+/**
+ * DTO for an associated maintenance requisition.
+ * This DTO is for data transfer from API, not direct Prisma CreateManyInput.
+ */
+export class SipacRequisicaoManutencaoAssociadaDto {
+  @ApiProperty({
+    description: 'Número/ano da requisição associada (ex: "631/2024")',
+    example: '631/2024'
+  })
+  @IsNotEmpty()
+  @IsString()
+  numeroAno: string;
+
+  @ApiProperty({
+    description: 'Descrição da requisição associada',
+    example: 'Acessórios e ferramentas necessários...'
+  })
+  @IsNotEmpty()
+  @IsString()
+  descricao: string;
+
+  @ApiProperty({
+    description:
+      'Status da requisição associada (ex: "PEDIDO DE MATERIAL REALIZADO")',
+    example: 'PEDIDO DE MATERIAL REALIZADO'
+  })
+  @IsNotEmpty()
+  @IsString()
+  status: string;
+
+  @ApiProperty({
+    description: 'Data de cadastro da requisição associada (ex: "02/02/2024")',
+    example: '2024-02-02T00:00:00.000Z'
+  })
+  @IsNotEmpty()
+  @Type(() => Date)
+  @IsDate()
+  dataDeCadastro: Date;
+
+  @ApiProperty({
+    description:
+      'Usuário que cadastrou a requisição associada (ex: "joao.felipe")',
+    example: 'joao.felipe'
+  })
+  @IsNotEmpty()
+  @IsString()
+  usuario: string;
+}
+
+/**
+ * DTO for an item within an associated material requisition.
+ * Corresponds to the `SipacItemRequisicaoMaterial` Prisma model.
+ */
+export class SipacItemRequisicaoMaterialManutencaoDto {
+  @ApiProperty({
+    description: 'ID da requisição de material associada pai',
+    example: 1
+  })
+  @IsOptional() // Made optional as it will be set by parent
+  @IsNumber()
+  requisicaoId?: number; // This links to SipacRequisicaoMaterial
+
+  @ApiProperty({
+    description: 'Material (ex: "302400009390 - BALDE DE FERRO - 10 LITROS")',
+    example: '302400009390 - BALDE DE FERRO - 10 LITROS'
+  })
+  @IsNotEmpty()
+  @IsString()
+  material: string;
+
+  @ApiProperty({ description: 'Quantidade (ex: 1)', example: 1 })
+  @IsNotEmpty()
+  @IsNumber()
+  quantidade: number;
+
+  @ApiProperty({
+    description: 'Valor unitário (ex: "20,91")',
+    example: 20.91,
+    type: 'number',
+    format: 'double'
+  })
+  @IsNotEmpty()
+  @IsDecimal({ decimal_digits: '2' })
+  valor: DecimalJsLike;
+
+  @ApiProperty({
+    description: 'Valor total (ex: "20,91")',
+    example: 20.91,
+    type: 'number',
+    format: 'double'
+  })
+  @IsNotEmpty()
+  @IsDecimal({ decimal_digits: '2' })
+  total: DecimalJsLike;
+
+  // These fields are part of SipacItemRequisicaoMaterial but not in the provided JSON for maintenance items.
+  // They are optional for now, but might need to be populated with default values or derived if required by Prisma.
+  @IsOptional()
+  @IsNumber()
+  numeroItem?: number;
+
+  @IsOptional()
+  @IsString()
+  codigo?: string;
+
+  @IsOptional()
+  @IsNumber()
+  quantidadeAtendida?: number;
+
+  @IsOptional()
+  @IsNumber()
+  quantidadeDevolvida?: number;
+
+  @IsOptional()
+  @IsNumber()
+  quantidadeEmCompra?: number;
+
+  @IsOptional()
+  @IsDecimal({ decimal_digits: '2' })
+  valorAtendimento?: DecimalJsLike;
+
+  @IsOptional()
+  @IsDecimal({ decimal_digits: '2' })
+  totalAtendimento?: DecimalJsLike;
+
+  @IsOptional()
+  @IsString()
+  status?: string;
+}
+
+/**
+ * DTO for an associated material requisition.
+ * Corresponds to the `SipacRequisicaoMaterial` Prisma model.
+ */
+export class SipacRequisicaoMaterialAssociadaManutencaoDto {
+  @ApiProperty({
+    description: 'ID da requisição de manutenção pai',
+    example: 1
+  })
+  @IsOptional() // Made optional as it will be set by parent
+  @IsNumber()
+  sipacRequisicaoManutencaoId?: number;
+
+  @ApiProperty({
+    description: 'Número da requisição (ex: "16689/2025")',
+    example: '16689/2025'
+  })
+  @IsNotEmpty()
+  @IsString()
+  numeroDaRequisicao: string;
+
+  @ApiProperty({ description: 'Grupo (ex: "0-")', example: '0-' })
+  @IsNotEmpty()
+  @IsString()
+  grupoDeMaterial: string;
+
+  @ApiProperty({
+    description: 'Data de cadastro (ex: "06/06/2025")',
+    example: '2025-06-06T00:00:00.000Z'
+  })
+  @IsNotEmpty()
+  @Type(() => Date)
+  @IsDate()
+  dataDeCadastro: Date;
+
+  @ApiProperty({
+    description: 'Status (ex: "AGUARD. AUTORIZAÇÃO ORÇAMENTÁRIA")',
+    example: 'AGUARD. AUTORIZAÇÃO ORÇAMENTÁRIA'
+  })
+  @IsNotEmpty()
+  @IsString()
+  statusAtual: string;
+
+  @ApiProperty({
+    type: () => [SipacItemRequisicaoMaterialManutencaoDto],
+    description: 'Lista de itens da requisição de material'
+  })
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => SipacItemRequisicaoMaterialManutencaoDto)
+  itens: SipacItemRequisicaoMaterialManutencaoDto[];
+
+  // These fields are not directly in SipacRequisicaoMaterial Prisma model,
+  // but are part of the API response for associated materials.
+  @ApiProperty({
+    description: 'Total de quantidade do grupo (ex: "3,0")',
+    example: '3,0'
+  })
+  @IsNotEmpty()
+  @IsString()
+  totalGrupoQuantidade: string;
+
+  @ApiProperty({
+    description: 'Total de valor calculado do grupo (ex: "R$ 61,60")',
+    example: 61.6,
+    type: 'number',
+    format: 'double'
+  })
+  @IsNotEmpty()
+  @IsDecimal({ decimal_digits: '2' })
+  totalGrupoValorCalculado: DecimalJsLike;
+
+  @ApiProperty({
+    description: 'Total de valor total do grupo (ex: "R$ 61,60")',
+    example: 61.6,
+    type: 'number',
+    format: 'double'
+  })
+  @IsNotEmpty()
+  @IsDecimal({ decimal_digits: '2' })
+  totalGrupoValorTotal: DecimalJsLike;
+
+  // Fields from SipacRequisicaoMaterial that are not in the provided JSON for associated materials
+  @IsOptional()
+  @IsNumber()
+  id?: number; // ID from SIPAC, not auto-generated by local DB in this context
+
+  @IsOptional()
+  @IsString()
+  tipoDaRequisicao?: string;
+
+  @IsOptional()
+  @IsNumber()
+  tipoId?: number;
+
+  @IsOptional()
+  @IsString()
+  convenio?: string;
+
+  @IsOptional()
+  @IsNumber()
+  grupoMaterialId?: number;
+
+  @IsOptional()
+  @IsString()
+  unidadeDeCusto?: string;
+
+  @IsOptional()
+  @IsString()
+  unidadeRequisitante?: string;
+
+  @IsOptional()
+  @IsString()
+  destinoDaRequisicao?: string;
+
+  @IsOptional()
+  @IsString()
+  usuarioLogin?: string;
+
+  @IsOptional()
+  @IsNumber()
+  usuarioId?: number;
+
+  @IsOptional()
+  @Type(() => Date)
+  @IsDate()
+  dataDeEnvio?: Date;
+
+  @IsOptional()
+  @IsDecimal({ decimal_digits: '2' })
+  valorDaRequisicao?: DecimalJsLike;
+
+  @IsOptional()
+  @IsDecimal({ decimal_digits: '2' })
+  valorDoTotalAtendido?: DecimalJsLike;
+
+  @IsOptional()
+  @IsString()
+  opcaoOrcamentaria?: string;
+
+  @IsOptional()
+  @IsString()
+  numeroDaRequisicaoRelacionada?: string;
+
+  @IsOptional()
+  @IsString()
+  local?: string;
+
+  @IsOptional()
+  @IsString()
+  observacoes?: string;
+
+  @IsOptional()
+  @IsString()
+  almoxarifado?: string;
+
+  @IsOptional()
+  @IsNumber()
+  almoxarifadoId?: number;
+}
+
+/**
+ * DTO for an inserted property/building related to a maintenance requisition.
+ * Corresponds to the `SipacImovelPredioManutencao` Prisma model.
+ */
+export class SipacImovelPredioManutencaoDto {
+  @ApiProperty({
+    description: 'ID da requisição de manutenção pai',
+    example: 1
+  })
+  @IsOptional() // Made optional as it will be set by parent
+  @IsNumber()
+  requisicaoManutencaoId?: number;
+
+  @ApiProperty({ description: 'Tipo (ex: "")', example: '' })
+  @IsNotEmpty()
+  @IsString()
+  tipo: string;
+
+  @ApiProperty({ description: 'Município (ex: "NATAL")', example: 'NATAL' })
+  @IsNotEmpty()
+  @IsString()
+  municipio: string;
+
+  @ApiProperty({
+    description: 'Campus (ex: "CAMPUS CENTRAL")',
+    example: 'CAMPUS CENTRAL'
+  })
+  @IsNotEmpty()
+  @IsString()
+  campus: string;
+
+  @ApiProperty({
+    description: 'RIP (ex: "1761.00464.500-8")',
+    example: '1761.00464.500-8'
+  })
+  @IsNotEmpty()
+  @IsString()
+  rip: string;
+
+  @ApiProperty({
+    description: 'Imóvel/Terreno (ex: "CAMPUS UNIVERSITÁRIO - AREA II")',
+    example: 'CAMPUS UNIVERSITÁRIO - AREA II'
+  })
+  @IsNotEmpty()
+  @IsString()
+  imovelTerreno: string;
+
+  @ApiProperty({
+    description:
+      'Prédio (ex: "ADM. CENTRAL - SIN/DIMAN - DIRETORIA DE MANUTENÇÃO - MANUTEÇÃO DE INSTALAÇÕES")',
+    example:
+      'ADM. CENTRAL - SIN/DIMAN - DIRETORIA DE MANUTENÇÃO - MANUTEÇÃO DE INSTALAÇÕES'
+  })
+  @IsNotEmpty()
+  @IsString()
+  predio: string;
+
+  @ApiProperty({
+    description: 'Zona (ex: "ZONA 05 - Z5")',
+    example: 'ZONA 05 - Z5'
+  })
+  @IsNotEmpty()
+  @IsString()
+  zona: string;
+}
+
+/**
+ * DTO for a history entry of a maintenance requisition.
+ * Corresponds to the `SipacHistoricoManutencao` Prisma model.
+ */
+export class SipacHistoricoManutencaoDto {
+  @ApiProperty({
+    description: 'ID da requisição de manutenção pai',
+    example: 1
+  })
+  @IsOptional() // Made optional as it will be set by parent
+  @IsNumber()
+  requisicaoManutencaoId?: number;
+
+  @ApiProperty({
+    description: 'Data do evento (ex: "27/03/2025")',
+    example: '2025-03-27T00:00:00.000Z'
+  })
+  @IsNotEmpty()
+  @Type(() => Date)
+  @IsDate()
+  data: Date;
+
+  @ApiProperty({
+    description: 'Status do evento (ex: "CADASTRADA")',
+    example: 'CADASTRADA'
+  })
+  @IsNotEmpty()
+  @IsString()
+  status: string;
+
+  @ApiProperty({
+    description:
+      'Usuário responsável pelo evento (ex: "JOAO PAULO FELIPE PINTO")',
+    example: 'JOAO PAULO FELIPE PINTO'
+  })
+  @IsNotEmpty()
+  @IsString()
+  usuario: string;
+
+  @ApiProperty({
+    description: 'Ramal (ex: "Não informado")',
+    example: 'Não informado'
+  })
+  @IsNotEmpty()
+  @IsString()
+  ramal: string;
+
+  @ApiProperty({ description: 'Observações do evento (ex: "-")', example: '-' })
+  @IsNotEmpty()
+  @IsString()
+  observacoes: string;
+}
+
+/**
+ * DTO for creating a complete SipacRequisicaoManutencao record.
+ * This DTO reflects the comprehensive structure from the example JSON and Prisma schema.
+ */
+export class CreateSipacRequisicaoManutencaoCompletoDto {
+  @ApiProperty({
+    type: () => SipacDadosDaRequisicaoManutencaoDto,
+    description: 'Dados detalhados da requisição de manutenção'
+  })
+  @IsNotEmpty()
+  @ValidateNested()
+  @Type(() => SipacDadosDaRequisicaoManutencaoDto)
+  dadosDaRequisicao: SipacDadosDaRequisicaoManutencaoDto;
+
+  @ApiProperty({
+    type: () => [SipacInformacoesDoServicoManutencaoDto],
+    description: 'Informações sobre o serviço de manutenção'
+  })
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => SipacInformacoesDoServicoManutencaoDto)
+  informacoesDoServico: SipacInformacoesDoServicoManutencaoDto[];
+
+  @ApiProperty({
+    type: () => [SipacRequisicaoManutencaoAssociadaDto],
+    description: 'Requisições de manutenção associadas'
+  })
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => SipacRequisicaoManutencaoAssociadaDto)
+  requisicoesDeManutencaoAssociadas: SipacRequisicaoManutencaoAssociadaDto[];
+
+  @ApiProperty({
+    type: () => [SipacRequisicaoMaterialAssociadaManutencaoDto],
+    description: 'Requisições de materiais associadas'
+  })
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => SipacRequisicaoMaterialAssociadaManutencaoDto)
+  requisicoesAssociadasDeMateriais: SipacRequisicaoMaterialAssociadaManutencaoDto[];
+
+  @ApiProperty({
+    type: () => [SipacImovelPredioManutencaoDto],
+    description: 'Imóveis/prédios inseridos'
+  })
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => SipacImovelPredioManutencaoDto)
+  imoveisPrediosInseridos: SipacImovelPredioManutencaoDto[];
+
+  @ApiProperty({
+    type: () => [SipacHistoricoManutencaoDto],
+    description: 'Histórico da requisição de manutenção'
+  })
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => SipacHistoricoManutencaoDto)
+  historico: SipacHistoricoManutencaoDto[];
+}
+
+/**
+ * DTO for updating an existing SipacRequisicaoManutencao.
+ * All fields are optional, allowing for partial updates.
+ */
+export class UpdateSipacRequisicaoManutencaoDto extends PartialType(
+  CreateSipacRequisicaoManutencaoCompletoDto
+) {}
+
+/**
+ * DTO for creating multiple SipacRequisicaoManutencao records for list view.
+ * Corresponds to the `SipacRequisicaoManutencao` Prisma model.
+ */
+export class CreateSipacListaRequisicaoManutencaoDto
+  implements Prisma.SipacRequisicaoManutencaoCreateManyInput
+{
+  @ApiProperty({
+    description:
+      'Identificador único da requisição (deve ser fornecido se não for autogerado)',
+    example: 12345
+  })
+  @IsNotEmpty()
+  @IsNumber()
+  id: number; // ID from SIPAC, not auto-generated by local DB in this context
+
+  @ApiProperty({
+    description: 'Número da requisição no SIPAC',
+    example: '2124/2025'
+  })
+  @IsNotEmpty()
+  @IsString()
+  numeroRequisicao: string; // Mapped from numeroDaRequisicao
+
+  @ApiProperty({
+    description: 'Tipo da requisição',
+    example: 'REQUISIÇÃO DE MANUTENÇÃO'
+  })
+  @IsNotEmpty()
+  @IsString()
+  tipoDaRequisicao: string;
+
+  @ApiProperty({
+    description: 'Divisão',
+    example: 'Serviços Gerais'
+  })
+  @IsNotEmpty()
+  @IsString()
+  divisao: string;
+
+  @ApiProperty({
+    description: 'Usuário que gravou a requisição',
+    example: 'JOAO PAULO FELIPE PINTO'
+  })
+  @IsNotEmpty()
+  @IsString()
+  usuarioGravacao: string; // Mapped from requisicaoGravadaPeloUsuario
+
+  @ApiProperty({
+    description: 'Status atual da requisição',
+    example: 'PEDIDO DE MATERIAL REALIZADO'
+  })
+  @IsNotEmpty()
+  @IsString()
+  status: string; // Mapped from statusAtual
+
+  @ApiProperty({
+    description: 'Data de cadastro da requisição',
+    example: '2025-03-27T00:00:00.000Z'
+  })
+  @IsNotEmpty()
+  @Type(() => Date)
+  @IsDate()
+  dataDeCadastro: Date;
+
+  @ApiProperty({
+    description: 'Unidade requisitante',
+    example: 'DIRETORIA DE MANUTENÇÃO DE INSTALAÇÕES FÍSICAS'
+  })
+  @IsNotEmpty()
+  @IsString()
+  unidadeRequisitante: string;
+
+  @ApiProperty({
+    description: 'Unidade de custo',
+    example: 'MANUTENÇÃO E CONSERVAÇÃO DA INFRA-ESTRUTURA FÍSICA'
+  })
+  @IsNotEmpty()
+  @IsString()
+  unidadeDeCusto: string;
+
+  @ApiProperty({
+    description: 'Descrição da requisição',
+    example: 'Acessórios e ferramentas necessários...'
+  })
+  @IsNotEmpty()
+  @IsString()
+  descricao: string;
+
+  @ApiProperty({
+    description: 'Local da requisição',
+    example: 'Diman'
+  })
+  @IsNotEmpty()
+  @IsString()
+  local: string;
+
+  @ApiProperty({
+    description: 'Representante da unidade de origem',
+    example: 'JONATAS HENRIQUE CAMARA DA SILVA'
+  })
+  @IsNotEmpty()
+  @IsString()
+  representanteDaUnidadeDeOrigem: string;
+
+  @ApiProperty({
+    description: 'Telefones do representante',
+    example: '84991676560'
+  })
+  @IsNotEmpty()
+  @IsString()
+  telefonesDoRepresentante: string;
+
+  @ApiProperty({
+    description: 'Ramal',
+    example: '0'
+  })
+  @IsNotEmpty()
+  @IsString()
+  ramal: string;
+
+  @ApiProperty({
+    description: 'Email do representante',
+    example: 'jonatasufrn@yahoo.com'
+  })
+  @IsNotEmpty()
+  @IsString()
+  email: string;
+
+  @ApiProperty({
+    description: 'Horário para atendimento',
+    example: '07H00-16H00'
+  })
+  @IsNotEmpty()
+  @IsString()
+  horarioParaAtendimento: string;
+
+  @ApiProperty({
+    description: 'Observação',
+    example: '-'
+  })
+  @IsNotEmpty()
+  @IsString()
+  observacao: string;
+}
+
+export class CreateManySipacListaRequisicaoManutencaoDto {
+  @ApiProperty({ type: () => [CreateSipacListaRequisicaoManutencaoDto] })
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreateSipacListaRequisicaoManutencaoDto)
+  items: CreateSipacListaRequisicaoManutencaoDto[];
+}

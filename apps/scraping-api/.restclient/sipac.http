@@ -8,8 +8,8 @@ Content-Type: {{contentType}}
 
 ### GET requisição de material
 GET {{urlLocal}}/requisicao/material
-?id=2141648
-&requisicao=2141648
+?id=2033086
+&requisicao=2033086
 &acao=200
 Content-Type: {{contentType}}
 
@@ -30,7 +30,7 @@ GET {{urlLocal}}/lista/requisicao/manutencao
 &buscaData=true
 &buscaUnidadeReq=false
 &dataInicial=01/01/2025
-&dataFinal=31/01/2025
+&dataFinal=05/01/2025
 &proposto.cpf_cnpj=-1
 &usuario.id=0
 &proponente.siape=0

@@ -6,6 +6,7 @@ import { MateriaisModule } from './materiais/materiais.module';
 import { GruposMateriaisModule } from './grupos-materiais/grupos-materiais.module';
 import { SubGruposMateriaisModule } from './subgrupo-materiais/subgrupos-materiais.module';
 import { RequisicoesMateriaisModule } from './requisicoes-materiais/requisicoes-materiais.module';
+import { RequisicoesManutencoesModule } from './requisicoes-manutencoes/requisicoes-manutencoes.module';
 import { SipacScrapingService } from './sipac-scraping.service';
 // import { UnidadesModule } from './unidades/unidades.module'; // Exemplo
 
@@ -26,9 +27,15 @@ import { SipacScrapingService } from './sipac-scraping.service';
     MateriaisModule,
     GruposMateriaisModule,
     SubGruposMateriaisModule,
-    RequisicoesMateriaisModule
+    RequisicoesMateriaisModule,
+    RequisicoesManutencoesModule // Add the new module
   ],
   providers: [SipacApiService, SipacScrapingService], // Logger pode ser útil aqui também
-  exports: [SipacApiService, SipacScrapingService] // Exporta para uso nos submódulos
+  exports: [
+    SipacApiService,
+    SipacScrapingService,
+    // Export services from the new module if needed by other modules
+    RequisicoesManutencoesModule
+  ] // Exporta para uso nos submódulos
 })
 export class SipacModule {}
