@@ -103,23 +103,14 @@ export interface SipacRequisicaoManutencaoResponseItem {
  * Represents an item in the list response for maintenance requisitions.
  */
 export interface SipacListaRequisicaoManutencaoResponseItem {
-  id: number;
-  requisicao: string;
-  tipoDaRequisicao: string;
-  divisao: string;
-  requisicaoGravadaPeloUsuario: string;
-  status: string;
-  dataDeCadastro: string;
-  unidadeRequisitante: string;
-  unidadeDeCusto: string;
+  numeroAno: string;
   descricao: string;
   local: string;
-  representanteDaUnidadeDeOrigem: string;
-  telefonesDoRepresentante: string;
-  ramal: string;
-  email: string;
-  horarioParaAtendimento: string;
-  observacao: string;
+  tipo: string;
+  status: string;
+  usuarioDetalhes: string;
+  usuario: string;
+  id: number;
 }
 
 /**
@@ -221,6 +212,7 @@ export interface SipacRequisicaoManutencaoAssociadaResponse {
   status: string;
   dataDeCadastro: string;
   usuario: string;
+  id: string;
 }
 
 /**
@@ -237,6 +229,7 @@ export interface SipacItemRequisicaoMaterialManutencaoResponse {
  * Represents an item in the "requisicoesAssociadasDeMateriais" array of a maintenance requisition response.
  */
 export interface SipacRequisicaoMaterialAssociadaManutencaoResponse {
+  id: string;
   requisicao: string;
   grupo: string;
   dataCadastro: string;

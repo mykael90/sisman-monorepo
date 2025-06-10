@@ -164,7 +164,6 @@ export class ReqManutencaoParserService implements IHtmlParser {
 
   /**
    * Processa uma tabela no estilo lista/grid (com <thead> e <tbody>).
-   * Adaptado para não ter renomeação específica de materiais.
    * @param $table A seleção Cheerio da tabela a ser processada.
    * @param $ O contexto CheerioAPI global.
    * @returns Um array de objetos.
@@ -177,14 +176,12 @@ export class ReqManutencaoParserService implements IHtmlParser {
         const $th: cheerio.Cheerio = $(th);
         const rawHeader = this.cleanValue($th.text());
 
-        // Ignorar headers vazios ou que contenham apenas imagens (como o ícone de visualizar)
         if (
           rawHeader &&
           rawHeader !== ' ' &&
           $th.find('img').length === 0 &&
           rawHeader !== ' '
         ) {
-          // Aplica camelCase diretamente
           headers.push(this.toCamelCase(rawHeader));
         } else {
           headers.push(null); // Manter posição para alinhamento das células
@@ -196,10 +193,9 @@ export class ReqManutencaoParserService implements IHtmlParser {
       const $row: cheerio.Cheerio = $(row);
       const rowData = {};
       let hasData = false;
-      let cellIndex = 0; // Índice para mapear corretamente com headers que podem ter 'null'
+      let cellIndex = 0;
 
       $row.find('> td').each((index, cell: cheerio.Element) => {
-        // Pular se não houver header correspondente
         while (cellIndex < headers.length && headers[cellIndex] === null) {
           cellIndex++;
         }
@@ -207,13 +203,23 @@ export class ReqManutencaoParserService implements IHtmlParser {
         if (cellIndex < headers.length) {
           const key = headers[cellIndex] as string;
           const $cell = $(cell);
-          // Tentar pegar o texto ou o valor de um link se for o caso (ex: req associadas)
           const link = $cell.find('a').first();
           let value: string;
+
           if (link.length > 0) {
             value = this.cleanValue(link.text());
-            // Poderia adicionar o href também se necessário:
-            // rowData[key + 'Url'] = link.attr('href');
+
+            // --- INÍCIO DA MODIFICAÇÃO ---
+            // Extrai o 'id' do atributo onclick se ele existir
+            const onclickAttr = link.attr('onclick');
+            if (onclickAttr) {
+              const idMatch = onclickAttr.match(/id=(\d+)/);
+              if (idMatch && idMatch[1]) {
+                // Adiciona a nova chave 'id' ao objeto da linha
+                rowData['id'] = idMatch[1];
+              }
+            }
+            // --- FIM DA MODIFICAÇÃO ---
           } else {
             value = this.cleanValue($cell.text());
           }
@@ -222,7 +228,7 @@ export class ReqManutencaoParserService implements IHtmlParser {
           if (value) {
             hasData = true;
           }
-          cellIndex++; // Avançar para o próximo header mapeável
+          cellIndex++;
         }
       });
 
@@ -444,7 +450,7 @@ export class ReqManutencaoParserService implements IHtmlParser {
           dataCadastro: this.cleanValue($cells.eq(2).text()),
           status: this.cleanValue($cells.eq(3).text()),
           // Poderia extrair o ID da requisição do form/link se necessário
-          // id: $row.find('input[name="id"]').val(),
+          id: $row.find('input[name="id"]').val(),
           itens: [],
         };
         itemHeaders = []; // Resetar headers dos itens para a nova requisição
@@ -534,8 +540,3 @@ export class ReqManutencaoParserService implements IHtmlParser {
     return requests;
   }
 }
-
-// Interface de exemplo (coloque em seu próprio arquivo .interface.ts)
-// export interface IHtmlParser {
-//   parse(html: string, sourceUrl: string): object;
-// }

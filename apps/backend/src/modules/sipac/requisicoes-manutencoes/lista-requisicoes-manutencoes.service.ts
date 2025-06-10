@@ -19,13 +19,12 @@ import { AxiosRequestConfig } from 'axios';
 @Injectable()
 export class ListaRequisicoesManutencoesService {
   private readonly logger = new Logger(ListaRequisicoesManutencoesService.name);
-  private readonly URL_PATH = 'sipac/lista/requisicao/manutencao'; // TODO: Confirm the actual API path
+  private readonly URL_PATH = 'sipac/lista/requisicao/manutencao';
 
   // Constant query parameters - TODO: Confirm these for maintenance requisitions
   private readonly CONSTANT_PARAMS = {
-    'tipoReq.id': 2, // Assuming a different type ID for maintenance
-    'subTipoReq.id': 2 // Assuming a different sub-type ID for maintenance
-    // Add other necessary constant params for maintenance requisitions
+    'tipoReq.id': 11, // Assuming a different type ID for maintenance
+    buscaTipo: true
   };
 
   constructor(
@@ -33,6 +32,20 @@ export class ListaRequisicoesManutencoesService {
     private readonly sipacScraping: SipacScrapingService
   ) {}
 
+  // @Cron(
+  //   process.env.CRON_SIPAC_REQUISICOES_MANUTENCOES_SYNC || '0 0 * * *' // Daily at midnight
+  // )
+  // async handleCronSyncRequisicoesManutencoes() {
+  //   this.logger.log(
+  //     'Iniciando sincronização agendada de requisições de manutenções do SIPAC...'
+  //   );
+  //   // You'll need to define how to get dataInicial and dataFinal for cron jobs
+  //   // For example, sync for the previous day or week.
+  //   const result = await this.fetchAllAndPersistListaRequisicoesManutencoes('01/01/2025', '05/01/2025'); // Placeholder dates
+  //   this.logger.log(
+  //     `Sincronização agendada de requisições de manutenções do SIPAC concluída. Summary: ${JSON.stringify(result.summary)}, Details: ${result.details.length} items processed.`
+  //   );
+  // }
   // @Cron(
   //   process.env.CRON_SIPAC_REQUISICOES_MANUTENCOES_SYNC || '0 0 * * *' // Daily at midnight
   // )
@@ -77,14 +90,14 @@ export class ListaRequisicoesManutencoesService {
         `Erro ao persistir lote de requisições de manutenções: ${error.message}`,
         error.stack
       );
-      // Tratar erros de transação, talvez individualmente se necessário.
+      throw error; // Re-throw for the caller to handle batch failure
     }
   }
 
   async fetchAllAndPersistListaRequisicoesManutencoes(
     dataInicial: string,
     dataFinal: string
-  ): Promise<SyncResult> {
+  ): Promise<DetailedSyncWithListaItemsResult> {
     this.logger.log(
       'Buscando todas as requisições de manutenções do SIPAC. do período ' +
         dataInicial +
@@ -92,10 +105,10 @@ export class ListaRequisicoesManutencoesService {
         dataFinal +
         '...'
     );
+    const details: ProcessedListaItemResult[] = [];
     let successfulItems = 0;
     let failedItems = 0;
     let itemsFetched = 0;
-
     try {
       const response = await this.sipacScraping.get<
         SipacPaginatedScrapingResponse<SipacListaRequisicaoManutencaoResponseItem>
@@ -115,24 +128,41 @@ export class ListaRequisicoesManutencoesService {
       itemsFetched = requisicoes ? requisicoes.length : 0;
 
       if (requisicoes && requisicoes.length > 0) {
+        const dtosToPersist = requisicoes.map((item) =>
+          SipacListaRequisicaoManutencaoMapper.toCreateDto(item)
+        );
         this.logger.log(
-          `Recebidas ${requisicoes.length} requisições. Persistindo...`
+          `Recebidas ${itemsFetched} requisições. Persistindo...`
         );
         const createManyDto: CreateManySipacListaRequisicaoManutencaoDto = {
-          items: requisicoes.map((item) =>
-            SipacListaRequisicaoManutencaoMapper.toCreateDto(item)
-          )
+          items: dtosToPersist
         };
         try {
           await this.persistManyListaRequisicoesManutencoes(createManyDto);
-          successfulItems = requisicoes.length; // Assume all items in batch were passed to persistMany successfully
+          successfulItems = itemsFetched;
+          dtosToPersist.forEach((dto) => {
+            details.push({
+              identifier: dto.numeroRequisicao,
+              status: 'success'
+            });
+          });
         } catch (persistError) {
-          // This catch is likely unreachable if persistManyListaRequisicoesManutencoes handles its own errors and doesn't rethrow.
           this.logger.error(
             `Erro CRÍTICO ao persistir LOTE de requisições: ${persistError.message}`,
             persistError.stack
           );
-          failedItems = requisicoes.length; // All items in the batch failed due to critical persistence error
+          failedItems = itemsFetched;
+          const errorMessage =
+            persistError instanceof Error
+              ? persistError.message
+              : 'Erro desconhecido na persistência';
+          dtosToPersist.forEach((dto) => {
+            details.push({
+              identifier: dto.numeroRequisicao,
+              status: 'failed',
+              message: errorMessage
+            });
+          });
         }
       } else {
         this.logger.log(`Nenhuma requisição encontrada. Finalizando busca.`);
@@ -142,67 +172,75 @@ export class ListaRequisicoesManutencoesService {
         `Erro geral ao buscar ou persistir requisições de manutenções: ${error.message}`,
         error.stack
       );
-      // If fetch fails, itemsFetched will be 0, successfulItems and failedItems will be 0.
-      // The SyncResult will correctly reflect {0,0,0} items processed.
+      // If fetch fails, itemsFetched is 0. All summary counts remain 0. Details is empty.
+      // Or, add a single detail for the overall fetch failure if desired:
+      // details.push({ identifier: `batch_fetch_${dataInicial}_${dataFinal}`, status: 'failed', message: fetchError.message });
     }
 
-    // Determine finalTotalProcessed based on itemsFetched
-    // If items were fetched, they were "processed" (attempted persistence)
-    // If fetch failed or no items found, itemsFetched is 0, so finalTotalProcessed is 0.
     const finalTotalProcessed = itemsFetched;
 
     this.logger.log(
       `Sincronização de requisições de manutenções do SIPAC concluída. Total processado: ${finalTotalProcessed}, Sucesso: ${successfulItems}, Falhas: ${failedItems}.`
     );
     return {
-      totalProcessed: finalTotalProcessed,
-      successful: successfulItems,
-      failed: failedItems
+      summary: {
+        totalProcessed: finalTotalProcessed,
+        successful: successfulItems,
+        failed: failedItems
+      },
+      details
     };
   }
 
   async fetchManyByNumeroAnoAndPersistListaRequisicoesManutencoes(
     numeroAnoArray: string[]
-  ): Promise<SyncResult> {
-    //TODO: Consider using Promise.allSettled for concurrent processing if appropriate,
-    // and then aggregate results. For now, sequential processing is maintained.
+  ): Promise<DetailedSyncWithListaItemsResult> {
     this.logger.log(
       `Iniciando busca e persistência de múltiplas requisições de manutenções por ID do SIPAC. Total de IDs: ${numeroAnoArray.length}`
     );
-    let totalProcessed = 0;
-    let successful = 0;
-    let failed = 0;
+    const allDetails: ProcessedListaItemResult[] = [];
+    let totalSuccessful = 0;
+    let totalFailed = 0;
 
     for (const numeroAno of numeroAnoArray) {
       const result =
         await this.fetchByNumeroAnoAndPersistListaRequisicaoManutencao(
           numeroAno
         );
-      totalProcessed += result.totalProcessed;
-      successful += result.successful;
-      failed += result.failed;
+      // result.details will contain one item
+      allDetails.push(...result.details);
+      totalSuccessful += result.summary.successful;
+      totalFailed += result.summary.failed;
     }
+
+    const totalProcessed = numeroAnoArray.length;
     this.logger.log(
-      `Concluída a busca e persistência de múltiplas requisições de manutenções por ID do SIPAC. Total processado: ${totalProcessed}, Sucesso: ${successful}, Falhas: ${failed}.`
+      `Concluída a busca e persistência de múltiplas requisições de manutenções por ID do SIPAC. Total processado: ${totalProcessed}, Sucesso: ${totalSuccessful}, Falhas: ${totalFailed}.`
     );
     return {
-      totalProcessed,
-      successful,
-      failed
+      summary: {
+        totalProcessed,
+        successful: totalSuccessful,
+        failed: totalFailed
+      },
+      details: allDetails
     };
   }
 
   async fetchByNumeroAnoAndPersistListaRequisicaoManutencao(
     numeroAno: string
-  ): Promise<SyncResult> {
-    //TODO: check pattern numeroAno
+  ): Promise<DetailedSyncWithListaItemsResult> {
     const numero = numeroAno.split('/')[0];
     const ano = numeroAno.split('/')[1];
     this.logger.log(
       `Buscando e persistindo requisição de manutenção do SIPAC com numero: ${numero}/${ano}...`
     );
-    let successful = 0;
-    let failed = 0;
+
+    const details: ProcessedListaItemResult[] = [];
+    let status: 'success' | 'failed' = 'failed'; // Default to failed
+    let message: string | undefined;
+    let successfulCount = 0;
+    let failedCount = 0;
 
     try {
       const response = await this.sipacScraping.get<
@@ -221,51 +259,62 @@ export class ListaRequisicoesManutencoesService {
 
       const requisicao = response.data.data.items[0]; // Expecting a single item in the array
       if (requisicao) {
+        const createDto =
+          SipacListaRequisicaoManutencaoMapper.toCreateDto(requisicao);
         this.logger.log(
           `Requisição de manutenção com numero ${numero}/${ano} encontrada. Persistindo...`
         );
         const createManyDto: CreateManySipacListaRequisicaoManutencaoDto = {
-          items: [SipacListaRequisicaoManutencaoMapper.toCreateDto(requisicao)]
+          items: [createDto]
         };
         try {
           await this.persistManyListaRequisicoesManutencoes(createManyDto);
-          successful = 1; // Item fetched and persistence attempt was successful (persistMany didn't throw)
+          status = 'success';
+          successfulCount = 1;
           this.logger.log(
             `Requisição de manutenção com numero ${numero}/${ano} persistida com sucesso (ou skipDuplicates).`
           );
         } catch (persistError) {
-          // This block is likely unreachable if persistManyListaRequisicoesManutencoes catches its own errors and doesn't rethrow.
           this.logger.error(
             `Erro CRÍTICO ao persistir requisição de manutenção com numero ${numero}/${ano}: ${persistError.message}`,
             persistError.stack
           );
-          failed = 1; // Persistence failed critically
+          message =
+            persistError instanceof Error
+              ? persistError.message
+              : 'Erro desconhecido na persistência';
+          failedCount = 1;
         }
       } else {
-        this.logger.log(
-          `Nenhuma requisição encontrada com numero ${numero}/${ano}.`
-        );
-        failed = 1; // Item not found is treated as a failed attempt for this specific numeroAno
+        message = `Nenhuma requisição encontrada com numero ${numero}/${ano}.`;
+        this.logger.warn(message);
+        failedCount = 1;
       }
-    } catch (error) {
+    } catch (fetchError) {
       this.logger.error(
-        `Erro ao buscar ou processar requisição de manutenção com numero ${numero}/${ano}: ${error.message}`,
-        error.stack
+        `Erro ao buscar ou processar requisição de manutenção com numero ${numero}/${ano}: ${fetchError.message}`,
+        fetchError.stack
       );
-      failed = 1; // Fetch error or other unhandled error during processing of this item
+      message =
+        fetchError instanceof Error
+          ? fetchError.message
+          : 'Erro desconhecido na busca';
+      failedCount = 1;
     }
 
-    // totalProcessed will be 1 because one numeroAno was processed,
-    // resulting in either a success or a failure.
+    details.push({ identifier: numeroAno, status, message });
+
     return {
-      totalProcessed: successful + failed, // This will be 1 (either 1+0 or 0+1)
-      successful: successful,
-      failed: failed
+      summary: {
+        totalProcessed: 1, // Always 1 for this method
+        successful: successfulCount,
+        failed: failedCount
+      },
+      details
     };
   }
 
   async fetchByNumeroAnoAndReturnListaRequisicaoManutencao(numeroAno: string) {
-    //TODO: check pattern numeroAno
     const numero = numeroAno.split('/')[0];
     const ano = numeroAno.split('/')[1];
     this.logger.log(
@@ -290,8 +339,9 @@ export class ListaRequisicoesManutencoesService {
       const result = request.data.data.items[0]; // Expecting a single item in the array
 
       if (!result) {
+        // Consistent with how fetchByNumeroAnoAndPersistListaRequisicaoManutencao handles not found
         throw new Error(
-          `Requisição de manutenção com numero ${numero}/${ano} não encontrada.`
+          `Nenhuma requisição encontrada com numero ${numero}/${ano}.`
         );
       }
 
@@ -362,4 +412,15 @@ export class ListaRequisicoesManutencoesService {
       throw error;
     }
   }
+}
+
+export interface ProcessedListaItemResult {
+  identifier: string; // numeroAno (e.g., "123/2024")
+  status: 'success' | 'failed';
+  message?: string;
+}
+
+export interface DetailedSyncWithListaItemsResult {
+  summary: SyncResult; // SyncResult is { totalProcessed: number; successful: number; failed: number }
+  details: ProcessedListaItemResult[];
 }

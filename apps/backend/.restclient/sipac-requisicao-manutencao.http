@@ -1,0 +1,41 @@
+### Variables
+@urlLocal = {{apiUrl}}/sipac/requisicoes-manutencoes
+@contentType = application/json
+
+### GET fetch requisicoes manutencao
+GET {{urlLocal}}/list/test
+?dataInicial=01/01/2025
+&dataFinal=15/01/2025
+
+### POST
+POST {{urlLocal}}/list/fetch-one
+Content-Type: {{contentType}}
+
+{
+    "numeroAno": "211/2025"
+}
+
+### POST
+POST {{urlLocal}}/list/sync-one
+Content-Type: {{contentType}}
+
+{
+    "numeroAno": "211/2025"
+}
+
+### POST
+POST {{urlLocal}}/list/sync-many
+Content-Type: {{contentType}}
+
+{
+    "numeroAnoArray": ["211/2025","3984/2025","5585/2025", "4445/2025" ]
+}
+
+### GET fetch and persist requisicoes manutencao
+GET {{urlLocal}}/list/sync-all
+?dataInicial=01/01/2025
+&dataFinal=05/01/2025
+
+
+### GET fetch one and return by id
+GET {{urlLocal}}/fetch-one/2153960

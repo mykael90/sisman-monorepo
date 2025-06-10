@@ -636,9 +636,13 @@ exports.Prisma.SipacDetalheAquisicaoItemMaterialScalarFieldEnum = {
 exports.Prisma.SipacRequisicaoManutencaoScalarFieldEnum = {
   id: 'id',
   numeroRequisicao: 'numeroRequisicao',
+  categoriaRequisicao: 'categoriaRequisicao',
+  idCategoria: 'idCategoria',
   tipoDaRequisicao: 'tipoDaRequisicao',
+  idTipo: 'idTipo',
   divisao: 'divisao',
   usuarioGravacao: 'usuarioGravacao',
+  idUsuarioGravacao: 'idUsuarioGravacao',
   status: 'status',
   dataDeCadastro: 'dataDeCadastro',
   unidadeRequisitante: 'unidadeRequisitante',
@@ -651,6 +655,12 @@ exports.Prisma.SipacRequisicaoManutencaoScalarFieldEnum = {
   email: 'email',
   horarioParaAtendimento: 'horarioParaAtendimento',
   observacao: 'observacao',
+  justificativa: 'justificativa',
+  valorRequisicao: 'valorRequisicao',
+  valorAutorizacao: 'valorAutorizacao',
+  dataAutorizacaoResponsavel: 'dataAutorizacaoResponsavel',
+  dataFinalizacao: 'dataFinalizacao',
+  emailRepresentante: 'emailRepresentante',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -975,6 +985,7 @@ exports.Prisma.SipacDetalheAquisicaoItemMaterialOrderByRelevanceFieldEnum = {
 
 exports.Prisma.SipacRequisicaoManutencaoOrderByRelevanceFieldEnum = {
   numeroRequisicao: 'numeroRequisicao',
+  categoriaRequisicao: 'categoriaRequisicao',
   tipoDaRequisicao: 'tipoDaRequisicao',
   divisao: 'divisao',
   usuarioGravacao: 'usuarioGravacao',
@@ -988,7 +999,9 @@ exports.Prisma.SipacRequisicaoManutencaoOrderByRelevanceFieldEnum = {
   ramal: 'ramal',
   email: 'email',
   horarioParaAtendimento: 'horarioParaAtendimento',
-  observacao: 'observacao'
+  observacao: 'observacao',
+  justificativa: 'justificativa',
+  emailRepresentante: 'emailRepresentante'
 };
 
 exports.Prisma.SipacInformacaoServicoManutencaoOrderByRelevanceFieldEnum = {

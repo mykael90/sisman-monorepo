@@ -125,4 +125,15 @@ export class RequisicoesManutencoesController {
       id
     );
   }
+
+  @Get('list/test')
+  async test(
+    @Query('dataInicial') dataInicial: string,
+    @Query('dataFinal') dataFinal: string
+  ) {
+    return await this.listaRequisicoesManutencoesService.testFetchListaRequisicoesManutencoes(
+      dataInicial,
+      dataFinal
+    );
+  }
 }

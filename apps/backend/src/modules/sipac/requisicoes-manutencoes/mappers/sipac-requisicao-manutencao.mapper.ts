@@ -1,3 +1,4 @@
+import { toPlainObject } from 'lodash';
 import {
   SipacRequisicaoManutencaoResponseItem,
   SipacInformacoesDoServicoManutencaoResponse,
@@ -5,7 +6,8 @@ import {
   SipacRequisicaoMaterialAssociadaManutencaoResponse,
   SipacImovelPredioManutencaoResponse,
   SipacHistoricoManutencaoResponse,
-  SipacItemRequisicaoMaterialManutencaoResponse
+  SipacItemRequisicaoMaterialManutencaoResponse,
+  SipacListaRequisicaoManutencaoResponseItem
 } from '../../sipac-scraping.interfaces';
 import {
   CreateSipacRequisicaoManutencaoCompletoDto,
@@ -15,11 +17,27 @@ import {
   SipacRequisicaoMaterialAssociadaManutencaoDto,
   SipacImovelPredioManutencaoDto,
   SipacHistoricoManutencaoDto,
-  SipacItemRequisicaoMaterialManutencaoDto
+  SipacItemRequisicaoMaterialManutencaoDto,
+  CreateSipacListaRequisicaoManutencaoDto
 } from '../dto/sipac-requisicao-manutencao.dto';
 import { DecimalJsLike } from '@sisman/prisma/generated/client/runtime/library';
 
 export class SipacRequisicaoManutencaoMapper {
+  // Helper to parse date string (DD/MM/YYYY) to Date or undefined
+  static parseDateString(value: string | undefined | null): Date | undefined {
+    if (value === null || value === undefined || String(value).trim() === '') {
+      return undefined;
+    }
+    const parts = String(value).split('/');
+    if (parts.length !== 3) return undefined;
+
+    const [dia, mes, ano] = parts.map(Number);
+    if (isNaN(dia) || isNaN(mes) || isNaN(ano)) return undefined;
+
+    const date = new Date(ano, mes - 1, dia);
+    return isNaN(date.getTime()) ? undefined : date;
+  }
+
   static toCreateDto(
     item: SipacRequisicaoManutencaoResponseItem
   ): CreateSipacRequisicaoManutencaoCompletoDto {
@@ -33,7 +51,9 @@ export class SipacRequisicaoManutencaoMapper {
         requisicaoGravadaPeloUsuario:
           dadosDaRequisicao.requisicaoGravadaPeloUsuario,
         status: dadosDaRequisicao.status,
-        dataDeCadastro: new Date(dadosDaRequisicao.dataDeCadastro), // Assuming date format is parseable
+        dataDeCadastro: SipacRequisicaoManutencaoMapper.parseDateString(
+          dadosDaRequisicao.dataDeCadastro
+        ), // Assuming date format is parseable
         unidadeRequisitante: dadosDaRequisicao.unidadeRequisitante,
         unidadeDeCusto: dadosDaRequisicao.unidadeDeCusto,
         descricao: dadosDaRequisicao.descricao,
@@ -46,22 +66,22 @@ export class SipacRequisicaoManutencaoMapper {
         horarioParaAtendimento: dadosDaRequisicao.horarioParaAtendimento,
         observacao: dadosDaRequisicao.observacao
       },
-      informacoesDoServico: item.informacoesDoServico.map(
+      informacoesDoServico: item.informacoesDoServico?.map(
         SipacRequisicaoManutencaoMapper.toInformacoesDoServicoDto
       ),
       requisicoesDeManutencaoAssociadas:
-        item.requisicoesDeManutencaoAssociadas.map(
+        item.requisicoesDeManutencaoAssociadas?.map(
           SipacRequisicaoManutencaoMapper.toRequisicaoManutencaoAssociadaDto
         ),
       requisicoesAssociadasDeMateriais:
-        item.requisicoesAssociadasDeMateriais.map(
+        item.requisicoesAssociadasDeMateriais?.map(
           SipacRequisicaoManutencaoMapper.toRequisicaoMaterialAssociadaManutencaoDto
         ),
-      imoveisPrediosInseridos: item['imoveis/prediosInseridos'].map(
+      imoveisPrediosInseridos: item['imoveis/prediosInseridos']?.map(
         SipacRequisicaoManutencaoMapper.toImovelPredioManutencaoDto
       ),
       historico: item.historico.map(
-        SipacRequisicaoManutencaoMapper.toHistoricoManutencaoDto
+        SipacRequisicaoManutencaoMapper?.toHistoricoManutencaoDto
       )
     };
   }
@@ -73,7 +93,9 @@ export class SipacRequisicaoManutencaoMapper {
       // requisicaoManutencaoId will be set by the service when creating nested records
       diagnostico: item.diagnostico,
       executante: item.executante,
-      dataDeCadastro: new Date(item.dataDeCadastro),
+      dataDeCadastro: SipacRequisicaoManutencaoMapper.parseDateString(
+        item.dataDeCadastro
+      ),
       tecnicoResponsavel: item.tecnicoResponsavel
     };
   }
@@ -85,8 +107,11 @@ export class SipacRequisicaoManutencaoMapper {
       numeroAno: item['numero/ano'],
       descricao: item.descricao,
       status: item.status,
-      dataDeCadastro: new Date(item.dataDeCadastro),
-      usuario: item.usuario
+      dataDeCadastro: SipacRequisicaoManutencaoMapper.parseDateString(
+        item.dataDeCadastro
+      ),
+      usuario: item.usuario,
+      id: parseInt(item.id, 10)
     };
   }
 
@@ -95,9 +120,12 @@ export class SipacRequisicaoManutencaoMapper {
   ): SipacRequisicaoMaterialAssociadaManutencaoDto {
     return {
       // sipacRequisicaoManutencaoId will be set by the service
+      id: parseInt(item.id, 10),
       numeroDaRequisicao: item.requisicao,
       grupoDeMaterial: item.grupo,
-      dataDeCadastro: new Date(item.dataCadastro),
+      dataDeCadastro: SipacRequisicaoManutencaoMapper.parseDateString(
+        item.dataCadastro
+      ),
       statusAtual: item.status,
       itens: item.itens.map(
         SipacRequisicaoManutencaoMapper.toItemRequisicaoMaterialManutencaoDto
@@ -156,7 +184,7 @@ export class SipacRequisicaoManutencaoMapper {
   ): SipacHistoricoManutencaoDto {
     return {
       // requisicaoManutencaoId will be set by the service
-      data: new Date(item.data),
+      data: SipacRequisicaoManutencaoMapper.parseDateString(item.data),
       status: item.status,
       usuario: item.usuario,
       ramal: item.ramal,

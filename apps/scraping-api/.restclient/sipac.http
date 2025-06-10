@@ -20,28 +20,28 @@ Content-Type: {{contentType}}
 
 ### GET lista de manutencao
 GET {{urlLocal}}/lista/requisicao/manutencao
-?pageNum=1 
-&buscaNumAno=false
-&buscaTipo=true
-&buscaStatus=false
-&buscaUsuario=false
-&buscaProponente=false
-&buscaProposto=false
+# ?pageNum=1 
+# &buscaNumAno=false
+?buscaTipo=true
+# &buscaStatus=false
+# &buscaUsuario=false
+# &buscaProponente=false
+# &buscaProposto=false
 &buscaData=true
-&buscaUnidadeReq=false
+# &buscaUnidadeReq=false
 &dataInicial=01/01/2025
 &dataFinal=05/01/2025
-&proposto.cpf_cnpj=-1
-&usuario.id=0
-&proponente.siape=0
-&numero=0
+# &proposto.cpf_cnpj=-1
+# &usuario.id=0
+# &proponente.siape=0
+# &numero=0
 # &ano=2025
 &tipoReq.id=11
-&status=-1
-&unidade.id=0
-&buscaUnidadesSubordinadas=false
-&buscaTipoServico=false
-&grupoManutencao.id=0
+# &status=-1
+# &unidade.id=0
+# &buscaUnidadesSubordinadas=false
+# &buscaTipoServico=false
+# &grupoManutencao.id=0
 Content-Type: {{contentType}}
 
 

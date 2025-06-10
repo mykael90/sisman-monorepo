@@ -31,7 +31,7 @@ export class RequisicoesManutencoesService {
 
   // Constant query parameters - TODO: Confirm these for maintenance requisitions
   private readonly CONSTANT_PARAMS = {
-    acao: 200 // Assuming a similar action parameter
+    // acao: 200 // Assuming a similar action parameter
     // Add other necessary constant params for maintenance requisitions
   };
 
@@ -56,6 +56,90 @@ export class RequisicoesManutencoesService {
   //     `Sincronização agendada de requisições de manutenções do SIPAC concluída. Total processado: ${result.totalProcessed}, Sucesso: ${result.successful}, Falhas: ${result.failed}.`
   //   );
   // }
+
+  private async persistCreateRequisicaoManutencao(
+    data: CreateSipacRequisicaoManutencaoCompletoDto
+  ) {
+    const sipacRequisicaoManutencaoModel = Prisma.dmmf.datamodel.models.find(
+      (model) => model.name === 'SipacRequisicaoManutencao'
+    );
+
+    let relationalKeysFromDMMF: string[] = [];
+    const relationsToInclude: Prisma.SipacRequisicaoManutencaoInclude = {};
+
+    if (sipacRequisicaoManutencaoModel) {
+      relationalKeysFromDMMF = sipacRequisicaoManutencaoModel.fields
+        .filter((field) => field.kind === 'object' && field.relationName)
+        .map((field) => field.name);
+    } else {
+      this.logger.error(
+        'Modelo SipacRequisicaoManutencao não encontrado no DMMF.'
+      );
+    }
+
+    const prismaCreateInput = {};
+
+    // Ensure materials referenced in requisition items exist if MateriaisService is used
+    // if (data.requisicoesAssociadasDeMateriais && data.requisicoesAssociadasDeMateriais.length > 0 && this.materiaisService) {
+    //   const allItems = data.requisicoesAssociadasDeMateriais.flatMap(req => req.itens || []);
+    //   if (allItems.length > 0) {
+    //      const itensParaVerificar = allItems.map(item => ({ codigo: item.codigo })); // Assuming the DTO has 'codigo' in items
+    //      await this.materiaisService.ensureMateriaisExistentes(itensParaVerificar as any); // `as any` to simplify, ideally type correctly
+    //   }
+    // }
+
+    for (const key in data) {
+      if (Object.prototype.hasOwnProperty.call(data, key)) {
+        const typedKey =
+          key as keyof CreateSipacRequisicaoManutencaoCompletoDto;
+        const value = data[typedKey];
+
+        if (relationalKeysFromDMMF.includes(typedKey)) {
+          // If it's a relational field, wrap in 'create' or 'createMany'
+          if (Array.isArray(value)) {
+            (prismaCreateInput as any)[typedKey] = {
+              createMany: {
+                data: value.map((item: any) => {
+                  // Remove the foreign key from the item data as it will be set by createMany
+                  const { requisicaoManutencaoId, requisicaoId, ...itemData } =
+                    item; // Also remove requisicaoId for nested material items
+                  return itemData;
+                }),
+                skipDuplicates: true // Optional: skip if a unique constraint would be violated
+              }
+            };
+            (relationsToInclude as any)[typedKey] = true;
+          } else if (value !== null && typeof value === 'object') {
+            // Handle single nested object relations (e.g., dadosDaRequisicao)
+            (prismaCreateInput as any)[typedKey] = {
+              create: value
+            };
+            (relationsToInclude as any)[typedKey] = true;
+          }
+        } else {
+          // Assume it's a scalar field and assign directly
+          (prismaCreateInput as any)[typedKey] = value;
+        }
+      }
+    }
+
+    try {
+      this.logger.log(`Persistindo a criação da requisição de manutenção...`);
+      return await this.prisma.sipacRequisicaoManutencao.create({
+        data: { ...(prismaCreateInput as any) },
+        include:
+          Object.keys(relationsToInclude).length > 0
+            ? relationsToInclude
+            : undefined
+      });
+    } catch (error) {
+      handlePrismaError(error, this.logger, 'Requisição de Manutenção SIPAC', {
+        operation: 'create',
+        data
+      });
+      throw error;
+    }
+  }
 
   private async persistUpdateRequisicaoManutencao(
     id: number,
@@ -192,90 +276,6 @@ export class RequisicoesManutencoesService {
     }
   }
 
-  private async persistCreateRequisicaoManutencao(
-    data: CreateSipacRequisicaoManutencaoCompletoDto
-  ) {
-    const sipacRequisicaoManutencaoModel = Prisma.dmmf.datamodel.models.find(
-      (model) => model.name === 'SipacRequisicaoManutencao'
-    );
-
-    let relationalKeysFromDMMF: string[] = [];
-    const relationsToInclude: Prisma.SipacRequisicaoManutencaoInclude = {};
-
-    if (sipacRequisicaoManutencaoModel) {
-      relationalKeysFromDMMF = sipacRequisicaoManutencaoModel.fields
-        .filter((field) => field.kind === 'object' && field.relationName)
-        .map((field) => field.name);
-    } else {
-      this.logger.error(
-        'Modelo SipacRequisicaoManutencao não encontrado no DMMF.'
-      );
-    }
-
-    const prismaCreateInput = {};
-
-    // Ensure materials referenced in requisition items exist if MateriaisService is used
-    // if (data.requisicoesAssociadasDeMateriais && data.requisicoesAssociadasDeMateriais.length > 0 && this.materiaisService) {
-    //   const allItems = data.requisicoesAssociadasDeMateriais.flatMap(req => req.itens || []);
-    //   if (allItems.length > 0) {
-    //      const itensParaVerificar = allItems.map(item => ({ codigo: item.codigo })); // Assuming the DTO has 'codigo' in items
-    //      await this.materiaisService.ensureMateriaisExistentes(itensParaVerificar as any); // `as any` to simplify, ideally type correctly
-    //   }
-    // }
-
-    for (const key in data) {
-      if (Object.prototype.hasOwnProperty.call(data, key)) {
-        const typedKey =
-          key as keyof CreateSipacRequisicaoManutencaoCompletoDto;
-        const value = data[typedKey];
-
-        if (relationalKeysFromDMMF.includes(typedKey)) {
-          // If it's a relational field, wrap in 'create' or 'createMany'
-          if (Array.isArray(value)) {
-            (prismaCreateInput as any)[typedKey] = {
-              createMany: {
-                data: value.map((item: any) => {
-                  // Remove the foreign key from the item data as it will be set by createMany
-                  const { requisicaoManutencaoId, requisicaoId, ...itemData } =
-                    item; // Also remove requisicaoId for nested material items
-                  return itemData;
-                }),
-                skipDuplicates: true // Optional: skip if a unique constraint would be violated
-              }
-            };
-            (relationsToInclude as any)[typedKey] = true;
-          } else if (value !== null && typeof value === 'object') {
-            // Handle single nested object relations (e.g., dadosDaRequisicao)
-            (prismaCreateInput as any)[typedKey] = {
-              create: value
-            };
-            (relationsToInclude as any)[typedKey] = true;
-          }
-        } else {
-          // Assume it's a scalar field and assign directly
-          (prismaCreateInput as any)[typedKey] = value;
-        }
-      }
-    }
-
-    try {
-      this.logger.log(`Persistindo a criação da requisição de manutenção...`);
-      return await this.prisma.sipacRequisicaoManutencao.create({
-        data: { ...(prismaCreateInput as any) },
-        include:
-          Object.keys(relationsToInclude).length > 0
-            ? relationsToInclude
-            : undefined
-      });
-    } catch (error) {
-      handlePrismaError(error, this.logger, 'Requisição de Manutenção SIPAC', {
-        operation: 'create',
-        data
-      });
-      throw error;
-    }
-  }
-
   // TODO: Determine if ensureMateriaisExistentes is needed and adapt it
   // private async ensureMateriaisExistentes(
   //   itensRequisicao: Array<{ codigo: string; [key: string]: any }>
@@ -352,13 +352,14 @@ export class RequisicoesManutencoesService {
         SipacSingleScrapingResponse<SipacRequisicaoManutencaoResponseItem>
       >(this.URL_PATH, {
         ...this.CONSTANT_PARAMS,
-        id,
-        requisicao: id // Assuming 'requisicao' parameter is used for detail fetch
+        id
       });
       const { data } = request;
       this.logger.log(
         `Busca da requisição de manutenção do SIPAC com ID: ${id} concluída com sucesso.`
       );
+
+      this.logger.log(data);
 
       // The response structure for maintenance is different from material.
       // The mapper should handle the transformation.
@@ -368,6 +369,8 @@ export class RequisicoesManutencoesService {
       this.logger.log(
         `Retornando requisição de manutenção do SIPAC com ID: ${id}`
       );
+
+      this.logger.log(requisicaoManutencaoDtoFormat);
 
       return requisicaoManutencaoDtoFormat;
     } catch (error) {

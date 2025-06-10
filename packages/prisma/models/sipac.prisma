@@ -196,8 +196,8 @@ model SipacDetalheAquisicaoItemMaterial {
 
 // Representa uma requisição de manutenção do SIPAC.
 model SipacRequisicaoManutencao {
-    id                             Int      @id // Identificador único da requisição de manutenção.
-    numeroRequisicao               String   @unique // Número da requisição (ex: "2124/2025").
+    id                             Int       @id // Identificador único da requisição de manutenção.
+    numeroRequisicao               String    @unique // Número da requisição (ex: "2124/2025").
     categoriaRequisicao            String? // Categoria da requisição (ex: "Manutenção Corretiva"; "Manutenção Preventiva"; "Meio Ambiente").
     idCategoria                    Int?
     tipoDaRequisicao               String? // Tipo da requisição (ex: "REQUISIÇÃO DE MANUTENÇÃO").
@@ -206,22 +206,22 @@ model SipacRequisicaoManutencao {
     usuarioGravacao                String // Usuário que gravou a requisição (ex: "JOAO PAULO FELIPE PINTO").
     idUsuarioGravacao              Int? // Identificador do usuário que gravou a requisição.
     status                         String // Status da requisição (ex: "PEDIDO DE MATERIAL REALIZADO").
-    dataDeCadastro                 DateTime @db.Timestamp(0) // Data de cadastro da requisição.
-    unidadeRequisitante            String // Unidade requisitante.
-    unidadeDeCusto                 String // Unidade de custo.
-    descricao                      String   @db.Text // Descrição da requisição.
+    dataDeCadastro                 DateTime? @db.Timestamp(0) // Data de cadastro da requisição.
+    unidadeRequisitante            String? // Unidade requisitante.
+    unidadeDeCusto                 String? // Unidade de custo.
+    descricao                      String    @db.Text // Descrição da requisição.
     local                          String? // Local da requisição.
     representanteDaUnidadeDeOrigem String?
     telefonesDoRepresentante       String?
     ramal                          String?
     email                          String?
     horarioParaAtendimento         String?
-    observacao                     String?  @db.Text
-    justificativa                  String?  @db.Text
-    valorRequisicao                Decimal  @db.Decimal(12, 2) // Valor total da requisição.
-    valorAutorizacao               Decimal  @db.Decimal(12, 2)
-    dataAutorizacaoResponsavel     DateTime @db.Timestamp(0)
-    dataFinalizacao                DateTime @db.Timestamp(0)
+    observacao                     String?   @db.Text
+    justificativa                  String?   @db.Text
+    valorRequisicao                Decimal?  @db.Decimal(12, 2) // Valor total da requisição.
+    valorAutorizacao               Decimal?  @db.Decimal(12, 2)
+    dataAutorizacaoResponsavel     DateTime? @db.Timestamp(0)
+    dataFinalizacao                DateTime? @db.Timestamp(0)
     emailRepresentante             String?
 
     createdAt DateTime @default(now()) @db.Timestamp(0)
