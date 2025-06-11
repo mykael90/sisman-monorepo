@@ -1269,14 +1269,15 @@ model SipacRequisicaoManutencao {
   updatedAt DateTime @updatedAt @db.Timestamp(0)
 
   // Relations
-  informacoesServico              SipacInformacaoServicoManutencao[]
+  informacoesServico          SipacInformacaoServicoManutencao[]
+  requisicaoManutencaoIdMae   Int?
   // Requisições de manutenção que esta requisição lista como associadas
-  associadasCom                   SipacRequisicaoManutencao[]        @relation("RequisicaoManutencaoAssociacao")
+  requisicaoManutencaoMae     SipacRequisicaoManutencao?         @relation("RequisicaoManutencaoAssociacao", fields: [requisicaoManutencaoIdMae], references: [id])
   // Requisições de manutenção que listam esta requisição como associada
-  associadaPor                    SipacRequisicaoManutencao[]        @relation("RequisicaoManutencaoAssociacao")
-  requisicoesDeMaterialAssociadas SipacRequisicaoMaterial[] // Requisições de material vinculadas a esta requisição de manutenção
-  imoveisPredios                  SipacImovelPredioManutencao[]
-  historico                       SipacHistoricoManutencao[]
+  requisicoesManutencaoFilhas SipacRequisicaoManutencao[]        @relation("RequisicaoManutencaoAssociacao")
+  requisicoesMateriais        SipacRequisicaoMaterial[] // Requisições de material vinculadas a esta requisição de manutenção
+  predios                     SipacPredio[]
+  historico                   SipacHistoricoManutencao[]
 
   @@index([numeroRequisicao])
   @@map("sipac_requisicoes_manutencao")
@@ -1293,32 +1294,8 @@ model SipacInformacaoServicoManutencao {
   requisicaoManutencaoId Int
   requisicaoManutencao   SipacRequisicaoManutencao @relation(fields: [requisicaoManutencaoId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime @default(now()) @db.Timestamp(0)
-  updatedAt DateTime @updatedAt @db.Timestamp(0)
-
   @@index([requisicaoManutencaoId])
   @@map("sipac_informacoes_servico_manutencao")
-}
-
-// Representa imóveis/prédios associados a uma requisição de manutenção.
-model SipacImovelPredioManutencao {
-  id            Int     @id @default(autoincrement())
-  tipo          String?
-  municipio     String?
-  campus        String?
-  rip           String?
-  imovelTerreno String? // Mapeado de "imovel/terreno" do JSON
-  predio        String?
-  zona          String?
-
-  requisicaoManutencaoId Int
-  requisicaoManutencao   SipacRequisicaoManutencao @relation(fields: [requisicaoManutencaoId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now()) @db.Timestamp(0)
-  updatedAt DateTime @updatedAt @db.Timestamp(0)
-
-  @@index([requisicaoManutencaoId])
-  @@map("sipac_imoveis_predios_manutencao")
 }
 
 // Representa o histórico de uma requisição de manutenção.
@@ -1333,11 +1310,74 @@ model SipacHistoricoManutencao {
   requisicaoManutencaoId Int
   requisicaoManutencao   SipacRequisicaoManutencao @relation(fields: [requisicaoManutencaoId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime @default(now()) @db.Timestamp(0)
-  updatedAt DateTime @updatedAt @db.Timestamp(0)
-
   @@index([requisicaoManutencaoId])
   @@map("sipac_historico_manutencao")
+}
+
+// Representa um imóvel no sistema SIPAC.
+model SipacImovel {
+  rip        String   @id /// Corresponde ao registro do imóvel no SPIUnet, sistema do governo.
+  nomeImovel String /// Nome do imóvel. Tive que retirar a restrição unique pois tem nome repetido
+  latitude   Decimal? @db.Decimal(8, 6) /// Latitude do prédio.
+  longitude  Decimal? @db.Decimal(9, 6) /// Longitude do prédio.
+
+  tipoVocacao String?
+
+  tipoFormaAquisicao String?
+
+  tipoImovel String?
+
+  // Relations
+  predios  SipacPredio[]
+  endereco SipacImovelEndereco?
+  campus   SipacCampus?
+
+  @@index([rip])
+  @@map("sipac_imoveis")
+}
+
+model SipacImovelEndereco {
+  id          Int     @id() @default(autoincrement())
+  municipio   String /// Município ao qual o imóvel pertence. TODO: Relacionar com SipacMunicipio se existir.
+  bairro      String? /// Bairro ao qual o imóvel pertence. TODO: Relacionar com SipacBairro se existir.
+  logradouro  String? /// Logradouro ao qual o imóvel pertence. TODO: Relacionar com SipacLogradouro se existir.
+  numero      String? /// Número do imóvel.
+  complemento String? /// Complemento do imóvel.
+  cep         String? /// CEP do imóvel.
+
+  ripImovel String      @unique /// Identificador do imóvel associado ao endereço.
+  imovel    SipacImovel @relation(fields: [ripImovel], references: [rip])
+
+  @@index([ripImovel])
+  @@map("sipac_imoveis_enderecos")
+}
+
+model SipacCampus {
+  id         Int          @id @default(autoincrement())
+  nomeCampus String       @unique
+  ripImovel  String?      @unique /// Identificador do imóvel associado ao endereço.
+  imovel     SipacImovel? @relation(fields: [ripImovel], references: [rip])
+
+  @@index([ripImovel])
+  @@index([nomeCampus])
+  @@map("sipac_campus")
+}
+
+// Representa um prédio associado a um imóvel no sistema SIPAC.
+model SipacPredio {
+  subRip            String   @id /// Sub Rip do prédio
+  denominacaoPredio String   @db.VarChar(500) /// Denominação do prédio
+  idZona            String? /// Identificador da zona associada ao prédio. TODO: Relacionar com SipacZona se existir.
+  ripImovel         String /// Identificador do imóvel associado ao prédio
+  latitude          Decimal? @db.Decimal(8, 6) /// Latitude do prédio.
+  longitude         Decimal? @db.Decimal(9, 6) /// Longitude do prédio.
+
+  imovel SipacImovel @relation(fields: [ripImovel], references: [rip])
+
+  requisicoesManutencao SipacRequisicaoManutencao[]
+
+  @@index([ripImovel])
+  @@map("sipac_predios")
 }
 
 // Defines the possible statuses for a MaterialRequest.

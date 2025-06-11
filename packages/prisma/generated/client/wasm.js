@@ -662,7 +662,8 @@ exports.Prisma.SipacRequisicaoManutencaoScalarFieldEnum = {
   dataFinalizacao: 'dataFinalizacao',
   emailRepresentante: 'emailRepresentante',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  requisicaoManutencaoIdMae: 'requisicaoManutencaoIdMae'
 };
 
 exports.Prisma.SipacInformacaoServicoManutencaoScalarFieldEnum = {
@@ -671,23 +672,7 @@ exports.Prisma.SipacInformacaoServicoManutencaoScalarFieldEnum = {
   executante: 'executante',
   dataDeCadastro: 'dataDeCadastro',
   tecnicoResponsavel: 'tecnicoResponsavel',
-  requisicaoManutencaoId: 'requisicaoManutencaoId',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
-exports.Prisma.SipacImovelPredioManutencaoScalarFieldEnum = {
-  id: 'id',
-  tipo: 'tipo',
-  municipio: 'municipio',
-  campus: 'campus',
-  rip: 'rip',
-  imovelTerreno: 'imovelTerreno',
-  predio: 'predio',
-  zona: 'zona',
-  requisicaoManutencaoId: 'requisicaoManutencaoId',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  requisicaoManutencaoId: 'requisicaoManutencaoId'
 };
 
 exports.Prisma.SipacHistoricoManutencaoScalarFieldEnum = {
@@ -697,9 +682,43 @@ exports.Prisma.SipacHistoricoManutencaoScalarFieldEnum = {
   usuario: 'usuario',
   ramal: 'ramal',
   observacoes: 'observacoes',
-  requisicaoManutencaoId: 'requisicaoManutencaoId',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  requisicaoManutencaoId: 'requisicaoManutencaoId'
+};
+
+exports.Prisma.SipacImovelScalarFieldEnum = {
+  rip: 'rip',
+  nomeImovel: 'nomeImovel',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  tipoVocacao: 'tipoVocacao',
+  tipoFormaAquisicao: 'tipoFormaAquisicao',
+  tipoImovel: 'tipoImovel'
+};
+
+exports.Prisma.SipacImovelEnderecoScalarFieldEnum = {
+  id: 'id',
+  municipio: 'municipio',
+  bairro: 'bairro',
+  logradouro: 'logradouro',
+  numero: 'numero',
+  complemento: 'complemento',
+  cep: 'cep',
+  ripImovel: 'ripImovel'
+};
+
+exports.Prisma.SipacCampusScalarFieldEnum = {
+  id: 'id',
+  nomeCampus: 'nomeCampus',
+  ripImovel: 'ripImovel'
+};
+
+exports.Prisma.SipacPredioScalarFieldEnum = {
+  subRip: 'subRip',
+  denominacaoPredio: 'denominacaoPredio',
+  idZona: 'idZona',
+  ripImovel: 'ripImovel',
+  latitude: 'latitude',
+  longitude: 'longitude'
 };
 
 exports.Prisma.UserScalarFieldEnum = {
@@ -1010,21 +1029,41 @@ exports.Prisma.SipacInformacaoServicoManutencaoOrderByRelevanceFieldEnum = {
   tecnicoResponsavel: 'tecnicoResponsavel'
 };
 
-exports.Prisma.SipacImovelPredioManutencaoOrderByRelevanceFieldEnum = {
-  tipo: 'tipo',
-  municipio: 'municipio',
-  campus: 'campus',
-  rip: 'rip',
-  imovelTerreno: 'imovelTerreno',
-  predio: 'predio',
-  zona: 'zona'
-};
-
 exports.Prisma.SipacHistoricoManutencaoOrderByRelevanceFieldEnum = {
   status: 'status',
   usuario: 'usuario',
   ramal: 'ramal',
   observacoes: 'observacoes'
+};
+
+exports.Prisma.SipacImovelOrderByRelevanceFieldEnum = {
+  rip: 'rip',
+  nomeImovel: 'nomeImovel',
+  tipoVocacao: 'tipoVocacao',
+  tipoFormaAquisicao: 'tipoFormaAquisicao',
+  tipoImovel: 'tipoImovel'
+};
+
+exports.Prisma.SipacImovelEnderecoOrderByRelevanceFieldEnum = {
+  municipio: 'municipio',
+  bairro: 'bairro',
+  logradouro: 'logradouro',
+  numero: 'numero',
+  complemento: 'complemento',
+  cep: 'cep',
+  ripImovel: 'ripImovel'
+};
+
+exports.Prisma.SipacCampusOrderByRelevanceFieldEnum = {
+  nomeCampus: 'nomeCampus',
+  ripImovel: 'ripImovel'
+};
+
+exports.Prisma.SipacPredioOrderByRelevanceFieldEnum = {
+  subRip: 'subRip',
+  denominacaoPredio: 'denominacaoPredio',
+  idZona: 'idZona',
+  ripImovel: 'ripImovel'
 };
 
 exports.Prisma.UserOrderByRelevanceFieldEnum = {
@@ -1182,8 +1221,11 @@ exports.Prisma.ModelName = {
   SipacDetalheAquisicaoItemMaterial: 'SipacDetalheAquisicaoItemMaterial',
   SipacRequisicaoManutencao: 'SipacRequisicaoManutencao',
   SipacInformacaoServicoManutencao: 'SipacInformacaoServicoManutencao',
-  SipacImovelPredioManutencao: 'SipacImovelPredioManutencao',
   SipacHistoricoManutencao: 'SipacHistoricoManutencao',
+  SipacImovel: 'SipacImovel',
+  SipacImovelEndereco: 'SipacImovelEndereco',
+  SipacCampus: 'SipacCampus',
+  SipacPredio: 'SipacPredio',
   User: 'User',
   MagicLink: 'MagicLink',
   Role: 'Role',

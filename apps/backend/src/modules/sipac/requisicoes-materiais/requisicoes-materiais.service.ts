@@ -105,14 +105,14 @@ export class RequisicoesMateriaisService {
         }
         hasUpdates = true;
 
-        // 2. Verificar se a chave é uma relação para definir com 'set'
+        // 2. Verificar se a chave é uma relação para definir com 'create'
         if (
           relationalKeysFromDMMF.includes(typedKey) &&
           Array.isArray(value) // 'value' deve ser um array (pode ser vazio para remover todas as conexões)
         ) {
           const relationDataToSet = value;
 
-          // Usar 'set' para criar completamente as conexões existentes
+          // Usar 'create' para criar completamente as conexões existentes
           (prismaUpdateInput as any)[typedKey] = {
             deleteMany: {}, // Delete all existing items
             create: relationDataToSet // Create the new items

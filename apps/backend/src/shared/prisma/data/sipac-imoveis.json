@@ -1,0 +1,948 @@
+[
+  {
+    "rip": "1761.00463.500-2",
+    "nomeImovel": "CAMPUS UNIVERSITÁRIO - ÁREA I",
+    "latitude": "",
+    "longitude": "",
+    "tipoVocacao": "ENSINO",
+    "tipoFormaAquisicao": "COMPRA E VENDA",
+    "tipoImovel": "UNIVERSIDADE",
+    "endereco": {
+      "municipio": "NATAL",
+      "bairro": "LAGOA NOVA",
+      "logradouro": "AV SALGADO FILHO",
+      "numero": "3000",
+      "complemento": "-",
+      "cep": "57072970"
+    },
+    "campus": {
+      "nomeCampus": "CAMPUS CENTRAL"
+    }
+  },
+  {
+    "rip": "1761.00394.500-8",
+    "nomeImovel": "HUOL - HOSPITAL UNIVERSITÁRIO ONOFRE LOPES",
+    "tipoVocacao": "SAÚDE",
+    "tipoFormaAquisicao": "DOAÇÃO",
+    "tipoImovel": "HOSPITAL",
+    "endereco": {
+      "municipio": "NATAL",
+      "bairro": "PETRÓPOLIS",
+      "logradouro": "NILO PEÇANHA",
+      "numero": "620",
+      "complemento": "-",
+      "cep": "59012300"
+    },
+    "campus": {
+      "nomeCampus": "CAMPUS DA SAÚDE"
+    }
+  },
+  {
+    "rip": "1761.00310.500-0",
+    "nomeImovel": "NHH - NÚCLEO DE HEMATOLOGIA E HEMOTERAPIA",
+    "tipoVocacao": "ENSINO",
+    "tipoFormaAquisicao": "COMPRA E VENDA",
+    "tipoImovel": "LABORATÓRIO",
+    "endereco": {
+      "municipio": "NATAL",
+      "bairro": "PETRÓPOLIS",
+      "logradouro": "NILO PEÇANHA",
+      "numero": "619",
+      "complemento": "-",
+      "cep": "59012300"
+    },
+    "campus": {
+      "nomeCampus": "CAMPUS DA SAÚDE"
+    }
+  },
+  {
+    "rip": "1761.00311.500-5",
+    "nomeImovel": "FACULDADE DE ODONTOLOGIA",
+    "latitude": "",
+    "longitude": "",
+    "tipoVocacao": "ENSINO",
+    "tipoFormaAquisicao": "COMPRA E VENDA",
+    "tipoImovel": "UNIVERSIDADE",
+    "endereco": {
+      "municipio": "NATAL",
+      "bairro": "LAGOA NOVA",
+      "logradouro": "AV. SALGADO FILHO",
+      "numero": "1787",
+      "complemento": "-",
+      "cep": "59056300"
+    },
+    "campus": {
+      "nomeCampus": "CAMPUS DA SAÚDE"
+    }
+  },
+  {
+    "rip": "1761.00465.500-3",
+    "nomeImovel": "DEPARTAMENTO DE OCEANOGRAFIA E LIMNOLOGIA - ÁREA I",
+    "tipoVocacao": "ENSINO",
+    "tipoFormaAquisicao": "DOAÇÃO",
+    "tipoImovel": "UNIVERSIDADE",
+    "endereco": {
+      "municipio": "NATAL",
+      "bairro": "MÃE LUIZA",
+      "logradouro": "VIA COSTEIRA",
+      "numero": "0",
+      "complemento": "--",
+      "cep": "59090001"
+    }
+  },
+  {
+    "rip": "1761.00360.500-2",
+    "nomeImovel": "DEPARTAMENTO DE OCEANOGRAFIA E LIMNOLOGIA - ÁREA II",
+    "tipoVocacao": "ENSINO",
+    "tipoFormaAquisicao": "LEI 9.760/46",
+    "tipoImovel": "UNIVERSIDADE",
+    "endereco": {
+      "municipio": "NATAL",
+      "bairro": "MÃE LUIZA",
+      "logradouro": "VIA COSTEIRA",
+      "numero": "0",
+      "complemento": "-",
+      "cep": "59090001"
+    }
+  },
+  {
+    "rip": "1761.00309.500-4",
+    "nomeImovel": "MUSEU CAMARA CASCUDO",
+    "latitude": "",
+    "longitude": "",
+    "tipoVocacao": "CULTURAL",
+    "tipoFormaAquisicao": "DOAÇÃO",
+    "tipoImovel": "MUSEU",
+    "endereco": {
+      "municipio": "NATAL",
+      "bairro": "TIROL",
+      "logradouro": "AV. HERMES DA FONSECA",
+      "numero": "1398",
+      "complemento": "--",
+      "cep": "59015001"
+    }
+  },
+  {
+    "rip": "1761.00352.500-9",
+    "nomeImovel": "ANTIGA FACULDADE DE DIREITO (ANTIGO GRUPO ESCOLAR AUGUSTO SEVERO)",
+    "tipoVocacao": "SERVIÇO PÚBLICO",
+    "tipoFormaAquisicao": "DOAÇÃO",
+    "tipoImovel": "EDIFÍCIO/PRÉDIO",
+    "endereco": {
+      "municipio": "NATAL",
+      "bairro": "RIBEIRA",
+      "logradouro": "PRAÇA AUGUSTO SEVERO",
+      "numero": "261",
+      "complemento": "-",
+      "cep": "59012380"
+    }
+  },
+  {
+    "rip": "1761.00446.500-0",
+    "nomeImovel": "ANTIGA ESCOLA INDUSTRIAL (CAMPUS IFRN CIDADE ALTA)",
+    "tipoVocacao": "ENSINO",
+    "tipoFormaAquisicao": "LEI 5.972/93",
+    "tipoImovel": "OUTROS",
+    "endereco": {
+      "municipio": "NATAL",
+      "bairro": "CIDADE ALTA",
+      "logradouro": "AV. RIO BRANCO",
+      "numero": "743",
+      "complemento": "-",
+      "cep": "59025002"
+    }
+  },
+  {
+    "rip": "1761.00359.500-7",
+    "nomeImovel": "RESIDÊNCIA UNIVERSITÁRIA - ADERBAL FIGUEIREDO",
+    "latitude": "",
+    "longitude": "",
+    "tipoVocacao": "RESIDENCIAL",
+    "tipoFormaAquisicao": "DESAPROPRIAÇÃO",
+    "tipoImovel": "RESIDÊNCIA",
+    "endereco": {
+      "municipio": "NATAL",
+      "bairro": "PETROPOLIS",
+      "logradouro": "RUA ADERBAL FIGUEIREDO",
+      "numero": "0",
+      "complemento": "-",
+      "cep": "59010780"
+    }
+  },
+  {
+    "rip": "1761.00378.500-0",
+    "nomeImovel": "RESIDÊNCIA UNIVERSITÁRIA - MIPIBU",
+    "tipoVocacao": "RESIDENCIAL",
+    "tipoFormaAquisicao": "DOAÇÃO",
+    "tipoImovel": "RESIDÊNCIA",
+    "endereco": {
+      "municipio": "NATAL",
+      "bairro": "PETROPOLIS",
+      "logradouro": "MIPIBU",
+      "numero": "419",
+      "complemento": "-",
+      "cep": "59020250"
+    }
+  },
+  {
+    "rip": "1761.00303.500-1",
+    "nomeImovel": "RESIDÊNCIA UNIVERSITÁRIA - PRAÇA PEDRO VELHO",
+    "tipoVocacao": "RESIDENCIAL",
+    "tipoFormaAquisicao": "COMPRA E VENDA",
+    "tipoImovel": "RESIDÊNCIA",
+    "endereco": {
+      "municipio": "NATAL",
+      "bairro": "PETRÓPOLIS",
+      "logradouro": "PRAÇA PEDRO VELHO",
+      "numero": "449",
+      "complemento": "--",
+      "cep": "59020400"
+    }
+  },
+  {
+    "rip": "1761.00395.500-3",
+    "nomeImovel": "ANTIGA FACULDADE DE FARMÁCIA E ODONTOLOGIA",
+    "latitude": "",
+    "longitude": "",
+    "tipoVocacao": "SERVIÇO PÚBLICO",
+    "tipoFormaAquisicao": "DOAÇÃO",
+    "tipoImovel": "EDIFÍCIO/PRÉDIO",
+    "endereco": {
+      "municipio": "NATAL",
+      "bairro": "CIDADE ALTA",
+      "logradouro": "CORONEL BEZERRA",
+      "numero": "0",
+      "complemento": "PRAÇA DO ESTUDANTE COM AV. JUNQUEIRA AIRES",
+      "cep": "59025070"
+    }
+  },
+  {
+    "rip": "1761.00304.500-7",
+    "nomeImovel": "ANTIGA ESCOLA DE SERVIÇO SOCIAL (CÂMARA MUNICIPAL DE NATAL)",
+    "tipoVocacao": "SERVIÇO PÚBLICO",
+    "tipoFormaAquisicao": "DOAÇÃO",
+    "tipoImovel": "EDIFÍCIO/PRÉDIO",
+    "endereco": {
+      "municipio": "NATAL",
+      "bairro": "TIROL",
+      "logradouro": "JUNDIAÍ",
+      "numero": "546",
+      "complemento": "ESQUINA COM À AVENIDA CAMPOS SALES",
+      "cep": "59020250"
+    }
+  },
+  {
+    "rip": "9701.22173.500-5",
+    "nomeImovel": "ESCRITÓRIO DE REPRESENTAÇÃO EM BRASÍLIA - UFRN",
+    "tipoVocacao": "SERVIÇO PÚBLICO",
+    "tipoFormaAquisicao": "COMPRA E VENDA",
+    "tipoImovel": "SALA",
+    "endereco": {
+      "municipio": "BRASILIA",
+      "bairro": "NORTE",
+      "logradouro": "AV. W-3 NORTE- SETOR DE RADIO E TELEVISÃO NORTE",
+      "numero": "0",
+      "complemento": "EDIFICIO BRASÍLIA RADIO CENTER - SL. 1120",
+      "cep": "73380600"
+    }
+  },
+  {
+    "rip": "1639.00236.500-5",
+    "nomeImovel": "CERES CAICÓ",
+    "latitude": "",
+    "longitude": "",
+    "tipoVocacao": "ENSINO",
+    "tipoFormaAquisicao": "COMPRA E VENDA",
+    "tipoImovel": "UNIVERSIDADE",
+    "endereco": {
+      "municipio": "CAICÓ",
+      "bairro": "PENEDO",
+      "logradouro": "RUA JOSE EVARISTO DE MEDEIROS",
+      "numero": "0",
+      "complemento": "-",
+      "cep": "59300000"
+    },
+    "campus": {
+      "nomeCampus": "CENTRO DE ENSINO SUPERIOR DO SERIDÓ - CERES CAICÓ"
+    }
+  },
+  {
+    "rip": "1639.00237.500-0",
+    "nomeImovel": "MUSEU DO SERIDÓ",
+    "tipoVocacao": "ENSINO",
+    "tipoFormaAquisicao": "DOAÇÃO",
+    "tipoImovel": "MUSEU",
+    "endereco": {
+      "municipio": "CAICÓ",
+      "bairro": "CENTRO",
+      "logradouro": "RUA AMARO CAVALCANTE",
+      "numero": "123",
+      "complemento": "-",
+      "cep": "59300000"
+    },
+    "campus": {
+      "nomeCampus": "CENTRO DE ENSINO SUPERIOR DO SERIDÓ - CERES CAICÓ"
+    }
+  },
+  {
+    "rip": "1639.00246.500-0",
+    "nomeImovel": "ESTAÇÃO SISMOGRÁFICA DE CAICÓ",
+    "tipoVocacao": "ENSINO",
+    "tipoFormaAquisicao": "DOAÇÃO",
+    "tipoImovel": "ESTAÇÃO",
+    "endereco": {
+      "municipio": "CAICÓ",
+      "bairro": "CENTRO",
+      "logradouro": "SITIO PIATOZINHO",
+      "numero": "0",
+      "complemento": "-",
+      "cep": "59300000"
+    },
+    "campus": {
+      "nomeCampus": "CENTRO DE ENSINO SUPERIOR DO SERIDÓ - CERES CAICÓ"
+    }
+  },
+  {
+    "rip": "1661.00038.500-5",
+    "nomeImovel": "CERES CURRAIS NOVOS",
+    "latitude": "",
+    "longitude": "",
+    "tipoVocacao": "ENSINO",
+    "tipoFormaAquisicao": "ORIGINALMENTE DA UNIÃO",
+    "tipoImovel": "UNIVERSIDADE",
+    "endereco": {
+      "municipio": "CURRAIS NOVOS",
+      "bairro": "DISTRITO",
+      "logradouro": "FAZENDA TOTORÓ",
+      "numero": "0",
+      "complemento": "-",
+      "cep": "59380000"
+    },
+    "campus": {
+      "nomeCampus": "CENTRO DE ENSINO SUPERIOR DO SERIDÓ-CERES C.NOVOS"
+    }
+  },
+  {
+    "rip": "1671.00002.500-6",
+    "nomeImovel": "FAZENDA SANTA MÔNICA - EXTREMOZ/RN",
+    "tipoVocacao": "AGRÍCOLA",
+    "tipoFormaAquisicao": "DOAÇÃO",
+    "tipoImovel": "FAZENDA",
+    "endereco": {
+      "municipio": "EXTREMOZ",
+      "bairro": "BOCA DA ILHA",
+      "logradouro": "FOZ DO RIO CEARÁ-MIRIM",
+      "numero": "0",
+      "complemento": "--",
+      "cep": "59575000"
+    }
+  },
+  {
+    "rip": "1741.00016.500-7",
+    "nomeImovel": "EAJ - ESCOLA AGRÍCOLA DE JUNDIAÍ",
+    "tipoVocacao": "AGRÍCOLA",
+    "tipoFormaAquisicao": "DOAÇÃO",
+    "tipoImovel": "FAZENDA",
+    "endereco": {
+      "municipio": "MACAÍBA",
+      "bairro": "DISTRITO",
+      "logradouro": "JUNDIAÍ",
+      "numero": "-",
+      "complemento": "DISTRITO JUNDIAÍ",
+      "cep": "59280000"
+    },
+    "campus": {
+      "nomeCampus": "ESCOLA AGRÍCOLA DE JUNDIAÍ - EAJ"
+    }
+  },
+  {
+    "rip": "1743.00010.500-0",
+    "nomeImovel": "NÚCLEO DE ENSINO SUPERIOR DE MACAU",
+    "latitude": "",
+    "longitude": "",
+    "tipoVocacao": "ENSINO",
+    "tipoFormaAquisicao": "DOAÇÃO",
+    "tipoImovel": "UNIVERSIDADE",
+    "endereco": {
+      "municipio": "MACAU",
+      "bairro": "CENTRO",
+      "logradouro": "RUA PADRE JOÃO CLEMENTE",
+      "numero": "-",
+      "complemento": "-",
+      "cep": "59500000"
+    },
+    "campus": {
+      "nomeCampus": "CAMPUS PROFº BENITO MAIA BARROS - POLO MACAU"
+    }
+  },
+  {
+    "rip": "1743.00011.500-6",
+    "nomeImovel": "TERRENO MACAUZINHO",
+    "tipoVocacao": "OUTROS",
+    "tipoFormaAquisicao": "COMPRA E VENDA",
+    "tipoImovel": "TERRENO",
+    "endereco": {
+      "municipio": "MACAU",
+      "bairro": "MACAUZINHO",
+      "logradouro": "ESTRADA NATAL - PENDÊNCIAS",
+      "numero": "-",
+      "complemento": "-",
+      "cep": "59500000"
+    },
+    "campus": {
+      "nomeCampus": "CAMPUS PROFº BENITO MAIA BARROS - POLO MACAU"
+    }
+  },
+  {
+    "rip": "1823.00029.500-6",
+    "nomeImovel": "HUAB - HOSPITAL UNIVERSITÁRIO ANA BEZERRA",
+    "tipoVocacao": "ENSINO",
+    "tipoFormaAquisicao": "DOAÇÃO",
+    "tipoImovel": "HOSPITAL",
+    "endereco": {
+      "municipio": "SANTA CRUZ",
+      "bairro": "CENTRO",
+      "logradouro": "PRAÇA MANOEL VILAÇA",
+      "numero": "13",
+      "complemento": "-",
+      "cep": "59200000"
+    },
+    "campus": {
+      "nomeCampus": "CAMPUS DA SAÚDE"
+    }
+  },
+  {
+    "rip": "1823.00034.500-3",
+    "nomeImovel": "FACISA - FACULDADE DE CIÊNCIAS DA SAÚDE DO TRAIRÍ",
+    "latitude": "",
+    "longitude": "",
+    "tipoVocacao": "ENSINO",
+    "tipoFormaAquisicao": "DOAÇÃO",
+    "tipoImovel": "TERRENO",
+    "endereco": {
+      "municipio": "SANTA CRUZ",
+      "bairro": "CENTRO",
+      "logradouro": "RUA SEN. JOÃO CÂMARA",
+      "numero": "0",
+      "complemento": "-",
+      "cep": "59200000"
+    },
+    "campus": {
+      "nomeCampus": "FACULDADE DE CIÊNCIAS DA SAÚDE DO TRAIRÍ - FACISA"
+    }
+  },
+  {
+    "rip": "1829.00004.500-9",
+    "nomeImovel": "HURA - HOSPITAL UNIVERSITÁRIO RODOPIANO AZEVEDO",
+    "tipoVocacao": "SAÚDE",
+    "tipoFormaAquisicao": "DOAÇÃO",
+    "tipoImovel": "HOSPITAL",
+    "endereco": {
+      "municipio": "SANTO ANTÔNIO",
+      "bairro": "CENTRO",
+      "logradouro": "RUA ANA PONTES",
+      "numero": "0",
+      "complemento": "-",
+      "cep": "59255000"
+    },
+    "campus": {
+      "nomeCampus": "CAMPUS DA SAÚDE"
+    }
+  },
+  {
+    "rip": "1829.00006.500-0",
+    "nomeImovel": "RESIDÊNCIA UNIVERSITÁRIA - SANTO ANTÔNIO/RN",
+    "tipoVocacao": "RESIDENCIAL",
+    "tipoFormaAquisicao": "DOAÇÃO",
+    "tipoImovel": "RESIDÊNCIA",
+    "endereco": {
+      "municipio": "SANTO ANTÔNIO",
+      "bairro": "CENTRO",
+      "logradouro": "RUA ANA PONTES",
+      "numero": "0",
+      "complemento": "--",
+      "cep": "59255000"
+    }
+  },
+  {
+    "rip": "1877.00017.500-0",
+    "nomeImovel": "MATERNIDADE SANTA TEREZINHA",
+    "latitude": "",
+    "longitude": "",
+    "tipoVocacao": "SAÚDE",
+    "tipoFormaAquisicao": "DOAÇÃO",
+    "tipoImovel": "HOSPITAL",
+    "endereco": {
+      "municipio": "TANGARÁ",
+      "bairro": "CENTRO",
+      "logradouro": "RUA MIGUEL BARBOSA",
+      "numero": "-",
+      "complemento": "-",
+      "cep": "59240000"
+    }
+  },
+  {
+    "rip": "1761.00464.500-8",
+    "nomeImovel": "CAMPUS UNIVERSITÁRIO - ÁREA II",
+    "tipoVocacao": "ENSINO",
+    "tipoFormaAquisicao": "DOAÇÃO",
+    "tipoImovel": "UNIVERSIDADE",
+    "endereco": {
+      "municipio": "NATAL",
+      "bairro": "LAGOA NOVA",
+      "logradouro": "AV SALGADO FILHO",
+      "numero": "3000",
+      "complemento": "-",
+      "cep": "59072970"
+    },
+    "campus": {
+      "nomeCampus": "CAMPUS CENTRAL"
+    }
+  },
+  {
+    "rip": "1761.00307.500-3",
+    "nomeImovel": "MEJC - MATERNIDADE ESCOLA JANUÁRIO CICCO",
+    "latitude": "",
+    "longitude": "",
+    "tipoVocacao": "SAÚDE",
+    "tipoFormaAquisicao": "DOAÇÃO",
+    "tipoImovel": "HOSPITAL",
+    "endereco": {
+      "municipio": "NATAL",
+      "bairro": "PETROPOLIS",
+      "logradouro": "NILO PEÇANHA",
+      "numero": "270",
+      "complemento": "-",
+      "cep": "59012300"
+    },
+    "campus": {
+      "nomeCampus": "CAMPUS DA SAÚDE"
+    }
+  },
+  {
+    "rip": "1761.00561.500-5",
+    "nomeImovel": "LOCAÇÃO - RESIDÊNCIA UNIVERSITÁRIA - GARDÊNIAS",
+    "tipoVocacao": "RESIDENCIAL",
+    "tipoFormaAquisicao": "COMPRA E VENDA",
+    "tipoImovel": "RESIDÊNCIA",
+    "endereco": {
+      "municipio": "NATAL",
+      "bairro": "LAGOA NOVA",
+      "logradouro": "RUA DAS GARDÊNIAS",
+      "numero": "1885",
+      "complemento": "--",
+      "cep": "59077020"
+    }
+  },
+  {
+    "rip": "1779.00077.500-7",
+    "nomeImovel": "LOCAÇÃO - DEPÓSITO PARA MATERIAL PERMANENTE",
+    "tipoVocacao": "SERVIÇO PÚBLICO",
+    "tipoFormaAquisicao": "COMPRA E VENDA",
+    "tipoImovel": "GALPÃO",
+    "endereco": {
+      "municipio": "PARNAMIRIM",
+      "bairro": "PARQUE DE EXPOSIÇÕES",
+      "logradouro": "RUA SINHORZINHO",
+      "numero": "490",
+      "complemento": "D",
+      "cep": "59150000"
+    }
+  },
+  {
+    "rip": "1761.00573.500-0",
+    "nomeImovel": "LOCAÇÃO - ASSOCIAÇÃO POTIGUAR DE EDUCAÇÃO E CULTURA - APEC",
+    "latitude": "",
+    "longitude": "",
+    "tipoVocacao": "ENSINO",
+    "tipoFormaAquisicao": "COMPRA E VENDA",
+    "tipoImovel": "UNIVERSIDADE",
+    "endereco": {
+      "municipio": "NATAL",
+      "bairro": "PETROPOLIS",
+      "logradouro": "RUA MAL. FLORIANO PEIXOTO",
+      "numero": "295",
+      "complemento": "--",
+      "cep": "59012265"
+    }
+  },
+  {
+    "rip": "1761.00571.500-0",
+    "nomeImovel": "RESIDÊNCIA UNIVERSITÁRIA",
+    "tipoVocacao": "RESIDENCIAL",
+    "tipoFormaAquisicao": "COMPRA E VENDA",
+    "tipoImovel": "RESIDÊNCIA",
+    "endereco": {
+      "municipio": "NATAL",
+      "bairro": "NOVA DESCOBERTA",
+      "logradouro": "RUA DA SAUDADE",
+      "numero": "1051",
+      "complemento": "--",
+      "cep": "59056400"
+    }
+  },
+  {
+    "rip": "1761.00555.500-2",
+    "nomeImovel": "LOCAÇÃO - CRUTAC CIDADE JARDIM",
+    "tipoVocacao": "ENSINO",
+    "tipoFormaAquisicao": "COMPRA E VENDA",
+    "tipoImovel": "UNIVERSIDADE",
+    "endereco": {
+      "municipio": "NATAL",
+      "bairro": "CAPIM MACIO",
+      "logradouro": "AV. GUSTAVO GUEDES",
+      "numero": "1880",
+      "complemento": "--",
+      "cep": "59078380"
+    }
+  },
+  {
+    "rip": "1761.00565.500-7",
+    "nomeImovel": "LOCAÇÃO - RESIDENCIA UNIVERSITÁRIA - VIOLETAS",
+    "latitude": "",
+    "longitude": "",
+    "tipoVocacao": "RESIDENCIAL",
+    "tipoFormaAquisicao": "COMPRA E VENDA",
+    "tipoImovel": "RESIDÊNCIA",
+    "endereco": {
+      "municipio": "NATAL",
+      "bairro": "CAPIM MACIO",
+      "logradouro": "RUA DAS VIOLETAS",
+      "numero": "621",
+      "complemento": "--",
+      "cep": "59078160"
+    }
+  },
+  {
+    "rip": "1761.00569.500-9",
+    "nomeImovel": "LOCAÇÃO - BIOINFORMÁTICA/IMD",
+    "tipoVocacao": "ENSINO",
+    "tipoFormaAquisicao": "COMPRA E VENDA",
+    "tipoImovel": "UNIVERSIDADE",
+    "endereco": {
+      "municipio": "NATAL",
+      "bairro": "CAPIM MACIO",
+      "logradouro": "RUA ODILON GOMES DE LIMA",
+      "numero": "1722",
+      "complemento": "--",
+      "cep": "59078400"
+    }
+  },
+  {
+    "rip": "1823.00040.500-6",
+    "nomeImovel": "LOCAÇÃO - ESCRITORIO ADMINISTRATIVO DA FACISA",
+    "tipoVocacao": "SERVIÇO PÚBLICO",
+    "tipoFormaAquisicao": "COMPRA E VENDA",
+    "tipoImovel": "UNIVERSIDADE",
+    "endereco": {
+      "municipio": "SANTA CRUZ",
+      "bairro": "CENTRO",
+      "logradouro": "RUA TRAIRI",
+      "numero": "27",
+      "complemento": "A",
+      "cep": "59200000"
+    },
+    "campus": {
+      "nomeCampus": "FACULDADE DE CIÊNCIAS DA SAÚDE DO TRAIRÍ - FACISA"
+    }
+  },
+  {
+    "rip": "1761.00563.500-6",
+    "nomeImovel": "LOCAÇÃO - SECRETARIA DE ENSINO A DISTÂNCIA - SEDIS",
+    "latitude": "",
+    "longitude": "",
+    "tipoVocacao": "ENSINO",
+    "tipoFormaAquisicao": "COMPRA E VENDA",
+    "tipoImovel": "UNIVERSIDADE",
+    "endereco": {
+      "municipio": "NATAL",
+      "bairro": "LAGOA NOVA",
+      "logradouro": "RUA DRª NÍVEL MADRUGA",
+      "numero": "2055",
+      "complemento": "--",
+      "cep": "59076730"
+    }
+  },
+  {
+    "rip": "1761.00567.500-8",
+    "nomeImovel": "LOCAÇÃO - IMD - INSTITUTO METRÓPOLE DIGITAL",
+    "tipoVocacao": "ENSINO",
+    "tipoFormaAquisicao": "COMPRA E VENDA",
+    "tipoImovel": "UNIVERSIDADE",
+    "endereco": {
+      "municipio": "NATAL",
+      "bairro": "CAPIM MACIO",
+      "logradouro": "AV. ODILON GOMES DE LIMA",
+      "numero": "1724",
+      "complemento": "--",
+      "cep": "59078400"
+    }
+  },
+  {
+    "rip": "1761.00559.500-4",
+    "nomeImovel": "LOCAÇÃO - RESIDÊNCIA UNIVERSITÁRIA - ANTONIO BARROS CAVALCANTI",
+    "tipoVocacao": "RESIDENCIAL",
+    "tipoFormaAquisicao": "COMPRA E VENDA",
+    "tipoImovel": "RESIDÊNCIA",
+    "endereco": {
+      "municipio": "NATAL",
+      "bairro": "CIDADE JARDIM",
+      "logradouro": "RUA ANTONIO BARROS CAVALCANTE",
+      "numero": "2873",
+      "complemento": "--",
+      "cep": "59078260"
+    }
+  },
+  {
+    "rip": "1761.00557.500-3",
+    "nomeImovel": "LOCAÇÃO - IMD - INSTITUTO METROPOLE DIGITAL",
+    "latitude": "",
+    "longitude": "",
+    "tipoVocacao": "SERVIÇO PÚBLICO",
+    "tipoFormaAquisicao": "COMPRA E VENDA",
+    "tipoImovel": "UNIVERSIDADE",
+    "endereco": {
+      "municipio": "NATAL",
+      "bairro": "CIDADE JARDIM",
+      "logradouro": "RUA PROF. JOÃO MACHADO",
+      "numero": "2884",
+      "complemento": "--",
+      "cep": "59078340"
+    }
+  },
+  {
+    "rip": "1761.00575.500-1",
+    "nomeImovel": "LOCAÇÃO - INSTITUTO DE NEUROCIÊNCIAS",
+    "tipoVocacao": "SERVIÇO PÚBLICO",
+    "tipoFormaAquisicao": "CARTA DE ADJUDICAÇÃO",
+    "tipoImovel": "UNIVERSIDADE",
+    "endereco": {
+      "municipio": "NATAL",
+      "bairro": "LAGOA NOVA",
+      "logradouro": "RUA XAVIER DA SILVEIRA",
+      "numero": "688",
+      "complemento": "--",
+      "cep": "59075450"
+    }
+  },
+  {
+    "rip": "1761.00553.500-1",
+    "nomeImovel": "ANEXO DA SINFO - SUPERINTENDÊNCIA DE INFORMÁTICA",
+    "tipoVocacao": "RESIDENCIAL",
+    "tipoFormaAquisicao": "COMPRA E VENDA",
+    "tipoImovel": "RESIDÊNCIA",
+    "endereco": {
+      "municipio": "NATAL",
+      "bairro": "LAGOA NOVA",
+      "logradouro": "AV. CAPITÃO MOR GOUVEIA",
+      "numero": "2851",
+      "complemento": "-",
+      "cep": "59076400"
+    },
+    "campus": {
+      "nomeCampus": "CAMPUS CENTRAL"
+    }
+  },
+  {
+    "rip": "1761.00434.500-4",
+    "nomeImovel": "PRAÇA DO ESTUDANTE",
+    "latitude": "",
+    "longitude": "",
+    "tipoVocacao": "ENSINO",
+    "tipoFormaAquisicao": "DOAÇÃO",
+    "tipoImovel": "TERRENO",
+    "endereco": {
+      "municipio": "NATAL",
+      "bairro": "CIDADE ALTA",
+      "logradouro": "RUA VIGÁRIO BARTOLOMEU",
+      "numero": "0",
+      "complemento": "-",
+      "cep": "59025100"
+    }
+  },
+  {
+    "rip": "1761.00308.500-9",
+    "nomeImovel": "ESCOLA DE ENFERMAGEM",
+    "tipoVocacao": "ENSINO",
+    "tipoFormaAquisicao": "COMPRA E VENDA",
+    "tipoImovel": "UNIVERSIDADE",
+    "endereco": {
+      "municipio": "NATAL",
+      "bairro": "PETRÓPOLIS",
+      "logradouro": "AV. NILO PEÇANHA",
+      "numero": "619",
+      "complemento": "--",
+      "cep": "59012300"
+    }
+  },
+  {
+    "rip": "1761.00581.500-4",
+    "nomeImovel": "IMT - INSTITUTO DE MEDICINA TROPICAL",
+    "tipoVocacao": "ENSINO",
+    "tipoFormaAquisicao": "DOAÇÃO",
+    "tipoImovel": "TERRENO",
+    "endereco": {
+      "municipio": "NATAL",
+      "bairro": "QUINTAS",
+      "logradouro": "CÔNEGO MONTE",
+      "numero": "-",
+      "complemento": "-",
+      "cep": "59037170"
+    },
+    "campus": {
+      "nomeCampus": "CAMPUS DA SAÚDE"
+    }
+  },
+  {
+    "rip": "1761.00579.500-3",
+    "nomeImovel": "LOCAÇÃO - IMD - INSTITUTO METRÓPOLE DIGITAL",
+    "latitude": "",
+    "longitude": "",
+    "tipoVocacao": "ENSINO",
+    "tipoFormaAquisicao": "COMPRA E VENDA",
+    "tipoImovel": "UNIVERSIDADE",
+    "endereco": {
+      "municipio": "NATAL",
+      "bairro": "CAPIM MACIO",
+      "logradouro": "MONTE SINAI",
+      "numero": "1653",
+      "complemento": "-",
+      "cep": "59078360"
+    }
+  },
+  {
+    "rip": "1779.00080.500-3",
+    "nomeImovel": "LOCAÇÃO - DEPÓSITO PARA MATERIAL PERMANENTE",
+    "tipoVocacao": "DEPÓSITO EM GERAL",
+    "tipoFormaAquisicao": "PERMUTA",
+    "tipoImovel": "GALPÃO",
+    "endereco": {
+      "municipio": "PARNAMIRIM",
+      "bairro": "PARQUE DE EXPOSIÇÕES",
+      "logradouro": "RUA SINHOZINHO",
+      "numero": "328",
+      "complemento": "CONDOMÍNIO COMERCIAL PARQUE DE EXPOSIÇÕES",
+      "cep": "59150000"
+    }
+  },
+  {
+    "rip": "1639.00257.500-0",
+    "nomeImovel": "LOCAÇÃO - HOSPITAL DE ONCOLOGIA DO SERIDÓ",
+    "tipoVocacao": "ENSINO",
+    "tipoFormaAquisicao": "DOAÇÃO",
+    "tipoImovel": "HOSPITAL",
+    "endereco": {
+      "municipio": "CAICÓ",
+      "bairro": "CENTRO",
+      "logradouro": "RUA DR. CARLINDO DE SOUZA DANTAS",
+      "numero": "540",
+      "complemento": "-",
+      "cep": "59300000"
+    },
+    "campus": {
+      "nomeCampus": "CENTRO DE ENSINO SUPERIOR DO SERIDÓ - CERES CAICÓ"
+    }
+  },
+  {
+    "rip": "1761.00597.500-1",
+    "nomeImovel": "LOCAÇÃO - INSTITUTO DO CÉREBRO",
+    "latitude": "",
+    "longitude": "",
+    "tipoVocacao": "ENSINO",
+    "tipoFormaAquisicao": "COMPRA E VENDA",
+    "tipoImovel": "UNIVERSIDADE",
+    "endereco": {
+      "municipio": "NATAL",
+      "bairro": "Lagoa Nova",
+      "logradouro": "Nascimento de Castro",
+      "numero": "2151",
+      "complemento": "ESQUINA COM A RUA JÚLIO REZENDE",
+      "cep": "59056450"
+    }
+  },
+  {
+    "rip": "1823.00046.500-9",
+    "nomeImovel": "RESIDÊNCIA UNIVERSITÁRIA DE SANTA CRUZ/RN",
+    "tipoVocacao": "RESIDENCIAL",
+    "tipoFormaAquisicao": "DOAÇÃO",
+    "tipoImovel": "RESIDÊNCIA",
+    "endereco": {
+      "municipio": "SANTA CRUZ",
+      "bairro": "Centro",
+      "logradouro": "RUA ALUÍZIO BEZERRA",
+      "numero": "175",
+      "complemento": "-",
+      "cep": "59200000"
+    },
+    "campus": {
+      "nomeCampus": "FACULDADE DE CIÊNCIAS DA SAÚDE DO TRAIRÍ - FACISA"
+    }
+  },
+  {
+    "rip": "1823.00048.500-0",
+    "nomeImovel": "LOCAÇÃO - GERÊNCIA DE ENSINO E PESQUISA DO HUAB",
+    "latitude": "",
+    "longitude": "",
+    "tipoVocacao": "SERVIÇO PÚBLICO",
+    "tipoFormaAquisicao": "COMPRA E VENDA",
+    "tipoImovel": "UNIVERSIDADE",
+    "endereco": {
+      "municipio": "SANTA CRUZ",
+      "bairro": "Centro",
+      "logradouro": "Barão do Rio Branco",
+      "numero": "588",
+      "complemento": "-",
+      "cep": "59200000"
+    }
+  },
+  {
+    "rip": "1823.00050.500-0",
+    "nomeImovel": "LOCAÇÃO - GERÊNCIA ADMINISTRATIVA DO HUAB",
+    "tipoVocacao": "SERVIÇO PÚBLICO",
+    "tipoFormaAquisicao": "COMPRA E VENDA",
+    "tipoImovel": "AUTARQUIA / FUNDAÇÃO",
+    "endereco": {
+      "municipio": "SANTA CRUZ",
+      "bairro": "Centro",
+      "logradouro": "COSME FERREIRA MARQUES",
+      "numero": "337",
+      "complemento": "-",
+      "cep": "59200000"
+    }
+  },
+  {
+    "rip": "1741.00016.500-0",
+    "nomeImovel": "EAJ - ESCOLA AGRÍCOLA DE JUNDIAÍ / CAMPUS DO CÉREBRO",
+    "tipoVocacao": "ENSINO",
+    "tipoFormaAquisicao": "NÃO INFORMADO",
+    "tipoImovel": "OUTROS",
+    "endereco": {
+      "municipio": "MACAÍBA",
+      "bairro": "DISTRITO",
+      "logradouro": "JUDIAÍ",
+      "numero": "S/N",
+      "complemento": "DISTRITO JUNDIAÍ",
+      "cep": "59280000"
+    },
+    "campus": {
+      "nomeCampus": "CAMPUS DO CÉREBRO"
+    }
+  },
+  {
+    "rip": "1761.00655.500-6",
+    "nomeImovel": "TERRENO SAN VALLE",
+    "latitude": "",
+    "longitude": "",
+    "tipoVocacao": "OUTROS",
+    "tipoFormaAquisicao": "DOAÇÃO EM PAGAMENTO",
+    "tipoImovel": "TERRENO",
+    "endereco": {
+      "municipio": "NATAL",
+      "bairro": "Candelária",
+      "logradouro": "Doutor José Tavares da Silva",
+      "numero": "S/N",
+      "complemento": "-",
+      "cep": "59066260"
+    }
+  }
+]

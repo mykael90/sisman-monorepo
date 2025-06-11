@@ -177,3 +177,44 @@ export function removeNullOrEmptyStringProps<T extends Record<string, any>>(
   }
   return cleanedObject;
 }
+
+/**
+ * Remove acentos e caracteres especiais de todas as propriedades string de um objeto, incluindo objetos aninhados.
+ * Cria uma cópia superficial (shallow copy) para não modificar o objeto original.
+ * @param obj O objeto a ser normalizado.
+ * @returns Um novo objeto com as strings normalizadas.
+ */
+export function removeAccentsAndSpecialChars<T extends Record<string, any>>(
+  obj: T
+): T {
+  const newObj = { ...obj } as T;
+  for (const key in newObj) {
+    if (Object.prototype.hasOwnProperty.call(newObj, key)) {
+      const value = newObj[key];
+      if (typeof value === 'string') {
+        let normalizedString = value
+          .normalize('NFD') // Normaliza para decompor caracteres acentuados
+          .replace(/[\u0300-\u036f]/g, ''); // Remove os diacríticos (acentos)
+        // Remove caracteres especiais comuns, mantendo letras, números e espaços.
+        // Adicione outros caracteres que deseja manter se necessário.
+        normalizedString = normalizedString.replace(/[^\w\s.-]/gi, ''); // Mantém letras, números, espaços, pontos e hífens.
+        newObj[key] = normalizedString as any; // eslint-disable-line @typescript-eslint/no-explicit-any
+      } else if (
+        typeof value === 'object' &&
+        value !== null &&
+        !Array.isArray(value)
+      ) {
+        // Se o valor for um objeto (e não um array ou nulo), chama recursivamente
+        newObj[key] = removeAccentsAndSpecialChars(value) as any; // eslint-disable-line @typescript-eslint/no-explicit-any
+      } else if (Array.isArray(value)) {
+        // Se for um array, itera sobre seus elementos
+        newObj[key] = value.map((item) =>
+          typeof item === 'object' && item !== null
+            ? removeAccentsAndSpecialChars(item)
+            : item
+        ) as any;
+      }
+    }
+  }
+  return newObj;
+}

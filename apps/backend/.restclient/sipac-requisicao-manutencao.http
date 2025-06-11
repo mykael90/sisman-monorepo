@@ -12,7 +12,7 @@ POST {{urlLocal}}/list/fetch-one
 Content-Type: {{contentType}}
 
 {
-    "numeroAno": "211/2025"
+    "numeroAno": "1390/2025"
 }
 
 ### POST
@@ -39,3 +39,12 @@ GET {{urlLocal}}/list/sync-all
 
 ### GET fetch one and return by id
 GET {{urlLocal}}/fetch-one/2153960
+
+
+### POST
+POST {{urlLocal}}/fetch-one-complete-and-persist
+Content-Type: {{contentType}}
+
+{
+    "numeroAno": "1390/2025"
+}

@@ -1,0 +1,3330 @@
+[
+  {
+    "denominacaoPredio": "CERES CAIC\u00d3 - BLOCO DE SALAS DE AULA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1639.00236.500-5-001",
+    "ripImovel": "1639.00236.500-5"
+  },
+  {
+    "denominacaoPredio": "CERES CAIC\u00d3 - AUDIT\u00d3RIO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1639.00236.500-5-002",
+    "ripImovel": "1639.00236.500-5"
+  },
+  {
+    "denominacaoPredio": "CERES CAIC\u00d3 - BIBLIOTECA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1639.00236.500-5-003",
+    "ripImovel": "1639.00236.500-5"
+  },
+  {
+    "denominacaoPredio": "CERES CAIC\u00d3 - PR\u00c1TICA FORENSE",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1639.00236.500-5-004",
+    "ripImovel": "1639.00236.500-5"
+  },
+  {
+    "denominacaoPredio": "CERES CAIC\u00d3 - BACHARELADO EM SISTEMA DE INFORMA\u00c7\u00c3O",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1639.00236.500-5-005",
+    "ripImovel": "1639.00236.500-5"
+  },
+  {
+    "denominacaoPredio": "CERES CAIC\u00d3 - PAVILH\u00c3O DE PESQUISA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1639.00236.500-5-006",
+    "ripImovel": "1639.00236.500-5"
+  },
+  {
+    "denominacaoPredio": "CERES CAIC\u00d3 - LABORAT\u00d3RIO DE GEOGRAFIA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1639.00236.500-5-007",
+    "ripImovel": "1639.00236.500-5"
+  },
+  {
+    "denominacaoPredio": "CERES CAIC\u00d3 - PAVILH\u00c3O ADMINISTRATIVO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1639.00236.500-5-008",
+    "ripImovel": "1639.00236.500-5"
+  },
+  {
+    "denominacaoPredio": "CERES CAIC\u00d3 - GABINETE DOS DOCENTES",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1639.00236.500-5-009",
+    "ripImovel": "1639.00236.500-5"
+  },
+  {
+    "denominacaoPredio": "CERES CAIC\u00d3 - SETOR DE AULAS",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1639.00236.500-5-010",
+    "ripImovel": "1639.00236.500-5"
+  },
+  {
+    "denominacaoPredio": "CERES CAIC\u00d3 - ANTIGA RESID\u00caNCIA UNIVERSIT\u00c1RIA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1639.00236.500-5-011",
+    "ripImovel": "1639.00236.500-5"
+  },
+  {
+    "denominacaoPredio": "CERES CAIC\u00d3 - ESTA\u00c7\u00c3O CLIMATOL\u00d3GICA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1639.00236.500-5-012",
+    "ripImovel": "1639.00236.500-5"
+  },
+  {
+    "denominacaoPredio": "CERES CAIC\u00d3 - DIRE\u00c7\u00c3O",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1639.00236.500-5-013",
+    "ripImovel": "1639.00236.500-5"
+  },
+  {
+    "denominacaoPredio": "CERES CAIC\u00d3 - ALMOXARIFADO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1639.00236.500-5-014",
+    "ripImovel": "1639.00236.500-5"
+  },
+  {
+    "denominacaoPredio": "CERES CAIC\u00d3 - LABORAT\u00d3RIO DE HIST\u00d3RIA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1639.00236.500-5-015",
+    "ripImovel": "1639.00236.500-5"
+  },
+  {
+    "denominacaoPredio": "CERES CAIC\u00d3 - RESID\u00caNCIA UNIVERSIT\u00c1RIA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1639.00236.500-5-016",
+    "ripImovel": "1639.00236.500-5"
+  },
+  {
+    "denominacaoPredio": "CERES CAIC\u00d3 - INFRAESTRUTURA DE REDE DE \u00c1GUA E ESGOTO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1639.00236.500-5-017",
+    "ripImovel": "1639.00236.500-5"
+  },
+  {
+    "denominacaoPredio": "CERES CAIC\u00d3 - INFRAESTRUTURA DE REDE DE ENERGIA EL\u00c9TRICA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1639.00236.500-5-018",
+    "ripImovel": "1639.00236.500-5"
+  },
+  {
+    "denominacaoPredio": "CERES CAIC\u00d3 - INFRAESTRUTURA DE REDE DE TELECOMUNICA\u00c7\u00d5ES",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1639.00236.500-5-019",
+    "ripImovel": "1639.00236.500-5"
+  },
+  {
+    "denominacaoPredio": "CERES CAIC\u00d3 - MUSEU DO SERID\u00d3",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1639.00237.500-0-001",
+    "ripImovel": "1639.00237.500-0"
+  },
+  {
+    "denominacaoPredio": "CERES CAIC\u00d3 - ESTA\u00c7\u00c3O SISMOGR\u00c1FICA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1639.00246.500-0-001",
+    "ripImovel": "1639.00246.500-0"
+  },
+  {
+    "denominacaoPredio": "CERES CAIC\u00d3 - HOSPITAL DE ONCOLOGIA DO SERID\u00d3 (CURSO DE MEDICINA)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1639.00257.500-0-001",
+    "ripImovel": "1639.00257.500-0"
+  },
+  {
+    "denominacaoPredio": "CERES C. NOVOS - BLOCO DE SALAS DE AULA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1661.00038.500-5-001",
+    "ripImovel": "1661.00038.500-5"
+  },
+  {
+    "denominacaoPredio": "CERES C. NOVOS - LABORAT\u00d3RIO DE L\u00cdNGUA ESPANHOLA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1661.00038.500-5-002",
+    "ripImovel": "1661.00038.500-5"
+  },
+  {
+    "denominacaoPredio": "CERES C. NOVOS - PAVILH\u00c3O ACAD\u00caMICO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1661.00038.500-5-003",
+    "ripImovel": "1661.00038.500-5"
+  },
+  {
+    "denominacaoPredio": "CERES C. NOVOS - ANTIGA TURAE / SEDIS",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1661.00038.500-5-004",
+    "ripImovel": "1661.00038.500-5"
+  },
+  {
+    "denominacaoPredio": "CERES C. NOVOS - BIBLIOTECA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1661.00038.500-5-005",
+    "ripImovel": "1661.00038.500-5"
+  },
+  {
+    "denominacaoPredio": "CERES C. NOVOS - RESID\u00caNCIA UNIVERSIT\u00c1RIA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1661.00038.500-5-006",
+    "ripImovel": "1661.00038.500-5"
+  },
+  {
+    "denominacaoPredio": "CERES C. NOVOS - SALAS DE AULA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1661.00038.500-5-007",
+    "ripImovel": "1661.00038.500-5"
+  },
+  {
+    "denominacaoPredio": "CERES C. NOVOS - INFRAESTRUTURA DE REDE DE \u00c1GUA E ESGOTO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1661.00038.500-5-008",
+    "ripImovel": "1661.00038.500-5"
+  },
+  {
+    "denominacaoPredio": "CERES C. NOVOS - INFRAESTRUTURA DE REDE DE ENERGIA EL\u00c9TRICA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1661.00038.500-5-009",
+    "ripImovel": "1661.00038.500-5"
+  },
+  {
+    "denominacaoPredio": "CERES C. NOVOS - INFRAESTRUTURA DE REDE DE TELECOMUNICA\u00c7\u00d5ES",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1661.00038.500-5-010",
+    "ripImovel": "1661.00038.500-5"
+  },
+  {
+    "denominacaoPredio": "CB - CENTRO TECNOL\u00d3GICO DE AQUICULTURA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1671.00002.500-6-001",
+    "ripImovel": "1671.00002.500-6"
+  },
+  {
+    "denominacaoPredio": "ESCOLA L\u00cdGIA LAPORTA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-0-001",
+    "ripImovel": "1741.00016.500-0"
+  },
+  {
+    "denominacaoPredio": "CENTRO DE PESQUISA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-0-002",
+    "ripImovel": "1741.00016.500-0"
+  },
+  {
+    "denominacaoPredio": "INFRAESTRUTURA DE REDE DE ENERGIA EL\u00c9TRICA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-0-003",
+    "ripImovel": "1741.00016.500-0"
+  },
+  {
+    "denominacaoPredio": "INFRAESTRUTURA DE REDE DE \u00c1GUA E ESGOTO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-0-004",
+    "ripImovel": "1741.00016.500-0"
+  },
+  {
+    "denominacaoPredio": "INFRAESTRUTURA DE REDE DE TELECOMUNICA\u00c7\u00d5ES",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-0-005",
+    "ripImovel": "1741.00016.500-0"
+  },
+  {
+    "denominacaoPredio": "EAJ - ADMINISTRA\u00c7\u00c3O",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-001",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - ALMOXARIFADO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-002",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - COORDENA\u00c7\u00c3O DE PESSOAL",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-003",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - OFICINA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-004",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - ALOJAMENTO FEMININO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-005",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - DEPARTAMENTO DE EDUCA\u00c7\u00c3O F\u00cdSICA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-006",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - ALOJAMENTO MASCULINO I",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-007",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - ALOJAMENTO MASCULINO II",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-008",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - ALOJAMENTO MASCULINO III",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-009",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - ALOJAMENTO MASCULINO IV",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-010",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - ALOJAMENTO SEMI-INTERNATO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-011",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - BIBLIOTECA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-012",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - BLOCO DE AULAS DA AVICULTURA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-013",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - HARDEND (SALA DE R\u00c1DIO)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-014",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - BLOCO DE AULAS DO CURSO T\u00c9CNICO EM AGROPECU\u00c1RIA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-015",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - BLOCO DE AULAS DO CURSO T\u00c9CNICO EM AQUICULTURA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-016",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - COORDENA\u00c7\u00c3O DO CURSO T\u00c9CNICO EM AQUICULTURA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-017",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - BLOCO DE AULAS DO CURSO T\u00c9CNICO EM INFORM\u00c1TICA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-018",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - COORDENA\u00c7\u00c3O DO CURSO T\u00c9CNICO EM INFORM\u00c1TICA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-019",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - BLOCO DE AULAS DO M\u00d3DULO VEGETAL (AGROIND\u00daSTRIA)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-020",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - BLOCO DE AULAS DOS CURSOS DE GRADUA\u00c7\u00c3O",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-021",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - BLOCO DE AULAS DOS CURSOS DE P\u00d3S-GRADUA\u00c7\u00c3O",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-022",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - COORDENA\u00c7\u00c3O DOS CURSOS DE P\u00d3S-GRADUA\u00c7\u00c3O",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-023",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - BLOCO DE SALAS DE PROFESSORES DE FRUTICULTURA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-024",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - BLOCO DE SALAS DE PROFESSORES DOS CURSOS DE GRADUA\u00c7\u00c3O",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-025",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - COORDENA\u00c7\u00c3O DOS CURSOS DE GRADUA\u00c7\u00c3O",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-026",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - BLOCO DE AULAS DE ENSINO M\u00c9DIO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-027",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - COORDENA\u00c7\u00c3O DE ENSINO M\u00c9DIO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-028",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - REFEIT\u00d3RIO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-029",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - BOVINOCULTURA DE LEITE (EST\u00c1BULO)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-030",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - CANTINA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-031",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - CASA DE VEGETA\u00c7\u00c3O",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-032",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - CONTROLE DE TREINAMENTO (NEUROCI\u00caNCIAS)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-033",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - CENTRO VOCACIONAL TECNOL\u00d3GICO (CVT)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-034",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - COORDENA\u00c7\u00c3O DOS CURSOS T\u00c9CNICOS EM AGROPECU\u00c1RIA E AGROIND\u00daSTRIA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-035",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - CUNICULTURA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-036",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - DEP\u00d3SITO DE MATERIAL DE CAMPO (MATADOURO)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-037",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - DEP\u00d3SITO DE RA\u00c7\u00c3O DA AVICULTURA (CASA DA RA\u00c7\u00c3O)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-038",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - DEP\u00d3SITO DE VIVEIROS",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-039",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - DIRETORIA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-040",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - ESTA\u00c7\u00c3O DE PISCICULTURA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-041",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - GALP\u00c3O CORDONA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-042",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - GALP\u00c3O DE AVICULTURA (AVI\u00c1RIO GALP\u00c3O DE GALINHAS CAIPIRAS)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-043",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - GALP\u00c3O DE AVICULTURA II (GALP\u00c3O DAS CORDONAS)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-044",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - GALP\u00c3O DO LABORAT\u00d3RIO DE COMPOSTAGEM",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-045",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - GRUPO DE ESTUDOS EM FORRAGICULTURA (GEFOR)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-046",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - GIN\u00c1SIO POLIESPORTIVO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-047",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - LABORAT\u00d3RIO DA ESTA\u00c7\u00c3O DE PISCICULTURA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-048",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - LABORAT\u00d3RIO DE ALIMENTOS DA AGROIND\u00daSTRIA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-049",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - LABORAT\u00d3RIO DE COMPOSTAGEM",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-050",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - LABORAT\u00d3RIO DE OLERICULTURA (LABORAT\u00d3RIO DA HORTA)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-051",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - LABORAT\u00d3RIO DE TOPOGRAFIA (PR\u00c9DIOS DOS T\u00c9CNICOS AGR\u00cdCOLA)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-052",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - LABORAT\u00d3RIO DO CURSO DE ENGENHARIA FLORESTAL",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-053",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - CAPELA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-054",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - LABORAT\u00d3RIO DE APICULTURA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-055",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - LABORAT\u00d3RIO DE PESQUISA DE AN\u00c1LISE DE SEMENTES",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-056",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - OVINOCULTURA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-057",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - PADARIA / COOPERATIVA (COOPEAJ)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-058",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - PLAC\u00c1RIO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-059",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - P\u00d3RTICO DE ENTRADA (PORTARIA)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-060",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - RESID\u00caNCIAS (RUINHA)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-061",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - RESTAURANTE UNIVERSIT\u00c1RIO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-062",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - SECRETARIA ESCOLAR",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-063",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - SEDE DOS FUNCION\u00c1RIOS (ALOJAMENTO DOS VIGILANTES)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-064",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - SUINOCULTURA AULAS PR\u00c1TICAS (POCILGA I)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-065",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - SUINOCULTURA GALP\u00c3O DE PESQUISA (POCILGA II)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-066",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - UNIDADE DE ATENDIMENTO AO EDUCANDO (UAE)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-067",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - UNIDADE DE BENEFICIAMENTO DE SEMENTES (UBS)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-068",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - UNIDADE DE EXTRA\u00c7\u00c3O DE PRODUTOS AP\u00cdCOLAS (UEPA - CASA DO MEL)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-069",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - UNIDADE DE PROCESSAMENTO DE LATIC\u00cdNIOS",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-070",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - UNIDADE DE PROCESSAMENTO DE POLPA DE FRUTA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-071",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - VESTU\u00c1RIOS DE FUNCION\u00c1RIOS TERCEIRIZADOS",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-072",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - INFRAESTRUTURA DE REDE DE \u00c1GUA E ESGOTO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-073",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - INFRAESTRUTURA DE REDE DE ENERGIA EL\u00c9TRICA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-074",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - INFRAESTRUTURA DE REDE DE TELECOMUNICA\u00c7\u00d5ES",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-075",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - GIGAPOP MACA\u00cdBA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-076",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "EAJ - RESID\u00caNCIA UNIVERSIT\u00c1RIA DE JUNDIA\u00cd",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1741.00016.500-7-077",
+    "ripImovel": "1741.00016.500-7"
+  },
+  {
+    "denominacaoPredio": "CAMPUS PROFESSOR BENITO MAIA BARROS - POLO UAB MACAU",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1743.00010.500-0-001",
+    "ripImovel": "1743.00010.500-0"
+  },
+  {
+    "denominacaoPredio": "INFRAESTRUTURA DE REDE DE \u00c1GUA E ESGOTO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1743.00010.500-0-002",
+    "ripImovel": "1743.00010.500-0"
+  },
+  {
+    "denominacaoPredio": "INFRAESTRUTURA DE REDE DE ENERGIA EL\u00c9TRICA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1743.00010.500-0-003",
+    "ripImovel": "1743.00010.500-0"
+  },
+  {
+    "denominacaoPredio": "INFRAESTRUTURA DE REDE DE TELECOMUNICA\u00c7\u00d5ES",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1743.00010.500-0-004",
+    "ripImovel": "1743.00010.500-0"
+  },
+  {
+    "denominacaoPredio": "CAMPUS PROFESSOR BENITO MAIA BARROS - ALOJAMENTO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1743.00010.500-0-005",
+    "ripImovel": "1743.00010.500-0"
+  },
+  {
+    "denominacaoPredio": "CAMPUS PROFESSOR BENITO MAIA BARROS - ABRIGO DA CASA DE FOR\u00c7A",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1743.00010.500-0-006",
+    "ripImovel": "1743.00010.500-0"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - RESID\u00caNCIA UNIVERSIT\u00c1RIA - PRA\u00c7A PEDRO VELHO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00303.500-1-001",
+    "ripImovel": "1761.00303.500-1"
+  },
+  {
+    "denominacaoPredio": "ANTIGA ESCOLA DE SERVI\u00c7O SOCIAL (ATUAL C\u00c2MARA MUNICIPAL DE NATAL)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00304.500-7-001",
+    "ripImovel": "1761.00304.500-7"
+  },
+  {
+    "denominacaoPredio": "CCS - DEPARTAMENTO DE PEDIATRIA / DEPARTAMENTO DE TOCO-GINECOLOGIA / LABORAT\u00d3RIO DE HABILIDADES",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00307.500-3-001",
+    "ripImovel": "1761.00307.500-3"
+  },
+  {
+    "denominacaoPredio": "MCC - SETOR EXPOSITIVO (EXPOSI\u00c7\u00d5ES)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00309.500-4-001",
+    "ripImovel": "1761.00309.500-4"
+  },
+  {
+    "denominacaoPredio": "MCC - SETOR EXPOSITIVO (GUARITA)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00309.500-4-002",
+    "ripImovel": "1761.00309.500-4"
+  },
+  {
+    "denominacaoPredio": "MCC - PAVILH\u00c3O ADMINISTRATIVO, LABORATORIAL E RESERVAS T\u00c9CNICAS",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00309.500-4-003",
+    "ripImovel": "1761.00309.500-4"
+  },
+  {
+    "denominacaoPredio": "MCC - SALA DE QU\u00cdMICA (NEC - PROJETO PARQUE DA CI\u00caNCIA)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00309.500-4-004",
+    "ripImovel": "1761.00309.500-4"
+  },
+  {
+    "denominacaoPredio": "MCC - SALA DE F\u00cdSICA (NEC - PROJETO PARQUE DA CI\u00caNCIA)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00309.500-4-005",
+    "ripImovel": "1761.00309.500-4"
+  },
+  {
+    "denominacaoPredio": "MCC - SALA DE BIOLOGIA (NEC - PROJETO PARQUE DA CI\u00caNCIA)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00309.500-4-006",
+    "ripImovel": "1761.00309.500-4"
+  },
+  {
+    "denominacaoPredio": "NHH - N\u00daCLEO DE HEMATOLOGIA E HEMOTERAPIA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00310.500-0-001",
+    "ripImovel": "1761.00310.500-0"
+  },
+  {
+    "denominacaoPredio": "CCS - DEPARTAMENTO DE ODONTOLOGIA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00311.500-5-001",
+    "ripImovel": "1761.00311.500-5"
+  },
+  {
+    "denominacaoPredio": "ANTIGO GRUPO ESCOLAR AUGUSTO SEVERO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00352.500-9-001",
+    "ripImovel": "1761.00352.500-9"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - RESID\u00caNCIA UNIVERSIT\u00c1RIA BIOM\u00c9DICA - CASA 04",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00359.500-7-001",
+    "ripImovel": "1761.00359.500-7"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - RESID\u00caNCIA UNIVERSIT\u00c1RIA BIOM\u00c9DICA - CASA 6",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00359.500-7-002",
+    "ripImovel": "1761.00359.500-7"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - RESID\u00caNCIA UNIVERSIT\u00c1RIA BIOM\u00c9DICA - CASA 8",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00359.500-7-003",
+    "ripImovel": "1761.00359.500-7"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - RESID\u00caNCIA UNIVERSIT\u00c1RIA BIOM\u00c9DICA - CASA 10",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00359.500-7-004",
+    "ripImovel": "1761.00359.500-7"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - RESID\u00caNCIA UNIVERSIT\u00c1RIA BIOM\u00c9DICA - CASA 12",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00359.500-7-005",
+    "ripImovel": "1761.00359.500-7"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - RESID\u00caNCIA UNIVERSIT\u00c1RIA BIOM\u00c9DICA - CASA 14",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00359.500-7-006",
+    "ripImovel": "1761.00359.500-7"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - RESID\u00caNCIA UNIVERSIT\u00c1RIA BIOM\u00c9DICA - CASA 16",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00359.500-7-007",
+    "ripImovel": "1761.00359.500-7"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - RESID\u00caNCIA UNIVERSIT\u00c1RIA BIOM\u00c9DICA - CASA 18",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00359.500-7-008",
+    "ripImovel": "1761.00359.500-7"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - RESID\u00caNCIA UNIVERSIT\u00c1RIA BIOM\u00c9DICA - CASA 20",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00359.500-7-009",
+    "ripImovel": "1761.00359.500-7"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - RESID\u00caNCIA UNIVERSIT\u00c1RIA BIOM\u00c9DICA - CASA 22",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00359.500-7-010",
+    "ripImovel": "1761.00359.500-7"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - RESID\u00caNCIA UNIVERSIT\u00c1RIA BIOM\u00c9DICA - CASA 24",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00359.500-7-011",
+    "ripImovel": "1761.00359.500-7"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - RESID\u00caNCIA UNIVERSIT\u00c1RIA BIOM\u00c9DICA - CASA 26",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00359.500-7-012",
+    "ripImovel": "1761.00359.500-7"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - RESID\u00caNCIA UNIVERSIT\u00c1RIA BIOM\u00c9DICA - CASA 28",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00359.500-7-013",
+    "ripImovel": "1761.00359.500-7"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - RESID\u00caNCIA UNIVERSIT\u00c1RIA BIOM\u00c9DICA - CASA 30",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00359.500-7-014",
+    "ripImovel": "1761.00359.500-7"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - RESID\u00caNCIA UNIVERSIT\u00c1RIA BIOM\u00c9DICA - CASA 32",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00359.500-7-015",
+    "ripImovel": "1761.00359.500-7"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - RESID\u00caNCIA UNIVERSIT\u00c1RIA BIOM\u00c9DICA - GUARITA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00359.500-7-016",
+    "ripImovel": "1761.00359.500-7"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - RESID\u00caNCIA UNIVERSIT\u00c1RIA BIOM\u00c9DICA - INFRAESTRUTURA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00359.500-7-017",
+    "ripImovel": "1761.00359.500-7"
+  },
+  {
+    "denominacaoPredio": "CB - DEPARTAMENTO DE OCEANOGRAFIA E LIMNOLOGIA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00360.500-2-001",
+    "ripImovel": "1761.00360.500-2"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - RESID\u00caNCIA UNIVERSIT\u00c1RIA MIPIBU - MASCULINA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00378.500-0-001",
+    "ripImovel": "1761.00378.500-0"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - RESID\u00caNCIA UNIVERSIT\u00c1RIA MIPIBU - P\u00d3S-GRADUA\u00c7\u00c3O",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00378.500-0-002",
+    "ripImovel": "1761.00378.500-0"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - REFEIT\u00d3RIO DA BIOM\u00c9DICA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00394.500-8-001",
+    "ripImovel": "1761.00394.500-8"
+  },
+  {
+    "denominacaoPredio": "CE - CRECHE DO NEI",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00394.500-8-002",
+    "ripImovel": "1761.00394.500-8"
+  },
+  {
+    "denominacaoPredio": "CCS - PAVILH\u00c3O ADMINISTRATIVO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00394.500-8-003",
+    "ripImovel": "1761.00394.500-8"
+  },
+  {
+    "denominacaoPredio": "CCS - DEPTO. AN\u00c1LISES CL\u00cdNICAS E TOXICOL\u00d3GICAS / DEPTO. FARM\u00c1CIA (FACULDADE DE FARM\u00c1CIA)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00394.500-8-004",
+    "ripImovel": "1761.00394.500-8"
+  },
+  {
+    "denominacaoPredio": "CCS - DEPARTAMENTO DE MEDICINA INTEGRADA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00394.500-8-005",
+    "ripImovel": "1761.00394.500-8"
+  },
+  {
+    "denominacaoPredio": "CCS - DEPARTAMENTO DE FONOAUDIOLOGIA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00394.500-8-006",
+    "ripImovel": "1761.00394.500-8"
+  },
+  {
+    "denominacaoPredio": "CCS - DEPARTAMENTO DE PATOLOGIA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00394.500-8-007",
+    "ripImovel": "1761.00394.500-8"
+  },
+  {
+    "denominacaoPredio": "CCS - DEPARTAMENTO DE CIRURGIA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00394.500-8-008",
+    "ripImovel": "1761.00394.500-8"
+  },
+  {
+    "denominacaoPredio": "CCS - DEPARTAMENTO DE MEDICINA CL\u00cdNICA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00394.500-8-009",
+    "ripImovel": "1761.00394.500-8"
+  },
+  {
+    "denominacaoPredio": "HUOL - PAVILH\u00c3O ADMINISTRATIVO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00394.500-8-010",
+    "ripImovel": "1761.00394.500-8"
+  },
+  {
+    "denominacaoPredio": "HUOL - PR\u00c9DIO AMBULATORIAL",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00394.500-8-011",
+    "ripImovel": "1761.00394.500-8"
+  },
+  {
+    "denominacaoPredio": "HUOL - EDIF\u00cdCIO CENTRAL DE INTERNA\u00c7\u00c3O - ECI",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00394.500-8-012",
+    "ripImovel": "1761.00394.500-8"
+  },
+  {
+    "denominacaoPredio": "HUOL - CENTRO DE DIAGN\u00d3STICO POR IMAGEM - CDI",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00394.500-8-013",
+    "ripImovel": "1761.00394.500-8"
+  },
+  {
+    "denominacaoPredio": "ANTIGA FACULDADE DE FARM\u00c1CIA E ODONTOLOGIA (ATUAL SEMUT-NATAL/RN)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00395.500-3-001",
+    "ripImovel": "1761.00395.500-3"
+  },
+  {
+    "denominacaoPredio": "ANTIGA ESCOLA INDUSTRIAL / ANTIGA TVU (ATUAL IFRN - CAMPUS CIDADE ALTA)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00446.500-0-001",
+    "ripImovel": "1761.00446.500-0"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - ESCOLA DE M\u00daSICA (EMUFRN)",
+    "latitude": -5.837533611516708,
+    "longitude": -35.20656817510864,
+    "idZona": "1",
+    "subRip": "1761.00463.500-2-001",
+    "ripImovel": "1761.00463.500-2"
+  },
+  {
+    "denominacaoPredio": "CE - N\u00daCLEO DE EDUCA\u00c7\u00c3O INFANTIL (NEI)",
+    "latitude": -5.837162725691773,
+    "longitude": -35.2061147661813,
+    "idZona": "1",
+    "subRip": "1761.00463.500-2-002",
+    "ripImovel": "1761.00463.500-2"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - TEMPLO ECUM\u00caNICO (CAPELA DO CAMPUS)",
+    "latitude": -5.837206577819957,
+    "longitude": -35.208560940537616,
+    "idZona": "1",
+    "subRip": "1761.00463.500-2-003",
+    "ripImovel": "1761.00463.500-2"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - PRA\u00c7A DE EVENTOS (PRA\u00c7A C\u00cdVICA DO CAMPUS)",
+    "latitude": -5.837601747173105,
+    "longitude": -35.20999532675018,
+    "idZona": "1",
+    "subRip": "1761.00463.500-2-004",
+    "ripImovel": "1761.00463.500-2"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - DIRETORIA DE DESENVOLVIMENTO DE PESSOAS",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "1",
+    "subRip": "1761.00463.500-2-005",
+    "ripImovel": "1761.00463.500-2"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - DIRETORIA DE ATEN\u00c7\u00c3O \u00c0 SA\u00daDE DO SERVIDOR",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "1",
+    "subRip": "1761.00463.500-2-006",
+    "ripImovel": "1761.00463.500-2"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - N\u00daCELO PERMANENTE DE CONCURSOS - COMPERVE",
+    "latitude": -5.833910557681596,
+    "longitude": -35.21159993645254,
+    "idZona": "1",
+    "subRip": "1761.00463.500-2-007",
+    "ripImovel": "1761.00463.500-2"
+  },
+  {
+    "denominacaoPredio": "CCHLA - DEPARTAMENTO DE ARTES (DEART)",
+    "latitude": -5.835316420629434,
+    "longitude": -35.21129461108425,
+    "idZona": "1",
+    "subRip": "1761.00463.500-2-008",
+    "ripImovel": "1761.00463.500-2"
+  },
+  {
+    "denominacaoPredio": "CCHLA - ESTA\u00c7\u00c3O CLIMATOL\u00d3GICA",
+    "latitude": -5.837543263668007,
+    "longitude": -35.20796463725392,
+    "idZona": "1",
+    "subRip": "1761.00463.500-2-009",
+    "ripImovel": "1761.00463.500-2"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - DIVIS\u00c3O DE TRANSPORTES E OFICINAS (DTO)",
+    "latitude": -5.834267778859659,
+    "longitude": -35.21121084695751,
+    "idZona": "1",
+    "subRip": "1761.00463.500-2-010",
+    "ripImovel": "1761.00463.500-2"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - DIVIS\u00c3O DE TRANSPORTES E OFICINAS (DTO - GUARITA)",
+    "latitude": -5.834975016870867,
+    "longitude": -35.20995977423601,
+    "idZona": "1",
+    "subRip": "1761.00463.500-2-011",
+    "ripImovel": "1761.00463.500-2"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - DIVIS\u00c3O DE TRANSPORTES E OFICINAS (DTO - GARAGENS)",
+    "latitude": -5.834104715803703,
+    "longitude": -35.21075330291038,
+    "idZona": "1",
+    "subRip": "1761.00463.500-2-012",
+    "ripImovel": "1761.00463.500-2"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - DIVIS\u00c3O DE TRANSPORTES E OFICINAS (DTO - OFICINAS)",
+    "latitude": -5.834256709546626,
+    "longitude": -35.21063951786212,
+    "idZona": "1",
+    "subRip": "1761.00463.500-2-013",
+    "ripImovel": "1761.00463.500-2"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - FUNDA\u00c7\u00c3O NORTERIOGRANDENSE DE PESQUISA E CULTURA (FUNPEC)",
+    "latitude": -5.834739119022442,
+    "longitude": -35.211196178594165,
+    "idZona": "1",
+    "subRip": "1761.00463.500-2-014",
+    "ripImovel": "1761.00463.500-2"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - SUBESTA\u00c7\u00c3O EL\u00c9TRICA ABRIGADA (SE101)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "1",
+    "subRip": "1761.00463.500-2-015",
+    "ripImovel": "1761.00463.500-2"
+  },
+  {
+    "denominacaoPredio": "CCSA - UNIDADE EDUCACIONAL INFANTIL (UEI)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "1",
+    "subRip": "1761.00463.500-2-016",
+    "ripImovel": "1761.00463.500-2"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - SEDIS - SECRETARIA DE EDUCA\u00c7\u00c3O A DIST\u00c2NCIA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "1",
+    "subRip": "1761.00463.500-2-017",
+    "ripImovel": "1761.00463.500-2"
+  },
+  {
+    "denominacaoPredio": "INFRAESTRUTURA DE REDE DE \u00c1GUA E ESGOTO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "1",
+    "subRip": "1761.00463.500-2-018",
+    "ripImovel": "1761.00463.500-2"
+  },
+  {
+    "denominacaoPredio": "INFRAESTRUTURA DE REDE DE ENERGIA EL\u00c9TRICA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "1",
+    "subRip": "1761.00463.500-2-019",
+    "ripImovel": "1761.00463.500-2"
+  },
+  {
+    "denominacaoPredio": "INFRAESTRUTURA DE REDE DE TELECOMUNICA\u00c7\u00d5ES",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "1",
+    "subRip": "1761.00463.500-2-020",
+    "ripImovel": "1761.00463.500-2"
+  },
+  {
+    "denominacaoPredio": "INFRAESTRUTURA DE REDE VI\u00c1RIA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "1",
+    "subRip": "1761.00463.500-2-021",
+    "ripImovel": "1761.00463.500-2"
+  },
+  {
+    "denominacaoPredio": "CB - SETOR DE AULAS",
+    "latitude": -5.841860086225582,
+    "longitude": -35.20178389840652,
+    "idZona": "2",
+    "subRip": "1761.00464.500-8-001",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CB - BIOT\u00c9RIO",
+    "latitude": -5.843070314871104,
+    "longitude": -35.20182706064882,
+    "idZona": "2",
+    "subRip": "1761.00464.500-8-002",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CB - LABORAT\u00d3RIO DE BIOLOGIA DE MICORRIZAS",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "2",
+    "subRip": "1761.00464.500-8-003",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CB - N\u00daCLEO DE PRIMATOLOGIA",
+    "latitude": -5.842875394998264,
+    "longitude": -35.20236288169987,
+    "idZona": "2",
+    "subRip": "1761.00464.500-8-004",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CB - LABORAT\u00d3RIO DE ENTOMOLOGIA",
+    "latitude": -5.842589017869718,
+    "longitude": -35.20272134690175,
+    "idZona": "2",
+    "subRip": "1761.00464.500-8-005",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CB - MUSEU DE CI\u00caNCIAS MORFOL\u00d3GICAS",
+    "latitude": -5.841819524308635,
+    "longitude": -35.20302115260763,
+    "idZona": "2",
+    "subRip": "1761.00464.500-8-006",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CB - INSTITUTO DE MEDICINA TROPICAL",
+    "latitude": -5.843230837182757,
+    "longitude": -35.20184609542885,
+    "idZona": "2",
+    "subRip": "1761.00464.500-8-007",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CB - LABORAT\u00d3RIO DE INVESTIGA\u00c7\u00c3O DE MATRIZES VEGETAIS ENERG\u00c9TICAS",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "2",
+    "subRip": "1761.00464.500-8-008",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CCS - DEPARTAMENTO DE NUTRI\u00c7\u00c3O / DEPARTAMENTO DE SA\u00daDE COLETIVA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-009",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - EDITORA UNIVERSIT\u00c1RIA",
+    "latitude": -5.838317837265694,
+    "longitude": -35.20429337713558,
+    "idZona": "2",
+    "subRip": "1761.00464.500-8-010",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CB - SUBESTA\u00c7\u00c3O EL\u00c9TRICA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "2",
+    "subRip": "1761.00464.500-8-011",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ECT - ESCOLA DE CI\u00caNCIA E TECNOLOGIA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-012",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CT - PAVILH\u00c3O ADMINISTRATIVO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-013",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CT - NTI - N\u00daCLEO DE TECNOLOGIA INDUSTRIAL",
+    "latitude": -5.842617134093963,
+    "longitude": -35.19642266896075,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-014",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CT - SETOR DE AULAS IV",
+    "latitude": -5.842437845852359,
+    "longitude": -35.199782598297126,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-015",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CT - DARQ - LABORAT\u00d3RIOS DE ARQUITETURA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-016",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CT - LARHISA - LABORAT\u00d3RIO DE RECURSOS H\u00cdDRICO E SANEAMENTO AMBIENTAL",
+    "latitude": -5.842378253771835,
+    "longitude": -35.19809920172794,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-017",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CT - LANCHONETE DO SETOR DE AULAS IV",
+    "latitude": -5.841804797435592,
+    "longitude": -35.20019018457805,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-018",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CT - OCA - ORGANIZA\u00c7\u00c3O DOS CENTROS ACAD\u00caMICOS",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-019",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CT - CASA DE M\u00c1QUINAS",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-020",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CCHLA - PAVILH\u00c3O ADMINISTRATIVO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "4",
+    "subRip": "1761.00464.500-8-021",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CCHLA - SETOR DE AULAS II",
+    "latitude": -5.840483084070706,
+    "longitude": -35.19712263140272,
+    "idZona": "4",
+    "subRip": "1761.00464.500-8-022",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CCHLA - LABORAT\u00d3RIO DE PSICOLOGIA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "4",
+    "subRip": "1761.00464.500-8-023",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CCHLA - LABORAT\u00d3RIO DE COMUNICA\u00c7\u00c3O (LABCOM)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "4",
+    "subRip": "1761.00464.500-8-024",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CCHLA - SEPA",
+    "latitude": -5.8385985713482365,
+    "longitude": -35.19868213031523,
+    "idZona": "4",
+    "subRip": "1761.00464.500-8-025",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - DMP - SETOR DE PATRIM\u00d4NIO M\u00d3VEL",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "2",
+    "subRip": "1761.00464.500-8-026",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - DMP - ALMOXARIFADO CENTRAL",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "2",
+    "subRip": "1761.00464.500-8-027",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CCSA - PAVILH\u00c3O ADMINISTRATIVO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "4",
+    "subRip": "1761.00464.500-8-028",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CCSA - N\u00daCLEO DE PESQUISA EM CI\u00caNCIAS SOCIAIS (NEPSA I)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "4",
+    "subRip": "1761.00464.500-8-029",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CCSA - N\u00daCLEO DE PESQUISA EM CI\u00caNCIAS SOCIAIS (NEPSA II)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "4",
+    "subRip": "1761.00464.500-8-030",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CCSA - SETOR DE AULAS I",
+    "latitude": -5.837524023141346,
+    "longitude": -35.199567777118396,
+    "idZona": "4",
+    "subRip": "1761.00464.500-8-031",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CCSA - SETOR DE AULAS V",
+    "latitude": -5.838457092369693,
+    "longitude": -35.197460700510064,
+    "idZona": "4",
+    "subRip": "1761.00464.500-8-032",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "EEN - ESCOLA DE ENFERMAGEM DE NATAL / CCS - DEPARTAMENTO DE ENFERMAGEM",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-033",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "EEN - ESCOLA DE ENFERMAGEM DE NATAL (ANEXO I)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-034",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "EEN - ESCOLA DE ENFERMAGEM DE NATAL (ANEXO II)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-035",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CCS - DEPARTAMENTO DE FISIOTERAPIA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-036",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - DMP - DIRETORIA DE MATERIAL E PATRIM\u00d4NIO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "2",
+    "subRip": "1761.00464.500-8-037",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - DMP - SETOR DE LICITA\u00c7\u00d5ES",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "2",
+    "subRip": "1761.00464.500-8-038",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - RESID\u00caNCIA UNIVERSIT\u00c1RIA - COMPLEXO CAMPUS I",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-039",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - RESID\u00caNCIA UNIVERSIT\u00c1RIA - COMPLEXO CAMPUS II",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-040",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - RESID\u00caNCIA UNIVERSIT\u00c1RIA - COMPLEXO CAMPUS III",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-041",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - RESID\u00caNCIA UNIVERSIT\u00c1RIA - COMPLEXO CAMPUS IV",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-042",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - REITORIA",
+    "latitude": -5.839831817775898,
+    "longitude": -35.20180938277525,
+    "idZona": "C",
+    "subRip": "1761.00464.500-8-043",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - CENTRO DE CONVIV\u00caNCIAS DJALMA MARINHO",
+    "latitude": -5.839292823132251,
+    "longitude": -35.20015654609227,
+    "idZona": "C",
+    "subRip": "1761.00464.500-8-044",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - BIBLIOTECA CENTRAL ZILA MAMEDE (BCZM)",
+    "latitude": -5.839786503271736,
+    "longitude": -35.19906732689772,
+    "idZona": "C",
+    "subRip": "1761.00464.500-8-045",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - DAD - DIVIS\u00c3O DE ATIVIDADES DESPORTIVAS",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-046",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - DAD - GIN\u00c1SIO POLIESPORTIVO I",
+    "latitude": -5.835219997336945,
+    "longitude": -35.20230859693333,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-047",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - DAD - PARQUE AQU\u00c1TICO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-048",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - DAD - PARQUE AQU\u00c1TICO - VESTU\u00c1RIO/ARQUIBANCADA",
+    "latitude": -5.8343649943660685,
+    "longitude": -35.20184709288399,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-049",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - DAD - PARQUE AQU\u00c1TICO - PISCINA OL\u00cdMPICA",
+    "latitude": -5.834414643729399,
+    "longitude": -35.20161588694098,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-050",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - DAD - PARQUE AQU\u00c1TICO - CASA DE BOMBAS",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-051",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - DAD - PARQUE AQU\u00c1TICO - APOIO PISCINA SEMIOL\u00cdMPICAS",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-052",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - DAD - PARQUE AQU\u00c1TICO - PISCINA SEMIOL\u00cdMPICA 01",
+    "latitude": -5.834792914267693,
+    "longitude": -35.20107293260141,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-053",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - DAD - PARQUE AQU\u00c1TICO - PISCINA SEMIOL\u00cdMPICA 02",
+    "latitude": -5.834800018180271,
+    "longitude": -35.2008690356313,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-054",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - DAD - PARQUE AQU\u00c1TICO - TANQUE DE REMO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-055",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - DAD - PARQUE AQU\u00c1TICO - CASA DE M\u00c1QUINAS PISCINA 02",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-056",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CCET - N\u00daCLEO DE PROCESSAMENTO PRIM\u00c1RIO E REUSO DE \u00c1GUAS RENOV\u00c1VEIS",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-057",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - DAD - PARQUE OL\u00cdMPICO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-058",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - DAD - GIN\u00c1SIO POLIESPORTIVO II",
+    "latitude": -5.83595406960602,
+    "longitude": -35.19934429575958,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-059",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - NUPLAM - N\u00daCLEO DE PESQUISA EM ALIMENTOS E MEDICAMENTOS",
+    "latitude": -5.840135632137907,
+    "longitude": -35.203380318940084,
+    "idZona": "2",
+    "subRip": "1761.00464.500-8-060",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - SIN - SUPERINTEND\u00caNCIA DE INFRAESTRUTURA - CENTRAL MAT.",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "2",
+    "subRip": "1761.00464.500-8-061",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - DIRETORIA DE GEST\u00c3O DA INFORMA\u00c7\u00c3O - ARQUIVO GERAL",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "2",
+    "subRip": "1761.00464.500-8-062",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - IMD - INSTITUTO METR\u00d3POLE DIGITAL",
+    "latitude": -5.832157351715455,
+    "longitude": -35.20530587411415,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-063",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - DSP - DIRETORIA DE SEGURAN\u00c7A PATRIMONIAL",
+    "latitude": -5.837735558284271,
+    "longitude": -35.204155049149314,
+    "idZona": "2",
+    "subRip": "1761.00464.500-8-064",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CB - MUSEU DE ANATOMIA COMPARATIVA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "C",
+    "subRip": "1761.00464.500-8-065",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - ALMOXARIFADO DE GASES INFLAM\u00c1VEIS",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "2",
+    "subRip": "1761.00464.500-8-066",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CB - DEP\u00d3SITO DE RES\u00cdDUOS RADIOATIVOS",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "2",
+    "subRip": "1761.00464.500-8-067",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - SIN - RESERVAT\u00d3RIO ELEVADO (RE201)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "2",
+    "subRip": "1761.00464.500-8-068",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - SIN - SUBESTA\u00c7\u00c3O EL\u00c9TRICA ABRIGADA (SE201)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "2",
+    "subRip": "1761.00464.500-8-069",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CB - CASA DE VEGETA\u00c7\u00c3O DESATIVADA I",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "2",
+    "subRip": "1761.00464.500-8-070",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CB - CASA DE VEGETA\u00c7\u00c3O DESATIVADA II",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "2",
+    "subRip": "1761.00464.500-8-071",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CCET - SETOR DE AULAS TE\u00d3RICAS III",
+    "latitude": -5.8410879819715555,
+    "longitude": -35.200362875223774,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-072",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CCET - IQ - LABORAT\u00d3RIO DE RESSON\u00c2NCIA MAGN\u00c9TICA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-073",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CCET - N\u00daCLEO DE APOIO A PESQUISA EM PETR\u00d3LEO E G\u00c1S NATURAL",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-074",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CCET - IQ - LABORAT\u00d3RIO I DE QU\u00cdMICA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-075",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CCET - ANFITEATROS",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-076",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CCET - IQ - LABORAT\u00d3RIO CENTRAL DE ESTUDOS DO PETR\u00d3LEO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-077",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CCET - IQ - LABORAT\u00d3RIO II DE QU\u00cdMICA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-078",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CCET - PAVILH\u00c3O ADMINISTRATIVO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-079",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CT - NUPEG II - N\u00daCLEO DE PESQUISA EM PETR\u00d3LEO E G\u00c1S",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-080",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CT - DARQ - LABSEC - ESTOCAGEM DE MATERIAL DO LABORAT\u00d3RIO DE SISTEMAS ESTRUTURAS E CONSTRUTIVOS",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-081",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CCET - DFTE - LABORAT\u00d3RIO I DE F\u00cdSICA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-082",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CCET - DFTE - OFICINAS DO DEPARTAMENTO DE F\u00cdSICA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-083",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CCET - DEPARTAMENTO DE F\u00cdSICA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-084",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CCET - DFTE - LABORAT\u00d3RIO II DE F\u00cdSICA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-085",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CCET - DGEF - ESTA\u00c7\u00c3O DE RASTREAMENTO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-086",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CCET - DG - LABORAT\u00d3RIO DE GEOF\u00cdSICA E GEOLOGIA DO PETR\u00d3LEO I",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-087",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CCET - DG - LABORAT\u00d3RIO DE GEOQU\u00cdMICA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-088",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CCET - DG - LABORAT\u00d3RIOS DE GEOLOGIA I",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-089",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CT - NUPEG I - N\u00daCLEO DE PESQUISA EM PETR\u00d3LEO E G\u00c1S",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-090",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CT - LABORAT\u00d3RIO DE AN\u00c1LISES DE PETR\u00d3LEO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-091",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CT - LAMP - LABORAT\u00d3RIO DE AVALIA\u00c7\u00c3O DE MEDI\u00c7\u00c3O EM PETR\u00d3LEO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-092",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CCET - DGEF - LABORAT\u00d3RIO DE GEOF\u00cdSICA APLICADA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-093",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CT - NTI - LAMTRE/CATRE - LAB MONIT TRAT REUSO DE RES\u00cdDUOS IND PETR\u00d3LEO/LAB CENTRAL TRAT RES\u00cdDUOS",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-094",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - SIN - RESERVAT\u00d3RIO ELEVADO (RE301)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-095",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - CANTINA",
+    "latitude": -5.841785051856123,
+    "longitude": -35.20022416717061,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-096",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - SIN - SUBESTA\u00c7\u00c3O EL\u00c9TRICA ABRIGADA (SE301)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-097",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CT - NTI-LEAFT-LAB ENG ALTERNATIVAS E FEN\u00d4MENOS TRANSP/LAB MAT NANOESTRUTURADOS E REATORES CATAL\u00cdTICOS",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-098",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - SIN - SUBESTA\u00c7\u00c3O EL\u00c9TRICA ABRIGADA (SE302)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-099",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - SIN - SUBESTA\u00c7\u00c3O EL\u00c9TRICA ABRIGADA (SE303)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-100",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - DEPARTAMENTO DE INFORM\u00c1TICA APLICADA (DIMAP)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-101",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - SUPERINTEND\u00caNCIA DE INFORM\u00c1TICA (SINFO)",
+    "latitude": -5.841488248156646,
+    "longitude": -35.1986262062107,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-102",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - SIN - RESERVAT\u00d3RIO ELEVADO (RE302)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-103",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CT - NTI - LAI - LAB. ACESSIBILIDADE INTEGRADA / CT - PEC - PROG. P\u00d3S-GRADUA\u00c7\u00c3O EM ENGENHARIA CIVIL",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-104",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CT - LECA - LABORAT\u00d3RIO DE ENGENHARIA DA COMPUTA\u00c7\u00c3O E AUTOMA\u00c7\u00c3O",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-105",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CT - NTI - LABORAT\u00d3RIO DE ENGENHARIA DE ALIMENTOS",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-106",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - SIN - SUBESTA\u00c7\u00c3O EL\u00c9TRICA ABRIGADA (SE304)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-107",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CT - NTI - LABTEX - LABORAT\u00d3RIO DE ENGENHARIA TEXTIL",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-108",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CT - LAUT - LABORAT\u00d3RIO DE AUTOMA\u00c7\u00c3O EM PETR\u00d3LEO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-109",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - SUPERINTEND\u00caNCIA DE COMUNICA\u00c7\u00c3O",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "4",
+    "subRip": "1761.00464.500-8-110",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - SIN/DIMAN - DIRETORIA DE MANUTEN\u00c7\u00c3O - MANUT. INSTALA\u00c7\u00d5ES TELEF\u00d4NICAS",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "4",
+    "subRip": "1761.00464.500-8-111",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - SIN - RESERVAT\u00d3RIO ELEVADO (RE401)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "4",
+    "subRip": "1761.00464.500-8-112",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CCSA - SETOR DE PR\u00c1TICA FORENSE",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "4",
+    "subRip": "1761.00464.500-8-113",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CCSA - CENTROS ACAD\u00caMICOS",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "4",
+    "subRip": "1761.00464.500-8-114",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - SIN - SUBESTA\u00c7\u00c3O EL\u00c9TRICA ABRIGADA (SE401A)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "4",
+    "subRip": "1761.00464.500-8-115",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - SIN - SUBESTA\u00c7\u00c3O EL\u00c9TRICA ABRIGADA (SE401B)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "4",
+    "subRip": "1761.00464.500-8-116",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CCHLA - LABORAT\u00d3RIO DE ARQUEOLOGIA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "4",
+    "subRip": "1761.00464.500-8-117",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - DIRET\u00d3RIO CENTRAL DOS ESTUDANTES (DCE)",
+    "latitude": -5.838095420579826,
+    "longitude": -35.199925931386225,
+    "idZona": "4",
+    "subRip": "1761.00464.500-8-118",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - CANTINA",
+    "latitude": -5.840916367872892,
+    "longitude": -35.19771626678741,
+    "idZona": "4",
+    "subRip": "1761.00464.500-8-119",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - SIN - SUBESTA\u00c7\u00c3O EL\u00c9TRICA ABRIGADA (SE402)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "4",
+    "subRip": "1761.00464.500-8-120",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - SIN - RESERVAT\u00d3RIO ELEVADO (RE402)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "4",
+    "subRip": "1761.00464.500-8-121",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - SIN - SUBESTA\u00c7\u00c3O EL\u00c9TRICA ABRIGADA (SE403)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "4",
+    "subRip": "1761.00464.500-8-122",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CCHLA - N\u00daCLEO DE ESTUDOS EM POL\u00cdTICAS P\u00daBLICAS",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "4",
+    "subRip": "1761.00464.500-8-123",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - CANTINA",
+    "latitude": -5.837975395652747,
+    "longitude": -35.19931058232579,
+    "idZona": "4",
+    "subRip": "1761.00464.500-8-124",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - SIN - RESERVAT\u00d3RIO ELEVADO (RE403)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "4",
+    "subRip": "1761.00464.500-8-125",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CCHLA - CENTROS ACAD\u00caMICOS",
+    "latitude": -5.839314841547508,
+    "longitude": -35.19815923897376,
+    "idZona": "4",
+    "subRip": "1761.00464.500-8-126",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - SEDE DA ADURN",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "4",
+    "subRip": "1761.00464.500-8-127",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CCHLA - INSTITUTO \u00c1GORA",
+    "latitude": -5.840185607101402,
+    "longitude": -35.19780376098803,
+    "idZona": "4",
+    "subRip": "1761.00464.500-8-128",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - SIN - SUPERINTEND\u00caNCIA DE INFRAESTRUTURA",
+    "latitude": -5.834147411566757,
+    "longitude": -35.203362000834055,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-129",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - SIN/DIMAN - DIRETORIA DE MANUTEN\u00c7\u00c3O - ADMINISTRA\u00c7\u00c3O",
+    "latitude": -5.834505789198102,
+    "longitude": -35.203738484884546,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-130",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - SIN/DIMAN - DIRETORIA DE MANUTEN\u00c7\u00c3O - ALOJAMENTO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-131",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - SIN/DIMAN - DIRETORIA DE MANUTEN\u00c7\u00c3O - CENTRAL DE MEDI\u00c7\u00c3OEL\u00c9TRICA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-132",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - SIN/DIMAN - DIRETORIA DE MANUTEN\u00c7\u00c3O - MANUTEN\u00c7\u00c3O DE INSTALA\u00c7\u00d5ES",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-133",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - SIN - SUPERINTEND\u00caNCIA DE INFRAESTRUTURA - \u00c1REA DE PRODU\u00c7\u00c3O DE MUDAS",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-134",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - SIN - RESERVAT\u00d3RIO ELEVADO (RE501)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-135",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - SIN - GALP\u00c3O DE COLETA SELETIVA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-136",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - SIN/DSU - DEP\u00d3SITO DE EQUIPAMENTOS",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-137",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - SIN/DSU - DIVIS\u00c3O DE SERVI\u00c7OS URBANOS",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-138",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - DAD - N\u00daCLEO DE YOGA",
+    "latitude": -5.834386566293711,
+    "longitude": -35.20172072651412,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-139",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - DAD - CAMPO DE VOLEY DE PRAIA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-140",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - DAD - PISTA DE ATLETISMO",
+    "latitude": -5.8360529558269905,
+    "longitude": -35.20079575076393,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-141",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - DAD - CAMPO DE FUTEBOL",
+    "latitude": -5.836123237795602,
+    "longitude": -35.20073053880306,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-142",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - DAD - QUADRA POLIESPORTIVA DESCOBERTA I",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-143",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - DAD - QUADRA POLIESPORTIVA DESCOBERTA II",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-144",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - DAD - CAMPO DE MINI-FUTEBOL",
+    "latitude": -5.836460017298735,
+    "longitude": -35.19963574563647,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-145",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - RESID\u00caNCIA UNIVERSIT\u00c1RIA DE P\u00d3S-GRADUA\u00c7\u00c3O",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-146",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - SIN/ETE - LABORAT\u00d3RIO DE AN\u00c1LISE DE QDE. E ADM. ESTA\u00c7\u00c3O DE TRAT. DE ESGOTO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-147",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - SIN - VALO DE OXIDA\u00c7\u00c3O (VO)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-148",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - SIN - CASA DE BOMBAS MOTO-REDUTOR I",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-149",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - SIN - CASA DE BOMBAS MOTO-REDUTOR II",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-150",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CT - ETE - PROSAB - LABORAT\u00d3RIO DO PROGRAMA DE PESQUISA EM SANEAMENTO B\u00c1SICO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-151",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - SIN - ESTUFA HIDROPONIA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-152",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - SIN - DECANTADOR SECUND\u00c1RIO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-153",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - SIN - TANQUES DO PROSAB",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-154",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - SIN - TANQUES DE ARMAZENAMENTO DE IODO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-155",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - SIN - SISTEMA DE CLORA\u00c7\u00c3O",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-156",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - SIN - TANQUES DE ARMAZENAMENTO DE ESGOTO TRATADO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-157",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - SIN - CASA DE BOMBAS DO ESGOTO TRATADO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-158",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - SIN - TANQUES DE ARMAZ. ESGOTO BRUTO E ALOJAMENTO DOS OPERADORES",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-159",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - SIN - ABRIGO DO QUADRO GERAL DE DISTRIBUI\u00c7\u00c3O DE ENERGIA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-160",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CE - NTI-LIME/LABMETROL-LAB INSTIT MICROSCOPIA ELETR\u00d4NICA E CARACTERIZA\u00c7\u00c3O DE MATERIAIS/LAB METROLOGIA",
+    "latitude": -5.842459440496769,
+    "longitude": -35.19650908136798,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-161",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CT - NPITI - N\u00daCLEO DE PESQUISA E INOVA\u00c7\u00c3O EM TECNOLOGIA DA INFORMA\u00c7\u00c3O",
+    "latitude": -5.842899828317829,
+    "longitude": -35.1975061106481,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-162",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CT - LABORAT\u00d3RIOS DAS NOVAS ENGENHARIAS",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-163",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CCS - DEPARTAMENTO DE EDUCA\u00c7\u00c3O F\u00cdSICA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-164",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - RESTAURANTE UNIVERSIT\u00c1RIO",
+    "latitude": -5.833353783832912,
+    "longitude": -35.20389340051783,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-165",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CE - CENTRO DE EDUCA\u00c7\u00c3O",
+    "latitude": -5.838670173941751,
+    "longitude": -35.19675763218768,
+    "idZona": "4",
+    "subRip": "1761.00464.500-8-166",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CCET - DIMAP - DEPARTAMENTO DE INFORM\u00c1TICA E MATEM\u00c1TICA APLICADA",
+    "latitude": -5.841493373040904,
+    "longitude": -35.1983226985877,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-167",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CCET - DG - LABORAT\u00d3RIO DE GEOF\u00cdSICA E GEOLOGIA DO PETR\u00d3LEO II",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-168",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CCET - DG - LABORAT\u00d3RIOS DE GEOPROCESSAMENTO / GEOLOGIA E GEOF\u00cdSICA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-169",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CCET - DG - LABORAT\u00d3RIOS DE AN\u00c1LISES ESTRATIGR\u00c1FICAS E INSTRUMENTA\u00c7\u00c3O MARINHA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-170",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CCET - IQ - LABORAT\u00d3RIO III DE QU\u00cdMICA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-171",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CCET - IQ - LABORAT\u00d3RIO DE CIMENTOS",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-172",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "INFRAESTRUTURA DE REDE DE \u00c1GUA E ESGOTO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "C",
+    "subRip": "1761.00464.500-8-173",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "INFRAESTRUTURA DE REDE DE ENERGIA EL\u00c9TRICA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "C",
+    "subRip": "1761.00464.500-8-174",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "INFRAESTRUTURA DE REDE DE TELECOMUNICA\u00c7\u00d5ES",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "C",
+    "subRip": "1761.00464.500-8-175",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CCET - LAPET - LABORAT\u00d3RIO DE PESQUISA EM PETR\u00d3LEO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-176",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CB - ADMINISTRA\u00c7\u00c3O DO CENTRO DE BIOCI\u00caNCIAS",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "2",
+    "subRip": "1761.00464.500-8-177",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - RESID\u00caNCIA UNIVERSIT\u00c1RIA - COMPLEXO CAMPUS - INFRAESTRUTURA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-178",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - INSTITUTO INTERNACIONAL DE F\u00cdSICA",
+    "latitude": -5.8403296192209915,
+    "longitude": -35.195446458961655,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-179",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ICE - INSTITUTO DO C\u00c9REBRO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-180",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - SIN - UNIDADE DE TRATAMENTO DE RES\u00cdDUOS S\u00d3LIDOS",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-181",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "INFRAESTRUTURA DE REDE VI\u00c1RIA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "C",
+    "subRip": "1761.00464.500-8-182",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "INFRAESTRUTURA DE REDE DE \u00c1GUA E ESGOTO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "2",
+    "subRip": "1761.00464.500-8-183",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "INFRAESTRUTURA DE REDE DE ENERGIA EL\u00c9TRICA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "2",
+    "subRip": "1761.00464.500-8-184",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "INFRAESTRUTURA DE REDE DE TELECOMUNICA\u00c7\u00d5ES",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "2",
+    "subRip": "1761.00464.500-8-185",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "INFRAESTRUTURA DE REDE VI\u00c1RIA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "2",
+    "subRip": "1761.00464.500-8-186",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "INFRAESTRUTURA DE REDE DE \u00c1GUA E ESGOTO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-187",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "INFRAESTRUTURA DE REDE DE ENERGIA EL\u00c9TRICA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-188",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "INFRAESTRUTURA DE REDE DE TELECOMUNICA\u00c7\u00d5ES",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-189",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "INFRAESTRUTURA DE REDE VI\u00c1RIA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-190",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "INFRAESTRUTURA DE REDE DE \u00c1GUA E ESGOTO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "4",
+    "subRip": "1761.00464.500-8-191",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "INFRAESTRUTURA DE REDE DE ENERGIA EL\u00c9TRICA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "4",
+    "subRip": "1761.00464.500-8-192",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "INFRAESTRUTURA DE REDE DE TELECOMUNICA\u00c7\u00d5ES",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "4",
+    "subRip": "1761.00464.500-8-193",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "INFRAESTRUTURA DE REDE VI\u00c1RIA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "4",
+    "subRip": "1761.00464.500-8-194",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "INFRAESTRUTURA DE REDE DE \u00c1GUA E ESGOTO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-195",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "INFRAESTRUTURA DE REDE DE ENERGIA EL\u00c9TRICA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-196",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "INFRAESTRUTURA DE REDE DE TELECOMUNICA\u00c7\u00d5ES",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-197",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "INFRAESTRUTURA DE REDE VI\u00c1RIA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "5",
+    "subRip": "1761.00464.500-8-198",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CTEC - COMPLEXO TECNOL\u00d3GICO DE ENGENHARIA -",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "3",
+    "subRip": "1761.00464.500-8-199",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - REITORIA - CORREGEDORIA (PR\u00d3X. SALA COLEGIADOS SUPERIORES)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "C",
+    "subRip": "1761.00464.500-8-200",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ESTACIONAMENTO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00465.500-3-001",
+    "ripImovel": "1761.00465.500-3"
+  },
+  {
+    "denominacaoPredio": "ANEXO DA SINFO - SUPERINTEND\u00caNCIA DE INFORM\u00c1TICA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00553.500-1-001",
+    "ripImovel": "1761.00553.500-1"
+  },
+  {
+    "denominacaoPredio": "LOCA\u00c7\u00c3O - CRUTAC CIDADE JARDIM",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00555.500-2-001",
+    "ripImovel": "1761.00555.500-2"
+  },
+  {
+    "denominacaoPredio": "LOCA\u00c7\u00c3O - IMD 'ESCRIT\u00d3RIO T\u00c9CNICO ADMINISTRATIVO'",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00557.500-3-001",
+    "ripImovel": "1761.00557.500-3"
+  },
+  {
+    "denominacaoPredio": "LOCA\u00c7\u00c3O - RESID\u00caNCIA UNIVERSIT\u00c1RIA - ANTONIO BARROS CAVALCANTI",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00559.500-4-001",
+    "ripImovel": "1761.00559.500-4"
+  },
+  {
+    "denominacaoPredio": "LOCA\u00c7\u00c3O - RESID\u00caNCIA UNIVERSIT\u00c1RIA - GARD\u00caNIAS",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00561.500-5-001",
+    "ripImovel": "1761.00561.500-5"
+  },
+  {
+    "denominacaoPredio": "LOCA\u00c7\u00c3O - SECRETARIA DE ENSINO A DIST\u00c2NCIA - SEDIS",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00563.500-6-001",
+    "ripImovel": "1761.00563.500-6"
+  },
+  {
+    "denominacaoPredio": "LOCA\u00c7\u00c3O - RESID\u00caNCIA UNIVERSIT\u00c1RIA - VIOLETAS",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00565.500-7-001",
+    "ripImovel": "1761.00565.500-7"
+  },
+  {
+    "denominacaoPredio": "LOCA\u00c7\u00c3O - IMD - INSTITUTO METR\u00d3POLE DIGITAL",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00567.500-8-001",
+    "ripImovel": "1761.00567.500-8"
+  },
+  {
+    "denominacaoPredio": "LOCA\u00c7\u00c3O - BIOINFORM\u00c1TICA/IMD",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00569.500-9-001",
+    "ripImovel": "1761.00569.500-9"
+  },
+  {
+    "denominacaoPredio": "RESID\u00caNCIA UNIVERSIT\u00c1RIA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00571.500-0-001",
+    "ripImovel": "1761.00571.500-0"
+  },
+  {
+    "denominacaoPredio": "LOCA\u00c7\u00c3O - APEC (SALAS PARA O CURSO DE NUTRI\u00c7\u00c3O)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00573.500-0-001",
+    "ripImovel": "1761.00573.500-0"
+  },
+  {
+    "denominacaoPredio": "LOCA\u00c7\u00c3O - INSTITUTO DE NEUROCI\u00caNCIAS",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00575.500-1-001",
+    "ripImovel": "1761.00575.500-1"
+  },
+  {
+    "denominacaoPredio": "LOCA\u00c7\u00c3O - IMD - 'ESCRIT\u00d3RIO'",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00579.500-3-001",
+    "ripImovel": "1761.00579.500-3"
+  },
+  {
+    "denominacaoPredio": "CCS - DEPARTAMENTO DE INFECTOLOGIA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00581.500-4-001",
+    "ripImovel": "1761.00581.500-4"
+  },
+  {
+    "denominacaoPredio": "LOCA\u00c7\u00c3O - INSTITUTO DO C\u00c9REBRO",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1761.00597.500-1-001",
+    "ripImovel": "1761.00597.500-1"
+  },
+  {
+    "denominacaoPredio": "LOCA\u00c7\u00c3O - DEP\u00d3SITO PARA MATERIAL PERMANENTE",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1779.00077.500-7-001",
+    "ripImovel": "1779.00077.500-7"
+  },
+  {
+    "denominacaoPredio": "LOCA\u00c7\u00c3O - DEP\u00d3SITO PARA MATERIAL PERMANENTE",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1779.00080.500-3-001",
+    "ripImovel": "1779.00080.500-3"
+  },
+  {
+    "denominacaoPredio": "HUAB - MATERNIDADE / PEDIATRIA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1823.00029.500-6-001",
+    "ripImovel": "1823.00029.500-6"
+  },
+  {
+    "denominacaoPredio": "HUAB - NUTRI\u00c7\u00c3O / RESTAURANTE (NOVAS INSTALA\u00c7\u00d5ES)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1823.00029.500-6-002",
+    "ripImovel": "1823.00029.500-6"
+  },
+  {
+    "denominacaoPredio": "HUAB - SUBESTA\u00c7\u00c3O DE ENERGIA",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1823.00029.500-6-003",
+    "ripImovel": "1823.00029.500-6"
+  },
+  {
+    "denominacaoPredio": "FACISA - PAVILH\u00c3O ACAD\u00caMICO - BLOCO I",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1823.00034.500-3-001",
+    "ripImovel": "1823.00034.500-3"
+  },
+  {
+    "denominacaoPredio": "FACISA - PAVILH\u00c3O ACAD\u00caMICO - BLOCO II",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1823.00034.500-3-002",
+    "ripImovel": "1823.00034.500-3"
+  },
+  {
+    "denominacaoPredio": "LOCA\u00c7\u00c3O - FACISA 'ESCRIT\u00d3RIO'",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1823.00040.500-6-001",
+    "ripImovel": "1823.00040.500-6"
+  },
+  {
+    "denominacaoPredio": "RESID\u00caNCIA UNIVERSIT\u00c1RIA DE SANTA CRUZ/RN",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1823.00046.500-9-001",
+    "ripImovel": "1823.00046.500-9"
+  },
+  {
+    "denominacaoPredio": "LOCA\u00c7\u00c3O - DIVIS\u00c3O ACAD\u00caMICA - GER\u00caNCIA DE ENSINO E PESQUISA DO HUAB\n(ANEXO III)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1823.00048.500-0-001",
+    "ripImovel": "1823.00048.500-0"
+  },
+  {
+    "denominacaoPredio": "LOCA\u00c7\u00c3O - SUPERINTEND\u00caNCIA / GER\u00caNCIA ADMINISTRATIVA DO HUAB (ANEXO I)",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "idZona": "",
+    "subRip": "1823.00050.500-0-001",
+    "ripImovel": "1823.00050.500-0"
+  }
+]

@@ -73,11 +73,10 @@ export class SipacRequisicaoManutencaoMapper {
         item.requisicoesDeManutencaoAssociadas?.map(
           SipacRequisicaoManutencaoMapper.toRequisicaoManutencaoAssociadaDto
         ),
-      requisicoesAssociadasDeMateriais:
-        item.requisicoesAssociadasDeMateriais?.map(
-          SipacRequisicaoManutencaoMapper.toRequisicaoMaterialAssociadaManutencaoDto
-        ),
-      imoveisPrediosInseridos: item['imoveis/prediosInseridos']?.map(
+      requisicoesMateriais: item.requisicoesAssociadasDeMateriais?.map(
+        SipacRequisicaoManutencaoMapper.toRequisicaoMaterialAssociadaManutencaoDto
+      ),
+      predios: item['imoveis/prediosInseridos']?.map(
         SipacRequisicaoManutencaoMapper.toImovelPredioManutencaoDto
       ),
       historico: item.historico.map(

@@ -645,7 +645,7 @@ export class CreateSipacRequisicaoManutencaoCompletoDto {
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => SipacRequisicaoMaterialAssociadaManutencaoDto)
-  requisicoesAssociadasDeMateriais: SipacRequisicaoMaterialAssociadaManutencaoDto[];
+  requisicoesMateriais: SipacRequisicaoMaterialAssociadaManutencaoDto[];
 
   @ApiProperty({
     type: () => [SipacImovelPredioManutencaoDto],
@@ -654,7 +654,7 @@ export class CreateSipacRequisicaoManutencaoCompletoDto {
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => SipacImovelPredioManutencaoDto)
-  imoveisPrediosInseridos: SipacImovelPredioManutencaoDto[];
+  predios: SipacImovelPredioManutencaoDto[];
 
   @ApiProperty({
     type: () => [SipacHistoricoManutencaoDto],

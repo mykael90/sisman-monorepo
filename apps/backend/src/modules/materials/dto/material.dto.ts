@@ -17,7 +17,7 @@ export class CreateMaterialDto
   name: string;
 
   @IsOptional()
-  sipacCode: string;
+  sipacCode?: string;
 
   @IsString()
   @IsOptional()

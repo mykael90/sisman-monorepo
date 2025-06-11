@@ -6,38 +6,65 @@ import { main as seedUsers } from './seeds/users.seed';
 import { main as seedMaterials } from './seeds/materials.seed';
 import { main as seedRoles } from './seeds/roles.seed';
 import { main as seedUsersRoles } from './seeds/_role-to-user.seed';
+import { main as seedSipacImoveis } from './seeds/sipac-imoveis.seed';
+import { main as seedSipacPredios } from './seeds/sipca-predios.seed';
 
 const logger = console;
 
 // Create ONE Prisma client instance for the entire seeding process
 const prisma = new PrismaClient();
 
+// Map seed names to their respective functions
+const seedFunctions: {
+  [key: string]: (prisma: PrismaClient) => Promise<void>;
+} = {
+  seedUsers,
+  seedMaterials,
+  seedRoles,
+  seedUsersRoles,
+  seedSipacImoveis,
+  seedSipacPredios
+};
+
 // Main function to seed the database
 async function mainSeed() {
-  // Renamed to avoid conflict with imported 'main'
+  const args = process.argv.slice(2); // Get command line arguments, excluding 'node' and script path
+
   logger.log('Starting database seeding...');
   try {
-    // Call the seed functions for each entity, passing the prisma instance
-    await seedUsers(prisma);
-    await seedMaterials(prisma);
-    await seedRoles(prisma);
-    await seedUsersRoles(prisma);
+    if (args.length > 0) {
+      const seedName = args[0]; // Get the first argument as the seed name
+      const seedFunction = seedFunctions[seedName];
+      if (seedFunction) {
+        logger.log(`Running specific seed: ${seedName}`);
+        await seedFunction(prisma);
+      } else {
+        logger.error(`Seed function "${seedName}" not found.`);
+        process.exit(1);
+      }
+    } else {
+      logger.log('Running all seed functions...');
+      // Call the seed functions for each entity, passing the prisma instance
+      await seedUsers(prisma);
+      await seedMaterials(prisma);
+      await seedRoles(prisma);
+      await seedUsersRoles(prisma);
+      await seedSipacImoveis(prisma);
+      await seedSipacPredios(prisma);
+    }
 
     logger.log('Database seeding completed successfully.');
-    // No need for process.exit(0) here, natural exit is success
   } catch (error) {
-    // Log the error if something goes wrong during seeding
     logger.error('An error occurred during database seeding:', error);
-    process.exit(1); // Exit with error code if any seed function fails
+    process.exit(1);
   } finally {
-    // Always disconnect the Prisma client, whether success or error
     logger.log('Disconnecting Prisma client...');
     await prisma
       .$disconnect()
       .then(() => logger.log('Prisma client disconnected.'))
       .catch(async (disconnectError) => {
         logger.error('Error disconnecting Prisma client:', disconnectError);
-        process.exit(1); // Exit with error if disconnect fails too
+        process.exit(1);
       });
   }
 }

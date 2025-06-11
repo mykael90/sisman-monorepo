@@ -22,6 +22,7 @@ import { SipacRequisicaoManutencaoMapper } from './mappers/sipac-requisicao-manu
 import { AxiosRequestConfig } from 'axios';
 import { handlePrismaError } from '../../../shared/utils/prisma-error-handler';
 import { ListaRequisicoesManutencoesService } from './lista-requisicoes-manutencoes.service';
+import { RequisicoesMateriaisService } from '../requisicoes-materiais/requisicoes-materiais.service';
 // import { MateriaisService } from '../materiais/materiais.service'; // TODO: Determine if MateriaisService is needed
 
 @Injectable()
@@ -39,7 +40,8 @@ export class RequisicoesManutencoesService {
     private readonly prisma: PrismaService,
     private readonly listaRequisicoesManutencoesService: ListaRequisicoesManutencoesService,
     // private readonly materiaisService: MateriaisService, // TODO: Determine if MateriaisService is needed
-    private readonly sipacScraping: SipacScrapingService
+    private readonly sipacScraping: SipacScrapingService,
+    private readonly requisicoesMateriaisService: RequisicoesMateriaisService
   ) {}
 
   // @Cron(
@@ -79,14 +81,31 @@ export class RequisicoesManutencoesService {
 
     const prismaCreateInput = {};
 
-    // Ensure materials referenced in requisition items exist if MateriaisService is used
+    //TODO:
+    // Ensure predios associadss referenced in requisition items exist if MateriaisService is used
     // if (data.requisicoesAssociadasDeMateriais && data.requisicoesAssociadasDeMateriais.length > 0 && this.materiaisService) {
-    //   const allItems = data.requisicoesAssociadasDeMateriais.flatMap(req => req.itens || []);
+    //   const allItems = data.requisicoesDeManutencaoAssociadas.flatMap(req => req.itens || []);
     //   if (allItems.length > 0) {
     //      const itensParaVerificar = allItems.map(item => ({ codigo: item.codigo })); // Assuming the DTO has 'codigo' in items
     //      await this.materiaisService.ensureMateriaisExistentes(itensParaVerificar as any); // `as any` to simplify, ideally type correctly
     //   }
     // }
+
+    // Ensure requisicoes de materials referenced in requisition items exist
+    if (
+      data.requisicoesMateriais &&
+      data.requisicoesMateriais.length > 0 &&
+      this.requisicoesMateriaisService
+    ) {
+      const requisicoesParaVerificar = data.requisicoesMateriais.map(
+        (requisicao) => ({
+          numeroAno: requisicao.numeroDaRequisicao
+        })
+      );
+      await this.ensureRequisicoesMateriaisAssociadasExistentes(
+        requisicoesParaVerificar
+      ); // `as any` to simplify, ideally type correctly
+    }
 
     for (const key in data) {
       if (Object.prototype.hasOwnProperty.call(data, key)) {
@@ -97,17 +116,37 @@ export class RequisicoesManutencoesService {
         if (relationalKeysFromDMMF.includes(typedKey)) {
           // If it's a relational field, wrap in 'create' or 'createMany'
           if (Array.isArray(value)) {
-            (prismaCreateInput as any)[typedKey] = {
-              createMany: {
-                data: value.map((item: any) => {
-                  // Remove the foreign key from the item data as it will be set by createMany
-                  const { requisicaoManutencaoId, requisicaoId, ...itemData } =
-                    item; // Also remove requisicaoId for nested material items
-                  return itemData;
-                }),
-                skipDuplicates: true // Optional: skip if a unique constraint would be violated
-              }
-            };
+            if (
+              typedKey === 'requisicoesMateriais' ||
+              'requisicoesDeManutencaoAssociadas' ||
+              'imoveisPrediosInseridos'
+            ) {
+              (prismaCreateInput as any)[typedKey] = {
+                connect: {
+                  //TODO: precisa ajustar para se conectar com o id correto, tem que tratatar já no mapper
+                  data: value.map((item: any) => ({
+                    // Remove the foreign key from the item data as it will be set by createMany
+                    id: item.id
+                  })),
+                  skipDuplicates: true // Optional: skip if a unique constraint would be violated
+                }
+              };
+            } else {
+              (prismaCreateInput as any)[typedKey] = {
+                createMany: {
+                  data: value.map((item: any) => {
+                    // Remove the foreign key from the item data as it will be set by createMany
+                    const {
+                      requisicaoManutencaoId,
+                      requisicaoId,
+                      ...itemData
+                    } = item; // Also remove requisicaoId for nested material items
+                    return itemData;
+                  }),
+                  skipDuplicates: true // Optional: skip if a unique constraint would be violated
+                }
+              };
+            }
             (relationsToInclude as any)[typedKey] = true;
           } else if (value !== null && typeof value === 'object') {
             // Handle single nested object relations (e.g., dadosDaRequisicao)
@@ -359,8 +398,6 @@ export class RequisicoesManutencoesService {
         `Busca da requisição de manutenção do SIPAC com ID: ${id} concluída com sucesso.`
       );
 
-      this.logger.log(data);
-
       // The response structure for maintenance is different from material.
       // The mapper should handle the transformation.
       const requisicaoManutencaoDtoFormat: CreateSipacRequisicaoManutencaoCompletoDto =
@@ -369,8 +406,6 @@ export class RequisicoesManutencoesService {
       this.logger.log(
         `Retornando requisição de manutenção do SIPAC com ID: ${id}`
       );
-
-      this.logger.log(requisicaoManutencaoDtoFormat);
 
       return requisicaoManutencaoDtoFormat;
     } catch (error) {
@@ -500,6 +535,45 @@ export class RequisicoesManutencoesService {
       },
       details: results
     };
+  }
+
+  private async ensureRequisicoesMateriaisAssociadasExistentes(
+    requisicoesAssociadas: Array<{ numeroAno: string; [key: string]: any }>
+  ): Promise<void> {
+    if (!requisicoesAssociadas || requisicoesAssociadas.length === 0) {
+      return;
+    }
+
+    this.logger.log(
+      `Verificando a necessidade de cadastrar requisições de materiais que ainda não existam no banco de dados.`
+    );
+
+    const requisicoesMateriaisNumerosAnos = requisicoesAssociadas.map(
+      (requisicao) => requisicao.numeroAno
+    );
+
+    const registeredRequisicoes =
+      await this.prisma.sipacRequisicaoMaterial.findMany({
+        where: { numeroDaRequisicao: { in: requisicoesMateriaisNumerosAnos } },
+        select: { numeroDaRequisicao: true }
+      });
+
+    const numerosAnosEncontrados = registeredRequisicoes.map(
+      (register) => register.numeroDaRequisicao
+    );
+
+    const numerosAnosNaoEncontrados = requisicoesMateriaisNumerosAnos.filter(
+      (numeroAno) => !numerosAnosEncontrados.includes(numeroAno)
+    );
+
+    if (numerosAnosNaoEncontrados.length > 0) {
+      this.logger.warn(
+        `Ids ausentes: ${numerosAnosNaoEncontrados.join(', ')}. Cadastrando...`
+      );
+      await this.requisicoesMateriaisService.fetchCompleteAndPersistCreateOrUpdateRequisicaoMaterialArray(
+        numerosAnosNaoEncontrados
+      );
+    }
   }
 }
 export interface ProcessNumeroAnoResult {
