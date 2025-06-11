@@ -23,6 +23,7 @@ import { AxiosRequestConfig } from 'axios';
 import { handlePrismaError } from '../../../shared/utils/prisma-error-handler';
 import { ListaRequisicoesManutencoesService } from './lista-requisicoes-manutencoes.service';
 import { RequisicoesMateriaisService } from '../requisicoes-materiais/requisicoes-materiais.service';
+import { removeAccentsAndSpecialChars } from '../../../shared/prisma/seeds/seed-utils';
 // import { MateriaisService } from '../materiais/materiais.service'; // TODO: Determine if MateriaisService is needed
 
 @Injectable()
@@ -81,16 +82,6 @@ export class RequisicoesManutencoesService {
 
     const prismaCreateInput = {};
 
-    //TODO:
-    // Ensure predios associadss referenced in requisition items exist if MateriaisService is used
-    // if (data.requisicoesAssociadasDeMateriais && data.requisicoesAssociadasDeMateriais.length > 0 && this.materiaisService) {
-    //   const allItems = data.requisicoesDeManutencaoAssociadas.flatMap(req => req.itens || []);
-    //   if (allItems.length > 0) {
-    //      const itensParaVerificar = allItems.map(item => ({ codigo: item.codigo })); // Assuming the DTO has 'codigo' in items
-    //      await this.materiaisService.ensureMateriaisExistentes(itensParaVerificar as any); // `as any` to simplify, ideally type correctly
-    //   }
-    // }
-
     // Ensure requisicoes de materials referenced in requisition items exist
     if (
       data.requisicoesMateriais &&
@@ -107,6 +98,31 @@ export class RequisicoesManutencoesService {
       ); // `as any` to simplify, ideally type correctly
     }
 
+    // Find all predios by denominacaoPredio e rip
+    const prediosSubrips = await this.prisma.sipacPredio.findMany({
+      select: {
+        subRip: true
+      },
+      where: {
+        AND: [
+          {
+            denominacaoPredio: {
+              in: data.predios.map(
+                (predio) => removeAccentsAndSpecialChars(predio).predio
+              )
+            }
+          },
+          {
+            ripImovel: {
+              in: data.predios.map((predio) => predio.rip)
+            }
+          }
+        ]
+      }
+    });
+
+    //
+
     for (const key in data) {
       if (Object.prototype.hasOwnProperty.call(data, key)) {
         const typedKey =
@@ -116,35 +132,25 @@ export class RequisicoesManutencoesService {
         if (relationalKeysFromDMMF.includes(typedKey)) {
           // If it's a relational field, wrap in 'create' or 'createMany'
           if (Array.isArray(value)) {
-            if (
-              typedKey === 'requisicoesMateriais' ||
-              'requisicoesDeManutencaoAssociadas' ||
-              'imoveisPrediosInseridos'
-            ) {
+            if (typedKey === 'requisicoesMateriais') {
               (prismaCreateInput as any)[typedKey] = {
-                connect: {
-                  //TODO: precisa ajustar para se conectar com o id correto, tem que tratatar já no mapper
-                  data: value.map((item: any) => ({
-                    // Remove the foreign key from the item data as it will be set by createMany
-                    id: item.id
-                  })),
-                  skipDuplicates: true // Optional: skip if a unique constraint would be violated
-                }
+                connect: value.map((item: any) => ({
+                  // Remove the foreign key from the item data as it will be set by createMany
+                  id: item.id
+                }))
               };
+            } else if (typedKey === 'predios') {
+              (prismaCreateInput as any)[typedKey] = {
+                connect: prediosSubrips
+              };
+            } else if (typedKey === 'requisicoesDeManutencaoAssociadas') {
+              //TODO:
+              // essa logica de colocar as requisicoes associadas vai ser mais complicado, no sipac não deixa claro quem é mãe e quem é filha, tem que avaliar o numero da reuiqiscao
+              // veja que se não tiver a mae cadastrada pode dar problema, talvez seja necessário avaliar primeiro as requisicoes associadas, para posteriormente estabelecer a ordem que cada uma deve ser cadastrada, começando da mais antiga
             } else {
               (prismaCreateInput as any)[typedKey] = {
-                createMany: {
-                  data: value.map((item: any) => {
-                    // Remove the foreign key from the item data as it will be set by createMany
-                    const {
-                      requisicaoManutencaoId,
-                      requisicaoId,
-                      ...itemData
-                    } = item; // Also remove requisicaoId for nested material items
-                    return itemData;
-                  }),
-                  skipDuplicates: true // Optional: skip if a unique constraint would be violated
-                }
+                deleteMany: {}, // Delete all existing items
+                create: value // Create the new items
               };
             }
             (relationsToInclude as any)[typedKey] = true;
@@ -171,6 +177,8 @@ export class RequisicoesManutencoesService {
             ? relationsToInclude
             : undefined
       });
+
+      // return prismaCreateInput;
     } catch (error) {
       handlePrismaError(error, this.logger, 'Requisição de Manutenção SIPAC', {
         operation: 'create',
@@ -438,12 +446,16 @@ export class RequisicoesManutencoesService {
     );
 
     // Combine information if necessary, although the detailed response should be comprehensive
-    // const infoComplete = {
-    //   ...infoFromList, // May contain some overlapping fields, decide which source is authoritative
-    //   ...infoFromDetail
-    // };
+    //TODO: simplificar
+    const infoComplete = {
+      ...infoFromDetail,
+      dadosDaRequisicao: {
+        ...infoFromList,
+        ...infoFromDetail.dadosDaRequisicao
+      } // May contain some overlapping fields, decide which source is authoritative
+    };
 
-    return infoFromDetail; // The detailed response should be sufficient
+    return infoComplete; // The detailed response should be sufficient
   }
 
   async fetchCompleteAndPersistCreateOrUpdateRequisicaoManutencao(
@@ -576,6 +588,7 @@ export class RequisicoesManutencoesService {
     }
   }
 }
+
 export interface ProcessNumeroAnoResult {
   numeroAno: string;
   status: 'success' | 'failed';

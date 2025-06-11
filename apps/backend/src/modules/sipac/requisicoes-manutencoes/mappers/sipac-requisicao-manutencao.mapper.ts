@@ -66,7 +66,7 @@ export class SipacRequisicaoManutencaoMapper {
         horarioParaAtendimento: dadosDaRequisicao.horarioParaAtendimento,
         observacao: dadosDaRequisicao.observacao
       },
-      informacoesDoServico: item.informacoesDoServico?.map(
+      informacoesServico: item.informacoesDoServico?.map(
         SipacRequisicaoManutencaoMapper.toInformacoesDoServicoDto
       ),
       requisicoesDeManutencaoAssociadas:

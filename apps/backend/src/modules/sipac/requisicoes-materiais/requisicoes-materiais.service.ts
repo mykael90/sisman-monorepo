@@ -110,12 +110,10 @@ export class RequisicoesMateriaisService {
           relationalKeysFromDMMF.includes(typedKey) &&
           Array.isArray(value) // 'value' deve ser um array (pode ser vazio para remover todas as conexões)
         ) {
-          const relationDataToSet = value;
-
           // Usar 'create' para criar completamente as conexões existentes
           (prismaUpdateInput as any)[typedKey] = {
             deleteMany: {}, // Delete all existing items
-            create: relationDataToSet // Create the new items
+            create: value // Create the new items
           };
           (relationsToInclude as any)[typedKey] = true;
         } else if (

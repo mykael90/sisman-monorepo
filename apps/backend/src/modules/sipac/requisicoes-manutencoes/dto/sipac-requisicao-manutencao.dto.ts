@@ -627,7 +627,7 @@ export class CreateSipacRequisicaoManutencaoCompletoDto {
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => SipacInformacoesDoServicoManutencaoDto)
-  informacoesDoServico: SipacInformacoesDoServicoManutencaoDto[];
+  informacoesServico: SipacInformacoesDoServicoManutencaoDto[];
 
   @ApiProperty({
     type: () => [SipacRequisicaoManutencaoAssociadaDto],
