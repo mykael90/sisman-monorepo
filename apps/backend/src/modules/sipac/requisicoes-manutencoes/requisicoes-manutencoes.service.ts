@@ -201,8 +201,10 @@ export class RequisicoesManutencoesService {
       });
 
       //antes de retornar o resultado é importante criar as requisicoes de manutencao filhas.
-      //TODO:
-      // this.ensureRequisicoesFilhasExistentes(data.requisicoesManutencaoFilhas);
+      //pensando melhor, não dá certo, gera inconsistência. É melhor engatilhar só com a mãe. fiz os teste tentando a req. 631/2024 e ela da certo mas tem inconsistencia
+      // await this.ensureRequisicoesFilhasExistentes(
+      //   data.requisicoesManutencaoFilhas
+      // );
 
       return result;
       // return prismaCreateInput;
@@ -645,6 +647,7 @@ export class RequisicoesManutencoesService {
     }
   }
 
+  //não utilizei pq gera inconsistência. Deixar apenas o método ensureRequisicaoMaeExistente ativo
   private async ensureRequisicoesFilhasExistentes(
     requisicoesFilhas: SipacRequisicaoManutencaoMaeAssociadaDto[]
   ) {
