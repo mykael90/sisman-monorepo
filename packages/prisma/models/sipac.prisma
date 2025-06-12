@@ -207,8 +207,8 @@ model SipacRequisicaoManutencao {
     idUsuarioGravacao              Int? // Identificador do usuário que gravou a requisição.
     status                         String // Status da requisição (ex: "PEDIDO DE MATERIAL REALIZADO").
     dataDeCadastro                 DateTime? @db.Timestamp(0) // Data de cadastro da requisição.
-    unidadeRequisitante            String? // Unidade requisitante.
-    unidadeDeCusto                 String? // Unidade de custo.
+    nomeUnidadeRequisitante        String? // Unidade requisitante.
+    nomeUnidadeDeCusto             String? // Unidade de custo.
     descricao                      String    @db.Text // Descrição da requisição.
     local                          String? // Local da requisição.
     representanteDaUnidadeDeOrigem String?
@@ -231,6 +231,12 @@ model SipacRequisicaoManutencao {
     requisicoesMateriais        SipacRequisicaoMaterial[] // Requisições de material vinculadas a esta requisição de manutenção
     predios                     SipacPredio[]
     historico                   SipacHistoricoManutencao[]
+
+    //unidades
+    unidadeRequisitanteId Int?
+    unidadeRequisitante   SipacUnidade? @relation("unidadeRequisitante", fields: [unidadeRequisitanteId], references: [id])
+    unidadeCustoId        Int?
+    unidadeCusto          SipacUnidade? @relation("unidadeCusto", fields: [unidadeCustoId], references: [id])
 
     @@index([numeroRequisicao])
     @@map("sipac_requisicoes_manutencao")
@@ -341,7 +347,12 @@ model SipacUnidade {
     nomeUnidade   String // Nome da unidade.
     sigla         String? // Sigla da unidade.
 
+    requisicoesManutencaoRequisistante SipacRequisicaoManutencao[] @relation("unidadeRequisitante")
+    requisicoesManutencaoCusto         SipacRequisicaoManutencao[] @relation("unidadeCusto")
+
     @@index([codigoUnidade])
+    @@index([nomeUnidade])
+    @@index([sigla])
     @@map("sipac_unidades")
 }
 

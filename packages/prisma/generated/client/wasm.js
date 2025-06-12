@@ -645,8 +645,8 @@ exports.Prisma.SipacRequisicaoManutencaoScalarFieldEnum = {
   idUsuarioGravacao: 'idUsuarioGravacao',
   status: 'status',
   dataDeCadastro: 'dataDeCadastro',
-  unidadeRequisitante: 'unidadeRequisitante',
-  unidadeDeCusto: 'unidadeDeCusto',
+  nomeUnidadeRequisitante: 'nomeUnidadeRequisitante',
+  nomeUnidadeDeCusto: 'nomeUnidadeDeCusto',
   descricao: 'descricao',
   local: 'local',
   representanteDaUnidadeDeOrigem: 'representanteDaUnidadeDeOrigem',
@@ -657,7 +657,9 @@ exports.Prisma.SipacRequisicaoManutencaoScalarFieldEnum = {
   observacao: 'observacao',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  requisicaoManutencaoIdMae: 'requisicaoManutencaoIdMae'
+  requisicaoManutencaoIdMae: 'requisicaoManutencaoIdMae',
+  unidadeRequisitanteId: 'unidadeRequisitanteId',
+  unidadeCustoId: 'unidadeCustoId'
 };
 
 exports.Prisma.SipacInformacaoServicoManutencaoScalarFieldEnum = {
@@ -1011,8 +1013,8 @@ exports.Prisma.SipacRequisicaoManutencaoOrderByRelevanceFieldEnum = {
   divisao: 'divisao',
   usuarioGravacao: 'usuarioGravacao',
   status: 'status',
-  unidadeRequisitante: 'unidadeRequisitante',
-  unidadeDeCusto: 'unidadeDeCusto',
+  nomeUnidadeRequisitante: 'nomeUnidadeRequisitante',
+  nomeUnidadeDeCusto: 'nomeUnidadeDeCusto',
   descricao: 'descricao',
   local: 'local',
   representanteDaUnidadeDeOrigem: 'representanteDaUnidadeDeOrigem',

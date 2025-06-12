@@ -98,8 +98,8 @@ export class SipacRequisicaoManutencaoMapper {
       dataDeCadastro: SipacRequisicaoManutencaoMapper.parseDateString(
         dadosDaRequisicao.dataDeCadastro
       ), // Assuming date format is parseable
-      unidadeRequisitante: dadosDaRequisicao.unidadeRequisitante,
-      unidadeDeCusto: dadosDaRequisicao.unidadeDeCusto,
+      nomeUnidadeRequisitante: dadosDaRequisicao.unidadeRequisitante,
+      nomeUnidadeDeCusto: dadosDaRequisicao.unidadeDeCusto,
       descricao: dadosDaRequisicao.descricao,
       local: dadosDaRequisicao.local,
       representanteDaUnidadeDeOrigem:

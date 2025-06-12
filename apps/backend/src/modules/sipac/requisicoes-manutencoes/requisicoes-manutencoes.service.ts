@@ -25,14 +25,14 @@ import { handlePrismaError } from '../../../shared/utils/prisma-error-handler';
 import { ListaRequisicoesManutencoesService } from './lista-requisicoes-manutencoes.service';
 import { RequisicoesMateriaisService } from '../requisicoes-materiais/requisicoes-materiais.service';
 import { removeAccentsAndSpecialChars } from '../../../shared/prisma/seeds/seed-utils';
+import { normalizeString } from '../../../shared/utils/string-utils';
 // import { MateriaisService } from '../materiais/materiais.service'; // TODO: Determine if MateriaisService is needed
 
 @Injectable()
 export class RequisicoesManutencoesService {
   private readonly logger = new Logger(RequisicoesManutencoesService.name);
-  private readonly URL_PATH = 'sipac/requisicao/manutencao'; // TODO: Confirm the actual API path
+  private readonly URL_PATH = 'sipac/requisicao/manutencao';
 
-  // Constant query parameters - TODO: Confirm these for maintenance requisitions
   private readonly CONSTANT_PARAMS = {
     // acao: 200 // Assuming a similar action parameter
     // Add other necessary constant params for maintenance requisitions
@@ -115,9 +115,7 @@ export class RequisicoesManutencoesService {
         AND: [
           {
             denominacaoPredio: {
-              in: data.predios.map(
-                (predio) => removeAccentsAndSpecialChars(predio).predio
-              )
+              in: data.predios.map((predio) => normalizeString(predio.predio))
             }
           },
           {
@@ -130,12 +128,40 @@ export class RequisicoesManutencoesService {
       }
     });
 
+    //Find unidadeCusto e unidadeRequisitante by nomeUnidade
+    //TODO: É bom fazer uma lógica para adicionar a unidade (usando a API SIPAC) se ela não existir. Possível brecha para erro
+    const unidadeRequisitante = await this.prisma.sipacUnidade.findFirst({
+      where: {
+        nomeUnidade: normalizeString(data.nomeUnidadeRequisitante)
+      },
+      select: {
+        id: true
+      }
+    });
+
+    if (unidadeRequisitante) {
+      data.unidadeRequisitante = { id: unidadeRequisitante.id };
+    }
+
+    const unidadeCusto = await this.prisma.sipacUnidade.findFirst({
+      where: {
+        nomeUnidade: normalizeString(data.nomeUnidadeDeCusto)
+      },
+      select: {
+        id: true
+      }
+    });
+
+    if (unidadeCusto) {
+      data.unidadeCusto = { id: unidadeCusto.id };
+    }
+
     //
 
     for (const key in data) {
       if (Object.prototype.hasOwnProperty.call(data, key)) {
         const typedKey =
-          key as keyof CreateSipacRequisicaoManutencaoCompletoDto;
+          key as keyof Prisma.SipacRequisicaoManutencaoCreateInput;
         const value = data[typedKey];
 
         if (relationalKeysFromDMMF.includes(typedKey)) {
@@ -180,8 +206,21 @@ export class RequisicoesManutencoesService {
                   create: value
                 };
               }
+            } else if (typedKey === 'unidadeRequisitante') {
+              (prismaCreateInput as any)[typedKey] = {
+                connect: {
+                  id: unidadeRequisitante?.id
+                }
+              };
+            } else if (typedKey === 'unidadeCusto') {
+              (prismaCreateInput as any)[typedKey] = {
+                connect: {
+                  id: unidadeCusto?.id
+                }
+              };
+            } else {
+              (relationsToInclude as any)[typedKey] = true;
             }
-            (relationsToInclude as any)[typedKey] = true;
           }
         } else {
           // Assume it's a scalar field and assign directly
@@ -272,9 +311,7 @@ export class RequisicoesManutencoesService {
         AND: [
           {
             denominacaoPredio: {
-              in: data.predios.map(
-                (predio) => removeAccentsAndSpecialChars(predio).predio
-              )
+              in: data.predios.map((predio) => normalizeString(predio.predio))
             }
           },
           {
@@ -286,6 +323,36 @@ export class RequisicoesManutencoesService {
         ]
       }
     });
+
+    //
+
+    //Find unidadeCusto e unidadeRequisitante by nomeUnidade
+    //TODO: É bom fazer uma lógica para adicionar a unidade (usando a API SIPAC) se ela não existir. Possível brecha para erro
+    const unidadeRequisitante = await this.prisma.sipacUnidade.findFirst({
+      where: {
+        nomeUnidade: normalizeString(data.nomeUnidadeRequisitante)
+      },
+      select: {
+        id: true
+      }
+    });
+
+    if (unidadeRequisitante) {
+      data.unidadeRequisitante = { id: unidadeRequisitante.id };
+    }
+
+    const unidadeCusto = await this.prisma.sipacUnidade.findFirst({
+      where: {
+        nomeUnidade: normalizeString(data.nomeUnidadeDeCusto)
+      },
+      select: {
+        id: true
+      }
+    });
+
+    if (unidadeCusto) {
+      data.unidadeCusto = { id: unidadeCusto.id };
+    }
 
     //
 
@@ -343,8 +410,21 @@ export class RequisicoesManutencoesService {
                   create: value
                 };
               }
+            } else if (typedKey === 'unidadeRequisitante') {
+              (prismaUpdateInput as any)[typedKey] = {
+                connect: {
+                  id: unidadeRequisitante?.id
+                }
+              };
+            } else if (typedKey === 'unidadeCusto') {
+              (prismaUpdateInput as any)[typedKey] = {
+                connect: {
+                  id: unidadeCusto?.id
+                }
+              };
+            } else {
+              (relationsToInclude as any)[typedKey] = true;
             }
-            (relationsToInclude as any)[typedKey] = true;
           }
         } else {
           // Assume it's a scalar field and assign directly

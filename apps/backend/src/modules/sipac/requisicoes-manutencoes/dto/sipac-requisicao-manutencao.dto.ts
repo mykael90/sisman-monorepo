@@ -16,6 +16,7 @@ import {
 import { Type } from 'class-transformer';
 import { Prisma } from '@sisman/prisma';
 import { DecimalJsLike } from '@sisman/prisma/generated/client/runtime/library';
+import { UpdateSipacUnidadeDto } from '../../unidades/dto/sipac-unidade.dto';
 
 /**
  * DTO for creating multiple SipacRequisicaoManutencao records for list view.
@@ -579,7 +580,7 @@ export class CreateSipacRequisicaoManutencaoCompletoDto extends CreateSipacLista
   })
   @IsNotEmpty()
   @IsString()
-  unidadeRequisitante: string;
+  nomeUnidadeRequisitante: string;
 
   @ApiProperty({
     description:
@@ -588,7 +589,7 @@ export class CreateSipacRequisicaoManutencaoCompletoDto extends CreateSipacLista
   })
   @IsNotEmpty()
   @IsString()
-  unidadeDeCusto: string;
+  nomeUnidadeDeCusto: string;
 
   @ApiProperty({
     description:
@@ -690,6 +691,22 @@ export class CreateSipacRequisicaoManutencaoCompletoDto extends CreateSipacLista
   @ValidateNested({ each: true })
   @Type(() => SipacHistoricoManutencaoDto)
   historico?: SipacHistoricoManutencaoDto[];
+
+  @ApiProperty({
+    type: () => [UpdateSipacUnidadeDto],
+    description: 'Unidade requisitante associada'
+  })
+  @IsOptional()
+  @Type(() => UpdateSipacUnidadeDto)
+  unidadeRequisitante?: UpdateSipacUnidadeDto;
+
+  @ApiProperty({
+    type: () => [UpdateSipacUnidadeDto],
+    description: 'Unidade de custo associada'
+  })
+  @IsOptional()
+  @Type(() => UpdateSipacUnidadeDto)
+  unidadeCusto?: UpdateSipacUnidadeDto;
 }
 
 /**
