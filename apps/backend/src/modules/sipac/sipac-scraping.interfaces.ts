@@ -175,6 +175,7 @@ export interface SipacRequisicaoMaterialResponseItem {
  * Represents the nested details within the "dadosDaRequisicao" object of a maintenance requisition.
  */
 export interface SipacDadosDaRequisicaoManutencaoResponse {
+  id: number;
   requisicao: string;
   tipoDaRequisicao: string;
   divisao: string;

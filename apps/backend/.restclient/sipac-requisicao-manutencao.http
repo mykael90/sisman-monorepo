@@ -2,6 +2,9 @@
 @urlLocal = {{apiUrl}}/sipac/requisicoes-manutencoes
 @contentType = application/json
 
+### GET findAll requisicoes manutencao
+GET {{urlLocal}}
+
 ### GET fetch requisicoes manutencao
 GET {{urlLocal}}/list/test
 ?dataInicial=01/01/2025
@@ -34,11 +37,11 @@ Content-Type: {{contentType}}
 ### GET fetch and persist requisicoes manutencao
 GET {{urlLocal}}/list/sync-all
 ?dataInicial=01/01/2025
-&dataFinal=05/01/2025
+&dataFinal=05/01/2025x
 
 
 ### GET fetch one and return by id
-GET {{urlLocal}}/fetch-one/2153960
+GET {{urlLocal}}/fetch-one/2093142
 
 
 ### POST
@@ -46,5 +49,15 @@ POST {{urlLocal}}/fetch-one-complete-and-persist
 Content-Type: {{contentType}}
 
 {
-    "numeroAno": "1390/2025"
+    "numeroAno": "631/2024"
+}
+
+### POST
+POST {{urlLocal}}/fetch-many-complete-and-persist
+Content-Type: {{contentType}}
+
+{
+    "numeroAnoArray": [
+    "1390/2025"
+    ]
 }

@@ -16,6 +16,7 @@ import {
 } from '../sipac-scraping.interfaces';
 import {
   CreateSipacRequisicaoManutencaoCompletoDto,
+  SipacRequisicaoManutencaoMaeAssociadaDto,
   UpdateSipacRequisicaoManutencaoDto
 } from './dto/sipac-requisicao-manutencao.dto';
 import { SipacRequisicaoManutencaoMapper } from './mappers/sipac-requisicao-manutencao.mapper';
@@ -67,6 +68,8 @@ export class RequisicoesManutencoesService {
       (model) => model.name === 'SipacRequisicaoManutencao'
     );
 
+    // this.logger.log(data);
+
     let relationalKeysFromDMMF: string[] = [];
     const relationsToInclude: Prisma.SipacRequisicaoManutencaoInclude = {};
 
@@ -81,6 +84,11 @@ export class RequisicoesManutencoesService {
     }
 
     const prismaCreateInput = {};
+
+    // Ensure requisicoe mae existe no banco de dados se vier no dto
+    if (data.requisicaoManutencaoMae) {
+      await this.ensureRequisicaoMaeExistente(data.requisicaoManutencaoMae);
+    }
 
     // Ensure requisicoes de materials referenced in requisition items exist
     if (
@@ -115,6 +123,7 @@ export class RequisicoesManutencoesService {
           {
             ripImovel: {
               in: data.predios.map((predio) => predio.rip)
+              // in: ['1761.00464.500-8']
             }
           }
         ]
@@ -143,22 +152,35 @@ export class RequisicoesManutencoesService {
               (prismaCreateInput as any)[typedKey] = {
                 connect: prediosSubrips
               };
-            } else if (typedKey === 'requisicoesDeManutencaoAssociadas') {
-              //TODO:
-              // essa logica de colocar as requisicoes associadas vai ser mais complicado, no sipac não deixa claro quem é mãe e quem é filha, tem que avaliar o numero da reuiqiscao
-              // veja que se não tiver a mae cadastrada pode dar problema, talvez seja necessário avaliar primeiro as requisicoes associadas, para posteriormente estabelecer a ordem que cada uma deve ser cadastrada, começando da mais antiga
+            } else if (typedKey === 'requisicoesManutencaoFilhas') {
+              //não faça nada, vai ter uma lógica no final para criar as requisições filhas.
             } else {
               (prismaCreateInput as any)[typedKey] = {
-                deleteMany: {}, // Delete all existing items
+                // deleteMany: {}, // Delete all existing items (apenas no update)
                 create: value // Create the new items
               };
             }
             (relationsToInclude as any)[typedKey] = true;
           } else if (value !== null && typeof value === 'object') {
             // Handle single nested object relations (e.g., dadosDaRequisicao)
-            (prismaCreateInput as any)[typedKey] = {
-              create: value
-            };
+            if (typedKey === 'requisicaoManutencaoMae') {
+              // connect requisicao mae
+              // Check if value is indeed a SipacRequisicaoManutencaoMaeAssociadaDto
+              if (value && 'id' in value && typeof value.id === 'number') {
+                (prismaCreateInput as any)[typedKey] = {
+                  connect: {
+                    // Assuming 'id' is the unique identifier for SipacRequisicaoManutencao
+                    id: value.id
+                  }
+                };
+                // }
+              } else {
+                (prismaCreateInput as any)[typedKey] = {
+                  // delete: value,
+                  create: value
+                };
+              }
+            }
             (relationsToInclude as any)[typedKey] = true;
           }
         } else {
@@ -170,7 +192,7 @@ export class RequisicoesManutencoesService {
 
     try {
       this.logger.log(`Persistindo a criação da requisição de manutenção...`);
-      return await this.prisma.sipacRequisicaoManutencao.create({
+      const result = await this.prisma.sipacRequisicaoManutencao.create({
         data: { ...(prismaCreateInput as any) },
         include:
           Object.keys(relationsToInclude).length > 0
@@ -178,6 +200,11 @@ export class RequisicoesManutencoesService {
             : undefined
       });
 
+      //antes de retornar o resultado é importante criar as requisicoes de manutencao filhas.
+      //TODO:
+      // this.ensureRequisicoesFilhasExistentes(data.requisicoesManutencaoFilhas);
+
+      return result;
       // return prismaCreateInput;
     } catch (error) {
       handlePrismaError(error, this.logger, 'Requisição de Manutenção SIPAC', {
@@ -402,6 +429,10 @@ export class RequisicoesManutencoesService {
         id
       });
       const { data } = request;
+
+      //inserindo o id
+      data.data.dadosDaRequisicao.detalhesAninhados.id = id;
+
       this.logger.log(
         `Busca da requisição de manutenção do SIPAC com ID: ${id} concluída com sucesso.`
       );
@@ -446,14 +477,11 @@ export class RequisicoesManutencoesService {
     );
 
     // Combine information if necessary, although the detailed response should be comprehensive
-    //TODO: simplificar
     const infoComplete = {
       ...infoFromDetail,
-      dadosDaRequisicao: {
-        ...infoFromList,
-        ...infoFromDetail.dadosDaRequisicao
-      } // May contain some overlapping fields, decide which source is authoritative
-    };
+      id: infoFromList.id,
+      usuarioGravacao: infoFromList.usuarioGravacao
+    }; // May contain some overlapping fields, decide which source is authoritative
 
     return infoComplete; // The detailed response should be sufficient
   }
@@ -507,6 +535,12 @@ export class RequisicoesManutencoesService {
         // },
         // imoveisPrediosInseridos: true,
         // historico: true,
+        historico: true,
+        informacoesServico: true,
+        requisicoesMateriais: true,
+        predios: true,
+        requisicaoManutencaoMae: true,
+        requisicoesManutencaoFilhas: true
       }
     });
   }
@@ -580,9 +614,70 @@ export class RequisicoesManutencoesService {
 
     if (numerosAnosNaoEncontrados.length > 0) {
       this.logger.warn(
-        `Ids ausentes: ${numerosAnosNaoEncontrados.join(', ')}. Cadastrando...`
+        `Requisicoes de materiais ausentes: ${numerosAnosNaoEncontrados.join(', ')}. Cadastrando...`
       );
       await this.requisicoesMateriaisService.fetchCompleteAndPersistCreateOrUpdateRequisicaoMaterialArray(
+        numerosAnosNaoEncontrados
+      );
+    }
+  }
+
+  private async ensureRequisicaoMaeExistente(
+    requisicaoMae: SipacRequisicaoManutencaoMaeAssociadaDto
+  ) {
+    this.logger.log(
+      `Verificando a necessidade de cadastrar requisição mãe que ainda não existam no banco de dados.`
+    );
+
+    const registeredRequisicao =
+      await this.prisma.sipacRequisicaoManutencao.findUnique({
+        where: { id: requisicaoMae.id },
+        select: { numeroRequisicao: true }
+      });
+
+    if (registeredRequisicao) {
+      this.logger.log(`Requisição mãe já encontrada, apenas conectar`);
+    } else {
+      this.logger.warn(`Requisição mãe não encontrada. Cadastrando...`);
+      await this.fetchCompleteAndPersistCreateOrUpdateRequisicaoManutencao(
+        requisicaoMae.numeroAno
+      );
+    }
+  }
+
+  private async ensureRequisicoesFilhasExistentes(
+    requisicoesFilhas: SipacRequisicaoManutencaoMaeAssociadaDto[]
+  ) {
+    if (!requisicoesFilhas || requisicoesFilhas.length === 0) {
+      return;
+    }
+    this.logger.log(
+      `Verificando a necessidade de cadastrar requisições de manutenção filhas que ainda não existam no banco de dados.`
+    );
+
+    const requisicoesFilhasNumerosAnos = requisicoesFilhas.map(
+      (requisicao) => requisicao.numeroAno
+    );
+
+    const registeredRequisicoes =
+      await this.prisma.sipacRequisicaoManutencao.findMany({
+        where: { numeroRequisicao: { in: requisicoesFilhasNumerosAnos } },
+        select: { numeroRequisicao: true }
+      });
+
+    const numerosAnosEncontrados = registeredRequisicoes.map(
+      (register) => register.numeroRequisicao
+    );
+
+    const numerosAnosNaoEncontrados = requisicoesFilhasNumerosAnos.filter(
+      (numeroAno) => !numerosAnosEncontrados.includes(numeroAno)
+    );
+
+    if (numerosAnosNaoEncontrados.length > 0) {
+      this.logger.warn(
+        `Requisicoes de manutenção filhas ausentes: ${numerosAnosNaoEncontrados.join(', ')}. Cadastrando...`
+      );
+      await this.fetchCompleteAndPersistCreateOrUpdateRequisicaoManutencaoArray(
         numerosAnosNaoEncontrados
       );
     }

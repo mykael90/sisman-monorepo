@@ -221,7 +221,29 @@ export class RequisicoesMateriaisService {
 
     // Garante que os materiais referenciados nos itens da requisição existam
     if (data.itensDaRequisicao && data.itensDaRequisicao.length > 0) {
-      await this.ensureMateriaisExistentes(data.itensDaRequisicao);
+      const ensureMateriaisResult = await this.ensureMateriaisExistentes(
+        data.itensDaRequisicao
+      );
+      this.logger.log(ensureMateriaisResult);
+      if (ensureMateriaisResult && ensureMateriaisResult.summary.failed > 0) {
+        const failedCodigos = ensureMateriaisResult.details
+          .filter((detail) => detail.status === 'failed')
+          .map((detail) => detail.codigo);
+
+        if (failedCodigos.length > 0) {
+          this.logger.warn(
+            `Removendo itens da requisição devido à falha na criação/localização dos seguintes materiais (códigos): ${failedCodigos.join(', ')}`
+          );
+          // Atualiza o prismaCreateInput para remover os itens com materiais falhados
+          if ((prismaCreateInput as any).itensDaRequisicao?.create) {
+            (prismaCreateInput as any).itensDaRequisicao.create = (
+              prismaCreateInput as any
+            ).itensDaRequisicao.create.filter(
+              (item: any) => !failedCodigos.includes(item.codigo)
+            );
+          }
+        }
+      }
     }
     try {
       this.logger.log(`Persistindo a criação da requisição de material...`);
@@ -243,19 +265,28 @@ export class RequisicoesMateriaisService {
 
   private async ensureMateriaisExistentes(
     itensRequisicao: Array<{ codigo: string; [key: string]: any }>
-  ): Promise<void> {
+  ): Promise<
+    | {
+        summary: { totalProcessed: number; successful: number; failed: number };
+        details: ProcessCodigoResult[];
+      }
+    | undefined
+  > {
     if (!itensRequisicao || itensRequisicao.length === 0) {
-      return;
+      return undefined;
     }
 
-    this.logger.log(
-      `Verificando a necessidade de cadastrar materiais da requisição que ainda não existam no banco de dados.`
-    );
+    this.logger.log(`Ensuring materials exist for provided codes.`);
 
-    const codigos = itensRequisicao.map((item) => item.codigo);
+    const uniqueCodigos = [
+      ...new Set(itensRequisicao.map((item) => item.codigo))
+    ];
+    const details: ProcessCodigoResult[] = [];
+    let successfulCount = 0;
+    let failedCount = 0;
 
     const registeredItems = await this.prisma.sipacMaterial.findMany({
-      where: { codigo: { in: codigos } },
+      where: { codigo: { in: uniqueCodigos } },
       select: { codigo: true }
     });
 
@@ -263,18 +294,59 @@ export class RequisicoesMateriaisService {
       (register) => register.codigo
     );
 
-    const codigosNaoEncontrados = codigos.filter(
+    for (const codigo of uniqueCodigos) {
+      if (codigosEncontrados.includes(codigo)) {
+        details.push({ codigo, status: 'success', message: 'Already existed' });
+        successfulCount++;
+      }
+    }
+
+    const codigosNaoEncontrados = uniqueCodigos.filter(
       (codigo) => !codigosEncontrados.includes(codigo)
     );
 
     if (codigosNaoEncontrados.length > 0) {
       this.logger.warn(
-        `Códigos ausentes: ${codigosNaoEncontrados.join(', ')}. Cadastrando...`
+        `Codes not found locally: ${codigosNaoEncontrados.join(', ')}. Attempting to fetch and persist...`
       );
-      await this.materiaisService.fetchManyByCodesAndPersistMaterials(
-        codigosNaoEncontrados
-      );
+
+      for (const codigo of codigosNaoEncontrados) {
+        try {
+          const singleCreationResult =
+            await this.materiaisService.fetchByCodeAndPersistMaterial(codigo);
+          if (singleCreationResult.successful === 1) {
+            details.push({ codigo, status: 'success', message: 'Created' });
+            successfulCount++;
+          } else {
+            details.push({
+              codigo,
+              status: 'failed',
+              message: 'Failed to create or find via service'
+            });
+            failedCount++;
+          }
+        } catch (error) {
+          const errorMessage =
+            error instanceof Error
+              ? error.message
+              : 'Unknown error during material fetch/persist';
+          this.logger.error(
+            `Error processing material code ${codigo} in ensureMateriaisExistentes: ${errorMessage}`
+          );
+          details.push({ codigo, status: 'failed', message: errorMessage });
+          failedCount++;
+        }
+      }
     }
+
+    return {
+      summary: {
+        totalProcessed: uniqueCodigos.length,
+        successful: successfulCount,
+        failed: failedCount
+      },
+      details
+    };
   }
 
   /**
@@ -289,6 +361,16 @@ export class RequisicoesMateriaisService {
     try {
       const updateDtoFormat: UpdateSipacRequisicaoMaterialDto =
         await this.fetchAndReturnRequisicaoMaterial(id);
+
+      // Ensure materials exist before attempting to update relations
+      if (
+        updateDtoFormat.itensDaRequisicao &&
+        updateDtoFormat.itensDaRequisicao.length > 0
+      ) {
+        await this.ensureMateriaisExistentes(
+          updateDtoFormat.itensDaRequisicao as any[]
+        );
+      }
 
       const updateRequisicaoMaterial =
         await this.persistUpdateRequisicaoMaterial(id, updateDtoFormat);
@@ -446,6 +528,12 @@ export class RequisicoesMateriaisService {
 }
 export interface ProcessNumeroAnoResult {
   numeroAno: string;
+  status: 'success' | 'failed';
+  message?: string;
+}
+
+export interface ProcessCodigoResult {
+  codigo: string;
   status: 'success' | 'failed';
   message?: string;
 }

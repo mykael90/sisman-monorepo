@@ -655,12 +655,6 @@ exports.Prisma.SipacRequisicaoManutencaoScalarFieldEnum = {
   email: 'email',
   horarioParaAtendimento: 'horarioParaAtendimento',
   observacao: 'observacao',
-  justificativa: 'justificativa',
-  valorRequisicao: 'valorRequisicao',
-  valorAutorizacao: 'valorAutorizacao',
-  dataAutorizacaoResponsavel: 'dataAutorizacaoResponsavel',
-  dataFinalizacao: 'dataFinalizacao',
-  emailRepresentante: 'emailRepresentante',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   requisicaoManutencaoIdMae: 'requisicaoManutencaoIdMae'
@@ -1018,9 +1012,7 @@ exports.Prisma.SipacRequisicaoManutencaoOrderByRelevanceFieldEnum = {
   ramal: 'ramal',
   email: 'email',
   horarioParaAtendimento: 'horarioParaAtendimento',
-  observacao: 'observacao',
-  justificativa: 'justificativa',
-  emailRepresentante: 'emailRepresentante'
+  observacao: 'observacao'
 };
 
 exports.Prisma.SipacInformacaoServicoManutencaoOrderByRelevanceFieldEnum = {

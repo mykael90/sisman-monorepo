@@ -262,6 +262,7 @@ export class MateriaisService {
         }
       } else {
         this.logger.log(`Nenhum material encontrado para o código ${codigo}.`);
+        failedPersists++; // Mark as failed if no material is found
       }
     } catch (error) {
       this.logger.error(

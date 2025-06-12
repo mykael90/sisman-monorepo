@@ -1,4 +1,3 @@
-import { toPlainObject } from 'lodash';
 import {
   SipacRequisicaoManutencaoResponseItem,
   SipacInformacoesDoServicoManutencaoResponse,
@@ -6,19 +5,16 @@ import {
   SipacRequisicaoMaterialAssociadaManutencaoResponse,
   SipacImovelPredioManutencaoResponse,
   SipacHistoricoManutencaoResponse,
-  SipacItemRequisicaoMaterialManutencaoResponse,
-  SipacListaRequisicaoManutencaoResponseItem
+  SipacItemRequisicaoMaterialManutencaoResponse
 } from '../../sipac-scraping.interfaces';
 import {
   CreateSipacRequisicaoManutencaoCompletoDto,
-  SipacDadosDaRequisicaoManutencaoDto,
   SipacInformacoesDoServicoManutencaoDto,
-  SipacRequisicaoManutencaoAssociadaDto,
+  SipacRequisicaoManutencaoMaeAssociadaDto,
   SipacRequisicaoMaterialAssociadaManutencaoDto,
   SipacImovelPredioManutencaoDto,
   SipacHistoricoManutencaoDto,
-  SipacItemRequisicaoMaterialManutencaoDto,
-  CreateSipacListaRequisicaoManutencaoDto
+  SipacItemRequisicaoMaterialManutencaoDto
 } from '../dto/sipac-requisicao-manutencao.dto';
 import { DecimalJsLike } from '@sisman/prisma/generated/client/runtime/library';
 
@@ -43,36 +39,82 @@ export class SipacRequisicaoManutencaoMapper {
   ): CreateSipacRequisicaoManutencaoCompletoDto {
     const dadosDaRequisicao = item.dadosDaRequisicao.detalhesAninhados;
 
+    let requisicaoManutencaoMaeDto:
+      | SipacRequisicaoManutencaoMaeAssociadaDto
+      | undefined = undefined;
+
+    let requisicaoManutencaoFilhasDto:
+      | SipacRequisicaoManutencaoMaeAssociadaDto[]
+      | undefined = undefined;
+
+    if (
+      item.requisicoesDeManutencaoAssociadas &&
+      item.requisicoesDeManutencaoAssociadas.length > 0
+    ) {
+      const possiveisMaes = item.requisicoesDeManutencaoAssociadas
+        .map((req) => ({
+          ...req,
+          idParsed: parseInt(req.id, 10) // Garante que o ID é número para comparação
+        }))
+        .filter(
+          (req) => !isNaN(req.idParsed) && req.idParsed < dadosDaRequisicao.id
+        );
+
+      const filhas = item.requisicoesDeManutencaoAssociadas
+        .map((req) => ({
+          ...req,
+          idParsed: parseInt(req.id, 10) // Garante que o ID é número para comparação
+        }))
+        .filter(
+          (req) => !isNaN(req.idParsed) && req.idParsed > dadosDaRequisicao.id
+        );
+
+      if (filhas.length > 0) {
+        requisicaoManutencaoFilhasDto = filhas.map((filha) =>
+          SipacRequisicaoManutencaoMapper.toRequisicaoManutencaoAssociadaDto(
+            filha
+          )
+        );
+      }
+
+      if (possiveisMaes.length > 0) {
+        const maeSelecionada = possiveisMaes.reduce((max, current) =>
+          current.idParsed > max.idParsed ? current : max
+        );
+        requisicaoManutencaoMaeDto =
+          SipacRequisicaoManutencaoMapper.toRequisicaoManutencaoAssociadaDto(
+            maeSelecionada
+          );
+      }
+    }
+
     return {
-      dadosDaRequisicao: {
-        requisicao: dadosDaRequisicao.requisicao,
-        tipoDaRequisicao: dadosDaRequisicao.tipoDaRequisicao,
-        divisao: dadosDaRequisicao.divisao,
-        requisicaoGravadaPeloUsuario:
-          dadosDaRequisicao.requisicaoGravadaPeloUsuario,
-        status: dadosDaRequisicao.status,
-        dataDeCadastro: SipacRequisicaoManutencaoMapper.parseDateString(
-          dadosDaRequisicao.dataDeCadastro
-        ), // Assuming date format is parseable
-        unidadeRequisitante: dadosDaRequisicao.unidadeRequisitante,
-        unidadeDeCusto: dadosDaRequisicao.unidadeDeCusto,
-        descricao: dadosDaRequisicao.descricao,
-        local: dadosDaRequisicao.local,
-        representanteDaUnidadeDeOrigem:
-          dadosDaRequisicao.representanteDaUnidadeDeOrigem,
-        telefonesDoRepresentante: dadosDaRequisicao.telefonesDoRepresentante,
-        ramal: dadosDaRequisicao.ramal,
-        email: dadosDaRequisicao.email,
-        horarioParaAtendimento: dadosDaRequisicao.horarioParaAtendimento,
-        observacao: dadosDaRequisicao.observacao
-      },
+      id: dadosDaRequisicao.id,
+      numeroRequisicao: dadosDaRequisicao.requisicao,
+      tipoDaRequisicao: dadosDaRequisicao.tipoDaRequisicao,
+      divisao: dadosDaRequisicao.divisao,
+      usuarioGravacao: dadosDaRequisicao.requisicaoGravadaPeloUsuario,
+      status: dadosDaRequisicao.status,
+      dataDeCadastro: SipacRequisicaoManutencaoMapper.parseDateString(
+        dadosDaRequisicao.dataDeCadastro
+      ), // Assuming date format is parseable
+      unidadeRequisitante: dadosDaRequisicao.unidadeRequisitante,
+      unidadeDeCusto: dadosDaRequisicao.unidadeDeCusto,
+      descricao: dadosDaRequisicao.descricao,
+      local: dadosDaRequisicao.local,
+      representanteDaUnidadeDeOrigem:
+        dadosDaRequisicao.representanteDaUnidadeDeOrigem,
+      telefonesDoRepresentante: dadosDaRequisicao.telefonesDoRepresentante,
+      ramal: dadosDaRequisicao.ramal,
+      email: dadosDaRequisicao.email,
+      horarioParaAtendimento: dadosDaRequisicao.horarioParaAtendimento,
+      observacao: dadosDaRequisicao.observacao,
+
       informacoesServico: item.informacoesDoServico?.map(
         SipacRequisicaoManutencaoMapper.toInformacoesDoServicoDto
       ),
-      requisicoesDeManutencaoAssociadas:
-        item.requisicoesDeManutencaoAssociadas?.map(
-          SipacRequisicaoManutencaoMapper.toRequisicaoManutencaoAssociadaDto
-        ),
+      requisicaoManutencaoMae: requisicaoManutencaoMaeDto,
+      requisicoesManutencaoFilhas: requisicaoManutencaoFilhasDto,
       requisicoesMateriais: item.requisicoesAssociadasDeMateriais?.map(
         SipacRequisicaoManutencaoMapper.toRequisicaoMaterialAssociadaManutencaoDto
       ),
@@ -101,7 +143,7 @@ export class SipacRequisicaoManutencaoMapper {
 
   static toRequisicaoManutencaoAssociadaDto(
     item: SipacRequisicaoManutencaoAssociadaResponse
-  ): SipacRequisicaoManutencaoAssociadaDto {
+  ): SipacRequisicaoManutencaoMaeAssociadaDto {
     return {
       numeroAno: item['numero/ano'],
       descricao: item.descricao,
