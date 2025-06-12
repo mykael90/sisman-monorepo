@@ -1,0 +1,21 @@
+### Variables
+@urlLocal = {{apiUrl}}/sipac/unidades
+@contentType = application/json
+
+
+### GET unidades
+GET {{urlLocal}}
+
+### GET one unidade by code
+GET {{urlLocal}}/1103
+
+### POST
+POST {{urlLocal}}/sync-many
+Content-Type: {{contentType}}
+
+{
+    "codigosUnidade": ["1135","110301","110202"]
+}
+
+### GET and SYNC all unidades to server database
+GET {{urlLocal}}/sync-all

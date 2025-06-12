@@ -715,6 +715,14 @@ exports.Prisma.SipacPredioScalarFieldEnum = {
   longitude: 'longitude'
 };
 
+exports.Prisma.SipacUnidadeScalarFieldEnum = {
+  id: 'id',
+  codigoUnidade: 'codigoUnidade',
+  dataCriacao: 'dataCriacao',
+  nomeUnidade: 'nomeUnidade',
+  sigla: 'sigla'
+};
+
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -1058,6 +1066,12 @@ exports.Prisma.SipacPredioOrderByRelevanceFieldEnum = {
   ripImovel: 'ripImovel'
 };
 
+exports.Prisma.SipacUnidadeOrderByRelevanceFieldEnum = {
+  codigoUnidade: 'codigoUnidade',
+  nomeUnidade: 'nomeUnidade',
+  sigla: 'sigla'
+};
+
 exports.Prisma.UserOrderByRelevanceFieldEnum = {
   name: 'name',
   login: 'login',
@@ -1218,6 +1232,7 @@ exports.Prisma.ModelName = {
   SipacImovelEndereco: 'SipacImovelEndereco',
   SipacCampus: 'SipacCampus',
   SipacPredio: 'SipacPredio',
+  SipacUnidade: 'SipacUnidade',
   User: 'User',
   MagicLink: 'MagicLink',
   Role: 'Role',

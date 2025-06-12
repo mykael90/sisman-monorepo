@@ -333,6 +333,18 @@ model SipacPredio {
     @@map("sipac_predios")
 }
 
+// Representa uma unidade da instituição.
+model SipacUnidade {
+    id            Int      @id // Identificador da unidade.
+    codigoUnidade String   @unique // Código da unidade.
+    dataCriacao   DateTime @db.Timestamp(0) // Data de criação da unidade.
+    nomeUnidade   String // Nome da unidade.
+    sigla         String? // Sigla da unidade.
+
+    @@index([codigoUnidade])
+    @@map("sipac_unidades")
+}
+
 // Defines the possible statuses for a MaterialRequest.
 enum SipacRequisicaoManutencaoStatus {
     AGUARDANDO_AVALIACAO_REQUISITANTE

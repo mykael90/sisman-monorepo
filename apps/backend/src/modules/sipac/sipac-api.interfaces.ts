@@ -47,3 +47,20 @@ export interface SipacSubGrupoMaterialResponseItem {
   'id-grupo-material': number; // integer($int32)
   'id-sub-grupo-material': number; // integer($int32)
 }
+
+export interface SipacUnidadeResponseItem {
+  'codigo-unidade': number;
+  'data-criacao': number; // Timestamp (integer)
+  email: string;
+  'id-ambiente-organizacional': number;
+  'id-area-atuacao-unidade': number;
+  'id-classificacao-unidade': number;
+  'id-municipio': number;
+  'id-nivel-organizacional': number;
+  'id-tipo-unidade-organizacional': number;
+  'id-unidade': number;
+  'nome-unidade': string;
+  sigla: string;
+  telefones: string;
+  'unidade-patrimonial': boolean;
+}
