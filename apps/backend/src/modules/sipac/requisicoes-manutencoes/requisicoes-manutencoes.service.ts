@@ -216,36 +216,78 @@ export class RequisicoesManutencoesService {
       throw error;
     }
   }
-
   private async persistUpdateRequisicaoManutencao(
     id: number,
-    data: UpdateSipacRequisicaoManutencaoDto
+    data: CreateSipacRequisicaoManutencaoCompletoDto
   ) {
     const sipacRequisicaoManutencaoModel = Prisma.dmmf.datamodel.models.find(
       (model) => model.name === 'SipacRequisicaoManutencao'
     );
 
+    // this.logger.log(data);
+
     let relationalKeysFromDMMF: string[] = [];
-    const prismaUpdateInput: Prisma.SipacRequisicaoManutencaoUpdateInput = {};
     const relationsToInclude: Prisma.SipacRequisicaoManutencaoInclude = {};
     let hasUpdates = false;
 
     if (sipacRequisicaoManutencaoModel) {
-      // Before processing updates, ensure materials for items exist if MateriaisService is used
-      // if (data.itensDaRequisicao && data.itensDaRequisicao.length > 0 && this.materiaisService) {
-      //   const itensParaVerificar = data.itensDaRequisicao.map((item) => ({
-      //     codigo: item.codigo // Assuming the DTO has 'codigo' in items
-      //   }));
-      //   await this.materiaisService.ensureMateriaisExistentes(itensParaVerificar as any); // `as any` to simplify, ideally type correctly
-      // }
       relationalKeysFromDMMF = sipacRequisicaoManutencaoModel.fields
-        .filter((field) => field.kind === 'object' && field.relationName) // Filter only fields that are objects (other models) and have a relation name
+        .filter((field) => field.kind === 'object' && field.relationName)
         .map((field) => field.name);
     } else {
       this.logger.error(
         'Modelo SipacRequisicaoManutencao não encontrado no DMMF.'
       );
     }
+
+    const prismaUpdateInput = {};
+
+    // Ensure requisicoe mae existe no banco de dados se vier no dto
+    if (data.requisicaoManutencaoMae) {
+      await this.ensureRequisicaoMaeExistente(data.requisicaoManutencaoMae);
+    }
+
+    // Ensure requisicoes de materials referenced in requisition items exist
+    if (
+      data.requisicoesMateriais &&
+      data.requisicoesMateriais.length > 0 &&
+      this.requisicoesMateriaisService
+    ) {
+      const requisicoesParaVerificar = data.requisicoesMateriais.map(
+        (requisicao) => ({
+          numeroAno: requisicao.numeroDaRequisicao
+        })
+      );
+      await this.ensureRequisicoesMateriaisAssociadasExistentes(
+        requisicoesParaVerificar
+      ); // `as any` to simplify, ideally type correctly
+    }
+
+    // Find all predios by denominacaoPredio e rip
+    const prediosSubrips = await this.prisma.sipacPredio.findMany({
+      select: {
+        subRip: true
+      },
+      where: {
+        AND: [
+          {
+            denominacaoPredio: {
+              in: data.predios.map(
+                (predio) => removeAccentsAndSpecialChars(predio).predio
+              )
+            }
+          },
+          {
+            ripImovel: {
+              in: data.predios.map((predio) => predio.rip)
+              // in: ['1761.00464.500-8']
+            }
+          }
+        ]
+      }
+    });
+
+    //
 
     for (const key in data) {
       if (Object.prototype.hasOwnProperty.call(data, key)) {
@@ -259,48 +301,53 @@ export class RequisicoesManutencoesService {
         }
         hasUpdates = true;
 
-        // 2. Check if the key is a relation to define with 'set' or 'createMany'/'updateMany'/'deleteMany'
         if (relationalKeysFromDMMF.includes(typedKey)) {
+          // If it's a relational field, wrap in 'create' or 'createMany'
           if (Array.isArray(value)) {
-            // Handle array relations (e.g., items, history, etc.)
-            // This assumes a pattern where existing related records are deleted and new ones created.
-            // A more robust approach might involve checking for existing records and updating/deleting selectively.
-            // For simplicity, using deleteMany and createMany as a starting point.
-            (prismaUpdateInput as any)[typedKey] = {
-              deleteMany: {}, // Delete all existing related records
-              createMany: {
-                data: value.map((item: any) => {
+            if (typedKey === 'requisicoesMateriais') {
+              (prismaUpdateInput as any)[typedKey] = {
+                connect: value.map((item: any) => ({
                   // Remove the foreign key from the item data as it will be set by createMany
-                  const { requisicaoManutencaoId, ...itemData } = item;
-                  return itemData;
-                }),
-                skipDuplicates: true // Optional: skip if a unique constraint would be violated
-              }
-            };
+                  id: item.id
+                }))
+              };
+            } else if (typedKey === 'predios') {
+              (prismaUpdateInput as any)[typedKey] = {
+                connect: prediosSubrips
+              };
+            } else if (typedKey === 'requisicoesManutencaoFilhas') {
+              //não faça nada, vai ter uma lógica no final para criar as requisições filhas.
+            } else {
+              (prismaUpdateInput as any)[typedKey] = {
+                deleteMany: {}, // Delete all existing items (apenas no update)
+                create: value // Create the new items
+              };
+            }
             (relationsToInclude as any)[typedKey] = true;
           } else if (value !== null && typeof value === 'object') {
-            // Handle single nested object relations if any (e.g., dadosDaRequisicao)
-            // This assumes the nested object should be updated or created if it doesn't exist.
-            (prismaUpdateInput as any)[typedKey] = {
-              upsert: {
-                // Use upsert for single nested objects
-                create: value,
-                update: value,
-                where: {
-                  /* Add a unique identifier for the nested object if available */
-                } // TODO: Add where clause if needed
+            // Handle single nested object relations (e.g., dadosDaRequisicao)
+            if (typedKey === 'requisicaoManutencaoMae') {
+              // connect requisicao mae
+              // Check if value is indeed a SipacRequisicaoManutencaoMaeAssociadaDto
+              if (value && 'id' in value && typeof value.id === 'number') {
+                (prismaUpdateInput as any)[typedKey] = {
+                  connect: {
+                    // Assuming 'id' is the unique identifier for SipacRequisicaoManutencao
+                    id: value.id
+                  }
+                };
+                // }
+              } else {
+                (prismaUpdateInput as any)[typedKey] = {
+                  delete: value,
+                  create: value
+                };
               }
-            };
+            }
             (relationsToInclude as any)[typedKey] = true;
           }
-        } else if (
-          Object.values(
-            Prisma.SipacRequisicaoManutencaoScalarFieldEnum
-          ).includes(
-            typedKey as Prisma.SipacRequisicaoManutencaoScalarFieldEnum
-          )
-        ) {
-          // It's a valid scalar field for the SipacRequisicaoManutencao model
+        } else {
+          // Assume it's a scalar field and assign directly
           (prismaUpdateInput as any)[typedKey] = value;
         }
       }
@@ -331,17 +378,25 @@ export class RequisicoesManutencoesService {
 
     try {
       this.logger.log(
-        `Persistindo a atualização de requisição de manutenção...`
+        `Persistindo a atualização da requisição de manutenção...`
       );
-      return await this.prisma.sipacRequisicaoManutencao.update({
+      const result = await this.prisma.sipacRequisicaoManutencao.update({
         where: { id },
         data: prismaUpdateInput,
-        //to have relations in the return
         include:
           Object.keys(relationsToInclude).length > 0
             ? relationsToInclude
             : undefined
       });
+
+      //antes de retornar o resultado é importante criar as requisicoes de manutencao filhas.
+      //pensando melhor, não dá certo, gera inconsistência. É melhor engatilhar só com a mãe. fiz os teste tentando a req. 631/2024 e ela da certo mas tem inconsistencia
+      // await this.ensureRequisicoesFilhasExistentes(
+      //   data.requisicoesManutencaoFilhas
+      // );
+
+      return result;
+      // return prismaCreateInput;
     } catch (error) {
       handlePrismaError(error, this.logger, 'Requisição de Manutenção SIPAC', {
         operation: 'update',
@@ -399,8 +454,7 @@ export class RequisicoesManutencoesService {
       `Iniciando busca e persistência da requisição de manutenção do SIPAC com ID: ${id}...`
     );
     try {
-      const updateDtoFormat: UpdateSipacRequisicaoManutencaoDto =
-        await this.fetchAndReturnRequisicaoManutencao(id);
+      const updateDtoFormat = await this.fetchAndReturnRequisicaoManutencao(id);
 
       const updateRequisicaoManutencao =
         await this.persistUpdateRequisicaoManutencao(id, updateDtoFormat);
