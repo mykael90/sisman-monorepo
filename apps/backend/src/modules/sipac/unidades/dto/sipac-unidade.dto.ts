@@ -29,16 +29,9 @@ export class CreateSipacUnidadeDto
   @IsNumber()
   id: number;
 
-  codigoUnidade: string;
-
-  @ApiProperty({
-    description: 'Data de cadastro da unidade (ex: "27/03/2025")',
-    example: '2025-03-27T00:00:00.000Z'
-  })
   @IsNotEmpty()
-  @Type(() => Date)
-  @IsDate()
-  dataCriacao: Date;
+  @IsString()
+  codigoUnidade: string;
 
   @ApiProperty({
     description: 'Nome da unidade',

@@ -592,6 +592,14 @@ export class CreateSipacRequisicaoManutencaoCompletoDto extends CreateSipacLista
   nomeUnidadeDeCusto: string;
 
   @ApiProperty({
+    description: 'Nome do predio',
+    example: '...'
+  })
+  @IsNotEmpty()
+  @IsString()
+  nomePredio: string;
+
+  @ApiProperty({
     description:
       'Representante da unidade de origem (ex: "JONATAS HENRIQUE CAMARA DA SILVA")',
     example: 'JONATAS HENRIQUE CAMARA DA SILVA'

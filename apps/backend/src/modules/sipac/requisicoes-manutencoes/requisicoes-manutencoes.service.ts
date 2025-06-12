@@ -219,8 +219,11 @@ export class RequisicoesManutencoesService {
                 }
               };
             } else {
-              (relationsToInclude as any)[typedKey] = true;
+              (prismaCreateInput as any)[typedKey] = {
+                create: value // Create the new items
+              };
             }
+            (relationsToInclude as any)[typedKey] = true;
           }
         } else {
           // Assume it's a scalar field and assign directly
@@ -423,8 +426,12 @@ export class RequisicoesManutencoesService {
                 }
               };
             } else {
-              (relationsToInclude as any)[typedKey] = true;
+              (prismaUpdateInput as any)[typedKey] = {
+                delete: {}, //
+                create: value // Create the new items
+              };
             }
+            (relationsToInclude as any)[typedKey] = true;
           }
         } else {
           // Assume it's a scalar field and assign directly
@@ -676,7 +683,9 @@ export class RequisicoesManutencoesService {
         requisicoesMateriais: true,
         predios: true,
         requisicaoManutencaoMae: true,
-        requisicoesManutencaoFilhas: true
+        requisicoesManutencaoFilhas: true,
+        unidadeCusto: true,
+        unidadeRequisitante: true
       }
     });
   }

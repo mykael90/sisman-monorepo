@@ -1,3 +1,4 @@
+import { normalizeString } from '../../../../shared/utils/string-utils';
 import {
   SipacRequisicaoManutencaoResponseItem,
   SipacInformacoesDoServicoManutencaoResponse,
@@ -100,6 +101,8 @@ export class SipacRequisicaoManutencaoMapper {
       ), // Assuming date format is parseable
       nomeUnidadeRequisitante: dadosDaRequisicao.unidadeRequisitante,
       nomeUnidadeDeCusto: dadosDaRequisicao.unidadeDeCusto,
+      //TODO: Depois fazer uma logica para colocar um valor padrão caso predio não exista
+      nomePredio: normalizeString(item['imoveis/prediosInseridos'][0]?.predio),
       descricao: dadosDaRequisicao.descricao,
       local: dadosDaRequisicao.local,
       representanteDaUnidadeDeOrigem:

@@ -1250,6 +1250,7 @@ model SipacRequisicaoManutencao {
   dataDeCadastro                 DateTime? @db.Timestamp(0) // Data de cadastro da requisição.
   nomeUnidadeRequisitante        String? // Unidade requisitante.
   nomeUnidadeDeCusto             String? // Unidade de custo.
+  nomePredio                     String? // Nome do prédio.
   descricao                      String    @db.Text // Descrição da requisição.
   local                          String? // Local da requisição.
   representanteDaUnidadeDeOrigem String?
@@ -1382,9 +1383,8 @@ model SipacPredio {
 
 // Representa uma unidade da instituição.
 model SipacUnidade {
-  id            Int      @id // Identificador da unidade.
-  codigoUnidade String   @unique // Código da unidade.
-  dataCriacao   DateTime @db.Timestamp(0) // Data de criação da unidade.
+  id            Int     @id // Identificador da unidade.
+  codigoUnidade String  @unique // Código da unidade.
   nomeUnidade   String // Nome da unidade.
   sigla         String? // Sigla da unidade.
 
