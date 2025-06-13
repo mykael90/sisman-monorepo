@@ -40,6 +40,10 @@ export class CreateMaterialDto
   @IsBoolean()
   @IsOptional()
   isActive: boolean;
+
+  @IsNumber()
+  @IsOptional()
+  groupId?: number;
 }
 
 export class UpdateMaterialDto extends PartialType(CreateMaterialDto) {}

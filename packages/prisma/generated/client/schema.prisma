@@ -282,8 +282,8 @@ model Warehouse {
 model MaterialGlobalCatalog {
   id            String  @id // Unique identifier for the material.
   code          String? @unique // A unique global code for the material. @map("sipacCode")
-  codeSidec     String? @unique
-  name          String // The name of the material.
+  codeSidec     String?
+  name          String  @db.VarChar(255) // The name of the material.
   description   String? @db.Text // Detailed description of the material.
   unitOfMeasure String // The standard unit of measure for this material (e.g., "UNIT", "KG").
   groupId       Int? // The category id of the material (e.g., "Electrical", "Hydraulic"). @map("categoryId")

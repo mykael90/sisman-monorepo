@@ -12,7 +12,8 @@ export class SipacGrupoMaterialMapper {
       name: item.denominacaoMaterial.toUpperCase(),
       description: item.especificacao.toUpperCase(),
       isActive: true,
-      unitOfMeasure: item.denominacaoUnidade.toUpperCase()
+      unitOfMeasure: item.denominacaoUnidade.toUpperCase(),
+      groupId: item.idGrupo
     };
   }
 }

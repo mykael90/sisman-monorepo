@@ -7,7 +7,7 @@
 GET {{urlLocal}}/materiais
 
 ### GET one material by code
-GET {{urlLocal}}/materiais/300700000086
+GET {{urlLocal}}/materiais/3026000000659
 
 ### POST
 POST {{urlLocal}}/materiais/sync-many

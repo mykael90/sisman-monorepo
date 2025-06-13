@@ -52,22 +52,22 @@ export class MaterialsService {
     // O tipo Prisma.SipacMaterialGetPayload<{}>[] pode ser substituído pelo tipo
     // específico do modelo Prisma gerado para SipacMaterial, se preferível (ex: SipacMaterial[]).
     // Grupos de interesse no sipac [3019,3024,3025,3026,3028,3029,3030,3042]
-    const codigosInterestGroups = ['3024', '3026', '3028', '3030', '3042'];
+    // const codigosInterestGroups = ['3024', '3026', '3028', '3030', '3042'];
 
     const idsInterestGroups = await this.prisma.sipacGrupoMaterial.findMany({
-      where: {
-        codigo: {
-          in: codigosInterestGroups
-        }
-      },
-      select: {
-        idGrupoMaterial: true
-      }
+      // where: {
+      //   codigo: {
+      //     in: codigosInterestGroups
+      //   }
+      // },
+      // select: {
+      //   idGrupoMaterial: true
+      // }
     });
 
-    if (!idsInterestGroups || idsInterestGroups.length === 0) {
-      return []; // Nenhum grupo de material para sincronizar, retorna array vazio.
-    }
+    // if (!idsInterestGroups || idsInterestGroups.length === 0) {
+    //   return []; // Nenhum grupo de material para sincronizar, retorna array vazio.
+    // }
 
     const sipacMateriais = await this.prisma.sipacMaterial.findMany({
       where: {
@@ -86,11 +86,12 @@ export class MaterialsService {
     );
 
     try {
-      await this.prisma.materialGlobalCatalog.createMany({
+      const result = await this.prisma.materialGlobalCatalog.createMany({
         data: createMaterialDtos,
         skipDuplicates: true // Ignora registros duplicados (baseado na chave primária 'id').
       });
-      return sipacMateriais; // Retorna a lista original de materiais do Sipac.
+
+      return result; // Retorna a lista original de materiais do Sipac.
     } catch (error) {
       // Considere um tratamento de erro mais específico ou logging.
       console.error('Error during Sipac material synchronization:', error);
