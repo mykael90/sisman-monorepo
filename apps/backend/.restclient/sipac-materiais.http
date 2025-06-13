@@ -1,0 +1,27 @@
+### Variables
+@urlLocal = {{apiUrl}}/sipac
+@contentType = application/json
+
+
+### GET materiais
+GET {{urlLocal}}/materiais
+
+### GET one material by code
+GET {{urlLocal}}/materiais/300700000086
+
+### POST
+POST {{urlLocal}}/materiais/sync-many
+Content-Type: {{contentType}}
+
+{
+    "codigos": ["300700000086","300700000116","300700000221"]
+}
+
+### GET and SYNC all materiais to server database
+GET {{urlLocal}}/materiais/sync-all
+
+### GET and SYNC all materiais to server database
+GET {{urlLocal}}/grupos-materiais/sync-all
+
+### GET and SYNC all materiais to server database
+GET {{urlLocal}}/subgrupos-materiais/sync-all

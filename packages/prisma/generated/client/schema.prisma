@@ -280,13 +280,14 @@ model Warehouse {
 // A global, system-wide catalog of all possible materials.
 // Only system administrators can modify this table.
 model MaterialGlobalCatalog {
-  id            Int     @id @default(autoincrement()) // Unique identifier for the material.
-  sipacCode     String? @unique // A unique global code for the material.
-  catmatCode    String? @unique
+  id            String  @id // Unique identifier for the material.
+  code          String? @unique // A unique global code for the material. @map("sipacCode")
+  codeSidec     String? @unique
   name          String // The name of the material.
   description   String? @db.Text // Detailed description of the material.
   unitOfMeasure String // The standard unit of measure for this material (e.g., "UNIT", "KG").
-  categoryId    Int? // The category id of the material (e.g., "Electrical", "Hydraulic").
+  groupId       Int? // The category id of the material (e.g., "Electrical", "Hydraulic"). @map("categoryId")
+  subGroupId    Int?
   photoUrl      String? // URL to an image representing the material.
   isActive      Boolean @default(true) // Indicates if the material is active in the global catalog.
 
@@ -303,7 +304,7 @@ model MaterialGlobalCatalog {
   materialReceiptItems            MaterialReceiptItem[]
   materialRestrictionOrderItems   MaterialRestrictionOrderItem[]
 
-  @@index([sipacCode]) // Index for faster lookups by global code.
+  @@index([code]) // Index for faster lookups by global code.
   @@map("material_global_catalog") // Maps this model to the 'materials_global_catalog' table.
 }
 
@@ -316,7 +317,7 @@ model MaterialWarehouseStock {
   warehouseId Int // Foreign key to the warehouse.
   warehouse   Warehouse @relation(fields: [warehouseId], references: [id], onDelete: Cascade) // Relation to the Warehouse model.
 
-  materialId Int // Foreign key to the global material.
+  materialId String // Foreign key to the global material.
   material   MaterialGlobalCatalog @relation(fields: [materialId], references: [id], onDelete: Restrict) // Relation to the Material model.
 
   // Stock Level Types
@@ -356,11 +357,11 @@ model MaterialRequest {
   requestDate   DateTime              @default(now()) // The date and time when the request was made.
   status        MaterialRequestStatus @default(PENDING) // The current status of the material request.
 
-  maintenanceRequestId Int // Foreign key to the associated maintenance request.
-  maintenanceRequest   MaintenanceRequest @relation(fields: [maintenanceRequestId], references: [id], onDelete: Cascade) // Relation to the MaintenanceRequest model.
+  maintenanceRequestId Int? // Foreign key to the associated maintenance request.
+  maintenanceRequest   MaintenanceRequest? @relation(fields: [maintenanceRequestId], references: [id]) // Relation to the MaintenanceRequest model.
 
-  requestedById Int // Foreign key to the user who requested the materials.
-  requestedBy   User @relation("MaterialRequestedByUser", fields: [requestedById], references: [id]) // Relation to the User model (who requested).
+  requestedById Int? // Foreign key to the user who requested the materials.
+  requestedBy   User? @relation("MaterialRequestedByUser", fields: [requestedById], references: [id]) // Relation to the User model (who requested).
 
   approvedById  Int? // Foreign key to the user who approved the material request.
   approvedBy    User?     @relation("MaterialApprovedByUser", fields: [approvedById], references: [id]) // Relation to the User model (who approved).
@@ -412,7 +413,7 @@ model MaterialRequestItem {
   requestType MaterialRequestItemType @default(GLOBAL_CATALOG) // Indicates the type of material being requested (global catalog or derived).
 
   // If MaterialRequest.requestType = NEW_MATERIALS, this item MUST reference a global catalog material.
-  requestedGlobalMaterialId Int? // Foreign key to the Material (global catalog).
+  requestedGlobalMaterialId String? // Foreign key to the Material (global catalog).
   requestedGlobalMaterial   MaterialGlobalCatalog? @relation("RequestedGlobalMaterial", fields: [requestedGlobalMaterialId], references: [id]) // Relation to the Material model.
 
   // If MaterialRequest.requestType = DERIVED_MATERIALS, this item MUST describe the desired derived material.
@@ -487,7 +488,7 @@ model MaterialStockMovement {
   warehouse   Warehouse @relation(fields: [warehouseId], references: [id], onDelete: Cascade) // Relation to the Warehouse model.
 
   // The global material type involved, if applicable.
-  globalMaterialId Int?
+  globalMaterialId String?
   globalMaterial   MaterialGlobalCatalog? @relation("GlobalMaterialMovements", fields: [globalMaterialId], references: [id], onDelete: Restrict) // Relation to the Material model.
 
   // The specific material instance involved, if applicable.
@@ -557,7 +558,7 @@ model MaterialDerived {
   // Optional link to the global material catalog.
   // Filled if this instance is a leftover/processed version of a known global item.
   // Null if it's a new item generated locally without a global counterpart.
-  globalMaterialId Int?
+  globalMaterialId String?
   globalMaterial   MaterialGlobalCatalog? @relation("GlobalMaterialLink", fields: [globalMaterialId], references: [id], onDelete: SetNull) // Relation to the Material model.
 
   // Specific description of the instance (especially if globalMaterialId is null).
@@ -758,7 +759,7 @@ model MaterialWithdrawalItem {
   materialWithdrawal   MaterialWithdrawal @relation(fields: [materialWithdrawalId], references: [id], onDelete: Cascade)
 
   // O material específico que foi retirado
-  globalMaterialId   Int?
+  globalMaterialId   String?
   globalMaterial     MaterialGlobalCatalog? @relation(fields: [globalMaterialId], references: [id], onDelete: Restrict)
   materialInstanceId Int?
   materialInstance   MaterialDerived?       @relation(fields: [materialInstanceId], references: [id], onDelete: Restrict)
@@ -853,7 +854,7 @@ model MaterialTransferOrderItem {
 
   // O que está sendo transferido:
   // Pode ser um material NOVO do catálogo global
-  materialId Int?
+  materialId String?
   material   MaterialGlobalCatalog? @relation(fields: [materialId], references: [id])
 
   // OU uma INSTÂNCIA ESPECÍFICA de material
@@ -928,7 +929,7 @@ model MaterialReceiptItem {
   materialReceiptId Int
   materialReceipt   MaterialReceipt @relation(fields: [materialReceiptId], references: [id], onDelete: Cascade)
 
-  materialId Int
+  materialId String
   material   MaterialGlobalCatalog @relation(fields: [materialId], references: [id])
 
   quantityExpected Decimal @db.Decimal(10, 3)
@@ -1003,7 +1004,7 @@ model MaterialRestrictionOrderItem {
   materialRestrictionOrder   MaterialRestrictionOrder @relation(fields: [materialRestrictionOrderId], references: [id], onDelete: Cascade)
 
   // O material específico a ser restringido/liberado
-  globalMaterialId   Int?
+  globalMaterialId   String?
   globalMaterial     MaterialGlobalCatalog? @relation(fields: [globalMaterialId], references: [id], onDelete: Restrict)
   materialInstanceId Int?
   materialInstance   MaterialDerived?       @relation(fields: [materialInstanceId], references: [id], onDelete: Restrict)
@@ -1049,14 +1050,14 @@ model SipacMaterial {
   codigo                   String   @unique // Código do material.
   codigoSidec              String? // Código do material no sistema do governo SIDEC.
   consumoEnergia           Decimal? @db.Decimal(12, 4) // Consumo de energia.
-  dataUltimaCompra         DateTime @db.Timestamp(0) // Data da última compra do material (timestamp).
+  // dataUltimaCompra         DateTime @db.Timestamp(0) // Data da última compra do material (timestamp).
   denominacaoGrupo         String? // Denominação do grupo do material.
-  denominacaoMaterial      String // Denominação do material.
-  denominacaoMaterialAscii String? // Denominação do material em ASCII.
+  denominacaoMaterial      String   @db.VarChar(255) // Denominação do material.
+  denominacaoMaterialAscii String?  @db.VarChar(255) // Denominação do material em ASCII.
   denominacaoSubGrupo      String? // Denominação do sub-grupo do material.
   denominacaoUnidade       String? // Denominação da unidade do material.
-  especificacao            String? // Especificação do material.
-  especificacaoAscii       String? // Especificação do material em ASCII.
+  especificacao            String?  @db.Text // Especificação do material.
+  especificacaoAscii       String?  @db.Text // Especificação do material em ASCII.
   idGrupo                  Int? // Identificador do grupo do material.
   idSubGrupo               Int? // Identificador do sub-grupo do material.
   precoCompra              Decimal? @db.Decimal(12, 4) // Preço de compra do material.
@@ -1079,7 +1080,7 @@ model SipacMaterial {
 model SipacGrupoMaterial {
   idGrupoMaterial   Int     @id // Identificador do grupo.
   ativo             Boolean // Indica se um grupo material está ativo ou não.
-  codigo            BigInt  @unique // Código do grupo.
+  codigo            String  @unique // Código do grupo.
   denominacao       String // Nome do grupo.
   descricao         String? // Descrição detalhada do grupo de material.
   idElementoDespesa Int? // Identificador do elemento de despesa associado ao grupo de material.

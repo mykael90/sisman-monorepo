@@ -28,20 +28,25 @@ export class MaterialsController {
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.materialsService.findOne(+id);
+  findOne(@Param('id') id: string) {
+    return this.materialsService.findOne(id);
   }
 
   @Patch(':id')
   update(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id') id: string,
     @Body() updateMaterialDto: UpdateMaterialDto
   ) {
-    return this.materialsService.update(+id, updateMaterialDto);
+    return this.materialsService.update(id, updateMaterialDto);
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.materialsService.remove(+id);
+  remove(@Param('id') id: string) {
+    return this.materialsService.remove(id);
+  }
+
+  @Post('sync')
+  syncFromSipacMateriais() {
+    return this.materialsService.syncFromSipacMateriais();
   }
 }

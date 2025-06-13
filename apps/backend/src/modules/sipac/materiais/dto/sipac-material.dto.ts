@@ -66,16 +66,16 @@ export class CreateSipacMaterialDto
   @IsNumber()
   consumoEnergia?: number;
 
-  @ApiProperty({
-    description:
-      "Data da última compra. Proveniente de SipacMaterialResponseItem['data-ultima-compra'] (timestamp), transformada para Date.",
-    example: '2023-10-26T10:00:00.000Z',
-    type: Date
-  })
-  @IsDate()
-  @Type(() => Date) // Garante a transformação para Date (ex: de string ISO)
-  @IsNotEmpty()
-  dataUltimaCompra: Date;
+  // @ApiProperty({
+  //   description:
+  //     "Data da última compra. Proveniente de SipacMaterialResponseItem['data-ultima-compra'] (timestamp), transformada para Date.",
+  //   example: '2023-10-26T10:00:00.000Z',
+  //   type: Date
+  // })
+  // @IsDate()
+  // @Type(() => Date) // Garante a transformação para Date (ex: de string ISO)
+  // @IsNotEmpty()
+  // dataUltimaCompra: Date;
 
   @ApiProperty({
     description:

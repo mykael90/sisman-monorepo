@@ -8,16 +8,26 @@ import {
   IsOptional,
   IsString
 } from 'class-validator';
+import { isNumber } from 'lodash';
 
 export class CreateMaterialDto
   implements Prisma.MaterialGlobalCatalogCreateManyInput
 {
   @IsNotEmpty()
   @IsString()
+  id: string;
+
+  @IsNotEmpty()
+  @IsString()
   name: string;
 
   @IsOptional()
-  sipacCode?: string;
+  @IsString()
+  code?: string;
+
+  @IsOptional()
+  @IsString()
+  codeSidec?: string;
 
   @IsString()
   @IsOptional()

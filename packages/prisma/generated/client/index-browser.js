@@ -246,12 +246,13 @@ exports.Prisma.WarehouseScalarFieldEnum = {
 
 exports.Prisma.MaterialGlobalCatalogScalarFieldEnum = {
   id: 'id',
-  sipacCode: 'sipacCode',
-  catmatCode: 'catmatCode',
+  code: 'code',
+  codeSidec: 'codeSidec',
   name: 'name',
   description: 'description',
   unitOfMeasure: 'unitOfMeasure',
-  categoryId: 'categoryId',
+  groupId: 'groupId',
+  subGroupId: 'subGroupId',
   photoUrl: 'photoUrl',
   isActive: 'isActive',
   createdAt: 'createdAt',
@@ -519,7 +520,6 @@ exports.Prisma.SipacMaterialScalarFieldEnum = {
   codigo: 'codigo',
   codigoSidec: 'codigoSidec',
   consumoEnergia: 'consumoEnergia',
-  dataUltimaCompra: 'dataUltimaCompra',
   denominacaoGrupo: 'denominacaoGrupo',
   denominacaoMaterial: 'denominacaoMaterial',
   denominacaoMaterialAscii: 'denominacaoMaterialAscii',
@@ -849,8 +849,9 @@ exports.Prisma.WarehouseOrderByRelevanceFieldEnum = {
 };
 
 exports.Prisma.MaterialGlobalCatalogOrderByRelevanceFieldEnum = {
-  sipacCode: 'sipacCode',
-  catmatCode: 'catmatCode',
+  id: 'id',
+  code: 'code',
+  codeSidec: 'codeSidec',
   name: 'name',
   description: 'description',
   unitOfMeasure: 'unitOfMeasure',
@@ -858,6 +859,7 @@ exports.Prisma.MaterialGlobalCatalogOrderByRelevanceFieldEnum = {
 };
 
 exports.Prisma.MaterialWarehouseStockOrderByRelevanceFieldEnum = {
+  materialId: 'materialId',
   locationInWarehouse: 'locationInWarehouse'
 };
 
@@ -868,6 +870,7 @@ exports.Prisma.MaterialRequestOrderByRelevanceFieldEnum = {
 };
 
 exports.Prisma.MaterialRequestItemOrderByRelevanceFieldEnum = {
+  requestedGlobalMaterialId: 'requestedGlobalMaterialId',
   unitOfMeasure: 'unitOfMeasure',
   notes: 'notes'
 };
@@ -879,6 +882,7 @@ exports.Prisma.MaterialStockMovementTypeOrderByRelevanceFieldEnum = {
 };
 
 exports.Prisma.MaterialStockMovementOrderByRelevanceFieldEnum = {
+  globalMaterialId: 'globalMaterialId',
   unitOfMeasure: 'unitOfMeasure'
 };
 
@@ -890,6 +894,7 @@ exports.Prisma.MaterialDerivedConditionOrderByRelevanceFieldEnum = {
 
 exports.Prisma.MaterialDerivedOrderByRelevanceFieldEnum = {
   derivedIdentifier: 'derivedIdentifier',
+  globalMaterialId: 'globalMaterialId',
   derivedName: 'derivedName',
   derivedDescription: 'derivedDescription',
   derivedUnitOfMeasure: 'derivedUnitOfMeasure',
@@ -912,6 +917,7 @@ exports.Prisma.MaterialWithdrawalOrderByRelevanceFieldEnum = {
 };
 
 exports.Prisma.MaterialWithdrawalItemOrderByRelevanceFieldEnum = {
+  globalMaterialId: 'globalMaterialId',
   unitOfMeasure: 'unitOfMeasure'
 };
 
@@ -921,6 +927,7 @@ exports.Prisma.MaterialTransferOrderOrderByRelevanceFieldEnum = {
 };
 
 exports.Prisma.MaterialTransferOrderItemOrderByRelevanceFieldEnum = {
+  materialId: 'materialId',
   unitOfMeasure: 'unitOfMeasure'
 };
 
@@ -932,6 +939,7 @@ exports.Prisma.MaterialReceiptOrderByRelevanceFieldEnum = {
 };
 
 exports.Prisma.MaterialReceiptItemOrderByRelevanceFieldEnum = {
+  materialId: 'materialId',
   unitOfMeasure: 'unitOfMeasure',
   rejectionReason: 'rejectionReason',
   batchNumber: 'batchNumber'
@@ -943,6 +951,7 @@ exports.Prisma.MaterialRestrictionOrderOrderByRelevanceFieldEnum = {
 };
 
 exports.Prisma.MaterialRestrictionOrderItemOrderByRelevanceFieldEnum = {
+  globalMaterialId: 'globalMaterialId',
   unitOfMeasure: 'unitOfMeasure'
 };
 
@@ -959,6 +968,7 @@ exports.Prisma.SipacMaterialOrderByRelevanceFieldEnum = {
 };
 
 exports.Prisma.SipacGrupoMaterialOrderByRelevanceFieldEnum = {
+  codigo: 'codigo',
   denominacao: 'denominacao',
   descricao: 'descricao'
 };

@@ -35,3 +35,8 @@ Authorization: Bearer {{token}}
 
 ### DELETE one
 DELETE {{urlLocal}}/{{material.response.body.id}}
+
+### SYNC FROM SIPAC
+POST {{urlLocal}}/sync
+Content-Type: application/json
+Authorization: Bearer {{token}}

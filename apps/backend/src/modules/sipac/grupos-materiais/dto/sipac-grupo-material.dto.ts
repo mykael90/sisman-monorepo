@@ -13,8 +13,8 @@ export class CreateSipacGrupoMaterialDto {
     description: 'Código do grupo de material',
     example: 1234567890
   })
-  @IsNumber()
-  codigo: number;
+  @IsString()
+  codigo: string;
 
   @ApiProperty({
     description: 'Denominação do grupo de material',

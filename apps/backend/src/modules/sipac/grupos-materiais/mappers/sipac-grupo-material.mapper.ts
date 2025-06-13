@@ -7,7 +7,7 @@ export class SipacGrupoMaterialMapper {
   ): CreateSipacGrupoMaterialDto {
     return {
       ativo: item.ativo,
-      codigo: item.codigo,
+      codigo: String(item.codigo),
       denominacao: item.denominacao,
       descricao: item.descricao,
       idElementoDespesa: item['id-elemento-despesa'],

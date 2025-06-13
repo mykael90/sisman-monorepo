@@ -13,7 +13,7 @@ export class SipacMaterialMapper {
         ? String(responseItem['codigo-sidec'])
         : undefined,
       consumoEnergia: responseItem['consumo-energia'],
-      dataUltimaCompra: new Date(responseItem['data-ultima-compra']),
+      // dataUltimaCompra: new Date(responseItem['data-ultima-compra']),
       denominacaoGrupo: responseItem['denominacao-grupo'],
       denominacaoMaterial: responseItem['denominacao-material'],
       denominacaoMaterialAscii: responseItem['denominacao-material-ascii'],
