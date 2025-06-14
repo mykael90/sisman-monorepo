@@ -6,8 +6,8 @@ export class SipacGrupoMaterialMapper {
     item: Prisma.SipacMaterialGetPayload<{}>
   ): CreateMaterialDto {
     return {
-      id: String(item.idMaterial),
-      code: item.codigo,
+      id: String(item.codigo),
+      // code: item.codigo,
       codeSidec: item.codigoSidec,
       name: item.denominacaoMaterial.toUpperCase(),
       description: item.especificacao.toUpperCase(),

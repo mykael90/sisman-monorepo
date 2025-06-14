@@ -54,7 +54,7 @@ const transformAndValidateMaterial: TransformValidateFn<
   // --- 4. Construct Prisma Create Input (using validated DTO data) ---
   const createInput: Prisma.MaterialGlobalCatalogCreateInput = {
     id: materialDto.id,
-    code: materialDto.code,
+    // code: materialDto.code,
     name: materialDto.name,
     unitOfMeasure: materialDto.unitOfMeasure,
     // Use os campos do DTO validado. Se forem opcionais no DTO e não existirem, não serão incluídos.

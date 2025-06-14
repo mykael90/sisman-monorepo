@@ -281,7 +281,7 @@ model Warehouse {
 // Only system administrators can modify this table.
 model MaterialGlobalCatalog {
   id            String  @id // Unique identifier for the material.
-  code          String? @unique // A unique global code for the material. @map("sipacCode")
+  // code          String? @unique // A unique global code for the material. @map("sipacCode")
   codeSidec     String?
   name          String  @db.VarChar(255) // The name of the material.
   description   String? @db.Text // Detailed description of the material.
@@ -304,7 +304,7 @@ model MaterialGlobalCatalog {
   materialReceiptItems            MaterialReceiptItem[]
   materialRestrictionOrderItems   MaterialRestrictionOrderItem[]
 
-  @@index([code]) // Index for faster lookups by global code.
+  // @@index([code]) // Index for faster lookups by global code.
   @@map("material_global_catalog") // Maps this model to the 'materials_global_catalog' table.
 }
 

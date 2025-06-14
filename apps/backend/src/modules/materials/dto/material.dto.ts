@@ -21,9 +21,9 @@ export class CreateMaterialDto
   @IsString()
   name: string;
 
-  @IsOptional()
-  @IsString()
-  code?: string;
+  // @IsOptional()
+  // @IsString()
+  // code?: string;
 
   @IsOptional()
   @IsString()

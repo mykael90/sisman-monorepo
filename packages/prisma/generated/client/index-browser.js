@@ -246,7 +246,6 @@ exports.Prisma.WarehouseScalarFieldEnum = {
 
 exports.Prisma.MaterialGlobalCatalogScalarFieldEnum = {
   id: 'id',
-  code: 'code',
   codeSidec: 'codeSidec',
   name: 'name',
   description: 'description',
@@ -850,7 +849,6 @@ exports.Prisma.WarehouseOrderByRelevanceFieldEnum = {
 
 exports.Prisma.MaterialGlobalCatalogOrderByRelevanceFieldEnum = {
   id: 'id',
-  code: 'code',
   codeSidec: 'codeSidec',
   name: 'name',
   description: 'description',
