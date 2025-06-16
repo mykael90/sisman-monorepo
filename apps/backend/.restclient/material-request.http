@@ -1,0 +1,48 @@
+### Variables
+@urlLocal = {{apiUrl}}/material-request
+@contentType = application/json
+
+### GET all
+GET {{urlLocal}}
+Authorization: Bearer {{token}}
+
+### GET one
+# @prompt id
+GET {{urlLocal}}/{{id}}
+Authorization: Bearer {{token}}
+
+### POST
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "protocolNumber": "REQ-{{$timestamp}}",
+    "requestType": "NEW_MATERIALS",
+    "justification": "Example material request",
+    "maintenanceRequestId": null,
+    "requestedById": 1,
+    "sipacUnitRequesting": "DEPTO-XYZ",
+    "sipacUnitCost": "CUSTO-ABC",
+    "origin": "SISMAN",
+    "requestValue": 100.50,
+    "servedValue": 0,
+    "warehouseId": 1
+}
+
+### PUT
+# @prompt id
+PUT {{urlLocal}}/{{id}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "justification": "Updated justification",
+    "servedValue": 100.50
+}
+
+### DELETE one
+# @prompt id
+DELETE {{urlLocal}}/{{id}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}

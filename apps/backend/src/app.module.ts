@@ -26,6 +26,8 @@ import { SipacModule } from './modules/sipac/sipac.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import sipacApiConfig from './config/sipac-api.config';
 import sipacScrapingConfig from './config/sipac-scraping.config';
+import { WarehousesModule } from './modules/warehouses/warehouses.module';
+import { MaterialRequestsModule } from './modules/material-requests/material-requests.module';
 
 @Module({
   imports: [
@@ -64,6 +66,8 @@ import sipacScrapingConfig from './config/sipac-scraping.config';
     AuthModule,
     FilesModule,
     MaterialsModule,
+    WarehousesModule,
+    MaterialRequestsModule,
     NotificationsModule,
     MaintenanceInstancesModule,
     SipacModule

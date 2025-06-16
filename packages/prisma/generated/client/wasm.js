@@ -279,16 +279,29 @@ exports.Prisma.MaterialRequestScalarFieldEnum = {
   id: 'id',
   protocolNumber: 'protocolNumber',
   requestType: 'requestType',
+  purpose: 'purpose',
   justification: 'justification',
   requestDate: 'requestDate',
-  status: 'status',
   maintenanceRequestId: 'maintenanceRequestId',
   requestedById: 'requestedById',
-  approvedById: 'approvedById',
-  approvalDate: 'approvalDate',
-  approvalNotes: 'approvalNotes',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  sipacUnitRequesting: 'sipacUnitRequesting',
+  sipacUnitCost: 'sipacUnitCost',
+  origin: 'origin',
+  requestValue: 'requestValue',
+  servedValue: 'servedValue',
+  warehouseId: 'warehouseId'
+};
+
+exports.Prisma.MaterialRequestStatusScalarFieldEnum = {
+  id: 'id',
+  materialRequestId: 'materialRequestId',
+  status: 'status',
+  changedById: 'changedById',
+  changeDate: 'changeDate',
+  notes: 'notes',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.MaterialRequestItemScalarFieldEnum = {
@@ -864,7 +877,12 @@ exports.Prisma.MaterialWarehouseStockOrderByRelevanceFieldEnum = {
 exports.Prisma.MaterialRequestOrderByRelevanceFieldEnum = {
   protocolNumber: 'protocolNumber',
   justification: 'justification',
-  approvalNotes: 'approvalNotes'
+  sipacUnitRequesting: 'sipacUnitRequesting',
+  sipacUnitCost: 'sipacUnitCost'
+};
+
+exports.Prisma.MaterialRequestStatusOrderByRelevanceFieldEnum = {
+  notes: 'notes'
 };
 
 exports.Prisma.MaterialRequestItemOrderByRelevanceFieldEnum = {
@@ -1137,7 +1155,18 @@ exports.MaterialRequestType = exports.$Enums.MaterialRequestType = {
   DERIVED_MATERIALS: 'DERIVED_MATERIALS'
 };
 
-exports.MaterialRequestStatus = exports.$Enums.MaterialRequestStatus = {
+exports.MaterialRequestPurpose = exports.$Enums.MaterialRequestPurpose = {
+  SUPPLY_WAREHOUSE: 'SUPPLY_WAREHOUSE',
+  SUPPLY_MAINTENANCE: 'SUPPLY_MAINTENANCE'
+};
+
+exports.MaterialRequestOrigin = exports.$Enums.MaterialRequestOrigin = {
+  SIPAC: 'SIPAC',
+  SISMAN: 'SISMAN'
+};
+
+exports.MaterialRequestStatusOptions = exports.$Enums.MaterialRequestStatusOptions = {
+  SIPAC_HANDLING: 'SIPAC_HANDLING',
   PENDING: 'PENDING',
   APPROVED: 'APPROVED',
   PARTIALLY_ATTENDED: 'PARTIALLY_ATTENDED',
@@ -1213,6 +1242,7 @@ exports.Prisma.ModelName = {
   MaterialGlobalCatalog: 'MaterialGlobalCatalog',
   MaterialWarehouseStock: 'MaterialWarehouseStock',
   MaterialRequest: 'MaterialRequest',
+  MaterialRequestStatus: 'MaterialRequestStatus',
   MaterialRequestItem: 'MaterialRequestItem',
   MaterialStockMovementType: 'MaterialStockMovementType',
   MaterialStockMovement: 'MaterialStockMovement',

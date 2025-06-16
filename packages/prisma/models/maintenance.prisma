@@ -128,8 +128,8 @@ enum TimelineEventType {
 // Represents a specific maintenance instance or department within an IFES.
 model MaintenanceInstance {
     id        Int      @id @default(autoincrement()) // Unique identifier for the maintenance instance.
-    sipacId   String   @unique // Unique identifier from the SIPAC system.
-    name      String   @unique // Name of the maintenance instance (e.g., "DIMAN/INFRA").
+    sipacId   String?  @unique // Unique identifier from the SIPAC system.
+    name      String?  @unique // Name of the maintenance instance (e.g., "DIMAN/INFRA").
     isActive  Boolean  @default(true) // Indicates if the instance is currently active.
     createdAt DateTime @default(now()) @db.Timestamp(0) // Timestamp for when the record was created.
     updatedAt DateTime @updatedAt @db.Timestamp(0) // Timestamp for the last update of the record.

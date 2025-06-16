@@ -15,6 +15,7 @@ model Warehouse {
     updatedAt DateTime @updatedAt @db.Timestamp(0) // Timestamp for the last update of the record.
 
     // Relations
+    materialRequests               MaterialRequest[]
     standardMaterialStocks         MaterialWarehouseStock[] // Stock levels for "new" materials in this warehouse.
     materialDerived                MaterialDerived[] // Instances/batches of derived materials in this warehouse.
     stockMovements                 MaterialStockMovement[] // Stock movements related to this warehouse.
@@ -97,46 +98,63 @@ model MaterialWarehouseStock {
     @@map("material_warehouse_stocks") // Maps this model to the 'warehouse_material_stocks' table.
 }
 
-// Represents a request for materials needed for a maintenance request.
+// Represents a request for materials needed for a maintenance request or just for inventory.
 model MaterialRequest {
     id             Int    @id @default(autoincrement()) // Unique identifier for the material request.
     protocolNumber String @unique @default(uuid()) // A unique protocol number for tracking the request.
 
     // Defines if the request is for new materials or derived materials.
-    requestType MaterialRequestType @default(NEW_MATERIALS)
+    requestType MaterialRequestType    @default(NEW_MATERIALS)
+    purpose     MaterialRequestPurpose @default(SUPPLY_MAINTENANCE)
 
-    justification String?               @db.Text // Justification for the material request.
-    requestDate   DateTime              @default(now()) // The date and time when the request was made.
-    status        MaterialRequestStatus @default(PENDING) // The current status of the material request.
-
+    justification        String?             @db.Text // Justification for the material request.
+    requestDate          DateTime            @default(now()) // The date and time when the request was made.
     maintenanceRequestId Int? // Foreign key to the associated maintenance request.
     maintenanceRequest   MaintenanceRequest? @relation(fields: [maintenanceRequestId], references: [id]) // Relation to the MaintenanceRequest model.
 
     requestedById Int? // Foreign key to the user who requested the materials.
     requestedBy   User? @relation("MaterialRequestedByUser", fields: [requestedById], references: [id]) // Relation to the User model (who requested).
 
-    approvedById  Int? // Foreign key to the user who approved the material request.
-    approvedBy    User?     @relation("MaterialApprovedByUser", fields: [approvedById], references: [id]) // Relation to the User model (who approved).
-    approvalDate  DateTime? // The date and time when the request was approved.
-    approvalNotes String?   @db.Text // Notes from the approver.
-
     createdAt DateTime @default(now()) @db.Timestamp(0) // Timestamp for when the record was created.
     updatedAt DateTime @updatedAt @db.Timestamp(0) // Timestamp for the last update of the record.
 
+    //campos compatibilidade sipac
+    sipacUnitRequesting String? // unidade de custo
+    sipacUnitCost       String? // unidade requisitante
+    origin              MaterialRequestOrigin @default(SISMAN) // Origem da requisicao
+
+    //
+    requestValue Decimal? @db.Decimal(12, 4) //valor da requisicao
+    servedValue  Decimal? @db.Decimal(12, 4) //valor atendido
+
+    // Relations
     restrictionOrders MaterialRestrictionOrder[] @relation("RestrictionsForMaterialRequest")
 
     // Items included in this material request. All items must adhere to the requestType of the header.
-    items MaterialRequestItem[]
+    items         MaterialRequestItem[]
+    statusHistory MaterialRequestStatus[] // History of status changes for this request
 
     // Other relations
+    warehouseId Int
+    warehouse   Warehouse @relation(fields: [warehouseId], references: [id]) // Relation to the Warehouse model.
+
     materialPickingOrders MaterialPickingOrder[]
     materialWithdrawals   MaterialWithdrawal[]
 
     @@index([maintenanceRequestId]) // Index for faster lookups by maintenance request.
     @@index([requestedById]) // Index for faster lookups by requesting user.
-    @@index([status]) // Index for faster lookups by status.
     @@index([requestType]) // Index for faster lookups by request type.
     @@map("material_requests") // Maps this model to the 'material_requests' table.
+}
+
+enum MaterialRequestOrigin {
+    SIPAC
+    SISMAN
+}
+
+enum MaterialRequestPurpose {
+    SUPPLY_WAREHOUSE //abastecimento de almoxarifado, óleos, brocas, etc
+    SUPPLY_MAINTENANCE //atendimento direcionado a requisição de manutenção
 }
 
 // Defines the type of materials being requested in a MaterialRequest.
@@ -146,13 +164,37 @@ enum MaterialRequestType {
 }
 
 // Defines the possible statuses for a MaterialRequest.
-enum MaterialRequestStatus {
+enum MaterialRequestStatusOptions {
+    SIPAC_HANDLING // Status gerenciado pelo sipac
     PENDING // Request is pending approval.
     APPROVED // Request has been approved.
     PARTIALLY_ATTENDED // Request has been partially fulfilled.
     FULLY_ATTENDED // Request has been fully fulfilled.
     REJECTED // Request has been rejected.
     CANCELLED // Request has been cancelled.
+
+    @@map("MaterialRequestStatus")
+}
+
+// Stores the history of status changes for a MaterialRequest.
+model MaterialRequestStatus {
+    id                Int                          @id @default(autoincrement())
+    materialRequestId Int // Foreign key to the MaterialRequest.
+    materialRequest   MaterialRequest              @relation(fields: [materialRequestId], references: [id], onDelete: Cascade) // Relation to the MaterialRequest model.
+    status            MaterialRequestStatusOptions // The status set at this point in time.
+
+    changedById Int? // User who made this status change (e.g., approver, requester for cancellation).
+    changedBy   User? @relation("MaterialRequestStatusChangedBy", fields: [changedById], references: [id], onDelete: SetNull) // Relation to the User model.
+
+    changeDate DateTime @default(now()) @db.Timestamp(0) // Timestamp for when this status was set.
+    notes      String?  @db.Text // Notes related to this status change (e.g., approval notes, rejection reason).
+
+    createdAt DateTime @default(now()) @db.Timestamp(0) // Timestamp for when the history record was created.
+
+    @@index([materialRequestId])
+    @@index([status])
+    @@index([changedById])
+    @@map("material_request_statuses")
 }
 
 // Represents an individual item within a MaterialRequest.
@@ -409,6 +451,7 @@ enum MaterialPickingOrderStatus {
     PARTIALLY_WITHDRAWN // Parte dos itens desta ordem já foi retirada
     FULLY_WITHDRAWN // Todos os itens desta ordem foram retirados
     CANCELLED // Ordem de separação cancelada
+    EXPIRED // Ordem de separação vencida
 }
 
 // --- Material Picking Order Item (Detalhe da Ordem de Separação/Reserva) ---

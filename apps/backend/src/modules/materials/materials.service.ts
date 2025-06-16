@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
 import { CreateMaterialDto, UpdateMaterialDto } from './dto/material.dto';
-import { SipacGrupoMaterialMapper } from './mappers/sipac-materiais-materials.mapper';
+import { MaterialsMapper } from './mappers/materials.mapper';
 import { Prisma } from '@sisman/prisma';
 
 @Injectable()
@@ -82,7 +82,7 @@ export class MaterialsService {
     }
 
     const createMaterialDtos = sipacMateriais.map((item) =>
-      SipacGrupoMaterialMapper.toCreateDto(item)
+      MaterialsMapper.toCreateDto(item)
     );
 
     try {
