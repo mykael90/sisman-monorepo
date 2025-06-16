@@ -152,8 +152,8 @@ export class SipacRequisicaoMaterialMapper {
       tipoDaRequisicao: dados.tipo, // Mapping 'tipo' to 'tipoDaRequisicao'
       convenio: dados.convenio,
       // grupoDeMaterial: dados.grupoDeMaterial,
-      unidadeDeCusto: dados.unidadeDeCusto,
-      unidadeRequisitante: dados.unidadeRequisitante,
+      // unidadeDeCusto: dados.unidadeDeCusto,
+      // unidadeRequisitante: dados.unidadeRequisitante,
       destinoDaRequisicao: dados.destinoDaRequisicao,
       // usuarioLogin: dados.usuario, // Mapping 'usuario' to 'usuarioLogin'
       dataDeCadastro: SipacListaRequisicaoMaterialMapper.parseDateString(

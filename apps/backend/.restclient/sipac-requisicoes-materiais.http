@@ -1,0 +1,88 @@
+### Variables
+@urlLocal = {{apiUrl}}/sipac/requisicoes-materiais
+@contentType = application/json
+
+### GET materiais
+GET {{urlLocal}}
+
+### GET materiais
+GET {{urlLocal}}/list/sync-all
+?dataInicial=31/03/2023
+&dataFinal=31/12/2023
+
+### POST
+POST {{urlLocal}}/list/sync-one
+Content-Type: {{contentType}}
+
+{
+    "numeroAno": "16455/2025"
+}
+
+### POST
+POST {{urlLocal}}/list/fetch-one
+Content-Type: {{contentType}}
+
+{
+    "numeroAno": "12853/2025"
+}
+
+### POST
+POST {{urlLocal}}/list/sync-many
+Content-Type: {{contentType}}
+
+{
+    "numeroAnoArray": ["12851/2025","12852/2025","12853/2025"]
+}
+
+### GET
+GET {{urlLocal}}/fetch-one/2159250
+Content-Type: {{contentType}}
+
+### PUT
+PUT {{urlLocal}}/2159250
+Content-Type: {{contentType}}
+
+### POST
+POST {{urlLocal}}/fetch-one-complete
+Content-Type: {{contentType}}
+
+{
+    "numeroAno": "12853/2025"
+}
+
+### POST
+POST {{urlLocal}}/fetch-one-complete-and-persist
+Content-Type: {{contentType}}
+
+{
+    "numeroAno": "16455/2025"
+}
+
+### POST
+POST {{urlLocal}}/fetch-many-complete-and-persist
+Content-Type: {{contentType}}
+
+{
+    "numeroAnoArray": [
+    "16347/2025",
+    "16321/2025",
+    "16343/2025",
+    "16455/2025",
+    "16435/2025",
+    "16466/2025",
+    "16422/2025",
+    "16421/2025",
+    "16470/2025",
+    "16155/2025"
+]
+}
+
+### POST
+POST {{urlLocal}}/fetch-many-complete-and-persist
+Content-Type: {{contentType}}
+
+{
+    "numeroAnoArray": [
+    "16708/2024"
+    ]
+}

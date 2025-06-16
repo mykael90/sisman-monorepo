@@ -4,7 +4,7 @@ import { CreateMaterialRequestDto } from '../dto/material-request.dto';
 export class MaterialRequestMapper {
   static toCreateDto(item: SipacRequisicaoMaterial): CreateMaterialRequestDto {
     return {
-      protocolNumber: String(item.id),
+      protocolNumber: String(item.numeroDaRequisicao),
       requestType: 'NEW_MATERIALS',
       requestDate: item.dataDeCadastro,
       warehouseId: 1, // SIPAC ALMOXARIFADO CENTRAL

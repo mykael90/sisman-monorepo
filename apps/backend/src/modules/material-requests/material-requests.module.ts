@@ -4,6 +4,7 @@ import { MaterialRequestsController } from './material-requests.controller';
 
 @Module({
   controllers: [MaterialRequestsController],
-  providers: [MaterialRequestsService]
+  providers: [MaterialRequestsService],
+  exports: [MaterialRequestsService]
 })
 export class MaterialRequestsModule {}

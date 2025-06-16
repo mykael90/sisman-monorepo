@@ -7,7 +7,7 @@ import {
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
-import { Prisma } from '@sisman/prisma';
+import { Prisma, SipacRequisicaoMaterial } from '@sisman/prisma';
 import { SipacScrapingService } from '../sipac-scraping.service';
 import {
   SipacListaRequisicaoMaterialResponseItem,
@@ -27,10 +27,12 @@ import {
   SipacListaRequisicaoMaterialMapper,
   SipacRequisicaoMaterialMapper
 } from './mappers/sipac-requisicao-material.mapper';
+import { MaterialRequestMapper } from 'src/modules/material-requests/mappers/materials-request.mapper';
 import { AxiosRequestConfig } from 'axios';
 import { handlePrismaError } from '../../../shared/utils/prisma-error-handler';
 import { ListaRequisicoesMateriaisService } from './lista-requisicoes-materiais.service';
 import { MateriaisService } from '../materiais/materiais.service';
+import { MaterialRequestsService } from 'src/modules/material-requests/material-requests.service';
 
 @Injectable()
 export class RequisicoesMateriaisService {
@@ -46,8 +48,105 @@ export class RequisicoesMateriaisService {
     private readonly prisma: PrismaService,
     private readonly listaRequisicoesMateriaisService: ListaRequisicoesMateriaisService,
     private readonly materiaisService: MateriaisService,
-    private readonly sipacScraping: SipacScrapingService
+    private readonly sipacScraping: SipacScrapingService,
+    private readonly materialRequestsService: MaterialRequestsService
   ) {}
+
+  //método compartilhado com lógica para processar os dados a serem criados ou atualizados no banco
+  private processRequisicaoMaterialData<T extends object>(
+    data: T,
+    relationalKeysFromDMMF: string[]
+  ): {
+    prismaInput:
+      | Prisma.SipacRequisicaoMaterialCreateInput
+      | Prisma.SipacRequisicaoMaterialUpdateInput;
+    relationsToInclude: Prisma.SipacRequisicaoMaterialInclude;
+  } {
+    const prismaInput: any = {};
+    const relationsToInclude: Prisma.SipacRequisicaoMaterialInclude = {};
+
+    for (const key in data) {
+      if (Object.prototype.hasOwnProperty.call(data, key)) {
+        const typedKey = key as keyof T;
+        const value = data[typedKey];
+
+        if (value === undefined) {
+          // 'undefined' means "do not alter this field" for updates
+          continue;
+        }
+
+        if (
+          relationalKeysFromDMMF.includes(key) &&
+          Array.isArray(value) // 'value' should be an array (can be empty to remove all connections)
+        ) {
+          // Use 'create' for creating new connections
+          prismaInput[key] = {
+            create: value
+          };
+          (relationsToInclude as any)[key] = true;
+        } else if (
+          Object.values(Prisma.SipacRequisicaoMaterialScalarFieldEnum).includes(
+            key as Prisma.SipacRequisicaoMaterialScalarFieldEnum
+          )
+        ) {
+          // It's a valid scalar field for the model
+          prismaInput[key] = value;
+        } else if (
+          relationalKeysFromDMMF.includes(key) &&
+          value !== null &&
+          typeof value === 'object'
+        ) {
+          // Handle single nested object relations if any
+          prismaInput[key] = {
+            create: value
+          };
+          (relationsToInclude as any)[key] = true;
+        }
+      }
+    }
+
+    return { prismaInput, relationsToInclude };
+  }
+
+  // New method to sync with MaterialRequestsService
+  private async syncMaterialRequest(
+    sipacRequisicao: SipacRequisicaoMaterial
+  ): Promise<void> {
+    try {
+      const materialRequestDto =
+        MaterialRequestMapper.toCreateDto(sipacRequisicao);
+
+      // Assuming protocolNumber in MaterialRequest stores the SIPAC request ID
+      const existingMaterialRequest = await this.materialRequestsService
+        .list()
+        .then((requests) =>
+          requests.find(
+            (req) => req.protocolNumber === String(sipacRequisicao.id)
+          )
+        );
+
+      if (existingMaterialRequest) {
+        this.logger.log(
+          `Updating MaterialRequest for SIPAC ID: ${sipacRequisicao.id}`
+        );
+        await this.materialRequestsService.update(
+          existingMaterialRequest.id,
+          materialRequestDto
+        );
+      } else {
+        this.logger.log(
+          `Creating MaterialRequest for SIPAC ID: ${sipacRequisicao.id}`
+        );
+        await this.materialRequestsService.create(materialRequestDto);
+      }
+    } catch (error) {
+      this.logger.error(
+        `Failed to sync MaterialRequest for SIPAC ID: ${sipacRequisicao.id}`,
+        error.stack
+      );
+      // Depending on requirements, you might want to re-throw or handle differently
+    }
+  }
 
   // @Cron(
   //   process.env.CRON_SIPAC_REQUISICOES_MATERIAIS_SYNC || '0 0 * * *' // Daily at midnight
@@ -64,6 +163,7 @@ export class RequisicoesMateriaisService {
   //   );
   // }
 
+  //persiste uma atualização
   private async persistUpdateRequisicaoMaterial(
     id: number,
     data: UpdateSipacRequisicaoMaterialDto
@@ -73,18 +173,8 @@ export class RequisicoesMateriaisService {
     );
 
     let relationalKeysFromDMMF: string[] = [];
-    const prismaUpdateInput: Prisma.SipacRequisicaoMaterialUpdateInput = {};
-    const relationsToInclude: Prisma.SipacRequisicaoMaterialInclude = {};
-    let hasUpdates = false;
 
     if (sipacRequisicaoMaterialModel) {
-      // Antes de processar as atualizações, garantir que os materiais dos itens existem
-      if (data.itensDaRequisicao && data.itensDaRequisicao.length > 0) {
-        const itensParaVerificar = data.itensDaRequisicao.map((item) => ({
-          codigo: item.codigo // Supondo que o DTO de update tenha `codigo` nos itens
-        }));
-        await this.ensureMateriaisExistentes(itensParaVerificar as any); // `as any` para simplificar, idealmente tipar corretamente
-      }
       relationalKeysFromDMMF = sipacRequisicaoMaterialModel.fields
         .filter((field) => field.kind === 'object' && field.relationName) // Filtra apenas campos que são objetos (outros modelos) e têm um nome de relação
         .map((field) => field.name);
@@ -94,49 +184,39 @@ export class RequisicoesMateriaisService {
       );
     }
 
-    for (const key in data) {
-      if (Object.prototype.hasOwnProperty.call(data, key)) {
-        const typedKey = key as keyof Prisma.SipacRequisicaoMaterialUpdateInput;
-        const value = data[typedKey];
-
-        if (value === undefined) {
-          // 'undefined' significa "não alterar este campo"
-          continue;
-        }
-        hasUpdates = true;
-
-        // 2. Verificar se a chave é uma relação para definir com 'create'
-        if (
-          relationalKeysFromDMMF.includes(typedKey) &&
-          Array.isArray(value) // 'value' deve ser um array (pode ser vazio para remover todas as conexões)
-        ) {
-          // Usar 'create' para criar completamente as conexões existentes
-          (prismaUpdateInput as any)[typedKey] = {
-            deleteMany: {}, // Delete all existing items
-            create: value // Create the new items
-          };
-          (relationsToInclude as any)[typedKey] = true;
-        } else if (
-          Object.values(Prisma.SipacRequisicaoMaterialScalarFieldEnum).includes(
-            typedKey as Prisma.SipacRequisicaoMaterialScalarFieldEnum
-          )
-        ) {
-          // É um campo escalar válido para o modelo User
-          (prismaUpdateInput as any)[typedKey] = value;
-        }
-      }
+    // Antes de processar as atualizações, garantir que os materiais dos itens existem
+    if (data.itensDaRequisicao && data.itensDaRequisicao.length > 0) {
+      const itensParaVerificar = data.itensDaRequisicao.map((item) => ({
+        codigo: item.codigo // Supondo que o DTO de update tenha `codigo` nos itens
+      }));
+      await this.ensureMateriaisExistentes(itensParaVerificar as any); // `as any` para simplificar, idealmente tipar corretamente
     }
 
-    if (!hasUpdates && Object.keys(prismaUpdateInput).length === 0) {
-      // Verifica também se prismaUpdateInput está realmente vazio, caso todos os valores
-      // fossem undefined, mas alguma chave de relação com array vazio tenha sido processada.
+    const { prismaInput: prismaUpdateInput, relationsToInclude } =
+      this.processRequisicaoMaterialData(data, relationalKeysFromDMMF);
+
+    // Check if there are any actual updates to scalar fields or if relational fields have non-empty arrays
+    const hasScalarUpdates = Object.keys(prismaUpdateInput).some((key) =>
+      Object.values(Prisma.SipacRequisicaoMaterialScalarFieldEnum).includes(
+        key as Prisma.SipacRequisicaoMaterialScalarFieldEnum
+      )
+    );
+
+    const hasRelationalUpdates = Object.keys(prismaUpdateInput).some(
+      (key) =>
+        relationalKeysFromDMMF.includes(key) &&
+        Array.isArray((prismaUpdateInput as any)[key]?.create) &&
+        ((prismaUpdateInput as any)[key]?.create as any[]).length > 0
+    );
+
+    if (!hasScalarUpdates && !hasRelationalUpdates) {
       this.logger.warn(
         `Nenhuma alteração fornecida para a requisição de material ID: ${id}. Retornando dados existentes.`
       );
       const existingRequisicaoMaterial =
         await this.prisma.sipacRequisicaoMaterial.findUnique({
           where: { id },
-          // Inclui as relações que poderiam ter sido atualizadas, mesmo que não tenham sido
+          // Inclui as relations that could have been updated, even if they weren't
           include: relationalKeysFromDMMF.reduce((acc, key) => {
             (acc as any)[key as string] = true;
             return acc;
@@ -150,20 +230,48 @@ export class RequisicoesMateriaisService {
       return existingRequisicaoMaterial;
     }
 
+    // For update, explicitly handle deletion of existing relational items before creating new ones
+    for (const key of relationalKeysFromDMMF) {
+      if (
+        (prismaUpdateInput as any)[key] &&
+        Array.isArray((prismaUpdateInput as any)[key].create)
+      ) {
+        (prismaUpdateInput as any)[key] = {
+          deleteMany: {}, // Delete all existing items
+          create: (prismaUpdateInput as any)[key].create // Create the new items
+        };
+      }
+    }
+
     try {
-      this.logger.log(`Persistindo a atualização de requisição de material...`);
-      return await this.prisma.sipacRequisicaoMaterial.update({
-        where: { id },
-        data: prismaUpdateInput,
-        //para ter as relações no retorno
-        include:
-          Object.keys(relationsToInclude).length > 0
-            ? relationsToInclude
-            : undefined
-      });
+      this.logger.log(
+        `Iniciando transação para atualizar requisição de material...`
+      );
+      const updatedRequisicaoMaterial = await this.prisma.$transaction(
+        async (prisma) => {
+          const updated = await prisma.sipacRequisicaoMaterial.update({
+            where: { id },
+            data: prismaUpdateInput as Prisma.SipacRequisicaoMaterialUpdateInput,
+            //para ter as relações no retorno
+            include:
+              Object.keys(relationsToInclude).length > 0
+                ? relationsToInclude
+                : undefined
+          });
+
+          await this.syncMaterialRequest(updated);
+
+          return updated;
+        }
+      );
+
+      this.logger.log(
+        `Transação de atualização de requisição de material concluída.`
+      );
+      return updatedRequisicaoMaterial;
     } catch (error) {
       handlePrismaError(error, this.logger, 'Requisição de Material SIPAC', {
-        operation: 'update',
+        operation: 'update (transactional)',
         id: id,
         data
       });
@@ -171,6 +279,7 @@ export class RequisicoesMateriaisService {
     }
   }
 
+  //persiste uma criação
   private async persistCreateRequisicaoMateiral(
     data: CreateSipacRequisicaoMaterialCompletoDto
   ) {
@@ -179,7 +288,6 @@ export class RequisicoesMateriaisService {
     );
 
     let relationalKeysFromDMMF: string[] = [];
-    const relationsToInclude: Prisma.SipacRequisicaoMaterialInclude = {};
 
     if (sipacRequisicaoMaterialModel) {
       relationalKeysFromDMMF = sipacRequisicaoMaterialModel.fields
@@ -191,78 +299,43 @@ export class RequisicoesMateriaisService {
       );
     }
 
-    const prismaCreateInput = {};
+    const { prismaInput: prismaCreateInput, relationsToInclude } =
+      this.processRequisicaoMaterialData(data, relationalKeysFromDMMF);
 
-    for (const key in data) {
-      if (Object.prototype.hasOwnProperty.call(data, key)) {
-        const typedKey = key as keyof CreateSipacRequisicaoMaterialCompletoDto;
-        const value = data[typedKey];
-
-        if (relationalKeysFromDMMF.includes(typedKey)) {
-          // If it's a relational field, wrap in 'create'
-          if (Array.isArray(value)) {
-            (prismaCreateInput as any)[typedKey] = {
-              create: value
-            };
-            (relationsToInclude as any)[typedKey] = true;
-          } else if (value !== null && typeof value === 'object') {
-            // Handle single nested object relations if any
-            (prismaCreateInput as any)[typedKey] = {
-              create: value
-            };
-            (relationsToInclude as any)[typedKey] = true;
-          }
-        } else {
-          // Assume it's a scalar field and assign directly
-          (prismaCreateInput as any)[typedKey] = value;
-        }
-      }
-    }
-
-    // Garante que os materiais referenciados nos itens da requisição existam
-    if (data.itensDaRequisicao && data.itensDaRequisicao.length > 0) {
-      const ensureMateriaisResult = await this.ensureMateriaisExistentes(
-        data.itensDaRequisicao
-      );
-      this.logger.log(ensureMateriaisResult);
-      if (ensureMateriaisResult && ensureMateriaisResult.summary.failed > 0) {
-        const failedCodigos = ensureMateriaisResult.details
-          .filter((detail) => detail.status === 'failed')
-          .map((detail) => detail.codigo);
-
-        if (failedCodigos.length > 0) {
-          this.logger.warn(
-            `Removendo itens da requisição devido à falha na criação/localização dos seguintes materiais (códigos): ${failedCodigos.join(', ')}`
-          );
-          // Atualiza o prismaCreateInput para remover os itens com materiais falhados
-          if ((prismaCreateInput as any).itensDaRequisicao?.create) {
-            (prismaCreateInput as any).itensDaRequisicao.create = (
-              prismaCreateInput as any
-            ).itensDaRequisicao.create.filter(
-              (item: any) => !failedCodigos.includes(item.codigo)
-            );
-          }
-        }
-      }
-    }
     try {
-      this.logger.log(`Persistindo a criação da requisição de material...`);
-      return await this.prisma.sipacRequisicaoMaterial.create({
-        data: { ...(prismaCreateInput as any) },
-        include:
-          Object.keys(relationsToInclude).length > 0
-            ? relationsToInclude
-            : undefined
-      });
+      this.logger.log(
+        `Iniciando transação para criar requisição de material...`
+      );
+      const createdRequisicaoMaterial = await this.prisma.$transaction(
+        async (prisma) => {
+          const created = await prisma.sipacRequisicaoMaterial.create({
+            data: prismaCreateInput as Prisma.SipacRequisicaoMaterialCreateInput,
+            include:
+              Object.keys(relationsToInclude).length > 0
+                ? relationsToInclude
+                : undefined
+          });
+
+          await this.syncMaterialRequest(created);
+
+          return created;
+        }
+      );
+
+      this.logger.log(
+        `Transação de criação de requisição de material concluída.`
+      );
+      return createdRequisicaoMaterial;
     } catch (error) {
       handlePrismaError(error, this.logger, 'Requisição de Material SIPAC', {
-        operation: 'create',
+        operation: 'create (transactional)',
         data
       });
       throw error;
     }
   }
 
+  //verifica se todos os materiais relacionados na requisição existem, se não existir, cria
   private async ensureMateriaisExistentes(
     itensRequisicao: Array<{ codigo: string; [key: string]: any }>
   ): Promise<
@@ -389,6 +462,7 @@ export class RequisicoesMateriaisService {
     }
   }
 
+  //só retorna o JSON da requisição de material do SIPAC (busca pelo id), não persiste no banco
   async fetchAndReturnRequisicaoMaterial(id: number) {
     this.logger.log(
       `Iniciando busca da requisição de material do SIPAC com ID: ${id}...`
@@ -434,6 +508,7 @@ export class RequisicoesMateriaisService {
     }
   }
 
+  //só retorna o JSON da requisição de material do SIPAC (busca por numero/ano), não persiste no banco
   async fetchByNumeroAnoAndReturnRequisicaoMaterialComplete(numeroAno: string) {
     const infoFromList =
       await this.listaRequisicoesMateriaisService.fetchByNumeroAnoAndReturnListaRequisicaoMaterial(
@@ -451,6 +526,7 @@ export class RequisicoesMateriaisService {
     return infoComplete;
   }
 
+  // persiste os dados de uma requisição de material no banco
   async fetchCompleteAndPersistCreateOrUpdateRequisicaoMaterial(
     numeroAno: string
   ) {
@@ -476,6 +552,7 @@ export class RequisicoesMateriaisService {
     }
   }
 
+  // mostra as requisições do sipac que já foram cadastradas no SISMAN
   async list() {
     return await this.prisma.sipacRequisicaoMaterial.findMany({
       include: {
@@ -488,6 +565,7 @@ export class RequisicoesMateriaisService {
     });
   }
 
+  // persiste os dados de múltiplas requisições de material no banco
   async fetchCompleteAndPersistCreateOrUpdateRequisicaoMaterialArray(
     numeroAnoArray: string[]
   ): Promise<{

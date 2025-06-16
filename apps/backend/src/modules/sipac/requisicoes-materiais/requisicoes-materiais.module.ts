@@ -5,10 +5,15 @@ import { SipacModule } from '../sipac.module';
 import { RequisicoesMateriaisService } from './requisicoes-materiais.service';
 import { MateriaisService } from '../materiais/materiais.service';
 import { MateriaisModule } from '../materiais/materiais.module';
+import { MaterialRequestsModule } from '../../material-requests/material-requests.module';
 // O SipacModule já exporta o SipacHttpService e o PrismaModule é global
 
 @Module({
-  imports: [forwardRef(() => SipacModule), MateriaisModule],
+  imports: [
+    forwardRef(() => SipacModule),
+    MateriaisModule,
+    MaterialRequestsModule
+  ],
   controllers: [RequisicoesMateriaisController], // Adicione se tiver controller
   providers: [ListaRequisicoesMateriaisService, RequisicoesMateriaisService],
   exports: [ListaRequisicoesMateriaisService, RequisicoesMateriaisService] // Se outro módulo precisar usar este serviço

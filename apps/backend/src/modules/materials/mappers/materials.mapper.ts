@@ -7,7 +7,6 @@ export class MaterialsMapper {
   ): CreateMaterialDto {
     return {
       id: String(item.codigo),
-      // code: item.codigo,
       codeSidec: item.codigoSidec,
       name: item.denominacaoMaterial.toUpperCase(),
       description: item.especificacao.toUpperCase(),
