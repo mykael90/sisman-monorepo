@@ -699,6 +699,7 @@ enum MaterialPickingOrderStatus {
   PARTIALLY_WITHDRAWN // Parte dos itens desta ordem já foi retirada
   FULLY_WITHDRAWN // Todos os itens desta ordem foram retirados
   CANCELLED // Ordem de separação cancelada
+  EXPIRED // Ordem de separação vencida
 }
 
 // --- Material Picking Order Item (Detalhe da Ordem de Separação/Reserva) ---
@@ -1287,7 +1288,7 @@ model SipacRequisicaoManutencao {
   tipoDaRequisicao               String? // Tipo da requisição (ex: "REQUISIÇÃO DE MANUTENÇÃO").
   idTipo                         Int? // Identificador do tipo da requisição.
   divisao                        String? // Divisão (ex: "Serviços Gerais").
-  usuarioGravacao                String // Usuário que gravou a requisição (ex: "JOAO PAULO FELIPE PINTO").
+  usuarioGravacao                String? // Usuário que gravou a requisição (ex: "JOAO PAULO FELIPE PINTO").
   idUsuarioGravacao              Int? // Identificador do usuário que gravou a requisição.
   status                         String // Status da requisição (ex: "PEDIDO DE MATERIAL REALIZADO").
   dataDeCadastro                 DateTime? @db.Timestamp(0) // Data de cadastro da requisição.

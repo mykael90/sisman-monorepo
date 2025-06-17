@@ -1,4 +1,4 @@
-import { PartialType } from '@nestjs/mapped-types';
+import { PartialType, OmitType } from '@nestjs/mapped-types';
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsString,
@@ -22,9 +22,8 @@ import { UpdateSipacUnidadeDto } from '../../unidades/dto/sipac-unidade.dto';
  * DTO for creating multiple SipacRequisicaoManutencao records for list view.
  * Corresponds to the `SipacRequisicaoManutencao` Prisma model.
  */
-export class CreateSipacListaRequisicaoManutencaoDto
-  implements Prisma.SipacRequisicaoManutencaoCreateManyInput
-{
+export class CreateSipacListaRequisicaoManutencaoDto {
+  // implements Prisma.SipacRequisicaoManutencaoCreateManyInput
   @ApiProperty({
     description:
       'Identificador único da requisição (deve ser fornecido se não for autogerado)',
@@ -54,9 +53,9 @@ export class CreateSipacListaRequisicaoManutencaoDto
     description: 'Usuário que gravou a requisição',
     example: 'JOAO PAULO FELIPE PINTO'
   })
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
-  usuarioGravacao: string; // Mapped from requisicaoGravadaPeloUsuario
+  usuarioGravacao?: string; // Mapped from requisicaoGravadaPeloUsuario
 
   @ApiProperty({
     description: 'Status atual da requisição',

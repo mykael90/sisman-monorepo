@@ -5,11 +5,16 @@ import { SipacModule } from '../sipac.module';
 import { RequisicoesManutencoesService } from './requisicoes-manutencoes.service';
 import { RequisicoesMateriaisService } from '../requisicoes-materiais/requisicoes-materiais.service';
 import { RequisicoesMateriaisModule } from '../requisicoes-materiais/requisicoes-materiais.module';
+import { UnidadesModule } from '../unidades/unidades.module';
 // import { MateriaisService } from '../materiais/materiais.service'; // TODO: Determine if MateriaisService is needed
 // The SipacModule already exports SipacHttpService and PrismaModule is global
 
 @Module({
-  imports: [forwardRef(() => SipacModule), RequisicoesMateriaisModule],
+  imports: [
+    forwardRef(() => SipacModule),
+    RequisicoesMateriaisModule,
+    UnidadesModule
+  ],
   controllers: [RequisicoesManutencoesController],
   providers: [
     ListaRequisicoesManutencoesService,

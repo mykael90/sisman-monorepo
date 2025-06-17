@@ -26,6 +26,7 @@ import { ListaRequisicoesManutencoesService } from './lista-requisicoes-manutenc
 import { RequisicoesMateriaisService } from '../requisicoes-materiais/requisicoes-materiais.service';
 import { removeAccentsAndSpecialChars } from '../../../shared/prisma/seeds/seed-utils';
 import { normalizeString } from '../../../shared/utils/string-utils';
+import { UnidadesService } from '../unidades/unidades.service';
 // import { MateriaisService } from '../materiais/materiais.service'; // TODO: Determine if MateriaisService is needed
 
 @Injectable()
@@ -43,8 +44,136 @@ export class RequisicoesManutencoesService {
     private readonly listaRequisicoesManutencoesService: ListaRequisicoesManutencoesService,
     // private readonly materiaisService: MateriaisService, // TODO: Determine if MateriaisService is needed
     private readonly sipacScraping: SipacScrapingService,
-    private readonly requisicoesMateriaisService: RequisicoesMateriaisService
+    private readonly requisicoesMateriaisService: RequisicoesMateriaisService,
+    private readonly unidadesService: UnidadesService
   ) {}
+
+  private processRequisicaoManutencaoData<T extends object>(
+    data: T,
+    relationalKeysFromDMMF: string[],
+    prediosSubrips: { subRip: string }[],
+    unidadeRequisitanteId?: number,
+    unidadeCustoId?: number
+  ): {
+    prismaInput:
+      | Prisma.SipacRequisicaoManutencaoCreateInput
+      | Prisma.SipacRequisicaoManutencaoUpdateInput;
+    relationsToInclude: Prisma.SipacRequisicaoManutencaoInclude;
+  } {
+    const prismaInput: any = {};
+    const relationsToInclude: Prisma.SipacRequisicaoManutencaoInclude = {};
+
+    for (const key in data) {
+      if (Object.prototype.hasOwnProperty.call(data, key)) {
+        const typedKey = key as keyof T;
+        const value = data[typedKey];
+
+        if (value === undefined) {
+          // 'undefined' means "do not alter this field" for updates
+          continue;
+        }
+
+        if (relationalKeysFromDMMF.includes(key)) {
+          // If it's a relational field
+          if (Array.isArray(value)) {
+            if (key === 'requisicoesMateriais') {
+              prismaInput[key] = {
+                connect: value.map((item: any) => ({
+                  id: item.id
+                }))
+              };
+            } else if (key === 'predios') {
+              prismaInput[key] = {
+                connect: prediosSubrips
+              };
+            } else if (key === 'requisicoesManutencaoFilhas') {
+              // Do nothing, handled separately if needed
+            } else {
+              // For other array relations, use create
+              prismaInput[key] = {
+                create: value
+              };
+            }
+            (relationsToInclude as any)[key] = true;
+          } else if (value !== null && typeof value === 'object') {
+            // Handle single nested object relations
+            if (key === 'requisicaoManutencaoMae') {
+              if (value && 'id' in value && typeof value.id === 'number') {
+                prismaInput[key] = {
+                  connect: {
+                    id: value.id
+                  }
+                };
+              } else {
+                // This case might need refinement based on how requisicaoManutencaoMae is handled in create/update
+                // For now, assuming create is the intent if no ID is present
+                prismaInput[key] = {
+                  create: value
+                };
+              }
+            } else if (
+              typedKey === 'unidadeRequisitante' ||
+              typedKey === 'unidadeCusto'
+            ) {
+              // `value` here is `data.unidadeRequisitante` or `data.unidadeCusto`
+              // which should be `{ id: number }` if successfully processed by getOrCreateUnidade
+              if (
+                value &&
+                'id' in value &&
+                typeof (value as any).id === 'number'
+              ) {
+                prismaInput[key] = {
+                  connect: { id: (value as any).id }
+                };
+              }
+            } else {
+              // For other single object relations, use create
+              prismaInput[key] = {
+                create: value
+              };
+            }
+            (relationsToInclude as any)[key] = true;
+          }
+        } else {
+          // Assume it's a scalar field and assign directly
+          (prismaInput as any)[key] = value;
+        }
+      }
+    }
+
+    return { prismaInput, relationsToInclude };
+  }
+
+  private async getOrCreateUnidade(
+    nomeUnidadeOriginal: string | undefined | null,
+    tipoUnidade: 'requisitante' | 'custo'
+  ): Promise<{ id: number } | null> {
+    if (!nomeUnidadeOriginal || nomeUnidadeOriginal.trim() === '') {
+      this.logger.warn(`Nome da unidade ${tipoUnidade} está vazio ou ausente.`);
+      return null;
+    }
+    try {
+      const unidade =
+        await this.unidadesService.findOrCreateUnidadeByNome(
+          nomeUnidadeOriginal
+        );
+      return { id: unidade.id };
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        this.logger.error(
+          `Falha ao obter ou criar unidade ${tipoUnidade} '${nomeUnidadeOriginal}': ${error.message}`
+        );
+        throw new BadRequestException(
+          `Unidade ${tipoUnidade} '${nomeUnidadeOriginal}' não encontrada e não pôde ser criada via SIPAC. Detalhe: ${error.message}`
+        );
+      }
+      this.logger.error(
+        `Erro inesperado ao processar unidade ${tipoUnidade} '${nomeUnidadeOriginal}': ${error.message}`,
+        error.stack
+      );
+      throw error;
+    }
+  }
 
   // @Cron(
   //   process.env.CRON_SIPAC_REQUISICOES_MANUTENCOES_SYNC || '0 0 * * *' // Daily at midnight
@@ -64,14 +193,13 @@ export class RequisicoesManutencoesService {
   private async persistCreateRequisicaoManutencao(
     data: CreateSipacRequisicaoManutencaoCompletoDto
   ) {
+    // this.logger.log(data);
+
     const sipacRequisicaoManutencaoModel = Prisma.dmmf.datamodel.models.find(
       (model) => model.name === 'SipacRequisicaoManutencao'
     );
 
-    // this.logger.log(data);
-
     let relationalKeysFromDMMF: string[] = [];
-    const relationsToInclude: Prisma.SipacRequisicaoManutencaoInclude = {};
 
     if (sipacRequisicaoManutencaoModel) {
       relationalKeysFromDMMF = sipacRequisicaoManutencaoModel.fields
@@ -82,8 +210,6 @@ export class RequisicoesManutencoesService {
         'Modelo SipacRequisicaoManutencao não encontrado no DMMF.'
       );
     }
-
-    const prismaCreateInput = {};
 
     // Ensure requisicoe mae existe no banco de dados se vier no dto
     if (data.requisicaoManutencaoMae) {
@@ -107,6 +233,7 @@ export class RequisicoesManutencoesService {
     }
 
     // Find all predios by denominacaoPredio e rip
+    // Se não encontrar, não tem problema, fica sem o relacionamento com o prédio
     const prediosSubrips = await this.prisma.sipacPredio.findMany({
       select: {
         subRip: true
@@ -128,114 +255,36 @@ export class RequisicoesManutencoesService {
       }
     });
 
-    //Find unidadeCusto e unidadeRequisitante by nomeUnidade
-    //TODO: É bom fazer uma lógica para adicionar a unidade (usando a API SIPAC) se ela não existir. Possível brecha para erro
-    const unidadeRequisitante = await this.prisma.sipacUnidade.findFirst({
-      where: {
-        nomeUnidade: normalizeString(data.nomeUnidadeRequisitante)
-      },
-      select: {
-        id: true
-      }
-    });
-
-    if (unidadeRequisitante) {
-      data.unidadeRequisitante = { id: unidadeRequisitante.id };
+    // Get or Create Unidade Requisitante and Unidade Custo
+    const unidadeRequisitanteInfo = await this.getOrCreateUnidade(
+      data.nomeUnidadeRequisitante,
+      'requisitante'
+    );
+    if (unidadeRequisitanteInfo) {
+      data.unidadeRequisitante = { id: unidadeRequisitanteInfo.id };
     }
 
-    const unidadeCusto = await this.prisma.sipacUnidade.findFirst({
-      where: {
-        nomeUnidade: normalizeString(data.nomeUnidadeDeCusto)
-      },
-      select: {
-        id: true
-      }
-    });
-
-    if (unidadeCusto) {
-      data.unidadeCusto = { id: unidadeCusto.id };
+    const unidadeCustoInfo = await this.getOrCreateUnidade(
+      data.nomeUnidadeDeCusto,
+      'custo'
+    );
+    if (unidadeCustoInfo) {
+      data.unidadeCusto = { id: unidadeCustoInfo.id };
     }
 
-    //
-
-    for (const key in data) {
-      if (Object.prototype.hasOwnProperty.call(data, key)) {
-        const typedKey =
-          key as keyof Prisma.SipacRequisicaoManutencaoCreateInput;
-        const value = data[typedKey];
-
-        if (relationalKeysFromDMMF.includes(typedKey)) {
-          // If it's a relational field, wrap in 'create' or 'createMany'
-          if (Array.isArray(value)) {
-            if (typedKey === 'requisicoesMateriais') {
-              (prismaCreateInput as any)[typedKey] = {
-                connect: value.map((item: any) => ({
-                  // Remove the foreign key from the item data as it will be set by createMany
-                  id: item.id
-                }))
-              };
-            } else if (typedKey === 'predios') {
-              (prismaCreateInput as any)[typedKey] = {
-                connect: prediosSubrips
-              };
-            } else if (typedKey === 'requisicoesManutencaoFilhas') {
-              //não faça nada, vai ter uma lógica no final para criar as requisições filhas.
-            } else {
-              (prismaCreateInput as any)[typedKey] = {
-                // deleteMany: {}, // Delete all existing items (apenas no update)
-                create: value // Create the new items
-              };
-            }
-            (relationsToInclude as any)[typedKey] = true;
-          } else if (value !== null && typeof value === 'object') {
-            // Handle single nested object relations (e.g., dadosDaRequisicao)
-            if (typedKey === 'requisicaoManutencaoMae') {
-              // connect requisicao mae
-              // Check if value is indeed a SipacRequisicaoManutencaoMaeAssociadaDto
-              if (value && 'id' in value && typeof value.id === 'number') {
-                (prismaCreateInput as any)[typedKey] = {
-                  connect: {
-                    // Assuming 'id' is the unique identifier for SipacRequisicaoManutencao
-                    id: value.id
-                  }
-                };
-                // }
-              } else {
-                (prismaCreateInput as any)[typedKey] = {
-                  // delete: value,
-                  create: value
-                };
-              }
-            } else if (typedKey === 'unidadeRequisitante') {
-              (prismaCreateInput as any)[typedKey] = {
-                connect: {
-                  id: unidadeRequisitante?.id
-                }
-              };
-            } else if (typedKey === 'unidadeCusto') {
-              (prismaCreateInput as any)[typedKey] = {
-                connect: {
-                  id: unidadeCusto?.id
-                }
-              };
-            } else {
-              (prismaCreateInput as any)[typedKey] = {
-                create: value // Create the new items
-              };
-            }
-            (relationsToInclude as any)[typedKey] = true;
-          }
-        } else {
-          // Assume it's a scalar field and assign directly
-          (prismaCreateInput as any)[typedKey] = value;
-        }
-      }
-    }
+    const { prismaInput: prismaCreateInput, relationsToInclude } =
+      this.processRequisicaoManutencaoData(
+        data,
+        relationalKeysFromDMMF,
+        prediosSubrips,
+        unidadeRequisitanteInfo?.id,
+        unidadeCustoInfo?.id
+      );
 
     try {
       this.logger.log(`Persistindo a criação da requisição de manutenção...`);
       const result = await this.prisma.sipacRequisicaoManutencao.create({
-        data: { ...(prismaCreateInput as any) },
+        data: prismaCreateInput as Prisma.SipacRequisicaoManutencaoCreateInput,
         include:
           Object.keys(relationsToInclude).length > 0
             ? relationsToInclude
@@ -266,11 +315,7 @@ export class RequisicoesManutencoesService {
       (model) => model.name === 'SipacRequisicaoManutencao'
     );
 
-    // this.logger.log(data);
-
     let relationalKeysFromDMMF: string[] = [];
-    const relationsToInclude: Prisma.SipacRequisicaoManutencaoInclude = {};
-    let hasUpdates = false;
 
     if (sipacRequisicaoManutencaoModel) {
       relationalKeysFromDMMF = sipacRequisicaoManutencaoModel.fields
@@ -281,8 +326,6 @@ export class RequisicoesManutencoesService {
         'Modelo SipacRequisicaoManutencao não encontrado no DMMF.'
       );
     }
-
-    const prismaUpdateInput = {};
 
     // Ensure requisicoe mae existe no banco de dados se vier no dto
     if (data.requisicaoManutencaoMae) {
@@ -327,122 +370,50 @@ export class RequisicoesManutencoesService {
       }
     });
 
-    //
-
-    //Find unidadeCusto e unidadeRequisitante by nomeUnidade
-    //TODO: É bom fazer uma lógica para adicionar a unidade (usando a API SIPAC) se ela não existir. Possível brecha para erro
-    const unidadeRequisitante = await this.prisma.sipacUnidade.findFirst({
-      where: {
-        nomeUnidade: normalizeString(data.nomeUnidadeRequisitante)
-      },
-      select: {
-        id: true
-      }
-    });
-
-    if (unidadeRequisitante) {
-      data.unidadeRequisitante = { id: unidadeRequisitante.id };
+    // Get or Create Unidade Requisitante and Unidade Custo
+    // Note: For updates, if nomeUnidadeRequisitante/DeCusto is not provided in `data`,
+    // we might want to preserve the existing one or disconnect if explicitly set to null.
+    // This logic assumes if `nomeUnidade...` is in `data`, we try to get/create and connect.
+    if (data.hasOwnProperty('nomeUnidadeRequisitante')) {
+      const unidadeRequisitanteInfo = await this.getOrCreateUnidade(
+        data.nomeUnidadeRequisitante,
+        'requisitante'
+      );
+      data.unidadeRequisitante = unidadeRequisitanteInfo
+        ? { id: unidadeRequisitanteInfo.id }
+        : null;
     }
 
-    const unidadeCusto = await this.prisma.sipacUnidade.findFirst({
-      where: {
-        nomeUnidade: normalizeString(data.nomeUnidadeDeCusto)
-      },
-      select: {
-        id: true
-      }
-    });
-
-    if (unidadeCusto) {
-      data.unidadeCusto = { id: unidadeCusto.id };
+    if (data.hasOwnProperty('nomeUnidadeDeCusto')) {
+      const unidadeCustoInfo = await this.getOrCreateUnidade(
+        data.nomeUnidadeDeCusto,
+        'custo'
+      );
+      data.unidadeCusto = unidadeCustoInfo ? { id: unidadeCustoInfo.id } : null;
     }
 
-    //
+    const { prismaInput: prismaUpdateInput, relationsToInclude } =
+      this.processRequisicaoManutencaoData(
+        data,
+        relationalKeysFromDMMF,
+        prediosSubrips
+      );
 
-    for (const key in data) {
-      if (Object.prototype.hasOwnProperty.call(data, key)) {
-        const typedKey =
-          key as keyof Prisma.SipacRequisicaoManutencaoUpdateInput;
-        const value = data[typedKey];
+    // Check if there are any actual updates to scalar fields or if relational fields have non-empty arrays
+    const hasScalarUpdates = Object.keys(prismaUpdateInput).some((key) =>
+      Object.values(Prisma.SipacRequisicaoManutencaoScalarFieldEnum).includes(
+        key as Prisma.SipacRequisicaoManutencaoScalarFieldEnum
+      )
+    );
 
-        if (value === undefined) {
-          // 'undefined' means "do not change this field"
-          continue;
-        }
-        hasUpdates = true;
+    const hasRelationalUpdates = Object.keys(prismaUpdateInput).some(
+      (key) =>
+        relationalKeysFromDMMF.includes(key) &&
+        Array.isArray((prismaUpdateInput as any)[key]?.create) &&
+        ((prismaUpdateInput as any)[key]?.create as any[]).length > 0
+    );
 
-        if (relationalKeysFromDMMF.includes(typedKey)) {
-          // If it's a relational field, wrap in 'create' or 'createMany'
-          if (Array.isArray(value)) {
-            if (typedKey === 'requisicoesMateriais') {
-              (prismaUpdateInput as any)[typedKey] = {
-                connect: value.map((item: any) => ({
-                  // Remove the foreign key from the item data as it will be set by createMany
-                  id: item.id
-                }))
-              };
-            } else if (typedKey === 'predios') {
-              (prismaUpdateInput as any)[typedKey] = {
-                connect: prediosSubrips
-              };
-            } else if (typedKey === 'requisicoesManutencaoFilhas') {
-              //não faça nada, vai ter uma lógica no final para criar as requisições filhas.
-            } else {
-              (prismaUpdateInput as any)[typedKey] = {
-                deleteMany: {}, // Delete all existing items (apenas no update)
-                create: value // Create the new items
-              };
-            }
-            (relationsToInclude as any)[typedKey] = true;
-          } else if (value !== null && typeof value === 'object') {
-            // Handle single nested object relations (e.g., dadosDaRequisicao)
-            if (typedKey === 'requisicaoManutencaoMae') {
-              // connect requisicao mae
-              // Check if value is indeed a SipacRequisicaoManutencaoMaeAssociadaDto
-              if (value && 'id' in value && typeof value.id === 'number') {
-                (prismaUpdateInput as any)[typedKey] = {
-                  connect: {
-                    // Assuming 'id' is the unique identifier for SipacRequisicaoManutencao
-                    id: value.id
-                  }
-                };
-                // }
-              } else {
-                (prismaUpdateInput as any)[typedKey] = {
-                  delete: value,
-                  create: value
-                };
-              }
-            } else if (typedKey === 'unidadeRequisitante') {
-              (prismaUpdateInput as any)[typedKey] = {
-                connect: {
-                  id: unidadeRequisitante?.id
-                }
-              };
-            } else if (typedKey === 'unidadeCusto') {
-              (prismaUpdateInput as any)[typedKey] = {
-                connect: {
-                  id: unidadeCusto?.id
-                }
-              };
-            } else {
-              (prismaUpdateInput as any)[typedKey] = {
-                delete: {}, //
-                create: value // Create the new items
-              };
-            }
-            (relationsToInclude as any)[typedKey] = true;
-          }
-        } else {
-          // Assume it's a scalar field and assign directly
-          (prismaUpdateInput as any)[typedKey] = value;
-        }
-      }
-    }
-
-    if (!hasUpdates && Object.keys(prismaUpdateInput).length === 0) {
-      // Check also if prismaUpdateInput is actually empty, in case all values
-      // were undefined, but some relational key with empty array was processed.
+    if (!hasScalarUpdates && !hasRelationalUpdates) {
       this.logger.warn(
         `Nenhuma alteração fornecida para a requisição de manutenção ID: ${id}. Retornando dados existentes.`
       );
@@ -463,13 +434,38 @@ export class RequisicoesManutencoesService {
       return existingRequisicaoManutencao;
     }
 
+    // For update, explicitly handle deletion of existing relational items before creating new ones
+    for (const key of relationalKeysFromDMMF) {
+      if (
+        (prismaUpdateInput as any)[key] &&
+        Array.isArray((prismaUpdateInput as any)[key].create)
+      ) {
+        (prismaUpdateInput as any)[key] = {
+          deleteMany: {}, // Delete all existing items
+          create: (prismaUpdateInput as any)[key].create // Create the new items
+        };
+      } else if (
+        (prismaUpdateInput as any)[key] &&
+        typeof (prismaUpdateInput as any)[key].create === 'object' &&
+        (key === 'requisicaoManutencaoMae' ||
+          key === 'unidadeRequisitante' ||
+          key === 'unidadeCusto')
+      ) {
+        // For single object relations that are being updated, delete the old one first
+        (prismaUpdateInput as any)[key] = {
+          disconnect: true, // Disconnect the old relation
+          create: (prismaUpdateInput as any)[key].create // Create the new one
+        };
+      }
+    }
+
     try {
       this.logger.log(
         `Persistindo a atualização da requisição de manutenção...`
       );
       const result = await this.prisma.sipacRequisicaoManutencao.update({
         where: { id },
-        data: prismaUpdateInput,
+        data: prismaUpdateInput as Prisma.SipacRequisicaoManutencaoUpdateInput,
         include:
           Object.keys(relationsToInclude).length > 0
             ? relationsToInclude
@@ -483,7 +479,7 @@ export class RequisicoesManutencoesService {
       // );
 
       return result;
-      // return prismaCreateInput;
+      // return prismaUpdateInput;
     } catch (error) {
       handlePrismaError(error, this.logger, 'Requisição de Manutenção SIPAC', {
         operation: 'update',

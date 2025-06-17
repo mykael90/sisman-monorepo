@@ -1193,7 +1193,8 @@ exports.MaterialPickingOrderStatus = exports.$Enums.MaterialPickingOrderStatus =
   READY_FOR_PICKUP: 'READY_FOR_PICKUP',
   PARTIALLY_WITHDRAWN: 'PARTIALLY_WITHDRAWN',
   FULLY_WITHDRAWN: 'FULLY_WITHDRAWN',
-  CANCELLED: 'CANCELLED'
+  CANCELLED: 'CANCELLED',
+  EXPIRED: 'EXPIRED'
 };
 
 exports.MaterialTransferStatus = exports.$Enums.MaterialTransferStatus = {

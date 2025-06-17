@@ -94,7 +94,7 @@ export class SipacRequisicaoManutencaoMapper {
       numeroRequisicao: dadosDaRequisicao.requisicao,
       tipoDaRequisicao: dadosDaRequisicao.tipoDaRequisicao,
       divisao: dadosDaRequisicao.divisao,
-      usuarioGravacao: dadosDaRequisicao.requisicaoGravadaPeloUsuario,
+      // usuarioGravacao: dadosDaRequisicao.requisicaoGravadaPeloUsuario,
       status: dadosDaRequisicao.status,
       dataDeCadastro: SipacRequisicaoManutencaoMapper.parseDateString(
         dadosDaRequisicao.dataDeCadastro

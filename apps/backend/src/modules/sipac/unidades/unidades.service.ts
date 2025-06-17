@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
@@ -14,6 +14,7 @@ import {
   CreateSipacUnidadeDto
 } from './dto/sipac-unidade.dto';
 import { SipacUnidadeMapper } from './mappers/sipac-unidade.mapper';
+import { normalizeString } from '../../../shared/utils/string-utils';
 
 @Injectable()
 export class UnidadesService {
@@ -333,5 +334,69 @@ export class UnidadesService {
       );
       throw error; // Re-lança o erro para ser tratado por quem chamou
     }
+  }
+
+  async findOrCreateUnidadeByNome(
+    nomeUnidade: string
+  ): Promise<Prisma.SipacUnidadeGetPayload<{}>> {
+    const normalizedNomeUnidade = normalizeString(nomeUnidade);
+
+    let unidade = await this.prisma.sipacUnidade.findFirst({
+      where: { nomeUnidade: normalizedNomeUnidade } // Assumes 'nomeUnidade' in DB is normalized and unique
+    });
+
+    if (unidade) {
+      this.logger.log(
+        `Unidade '${nomeUnidade}' (normalizado: '${normalizedNomeUnidade}') encontrada no banco de dados local.`
+      );
+      return unidade;
+    }
+
+    this.logger.log(
+      `Unidade '${nomeUnidade}' (normalizado: '${normalizedNomeUnidade}') não encontrada localmente. Buscando na API SIPAC...`
+    );
+
+    // API parameter 'nome-unidade-ascii' is assumed for normalized name search.
+    const apiUnidadesResponse = await this.sipacHttp.get<
+      SipacUnidadeResponseItem[]
+    >(
+      this.URL_PATH,
+      {
+        offset: 0,
+        limit: 1,
+        'nome-unidade-ascii': normalizedNomeUnidade
+      },
+      {
+        paginado: 'true'
+      }
+    );
+
+    const apiUnidadeData =
+      apiUnidadesResponse.data && apiUnidadesResponse.data.length > 0
+        ? apiUnidadesResponse.data[0]
+        : null;
+
+    if (!apiUnidadeData) {
+      this.logger.error(
+        `Unidade com nome '${nomeUnidade}' (normalizado: '${normalizedNomeUnidade}') não encontrada na API SIPAC.`
+      );
+      throw new NotFoundException(
+        `Unidade com nome '${nomeUnidade}' (normalizado: '${normalizedNomeUnidade}') não encontrada na API SIPAC.`
+      );
+    }
+
+    this.logger.log(
+      `Unidade '${nomeUnidade}' (normalizado: '${normalizedNomeUnidade}') encontrada na API SIPAC. Persistindo...`
+    );
+    // Assumes SipacUnidadeMapper.toCreateDto handles normalization of nomeUnidade if necessary before saving.
+    const unidadeDto = SipacUnidadeMapper.toCreateDto(apiUnidadeData);
+
+    const novaUnidade = await this.prisma.sipacUnidade.create({
+      data: unidadeDto
+    });
+    this.logger.log(
+      `Unidade '${nomeUnidade}' (ID: ${novaUnidade.id}) persistida com sucesso.`
+    );
+    return novaUnidade;
   }
 }
