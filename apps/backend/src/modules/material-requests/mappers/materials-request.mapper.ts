@@ -10,8 +10,8 @@ export class MaterialRequestMapper {
       warehouseId: 1, // SIPAC ALMOXARIFADO CENTRAL
       maintenanceRequestId: item.sipacRequisicaoManutencaoId,
       requestedById: item.usuarioId,
-      sipacUnitRequesting: item.unidadeRequisitante,
-      sipacUnitCost: item.unidadeDeCusto,
+      sipacUnitRequesting: item.siglaUnidadeRequisitante,
+      sipacUnitCost: item.siglaUnidadeDeCusto,
       origin: 'SIPAC',
       requestValue: item.valorDaRequisicao,
       servedValue: item.valorDoTotalAtendido

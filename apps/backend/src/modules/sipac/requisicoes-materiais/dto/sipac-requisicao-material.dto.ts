@@ -319,7 +319,7 @@ export class CreateSipacListaRequisicaoMaterialDto
   })
   @IsNotEmpty()
   @IsString()
-  unidadeRequisitante: string;
+  siglaUnidadeRequisitante: string;
 
   @ApiProperty({
     description: 'Unidade de custo',
@@ -327,7 +327,7 @@ export class CreateSipacListaRequisicaoMaterialDto
   })
   @IsNotEmpty()
   @IsString()
-  unidadeDeCusto: string;
+  siglaUnidadeDeCusto: string;
 
   @ApiProperty({
     description: 'Grupo de material',
@@ -428,7 +428,7 @@ export class CreateSipacRequisicaoMaterialCompletoDto extends CreateSipacListaRe
   })
   @IsNotEmpty()
   @IsString()
-  unidadeDeCusto: string;
+  siglaUnidadeDeCusto: string;
 
   @ApiProperty({
     description:
@@ -437,7 +437,7 @@ export class CreateSipacRequisicaoMaterialCompletoDto extends CreateSipacListaRe
   })
   @IsNotEmpty()
   @IsString()
-  unidadeRequisitante: string;
+  siglaUnidadeRequisitante: string;
 
   @ApiProperty({
     description: 'Destino da requisição',

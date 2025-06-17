@@ -299,6 +299,14 @@ export class RequisicoesMateriaisService {
       );
     }
 
+    // Antes de processar as criações, garantir que os materiais dos itens existem
+    if (data.itensDaRequisicao && data.itensDaRequisicao.length > 0) {
+      const itensParaVerificar = data.itensDaRequisicao.map((item) => ({
+        codigo: item.codigo // Supondo que o DTO de update tenha `codigo` nos itens
+      }));
+      await this.ensureMateriaisExistentes(itensParaVerificar as any); // `as any` para simplificar, idealmente tipar corretamente
+    }
+
     const { prismaInput: prismaCreateInput, relationsToInclude } =
       this.processRequisicaoMaterialData(data, relationalKeysFromDMMF);
 
@@ -434,16 +442,6 @@ export class RequisicoesMateriaisService {
     try {
       const updateDtoFormat: UpdateSipacRequisicaoMaterialDto =
         await this.fetchAndReturnRequisicaoMaterial(id);
-
-      // Ensure materials exist before attempting to update relations
-      if (
-        updateDtoFormat.itensDaRequisicao &&
-        updateDtoFormat.itensDaRequisicao.length > 0
-      ) {
-        await this.ensureMateriaisExistentes(
-          updateDtoFormat.itensDaRequisicao as any[]
-        );
-      }
 
       const updateRequisicaoMaterial =
         await this.persistUpdateRequisicaoMaterial(id, updateDtoFormat);

@@ -14,6 +14,8 @@ import {
   CreateSipacMaterialDto
 } from './dto/sipac-material.dto';
 import { SipacMaterialMapper } from './mappers/sipac-material.mapper';
+import { MaterialsMapper } from 'src/modules/materials/mappers/materials.mapper';
+import { MaterialsService } from 'src/modules/materials/materials.service';
 
 @Injectable()
 export class MateriaisService {
@@ -23,7 +25,8 @@ export class MateriaisService {
 
   constructor(
     private readonly prisma: PrismaService,
-    private readonly sipacHttp: SipacApiService
+    private readonly sipacHttp: SipacApiService,
+    private readonly materialsService: MaterialsService
   ) {}
 
   // @Cron(
@@ -41,31 +44,128 @@ export class MateriaisService {
 
   private async persistManyMateriais(
     data: CreateManySipacMaterialDto
-  ): Promise<void> {
-    try {
-      const result = await this.prisma.sipacMaterial.createMany({
-        data: data.items,
-        skipDuplicates: true
-      });
-      this.logger.log(`Materiais persistidos/atualizados com sucesso.`);
+  ): Promise<SyncResult> {
+    this.logger.log(
+      `Persistindo lote de ${data.items.length} materiais com transação...`
+    );
+    let successful = 0;
+    let failed = 0;
 
-      const response = {
-        created: result.count,
-        skipped: data.items.length - result.count
-      };
+    for (const item of data.items) {
+      try {
+        await this.prisma.$transaction(async (prisma) => {
+          // Persist in sipacMaterial (create or skip)
+          await prisma.sipacMaterial.create({
+            data: item
+            // Using create and handling potential unique constraint error for "skipDuplicates" behavior
+          });
 
-      this.logger.log(
-        `${response.created} materiais criados e ${response.skipped} já existentes`
-      );
+          // Map to materialGlobalCatalog DTO
+          const materialGlobalCatalogDto = MaterialsMapper.toCreateDto(
+            item as any
+          ); // Cast needed due to Prisma type
 
-      return;
-    } catch (error) {
-      this.logger.error(
-        `Erro ao persistir lote de materiais: ${error.message}`,
-        error.stack
-      );
-      // Tratar erros de transação, talvez individualmente se necessário.
+          // Check if material exists in materialGlobalCatalog
+          const existingMaterialGlobalCatalog =
+            await prisma.materialGlobalCatalog.findUnique({
+              where: { id: materialGlobalCatalogDto.id }
+            });
+
+          if (existingMaterialGlobalCatalog) {
+            // Update existing materialGlobalCatalog
+            await prisma.materialGlobalCatalog.update({
+              where: { id: existingMaterialGlobalCatalog.id },
+              data: materialGlobalCatalogDto
+            });
+            this.logger.debug(
+              `MaterialGlobalCatalog updated for SIPAC code: ${item.codigo}`
+            );
+          } else {
+            // Create new materialGlobalCatalog
+            await prisma.materialGlobalCatalog.create({
+              data: materialGlobalCatalogDto
+            });
+            this.logger.debug(
+              `MaterialGlobalCatalog created for SIPAC code: ${item.codigo}`
+            );
+          }
+        });
+        successful++;
+        this.logger.debug(
+          `Transaction successful for SIPAC code: ${item.codigo}`
+        );
+      } catch (error) {
+        failed++;
+        const errorMessage =
+          error instanceof Error ? error.message : 'Unknown error';
+        // Check if the error is a unique constraint violation for sipacMaterial (skipDuplicates behavior)
+        if (
+          error instanceof Prisma.PrismaClientKnownRequestError &&
+          error.code === 'P2002'
+        ) {
+          this.logger.debug(
+            `SIPAC material with code ${item.codigo} already exists. Skipping sipacMaterial creation but attempting MaterialGlobalCatalog sync.`
+          );
+          // Even if sipacMaterial creation is skipped, we still want to try syncing MaterialGlobalCatalog
+          try {
+            await this.prisma.$transaction(async (prisma) => {
+              const materialGlobalCatalogDto = MaterialsMapper.toCreateDto(
+                item as any
+              );
+              const existingMaterialGlobalCatalog =
+                await prisma.materialGlobalCatalog.findUnique({
+                  where: { id: materialGlobalCatalogDto.id }
+                });
+
+              if (existingMaterialGlobalCatalog) {
+                await prisma.materialGlobalCatalog.update({
+                  where: { id: existingMaterialGlobalCatalog.id },
+                  data: materialGlobalCatalogDto
+                });
+                this.logger.debug(
+                  `MaterialGlobalCatalog updated for existing SIPAC code: ${item.codigo}`
+                );
+              } else {
+                // This case should ideally not happen if sipacMaterial exists, but as a fallback
+                await prisma.materialGlobalCatalog.create({
+                  data: materialGlobalCatalogDto
+                });
+                this.logger.debug(
+                  `MaterialGlobalCatalog created for existing SIPAC code: ${item.codigo}`
+                );
+              }
+            });
+            successful++; // Count as successful if MaterialGlobalCatalog sync worked
+          } catch (innerError) {
+            failed++; // Count as failed if MaterialGlobalCatalog sync also failed
+            const innerErrorMessage =
+              innerError instanceof Error
+                ? innerError.message
+                : 'Unknown inner error';
+            this.logger.error(
+              `Failed to sync MaterialGlobalCatalog for existing SIPAC code ${item.codigo}: ${innerErrorMessage}`,
+              innerError.stack
+            );
+          }
+        } else {
+          this.logger.error(
+            `Transaction failed for SIPAC code ${item.codigo}: ${errorMessage}`,
+            error.stack
+          );
+        }
+      }
     }
+
+    const totalProcessed = successful + failed;
+    this.logger.log(
+      `Lote de materiais processado. Total: ${totalProcessed}, Sucesso: ${successful}, Falhas: ${failed}.`
+    );
+
+    return {
+      totalProcessed,
+      successful,
+      failed
+    };
   }
 
   async fetchAllAndPersistMateriais(): Promise<SyncResult> {

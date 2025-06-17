@@ -1,4 +1,9 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  Logger,
+  NotFoundException
+} from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
@@ -398,5 +403,33 @@ export class UnidadesService {
       `Unidade '${nomeUnidade}' (ID: ${novaUnidade.id}) persistida com sucesso.`
     );
     return novaUnidade;
+  }
+
+  async getOrCreateUnidadeByNome(
+    nomeUnidadeOriginal: string | undefined | null,
+    tipoUnidade: 'requisitante' | 'custo'
+  ): Promise<{ id: number } | null> {
+    if (!nomeUnidadeOriginal || nomeUnidadeOriginal.trim() === '') {
+      this.logger.warn(`Nome da unidade ${tipoUnidade} está vazio ou ausente.`);
+      return null;
+    }
+    try {
+      const unidade = await this.findOrCreateUnidadeByNome(nomeUnidadeOriginal);
+      return { id: unidade.id };
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        this.logger.error(
+          `Falha ao obter ou criar unidade ${tipoUnidade} '${nomeUnidadeOriginal}': ${error.message}`
+        );
+        throw new BadRequestException(
+          `Unidade ${tipoUnidade} '${nomeUnidadeOriginal}' não encontrada e não pôde ser criada via SIPAC. Detalhe: ${error.message}`
+        );
+      }
+      this.logger.error(
+        `Erro inesperado ao processar unidade ${tipoUnidade} '${nomeUnidadeOriginal}': ${error.message}`,
+        error.stack
+      );
+      throw error;
+    }
   }
 }

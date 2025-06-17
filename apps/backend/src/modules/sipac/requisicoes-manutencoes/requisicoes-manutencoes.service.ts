@@ -144,37 +144,6 @@ export class RequisicoesManutencoesService {
     return { prismaInput, relationsToInclude };
   }
 
-  private async getOrCreateUnidade(
-    nomeUnidadeOriginal: string | undefined | null,
-    tipoUnidade: 'requisitante' | 'custo'
-  ): Promise<{ id: number } | null> {
-    if (!nomeUnidadeOriginal || nomeUnidadeOriginal.trim() === '') {
-      this.logger.warn(`Nome da unidade ${tipoUnidade} está vazio ou ausente.`);
-      return null;
-    }
-    try {
-      const unidade =
-        await this.unidadesService.findOrCreateUnidadeByNome(
-          nomeUnidadeOriginal
-        );
-      return { id: unidade.id };
-    } catch (error) {
-      if (error instanceof NotFoundException) {
-        this.logger.error(
-          `Falha ao obter ou criar unidade ${tipoUnidade} '${nomeUnidadeOriginal}': ${error.message}`
-        );
-        throw new BadRequestException(
-          `Unidade ${tipoUnidade} '${nomeUnidadeOriginal}' não encontrada e não pôde ser criada via SIPAC. Detalhe: ${error.message}`
-        );
-      }
-      this.logger.error(
-        `Erro inesperado ao processar unidade ${tipoUnidade} '${nomeUnidadeOriginal}': ${error.message}`,
-        error.stack
-      );
-      throw error;
-    }
-  }
-
   // @Cron(
   //   process.env.CRON_SIPAC_REQUISICOES_MANUTENCOES_SYNC || '0 0 * * *' // Daily at midnight
   // )
@@ -256,18 +225,20 @@ export class RequisicoesManutencoesService {
     });
 
     // Get or Create Unidade Requisitante and Unidade Custo
-    const unidadeRequisitanteInfo = await this.getOrCreateUnidade(
-      data.nomeUnidadeRequisitante,
-      'requisitante'
-    );
+    const unidadeRequisitanteInfo =
+      await this.unidadesService.getOrCreateUnidadeByNome(
+        data.nomeUnidadeRequisitante,
+        'requisitante'
+      );
     if (unidadeRequisitanteInfo) {
       data.unidadeRequisitante = { id: unidadeRequisitanteInfo.id };
     }
 
-    const unidadeCustoInfo = await this.getOrCreateUnidade(
-      data.nomeUnidadeDeCusto,
-      'custo'
-    );
+    const unidadeCustoInfo =
+      await this.unidadesService.getOrCreateUnidadeByNome(
+        data.nomeUnidadeDeCusto,
+        'custo'
+      );
     if (unidadeCustoInfo) {
       data.unidadeCusto = { id: unidadeCustoInfo.id };
     }
@@ -375,20 +346,22 @@ export class RequisicoesManutencoesService {
     // we might want to preserve the existing one or disconnect if explicitly set to null.
     // This logic assumes if `nomeUnidade...` is in `data`, we try to get/create and connect.
     if (data.hasOwnProperty('nomeUnidadeRequisitante')) {
-      const unidadeRequisitanteInfo = await this.getOrCreateUnidade(
-        data.nomeUnidadeRequisitante,
-        'requisitante'
-      );
+      const unidadeRequisitanteInfo =
+        await this.unidadesService.getOrCreateUnidadeByNome(
+          data.nomeUnidadeRequisitante,
+          'requisitante'
+        );
       data.unidadeRequisitante = unidadeRequisitanteInfo
         ? { id: unidadeRequisitanteInfo.id }
         : null;
     }
 
     if (data.hasOwnProperty('nomeUnidadeDeCusto')) {
-      const unidadeCustoInfo = await this.getOrCreateUnidade(
-        data.nomeUnidadeDeCusto,
-        'custo'
-      );
+      const unidadeCustoInfo =
+        await this.unidadesService.getOrCreateUnidadeByNome(
+          data.nomeUnidadeDeCusto,
+          'custo'
+        );
       data.unidadeCusto = unidadeCustoInfo ? { id: unidadeCustoInfo.id } : null;
     }
 

@@ -2,10 +2,11 @@ import { forwardRef, Module } from '@nestjs/common';
 import { MateriaisService } from './materiais.service';
 import { MateriaisController } from './materiais.controller';
 import { SipacModule } from '../sipac.module';
+import { MaterialsModule } from '../../materials/materials.module';
 // O SipacModule já exporta o SipacHttpService e o PrismaModule é global
 
 @Module({
-  imports: [forwardRef(() => SipacModule)],
+  imports: [forwardRef(() => SipacModule), MaterialsModule],
   controllers: [MateriaisController], // Adicione se tiver controller
   providers: [MateriaisService],
   exports: [MateriaisService] // Se outro módulo precisar usar este serviço

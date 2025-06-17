@@ -575,8 +575,8 @@ exports.Prisma.SipacRequisicaoMaterialScalarFieldEnum = {
   convenio: 'convenio',
   grupoDeMaterial: 'grupoDeMaterial',
   grupoMaterialId: 'grupoMaterialId',
-  unidadeDeCusto: 'unidadeDeCusto',
-  unidadeRequisitante: 'unidadeRequisitante',
+  siglaUnidadeDeCusto: 'siglaUnidadeDeCusto',
+  siglaUnidadeRequisitante: 'siglaUnidadeRequisitante',
   destinoDaRequisicao: 'destinoDaRequisicao',
   usuarioLogin: 'usuarioLogin',
   usuarioId: 'usuarioId',
@@ -593,7 +593,9 @@ exports.Prisma.SipacRequisicaoMaterialScalarFieldEnum = {
   almoxarifadoId: 'almoxarifadoId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  sipacRequisicaoManutencaoId: 'sipacRequisicaoManutencaoId'
+  sipacRequisicaoManutencaoId: 'sipacRequisicaoManutencaoId',
+  unidadeRequisitanteId: 'unidadeRequisitanteId',
+  unidadeCustoId: 'unidadeCustoId'
 };
 
 exports.Prisma.SipacItemRequisicaoMaterialScalarFieldEnum = {
@@ -998,8 +1000,8 @@ exports.Prisma.SipacRequisicaoMaterialOrderByRelevanceFieldEnum = {
   tipoDaRequisicao: 'tipoDaRequisicao',
   convenio: 'convenio',
   grupoDeMaterial: 'grupoDeMaterial',
-  unidadeDeCusto: 'unidadeDeCusto',
-  unidadeRequisitante: 'unidadeRequisitante',
+  siglaUnidadeDeCusto: 'siglaUnidadeDeCusto',
+  siglaUnidadeRequisitante: 'siglaUnidadeRequisitante',
   destinoDaRequisicao: 'destinoDaRequisicao',
   usuarioLogin: 'usuarioLogin',
   opcaoOrcamentaria: 'opcaoOrcamentaria',

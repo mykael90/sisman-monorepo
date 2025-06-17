@@ -79,8 +79,8 @@ model SipacRequisicaoMaterial {
     convenio                      String? // Indica se há convênio (ex: "Não").
     grupoDeMaterial               String? // Grupo de material (ex: "(0)").
     grupoMaterialId               Int? // Identificador do grupo de material.
-    unidadeDeCusto                String // Unidade de custo (ex: "INSTITUTO METROPOLE DIGITAL (11.00.05)").
-    unidadeRequisitante           String // Unidade requisitante (ex: "DIRETORIA DE MANUTENÇÃO DE INSTALAÇÕES FÍSICAS (11.08.05)").
+    siglaUnidadeDeCusto           String // Unidade de custo (ex: "INSTITUTO METROPOLE DIGITAL (11.00.05)").
+    siglaUnidadeRequisitante      String // Unidade requisitante (ex: "DIRETORIA DE MANUTENÇÃO DE INSTALAÇÕES FÍSICAS (11.08.05)").
     destinoDaRequisicao           String? // Destino da requisição (ex: "SUSTENTAÇÃO DE ESTOQUE DO ALMOXARIFADO DA SUP. INFRAESTRUTURA (11.89)").
     usuarioLogin                  String // Usuário que cadastrou a requisição (ex: "edivan.nascimento - EDIVAN DO NASCIMENTO (Ramal: )").
     usuarioId                     Int? // Identificador do usuário que cadastrou a requisição.
@@ -109,6 +109,12 @@ model SipacRequisicaoMaterial {
     // Relation to SipacRequisicaoManutencao
     sipacRequisicaoManutencaoId Int?
     sipacRequisicaoManutencao   SipacRequisicaoManutencao? @relation(fields: [sipacRequisicaoManutencaoId], references: [id], onDelete: SetNull)
+
+    //unidades
+    unidadeRequisitanteId Int?
+    unidadeRequisitante   SipacUnidade? @relation("unidadeRequisitanteMaterial", fields: [unidadeRequisitanteId], references: [id])
+    unidadeCustoId        Int?
+    unidadeCusto          SipacUnidade? @relation("unidadeCustoMaterial", fields: [unidadeCustoId], references: [id])
 
     @@index([numeroDaRequisicao])
     @@index([sipacRequisicaoManutencaoId])
@@ -235,9 +241,9 @@ model SipacRequisicaoManutencao {
 
     //unidades
     unidadeRequisitanteId Int?
-    unidadeRequisitante   SipacUnidade? @relation("unidadeRequisitante", fields: [unidadeRequisitanteId], references: [id])
+    unidadeRequisitante   SipacUnidade? @relation("unidadeRequisitanteManutencao", fields: [unidadeRequisitanteId], references: [id])
     unidadeCustoId        Int?
-    unidadeCusto          SipacUnidade? @relation("unidadeCusto", fields: [unidadeCustoId], references: [id])
+    unidadeCusto          SipacUnidade? @relation("unidadeCustoManutencao", fields: [unidadeCustoId], references: [id])
 
     @@index([numeroRequisicao])
     @@map("sipac_requisicoes_manutencao")
@@ -347,8 +353,11 @@ model SipacUnidade {
     nomeUnidade   String // Nome da unidade.
     sigla         String? // Sigla da unidade.
 
-    requisicoesManutencaoRequisistante SipacRequisicaoManutencao[] @relation("unidadeRequisitante")
-    requisicoesManutencaoCusto         SipacRequisicaoManutencao[] @relation("unidadeCusto")
+    requisicoesManutencaoRequisistante SipacRequisicaoManutencao[] @relation("unidadeRequisitanteManutencao")
+    requisicoesManutencaoCusto         SipacRequisicaoManutencao[] @relation("unidadeCustoManutencao")
+
+    requisicoesMaterialRequisitante SipacRequisicaoMaterial[] @relation("unidadeRequisitanteMaterial")
+    requisicoesMaterialCusto        SipacRequisicaoMaterial[] @relation("unidadeCustoMaterial")
 
     @@index([codigoUnidade])
     @@index([nomeUnidade])
