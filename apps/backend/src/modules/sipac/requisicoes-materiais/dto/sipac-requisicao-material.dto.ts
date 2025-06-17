@@ -14,6 +14,7 @@ import {
 import { Type } from 'class-transformer';
 import { Prisma } from '@sisman/prisma';
 import { DecimalJsLike } from '@sisman/prisma/generated/client/runtime/library';
+import { UpdateSipacUnidadeDto } from '../../unidades/dto/sipac-unidade.dto';
 
 /**
  * DTO for creating an item within a material requisition.
@@ -594,6 +595,22 @@ export class CreateSipacRequisicaoMaterialCompletoDto extends CreateSipacListaRe
   @ValidateNested({ each: true })
   @Type(() => CreateSipacDetalheAquisicaoItemMaterialDto)
   detalhesDaAquisicao?: CreateSipacDetalheAquisicaoItemMaterialDto[];
+
+  @ApiProperty({
+    type: () => [UpdateSipacUnidadeDto],
+    description: 'Unidade requisitante associada'
+  })
+  @IsOptional()
+  @Type(() => UpdateSipacUnidadeDto)
+  unidadeRequisitante?: UpdateSipacUnidadeDto;
+
+  @ApiProperty({
+    type: () => [UpdateSipacUnidadeDto],
+    description: 'Unidade de custo associada'
+  })
+  @IsOptional()
+  @Type(() => UpdateSipacUnidadeDto)
+  unidadeCusto?: UpdateSipacUnidadeDto;
 }
 
 export class CreateManySipacListaRequisicaoMaterialDto {

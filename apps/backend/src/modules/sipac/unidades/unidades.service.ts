@@ -432,4 +432,96 @@ export class UnidadesService {
       throw error;
     }
   }
+
+  async findOrCreateUnidadeBySigla(
+    sigla: string
+  ): Promise<Prisma.SipacUnidadeGetPayload<{}>> {
+    let unidade = await this.prisma.sipacUnidade.findFirst({
+      where: { sigla: sigla } // Assumes 'siglaUnidade' in DB is normalized and unique
+    });
+
+    if (unidade) {
+      this.logger.log(
+        `Unidade '${sigla}' (normalizado: '${sigla}') encontrada no banco de dados local.`
+      );
+      return unidade;
+    }
+
+    this.logger.log(
+      `Unidade '${sigla}' (normalizado: '${sigla}') não encontrada localmente. Buscando na API SIPAC...`
+    );
+
+    // API parameter 'sigla' is assumed for normalized sigla search.
+    const apiUnidadesResponse = await this.sipacHttp.get<
+      SipacUnidadeResponseItem[]
+    >(
+      this.URL_PATH,
+      {
+        offset: 0,
+        limit: 1,
+        sigla: sigla
+      },
+      {
+        paginado: 'true'
+      }
+    );
+
+    const apiUnidadeData =
+      apiUnidadesResponse.data && apiUnidadesResponse.data.length > 0
+        ? apiUnidadesResponse.data[0]
+        : null;
+
+    if (!apiUnidadeData) {
+      this.logger.error(
+        `Unidade com sigla '${sigla}' (normalizado: '${sigla}') não encontrada na API SIPAC.`
+      );
+      throw new NotFoundException(
+        `Unidade com sigla '${sigla}' (normalizado: '${sigla}') não encontrada na API SIPAC.`
+      );
+    }
+
+    this.logger.log(
+      `Unidade '${sigla}' (normalizado: '${sigla}') encontrada na API SIPAC. Persistindo...`
+    );
+    // Assumes SipacUnidadeMapper.toCreateDto handles normalization of siglaUnidade if necessary before saving.
+    const unidadeDto = SipacUnidadeMapper.toCreateDto(apiUnidadeData);
+
+    const novaUnidade = await this.prisma.sipacUnidade.create({
+      data: unidadeDto
+    });
+    this.logger.log(
+      `Unidade '${sigla}' (ID: ${novaUnidade.id}) persistida com sucesso.`
+    );
+    return novaUnidade;
+  }
+
+  async getOrCreateUnidadeBySigla(
+    sigla: string | undefined | null,
+    tipoUnidade: 'requisitante' | 'custo'
+  ): Promise<{ id: number } | null> {
+    if (!sigla || sigla.trim() === '') {
+      this.logger.warn(
+        `Sigla da unidade ${tipoUnidade} está vazia ou ausente.`
+      );
+      return null;
+    }
+    try {
+      const unidade = await this.findOrCreateUnidadeBySigla(sigla);
+      return { id: unidade.id };
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        this.logger.error(
+          `Falha ao obter ou criar unidade ${tipoUnidade} '${sigla}': ${error.message}`
+        );
+        throw new BadRequestException(
+          `Unidade ${tipoUnidade} '${sigla}' não encontrada e não pôde ser criada via SIPAC. Detalhe: ${error.message}`
+        );
+      }
+      this.logger.error(
+        `Erro inesperado ao processar unidade ${tipoUnidade} '${sigla}': ${error.message}`,
+        error.stack
+      );
+      throw error;
+    }
+  }
 }
