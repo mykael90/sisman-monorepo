@@ -496,6 +496,10 @@ export class UnidadesService {
     sigla: string | undefined | null,
     tipoUnidade: 'requisitante' | 'custo'
   ): Promise<{ id: number } | null> {
+    this.logger.log(
+      `Locando ou criando unidade ${tipoUnidade} com sigla: ${sigla}`
+    );
+
     if (!sigla || sigla.trim() === '') {
       this.logger.warn(
         `Sigla da unidade ${tipoUnidade} está vazia ou ausente.`

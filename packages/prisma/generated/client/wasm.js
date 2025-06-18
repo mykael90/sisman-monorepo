@@ -289,6 +289,7 @@ exports.Prisma.MaterialRequestScalarFieldEnum = {
   sipacUnitRequesting: 'sipacUnitRequesting',
   sipacUnitCost: 'sipacUnitCost',
   origin: 'origin',
+  sipacUserLoginRequest: 'sipacUserLoginRequest',
   requestValue: 'requestValue',
   servedValue: 'servedValue',
   warehouseId: 'warehouseId'
@@ -880,7 +881,8 @@ exports.Prisma.MaterialRequestOrderByRelevanceFieldEnum = {
   protocolNumber: 'protocolNumber',
   justification: 'justification',
   sipacUnitRequesting: 'sipacUnitRequesting',
-  sipacUnitCost: 'sipacUnitCost'
+  sipacUnitCost: 'sipacUnitCost',
+  sipacUserLoginRequest: 'sipacUserLoginRequest'
 };
 
 exports.Prisma.MaterialRequestStatusOrderByRelevanceFieldEnum = {

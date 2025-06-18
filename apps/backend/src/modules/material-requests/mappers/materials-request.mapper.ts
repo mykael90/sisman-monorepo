@@ -12,6 +12,7 @@ export class MaterialRequestMapper {
       requestedById: item.usuarioId,
       sipacUnitRequesting: item.siglaUnidadeRequisitante,
       sipacUnitCost: item.siglaUnidadeDeCusto,
+      sipacUserLoginRequest: item.usuarioLogin,
       origin: 'SIPAC',
       requestValue: item.valorDaRequisicao,
       servedValue: item.valorDoTotalAtendido

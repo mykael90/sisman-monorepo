@@ -102,6 +102,15 @@ export class CreateMaterialRequestDto
   sipacUnitCost?: string;
 
   @ApiProperty({
+    description: 'Usuario que realizou a requisicao de material',
+    example: 'mykael.mello',
+    required: false
+  })
+  @IsOptional()
+  @IsString()
+  sipacUserLoginRequest?: string;
+
+  @ApiProperty({
     description: 'Origem da requisição de material',
     enum: $Enums.MaterialRequestOrigin,
     example: $Enums.MaterialRequestOrigin.SISMAN,

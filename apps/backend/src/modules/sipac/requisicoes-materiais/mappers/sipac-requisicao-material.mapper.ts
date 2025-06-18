@@ -52,7 +52,8 @@ export class SipacListaRequisicaoMaterialMapper {
       almoxarifado: item.almoxarifado,
       statusAtual: item.status,
       usuarioLogin: item.usuario,
-      valorDaRequisicao: valorFormatado
+      valorDaRequisicao: valorFormatado,
+      grupoMaterialId: undefined
     };
   }
 }
@@ -172,7 +173,7 @@ export class SipacRequisicaoMaterialMapper {
       observacoes: dados.observacoes,
       statusAtual: dados.statusAtual,
       // almoxarifado: undefined, // Not available in item.dadosDaRequisicao
-
+      grupoMaterialId: undefined, // Not available in item.dadosDaRequisicao
       itensDaRequisicao: dados.itensDaRequisicao?.map(
         (
           subItem: SipacItemDaRequisicaoMaterial

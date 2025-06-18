@@ -380,6 +380,10 @@ export class CreateSipacListaRequisicaoMaterialDto
   @IsNotEmpty()
   @IsDecimal({ decimal_digits: '2' })
   valorDaRequisicao: DecimalJsLike; // Prisma Decimal type
+
+  @IsOptional()
+  @IsNumber()
+  grupoMaterialId?: number;
 }
 
 /**
@@ -611,6 +615,10 @@ export class CreateSipacRequisicaoMaterialCompletoDto extends CreateSipacListaRe
   @IsOptional()
   @Type(() => UpdateSipacUnidadeDto)
   unidadeCusto?: UpdateSipacUnidadeDto;
+
+  @IsOptional()
+  @IsNumber()
+  grupoMaterialId?: number;
 }
 
 export class CreateManySipacListaRequisicaoMaterialDto {

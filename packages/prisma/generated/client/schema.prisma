@@ -367,9 +367,10 @@ model MaterialRequest {
   updatedAt DateTime @updatedAt @db.Timestamp(0) // Timestamp for the last update of the record.
 
   //campos compatibilidade sipac
-  sipacUnitRequesting String? // unidade de custo
-  sipacUnitCost       String? // unidade requisitante
-  origin              MaterialRequestOrigin @default(SISMAN) // Origem da requisicao
+  sipacUnitRequesting   String? // unidade de custo
+  sipacUnitCost         String? // unidade requisitante
+  origin                MaterialRequestOrigin @default(SISMAN) // Origem da requisicao
+  sipacUserLoginRequest String? // usuario que realizou a requisicao
 
   //
   requestValue Decimal? @db.Decimal(12, 4) //valor da requisicao

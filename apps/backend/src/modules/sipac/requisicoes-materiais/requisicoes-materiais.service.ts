@@ -69,6 +69,18 @@ export class RequisicoesMateriaisService {
     const prismaInput: any = {};
     const relationsToInclude: Prisma.SipacRequisicaoMaterialInclude = {};
 
+    if (unidadeRequisitanteId) {
+      prismaInput.unidadeRequisitante = {
+        connect: { id: unidadeRequisitanteId }
+      };
+    }
+
+    if (unidadeCustoId) {
+      prismaInput.unidadeCusto = {
+        connect: { id: unidadeCustoId }
+      };
+    }
+
     for (const key in data) {
       if (Object.prototype.hasOwnProperty.call(data, key)) {
         const typedKey = key as keyof T;
@@ -76,6 +88,13 @@ export class RequisicoesMateriaisService {
 
         if (value === undefined) {
           // 'undefined' means "do not alter this field" for updates
+          continue;
+        }
+
+        if (
+          typedKey === 'unidadeRequisitanteId' ||
+          typedKey === 'unidadeCustoId'
+        ) {
           continue;
         }
 
@@ -94,6 +113,10 @@ export class RequisicoesMateriaisService {
           )
         ) {
           // It's a valid scalar field for the model
+          //TODO:  include this in others services
+          if (value === null) {
+            continue; // Skip null scalar values
+          }
           prismaInput[key] = value;
         } else if (
           relationalKeysFromDMMF.includes(key) &&
@@ -131,6 +154,7 @@ export class RequisicoesMateriaisService {
   }
 
   // New method to sync with MaterialRequestsService
+  // TODO: a logica deve implementar tanto a criação como atualização. No caso da atualização utilizar upsert com where para os materiais (itens) vinculados
   private async syncMaterialRequest(
     sipacRequisicao: SipacRequisicaoMaterial
   ): Promise<void> {
@@ -302,6 +326,32 @@ export class RequisicoesMateriaisService {
       await this.ensureMateriaisExistentes(itensParaVerificar as any); // `as any` para simplificar, idealmente tipar corretamente
     }
 
+    this.logger.debug(data);
+
+    // Get or Create Unidade Requisitante and Unidade Custo
+    // Note: For updates, if nomeUnidadeRequisitante/DeCusto is not provided in `data`,
+    // we might want to preserve the existing one or disconnect if explicitly set to null.
+    // This logic assumes if `nomeUnidade...` is in `data`, we try to get/create and connect.
+    if (data.hasOwnProperty('siglaUnidadeRequisitante')) {
+      const unidadeRequisitanteInfo =
+        await this.unidadesService.getOrCreateUnidadeBySigla(
+          data.siglaUnidadeRequisitante,
+          'requisitante'
+        );
+      data.unidadeRequisitante = unidadeRequisitanteInfo
+        ? { id: unidadeRequisitanteInfo.id }
+        : null;
+    }
+
+    if (data.hasOwnProperty('siglaUnidadeDeCusto')) {
+      const unidadeCustoInfo =
+        await this.unidadesService.getOrCreateUnidadeBySigla(
+          data.siglaUnidadeDeCusto,
+          'custo'
+        );
+      data.unidadeCusto = unidadeCustoInfo ? { id: unidadeCustoInfo.id } : null;
+    }
+
     const { prismaInput: prismaUpdateInput, relationsToInclude } =
       this.processRequisicaoMaterialData(data, relationalKeysFromDMMF);
 
@@ -369,7 +419,7 @@ export class RequisicoesMateriaisService {
                 : undefined
           });
 
-          await this.syncMaterialRequest(updated);
+          // await this.syncMaterialRequest(updated); //TODO:
 
           return updated;
         }
@@ -583,7 +633,10 @@ export class RequisicoesMateriaisService {
 
       if (exists) {
         this.logger.log(`A requisição de material já existe. Atualizando...`);
-        const newData = await this.fetchAndReturnRequisicaoMaterial(exists.id);
+        const newData =
+          await this.fetchByNumeroAnoAndReturnRequisicaoMaterialComplete(
+            numeroAno
+          );
         return await this.persistUpdateRequisicaoMaterial(exists.id, newData);
       } else {
         this.logger.log(`A requisição de material não existe. Criando...`);

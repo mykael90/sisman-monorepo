@@ -168,8 +168,6 @@ export class AuthService {
 
       const roles = user.roles;
 
-      this.logger.error(JSON.stringify(roles));
-
       return this.createToken(user, roles);
     } catch (error) {
       // Se o erro não for Unauthorized, é algo inesperado, relance
