@@ -10,8 +10,8 @@ import {
 } from '@nestjs/common';
 import { MaterialRequestsService } from './material-requests.service';
 import {
-  CreateMaterialRequestDto,
-  UpdateMaterialRequestDto
+  CreateMaterialRequestWithRelationsDto,
+  UpdateMaterialRequestWithRelationsDto
 } from './dto/material-request.dto';
 import { Roles } from '../../shared/decorators/roles.decorator';
 import { Role } from '../../shared/enums/role.enum';
@@ -27,7 +27,7 @@ export class MaterialRequestsController {
   ) {}
 
   @Post()
-  async create(@Body() data: CreateMaterialRequestDto) {
+  async create(@Body() data: CreateMaterialRequestWithRelationsDto) {
     return this.materialRequestsService.create(data);
   }
 
@@ -44,7 +44,7 @@ export class MaterialRequestsController {
   @Put(':id')
   async update(
     @Param('id') id: number,
-    @Body() data: UpdateMaterialRequestDto
+    @Body() data: UpdateMaterialRequestWithRelationsDto
   ) {
     return this.materialRequestsService.update(id, data);
   }

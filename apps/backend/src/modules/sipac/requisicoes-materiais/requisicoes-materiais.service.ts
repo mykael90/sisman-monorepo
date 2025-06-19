@@ -154,26 +154,29 @@ export class RequisicoesMateriaisService {
   }
 
   // New method to sync with MaterialRequestsService
-  // TODO: a logica deve implementar tanto a criação como atualização. No caso da atualização utilizar upsert com where para os materiais (itens) vinculados
   private async syncMaterialRequest(
-    sipacRequisicao: SipacRequisicaoMaterial
+    sipacRequisicao: Prisma.SipacRequisicaoMaterialGetPayload<{
+      include: {
+        itensDaRequisicao: true;
+        unidadeCusto: true;
+        unidadeRequisitante: true;
+        historicoDaRequisicao: true;
+      };
+    }>
   ): Promise<void> {
     try {
       const materialRequestDto =
         MaterialRequestMapper.toCreateDto(sipacRequisicao);
 
       // Assuming protocolNumber in MaterialRequest stores the SIPAC request ID
-      const existingMaterialRequest = await this.materialRequestsService
-        .list()
-        .then((requests) =>
-          requests.find(
-            (req) => req.protocolNumber === String(sipacRequisicao.id)
-          )
+      const existingMaterialRequest =
+        await this.materialRequestsService.findByProtocolNumber(
+          sipacRequisicao.numeroDaRequisicao
         );
 
       if (existingMaterialRequest) {
         this.logger.log(
-          `Updating MaterialRequest for SIPAC ID: ${sipacRequisicao.id}`
+          `Updating MaterialRequest for SIPAC ID: ${sipacRequisicao.numeroDaRequisicao}`
         );
         await this.materialRequestsService.update(
           existingMaterialRequest.id,
@@ -181,13 +184,13 @@ export class RequisicoesMateriaisService {
         );
       } else {
         this.logger.log(
-          `Creating MaterialRequest for SIPAC ID: ${sipacRequisicao.id}`
+          `Creating MaterialRequest for SIPAC ID: ${sipacRequisicao.numeroDaRequisicao}`
         );
         await this.materialRequestsService.create(materialRequestDto);
       }
     } catch (error) {
       this.logger.error(
-        `Failed to sync MaterialRequest for SIPAC ID: ${sipacRequisicao.id}`,
+        `Failed to sync MaterialRequest for SIPAC ID: ${sipacRequisicao.numeroDaRequisicao}`,
         error.stack
       );
       // Depending on requirements, you might want to re-throw or handle differently
@@ -419,7 +422,7 @@ export class RequisicoesMateriaisService {
                 : undefined
           });
 
-          // await this.syncMaterialRequest(updated); //TODO:
+          await this.syncMaterialRequest(updated);
 
           return updated;
         }

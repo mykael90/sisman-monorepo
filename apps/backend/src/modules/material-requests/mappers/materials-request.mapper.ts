@@ -1,21 +1,54 @@
-import { SipacRequisicaoMaterial } from '@sisman/prisma';
-import { CreateMaterialRequestDto } from '../dto/material-request.dto';
+import { Prisma, SipacItemRequisicaoMaterial } from '@sisman/prisma';
+import {
+  CreateMaterialRequestDto,
+  CreateMaterialRequestItemDto,
+  CreateMaterialRequestWithRelationsDto
+} from '../dto/material-request.dto';
 
 export class MaterialRequestMapper {
-  static toCreateDto(item: SipacRequisicaoMaterial): CreateMaterialRequestDto {
+  static toCreateDto(
+    item: Prisma.SipacRequisicaoMaterialGetPayload<{
+      include: {
+        itensDaRequisicao: true;
+        unidadeCusto: true;
+        unidadeRequisitante: true;
+        historicoDaRequisicao: true;
+      };
+    }>
+  ): CreateMaterialRequestWithRelationsDto {
     return {
       protocolNumber: String(item.numeroDaRequisicao),
       requestType: 'NEW_MATERIALS',
       requestDate: item.dataDeCadastro,
-      warehouseId: 1, // SIPAC ALMOXARIFADO CENTRAL
-      maintenanceRequestId: item.sipacRequisicaoManutencaoId,
-      requestedById: item.usuarioId,
-      sipacUnitRequesting: item.siglaUnidadeRequisitante,
-      sipacUnitCost: item.siglaUnidadeDeCusto,
+      // warehouseId: 1, // SIPAC ALMOXARIFADO CENTRAL
+      maintenanceRequestId: item.sipacRequisicaoManutencaoId || undefined,
+      requestedById: item.usuarioId || undefined,
+      sipacUnitRequesting: item.unidadeRequisitante,
+      sipacUnitCost: item.unidadeCusto,
       sipacUserLoginRequest: item.usuarioLogin,
       origin: 'SIPAC',
       requestValue: item.valorDaRequisicao,
-      servedValue: item.valorDoTotalAtendido
+      servedValue: item.valorDoTotalAtendido,
+      purpose: 'SUPPLY_MAINTENANCE',
+      // relations
+      warehouse: {
+        id: 1 //almoxarifado central da ufrn id=1 (convenção minha)
+      },
+      items: item.itensDaRequisicao?.map(
+        (
+          material: SipacItemRequisicaoMaterial
+        ): CreateMaterialRequestItemDto => ({
+          requestedGlobalMaterialId: material.codigo,
+          quantityRequested: material.quantidade,
+          quantityApproved: material.quantidadeAtendida,
+          quantityDelivered: material.quantidadeAtendida
+        })
+      ),
+      statusHistory: [
+        {
+          status: 'SIPAC_HANDLING'
+        }
+      ]
     };
   }
 }
