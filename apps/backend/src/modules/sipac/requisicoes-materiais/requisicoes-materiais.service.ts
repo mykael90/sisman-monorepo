@@ -274,11 +274,14 @@ export class RequisicoesMateriaisService {
       const createdRequisicaoMaterial = await this.prisma.$transaction(
         async (prisma) => {
           const created = await prisma.sipacRequisicaoMaterial.create({
-            data: prismaCreateInput as any,
-            include:
-              Object.keys(relationsToInclude).length > 0
-                ? relationsToInclude
-                : undefined
+            data: prismaCreateInput as Prisma.SipacRequisicaoMaterialCreateInput,
+            include: {
+              // Explicitly define the required relations
+              itensDaRequisicao: true,
+              unidadeCusto: true,
+              unidadeRequisitante: true,
+              historicoDaRequisicao: true
+            }
           });
 
           await this.syncMaterialRequest(created);
@@ -416,10 +419,13 @@ export class RequisicoesMateriaisService {
             where: { id },
             data: prismaUpdateInput as Prisma.SipacRequisicaoMaterialUpdateInput,
             //para ter as relações no retorno
-            include:
-              Object.keys(relationsToInclude).length > 0
-                ? relationsToInclude
-                : undefined
+            include: {
+              // Explicitly define the required relations
+              itensDaRequisicao: true,
+              unidadeCusto: true,
+              unidadeRequisitante: true,
+              historicoDaRequisicao: true
+            }
           });
 
           await this.syncMaterialRequest(updated);

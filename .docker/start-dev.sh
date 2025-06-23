@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "Entrou no start-dev.sh"
+
 # pnpm install
 
 # wait

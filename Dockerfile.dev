@@ -36,4 +36,4 @@ RUN pnpm install --frozen-lockfile
 #    Garante que todo o código-fonte também seja de propriedade do usuário 'node'.
 COPY --chown=node:node . .
 
-CMD ["/home/node/sisman-monorepo/.docker/start.sh"]
+CMD ["/home/node/sisman-monorepo/.docker/start-dev.sh"]

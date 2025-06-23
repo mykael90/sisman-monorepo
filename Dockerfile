@@ -53,7 +53,7 @@ RUN apt update && apt install -y openssl procps
 
 # ATENÇÃO: pnpm não é necessário na imagem de produção, pois as dependências já foram instaladas e os builds feitos.
 # Isso ajuda a manter a imagem final menor.
-# RUN npm install -g pnpm@10.0.0
+RUN npm install -g pnpm@10.0.0
 
 # Instala o PM2 globalmente
 RUN npm install -g pm2@6.0.8
@@ -64,17 +64,12 @@ USER node
 # Defina o diretório de trabalho. Ele será de propriedade do 'node'.
 WORKDIR /home/node/sisman-monorepo/
 
-# Copia o nosso arquivo de configuração do PM2 para dentro da imagem
-COPY --chown=node:node ecosystem.config.js .
-
 # Copia os arquivos de configuração da raiz do monorepo (necessário para o PM2 e scripts de inicialização)
 COPY --from=builder --chown=node:node /home/node/sisman-monorepo/package.json ./package.json
 COPY --from=builder --chown=node:node /home/node/sisman-monorepo/pnpm-workspace.yaml ./pnpm-workspace.yaml
 # pnpm-lock.yaml não é estritamente necessário para runtime, mas pode ser copiado se houver alguma lógica que dependa dele.
 
 # ATENÇÃO: Para pnpm, você deve copiar o diretório node_modules PRINCIPAL
-# que contém o cache `.pnpm` e os symlinks. Se você tentar copiar node_modules
-# de pacotes individuais, os symlinks apontarão para caminhos que não existem
 # na nova imagem. Copie o `node_modules` da raiz do monorepo.
 COPY --from=builder --chown=node:node /home/node/sisman-monorepo/node_modules ./node_modules
 
@@ -84,14 +79,20 @@ COPY --from=builder --chown=node:node /home/node/sisman-monorepo/node_modules ./
 # Backend
 COPY --from=builder --chown=node:node /home/node/sisman-monorepo/apps/backend/dist ./apps/backend/dist
 COPY --from=builder --chown=node:node /home/node/sisman-monorepo/apps/backend/package.json ./apps/backend/
+COPY --from=builder --chown=node:node /home/node/sisman-monorepo/apps/backend/node_modules ./apps/backend/node_modules
 
 # Frontend
 COPY --from=builder --chown=node:node /home/node/sisman-monorepo/apps/frontend/.next ./apps/frontend/.next
 COPY --from=builder --chown=node:node /home/node/sisman-monorepo/apps/frontend/package.json ./apps/frontend/
+COPY --from=builder --chown=node:node /home/node/sisman-monorepo/apps/frontend/node_modules ./apps/frontend/node_modules
+COPY --from=builder --chown=node:node /home/node/sisman-monorepo/apps/frontend/public ./apps/frontend/public
+# Copie o next.config.js se ele existir
+COPY --from=builder --chown=node:node /home/node/sisman-monorepo/apps/frontend/next.config.ts ./apps/frontend/
 
 # Scraping API
 COPY --from=builder --chown=node:node /home/node/sisman-monorepo/apps/scraping-api/dist ./apps/scraping-api/dist
 COPY --from=builder --chown=node:node /home/node/sisman-monorepo/apps/scraping-api/package.json ./apps/scraping-api/
+COPY --from=builder --chown=node:node /home/node/sisman-monorepo/apps/scraping-api/node_modules ./apps/scraping-api/node_modules
 
 # Copie pacotes de dependências compartilhadas ou pacotes que contêm código runtime
 # Ex: packages/prisma pode ter o cliente gerado; packages/types pode ter interfaces usadas em runtime.
@@ -100,9 +101,18 @@ COPY --from=builder --chown=node:node /home/node/sisman-monorepo/apps/scraping-a
 COPY --from=builder --chown=node:node /home/node/sisman-monorepo/packages/prisma ./packages/prisma
 COPY --from=builder --chown=node:node /home/node/sisman-monorepo/packages/types ./packages/types
 
+# Copia o nosso arquivo de configuração do PM2 para dentro da imagem
+COPY --chown=node:node ecosystem.config.js .
+
+# Copie o script de inicialização e dê permissão de execução
+COPY --chown=node:node .docker/start-prod.sh .
+RUN chmod +x ./start-prod.sh
+
 # Comando final para iniciar o PM2 em modo "no-daemon",
 # que mantém o container rodando.
-CMD ["pm2-runtime", "start", "ecosystem.config.js"]
+CMD ["./start-prod.sh"]
+# CMD ["tail", "-f", "/dev/null"]
+
 
 
 # =========================================================================
