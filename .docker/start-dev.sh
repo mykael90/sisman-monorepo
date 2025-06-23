@@ -1,8 +1,8 @@
 #!/bin/bash
 
-pnpm install
+# pnpm install
 
-wait
+# wait
 
 # npm run start:dev
 

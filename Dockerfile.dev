@@ -1,0 +1,39 @@
+FROM node:23-slim
+
+# atualizar e instalar pacotes
+RUN apt update && apt install -y openssl procps
+
+# instalar pnpm 10.0.0 globally
+RUN npm install -g pnpm@10.0.0
+
+# 1. Crie o diretório de trabalho *como root*, depois mude sua propriedade para 'node'.
+#    Use `mkdir -p` para garantir que o diretório seja criado se não existir.
+RUN mkdir -p /home/node/sisman-monorepo/ && chown -R node:node /home/node/sisman-monorepo/
+
+# Mude para o usuário 'node' antes de definir o WORKDIR e copiar os arquivos.
+USER node
+
+# Defina o diretório de trabalho. Agora ele pertence ao usuário 'node'.
+WORKDIR /home/node/sisman-monorepo/
+
+# 2. Copia os arquivos de configuração do workspace e lockfile da raiz
+#    Use --chown para garantir que os arquivos sejam de propriedade de 'node' imediatamente.
+COPY --chown=node:node package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+
+# 3. Copia os manifestos de cada pacote
+#    Também use --chown para esses diretórios/arquivos.
+COPY --chown=node:node apps/backend/package.json ./apps/backend/
+COPY --chown=node:node apps/frontend/package.json ./apps/frontend/
+COPY --chown=node:node apps/scraping-api/package.json ./apps/scraping-api/
+COPY --chown=node:node packages/prisma/package.json ./packages/prisma/
+COPY --chown=node:node packages/types/package.json ./packages/types/
+# ... e assim por diante para cada pacote
+
+# 4. Instale as dependências. O pnpm agora pode criar node_modules.
+RUN pnpm install --frozen-lockfile
+
+# 5. Copie o resto do código-fonte (o arquivo .dockerignore já deve estar configurado)
+#    Garante que todo o código-fonte também seja de propriedade do usuário 'node'.
+COPY --chown=node:node . .
+
+CMD ["/home/node/sisman-monorepo/.docker/start.sh"]

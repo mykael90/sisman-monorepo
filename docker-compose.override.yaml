@@ -18,8 +18,8 @@ services:
       .env
       # - ${ENV_FILE_RMQ}
       # - ${ENV_FILE_KC}
-    # volumes:
-    #   - .:/home/node/sisman-monorepo
+    volumes:
+      - .:/home/node/sisman-monorepo
     restart: unless-stopped
     depends_on:
       - db
