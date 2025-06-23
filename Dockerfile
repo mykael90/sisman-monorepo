@@ -32,14 +32,21 @@ COPY --chown=node:node packages/types/package.json ./packages/types/
 # 3. Instale as dependências. O pnpm agora pode criar node_modules.
 RUN pnpm install --frozen-lockfile
 
-# 4. Copie o resto do código-fonte (o arquivo .dockerignore já deve estar configurado)
-#    Garante que todo o código-fonte também seja de propriedade do usuário 'node'.
-COPY --chown=node:node . .
+# --- Otimização de Cache de Build ---
+# Agora, copie o código-fonte e construa cada aplicação separadamente.
+# Isso garante que a mudança em um app não invalide o cache do build dos outros.
 
-# 5. Rode o build para as aplicações específicas que você quer na imagem final
-# O filtro garante que apenas as aplicações especificadas e suas dependências internas sejam construídas
+# 3. Construir o Backend
+COPY --chown=node:node apps/backend ./apps/backend
+COPY --chown=node:node packages ./packages
 RUN pnpm --filter sisman-backend run build
+
+# 4. Construir a Scraping API
+COPY --chown=node:node apps/scraping-api ./apps/scraping-api
 RUN pnpm --filter scraping-api run build
+
+# 5. Construir o Frontend
+COPY --chown=node:node apps/frontend ./apps/frontend
 RUN pnpm --filter sisman-frontend run build
 
 
