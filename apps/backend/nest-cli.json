@@ -8,6 +8,10 @@
       {
         "include": "shared/notifications/email/templates/**/*",
         "outDir": "dist"
+      },
+      {
+        "include": "**/*.json",
+        "outDir": "dist"
       }
     ]
   }
