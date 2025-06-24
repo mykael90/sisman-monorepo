@@ -13,7 +13,10 @@ export default async function ServerPage() {
   if (session) {
     // Só tenta buscar se houver uma sessão (opcional, a função fetch já verifica)
     try {
-      const response = await fetchApiUFRN('/usuario/v1/usuarios/info');
+      const response = await fetchApiUFRN(
+        '/usuario/v1/usuarios/info',
+        session.accessTokenUfrn as string
+      );
       // Verifica se a resposta foi realmente OK antes de tentar ler o JSON
       if (response.ok) {
         apiData = await response.json();

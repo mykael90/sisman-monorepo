@@ -1,6 +1,7 @@
 import { getServerSession } from 'next-auth';
 import { NextRequest, NextResponse } from 'next/server';
 import { authOptions } from '@/app/api/auth/_options';
+import { fetchApiSisman } from '../../../../lib/fetch/api-sisman';
 
 export async function GET(request: NextRequest) {
   const session = await getServerSession(authOptions);
@@ -33,13 +34,9 @@ export async function GET(request: NextRequest) {
   }
   try {
     // Use o session.accessTokenSisman para chamar sua outra API backend
-    const backendApiResponse = await fetch(
-      'https://sistema.api/some-resource',
-      {
-        headers: {
-          Authorization: `Bearer ${session.accessTokenSisman}`
-        }
-      }
+    const backendApiResponse = await fetchApiSisman(
+      '/user',
+      session.accessTokenSisman
     );
 
     if (!backendApiResponse.ok) {

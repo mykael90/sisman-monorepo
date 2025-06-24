@@ -14,7 +14,8 @@ export default async function ServerPage() {
     // Só tenta buscar se houver uma sessão (opcional, a função fetch já verifica)
     try {
       const response = await fetchApiSisman(
-        '/users' // <-- Substitua pela rota correta da API Sisman
+        '/user', // <-- Substitua pela rota correta da API Sisman
+        session.accessTokenSisman as string
       );
       // Verifica se a resposta foi realmente OK antes de tentar ler o JSON
       if (response.ok) {
