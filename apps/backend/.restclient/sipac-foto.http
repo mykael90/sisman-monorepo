@@ -1,0 +1,11 @@
+### Variables
+@urlLocal = {{apiUrl}}/sipac/foto
+@contentType = application/json
+
+### GET findAll requisicoes manutencao
+GET {{urlLocal}}
+
+### GET fetch requisicoes manutencao
+GET {{urlLocal}}
+?idProducao=8027032
+&key=01a259ddff3d05ed3ae5df8e5cc61594

@@ -9,6 +9,7 @@ import { RequisicoesMateriaisModule } from './requisicoes-materiais/requisicoes-
 import { RequisicoesManutencoesModule } from './requisicoes-manutencoes/requisicoes-manutencoes.module';
 import { SipacScrapingService } from './sipac-scraping.service';
 import { UnidadesModule } from './unidades/unidades.module';
+import { FotoModule } from './foto/foto.module';
 // import { UnidadesModule } from './unidades/unidades.module'; // Exemplo
 
 @Module({
@@ -30,7 +31,8 @@ import { UnidadesModule } from './unidades/unidades.module';
     SubGruposMateriaisModule,
     RequisicoesMateriaisModule,
     RequisicoesManutencoesModule, // Add the new module
-    UnidadesModule
+    UnidadesModule,
+    FotoModule
   ],
   providers: [SipacApiService, SipacScrapingService], // Logger pode ser útil aqui também
   exports: [
