@@ -15,6 +15,8 @@ import configParserProvider from './html-parser/config-parser.provider';
 import { ReqManutencaoParserService } from './html-parser/req-manutencao-parser.service';
 import { ListaManutencaoParserService } from './html-parser/lista-manutencao-parser.service';
 import { ListaMaterialParserService } from './html-parser/lista-material-parser.service';
+import { ImageParserService } from './html-parser/image-parser.service';
+import { GetFileService } from './get-file.service';
 
 @Module({
   imports: [
@@ -50,6 +52,8 @@ import { ListaMaterialParserService } from './html-parser/lista-material-parser.
     ListaManutencaoParserService,
     ListaMaterialParserService,
     Logger,
+    ImageParserService,
+    GetFileService,
     // Provider para o Mapa de Parsers
     configParserProvider,
   ],

@@ -28,6 +28,10 @@ import {
 const AUTH_COOKIE_KEY = 'sipac_auth_cookies';
 const AUTH_RETRY_COUNT_KEY = 'sipac_auth_retry_count';
 
+// Novos tipos para clareza
+export type TargetSystem = 'sipac' | 'sigaa';
+const AUTH_COOKIE_KEY_PREFIX = 'auth_cookies_';
+
 @Injectable()
 export class SipacService {
   private readonly logger = new Logger(SipacService.name);
@@ -37,6 +41,10 @@ export class SipacService {
   private readonly password: string;
   private readonly authRetryLimit: number;
   private readonly cacheTtl: number; // Expects seconds from config
+  private readonly ssoLoginUrl: string;
+  private readonly sipacServiceUrl: string;
+  private readonly sigaaServiceUrl: string; // Adicionar
+  private readonly baseSigaaUrl: string; // Adicionar
 
   constructor(
     private readonly httpService: HttpService,
@@ -49,8 +57,14 @@ export class SipacService {
     private readonly parserMap: Map<string, IHtmlParser>,
   ) {
     // Load configuration values safely
+    this.ssoLoginUrl = this.configService.getOrThrow<string>('SSO_LOGIN_URL');
+    this.sipacServiceUrl =
+      this.configService.getOrThrow<string>('SIPAC_SERVICE_URL');
+    this.sigaaServiceUrl =
+      this.configService.getOrThrow<string>('SIGAA_SERVICE_URL');
     this.loginUrl = this.configService.getOrThrow<string>('LOGIN_URL');
     this.baseSipacUrl = this.configService.getOrThrow<string>('BASE_SIPAC_URL');
+    this.baseSigaaUrl = this.configService.getOrThrow<string>('BASE_SIGAA_URL');
     this.username = this.configService.getOrThrow<string>('SIPAC_USERNAME');
     this.password = this.configService.getOrThrow<string>('SIPAC_PASSWORD');
     this.authRetryLimit = this.configService.get<number>('AUTH_RETRY_LIMIT', 2);
@@ -70,9 +84,14 @@ export class SipacService {
    * Performs the full authentication flow: CAS login + SIPAC ticket validation.
    * Returns the final combined cookies necessary for accessing SIPAC pages.
    */
-  private async performFullAuthentication(): Promise<string[]> {
+  private async performFullAuthentication(
+    targetServiceUrl?: string,
+  ): Promise<{ cookies: string[]; finalRedirectUrl: string }> {
+    const serviceUrl = targetServiceUrl || this.sipacServiceUrl;
+    const loginUrl = `${this.ssoLoginUrl}?service=${encodeURIComponent(serviceUrl)}`;
+
     this.logger.log(
-      'Performing full authentication (CAS + SIPAC Ticket Validation)...',
+      `Performing full authentication (CAS + ${targetServiceUrl} Ticket Validation)...`,
     );
     await this.cacheManager.del(AUTH_RETRY_COUNT_KEY); // Reset retry count
 
@@ -82,10 +101,10 @@ export class SipacService {
       // --- Step 1: CAS Authentication ---
 
       // 1a: GET Login Page to get initial cookies and form tokens
-      this.logger.debug(`CAS Auth Step 1a: GET ${this.loginUrl}`);
+      this.logger.debug(`CAS Auth Step 1a: GET ${loginUrl}`);
       const initialResponse = await firstValueFrom(
         this.httpService
-          .get<string>(this.loginUrl, {
+          .get<string>(loginUrl, {
             headers: {
               // Standard browser-like headers
               'User-Agent':
@@ -126,7 +145,7 @@ export class SipacService {
 
       // 1b: POST Credentials to CAS
       this.logger.debug(
-        `CAS Auth Step 1b: POST to ${this.loginUrl} (no auto redirect)`,
+        `CAS Auth Step 1b: POST to ${loginUrl} (no auto redirect)`,
       );
       const loginData = new URLSearchParams();
       loginData.append('username', this.username);
@@ -139,16 +158,16 @@ export class SipacService {
 
       const postResponse = await firstValueFrom(
         this.httpService
-          .post<string>(this.loginUrl, loginData.toString(), {
+          .post<string>(loginUrl, loginData.toString(), {
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded',
               'User-Agent':
                 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36',
-              Referer: this.loginUrl,
+              Referer: loginUrl,
               Cookie: initialCookies.join('; '), // Send initial JSESSIONID
               Accept:
                 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-              Origin: new URL(this.loginUrl).origin,
+              Origin: new URL(loginUrl).origin,
               'Accept-Language': 'pt,pt-BR;q=0.9,en;q=0.8',
               'Cache-Control': 'max-age=0',
               Connection: 'keep-alive',
@@ -238,7 +257,7 @@ export class SipacService {
 
       // --- Step 2: SIPAC Ticket Validation (GET Request to Ticket URL - No Auto Redirect) ---
       this.logger.debug(
-        `SIPAC Ticket Validation Step 2: GET ${locationHeaderTicketUrl} (no auto redirect)`,
+        `${targetServiceUrl} Ticket Validation Step 2: GET ${locationHeaderTicketUrl} (no auto redirect)`,
       );
       const ticketValidationResponse = await firstValueFrom(
         this.httpService
@@ -249,7 +268,7 @@ export class SipacService {
                 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36',
               Accept:
                 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-              Referer: this.loginUrl, // Referer is the previous CAS page
+              Referer: loginUrl, // Referer is the previous CAS page
               'Accept-Language': 'pt,pt-BR;q=0.9,en;q=0.8',
               Connection: 'keep-alive',
               'Sec-Fetch-Dest': 'document',
@@ -263,7 +282,7 @@ export class SipacService {
           .pipe(
             catchError((error: AxiosError) => {
               this.logger.error(
-                `SIPAC Ticket validation GET failed: ${error.message}`,
+                `${targetServiceUrl} Ticket validation GET failed: ${error.message}`,
               );
               if (error.response) {
                 this.logger.error(`Status: ${error.response.status}`);
@@ -278,7 +297,7 @@ export class SipacService {
                 }
               }
               throw new InternalServerErrorException(
-                'Failed GET for SIPAC ticket validation.',
+                'Failed GET for ${targetServiceUrl} ticket validation.',
               );
             }),
           ),
@@ -289,7 +308,7 @@ export class SipacService {
         // If SIPAC doesn't respond with a redirect after successful ticket validation,
         // it usually means failure (often redirects back to CAS login, caught by isLoginPage)
         this.logger.error(
-          `Ticket validation failed: Expected 302 redirect from SIPAC after ticket validation, received ${ticketValidationResponse.status}.`,
+          `Ticket validation failed: Expected 302 redirect from ${targetServiceUrl} after ticket validation, received ${ticketValidationResponse.status}.`,
         );
         if (this.isLoginPage(ticketValidationResponse)) {
           // This checks if the response content or URL looks like the CAS login page
@@ -307,25 +326,31 @@ export class SipacService {
           );
         }
         throw new UnauthorizedException(
-          `Ticket validation failed (SIPAC Status: ${ticketValidationResponse.status})`,
+          `Ticket validation failed (${targetServiceUrl} Status: ${ticketValidationResponse.status})`,
         );
       }
 
       // --- Got 302 from SIPAC (Ticket Validation Success!) ---
       this.logger.log(
-        'SIPAC Ticket validation successful (Received 302 redirect from SIPAC).',
+        '${targetServiceUrl} Ticket validation successful (Received 302 redirect from SIPAC).',
       );
-      const finalRedirectUrl = ticketValidationResponse.headers['location']; // Should be the target page within SIPAC
       const sipacCookies = this.extractCookies(
         ticketValidationResponse.headers,
       ); // Should contain JSESSIONID for sipac.ufrn.br domain
-      this.logger.debug(`SIPAC redirecting to: ${finalRedirectUrl}`);
-      this.logger.debug(`Cookies set by SIPAC: ${sipacCookies.join('; ')}`);
 
-      // Combine ALL cookies needed for subsequent requests: CAS context + SIPAC session
+      const finalRedirectUrl = ticketValidationResponse.headers['location']; // Você já tem isso
+
+      this.logger.debug(
+        `${targetServiceUrl} redirecting to: ${finalRedirectUrl}`,
+      );
+      this.logger.debug(
+        `Cookies set by ${targetServiceUrl}: ${sipacCookies.join('; ')}`,
+      );
+
+      // MUDE PARA:
       const finalCombinedCookies = this.mergeCookies(
-        cookiesForTicketValidation, // Contains CASTGC + initial/CAS JSESSIONID
-        sipacCookies, // Contains SIPAC JSESSIONID
+        cookiesForTicketValidation,
+        sipacCookies,
       );
 
       // Sanity check: Ensure we have the SIPAC JSESSIONID
@@ -336,24 +361,21 @@ export class SipacService {
       if (!hasSipacSession) {
         // This might not be fatal if SIPAC uses another cookie name, but it's a warning sign
         this.logger.warn(
-          'Could not confirm standard JSESSIONID cookie set by SIPAC after ticket validation. Session might not work correctly if another name is used.',
+          'Could not confirm standard JSESSIONID cookie set by ${targetServiceUrl} after ticket validation. Session might not work correctly if another name is used.',
         );
       }
 
       this.logger.log(
-        'Full authentication successful (CAS + SIPAC Ticket Validation + SIPAC Session established).',
+        'Full authentication successful (CAS + ${targetServiceUrl} Ticket Validation + ${targetServiceUrl} Session established).',
       );
       this.logger.debug(
         `Storing final combined cookies in cache (TTL: ${this.cacheTtl * 1000}ms): ${finalCombinedCookies.join('; ')}`,
       );
-      // Store the complete set of necessary cookies in cache using milliseconds for TTL
-      await this.cacheManager.set(
-        AUTH_COOKIE_KEY,
-        finalCombinedCookies,
-        this.cacheTtl * 1000,
-      );
-      await this.cacheManager.del(AUTH_RETRY_COUNT_KEY); // Reset retry counter on full success
-      return finalCombinedCookies; // Return the complete set of cookies needed for SIPAC access
+
+      return {
+        cookies: finalCombinedCookies,
+        finalRedirectUrl: finalRedirectUrl,
+      }; // Return the complete set of cookies needed for SIPAC access
     } catch (error) {
       this.logger.error(
         `Full authentication process failed: ${error.message}`,
@@ -368,49 +390,80 @@ export class SipacService {
   }
 
   /**
-   * Retrieves valid cookies from cache or triggers the full authentication flow.
-   * Manages retry attempts for authentication failures.
+   * Obtém cookies de autenticação para um sistema alvo (SIPAC ou SIGAA).
+   * Lida automaticamente com a seleção de vínculo do SIGAA, se necessário.
    */
-  async getAuthCookies(retryCount = 0): Promise<string[]> {
-    const cachedCookies =
-      await this.cacheManager.get<string[]>(AUTH_COOKIE_KEY);
+  async getAuthCookies(
+    targetSystem: TargetSystem = 'sipac',
+  ): Promise<string[]> {
+    const cacheKey = `${AUTH_COOKIE_KEY_PREFIX}${targetSystem}`;
+    const cachedCookies = await this.cacheManager.get<string[]>(cacheKey);
+
     if (cachedCookies && cachedCookies.length > 0) {
-      this.logger.debug('Using cached authentication cookies.');
+      this.logger.debug(
+        `Using cached authentication cookies for [${targetSystem}].`,
+      );
       return cachedCookies;
     }
 
     this.logger.log(
-      'No valid cached cookies found. Triggering full authentication.',
+      `No valid cached cookies for [${targetSystem}]. Triggering authentication for [${targetSystem}].`,
     );
-    // Check retry limit before attempting authentication
-    if (retryCount >= this.authRetryLimit) {
-      this.logger.error(
-        `Authentication retry limit (${this.authRetryLimit}) reached.`,
-      );
-      throw new UnauthorizedException(
-        'Authentication failed after multiple retries.',
-      );
-    }
+
+    const serviceUrl =
+      targetSystem === 'sigaa' ? this.sigaaServiceUrl : this.sipacServiceUrl;
 
     try {
-      // Attempt the full authentication flow
-      const newCookies = await this.performFullAuthentication();
-      return newCookies;
+      // 1. Executa a autenticação inicial
+      const authResult = await this.performFullAuthentication(serviceUrl);
+
+      let finalActiveCookies: string[];
+
+      // 2. LÓGICA CONDICIONAL: Verifica se precisa selecionar o vínculo
+      if (
+        targetSystem === 'sigaa' &&
+        authResult.finalRedirectUrl.includes('escolhaVinculo.do')
+      ) {
+        this.logger.log(
+          'SIGAA login requires role selection. Proceeding to select a role.',
+        );
+        finalActiveCookies = await this._completeSigaaLogin(
+          authResult.cookies,
+          authResult.finalRedirectUrl,
+        );
+      } else {
+        // Para o SIPAC, ou para o SIGAA quando não há múltiplos vínculos
+        this.logger.log('Direct login successful. No role selection needed.');
+        finalActiveCookies = authResult.cookies;
+      }
+
+      // 3. Armazena no cache e retorna os cookies da sessão totalmente ativa
+      this.logger.debug(
+        `Storing fully active [${targetSystem}] cookies in cache (Key: ${cacheKey})`,
+      );
+      await this.cacheManager.set(
+        cacheKey,
+        finalActiveCookies,
+        this.cacheTtl * 1000,
+      );
+
+      return finalActiveCookies;
     } catch (error) {
       this.logger.error(
-        `Full Authentication attempt ${retryCount + 1} failed. Error: ${error.message}`,
+        `Authentication for [${targetSystem}] failed. Error: ${error.message}`,
+        error.stack,
       );
-      // Rethrow the error to be caught by the caller (e.g., fetchAndParse's retry logic)
       throw error;
     }
   }
 
   /** Clears authentication cookies from the cache. */
-  async invalidateAuth(): Promise<void> {
-    this.logger.warn('Invalidating authentication cookies from cache.');
-    await this.cacheManager.del(AUTH_COOKIE_KEY);
-    // Also clear the retry count if it exists
-    await this.cacheManager.del(AUTH_RETRY_COUNT_KEY);
+  async invalidateAuth(targetSystem: TargetSystem = 'sipac'): Promise<void> {
+    const cacheKey = `${AUTH_COOKIE_KEY_PREFIX}${targetSystem}`;
+    this.logger.warn(
+      `Invalidating [${targetSystem}] authentication cookies from cache (Key: ${cacheKey}).`,
+    );
+    await this.cacheManager.del(cacheKey);
   }
 
   /** Scheduled task to proactively refresh authentication cookies during working hours (Mon-Fri). */
@@ -447,7 +500,7 @@ export class SipacService {
         this.logger.log(
           `Tentativa Interna de Autenticação ${internalAuthRetryAttempt + 1} para busca (Tentativa do Chamador: ${callerAttemptNumber}): ${method} ${targetUrl}`,
         );
-        const cookies = await this.getAuthCookies(internalAuthRetryAttempt);
+        const cookies = await this.getAuthCookies();
 
         let response: AxiosResponse<string>;
         const commonHeaders = {
@@ -972,5 +1025,126 @@ export class SipacService {
       html.includes('Nome de Usuário') || // CAS login form label
       html.includes('Autenticação Integrada') // CAS page title/header
     );
+  }
+
+  /**
+   * Manipula a página "escolhaVinculo.do" do SIGAA, simulando o clique no primeiro vínculo.
+   * @param initialCookies Cookies obtidos na etapa de login.
+   * @param vinculoPageUrl A URL da página de seleção de vínculo.
+   * @returns Os cookies finais de uma sessão totalmente ativa.
+   */
+  private async _completeSigaaLogin(
+    initialCookies: string[],
+    vinculoPageUrl: string,
+  ): Promise<string[]> {
+    this.logger.log(
+      `Handling SIGAA login completion flow, starting from: ${vinculoPageUrl}`,
+    );
+
+    // --- ETAPA 1: Obter o HTML da página de seleção de vínculo ---
+    // Esta etapa é necessária para encontrar o link do portal (servidor, discente, etc.)
+    this.logger.debug('Step 1: Fetching the role selection page HTML.');
+    const pageResponse = await firstValueFrom(
+      this.httpService.get<string>(vinculoPageUrl, {
+        headers: { Cookie: initialCookies.join('; ') },
+        responseEncoding: 'latin1', // SIGAA usa codificação latin1
+      }),
+    );
+
+    const $ = cheerio.load(pageResponse.data);
+
+    // --- ETAPA 2: Encontrar e "clicar" no link do primeiro vínculo disponível ---
+    this.logger.debug('Step 2: Parsing HTML to find the role selection link.');
+    const vinculoLink = $('a[href*="escolhaVinculo.do?dispatch=escolher"]')
+      .first()
+      .attr('href');
+
+    if (!vinculoLink) {
+      this.logger.error('Could not find the role selection link on the page.');
+      // Logar um trecho do HTML pode ajudar a depurar se o seletor falhar no futuro
+      this.logger.debug(`HTML excerpt: ${pageResponse.data.substring(0, 500)}`);
+      throw new Error('Failed to parse SIGAA role selection page.');
+    }
+
+    // Constrói a URL absoluta para a seleção do vínculo
+    const absoluteVinculoUrl = new URL(vinculoLink, this.baseSigaaUrl).href;
+    this.logger.log(`Found role link. Following to: ${absoluteVinculoUrl}`);
+
+    // --- ETAPA 3: Fazer a requisição para selecionar o vínculo, sem seguir o redirecionamento ---
+    // O objetivo aqui é capturar o redirecionamento para a próxima página (a tela de avisos).
+    this.logger.debug(
+      'Step 3: Following the role link to get the next redirect.',
+    );
+    const vinculoResponse = await firstValueFrom(
+      this.httpService.get(absoluteVinculoUrl, {
+        headers: {
+          Cookie: initialCookies.join('; '),
+          Referer: vinculoPageUrl, // O referer é a página de onde "viemos"
+        },
+        maxRedirects: 0, // CRÍTICO: Não seguir o redirect automaticamente
+        validateStatus: (status) => status >= 200 && status < 400, // Aceitar 302 como sucesso
+      }),
+    );
+
+    // Valida se a seleção do vínculo funcionou e nos redirecionou
+    if (vinculoResponse.status !== 302 || !vinculoResponse.headers.location) {
+      this.logger.error(
+        `Expected a 302 redirect after selecting role, but got status ${vinculoResponse.status}.`,
+      );
+      throw new Error(
+        'Failed to activate SIGAA portal session after role selection.',
+      );
+    }
+
+    // Mescla quaisquer novos cookies que a seleção de vínculo possa ter nos dado
+    const cookiesAfterVinculo = this.mergeCookies(
+      initialCookies,
+      this.extractCookies(vinculoResponse.headers),
+    );
+    const nextUrl = new URL(vinculoResponse.headers.location, this.baseSigaaUrl)
+      .href;
+
+    this.logger.log(`Successfully selected role. Redirecting to: ${nextUrl}`);
+
+    // --- ETAPA 4: Lidar com a tela de avisos (`telaAvisoLogon.jsf`) se ela aparecer ---
+    // Esta é a última barreira antes de entrar no portal.
+    if (nextUrl.includes('telaAvisoLogon.jsf')) {
+      this.logger.log(
+        'Step 4: Navigating through the "telaAvisoLogon.jsf" page...',
+      );
+
+      // Fazemos um GET para a página de aviso. O servidor então nos redirecionará para o portal final.
+      // Desta vez, permitimos que o Axios siga os redirecionamentos para chegar ao destino final.
+      const portalResponse = await firstValueFrom(
+        this.httpService.get(nextUrl, {
+          headers: {
+            Cookie: cookiesAfterVinculo.join('; '),
+            Referer: absoluteVinculoUrl, // O referer é a URL de seleção de vínculo que acabamos de visitar
+          },
+          maxRedirects: 5, // Permitir que o Axios siga para o portal final
+        }),
+      );
+
+      // Os cookies finais e definitivos são os coletados após esta última etapa.
+      const finalActiveCookies = this.mergeCookies(
+        cookiesAfterVinculo,
+        this.extractCookies(portalResponse.headers),
+      );
+      this.logger.log(
+        'Successfully navigated past the aviso page. Session is now fully active.',
+      );
+      return finalActiveCookies;
+    } else {
+      // Se a seleção de vínculo nos redirecionou para um lugar que não é a tela de avisos,
+      // assumimos que a sessão já está ativa.
+      this.logger.log(
+        'No aviso page detected. Assuming session is already active.',
+      );
+      return cookiesAfterVinculo;
+    }
+  }
+
+  public getBaseSigaaUrl(): string {
+    return this.baseSigaaUrl;
   }
 } // End of SipacService class

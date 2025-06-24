@@ -6,6 +6,13 @@
 GET {{urlLocal}}/portal/administrativo
 Content-Type: {{contentType}}
 
+### GET image
+GET {{urlLocal}}/image
+?idProducao=8027032
+&key=01a259ddff3d05ed3ae5df8e5cc61594
+Content-Type: {{contentType}}
+
+
 ### GET requisição de material
 GET {{urlLocal}}/requisicao/material
 ?id=2033086

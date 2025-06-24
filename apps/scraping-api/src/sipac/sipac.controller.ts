@@ -12,10 +12,17 @@ import {
   Param,
   NotFoundException,
   Req,
+  Res,
+  BadRequestException,
+  HttpException,
+  InternalServerErrorException,
 } from '@nestjs/common';
+import { Response } from 'express';
 import { SipacService } from './sipac.service';
+import { ImageParserService } from './html-parser/image-parser.service';
 import { IsNotEmpty, IsUrl, IsOptional, IsString, IsIn } from 'class-validator';
 import { sipacPathMappings } from './sipac-paths.map';
+import { GetFileService } from './get-file.service';
 
 // DTO for fetching a SIPAC page with a specified URL, method, and optional body.
 export class FetchSipacPageDto {
@@ -48,7 +55,11 @@ export class SipacPathRequestDto {
 export class SipacController {
   private readonly logger = new Logger(SipacController.name);
 
-  constructor(private readonly sipacService: SipacService) {}
+  constructor(
+    private readonly sipacService: SipacService,
+    private readonly imageParserService: ImageParserService,
+    private readonly getFileService: GetFileService,
+  ) {}
 
   // Endpoint to fetch a SIPAC page using a specified URL, method, and optional body.
   @Post('fetch')
@@ -103,7 +114,7 @@ export class SipacController {
     try {
       await this.sipacService.invalidateAuth();
       this.logger.log('Cache invalidated. Performing full authentication...');
-      const cookies = await this.sipacService.getAuthCookies(0);
+      const cookies = await this.sipacService.getAuthCookies();
       this.logger.log('Manual re-authentication successful.');
       return { message: 'Re-authentication successful.', cookies: cookies };
     } catch (error) {
@@ -112,6 +123,66 @@ export class SipacController {
         error.stack,
       );
       throw error;
+    }
+  }
+
+  /**
+   * Endpoint para buscar um arquivo de produção do SIGAA (ex: imagem, PDF).
+   * Ele abstrai a construção da URL, exigindo apenas os parâmetros chave.
+   * @param res - O objeto de resposta do Express para streaming do arquivo.
+   * @param idProducao - O ID da produção a ser buscada.
+   * @param key - A chave de acesso para a produção.
+   */
+  @Get('image')
+  async getImage(
+    @Res() res: Response,
+    @Query('idProducao') idProducao: string,
+    @Query('key') key: string,
+  ) {
+    this.logger.log(
+      `Received request to fetch image for idProducao: ${idProducao}`,
+    );
+
+    // 1. Validação dos parâmetros de entrada
+    if (!idProducao || !key) {
+      throw new BadRequestException(
+        'Both "idProducao" and "key" query parameters are required.',
+      );
+    }
+
+    // 2. Construção da URL final de forma segura dentro do backend
+    const baseUrl = 'https://sigaa.ufrn.br/sigaa/verProducao';
+    const fullUrl = `${baseUrl}?idProducao=${idProducao}&key=${key}`;
+    this.logger.log(`Assembled final URL: ${fullUrl}`);
+
+    try {
+      // 3. Chama o serviço com a URL completa e correta
+      const blob = await this.getFileService.getArquivoDeProducao(fullUrl);
+
+      // 4. Envia o arquivo de volta para o cliente
+      res.setHeader('Content-Type', blob.type);
+      res.setHeader('Content-Length', blob.size.toString());
+      // Você pode tentar criar um nome de arquivo mais dinâmico se quiser
+      res.setHeader(
+        'Content-Disposition',
+        `attachment; filename="producao_${idProducao}"`,
+      );
+
+      const buffer = Buffer.from(await blob.arrayBuffer());
+      res.send(buffer);
+    } catch (error) {
+      this.logger.error(
+        `Error processing image request for idProducao ${idProducao}: ${error.message}`,
+        error.stack,
+      );
+
+      // Re-lança o erro para que o Exception Filter do NestJS o capture e formate a resposta de erro
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      throw new InternalServerErrorException(
+        `Failed to retrieve the file: ${error.message}`,
+      );
     }
   }
 
