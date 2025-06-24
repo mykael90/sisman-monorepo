@@ -84,11 +84,14 @@ function isSismanApiErrorResponse(obj: any): obj is ISismanApiErrorResponse {
  * @throws Throws {@link SismanApiError} if the API returns an error response
  *         in the expected JSON format.
  */
+
+export type ResponseType = 'json' | 'arraybuffer';
+
 export async function fetchApiSisman(
   relativeUrl: string,
   accessTokenSisman?: string,
-  options: RequestInit = {}
-): Promise<Response> {
+  options: RequestInit & { body?: any; responseType?: ResponseType } = {}
+): Promise<Response | ArrayBuffer> {
   const baseUrl = process.env.SISMAN_API_URL;
   if (!baseUrl) {
     const errorMessage =
@@ -103,9 +106,13 @@ export async function fetchApiSisman(
   const fullUrl = `${cleanBaseUrl}/${cleanRelativeUrl}`;
 
   const headers = new Headers(options.headers); // Handles various HeadersInit types
-  if (!headers.has('Content-Type')) {
+
+  if (options.body instanceof ArrayBuffer) {
+    headers.set('Content-Type', 'image/jpeg'); // Or other appropriate image type
+  } else if (!headers.has('Content-Type')) {
     headers.set('Content-Type', 'application/json');
   }
+
   if (accessTokenSisman) {
     headers.set('Authorization', `Bearer ${accessTokenSisman}`);
   }
@@ -114,7 +121,12 @@ export async function fetchApiSisman(
     logger.info(
       `fetchApiSisman: Fetching ${fullUrl} with method ${options.method || 'GET'}`
     );
-    const response = await fetch(fullUrl, { ...options, headers });
+
+    const response = await fetch(fullUrl, {
+      ...options,
+      headers,
+      body: options.body
+    });
 
     if (!response.ok) {
       const errorBodyText = await response.text();
@@ -160,6 +172,11 @@ export async function fetchApiSisman(
     }
 
     logger.info(`fetchApiSisman: Request to ${fullUrl} successful.`);
+
+    if (options.responseType === 'arraybuffer') {
+      return response.arrayBuffer();
+    }
+
     return response;
   } catch (error) {
     // Re-throw SismanApiError instances directly

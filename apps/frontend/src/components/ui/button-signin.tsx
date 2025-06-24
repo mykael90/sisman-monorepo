@@ -36,7 +36,12 @@ const SignInButton = () => {
           <DropdownMenuTrigger className='cursor-pointer'>
             <div className='flex items-center gap-2'>
               <UserAvatar
-                imageUrl={session?.user?.image}
+                imageUrl={
+                  session?.user?.image
+                    ? // TODO: se ficar lento, armazenar foto no próprio SISMAN
+                      `/api/sipac/foto?${session?.user?.image?.split('?')[1]}`
+                    : undefined
+                }
                 name={
                   session?.user?.login
                     ? getNameFromLogin(session.user.login)
@@ -54,7 +59,12 @@ const SignInButton = () => {
             <DropdownMenuLabel>
               <div className='flex items-center gap-2'>
                 <UserAvatar
-                  imageUrl={session?.user?.image}
+                  imageUrl={
+                    session?.user?.image
+                      ? // TODO: se ficar lento, armazenar foto no próprio SISMAN
+                        `/api/sipac/foto?${session?.user?.image?.split('?')[1]}`
+                      : undefined
+                  }
                   name={
                     session?.user?.login
                       ? getNameFromLogin(session.user.login)
