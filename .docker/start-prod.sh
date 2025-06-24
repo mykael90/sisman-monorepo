@@ -39,7 +39,7 @@ echo "Estrutura do banco de dados aplicada com sucesso."
 
 echo "--> Passo 2: Povoando o banco de dados com 'pnpm seed'..."
 # Da mesma forma, executa o seeder a partir do diretório do backend.
-(cd apps/backend && pnpm seed)
+(cd apps/backend && pnpm seed:prod)
 echo "Banco de dados povoado com sucesso."
 
 

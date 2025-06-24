@@ -21,6 +21,11 @@ import { UpdateRoleDto } from '../../roles/dto/roles/role.dto';
 
 export class CreateUserDto implements Prisma.UserCreateManyInput {
   @ApiProperty()
+  @IsOptional()
+  @IsNumber()
+  id?: number;
+
+  @ApiProperty()
   @IsNotEmpty()
   @IsString()
   name: string;

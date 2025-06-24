@@ -62,7 +62,8 @@ const transformAndValidateUser: TransformValidateFn<
   // }
 
   // Construct the Prisma Create Input object using the validated DTO data
-  const createInput: Prisma.UserCreateInput = {
+  const createInput: Prisma.UserUncheckedCreateInput = {
+    id: userDto.id,
     name: userDto.name,
     email: userDto.email,
     login: userDto.login
