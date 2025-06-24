@@ -4,8 +4,9 @@
   "version": "1.0.0",
   "scripts": {
     "backend:dev": "pnpm --filter sisman-backend start:dev",
-    "backend:seed": "pnpm --filter sisman-backend seed",
+    "backend:seed:dev": "pnpm --filter sisman-backend seed:dev",
     "frontend:dev": "pnpm --filter sisman-frontend start:dev",
+    "scraping-api:dev": "pnpm --filter scraping-api start:dev",
     "build": "pnpm run --recursive build",
     "lint": "pnpm run --recursive lint",
     "format": "pnpm run --recursive format",

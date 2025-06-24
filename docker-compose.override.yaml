@@ -1,4 +1,6 @@
-
+####################################################
+# DOCKER-COMPOSE PARA DESENVOLVIMENTO COM HOT-RELOAD
+####################################################
 services:
 
   workspace:
@@ -9,21 +11,18 @@ services:
     ports:
       - 3080:3080
       - 3000:3000
-      # - 9229:9229  # Porta para o debug do Visual Studio Code, fechar se em produção ou debug no proprio conteiner
     environment:
-      ENV: ${ENV}
+      ENV: dev
       TZ: America/Sao_Paulo
-      # DEBUG_MODE: ${DEBUG_MODE}
     env_file:
       .env
-      # - ${ENV_FILE_RMQ}
-      # - ${ENV_FILE_KC}
     volumes:
+    # HOT-RELOAD
       - .:/home/node/sisman-monorepo
     restart: unless-stopped
     depends_on:
       - db
-    networks: # <-- Conectar à rede compartilhada
+    networks:
       - sisman_net
 
   db:
@@ -36,13 +35,10 @@ services:
       - 3306:3306
     env_file:
       .env
-      # - ${ENV_FILE_RMQ}
-      # - ${ENV_FILE_KC}
     volumes:
-    # - ./.docker/mariadb:/docker-entrypoint-initdb.d
     - ./_data/mariadb-data/${ENV}:/var/lib/mysql
     restart: unless-stopped
-    networks: # <-- Conectar à rede compartilhada
+    networks:
       - sisman_net
 
       # Define a rede compartilhada

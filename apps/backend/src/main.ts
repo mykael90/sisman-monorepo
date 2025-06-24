@@ -6,14 +6,17 @@ import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import 'src/shared/utils/bigint-tojson';
 import 'src/shared/utils/date-tojson';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const configService = app.get(ConfigService);
+  const port = configService.get<number>('PORT_BACKEND', 3080);
   const logger = new Logger('Bootstrap');
 
-  app.enableCors({
-    origin: ['http://10.10.10.10:3002', 'http://localhost:3090']
-  });
+  // app.enableCors({
+  //   origin: ['http://10.10.10.10:3002', 'http://localhost:3090']
+  // });
 
   // Remove propriedades não listadas no DTO
   // Transforma o payload para o tipo do DTO
@@ -43,7 +46,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  await app.listen(3080);
+  await app.listen(port);
   logger.log('SISMAN is listening...');
 
   // Se o modo de desenvolvimento estiver ativo, inicie o debugger manualmente
