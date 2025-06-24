@@ -37,7 +37,11 @@ const SignInButton = () => {
             <div className='flex items-center gap-2'>
               <UserAvatar
                 imageUrl={session?.user?.image}
-                name={session?.user?.name}
+                name={
+                  session?.user?.login
+                    ? getNameFromLogin(session.user.login)
+                    : getFirstAndLastName(session?.user?.name)
+                }
               />
               <span className='hidden text-sm text-gray-600 sm:block dark:text-gray-300'>
                 {session?.user?.login
