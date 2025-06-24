@@ -92,8 +92,9 @@ export class ImageParserService {
 
         // Verifica se uma resposta 200 OK é na verdade uma página de login (ex: servidor envia HTML com status 200)
         if (
-          contentType.includes('text/html') &&
-          this.isLoginPageFromAxiosResponse(response)
+          contentType.includes('text/html')
+          //TODO: mesmo quando expira não está funcionando. Precisa ajustar esse método isLoginPageFromAxiosResponse
+          // && this.isLoginPageFromAxiosResponse(response)
         ) {
           this.logger.warn(
             `Image fetch received login page as 200 OK response. Invalidating auth and retrying.`,
