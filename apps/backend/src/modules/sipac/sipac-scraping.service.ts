@@ -1,4 +1,10 @@
-import { Inject, Injectable, Logger, OnModuleInit } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  Logger,
+  OnModuleInit,
+  ServiceUnavailableException
+} from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { ConfigType } from '@nestjs/config';
 import { AxiosRequestConfig, AxiosResponse } from 'axios';
@@ -38,14 +44,27 @@ export class SipacScrapingService implements OnModuleInit {
           return await firstValueFrom(this.httpService.request<T>(config));
         } catch (error) {
           this.logger.error(
-            `Erro durante requisição HTTP de dados para ${config.url}: ${error.message}`,
+            `Erro durante requisição HTTP de dados para ${config.url}: ${error.message} ${error.code}`,
             error.stack
           );
+          this.logger.error(error.code === 'ECONNREFUSED');
           if (error.response) {
             this.logger.error(
               `Response status: ${error.response.status}, data: ${JSON.stringify(error.response.data)}`
             );
           }
+
+          // Captura erros de conexão, como o serviço estar offline
+          if (error.code === 'ECONNREFUSED') {
+            this.logger.error(
+              `A conexão com o serviço em '${config.url}' foi recusada.`
+            );
+            const serviceUrl = new URL(config.url);
+            throw new ServiceUnavailableException(
+              `A conexão com o serviço em '${serviceUrl.host}' foi recusada. O serviço pode estar indisponível.`
+            );
+          }
+
           throw error;
         }
       }
