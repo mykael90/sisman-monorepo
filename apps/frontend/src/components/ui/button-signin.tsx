@@ -55,7 +55,11 @@ const SignInButton = () => {
               <div className='flex items-center gap-2'>
                 <UserAvatar
                   imageUrl={session?.user?.image}
-                  name={session?.user?.name}
+                  name={
+                    session?.user?.login
+                      ? getNameFromLogin(session.user.login)
+                      : getFirstAndLastName(session?.user?.name)
+                  }
                   size='xl'
                 />
                 <div className='flex flex-col gap-1'>
