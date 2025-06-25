@@ -26,6 +26,26 @@ const SignInButton = () => {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
+  let idProducao = null;
+  let key = null;
+  const publicUrlBaseFiles = 'https://sigaa.ufrn.br/shared/verArquivo';
+  //a foto que vem direto na informação do info do sipac não é pública, tem que fazer esse ajuste
+
+  if (session?.user?.image) {
+    try {
+      // Assumindo que session.user.image é uma URL completa
+      const url = new URL(session.user.image);
+      idProducao = url.searchParams.get('idProducao');
+      key = url.searchParams.get('key');
+    } catch (error) {
+      console.error(
+        'URL da imagem do usuário é inválida:',
+        session.user.image,
+        error
+      );
+    }
+  }
+
   const userIsInSigninPage: boolean = usePathname().startsWith('/signin');
 
   if (!mounted) return <SignInButtonSkeleton></SignInButtonSkeleton>;
@@ -37,9 +57,8 @@ const SignInButton = () => {
             <div className='flex items-center gap-2'>
               <UserAvatar
                 imageUrl={
-                  session?.user?.image
-                    ? // TODO: se ficar lento, armazenar foto no próprio SISMAN
-                      `/api/sipac/foto?${session?.user?.image?.split('?')[1]}`
+                  idProducao && key
+                    ? `${publicUrlBaseFiles}?idArquivo=${idProducao}&key=${key}`
                     : undefined
                 }
                 name={
@@ -60,9 +79,8 @@ const SignInButton = () => {
               <div className='flex items-center gap-2'>
                 <UserAvatar
                   imageUrl={
-                    session?.user?.image
-                      ? // TODO: se ficar lento, armazenar foto no próprio SISMAN
-                        `/api/sipac/foto?${session?.user?.image?.split('?')[1]}`
+                    idProducao && key
+                      ? `${publicUrlBaseFiles}?idArquivo=${idProducao}&key=${key}`
                       : undefined
                   }
                   name={
