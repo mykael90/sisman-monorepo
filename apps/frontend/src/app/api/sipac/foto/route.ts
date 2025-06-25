@@ -57,15 +57,6 @@ async function fetchAndProcessImage(
 
   // Caso 1: A API retornou um objeto Response padrão.
   if (sismanApiResponse instanceof Response) {
-    if (!sismanApiResponse.ok) {
-      const errorText = await sismanApiResponse.text();
-      // Lançamos um erro para ser capturado pelo handler principal.
-      throw new SismanApiError(
-        `Failed to fetch image from Sisman API. Status: ${sismanApiResponse.status}`,
-        sismanApiResponse.status,
-        errorText
-      );
-    }
     const contentType =
       sismanApiResponse.headers.get('Content-Type') || 'image/jpeg';
     const imageBuffer = await sismanApiResponse.arrayBuffer();
