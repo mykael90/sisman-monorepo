@@ -20,31 +20,12 @@ import getNameFromLogin from '../../lib/getNameFromLogin';
 import handleManualSignOut from '../../lib/auth/signout-ufrn';
 import { useEffect, useState } from 'react';
 import SignInButtonSkeleton from '../skeletons/button-signin-skeleton';
+import { getPublicFotoSigaa } from '../../lib/fetch/get-public-foto-sigaa';
 
 const SignInButton = () => {
   const { data: session } = useSession();
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
-
-  let idProducao = null;
-  let key = null;
-  const publicUrlBaseFiles = 'https://sigaa.ufrn.br/shared/verArquivo';
-  //a foto que vem direto na informação do info do sipac não é pública, tem que fazer esse ajuste
-
-  if (session?.user?.image) {
-    try {
-      // Assumindo que session.user.image é uma URL completa
-      const url = new URL(session.user.image);
-      idProducao = url.searchParams.get('idProducao');
-      key = url.searchParams.get('key');
-    } catch (error) {
-      console.error(
-        'URL da imagem do usuário é inválida:',
-        session.user.image,
-        error
-      );
-    }
-  }
 
   const userIsInSigninPage: boolean = usePathname().startsWith('/signin');
 
@@ -57,8 +38,8 @@ const SignInButton = () => {
             <div className='flex items-center gap-2'>
               <UserAvatar
                 imageUrl={
-                  idProducao && key
-                    ? `${publicUrlBaseFiles}?idArquivo=${idProducao}&key=${key}`
+                  session.user.image
+                    ? getPublicFotoSigaa(session.user.image)
                     : undefined
                 }
                 name={
@@ -79,8 +60,8 @@ const SignInButton = () => {
               <div className='flex items-center gap-2'>
                 <UserAvatar
                   imageUrl={
-                    idProducao && key
-                      ? `${publicUrlBaseFiles}?idArquivo=${idProducao}&key=${key}`
+                    session.user.image
+                      ? getPublicFotoSigaa(session.user.image)
                       : undefined
                   }
                   name={

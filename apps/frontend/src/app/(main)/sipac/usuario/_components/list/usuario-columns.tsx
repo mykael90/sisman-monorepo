@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { UserPlus } from 'lucide-react';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { IUsuario } from '../../usuario-types';
+import { getPublicFotoSigaa } from '../../../../../../lib/fetch/get-public-foto-sigaa';
 
 // 1. Definir as colunas com createColumnHelper
 const columnHelper = createColumnHelper<IUsuario>();
@@ -36,13 +37,13 @@ export const columns = (
     cell: (props) => {
       const usuario = props.row.original; // Acesso ao objeto de dados completo da linha
       const nameValue = props.getValue(); // Valor da célula atual (usuario.nome)
-      const loginValue = usuario.email; // Acesso à propriedade 'login' da mesma linha
+      const loginValue = usuario.login; // Acesso à propriedade 'login' da mesma linha
 
       return (
         <div className='flex items-center gap-2 py-0.5'>
           <Avatar className='h-10 w-10'>
             <AvatarImage
-              src={usuario['url-foto']}
+              src={getPublicFotoSigaa(usuario['url-foto'])}
               alt={loginValue ? `${nameValue} (${loginValue})` : nameValue} // Ex: "Nome (Login)"
             />
             <AvatarFallback>
