@@ -158,6 +158,7 @@ exports.Prisma.MaintenanceRequestScalarFieldEnum = {
   equipmentId: 'equipmentId',
   serviceTypeId: 'serviceTypeId',
   statusId: 'statusId',
+  currentStatus: 'currentStatus',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -233,6 +234,11 @@ exports.Prisma.InfrastructureOccurrenceScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.StorageScalarFieldEnum = {
+  id: 'id',
+  name: 'name'
+};
+
 exports.Prisma.WarehouseScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -292,7 +298,8 @@ exports.Prisma.MaterialRequestScalarFieldEnum = {
   sipacUserLoginRequest: 'sipacUserLoginRequest',
   requestValue: 'requestValue',
   servedValue: 'servedValue',
-  warehouseId: 'warehouseId'
+  currentStatus: 'currentStatus',
+  storageId: 'storageId'
 };
 
 exports.Prisma.MaterialRequestStatusScalarFieldEnum = {
@@ -622,9 +629,7 @@ exports.Prisma.SipacHistoricoRequisicaoMaterialScalarFieldEnum = {
   status: 'status',
   usuario: 'usuario',
   observacoes: 'observacoes',
-  requisicaoId: 'requisicaoId',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  requisicaoId: 'requisicaoId'
 };
 
 exports.Prisma.SipacTotalizacaoElementoDespesaMaterialScalarFieldEnum = {
@@ -854,6 +859,10 @@ exports.Prisma.InfrastructureOccurrenceOrderByRelevanceFieldEnum = {
   description: 'description',
   locationDescription: 'locationDescription',
   resolutionNotes: 'resolutionNotes'
+};
+
+exports.Prisma.StorageOrderByRelevanceFieldEnum = {
+  name: 'name'
 };
 
 exports.Prisma.WarehouseOrderByRelevanceFieldEnum = {
@@ -1124,6 +1133,16 @@ exports.RequestPriority = exports.$Enums.RequestPriority = {
   URGENT: 'URGENT'
 };
 
+exports.MaintenanceRequestStatusOptions = exports.$Enums.MaintenanceRequestStatusOptions = {
+  SIPAC_HANDLING: 'SIPAC_HANDLING',
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  PARTIALLY_ATTENDED: 'PARTIALLY_ATTENDED',
+  FULLY_ATTENDED: 'FULLY_ATTENDED',
+  REJECTED: 'REJECTED',
+  CANCELLED: 'CANCELLED'
+};
+
 exports.TimelineEventType = exports.$Enums.TimelineEventType = {
   CREATION: 'CREATION',
   COMMENT: 'COMMENT',
@@ -1239,6 +1258,7 @@ exports.Prisma.ModelName = {
   SipacServiceTypeManutencao: 'SipacServiceTypeManutencao',
   Equipment: 'Equipment',
   InfrastructureOccurrence: 'InfrastructureOccurrence',
+  Storage: 'Storage',
   Warehouse: 'Warehouse',
   MaterialGlobalCatalog: 'MaterialGlobalCatalog',
   MaterialWarehouseStock: 'MaterialWarehouseStock',

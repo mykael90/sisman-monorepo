@@ -15,7 +15,7 @@ export class MaterialRequestsService {
 
   async create(data: CreateMaterialRequestWithRelationsDto): Promise<any> {
     const {
-      warehouse,
+      storage,
       items,
       statusHistory,
       sipacUnitRequesting,
@@ -23,12 +23,12 @@ export class MaterialRequestsService {
       ...restOfData
     } = data;
 
-    // Validate warehouse object if provided.
-    // If the 'warehouse' object is part of the payload, its 'id' must be present for connection.
-    // If the 'warehouse' object is not provided, Prisma will use 'warehouseId' from restOfData (which is mandatory in CreateMaterialRequestDto).
-    if (warehouse && !warehouse.id) {
+    // Validate storage object if provided.
+    // If the 'storage' object is part of the payload, its 'id' must be present for connection.
+    // If the 'storage' object is not provided, Prisma will use 'storageId' from restOfData (which is mandatory in CreateMaterialRequestDto).
+    if (storage && !storage.id) {
       throw new Error(
-        'Se o objeto "warehouse" é fornecido, seu "id" é obrigatório para conectar.'
+        'Se o objeto "storage" é fornecido, seu "id" é obrigatório para conectar.'
       );
     }
 
@@ -48,9 +48,9 @@ export class MaterialRequestsService {
 
     const createInput: Prisma.MaterialRequestCreateInput = {
       ...restOfData,
-      warehouse: warehouse?.id // If warehouse object and its id are provided, connect using it.
+      storage: storage?.id // If storage object and its id are provided, connect using it.
         ? {
-            connect: { id: warehouse.id }
+            connect: { id: storage.id }
           }
         : undefined,
       items:
@@ -181,7 +181,7 @@ export class MaterialRequestsService {
 
   async update(id: number, data: UpdateMaterialRequestWithRelationsDto) {
     const {
-      warehouse,
+      storage,
       items,
       statusHistory,
       sipacUnitRequesting,
@@ -189,10 +189,10 @@ export class MaterialRequestsService {
       ...restOfData
     } = data;
 
-    // Validate warehouse object if provided for update
-    if (warehouse && !warehouse.id) {
+    // Validate storage object if provided for update
+    if (storage && !storage.id) {
       throw new Error(
-        'Se o objeto "warehouse" é fornecido para atualização, seu "id" é obrigatório para conectar.'
+        'Se o objeto "storage" é fornecido para atualização, seu "id" é obrigatório para conectar.'
       );
     }
 
@@ -214,21 +214,21 @@ export class MaterialRequestsService {
       ...restOfData // Contains scalar fields
     };
 
-    // Handle warehouse connection
-    if (warehouse !== undefined) {
-      // warehouse object was explicitly passed
-      if (warehouse === null) {
-        // MaterialRequest.warehouseId is mandatory, so we cannot disconnect to null.
+    // Handle storage connection
+    if (storage !== undefined) {
+      // storage object was explicitly passed
+      if (storage === null) {
+        // MaterialRequest.storageId is mandatory, so we cannot disconnect to null.
         // This state should ideally be prevented by validation or DTO constraints.
-        // If warehouseId is in restOfData, it will be used.
-        // If warehouse object is null, it implies an attempt to remove a mandatory relation.
+        // If storageId is in restOfData, it will be used.
+        // If storage object is null, it implies an attempt to remove a mandatory relation.
         this.logger.warn(
-          `Attempted to set mandatory warehouse relation to null for MaterialRequest ID ${id}. This operation is ignored if warehouseId is not being updated via scalar field.`
+          `Attempted to set mandatory storage relation to null for MaterialRequest ID ${id}. This operation is ignored if storageId is not being updated via scalar field.`
         );
-      } else if (warehouse.id) {
-        updateInput.warehouse = { connect: { id: warehouse.id } };
+      } else if (storage.id) {
+        updateInput.storage = { connect: { id: storage.id } };
       }
-      // Error for warehouse object without ID is already thrown above.
+      // Error for storage object without ID is already thrown above.
     }
 
     // Handle sipacUnitRequesting (connect or disconnect)

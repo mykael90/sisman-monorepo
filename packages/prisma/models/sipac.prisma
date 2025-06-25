@@ -159,9 +159,6 @@ model SipacHistoricoRequisicaoMaterial {
     requisicaoId Int // Chave estrangeira para SipacRequisicaoMaterial.
     requisicao   SipacRequisicaoMaterial @relation(fields: [requisicaoId], references: [id], onDelete: Cascade)
 
-    createdAt DateTime @default(now()) @db.Timestamp(0)
-    updatedAt DateTime @updatedAt @db.Timestamp(0)
-
     @@index([requisicaoId])
     @@map("sipac_historico_requisicao_material")
 }

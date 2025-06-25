@@ -28,6 +28,7 @@ import sipacApiConfig from './config/sipac-api.config';
 import sipacScrapingConfig from './config/sipac-scraping.config';
 import { WarehousesModule } from './modules/warehouses/warehouses.module';
 import { MaterialRequestsModule } from './modules/material-requests/material-requests.module';
+import { StoragesModule } from './modules/storages/storages.module';
 
 @Module({
   imports: [
@@ -67,6 +68,7 @@ import { MaterialRequestsModule } from './modules/material-requests/material-req
     FilesModule,
     MaterialsModule,
     WarehousesModule,
+    StoragesModule,
     MaterialRequestsModule,
     NotificationsModule,
     MaintenanceInstancesModule,

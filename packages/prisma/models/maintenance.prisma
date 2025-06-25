@@ -25,8 +25,9 @@ model MaintenanceRequest {
     serviceTypeId Int? // Foreign key to the type of service required for this request.
     serviceType   SipacServiceTypeManutencao? @relation(fields: [serviceTypeId], references: [id], onDelete: SetNull) // Relation to the SipacServiceTypeManutencao model.
 
-    statusId Int // Foreign key to the current status of the maintenance request.
-    status   MaintenanceRequestStatus @relation(fields: [statusId], references: [id]) // Relation to the MaintenanceRequestStatus model.
+    statusId      Int // Foreign key to the current status of the maintenance request.
+    status        MaintenanceRequestStatus        @relation(fields: [statusId], references: [id]) // Relation to the MaintenanceRequestStatus model.
+    currentStatus MaintenanceRequestStatusOptions @default(PENDING)
 
     createdAt DateTime @default(now()) @db.Timestamp(0) // Timestamp for when the record was created.
     updatedAt DateTime @updatedAt @db.Timestamp(0) // Timestamp for the last update of the record.
@@ -71,6 +72,17 @@ model MaintenanceRequestStatus {
     maintenanceRequests MaintenanceRequest[] // Relation to MaintenanceRequest, indicating requests with this status.
 
     @@map("maintenance_request_statuses") // Maps this model to the 'maintenance_request_statuses' table.
+}
+
+enum MaintenanceRequestStatusOptions {
+    //TODO: need corrections
+    SIPAC_HANDLING // Status gerenciado pelo sipac
+    PENDING // Request is pending approval.
+    APPROVED // Request has been approved.
+    PARTIALLY_ATTENDED // Request has been partially fulfilled.
+    FULLY_ATTENDED // Request has been fully fulfilled.
+    REJECTED // Request has been rejected.
+    CANCELLED // Request has been cancelled.
 }
 
 // Records historical events and actions within a MaintenanceRequest.

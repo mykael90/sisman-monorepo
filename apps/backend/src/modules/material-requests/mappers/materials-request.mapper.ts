@@ -20,7 +20,6 @@ export class MaterialRequestMapper {
       protocolNumber: String(item.numeroDaRequisicao),
       requestType: 'NEW_MATERIALS',
       requestDate: item.dataDeCadastro,
-      // warehouseId: 1, // SIPAC ALMOXARIFADO CENTRAL
       maintenanceRequestId: item.sipacRequisicaoManutencaoId || undefined,
       requestedById: item.usuarioId || undefined,
       sipacUnitRequesting: item.unidadeRequisitante,
@@ -30,8 +29,9 @@ export class MaterialRequestMapper {
       requestValue: item.valorDaRequisicao,
       servedValue: item.valorDoTotalAtendido,
       purpose: 'SUPPLY_MAINTENANCE',
+      currentStatus: 'SIPAC_HANDLING',
       // relations
-      warehouse: {
+      storage: {
         id: 1 //almoxarifado central da ufrn id=1 (convenção minha)
       },
       items: item.itensDaRequisicao?.map(
@@ -46,7 +46,8 @@ export class MaterialRequestMapper {
       ),
       statusHistory: [
         {
-          status: 'SIPAC_HANDLING'
+          status: 'SIPAC_HANDLING',
+          notes: JSON.stringify(item.historicoDaRequisicao, null, 2)
         }
       ]
     };

@@ -1,4 +1,19 @@
+//Centro de distribuição, controle físico e financeiro de materiais
+// Não é vinculado a uma instância de manutenção específica, na verdade, pode atender (e atende) várias instâncias
+// A gestão do centro de distribuição está mais próxima do departamento financeiro do que do departamento de manutencão
+//Nessa implementação não será dado destaque à gestão do Storage (centro de distribuição) será considerada como uma entidade externa
+model Storage {
+    id   Int    @id @default(autoincrement()) // Unique identifier.
+    name String
+
+    //relations
+    materialRequests MaterialRequest[]
+
+    @@map("storages")
+}
+
 // Represents a physical or logical location where materials are stored.
+// depósito transitório, controle apenas físico de materiais 
 model Warehouse {
     id       Int     @id @default(autoincrement()) // Unique identifier for the warehouse.
     name     String  @unique // Name of the warehouse (e.g., "Central Warehouse Block A").
@@ -15,7 +30,6 @@ model Warehouse {
     updatedAt DateTime @updatedAt @db.Timestamp(0) // Timestamp for the last update of the record.
 
     // Relations
-    materialRequests               MaterialRequest[]
     standardMaterialStocks         MaterialWarehouseStock[] // Stock levels for "new" materials in this warehouse.
     materialDerived                MaterialDerived[] // Instances/batches of derived materials in this warehouse.
     stockMovements                 MaterialStockMovement[] // Stock movements related to this warehouse.
@@ -138,10 +152,11 @@ model MaterialRequest {
     // Items included in this material request. All items must adhere to the requestType of the header.
     items         MaterialRequestItem[]
     statusHistory MaterialRequestStatus[] // History of status changes for this request
+    currentStatus MaterialRequestStatusOptions @default(PENDING) // The current status of the request.
 
     // Other relations
-    warehouseId Int
-    warehouse   Warehouse @relation(fields: [warehouseId], references: [id]) // Relation to the Warehouse model.
+    storageId Int
+    storage   Storage @relation(fields: [storageId], references: [id]) // Relation to the storage model.
 
     materialPickingOrders MaterialPickingOrder[]
     materialWithdrawals   MaterialWithdrawal[]
@@ -158,27 +173,25 @@ enum MaterialRequestOrigin {
 }
 
 enum MaterialRequestPurpose {
-    SUPPLY_WAREHOUSE //abastecimento de almoxarifado, óleos, brocas, etc
-    SUPPLY_MAINTENANCE //atendimento direcionado a requisição de manutenção
+    SUPPLY_WAREHOUSE   @map("ALMOXARIFADO") //abastecimento de almoxarifado, óleos, brocas, etc
+    SUPPLY_MAINTENANCE @map("MANUTENCAO") //atendimento direcionado a requisição de manutenção
 }
 
 // Defines the type of materials being requested in a MaterialRequest.
 enum MaterialRequestType {
-    NEW_MATERIALS // This request is EXCLUSIVELY for new materials from the global catalog.
-    DERIVED_MATERIALS // This request is EXCLUSIVELY for derived/repurposed materials.
+    NEW_MATERIALS     @map("MATERIAIS NOVOS") // This request is EXCLUSIVELY for new materials from the global catalog.
+    DERIVED_MATERIALS @map("MATERIAIS DERIVADOS") // This request is EXCLUSIVELY for derived/repurposed materials.
 }
 
 // Defines the possible statuses for a MaterialRequest.
 enum MaterialRequestStatusOptions {
-    SIPAC_HANDLING // Status gerenciado pelo sipac
-    PENDING // Request is pending approval.
-    APPROVED // Request has been approved.
-    PARTIALLY_ATTENDED // Request has been partially fulfilled.
-    FULLY_ATTENDED // Request has been fully fulfilled.
-    REJECTED // Request has been rejected.
-    CANCELLED // Request has been cancelled.
-
-    @@map("MaterialRequestStatus")
+    SIPAC_HANDLING     @map("GERENCIADO PELO SIPAC") // Status gerenciado pelo sipac
+    PENDING            @map("PENDENTE") // Request is pending approval.
+    APPROVED           @map("APROVADO") // Request has been approved.
+    PARTIALLY_ATTENDED @map("PARCIALMENTE ATENDIDO") // Request has been partially fulfilled.
+    FULLY_ATTENDED     @map("TOTALMENTE ATENDIDO") // Request has been fully fulfilled.
+    REJECTED           @map("REJEITADO") // Request has been rejected.
+    CANCELLED          @map("CANCELADO") // Request has been cancelled.
 }
 
 // Stores the history of status changes for a MaterialRequest.
@@ -248,8 +261,10 @@ model MaterialRequestItem {
 
 // Defines the type of material requested within a MaterialRequestItem.
 enum MaterialRequestItemType {
-    GLOBAL_CATALOG // Request for a new/standard item from the global catalog.
-    DERIVED_MATERIAL // Request for a derived material (e.g., leftover, processed).
+    GLOBAL_CATALOG   @map("CATALOGO GLOBAL") // Request for a new/standard item from the global catalog.
+    DERIVED_MATERIAL @map("MATERIAL DERIVADO") // Request for a derived material (e.g., leftover, processed).
+
+    @@map("material_request_item_types")
 }
 
 // Defines different types of stock movements, offering more flexibility than an enum.
@@ -274,10 +289,10 @@ model MaterialStockMovementType {
 
 // Classifies the general operation of a StockMovementType.
 enum MaterialStockOperationType {
-    IN // Represents an increase in stock (e.g., purchase, return).
-    OUT // Represents a decrease in stock (e.g., usage, disposal).
-    ADJUSTMENT // Represents an adjustment that could be positive or negative (e.g., stock count).
-    RESERVATION // Represents a change in reserved/restricted quantity, not physical stock.
+    IN          @map("ENTRADA") // Represents an increase in stock (e.g., purchase, return).
+    OUT         @map("SAIDA") // Represents a decrease in stock (e.g., usage, disposal).
+    ADJUSTMENT  @map("AJUSTE") // Represents an adjustment that could be positive or negative (e.g., stock count).
+    RESERVATION @map("RESERVA") // Represents a change in reserved/restricted quantity, not physical stock.
 }
 
 // Records individual material stock transactions (log of all movements).
@@ -451,13 +466,14 @@ model MaterialPickingOrder {
 }
 
 enum MaterialPickingOrderStatus {
-    PENDING_PREPARATION // Aguardando almoxarifado iniciar a separação/reserva
-    IN_PREPARATION // Almoxarifado está separando/reservando os itens
-    READY_FOR_PICKUP // Materiais separados/reservados, aguardando retirada
-    PARTIALLY_WITHDRAWN // Parte dos itens desta ordem já foi retirada
-    FULLY_WITHDRAWN // Todos os itens desta ordem foram retirados
-    CANCELLED // Ordem de separação cancelada
-    EXPIRED // Ordem de separação vencida
+    PENDING_PREPARATION @map("PENDENTE PREPARACAO") // Aguardando almoxarifado iniciar a separação/reserva
+    IN_PREPARATION      @map("EM PREPARACAO") // Almoxarifado está separando/reservando os itens
+    READY_FOR_PICKUP    @map("PRONTO PARA RETIRADA") // Pronto para retirada
+    // Materiais separados/reservados, aguardando retirada
+    PARTIALLY_WITHDRAWN @map("PARCIALMENTE RETIRADO") // Parte dos itens desta ordem já foi retirada
+    FULLY_WITHDRAWN     @map("TOTALMENTE RETIRADO") // Todos os itens desta ordem foram retirados
+    CANCELLED           @map("CANCELADO") // Ordem de separação cancelada
+    EXPIRED             @map("VENCIDA") // Ordem de separação vencida
 }
 
 // --- Material Picking Order Item (Detalhe da Ordem de Separação/Reserva) ---
@@ -636,14 +652,14 @@ model MaterialTransferOrder {
 }
 
 enum MaterialTransferStatus {
-    PENDING_APPROVAL // Aguardando aprovação para a transferência
-    APPROVED // Aprovada, aguardando despacho do almoxarifado de origem
-    REJECTED // Transferência Rejeitada
-    PENDING_SHIPMENT // Aprovada, aguardando o almoxarifado de origem separar e despachar
-    IN_TRANSIT // Materiais despachados, aguardando recebimento no destino
-    PARTIALLY_RECEIVED // Parte dos materiais recebida no destino
-    FULLY_RECEIVED // Todos os materiais recebidos no destino
-    CANCELLED // Transferência cancelada
+    PENDING_APPROVAL   @map("PENDENTE APROVACAO") // Aguardando aprovação para a transferência
+    APPROVED           @map("APROVADA") // Aprovada, aguardando despacho do almoxarifado de origem
+    REJECTED           @map("REJEITADA") // Transferência Rejeitada
+    PENDING_SHIPMENT   @map("PENDENTE DESPACHO") // Aprovada, aguardando o almoxarifado de origem separar e despachar
+    IN_TRANSIT         @map("EM TRANSITO") // Materiais despachados, aguardando recebimento no destino
+    PARTIALLY_RECEIVED @map("PARCIALMENTE RECEBIDA") // Parte dos materiais recebida no destino
+    FULLY_RECEIVED     @map("TOTALMENTE RECEBIDA") // Todos os materiais recebidos no destino
+    CANCELLED          @map("CANCELADA") // Transferência cancelada
 }
 
 // --- Stock Transfer Order Item (Itens da Ordem de Transferência) ---
@@ -716,11 +732,11 @@ model MaterialReceipt {
 }
 
 enum MaterialReceiptStatus {
-    PENDING_INSPECTION
-    PARTIALLY_ACCEPTED
-    FULLY_ACCEPTED
-    REJECTED_TOTAL
-    CANCELLED
+    PENDING_INSPECTION @map("PENDENTE INSPEÇÃO")
+    PARTIALLY_ACCEPTED @map("PARCIALMENTE ACEITO")
+    FULLY_ACCEPTED     @map("TOTALMENTE ACEITO")
+    REJECTED_TOTAL     @map("TOTALMENTE REJEITADO")
+    CANCELLED          @map("CANCELADO")
 }
 
 // --- Material Receipt Item (Itens do Recebimento de Material) ---
@@ -785,16 +801,16 @@ model MaterialRestrictionOrder {
 }
 
 enum RestrictionOperationType {
-    RESTRICT // Marcar materiais como restritos
-    RELEASE_RESTRICTION // Liberar materiais que estavam restritos
+    RESTRICT            @map("RESTRINGIR") // Marcar materiais como restritos
+    RELEASE_RESTRICTION @map("LIBERAR") // Liberar materiais que estavam restritos
 }
 
 enum RestrictionOrderStatus {
-    PENDING // Ordem criada, aguardando efetivação da restrição/liberação no estoque
-    EFFECTIVE // Restrição/liberação aplicada ao estoque
-    PARTIALLY_REVERSED // Se uma restrição foi parcialmente liberada por uma ordem subsequente
-    FULLY_REVERSED // Se uma restrição foi totalmente liberada por uma ordem subsequente
-    CANCELLED // Ordem cancelada antes da efetivação
+    PENDING            @map("PENDENTE") // Ordem criada, aguardando efetivação da restrição/liberação no estoque
+    EFFECTIVE          @map("EFETIVA") // Restrição/liberação aplicada ao estoque
+    PARTIALLY_REVERSED @map("PARCIALMENTE REVERSADA") // Se uma restrição foi parcialmente liberada por uma ordem subsequente
+    FULLY_REVERSED     @map("TOTALMENTE REVERSADA") // Se uma restrição foi totalmente liberada por uma ordem subsequente
+    CANCELLED          @map("CANCELADA") // Ordem cancelada antes da efetivação
 }
 
 // --- Material Restriction Order Item (Detalhe da Ordem de Restrição/Liberação) ---

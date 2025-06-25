@@ -25,18 +25,13 @@ import {
 } from 'class-validator';
 import { UpdateSipacUnidadeDto } from '../../sipac/unidades/dto/sipac-unidade.dto';
 import {
-  CreateWarehouseDto,
-  UpdateWarehouseDto
-} from '../../warehouses/dto/warehouse.dto';
+  CreateStorageDto,
+  UpdateStorageDto
+} from '../../storages/dto/storage.dto';
 
 export class CreateMaterialRequestDto
-  implements Omit<Prisma.MaterialRequestCreateManyInput, 'warehouseId'>
+  implements Omit<Prisma.MaterialRequestCreateManyInput, 'storageId'>
 {
-  createdAt?: string | Date;
-  updatedAt?: string | Date;
-  sipacUnitRequestingId?: number;
-  sipacUnitCostId?: number;
-  // warehouseId: number;
   @ApiProperty({
     description:
       'ID da requisição de material (geralmente gerado automaticamente)',
@@ -161,14 +156,9 @@ export class CreateMaterialRequestDto
   @Type(() => Number) // Tenta converter para número, mas pode precisar de lógica customizada para Decimal
   servedValue?: string | number | Prisma.Decimal | DecimalJsLike;
 
-  // @ApiProperty({
-  //   description: 'ID do armazém de onde o material será retirado',
-  //   example: 1
-  // })
-  // @IsNumber()
-  // @IsNotEmpty()
-  // @Type(() => Number)
-  // warehouseId: number;
+  @ApiProperty()
+  @IsEnum(MaterialRequestStatusOptions)
+  currentStatus?: MaterialRequestStatusOptions;
 }
 
 export class CreateMaterialRequestItemDto
@@ -343,14 +333,14 @@ export class CreateMaterialRequestWithRelationsDto extends CreateMaterialRequest
   statusHistory?: CreateMaterialRequestStatusDto[];
 
   @ApiProperty({
-    type: () => CreateWarehouseDto,
-    description: 'Armazém associado à requisição de material.',
+    type: () => CreateStorageDto,
+    description: 'Centro de distribuição associado à requisição de material.',
     required: true
   })
   @IsOptional()
   @ValidateNested()
-  @Type(() => UpdateWarehouseDto)
-  warehouse?: UpdateWarehouseDto;
+  @Type(() => UpdateStorageDto)
+  storage?: UpdateStorageDto;
 
   @ApiProperty({
     type: () => [UpdateSipacUnidadeDto],

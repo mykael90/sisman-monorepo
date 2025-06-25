@@ -56,8 +56,9 @@ model MaintenanceRequest {
   serviceTypeId Int? // Foreign key to the type of service required for this request.
   serviceType   SipacServiceTypeManutencao? @relation(fields: [serviceTypeId], references: [id], onDelete: SetNull) // Relation to the SipacServiceTypeManutencao model.
 
-  statusId Int // Foreign key to the current status of the maintenance request.
-  status   MaintenanceRequestStatus @relation(fields: [statusId], references: [id]) // Relation to the MaintenanceRequestStatus model.
+  statusId      Int // Foreign key to the current status of the maintenance request.
+  status        MaintenanceRequestStatus        @relation(fields: [statusId], references: [id]) // Relation to the MaintenanceRequestStatus model.
+  currentStatus MaintenanceRequestStatusOptions @default(PENDING)
 
   createdAt DateTime @default(now()) @db.Timestamp(0) // Timestamp for when the record was created.
   updatedAt DateTime @updatedAt @db.Timestamp(0) // Timestamp for the last update of the record.
@@ -102,6 +103,17 @@ model MaintenanceRequestStatus {
   maintenanceRequests MaintenanceRequest[] // Relation to MaintenanceRequest, indicating requests with this status.
 
   @@map("maintenance_request_statuses") // Maps this model to the 'maintenance_request_statuses' table.
+}
+
+enum MaintenanceRequestStatusOptions {
+  //TODO: need corrections
+  SIPAC_HANDLING // Status gerenciado pelo sipac
+  PENDING // Request is pending approval.
+  APPROVED // Request has been approved.
+  PARTIALLY_ATTENDED // Request has been partially fulfilled.
+  FULLY_ATTENDED // Request has been fully fulfilled.
+  REJECTED // Request has been rejected.
+  CANCELLED // Request has been cancelled.
 }
 
 // Records historical events and actions within a MaintenanceRequest.
@@ -246,7 +258,22 @@ enum InfrastructureOccurrenceStatus {
   RESOLVED // Resolved without the need for a formal Maintenance Request (quick action).
 }
 
+//Centro de distribuição, controle físico e financeiro de materiais
+// Não é vinculado a uma instância de manutenção específica, na verdade, pode atender (e atende) várias instâncias
+// A gestão do centro de distribuição está mais próxima do departamento financeiro do que do departamento de manutencão
+//Nessa implementação não será dado destaque à gestão do Storage (centro de distribuição) será considerada como uma entidade externa
+model Storage {
+  id   Int    @id @default(autoincrement()) // Unique identifier.
+  name String
+
+  //relations
+  materialRequests MaterialRequest[]
+
+  @@map("storages")
+}
+
 // Represents a physical or logical location where materials are stored.
+// depósito transitório, controle apenas físico de materiais 
 model Warehouse {
   id       Int     @id @default(autoincrement()) // Unique identifier for the warehouse.
   name     String  @unique // Name of the warehouse (e.g., "Central Warehouse Block A").
@@ -263,7 +290,6 @@ model Warehouse {
   updatedAt DateTime @updatedAt @db.Timestamp(0) // Timestamp for the last update of the record.
 
   // Relations
-  materialRequests               MaterialRequest[]
   standardMaterialStocks         MaterialWarehouseStock[] // Stock levels for "new" materials in this warehouse.
   materialDerived                MaterialDerived[] // Instances/batches of derived materials in this warehouse.
   stockMovements                 MaterialStockMovement[] // Stock movements related to this warehouse.
@@ -386,10 +412,11 @@ model MaterialRequest {
   // Items included in this material request. All items must adhere to the requestType of the header.
   items         MaterialRequestItem[]
   statusHistory MaterialRequestStatus[] // History of status changes for this request
+  currentStatus MaterialRequestStatusOptions @default(PENDING) // The current status of the request.
 
   // Other relations
-  warehouseId Int
-  warehouse   Warehouse @relation(fields: [warehouseId], references: [id]) // Relation to the Warehouse model.
+  storageId Int
+  storage   Storage @relation(fields: [storageId], references: [id]) // Relation to the storage model.
 
   materialPickingOrders MaterialPickingOrder[]
   materialWithdrawals   MaterialWithdrawal[]
@@ -425,8 +452,6 @@ enum MaterialRequestStatusOptions {
   FULLY_ATTENDED // Request has been fully fulfilled.
   REJECTED // Request has been rejected.
   CANCELLED // Request has been cancelled.
-
-  @@map("MaterialRequestStatus")
 }
 
 // Stores the history of status changes for a MaterialRequest.
@@ -496,8 +521,10 @@ model MaterialRequestItem {
 
 // Defines the type of material requested within a MaterialRequestItem.
 enum MaterialRequestItemType {
-  GLOBAL_CATALOG // Request for a new/standard item from the global catalog.
-  DERIVED_MATERIAL // Request for a derived material (e.g., leftover, processed).
+  GLOBAL_CATALOG   @map("CATALOGO GLOBAL") // Request for a new/standard item from the global catalog.
+  DERIVED_MATERIAL @map("MATERIAL DERIVADO") // Request for a derived material (e.g., leftover, processed).
+
+  @@map("material_request_item_types")
 }
 
 // Defines different types of stock movements, offering more flexibility than an enum.
@@ -1249,9 +1276,6 @@ model SipacHistoricoRequisicaoMaterial {
 
   requisicaoId Int // Chave estrangeira para SipacRequisicaoMaterial.
   requisicao   SipacRequisicaoMaterial @relation(fields: [requisicaoId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now()) @db.Timestamp(0)
-  updatedAt DateTime @updatedAt @db.Timestamp(0)
 
   @@index([requisicaoId])
   @@map("sipac_historico_requisicao_material")

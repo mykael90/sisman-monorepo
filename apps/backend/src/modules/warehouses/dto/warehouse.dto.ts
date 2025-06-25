@@ -11,12 +11,16 @@ import {
 import { Type } from 'class-transformer';
 
 export class CreateWarehouseDto implements Prisma.WarehouseCreateManyInput {
-  @ApiProperty({ description: 'Nome do armazém', example: 'Armazém Central' })
+  @ApiProperty({
+    description: 'Nome do depósito transitório',
+    example: 'Depósito transitório Central'
+  })
   @IsString()
   name: string;
 
   @ApiProperty({
-    description: 'ID do armazém (geralmente gerado automaticamente)',
+    description:
+      'ID do depósito transitório (geralmente gerado automaticamente)',
     example: 1,
     required: false
   })
@@ -25,7 +29,7 @@ export class CreateWarehouseDto implements Prisma.WarehouseCreateManyInput {
   id?: number;
 
   @ApiProperty({
-    description: 'Código do armazém',
+    description: 'Código do depósito transitório',
     example: 'AZM001',
     required: false
   })
@@ -34,7 +38,7 @@ export class CreateWarehouseDto implements Prisma.WarehouseCreateManyInput {
   code?: string;
 
   @ApiProperty({
-    description: 'Localização do armazém',
+    description: 'Localização do depósito transitório',
     example: 'Rua Principal, 123',
     required: false
   })
@@ -43,7 +47,7 @@ export class CreateWarehouseDto implements Prisma.WarehouseCreateManyInput {
   location?: string;
 
   @ApiProperty({
-    description: 'Indica se o armazém está ativo',
+    description: 'Indica se o depósito transitório está ativo',
     example: true,
     required: false
   })
