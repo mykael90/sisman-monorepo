@@ -389,6 +389,8 @@ model MaterialRequest {
   requestedById Int? // Foreign key to the user who requested the materials.
   requestedBy   User? @relation("MaterialRequestedByUser", fields: [requestedById], references: [id]) // Relation to the User model (who requested).
 
+  notes String? @db.Text // Notes related to this status change (e.g., approval notes, rejection reason).
+
   createdAt DateTime @default(now()) @db.Timestamp(0) // Timestamp for when the record was created.
   updatedAt DateTime @updatedAt @db.Timestamp(0) // Timestamp for the last update of the record.
 

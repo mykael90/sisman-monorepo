@@ -159,6 +159,11 @@ export class CreateMaterialRequestDto
   @ApiProperty()
   @IsEnum(MaterialRequestStatusOptions)
   currentStatus?: MaterialRequestStatusOptions;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  notes?: string;
 }
 
 export class CreateMaterialRequestItemDto

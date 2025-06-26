@@ -290,6 +290,7 @@ exports.Prisma.MaterialRequestScalarFieldEnum = {
   requestDate: 'requestDate',
   maintenanceRequestId: 'maintenanceRequestId',
   requestedById: 'requestedById',
+  notes: 'notes',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   sipacUnitRequestingId: 'sipacUnitRequestingId',
@@ -888,6 +889,7 @@ exports.Prisma.MaterialWarehouseStockOrderByRelevanceFieldEnum = {
 exports.Prisma.MaterialRequestOrderByRelevanceFieldEnum = {
   protocolNumber: 'protocolNumber',
   justification: 'justification',
+  notes: 'notes',
   sipacUserLoginRequest: 'sipacUserLoginRequest'
 };
 
