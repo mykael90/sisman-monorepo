@@ -1186,12 +1186,17 @@ exports.MaterialRequestOrigin = exports.$Enums.MaterialRequestOrigin = {
 
 exports.MaterialRequestStatusOptions = exports.$Enums.MaterialRequestStatusOptions = {
   SIPAC_HANDLING: 'SIPAC_HANDLING',
+  REGISTERED: 'REGISTERED',
   PENDING: 'PENDING',
+  CHANGE_SPONSOR: 'CHANGE_SPONSOR',
   APPROVED: 'APPROVED',
   PARTIALLY_ATTENDED: 'PARTIALLY_ATTENDED',
   FULLY_ATTENDED: 'FULLY_ATTENDED',
   REJECTED: 'REJECTED',
-  CANCELLED: 'CANCELLED'
+  CANCELLED: 'CANCELLED',
+  REVERSED: 'REVERSED',
+  MATERIAL_SENT: 'MATERIAL_SENT',
+  MATERIAL_RECEIVED: 'MATERIAL_RECEIVED'
 };
 
 exports.MaterialRequestItemType = exports.$Enums.MaterialRequestItemType = {

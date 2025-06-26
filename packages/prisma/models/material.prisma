@@ -185,13 +185,18 @@ enum MaterialRequestType {
 
 // Defines the possible statuses for a MaterialRequest.
 enum MaterialRequestStatusOptions {
-    SIPAC_HANDLING     @map("GERENCIADO PELO SIPAC") // Status gerenciado pelo sipac
-    PENDING            @map("PENDENTE") // Request is pending approval.
-    APPROVED           @map("APROVADO") // Request has been approved.
-    PARTIALLY_ATTENDED @map("PARCIALMENTE ATENDIDO") // Request has been partially fulfilled.
-    FULLY_ATTENDED     @map("TOTALMENTE ATENDIDO") // Request has been fully fulfilled.
-    REJECTED           @map("REJEITADO") // Request has been rejected.
-    CANCELLED          @map("CANCELADO") // Request has been cancelled.
+    SIPAC_HANDLING     @map("GERENCIADA PELO SIPAC") // Status gerenciado pelo sipac
+    REGISTERED         @map("CADASTRADA")
+    PENDING            @map("PENDENTE DE AUTORIZACAO") // Request is pending approval.
+    CHANGE_SPONSOR     @map("ALTERADA UNIDADE DE CUSTO")
+    APPROVED           @map("AUTORIZADA") // Request has been approved.
+    PARTIALLY_ATTENDED @map("PARCIALMENTE ATENDIDA") // Request has been partially fulfilled.
+    FULLY_ATTENDED     @map("TOTALMENTE ATENDIDA") // Request has been fully fulfilled.
+    REJECTED           @map("REJEITADA") // Request has been rejected.
+    CANCELLED          @map("CANCELADA") // Request has been cancelled.
+    REVERSED           @map("ESTORNADA") // Request has been reversed.
+    MATERIAL_SENT      @map("MATERIAIS ENVIADOS")
+    MATERIAL_RECEIVED  @map("MATERIAIS RECEBIDOS")
 }
 
 // Stores the history of status changes for a MaterialRequest.
