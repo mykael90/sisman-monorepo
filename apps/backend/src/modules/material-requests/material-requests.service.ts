@@ -115,6 +115,7 @@ export class MaterialRequestsService {
           sipacUnitCost: true
         }
       });
+
       return materialRequests;
     } catch (error) {
       handlePrismaError(error, this.logger, 'MaterialRequestsService', {
@@ -300,14 +301,18 @@ export class MaterialRequestsService {
     if (statusHistory) {
       // statusHistory array is provided (could be empty)
       updateInput.statusHistory = {
-        upsert: statusHistory.map((status) => {
-          const { id: statusId, ...statusData } = status; // statusId is MaterialRequestStatus's own ID
-          return {
-            where: { id: statusId || 0 }, // Assumes 0 is not a valid ID
-            create: statusData,
-            update: statusData
-          };
-        })
+        deleteMany: {},
+        create: statusHistory.map((status) => ({
+          ...status
+        }))
+        // upsert: statusHistory.map((status) => {
+        //   const { id: statusId, ...statusData } = status; // statusId is MaterialRequestStatus's own ID
+        //   return {
+        //     where: { id: statusId || 0 }, // Assumes 0 is not a valid ID
+        //     create: statusData,
+        //     update: statusData
+        //   };
+        // })
       };
     }
 

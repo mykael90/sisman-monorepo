@@ -190,6 +190,7 @@ enum MaterialRequestStatusOptions {
     PENDING            @map("PENDENTE DE AUTORIZACAO") // Request is pending approval.
     CHANGE_SPONSOR     @map("ALTERADA UNIDADE DE CUSTO")
     APPROVED           @map("AUTORIZADA") // Request has been approved.
+    FORWARDED          @map("ENCAMINHADA")
     PARTIALLY_ATTENDED @map("PARCIALMENTE ATENDIDA") // Request has been partially fulfilled.
     FULLY_ATTENDED     @map("TOTALMENTE ATENDIDA") // Request has been fully fulfilled.
     REJECTED           @map("REJEITADA") // Request has been rejected.

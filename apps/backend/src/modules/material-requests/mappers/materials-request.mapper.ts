@@ -1,9 +1,37 @@
-import { Prisma, SipacItemRequisicaoMaterial } from '@sisman/prisma';
+import {
+  Prisma,
+  SipacItemRequisicaoMaterial,
+  MaterialRequestStatusOptions
+} from '@sisman/prisma';
 import {
   CreateMaterialRequestDto,
   CreateMaterialRequestItemDto,
   CreateMaterialRequestWithRelationsDto
 } from '../dto/material-request.dto';
+
+type SipacStatus =
+  | 'CADASTRADA'
+  | 'AGUARD. AUTORIZAÇÃO ORÇAMENTÁRIA'
+  | 'AUTORIZADA'
+  | 'ENVIADA'
+  | 'ESTORNADA'
+  | 'MUDANÇA DE UNID. DE CUSTO'
+  | 'FINALIZADA ATENDIMENTO'
+  | 'FINALIZADA';
+
+type SismanStatus =
+  (typeof MaterialRequestStatusOptions)[keyof typeof MaterialRequestStatusOptions];
+
+const StatusSipacToSisman: Record<SipacStatus, SismanStatus> = {
+  CADASTRADA: MaterialRequestStatusOptions.REGISTERED,
+  'AGUARD. AUTORIZAÇÃO ORÇAMENTÁRIA': MaterialRequestStatusOptions.PENDING,
+  AUTORIZADA: MaterialRequestStatusOptions.APPROVED,
+  ENVIADA: MaterialRequestStatusOptions.FORWARDED,
+  ESTORNADA: MaterialRequestStatusOptions.REVERSED,
+  'MUDANÇA DE UNID. DE CUSTO': MaterialRequestStatusOptions.CHANGE_SPONSOR,
+  'FINALIZADA ATENDIMENTO': MaterialRequestStatusOptions.PARTIALLY_ATTENDED,
+  FINALIZADA: MaterialRequestStatusOptions.FULLY_ATTENDED
+};
 
 export class MaterialRequestMapper {
   static toCreateDto(
@@ -29,7 +57,7 @@ export class MaterialRequestMapper {
       requestValue: item.valorDaRequisicao,
       servedValue: item.valorDoTotalAtendido,
       purpose: 'SUPPLY_MAINTENANCE',
-      currentStatus: 'SIPAC_HANDLING',
+      currentStatus: StatusSipacToSisman[item.statusAtual],
       // relations
       storage: {
         id: 1 //almoxarifado central da ufrn id=1 (convenção minha)
@@ -44,12 +72,17 @@ export class MaterialRequestMapper {
           quantityDelivered: material.quantidadeAtendida
         })
       ),
-      statusHistory: [
-        {
-          status: 'SIPAC_HANDLING',
-          notes: JSON.stringify(item.historicoDaRequisicao, null, 2)
-        }
-      ]
+      statusHistory: item.historicoDaRequisicao.map((status) => ({
+        status: StatusSipacToSisman[status.status],
+        changeDate: status.dataHora
+        // notes: JSON.stringify(status, null, 2)
+      }))
+      // [
+      //   {
+      //     status: StatusSipacToSisman[item.historicoDaRequisicao[0].status],
+      //     notes: JSON.stringify(item.historicoDaRequisicao, null, 2)
+      //   }
+      // ]
     };
   }
 }
