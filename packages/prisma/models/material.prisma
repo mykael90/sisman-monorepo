@@ -195,7 +195,7 @@ enum MaterialRequestStatusOptions {
     REJECTED           @map("REJEITADA") // Request has been rejected.
     CANCELLED          @map("CANCELADA") // Request has been cancelled.
     REVERSED           @map("ESTORNADA") // Request has been reversed.
-    MATERIAL_SENT      @map("MATERIAIS ENVIADOS")
+    MATERIAL_SENT      @map("MATERIAIS DESPACHADOS")
     MATERIAL_RECEIVED  @map("MATERIAIS RECEBIDOS")
 }
 
