@@ -297,7 +297,6 @@ export class MaterialRequestsService {
     }
 
     // Handle statusHistory using upsert
-    //TODO: ver como vai ser essa atualização, ta duplicando no momento
     if (statusHistory) {
       // statusHistory array is provided (could be empty)
       updateInput.statusHistory = {

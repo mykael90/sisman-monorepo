@@ -19,4 +19,13 @@ export class CreateMaintenanceInstanceDto
 
 export class UpdateMaintenanceInstance extends PartialType(
   CreateMaintenanceInstanceDto
-) {}
+) {
+  @ApiProperty({
+    description: 'ID of the maintenance instance (for upsert operation)',
+    example: 1,
+    required: true
+  })
+  @IsNumber()
+  @IsNotEmpty()
+  id: number;
+}

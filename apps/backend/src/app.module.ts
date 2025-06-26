@@ -29,6 +29,14 @@ import sipacScrapingConfig from './config/sipac-scraping.config';
 import { WarehousesModule } from './modules/warehouses/warehouses.module';
 import { MaterialRequestsModule } from './modules/material-requests/material-requests.module';
 import { StoragesModule } from './modules/storages/storages.module';
+import { MaintenanceRequestsModule } from './modules/maintenance-requests/maintenance-requests.module';
+import { BuildingsModule } from './modules/buildings/buildings.module';
+import { SpaceTypesModule } from './modules/space-types/space-types.module';
+import { SpacesModule } from './modules/spaces/spaces.module';
+import { InfrastructureSystemsModule } from './modules/infrastructure-systems/infrastructure-systems.module';
+import { OccurrenceReinforcementsModule } from './modules/occurrence-reinforcements/occurrence-reinforcements.module';
+import { DiagnosesModule } from './modules/diagnoses/diagnoses.module';
+import { ServiceTypesModule } from './modules/service-types/service-types.module';
 
 @Module({
   imports: [
@@ -72,7 +80,15 @@ import { StoragesModule } from './modules/storages/storages.module';
     MaterialRequestsModule,
     NotificationsModule,
     MaintenanceInstancesModule,
-    SipacModule
+    SipacModule,
+    MaintenanceRequestsModule,
+    BuildingsModule,
+    SpaceTypesModule,
+    SpacesModule,
+    InfrastructureSystemsModule,
+    OccurrenceReinforcementsModule,
+    DiagnosesModule,
+    ServiceTypesModule
   ],
   controllers: [AppController],
   providers: [

@@ -1,228 +1,311 @@
-// Defines a maintenance request, representing a formal demand for maintenance services.
+// =================================================================
+// ==              MODELS PARA ATIVOS DE INFRAESTRUTURA           ==
+// =================================================================
+
+model Building {
+    id                  Int                        @id @default(autoincrement())
+    name                String
+    code                String?                    @unique
+    address             String?
+    createdAt           DateTime                   @default(now())
+    updatedAt           DateTime                   @updatedAt
+    spaces              Space[]
+    systems             InfrastructureSystem[]
+    maintenanceRequests MaintenanceRequest[]
+    infraOccurrences    InfrastructureOccurrence[]
+
+    @@map("buildings")
+}
+
+// Modelo SpaceType, agora como um modelo para flexibilidade.
+model SpaceType {
+    id          Int      @id @default(autoincrement())
+    name        String   @unique
+    description String?
+    icon        String?
+    isActive    Boolean  @default(true)
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+    spaces      Space[]
+
+    @@map("space_types")
+}
+
+model Space {
+    id                  Int                        @id @default(autoincrement())
+    name                String
+    floor               String?
+    description         String?                    @db.Text
+    spaceTypeId         Int
+    spaceType           SpaceType                  @relation(fields: [spaceTypeId], references: [id], onDelete: Restrict)
+    buildingId          Int
+    building            Building                   @relation(fields: [buildingId], references: [id], onDelete: Cascade)
+    parentId            Int?
+    parent              Space?                     @relation("NestedSpaces", fields: [parentId], references: [id], onDelete: NoAction)
+    children            Space[]                    @relation("NestedSpaces")
+    maintenanceRequests MaintenanceRequest[]
+    infraOccurrences    InfrastructureOccurrence[]
+    createdAt           DateTime                   @default(now())
+    updatedAt           DateTime                   @updatedAt
+
+    @@index([buildingId])
+    @@index([parentId])
+    @@index([spaceTypeId])
+    @@map("spaces")
+}
+
+model InfrastructureSystem {
+    id                  Int                  @id @default(autoincrement())
+    name                String
+    type                String
+    description         String?              @db.Text
+    buildings           Building[]
+    maintenanceRequests MaintenanceRequest[]
+    createdAt           DateTime             @default(now())
+    updatedAt           DateTime             @updatedAt
+
+    @@unique([name, type])
+    @@map("infrastructure_systems")
+}
+
+model Equipment {
+    id                  Int                  @id @default(autoincrement())
+    patrimonyTag        String?              @unique
+    name                String
+    description         String?              @db.Text
+    location            String?
+    serialNumber        String?
+    manufacturer        String?
+    model               String?
+    acquisitionDate     DateTime?
+    isActive            Boolean              @default(true)
+    createdAt           DateTime             @default(now())
+    updatedAt           DateTime             @updatedAt
+    maintenanceRequests MaintenanceRequest[]
+
+    @@map("equipments")
+}
+
+// =================================================================
+// ==                 MODELS PARA O FLUXO DE MANUTENÇÃO           ==
+// =================================================================
+
+model InfrastructureOccurrence {
+    id                  Int                            @id @default(autoincrement())
+    title               String
+    description         String                         @db.Text
+    locationDescription String?
+    reportedAt          DateTime                       @default(now())
+    status              InfrastructureOccurrenceStatus @default(REPORTED)
+    duplicateOfId       Int?
+    duplicateOf         InfrastructureOccurrence?      @relation("DuplicateOccurrences", fields: [duplicateOfId], references: [id], onDelete: NoAction)
+    duplicates          InfrastructureOccurrence[]     @relation("DuplicateOccurrences")
+    reinforcements      OccurrenceReinforcement[]
+    spaceId             Int?
+    space               Space?                         @relation(fields: [spaceId], references: [id], onDelete: SetNull)
+    buildingId          Int?
+    building            Building?                      @relation(fields: [buildingId], references: [id], onDelete: SetNull)
+    reportedById        Int
+    reportedBy          User                           @relation("ReportedOccurrences", fields: [reportedById], references: [id])
+    diagnosis           Diagnosis?
+    createdAt           DateTime                       @default(now()) @db.Timestamp(0)
+    updatedAt           DateTime                       @updatedAt @db.Timestamp(0)
+
+    @@index([reportedById, spaceId, buildingId, status, duplicateOfId])
+    @@map("infrastructure_occurrences")
+}
+
+model OccurrenceReinforcement {
+    occurrenceId Int
+    occurrence   InfrastructureOccurrence @relation(fields: [occurrenceId], references: [id], onDelete: Cascade)
+    userId       Int
+    user         User                     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    reinforcedAt DateTime                 @default(now())
+    comment      String?
+
+    @@id([occurrenceId, userId])
+    @@map("occurrence_reinforcements")
+}
+
+enum InfrastructureOccurrenceStatus {
+    REPORTED
+    ANALYZING
+    ACCEPTED
+    DISMISSED
+    RESOLVED
+    DUPLICATE
+}
+
+model Diagnosis {
+    id                   Int                      @id @default(autoincrement())
+    diagnosticDetails    String                   @db.Text
+    prognosis            String?                  @db.Text
+    resolutionNotes      String?                  @db.Text
+    outcome              DiagnosisOutcome         @default(PENDING)
+    occurrenceId         Int                      @unique
+    occurrence           InfrastructureOccurrence @relation(fields: [occurrenceId], references: [id], onDelete: Cascade)
+    analyzedById         Int
+    analyzedBy           User                     @relation("AnalyzedByUser", fields: [analyzedById], references: [id])
+    diagnosedAt          DateTime                 @default(now())
+    maintenanceRequestId Int?                     @unique
+    maintenanceRequest   MaintenanceRequest?
+    createdAt            DateTime                 @default(now())
+    updatedAt            DateTime                 @updatedAt
+
+    @@index([analyzedById])
+    @@map("diagnoses")
+}
+
+enum DiagnosisOutcome {
+    PENDING
+    CREATE_REQUEST
+    RESOLVED_ON_SITE
+    DISMISS
+    FORWARD_TO_OTHER
+}
+
 model MaintenanceRequest {
-    id              Int             @id @default(autoincrement()) // Unique identifier for the maintenance request.
-    protocolNumber  String          @unique @default(uuid()) // A unique protocol number for tracking the request.
-    title           String // A brief title summarizing the request.
-    description     String          @db.Text // Detailed description of the maintenance issue or request.
-    priority        RequestPriority @default(NORMAL) // The urgency level of the request.
-    requestedAt     DateTime        @default(now()) // The date and time when the request was made.
-    deadline        DateTime? // The target date for completing the request.
-    solutionDetails String?         @db.Text // Details about the solution provided for the request.
-    completedAt     DateTime? // The date and time when the request was completed.
+    id                           Int                             @id @default(autoincrement())
+    protocolNumber               String                          @unique @default(uuid())
+    title                        String
+    description                  String                          @db.Text
+    priority                     RequestPriority                 @default(NORMAL)
+    requestedAt                  DateTime                        @default(now())
+    deadline                     DateTime?
+    solutionDetails              String?                         @db.Text
+    completedAt                  DateTime?
+    spaceId                      Int?
+    space                        Space?                          @relation(fields: [spaceId], references: [id], onDelete: SetNull)
+    buildingId                   Int?
+    building                     Building?                       @relation(fields: [buildingId], references: [id], onDelete: SetNull)
+    systemId                     Int?
+    system                       InfrastructureSystem?           @relation(fields: [systemId], references: [id], onDelete: SetNull)
+    equipmentId                  Int?
+    equipment                    Equipment?                      @relation(fields: [equipmentId], references: [id], onDelete: SetNull)
+    currentMaintenanceInstanceId Int
+    currentMaintenanceInstance   MaintenanceInstance             @relation("CurrentInstanceRequests", fields: [currentMaintenanceInstanceId], references: [id])
+    createdById                  Int
+    createdBy                    User                            @relation("CreatedByUser", fields: [createdById], references: [id])
+    assignedToId                 Int?
+    assignedTo                   User?                           @relation("AssignedToUser", fields: [assignedToId], references: [id])
+    serviceTypeId                Int?
+    serviceType                  ServiceType?                    @relation(fields: [serviceTypeId], references: [id], onDelete: SetNull)
+    statusId                     Int
+    status                       MaintenanceRequestStatus        @relation(fields: [statusId], references: [id])
+    currentStatus                MaintenanceRequestStatusOptions @default(PENDING)
+    diagnosisId                  Int?                            @unique
+    diagnosis                    Diagnosis?                      @relation(fields: [diagnosisId], references: [id], onDelete: SetNull)
+    createdAt                    DateTime                        @default(now()) @db.Timestamp(0)
+    updatedAt                    DateTime                        @updatedAt @db.Timestamp(0)
+    timelineEvents               MaintenanceTimelineEvent[]
+    materialRequests             MaterialRequest[]
+    materialStockMovements       MaterialStockMovement[]
+    materialWithdrawals          MaterialWithdrawal[]
 
-    currentMaintenanceInstanceId Int // Foreign key to the current maintenance instance handling this request.
-    currentMaintenanceInstance   MaintenanceInstance @relation("CurrentInstanceRequests", fields: [currentMaintenanceInstanceId], references: [id]) // Relation to the MaintenanceInstance model.
-
-    createdById Int // Foreign key to the user who formally opened this request.
-    createdBy   User @relation("CreatedByUser", fields: [createdById], references: [id]) // Relation to the User model (who created the request).
-
-    assignedToId Int? // Foreign key to the user (technician) assigned to this request.
-    assignedTo   User? @relation("AssignedToUser", fields: [assignedToId], references: [id]) // Relation to the User model (who is assigned).
-
-    equipmentId Int? // Foreign key to the equipment related to this request.
-    equipment   Equipment? @relation(fields: [equipmentId], references: [id], onDelete: SetNull) // Relation to the Equipment model.
-
-    serviceTypeId Int? // Foreign key to the type of service required for this request.
-    serviceType   SipacServiceTypeManutencao? @relation(fields: [serviceTypeId], references: [id], onDelete: SetNull) // Relation to the SipacServiceTypeManutencao model.
-
-    statusId      Int // Foreign key to the current status of the maintenance request.
-    status        MaintenanceRequestStatus        @relation(fields: [statusId], references: [id]) // Relation to the MaintenanceRequestStatus model.
-    currentStatus MaintenanceRequestStatusOptions @default(PENDING)
-
-    createdAt DateTime @default(now()) @db.Timestamp(0) // Timestamp for when the record was created.
-    updatedAt DateTime @updatedAt @db.Timestamp(0) // Timestamp for the last update of the record.
-
-    // Relations
-    // Infrastructure occurrences that originated this request.
-    originatingOccurrences InfrastructureOccurrence[] @relation("OriginatingOccurrences")
-
-    // History of events/actions related to this request.
-    timelineEvents MaintenanceTimelineEvent[]
-
-    // Material requests associated with this maintenance request.
-    materialRequests       MaterialRequest[]
-    materialStockMovements MaterialStockMovement[]
-    materialWithdrawals    MaterialWithdrawal[]
-
-    @@index([currentMaintenanceInstanceId]) // Index for faster lookups by maintenance instance.
-    @@index([createdById]) // Index for faster lookups by creator.
-    @@index([assignedToId]) // Index for faster lookups by assigned user.
-    @@index([statusId]) // Index for faster lookups by status.
-    @@map("maintenance_requests") // Maps this model to the 'maintenance_requests' table.
+    @@index([currentMaintenanceInstanceId, createdById, assignedToId, statusId, spaceId, buildingId, systemId, equipmentId, diagnosisId])
+    @@map("maintenance_requests")
 }
 
-// Defines the priority levels for maintenance requests.
-enum RequestPriority {
-    LOW // Low priority.
-    NORMAL // Normal priority.
-    HIGH // High priority.
-    URGENT // Urgent priority, requiring immediate attention.
+// =================================================================
+// ==              MODELS DE SUPORTE E CONTEXTO                   ==
+// =================================================================
+model ServiceType {
+    id                  Int                  @id @default(autoincrement())
+    name                String               @unique
+    description         String?
+    isActive            Boolean              @default(true)
+    createdAt           DateTime             @default(now())
+    updatedAt           DateTime             @updatedAt
+    maintenanceRequests MaintenanceRequest[]
+
+    @@map("service_types")
 }
 
-// Defines the possible statuses for a maintenance request.
+model MaintenanceInstance {
+    id                            Int                        @id @default(autoincrement())
+    sipacId                       String?                    @unique
+    name                          String                     @unique
+    isActive                      Boolean                    @default(true)
+    createdAt                     DateTime                   @default(now())
+    updatedAt                     DateTime                   @updatedAt
+    currentMaintenanceRequests    MaintenanceRequest[]       @relation("CurrentInstanceRequests")
+    timelineEventsTransferredFrom MaintenanceTimelineEvent[] @relation("TransferredFromInstanceEvents")
+    timelineEventsTransferredTo   MaintenanceTimelineEvent[] @relation("TransferredToInstanceEvents")
+    warehouses                    Warehouse[]
+
+    @@map("maintenance_instances")
+}
+
+model MaintenanceTimelineEvent {
+    id                        Int                 @id @default(autoincrement())
+    type                      TimelineEventType   @default(COMMENT)
+    description               String              @db.Text
+    eventData                 Json?
+    occurredAt                DateTime            @default(now())
+    maintenanceRequestId      Int
+    maintenanceRequest        MaintenanceRequest  @relation(fields: [maintenanceRequestId], references: [id])
+    actionById                Int
+    actionBy                  User                @relation("ActionByUser", fields: [actionById], references: [id])
+    transferredFromInstanceId Int
+    transferredToInstanceId   Int
+    transferredFromInstance   MaintenanceInstance @relation("TransferredFromInstanceEvents", fields: [transferredFromInstanceId], references: [id])
+    transferredToInstance     MaintenanceInstance @relation("TransferredToInstanceEvents", fields: [transferredToInstanceId], references: [id])
+    createdAt                 DateTime            @default(now()) @db.Timestamp(0)
+    updatedAt                 DateTime            @updatedAt @db.Timestamp(0)
+
+    @@index([maintenanceRequestId, actionById])
+    @@map("maintenance_timeline_events")
+}
+
 model MaintenanceRequestStatus {
-    id          Int      @id @default(autoincrement()) // Unique identifier for the status.
-    name        String   @unique // The name of the status (e.g., "Open", "In Analysis", "Completed").
-    description String? // A detailed description of the status.
-    isFinal     Boolean  @default(false) // Indicates if this status marks the end of a request (e.g., "Completed", "Cancelled").
-    order       Int      @default(0) // Order for display in user interfaces.
-    createdAt   DateTime @default(now()) @db.Timestamp(0) // Timestamp for when the record was created.
-    updatedAt   DateTime @updatedAt @db.Timestamp(0) // Timestamp for the last update of the record.
+    id                  Int                  @id @default(autoincrement())
+    name                String               @unique
+    description         String?
+    isFinal             Boolean              @default(false)
+    order               Int                  @default(0)
+    createdAt           DateTime             @default(now())
+    updatedAt           DateTime             @updatedAt
+    maintenanceRequests MaintenanceRequest[]
 
-    maintenanceRequests MaintenanceRequest[] // Relation to MaintenanceRequest, indicating requests with this status.
+    @@map("maintenance_request_statuses")
+}
 
-    @@map("maintenance_request_statuses") // Maps this model to the 'maintenance_request_statuses' table.
+// =================================================================
+// ==                         ENUMS                               ==
+// =================================================================
+
+enum RequestPriority {
+    LOW
+    NORMAL
+    HIGH
+    URGENT
 }
 
 enum MaintenanceRequestStatusOptions {
-    //TODO: need corrections
-    SIPAC_HANDLING // Status gerenciado pelo sipac
-    PENDING // Request is pending approval.
-    APPROVED // Request has been approved.
-    PARTIALLY_ATTENDED // Request has been partially fulfilled.
-    FULLY_ATTENDED // Request has been fully fulfilled.
-    REJECTED // Request has been rejected.
-    CANCELLED // Request has been cancelled.
+    PENDING
+    APPROVED
+    IN_PROGRESS
+    ON_HOLD
+    COMPLETED
+    REJECTED
+    CANCELLED
 }
 
-// Records historical events and actions within a MaintenanceRequest.
-model MaintenanceTimelineEvent {
-    id          Int               @id @default(autoincrement()) // Unique identifier for the timeline event.
-    type        TimelineEventType @default(COMMENT) // The type of event or action (e.g., comment, status change).
-    description String            @db.Text // Detailed description of the action (e.g., comment text, reason for transfer).
-    eventData   Json? // JSON field to store structured data related to the event (e.g., { oldStatus: "X", newStatus: "Y" }).
-    occurredAt  DateTime          @default(now()) // The date and time when the event occurred.
-
-    // Foreign Keys
-    maintenanceRequestId Int // Foreign key to the associated maintenance request.
-    maintenanceRequest   MaintenanceRequest @relation(fields: [maintenanceRequestId], references: [id], onDelete: Cascade) // Relation to the MaintenanceRequest model.
-
-    // User who performed the action/registered the event.
-    actionById Int
-    actionBy   User @relation("ActionByUser", fields: [actionById], references: [id])
-
-    // Specific fields for instance transfer.
-    transferredFromInstanceId Int?
-    transferredToInstanceId   Int?
-    transferredFromInstance   MaintenanceInstance? @relation("TransferredFromInstanceEvents", fields: [transferredFromInstanceId], references: [id], onDelete: SetNull) // Relation to the MaintenanceInstance from which it was transferred.
-    transferredToInstance     MaintenanceInstance? @relation("TransferredToInstanceEvents", fields: [transferredToInstanceId], references: [id], onDelete: SetNull) // Relation to the MaintenanceInstance to which it was transferred.
-
-    createdAt DateTime @default(now()) @db.Timestamp(0) // Timestamp for when the record was created.
-    updatedAt DateTime @updatedAt @db.Timestamp(0) // Timestamp for the last update of the record.
-
-    @@index([maintenanceRequestId]) // Index for faster lookups by maintenance request.
-    @@index([actionById]) // Index for faster lookups by actioning user.
-    @@index([type]) // Index for faster lookups by event type.
-    @@index([transferredFromInstanceId]) // Index for faster lookups by source instance.
-    @@index([transferredToInstanceId]) // Index for faster lookups by destination instance.
-    @@map("maintenance_timeline_events") // Maps this model to the 'maintenance_timeline_events' table.
-}
-
-// Defines the types of events that can occur in a maintenance request timeline.
 enum TimelineEventType {
-    CREATION // Maintenance Request Created.
-    COMMENT // A comment was added.
-    STATUS_CHANGE // The status of the Maintenance Request changed.
-    PRIORITY_CHANGE // The priority of the Maintenance Request changed.
-    ASSIGNMENT // A technician was assigned.
-    UNASSIGNMENT // A technician assignment was removed.
-    TRANSFER_INITIATED // Transfer between maintenance instances initiated.
-    SOLUTION_REGISTERED // Solution for the Maintenance Request registered.
-    MATERIAL_REQUESTED // Material request created.
-    MATERIAL_STATUS_CHANGED // Status of material request altered (approved, received, etc.).
-    DEADLINE_CHANGED // Deadline altered.
-    CLOSED // Maintenance Request Closed.
-    REOPENED // Maintenance Request Reopened.
-    LINKED_INFRA_OCCURRENCE // Linked an InfrastructureOccurrence.
-    UNLINKED_INFRA_OCCURRENCE // Unlinked an InfrastructureOccurrence.
-}
-
-// Represents a specific maintenance instance or department within an IFES.
-model MaintenanceInstance {
-    id        Int      @id @default(autoincrement()) // Unique identifier for the maintenance instance.
-    sipacId   String?  @unique // Unique identifier from the SIPAC system.
-    name      String?  @unique // Name of the maintenance instance (e.g., "DIMAN/INFRA").
-    isActive  Boolean  @default(true) // Indicates if the instance is currently active.
-    createdAt DateTime @default(now()) @db.Timestamp(0) // Timestamp for when the record was created.
-    updatedAt DateTime @updatedAt @db.Timestamp(0) // Timestamp for the last update of the record.
-
-    currentMaintenanceRequests    MaintenanceRequest[]       @relation("CurrentInstanceRequests") // Maintenance requests currently handled by this instance.
-    timelineEventsTransferredFrom MaintenanceTimelineEvent[] @relation("TransferredFromInstanceEvents") // Timeline events where this instance was the source of a transfer.
-    timelineEventsTransferredTo   MaintenanceTimelineEvent[] @relation("TransferredToInstanceEvents") // Timeline events where this instance was the destination of a transfer.
-    warehouses                    Warehouse[] // Warehouses associated with this maintenance instance.
-
-    @@index([sipacId]) // Index for faster lookups by SIPAC ID.
-    @@map("maintenance_instances") // Maps this model to the 'maintenance_instances' table.
-}
-
-// Defines types of services that can be requested for maintenance.
-model SipacServiceTypeManutencao {
-    id          Int      @id @default(autoincrement()) // Unique identifier for the service type.
-    name        String   @unique // Name of the service type (e.g., "Electrical", "Plumbing").
-    description String? // Description of the service type.
-    isActive    Boolean  @default(true) // Indicates if the service type is active.
-    createdAt   DateTime @default(now()) @db.Timestamp(0) // Timestamp for when the record was created.
-    updatedAt   DateTime @updatedAt @db.Timestamp(0) // Timestamp for the last update of the record.
-
-    maintenanceRequests MaintenanceRequest[] // Maintenance requests associated with this service type.
-
-    @@map("sipac_service_types_manutencao") // Maps this model to the 'service_types' table.
-}
-
-// Represents an equipment asset that may require maintenance.
-model Equipment {
-    id              Int       @id @default(autoincrement()) // Unique identifier for the equipment.
-    patrimonyTag    String?   @unique // Unique patrimony or asset tag number.
-    name            String // Name of the equipment.
-    description     String?   @db.Text // Detailed description of the equipment.
-    location        String? // Physical location of the equipment.
-    serialNumber    String? // Serial number of the equipment.
-    manufacturer    String? // Manufacturer of the equipment.
-    model           String? // Model of the equipment.
-    acquisitionDate DateTime? // Date when the equipment was acquired.
-    isActive        Boolean   @default(true) // Indicates if the equipment is currently active/in use.
-    createdAt       DateTime  @default(now()) @db.Timestamp(0) // Timestamp for when the record was created.
-    updatedAt       DateTime  @updatedAt @db.Timestamp(0) // Timestamp for the last update of the record.
-
-    maintenanceRequests MaintenanceRequest[] // Maintenance requests related to this equipment.
-
-    @@map("equipments") // Maps this model to the 'equipments' table.
-}
-
-// Records an initial observation or problem in the infrastructure or equipment.
-// An occurrence may or may not lead to a formal MaintenanceRequest.
-model InfrastructureOccurrence {
-    id                  Int                            @id @default(autoincrement()) // Unique identifier for the infrastructure occurrence.
-    title               String // A brief title for the occurrence.
-    description         String                         @db.Text // Detailed description of the observed problem.
-    locationDescription String? // Textual description of the location (e.g., "Corridor of Block B, near room 203").
-    reportedAt          DateTime                       @default(now()) // The date and time when the occurrence was reported.
-    status              InfrastructureOccurrenceStatus @default(REPORTED) // The current status of the occurrence.
-    resolutionNotes     String?                        @db.Text // Notes on how the occurrence was resolved, if without a formal Maintenance Request.
-
-    // Foreign Keys
-    // User who reported the occurrence.
-    reportedById Int
-    reportedBy   User @relation("ReportedOccurrences", fields: [reportedById], references: [id])
-
-    // If this occurrence generated or was linked to a Maintenance Request.
-    maintenanceRequestId Int? // Optional, as not all occurrences become a Maintenance Request.
-    maintenanceRequest   MaintenanceRequest? @relation("OriginatingOccurrences", fields: [maintenanceRequestId], references: [id], onDelete: SetNull) // Relation to the MaintenanceRequest model.
-
-    createdAt DateTime @default(now()) @db.Timestamp(0) // Timestamp for when the record was created.
-    updatedAt DateTime @updatedAt @db.Timestamp(0) // Timestamp for the last update of the record.
-
-    @@index([reportedById]) // Index for faster lookups by reporting user.
-    @@index([maintenanceRequestId]) // Index for faster lookups by associated maintenance request.
-    @@index([status]) // Index for faster lookups by status.
-    @@map("infrastructure_occurrences") // Maps this model to the 'infrastructure_occurrences' table.
-}
-
-// Defines the possible statuses for an infrastructure occurrence.
-enum InfrastructureOccurrenceStatus {
-    REPORTED // Newly reported, awaiting analysis.
-    ANALYZING // Under analysis to decide if it becomes a Maintenance Request.
-    ACCEPTED // Accepted, linked to an MR or awaiting MR creation.
-    DISMISSED // Rejected/Discarded (e.g., duplicate, not valid).
-    RESOLVED // Resolved without the need for a formal Maintenance Request (quick action).
+    CREATION
+    COMMENT
+    STATUS_CHANGE
+    PRIORITY_CHANGE
+    ASSIGNMENT
+    UNASSIGNMENT
+    TRANSFER_INITIATED
+    SOLUTION_REGISTERED
+    MATERIAL_REQUESTED
+    MATERIAL_STATUS_CHANGED
+    DEADLINE_CHANGED
+    CLOSED
+    REOPENED
+    ASSET_CHANGED
+    // NOVO EVENTO POSSÍVEL:
+    DIAGNOSIS_REGISTERED
 }

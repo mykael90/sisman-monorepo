@@ -256,10 +256,16 @@ export class RequisicoesManutencoesService {
       this.logger.log(`Persistindo a criação da requisição de manutenção...`);
       const result = await this.prisma.sipacRequisicaoManutencao.create({
         data: prismaCreateInput as Prisma.SipacRequisicaoManutencaoCreateInput,
-        include:
-          Object.keys(relationsToInclude).length > 0
-            ? relationsToInclude
-            : undefined
+        include: {
+          historico: true,
+          informacoesServico: true,
+          requisicoesMateriais: true,
+          predios: true,
+          requisicaoManutencaoMae: true,
+          requisicoesManutencaoFilhas: true,
+          unidadeCusto: true,
+          unidadeRequisitante: true
+        }
       });
 
       //antes de retornar o resultado é importante criar as requisicoes de manutencao filhas.

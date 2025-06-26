@@ -19,6 +19,7 @@ model User {
   createdMaintenanceRequests  MaintenanceRequest[]       @relation("CreatedByUser") // Maintenance requests created by this user.
   assignedMaintenanceRequests MaintenanceRequest[]       @relation("AssignedToUser") // Maintenance requests assigned to this user.
   timelineEvents              MaintenanceTimelineEvent[] @relation("ActionByUser") // Timeline events/actions performed by this user.
+  analyzedDiagnoses           Diagnosis[]                @relation("AnalyzedByUser")
 
   // Relations: material.prisma (for MaterialRequest)
   materialRequestsCreated      MaterialRequest[]       @relation("MaterialRequestedByUser") // Material requests created by this user.
@@ -45,6 +46,7 @@ model User {
   restrictionOrdersProcessed      MaterialRestrictionOrder[] @relation("RestrictionOrdersProcessedBy") // Material restriction orders processed by this user.
   materialStockMovementsProcessed MaterialStockMovement[]    @relation("StockMovementsProcessedBy")
   materialStockMovementsCollected MaterialStockMovement[]    @relation("StockMovementsCollectedBy")
+  OccurrenceReinforcement         OccurrenceReinforcement[]
 
   @@map("users") // Maps this model to the 'users' table.
 }

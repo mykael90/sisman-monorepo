@@ -142,65 +142,42 @@ exports.Prisma.LogLoginScalarFieldEnum = {
   successful: 'successful'
 };
 
-exports.Prisma.MaintenanceRequestScalarFieldEnum = {
+exports.Prisma.BuildingScalarFieldEnum = {
   id: 'id',
-  protocolNumber: 'protocolNumber',
-  title: 'title',
-  description: 'description',
-  priority: 'priority',
-  requestedAt: 'requestedAt',
-  deadline: 'deadline',
-  solutionDetails: 'solutionDetails',
-  completedAt: 'completedAt',
-  currentMaintenanceInstanceId: 'currentMaintenanceInstanceId',
-  createdById: 'createdById',
-  assignedToId: 'assignedToId',
-  equipmentId: 'equipmentId',
-  serviceTypeId: 'serviceTypeId',
-  statusId: 'statusId',
-  currentStatus: 'currentStatus',
+  name: 'name',
+  code: 'code',
+  address: 'address',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
 
-exports.Prisma.MaintenanceRequestStatusScalarFieldEnum = {
+exports.Prisma.SpaceTypeScalarFieldEnum = {
   id: 'id',
   name: 'name',
   description: 'description',
-  isFinal: 'isFinal',
-  order: 'order',
+  icon: 'icon',
+  isActive: 'isActive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
 
-exports.Prisma.MaintenanceTimelineEventScalarFieldEnum = {
+exports.Prisma.SpaceScalarFieldEnum = {
   id: 'id',
+  name: 'name',
+  floor: 'floor',
+  description: 'description',
+  spaceTypeId: 'spaceTypeId',
+  buildingId: 'buildingId',
+  parentId: 'parentId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.InfrastructureSystemScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
   type: 'type',
   description: 'description',
-  eventData: 'eventData',
-  occurredAt: 'occurredAt',
-  maintenanceRequestId: 'maintenanceRequestId',
-  actionById: 'actionById',
-  transferredFromInstanceId: 'transferredFromInstanceId',
-  transferredToInstanceId: 'transferredToInstanceId',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
-exports.Prisma.MaintenanceInstanceScalarFieldEnum = {
-  id: 'id',
-  sipacId: 'sipacId',
-  name: 'name',
-  isActive: 'isActive',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
-exports.Prisma.SipacServiceTypeManutencaoScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  description: 'description',
-  isActive: 'isActive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -227,9 +204,98 @@ exports.Prisma.InfrastructureOccurrenceScalarFieldEnum = {
   locationDescription: 'locationDescription',
   reportedAt: 'reportedAt',
   status: 'status',
-  resolutionNotes: 'resolutionNotes',
+  duplicateOfId: 'duplicateOfId',
+  spaceId: 'spaceId',
+  buildingId: 'buildingId',
   reportedById: 'reportedById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.OccurrenceReinforcementScalarFieldEnum = {
+  occurrenceId: 'occurrenceId',
+  userId: 'userId',
+  reinforcedAt: 'reinforcedAt',
+  comment: 'comment'
+};
+
+exports.Prisma.DiagnosisScalarFieldEnum = {
+  id: 'id',
+  diagnosticDetails: 'diagnosticDetails',
+  prognosis: 'prognosis',
+  resolutionNotes: 'resolutionNotes',
+  outcome: 'outcome',
+  occurrenceId: 'occurrenceId',
+  analyzedById: 'analyzedById',
+  diagnosedAt: 'diagnosedAt',
   maintenanceRequestId: 'maintenanceRequestId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.MaintenanceRequestScalarFieldEnum = {
+  id: 'id',
+  protocolNumber: 'protocolNumber',
+  title: 'title',
+  description: 'description',
+  priority: 'priority',
+  requestedAt: 'requestedAt',
+  deadline: 'deadline',
+  solutionDetails: 'solutionDetails',
+  completedAt: 'completedAt',
+  spaceId: 'spaceId',
+  buildingId: 'buildingId',
+  systemId: 'systemId',
+  equipmentId: 'equipmentId',
+  currentMaintenanceInstanceId: 'currentMaintenanceInstanceId',
+  createdById: 'createdById',
+  assignedToId: 'assignedToId',
+  serviceTypeId: 'serviceTypeId',
+  statusId: 'statusId',
+  currentStatus: 'currentStatus',
+  diagnosisId: 'diagnosisId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ServiceTypeScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.MaintenanceInstanceScalarFieldEnum = {
+  id: 'id',
+  sipacId: 'sipacId',
+  name: 'name',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.MaintenanceTimelineEventScalarFieldEnum = {
+  id: 'id',
+  type: 'type',
+  description: 'description',
+  eventData: 'eventData',
+  occurredAt: 'occurredAt',
+  maintenanceRequestId: 'maintenanceRequestId',
+  actionById: 'actionById',
+  transferredFromInstanceId: 'transferredFromInstanceId',
+  transferredToInstanceId: 'transferredToInstanceId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.MaintenanceRequestStatusScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  isFinal: 'isFinal',
+  order: 'order',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -808,6 +874,56 @@ exports.Prisma.LogLoginOrderByRelevanceFieldEnum = {
   userAgent: 'userAgent'
 };
 
+exports.Prisma.BuildingOrderByRelevanceFieldEnum = {
+  name: 'name',
+  code: 'code',
+  address: 'address'
+};
+
+exports.Prisma.SpaceTypeOrderByRelevanceFieldEnum = {
+  name: 'name',
+  description: 'description',
+  icon: 'icon'
+};
+
+exports.Prisma.SpaceOrderByRelevanceFieldEnum = {
+  name: 'name',
+  floor: 'floor',
+  description: 'description'
+};
+
+exports.Prisma.InfrastructureSystemOrderByRelevanceFieldEnum = {
+  name: 'name',
+  type: 'type',
+  description: 'description'
+};
+
+exports.Prisma.EquipmentOrderByRelevanceFieldEnum = {
+  patrimonyTag: 'patrimonyTag',
+  name: 'name',
+  description: 'description',
+  location: 'location',
+  serialNumber: 'serialNumber',
+  manufacturer: 'manufacturer',
+  model: 'model'
+};
+
+exports.Prisma.InfrastructureOccurrenceOrderByRelevanceFieldEnum = {
+  title: 'title',
+  description: 'description',
+  locationDescription: 'locationDescription'
+};
+
+exports.Prisma.OccurrenceReinforcementOrderByRelevanceFieldEnum = {
+  comment: 'comment'
+};
+
+exports.Prisma.DiagnosisOrderByRelevanceFieldEnum = {
+  diagnosticDetails: 'diagnosticDetails',
+  prognosis: 'prognosis',
+  resolutionNotes: 'resolutionNotes'
+};
+
 exports.Prisma.MaintenanceRequestOrderByRelevanceFieldEnum = {
   protocolNumber: 'protocolNumber',
   title: 'title',
@@ -815,9 +931,14 @@ exports.Prisma.MaintenanceRequestOrderByRelevanceFieldEnum = {
   solutionDetails: 'solutionDetails'
 };
 
-exports.Prisma.MaintenanceRequestStatusOrderByRelevanceFieldEnum = {
+exports.Prisma.ServiceTypeOrderByRelevanceFieldEnum = {
   name: 'name',
   description: 'description'
+};
+
+exports.Prisma.MaintenanceInstanceOrderByRelevanceFieldEnum = {
+  sipacId: 'sipacId',
+  name: 'name'
 };
 
 exports.Prisma.JsonNullValueFilter = {
@@ -835,31 +956,9 @@ exports.Prisma.MaintenanceTimelineEventOrderByRelevanceFieldEnum = {
   description: 'description'
 };
 
-exports.Prisma.MaintenanceInstanceOrderByRelevanceFieldEnum = {
-  sipacId: 'sipacId',
-  name: 'name'
-};
-
-exports.Prisma.SipacServiceTypeManutencaoOrderByRelevanceFieldEnum = {
+exports.Prisma.MaintenanceRequestStatusOrderByRelevanceFieldEnum = {
   name: 'name',
   description: 'description'
-};
-
-exports.Prisma.EquipmentOrderByRelevanceFieldEnum = {
-  patrimonyTag: 'patrimonyTag',
-  name: 'name',
-  description: 'description',
-  location: 'location',
-  serialNumber: 'serialNumber',
-  manufacturer: 'manufacturer',
-  model: 'model'
-};
-
-exports.Prisma.InfrastructureOccurrenceOrderByRelevanceFieldEnum = {
-  title: 'title',
-  description: 'description',
-  locationDescription: 'locationDescription',
-  resolutionNotes: 'resolutionNotes'
 };
 
 exports.Prisma.StorageOrderByRelevanceFieldEnum = {
@@ -1128,6 +1227,23 @@ exports.Prisma.RoleOrderByRelevanceFieldEnum = {
   role: 'role',
   description: 'description'
 };
+exports.InfrastructureOccurrenceStatus = exports.$Enums.InfrastructureOccurrenceStatus = {
+  REPORTED: 'REPORTED',
+  ANALYZING: 'ANALYZING',
+  ACCEPTED: 'ACCEPTED',
+  DISMISSED: 'DISMISSED',
+  RESOLVED: 'RESOLVED',
+  DUPLICATE: 'DUPLICATE'
+};
+
+exports.DiagnosisOutcome = exports.$Enums.DiagnosisOutcome = {
+  PENDING: 'PENDING',
+  CREATE_REQUEST: 'CREATE_REQUEST',
+  RESOLVED_ON_SITE: 'RESOLVED_ON_SITE',
+  DISMISS: 'DISMISS',
+  FORWARD_TO_OTHER: 'FORWARD_TO_OTHER'
+};
+
 exports.RequestPriority = exports.$Enums.RequestPriority = {
   LOW: 'LOW',
   NORMAL: 'NORMAL',
@@ -1136,11 +1252,11 @@ exports.RequestPriority = exports.$Enums.RequestPriority = {
 };
 
 exports.MaintenanceRequestStatusOptions = exports.$Enums.MaintenanceRequestStatusOptions = {
-  SIPAC_HANDLING: 'SIPAC_HANDLING',
   PENDING: 'PENDING',
   APPROVED: 'APPROVED',
-  PARTIALLY_ATTENDED: 'PARTIALLY_ATTENDED',
-  FULLY_ATTENDED: 'FULLY_ATTENDED',
+  IN_PROGRESS: 'IN_PROGRESS',
+  ON_HOLD: 'ON_HOLD',
+  COMPLETED: 'COMPLETED',
   REJECTED: 'REJECTED',
   CANCELLED: 'CANCELLED'
 };
@@ -1159,16 +1275,8 @@ exports.TimelineEventType = exports.$Enums.TimelineEventType = {
   DEADLINE_CHANGED: 'DEADLINE_CHANGED',
   CLOSED: 'CLOSED',
   REOPENED: 'REOPENED',
-  LINKED_INFRA_OCCURRENCE: 'LINKED_INFRA_OCCURRENCE',
-  UNLINKED_INFRA_OCCURRENCE: 'UNLINKED_INFRA_OCCURRENCE'
-};
-
-exports.InfrastructureOccurrenceStatus = exports.$Enums.InfrastructureOccurrenceStatus = {
-  REPORTED: 'REPORTED',
-  ANALYZING: 'ANALYZING',
-  ACCEPTED: 'ACCEPTED',
-  DISMISSED: 'DISMISSED',
-  RESOLVED: 'RESOLVED'
+  ASSET_CHANGED: 'ASSET_CHANGED',
+  DIAGNOSIS_REGISTERED: 'DIAGNOSIS_REGISTERED'
 };
 
 exports.MaterialRequestType = exports.$Enums.MaterialRequestType = {
@@ -1259,13 +1367,19 @@ exports.RestrictionOrderStatus = exports.$Enums.RestrictionOrderStatus = {
 exports.Prisma.ModelName = {
   LogError: 'LogError',
   LogLogin: 'LogLogin',
-  MaintenanceRequest: 'MaintenanceRequest',
-  MaintenanceRequestStatus: 'MaintenanceRequestStatus',
-  MaintenanceTimelineEvent: 'MaintenanceTimelineEvent',
-  MaintenanceInstance: 'MaintenanceInstance',
-  SipacServiceTypeManutencao: 'SipacServiceTypeManutencao',
+  Building: 'Building',
+  SpaceType: 'SpaceType',
+  Space: 'Space',
+  InfrastructureSystem: 'InfrastructureSystem',
   Equipment: 'Equipment',
   InfrastructureOccurrence: 'InfrastructureOccurrence',
+  OccurrenceReinforcement: 'OccurrenceReinforcement',
+  Diagnosis: 'Diagnosis',
+  MaintenanceRequest: 'MaintenanceRequest',
+  ServiceType: 'ServiceType',
+  MaintenanceInstance: 'MaintenanceInstance',
+  MaintenanceTimelineEvent: 'MaintenanceTimelineEvent',
+  MaintenanceRequestStatus: 'MaintenanceRequestStatus',
   Storage: 'Storage',
   Warehouse: 'Warehouse',
   MaterialGlobalCatalog: 'MaterialGlobalCatalog',
