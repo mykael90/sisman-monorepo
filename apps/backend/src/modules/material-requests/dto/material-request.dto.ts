@@ -333,10 +333,30 @@ class MaterialRequestBaseDto implements MaterialRequest {
 // 2. DTOs DE RESPOSTA (Públicas) - Adicionam as relações aninhadas
 // =================================================================
 
+const MaterialRequestRelationOnlyArgs =
+  Prisma.validator<Prisma.MaterialRequestDefaultArgs>()({
+    select: {
+      items: true,
+      statusHistory: true,
+      storage: true,
+      sipacUnitRequesting: true,
+      sipacUnitCost: true,
+      maintenanceRequest: true,
+      requestedBy: true
+    }
+  });
+
+type MaterialRequestRelationsOnly = Prisma.MaterialRequestGetPayload<
+  typeof MaterialRequestRelationOnlyArgs
+>;
+
 /**
  * DTO para representar a resposta completa de uma requisição de material, incluindo suas relações.
  */
-export class MaterialRequestWithRelationsResponseDto extends MaterialRequestBaseDto {
+export class MaterialRequestWithRelationsResponseDto
+  extends MaterialRequestBaseDto
+  implements Partial<MaterialRequestRelationsOnly>
+{
   /**
    * Lista de itens associados à requisição.
    */
@@ -362,7 +382,7 @@ export class MaterialRequestWithRelationsResponseDto extends MaterialRequestBase
   @IsOptional()
   @ValidateNested()
   @Type(() => UpdateStorageDto) // Substituir por StorageResponseDto se existir
-  storage?: any;
+  storage?: MaterialRequestRelationsOnly['storage'];
 
   //TODO:
   /**
@@ -371,7 +391,7 @@ export class MaterialRequestWithRelationsResponseDto extends MaterialRequestBase
   @IsOptional()
   @ValidateNested()
   @Type(() => UpdateSipacUnidadeDto) // Substituir por SipacUnitResponseDto se existir
-  sipacUnitRequesting?: any;
+  sipacUnitRequesting?: MaterialRequestRelationsOnly['sipacUnitRequesting'];
 
   //TODO:
   /**
@@ -380,21 +400,21 @@ export class MaterialRequestWithRelationsResponseDto extends MaterialRequestBase
   @IsOptional()
   @ValidateNested()
   @Type(() => UpdateSipacUnidadeDto) // Substituir por SipacUnitResponseDto se existir
-  sipacUnitCost?: any;
+  sipacUnitCost?: MaterialRequestRelationsOnly['sipacUnitCost'];
 
   //TODO:
   /**
    * Dados da requisição de manutenção vinculada
    */
   @IsOptional()
-  maintenanceRequest?: any;
+  maintenanceRequest?: MaterialRequestRelationsOnly['maintenanceRequest'];
 
   //TODO:
   /**
    * Dados do requisisitante
    */
   @IsOptional()
-  requestedBy?: any;
+  requestedBy?: MaterialRequestRelationsOnly['requestedBy'];
 }
 
 // =================================================================
