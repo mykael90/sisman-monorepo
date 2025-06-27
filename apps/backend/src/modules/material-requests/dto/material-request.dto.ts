@@ -1,12 +1,14 @@
 import { OmitType, PartialType } from '@nestjs/swagger';
 import {
   Prisma,
+  MaterialRequest,
+  MaterialRequestItem,
+  MaterialRequestStatus,
   MaterialRequestItemType,
   MaterialRequestOrigin,
   MaterialRequestPurpose,
   MaterialRequestStatusOptions,
-  MaterialRequestType,
-  MaterialRequest
+  MaterialRequestType
 } from '@sisman/prisma';
 import { DecimalJsLike } from '@sisman/prisma/generated/client/runtime/library';
 import { Type } from 'class-transformer';
@@ -27,35 +29,44 @@ import { UpdateSipacUnidadeDto } from '../../sipac/unidades/dto/sipac-unidade.dt
 import { UpdateStorageDto } from '../../storages/dto/storage.dto';
 
 // =================================================================
-// 1. DTOs DE RESPOSTA (FONTE DA VERDADE PARA SCHEMAS)
+// 1. "SUPER CLASSES" DE RESPOSTA (FONTE DA VERDADE)
+// Contêm o contrato com o Prisma (`implements`) e os decoradores de validação.
+// São a base para todas as outras DTOs.
 // =================================================================
 
 /**
- * Representa um item da requisição na resposta da API. Inclui o ID.
+ * Classe base para um item de requisição de material.
+ * @hidden
  */
-export class MaterialRequestItemResponseDto {
+class MaterialRequestItemBaseDto implements MaterialRequestItem {
   /**
-   * ID único do item da requisição
+   * ID único do item.
    * @example 101
    */
   @IsNumber()
   id: number;
 
   /**
-   * Tipo do item da requisição de material.
-   * @example GLOBAL_CATALOG
+   * ID da requisição de material à qual este item pertence.
+   * @example 1
+   */
+  @IsNumber()
+  materialRequestId: number;
+
+  /**
+   * Tipo do item da requisição.
    */
   @IsOptional()
   @IsEnum(MaterialRequestItemType)
-  itemRequestType?: MaterialRequestItemType;
+  itemRequestType: MaterialRequestItemType | null;
 
   /**
-   * ID global do material solicitado.
+   * ID global do material solicitado (se aplicável).
    * @example 'MAT-001'
    */
   @IsOptional()
   @IsString()
-  requestedGlobalMaterialId?: string;
+  requestedGlobalMaterialId: string | null;
 
   /**
    * ID da instância do material que atendeu ao item (se aplicável).
@@ -63,7 +74,7 @@ export class MaterialRequestItemResponseDto {
    */
   @IsOptional()
   @IsNumber()
-  fulfilledByInstanceId?: number;
+  fulfilledByInstanceId: number | null;
 
   /**
    * Quantidade solicitada do material.
@@ -73,7 +84,7 @@ export class MaterialRequestItemResponseDto {
   @IsPositive()
   @IsNotEmpty()
   @Type(() => Number)
-  quantityRequested: number | Prisma.Decimal | DecimalJsLike;
+  quantityRequested: Prisma.Decimal;
 
   /**
    * Quantidade aprovada do material.
@@ -83,17 +94,17 @@ export class MaterialRequestItemResponseDto {
   @IsNumber()
   @IsPositive()
   @Type(() => Number)
-  quantityApproved?: number | Prisma.Decimal | DecimalJsLike;
+  quantityApproved: Prisma.Decimal | null;
 
   /**
    * Quantidade entregue do material.
-   * @example 10
+   * @example 8
    */
   @IsOptional()
   @IsNumber()
   @IsPositive()
   @Type(() => Number)
-  quantityDelivered?: number | Prisma.Decimal | DecimalJsLike;
+  quantityDelivered: Prisma.Decimal | null;
 
   /**
    * Observações adicionais sobre o item.
@@ -101,16 +112,42 @@ export class MaterialRequestItemResponseDto {
    */
   @IsOptional()
   @IsString()
-  notes?: string;
+  notes: string | null;
+
+  /**
+   * Data de criação do item.
+   */
+  @IsDate()
+  createdAt: Date;
+
+  /**
+   * Data da última atualização do item.
+   */
+  @IsDate()
+  updatedAt: Date;
 }
 
 /**
- * Representa um status do histórico na resposta da API. Inclui o ID.
+ * Classe base para um status do histórico da requisição.
+ * @hidden
  */
-export class MaterialRequestStatusResponseDto {
+class MaterialRequestStatusBaseDto implements MaterialRequestStatus {
   /**
-   * Status da requisição de material.
-   * @example APPROVED
+   * ID único do registro de status.
+   * @example 201
+   */
+  @IsNumber()
+  id: number;
+
+  /**
+   * ID da requisição de material à qual este status pertence.
+   * @example 1
+   */
+  @IsNumber()
+  materialRequestId: number;
+
+  /**
+   * O status da requisição.
    */
   @IsEnum(MaterialRequestStatusOptions)
   @IsNotEmpty()
@@ -122,15 +159,14 @@ export class MaterialRequestStatusResponseDto {
    */
   @IsOptional()
   @IsNumber()
-  changedById?: number;
+  changedById: number | null;
 
   /**
-   * Data da alteração do status (formato ISO 8601).
-   * @example '2023-10-27T10:00:00.000Z'
+   * Data da alteração do status.
    */
   @IsOptional()
   @IsDateString()
-  changeDate?: string | Date;
+  changeDate: Date | null;
 
   /**
    * Observações sobre a alteração de status.
@@ -138,278 +174,284 @@ export class MaterialRequestStatusResponseDto {
    */
   @IsOptional()
   @IsString()
-  notes?: string;
+  notes: string | null;
+
+  /**
+   * Data de criação do registro de status.
+   */
+  @IsDate()
+  createdAt: Date;
+
+  /**
+   * Data da última atualização do registro de status.
+   */
+  @IsDate()
+  updatedAt: Date;
 }
 
 /**
- * DTO principal para respostas da API. Esta é a classe mais completa,
- * representando a entidade `MaterialRequest` com suas relações.
- * É a fonte da verdade para o schema da API.
+ * Classe base para a requisição de material.
+ * @hidden
  */
-export class MaterialRequestWithRelationsResponseDto {
+class MaterialRequestBaseDto implements MaterialRequest {
   /**
-   * ID da requisição de material (gerado automaticamente)
+   * ID único da requisição de material.
    * @example 1
    */
   @IsNumber()
   id: number;
 
   /**
-   * Data de criação do registro
-   * @example '2023-10-27T09:00:00.000Z'
+   * Data de criação da requisição.
    */
   @IsDate()
   createdAt: Date;
 
   /**
-   * Data da última atualização do registro
-   * @example '2023-10-27T10:00:00.000Z'
+   * Data da última atualização da requisição.
    */
   @IsDate()
   updatedAt: Date;
 
   /**
-   * Número do protocolo da requisição
+   * Número do protocolo da requisição.
    * @example '2023/00123'
    */
   @IsOptional()
   @IsString()
-  protocolNumber?: string;
+  protocolNumber: string | null;
 
   /**
-   * Tipo da requisição de material
-   * @example NEW_MATERIALS
+   * Tipo da requisição.
    */
   @IsOptional()
   @IsEnum(MaterialRequestType)
-  requestType?: MaterialRequestType;
+  requestType: MaterialRequestType | null;
 
   /**
-   * Propósito da requisição de material
-   * @example SUPPLY_MAINTENANCE
+   * Propósito da requisição.
    */
   @IsOptional()
   @IsEnum(MaterialRequestPurpose)
-  purpose?: MaterialRequestPurpose;
+  purpose: MaterialRequestPurpose | null;
 
   /**
-   * Justificativa para a requisição
+   * Justificativa para a requisição.
    * @example 'Necessário para reparo do equipamento X'
    */
   @IsOptional()
   @IsString()
-  justification?: string;
+  justification: string | null;
 
   /**
-   * Data da requisição (formato ISO 8601)
-   * @example '2023-10-27T10:00:00.000Z'
+   * Data da requisição.
    */
   @IsOptional()
   @IsDateString()
-  requestDate?: string | Date;
+  requestDate: Date | null;
 
   /**
-   * ID da requisição de manutenção associada
+   * ID da requisição de manutenção associada (se houver).
    * @example 10
    */
   @IsOptional()
   @IsNumber()
   @Type(() => Number)
-  maintenanceRequestId?: number;
+  maintenanceRequestId: number | null;
 
   /**
-   * ID do usuário que solicitou
+   * ID do usuário que solicitou.
    * @example 5
    */
   @IsOptional()
   @IsNumber()
   @Type(() => Number)
-  requestedById?: number;
+  requestedById: number | null;
 
   /**
-   * Usuario que realizou a requisicao de material
+   * Login do usuário do SIPAC que realizou a requisição.
    * @example 'mykael.mello'
    */
   @IsOptional()
   @IsString()
-  sipacUserLoginRequest?: string;
+  sipacUserLoginRequest: string | null;
 
   /**
-   * Origem da requisição de material
-   * @example SISMAN
+   * Origem da requisição.
    */
   @IsOptional()
   @IsEnum(MaterialRequestOrigin)
-  origin?: MaterialRequestOrigin;
+  origin: MaterialRequestOrigin | null;
 
   /**
-   * Valor solicitado (pode ser string, número ou Decimal)
+   * Valor total solicitado.
    * @example 150.75
    */
   @IsOptional()
   @ValidateIf((o) => o.requestValue !== undefined)
   @IsNumber({}, { message: 'O valor solicitado deve ser um número válido.' })
   @Type(() => Number)
-  requestValue?: string | number | Prisma.Decimal | DecimalJsLike;
+  requestValue: Prisma.Decimal | null;
 
   /**
-   * Valor atendido (pode ser string, número ou Decimal)
-   * @example 150.0
+   * Valor total atendido.
+   * @example 150.00
    */
   @IsOptional()
   @ValidateIf((o) => o.servedValue !== undefined)
   @IsNumber({}, { message: 'O valor atendido deve ser um número válido.' })
   @Type(() => Number)
-  servedValue?: string | number | Prisma.Decimal | DecimalJsLike;
+  servedValue: Prisma.Decimal | null;
 
   /**
-   * Status atual da requisição de material
-   * @example APPROVED
+   * Status atual da requisição.
    */
-  @IsOptional() // Current status pode ser opcional dependendo da lógica de criação
+  @IsOptional()
   @IsEnum(MaterialRequestStatusOptions)
-  currentStatus?: MaterialRequestStatusOptions;
+  currentStatus: MaterialRequestStatusOptions | null;
 
   /**
-   * Observações adicionais sobre a requisição.
+   * Observações gerais sobre a requisição.
    */
   @IsOptional()
   @IsString()
-  notes?: string;
+  notes: string | null;
 
   /**
-   * Itens da requisição de material.
+   * ID do almoxarifado associado.
+   * @example 3
+   */
+  @IsOptional()
+  @IsNumber()
+  storageId: number | null;
+
+  /**
+   * ID da unidade SIPAC requisitante.
+   * @example 1234
+   */
+  @IsOptional()
+  @IsNumber()
+  sipacUnitRequestingId: number | null;
+
+  /**
+   * ID da unidade de custo SIPAC.
+   * @example 5678
+   */
+  @IsOptional()
+  @IsNumber()
+  sipacUnitCostId: number | null;
+}
+
+// =================================================================
+// 2. DTOs DE RESPOSTA (Públicas) - Adicionam as relações aninhadas
+// =================================================================
+
+/**
+ * DTO para representar a resposta completa de uma requisição de material, incluindo suas relações.
+ */
+export class MaterialRequestWithRelationsResponseDto extends MaterialRequestBaseDto {
+  /**
+   * Lista de itens associados à requisição.
    */
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => MaterialRequestItemResponseDto) // Usa a DTO de Resposta de Item
-  items?: MaterialRequestItemResponseDto[];
+  @Type(() => MaterialRequestItemBaseDto)
+  items?: MaterialRequestItemBaseDto[];
 
   /**
-   * Histórico de status da requisição de material.
+   * Histórico de status da requisição.
    */
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => MaterialRequestStatusResponseDto) // Usa a DTO de Resposta de Status
-  statusHistory?: MaterialRequestStatusResponseDto[];
+  @Type(() => MaterialRequestStatusBaseDto)
+  statusHistory?: MaterialRequestStatusBaseDto[];
 
   /**
-   * Centro de distribuição associado à requisição de material.
+   * Dados do almoxarifado associado.
    */
   @IsOptional()
   @ValidateNested()
-  @Type(() => UpdateStorageDto)
+  @Type(() => UpdateStorageDto) // Substituir por StorageResponseDto se existir
   storage?: UpdateStorageDto;
 
   /**
-   * Unidade requisitante associada
+   * Dados da unidade SIPAC requisitante.
    */
   @IsOptional()
-  @Type(() => UpdateSipacUnidadeDto)
+  @ValidateNested()
+  @Type(() => UpdateSipacUnidadeDto) // Substituir por SipacUnitResponseDto se existir
   sipacUnitRequesting?: UpdateSipacUnidadeDto;
 
   /**
-   * Unidade de custo associada.
+   * Dados da unidade de custo SIPAC.
    */
   @IsOptional()
-  @Type(() => UpdateSipacUnidadeDto)
+  @ValidateNested()
+  @Type(() => UpdateSipacUnidadeDto) // Substituir por SipacUnitResponseDto se existir
   sipacUnitCost?: UpdateSipacUnidadeDto;
 }
 
 // =================================================================
-// 2. DTOs DE CRIAÇÃO (INPUT) - Derivadas das DTOs de Resposta
+// 3. DTOs DE CRIAÇÃO (INPUT) - Derivadas com OmitType
 // =================================================================
 
 /**
- * DTO para criar um item de requisição. Omite o ID que é gerado pelo banco.
+ * DTO para criar um novo item de requisição.
  */
 export class CreateMaterialRequestItemDto extends OmitType(
-  MaterialRequestItemResponseDto,
-  ['id'] as const
-) {
-  /**
-   * ID da requisição de material (geralmente gerado automaticamente)
-   * @example 1
-   */
-  @IsOptional()
-  @IsNumber()
-  id?: number;
-}
+  MaterialRequestItemBaseDto,
+  ['id', 'materialRequestId', 'createdAt', 'updatedAt'] as const
+) {}
 
 /**
- * DTO para criar um status de requisição. Omite o ID que é gerado pelo banco.
+ * DTO para criar um novo registro de status.
  */
-export class CreateMaterialRequestStatusDto extends MaterialRequestStatusResponseDto {}
+export class CreateMaterialRequestStatusDto extends OmitType(
+  MaterialRequestStatusBaseDto,
+  ['id', 'materialRequestId', 'createdAt', 'updatedAt'] as const
+) {}
 
 /**
- * DTO para criar uma requisição de material com suas relações.
- * Omite campos gerados pelo servidor como 'id', 'createdAt', 'updatedAt'.
+ * DTO para criar uma nova requisição de material com suas relações.
  */
 export class CreateMaterialRequestWithRelationsDto extends OmitType(
-  MaterialRequestWithRelationsResponseDto,
-  ['id', 'createdAt', 'updatedAt', 'items', 'statusHistory'] as const
+  MaterialRequestBaseDto,
+  ['id', 'createdAt', 'updatedAt'] as const
 ) {
-  // Sobrescreve as propriedades aninhadas para usar as DTOs de CRIAÇÃO corretas
   /**
-   * ID da requisição de material (geralmente gerado automaticamente)
-   * @example 1
-   */
-  @IsOptional()
-  @IsNumber()
-  id?: number;
-
-  /**
-   * Itens da requisição de material.
+   * Lista de itens a serem criados junto com a requisição.
    */
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => CreateMaterialRequestItemDto) // <- Usa a DTO de Criação de Item
+  @Type(() => CreateMaterialRequestItemDto)
   items?: CreateMaterialRequestItemDto[];
 
   /**
-   * Histórico de status da requisição de material.
+   * Histórico de status a ser criado junto com a requisição.
    */
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => CreateMaterialRequestStatusDto) // <- Usa a DTO de Criação de Status
+  @Type(() => CreateMaterialRequestStatusDto)
   statusHistory?: CreateMaterialRequestStatusDto[];
 }
 
 // =================================================================
-// 3. DTOs DE ATUALIZAÇÃO (INPUT) - Derivadas das DTOs de Criação
+// 4. DTOs DE ATUALIZAÇÃO (INPUT) - Derivadas com PartialType
 // =================================================================
 
 /**
- * DTO para atualizar uma requisição de material (apenas campos principais).
- * Usa PartialType para tornar todos os campos opcionais.
- */
-export class UpdateMaterialRequestDto extends PartialType(
-  // A base para a atualização não deve incluir as relações
-  OmitType(MaterialRequestWithRelationsResponseDto, [
-    'id',
-    'createdAt',
-    'updatedAt',
-    'items',
-    'statusHistory',
-    'storage',
-    'sipacUnitRequesting',
-    'sipacUnitCost'
-  ] as const)
-) {}
-
-/**
- * DTO para atualizar/inserir (upsert) um item de requisição.
- * O ID é opcional para identificar qual item atualizar.
+ * DTO para atualizar ou inserir (upsert) um item de requisição.
  */
 export class UpdateMaterialRequestItemDto extends PartialType(
   CreateMaterialRequestItemDto
 ) {
   /**
-   * ID do item da requisição (usado para identificar o item a ser atualizado)
+   * ID do item. Necessário para identificar o item a ser atualizado.
+   * Se omitido para um item existente, pode causar erro. Se fornecido para um novo, pode ser ignorado dependendo da lógica do serviço.
    * @example 101
    */
   @IsOptional()
@@ -418,33 +460,45 @@ export class UpdateMaterialRequestItemDto extends PartialType(
 }
 
 /**
- * DTO para atualizar/inserir um status de requisição.
+ * DTO para atualizar ou inserir (upsert) um registro de status.
  */
 export class UpdateMaterialRequestStatusDto extends PartialType(
   CreateMaterialRequestStatusDto
-) {}
-
-/**
- * DTO para atualizar uma requisição de material com suas relações.
- * Torna todos os campos opcionais.
- */
-export class UpdateMaterialRequestWithRelationsDto extends PartialType(
-  OmitType(CreateMaterialRequestWithRelationsDto, ['items'] as const)
 ) {
-  // Sobrescreve as propriedades aninhadas para usar as DTOs de ATUALIZAÇÃO corretas
   /**
-   * ID de status da requisição de material (geralmente gerado automaticamente)
-   * @example 1
+   * ID do registro de status. Necessário para identificar o registro a ser atualizado.
+   * @example 201
    */
   @IsOptional()
   @IsNumber()
   id?: number;
+}
+
+/**
+ * DTO para atualizar uma requisição de material existente com suas relações.
+ */
+export class UpdateMaterialRequestWithRelationsDto extends PartialType(
+  OmitType(CreateMaterialRequestWithRelationsDto, [
+    'items',
+    'statusHistory'
+  ] as const)
+) {
   /**
-   * Itens da requisição de material.
+   * Lista de itens a serem atualizados, criados ou removidos.
+   * A lógica de `upsert` e remoção deve ser implementada no serviço.
    */
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => UpdateMaterialRequestItemDto) // <- Usa a DTO de Atualização de Item
+  @Type(() => UpdateMaterialRequestItemDto)
   items?: UpdateMaterialRequestItemDto[];
+
+  /**
+   * Histórico de status a ser atualizado ou criado.
+   */
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => UpdateMaterialRequestStatusDto)
+  statusHistory?: UpdateMaterialRequestStatusDto[];
 }
