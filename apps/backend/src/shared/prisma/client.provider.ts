@@ -2,7 +2,7 @@ import {
   INestApplication,
   Injectable,
   OnModuleDestroy,
-  OnModuleInit,
+  OnModuleInit
 } from '@nestjs/common';
 import { PrismaClient } from '@sisman/prisma';
 import { AddMethodsExtension } from './extensions/add-methods-extension';
@@ -19,10 +19,10 @@ export class PrismaClientProvider
     private readonly addMethodsExtension: AddMethodsExtension,
     private readonly formatResponseExtension: FormatResponseExtension,
     private readonly addLogsExtension: AddLogsExtension,
-    private readonly computedFieldExtension: ComputedFieldExtension,
+    private readonly computedFieldExtension: ComputedFieldExtension
   ) {
     super({
-      log: ['query', 'info', 'warn', 'error'],
+      log: ['query', 'info', 'warn', 'error']
     });
   }
 
@@ -32,7 +32,7 @@ export class PrismaClientProvider
         // .$extends(this.formatResponseExtension.formatDates)
         // .$extends(this.formatResponseExtension.upperCase)
         .$extends(this.addLogsExtension.perfomanceLog)
-        .$extends(this.computedFieldExtension.addUpdatedAtBr)
+      // .$extends(this.computedFieldExtension.addUpdatedAtBr)
     );
   }
 

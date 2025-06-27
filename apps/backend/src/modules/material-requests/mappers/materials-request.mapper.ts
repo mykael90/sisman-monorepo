@@ -11,8 +11,7 @@ import {
   CreateMaterialRequestItemDto,
   CreateMaterialRequestWithRelationsDto
 } from '../dto/material-request.dto';
-import { nowFormatted } from '../../../shared/utils/date-utils';
-import { Material } from '../../../shared/entities/material.entity';
+import { getNowFormatted } from '../../../shared/utils/date-utils';
 
 type SipacStatus =
   | 'CADASTRADA'
@@ -63,7 +62,7 @@ export class MaterialRequestMapper {
       servedValue: item.valorDoTotalAtendido,
       purpose: MaterialRequestPurpose.SUPPLY_MAINTENANCE,
       currentStatus: StatusSipacToSisman[item.statusAtual],
-      notes: `IMPORTADO DO ${MaterialRequestOrigin.SIPAC} EM ${nowFormatted} \n ${item.observacoes}`,
+      notes: `IMPORTADO DO ${MaterialRequestOrigin.SIPAC} EM ${getNowFormatted()} \n ${item.observacoes}`,
 
       // relations
       storage: {
@@ -83,7 +82,7 @@ export class MaterialRequestMapper {
       statusHistory: item.historicoDaRequisicao.map((status) => ({
         status: StatusSipacToSisman[status.status],
         changeDate: status.dataHora,
-        notes: `IMPORTADO ${MaterialRequestOrigin.SIPAC} SIPAC EM ${nowFormatted}`
+        notes: `IMPORTADO ${MaterialRequestOrigin.SIPAC} EM ${getNowFormatted()}`
         // notes: JSON.stringify(status, null, 2)
       }))
       // [

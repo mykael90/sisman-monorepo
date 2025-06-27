@@ -8,9 +8,9 @@ import {
   MaterialRequestOrigin,
   MaterialRequestPurpose,
   MaterialRequestStatusOptions,
-  MaterialRequestType
+  MaterialRequestType,
+  $Enums
 } from '@sisman/prisma';
-import { DecimalJsLike } from '@sisman/prisma/generated/client/runtime/library';
 import { Type } from 'class-transformer';
 import {
   IsArray,
@@ -133,13 +133,6 @@ class MaterialRequestItemBaseDto implements MaterialRequestItem {
  */
 class MaterialRequestStatusBaseDto implements MaterialRequestStatus {
   /**
-   * ID único do registro de status.
-   * @example 201
-   */
-  @IsNumber()
-  id: number;
-
-  /**
    * ID da requisição de material à qual este status pertence.
    * @example 1
    */
@@ -181,12 +174,6 @@ class MaterialRequestStatusBaseDto implements MaterialRequestStatus {
    */
   @IsDate()
   createdAt: Date;
-
-  /**
-   * Data da última atualização do registro de status.
-   */
-  @IsDate()
-  updatedAt: Date;
 }
 
 /**
@@ -368,6 +355,152 @@ export class MaterialRequestWithRelationsResponseDto extends MaterialRequestBase
   @Type(() => MaterialRequestStatusBaseDto)
   statusHistory?: MaterialRequestStatusBaseDto[];
 
+  //TODO:
+  /**
+   * Dados do almoxarifado associado.
+   */
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => UpdateStorageDto) // Substituir por StorageResponseDto se existir
+  storage?: any;
+
+  //TODO:
+  /**
+   * Dados da unidade SIPAC requisitante.
+   */
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => UpdateSipacUnidadeDto) // Substituir por SipacUnitResponseDto se existir
+  sipacUnitRequesting?: any;
+
+  //TODO:
+  /**
+   * Dados da unidade de custo SIPAC.
+   */
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => UpdateSipacUnidadeDto) // Substituir por SipacUnitResponseDto se existir
+  sipacUnitCost?: any;
+
+  //TODO:
+  /**
+   * Dados da requisição de manutenção vinculada
+   */
+  @IsOptional()
+  maintenanceRequest?: any;
+
+  //TODO:
+  /**
+   * Dados do requisisitante
+   */
+  @IsOptional()
+  requestedBy?: any;
+}
+
+// =================================================================
+// 3. DTOs DE CRIAÇÃO (INPUT) - Derivadas com OmitType
+// =================================================================
+
+/**
+ * DTO para criar um novo item de requisição.
+ */
+export class CreateMaterialRequestItemDto extends OmitType(
+  MaterialRequestItemBaseDto,
+  [
+    'id',
+    'materialRequestId',
+    'createdAt',
+    'updatedAt',
+    'fulfilledByInstanceId',
+    'requestedGlobalMaterialId',
+    'notes'
+  ] as const
+) {
+  /**
+   *    * ID global do material solicitado (se aplicável).
+   * @example 'MAT-001'
+.
+   */
+  @IsOptional()
+  @IsString()
+  requestedGlobalMaterialId?: string;
+
+  /**
+   *    * ID de material derivado (se aplicável).
+   * @example '1'
+.
+   */
+  @IsOptional()
+  @IsNumber()
+  fulfilledByInstanceId?: number;
+}
+
+/**
+ * DTO para criar um novo registro de status.
+ */
+export class CreateMaterialRequestStatusDto extends OmitType(
+  MaterialRequestStatusBaseDto,
+  ['materialRequestId', 'createdAt', 'changedById', 'notes'] as const
+) {
+  /**
+   * Observações sobre a alteração de status.
+   * @example 'Aprovado pelo gerente.'
+   */
+  @IsOptional()
+  @IsString()
+  notes?: string;
+
+  // /**
+  //  * ID do usuário que alterou o status.
+  //  * @example 5
+  //  */
+  // @IsOptional()
+  // @IsNumber()
+  // changedById?: number;
+}
+
+/**
+ * DTO para criar uma nova requisição de material com suas relações.
+ */
+export class CreateMaterialRequestWithRelationsDto extends OmitType(
+  MaterialRequestBaseDto,
+  [
+    'id',
+    'createdAt',
+    'updatedAt',
+    'justification',
+    'storageId',
+    'sipacUnitRequestingId',
+    'sipacUnitCostId'
+  ] as const
+) {
+  // Sobrescreve as propriedades aninhadas para usar as DTOs de CRIAÇÃO corretas
+  /**
+   * ID da requisição de material (geralmente gerado automaticamente)
+   * @example 1
+   */
+  @IsOptional()
+  @IsNumber()
+  id?: number;
+
+  /**
+   * Lista de itens a serem criados junto com a requisição.
+   */
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreateMaterialRequestItemDto)
+  items?: CreateMaterialRequestItemDto[];
+
+  /**
+   * Histórico de status a ser criado junto com a requisição.
+   */
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreateMaterialRequestStatusDto)
+  statusHistory?: CreateMaterialRequestStatusDto[];
+
   /**
    * Dados do almoxarifado associado.
    */
@@ -391,52 +524,6 @@ export class MaterialRequestWithRelationsResponseDto extends MaterialRequestBase
   @ValidateNested()
   @Type(() => UpdateSipacUnidadeDto) // Substituir por SipacUnitResponseDto se existir
   sipacUnitCost?: UpdateSipacUnidadeDto;
-}
-
-// =================================================================
-// 3. DTOs DE CRIAÇÃO (INPUT) - Derivadas com OmitType
-// =================================================================
-
-/**
- * DTO para criar um novo item de requisição.
- */
-export class CreateMaterialRequestItemDto extends OmitType(
-  MaterialRequestItemBaseDto,
-  ['id', 'materialRequestId', 'createdAt', 'updatedAt'] as const
-) {}
-
-/**
- * DTO para criar um novo registro de status.
- */
-export class CreateMaterialRequestStatusDto extends OmitType(
-  MaterialRequestStatusBaseDto,
-  ['id', 'materialRequestId', 'createdAt', 'updatedAt'] as const
-) {}
-
-/**
- * DTO para criar uma nova requisição de material com suas relações.
- */
-export class CreateMaterialRequestWithRelationsDto extends OmitType(
-  MaterialRequestBaseDto,
-  ['id', 'createdAt', 'updatedAt'] as const
-) {
-  /**
-   * Lista de itens a serem criados junto com a requisição.
-   */
-  @IsOptional()
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => CreateMaterialRequestItemDto)
-  items?: CreateMaterialRequestItemDto[];
-
-  /**
-   * Histórico de status a ser criado junto com a requisição.
-   */
-  @IsOptional()
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => CreateMaterialRequestStatusDto)
-  statusHistory?: CreateMaterialRequestStatusDto[];
 }
 
 // =================================================================
@@ -466,12 +553,18 @@ export class UpdateMaterialRequestStatusDto extends PartialType(
   CreateMaterialRequestStatusDto
 ) {
   /**
-   * ID do registro de status. Necessário para identificar o registro a ser atualizado.
-   * @example 201
+   * O status da requisição.
+   */
+  @IsEnum(MaterialRequestStatusOptions)
+  @IsNotEmpty()
+  status: $Enums.MaterialRequestStatusOptions;
+
+  /**
+   * Data da alteração do status.
    */
   @IsOptional()
-  @IsNumber()
-  id?: number;
+  @IsDateString()
+  changeDate: Date;
 }
 
 /**
