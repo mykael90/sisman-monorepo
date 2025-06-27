@@ -4,7 +4,6 @@ import {
   MaterialRequestStatusOptions
 } from '@sisman/prisma';
 import {
-  CreateMaterialRequestDto,
   CreateMaterialRequestItemDto,
   CreateMaterialRequestWithRelationsDto
 } from '../dto/material-request.dto';

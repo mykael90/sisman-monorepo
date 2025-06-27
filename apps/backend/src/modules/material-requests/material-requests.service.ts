@@ -1,7 +1,6 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../shared/prisma/prisma.service';
 import {
-  CreateMaterialRequestDto,
   CreateMaterialRequestWithRelationsDto,
   UpdateMaterialRequestWithRelationsDto
 } from './dto/material-request.dto';

@@ -35,7 +35,7 @@ Authorization: Bearer {{token}}
     "currentStatus": "REJECTED",
     "currentMaintenanceInstance": {"id": 1},
     "createdBy": {"id": 1},
-    "status": {"id": 3, "name": "REJECTED"}
+    "status": {"id": 1, "name": "REJECTED"}
 }
 
 ### PUT

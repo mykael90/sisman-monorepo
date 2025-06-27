@@ -4,7 +4,7 @@ import {
   ApiOperation,
   ApiResponse,
   ApiResponseOptions,
-  getSchemaPath
+  getSchemaPath // Importante para a referência do schema
 } from '@nestjs/swagger';
 
 interface ApiEndpointOptions {
@@ -13,8 +13,9 @@ interface ApiEndpointOptions {
   response: {
     status: number;
     description: string;
-    type?: Type<any>; // O DTO de resposta
-    content?: any;
+    type?: Type<any>;
+    isArray?: boolean;
+    content?: ApiResponseOptions['content'];
   };
   errors?: {
     status: number;
@@ -27,6 +28,8 @@ export function ApiEndpointSwagger(options: ApiEndpointOptions) {
 
   const defaultErrors = [
     { status: 400, description: 'Requisição inválida (Bad Request)' },
+    { status: 401, description: 'Não autorizado' },
+    { status: 403, description: 'Acesso negado' },
     { status: 500, description: 'Erro interno do servidor' }
   ];
 
@@ -34,14 +37,38 @@ export function ApiEndpointSwagger(options: ApiEndpointOptions) {
     ApiResponse({ status: err.status, description: err.description })
   );
 
+  // Construir a configuração da resposta de sucesso
+  const successResponseOptions: ApiResponseOptions = {
+    status: response.status,
+    description: response.description
+  };
+
+  // Lógica de Priorização Corrigida:
+  if (response.content) {
+    // 1. Se 'content' for fornecido, ele tem prioridade máxima.
+    successResponseOptions.content = response.content;
+  } else if (response.type) {
+    // 2. Senão, se 'type' for fornecido, construímos a resposta.
+    if (response.isArray) {
+      // CORREÇÃO AQUI: Para arrays, construímos o 'content' manualmente.
+      successResponseOptions.content = {
+        'application/json': {
+          // Assumindo que a resposta é sempre JSON
+          schema: {
+            type: 'array',
+            items: { $ref: getSchemaPath(response.type) }
+          }
+        }
+      };
+    } else {
+      // Para objetos únicos, o atalho 'type' funciona perfeitamente.
+      successResponseOptions.type = response.type;
+    }
+  }
+
   return applyDecorators(
     ApiOperation({ summary, description }),
-    ApiResponse({
-      status: response.status,
-      description: response.description,
-      content: response.content,
-      type: response.type
-    }),
+    ApiResponse(successResponseOptions),
     ...allErrors
   );
 }
