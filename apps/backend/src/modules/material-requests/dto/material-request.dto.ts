@@ -1,5 +1,4 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { ApiProperty } from '@nestjs/swagger';
+import { PartialType } from '@nestjs/swagger';
 import {
   $Enums,
   Prisma,
@@ -32,111 +31,92 @@ import {
 export class CreateMaterialRequestDto
   implements Omit<Prisma.MaterialRequestCreateManyInput, 'storageId'>
 {
-  @ApiProperty({
-    description:
-      'ID da requisição de material (geralmente gerado automaticamente)',
-    example: 1,
-    required: false
-  })
+  /**
+   * ID da requisição de material (geralmente gerado automaticamente)
+   * @example 1
+   */
   @IsOptional()
   @IsNumber()
   id?: number;
 
-  @ApiProperty({
-    description: 'Número do protocolo da requisição',
-    example: '2023/00123',
-    required: false
-  })
+  /**
+   * Número do protocolo da requisição
+   * @example '2023/00123'
+   */
   @IsOptional()
   @IsString()
   protocolNumber?: string;
 
-  @ApiProperty({
-    description: 'Tipo da requisição de material',
-    enum: $Enums.MaterialRequestType,
-    // Correção para usar o enum importado diretamente
-    // enum: MaterialRequestType,
-    example: $Enums.MaterialRequestType.NEW_MATERIALS,
-    required: false
-  })
+  /**
+   * Tipo da requisição de material
+   * @example NEW_MATERIALS
+   */
   @IsOptional()
   @IsEnum(MaterialRequestType) // Usando o enum importado
   requestType?: MaterialRequestType;
 
-  @ApiProperty({
-    description: 'Propósito da requisição de material',
-    enum: MaterialRequestPurpose,
-    example: MaterialRequestPurpose.SUPPLY_MAINTENANCE,
-    required: false
-  })
+  /**
+   * Propósito da requisição de material
+   * @example SUPPLY_MAINTENANCE
+   */
   @IsOptional()
   @IsEnum(MaterialRequestPurpose)
   purpose?: MaterialRequestPurpose;
 
-  @ApiProperty({
-    description: 'Justificativa para a requisição',
-    example: 'Necessário para reparo do equipamento X',
-    required: false
-  })
+  /**
+   * Justificativa para a requisição
+   * @example 'Necessário para reparo do equipamento X'
+   */
   @IsOptional()
   @IsString()
   justification?: string;
 
-  @ApiProperty({
-    description: 'Data da requisição (formato ISO 8601)',
-    example: '2023-10-27T10:00:00.000Z',
-    required: false
-  })
+  /**
+   * Data da requisição (formato ISO 8601)
+   * @example '2023-10-27T10:00:00.000Z'
+   */
   @IsOptional()
   @IsDateString()
   requestDate?: string | Date;
 
-  @ApiProperty({
-    description: 'ID da requisição de manutenção associada',
-    example: 10,
-    required: false
-  })
+  /**
+   * ID da requisição de manutenção associada
+   * @example 10
+   */
   @IsOptional()
   @IsNumber()
   @Type(() => Number)
   maintenanceRequestId?: number;
 
-  @ApiProperty({
-    description: 'ID do usuário que solicitou',
-    example: 5,
-    required: false
-  })
+  /**
+   * ID do usuário que solicitou
+   * @example 5
+   */
   @IsOptional()
   @IsNumber()
   @Type(() => Number)
   requestedById?: number;
 
-  @ApiProperty({
-    description: 'Usuario que realizou a requisicao de material',
-    example: 'mykael.mello',
-    required: false
-  })
+  /**
+   * Usuario que realizou a requisicao de material
+   * @example 'mykael.mello'
+   */
   @IsOptional()
   @IsString()
   sipacUserLoginRequest?: string;
 
-  @ApiProperty({
-    description: 'Origem da requisição de material',
-    enum: $Enums.MaterialRequestOrigin,
-    // Correção para usar o enum importado diretamente
-    // enum: MaterialRequestOrigin,
-    example: $Enums.MaterialRequestOrigin.SISMAN,
-    required: false
-  })
+  /**
+   * Origem da requisição de material
+   * @example SISMAN
+   */
   @IsOptional()
   @IsEnum(MaterialRequestOrigin) // Usando o enum importado
   origin?: MaterialRequestOrigin;
 
-  @ApiProperty({
-    description: 'Valor solicitado (pode ser string, número ou Decimal)',
-    example: 150.75,
-    required: false
-  })
+  /**
+   * Valor solicitado (pode ser string, número ou Decimal)
+   * @example 150.75
+   */
   @IsOptional()
   // Validação mais complexa pode ser necessária dependendo do formato esperado
   @ValidateIf((o) => o.requestValue !== undefined)
@@ -144,11 +124,10 @@ export class CreateMaterialRequestDto
   @Type(() => Number) // Tenta converter para número, mas pode precisar de lógica customizada para Decimal
   requestValue?: string | number | Prisma.Decimal | DecimalJsLike;
 
-  @ApiProperty({
-    description: 'Valor atendido (pode ser string, número ou Decimal)',
-    example: 150.0,
-    required: false
-  })
+  /**
+   * Valor atendido (pode ser string, número ou Decimal)
+   * @example 150.0
+   */
   @IsOptional()
   // Validação mais complexa pode ser necessária dependendo do formato esperado
   @ValidateIf((o) => o.servedValue !== undefined)
@@ -156,11 +135,16 @@ export class CreateMaterialRequestDto
   @Type(() => Number) // Tenta converter para número, mas pode precisar de lógica customizada para Decimal
   servedValue?: string | number | Prisma.Decimal | DecimalJsLike;
 
-  @ApiProperty()
+  /**
+   * Status atual da requisição de material
+   * @example APPROVED
+   */
   @IsEnum(MaterialRequestStatusOptions)
   currentStatus?: MaterialRequestStatusOptions;
 
-  @ApiProperty()
+  /**
+   * Observações adicionais sobre a requisição.
+   */
   @IsOptional()
   @IsString()
   notes?: string;
@@ -177,64 +161,54 @@ export class CreateMaterialRequestItemDto
   // @IsNumber()
   // @IsNotEmpty()
   // materialRequestId: number;
-
-  @ApiProperty({
-    description: 'Tipo do item da requisição de material.',
-    enum: $Enums.MaterialRequestItemType,
-    // Correção para usar o enum importado diretamente
-    // enum: MaterialRequestItemType,
-    example: $Enums.MaterialRequestItemType.GLOBAL_CATALOG,
-    required: false
-  })
+  /**
+   * Tipo do item da requisição de material.
+   * @example GLOBAL_CATALOG
+   */
   @IsOptional()
   @IsEnum(MaterialRequestItemType) // Usando o enum importado
   requestType?: MaterialRequestItemType; // Tipo já estava correto aqui
 
-  @ApiProperty({
-    description: 'ID global do material solicitado.',
-    example: 'MAT-001',
-    required: false
-  })
+  /**
+   * ID global do material solicitado.
+   * @example 'MAT-001'
+   */
   @IsOptional()
   @IsString()
   requestedGlobalMaterialId?: string;
 
-  @ApiProperty({
-    description:
-      'ID da instância do material que atendeu ao item (se aplicável).',
-    example: 101,
-    required: false
-  })
+  /**
+   * ID da instância do material que atendeu ao item (se aplicável).
+   * @example 101
+   */
   @IsOptional()
   @IsNumber()
   fulfilledByInstanceId?: number;
 
-  @ApiProperty({
-    description: 'Quantidade solicitada do material.',
-    example: 10
-  })
+  /**
+   * Quantidade solicitada do material.
+   * @example 10
+   */
   @IsNumber()
   @IsPositive() // Ensures quantity is a positive number
   @IsNotEmpty()
   @Type(() => Number) // Ensures transformation from string if necessary
   quantityRequested: number | Prisma.Decimal | DecimalJsLike;
 
-  @ApiProperty({
-    description: 'Quantidade aprovada do material.',
-    example: 10,
-    required: false
-  })
+  /**
+   * Quantidade aprovada do material.
+   * @example 10
+   */
   @IsOptional()
   @IsNumber()
   @IsPositive()
   @Type(() => Number)
   quantityApproved?: number | Prisma.Decimal | DecimalJsLike;
 
-  @ApiProperty({
-    description: 'Quantidade entregue do material.',
-    example: 10,
-    required: false
-  })
+  /**
+   * Quantidade entregue do material.
+   * @example 10
+   */
   @IsOptional()
   @IsNumber()
   @IsPositive()
@@ -245,12 +219,10 @@ export class CreateMaterialRequestItemDto
   // @IsString()
   // @IsNotEmpty()
   // unitOfMeasure: string;
-
-  @ApiProperty({
-    description: 'Observações adicionais sobre o item.',
-    example: 'Urgente',
-    required: false
-  })
+  /**
+   * Observações adicionais sobre o item.
+   * @example 'Urgente'
+   */
   @IsOptional()
   @IsString()
   notes?: string;
@@ -260,11 +232,10 @@ export class CreateMaterialRequestStatusDto
   implements
     Omit<Prisma.MaterialRequestStatusCreateManyInput, 'materialRequestId'>
 {
-  @ApiProperty({
-    description: 'ID do status (geralmente gerado automaticamente)',
-    example: 1,
-    required: false
-  })
+  /**
+   * ID do status (geralmente gerado automaticamente)
+   * @example 1
+   */
   @IsOptional()
   @IsNumber()
   id?: number;
@@ -276,89 +247,76 @@ export class CreateMaterialRequestStatusDto
   // @IsNumber()
   // @IsNotEmpty()
   // materialRequestId: number;
-
-  @ApiProperty({
-    description: 'Status da requisição de material.',
-    enum: MaterialRequestStatusOptions,
-    example: MaterialRequestStatusOptions.APPROVED
-  })
+  /**
+   * Status da requisição de material.
+   * @example APPROVED
+   */
   @IsEnum(MaterialRequestStatusOptions)
   @IsNotEmpty()
   status: MaterialRequestStatusOptions;
 
-  @ApiProperty({
-    description: 'ID do usuário que alterou o status.',
-    example: 5,
-    required: false
-  })
+  /**
+   * ID do usuário que alterou o status.
+   * @example 5
+   */
   @IsOptional()
   @IsNumber()
   changedById?: number;
 
-  @ApiProperty({
-    description: 'Data da alteração do status (formato ISO 8601).',
-    example: '2023-10-27T10:00:00.000Z',
-    required: false
-  })
+  /**
+   * Data da alteração do status (formato ISO 8601).
+   * @example '2023-10-27T10:00:00.000Z'
+   */
   @IsOptional()
   @IsDateString()
   changeDate?: string | Date;
 
-  @ApiProperty({
-    description: 'Observações sobre a alteração de status.',
-    example: 'Aprovado pelo gerente.',
-    required: false
-  })
+  /**
+   * Observações sobre a alteração de status.
+   * @example 'Aprovado pelo gerente.'
+   */
   @IsOptional()
   @IsString()
   notes?: string;
 }
 
 export class CreateMaterialRequestWithRelationsDto extends CreateMaterialRequestDto {
-  @ApiProperty({
-    type: () => [CreateMaterialRequestItemDto],
-    description: 'Itens da requisição de material.',
-    required: false
-  })
+  /**
+   * Itens da requisição de material.
+   */
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => CreateMaterialRequestItemDto)
   items?: CreateMaterialRequestItemDto[];
 
-  @ApiProperty({
-    type: () => [CreateMaterialRequestStatusDto],
-    description: 'Histórico de status da requisição de material.',
-    required: false
-  })
+  /**
+   * Histórico de status da requisição de material.
+   */
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => CreateMaterialRequestStatusDto)
   statusHistory?: CreateMaterialRequestStatusDto[];
 
-  @ApiProperty({
-    type: () => CreateStorageDto,
-    description: 'Centro de distribuição associado à requisição de material.',
-    required: true
-  })
+  /**
+   * Centro de distribuição associado à requisição de material.
+   */
   @IsOptional()
   @ValidateNested()
   @Type(() => UpdateStorageDto)
   storage?: UpdateStorageDto;
 
-  @ApiProperty({
-    type: () => [UpdateSipacUnidadeDto],
+  /**
     description: 'Unidade requisitante associada'
-  })
+   */
   @IsOptional()
   @Type(() => UpdateSipacUnidadeDto)
   sipacUnitRequesting?: UpdateSipacUnidadeDto;
 
-  @ApiProperty({
-    type: () => [UpdateSipacUnidadeDto],
-    description: 'Unidade de custo associada'
-  })
+  /**
+   * Unidade de custo associada.
+   */
   @IsOptional()
   @Type(() => UpdateSipacUnidadeDto)
   sipacUnitCost?: UpdateSipacUnidadeDto;
@@ -371,11 +329,11 @@ export class UpdateMaterialRequestDto extends PartialType(
 export class UpdateMaterialRequestItemDto extends PartialType(
   CreateMaterialRequestItemDto // Ensure CreateMaterialRequestItemDto does not have 'id' for item itself
 ) {
-  @ApiProperty({
-    description: 'ID of the material request item (for upsert operation)',
-    example: 1,
-    required: false
-  })
+  /**
+   * ID of the material request item (for upsert operation)
+   * @example 1
+   */
+  // required: false é inferido de `id?: number;`
   @IsOptional()
   @IsNumber()
   id?: number; // ID of the MaterialRequestItem record itself
