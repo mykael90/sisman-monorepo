@@ -1,5 +1,4 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { ApiProperty } from '@nestjs/swagger';
+import { PartialType } from '@nestjs/swagger';
 import {
   $Enums,
   Prisma,
@@ -47,213 +46,187 @@ export class CreateMaintenanceRequestDto
       | 'diagnosisId'
     >
 {
-  @ApiProperty({
-    description:
-      'ID da requisição de manutenção (geralmente gerado automaticamente)',
-    example: 1,
-    required: false
-  })
+  /**
+   * ID da requisição de manutenção (geralmente gerado automaticamente)
+   * @example 1
+   */
   @IsOptional()
   @IsNumber()
   id?: number;
 
-  @ApiProperty({
-    description: 'Número do protocolo da requisição',
-    example: 'MANUT-2023/001',
-    required: false
-  })
+  /**
+   * Número do protocolo da requisição
+   * @example 'MANUT-2023/001'
+   */
   @IsOptional()
   @IsString()
   protocolNumber?: string;
 
-  @ApiProperty({
-    description: 'Título da requisição',
-    example: 'Reparo de vazamento no banheiro do Bloco A',
-    required: true
-  })
+  /**
+   * Título da requisição
+   * @example 'Reparo de vazamento no banheiro do Bloco A'
+   */
   @IsString()
   @IsNotEmpty()
   title: string;
 
-  @ApiProperty({
-    description: 'Descrição detalhada do problema ou solicitação',
-    example:
-      'Há um vazamento constante na pia do banheiro masculino do segundo andar do Bloco A.',
-    required: true
-  })
+  /**
+   * Descrição detalhada do problema ou solicitação
+   * @example 'Há um vazamento constante na pia do banheiro masculino do segundo andar do Bloco A.'
+   */
   @IsString()
   @IsNotEmpty()
   description: string;
 
-  @ApiProperty({
-    description: 'Prioridade da requisição',
-    enum: RequestPriority,
-    example: RequestPriority.NORMAL,
-    required: false
-  })
+  /**
+   * Prioridade da requisição
+   * @example 'NORMAL'
+   */
   @IsOptional()
   @IsEnum(RequestPriority)
   priority?: RequestPriority;
 
-  @ApiProperty({
-    description: 'Data e hora da solicitação (formato ISO 8601)',
-    example: '2023-10-27T10:00:00.000Z',
-    required: false
-  })
+  /**
+   * Data e hora da solicitação (formato ISO 8601)
+   * @example '2023-10-27T10:00:00.000Z'
+   */
   @IsOptional()
   @IsDateString()
   requestedAt?: string | Date;
 
-  @ApiProperty({
-    description: 'Prazo final para conclusão da requisição (formato ISO 8601)',
-    example: '2023-11-15T17:00:00.000Z',
-    required: false
-  })
+  /**
+   * Prazo final para conclusão da requisição (formato ISO 8601)
+   * @example '2023-11-15T17:00:00.000Z'
+   */
   @IsOptional()
   @IsDateString()
   deadline?: string | Date;
 
-  @ApiProperty({
-    description: 'Detalhes da solução fornecida',
-    example: 'Vazamento corrigido com a troca da vedação da torneira.',
-    required: false
-  })
+  /**
+   * Detalhes da solução fornecida
+   * @example 'Vazamento corrigido com a troca da vedação da torneira.'
+   */
   @IsOptional()
   @IsString()
   solutionDetails?: string;
 
-  @ApiProperty({
-    description: 'Data e hora da conclusão da requisição (formato ISO 8601)',
-    example: '2023-11-10T14:30:00.000Z',
-    required: false
-  })
+  /**
+   * Data e hora da conclusão da requisição (formato ISO 8601)
+   * @example '2023-11-10T14:30:00.000Z'
+   */
   @IsOptional()
   @IsDateString()
   completedAt?: string | Date;
 
-  @ApiProperty({
-    description: 'ID do usuário (técnico) atribuído à requisição',
-    example: 7,
-    required: false
-  })
+  /**
+   * ID do usuário (técnico) atribuído à requisição
+   * @example 7
+   */
   @IsOptional()
   @IsNumber()
   @Type(() => Number)
   assignedToId?: number;
 
-  @ApiProperty({
-    description: 'ID do espaço relacionado à requisição',
-    example: 1,
-    required: false
-  })
+  /**
+   * ID do espaço relacionado à requisição
+   * @example 1
+   */
   @IsOptional()
   @IsNumber()
   @Type(() => Number)
   spaceId?: number;
 
-  @ApiProperty({
-    description: 'ID do edifício relacionado à requisição',
-    example: 1,
-    required: false
-  })
+  /**
+   * ID do edifício relacionado à requisição
+   * @example 1
+   */
   @IsOptional()
   @IsNumber()
   @Type(() => Number)
   buildingId?: number;
 
-  @ApiProperty({
-    description: 'ID do sistema de infraestrutura relacionado à requisição',
-    example: 1,
-    required: false
-  })
+  /**
+   * ID do sistema de infraestrutura relacionado à requisição
+   * @example 1
+   */
   @IsOptional()
   @IsNumber()
   @Type(() => Number)
   systemId?: number;
 
-  @ApiProperty({
-    description: 'ID do equipamento relacionado à requisição',
-    example: 20,
-    required: false
-  })
+  /**
+   * ID do equipamento relacionado à requisição
+   * @example 20
+   */
   @IsOptional()
   @IsNumber()
   @Type(() => Number)
   equipmentId?: number;
 
-  @ApiProperty({
-    description: 'ID do tipo de serviço necessário para a requisição',
-    example: 3,
-    required: false
-  })
+  /**
+   * ID do tipo de serviço necessário para a requisição
+   * @example 3
+   */
   @IsOptional()
   @IsNumber()
   @Type(() => Number)
   serviceTypeId?: number;
 
-  @ApiProperty({
-    description: 'ID do diagnóstico associado a esta requisição',
-    example: 1,
-    required: false
-  })
+  /**
+   * ID do diagnóstico associado a esta requisição
+   * @example 1
+   */
   @IsOptional()
   @IsNumber()
   @Type(() => Number)
   diagnosisId?: number;
 
-  @ApiProperty({
-    description: 'Status atual da requisição de manutenção',
-    enum: MaintenanceRequestStatusOptions,
-    example: MaintenanceRequestStatusOptions.PENDING,
-    required: false
-  })
+  /**
+   * Status atual da requisição de manutenção
+   * @example 'PENDING'
+   */
   @IsOptional()
   @IsEnum(MaintenanceRequestStatusOptions)
   currentStatus?: MaintenanceRequestStatusOptions;
 }
 
 export class UpdateMaintenanceRequestStatusDto {
-  @ApiProperty({
-    description: 'ID do status da requisição de manutenção.',
-    example: 1,
-    required: true
-  })
+  /**
+   * ID do status da requisição de manutenção.
+   * @example 1
+   */
   @IsNumber()
   @IsNotEmpty()
   id: number;
 
-  @ApiProperty({
-    description: 'Nome do status (e.g., "Open", "In Analysis", "Completed").',
-    example: 'Open',
-    required: false
-  })
+  /**
+   * Nome do status (e.g., "Open", "In Analysis", "Completed").
+   * @example 'Open'
+   */
   @IsOptional()
   @IsString()
   name?: string;
 
-  @ApiProperty({
-    description: 'Descrição detalhada do status.',
-    example: 'Requisição aberta e aguardando atribuição.',
-    required: false
-  })
+  /**
+   * Descrição detalhada do status.
+   * @example 'Requisição aberta e aguardando atribuição.'
+   */
   @IsOptional()
   @IsString()
   description?: string;
 
-  @ApiProperty({
-    description: 'Indica se este status marca o fim de uma requisição.',
-    example: false,
-    required: false
-  })
+  /**
+   * Indica se este status marca o fim de uma requisição.
+   * @example false
+   */
   @IsOptional()
   @IsBoolean()
   isFinal?: boolean;
 
-  @ApiProperty({
-    description: 'Ordem para exibição em interfaces de usuário.',
-    example: 1,
-    required: false
-  })
+  /**
+   * Ordem para exibição em interfaces de usuário.
+   * @example 1
+   */
   @IsOptional()
   @IsNumber()
   order?: number;
@@ -263,213 +236,170 @@ export class CreateMaintenanceTimelineEventDto
   implements
     Omit<Prisma.MaintenanceTimelineEventCreateManyInput, 'maintenanceRequestId'>
 {
-  @ApiProperty({
-    description:
-      'ID do evento da linha do tempo (geralmente gerado automaticamente)',
-    example: 1,
-    required: false
-  })
+  /**
+   * ID do evento da linha do tempo (geralmente gerado automaticamente)
+   * @example 1
+   */
   @IsOptional()
   @IsNumber()
   id?: number;
 
-  @ApiProperty({
-    description: 'ID do usuário que realizou a ação/registrou o evento.',
-    example: 5,
-    required: true
-  })
+  /**
+   * ID do usuário que realizou a ação/registrou o evento.
+   * @example 5
+   */
   @IsNumber()
   @IsNotEmpty()
   @Type(() => Number)
   actionById: number;
 
-  @ApiProperty({
-    description: 'Tipo do evento ou ação',
-    enum: TimelineEventType,
-    example: TimelineEventType.COMMENT,
-    required: true
-  })
+  /**
+   * Tipo do evento ou ação
+   * @example 'COMMENT'
+   */
   @IsEnum(TimelineEventType)
   @IsNotEmpty()
   type: TimelineEventType;
 
-  @ApiProperty({
-    description: 'Descrição detalhada da ação',
-    example:
-      'Comentário adicionado: Verificado o local, o vazamento é pequeno.',
-    required: true
-  })
+  /**
+   * Descrição detalhada da ação
+   * @example 'Comentário adicionado: Verificado o local, o vazamento é pequeno.'
+   */
   @IsString()
   @IsNotEmpty()
   description: string;
 
-  @ApiProperty({
-    description: 'Dados estruturados relacionados ao evento (JSON)',
-    example: { oldStatus: 'PENDING', newStatus: 'IN_PROGRESS' },
-    required: false
-  })
+  /**
+   * Dados estruturados relacionados ao evento (JSON)
+   * @example { oldStatus: 'PENDING', newStatus: 'IN_PROGRESS' }
+   */
   @IsOptional()
   eventData?: Prisma.JsonValue;
 
-  @ApiProperty({
-    description: 'Data e hora em que o evento ocorreu (formato ISO 8601)',
-    example: '2023-10-27T10:05:00.000Z',
-    required: false
-  })
+  /**
+   * Data e hora em que o evento ocorreu (formato ISO 8601)
+   * @example '2023-10-27T10:05:00.000Z'
+   */
   @IsOptional()
   @IsDateString()
   occurredAt?: string | Date;
 
-  @ApiProperty({
-    description:
-      'ID da instância de manutenção de onde foi transferido (se aplicável)',
-    example: 1,
-    required: false
-  })
+  /**
+   * ID da instância de manutenção de onde foi transferido (se aplicável)
+   * @example 1
+   */
   @IsNumber()
   @Type(() => Number)
   transferredFromInstanceId: number;
 
-  @ApiProperty({
-    description:
-      'ID da instância de manutenção para onde foi transferido (se aplicável)',
-    example: 2,
-    required: false
-  })
+  /**
+   * ID da instância de manutenção para onde foi transferido (se aplicável)
+   * @example 2
+   */
   @IsNumber()
   @Type(() => Number)
   transferredToInstanceId: number;
 }
 
 export class CreateMaintenanceRequestWithRelationsDto extends CreateMaintenanceRequestDto {
-  @ApiProperty({
-    type: () => UpdateMaintenanceInstance,
-    description:
-      'Instância de manutenção atual que está lidando com a requisição.',
-    required: true
-  })
+  /**
+   * Instância de manutenção atual que está lidando com a requisição.
+   */
   @ValidateNested()
   @Type(() => UpdateMaintenanceInstance)
   currentMaintenanceInstance: UpdateMaintenanceInstance;
 
-  @ApiProperty({
-    type: () => UpdateUserDto,
-    description: 'Usuário que formalmente abriu esta requisição.',
-    required: true
-  })
+  /**
+   * Usuário que formalmente abriu esta requisição.
+   */
   @ValidateNested()
   @Type(() => UpdateUserDto)
   createdBy: UpdateUserDto;
 
-  @ApiProperty({
-    type: () => UpdateUserDto,
-    description: 'Usuário (técnico) atribuído a esta requisição.',
-    required: false
-  })
+  /**
+   * Usuário (técnico) atribuído a esta requisição.
+   */
   @IsOptional()
   @ValidateNested()
   @Type(() => UpdateUserDto)
   assignedTo?: UpdateUserDto;
 
-  @ApiProperty({
-    type: () => UpdateSpaceDto,
-    description: 'Espaço relacionado a esta requisição.',
-    required: false
-  })
+  /**
+   * Espaço relacionado a esta requisição.
+   */
   @IsOptional()
   @ValidateNested()
   @Type(() => UpdateSpaceDto)
   space?: UpdateSpaceDto;
 
-  @ApiProperty({
-    type: () => UpdateBuildingDto,
-    description: 'Edifício relacionado a esta requisição.',
-    required: false
-  })
+  /**
+   * Edifício relacionado a esta requisição.
+   */
   @IsOptional()
   @ValidateNested()
   @Type(() => UpdateBuildingDto)
   building?: UpdateBuildingDto;
 
-  @ApiProperty({
-    type: () => UpdateInfrastructureSystemDto,
-    description: 'Sistema de infraestrutura relacionado a esta requisição.',
-    required: false
-  })
+  /**
+   * Sistema de infraestrutura relacionado a esta requisição.
+   */
   @IsOptional()
   @ValidateNested()
   @Type(() => UpdateInfrastructureSystemDto)
   system?: UpdateInfrastructureSystemDto;
 
-  @ApiProperty({
-    type: () => UpdateEquipmentDto,
-    description: 'Equipamento relacionado a esta requisição.',
-    required: false
-  })
+  /**
+   * Equipamento relacionado a esta requisição.
+   */
   @IsOptional()
   @ValidateNested()
   @Type(() => UpdateEquipmentDto)
   equipment?: UpdateEquipmentDto;
 
-  @ApiProperty({
-    type: () => UpdateServiceTypeDto,
-    description: 'Tipo de serviço necessário para esta requisição.',
-    required: false
-  })
+  /**
+   * Tipo de serviço necessário para esta requisição.
+   */
   @IsOptional()
   @ValidateNested()
   @Type(() => UpdateServiceTypeDto)
   serviceType?: UpdateServiceTypeDto;
 
-  @ApiProperty({
-    type: () => UpdateMaintenanceRequestStatusDto, // Assuming a DTO for MaintenanceRequestStatus
-    description: 'Status da requisição de manutenção.',
-    required: true
-  })
+  /**
+   * Status da requisição de manutenção.
+   */
   @ValidateNested()
   @Type(() => UpdateMaintenanceRequestStatusDto)
   status: UpdateMaintenanceRequestStatusDto;
 
-  @ApiProperty({
-    type: () => UpdateDiagnosisDto,
-    description: 'Diagnóstico associado a esta requisição.',
-    required: false
-  })
+  /**
+   * Diagnóstico associado a esta requisição.
+   */
   @IsOptional()
   @ValidateNested()
   @Type(() => UpdateDiagnosisDto)
   diagnosis?: UpdateDiagnosisDto;
 
-  @ApiProperty({
-    type: () => [UpdateInfrastructureOccurrenceDto],
-    description:
-      'Ocorrências de infraestrutura que originaram esta requisição.',
-    required: false
-  })
+  /**
+   * Ocorrências de infraestrutura que originaram esta requisição.
+   */
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => UpdateInfrastructureOccurrenceDto)
   originatingOccurrences?: UpdateInfrastructureOccurrenceDto[];
 
-  @ApiProperty({
-    type: () => [CreateMaintenanceTimelineEventDto],
-    description: 'Histórico de eventos/ações relacionados a esta requisição.',
-    required: false
-  })
+  /**
+   * Histórico de eventos/ações relacionados a esta requisição.
+   */
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => CreateMaintenanceTimelineEventDto)
   timelineEvents?: CreateMaintenanceTimelineEventDto[];
 
-  // Material requests associated with this maintenance request.
-  @ApiProperty({
-    type: () => [CreateMaterialRequestWithRelationsDto], // Assuming a DTO for MaterialRequest
-    description:
-      'Requisições de material associadas a esta requisição de manutenção.',
-    required: false
-  })
+  /**
+   * Requisições de material associadas a esta requisição de manutenção.
+   */
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
@@ -484,20 +414,18 @@ export class UpdateMaintenanceRequestDto extends PartialType(
 export class UpdateMaintenanceTimelineEventDto extends PartialType(
   CreateMaintenanceTimelineEventDto
 ) {
-  @ApiProperty({
-    description: 'ID do evento da linha do tempo (para operação de upsert)',
-    example: 1,
-    required: true
-  })
+  /**
+   * ID do evento da linha do tempo (para operação de upsert)
+   * @example 1
+   */
   @IsNumber()
   @IsNotEmpty()
   id: number;
 
-  @ApiProperty({
-    description: 'ID do usuário que realizou a ação/registrou o evento.',
-    example: 5,
-    required: false
-  })
+  /**
+   * ID do usuário que realizou a ação/registrou o evento.
+   * @example 5
+   */
   @IsOptional()
   @IsNumber()
   @Type(() => Number)

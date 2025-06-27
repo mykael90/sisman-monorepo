@@ -32,10 +32,10 @@ Authorization: Bearer {{token}}
     "system": {"id": 1},
     "serviceType": {"id": 1},
     "diagnosis": {"id": 1},
-    "currentStatus": "APPROVED",
+    "currentStatus": "REJECTED",
     "currentMaintenanceInstance": {"id": 1},
     "createdBy": {"id": 1},
-    "status": {"id": 2, "name": "APPROVED"}
+    "status": {"id": 3, "name": "REJECTED"}
 }
 
 ### PUT
