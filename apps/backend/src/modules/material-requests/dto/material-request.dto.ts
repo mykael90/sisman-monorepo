@@ -5,7 +5,8 @@ import {
   MaterialRequestOrigin,
   MaterialRequestPurpose,
   MaterialRequestStatusOptions,
-  MaterialRequestType
+  MaterialRequestType,
+  MaterialRequest
 } from '@sisman/prisma';
 import { DecimalJsLike } from '@sisman/prisma/generated/client/runtime/library';
 import { Type } from 'class-transformer';
@@ -107,13 +108,6 @@ export class MaterialRequestItemResponseDto {
  * Representa um status do histórico na resposta da API. Inclui o ID.
  */
 export class MaterialRequestStatusResponseDto {
-  /**
-   * ID único do registro de status
-   * @example 201
-   */
-  @IsNumber()
-  id: number;
-
   /**
    * Status da requisição de material.
    * @example APPROVED
@@ -347,18 +341,7 @@ export class CreateMaterialRequestItemDto extends OmitType(
 /**
  * DTO para criar um status de requisição. Omite o ID que é gerado pelo banco.
  */
-export class CreateMaterialRequestStatusDto extends OmitType(
-  MaterialRequestStatusResponseDto,
-  ['id'] as const
-) {
-  /**
-   * ID de status da requisição de material (geralmente gerado automaticamente)
-   * @example 1
-   */
-  @IsOptional()
-  @IsNumber()
-  id?: number;
-}
+export class CreateMaterialRequestStatusDto extends MaterialRequestStatusResponseDto {}
 
 /**
  * DTO para criar uma requisição de material com suas relações.
@@ -439,15 +422,7 @@ export class UpdateMaterialRequestItemDto extends PartialType(
  */
 export class UpdateMaterialRequestStatusDto extends PartialType(
   CreateMaterialRequestStatusDto
-) {
-  /**
-   * ID do status (usado para identificar o status a ser atualizado)
-   * @example 201
-   */
-  @IsOptional()
-  @IsNumber()
-  id?: number;
-}
+) {}
 
 /**
  * DTO para atualizar uma requisição de material com suas relações.

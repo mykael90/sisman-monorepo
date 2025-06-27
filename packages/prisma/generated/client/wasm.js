@@ -370,7 +370,6 @@ exports.Prisma.MaterialRequestScalarFieldEnum = {
 };
 
 exports.Prisma.MaterialRequestStatusScalarFieldEnum = {
-  id: 'id',
   materialRequestId: 'materialRequestId',
   status: 'status',
   changedById: 'changedById',

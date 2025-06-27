@@ -193,7 +193,8 @@ export class RequisicoesMateriaisService {
         `Failed to sync MaterialRequest for SIPAC ID: ${sipacRequisicao.numeroDaRequisicao}`,
         error.stack
       );
-      // Depending on requirements, you might want to re-throw or handle differently
+      // Relança o erro para garantir que a transação pai seja revertida.
+      throw error;
     }
   }
 

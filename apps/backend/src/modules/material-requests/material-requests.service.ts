@@ -299,18 +299,30 @@ export class MaterialRequestsService {
     if (statusHistory) {
       // statusHistory array is provided (could be empty)
       updateInput.statusHistory = {
-        deleteMany: {},
-        create: statusHistory.map((status) => ({
-          ...status
-        }))
-        // upsert: statusHistory.map((status) => {
-        //   const { id: statusId, ...statusData } = status; // statusId is MaterialRequestStatus's own ID
-        //   return {
-        //     where: { id: statusId || 0 }, // Assumes 0 is not a valid ID
-        //     create: statusData,
-        //     update: statusData
-        //   };
-        // })
+        upsert: statusHistory.map((statusItem) => {
+          // Para o upsert, o 'changeDate' é essencial para identificar o registro.
+          // Se o cliente envia um status com um 'changeDate' que já existe para esta requisição, ele será atualizado.
+          // Se 'changeDate' for omitido ou for novo, um novo registro de histórico será criado.
+          const whereChangeDate = statusItem.changeDate
+            ? new Date(statusItem.changeDate)
+            : new Date();
+
+          const createPayload = { ...statusItem, changeDate: whereChangeDate };
+          // Na atualização, não se deve incluir os campos da chave primária.
+          const { changeDate, status, ...updatePayload } = statusItem;
+
+          return {
+            where: {
+              materialRequestId_status_changeDate: {
+                materialRequestId: id,
+                changeDate: whereChangeDate,
+                status: statusItem.status
+              }
+            },
+            create: createPayload,
+            update: updatePayload
+          };
+        })
       };
     }
 

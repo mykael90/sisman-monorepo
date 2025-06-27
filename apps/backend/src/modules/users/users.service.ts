@@ -101,10 +101,9 @@ export class UsersService {
     try {
       return await this.prisma.user.create({
         data: prismaCreateInput,
-        include:
-          Object.keys(relationsToInclude).length > 0
-            ? relationsToInclude
-            : undefined
+        include: {
+          roles: true
+        }
       });
     } catch (error) {
       handlePrismaError(error, this.logger, 'Usuário', {

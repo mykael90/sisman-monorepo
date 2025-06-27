@@ -547,7 +547,6 @@ enum MaterialRequestStatusOptions {
 
 // Stores the history of status changes for a MaterialRequest.
 model MaterialRequestStatus {
-  id                Int                          @id @default(autoincrement())
   materialRequestId Int // Foreign key to the MaterialRequest.
   materialRequest   MaterialRequest              @relation(fields: [materialRequestId], references: [id], onDelete: Cascade) // Relation to the MaterialRequest model.
   status            MaterialRequestStatusOptions // The status set at this point in time.
@@ -560,6 +559,7 @@ model MaterialRequestStatus {
 
   createdAt DateTime @default(now()) @db.Timestamp(0) // Timestamp for when the history record was created.
 
+  @@id([materialRequestId, status, changeDate])
   @@index([materialRequestId])
   @@index([status])
   @@index([changedById])

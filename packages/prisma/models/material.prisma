@@ -129,8 +129,7 @@ model MaterialRequest {
     requestedById Int? // Foreign key to the user who requested the materials.
     requestedBy   User? @relation("MaterialRequestedByUser", fields: [requestedById], references: [id]) // Relation to the User model (who requested).
 
-    notes      String?  @db.Text // Notes related to this status change (e.g., approval notes, rejection reason).
-
+    notes String? @db.Text // Notes related to this status change (e.g., approval notes, rejection reason).
 
     createdAt DateTime @default(now()) @db.Timestamp(0) // Timestamp for when the record was created.
     updatedAt DateTime @updatedAt @db.Timestamp(0) // Timestamp for the last update of the record.
@@ -205,7 +204,6 @@ enum MaterialRequestStatusOptions {
 
 // Stores the history of status changes for a MaterialRequest.
 model MaterialRequestStatus {
-    id                Int                          @id @default(autoincrement())
     materialRequestId Int // Foreign key to the MaterialRequest.
     materialRequest   MaterialRequest              @relation(fields: [materialRequestId], references: [id], onDelete: Cascade) // Relation to the MaterialRequest model.
     status            MaterialRequestStatusOptions // The status set at this point in time.
@@ -218,6 +216,7 @@ model MaterialRequestStatus {
 
     createdAt DateTime @default(now()) @db.Timestamp(0) // Timestamp for when the history record was created.
 
+    @@id([materialRequestId, status, changeDate])
     @@index([materialRequestId])
     @@index([status])
     @@index([changedById])
