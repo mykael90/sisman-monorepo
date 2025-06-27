@@ -431,15 +431,15 @@ model MaterialWarehouseStock {
   material   MaterialGlobalCatalog @relation(fields: [materialId], references: [id], onDelete: Restrict) // Relation to the Material model.
 
   // Stock Level Types
-  physicalOnHandQuantity Decimal  @default(0) @db.Decimal(12, 3) // Total physical quantity of the material currently in this warehouse.
-  initialStockQuantity   Decimal? @db.Decimal(12, 3) // Initial stock recorded upon system implementation or first entry.
-  restrictedQuantity     Decimal  @default(0) @db.Decimal(12, 3) // Quantity committed to a specific, paid-for maintenance request.
-  reservedQuantity       Decimal  @default(0) @db.Decimal(12, 3) // Quantity allocated for a specific demand, making it unavailable for others.
+  physicalOnHandQuantity Decimal  @default(0) @db.Decimal(12, 2) // Total physical quantity of the material currently in this warehouse.
+  initialStockQuantity   Decimal? @db.Decimal(12, 2) // Initial stock recorded upon system implementation or first entry.
+  restrictedQuantity     Decimal  @default(0) @db.Decimal(12, 2) // Quantity committed to a specific, paid-for maintenance request.
+  reservedQuantity       Decimal  @default(0) @db.Decimal(12, 2) // Quantity allocated for a specific demand, making it unavailable for others.
 
   // Other local information
   locationInWarehouse String? // Specific location within the warehouse (e.g., "Shelf A, Aisle 3").
-  minStockLevel       Decimal?  @db.Decimal(12, 3) // Reorder point for this material in this warehouse.
-  maxStockLevel       Decimal?  @db.Decimal(12, 3) // Maximum desired stock level.
+  minStockLevel       Decimal?  @db.Decimal(12, 2) // Reorder point for this material in this warehouse.
+  maxStockLevel       Decimal?  @db.Decimal(12, 2) // Maximum desired stock level.
   lastStockCountDate  DateTime? // Date of the last physical stock count.
   averageCost         Decimal?  @db.Decimal(12, 4) // Average cost of the material in this warehouse.
 
@@ -664,7 +664,7 @@ model MaterialStockMovement {
   movementTypeId Int // Foreign key to the type of stock movement.
   movementType   MaterialStockMovementType @relation(fields: [movementTypeId], references: [id]) // Relation to the StockMovementType model.
 
-  quantity      Decimal  @db.Decimal(12, 3) // Quantity of material moved in the unit of the instance or global material.
+  quantity      Decimal  @db.Decimal(12, 2) // Quantity of material moved in the unit of the instance or global material.
   unitOfMeasure String // Unit of measure for the movement.
   movementDate  DateTime @default(now()) // The date and time of the movement.
 
@@ -738,14 +738,14 @@ model MaterialDerived {
   conditionId Int // Foreign key to the condition of this material instance.
   condition   MaterialDerivedCondition @relation(fields: [conditionId], references: [id]) // Relation to the MaterialInstanceCondition model.
 
-  quantity            Decimal @db.Decimal(12, 3) // Current quantity of this instance.
+  quantity            Decimal @db.Decimal(12, 2) // Current quantity of this instance.
   locationInWarehouse String? // Specific location within the warehouse for this instance.
 
   sourceNotes String? @db.Text // Notes about the origin of this instance (e.g., "Leftover from WO-123").
 
   // Reserved/Restricted balance SPECIFIC to this instance.
-  reservedQuantity   Decimal @default(0) @db.Decimal(12, 3) // Quantity reserved for specific demands.
-  restrictedQuantity Decimal @default(0) @db.Decimal(12, 3) // Quantity restricted for specific, paid-for requests.
+  reservedQuantity   Decimal @default(0) @db.Decimal(12, 2) // Quantity reserved for specific demands.
+  restrictedQuantity Decimal @default(0) @db.Decimal(12, 2) // Quantity restricted for specific, paid-for requests.
 
   // Relations
   stockMovements        MaterialStockMovement[] @relation("InstanceStockMovements") // Stock movements related to this instance.
@@ -932,7 +932,7 @@ model MaterialWithdrawalItem {
   materialInstanceId Int?
   materialInstance   MaterialDerived?       @relation(fields: [materialInstanceId], references: [id], onDelete: Restrict)
 
-  quantityWithdrawn Decimal @db.Decimal(12, 3)
+  quantityWithdrawn Decimal @db.Decimal(12, 2)
   unitOfMeasure     String
 
   // Se este item está atendendo um MaterialRequestItem específico
@@ -1177,7 +1177,7 @@ model MaterialRestrictionOrderItem {
   materialInstanceId Int?
   materialInstance   MaterialDerived?       @relation(fields: [materialInstanceId], references: [id], onDelete: Restrict)
 
-  quantity      Decimal @db.Decimal(12, 3)
+  quantity      Decimal @db.Decimal(12, 2)
   unitOfMeasure String
 
   // *** RELAÇÃO CRUCIAL ADICIONADA/REFORÇADA ***
@@ -1336,12 +1336,12 @@ model SipacItemRequisicaoMaterial {
   id                  Int      @id @default(autoincrement()) // Identificador único do item.
   numeroItem          Int // Número sequencial do item na requisição.
   codigo              String // Código do material.
-  quantidade          Int // Quantidade solicitada.
+  quantidade          Decimal  @db.Decimal(12, 2) // Quantidade solicitada.
   valor               Decimal  @db.Decimal(12, 2) // Valor unitário do item.
   total               Decimal  @db.Decimal(12, 2) // Valor total do item (quantidade * valor).
-  quantidadeAtendida  Int // Quantidade atendida do item.
-  quantidadeDevolvida Int // Quantidade devolvida do item.
-  quantidadeEmCompra  Int // Quantidade em processo de compra.
+  quantidadeAtendida  Decimal  @db.Decimal(12, 2) // Quantidade atendida do item.
+  quantidadeDevolvida Decimal  @db.Decimal(12, 2) // Quantidade devolvida do item.
+  quantidadeEmCompra  Decimal  @db.Decimal(12, 2) // Quantidade em processo de compra.
   valorAtendimento    Decimal? @db.Decimal(12, 2) // Valor unitário do atendimento.
   totalAtendimento    Decimal? @db.Decimal(12, 2) // Valor total do atendimento.
   status              String // Status do item (ex: "ATENDIDO").

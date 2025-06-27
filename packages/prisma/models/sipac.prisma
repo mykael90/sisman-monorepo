@@ -126,12 +126,12 @@ model SipacItemRequisicaoMaterial {
     id                  Int      @id @default(autoincrement()) // Identificador único do item.
     numeroItem          Int // Número sequencial do item na requisição.
     codigo              String // Código do material.
-    quantidade          Int // Quantidade solicitada.
+    quantidade          Decimal  @db.Decimal(12, 2) // Quantidade solicitada.
     valor               Decimal  @db.Decimal(12, 2) // Valor unitário do item.
     total               Decimal  @db.Decimal(12, 2) // Valor total do item (quantidade * valor).
-    quantidadeAtendida  Int // Quantidade atendida do item.
-    quantidadeDevolvida Int // Quantidade devolvida do item.
-    quantidadeEmCompra  Int // Quantidade em processo de compra.
+    quantidadeAtendida  Decimal  @db.Decimal(12, 2) // Quantidade atendida do item.
+    quantidadeDevolvida Decimal  @db.Decimal(12, 2) // Quantidade devolvida do item.
+    quantidadeEmCompra  Decimal  @db.Decimal(12, 2) // Quantidade em processo de compra.
     valorAtendimento    Decimal? @db.Decimal(12, 2) // Valor unitário do atendimento.
     totalAtendimento    Decimal? @db.Decimal(12, 2) // Valor total do atendimento.
     status              String // Status do item (ex: "ATENDIDO").
