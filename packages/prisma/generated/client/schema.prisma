@@ -573,7 +573,7 @@ model MaterialRequestItem {
   materialRequestId Int // Foreign key to the parent material request.
   materialRequest   MaterialRequest @relation(fields: [materialRequestId], references: [id], onDelete: Cascade) // Relation to the MaterialRequest model.
 
-  requestType MaterialRequestItemType @default(GLOBAL_CATALOG) // Indicates the type of material being requested (global catalog or derived).
+  itemRequestType MaterialRequestItemType @default(GLOBAL_CATALOG) // Indicates the type of material being requested (global catalog or derived).
 
   // If MaterialRequest.requestType = NEW_MATERIALS, this item MUST reference a global catalog material.
   requestedGlobalMaterialId String? // Foreign key to the Material (global catalog).

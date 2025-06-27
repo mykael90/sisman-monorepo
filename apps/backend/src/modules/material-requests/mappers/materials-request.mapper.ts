@@ -1,13 +1,18 @@
 import {
   Prisma,
   SipacItemRequisicaoMaterial,
-  MaterialRequestStatusOptions
+  MaterialRequestStatusOptions,
+  MaterialRequestType,
+  MaterialRequestOrigin,
+  MaterialRequestPurpose,
+  MaterialRequestItemType
 } from '@sisman/prisma';
 import {
   CreateMaterialRequestItemDto,
   CreateMaterialRequestWithRelationsDto
 } from '../dto/material-request.dto';
 import { nowFormatted } from '../../../shared/utils/date-utils';
+import { Material } from '../../../shared/entities/material.entity';
 
 type SipacStatus =
   | 'CADASTRADA'
@@ -46,19 +51,19 @@ export class MaterialRequestMapper {
   ): CreateMaterialRequestWithRelationsDto {
     return {
       protocolNumber: String(item.numeroDaRequisicao),
-      requestType: 'NEW_MATERIALS',
+      requestType: MaterialRequestType.NEW_MATERIALS,
       requestDate: item.dataDeCadastro,
       maintenanceRequestId: item.sipacRequisicaoManutencaoId || undefined,
       requestedById: item.usuarioId || undefined,
       sipacUnitRequesting: item.unidadeRequisitante,
       sipacUnitCost: item.unidadeCusto,
       sipacUserLoginRequest: item.usuarioLogin,
-      origin: 'SIPAC',
+      origin: MaterialRequestOrigin.SIPAC,
       requestValue: item.valorDaRequisicao,
       servedValue: item.valorDoTotalAtendido,
-      purpose: 'SUPPLY_MAINTENANCE',
+      purpose: MaterialRequestPurpose.SUPPLY_MAINTENANCE,
       currentStatus: StatusSipacToSisman[item.statusAtual],
-      notes: `IMPORTADO DO SIPAC EM ${nowFormatted} \n ${item.observacoes}`,
+      notes: `IMPORTADO DO ${MaterialRequestOrigin.SIPAC} EM ${nowFormatted} \n ${item.observacoes}`,
 
       // relations
       storage: {
@@ -68,6 +73,7 @@ export class MaterialRequestMapper {
         (
           material: SipacItemRequisicaoMaterial
         ): CreateMaterialRequestItemDto => ({
+          itemRequestType: MaterialRequestItemType.GLOBAL_CATALOG,
           requestedGlobalMaterialId: material.codigo,
           quantityRequested: material.quantidade,
           quantityApproved: material.quantidadeAtendida,
@@ -77,7 +83,7 @@ export class MaterialRequestMapper {
       statusHistory: item.historicoDaRequisicao.map((status) => ({
         status: StatusSipacToSisman[status.status],
         changeDate: status.dataHora,
-        notes: `IMPORTADO DO SIPAC EM ${nowFormatted}`
+        notes: `IMPORTADO ${MaterialRequestOrigin.SIPAC} SIPAC EM ${nowFormatted}`
         // notes: JSON.stringify(status, null, 2)
       }))
       // [

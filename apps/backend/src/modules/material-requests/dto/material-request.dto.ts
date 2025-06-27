@@ -47,7 +47,7 @@ export class MaterialRequestItemResponseDto {
    */
   @IsOptional()
   @IsEnum(MaterialRequestItemType)
-  requestType?: MaterialRequestItemType;
+  itemRequestType?: MaterialRequestItemType;
 
   /**
    * ID global do material solicitado.

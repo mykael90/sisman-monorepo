@@ -381,7 +381,7 @@ exports.Prisma.MaterialRequestStatusScalarFieldEnum = {
 exports.Prisma.MaterialRequestItemScalarFieldEnum = {
   id: 'id',
   materialRequestId: 'materialRequestId',
-  requestType: 'requestType',
+  itemRequestType: 'itemRequestType',
   requestedGlobalMaterialId: 'requestedGlobalMaterialId',
   fulfilledByInstanceId: 'fulfilledByInstanceId',
   quantityRequested: 'quantityRequested',
