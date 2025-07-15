@@ -1,0 +1,150 @@
+[
+  {
+    "id": 1,
+    "name": "ALMOXARIFE"
+  },
+  {
+    "id": 2,
+    "name": "ARMADOR DE FERRAGENS"
+  },
+  {
+    "id": 3,
+    "name": "ARQUITETO"
+  },
+  {
+    "id": 4,
+    "name": "ASSISTENTE ADMINISTRATIVO"
+  },
+  {
+    "id": 5,
+    "name": "AUXILIAR DE ALMOXARIFADO"
+  },
+  {
+    "id": 6,
+    "name": "AUXILIAR DE ELETRICISTA"
+  },
+  {
+    "id": 7,
+    "name": "AUXILIAR DE MANUTENÇÃO"
+  },
+  {
+    "id": 8,
+    "name": "AUXILIAR DE PEDREIRO"
+  },
+  {
+    "id": 9,
+    "name": "BOLSISTA"
+  },
+  {
+    "id": 10,
+    "name": "BOMBEIRO HIDRAULICO"
+  },
+  {
+    "id": 11,
+    "name": "CALCETEIRO"
+  },
+  {
+    "id": 12,
+    "name": "CARPINTEIRO"
+  },
+  {
+    "id": 13,
+    "name": "CARPINTEIROASSISTENTE"
+  },
+  {
+    "id": 14,
+    "name": "COPEIRO"
+  },
+  {
+    "id": 15,
+    "name": "ELETRICISTA"
+  },
+  {
+    "id": 16,
+    "name": "ENCARREGADO OPERACIONAL"
+  },
+  {
+    "id": 17,
+    "name": "ENGENHEIRO CIVIL"
+  },
+  {
+    "id": 18,
+    "name": "ENGENHEIRO ELÉTRICO"
+  },
+  {
+    "id": 19,
+    "name": "ENGENHEIRO MECÂNICO"
+  },
+  {
+    "id": 20,
+    "name": "ESTAGIÁRIO"
+  },
+  {
+    "id": 21,
+    "name": "JARDINEIRO"
+  },
+  {
+    "id": 22,
+    "name": "LUSTRADOR"
+  },
+  {
+    "id": 23,
+    "name": "MANTEIRO"
+  },
+  {
+    "id": 24,
+    "name": "MARCENEIRO"
+  },
+  {
+    "id": 25,
+    "name": "MESTRE DE OBRAS"
+  },
+  {
+    "id": 26,
+    "name": "MOTORISTA"
+  },
+  {
+    "id": 27,
+    "name": "OPERADOR DE MAQUINAS"
+  },
+  {
+    "id": 28,
+    "name": "PEDREIRO"
+  },
+  {
+    "id": 29,
+    "name": "PINTOR"
+  },
+  {
+    "id": 30,
+    "name": "SERRALHEIRO"
+  },
+  {
+    "id": 31,
+    "name": "SERVENTE"
+  },
+  {
+    "id": 32,
+    "name": "SOLDADOR"
+  },
+  {
+    "id": 33,
+    "name": "TÉCNICO EM EDIFICAÇÕES"
+  },
+  {
+    "id": 34,
+    "name": "TÉCNICO EM ELETRÔNICA"
+  },
+  {
+    "id": 35,
+    "name": "TÉCNICO EM ELETROTÉCNICA"
+  },
+  {
+    "id": 36,
+    "name": "TÉCNICO EM TELEFONIA"
+  },
+  {
+    "id": 37,
+    "name": "TÉCNICO EM GASES ESPECIAIS"
+  }
+]

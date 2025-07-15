@@ -15,11 +15,11 @@ model User {
   logLogin LogLogin[] // Related login logs for this user.
 
   // Relations: maintenance.prisma
-  reportedOccurrences         InfrastructureOccurrence[] @relation("ReportedOccurrences") // Infrastructure occurrences reported by this user.
-  createdMaintenanceRequests  MaintenanceRequest[]       @relation("CreatedByUser") // Maintenance requests created by this user.
-  assignedMaintenanceRequests MaintenanceRequest[]       @relation("AssignedToUser") // Maintenance requests assigned to this user.
-  timelineEvents              MaintenanceTimelineEvent[] @relation("ActionByUser") // Timeline events/actions performed by this user.
-  analyzedDiagnoses           Diagnosis[]                @relation("AnalyzedByUser")
+  reportedOccurrences         InfrastructureOccurrence[]          @relation("ReportedOccurrences") // Infrastructure occurrences reported by this user.
+  createdMaintenanceRequests  MaintenanceRequest[]                @relation("CreatedByUser") // Maintenance requests created by this user.
+  assignedMaintenanceRequests MaintenanceRequest[]                @relation("AssignedToUser") // Maintenance requests assigned to this user.
+  timelineEvents              MaintenanceTimelineEvent[]          @relation("ActionByUser") // Timeline events/actions performed by this user.
+  analyzedDiagnoses           InfrastructureOccurrenceDiagnosis[] @relation("AnalyzedByUser")
 
   // Relations: material.prisma (for MaterialRequest)
   materialRequestsCreated      MaterialRequest[]       @relation("MaterialRequestedByUser") // Material requests created by this user.
@@ -43,10 +43,12 @@ model User {
   pickingOrdersBeCollected MaterialPickingOrder[] @relation("PickingOrdersBeCollectedByUser") // Material picking orders to be collected by this user.
 
   // Relations: material.prisma (for MaterialRestrictionOrder)
-  restrictionOrdersProcessed      MaterialRestrictionOrder[] @relation("RestrictionOrdersProcessedBy") // Material restriction orders processed by this user.
-  materialStockMovementsProcessed MaterialStockMovement[]    @relation("StockMovementsProcessedBy")
-  materialStockMovementsCollected MaterialStockMovement[]    @relation("StockMovementsCollectedBy")
-  OccurrenceReinforcement         OccurrenceReinforcement[]
+  restrictionOrdersProcessed      MaterialRestrictionOrder[]              @relation("RestrictionOrdersProcessedBy") // Material restriction orders processed by this user.
+  materialStockMovementsProcessed MaterialStockMovement[]                 @relation("StockMovementsProcessedBy")
+  materialStockMovementsCollected MaterialStockMovement[]                 @relation("StockMovementsCollectedBy")
+  OccurrenceReinforcement         InfrastructureOccurrenceReinforcement[]
+
+  madeAllocations MaintenanceServiceOrderAllocation[] @relation("AllocatedByUser")
 
   @@map("users") // Maps this model to the 'users' table.
 }

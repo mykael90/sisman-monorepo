@@ -7,5 +7,54 @@ model Worker {
     // Relations: material.prisma (for MaterialWithdrawal)
     withdrawalsCollected MaterialWithdrawal[] @relation("WithdrawalsCollectedByWorker") // Material picking orders to be collected by this worker.
 
+    // --- NOVAS RELAÇÕES ---
+    ledTeam         WorkerTeam?                         @relation("TeamLeader")
+    teams           WorkerTeam[]                        @relation("TeamMembers")
+    workAllocations MaintenanceServiceOrderAllocation[]
+    // ----------------------
+
     @@map("workers")
+}
+
+// Representa uma equipe de trabalho (Elétrica, Alvenaria, etc.).
+model WorkerTeam {
+    id          Int     @id @default(autoincrement())
+    name        String  @unique
+    description String?
+    isActive    Boolean @default(true)
+
+    // --- MUDANÇA AQUI ---
+    // Relação com a especialidade da equipe.
+    specialtyId Int
+    specialty   WorkerSpecialty @relation(fields: [specialtyId], references: [id])
+    // --------------------
+
+    // --- MUDANÇA AQUI ---
+    // Líder geral da equipe
+    leaderId Int?    @unique // Uma pessoa pode liderar apenas uma equipe
+    leader   Worker? @relation("TeamLeader", fields: [leaderId], references: [id], onDelete: SetNull)
+    // --------------------
+
+    members       Worker[]                  @relation("TeamMembers") // Relação para membros
+    serviceOrders MaintenanceServiceOrder[] // OS atribuídas a esta equipe
+
+    createdAt DateTime @default(now()) @db.Timestamp(0)
+    updatedAt DateTime @updatedAt @db.Timestamp(0)
+
+    @@map("workers_teams")
+}
+
+// Define as especialidades ou ofícios das equipes de manutenção.
+model WorkerSpecialty {
+    id          Int     @id @default(autoincrement())
+    name        String  @unique // Ex: "Eletricista", "Pedreiro", "Pintor"
+    description String?
+
+    // Relações
+    teams WorkerTeam[] // Todas as equipes que possuem esta especialidade.
+
+    createdAt DateTime @default(now()) @db.Timestamp(0)
+    updatedAt DateTime @updatedAt @db.Timestamp(0)
+
+    @@map("workers_specialties")
 }

@@ -19,14 +19,14 @@ import {
 } from 'class-validator';
 import { UpdateSipacUnidadeDto } from '../../sipac/unidades/dto/sipac-unidade.dto'; // Assuming this is still relevant for related entities like SipacUnit
 import { UpdateUserDto } from '../../users/dto/user.dto'; // Assuming User DTO exists
-import { UpdateEquipmentDto } from '../../equipments/dto/equipment.dto'; // Assuming Equipment DTO exists
+// import { UpdateEquipmentDto } from '../../equipments/dto/equipment.dto'; // Assuming Equipment DTO exists
 import { UpdateMaintenanceInstance } from '../../maintenance-instances/dto/maintenance-instance.dto'; // Assuming this DTO exists
 import { UpdateInfrastructureOccurrenceDto } from '../../infrastructure-occurrences/dto/infrastructure-occurrence.dto'; // Assuming this DTO exists
-import { UpdateBuildingDto } from '../../buildings/dto/building.dto';
-import { UpdateSpaceDto } from '../../spaces/dto/space.dto';
+import { UpdateInfrastructureBuildingDto } from '../../infrastructure-buildings/dto/infrastructure-building.dto';
+import { UpdateInfrastructureSpaceDto } from '../../infrastructure-spaces/dto/infrastructure-space.dto';
 import { UpdateInfrastructureSystemDto } from '../../infrastructure-systems/dto/infrastructure-system.dto';
-import { UpdateDiagnosisDto } from '../../diagnoses/dto/diagnosis.dto';
-import { UpdateServiceTypeDto } from '../../service-types/dto/service-type.dto';
+import { UpdateInfrastructureOccurrenceDiagnosisDto } from '../../infrastructure-occurrence-diagnosis/dto/infrastructure-occurrence-diagnosis.dto';
+import { UpdateMaintenanceServiceTypeDto } from '../../maintenance-service-types/dto/maintenance-service-type.dto';
 import { CreateMaterialRequestWithRelationsDto } from '../../material-requests/dto/material-request.dto';
 
 export class CreateMaintenanceRequestDto
@@ -39,7 +39,7 @@ export class CreateMaintenanceRequestDto
       | 'spaceId'
       | 'buildingId'
       | 'systemId'
-      | 'equipmentId'
+      // | 'equipmentId'
       | 'serviceTypeId'
       | 'diagnosisId'
     >
@@ -152,14 +152,14 @@ export class CreateMaintenanceRequestDto
   @Type(() => Number)
   systemId?: number;
 
-  /**
-   * ID do equipamento relacionado à requisição
-   * @example 20
-   */
-  @IsOptional()
-  @IsNumber()
-  @Type(() => Number)
-  equipmentId?: number;
+  // /**
+  //  * ID do equipamento relacionado à requisição
+  //  * @example 20
+  //  */
+  // @IsOptional()
+  // @IsNumber()
+  // @Type(() => Number)
+  // equipmentId?: number;
 
   /**
    * ID do tipo de serviço necessário para a requisição
@@ -327,16 +327,16 @@ export class CreateMaintenanceRequestWithRelationsDto extends CreateMaintenanceR
    */
   @IsOptional()
   @ValidateNested()
-  @Type(() => UpdateSpaceDto)
-  space?: UpdateSpaceDto;
+  @Type(() => UpdateInfrastructureSpaceDto)
+  space?: UpdateInfrastructureSpaceDto;
 
   /**
    * Edifício relacionado a esta requisição.
    */
   @IsOptional()
   @ValidateNested()
-  @Type(() => UpdateBuildingDto)
-  building?: UpdateBuildingDto;
+  @Type(() => UpdateInfrastructureBuildingDto)
+  building?: UpdateInfrastructureBuildingDto;
 
   /**
    * Sistema de infraestrutura relacionado a esta requisição.
@@ -346,21 +346,21 @@ export class CreateMaintenanceRequestWithRelationsDto extends CreateMaintenanceR
   @Type(() => UpdateInfrastructureSystemDto)
   system?: UpdateInfrastructureSystemDto;
 
-  /**
-   * Equipamento relacionado a esta requisição.
-   */
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => UpdateEquipmentDto)
-  equipment?: UpdateEquipmentDto;
+  // /**
+  //  * Equipamento relacionado a esta requisição.
+  //  */
+  // @IsOptional()
+  // @ValidateNested()
+  // @Type(() => UpdateEquipmentDto)
+  // equipment?: UpdateEquipmentDto;
 
   /**
    * Tipo de serviço necessário para esta requisição.
    */
   @IsOptional()
   @ValidateNested()
-  @Type(() => UpdateServiceTypeDto)
-  serviceType?: UpdateServiceTypeDto;
+  @Type(() => UpdateMaintenanceServiceTypeDto)
+  serviceType?: UpdateMaintenanceServiceTypeDto;
 
   /**
    * Status da requisição de manutenção.
@@ -374,8 +374,8 @@ export class CreateMaintenanceRequestWithRelationsDto extends CreateMaintenanceR
    */
   @IsOptional()
   @ValidateNested()
-  @Type(() => UpdateDiagnosisDto)
-  diagnosis?: UpdateDiagnosisDto;
+  @Type(() => UpdateInfrastructureOccurrenceDiagnosisDto)
+  diagnosis?: UpdateInfrastructureOccurrenceDiagnosisDto;
 
   /**
    * Ocorrências de infraestrutura que originaram esta requisição.

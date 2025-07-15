@@ -142,7 +142,7 @@ exports.Prisma.LogLoginScalarFieldEnum = {
   successful: 'successful'
 };
 
-exports.Prisma.BuildingScalarFieldEnum = {
+exports.Prisma.InfrastructureBuildingScalarFieldEnum = {
   id: 'id',
   name: 'name',
   code: 'code',
@@ -151,7 +151,7 @@ exports.Prisma.BuildingScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
-exports.Prisma.SpaceTypeScalarFieldEnum = {
+exports.Prisma.InfrastructureSpaceTypeScalarFieldEnum = {
   id: 'id',
   name: 'name',
   description: 'description',
@@ -161,7 +161,7 @@ exports.Prisma.SpaceTypeScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
-exports.Prisma.SpaceScalarFieldEnum = {
+exports.Prisma.InfrastructureSpaceScalarFieldEnum = {
   id: 'id',
   name: 'name',
   floor: 'floor',
@@ -182,21 +182,6 @@ exports.Prisma.InfrastructureSystemScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
-exports.Prisma.EquipmentScalarFieldEnum = {
-  id: 'id',
-  patrimonyTag: 'patrimonyTag',
-  name: 'name',
-  description: 'description',
-  location: 'location',
-  serialNumber: 'serialNumber',
-  manufacturer: 'manufacturer',
-  model: 'model',
-  acquisitionDate: 'acquisitionDate',
-  isActive: 'isActive',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
 exports.Prisma.InfrastructureOccurrenceScalarFieldEnum = {
   id: 'id',
   title: 'title',
@@ -212,14 +197,14 @@ exports.Prisma.InfrastructureOccurrenceScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
-exports.Prisma.OccurrenceReinforcementScalarFieldEnum = {
+exports.Prisma.InfrastructureOccurrenceReinforcementScalarFieldEnum = {
   occurrenceId: 'occurrenceId',
   userId: 'userId',
   reinforcedAt: 'reinforcedAt',
   comment: 'comment'
 };
 
-exports.Prisma.DiagnosisScalarFieldEnum = {
+exports.Prisma.InfrastructureOccurrenceDiagnosisScalarFieldEnum = {
   id: 'id',
   diagnosticDetails: 'diagnosticDetails',
   prognosis: 'prognosis',
@@ -230,7 +215,19 @@ exports.Prisma.DiagnosisScalarFieldEnum = {
   diagnosedAt: 'diagnosedAt',
   maintenanceRequestId: 'maintenanceRequestId',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  estimatedResolutionTime: 'estimatedResolutionTime',
+  estimatedResolutionUnit: 'estimatedResolutionUnit',
+  requiresInterdiction: 'requiresInterdiction',
+  interdictionDetails: 'interdictionDetails',
+  wasteGenerated: 'wasteGenerated',
+  wasteDisposalInstructions: 'wasteDisposalInstructions'
+};
+
+exports.Prisma.InfrastructureOccurrenceDiagnosisRiskTypeScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description'
 };
 
 exports.Prisma.MaintenanceRequestScalarFieldEnum = {
@@ -246,7 +243,6 @@ exports.Prisma.MaintenanceRequestScalarFieldEnum = {
   spaceId: 'spaceId',
   buildingId: 'buildingId',
   systemId: 'systemId',
-  equipmentId: 'equipmentId',
   currentMaintenanceInstanceId: 'currentMaintenanceInstanceId',
   createdById: 'createdById',
   assignedToId: 'assignedToId',
@@ -258,7 +254,22 @@ exports.Prisma.MaintenanceRequestScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
-exports.Prisma.ServiceTypeScalarFieldEnum = {
+exports.Prisma.MaintenanceServiceOrderScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  status: 'status',
+  scheduledStart: 'scheduledStart',
+  scheduledEnd: 'scheduledEnd',
+  actualStart: 'actualStart',
+  actualEnd: 'actualEnd',
+  assignedTeamId: 'assignedTeamId',
+  maintenanceRequestId: 'maintenanceRequestId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.MaintenanceServiceTypeScalarFieldEnum = {
   id: 'id',
   name: 'name',
   description: 'description',
@@ -298,6 +309,14 @@ exports.Prisma.MaintenanceRequestStatusScalarFieldEnum = {
   order: 'order',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.MaintenanceServiceOrderAllocationScalarFieldEnum = {
+  serviceOrderId: 'serviceOrderId',
+  workerId: 'workerId',
+  isLeader: 'isLeader',
+  allocatedAt: 'allocatedAt',
+  allocatedById: 'allocatedById'
 };
 
 exports.Prisma.StorageScalarFieldEnum = {
@@ -842,6 +861,25 @@ exports.Prisma.WorkerScalarFieldEnum = {
   id: 'id'
 };
 
+exports.Prisma.WorkerTeamScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  isActive: 'isActive',
+  specialtyId: 'specialtyId',
+  leaderId: 'leaderId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.WorkerSpecialtyScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -873,19 +911,19 @@ exports.Prisma.LogLoginOrderByRelevanceFieldEnum = {
   userAgent: 'userAgent'
 };
 
-exports.Prisma.BuildingOrderByRelevanceFieldEnum = {
+exports.Prisma.InfrastructureBuildingOrderByRelevanceFieldEnum = {
   name: 'name',
   code: 'code',
   address: 'address'
 };
 
-exports.Prisma.SpaceTypeOrderByRelevanceFieldEnum = {
+exports.Prisma.InfrastructureSpaceTypeOrderByRelevanceFieldEnum = {
   name: 'name',
   description: 'description',
   icon: 'icon'
 };
 
-exports.Prisma.SpaceOrderByRelevanceFieldEnum = {
+exports.Prisma.InfrastructureSpaceOrderByRelevanceFieldEnum = {
   name: 'name',
   floor: 'floor',
   description: 'description'
@@ -897,30 +935,27 @@ exports.Prisma.InfrastructureSystemOrderByRelevanceFieldEnum = {
   description: 'description'
 };
 
-exports.Prisma.EquipmentOrderByRelevanceFieldEnum = {
-  patrimonyTag: 'patrimonyTag',
-  name: 'name',
-  description: 'description',
-  location: 'location',
-  serialNumber: 'serialNumber',
-  manufacturer: 'manufacturer',
-  model: 'model'
-};
-
 exports.Prisma.InfrastructureOccurrenceOrderByRelevanceFieldEnum = {
   title: 'title',
   description: 'description',
   locationDescription: 'locationDescription'
 };
 
-exports.Prisma.OccurrenceReinforcementOrderByRelevanceFieldEnum = {
+exports.Prisma.InfrastructureOccurrenceReinforcementOrderByRelevanceFieldEnum = {
   comment: 'comment'
 };
 
-exports.Prisma.DiagnosisOrderByRelevanceFieldEnum = {
+exports.Prisma.InfrastructureOccurrenceDiagnosisOrderByRelevanceFieldEnum = {
   diagnosticDetails: 'diagnosticDetails',
   prognosis: 'prognosis',
-  resolutionNotes: 'resolutionNotes'
+  resolutionNotes: 'resolutionNotes',
+  interdictionDetails: 'interdictionDetails',
+  wasteDisposalInstructions: 'wasteDisposalInstructions'
+};
+
+exports.Prisma.InfrastructureOccurrenceDiagnosisRiskTypeOrderByRelevanceFieldEnum = {
+  name: 'name',
+  description: 'description'
 };
 
 exports.Prisma.MaintenanceRequestOrderByRelevanceFieldEnum = {
@@ -930,7 +965,12 @@ exports.Prisma.MaintenanceRequestOrderByRelevanceFieldEnum = {
   solutionDetails: 'solutionDetails'
 };
 
-exports.Prisma.ServiceTypeOrderByRelevanceFieldEnum = {
+exports.Prisma.MaintenanceServiceOrderOrderByRelevanceFieldEnum = {
+  title: 'title',
+  description: 'description'
+};
+
+exports.Prisma.MaintenanceServiceTypeOrderByRelevanceFieldEnum = {
   name: 'name',
   description: 'description'
 };
@@ -1226,10 +1266,21 @@ exports.Prisma.RoleOrderByRelevanceFieldEnum = {
   role: 'role',
   description: 'description'
 };
+
+exports.Prisma.WorkerTeamOrderByRelevanceFieldEnum = {
+  name: 'name',
+  description: 'description'
+};
+
+exports.Prisma.WorkerSpecialtyOrderByRelevanceFieldEnum = {
+  name: 'name',
+  description: 'description'
+};
 exports.InfrastructureOccurrenceStatus = exports.$Enums.InfrastructureOccurrenceStatus = {
   REPORTED: 'REPORTED',
   ANALYZING: 'ANALYZING',
   ACCEPTED: 'ACCEPTED',
+  REJECTED: 'REJECTED',
   DISMISSED: 'DISMISSED',
   RESOLVED: 'RESOLVED',
   DUPLICATE: 'DUPLICATE'
@@ -1237,10 +1288,18 @@ exports.InfrastructureOccurrenceStatus = exports.$Enums.InfrastructureOccurrence
 
 exports.DiagnosisOutcome = exports.$Enums.DiagnosisOutcome = {
   PENDING: 'PENDING',
-  CREATE_REQUEST: 'CREATE_REQUEST',
+  CREATED_REQUEST: 'CREATED_REQUEST',
   RESOLVED_ON_SITE: 'RESOLVED_ON_SITE',
   DISMISS: 'DISMISS',
-  FORWARD_TO_OTHER: 'FORWARD_TO_OTHER'
+  REJECT: 'REJECT'
+};
+
+exports.TimeUnit = exports.$Enums.TimeUnit = {
+  MINUTES: 'MINUTES',
+  HOURS: 'HOURS',
+  DAYS: 'DAYS',
+  WEEKS: 'WEEKS',
+  MONTHS: 'MONTHS'
 };
 
 exports.RequestPriority = exports.$Enums.RequestPriority = {
@@ -1257,6 +1316,15 @@ exports.MaintenanceRequestStatusOptions = exports.$Enums.MaintenanceRequestStatu
   ON_HOLD: 'ON_HOLD',
   COMPLETED: 'COMPLETED',
   REJECTED: 'REJECTED',
+  CANCELLED: 'CANCELLED'
+};
+
+exports.ServiceOrderStatus = exports.$Enums.ServiceOrderStatus = {
+  PENDING: 'PENDING',
+  SCHEDULED: 'SCHEDULED',
+  IN_PROGRESS: 'IN_PROGRESS',
+  ON_HOLD: 'ON_HOLD',
+  COMPLETED: 'COMPLETED',
   CANCELLED: 'CANCELLED'
 };
 
@@ -1366,19 +1434,21 @@ exports.RestrictionOrderStatus = exports.$Enums.RestrictionOrderStatus = {
 exports.Prisma.ModelName = {
   LogError: 'LogError',
   LogLogin: 'LogLogin',
-  Building: 'Building',
-  SpaceType: 'SpaceType',
-  Space: 'Space',
+  InfrastructureBuilding: 'InfrastructureBuilding',
+  InfrastructureSpaceType: 'InfrastructureSpaceType',
+  InfrastructureSpace: 'InfrastructureSpace',
   InfrastructureSystem: 'InfrastructureSystem',
-  Equipment: 'Equipment',
   InfrastructureOccurrence: 'InfrastructureOccurrence',
-  OccurrenceReinforcement: 'OccurrenceReinforcement',
-  Diagnosis: 'Diagnosis',
+  InfrastructureOccurrenceReinforcement: 'InfrastructureOccurrenceReinforcement',
+  InfrastructureOccurrenceDiagnosis: 'InfrastructureOccurrenceDiagnosis',
+  InfrastructureOccurrenceDiagnosisRiskType: 'InfrastructureOccurrenceDiagnosisRiskType',
   MaintenanceRequest: 'MaintenanceRequest',
-  ServiceType: 'ServiceType',
+  MaintenanceServiceOrder: 'MaintenanceServiceOrder',
+  MaintenanceServiceType: 'MaintenanceServiceType',
   MaintenanceInstance: 'MaintenanceInstance',
   MaintenanceTimelineEvent: 'MaintenanceTimelineEvent',
   MaintenanceRequestStatus: 'MaintenanceRequestStatus',
+  MaintenanceServiceOrderAllocation: 'MaintenanceServiceOrderAllocation',
   Storage: 'Storage',
   Warehouse: 'Warehouse',
   MaterialGlobalCatalog: 'MaterialGlobalCatalog',
@@ -1419,7 +1489,9 @@ exports.Prisma.ModelName = {
   User: 'User',
   MagicLink: 'MagicLink',
   Role: 'Role',
-  Worker: 'Worker'
+  Worker: 'Worker',
+  WorkerTeam: 'WorkerTeam',
+  WorkerSpecialty: 'WorkerSpecialty'
 };
 
 /**

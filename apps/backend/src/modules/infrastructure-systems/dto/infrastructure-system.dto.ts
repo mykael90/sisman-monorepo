@@ -10,7 +10,7 @@ import {
   IsNumber
 } from 'class-validator';
 import { Type } from 'class-transformer';
-import { UpdateBuildingDto } from '../../buildings/dto/building.dto';
+import { UpdateInfrastructureBuildingDto } from '../../infrastructure-buildings/dto/infrastructure-building.dto';
 
 export class CreateInfrastructureSystemDto
   implements Prisma.InfrastructureSystemCreateManyInput
@@ -47,15 +47,15 @@ export class CreateInfrastructureSystemDto
 
 export class CreateInfrastructureSystemWithRelationsDto extends CreateInfrastructureSystemDto {
   @ApiProperty({
-    type: () => [UpdateBuildingDto],
+    type: () => [UpdateInfrastructureBuildingDto],
     description: 'Buildings associated with this infrastructure system.',
     required: false
   })
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => UpdateBuildingDto)
-  buildings?: UpdateBuildingDto[];
+  @Type(() => UpdateInfrastructureBuildingDto)
+  buildings?: UpdateInfrastructureBuildingDto[];
 }
 
 export class UpdateInfrastructureSystemDto extends PartialType(

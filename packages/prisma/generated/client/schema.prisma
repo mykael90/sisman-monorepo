@@ -33,120 +33,120 @@ model LogLogin {
 // ==              MODELS PARA ATIVOS DE INFRAESTRUTURA           ==
 // =================================================================
 
-model Building {
+model InfrastructureBuilding {
   id                  Int                        @id @default(autoincrement())
   name                String
   code                String?                    @unique
   address             String?
   createdAt           DateTime                   @default(now())
   updatedAt           DateTime                   @updatedAt
-  spaces              Space[]
+  spaces              InfrastructureSpace[]
   systems             InfrastructureSystem[]
   maintenanceRequests MaintenanceRequest[]
   infraOccurrences    InfrastructureOccurrence[]
 
-  @@map("buildings")
+  @@map("infrastructure_buildings")
 }
 
 // Modelo SpaceType, agora como um modelo para flexibilidade.
-model SpaceType {
-  id          Int      @id @default(autoincrement())
-  name        String   @unique
+model InfrastructureSpaceType {
+  id          Int                   @id @default(autoincrement())
+  name        String                @unique
   description String?
   icon        String?
-  isActive    Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  spaces      Space[]
+  isActive    Boolean               @default(true)
+  createdAt   DateTime              @default(now()) @db.Timestamp(0)
+  updatedAt   DateTime              @updatedAt @db.Timestamp(0)
+  spaces      InfrastructureSpace[]
 
-  @@map("space_types")
+  @@map("infrastructure_space_types")
 }
 
-model Space {
+model InfrastructureSpace {
   id                  Int                        @id @default(autoincrement())
   name                String
   floor               String?
   description         String?                    @db.Text
   spaceTypeId         Int
-  spaceType           SpaceType                  @relation(fields: [spaceTypeId], references: [id], onDelete: Restrict)
+  spaceType           InfrastructureSpaceType    @relation(fields: [spaceTypeId], references: [id], onDelete: Restrict)
   buildingId          Int
-  building            Building                   @relation(fields: [buildingId], references: [id], onDelete: Cascade)
+  building            InfrastructureBuilding     @relation(fields: [buildingId], references: [id], onDelete: Cascade)
   parentId            Int?
-  parent              Space?                     @relation("NestedSpaces", fields: [parentId], references: [id], onDelete: NoAction)
-  children            Space[]                    @relation("NestedSpaces")
+  parent              InfrastructureSpace?       @relation("NestedSpaces", fields: [parentId], references: [id], onDelete: NoAction)
+  children            InfrastructureSpace[]      @relation("NestedSpaces")
   maintenanceRequests MaintenanceRequest[]
   infraOccurrences    InfrastructureOccurrence[]
-  createdAt           DateTime                   @default(now())
-  updatedAt           DateTime                   @updatedAt
+  createdAt           DateTime                   @default(now()) @db.Timestamp(0)
+  updatedAt           DateTime                   @updatedAt @db.Timestamp(0)
 
   @@index([buildingId])
   @@index([parentId])
   @@index([spaceTypeId])
-  @@map("spaces")
+  @@map("infrastructure_spaces")
 }
 
 model InfrastructureSystem {
-  id                  Int                  @id @default(autoincrement())
+  id                  Int                      @id @default(autoincrement())
   name                String
   type                String
-  description         String?              @db.Text
-  buildings           Building[]
+  description         String?                  @db.Text
+  buildings           InfrastructureBuilding[]
   maintenanceRequests MaintenanceRequest[]
-  createdAt           DateTime             @default(now())
-  updatedAt           DateTime             @updatedAt
+  createdAt           DateTime                 @default(now()) @db.Timestamp(0)
+  updatedAt           DateTime                 @updatedAt @db.Timestamp(0)
 
   @@unique([name, type])
   @@map("infrastructure_systems")
 }
 
-model Equipment {
-  id                  Int                  @id @default(autoincrement())
-  patrimonyTag        String?              @unique
-  name                String
-  description         String?              @db.Text
-  location            String?
-  serialNumber        String?
-  manufacturer        String?
-  model               String?
-  acquisitionDate     DateTime?
-  isActive            Boolean              @default(true)
-  createdAt           DateTime             @default(now())
-  updatedAt           DateTime             @updatedAt
-  maintenanceRequests MaintenanceRequest[]
+// model Equipment {
+//     id                  Int                  @id @default(autoincrement())
+//     patrimonyTag        String?              @unique
+//     name                String
+//     description         String?              @db.Text
+//     location            String?
+//     serialNumber        String?
+//     manufacturer        String?
+//     model               String?
+//     acquisitionDate     DateTime?
+//     isActive            Boolean              @default(true)
+//     createdAt           DateTime             @default(now())
+//     updatedAt           DateTime             @updatedAt
+//     maintenanceRequests MaintenanceRequest[]
 
-  @@map("equipments")
-}
+//     @@map("equipments")
+// }
 
 // =================================================================
 // ==                 MODELS PARA O FLUXO DE MANUTENÇÃO           ==
 // =================================================================
 
 model InfrastructureOccurrence {
-  id                  Int                            @id @default(autoincrement())
+  id                  Int                                     @id @default(autoincrement())
   title               String
-  description         String                         @db.Text
+  description         String                                  @db.Text
   locationDescription String?
-  reportedAt          DateTime                       @default(now())
-  status              InfrastructureOccurrenceStatus @default(REPORTED)
+  reportedAt          DateTime                                @default(now())
+  status              InfrastructureOccurrenceStatus          @default(REPORTED)
   duplicateOfId       Int?
-  duplicateOf         InfrastructureOccurrence?      @relation("DuplicateOccurrences", fields: [duplicateOfId], references: [id], onDelete: NoAction)
-  duplicates          InfrastructureOccurrence[]     @relation("DuplicateOccurrences")
-  reinforcements      OccurrenceReinforcement[]
+  duplicateOf         InfrastructureOccurrence?               @relation("DuplicateOccurrences", fields: [duplicateOfId], references: [id], onDelete: NoAction)
+  duplicates          InfrastructureOccurrence[]              @relation("DuplicateOccurrences")
+  reinforcements      InfrastructureOccurrenceReinforcement[]
   spaceId             Int?
-  space               Space?                         @relation(fields: [spaceId], references: [id], onDelete: SetNull)
+  space               InfrastructureSpace?                    @relation(fields: [spaceId], references: [id], onDelete: SetNull)
   buildingId          Int?
-  building            Building?                      @relation(fields: [buildingId], references: [id], onDelete: SetNull)
+  building            InfrastructureBuilding?                 @relation(fields: [buildingId], references: [id], onDelete: SetNull)
   reportedById        Int
-  reportedBy          User                           @relation("ReportedOccurrences", fields: [reportedById], references: [id])
-  diagnosis           Diagnosis?
-  createdAt           DateTime                       @default(now()) @db.Timestamp(0)
-  updatedAt           DateTime                       @updatedAt @db.Timestamp(0)
+  reportedBy          User                                    @relation("ReportedOccurrences", fields: [reportedById], references: [id])
+  diagnosis           InfrastructureOccurrenceDiagnosis?
+  createdAt           DateTime                                @default(now()) @db.Timestamp(0)
+  updatedAt           DateTime                                @updatedAt @db.Timestamp(0)
 
   @@index([reportedById, spaceId, buildingId, status, duplicateOfId])
   @@map("infrastructure_occurrences")
 }
 
-model OccurrenceReinforcement {
+model InfrastructureOccurrenceReinforcement {
   occurrenceId Int
   occurrence   InfrastructureOccurrence @relation(fields: [occurrenceId], references: [id], onDelete: Cascade)
   userId       Int
@@ -155,19 +155,20 @@ model OccurrenceReinforcement {
   comment      String?
 
   @@id([occurrenceId, userId])
-  @@map("occurrence_reinforcements")
+  @@map("infrastructure_occurrence_reinforcements")
 }
 
 enum InfrastructureOccurrenceStatus {
-  REPORTED
-  ANALYZING
-  ACCEPTED
-  DISMISSED
-  RESOLVED
-  DUPLICATE
+  REPORTED  @map("REPORTADO")
+  ANALYZING @map("ANALISANDO")
+  ACCEPTED  @map("ACEITO")
+  REJECTED  @map("NEGADO")
+  DISMISSED @map("IMPROCEDENTE")
+  RESOLVED  @map("RESOLVIDO")
+  DUPLICATE @map("DUPLICADA")
 }
 
-model Diagnosis {
+model InfrastructureOccurrenceDiagnosis {
   id                   Int                      @id @default(autoincrement())
   diagnosticDetails    String                   @db.Text
   prognosis            String?                  @db.Text
@@ -180,67 +181,135 @@ model Diagnosis {
   diagnosedAt          DateTime                 @default(now())
   maintenanceRequestId Int?                     @unique
   maintenanceRequest   MaintenanceRequest?
-  createdAt            DateTime                 @default(now())
-  updatedAt            DateTime                 @updatedAt
+  createdAt            DateTime                 @default(now()) @db.Timestamp(0)
+  updatedAt            DateTime                 @updatedAt @db.Timestamp(0)
+
+  estimatedResolutionTime Int? // Quantidade de tempo estimada. Ex: 4
+  estimatedResolutionUnit TimeUnit? // Unidade de tempo. Ex: HOURS -> "4 Horas"
+
+  requiresInterdiction Boolean @default(false) // Necessita de interdição da área?
+  interdictionDetails  String? @db.Text // Detalhes da interdição (qual área, por quê, recomendações).
+
+  wasteGenerated            Boolean @default(false) // A resolução gerará resíduos?
+  wasteDisposalInstructions String? @db.Text // Instruções para o descarte correto dos resíduos.
+
+  // Relação N-N com os tipos de risco associados
+  associatedRisks InfrastructureOccurrenceDiagnosisRiskType[]
 
   @@index([analyzedById])
-  @@map("diagnoses")
+  @@map("infrastructure_occurrence_diagnosis")
 }
 
 enum DiagnosisOutcome {
-  PENDING
-  CREATE_REQUEST
-  RESOLVED_ON_SITE
-  DISMISS
-  FORWARD_TO_OTHER
+  PENDING          @map("PENDENTE")
+  CREATED_REQUEST  @map("REQUISICAO CRIADA")
+  RESOLVED_ON_SITE @map("REPARO RAPIDO")
+  DISMISS          @map("FALSO ALARME")
+  REJECT           @map("NEGADO")
+}
+
+// Modelo para tipos de risco configuráveis.
+model InfrastructureOccurrenceDiagnosisRiskType {
+  id          Int     @id @default(autoincrement())
+  name        String  @unique // Ex: "Risco à Saúde", "Risco ao Patrimônio", "Risco Ambiental"
+  description String? // Descrição detalhada do risco.
+
+  // Relação N-N com os diagnósticos que possuem este risco.
+  diagnoses InfrastructureOccurrenceDiagnosis[]
+
+  @@map("infrastructure_occurrence_diagnosis_risk_types")
+}
+
+// Enum para unidades de tempo.
+enum TimeUnit {
+  MINUTES @map("MINUTOS")
+  HOURS   @map("HORAS")
+  DAYS    @map("DIAS")
+  WEEKS   @map("SEMANAS")
+  MONTHS  @map("MESES")
 }
 
 model MaintenanceRequest {
-  id                           Int                             @id @default(autoincrement())
-  protocolNumber               String                          @unique @default(uuid())
+  id                           Int                                @id @default(autoincrement())
+  protocolNumber               String                             @unique @default(uuid())
   title                        String
-  description                  String                          @db.Text
-  priority                     RequestPriority                 @default(NORMAL)
-  requestedAt                  DateTime                        @default(now())
+  description                  String                             @db.Text
+  priority                     RequestPriority                    @default(NORMAL)
+  requestedAt                  DateTime                           @default(now())
   deadline                     DateTime?
-  solutionDetails              String?                         @db.Text
+  solutionDetails              String?                            @db.Text
   completedAt                  DateTime?
   spaceId                      Int?
-  space                        Space?                          @relation(fields: [spaceId], references: [id], onDelete: SetNull)
+  space                        InfrastructureSpace?               @relation(fields: [spaceId], references: [id], onDelete: SetNull)
   buildingId                   Int?
-  building                     Building?                       @relation(fields: [buildingId], references: [id], onDelete: SetNull)
+  building                     InfrastructureBuilding?            @relation(fields: [buildingId], references: [id], onDelete: SetNull)
   systemId                     Int?
-  system                       InfrastructureSystem?           @relation(fields: [systemId], references: [id], onDelete: SetNull)
-  equipmentId                  Int?
-  equipment                    Equipment?                      @relation(fields: [equipmentId], references: [id], onDelete: SetNull)
+  system                       InfrastructureSystem?              @relation(fields: [systemId], references: [id], onDelete: SetNull)
+  // equipmentId                  Int?
+  // equipment                    Equipment?                      @relation(fields: [equipmentId], references: [id], onDelete: SetNull)
   currentMaintenanceInstanceId Int
-  currentMaintenanceInstance   MaintenanceInstance             @relation("CurrentInstanceRequests", fields: [currentMaintenanceInstanceId], references: [id])
+  currentMaintenanceInstance   MaintenanceInstance                @relation("CurrentInstanceRequests", fields: [currentMaintenanceInstanceId], references: [id])
   createdById                  Int
-  createdBy                    User                            @relation("CreatedByUser", fields: [createdById], references: [id])
+  createdBy                    User                               @relation("CreatedByUser", fields: [createdById], references: [id])
   assignedToId                 Int?
-  assignedTo                   User?                           @relation("AssignedToUser", fields: [assignedToId], references: [id])
+  assignedTo                   User?                              @relation("AssignedToUser", fields: [assignedToId], references: [id])
   serviceTypeId                Int?
-  serviceType                  ServiceType?                    @relation(fields: [serviceTypeId], references: [id], onDelete: SetNull)
+  serviceType                  MaintenanceServiceType?            @relation(fields: [serviceTypeId], references: [id], onDelete: SetNull)
   statusId                     Int
-  status                       MaintenanceRequestStatus        @relation(fields: [statusId], references: [id])
-  currentStatus                MaintenanceRequestStatusOptions @default(PENDING)
-  diagnosisId                  Int?                            @unique
-  diagnosis                    Diagnosis?                      @relation(fields: [diagnosisId], references: [id], onDelete: SetNull)
-  createdAt                    DateTime                        @default(now()) @db.Timestamp(0)
-  updatedAt                    DateTime                        @updatedAt @db.Timestamp(0)
+  status                       MaintenanceRequestStatus           @relation(fields: [statusId], references: [id])
+  currentStatus                MaintenanceRequestStatusOptions    @default(PENDING)
+  diagnosisId                  Int?                               @unique
+  diagnosis                    InfrastructureOccurrenceDiagnosis? @relation(fields: [diagnosisId], references: [id], onDelete: SetNull)
+  createdAt                    DateTime                           @default(now()) @db.Timestamp(0)
+  updatedAt                    DateTime                           @updatedAt @db.Timestamp(0)
   timelineEvents               MaintenanceTimelineEvent[]
   materialRequests             MaterialRequest[]
   materialStockMovements       MaterialStockMovement[]
   materialWithdrawals          MaterialWithdrawal[]
 
-  @@index([currentMaintenanceInstanceId, createdById, assignedToId, statusId, spaceId, buildingId, systemId, equipmentId, diagnosisId])
+  // Relação 1-para-N com as Ordens de Serviço geradas
+  serviceOrders MaintenanceServiceOrder[]
+
+  @@index([currentMaintenanceInstanceId, createdById, assignedToId, statusId, spaceId, buildingId, systemId, diagnosisId])
   @@map("maintenance_requests")
+}
+
+// NOVO: Ordem de Serviço, uma tarefa executável ligada a uma Requisição de Manutenção.
+model MaintenanceServiceOrder {
+  id             Int                @id @default(autoincrement())
+  title          String
+  description    String?            @db.Text
+  status         ServiceOrderStatus @default(PENDING)
+  scheduledStart DateTime?
+  scheduledEnd   DateTime?
+  actualStart    DateTime?
+  actualEnd      DateTime?
+
+  // --- MUDANÇA AQUI ---
+  // A responsabilidade primária é da EQUIPE.
+  assignedTeamId Int
+  assignedTeam   WorkerTeam @relation(fields: [assignedTeamId], references: [id])
+
+  // As pessoas específicas são definidas na alocação.
+  allocations MaintenanceServiceOrderAllocation[]
+  // --------------------
+
+  maintenanceRequestId Int
+  maintenanceRequest   MaintenanceRequest        @relation(fields: [maintenanceRequestId], references: [id], onDelete: Cascade)
+  prerequisites        MaintenanceServiceOrder[] @relation("ServiceOrderDependencies")
+  subsequentOrders     MaintenanceServiceOrder[] @relation("ServiceOrderDependencies")
+
+  createdAt DateTime @default(now()) @db.Timestamp(0)
+  updatedAt DateTime @updatedAt @db.Timestamp(0)
+
+  @@index([maintenanceRequestId, assignedTeamId])
+  @@map("maintenance_service_orders")
 }
 
 // =================================================================
 // ==              MODELS DE SUPORTE E CONTEXTO                   ==
 // =================================================================
-model ServiceType {
+model MaintenanceServiceType {
   id                  Int                  @id @default(autoincrement())
   name                String               @unique
   description         String?
@@ -249,7 +318,7 @@ model ServiceType {
   updatedAt           DateTime             @updatedAt
   maintenanceRequests MaintenanceRequest[]
 
-  @@map("service_types")
+  @@map("maintenance_service_types")
 }
 
 model MaintenanceInstance {
@@ -257,8 +326,8 @@ model MaintenanceInstance {
   sipacId                       String?                    @unique
   name                          String                     @unique
   isActive                      Boolean                    @default(true)
-  createdAt                     DateTime                   @default(now())
-  updatedAt                     DateTime                   @updatedAt
+  createdAt                     DateTime                   @default(now()) @db.Timestamp(0)
+  updatedAt                     DateTime                   @updatedAt @db.Timestamp(0)
   currentMaintenanceRequests    MaintenanceRequest[]       @relation("CurrentInstanceRequests")
   timelineEventsTransferredFrom MaintenanceTimelineEvent[] @relation("TransferredFromInstanceEvents")
   timelineEventsTransferredTo   MaintenanceTimelineEvent[] @relation("TransferredToInstanceEvents")
@@ -294,11 +363,43 @@ model MaintenanceRequestStatus {
   description         String?
   isFinal             Boolean              @default(false)
   order               Int                  @default(0)
-  createdAt           DateTime             @default(now())
-  updatedAt           DateTime             @updatedAt
+  createdAt           DateTime             @default(now()) @db.Timestamp(0)
+  updatedAt           DateTime             @updatedAt @db.Timestamp(0)
   maintenanceRequests MaintenanceRequest[]
 
   @@map("maintenance_request_statuses")
+}
+
+// NOVO: Modelo que aloca um profissional específico para uma Ordem de Serviço.
+model MaintenanceServiceOrderAllocation {
+  // Relações
+  serviceOrderId Int
+  serviceOrder   MaintenanceServiceOrder @relation(fields: [serviceOrderId], references: [id], onDelete: Cascade)
+
+  workerId Int
+  worker   Worker @relation(fields: [workerId], references: [id], onDelete: Cascade)
+
+  // Papel na OS
+  isLeader Boolean @default(false) // Indica se este profissional é o líder desta OS específica.
+
+  // Metadados
+  allocatedAt   DateTime @default(now())
+  allocatedById Int? // Opcional: quem fez a alocação
+  allocatedBy   User?    @relation("AllocatedByUser", fields: [allocatedById], references: [id], onDelete: SetNull)
+
+  // Garante que um profissional só pode ser alocado uma vez para a mesma OS.
+  @@id([serviceOrderId, workerId])
+  @@map("maintenance_service_order_allocations")
+}
+
+// NOVO: Enum para o ciclo de vida de uma Ordem de Serviço.
+enum ServiceOrderStatus {
+  PENDING // Aguardando agendamento/recursos
+  SCHEDULED // Agendada com data e equipe
+  IN_PROGRESS // Em execução
+  ON_HOLD // Pausada (ex: aguardando material chegar)
+  COMPLETED // Concluída com sucesso
+  CANCELLED // Cancelada
 }
 
 // =================================================================
@@ -1621,11 +1722,11 @@ model User {
   logLogin LogLogin[] // Related login logs for this user.
 
   // Relations: maintenance.prisma
-  reportedOccurrences         InfrastructureOccurrence[] @relation("ReportedOccurrences") // Infrastructure occurrences reported by this user.
-  createdMaintenanceRequests  MaintenanceRequest[]       @relation("CreatedByUser") // Maintenance requests created by this user.
-  assignedMaintenanceRequests MaintenanceRequest[]       @relation("AssignedToUser") // Maintenance requests assigned to this user.
-  timelineEvents              MaintenanceTimelineEvent[] @relation("ActionByUser") // Timeline events/actions performed by this user.
-  analyzedDiagnoses           Diagnosis[]                @relation("AnalyzedByUser")
+  reportedOccurrences         InfrastructureOccurrence[]          @relation("ReportedOccurrences") // Infrastructure occurrences reported by this user.
+  createdMaintenanceRequests  MaintenanceRequest[]                @relation("CreatedByUser") // Maintenance requests created by this user.
+  assignedMaintenanceRequests MaintenanceRequest[]                @relation("AssignedToUser") // Maintenance requests assigned to this user.
+  timelineEvents              MaintenanceTimelineEvent[]          @relation("ActionByUser") // Timeline events/actions performed by this user.
+  analyzedDiagnoses           InfrastructureOccurrenceDiagnosis[] @relation("AnalyzedByUser")
 
   // Relations: material.prisma (for MaterialRequest)
   materialRequestsCreated      MaterialRequest[]       @relation("MaterialRequestedByUser") // Material requests created by this user.
@@ -1649,10 +1750,12 @@ model User {
   pickingOrdersBeCollected MaterialPickingOrder[] @relation("PickingOrdersBeCollectedByUser") // Material picking orders to be collected by this user.
 
   // Relations: material.prisma (for MaterialRestrictionOrder)
-  restrictionOrdersProcessed      MaterialRestrictionOrder[] @relation("RestrictionOrdersProcessedBy") // Material restriction orders processed by this user.
-  materialStockMovementsProcessed MaterialStockMovement[]    @relation("StockMovementsProcessedBy")
-  materialStockMovementsCollected MaterialStockMovement[]    @relation("StockMovementsCollectedBy")
-  OccurrenceReinforcement         OccurrenceReinforcement[]
+  restrictionOrdersProcessed      MaterialRestrictionOrder[]              @relation("RestrictionOrdersProcessedBy") // Material restriction orders processed by this user.
+  materialStockMovementsProcessed MaterialStockMovement[]                 @relation("StockMovementsProcessedBy")
+  materialStockMovementsCollected MaterialStockMovement[]                 @relation("StockMovementsCollectedBy")
+  OccurrenceReinforcement         InfrastructureOccurrenceReinforcement[]
+
+  madeAllocations MaintenanceServiceOrderAllocation[] @relation("AllocatedByUser")
 
   @@map("users") // Maps this model to the 'users' table.
 }
@@ -1692,5 +1795,54 @@ model Worker {
   // Relations: material.prisma (for MaterialWithdrawal)
   withdrawalsCollected MaterialWithdrawal[] @relation("WithdrawalsCollectedByWorker") // Material picking orders to be collected by this worker.
 
+  // --- NOVAS RELAÇÕES ---
+  ledTeam         WorkerTeam?                         @relation("TeamLeader")
+  teams           WorkerTeam[]                        @relation("TeamMembers")
+  workAllocations MaintenanceServiceOrderAllocation[]
+  // ----------------------
+
   @@map("workers")
+}
+
+// Representa uma equipe de trabalho (Elétrica, Alvenaria, etc.).
+model WorkerTeam {
+  id          Int     @id @default(autoincrement())
+  name        String  @unique
+  description String?
+  isActive    Boolean @default(true)
+
+  // --- MUDANÇA AQUI ---
+  // Relação com a especialidade da equipe.
+  specialtyId Int
+  specialty   WorkerSpecialty @relation(fields: [specialtyId], references: [id])
+  // --------------------
+
+  // --- MUDANÇA AQUI ---
+  // Líder geral da equipe
+  leaderId Int?    @unique // Uma pessoa pode liderar apenas uma equipe
+  leader   Worker? @relation("TeamLeader", fields: [leaderId], references: [id], onDelete: SetNull)
+  // --------------------
+
+  members       Worker[]                  @relation("TeamMembers") // Relação para membros
+  serviceOrders MaintenanceServiceOrder[] // OS atribuídas a esta equipe
+
+  createdAt DateTime @default(now()) @db.Timestamp(0)
+  updatedAt DateTime @updatedAt @db.Timestamp(0)
+
+  @@map("workers_teams")
+}
+
+// Define as especialidades ou ofícios das equipes de manutenção.
+model WorkerSpecialty {
+  id          Int     @id @default(autoincrement())
+  name        String  @unique // Ex: "Eletricista", "Pedreiro", "Pintor"
+  description String?
+
+  // Relações
+  teams WorkerTeam[] // Todas as equipes que possuem esta especialidade.
+
+  createdAt DateTime @default(now()) @db.Timestamp(0)
+  updatedAt DateTime @updatedAt @db.Timestamp(0)
+
+  @@map("workers_specialties")
 }

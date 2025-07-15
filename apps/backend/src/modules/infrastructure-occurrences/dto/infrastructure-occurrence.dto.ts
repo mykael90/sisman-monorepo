@@ -13,10 +13,10 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { UpdateUserDto } from '../../users/dto/user.dto'; // Assuming User DTO exists
-import { UpdateBuildingDto } from '../../buildings/dto/building.dto';
-import { UpdateSpaceDto } from '../../spaces/dto/space.dto';
-import { UpdateDiagnosisDto } from '../../diagnoses/dto/diagnosis.dto';
-import { UpdateOccurrenceReinforcementDto } from '../../occurrence-reinforcements/dto/occurrence-reinforcement.dto';
+import { UpdateInfrastructureBuildingDto } from '../../infrastructure-buildings/dto/infrastructure-building.dto';
+import { UpdateInfrastructureSpaceDto } from '../../infrastructure-spaces/dto/infrastructure-space.dto';
+import { UpdateInfrastructureOccurrenceDiagnosisDto } from '../../infrastructure-occurrence-diagnosis/dto/infrastructure-occurrence-diagnosis.dto';
+import { UpdateInfrastructureOccurrenceReinforcementDto } from '../../infrastructure-occurrence-reinforcements/dto/infrastructure-occurrence-reinforcement.dto';
 
 export class CreateInfrastructureOccurrenceDto
   implements
@@ -126,45 +126,45 @@ export class CreateInfrastructureOccurrenceWithRelationsDto extends CreateInfras
   reportedBy: UpdateUserDto;
 
   @ApiProperty({
-    type: () => UpdateSpaceDto,
+    type: () => UpdateInfrastructureSpaceDto,
     description: 'The space where the occurrence happened.',
     required: false
   })
   @IsOptional()
   @ValidateNested()
-  @Type(() => UpdateSpaceDto)
-  space?: UpdateSpaceDto;
+  @Type(() => UpdateInfrastructureSpaceDto)
+  space?: UpdateInfrastructureSpaceDto;
 
   @ApiProperty({
-    type: () => UpdateBuildingDto,
+    type: () => UpdateInfrastructureBuildingDto,
     description: 'The building where the occurrence happened.',
     required: false
   })
   @IsOptional()
   @ValidateNested()
-  @Type(() => UpdateBuildingDto)
-  building?: UpdateBuildingDto;
+  @Type(() => UpdateInfrastructureBuildingDto)
+  building?: UpdateInfrastructureBuildingDto;
 
   @ApiProperty({
-    type: () => UpdateDiagnosisDto,
+    type: () => UpdateInfrastructureOccurrenceDiagnosisDto,
     description: 'The diagnosis associated with this occurrence.',
     required: false
   })
   @IsOptional()
   @ValidateNested()
-  @Type(() => UpdateDiagnosisDto)
-  diagnosis?: UpdateDiagnosisDto;
+  @Type(() => UpdateInfrastructureOccurrenceDiagnosisDto)
+  diagnosis?: UpdateInfrastructureOccurrenceDiagnosisDto;
 
   @ApiProperty({
-    type: () => [UpdateOccurrenceReinforcementDto],
+    type: () => [UpdateInfrastructureOccurrenceReinforcementDto],
     description: 'Reinforcements for this occurrence.',
     required: false
   })
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => UpdateOccurrenceReinforcementDto)
-  reinforcements?: UpdateOccurrenceReinforcementDto[];
+  @Type(() => UpdateInfrastructureOccurrenceReinforcementDto)
+  reinforcements?: UpdateInfrastructureOccurrenceReinforcementDto[];
 }
 
 export class UpdateInfrastructureOccurrenceDto extends PartialType(

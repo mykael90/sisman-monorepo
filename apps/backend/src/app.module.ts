@@ -30,13 +30,13 @@ import { WarehousesModule } from './modules/warehouses/warehouses.module';
 import { MaterialRequestsModule } from './modules/material-requests/material-requests.module';
 import { StoragesModule } from './modules/storages/storages.module';
 import { MaintenanceRequestsModule } from './modules/maintenance-requests/maintenance-requests.module';
-import { BuildingsModule } from './modules/buildings/buildings.module';
-import { SpaceTypesModule } from './modules/space-types/space-types.module';
-import { SpacesModule } from './modules/spaces/spaces.module';
+import { InfrastructureBuildingsModule } from './modules/infrastructure-buildings/infrastructure-buildings.module';
+import { InfrastructureSpaceTypesModule } from './modules/infrastructure-space-types/infrastructure-space-types.module';
+import { InfrastructureSpacesModule } from './modules/infrastructure-spaces/infrastructure-spaces.module';
 import { InfrastructureSystemsModule } from './modules/infrastructure-systems/infrastructure-systems.module';
-import { OccurrenceReinforcementsModule } from './modules/occurrence-reinforcements/occurrence-reinforcements.module';
-import { DiagnosesModule } from './modules/diagnoses/diagnoses.module';
-import { ServiceTypesModule } from './modules/service-types/service-types.module';
+import { InfrastructureOccurrenceReinforcementsModule } from './modules/infrastructure-occurrence-reinforcements/infrastructure-occurrence-reinforcements.module';
+import { InfrastructureOccurrenceDiagnosisModule } from './modules/infrastructure-occurrence-diagnosis/infrastructure-occurrence-diagnosis.module';
+import { MaintenanceServiceTypesModule } from './modules/maintenance-service-types/maintenance-service-types.module';
 
 @Module({
   imports: [
@@ -82,13 +82,13 @@ import { ServiceTypesModule } from './modules/service-types/service-types.module
     MaintenanceInstancesModule,
     SipacModule,
     MaintenanceRequestsModule,
-    BuildingsModule,
-    SpaceTypesModule,
-    SpacesModule,
+    InfrastructureBuildingsModule,
+    InfrastructureSpaceTypesModule,
+    InfrastructureSpacesModule,
     InfrastructureSystemsModule,
-    OccurrenceReinforcementsModule,
-    DiagnosesModule,
-    ServiceTypesModule
+    InfrastructureOccurrenceReinforcementsModule,
+    InfrastructureOccurrenceDiagnosisModule,
+    MaintenanceServiceTypesModule
   ],
   controllers: [AppController],
   providers: [

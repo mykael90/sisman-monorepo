@@ -23,7 +23,7 @@ export class MaintenanceRequestsService {
       space,
       building,
       system,
-      equipment: _, // não será implementado esse model de equipment nesse projeto de pesquisa => TODO: futuro
+      // equipment: _, // não será implementado esse model de equipment nesse projeto de pesquisa => TODO: futuro
       serviceType,
       status,
       diagnosis,
@@ -156,7 +156,7 @@ export class MaintenanceRequestsService {
             space: true,
             building: true,
             system: true,
-            equipment: true,
+            // equipment: true,
             serviceType: true,
             status: true,
             diagnosis: true,
@@ -186,7 +186,7 @@ export class MaintenanceRequestsService {
             space: true,
             building: true,
             system: true,
-            equipment: true,
+            // equipment: true,
             serviceType: true,
             status: true,
             diagnosis: true,
@@ -224,7 +224,7 @@ export class MaintenanceRequestsService {
             space: true,
             building: true,
             system: true,
-            equipment: true,
+            // equipment: true,
             serviceType: true,
             status: true,
             diagnosis: true,
@@ -250,7 +250,7 @@ export class MaintenanceRequestsService {
       space,
       building,
       system,
-      equipment: _, // não será implementado esse model de equipment nesse projeto de pesquisa => TODO: futuro
+      // equipment: _, // não será implementado esse model de equipment nesse projeto de pesquisa => TODO: futuro
       serviceType,
       status,
       diagnosis,
