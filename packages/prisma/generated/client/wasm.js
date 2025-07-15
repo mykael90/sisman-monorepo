@@ -164,9 +164,9 @@ exports.Prisma.InfrastructureSpaceTypeScalarFieldEnum = {
 exports.Prisma.InfrastructureSpaceScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  floor: 'floor',
   description: 'description',
   spaceTypeId: 'spaceTypeId',
+  regionType: 'regionType',
   buildingId: 'buildingId',
   parentId: 'parentId',
   createdAt: 'createdAt',
@@ -925,7 +925,6 @@ exports.Prisma.InfrastructureSpaceTypeOrderByRelevanceFieldEnum = {
 
 exports.Prisma.InfrastructureSpaceOrderByRelevanceFieldEnum = {
   name: 'name',
-  floor: 'floor',
   description: 'description'
 };
 
@@ -1276,6 +1275,12 @@ exports.Prisma.WorkerSpecialtyOrderByRelevanceFieldEnum = {
   name: 'name',
   description: 'description'
 };
+exports.RegionType = exports.$Enums.RegionType = {
+  INTERNAL: 'INTERNAL',
+  EXTERNAL: 'EXTERNAL',
+  INTERFACE: 'INTERFACE'
+};
+
 exports.InfrastructureOccurrenceStatus = exports.$Enums.InfrastructureOccurrenceStatus = {
   REPORTED: 'REPORTED',
   ANALYZING: 'ANALYZING',

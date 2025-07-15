@@ -1,0 +1,356 @@
+[
+  {
+    "name": "ALMOXARIFADO",
+    "description": "Local para armazenamento e controle de materiais e suprimentos.",
+    "icon": "warehouse",
+    "isActive": true
+  },
+  {
+    "name": "ANEXO",
+    "description": "Edifício ou corpo de edifício que se acrescenta ao principal.",
+    "icon": "paperclip",
+    "isActive": true
+  },
+  {
+    "name": "ANFITEATRO",
+    "description": "Espaço ao ar livre, semicircular, com assentos em degraus, para apresentações e eventos.",
+    "icon": "theater",
+    "isActive": true
+  },
+  {
+    "name": "ÁTRIO",
+    "description": "Pátio ou espaço central, geralmente aberto, no interior de uma edificação.",
+    "icon": "layout-template",
+    "isActive": true
+  },
+  {
+    "name": "AUDITÓRIO",
+    "description": "Grande salão para eventos, palestras, conferências e apresentações.",
+    "icon": "presentation",
+    "isActive": true
+  },
+  {
+    "name": "BARRILETE",
+    "description": "Espaço técnico que abriga a distribuição principal de tubulações de água potável.",
+    "icon": "pipe",
+    "isActive": true
+  },
+  {
+    "name": "BLOCO",
+    "description": "Conjunto de edifícios ou uma seção distinta de um grande complexo de edificações.",
+    "icon": "blocks",
+    "isActive": true
+  },
+  {
+    "name": "BWC",
+    "description": "Instalação sanitária, banheiro. Abreviação de 'Bathroom/Water Closet'.",
+    "icon": "bath",
+    "isActive": true
+  },
+  {
+    "name": "CÂMARA",
+    "description": "Sala ou recinto para reuniões, assembleias ou armazenamento específico (ex: câmara fria).",
+    "icon": "users",
+    "isActive": true
+  },
+  {
+    "name": "CAMPO",
+    "description": "Área aberta e gramada para práticas esportivas como futebol.",
+    "icon": "goal",
+    "isActive": true
+  },
+  {
+    "name": "CANTINA",
+    "description": "Local para venda e consumo de lanches e refeições rápidas.",
+    "icon": "utensils",
+    "isActive": true
+  },
+  {
+    "name": "CASA DE GÁS",
+    "description": "Abrigo seguro para armazenamento de cilindros de gás.",
+    "icon": "gas-can",
+    "isActive": true
+  },
+  {
+    "name": "CASA DE LIXO",
+    "description": "Compartimento para armazenamento temporário de resíduos e lixo.",
+    "icon": "trash-2",
+    "isActive": true
+  },
+  {
+    "name": "CASA DE MÁQUINAS",
+    "description": "Espaço técnico que abriga equipamentos mecânicos, elétricos ou de elevadores.",
+    "icon": "cpu",
+    "isActive": true
+  },
+  {
+    "name": "CIRCULAÇÃO",
+    "description": "Área destinada ao trânsito e movimentação de pessoas, como corredores e halls.",
+    "icon": "move",
+    "isActive": true
+  },
+  {
+    "name": "COBERTURA",
+    "description": "Parte superior de um edifício, incluindo telhado, terraço ou laje.",
+    "icon": "building",
+    "isActive": true
+  },
+  {
+    "name": "COPA",
+    "description": "Pequena cozinha de apoio para preparo de refeições rápidas e lanches.",
+    "icon": "utensils-crossed",
+    "isActive": true
+  },
+  {
+    "name": "CORREDOR",
+    "description": "Passagem longa e estreita que liga diferentes cômodos ou áreas de uma edificação.",
+    "icon": "signpost",
+    "isActive": true
+  },
+  {
+    "name": "COZINHA",
+    "description": "Espaço equipado para o preparo de alimentos e refeições completas.",
+    "icon": "soup",
+    "isActive": true
+  },
+  {
+    "name": "DEPÓSITO",
+    "description": "Local para guardar mercadorias, materiais ou objetos diversos.",
+    "icon": "archive",
+    "isActive": true
+  },
+  {
+    "name": "DESPENSA",
+    "description": "Pequeno cômodo para armazenamento de alimentos, geralmente próximo à cozinha.",
+    "icon": "archive",
+    "isActive": true
+  },
+  {
+    "name": "DIVISÃO",
+    "description": "Unidade organizacional ou setor dentro de uma instituição.",
+    "icon": "network",
+    "isActive": true
+  },
+  {
+    "name": "DORMITÓRIO",
+    "description": "Quarto de dormir, especialmente em alojamentos ou residências coletivas.",
+    "icon": "bed-double",
+    "isActive": true
+  },
+  {
+    "name": "EDÍCULA",
+    "description": "Pequena construção anexa à casa principal, geralmente nos fundos.",
+    "icon": "home",
+    "isActive": true
+  },
+  {
+    "name": "ELEVADOR",
+    "description": "Equipamento para transporte vertical de pessoas ou cargas entre andares.",
+    "icon": "arrow-up-down",
+    "isActive": true
+  },
+  {
+    "name": "ENTRADA",
+    "description": "Acesso principal a um edifício ou espaço.",
+    "icon": "door-open",
+    "isActive": true
+  },
+  {
+    "name": "ESCADA",
+    "description": "Estrutura com degraus para circulação vertical entre diferentes níveis.",
+    "icon": "stairs",
+    "isActive": true
+  },
+  {
+    "name": "ESTACIONAMENTO",
+    "description": "Área destinada à parada e guarda de veículos.",
+    "icon": "parking-circle",
+    "isActive": true
+  },
+  {
+    "name": "FACHADA",
+    "description": "Face exterior de um edifício, especialmente a principal.",
+    "icon": "building-2",
+    "isActive": true
+  },
+  {
+    "name": "GARAGEM",
+    "description": "Espaço coberto para guardar veículos.",
+    "icon": "garage",
+    "isActive": true
+  },
+  {
+    "name": "GINÁSIO",
+    "description": "Local amplo e coberto para a prática de esportes e exercícios físicos.",
+    "icon": "dumbbell",
+    "isActive": true
+  },
+  {
+    "name": "HALL",
+    "description": "Área de entrada ou distribuição em um edifício, que dá acesso a outros cômodos.",
+    "icon": "sofa",
+    "isActive": true
+  },
+  {
+    "name": "JARDIM",
+    "description": "Área externa com plantas, flores e árvores, para lazer e contemplação.",
+    "icon": "flower-2",
+    "isActive": true
+  },
+  {
+    "name": "LABORATÓRIO",
+    "description": "Espaço com equipamentos para experimentação, pesquisa e análise.",
+    "icon": "flask-conical",
+    "isActive": true
+  },
+  {
+    "name": "MIRANTE",
+    "description": "Ponto elevado com vista panorâmica para observação da paisagem.",
+    "icon": "binoculars",
+    "isActive": true
+  },
+  {
+    "name": "PALCO",
+    "description": "Estrutura elevada em teatros ou auditórios para apresentações artísticas.",
+    "icon": "mic",
+    "isActive": true
+  },
+  {
+    "name": "PASSEIO",
+    "description": "Calçada ou caminho pavimentado para circulação de pedestres.",
+    "icon": "footprints",
+    "isActive": true
+  },
+  {
+    "name": "PÁTIO",
+    "description": "Área aberta, geralmente central, dentro de uma edificação ou complexo.",
+    "icon": "square",
+    "isActive": true
+  },
+  {
+    "name": "PAVIMENTO",
+    "description": "Cada um dos andares ou pisos de um edifício.",
+    "icon": "layers",
+    "isActive": true
+  },
+  {
+    "name": "PERGOLADO",
+    "description": "Estrutura de jardim, formada por pilares e vigas, para suporte de plantas trepadeiras.",
+    "icon": "arch",
+    "isActive": true
+  },
+  {
+    "name": "PISCINA",
+    "description": "Tanque com água para natação, lazer ou práticas esportivas.",
+    "icon": "waves",
+    "isActive": true
+  },
+  {
+    "name": "PORÃO",
+    "description": "Parte de uma casa localizada abaixo do nível do solo.",
+    "icon": "archive",
+    "isActive": true
+  },
+  {
+    "name": "PÓRTICO",
+    "description": "Galeria ou alpendre com colunas na entrada de um edifício.",
+    "icon": "arch",
+    "isActive": true
+  },
+  {
+    "name": "PRAÇA",
+    "description": "Espaço público amplo e aberto, com jardins e bancos, para convívio e lazer.",
+    "icon": "landmark",
+    "isActive": true
+  },
+  {
+    "name": "QUARTO",
+    "description": "Cômodo de uma residência destinado ao repouso e sono.",
+    "icon": "bed",
+    "isActive": true
+  },
+  {
+    "name": "RECEPÇÃO",
+    "description": "Área de entrada de um estabelecimento para receber e orientar visitantes.",
+    "icon": "concierge-bell",
+    "isActive": true
+  },
+  {
+    "name": "REFEITÓRIO",
+    "description": "Amplo salão destinado a refeições coletivas.",
+    "icon": "utensils-crossed",
+    "isActive": true
+  },
+  {
+    "name": "RESERVATÓRIO",
+    "description": "Grande recipiente para armazenamento de água ou outros fluidos.",
+    "icon": "droplets",
+    "isActive": true
+  },
+  {
+    "name": "SAGUÃO",
+    "description": "Vasto hall de entrada em edifícios públicos, hotéis ou teatros.",
+    "icon": "concierge-bell",
+    "isActive": true
+  },
+  {
+    "name": "SALA",
+    "description": "Cômodo genérico em uma edificação, para diversos fins como estar, reuniões ou trabalho.",
+    "icon": "square",
+    "isActive": true
+  },
+  {
+    "name": "SALA DE AULA",
+    "description": "Espaço destinado a atividades de ensino e aprendizagem.",
+    "icon": "school",
+    "isActive": true
+  },
+  {
+    "name": "SALÃO",
+    "description": "Espaço amplo para eventos, festas ou reuniões.",
+    "icon": "party-popper",
+    "isActive": true
+  },
+  {
+    "name": "SAUNA",
+    "description": "Ambiente com vapor ou calor seco para fins terapêuticos e de relaxamento.",
+    "icon": "thermometer",
+    "isActive": true
+  },
+  {
+    "name": "SETOR",
+    "description": "Área ou departamento com uma função específica dentro de uma organização.",
+    "icon": "layout-grid",
+    "isActive": true
+  },
+  {
+    "name": "SHAFT",
+    "description": "Vão vertical em uma edificação para a passagem de instalações e dutos.",
+    "icon": "git-commit-vertical",
+    "isActive": true
+  },
+  {
+    "name": "SUBSOLO",
+    "description": "Andar ou pavimento localizado abaixo do nível térreo.",
+    "icon": "arrow-down-to-line",
+    "isActive": true
+  },
+  {
+    "name": "TERRAÇO",
+    "description": "Área aberta em um nível elevado de um edifício, para lazer e convívio.",
+    "icon": "sun",
+    "isActive": true
+  },
+  {
+    "name": "TORRE",
+    "description": "Edificação alta e estreita, isolada ou parte de um complexo maior.",
+    "icon": "castle",
+    "isActive": true
+  },
+  {
+    "name": "VARANDA",
+    "description": "Espaço externo coberto, na frente ou ao lado de uma edificação.",
+    "icon": "sofa",
+    "isActive": true
+  }
+]

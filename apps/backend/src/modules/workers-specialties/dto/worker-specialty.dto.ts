@@ -1,4 +1,4 @@
-import { OmitType } from '@nestjs/mapped-types';
+import { OmitType, PartialType } from '@nestjs/swagger';
 import { Prisma, WorkerSpecialty } from '@sisman/prisma';
 import {
   IsArray,
@@ -16,6 +16,10 @@ import {
 // São a base para todas as outras DTOs.
 // =================================================================
 
+/**
+ * Classe base.
+ * @hidden
+ */
 class WorkerSpecialtyBaseDto implements WorkerSpecialty {
   /**
    * Nome da especialidade do trabalhador.
@@ -104,3 +108,11 @@ export class WorkerSpecialtyCreateDto extends OmitType(WorkerSpecialtyBaseDto, [
   @IsNumber()
   id?: number;
 }
+
+// =================================================================
+// 4. DTOs DE ATUALIZAÇÃO (INPUT) - Derivadas com PartialType
+// =================================================================
+
+export class WorkerSpecialtyUpdateDto extends PartialType(
+  WorkerSpecialtyCreateDto
+) {}

@@ -9,6 +9,7 @@ import { main as seedUsersRoles } from './seeds/_role-to-user.seed';
 import { main as seedSipacImoveis } from './seeds/sipac-imoveis.seed';
 import { main as seedSipacPredios } from './seeds/sipca-predios.seed';
 import { main as seedWorkersSpecialties } from './seeds/workers-specialties.seed';
+import { main as seedInfrastructureSpaceTypes } from './seeds/infrastructure-space-types.seed';
 
 const logger = console;
 
@@ -25,7 +26,8 @@ const seedFunctions: {
   seedUsersRoles,
   seedSipacImoveis,
   seedSipacPredios,
-  seedWorkersSpecialties
+  seedWorkersSpecialties,
+  seedInfrastructureSpaceTypes
 };
 
 // Main function to seed the database
@@ -54,6 +56,7 @@ async function mainSeed() {
       await seedSipacImoveis(prisma);
       await seedSipacPredios(prisma);
       await seedWorkersSpecialties(prisma);
+      await seedInfrastructureSpaceTypes(prisma);
     }
 
     logger.log('Database seeding completed successfully.');

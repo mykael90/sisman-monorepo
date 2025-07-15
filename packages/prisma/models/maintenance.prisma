@@ -34,10 +34,10 @@ model InfrastructureSpaceType {
 model InfrastructureSpace {
     id                  Int                        @id @default(autoincrement())
     name                String
-    floor               String?
     description         String?                    @db.Text
     spaceTypeId         Int
     spaceType           InfrastructureSpaceType    @relation(fields: [spaceTypeId], references: [id], onDelete: Restrict)
+    regionType          RegionType                 @default(INTERNAL)
     buildingId          Int
     building            InfrastructureBuilding     @relation(fields: [buildingId], references: [id], onDelete: Cascade)
     parentId            Int?
@@ -52,6 +52,12 @@ model InfrastructureSpace {
     @@index([parentId])
     @@index([spaceTypeId])
     @@map("infrastructure_spaces")
+}
+
+enum RegionType {
+    INTERNAL  @map("INTERNO") // Espaço interno da edificação
+    EXTERNAL  @map("EXTERNO") // Espaço externo da edificação, exemplo jardim, estacionamento, etc.
+    INTERFACE @map("INTERFACE") // Espaço de interface da edificação, exemplo fachada
 }
 
 model InfrastructureSystem {
