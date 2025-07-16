@@ -1,0 +1,37 @@
+[
+  {
+    "id": 1,
+    "name": "ADMINISTRATIVO",
+    "description": "Infraestrutura relacionada a atividades administrativas"
+  },
+  {
+    "id": 2,
+    "name": "INFRAESTRUTURA BASICA",
+    "description": "Infraestrutura basica, geralmente com acesso restrito, exemplos: Subestações, Reservatórios, Estações, etc."
+  },
+  {
+    "id": 3,
+    "name": "INDUSTRIA",
+    "description": "Infraestrutura utilizada para produção de bens diversos"
+  },
+  {
+    "id": 4,
+    "name": "PESQUISA",
+    "description": "Infraestrutura utilizada para pesquisa, tais como laboratórios, estufas, biotérios, etc"
+  },
+  {
+    "id": 5,
+    "name": "RESIDENCIA",
+    "description": "Infraestrutura utilizada para alojamento de pessoas"
+  },
+  {
+    "id": 6,
+    "name": "ENSINO",
+    "description": "Infraestrutura relacionada as atividades de ensino, como, salas de aula, bibliotecas, etc"
+  },
+  {
+    "id": 7,
+    "name": "OUTRO",
+    "description": "Outros tipos de infraestrutura"
+  }
+]
