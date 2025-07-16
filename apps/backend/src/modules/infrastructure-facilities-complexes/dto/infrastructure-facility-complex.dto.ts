@@ -6,7 +6,6 @@
 
 import { OmitType, PartialType } from '@nestjs/swagger';
 import { $Enums, InfrastructureFacilityComplex, Prisma } from '@sisman/prisma';
-import { Decimal } from '@sisman/prisma/generated/client/runtime/library';
 import { Type } from 'class-transformer';
 import {
   IsArray,
@@ -57,7 +56,7 @@ class InfrastructureFacilityComplexBaseDto
   @IsLatitude()
   @IsNumber()
   @Type(() => Number)
-  latitude: Decimal;
+  latitude: Prisma.Decimal;
 
   /**
    * Coordenada de longitude do ponto central do complexo.
@@ -66,7 +65,7 @@ class InfrastructureFacilityComplexBaseDto
   @IsLongitude()
   @IsNumber()
   @Type(() => Number)
-  longitude: Decimal;
+  longitude: Prisma.Decimal;
 
   /**
    * Tipo do complexo de instalações.
