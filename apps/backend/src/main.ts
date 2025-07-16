@@ -14,8 +14,11 @@ async function bootstrap() {
   const port = configService.get<number>('PORT_BACKEND', 3080);
   const logger = new Logger('Bootstrap');
 
+  // Habilita o CORS. É uma boa prática tornar as origens configuráveis.
+  // Ex: configService.get('CORS_ORIGIN').split(',')
   // app.enableCors({
-  //   origin: ['http://10.10.10.10:3002', 'http://localhost:3090']
+  //   origin: true, // Ou especifique as origens permitidas
+  //   credentials: true
   // });
 
   // Remove propriedades não listadas no DTO
@@ -41,13 +44,17 @@ async function bootstrap() {
     .setTitle('Sisman')
     .setDescription('The Sisman API description')
     .setVersion('0.1')
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
   await app.listen(port);
-  logger.log('SISMAN is listening...');
+  logger.log(`🚀 Aplicação rodando em: http://localhost:${port}`);
+  logger.log(
+    `📄 Documentação do Swagger disponível em: http://localhost:${port}/api`
+  );
 
   // Se o modo de desenvolvimento estiver ativo, inicie o debugger manualmente
   if (process.env.DEBUG_MODE === 'yes') {
