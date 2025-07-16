@@ -1,0 +1,45 @@
+### Variables
+@urlLocal = {{apiUrl}}/infrastructure-space-types
+@contentType = application/json
+
+### GET all
+GET {{urlLocal}}
+Authorization: Bearer {{token}}
+
+### GET one
+# @prompt id
+GET {{urlLocal}}/{{id}}
+Authorization: Bearer {{token}}
+
+### POST
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "name": "Sala de Aula",
+    "description": "Espaço destinado a atividades de ensino.",
+    "isActive": true,
+    "icon": "classroom-icon"
+}
+
+
+### PUT
+# @prompt id
+PUT {{urlLocal}}/{{id}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "name": "Laboratório de Informática",
+    "description": "Espaço destinado a aulas práticas de informática.",
+    "isActive": true,
+    "icon": "computer-lab-icon"
+}
+
+
+### DELETE one
+# @prompt id
+DELETE {{urlLocal}}/{{id}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}

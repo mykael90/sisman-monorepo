@@ -54,7 +54,7 @@ const InfrastructureBuildingActivityRelationOnlyArgs =
     select: {
       buldingsPrimary: true,
       buldingsSecondary: true,
-      InfrastructureBuildingType: true
+      infrastructureBuildingType: true
     }
   });
 
@@ -91,7 +91,7 @@ export class InfrastructureBuildingActivityWithRelationsResponseDto
    * O tipo de edificação associado a esta atividade.
    */
   @IsOptional()
-  InfrastructureBuildingType?: InfrastructureBuildingActivityRelationsOnly['InfrastructureBuildingType'];
+  InfrastructureBuildingType?: InfrastructureBuildingActivityRelationsOnly['infrastructureBuildingType'];
 }
 
 // =================================================================

@@ -69,7 +69,7 @@ model InfrastructureBuildingActivity {
 
     buldingsSecondary          InfrastructureBuilding[]     @relation("SecondaryActivity")
     buldingsPrimary            InfrastructureBuilding[]     @relation("PrimaryActivity")
-    InfrastructureBuildingType InfrastructureBuildingType[]
+    infrastructureBuildingType InfrastructureBuildingType[]
 
     @@map("infrastructure_buildings_activities")
 }

@@ -36,7 +36,11 @@ export class InfrastructureBuildingsActivitiesService {
   async list() {
     try {
       const activities =
-        await this.prisma.infrastructureBuildingActivity.findMany();
+        await this.prisma.infrastructureBuildingActivity.findMany({
+          include: {
+            infrastructureBuildingType: true
+          }
+        });
       return activities;
     } catch (error) {
       handlePrismaError(
