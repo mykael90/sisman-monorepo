@@ -1,0 +1,98 @@
+[
+  {
+    "id": 1,
+    "name": "BASE DE DADOS",
+    "description": null,
+    "infrastructureBuildingActivityId": 4
+  },
+  {
+    "id": 2,
+    "name": "BIBLIOTECA OU ACERVO",
+    "description": null,
+    "infrastructureBuildingActivityId": 4
+  },
+  {
+    "id": 3,
+    "name": "BIOTÉRIO",
+    "description": null,
+    "infrastructureBuildingActivityId": 4
+  },
+  {
+    "id": 4,
+    "name": "CENTRO DE COMPUTAÇÃO CIENTÍFICA, DATACENTER OU INFRAESTRUTURA DE TI",
+    "description": null,
+    "infrastructureBuildingActivityId": 4
+  },
+  {
+    "id": 5,
+    "name": "COLEÇÃO DE RECURSOS BIOLÓGICOS",
+    "description": null,
+    "infrastructureBuildingActivityId": 4
+  },
+  {
+    "id": 6,
+    "name": "COLEÇÃO DE RECURSOS MINERAIS",
+    "description": null,
+    "infrastructureBuildingActivityId": 4
+  },
+  {
+    "id": 7,
+    "name": "ESTAÇÃO OU FAZENDA EXPERIMENTAL",
+    "description": null,
+    "infrastructureBuildingActivityId": 4
+  },
+  {
+    "id": 8,
+    "name": "ESTAÇÃO OU REDE DE MONITORAMENTO",
+    "description": null,
+    "infrastructureBuildingActivityId": 4
+  },
+  {
+    "id": 9,
+    "name": "ESTUFA, CÂMARA DE CRESCIMENTO OU VIVEIRO",
+    "description": null,
+    "infrastructureBuildingActivityId": 4
+  },
+  {
+    "id": 10,
+    "name": "LABORATÓRIO",
+    "description": null,
+    "infrastructureBuildingActivityId": 4
+  },
+  {
+    "id": 11,
+    "name": "LABORATÓRIO DE INFORMÁTICA PARA USO DIDÁTICO",
+    "description": null,
+    "infrastructureBuildingActivityId": 4
+  },
+  {
+    "id": 12,
+    "name": "NAVIO DE PESQUISA OU LABORATÓRIO FLUTUANTE",
+    "description": null,
+    "infrastructureBuildingActivityId": 4
+  },
+  {
+    "id": 13,
+    "name": "OBSERVATÓRIO",
+    "description": null,
+    "infrastructureBuildingActivityId": 4
+  },
+  {
+    "id": 14,
+    "name": "PLANTA OU USINA-PILOTO",
+    "description": null,
+    "infrastructureBuildingActivityId": 4
+  },
+  {
+    "id": 15,
+    "name": "RESERVA",
+    "description": null,
+    "infrastructureBuildingActivityId": 4
+  },
+  {
+    "id": 16,
+    "name": "OUTRO",
+    "description": null,
+    "infrastructureBuildingActivityId": 4
+  }
+]
