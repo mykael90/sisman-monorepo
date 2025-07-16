@@ -19,7 +19,7 @@ enum FacilityComplexType {
     BUILDING   @map("EDIFICIO")
     FARM       @map("FAZENDA")
     HOSPITAL   @map("HOSPITAL")
-    LABORATORY @map("LABORATÓRIO")
+    LABORATORY @map("LABORATORIO")
     LAND       @map("TERRENO")
     MUSEUM     @map("MUSEU")
     OTHER      @map("OUTRO")
