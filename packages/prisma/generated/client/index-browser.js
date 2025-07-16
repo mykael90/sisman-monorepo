@@ -142,7 +142,7 @@ exports.Prisma.LogLoginScalarFieldEnum = {
   successful: 'successful'
 };
 
-exports.Prisma.FacilityComplexScalarFieldEnum = {
+exports.Prisma.InfrastructureFacilityComplexScalarFieldEnum = {
   id: 'id',
   name: 'name',
   address: 'address',
@@ -950,7 +950,7 @@ exports.Prisma.LogLoginOrderByRelevanceFieldEnum = {
   userAgent: 'userAgent'
 };
 
-exports.Prisma.FacilityComplexOrderByRelevanceFieldEnum = {
+exports.Prisma.InfrastructureFacilityComplexOrderByRelevanceFieldEnum = {
   id: 'id',
   name: 'name',
   address: 'address'
@@ -1516,7 +1516,7 @@ exports.RestrictionOrderStatus = exports.$Enums.RestrictionOrderStatus = {
 exports.Prisma.ModelName = {
   LogError: 'LogError',
   LogLogin: 'LogLogin',
-  FacilityComplex: 'FacilityComplex',
+  InfrastructureFacilityComplex: 'InfrastructureFacilityComplex',
   InfrastructureBuilding: 'InfrastructureBuilding',
   InfrastructureBuildingActivity: 'InfrastructureBuildingActivity',
   InfrastructureBuildingType: 'InfrastructureBuildingType',

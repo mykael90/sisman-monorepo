@@ -33,7 +33,7 @@ model LogLogin {
 // ==              MODELS PARA ATIVOS DE INFRAESTRUTURA           ==
 // =================================================================
 
-model FacilityComplex {
+model InfrastructureFacilityComplex {
   id        String               @id
   name      String
   address   String?
@@ -77,7 +77,7 @@ model InfrastructureBuilding {
   systems                      InfrastructureSystem[]
   maintenanceRequests          MaintenanceRequest[]
   infraOccurrences             InfrastructureOccurrence[]
-  facilityComplex              FacilityComplex?                 @relation(fields: [facilityComplexId], references: [id])
+  facilityComplex              InfrastructureFacilityComplex?   @relation(fields: [facilityComplexId], references: [id])
   facilityComplexId            String?
   infrastructureBuildingTypeId Int?
   primaryActivity              InfrastructureBuildingActivity?  @relation("PrimaryActivity", fields: [infrastructureBuildingTypeId], references: [id])
@@ -102,7 +102,7 @@ model InfrastructureBuildingActivity {
   buldingsPrimary            InfrastructureBuilding[]     @relation("PrimaryActivity")
   InfrastructureBuildingType InfrastructureBuildingType[]
 
-  @@map("infrastructure_building_activities")
+  @@map("infrastructure_buildings_activities")
 }
 
 model InfrastructureBuildingType {
@@ -112,7 +112,7 @@ model InfrastructureBuildingType {
   infrastructureBuildingActivity   InfrastructureBuildingActivity @relation(fields: [infrastructureBuildingActivityId], references: [id])
   infrastructureBuildingActivityId Int
 
-  @@map("infrastructure_building_types")
+  @@map("infrastructure_buildings_types")
 }
 
 // Modelo SpaceType, agora como um modelo para flexibilidade.
