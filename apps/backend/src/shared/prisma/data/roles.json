@@ -1,12 +1,57 @@
 [
- {"id":1, "role":"user", "description":"USUÁRIO COMUM"},
- {"id":100, "role":"adm", "description":"ADMINISTRADOR"},
- {"id":200, "role":"adm_materials", "description":"ADMINISTRADOR MODULO MATERIAIS"},
- {"id":201, "role":"super_materials", "description":"SUPER USUARIO MODULO MATERIAIS"},
- {"id":202, "role":"common_materials", "description":"USUARIO COMUM MODULO MATERIAIS"},
- {"id":300, "role":"adm_workers", "description":"ADMINISTRADOR MODULO COLABORADORES"},
- {"id":301, "role":"super_workers", "description":"SUPER USUARIO MODULO COLABORADORES"},
- {"id":302, "role":"common_workers", "description":"USUARIO COMUM MODULO COLABORADORES"},
- {"id":400, "role":"adm_suppliers", "description":"ADMINISTRADOR MODULO FORNECEDORES"},
- {"id":401, "role":"super_suppliers", "description":"SUPER USUARIO MODULO FORNECEDORES"},
- {"id":402, "role":"common_suppliers", "description":"USUARIO COMUM MODULO FORNECEDORES"}]
+  {
+    "id": 1,
+    "role": "USER",
+    "description": "USUÁRIO COMUM"
+  },
+  {
+    "id": 100,
+    "role": "ADM",
+    "description": "ADMINISTRADOR"
+  },
+  {
+    "id": 200,
+    "role": "ADM_MATERIALS",
+    "description": "ADMINISTRADOR MODULO MATERIAIS"
+  },
+  {
+    "id": 201,
+    "role": "SUPER_MATERIALS",
+    "description": "SUPER USUARIO MODULO MATERIAIS"
+  },
+  {
+    "id": 202,
+    "role": "COMMON_MATERIALS",
+    "description": "USUARIO COMUM MODULO MATERIAIS"
+  },
+  {
+    "id": 300,
+    "role": "ADM_WORKERS",
+    "description": "ADMINISTRADOR MODULO COLABORADORES"
+  },
+  {
+    "id": 301,
+    "role": "SUPER_WORKERS",
+    "description": "SUPER USUARIO MODULO COLABORADORES"
+  },
+  {
+    "id": 302,
+    "role": "COMMON_WORKERS",
+    "description": "USUARIO COMUM MODULO COLABORADORES"
+  },
+  {
+    "id": 400,
+    "role": "ADM_SUPPLIERS",
+    "description": "ADMINISTRADOR MODULO FORNECEDORES"
+  },
+  {
+    "id": 401,
+    "role": "SUPER_SUPPLIERS",
+    "description": "SUPER USUARIO MODULO FORNECEDORES"
+  },
+  {
+    "id": 402,
+    "role": "COMMON_SUPPLIERS",
+    "description": "USUARIO COMUM MODULO FORNECEDORES"
+  }
+]
