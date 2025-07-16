@@ -50,6 +50,10 @@ model User {
 
   madeAllocations MaintenanceServiceOrderAllocation[] @relation("AllocatedByUser")
 
+  InfrastructureBuildings InfrastructureBuilding[] @relation("Managers")
+
+  InfrastructureSpaceUser InfrastructureSpaceUser[]
+
   @@map("users") // Maps this model to the 'users' table.
 }
 

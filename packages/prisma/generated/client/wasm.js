@@ -142,13 +142,24 @@ exports.Prisma.LogLoginScalarFieldEnum = {
   successful: 'successful'
 };
 
+exports.Prisma.FacilityComplexScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  address: 'address',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  type: 'type'
+};
+
 exports.Prisma.InfrastructureBuildingScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  code: 'code',
   address: 'address',
+  latitude: 'latitude',
+  longitude: 'longitude',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  facilityComplexId: 'facilityComplexId'
 };
 
 exports.Prisma.InfrastructureSpaceTypeScalarFieldEnum = {
@@ -911,10 +922,17 @@ exports.Prisma.LogLoginOrderByRelevanceFieldEnum = {
   userAgent: 'userAgent'
 };
 
-exports.Prisma.InfrastructureBuildingOrderByRelevanceFieldEnum = {
+exports.Prisma.FacilityComplexOrderByRelevanceFieldEnum = {
+  id: 'id',
   name: 'name',
-  code: 'code',
   address: 'address'
+};
+
+exports.Prisma.InfrastructureBuildingOrderByRelevanceFieldEnum = {
+  id: 'id',
+  name: 'name',
+  address: 'address',
+  facilityComplexId: 'facilityComplexId'
 };
 
 exports.Prisma.InfrastructureSpaceTypeOrderByRelevanceFieldEnum = {
@@ -925,7 +943,8 @@ exports.Prisma.InfrastructureSpaceTypeOrderByRelevanceFieldEnum = {
 
 exports.Prisma.InfrastructureSpaceOrderByRelevanceFieldEnum = {
   name: 'name',
-  description: 'description'
+  description: 'description',
+  buildingId: 'buildingId'
 };
 
 exports.Prisma.InfrastructureSystemOrderByRelevanceFieldEnum = {
@@ -937,7 +956,8 @@ exports.Prisma.InfrastructureSystemOrderByRelevanceFieldEnum = {
 exports.Prisma.InfrastructureOccurrenceOrderByRelevanceFieldEnum = {
   title: 'title',
   description: 'description',
-  locationDescription: 'locationDescription'
+  locationDescription: 'locationDescription',
+  buildingId: 'buildingId'
 };
 
 exports.Prisma.InfrastructureOccurrenceReinforcementOrderByRelevanceFieldEnum = {
@@ -961,7 +981,8 @@ exports.Prisma.MaintenanceRequestOrderByRelevanceFieldEnum = {
   protocolNumber: 'protocolNumber',
   title: 'title',
   description: 'description',
-  solutionDetails: 'solutionDetails'
+  solutionDetails: 'solutionDetails',
+  buildingId: 'buildingId'
 };
 
 exports.Prisma.MaintenanceServiceOrderOrderByRelevanceFieldEnum = {
@@ -1275,6 +1296,19 @@ exports.Prisma.WorkerSpecialtyOrderByRelevanceFieldEnum = {
   name: 'name',
   description: 'description'
 };
+exports.FacilityComplexType = exports.$Enums.FacilityComplexType = {
+  BUILDING: 'BUILDING',
+  FARM: 'FARM',
+  HOSPITAL: 'HOSPITAL',
+  LABORATORY: 'LABORATORY',
+  MUSEUM: 'MUSEUM',
+  OTHER: 'OTHER',
+  RESIDENCE: 'RESIDENCE',
+  ROOM: 'ROOM',
+  STATION: 'STATION',
+  UNIVERSITY: 'UNIVERSITY'
+};
+
 exports.RegionType = exports.$Enums.RegionType = {
   INTERNAL: 'INTERNAL',
   EXTERNAL: 'EXTERNAL',
@@ -1439,6 +1473,7 @@ exports.RestrictionOrderStatus = exports.$Enums.RestrictionOrderStatus = {
 exports.Prisma.ModelName = {
   LogError: 'LogError',
   LogLogin: 'LogLogin',
+  FacilityComplex: 'FacilityComplex',
   InfrastructureBuilding: 'InfrastructureBuilding',
   InfrastructureSpaceType: 'InfrastructureSpaceType',
   InfrastructureSpace: 'InfrastructureSpace',

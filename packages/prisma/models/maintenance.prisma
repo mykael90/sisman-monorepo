@@ -2,19 +2,86 @@
 // ==              MODELS PARA ATIVOS DE INFRAESTRUTURA           ==
 // =================================================================
 
-model InfrastructureBuilding {
-    id                  Int                        @id @default(autoincrement())
-    name                String
-    code                String?                    @unique
-    address             String?
-    createdAt           DateTime                   @default(now())
-    updatedAt           DateTime                   @updatedAt
-    spaces              InfrastructureSpace[]
-    systems             InfrastructureSystem[]
-    maintenanceRequests MaintenanceRequest[]
-    infraOccurrences    InfrastructureOccurrence[]
+model FacilityComplex {
+    id        String               @id
+    name      String
+    address   String?
+    latitude  Decimal?             @db.Decimal(8, 6)
+    longitude Decimal?             @db.Decimal(9, 6)
+    type      FacilityComplexType?
 
+    buildings InfrastructureBuilding[]
+
+    @@map("infrastructure_facilities_complexes")
+}
+
+enum FacilityComplexType {
+    BUILDING   @map("EDIFICIO")
+    FARM       @map("FAZENDA")
+    HOSPITAL   @map("HOSPITAL")
+    LABORATORY @map("LABORATÓRIO")
+    LAND       @map("TERRENO")
+    MUSEUM     @map("MUSEU")
+    OTHER      @map("OUTRO")
+    RESIDENCE  @map("RESIDENCIA")
+    OFFICE     @map("ESCRITORIO")
+    STATION    @map("ESTACAO")
+    UNIVERSITY @map("UNIVERSIDADE")
+    WAREHOUSE  @map("GALPAO")
+}
+
+model InfrastructureBuilding {
+    id                           String                           @id
+    name                         String
+    alias                        String?
+    description                  String?
+    address                      String?
+    latitude                     Decimal?                         @db.Decimal(8, 6)
+    longitude                    Decimal?                         @db.Decimal(9, 6)
+    createdAt                    DateTime                         @default(now())
+    updatedAt                    DateTime                         @updatedAt
+    restrictedAccess             Boolean                          @default(false) //Somente pessoas autorizadas acessam essa infraestrutura
+    managers                     User[]                           @relation("Managers")
+    spaces                       InfrastructureSpace[]
+    systems                      InfrastructureSystem[]
+    maintenanceRequests          MaintenanceRequest[]
+    infraOccurrences             InfrastructureOccurrence[]
+    facilityComplex              FacilityComplex?                 @relation(fields: [facilityComplexId], references: [id])
+    facilityComplexId            String?
+    infrastructureBuildingTypeId Int?
+    primaryActivity              InfrastructureBuildingActivity?  @relation("PrimaryActivity", fields: [infrastructureBuildingTypeId], references: [id])
+    secondariesActivities        InfrastructureBuildingActivity[] @relation("SecondaryActivity")
+
+    maintenanceInstance   MaintenanceInstance? @relation(fields: [maintenanceInstanceId], references: [id])
+    maintenanceInstanceId Int?
+
+    unidadesSipacVinculadas SipacUnidade[] @relation("UnidadesVinculadasInfraestrutura")
+
+    @@index([facilityComplexId])
+    @@index([infrastructureBuildingTypeId])
     @@map("infrastructure_buildings")
+}
+
+model InfrastructureBuildingActivity {
+    id          Int     @id @default(autoincrement())
+    name        String  @unique
+    description String?
+
+    buldingsSecondary          InfrastructureBuilding[]     @relation("SecondaryActivity")
+    buldingsPrimary            InfrastructureBuilding[]     @relation("PrimaryActivity")
+    InfrastructureBuildingType InfrastructureBuildingType[]
+
+    @@map("infrastructure_building_activities")
+}
+
+model InfrastructureBuildingType {
+    id                               Int                            @id @default(autoincrement())
+    name                             String                         @unique
+    description                      String?
+    infrastructureBuildingActivity   InfrastructureBuildingActivity @relation(fields: [infrastructureBuildingActivityId], references: [id])
+    infrastructureBuildingActivityId Int
+
+    @@map("infrastructure_building_types")
 }
 
 // Modelo SpaceType, agora como um modelo para flexibilidade.
@@ -32,26 +99,42 @@ model InfrastructureSpaceType {
 }
 
 model InfrastructureSpace {
-    id                  Int                        @id @default(autoincrement())
-    name                String
-    description         String?                    @db.Text
-    spaceTypeId         Int
-    spaceType           InfrastructureSpaceType    @relation(fields: [spaceTypeId], references: [id], onDelete: Restrict)
-    regionType          RegionType                 @default(INTERNAL)
-    buildingId          Int
-    building            InfrastructureBuilding     @relation(fields: [buildingId], references: [id], onDelete: Cascade)
-    parentId            Int?
-    parent              InfrastructureSpace?       @relation("NestedSpaces", fields: [parentId], references: [id], onDelete: NoAction)
-    children            InfrastructureSpace[]      @relation("NestedSpaces")
-    maintenanceRequests MaintenanceRequest[]
-    infraOccurrences    InfrastructureOccurrence[]
-    createdAt           DateTime                   @default(now()) @db.Timestamp(0)
-    updatedAt           DateTime                   @updatedAt @db.Timestamp(0)
+    id                      Int                        @id @default(autoincrement())
+    name                    String
+    description             String?                    @db.Text
+    keyCode                 String?
+    spaceTypeId             Int
+    spaceType               InfrastructureSpaceType    @relation(fields: [spaceTypeId], references: [id], onDelete: Restrict)
+    regionType              RegionType                 @default(INTERNAL)
+    buildingId              String
+    building                InfrastructureBuilding     @relation(fields: [buildingId], references: [id], onDelete: Cascade)
+    parentId                Int?
+    parent                  InfrastructureSpace?       @relation("NestedSpaces", fields: [parentId], references: [id], onDelete: NoAction)
+    children                InfrastructureSpace[]      @relation("NestedSpaces")
+    maintenanceRequests     MaintenanceRequest[]
+    infraOccurrences        InfrastructureOccurrence[]
+    createdAt               DateTime                   @default(now()) @db.Timestamp(0)
+    updatedAt               DateTime                   @updatedAt @db.Timestamp(0)
+    InfrastructureSpaceUser InfrastructureSpaceUser[]
 
     @@index([buildingId])
     @@index([parentId])
     @@index([spaceTypeId])
     @@map("infrastructure_spaces")
+}
+
+model InfrastructureSpaceUser {
+    id                    Int                 @id @default(autoincrement())
+    spaceId               Int
+    space                 InfrastructureSpace @relation(fields: [infrastructureSpaceId], references: [id])
+    infrastructureSpaceId Int
+    user                  User                @relation(fields: [userId], references: [id])
+    userId                Int
+    createdAt             DateTime            @default(now()) @db.Timestamp(0)
+    updatedAt             DateTime            @updatedAt @db.Timestamp(0)
+
+    @@index([spaceId, userId])
+    @@map("infrastructure_space_users")
 }
 
 enum RegionType {
@@ -109,7 +192,7 @@ model InfrastructureOccurrence {
     reinforcements      InfrastructureOccurrenceReinforcement[]
     spaceId             Int?
     space               InfrastructureSpace?                    @relation(fields: [spaceId], references: [id], onDelete: SetNull)
-    buildingId          Int?
+    buildingId          String?
     building            InfrastructureBuilding?                 @relation(fields: [buildingId], references: [id], onDelete: SetNull)
     reportedById        Int
     reportedBy          User                                    @relation("ReportedOccurrences", fields: [reportedById], references: [id])
@@ -216,7 +299,7 @@ model MaintenanceRequest {
     completedAt                  DateTime?
     spaceId                      Int?
     space                        InfrastructureSpace?               @relation(fields: [spaceId], references: [id], onDelete: SetNull)
-    buildingId                   Int?
+    buildingId                   String?
     building                     InfrastructureBuilding?            @relation(fields: [buildingId], references: [id], onDelete: SetNull)
     systemId                     Int?
     system                       InfrastructureSystem?              @relation(fields: [systemId], references: [id], onDelete: SetNull)
@@ -307,6 +390,7 @@ model MaintenanceInstance {
     timelineEventsTransferredFrom MaintenanceTimelineEvent[] @relation("TransferredFromInstanceEvents")
     timelineEventsTransferredTo   MaintenanceTimelineEvent[] @relation("TransferredToInstanceEvents")
     warehouses                    Warehouse[]
+    InfrastructureBuilding        InfrastructureBuilding[]
 
     @@map("maintenance_instances")
 }

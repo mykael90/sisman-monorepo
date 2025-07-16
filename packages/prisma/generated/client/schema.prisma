@@ -33,17 +33,46 @@ model LogLogin {
 // ==              MODELS PARA ATIVOS DE INFRAESTRUTURA           ==
 // =================================================================
 
+model FacilityComplex {
+  id        String               @id
+  name      String
+  address   String?
+  latitude  Decimal?             @db.Decimal(8, 6)
+  longitude Decimal?             @db.Decimal(9, 6)
+  type      FacilityComplexType?
+
+  buildings InfrastructureBuilding[]
+
+  @@map("infrastructure_facilities_complexes")
+}
+
+enum FacilityComplexType {
+  BUILDING
+  FARM
+  HOSPITAL
+  LABORATORY
+  MUSEUM
+  OTHER
+  RESIDENCE
+  ROOM
+  STATION
+  UNIVERSITY
+}
+
 model InfrastructureBuilding {
-  id                  Int                        @id @default(autoincrement())
+  id                  String                     @id
   name                String
-  code                String?                    @unique
   address             String?
+  latitude            Decimal?                   @db.Decimal(8, 6)
+  longitude           Decimal?                   @db.Decimal(9, 6)
   createdAt           DateTime                   @default(now())
   updatedAt           DateTime                   @updatedAt
   spaces              InfrastructureSpace[]
   systems             InfrastructureSystem[]
   maintenanceRequests MaintenanceRequest[]
   infraOccurrences    InfrastructureOccurrence[]
+  facilityComplex     FacilityComplex?           @relation(fields: [facilityComplexId], references: [id])
+  facilityComplexId   String?
 
   @@map("infrastructure_buildings")
 }
@@ -69,7 +98,7 @@ model InfrastructureSpace {
   spaceTypeId         Int
   spaceType           InfrastructureSpaceType    @relation(fields: [spaceTypeId], references: [id], onDelete: Restrict)
   regionType          RegionType                 @default(INTERNAL)
-  buildingId          Int
+  buildingId          String
   building            InfrastructureBuilding     @relation(fields: [buildingId], references: [id], onDelete: Cascade)
   parentId            Int?
   parent              InfrastructureSpace?       @relation("NestedSpaces", fields: [parentId], references: [id], onDelete: NoAction)
@@ -140,7 +169,7 @@ model InfrastructureOccurrence {
   reinforcements      InfrastructureOccurrenceReinforcement[]
   spaceId             Int?
   space               InfrastructureSpace?                    @relation(fields: [spaceId], references: [id], onDelete: SetNull)
-  buildingId          Int?
+  buildingId          String?
   building            InfrastructureBuilding?                 @relation(fields: [buildingId], references: [id], onDelete: SetNull)
   reportedById        Int
   reportedBy          User                                    @relation("ReportedOccurrences", fields: [reportedById], references: [id])
@@ -247,7 +276,7 @@ model MaintenanceRequest {
   completedAt                  DateTime?
   spaceId                      Int?
   space                        InfrastructureSpace?               @relation(fields: [spaceId], references: [id], onDelete: SetNull)
-  buildingId                   Int?
+  buildingId                   String?
   building                     InfrastructureBuilding?            @relation(fields: [buildingId], references: [id], onDelete: SetNull)
   systemId                     Int?
   system                       InfrastructureSystem?              @relation(fields: [systemId], references: [id], onDelete: SetNull)

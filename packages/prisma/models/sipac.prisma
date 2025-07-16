@@ -359,6 +359,8 @@ model SipacUnidade {
     materialRequestRequisitante MaterialRequest[] @relation("unidadeRequisitanteMaterialRequest")
     materialRequestCusto        MaterialRequest[] @relation("unidadeCustoMaterialRequest")
 
+    infrastructureBuilding InfrastructureBuilding[] @relation("UnidadesVinculadasInfraestrutura")
+
     @@index([codigoUnidade])
     @@index([nomeUnidade])
     @@index([sigla])
