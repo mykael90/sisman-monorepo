@@ -1,0 +1,47 @@
+### Variables
+@urlLocal = {{apiUrl}}/infrastructure-facilities-complexes
+@contentType = application/json
+
+### GET all
+GET {{urlLocal}}
+Authorization: Bearer {{token}}
+
+### GET one
+# @prompt id
+GET {{urlLocal}}/{{id}}
+Authorization: Bearer {{token}}
+
+### POST
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "name": "Campus Universitário Central",
+    "address": "Av. Senador Salgado Filho, 3000 - Lagoa Nova, Natal - RN, 59078-970",
+    "latitude": -5.843472,
+    "longitude": -35.201633,
+    "type": "UNIVERSIDADE"
+}
+
+
+### PUT
+# @prompt id
+PUT {{urlLocal}}/{{id}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "name": "Campus Universitário Central - Atualizado",
+    "address": "Av. Senador Salgado Filho, 3000 - Lagoa Nova, Natal - RN, 59078-970",
+    "latitude": -5.843472,
+    "longitude": -35.201633,
+    "type": "UNIVERSIDADE"
+}
+
+
+### DELETE one
+# @prompt id
+DELETE {{urlLocal}}/{{id}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}

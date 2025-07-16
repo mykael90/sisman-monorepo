@@ -114,16 +114,8 @@ export class InfrastructureFacilityComplexWithRelationsResponseDto
 
 export class CreateInfrastructureFacilityComplexDto extends OmitType(
   InfrastructureFacilityComplexBaseDto,
-  ['id'] as const
-) {
-  /**
-   * Identificador único do complexo de instalações. Geralmente um código RIP (Registro Imobiliário Patrimonial).
-   * @example '1761.00464.500-8'
-   */
-  @IsOptional()
-  @IsString()
-  id?: string;
-}
+  ['type'] as const
+) {}
 
 // =================================================================
 // 4. DTOs DE ATUALIZAÇÃO (INPUT) - Derivadas com PartialType
