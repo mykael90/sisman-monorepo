@@ -63,6 +63,8 @@ type InfrastructureBuildingActivityRelationsOnly =
     typeof InfrastructureBuildingActivityRelationOnlyArgs
   >;
 
+export class InfrastructureBuildingActivityResponseDto extends InfrastructureBuildingActivityBaseDto {}
+
 /**
  * DTO para representar a resposta completa, incluindo suas relações.
  */

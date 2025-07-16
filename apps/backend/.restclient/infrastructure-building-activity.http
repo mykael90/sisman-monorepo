@@ -1,0 +1,41 @@
+### Variables
+@urlLocal = {{apiUrl}}/infrastructure-building-activity
+@contentType = application/json
+
+### GET all
+GET {{urlLocal}}
+Authorization: Bearer {{token}}
+
+### GET one
+# @prompt id
+GET {{urlLocal}}/{{id}}
+Authorization: Bearer {{token}}
+
+### POST
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "name": "Atividade Exemplo",
+    "description": "Descrição da atividade de exemplo"
+}
+
+
+### PUT
+# @prompt id
+PUT {{urlLocal}}/{{id}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "name": "Atividade Exemplo Atualizada",
+    "description": "Nova descrição da atividade"
+}
+
+
+### DELETE one
+# @prompt id
+DELETE {{urlLocal}}/{{id}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}

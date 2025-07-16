@@ -37,6 +37,8 @@ import { InfrastructureSystemsModule } from './modules/infrastructure-systems/in
 import { InfrastructureOccurrenceReinforcementsModule } from './modules/infrastructure-occurrence-reinforcements/infrastructure-occurrence-reinforcements.module';
 import { InfrastructureOccurrenceDiagnosisModule } from './modules/infrastructure-occurrence-diagnosis/infrastructure-occurrence-diagnosis.module';
 import { MaintenanceServiceTypesModule } from './modules/maintenance-service-types/maintenance-service-types.module';
+import { InfrastructureBuildingsActivitiesModule } from './modules/infrastructure-buildings-activities/infrastructure-buildings-activities.module';
+import { InfrastructureBuildingTypesModule } from './modules/infrastructure-buildings-types/infrastructure-buildings-types.module';
 
 @Module({
   imports: [
@@ -88,7 +90,9 @@ import { MaintenanceServiceTypesModule } from './modules/maintenance-service-typ
     InfrastructureSystemsModule,
     InfrastructureOccurrenceReinforcementsModule,
     InfrastructureOccurrenceDiagnosisModule,
-    MaintenanceServiceTypesModule
+    MaintenanceServiceTypesModule,
+    InfrastructureBuildingsActivitiesModule,
+    InfrastructureBuildingTypesModule
   ],
   controllers: [AppController],
   providers: [

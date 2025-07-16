@@ -1,0 +1,42 @@
+### Variables
+@urlLocal = {{apiUrl}}/infrastructure-building-types
+@contentType = application/json
+
+### GET all
+GET {{urlLocal}}
+Authorization: Bearer {{token}}
+
+### GET one
+# @prompt id
+GET {{urlLocal}}/{{id}}
+Authorization: Bearer {{token}}
+
+### POST
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "name": "Tipo de Edificação Exemplo",
+    "description": "Descrição do tipo de edificação de exemplo.",
+    "infrastructureBuildingActivityId": 1
+}
+
+
+### PUT
+# @prompt id
+PUT {{urlLocal}}/{{id}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "name": "Tipo de Edificação Atualizado",
+    "description": "Nova descrição do tipo de edificação."
+}
+
+
+### DELETE one
+# @prompt id
+DELETE {{urlLocal}}/{{id}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
