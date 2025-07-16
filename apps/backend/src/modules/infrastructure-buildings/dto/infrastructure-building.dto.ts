@@ -6,6 +6,10 @@ import { IsNotEmpty, IsString, IsOptional, IsNumber } from 'class-validator';
 export class CreateInfrastructureBuildingDto
   implements Prisma.InfrastructureBuildingCreateManyInput
 {
+  @IsString()
+  @IsNotEmpty()
+  id: string;
+
   @ApiProperty({
     description: 'Name of the building.',
     example: 'Bloco A',
@@ -39,10 +43,10 @@ export class UpdateInfrastructureBuildingDto extends PartialType(
 ) {
   @ApiProperty({
     description: 'ID of the building (for upsert operation)',
-    example: 1,
+    example: 'RIP-01',
     required: true
   })
-  @IsNumber()
+  @IsString()
   @IsNotEmpty()
-  id: number;
+  id: string;
 }
