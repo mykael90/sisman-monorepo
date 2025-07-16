@@ -154,12 +154,30 @@ exports.Prisma.FacilityComplexScalarFieldEnum = {
 exports.Prisma.InfrastructureBuildingScalarFieldEnum = {
   id: 'id',
   name: 'name',
+  alias: 'alias',
+  description: 'description',
   address: 'address',
   latitude: 'latitude',
   longitude: 'longitude',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  facilityComplexId: 'facilityComplexId'
+  restrictedAccess: 'restrictedAccess',
+  facilityComplexId: 'facilityComplexId',
+  infrastructureBuildingTypeId: 'infrastructureBuildingTypeId',
+  maintenanceInstanceId: 'maintenanceInstanceId'
+};
+
+exports.Prisma.InfrastructureBuildingActivityScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description'
+};
+
+exports.Prisma.InfrastructureBuildingTypeScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  infrastructureBuildingActivityId: 'infrastructureBuildingActivityId'
 };
 
 exports.Prisma.InfrastructureSpaceTypeScalarFieldEnum = {
@@ -176,10 +194,20 @@ exports.Prisma.InfrastructureSpaceScalarFieldEnum = {
   id: 'id',
   name: 'name',
   description: 'description',
+  keyCode: 'keyCode',
   spaceTypeId: 'spaceTypeId',
   regionType: 'regionType',
   buildingId: 'buildingId',
   parentId: 'parentId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.InfrastructureSpaceUserScalarFieldEnum = {
+  id: 'id',
+  spaceId: 'spaceId',
+  infrastructureSpaceId: 'infrastructureSpaceId',
+  userId: 'userId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -931,8 +959,20 @@ exports.Prisma.FacilityComplexOrderByRelevanceFieldEnum = {
 exports.Prisma.InfrastructureBuildingOrderByRelevanceFieldEnum = {
   id: 'id',
   name: 'name',
+  alias: 'alias',
+  description: 'description',
   address: 'address',
   facilityComplexId: 'facilityComplexId'
+};
+
+exports.Prisma.InfrastructureBuildingActivityOrderByRelevanceFieldEnum = {
+  name: 'name',
+  description: 'description'
+};
+
+exports.Prisma.InfrastructureBuildingTypeOrderByRelevanceFieldEnum = {
+  name: 'name',
+  description: 'description'
 };
 
 exports.Prisma.InfrastructureSpaceTypeOrderByRelevanceFieldEnum = {
@@ -944,6 +984,7 @@ exports.Prisma.InfrastructureSpaceTypeOrderByRelevanceFieldEnum = {
 exports.Prisma.InfrastructureSpaceOrderByRelevanceFieldEnum = {
   name: 'name',
   description: 'description',
+  keyCode: 'keyCode',
   buildingId: 'buildingId'
 };
 
@@ -1301,12 +1342,14 @@ exports.FacilityComplexType = exports.$Enums.FacilityComplexType = {
   FARM: 'FARM',
   HOSPITAL: 'HOSPITAL',
   LABORATORY: 'LABORATORY',
+  LAND: 'LAND',
   MUSEUM: 'MUSEUM',
   OTHER: 'OTHER',
   RESIDENCE: 'RESIDENCE',
-  ROOM: 'ROOM',
+  OFFICE: 'OFFICE',
   STATION: 'STATION',
-  UNIVERSITY: 'UNIVERSITY'
+  UNIVERSITY: 'UNIVERSITY',
+  WAREHOUSE: 'WAREHOUSE'
 };
 
 exports.RegionType = exports.$Enums.RegionType = {
@@ -1475,8 +1518,11 @@ exports.Prisma.ModelName = {
   LogLogin: 'LogLogin',
   FacilityComplex: 'FacilityComplex',
   InfrastructureBuilding: 'InfrastructureBuilding',
+  InfrastructureBuildingActivity: 'InfrastructureBuildingActivity',
+  InfrastructureBuildingType: 'InfrastructureBuildingType',
   InfrastructureSpaceType: 'InfrastructureSpaceType',
   InfrastructureSpace: 'InfrastructureSpace',
+  InfrastructureSpaceUser: 'InfrastructureSpaceUser',
   InfrastructureSystem: 'InfrastructureSystem',
   InfrastructureOccurrence: 'InfrastructureOccurrence',
   InfrastructureOccurrenceReinforcement: 'InfrastructureOccurrenceReinforcement',
