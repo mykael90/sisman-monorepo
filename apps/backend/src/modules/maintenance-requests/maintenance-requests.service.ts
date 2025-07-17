@@ -27,6 +27,8 @@ export class MaintenanceRequestsService {
       diagnosis,
       timelineEvents, //não utiliza
       materialRequests,
+      sipacUnitCost,
+      sipacUnitRequesting,
       // originatingOccurrences is a reverse relation, cannot be created/updated directly here
       ...restOfData
     } = data;
@@ -92,6 +94,20 @@ export class MaintenanceRequestsService {
       );
     }
 
+    // Validate and prepare sipacUnitRequesting for connect-only
+    if (sipacUnitRequesting && !sipacUnitRequesting.id) {
+      throw new Error(
+        'ID da unidade requisitante (sipacUnitRequesting.id) é obrigatório. Apenas conexão é permitida.'
+      );
+    }
+
+    // Validate and prepare sipacUnitCost for connect-only
+    if (sipacUnitCost && !sipacUnitCost.id) {
+      throw new Error(
+        'ID da unidade de custo (sipacUnitCost.id) é obrigatório. Apenas conexão é permitida.'
+      );
+    }
+
     const createInput: Prisma.MaintenanceRequestCreateInput = {
       ...restOfData,
       currentMaintenanceInstance: {
@@ -132,7 +148,13 @@ export class MaintenanceRequestsService {
             );
           }
         })
-      }
+      },
+      sipacUnitRequesting: sipacUnitRequesting?.id // Connect if sipacUnitRequesting and its id are provided
+        ? { connect: { id: sipacUnitRequesting.id } }
+        : undefined,
+      sipacUnitCost: sipacUnitCost?.id // Connect if sipacUnitCost and its id are provided
+        ? { connect: { id: sipacUnitCost.id } }
+        : undefined
     };
 
     this.logger.warn('createInput:', createInput);
@@ -154,7 +176,9 @@ export class MaintenanceRequestsService {
           diagnosis: true,
           // originatingOccurrences: true, // Cannot include reverse relation directly
           timelineEvents: true,
-          materialRequests: true
+          materialRequests: true,
+          sipacUnitRequesting: true,
+          sipacUnitCost: true
         }
       });
       return maintenanceRequest;
@@ -185,7 +209,9 @@ export class MaintenanceRequestsService {
             diagnosis: true,
             // originatingOccurrences: true, // Cannot include reverse relation directly
             timelineEvents: true,
-            materialRequests: true
+            materialRequests: true,
+            sipacUnitRequesting: true,
+            sipacUnitCost: true
           }
         }
       );
@@ -217,7 +243,9 @@ export class MaintenanceRequestsService {
             diagnosis: true,
             // originatingOccurrences: true, // Cannot include reverse relation directly
             timelineEvents: true,
-            materialRequests: true
+            materialRequests: true,
+            sipacUnitRequesting: true,
+            sipacUnitCost: true
           }
         });
       if (!maintenanceRequest) {
@@ -257,7 +285,9 @@ export class MaintenanceRequestsService {
             diagnosis: true,
             // originatingOccurrences: true, // Cannot include reverse relation directly
             timelineEvents: true,
-            materialRequests: true
+            materialRequests: true,
+            sipacUnitRequesting: true,
+            sipacUnitCost: true
           }
         });
       return maintenanceRequest;
@@ -285,6 +315,8 @@ export class MaintenanceRequestsService {
       diagnosis,
       timelineEvents,
       materialRequests,
+      sipacUnitCost,
+      sipacUnitRequesting,
       // originatingOccurrences is a reverse relation, cannot be created/updated directly here
       ...restOfData
     } = data;
@@ -459,6 +491,22 @@ export class MaintenanceRequestsService {
     //   };
     // }
 
+    // Handle sipacUnitRequesting (connect or disconnect)
+    if (sipacUnitRequesting === null) {
+      updateInput.sipacUnitRequesting = { disconnect: true };
+    } else if (sipacUnitRequesting?.id) {
+      updateInput.sipacUnitRequesting = {
+        connect: { id: sipacUnitRequesting.id }
+      };
+    } // Error for object without ID already thrown
+
+    // Handle sipacUnitCost (connect or disconnect)
+    if (sipacUnitCost === null) {
+      updateInput.sipacUnitCost = { disconnect: true };
+    } else if (sipacUnitCost?.id) {
+      updateInput.sipacUnitCost = { connect: { id: sipacUnitCost.id } };
+    } // Error for object without ID already thrown
+
     if (timelineEvents) {
       updateInput.timelineEvents = {
         upsert: timelineEvents.map((event) => {
@@ -494,7 +542,9 @@ export class MaintenanceRequestsService {
           diagnosis: true,
           // originatingOccurrences: true, // Cannot include reverse relation directly
           timelineEvents: true,
-          materialRequests: true
+          materialRequests: true,
+          sipacUnitRequesting: true,
+          sipacUnitCost: true
         }
       });
       return updated;

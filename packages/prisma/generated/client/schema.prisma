@@ -367,8 +367,8 @@ model MaintenanceRequest {
   // equipment                    Equipment?                      @relation(fields: [equipmentId], references: [id], onDelete: SetNull)
   currentMaintenanceInstanceId Int?
   currentMaintenanceInstance   MaintenanceInstance?               @relation("CurrentInstanceRequests", fields: [currentMaintenanceInstanceId], references: [id])
-  createdById                  Int
-  createdBy                    User                               @relation("CreatedByUser", fields: [createdById], references: [id])
+  createdById                  Int?
+  createdBy                    User?                              @relation("CreatedByUser", fields: [createdById], references: [id])
   assignedToId                 Int?
   assignedTo                   User?                              @relation("AssignedToUser", fields: [assignedToId], references: [id])
   serviceTypeId                Int?

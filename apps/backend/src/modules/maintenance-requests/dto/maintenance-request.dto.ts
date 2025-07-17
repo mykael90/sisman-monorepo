@@ -5,6 +5,7 @@ import {
   IsArray,
   IsDate,
   IsNotEmpty,
+  IsEnum,
   IsNumber,
   IsOptional,
   IsString,
@@ -19,8 +20,12 @@ import { UpdateMaintenanceServiceTypeDto } from '../../maintenance-service-types
 import { UpdateMaintenanceRequestStatusDto } from '../../maintenance-request-statuses/dto/maintenance-request-status.dto';
 import { UpdateInfrastructureOccurrenceDiagnosisDto } from '../../infrastructure-occurrence-diagnosis/dto/infrastructure-occurrence-diagnosis.dto';
 import { CreateMaintenanceTimelineEventDto } from '../../maintenance-timeline-events/dto/maintenance-timeline-event.dto';
-import { CreateMaterialRequestWithRelationsDto } from '../../material-requests/dto/material-request.dto';
+import {
+  CreateMaterialRequestWithRelationsDto,
+  UpdateMaterialRequestWithRelationsDto
+} from '../../material-requests/dto/material-request.dto';
 import { UpdateInfrastructureFacilityComplexDto } from '../../infrastructure-facilities-complexes/dto/infrastructure-facility-complex.dto';
+import { UpdateSipacUnidadeDto } from '../../sipac/unidades/dto/sipac-unidade.dto';
 
 // =================================================================
 // 1. "SUPER CLASSES" DE RESPOSTA (FONTE DA VERDADE)
@@ -178,14 +183,39 @@ class MaintenanceRequestBaseDto implements MaintenanceRequest {
   @IsString()
   notes: string;
 
+  /**
+   * Localização específica da requisição de manutenção.
+   * @example "Sala 101, Bloco A"
+   */
+  @IsString()
   local: string;
 
+  /**
+   * Origem da requisição de manutenção (e.g., SIPAC, SISMAN).
+   * @example "SISMAN"
+   */
+  @IsEnum($Enums.MaintenanceRequestOrigin)
   origin: $Enums.MaintenanceRequestOrigin;
 
+  /**
+   * ID da unidade de custo do SIPAC.
+   * @example 12345
+   */
+  @IsNumber()
   sipacUnitCostId: number;
 
+  /**
+   * ID da unidade requisitante do SIPAC.
+   * @example 67890
+   */
+  @IsNumber()
   sipacUnitRequestingId: number;
 
+  /**
+   * Login do usuário solicitante no SIPAC.
+   * @example "usuario.login"
+   */
+  @IsString()
   sipacUserLoginRequest: string;
 }
 
@@ -211,7 +241,9 @@ const MaintenanceRequestRelationOnlyArgs =
       materialStockMovements: true,
       materialWithdrawals: true,
       priorities: true,
-      serviceOrders: true
+      serviceOrders: true,
+      sipacUnitCost: true,
+      sipacUnitRequesting: true
     }
   });
 
@@ -326,6 +358,10 @@ export class MaintenanceRequestWithRelationsResponseDto
   priorities?: MaintenanceRequestRelationsOnly['priorities'];
 
   serviceOrders?: MaintenanceRequestRelationsOnly['serviceOrders'];
+
+  sipacUnitCost?: MaintenanceRequestRelationsOnly['sipacUnitCost'];
+
+  sipacUnitRequesting?: MaintenanceRequestRelationsOnly['sipacUnitRequesting'];
 }
 
 // =================================================================
@@ -341,16 +377,18 @@ export class CreateMaintenanceRequestWithRelationsDto extends CreateMaintenanceR
   /**
    * Instância de manutenção atual que está lidando com a requisição.
    */
+  @IsOptional()
   @ValidateNested()
   @Type(() => UpdateMaintenanceInstance)
-  currentMaintenanceInstance: UpdateMaintenanceInstance;
+  currentMaintenanceInstance?: UpdateMaintenanceInstance;
 
   /**
    * Usuário que formalmente abriu esta requisição.
    */
+  @IsOptional()
   @ValidateNested()
   @Type(() => UpdateUserDto)
-  createdBy: UpdateUserDto;
+  createdBy?: UpdateUserDto;
 
   /**
    * Usuário (técnico) atribuído a esta requisição.
@@ -411,9 +449,10 @@ export class CreateMaintenanceRequestWithRelationsDto extends CreateMaintenanceR
   /**
    * Status da requisição de manutenção.
    */
+  @IsOptional()
   @ValidateNested()
   @Type(() => UpdateMaintenanceRequestStatusDto)
-  statuses: UpdateMaintenanceRequestStatusDto;
+  statuses?: UpdateMaintenanceRequestStatusDto;
 
   /**
    * Diagnóstico associado a esta requisição.
@@ -438,8 +477,26 @@ export class CreateMaintenanceRequestWithRelationsDto extends CreateMaintenanceR
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => CreateMaterialRequestWithRelationsDto)
-  materialRequests?: CreateMaterialRequestWithRelationsDto[];
+  @Type(() => UpdateMaterialRequestWithRelationsDto)
+  materialRequests?: UpdateMaterialRequestWithRelationsDto[];
+
+  //TODO:
+  /**
+   * Dados da unidade SIPAC requisitante.
+   */
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => UpdateSipacUnidadeDto) // Substituir por SipacUnitResponseDto se existir
+  sipacUnitRequesting?: MaintenanceRequestRelationsOnly['sipacUnitRequesting'];
+
+  //TODO:
+  /**
+   * Dados da unidade de custo SIPAC.
+   */
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => UpdateSipacUnidadeDto) // Substituir por SipacUnitResponseDto se existir
+  sipacUnitCost?: MaintenanceRequestRelationsOnly['sipacUnitCost'];
 }
 
 // =================================================================

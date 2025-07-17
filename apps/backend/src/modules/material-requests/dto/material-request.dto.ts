@@ -1,4 +1,9 @@
-import { OmitType, PartialType } from '@nestjs/swagger';
+import {
+  IntersectionType,
+  OmitType,
+  PartialType,
+  PickType
+} from '@nestjs/swagger';
 import {
   Prisma,
   MaterialRequest,
@@ -482,17 +487,9 @@ export class CreateMaterialRequestStatusDto extends OmitType(
 /**
  * DTO para criar uma nova requisição de material com suas relações.
  */
-export class CreateMaterialRequestWithRelationsDto extends OmitType(
-  MaterialRequestBaseDto,
-  [
-    'id',
-    'createdAt',
-    'updatedAt',
-    'justification',
-    'storageId',
-    'sipacUnitRequestingId',
-    'sipacUnitCostId'
-  ] as const
+export class CreateMaterialRequestWithRelationsDto extends IntersectionType(
+  PartialType(MaterialRequestBaseDto),
+  PickType(MaterialRequestBaseDto, ['requestType'] as const)
 ) {
   // Sobrescreve as propriedades aninhadas para usar as DTOs de CRIAÇÃO corretas
   /**
