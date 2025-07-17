@@ -834,6 +834,8 @@ model MaterialRequestItem {
   quantityDelivered Decimal  @default(0) @db.Decimal(10, 3) // The quantity effectively delivered.
   // unitOfMeasure     String // The unit of measure for the requested quantity.
 
+  unitPrice Decimal? @db.Decimal(12, 2) // Valor unitário do item.
+
   notes String? @db.Text // Observations from the requester or warehouse staff for this item.
 
   stockMovements MaterialStockMovement[] // Stock movements that fulfilled this item.

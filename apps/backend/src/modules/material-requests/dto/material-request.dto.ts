@@ -112,6 +112,16 @@ class MaterialRequestItemBaseDto implements MaterialRequestItem {
   quantityDelivered: Prisma.Decimal | null;
 
   /**
+   * Preço unitário do do material.
+   * @example 8
+   */
+  @IsOptional()
+  @IsNumber()
+  @IsPositive()
+  @Type(() => Number)
+  unitPrice: Prisma.Decimal | null;
+
+  /**
    * Observações adicionais sobre o item.
    * @example 'Urgente'
    */

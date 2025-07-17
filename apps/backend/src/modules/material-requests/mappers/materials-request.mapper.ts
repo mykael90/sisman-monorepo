@@ -76,7 +76,8 @@ export class MaterialRequestMapper {
           requestedGlobalMaterialId: material.codigo,
           quantityRequested: material.quantidade,
           quantityApproved: material.quantidadeAtendida,
-          quantityDelivered: material.quantidadeAtendida
+          quantityDelivered: material.quantidadeAtendida,
+          unitPrice: material.valor
         })
       ),
       statusHistory: item.historicoDaRequisicao.map((status) => ({
