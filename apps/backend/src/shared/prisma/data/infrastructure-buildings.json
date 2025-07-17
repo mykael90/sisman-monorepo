@@ -3326,5 +3326,13 @@
     "latitude": null,
     "longitude": null,
     "facilityComplexId": "1823.00050.500-0"
+  },
+  {
+    "id": "NAO_IDENTIFICADO_01",
+    "name": "ADM. CENTRAL - COMPRAS - DIRETORIA DE COMPRAS",
+    "zone": 2,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
   }
 ]

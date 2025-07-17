@@ -14,10 +14,11 @@ model MaintenanceRequest {
     completedAt                  DateTime?
     facilityComplex              InfrastructureFacilityComplex?     @relation(fields: [facilityComplexId], references: [id])
     facilityComplexId            String?
-    spaceId                      Int?
-    space                        InfrastructureSpace?               @relation(fields: [spaceId], references: [id], onDelete: SetNull)
     buildingId                   String?
     building                     InfrastructureBuilding?            @relation(fields: [buildingId], references: [id], onDelete: SetNull)
+    spaceId                      Int?
+    space                        InfrastructureSpace?               @relation(fields: [spaceId], references: [id], onDelete: SetNull)
+    local                        String?
     systemId                     Int?
     system                       InfrastructureSystem?              @relation(fields: [systemId], references: [id], onDelete: SetNull)
     // equipmentId                  Int?
@@ -43,6 +44,16 @@ model MaintenanceRequest {
 
     // Relação 1-para-N com as Ordens de Serviço geradas
     serviceOrders MaintenanceServiceOrder[]
+
+    //campos compatibilidade sipac
+    //unidades
+    sipacUnitRequestingId Int?
+    sipacUnitRequesting   SipacUnidade? @relation("unidadeRequisitanteMaintenanceRequest", fields: [sipacUnitRequestingId], references: [id])
+    sipacUnitCostId       Int?
+    sipacUnitCost         SipacUnidade? @relation("unidadeCustoMaintenanceRequest", fields: [sipacUnitCostId], references: [id])
+
+    sipacUserLoginRequest String? // usuario que realizou a requisicao
+    origin                MaintenanceRequestOrigin @default(OCCURRENCE) // Origem da requisicao
 
     @@map("maintenance_requests")
 }
@@ -221,4 +232,10 @@ enum TimelineEventType {
     ASSET_CHANGED
     // NOVO EVENTO POSSÍVEL:
     DIAGNOSIS_REGISTERED
+}
+
+enum MaintenanceRequestOrigin {
+    OCCURRENCE  @map("OCORRÊNCIA")
+    IMPROVEMENT @map("MELHORIA")
+    SIPAC       @map("SIPAC")
 }

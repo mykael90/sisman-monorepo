@@ -1,34 +1,3 @@
-// Defines the structure for logging application errors.
-model LogError {
-  id          String   @id @default(uuid()) // Unique identifier for the error log.
-  timestamp   DateTime @default(now()) @db.Timestamp(0) // The date and time when the error occurred.
-  statusCode  Int? // HTTP status code associated with the error, if applicable.
-  path        String? // The request path that caused the error.
-  method      String? // The HTTP method of the request (e.g., GET, POST).
-  message     String   @db.Text // A descriptive message of the error.
-  stackTrace  String?  @db.Text // The stack trace of the error for debugging.
-  ipAddress   String? // The IP address of the client that made the request.
-  userId      Int? // The ID of the user who was logged in when the error occurred.
-  requestBody String?  @db.Text // The request body, if available and relevant.
-
-  @@map("log_errors") // Maps this model to the 'log_errors' table in the database.
-}
-
-// Records login attempts, both successful and unsuccessful.
-model LogLogin {
-  id         String   @id @default(uuid()) // Unique identifier for the login log.
-  userId     Int // The ID of the user attempting to log in.
-  timestamp  DateTime @default(now()) @db.Timestamp(0) // The date and time of the login attempt.
-  ipAddress  String? // The IP address from which the login attempt was made.
-  userAgent  String?  @db.Text // The user agent string of the client.
-  successful Boolean // Indicates if the login attempt was successful (true) or failed (false).
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade) // Establishes a relation to the User model.
-
-  @@index([userId]) // Creates an index on the userId field for faster lookups.
-  @@index([timestamp]) // Creates an index on the timestamp field for chronological queries.
-  @@map("log_logins") // Maps this model to the 'log_logins' table in the database.
-}
-
 // =================================================================
 // ==              MODELS PARA ATIVOS DE INFRAESTRUTURA           ==
 // =================================================================
@@ -52,22 +21,6 @@ model InfrastructureFacilityComplex {
   MaintenanceRequest       MaintenanceRequest[]
 
   @@map("infrastructure_facilities_complexes")
-}
-
-enum FacilityComplexType {
-  BUILDING   @map("EDIFÍCIO/PRÉDIO")
-  FARM       @map("FAZENDA")
-  HOSPITAL   @map("HOSPITAL")
-  LABORATORY @map("LABORATÓRIO")
-  LAND       @map("TERRENO")
-  MUSEUM     @map("MUSEU")
-  OTHER      @map("OUTROS")
-  RESIDENCE  @map("RESIDÊNCIA")
-  OFFICE     @map("SALA")
-  STATION    @map("ESTAÇÃO")
-  UNIVERSITY @map("UNIVERSIDADE")
-  WAREHOUSE  @map("GALPÃO")
-  AUTARCHY   @map("AUTARQUIA")
 }
 
 //não precisa de endereço, herda o endereço do complexo
@@ -178,12 +131,6 @@ model InfrastructureSpaceUser {
   @@map("infrastructure_space_users")
 }
 
-enum RegionType {
-  INTERNAL  @map("INTERNO") // Espaço interno da edificação
-  EXTERNAL  @map("EXTERNO") // Espaço externo da edificação, exemplo jardim, estacionamento, etc.
-  INTERFACE @map("INTERFACE") // Espaço de interface da edificação, exemplo fachada
-}
-
 model InfrastructureSystem {
   id                  Int                      @id @default(autoincrement())
   name                String
@@ -248,11 +195,6 @@ model InfrastructureOccurrence {
   @@map("infrastructure_occurrences")
 }
 
-enum InfrastructureType {
-  ISOLATED @map("ISOLADO")
-  NETWORK  @map("REDE")
-}
-
 model InfrastructureOccurrenceReinforcement {
   occurrenceId Int
   occurrence   InfrastructureOccurrence @relation(fields: [occurrenceId], references: [id], onDelete: Cascade)
@@ -263,16 +205,6 @@ model InfrastructureOccurrenceReinforcement {
 
   @@id([occurrenceId, userId])
   @@map("infrastructure_occurrence_reinforcements")
-}
-
-enum InfrastructureOccurrenceStatus {
-  REPORTED  @map("REPORTADO")
-  ANALYZING @map("ANALISANDO")
-  ACCEPTED  @map("ACEITO")
-  REJECTED  @map("NEGADO")
-  DISMISSED @map("IMPROCEDENTE")
-  RESOLVED  @map("RESOLVIDO")
-  DUPLICATE @map("DUPLICADA")
 }
 
 model InfrastructureOccurrenceDiagnosis {
@@ -307,14 +239,6 @@ model InfrastructureOccurrenceDiagnosis {
   @@map("infrastructure_occurrence_diagnosis")
 }
 
-enum DiagnosisOutcome {
-  PENDING          @map("PENDENTE")
-  CREATED_REQUEST  @map("REQUISICAO CRIADA")
-  RESOLVED_ON_SITE @map("REPARO RAPIDO")
-  DISMISS          @map("FALSO ALARME")
-  REJECT           @map("NEGADO")
-}
-
 // Modelo para tipos de risco configuráveis.
 model InfrastructureOccurrenceDiagnosisRiskType {
   id          Int     @id @default(autoincrement())
@@ -327,6 +251,10 @@ model InfrastructureOccurrenceDiagnosisRiskType {
   @@map("infrastructure_occurrence_diagnosis_risk_types")
 }
 
+// =================================================================
+// ==                         ENUMS                               ==
+// =================================================================
+
 // Enum para unidades de tempo.
 enum TimeUnit {
   MINUTES @map("MINUTOS")
@@ -335,6 +263,86 @@ enum TimeUnit {
   WEEKS   @map("SEMANAS")
   MONTHS  @map("MESES")
 }
+
+enum DiagnosisOutcome {
+  PENDING          @map("PENDENTE")
+  CREATED_REQUEST  @map("REQUISICAO CRIADA")
+  RESOLVED_ON_SITE @map("REPARO RAPIDO")
+  DISMISS          @map("FALSO ALARME")
+  REJECT           @map("NEGADO")
+}
+
+enum InfrastructureOccurrenceStatus {
+  REPORTED  @map("REPORTADO")
+  ANALYZING @map("ANALISANDO")
+  ACCEPTED  @map("ACEITO")
+  REJECTED  @map("NEGADO")
+  DISMISSED @map("IMPROCEDENTE")
+  RESOLVED  @map("RESOLVIDO")
+  DUPLICATE @map("DUPLICADA")
+}
+
+enum InfrastructureType {
+  ISOLATED @map("ISOLADO")
+  NETWORK  @map("REDE")
+}
+
+enum RegionType {
+  INTERNAL  @map("INTERNO") // Espaço interno da edificação
+  EXTERNAL  @map("EXTERNO") // Espaço externo da edificação, exemplo jardim, estacionamento, etc.
+  INTERFACE @map("INTERFACE") // Espaço de interface da edificação, exemplo fachada
+}
+
+enum FacilityComplexType {
+  BUILDING   @map("EDIFÍCIO/PRÉDIO")
+  FARM       @map("FAZENDA")
+  HOSPITAL   @map("HOSPITAL")
+  LABORATORY @map("LABORATÓRIO")
+  LAND       @map("TERRENO")
+  MUSEUM     @map("MUSEU")
+  OTHER      @map("OUTROS")
+  RESIDENCE  @map("RESIDÊNCIA")
+  OFFICE     @map("SALA")
+  STATION    @map("ESTAÇÃO")
+  UNIVERSITY @map("UNIVERSIDADE")
+  WAREHOUSE  @map("GALPÃO")
+  AUTARCHY   @map("AUTARQUIA")
+}
+
+// Defines the structure for logging application errors.
+model LogError {
+  id          String   @id @default(uuid()) // Unique identifier for the error log.
+  timestamp   DateTime @default(now()) @db.Timestamp(0) // The date and time when the error occurred.
+  statusCode  Int? // HTTP status code associated with the error, if applicable.
+  path        String? // The request path that caused the error.
+  method      String? // The HTTP method of the request (e.g., GET, POST).
+  message     String   @db.Text // A descriptive message of the error.
+  stackTrace  String?  @db.Text // The stack trace of the error for debugging.
+  ipAddress   String? // The IP address of the client that made the request.
+  userId      Int? // The ID of the user who was logged in when the error occurred.
+  requestBody String?  @db.Text // The request body, if available and relevant.
+
+  @@map("log_errors") // Maps this model to the 'log_errors' table in the database.
+}
+
+// Records login attempts, both successful and unsuccessful.
+model LogLogin {
+  id         String   @id @default(uuid()) // Unique identifier for the login log.
+  userId     Int // The ID of the user attempting to log in.
+  timestamp  DateTime @default(now()) @db.Timestamp(0) // The date and time of the login attempt.
+  ipAddress  String? // The IP address from which the login attempt was made.
+  userAgent  String?  @db.Text // The user agent string of the client.
+  successful Boolean // Indicates if the login attempt was successful (true) or failed (false).
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade) // Establishes a relation to the User model.
+
+  @@index([userId]) // Creates an index on the userId field for faster lookups.
+  @@index([timestamp]) // Creates an index on the timestamp field for chronological queries.
+  @@map("log_logins") // Maps this model to the 'log_logins' table in the database.
+}
+
+// =================================================================
+// ==                      MODELS DE MANUTENÇÃO                   ==
+// =================================================================
 
 model MaintenanceRequest {
   id                           Int                                @id @default(autoincrement())
@@ -348,10 +356,11 @@ model MaintenanceRequest {
   completedAt                  DateTime?
   facilityComplex              InfrastructureFacilityComplex?     @relation(fields: [facilityComplexId], references: [id])
   facilityComplexId            String?
-  spaceId                      Int?
-  space                        InfrastructureSpace?               @relation(fields: [spaceId], references: [id], onDelete: SetNull)
   buildingId                   String?
   building                     InfrastructureBuilding?            @relation(fields: [buildingId], references: [id], onDelete: SetNull)
+  spaceId                      Int?
+  space                        InfrastructureSpace?               @relation(fields: [spaceId], references: [id], onDelete: SetNull)
+  local                        String?
   systemId                     Int?
   system                       InfrastructureSystem?              @relation(fields: [systemId], references: [id], onDelete: SetNull)
   // equipmentId                  Int?
@@ -377,6 +386,16 @@ model MaintenanceRequest {
 
   // Relação 1-para-N com as Ordens de Serviço geradas
   serviceOrders MaintenanceServiceOrder[]
+
+  //campos compatibilidade sipac
+  //unidades
+  sipacUnitRequestingId Int?
+  sipacUnitRequesting   SipacUnidade? @relation("unidadeRequisitanteMaintenanceRequest", fields: [sipacUnitRequestingId], references: [id])
+  sipacUnitCostId       Int?
+  sipacUnitCost         SipacUnidade? @relation("unidadeCustoMaintenanceRequest", fields: [sipacUnitCostId], references: [id])
+
+  sipacUserLoginRequest String? // usuario que realizou a requisicao
+  origin                MaintenanceRequestOrigin @default(OCCURRENCE) // Origem da requisicao
 
   @@map("maintenance_requests")
 }
@@ -512,10 +531,6 @@ enum ServiceOrderStatus {
   CANCELLED // Cancelada
 }
 
-// =================================================================
-// ==                         ENUMS                               ==
-// =================================================================
-
 model MaintenanceRequestPriority {
   id                   Int                 @id @default(autoincrement())
   priority             Int
@@ -527,6 +542,10 @@ model MaintenanceRequestPriority {
   @@index([maintenanceRequestId])
   @@map("maintenance_request_priorities")
 }
+
+// =================================================================
+// ==                         ENUMS                               ==
+// =================================================================
 
 enum MaintenanceRequestStatusOptions {
   PENDING
@@ -555,6 +574,12 @@ enum TimelineEventType {
   ASSET_CHANGED
   // NOVO EVENTO POSSÍVEL:
   DIAGNOSIS_REGISTERED
+}
+
+enum MaintenanceRequestOrigin {
+  OCCURRENCE  @map("OCORRÊNCIA")
+  IMPROVEMENT @map("MELHORIA")
+  SIPAC       @map("SIPAC")
 }
 
 //Centro de distribuição, controle físico e financeiro de materiais
@@ -1781,6 +1806,9 @@ model SipacUnidade {
 
   requisicoesMaterialRequisitante SipacRequisicaoMaterial[] @relation("unidadeRequisitanteMaterial")
   requisicoesMaterialCusto        SipacRequisicaoMaterial[] @relation("unidadeCustoMaterial")
+
+  maintenanceRequestRequisitante MaintenanceRequest[] @relation("unidadeRequisitanteMaintenanceRequest")
+  maintenanceRequestCusto        MaintenanceRequest[] @relation("unidadeCustoMaintenanceRequest")
 
   materialRequestRequisitante MaterialRequest[] @relation("unidadeRequisitanteMaterialRequest")
   materialRequestCusto        MaterialRequest[] @relation("unidadeCustoMaterialRequest")

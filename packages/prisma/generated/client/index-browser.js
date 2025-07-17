@@ -120,28 +120,6 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
-exports.Prisma.LogErrorScalarFieldEnum = {
-  id: 'id',
-  timestamp: 'timestamp',
-  statusCode: 'statusCode',
-  path: 'path',
-  method: 'method',
-  message: 'message',
-  stackTrace: 'stackTrace',
-  ipAddress: 'ipAddress',
-  userId: 'userId',
-  requestBody: 'requestBody'
-};
-
-exports.Prisma.LogLoginScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  timestamp: 'timestamp',
-  ipAddress: 'ipAddress',
-  userAgent: 'userAgent',
-  successful: 'successful'
-};
-
 exports.Prisma.InfrastructureFacilityComplexScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -275,6 +253,28 @@ exports.Prisma.InfrastructureOccurrenceDiagnosisRiskTypeScalarFieldEnum = {
   description: 'description'
 };
 
+exports.Prisma.LogErrorScalarFieldEnum = {
+  id: 'id',
+  timestamp: 'timestamp',
+  statusCode: 'statusCode',
+  path: 'path',
+  method: 'method',
+  message: 'message',
+  stackTrace: 'stackTrace',
+  ipAddress: 'ipAddress',
+  userId: 'userId',
+  requestBody: 'requestBody'
+};
+
+exports.Prisma.LogLoginScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  timestamp: 'timestamp',
+  ipAddress: 'ipAddress',
+  userAgent: 'userAgent',
+  successful: 'successful'
+};
+
 exports.Prisma.MaintenanceRequestScalarFieldEnum = {
   id: 'id',
   protocolNumber: 'protocolNumber',
@@ -285,8 +285,9 @@ exports.Prisma.MaintenanceRequestScalarFieldEnum = {
   solutionDetails: 'solutionDetails',
   completedAt: 'completedAt',
   facilityComplexId: 'facilityComplexId',
-  spaceId: 'spaceId',
   buildingId: 'buildingId',
+  spaceId: 'spaceId',
+  local: 'local',
   systemId: 'systemId',
   currentMaintenanceInstanceId: 'currentMaintenanceInstanceId',
   createdById: 'createdById',
@@ -295,7 +296,11 @@ exports.Prisma.MaintenanceRequestScalarFieldEnum = {
   diagnosisId: 'diagnosisId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  notes: 'notes'
+  notes: 'notes',
+  sipacUnitRequestingId: 'sipacUnitRequestingId',
+  sipacUnitCostId: 'sipacUnitCostId',
+  sipacUserLoginRequest: 'sipacUserLoginRequest',
+  origin: 'origin'
 };
 
 exports.Prisma.MaintenanceServiceOrderScalarFieldEnum = {
@@ -947,22 +952,6 @@ exports.Prisma.NullsOrder = {
   last: 'last'
 };
 
-exports.Prisma.LogErrorOrderByRelevanceFieldEnum = {
-  id: 'id',
-  path: 'path',
-  method: 'method',
-  message: 'message',
-  stackTrace: 'stackTrace',
-  ipAddress: 'ipAddress',
-  requestBody: 'requestBody'
-};
-
-exports.Prisma.LogLoginOrderByRelevanceFieldEnum = {
-  id: 'id',
-  ipAddress: 'ipAddress',
-  userAgent: 'userAgent'
-};
-
 exports.Prisma.InfrastructureFacilityComplexOrderByRelevanceFieldEnum = {
   id: 'id',
   name: 'name',
@@ -1035,6 +1024,22 @@ exports.Prisma.InfrastructureOccurrenceDiagnosisRiskTypeOrderByRelevanceFieldEnu
   description: 'description'
 };
 
+exports.Prisma.LogErrorOrderByRelevanceFieldEnum = {
+  id: 'id',
+  path: 'path',
+  method: 'method',
+  message: 'message',
+  stackTrace: 'stackTrace',
+  ipAddress: 'ipAddress',
+  requestBody: 'requestBody'
+};
+
+exports.Prisma.LogLoginOrderByRelevanceFieldEnum = {
+  id: 'id',
+  ipAddress: 'ipAddress',
+  userAgent: 'userAgent'
+};
+
 exports.Prisma.MaintenanceRequestOrderByRelevanceFieldEnum = {
   protocolNumber: 'protocolNumber',
   title: 'title',
@@ -1042,7 +1047,9 @@ exports.Prisma.MaintenanceRequestOrderByRelevanceFieldEnum = {
   solutionDetails: 'solutionDetails',
   facilityComplexId: 'facilityComplexId',
   buildingId: 'buildingId',
-  notes: 'notes'
+  local: 'local',
+  notes: 'notes',
+  sipacUserLoginRequest: 'sipacUserLoginRequest'
 };
 
 exports.Prisma.MaintenanceServiceOrderOrderByRelevanceFieldEnum = {
@@ -1408,6 +1415,12 @@ exports.TimeUnit = exports.$Enums.TimeUnit = {
   MONTHS: 'MONTHS'
 };
 
+exports.MaintenanceRequestOrigin = exports.$Enums.MaintenanceRequestOrigin = {
+  OCCURRENCE: 'OCCURRENCE',
+  IMPROVEMENT: 'IMPROVEMENT',
+  SIPAC: 'SIPAC'
+};
+
 exports.ServiceOrderStatus = exports.$Enums.ServiceOrderStatus = {
   PENDING: 'PENDING',
   SCHEDULED: 'SCHEDULED',
@@ -1531,8 +1544,6 @@ exports.RestrictionOrderStatus = exports.$Enums.RestrictionOrderStatus = {
 };
 
 exports.Prisma.ModelName = {
-  LogError: 'LogError',
-  LogLogin: 'LogLogin',
   InfrastructureFacilityComplex: 'InfrastructureFacilityComplex',
   InfrastructureBuilding: 'InfrastructureBuilding',
   InfrastructureBuildingActivity: 'InfrastructureBuildingActivity',
@@ -1545,6 +1556,8 @@ exports.Prisma.ModelName = {
   InfrastructureOccurrenceReinforcement: 'InfrastructureOccurrenceReinforcement',
   InfrastructureOccurrenceDiagnosis: 'InfrastructureOccurrenceDiagnosis',
   InfrastructureOccurrenceDiagnosisRiskType: 'InfrastructureOccurrenceDiagnosisRiskType',
+  LogError: 'LogError',
+  LogLogin: 'LogLogin',
   MaintenanceRequest: 'MaintenanceRequest',
   MaintenanceServiceOrder: 'MaintenanceServiceOrder',
   MaintenanceServiceType: 'MaintenanceServiceType',

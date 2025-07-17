@@ -30,7 +30,12 @@ Authorization: Bearer {{token}}
     "serviceType": {"id": 1},
     "currentMaintenanceInstance": {"id": 1},
     "createdBy": {"id": 1},
-    "statuses": {"status": "PENDING"}
+    "statuses": {"status": "PENDING"},
+    "materialRequests": [
+        {
+            "protocolNumber": "6433/2024"
+        }
+    ]
 }
 
 ### PUT
@@ -41,7 +46,8 @@ Authorization: Bearer {{token}}
 
 {
     "title": "Updated Maintenance Request Title",
-    "description": "Updated details of the maintenance request"
+    "description": "Updated details of the maintenance request",
+    "statuses": {"status": "PENDING"}
 }
 
 ### DELETE one

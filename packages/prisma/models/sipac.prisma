@@ -356,6 +356,9 @@ model SipacUnidade {
     requisicoesMaterialRequisitante SipacRequisicaoMaterial[] @relation("unidadeRequisitanteMaterial")
     requisicoesMaterialCusto        SipacRequisicaoMaterial[] @relation("unidadeCustoMaterial")
 
+    maintenanceRequestRequisitante MaintenanceRequest[] @relation("unidadeRequisitanteMaintenanceRequest")
+    maintenanceRequestCusto        MaintenanceRequest[] @relation("unidadeCustoMaintenanceRequest")
+
     materialRequestRequisitante MaterialRequest[] @relation("unidadeRequisitanteMaterialRequest")
     materialRequestCusto        MaterialRequest[] @relation("unidadeCustoMaterialRequest")
 

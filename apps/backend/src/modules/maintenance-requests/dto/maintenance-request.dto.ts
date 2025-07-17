@@ -1,5 +1,5 @@
 import { IntersectionType, PartialType, PickType } from '@nestjs/swagger';
-import { MaintenanceRequest, Prisma } from '@sisman/prisma';
+import { $Enums, MaintenanceRequest, Prisma } from '@sisman/prisma';
 import { Type } from 'class-transformer';
 import {
   IsArray,
@@ -177,6 +177,16 @@ class MaintenanceRequestBaseDto implements MaintenanceRequest {
   @IsOptional()
   @IsString()
   notes: string;
+
+  local: string;
+
+  origin: $Enums.MaintenanceRequestOrigin;
+
+  sipacUnitCostId: number;
+
+  sipacUnitRequestingId: number;
+
+  sipacUserLoginRequest: string;
 }
 
 // =================================================================

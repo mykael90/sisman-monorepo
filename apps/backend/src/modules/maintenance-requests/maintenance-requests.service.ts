@@ -121,11 +121,21 @@ export class MaintenanceRequestsService {
       diagnosis: diagnosis?.id ? { connect: { id: diagnosis.id } } : undefined,
       // originatingOccurrences cannot be created/connected directly from MaintenanceRequest
       materialRequests: {
-        connect: materialRequests?.map((materialRequest) => ({
-          id: materialRequest.id
-        }))
+        connect: materialRequests?.map((materialRequest) => {
+          if (materialRequest.id) {
+            return { id: materialRequest.id };
+          } else if (materialRequest.protocolNumber) {
+            return { protocolNumber: materialRequest.protocolNumber };
+          } else {
+            throw new Error(
+              'O objeto precisa conter a chave "id" ou "protocolNumber".'
+            );
+          }
+        })
       }
     };
+
+    this.logger.warn('createInput:', createInput);
 
     try {
       const maintenanceRequest = await this.prisma.maintenanceRequest.create({
@@ -143,7 +153,8 @@ export class MaintenanceRequestsService {
           statuses: true,
           diagnosis: true,
           // originatingOccurrences: true, // Cannot include reverse relation directly
-          timelineEvents: true
+          timelineEvents: true,
+          materialRequests: true
         }
       });
       return maintenanceRequest;
@@ -164,15 +175,17 @@ export class MaintenanceRequestsService {
             currentMaintenanceInstance: true,
             createdBy: true,
             assignedTo: true,
-            space: true,
+            facilityComplex: true,
             building: true,
+            space: true,
             system: true,
             // equipment: true,
             serviceType: true,
             statuses: true,
             diagnosis: true,
             // originatingOccurrences: true, // Cannot include reverse relation directly
-            timelineEvents: true
+            timelineEvents: true,
+            materialRequests: true
           }
         }
       );
@@ -203,7 +216,8 @@ export class MaintenanceRequestsService {
             statuses: true,
             diagnosis: true,
             // originatingOccurrences: true, // Cannot include reverse relation directly
-            timelineEvents: true
+            timelineEvents: true,
+            materialRequests: true
           }
         });
       if (!maintenanceRequest) {
@@ -242,7 +256,8 @@ export class MaintenanceRequestsService {
             statuses: true,
             diagnosis: true,
             // originatingOccurrences: true, // Cannot include reverse relation directly
-            timelineEvents: true
+            timelineEvents: true,
+            materialRequests: true
           }
         });
       return maintenanceRequest;
@@ -321,19 +336,32 @@ export class MaintenanceRequestsService {
         );
       } else if (statuses.status) {
         updateInput.statuses = {
-          connect: {
-            status_maintenanceRequestId_createdAt: {
+          upsert: {
+            where: {
+              status_maintenanceRequestId_createdAt: {
+                status: statuses.status,
+                maintenanceRequestId: id,
+                createdAt: statuses.createdAt ?? new Date()
+              }
+            },
+            update: {
               status: statuses.status,
-              maintenanceRequestId: id,
-              createdAt: new Date()
+              isFinal: statuses.isFinal,
+              order: statuses.order
+            },
+            create: {
+              status: statuses.status,
+              description: statuses.description,
+              isFinal: statuses.isFinal,
+              order: statuses.order
             }
           }
         };
-      } else {
-        throw new Error(
-          'Se o objeto "status" é fornecido para atualização, seu "id" é obrigatório para conectar.'
-        );
       }
+    } else {
+      throw new Error(
+        'Se o objeto "status" é fornecido para atualização, seu "id" é obrigatório para conectar.'
+      );
     }
 
     // Handle assignedTo (connect or disconnect)
