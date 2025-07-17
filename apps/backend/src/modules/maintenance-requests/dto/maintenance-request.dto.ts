@@ -1,297 +1,330 @@
-import { PartialType } from '@nestjs/swagger';
-import {
-  Prisma,
-  MaintenanceRequestStatusOptions,
-  TimelineEventType
-} from '@sisman/prisma';
+import { IntersectionType, PartialType, PickType } from '@nestjs/swagger';
+import { MaintenanceRequest, Prisma } from '@sisman/prisma';
 import { Type } from 'class-transformer';
 import {
-  IsDateString,
-  IsEnum,
+  IsArray,
+  IsDate,
   IsNotEmpty,
   IsNumber,
   IsOptional,
   IsString,
-  IsArray,
-  ValidateNested,
-  IsBoolean,
-  IsDate
+  ValidateNested
 } from 'class-validator';
-import { UpdateSipacUnidadeDto } from '../../sipac/unidades/dto/sipac-unidade.dto'; // Assuming this is still relevant for related entities like SipacUnit
-import { UpdateUserDto } from '../../users/dto/user.dto'; // Assuming User DTO exists
-// import { UpdateEquipmentDto } from '../../equipments/dto/equipment.dto'; // Assuming Equipment DTO exists
-import { UpdateMaintenanceInstance } from '../../maintenance-instances/dto/maintenance-instance.dto'; // Assuming this DTO exists
-import { UpdateInfrastructureOccurrenceDto } from '../../infrastructure-occurrences/dto/infrastructure-occurrence.dto'; // Assuming this DTO exists
-import { UpdateInfrastructureBuildingDto } from '../../infrastructure-buildings/dto/infrastructure-building.dto';
+import { UpdateMaintenanceInstance } from '../../maintenance-instances/dto/maintenance-instance.dto';
+import { UpdateUserDto } from '../../users/dto/user.dto';
 import { UpdateInfrastructureSpaceDto } from '../../infrastructure-spaces/dto/infrastructure-space.dto';
+import { UpdateInfrastructureBuildingDto } from '../../infrastructure-buildings/dto/infrastructure-building.dto';
 import { UpdateInfrastructureSystemDto } from '../../infrastructure-systems/dto/infrastructure-system.dto';
-import { UpdateInfrastructureOccurrenceDiagnosisDto } from '../../infrastructure-occurrence-diagnosis/dto/infrastructure-occurrence-diagnosis.dto';
 import { UpdateMaintenanceServiceTypeDto } from '../../maintenance-service-types/dto/maintenance-service-type.dto';
+import { UpdateMaintenanceRequestStatusDto } from '../../maintenance-request-statuses/dto/maintenance-request-status.dto';
+import { UpdateInfrastructureOccurrenceDiagnosisDto } from '../../infrastructure-occurrence-diagnosis/dto/infrastructure-occurrence-diagnosis.dto';
+import { CreateMaintenanceTimelineEventDto } from '../../maintenance-timeline-events/dto/maintenance-timeline-event.dto';
 import { CreateMaterialRequestWithRelationsDto } from '../../material-requests/dto/material-request.dto';
+import { UpdateInfrastructureFacilityComplexDto } from '../../infrastructure-facilities-complexes/dto/infrastructure-facility-complex.dto';
 
-export class CreateMaintenanceRequestDto
-  implements
-    Omit<
-      Prisma.MaintenanceRequestCreateManyInput,
-      | 'currentMaintenanceInstanceId'
-      | 'createdById'
-      | 'statusId'
-      | 'spaceId'
-      | 'buildingId'
-      | 'systemId'
-      // | 'equipmentId'
-      | 'serviceTypeId'
-      | 'diagnosisId'
-    >
-{
+// =================================================================
+// 1. "SUPER CLASSES" DE RESPOSTA (FONTE DA VERDADE)
+// Contêm o contrato com o Prisma (`implements`) e os decoradores de validação.
+// São a base para todas as outras DTOs.
+// ===============================================================
+
+/**
+ * Classe base.
+ * @hidden
+ */
+class MaintenanceRequestBaseDto implements MaintenanceRequest {
   /**
-   * ID da requisição de manutenção (geralmente gerado automaticamente)
+   * ID da requisição de manutenção.
    * @example 1
    */
-  @IsOptional()
   @IsNumber()
-  id?: number;
+  id: number;
 
   /**
-   * Número do protocolo da requisição
-   * @example 'MANUT-2023/001'
+   * Número do protocolo da requisição.
+   * @example "MANUT-2023-0001"
    */
-  @IsOptional()
   @IsString()
-  protocolNumber?: string;
+  protocolNumber: string;
 
   /**
-   * Título da requisição
-   * @example 'Reparo de vazamento no banheiro do Bloco A'
+   * Título da requisição.
+   * @example "Reparo elétrico no bloco A"
    */
   @IsString()
-  @IsNotEmpty()
   title: string;
 
   /**
-   * Descrição detalhada do problema ou solicitação
-   * @example 'Há um vazamento constante na pia do banheiro masculino do segundo andar do Bloco A.'
-   */
-  @IsOptional()
-  @IsString()
-  description?: string;
-
-  /**
-   * Data e hora da solicitação (formato ISO 8601)
-   * @example '2023-10-27T10:00:00.000Z'
-   */
-  @IsOptional()
-  @IsDateString()
-  requestedAt?: string | Date;
-
-  /**
-   * Prazo final para conclusão da requisição (formato ISO 8601)
-   * @example '2023-11-15T17:00:00.000Z'
-   */
-  @IsOptional()
-  @IsDateString()
-  deadline?: string | Date;
-
-  /**
-   * Detalhes da solução fornecida
-   * @example 'Vazamento corrigido com a troca da vedação da torneira.'
-   */
-  @IsOptional()
-  @IsString()
-  solutionDetails?: string;
-
-  /**
-   * Data e hora da conclusão da requisição (formato ISO 8601)
-   * @example '2023-11-10T14:30:00.000Z'
-   */
-  @IsOptional()
-  @IsDateString()
-  completedAt?: string | Date;
-
-  /**
-   * ID do usuário (técnico) atribuído à requisição
-   * @example 7
-   */
-  @IsOptional()
-  @IsNumber()
-  @Type(() => Number)
-  assignedToId?: number;
-
-  /**
-   * ID do espaço relacionado à requisição
-   * @example 1
-   */
-  @IsOptional()
-  @IsNumber()
-  @Type(() => Number)
-  spaceId?: number;
-
-  /**
-   * ID do edifício relacionado à requisição
-   * @example 1
-   */
-  @IsOptional()
-  @IsNumber()
-  @Type(() => Number)
-  buildingId?: number;
-
-  /**
-   * ID do sistema de infraestrutura relacionado à requisição
-   * @example 1
-   */
-  @IsOptional()
-  @IsNumber()
-  @Type(() => Number)
-  systemId?: number;
-
-  // /**
-  //  * ID do equipamento relacionado à requisição
-  //  * @example 20
-  //  */
-  // @IsOptional()
-  // @IsNumber()
-  // @Type(() => Number)
-  // equipmentId?: number;
-
-  /**
-   * ID do tipo de serviço necessário para a requisição
-   * @example 3
-   */
-  @IsOptional()
-  @IsNumber()
-  @Type(() => Number)
-  serviceTypeId?: number;
-
-  /**
-   * ID do diagnóstico associado a esta requisição
-   * @example 1
-   */
-  @IsOptional()
-  @IsNumber()
-  @Type(() => Number)
-  diagnosisId?: number;
-}
-
-export class CreateMaintenanceTimelineEventDto
-  implements
-    Omit<Prisma.MaintenanceTimelineEventCreateManyInput, 'maintenanceRequestId'>
-{
-  /**
-   * ID do evento da linha do tempo (geralmente gerado automaticamente)
-   * @example 1
-   */
-  @IsOptional()
-  @IsNumber()
-  id?: number;
-
-  /**
-   * ID do usuário que realizou a ação/registrou o evento.
-   * @example 5
-   */
-  @IsNumber()
-  @IsNotEmpty()
-  @Type(() => Number)
-  actionById: number;
-
-  /**
-   * Tipo do evento ou ação
-   * @example 'COMMENT'
-   */
-  @IsEnum(TimelineEventType)
-  @IsNotEmpty()
-  type: TimelineEventType;
-
-  /**
-   * Descrição detalhada da ação
-   * @example 'Comentário adicionado: Verificado o local, o vazamento é pequeno.'
+   * Descrição detalhada da requisição.
+   * @example "Lâmpadas queimadas e fiação exposta na sala 101 do bloco A."
    */
   @IsString()
-  @IsNotEmpty()
   description: string;
 
   /**
-   * Dados estruturados relacionados ao evento (JSON)
-   * @example { oldStatus: 'PENDING', newStatus: 'IN_PROGRESS' }
+   * Data e hora da solicitação.
+   * @example "2023-10-27T10:00:00.000Z"
    */
-  @IsOptional()
-  eventData?: Prisma.JsonValue;
+  @IsDate()
+  requestedAt: Date;
 
   /**
-   * Data e hora em que o evento ocorreu (formato ISO 8601)
-   * @example '2023-10-27T10:05:00.000Z'
+   * Prazo para conclusão da requisição.
+   * @example "2023-11-10T17:00:00.000Z"
    */
-  @IsOptional()
-  @IsDateString()
-  occurredAt?: string | Date;
+  @IsDate()
+  deadline: Date;
 
   /**
-   * ID da instância de manutenção de onde foi transferido (se aplicável)
-   * @example 1
-   */
-  @IsNumber()
-  @Type(() => Number)
-  transferredFromInstanceId: number;
-
-  /**
-   * ID da instância de manutenção para onde foi transferido (se aplicável)
-   * @example 2
-   */
-  @IsNumber()
-  @Type(() => Number)
-  transferredToInstanceId: number;
-}
-
-export class CreateMaintenanceRequestStatusDto
-  implements Prisma.MaintenanceRequestStatusCreateManyInput
-{
-  /**
-   * O status da requisição.
-   */
-  @IsEnum(MaintenanceRequestStatusOptions)
-  @IsNotEmpty()
-  status: MaintenanceRequestStatusOptions;
-
-  @IsNumber()
-  @Type(() => Number)
-  maintenanceRequestId: number;
-
-  /**
-   * Descrição do status.
-   * @example 'Requisição criada e aguardando atribuição.'
+   * Detalhes da solução aplicada.
+   * @example "Substituição das lâmpadas e reparo da fiação."
    */
   @IsOptional()
   @IsString()
-  description?: string;
+  solutionDetails: string;
 
   /**
-   * Indica se este status é um status final para a requisição.
-   * @example false
+   * Data e hora da conclusão da requisição.
+   * @example "2023-11-05T14:30:00.000Z"
    */
   @IsOptional()
-  @IsBoolean()
-  @Type(() => Boolean)
-  isFinal?: boolean;
+  @IsDate()
+  completedAt: Date;
 
+  /**
+   * ID do complexo de instalações relacionado.
+   * @example "CAMPUS-CENTRAL"
+   */
+  @IsString()
+  facilityComplexId: string;
+
+  /**
+   * ID do espaço relacionado.
+   * @example 1
+   */
+  @IsNumber()
+  spaceId: number;
+
+  /**
+   * ID do edifício relacionado.
+   * @example "BLOCO-A"
+   */
+  @IsString()
+  buildingId: string;
+
+  /**
+   * ID do sistema relacionado.
+   * @example 1
+   */
+  @IsNumber()
+  systemId: number;
+
+  /**
+   * ID da instância de manutenção atual.
+   * @example 1
+   */
+  @IsNumber()
+  currentMaintenanceInstanceId: number;
+
+  /**
+   * ID do usuário que criou a requisição.
+   * @example 1
+   */
+  @IsNumber()
+  createdById: number;
+
+  /**
+   * ID do usuário atribuído para resolver a requisição.
+   * @example 2
+   */
   @IsOptional()
   @IsNumber()
-  @Type(() => Number)
-  order?: number;
+  assignedToId: number;
 
-  @IsOptional()
-  @IsDate()
-  changeDate?: string | Date;
+  /**
+   * ID do tipo de serviço necessário.
+   * @example 1
+   */
+  @IsNumber()
+  serviceTypeId: number;
 
+  /**
+   * ID do diagnóstico associado.
+   * @example 1
+   */
   @IsOptional()
-  @IsDate()
-  createdAt?: string | Date;
+  @IsNumber()
+  diagnosisId: number;
 
-  @IsOptional()
+  /**
+   * Data e hora de criação do registro.
+   * @example "2023-10-27T09:00:00.000Z"
+   */
   @IsDate()
-  updatedAt?: string | Date;
+  createdAt: Date;
+
+  /**
+   * Data e hora da última atualização do registro.
+   * @example "2023-11-05T15:00:00.000Z"
+   */
+  @IsDate()
+  updatedAt: Date;
+
+  /**
+   * Observações adicionais sobre a requisição.
+   * @example "Agendar com o responsável pelo bloco."
+   */
+  @IsOptional()
+  @IsString()
+  notes: string;
 }
 
-export class UpdateMaintenanceRequestStatusDto extends PartialType(
-  CreateMaintenanceRequestStatusDto
+// =================================================================
+// 2. DTOs DE RESPOSTA (Públicas) - Adicionam as relações aninhadas
+// =================================================================
+
+const MaintenanceRequestRelationOnlyArgs =
+  Prisma.validator<Prisma.MaintenanceRequestDefaultArgs>()({
+    select: {
+      currentMaintenanceInstance: true,
+      createdBy: true,
+      assignedTo: true,
+      building: true,
+      space: true,
+      system: true,
+      serviceType: true,
+      statuses: true,
+      diagnosis: true,
+      timelineEvents: true,
+      materialRequests: true,
+      facilityComplex: true,
+      materialStockMovements: true,
+      materialWithdrawals: true,
+      priorities: true,
+      serviceOrders: true
+    }
+  });
+
+type MaintenanceRequestRelationsOnly = Prisma.MaintenanceRequestGetPayload<
+  typeof MaintenanceRequestRelationOnlyArgs
+>;
+
+/**
+ * DTO para representar a resposta completa, incluindo suas relações.
+ */
+
+export class MaintenanceRequestWithRelationsResponseDto
+  extends MaintenanceRequestBaseDto
+  implements Partial<MaintenanceRequestRelationsOnly>
+{
+  /**
+   * Instância de manutenção associada à requisição.
+   */
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => UpdateMaintenanceInstance)
+  currentMaintenanceInstance?: MaintenanceRequestRelationsOnly['currentMaintenanceInstance'];
+
+  /**
+   * Usuário que criou a requisição.
+   */
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => UpdateUserDto)
+  createdBy?: MaintenanceRequestRelationsOnly['createdBy'];
+
+  /**
+   * Usuário atribuído para resolver a requisição.
+   */
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => UpdateUserDto)
+  assignedTo?: MaintenanceRequestRelationsOnly['assignedTo'];
+
+  /**
+   * Edifício relacionado à requisição.
+   */
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => UpdateInfrastructureBuildingDto)
+  building?: MaintenanceRequestRelationsOnly['building'];
+
+  /**
+   * Espaço relacionado à requisição.
+   */
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => UpdateInfrastructureSpaceDto)
+  space?: MaintenanceRequestRelationsOnly['space'];
+
+  /**
+   * Sistema relacionado à requisição.
+   */
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => UpdateInfrastructureSystemDto)
+  system?: MaintenanceRequestRelationsOnly['system'];
+
+  /**
+   * Tipo de serviço associado à requisição.
+   */
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => UpdateMaintenanceServiceTypeDto)
+  serviceType?: MaintenanceRequestRelationsOnly['serviceType'];
+
+  /**
+   * Status da requisição.
+   */
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => UpdateMaintenanceRequestStatusDto)
+  statuses?: MaintenanceRequestRelationsOnly['statuses'];
+
+  /**
+   * Diagnóstico associado à requisição.
+   */
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => UpdateInfrastructureOccurrenceDiagnosisDto)
+  diagnosis?: MaintenanceRequestRelationsOnly['diagnosis'];
+
+  /**
+   * Eventos da linha do tempo da requisição.
+   */
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreateMaintenanceTimelineEventDto)
+  timelineEvents?: MaintenanceRequestRelationsOnly['timelineEvents'];
+
+  /**
+   * Requisições de material associadas.
+   */
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreateMaterialRequestWithRelationsDto)
+  materialRequests?: MaintenanceRequestRelationsOnly['materialRequests'];
+
+  facilityComplex?: MaintenanceRequestRelationsOnly['facilityComplex'];
+
+  materialStockMovements?: MaintenanceRequestRelationsOnly['materialStockMovements'];
+
+  materialWithdrawals?: MaintenanceRequestRelationsOnly['materialWithdrawals'];
+
+  priorities?: MaintenanceRequestRelationsOnly['priorities'];
+
+  serviceOrders?: MaintenanceRequestRelationsOnly['serviceOrders'];
+}
+
+// =================================================================
+// 3. DTOs DE CRIAÇÃO (INPUT) - Derivadas com OmitType
+// =================================================================
+
+export class CreateMaintenanceRequestDto extends IntersectionType(
+  PartialType(MaintenanceRequestBaseDto),
+  PickType(MaintenanceRequestBaseDto, ['protocolNumber', 'title'] as const)
 ) {}
 
 export class CreateMaintenanceRequestWithRelationsDto extends CreateMaintenanceRequestDto {
@@ -318,12 +351,12 @@ export class CreateMaintenanceRequestWithRelationsDto extends CreateMaintenanceR
   assignedTo?: UpdateUserDto;
 
   /**
-   * Espaço relacionado a esta requisição.
+   * Complexo de instalações (campus) relacionado a esta requisição.
    */
   @IsOptional()
   @ValidateNested()
-  @Type(() => UpdateInfrastructureSpaceDto)
-  space?: UpdateInfrastructureSpaceDto;
+  @Type(() => UpdateInfrastructureFacilityComplexDto)
+  facilityComplex?: UpdateInfrastructureFacilityComplexDto;
 
   /**
    * Edifício relacionado a esta requisição.
@@ -332,6 +365,14 @@ export class CreateMaintenanceRequestWithRelationsDto extends CreateMaintenanceR
   @ValidateNested()
   @Type(() => UpdateInfrastructureBuildingDto)
   building?: UpdateInfrastructureBuildingDto;
+
+  /**
+   * Espaço relacionado a esta requisição.
+   */
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => UpdateInfrastructureSpaceDto)
+  space?: UpdateInfrastructureSpaceDto;
 
   /**
    * Sistema de infraestrutura relacionado a esta requisição.
@@ -373,15 +414,6 @@ export class CreateMaintenanceRequestWithRelationsDto extends CreateMaintenanceR
   diagnosis?: UpdateInfrastructureOccurrenceDiagnosisDto;
 
   /**
-   * Ocorrências de infraestrutura que originaram esta requisição.
-   */
-  @IsOptional()
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => UpdateInfrastructureOccurrenceDto)
-  originatingOccurrences?: UpdateInfrastructureOccurrenceDto[];
-
-  /**
    * Histórico de eventos/ações relacionados a esta requisição.
    */
   @IsOptional()
@@ -400,30 +432,13 @@ export class CreateMaintenanceRequestWithRelationsDto extends CreateMaintenanceR
   materialRequests?: CreateMaterialRequestWithRelationsDto[];
 }
 
+// =================================================================
+// 4. DTOs DE ATUALIZAÇÃO (INPUT) - Derivadas com PartialType
+// =================================================================
+
 export class UpdateMaintenanceRequestDto extends PartialType(
   CreateMaintenanceRequestDto
 ) {}
-
-export class UpdateMaintenanceTimelineEventDto extends PartialType(
-  CreateMaintenanceTimelineEventDto
-) {
-  /**
-   * ID do evento da linha do tempo (para operação de upsert)
-   * @example 1
-   */
-  @IsNumber()
-  @IsNotEmpty()
-  id: number;
-
-  /**
-   * ID do usuário que realizou a ação/registrou o evento.
-   * @example 5
-   */
-  @IsOptional()
-  @IsNumber()
-  @Type(() => Number)
-  actionById?: number;
-}
 
 export class UpdateMaintenanceRequestWithRelationsDto extends PartialType(
   CreateMaintenanceRequestWithRelationsDto

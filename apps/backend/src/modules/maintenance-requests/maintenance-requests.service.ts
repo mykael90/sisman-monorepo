@@ -2,10 +2,7 @@ import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../shared/prisma/prisma.service';
 import {
   CreateMaintenanceRequestWithRelationsDto,
-  UpdateMaintenanceRequestWithRelationsDto,
-  CreateMaintenanceTimelineEventDto,
-  UpdateMaintenanceTimelineEventDto,
-  UpdateMaintenanceRequestStatusDto
+  UpdateMaintenanceRequestWithRelationsDto
 } from './dto/maintenance-request.dto';
 import { handlePrismaError } from '../../shared/utils/prisma-error-handler';
 import { Prisma } from '@sisman/prisma';
@@ -22,6 +19,7 @@ export class MaintenanceRequestsService {
       assignedTo,
       space,
       building,
+      facilityComplex,
       system,
       // equipment: _, // não será implementado esse model de equipment nesse projeto de pesquisa => TODO: futuro
       serviceType,
@@ -59,6 +57,11 @@ export class MaintenanceRequestsService {
     if (space && !space.id) {
       throw new Error(
         'Se o objeto "space" é fornecido, seu "id" é obrigatório para conectar.'
+      );
+    }
+    if (facilityComplex && !facilityComplex.id) {
+      throw new Error(
+        'Se o objeto "facilityComplex" é fornecido, seu "id" é obrigatório para conectar.'
       );
     }
     if (building && !building.id) {
@@ -106,6 +109,9 @@ export class MaintenanceRequestsService {
         ? { connect: { id: assignedTo.id } }
         : undefined,
       space: space?.id ? { connect: { id: space.id } } : undefined,
+      facilityComplex: facilityComplex?.id
+        ? { connect: { id: facilityComplex.id } }
+        : undefined,
       building: building?.id ? { connect: { id: building.id } } : undefined,
       system: system?.id ? { connect: { id: system.id } } : undefined,
       // equipment: equipment?.id ? { connect: { id: equipment.id } } : undefined,
@@ -128,8 +134,9 @@ export class MaintenanceRequestsService {
           currentMaintenanceInstance: true,
           createdBy: true,
           assignedTo: true,
-          space: true,
+          facilityComplex: true,
           building: true,
+          space: true,
           system: true,
           // equipment: true,
           serviceType: true,
@@ -187,8 +194,9 @@ export class MaintenanceRequestsService {
             currentMaintenanceInstance: true,
             createdBy: true,
             assignedTo: true,
-            space: true,
+            facilityComplex: true,
             building: true,
+            space: true,
             system: true,
             // equipment: true,
             serviceType: true,
@@ -225,8 +233,9 @@ export class MaintenanceRequestsService {
             currentMaintenanceInstance: true,
             createdBy: true,
             assignedTo: true,
-            space: true,
+            facilityComplex: true,
             building: true,
+            space: true,
             system: true,
             // equipment: true,
             serviceType: true,
@@ -251,8 +260,9 @@ export class MaintenanceRequestsService {
       currentMaintenanceInstance,
       createdBy,
       assignedTo,
-      space,
+      facilityComplex,
       building,
+      space,
       system,
       // equipment: _, // não será implementado esse model de equipment nesse projeto de pesquisa => TODO: futuro
       serviceType,
@@ -348,6 +358,17 @@ export class MaintenanceRequestsService {
       );
     }
 
+    //Handle facilityComplex (connect or disconnect
+    if (facilityComplex === null) {
+      updateInput.facilityComplex = { disconnect: true };
+    } else if (facilityComplex?.id) {
+      updateInput.facilityComplex = { connect: { id: facilityComplex.id } };
+    } else if (facilityComplex !== undefined) {
+      throw new Error(
+        'Se o objeto "facilityComplex" é fornecido para atualização, seu "id" é obrigatório para conectar.'
+      );
+    }
+
     // Handle building (connect or disconnect)
     if (building === null) {
       updateInput.building = { disconnect: true };
@@ -435,8 +456,9 @@ export class MaintenanceRequestsService {
           currentMaintenanceInstance: true,
           createdBy: true,
           assignedTo: true,
-          space: true,
+          facilityComplex: true,
           building: true,
+          space: true,
           system: true,
           // equipment: true,
           serviceType: true,
