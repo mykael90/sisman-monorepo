@@ -178,10 +178,6 @@ enum ServiceOrderStatus {
     CANCELLED // Cancelada
 }
 
-// =================================================================
-// ==                         ENUMS                               ==
-// =================================================================
-
 model MaintenanceRequestPriority {
     id                   Int                 @id @default(autoincrement())
     priority             Int
@@ -193,6 +189,10 @@ model MaintenanceRequestPriority {
     @@index([maintenanceRequestId])
     @@map("maintenance_request_priorities")
 }
+
+// =================================================================
+// ==                         ENUMS                               ==
+// =================================================================
 
 enum MaintenanceRequestStatusOptions {
     PENDING

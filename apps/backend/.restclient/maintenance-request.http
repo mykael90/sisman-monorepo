@@ -25,6 +25,7 @@ Authorization: Bearer {{token}}
     "completedAt": "2023-11-10T14:30:00.000Z",
     "createdBy": {"id": 1},
     "assignedTo": {"id": 1},
+    "facilityComplexId" : {"id": "1639.00236.500-5"},
     "building": {"id": "1639.00236.500-5-001"},
     "serviceType": {"id": 1},
     "currentMaintenanceInstance": {"id": 1},
