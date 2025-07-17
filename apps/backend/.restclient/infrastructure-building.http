@@ -1,0 +1,57 @@
+### Variables
+@urlLocal = {{apiUrl}}/infrastructure-building
+@contentType = application/json
+
+### GET all
+GET {{urlLocal}}
+Authorization: Bearer {{token}}
+
+### GET one
+# @prompt id
+GET {{urlLocal}}/{{id}}
+Authorization: Bearer {{token}}
+
+### POST
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "name": "Prédio do Instituto Metrópole Digital",
+    "latitude": -5.843472,
+    "longitude": -35.201633,
+    "maintenanceInstanceId": 1,
+    "alias": "IMD",
+    "description": "Prédio principal do IMD, com laboratórios de pesquisa e salas de aula.",
+    "zone": "1",
+    "restrictedAccess": false,
+    "facilityComplexId": "1761.00464.500-8",
+    "infrastructureBuildingTypeId": 2
+}
+
+
+### PUT
+# @prompt id
+PUT {{urlLocal}}/{{id}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "name": "Prédio do Instituto Metrópole Digital - Atualizado",
+    "latitude": -5.843472,
+    "longitude": -35.201633,
+    "maintenanceInstanceId": 1,
+    "alias": "IMD-Atualizado",
+    "description": "Prédio principal do IMD, com laboratórios de pesquisa e salas de aula. (Atualizado)",
+    "zone": "1",
+    "restrictedAccess": false,
+    "facilityComplexId": "1761.00464.500-8",
+    "infrastructureBuildingTypeId": 2
+}
+
+
+### DELETE one
+# @prompt id
+DELETE {{urlLocal}}/{{id}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}

@@ -151,7 +151,8 @@ exports.Prisma.InfrastructureFacilityComplexScalarFieldEnum = {
   cep: 'cep',
   latitude: 'latitude',
   longitude: 'longitude',
-  type: 'type'
+  type: 'type',
+  maintenanceInstanceId: 'maintenanceInstanceId'
 };
 
 exports.Prisma.InfrastructureBuildingScalarFieldEnum = {
@@ -159,7 +160,7 @@ exports.Prisma.InfrastructureBuildingScalarFieldEnum = {
   name: 'name',
   alias: 'alias',
   description: 'description',
-  address: 'address',
+  zone: 'zone',
   latitude: 'latitude',
   longitude: 'longitude',
   createdAt: 'createdAt',
@@ -228,12 +229,14 @@ exports.Prisma.InfrastructureOccurrenceScalarFieldEnum = {
   id: 'id',
   title: 'title',
   description: 'description',
+  infrastructureType: 'infrastructureType',
   locationDescription: 'locationDescription',
   reportedAt: 'reportedAt',
   status: 'status',
   duplicateOfId: 'duplicateOfId',
-  spaceId: 'spaceId',
+  facilityComplexId: 'facilityComplexId',
   buildingId: 'buildingId',
+  spaceId: 'spaceId',
   reportedById: 'reportedById',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -967,7 +970,7 @@ exports.Prisma.InfrastructureBuildingOrderByRelevanceFieldEnum = {
   name: 'name',
   alias: 'alias',
   description: 'description',
-  address: 'address',
+  zone: 'zone',
   facilityComplexId: 'facilityComplexId'
 };
 
@@ -1004,6 +1007,7 @@ exports.Prisma.InfrastructureOccurrenceOrderByRelevanceFieldEnum = {
   title: 'title',
   description: 'description',
   locationDescription: 'locationDescription',
+  facilityComplexId: 'facilityComplexId',
   buildingId: 'buildingId'
 };
 
@@ -1363,6 +1367,11 @@ exports.RegionType = exports.$Enums.RegionType = {
   INTERNAL: 'INTERNAL',
   EXTERNAL: 'EXTERNAL',
   INTERFACE: 'INTERFACE'
+};
+
+exports.InfrastructureType = exports.$Enums.InfrastructureType = {
+  ISOLATED: 'ISOLATED',
+  NETWORK: 'NETWORK'
 };
 
 exports.InfrastructureOccurrenceStatus = exports.$Enums.InfrastructureOccurrenceStatus = {

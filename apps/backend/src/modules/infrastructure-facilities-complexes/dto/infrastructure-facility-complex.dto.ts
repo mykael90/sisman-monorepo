@@ -17,6 +17,7 @@ import {
   IsOptional,
   IsString
 } from 'class-validator';
+import { isString } from 'lodash';
 
 /**
  * Classe base.
@@ -74,6 +75,34 @@ class InfrastructureFacilityComplexBaseDto
   @IsEnum($Enums.FacilityComplexType)
   @IsNotEmpty()
   type: $Enums.FacilityComplexType;
+
+  /**
+   * CEP do complexo de instalações.
+   * @example '57072970'
+   */
+  @IsString()
+  cep: string;
+
+  /**
+   * Município do complexo de instalações.
+   * @example 'NATAL'
+   */
+  @IsString()
+  city: string;
+
+  /**
+   * Complemento do endereço do complexo de instalações.
+   * @example 'NATAL'
+   */
+  @IsString()
+  complement: string;
+
+  /**
+   * ID da Instância de manutenção associada ao complexo de instalações.
+   * @example 1
+   */
+  @IsNumber()
+  maintenanceInstanceId: number;
 }
 
 // =================================================================

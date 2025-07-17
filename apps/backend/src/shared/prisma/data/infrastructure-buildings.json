@@ -1,0 +1,3330 @@
+[
+  {
+    "id": "1639.00236.500-5-001",
+    "name": "CERES CAICO - BLOCO DE SALAS DE AULA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1639.00236.500-5"
+  },
+  {
+    "id": "1639.00236.500-5-002",
+    "name": "CERES CAICO - AUDITORIO",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1639.00236.500-5"
+  },
+  {
+    "id": "1639.00236.500-5-003",
+    "name": "CERES CAICO - BIBLIOTECA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1639.00236.500-5"
+  },
+  {
+    "id": "1639.00236.500-5-004",
+    "name": "CERES CAICO - PRATICA FORENSE",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1639.00236.500-5"
+  },
+  {
+    "id": "1639.00236.500-5-005",
+    "name": "CERES CAICO - BACHARELADO EM SISTEMA DE INFORMACAO",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1639.00236.500-5"
+  },
+  {
+    "id": "1639.00236.500-5-006",
+    "name": "CERES CAICO - PAVILHAO DE PESQUISA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1639.00236.500-5"
+  },
+  {
+    "id": "1639.00236.500-5-007",
+    "name": "CERES CAICO - LABORATORIO DE GEOGRAFIA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1639.00236.500-5"
+  },
+  {
+    "id": "1639.00236.500-5-008",
+    "name": "CERES CAICO - PAVILHAO ADMINISTRATIVO",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1639.00236.500-5"
+  },
+  {
+    "id": "1639.00236.500-5-009",
+    "name": "CERES CAICO - GABINETE DOS DOCENTES",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1639.00236.500-5"
+  },
+  {
+    "id": "1639.00236.500-5-010",
+    "name": "CERES CAICO - SETOR DE AULAS",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1639.00236.500-5"
+  },
+  {
+    "id": "1639.00236.500-5-011",
+    "name": "CERES CAICO - ANTIGA RESIDENCIA UNIVERSITARIA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1639.00236.500-5"
+  },
+  {
+    "id": "1639.00236.500-5-012",
+    "name": "CERES CAICO - ESTACAO CLIMATOLOGICA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1639.00236.500-5"
+  },
+  {
+    "id": "1639.00236.500-5-013",
+    "name": "CERES CAICO - DIRECAO",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1639.00236.500-5"
+  },
+  {
+    "id": "1639.00236.500-5-014",
+    "name": "CERES CAICO - ALMOXARIFADO",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1639.00236.500-5"
+  },
+  {
+    "id": "1639.00236.500-5-015",
+    "name": "CERES CAICO - LABORATORIO DE HISTORIA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1639.00236.500-5"
+  },
+  {
+    "id": "1639.00236.500-5-016",
+    "name": "CERES CAICO - RESIDENCIA UNIVERSITARIA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1639.00236.500-5"
+  },
+  {
+    "id": "1639.00236.500-5-017",
+    "name": "CERES CAICO - INFRAESTRUTURA DE REDE DE AGUA E ESGOTO",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1639.00236.500-5"
+  },
+  {
+    "id": "1639.00236.500-5-018",
+    "name": "CERES CAICO - INFRAESTRUTURA DE REDE DE ENERGIA ELETRICA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1639.00236.500-5"
+  },
+  {
+    "id": "1639.00236.500-5-019",
+    "name": "CERES CAICO - INFRAESTRUTURA DE REDE DE TELECOMUNICACOES",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1639.00236.500-5"
+  },
+  {
+    "id": "1639.00237.500-0-001",
+    "name": "CERES CAICO - MUSEU DO SERIDO",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1639.00237.500-0"
+  },
+  {
+    "id": "1639.00246.500-0-001",
+    "name": "CERES CAICO - ESTACAO SISMOGRAFICA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1639.00246.500-0"
+  },
+  {
+    "id": "1639.00257.500-0-001",
+    "name": "CERES CAICO - HOSPITAL DE ONCOLOGIA DO SERIDO CURSO DE MEDICINA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1639.00257.500-0"
+  },
+  {
+    "id": "1661.00038.500-5-001",
+    "name": "CERES C. NOVOS - BLOCO DE SALAS DE AULA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1661.00038.500-5"
+  },
+  {
+    "id": "1661.00038.500-5-002",
+    "name": "CERES C. NOVOS - LABORATORIO DE LINGUA ESPANHOLA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1661.00038.500-5"
+  },
+  {
+    "id": "1661.00038.500-5-003",
+    "name": "CERES C. NOVOS - PAVILHAO ACADEMICO",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1661.00038.500-5"
+  },
+  {
+    "id": "1661.00038.500-5-004",
+    "name": "CERES C. NOVOS - ANTIGA TURAE  SEDIS",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1661.00038.500-5"
+  },
+  {
+    "id": "1661.00038.500-5-005",
+    "name": "CERES C. NOVOS - BIBLIOTECA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1661.00038.500-5"
+  },
+  {
+    "id": "1661.00038.500-5-006",
+    "name": "CERES C. NOVOS - RESIDENCIA UNIVERSITARIA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1661.00038.500-5"
+  },
+  {
+    "id": "1661.00038.500-5-007",
+    "name": "CERES C. NOVOS - SALAS DE AULA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1661.00038.500-5"
+  },
+  {
+    "id": "1661.00038.500-5-008",
+    "name": "CERES C. NOVOS - INFRAESTRUTURA DE REDE DE AGUA E ESGOTO",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1661.00038.500-5"
+  },
+  {
+    "id": "1661.00038.500-5-009",
+    "name": "CERES C. NOVOS - INFRAESTRUTURA DE REDE DE ENERGIA ELETRICA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1661.00038.500-5"
+  },
+  {
+    "id": "1661.00038.500-5-010",
+    "name": "CERES C. NOVOS - INFRAESTRUTURA DE REDE DE TELECOMUNICACOES",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1661.00038.500-5"
+  },
+  {
+    "id": "1671.00002.500-6-001",
+    "name": "CB - CENTRO TECNOLOGICO DE AQUICULTURA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1671.00002.500-6"
+  },
+  {
+    "id": "1741.00016.500-0-001",
+    "name": "ESCOLA LIGIA LAPORTA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-0"
+  },
+  {
+    "id": "1741.00016.500-0-002",
+    "name": "CENTRO DE PESQUISA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-0"
+  },
+  {
+    "id": "1741.00016.500-0-003",
+    "name": "INFRAESTRUTURA DE REDE DE ENERGIA ELETRICA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-0"
+  },
+  {
+    "id": "1741.00016.500-0-004",
+    "name": "INFRAESTRUTURA DE REDE DE AGUA E ESGOTO",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-0"
+  },
+  {
+    "id": "1741.00016.500-0-005",
+    "name": "INFRAESTRUTURA DE REDE DE TELECOMUNICACOES",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-0"
+  },
+  {
+    "id": "1741.00016.500-7-001",
+    "name": "EAJ - ADMINISTRACAO",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-002",
+    "name": "EAJ - ALMOXARIFADO",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-003",
+    "name": "EAJ - COORDENACAO DE PESSOAL",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-004",
+    "name": "EAJ - OFICINA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-005",
+    "name": "EAJ - ALOJAMENTO FEMININO",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-006",
+    "name": "EAJ - DEPARTAMENTO DE EDUCACAO FISICA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-007",
+    "name": "EAJ - ALOJAMENTO MASCULINO I",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-008",
+    "name": "EAJ - ALOJAMENTO MASCULINO II",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-009",
+    "name": "EAJ - ALOJAMENTO MASCULINO III",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-010",
+    "name": "EAJ - ALOJAMENTO MASCULINO IV",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-011",
+    "name": "EAJ - ALOJAMENTO SEMI-INTERNATO",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-012",
+    "name": "EAJ - BIBLIOTECA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-013",
+    "name": "EAJ - BLOCO DE AULAS DA AVICULTURA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-014",
+    "name": "EAJ - HARDEND SALA DE RADIO",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-015",
+    "name": "EAJ - BLOCO DE AULAS DO CURSO TECNICO EM AGROPECUARIA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-016",
+    "name": "EAJ - BLOCO DE AULAS DO CURSO TECNICO EM AQUICULTURA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-017",
+    "name": "EAJ - COORDENACAO DO CURSO TECNICO EM AQUICULTURA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-018",
+    "name": "EAJ - BLOCO DE AULAS DO CURSO TECNICO EM INFORMATICA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-019",
+    "name": "EAJ - COORDENACAO DO CURSO TECNICO EM INFORMATICA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-020",
+    "name": "EAJ - BLOCO DE AULAS DO MODULO VEGETAL AGROINDUSTRIA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-021",
+    "name": "EAJ - BLOCO DE AULAS DOS CURSOS DE GRADUACAO",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-022",
+    "name": "EAJ - BLOCO DE AULAS DOS CURSOS DE POS-GRADUACAO",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-023",
+    "name": "EAJ - COORDENACAO DOS CURSOS DE POS-GRADUACAO",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-024",
+    "name": "EAJ - BLOCO DE SALAS DE PROFESSORES DE FRUTICULTURA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-025",
+    "name": "EAJ - BLOCO DE SALAS DE PROFESSORES DOS CURSOS DE GRADUACAO",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-026",
+    "name": "EAJ - COORDENACAO DOS CURSOS DE GRADUACAO",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-027",
+    "name": "EAJ - BLOCO DE AULAS DE ENSINO MEDIO",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-028",
+    "name": "EAJ - COORDENACAO DE ENSINO MEDIO",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-029",
+    "name": "EAJ - REFEITORIO",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-030",
+    "name": "EAJ - BOVINOCULTURA DE LEITE ESTABULO",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-031",
+    "name": "EAJ - CANTINA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-032",
+    "name": "EAJ - CASA DE VEGETACAO",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-033",
+    "name": "EAJ - CONTROLE DE TREINAMENTO NEUROCIENCIAS",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-034",
+    "name": "EAJ - CENTRO VOCACIONAL TECNOLOGICO CVT",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-035",
+    "name": "EAJ - COORDENACAO DOS CURSOS TECNICOS EM AGROPECUARIA E AGROINDUSTRIA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-036",
+    "name": "EAJ - CUNICULTURA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-037",
+    "name": "EAJ - DEPOSITO DE MATERIAL DE CAMPO MATADOURO",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-038",
+    "name": "EAJ - DEPOSITO DE RACAO DA AVICULTURA CASA DA RACAO",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-039",
+    "name": "EAJ - DEPOSITO DE VIVEIROS",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-040",
+    "name": "EAJ - DIRETORIA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-041",
+    "name": "EAJ - ESTACAO DE PISCICULTURA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-042",
+    "name": "EAJ - GALPAO CORDONA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-043",
+    "name": "EAJ - GALPAO DE AVICULTURA AVIARIO GALPAO DE GALINHAS CAIPIRAS",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-044",
+    "name": "EAJ - GALPAO DE AVICULTURA II GALPAO DAS CORDONAS",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-045",
+    "name": "EAJ - GALPAO DO LABORATORIO DE COMPOSTAGEM",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-046",
+    "name": "EAJ - GRUPO DE ESTUDOS EM FORRAGICULTURA GEFOR",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-047",
+    "name": "EAJ - GINASIO POLIESPORTIVO",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-048",
+    "name": "EAJ - LABORATORIO DA ESTACAO DE PISCICULTURA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-049",
+    "name": "EAJ - LABORATORIO DE ALIMENTOS DA AGROINDUSTRIA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-050",
+    "name": "EAJ - LABORATORIO DE COMPOSTAGEM",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-051",
+    "name": "EAJ - LABORATORIO DE OLERICULTURA LABORATORIO DA HORTA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-052",
+    "name": "EAJ - LABORATORIO DE TOPOGRAFIA PREDIOS DOS TECNICOS AGRICOLA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-053",
+    "name": "EAJ - LABORATORIO DO CURSO DE ENGENHARIA FLORESTAL",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-054",
+    "name": "EAJ - CAPELA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-055",
+    "name": "EAJ - LABORATORIO DE APICULTURA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-056",
+    "name": "EAJ - LABORATORIO DE PESQUISA DE ANALISE DE SEMENTES",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-057",
+    "name": "EAJ - OVINOCULTURA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-058",
+    "name": "EAJ - PADARIA  COOPERATIVA COOPEAJ",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-059",
+    "name": "EAJ - PLACARIO",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-060",
+    "name": "EAJ - PORTICO DE ENTRADA PORTARIA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-061",
+    "name": "EAJ - RESIDENCIAS RUINHA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-062",
+    "name": "EAJ - RESTAURANTE UNIVERSITARIO",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-063",
+    "name": "EAJ - SECRETARIA ESCOLAR",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-064",
+    "name": "EAJ - SEDE DOS FUNCIONARIOS ALOJAMENTO DOS VIGILANTES",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-065",
+    "name": "EAJ - SUINOCULTURA AULAS PRATICAS POCILGA I",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-066",
+    "name": "EAJ - SUINOCULTURA GALPAO DE PESQUISA POCILGA II",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-067",
+    "name": "EAJ - UNIDADE DE ATENDIMENTO AO EDUCANDO UAE",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-068",
+    "name": "EAJ - UNIDADE DE BENEFICIAMENTO DE SEMENTES UBS",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-069",
+    "name": "EAJ - UNIDADE DE EXTRACAO DE PRODUTOS APICOLAS UEPA - CASA DO MEL",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-070",
+    "name": "EAJ - UNIDADE DE PROCESSAMENTO DE LATICINIOS",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-071",
+    "name": "EAJ - UNIDADE DE PROCESSAMENTO DE POLPA DE FRUTA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-072",
+    "name": "EAJ - VESTUARIOS DE FUNCIONARIOS TERCEIRIZADOS",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-073",
+    "name": "EAJ - INFRAESTRUTURA DE REDE DE AGUA E ESGOTO",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-074",
+    "name": "EAJ - INFRAESTRUTURA DE REDE DE ENERGIA ELETRICA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-075",
+    "name": "EAJ - INFRAESTRUTURA DE REDE DE TELECOMUNICACOES",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-076",
+    "name": "EAJ - GIGAPOP MACAIBA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1741.00016.500-7-077",
+    "name": "EAJ - RESIDENCIA UNIVERSITARIA DE JUNDIAI",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1741.00016.500-7"
+  },
+  {
+    "id": "1743.00010.500-0-001",
+    "name": "CAMPUS PROFESSOR BENITO MAIA BARROS - POLO UAB MACAU",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1743.00010.500-0"
+  },
+  {
+    "id": "1743.00010.500-0-002",
+    "name": "INFRAESTRUTURA DE REDE DE AGUA E ESGOTO",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1743.00010.500-0"
+  },
+  {
+    "id": "1743.00010.500-0-003",
+    "name": "INFRAESTRUTURA DE REDE DE ENERGIA ELETRICA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1743.00010.500-0"
+  },
+  {
+    "id": "1743.00010.500-0-004",
+    "name": "INFRAESTRUTURA DE REDE DE TELECOMUNICACOES",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1743.00010.500-0"
+  },
+  {
+    "id": "1743.00010.500-0-005",
+    "name": "CAMPUS PROFESSOR BENITO MAIA BARROS - ALOJAMENTO",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1743.00010.500-0"
+  },
+  {
+    "id": "1743.00010.500-0-006",
+    "name": "CAMPUS PROFESSOR BENITO MAIA BARROS - ABRIGO DA CASA DE FORCA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1743.00010.500-0"
+  },
+  {
+    "id": "1761.00303.500-1-001",
+    "name": "ADM. CENTRAL - RESIDENCIA UNIVERSITARIA - PRACA PEDRO VELHO",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00303.500-1"
+  },
+  {
+    "id": "1761.00304.500-7-001",
+    "name": "ANTIGA ESCOLA DE SERVICO SOCIAL ATUAL CAMARA MUNICIPAL DE NATAL",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00304.500-7"
+  },
+  {
+    "id": "1761.00307.500-3-001",
+    "name": "CCS - DEPARTAMENTO DE PEDIATRIA  DEPARTAMENTO DE TOCO-GINECOLOGIA  LABORATORIO DE HABILIDADES",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00307.500-3"
+  },
+  {
+    "id": "1761.00309.500-4-001",
+    "name": "MCC - SETOR EXPOSITIVO EXPOSICOES",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00309.500-4"
+  },
+  {
+    "id": "1761.00309.500-4-002",
+    "name": "MCC - SETOR EXPOSITIVO GUARITA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00309.500-4"
+  },
+  {
+    "id": "1761.00309.500-4-003",
+    "name": "MCC - PAVILHAO ADMINISTRATIVO LABORATORIAL E RESERVAS TECNICAS",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00309.500-4"
+  },
+  {
+    "id": "1761.00309.500-4-004",
+    "name": "MCC - SALA DE QUIMICA NEC - PROJETO PARQUE DA CIENCIA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00309.500-4"
+  },
+  {
+    "id": "1761.00309.500-4-005",
+    "name": "MCC - SALA DE FISICA NEC - PROJETO PARQUE DA CIENCIA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00309.500-4"
+  },
+  {
+    "id": "1761.00309.500-4-006",
+    "name": "MCC - SALA DE BIOLOGIA NEC - PROJETO PARQUE DA CIENCIA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00309.500-4"
+  },
+  {
+    "id": "1761.00310.500-0-001",
+    "name": "NHH - NUCLEO DE HEMATOLOGIA E HEMOTERAPIA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00310.500-0"
+  },
+  {
+    "id": "1761.00311.500-5-001",
+    "name": "CCS - DEPARTAMENTO DE ODONTOLOGIA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00311.500-5"
+  },
+  {
+    "id": "1761.00352.500-9-001",
+    "name": "ANTIGO GRUPO ESCOLAR AUGUSTO SEVERO",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00352.500-9"
+  },
+  {
+    "id": "1761.00359.500-7-001",
+    "name": "ADM. CENTRAL - RESIDENCIA UNIVERSITARIA BIOMEDICA - CASA 04",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00359.500-7"
+  },
+  {
+    "id": "1761.00359.500-7-002",
+    "name": "ADM. CENTRAL - RESIDENCIA UNIVERSITARIA BIOMEDICA - CASA 6",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00359.500-7"
+  },
+  {
+    "id": "1761.00359.500-7-003",
+    "name": "ADM. CENTRAL - RESIDENCIA UNIVERSITARIA BIOMEDICA - CASA 8",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00359.500-7"
+  },
+  {
+    "id": "1761.00359.500-7-004",
+    "name": "ADM. CENTRAL - RESIDENCIA UNIVERSITARIA BIOMEDICA - CASA 10",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00359.500-7"
+  },
+  {
+    "id": "1761.00359.500-7-005",
+    "name": "ADM. CENTRAL - RESIDENCIA UNIVERSITARIA BIOMEDICA - CASA 12",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00359.500-7"
+  },
+  {
+    "id": "1761.00359.500-7-006",
+    "name": "ADM. CENTRAL - RESIDENCIA UNIVERSITARIA BIOMEDICA - CASA 14",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00359.500-7"
+  },
+  {
+    "id": "1761.00359.500-7-007",
+    "name": "ADM. CENTRAL - RESIDENCIA UNIVERSITARIA BIOMEDICA - CASA 16",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00359.500-7"
+  },
+  {
+    "id": "1761.00359.500-7-008",
+    "name": "ADM. CENTRAL - RESIDENCIA UNIVERSITARIA BIOMEDICA - CASA 18",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00359.500-7"
+  },
+  {
+    "id": "1761.00359.500-7-009",
+    "name": "ADM. CENTRAL - RESIDENCIA UNIVERSITARIA BIOMEDICA - CASA 20",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00359.500-7"
+  },
+  {
+    "id": "1761.00359.500-7-010",
+    "name": "ADM. CENTRAL - RESIDENCIA UNIVERSITARIA BIOMEDICA - CASA 22",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00359.500-7"
+  },
+  {
+    "id": "1761.00359.500-7-011",
+    "name": "ADM. CENTRAL - RESIDENCIA UNIVERSITARIA BIOMEDICA - CASA 24",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00359.500-7"
+  },
+  {
+    "id": "1761.00359.500-7-012",
+    "name": "ADM. CENTRAL - RESIDENCIA UNIVERSITARIA BIOMEDICA - CASA 26",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00359.500-7"
+  },
+  {
+    "id": "1761.00359.500-7-013",
+    "name": "ADM. CENTRAL - RESIDENCIA UNIVERSITARIA BIOMEDICA - CASA 28",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00359.500-7"
+  },
+  {
+    "id": "1761.00359.500-7-014",
+    "name": "ADM. CENTRAL - RESIDENCIA UNIVERSITARIA BIOMEDICA - CASA 30",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00359.500-7"
+  },
+  {
+    "id": "1761.00359.500-7-015",
+    "name": "ADM. CENTRAL - RESIDENCIA UNIVERSITARIA BIOMEDICA - CASA 32",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00359.500-7"
+  },
+  {
+    "id": "1761.00359.500-7-016",
+    "name": "ADM. CENTRAL - RESIDENCIA UNIVERSITARIA BIOMEDICA - GUARITA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00359.500-7"
+  },
+  {
+    "id": "1761.00359.500-7-017",
+    "name": "ADM. CENTRAL - RESIDENCIA UNIVERSITARIA BIOMEDICA - INFRAESTRUTURA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00359.500-7"
+  },
+  {
+    "id": "1761.00360.500-2-001",
+    "name": "CB - DEPARTAMENTO DE OCEANOGRAFIA E LIMNOLOGIA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00360.500-2"
+  },
+  {
+    "id": "1761.00378.500-0-001",
+    "name": "ADM. CENTRAL - RESIDENCIA UNIVERSITARIA MIPIBU - MASCULINA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00378.500-0"
+  },
+  {
+    "id": "1761.00378.500-0-002",
+    "name": "ADM. CENTRAL - RESIDENCIA UNIVERSITARIA MIPIBU - POS-GRADUACAO",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00378.500-0"
+  },
+  {
+    "id": "1761.00394.500-8-001",
+    "name": "ADM. CENTRAL - REFEITORIO DA BIOMEDICA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00394.500-8"
+  },
+  {
+    "id": "1761.00394.500-8-002",
+    "name": "CE - CRECHE DO NEI",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00394.500-8"
+  },
+  {
+    "id": "1761.00394.500-8-003",
+    "name": "CCS - PAVILHAO ADMINISTRATIVO",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00394.500-8"
+  },
+  {
+    "id": "1761.00394.500-8-004",
+    "name": "CCS - DEPTO. ANALISES CLINICAS E TOXICOLOGICAS  DEPTO. FARMACIA FACULDADE DE FARMACIA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00394.500-8"
+  },
+  {
+    "id": "1761.00394.500-8-005",
+    "name": "CCS - DEPARTAMENTO DE MEDICINA INTEGRADA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00394.500-8"
+  },
+  {
+    "id": "1761.00394.500-8-006",
+    "name": "CCS - DEPARTAMENTO DE FONOAUDIOLOGIA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00394.500-8"
+  },
+  {
+    "id": "1761.00394.500-8-007",
+    "name": "CCS - DEPARTAMENTO DE PATOLOGIA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00394.500-8"
+  },
+  {
+    "id": "1761.00394.500-8-008",
+    "name": "CCS - DEPARTAMENTO DE CIRURGIA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00394.500-8"
+  },
+  {
+    "id": "1761.00394.500-8-009",
+    "name": "CCS - DEPARTAMENTO DE MEDICINA CLINICA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00394.500-8"
+  },
+  {
+    "id": "1761.00394.500-8-010",
+    "name": "HUOL - PAVILHAO ADMINISTRATIVO",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00394.500-8"
+  },
+  {
+    "id": "1761.00394.500-8-011",
+    "name": "HUOL - PREDIO AMBULATORIAL",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00394.500-8"
+  },
+  {
+    "id": "1761.00394.500-8-012",
+    "name": "HUOL - EDIFICIO CENTRAL DE INTERNACAO - ECI",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00394.500-8"
+  },
+  {
+    "id": "1761.00394.500-8-013",
+    "name": "HUOL - CENTRO DE DIAGNOSTICO POR IMAGEM - CDI",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00394.500-8"
+  },
+  {
+    "id": "1761.00395.500-3-001",
+    "name": "ANTIGA FACULDADE DE FARMACIA E ODONTOLOGIA ATUAL SEMUT-NATALRN",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00395.500-3"
+  },
+  {
+    "id": "1761.00446.500-0-001",
+    "name": "ANTIGA ESCOLA INDUSTRIAL  ANTIGA TVU ATUAL IFRN - CAMPUS CIDADE ALTA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00446.500-0"
+  },
+  {
+    "id": "1761.00463.500-2-001",
+    "name": "ADM. CENTRAL - ESCOLA DE MUSICA EMUFRN",
+    "zone": "1",
+    "latitude": -5.837534,
+    "longitude": -35.206568,
+    "facilityComplexId": "1761.00463.500-2"
+  },
+  {
+    "id": "1761.00463.500-2-002",
+    "name": "CE - NUCLEO DE EDUCACAO INFANTIL NEI",
+    "zone": "1",
+    "latitude": -5.837163,
+    "longitude": -35.206115,
+    "facilityComplexId": "1761.00463.500-2"
+  },
+  {
+    "id": "1761.00463.500-2-003",
+    "name": "ADM. CENTRAL - TEMPLO ECUMENICO CAPELA DO CAMPUS",
+    "zone": "1",
+    "latitude": -5.837207,
+    "longitude": -35.208561,
+    "facilityComplexId": "1761.00463.500-2"
+  },
+  {
+    "id": "1761.00463.500-2-004",
+    "name": "ADM. CENTRAL - PRACA DE EVENTOS PRACA CIVICA DO CAMPUS",
+    "zone": "1",
+    "latitude": -5.837602,
+    "longitude": -35.209995,
+    "facilityComplexId": "1761.00463.500-2"
+  },
+  {
+    "id": "1761.00463.500-2-005",
+    "name": "ADM. CENTRAL - DIRETORIA DE DESENVOLVIMENTO DE PESSOAS",
+    "zone": "1",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00463.500-2"
+  },
+  {
+    "id": "1761.00463.500-2-006",
+    "name": "ADM. CENTRAL - DIRETORIA DE ATENCAO A SAUDE DO SERVIDOR",
+    "zone": "1",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00463.500-2"
+  },
+  {
+    "id": "1761.00463.500-2-007",
+    "name": "ADM. CENTRAL - NUCELO PERMANENTE DE CONCURSOS - COMPERVE",
+    "zone": "1",
+    "latitude": -5.833911,
+    "longitude": -35.2116,
+    "facilityComplexId": "1761.00463.500-2"
+  },
+  {
+    "id": "1761.00463.500-2-008",
+    "name": "CCHLA - DEPARTAMENTO DE ARTES DEART",
+    "zone": "1",
+    "latitude": -5.835316,
+    "longitude": -35.211295,
+    "facilityComplexId": "1761.00463.500-2"
+  },
+  {
+    "id": "1761.00463.500-2-009",
+    "name": "CCHLA - ESTACAO CLIMATOLOGICA",
+    "zone": "1",
+    "latitude": -5.837543,
+    "longitude": -35.207965,
+    "facilityComplexId": "1761.00463.500-2"
+  },
+  {
+    "id": "1761.00463.500-2-010",
+    "name": "ADM. CENTRAL - DIVISAO DE TRANSPORTES E OFICINAS DTO",
+    "zone": "1",
+    "latitude": -5.834268,
+    "longitude": -35.211211,
+    "facilityComplexId": "1761.00463.500-2"
+  },
+  {
+    "id": "1761.00463.500-2-011",
+    "name": "ADM. CENTRAL - DIVISAO DE TRANSPORTES E OFICINAS DTO - GUARITA",
+    "zone": "1",
+    "latitude": -5.834975,
+    "longitude": -35.20996,
+    "facilityComplexId": "1761.00463.500-2"
+  },
+  {
+    "id": "1761.00463.500-2-012",
+    "name": "ADM. CENTRAL - DIVISAO DE TRANSPORTES E OFICINAS DTO - GARAGENS",
+    "zone": "1",
+    "latitude": -5.834105,
+    "longitude": -35.210753,
+    "facilityComplexId": "1761.00463.500-2"
+  },
+  {
+    "id": "1761.00463.500-2-013",
+    "name": "ADM. CENTRAL - DIVISAO DE TRANSPORTES E OFICINAS DTO - OFICINAS",
+    "zone": "1",
+    "latitude": -5.834257,
+    "longitude": -35.21064,
+    "facilityComplexId": "1761.00463.500-2"
+  },
+  {
+    "id": "1761.00463.500-2-014",
+    "name": "ADM. CENTRAL - FUNDACAO NORTERIOGRANDENSE DE PESQUISA E CULTURA FUNPEC",
+    "zone": "1",
+    "latitude": -5.834739,
+    "longitude": -35.211196,
+    "facilityComplexId": "1761.00463.500-2"
+  },
+  {
+    "id": "1761.00463.500-2-015",
+    "name": "ADM. CENTRAL - SUBESTACAO ELETRICA ABRIGADA SE101",
+    "zone": "1",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00463.500-2"
+  },
+  {
+    "id": "1761.00463.500-2-016",
+    "name": "CCSA - UNIDADE EDUCACIONAL INFANTIL UEI",
+    "zone": "1",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00463.500-2"
+  },
+  {
+    "id": "1761.00463.500-2-017",
+    "name": "ADM. CENTRAL - SEDIS - SECRETARIA DE EDUCACAO A DISTANCIA",
+    "zone": "1",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00463.500-2"
+  },
+  {
+    "id": "1761.00463.500-2-018",
+    "name": "INFRAESTRUTURA DE REDE DE AGUA E ESGOTO",
+    "zone": "1",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00463.500-2"
+  },
+  {
+    "id": "1761.00463.500-2-019",
+    "name": "INFRAESTRUTURA DE REDE DE ENERGIA ELETRICA",
+    "zone": "1",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00463.500-2"
+  },
+  {
+    "id": "1761.00463.500-2-020",
+    "name": "INFRAESTRUTURA DE REDE DE TELECOMUNICACOES",
+    "zone": "1",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00463.500-2"
+  },
+  {
+    "id": "1761.00463.500-2-021",
+    "name": "INFRAESTRUTURA DE REDE VIARIA",
+    "zone": "1",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00463.500-2"
+  },
+  {
+    "id": "1761.00464.500-8-001",
+    "name": "CB - SETOR DE AULAS",
+    "zone": "2",
+    "latitude": -5.84186,
+    "longitude": -35.201784,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-002",
+    "name": "CB - BIOTERIO",
+    "zone": "2",
+    "latitude": -5.84307,
+    "longitude": -35.201827,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-003",
+    "name": "CB - LABORATORIO DE BIOLOGIA DE MICORRIZAS",
+    "zone": "2",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-004",
+    "name": "CB - NUCLEO DE PRIMATOLOGIA",
+    "zone": "2",
+    "latitude": -5.842875,
+    "longitude": -35.202363,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-005",
+    "name": "CB - LABORATORIO DE ENTOMOLOGIA",
+    "zone": "2",
+    "latitude": -5.842589,
+    "longitude": -35.202721,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-006",
+    "name": "CB - MUSEU DE CIENCIAS MORFOLOGICAS",
+    "zone": "2",
+    "latitude": -5.84182,
+    "longitude": -35.203021,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-007",
+    "name": "CB - INSTITUTO DE MEDICINA TROPICAL",
+    "zone": "2",
+    "latitude": -5.843231,
+    "longitude": -35.201846,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-008",
+    "name": "CB - LABORATORIO DE INVESTIGACAO DE MATRIZES VEGETAIS ENERGETICAS",
+    "zone": "2",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-009",
+    "name": "CCS - DEPARTAMENTO DE NUTRICAO  DEPARTAMENTO DE SAUDE COLETIVA",
+    "zone": "5",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-010",
+    "name": "ADM. CENTRAL - EDITORA UNIVERSITARIA",
+    "zone": "2",
+    "latitude": -5.838318,
+    "longitude": -35.204293,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-011",
+    "name": "CB - SUBESTACAO ELETRICA",
+    "zone": "2",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-012",
+    "name": "ECT - ESCOLA DE CIENCIA E TECNOLOGIA",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-013",
+    "name": "CT - PAVILHAO ADMINISTRATIVO",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-014",
+    "name": "CT - NTI - NUCLEO DE TECNOLOGIA INDUSTRIAL",
+    "zone": "3",
+    "latitude": -5.842617,
+    "longitude": -35.196423,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-015",
+    "name": "CT - SETOR DE AULAS IV",
+    "zone": "3",
+    "latitude": -5.842438,
+    "longitude": -35.199783,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-016",
+    "name": "CT - DARQ - LABORATORIOS DE ARQUITETURA",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-017",
+    "name": "CT - LARHISA - LABORATORIO DE RECURSOS HIDRICO E SANEAMENTO AMBIENTAL",
+    "zone": "3",
+    "latitude": -5.842378,
+    "longitude": -35.198099,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-018",
+    "name": "CT - LANCHONETE DO SETOR DE AULAS IV",
+    "zone": "3",
+    "latitude": -5.841805,
+    "longitude": -35.20019,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-019",
+    "name": "CT - OCA - ORGANIZACAO DOS CENTROS ACADEMICOS",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-020",
+    "name": "CT - CASA DE MAQUINAS",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-021",
+    "name": "CCHLA - PAVILHAO ADMINISTRATIVO",
+    "zone": "4",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-022",
+    "name": "CCHLA - SETOR DE AULAS II",
+    "zone": "4",
+    "latitude": -5.840483,
+    "longitude": -35.197123,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-023",
+    "name": "CCHLA - LABORATORIO DE PSICOLOGIA",
+    "zone": "4",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-024",
+    "name": "CCHLA - LABORATORIO DE COMUNICACAO LABCOM",
+    "zone": "4",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-025",
+    "name": "CCHLA - SEPA",
+    "zone": "4",
+    "latitude": -5.838599,
+    "longitude": -35.198682,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-026",
+    "name": "ADM. CENTRAL - DMP - SETOR DE PATRIMONIO MOVEL",
+    "zone": "2",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-027",
+    "name": "ADM. CENTRAL - DMP - ALMOXARIFADO CENTRAL",
+    "zone": "2",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-028",
+    "name": "CCSA - PAVILHAO ADMINISTRATIVO",
+    "zone": "4",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-029",
+    "name": "CCSA - NUCLEO DE PESQUISA EM CIENCIAS SOCIAIS NEPSA I",
+    "zone": "4",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-030",
+    "name": "CCSA - NUCLEO DE PESQUISA EM CIENCIAS SOCIAIS NEPSA II",
+    "zone": "4",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-031",
+    "name": "CCSA - SETOR DE AULAS I",
+    "zone": "4",
+    "latitude": -5.837524,
+    "longitude": -35.199568,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-032",
+    "name": "CCSA - SETOR DE AULAS V",
+    "zone": "4",
+    "latitude": -5.838457,
+    "longitude": -35.197461,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-033",
+    "name": "EEN - ESCOLA DE ENFERMAGEM DE NATAL  CCS - DEPARTAMENTO DE ENFERMAGEM",
+    "zone": "5",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-034",
+    "name": "EEN - ESCOLA DE ENFERMAGEM DE NATAL ANEXO I",
+    "zone": "5",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-035",
+    "name": "EEN - ESCOLA DE ENFERMAGEM DE NATAL ANEXO II",
+    "zone": "5",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-036",
+    "name": "CCS - DEPARTAMENTO DE FISIOTERAPIA",
+    "zone": "5",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-037",
+    "name": "ADM. CENTRAL - DMP - DIRETORIA DE MATERIAL E PATRIMONIO",
+    "zone": "2",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-038",
+    "name": "ADM. CENTRAL - DMP - SETOR DE LICITACOES",
+    "zone": "2",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-039",
+    "name": "ADM. CENTRAL - RESIDENCIA UNIVERSITARIA - COMPLEXO CAMPUS I",
+    "zone": "5",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-040",
+    "name": "ADM. CENTRAL - RESIDENCIA UNIVERSITARIA - COMPLEXO CAMPUS II",
+    "zone": "5",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-041",
+    "name": "ADM. CENTRAL - RESIDENCIA UNIVERSITARIA - COMPLEXO CAMPUS III",
+    "zone": "5",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-042",
+    "name": "ADM. CENTRAL - RESIDENCIA UNIVERSITARIA - COMPLEXO CAMPUS IV",
+    "zone": "5",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-043",
+    "name": "ADM. CENTRAL - REITORIA",
+    "zone": "C",
+    "latitude": -5.839832,
+    "longitude": -35.201809,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-044",
+    "name": "ADM. CENTRAL - CENTRO DE CONVIVENCIAS DJALMA MARINHO",
+    "zone": "C",
+    "latitude": -5.839293,
+    "longitude": -35.200157,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-045",
+    "name": "ADM. CENTRAL - BIBLIOTECA CENTRAL ZILA MAMEDE BCZM",
+    "zone": "C",
+    "latitude": -5.839787,
+    "longitude": -35.199067,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-046",
+    "name": "ADM. CENTRAL - DAD - DIVISAO DE ATIVIDADES DESPORTIVAS",
+    "zone": "5",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-047",
+    "name": "ADM. CENTRAL - DAD - GINASIO POLIESPORTIVO I",
+    "zone": "5",
+    "latitude": -5.83522,
+    "longitude": -35.202309,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-048",
+    "name": "ADM. CENTRAL - DAD - PARQUE AQUATICO",
+    "zone": "5",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-049",
+    "name": "ADM. CENTRAL - DAD - PARQUE AQUATICO - VESTUARIOARQUIBANCADA",
+    "zone": "5",
+    "latitude": -5.834365,
+    "longitude": -35.201847,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-050",
+    "name": "ADM. CENTRAL - DAD - PARQUE AQUATICO - PISCINA OLIMPICA",
+    "zone": "5",
+    "latitude": -5.834415,
+    "longitude": -35.201616,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-051",
+    "name": "ADM. CENTRAL - DAD - PARQUE AQUATICO - CASA DE BOMBAS",
+    "zone": "5",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-052",
+    "name": "ADM. CENTRAL - DAD - PARQUE AQUATICO - APOIO PISCINA SEMIOLIMPICAS",
+    "zone": "5",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-053",
+    "name": "ADM. CENTRAL - DAD - PARQUE AQUATICO - PISCINA SEMIOLIMPICA 01",
+    "zone": "5",
+    "latitude": -5.834793,
+    "longitude": -35.201073,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-054",
+    "name": "ADM. CENTRAL - DAD - PARQUE AQUATICO - PISCINA SEMIOLIMPICA 02",
+    "zone": "5",
+    "latitude": -5.8348,
+    "longitude": -35.200869,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-055",
+    "name": "ADM. CENTRAL - DAD - PARQUE AQUATICO - TANQUE DE REMO",
+    "zone": "5",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-056",
+    "name": "ADM. CENTRAL - DAD - PARQUE AQUATICO - CASA DE MAQUINAS PISCINA 02",
+    "zone": "5",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-057",
+    "name": "CCET - NUCLEO DE PROCESSAMENTO PRIMARIO E REUSO DE AGUAS RENOVAVEIS",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-058",
+    "name": "ADM. CENTRAL - DAD - PARQUE OLIMPICO",
+    "zone": "5",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-059",
+    "name": "ADM. CENTRAL - DAD - GINASIO POLIESPORTIVO II",
+    "zone": "5",
+    "latitude": -5.835954,
+    "longitude": -35.199344,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-060",
+    "name": "ADM. CENTRAL - NUPLAM - NUCLEO DE PESQUISA EM ALIMENTOS E MEDICAMENTOS",
+    "zone": "2",
+    "latitude": -5.840136,
+    "longitude": -35.20338,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-061",
+    "name": "ADM. CENTRAL - SIN - SUPERINTENDENCIA DE INFRAESTRUTURA - CENTRAL MAT.",
+    "zone": "2",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-062",
+    "name": "ADM. CENTRAL - DIRETORIA DE GESTAO DA INFORMACAO - ARQUIVO GERAL",
+    "zone": "2",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-063",
+    "name": "ADM. CENTRAL - IMD - INSTITUTO METROPOLE DIGITAL",
+    "zone": "5",
+    "latitude": -5.832157,
+    "longitude": -35.205306,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-064",
+    "name": "ADM. CENTRAL - DSP - DIRETORIA DE SEGURANCA PATRIMONIAL",
+    "zone": "2",
+    "latitude": -5.837736,
+    "longitude": -35.204155,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-065",
+    "name": "CB - MUSEU DE ANATOMIA COMPARATIVA",
+    "zone": "C",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-066",
+    "name": "ADM. CENTRAL - ALMOXARIFADO DE GASES INFLAMAVEIS",
+    "zone": "2",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-067",
+    "name": "CB - DEPOSITO DE RESIDUOS RADIOATIVOS",
+    "zone": "2",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-068",
+    "name": "ADM. CENTRAL - SIN - RESERVATORIO ELEVADO RE201",
+    "zone": "2",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-069",
+    "name": "ADM. CENTRAL - SIN - SUBESTACAO ELETRICA ABRIGADA SE201",
+    "zone": "2",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-070",
+    "name": "CB - CASA DE VEGETACAO DESATIVADA I",
+    "zone": "2",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-071",
+    "name": "CB - CASA DE VEGETACAO DESATIVADA II",
+    "zone": "2",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-072",
+    "name": "CCET - SETOR DE AULAS TEORICAS III",
+    "zone": "3",
+    "latitude": -5.841088,
+    "longitude": -35.200363,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-073",
+    "name": "CCET - IQ - LABORATORIO DE RESSONANCIA MAGNETICA",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-074",
+    "name": "CCET - NUCLEO DE APOIO A PESQUISA EM PETROLEO E GAS NATURAL",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-075",
+    "name": "CCET - IQ - LABORATORIO I DE QUIMICA",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-076",
+    "name": "CCET - ANFITEATROS",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-077",
+    "name": "CCET - IQ - LABORATORIO CENTRAL DE ESTUDOS DO PETROLEO",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-078",
+    "name": "CCET - IQ - LABORATORIO II DE QUIMICA",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-079",
+    "name": "CCET - PAVILHAO ADMINISTRATIVO",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-080",
+    "name": "CT - NUPEG II - NUCLEO DE PESQUISA EM PETROLEO E GAS",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-081",
+    "name": "CT - DARQ - LABSEC - ESTOCAGEM DE MATERIAL DO LABORATORIO DE SISTEMAS ESTRUTURAS E CONSTRUTIVOS",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-082",
+    "name": "CCET - DFTE - LABORATORIO I DE FISICA",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-083",
+    "name": "CCET - DFTE - OFICINAS DO DEPARTAMENTO DE FISICA",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-084",
+    "name": "CCET - DEPARTAMENTO DE FISICA",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-085",
+    "name": "CCET - DFTE - LABORATORIO II DE FISICA",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-086",
+    "name": "CCET - DGEF - ESTACAO DE RASTREAMENTO",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-087",
+    "name": "CCET - DG - LABORATORIO DE GEOFISICA E GEOLOGIA DO PETROLEO I",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-088",
+    "name": "CCET - DG - LABORATORIO DE GEOQUIMICA",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-089",
+    "name": "CCET - DG - LABORATORIOS DE GEOLOGIA I",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-090",
+    "name": "CT - NUPEG I - NUCLEO DE PESQUISA EM PETROLEO E GAS",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-091",
+    "name": "CT - LABORATORIO DE ANALISES DE PETROLEO",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-092",
+    "name": "CT - LAMP - LABORATORIO DE AVALIACAO DE MEDICAO EM PETROLEO",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-093",
+    "name": "CCET - DGEF - LABORATORIO DE GEOFISICA APLICADA",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-094",
+    "name": "CT - NTI - LAMTRECATRE - LAB MONIT TRAT REUSO DE RESIDUOS IND PETROLEOLAB CENTRAL TRAT RESIDUOS",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-095",
+    "name": "ADM. CENTRAL - SIN - RESERVATORIO ELEVADO RE301",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-096",
+    "name": "ADM. CENTRAL - CANTINA",
+    "zone": "3",
+    "latitude": -5.841785,
+    "longitude": -35.200224,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-097",
+    "name": "ADM. CENTRAL - SIN - SUBESTACAO ELETRICA ABRIGADA SE301",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-098",
+    "name": "CT - NTI-LEAFT-LAB ENG ALTERNATIVAS E FENOMENOS TRANSPLAB MAT NANOESTRUTURADOS E REATORES CATALITICOS",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-099",
+    "name": "ADM. CENTRAL - SIN - SUBESTACAO ELETRICA ABRIGADA SE302",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-100",
+    "name": "ADM. CENTRAL - SIN - SUBESTACAO ELETRICA ABRIGADA SE303",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-101",
+    "name": "ADM. CENTRAL - DEPARTAMENTO DE INFORMATICA APLICADA DIMAP",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-102",
+    "name": "ADM. CENTRAL - SUPERINTENDENCIA DE INFORMATICA SINFO",
+    "zone": "3",
+    "latitude": -5.841488,
+    "longitude": -35.198626,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-103",
+    "name": "ADM. CENTRAL - SIN - RESERVATORIO ELEVADO RE302",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-104",
+    "name": "CT - NTI - LAI - LAB. ACESSIBILIDADE INTEGRADA  CT - PEC - PROG. POS-GRADUACAO EM ENGENHARIA CIVIL",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-105",
+    "name": "CT - LECA - LABORATORIO DE ENGENHARIA DA COMPUTACAO E AUTOMACAO",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-106",
+    "name": "CT - NTI - LABORATORIO DE ENGENHARIA DE ALIMENTOS",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-107",
+    "name": "ADM. CENTRAL - SIN - SUBESTACAO ELETRICA ABRIGADA SE304",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-108",
+    "name": "CT - NTI - LABTEX - LABORATORIO DE ENGENHARIA TEXTIL",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-109",
+    "name": "CT - LAUT - LABORATORIO DE AUTOMACAO EM PETROLEO",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-110",
+    "name": "ADM. CENTRAL - SUPERINTENDENCIA DE COMUNICACAO",
+    "zone": "4",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-111",
+    "name": "ADM. CENTRAL - SINDIMAN - DIRETORIA DE MANUTENCAO - MANUT. INSTALACOES TELEFONICAS",
+    "zone": "4",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-112",
+    "name": "ADM. CENTRAL - SIN - RESERVATORIO ELEVADO RE401",
+    "zone": "4",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-113",
+    "name": "CCSA - SETOR DE PRATICA FORENSE",
+    "zone": "4",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-114",
+    "name": "CCSA - CENTROS ACADEMICOS",
+    "zone": "4",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-115",
+    "name": "ADM. CENTRAL - SIN - SUBESTACAO ELETRICA ABRIGADA SE401A",
+    "zone": "4",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-116",
+    "name": "ADM. CENTRAL - SIN - SUBESTACAO ELETRICA ABRIGADA SE401B",
+    "zone": "4",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-117",
+    "name": "CCHLA - LABORATORIO DE ARQUEOLOGIA",
+    "zone": "4",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-118",
+    "name": "ADM. CENTRAL - DIRETORIO CENTRAL DOS ESTUDANTES DCE",
+    "zone": "4",
+    "latitude": -5.838095,
+    "longitude": -35.199926,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-119",
+    "name": "ADM. CENTRAL - CANTINA",
+    "zone": "4",
+    "latitude": -5.840916,
+    "longitude": -35.197716,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-120",
+    "name": "ADM. CENTRAL - SIN - SUBESTACAO ELETRICA ABRIGADA SE402",
+    "zone": "4",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-121",
+    "name": "ADM. CENTRAL - SIN - RESERVATORIO ELEVADO RE402",
+    "zone": "4",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-122",
+    "name": "ADM. CENTRAL - SIN - SUBESTACAO ELETRICA ABRIGADA SE403",
+    "zone": "4",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-123",
+    "name": "CCHLA - NUCLEO DE ESTUDOS EM POLITICAS PUBLICAS",
+    "zone": "4",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-124",
+    "name": "ADM. CENTRAL - CANTINA",
+    "zone": "4",
+    "latitude": -5.837975,
+    "longitude": -35.199311,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-125",
+    "name": "ADM. CENTRAL - SIN - RESERVATORIO ELEVADO RE403",
+    "zone": "4",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-126",
+    "name": "CCHLA - CENTROS ACADEMICOS",
+    "zone": "4",
+    "latitude": -5.839315,
+    "longitude": -35.198159,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-127",
+    "name": "ADM. CENTRAL - SEDE DA ADURN",
+    "zone": "4",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-128",
+    "name": "CCHLA - INSTITUTO AGORA",
+    "zone": "4",
+    "latitude": -5.840186,
+    "longitude": -35.197804,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-129",
+    "name": "ADM. CENTRAL - SIN - SUPERINTENDENCIA DE INFRAESTRUTURA",
+    "zone": "5",
+    "latitude": -5.834147,
+    "longitude": -35.203362,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-130",
+    "name": "ADM. CENTRAL - SINDIMAN - DIRETORIA DE MANUTENCAO - ADMINISTRACAO",
+    "zone": "5",
+    "latitude": -5.834506,
+    "longitude": -35.203738,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-131",
+    "name": "ADM. CENTRAL - SINDIMAN - DIRETORIA DE MANUTENCAO - ALOJAMENTO",
+    "zone": "5",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-132",
+    "name": "ADM. CENTRAL - SINDIMAN - DIRETORIA DE MANUTENCAO - CENTRAL DE MEDICAOELETRICA",
+    "zone": "5",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-133",
+    "name": "ADM. CENTRAL - SINDIMAN - DIRETORIA DE MANUTENCAO - MANUTECAO DE INSTALACOES",
+    "zone": "5",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-134",
+    "name": "ADM. CENTRAL - SIN - SUPERINTENDENCIA DE INFRAESTRUTURA - AREA DE PRODUCAO DE MUDAS",
+    "zone": "5",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-135",
+    "name": "ADM. CENTRAL - SIN - RESERVATORIO ELEVADO RE501",
+    "zone": "5",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-136",
+    "name": "ADM. CENTRAL - SIN - GALPAO DE COLETA SELETIVA",
+    "zone": "5",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-137",
+    "name": "ADM. CENTRAL - SINDSU - DEPOSITO DE EQUIPAMENTOS",
+    "zone": "5",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-138",
+    "name": "ADM. CENTRAL - SINDSU - DIVISAO DE SERVICOS URBANOS",
+    "zone": "5",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-139",
+    "name": "ADM. CENTRAL - DAD - NUCLEO DE YOGA",
+    "zone": "5",
+    "latitude": -5.834387,
+    "longitude": -35.201721,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-140",
+    "name": "ADM. CENTRAL - DAD - CAMPO DE VOLEY DE PRAIA",
+    "zone": "5",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-141",
+    "name": "ADM. CENTRAL - DAD - PISTA DE ATLETISMO",
+    "zone": "5",
+    "latitude": -5.836053,
+    "longitude": -35.200796,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-142",
+    "name": "ADM. CENTRAL - DAD - CAMPO DE FUTEBOL",
+    "zone": "5",
+    "latitude": -5.836123,
+    "longitude": -35.200731,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-143",
+    "name": "ADM. CENTRAL - DAD - QUADRA POLIESPORTIVA DESCOBERTA I",
+    "zone": "5",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-144",
+    "name": "ADM. CENTRAL - DAD - QUADRA POLIESPORTIVA DESCOBERTA II",
+    "zone": "5",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-145",
+    "name": "ADM. CENTRAL - DAD - CAMPO DE MINI-FUTEBOL",
+    "zone": "5",
+    "latitude": -5.83646,
+    "longitude": -35.199636,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-146",
+    "name": "ADM. CENTRAL - RESIDENCIA UNIVERSITARIA DE POS-GRADUACAO",
+    "zone": "5",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-147",
+    "name": "ADM. CENTRAL - SINETE - LABORATORIO DE ANALISE DE QDE. E ADM. ESTACAO DE TRAT. DE ESGOTO",
+    "zone": "5",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-148",
+    "name": "ADM. CENTRAL - SIN - VALO DE OXIDACAO VO",
+    "zone": "5",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-149",
+    "name": "ADM. CENTRAL - SIN - CASA DE BOMBAS MOTO-REDUTOR I",
+    "zone": "5",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-150",
+    "name": "ADM. CENTRAL - SIN - CASA DE BOMBAS MOTO-REDUTOR II",
+    "zone": "5",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-151",
+    "name": "CT - ETE - PROSAB - LABORATORIO DO PROGRAMA DE PESQUISA EM SANEAMENTO BASICO",
+    "zone": "5",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-152",
+    "name": "ADM. CENTRAL - SIN - ESTUFA HIDROPONIA",
+    "zone": "5",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-153",
+    "name": "ADM. CENTRAL - SIN - DECANTADOR SECUNDARIO",
+    "zone": "5",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-154",
+    "name": "ADM. CENTRAL - SIN - TANQUES DO PROSAB",
+    "zone": "5",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-155",
+    "name": "ADM. CENTRAL - SIN - TANQUES DE ARMAZENAMENTO DE IODO",
+    "zone": "5",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-156",
+    "name": "ADM. CENTRAL - SIN - SISTEMA DE CLORACAO",
+    "zone": "5",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-157",
+    "name": "ADM. CENTRAL - SIN - TANQUES DE ARMAZENAMENTO DE ESGOTO TRATADO",
+    "zone": "5",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-158",
+    "name": "ADM. CENTRAL - SIN - CASA DE BOMBAS DO ESGOTO TRATADO",
+    "zone": "5",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-159",
+    "name": "ADM. CENTRAL - SIN - TANQUES DE ARMAZ. ESGOTO BRUTO E ALOJAMENTO DOS OPERADORES",
+    "zone": "5",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-160",
+    "name": "ADM. CENTRAL - SIN - ABRIGO DO QUADRO GERAL DE DISTRIBUICAO DE ENERGIA",
+    "zone": "5",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-161",
+    "name": "CE - NTI-LIMELABMETROL-LAB INSTIT MICROSCOPIA ELETRONICA E CARACTERIZACAO DE MATERIAISLAB METROLOGIA",
+    "zone": "3",
+    "latitude": -5.842459,
+    "longitude": -35.196509,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-162",
+    "name": "CT - NPITI - NUCLEO DE PESQUISA E INOVACAO EM TECNOLOGIA DA INFORMACAO",
+    "zone": "3",
+    "latitude": -5.8429,
+    "longitude": -35.197506,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-163",
+    "name": "CT - LABORATORIOS DAS NOVAS ENGENHARIAS",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-164",
+    "name": "CCS - DEPARTAMENTO DE EDUCACAO FISICA",
+    "zone": "5",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-165",
+    "name": "ADM. CENTRAL - RESTAURANTE UNIVERSITARIO",
+    "zone": "5",
+    "latitude": -5.833354,
+    "longitude": -35.203893,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-166",
+    "name": "CE - CENTRO DE EDUCACAO",
+    "zone": "4",
+    "latitude": -5.83867,
+    "longitude": -35.196758,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-167",
+    "name": "CCET - DIMAP - DEPARTAMENTO DE INFORMATICA E MATEMATICA APLICADA",
+    "zone": "3",
+    "latitude": -5.841493,
+    "longitude": -35.198323,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-168",
+    "name": "CCET - DG - LABORATORIO DE GEOFISICA E GEOLOGIA DO PETROLEO II",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-169",
+    "name": "CCET - DG - LABORATORIOS DE GEOPROCESSAMENTO  GEOLOGIA E GEOFISICA",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-170",
+    "name": "CCET - DG - LABORATORIOS DE ANALISES ESTRATIGRAFICAS E INSTRUMENTACAO MARINHA",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-171",
+    "name": "CCET - IQ - LABORATORIO III DE QUIMICA",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-172",
+    "name": "CCET - IQ - LABORATORIO DE CIMENTOS",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-173",
+    "name": "INFRAESTRUTURA DE REDE DE AGUA E ESGOTO",
+    "zone": "C",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-174",
+    "name": "INFRAESTRUTURA DE REDE DE ENERGIA ELETRICA",
+    "zone": "C",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-175",
+    "name": "INFRAESTRUTURA DE REDE DE TELECOMUNICACOES",
+    "zone": "C",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-176",
+    "name": "CCET - LAPET - LABORATORIO DE PESQUISA EM PETROLEO",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-177",
+    "name": "CB - ADMINISTRACAO DO CENTRO DE BIOCIENCIAS",
+    "zone": "2",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-178",
+    "name": "ADM. CENTRAL - RESIDENCIA UNIVERSITARIA - COMPLEXO CAMPUS - INFRAESTRUTURA",
+    "zone": "5",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-179",
+    "name": "ADM. CENTRAL - INSTITUTO INTERNACIONAL DE FISICA",
+    "zone": "3",
+    "latitude": -5.84033,
+    "longitude": -35.195446,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-180",
+    "name": "ICE - INSTITUTO DO CEREBRO",
+    "zone": "5",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-181",
+    "name": "ADM. CENTRAL - SIN - UNIDADE DE TRATAMENTO DE RESIDUOS SOLIDOS",
+    "zone": "5",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-182",
+    "name": "INFRAESTRUTURA DE REDE VIARIA",
+    "zone": "C",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-183",
+    "name": "INFRAESTRUTURA DE REDE DE AGUA E ESGOTO",
+    "zone": "2",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-184",
+    "name": "INFRAESTRUTURA DE REDE DE ENERGIA ELETRICA",
+    "zone": "2",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-185",
+    "name": "INFRAESTRUTURA DE REDE DE TELECOMUNICACOES",
+    "zone": "2",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-186",
+    "name": "INFRAESTRUTURA DE REDE VIARIA",
+    "zone": "2",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-187",
+    "name": "INFRAESTRUTURA DE REDE DE AGUA E ESGOTO",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-188",
+    "name": "INFRAESTRUTURA DE REDE DE ENERGIA ELETRICA",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-189",
+    "name": "INFRAESTRUTURA DE REDE DE TELECOMUNICACOES",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-190",
+    "name": "INFRAESTRUTURA DE REDE VIARIA",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-191",
+    "name": "INFRAESTRUTURA DE REDE DE AGUA E ESGOTO",
+    "zone": "4",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-192",
+    "name": "INFRAESTRUTURA DE REDE DE ENERGIA ELETRICA",
+    "zone": "4",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-193",
+    "name": "INFRAESTRUTURA DE REDE DE TELECOMUNICACOES",
+    "zone": "4",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-194",
+    "name": "INFRAESTRUTURA DE REDE VIARIA",
+    "zone": "4",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-195",
+    "name": "INFRAESTRUTURA DE REDE DE AGUA E ESGOTO",
+    "zone": "5",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-196",
+    "name": "INFRAESTRUTURA DE REDE DE ENERGIA ELETRICA",
+    "zone": "5",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-197",
+    "name": "INFRAESTRUTURA DE REDE DE TELECOMUNICACOES",
+    "zone": "5",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-198",
+    "name": "INFRAESTRUTURA DE REDE VIARIA",
+    "zone": "5",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-199",
+    "name": "CTEC - COMPLEXO TECNOLOGICO DE ENGENHARIA -",
+    "zone": "3",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00464.500-8-200",
+    "name": "ADM. CENTRAL - REITORIA - CORREGEDORIA PROX. SALA COLEGIADOS SUPERIORES",
+    "zone": "C",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "1761.00465.500-3-001",
+    "name": "ESTACIONAMENTO",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00465.500-3"
+  },
+  {
+    "id": "1761.00553.500-1-001",
+    "name": "ANEXO DA SINFO - SUPERINTENDENCIA DE INFORMATICA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00553.500-1"
+  },
+  {
+    "id": "1761.00555.500-2-001",
+    "name": "LOCACAO - CRUTAC CIDADE JARDIM",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00555.500-2"
+  },
+  {
+    "id": "1761.00557.500-3-001",
+    "name": "LOCACAO - IMD ESCRITORIO TECNICO ADMINISTRATIVO",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00557.500-3"
+  },
+  {
+    "id": "1761.00559.500-4-001",
+    "name": "LOCACAO - RESIDENCIA UNIVERSITARIA - ANTONIO BARROS CAVALCANTI",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00559.500-4"
+  },
+  {
+    "id": "1761.00561.500-5-001",
+    "name": "LOCACAO - RESIDENCIA UNIVERSITARIA - GARDENIAS",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00561.500-5"
+  },
+  {
+    "id": "1761.00563.500-6-001",
+    "name": "LOCACAO - SECRETARIA DE ENSINO A DISTANCIA - SEDIS",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00563.500-6"
+  },
+  {
+    "id": "1761.00565.500-7-001",
+    "name": "LOCACAO - RESIDENCIA UNIVERSITARIA - VIOLETAS",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00565.500-7"
+  },
+  {
+    "id": "1761.00567.500-8-001",
+    "name": "LOCACAO - IMD - INSTITUTO METROPOLE DIGITAL",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00567.500-8"
+  },
+  {
+    "id": "1761.00569.500-9-001",
+    "name": "LOCACAO - BIOINFORMATICAIMD",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00569.500-9"
+  },
+  {
+    "id": "1761.00571.500-0-001",
+    "name": "RESIDENCIA UNIVERSITARIA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00571.500-0"
+  },
+  {
+    "id": "1761.00573.500-0-001",
+    "name": "LOCACAO - APEC SALAS PARA O CURSO DE NUTRICAO",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00573.500-0"
+  },
+  {
+    "id": "1761.00575.500-1-001",
+    "name": "LOCACAO - INSTITUTO DE NEUROCIENCIAS",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00575.500-1"
+  },
+  {
+    "id": "1761.00579.500-3-001",
+    "name": "LOCACAO - IMD - ESCRITORIO",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00579.500-3"
+  },
+  {
+    "id": "1761.00581.500-4-001",
+    "name": "CCS - DEPARTAMENTO DE INFECTOLOGIA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00581.500-4"
+  },
+  {
+    "id": "1761.00597.500-1-001",
+    "name": "LOCACAO - INSTITUTO DO CEREBRO",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00597.500-1"
+  },
+  {
+    "id": "1779.00077.500-7-001",
+    "name": "LOCACAO - DEPOSITO PARA MATERIAL PERMANENTE",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1779.00077.500-7"
+  },
+  {
+    "id": "1779.00080.500-3-001",
+    "name": "LOCACAO - DEPOSITO PARA MATERIAL PERMANENTE",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1779.00080.500-3"
+  },
+  {
+    "id": "1823.00029.500-6-001",
+    "name": "HUAB - MATERNIDADE  PEDIATRIA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1823.00029.500-6"
+  },
+  {
+    "id": "1823.00029.500-6-002",
+    "name": "HUAB - NUTRICAO  RESTAURANTE NOVAS INSTALACOES",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1823.00029.500-6"
+  },
+  {
+    "id": "1823.00029.500-6-003",
+    "name": "HUAB - SUBESTACAO DE ENERGIA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1823.00029.500-6"
+  },
+  {
+    "id": "1823.00034.500-3-001",
+    "name": "FACISA - PAVILHAO ACADEMICO - BLOCO I",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1823.00034.500-3"
+  },
+  {
+    "id": "1823.00034.500-3-002",
+    "name": "FACISA - PAVILHAO ACADEMICO - BLOCO II",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1823.00034.500-3"
+  },
+  {
+    "id": "1823.00040.500-6-001",
+    "name": "LOCACAO - FACISA ESCRITORIO",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1823.00040.500-6"
+  },
+  {
+    "id": "1823.00046.500-9-001",
+    "name": "RESIDENCIA UNIVERSITARIA DE SANTA CRUZRN",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1823.00046.500-9"
+  },
+  {
+    "id": "1823.00048.500-0-001",
+    "name": "LOCACAO - DIVISAO ACADEMICA - GERENCIA DE ENSINO E PESQUISA DO HUAB\nANEXO III",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1823.00048.500-0"
+  },
+  {
+    "id": "1823.00050.500-0-001",
+    "name": "LOCACAO - SUPERINTENDENCIA  GERENCIA ADMINISTRATIVA DO HUAB ANEXO I",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1823.00050.500-0"
+  }
+]

@@ -44,7 +44,11 @@ model InfrastructureFacilityComplex {
   longitude  Decimal?             @db.Decimal(9, 6)
   type       FacilityComplexType?
 
-  buildings InfrastructureBuilding[]
+  maintenanceInstance   MaintenanceInstance? @relation(fields: [maintenanceInstanceId], references: [id])
+  maintenanceInstanceId Int?
+
+  buildings                InfrastructureBuilding[]
+  InfrastructureOccurrence InfrastructureOccurrence[]
 
   @@map("infrastructure_facilities_complexes")
 }
@@ -69,8 +73,8 @@ model InfrastructureBuilding {
   id                           String                           @id
   name                         String
   alias                        String?
-  description                  String?
-  address                      String?
+  description                  String?                          @db.Text
+  zone                         String?
   latitude                     Decimal?                         @db.Decimal(8, 6)
   longitude                    Decimal?                         @db.Decimal(9, 6)
   createdAt                    DateTime                         @default(now())
@@ -218,6 +222,7 @@ model InfrastructureOccurrence {
   id                  Int                                     @id @default(autoincrement())
   title               String
   description         String                                  @db.Text
+  infrastructureType  InfrastructureType?                     @default(ISOLATED)
   locationDescription String?
   reportedAt          DateTime                                @default(now())
   status              InfrastructureOccurrenceStatus          @default(REPORTED)
@@ -225,10 +230,12 @@ model InfrastructureOccurrence {
   duplicateOf         InfrastructureOccurrence?               @relation("DuplicateOccurrences", fields: [duplicateOfId], references: [id], onDelete: NoAction)
   duplicates          InfrastructureOccurrence[]              @relation("DuplicateOccurrences")
   reinforcements      InfrastructureOccurrenceReinforcement[]
-  spaceId             Int?
-  space               InfrastructureSpace?                    @relation(fields: [spaceId], references: [id], onDelete: SetNull)
+  facilityComplex     InfrastructureFacilityComplex?          @relation(fields: [facilityComplexId], references: [id])
+  facilityComplexId   String?
   buildingId          String?
   building            InfrastructureBuilding?                 @relation(fields: [buildingId], references: [id], onDelete: SetNull)
+  spaceId             Int?
+  space               InfrastructureSpace?                    @relation(fields: [spaceId], references: [id], onDelete: SetNull)
   reportedById        Int
   reportedBy          User                                    @relation("ReportedOccurrences", fields: [reportedById], references: [id])
   diagnosis           InfrastructureOccurrenceDiagnosis?
@@ -237,6 +244,11 @@ model InfrastructureOccurrence {
 
   @@index([reportedById, spaceId, buildingId, status, duplicateOfId])
   @@map("infrastructure_occurrences")
+}
+
+enum InfrastructureType {
+  ISOLATED @map("ISOLADO")
+  NETWORK  @map("REDE")
 }
 
 model InfrastructureOccurrenceReinforcement {
@@ -415,17 +427,18 @@ model MaintenanceServiceType {
 }
 
 model MaintenanceInstance {
-  id                            Int                        @id @default(autoincrement())
-  sipacId                       String?                    @unique
-  name                          String                     @unique
-  isActive                      Boolean                    @default(true)
-  createdAt                     DateTime                   @default(now()) @db.Timestamp(0)
-  updatedAt                     DateTime                   @updatedAt @db.Timestamp(0)
-  currentMaintenanceRequests    MaintenanceRequest[]       @relation("CurrentInstanceRequests")
-  timelineEventsTransferredFrom MaintenanceTimelineEvent[] @relation("TransferredFromInstanceEvents")
-  timelineEventsTransferredTo   MaintenanceTimelineEvent[] @relation("TransferredToInstanceEvents")
+  id                            Int                             @id @default(autoincrement())
+  sipacId                       String?                         @unique
+  name                          String                          @unique
+  isActive                      Boolean                         @default(true)
+  createdAt                     DateTime                        @default(now()) @db.Timestamp(0)
+  updatedAt                     DateTime                        @updatedAt @db.Timestamp(0)
+  currentMaintenanceRequests    MaintenanceRequest[]            @relation("CurrentInstanceRequests")
+  timelineEventsTransferredFrom MaintenanceTimelineEvent[]      @relation("TransferredFromInstanceEvents")
+  timelineEventsTransferredTo   MaintenanceTimelineEvent[]      @relation("TransferredToInstanceEvents")
   warehouses                    Warehouse[]
   InfrastructureBuilding        InfrastructureBuilding[]
+  InfrastructureFacilityComplex InfrastructureFacilityComplex[]
 
   @@map("maintenance_instances")
 }
