@@ -1,7 +1,6 @@
 import { PartialType } from '@nestjs/swagger';
 import {
   Prisma,
-  RequestPriority,
   MaintenanceRequestStatusOptions,
   TimelineEventType
 } from '@sisman/prisma';
@@ -15,7 +14,8 @@ import {
   IsString,
   IsArray,
   ValidateNested,
-  IsBoolean
+  IsBoolean,
+  IsDate
 } from 'class-validator';
 import { UpdateSipacUnidadeDto } from '../../sipac/unidades/dto/sipac-unidade.dto'; // Assuming this is still relevant for related entities like SipacUnit
 import { UpdateUserDto } from '../../users/dto/user.dto'; // Assuming User DTO exists
@@ -72,17 +72,9 @@ export class CreateMaintenanceRequestDto
    * Descrição detalhada do problema ou solicitação
    * @example 'Há um vazamento constante na pia do banheiro masculino do segundo andar do Bloco A.'
    */
-  @IsString()
-  @IsNotEmpty()
-  description: string;
-
-  /**
-   * Prioridade da requisição
-   * @example 'NORMAL'
-   */
   @IsOptional()
-  @IsEnum(RequestPriority)
-  priority?: RequestPriority;
+  @IsString()
+  description?: string;
 
   /**
    * Data e hora da solicitação (formato ISO 8601)
@@ -178,56 +170,6 @@ export class CreateMaintenanceRequestDto
   @IsNumber()
   @Type(() => Number)
   diagnosisId?: number;
-
-  /**
-   * Status atual da requisição de manutenção
-   * @example 'PENDING'
-   */
-  @IsOptional()
-  @IsEnum(MaintenanceRequestStatusOptions)
-  currentStatus?: MaintenanceRequestStatusOptions;
-}
-
-export class UpdateMaintenanceRequestStatusDto {
-  /**
-   * ID do status da requisição de manutenção.
-   * @example 1
-   */
-  @IsNumber()
-  @IsNotEmpty()
-  id: number;
-
-  /**
-   * Nome do status (e.g., "Open", "In Analysis", "Completed").
-   * @example 'Open'
-   */
-  @IsOptional()
-  @IsString()
-  name?: string;
-
-  /**
-   * Descrição detalhada do status.
-   * @example 'Requisição aberta e aguardando atribuição.'
-   */
-  @IsOptional()
-  @IsString()
-  description?: string;
-
-  /**
-   * Indica se este status marca o fim de uma requisição.
-   * @example false
-   */
-  @IsOptional()
-  @IsBoolean()
-  isFinal?: boolean;
-
-  /**
-   * Ordem para exibição em interfaces de usuário.
-   * @example 1
-   */
-  @IsOptional()
-  @IsNumber()
-  order?: number;
 }
 
 export class CreateMaintenanceTimelineEventDto
@@ -299,6 +241,59 @@ export class CreateMaintenanceTimelineEventDto
   transferredToInstanceId: number;
 }
 
+export class CreateMaintenanceRequestStatusDto
+  implements Prisma.MaintenanceRequestStatusCreateManyInput
+{
+  /**
+   * O status da requisição.
+   */
+  @IsEnum(MaintenanceRequestStatusOptions)
+  @IsNotEmpty()
+  status: MaintenanceRequestStatusOptions;
+
+  @IsNumber()
+  @Type(() => Number)
+  maintenanceRequestId: number;
+
+  /**
+   * Descrição do status.
+   * @example 'Requisição criada e aguardando atribuição.'
+   */
+  @IsOptional()
+  @IsString()
+  description?: string;
+
+  /**
+   * Indica se este status é um status final para a requisição.
+   * @example false
+   */
+  @IsOptional()
+  @IsBoolean()
+  @Type(() => Boolean)
+  isFinal?: boolean;
+
+  @IsOptional()
+  @IsNumber()
+  @Type(() => Number)
+  order?: number;
+
+  @IsOptional()
+  @IsDate()
+  changeDate?: string | Date;
+
+  @IsOptional()
+  @IsDate()
+  createdAt?: string | Date;
+
+  @IsOptional()
+  @IsDate()
+  updatedAt?: string | Date;
+}
+
+export class UpdateMaintenanceRequestStatusDto extends PartialType(
+  CreateMaintenanceRequestStatusDto
+) {}
+
 export class CreateMaintenanceRequestWithRelationsDto extends CreateMaintenanceRequestDto {
   /**
    * Instância de manutenção atual que está lidando com a requisição.
@@ -367,7 +362,7 @@ export class CreateMaintenanceRequestWithRelationsDto extends CreateMaintenanceR
    */
   @ValidateNested()
   @Type(() => UpdateMaintenanceRequestStatusDto)
-  status: UpdateMaintenanceRequestStatusDto;
+  statuses: UpdateMaintenanceRequestStatusDto;
 
   /**
    * Diagnóstico associado a esta requisição.

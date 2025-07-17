@@ -280,11 +280,11 @@ exports.Prisma.MaintenanceRequestScalarFieldEnum = {
   protocolNumber: 'protocolNumber',
   title: 'title',
   description: 'description',
-  priority: 'priority',
   requestedAt: 'requestedAt',
   deadline: 'deadline',
   solutionDetails: 'solutionDetails',
   completedAt: 'completedAt',
+  facilityComplexId: 'facilityComplexId',
   spaceId: 'spaceId',
   buildingId: 'buildingId',
   systemId: 'systemId',
@@ -292,11 +292,10 @@ exports.Prisma.MaintenanceRequestScalarFieldEnum = {
   createdById: 'createdById',
   assignedToId: 'assignedToId',
   serviceTypeId: 'serviceTypeId',
-  statusId: 'statusId',
-  currentStatus: 'currentStatus',
   diagnosisId: 'diagnosisId',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  notes: 'notes'
 };
 
 exports.Prisma.MaintenanceServiceOrderScalarFieldEnum = {
@@ -347,8 +346,8 @@ exports.Prisma.MaintenanceTimelineEventScalarFieldEnum = {
 };
 
 exports.Prisma.MaintenanceRequestStatusScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
+  status: 'status',
+  maintenanceRequestId: 'maintenanceRequestId',
   description: 'description',
   isFinal: 'isFinal',
   order: 'order',
@@ -362,6 +361,14 @@ exports.Prisma.MaintenanceServiceOrderAllocationScalarFieldEnum = {
   isLeader: 'isLeader',
   allocatedAt: 'allocatedAt',
   allocatedById: 'allocatedById'
+};
+
+exports.Prisma.MaintenanceRequestPriorityScalarFieldEnum = {
+  id: 'id',
+  priority: 'priority',
+  maintenanceRequestId: 'maintenanceRequestId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.StorageScalarFieldEnum = {
@@ -1033,7 +1040,9 @@ exports.Prisma.MaintenanceRequestOrderByRelevanceFieldEnum = {
   title: 'title',
   description: 'description',
   solutionDetails: 'solutionDetails',
-  buildingId: 'buildingId'
+  facilityComplexId: 'facilityComplexId',
+  buildingId: 'buildingId',
+  notes: 'notes'
 };
 
 exports.Prisma.MaintenanceServiceOrderOrderByRelevanceFieldEnum = {
@@ -1067,7 +1076,6 @@ exports.Prisma.MaintenanceTimelineEventOrderByRelevanceFieldEnum = {
 };
 
 exports.Prisma.MaintenanceRequestStatusOrderByRelevanceFieldEnum = {
-  name: 'name',
   description: 'description'
 };
 
@@ -1400,23 +1408,6 @@ exports.TimeUnit = exports.$Enums.TimeUnit = {
   MONTHS: 'MONTHS'
 };
 
-exports.RequestPriority = exports.$Enums.RequestPriority = {
-  LOW: 'LOW',
-  NORMAL: 'NORMAL',
-  HIGH: 'HIGH',
-  URGENT: 'URGENT'
-};
-
-exports.MaintenanceRequestStatusOptions = exports.$Enums.MaintenanceRequestStatusOptions = {
-  PENDING: 'PENDING',
-  APPROVED: 'APPROVED',
-  IN_PROGRESS: 'IN_PROGRESS',
-  ON_HOLD: 'ON_HOLD',
-  COMPLETED: 'COMPLETED',
-  REJECTED: 'REJECTED',
-  CANCELLED: 'CANCELLED'
-};
-
 exports.ServiceOrderStatus = exports.$Enums.ServiceOrderStatus = {
   PENDING: 'PENDING',
   SCHEDULED: 'SCHEDULED',
@@ -1442,6 +1433,16 @@ exports.TimelineEventType = exports.$Enums.TimelineEventType = {
   REOPENED: 'REOPENED',
   ASSET_CHANGED: 'ASSET_CHANGED',
   DIAGNOSIS_REGISTERED: 'DIAGNOSIS_REGISTERED'
+};
+
+exports.MaintenanceRequestStatusOptions = exports.$Enums.MaintenanceRequestStatusOptions = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  IN_PROGRESS: 'IN_PROGRESS',
+  ON_HOLD: 'ON_HOLD',
+  COMPLETED: 'COMPLETED',
+  REJECTED: 'REJECTED',
+  CANCELLED: 'CANCELLED'
 };
 
 exports.MaterialRequestType = exports.$Enums.MaterialRequestType = {
@@ -1551,6 +1552,7 @@ exports.Prisma.ModelName = {
   MaintenanceTimelineEvent: 'MaintenanceTimelineEvent',
   MaintenanceRequestStatus: 'MaintenanceRequestStatus',
   MaintenanceServiceOrderAllocation: 'MaintenanceServiceOrderAllocation',
+  MaintenanceRequestPriority: 'MaintenanceRequestPriority',
   Storage: 'Storage',
   Warehouse: 'Warehouse',
   MaterialGlobalCatalog: 'MaterialGlobalCatalog',

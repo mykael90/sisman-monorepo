@@ -49,6 +49,7 @@ model InfrastructureFacilityComplex {
 
   buildings                InfrastructureBuilding[]
   InfrastructureOccurrence InfrastructureOccurrence[]
+  MaintenanceRequest       MaintenanceRequest[]
 
   @@map("infrastructure_facilities_complexes")
 }
@@ -69,6 +70,7 @@ enum FacilityComplexType {
   AUTARCHY   @map("AUTARQUIA")
 }
 
+//não precisa de endereço, herda o endereço do complexo
 model InfrastructureBuilding {
   id                           String                           @id
   name                         String
@@ -338,12 +340,14 @@ model MaintenanceRequest {
   id                           Int                                @id @default(autoincrement())
   protocolNumber               String                             @unique @default(uuid())
   title                        String
-  description                  String                             @db.Text
-  priority                     RequestPriority                    @default(NORMAL)
-  requestedAt                  DateTime                           @default(now())
+  description                  String?                            @db.Text
+  priorities                   MaintenanceRequestPriority[]
+  requestedAt                  DateTime                           @default(now()) @db.Timestamp(0)
   deadline                     DateTime?
   solutionDetails              String?                            @db.Text
   completedAt                  DateTime?
+  facilityComplex              InfrastructureFacilityComplex?     @relation(fields: [facilityComplexId], references: [id])
+  facilityComplexId            String?
   spaceId                      Int?
   space                        InfrastructureSpace?               @relation(fields: [spaceId], references: [id], onDelete: SetNull)
   buildingId                   String?
@@ -352,17 +356,15 @@ model MaintenanceRequest {
   system                       InfrastructureSystem?              @relation(fields: [systemId], references: [id], onDelete: SetNull)
   // equipmentId                  Int?
   // equipment                    Equipment?                      @relation(fields: [equipmentId], references: [id], onDelete: SetNull)
-  currentMaintenanceInstanceId Int
-  currentMaintenanceInstance   MaintenanceInstance                @relation("CurrentInstanceRequests", fields: [currentMaintenanceInstanceId], references: [id])
+  currentMaintenanceInstanceId Int?
+  currentMaintenanceInstance   MaintenanceInstance?               @relation("CurrentInstanceRequests", fields: [currentMaintenanceInstanceId], references: [id])
   createdById                  Int
   createdBy                    User                               @relation("CreatedByUser", fields: [createdById], references: [id])
   assignedToId                 Int?
   assignedTo                   User?                              @relation("AssignedToUser", fields: [assignedToId], references: [id])
   serviceTypeId                Int?
   serviceType                  MaintenanceServiceType?            @relation(fields: [serviceTypeId], references: [id], onDelete: SetNull)
-  statusId                     Int
-  status                       MaintenanceRequestStatus           @relation(fields: [statusId], references: [id])
-  currentStatus                MaintenanceRequestStatusOptions    @default(PENDING)
+  statuses                     MaintenanceRequestStatus[]
   diagnosisId                  Int?                               @unique
   diagnosis                    InfrastructureOccurrenceDiagnosis? @relation(fields: [diagnosisId], references: [id], onDelete: SetNull)
   createdAt                    DateTime                           @default(now()) @db.Timestamp(0)
@@ -371,11 +373,11 @@ model MaintenanceRequest {
   materialRequests             MaterialRequest[]
   materialStockMovements       MaterialStockMovement[]
   materialWithdrawals          MaterialWithdrawal[]
+  notes                        String?                            @db.Text
 
   // Relação 1-para-N com as Ordens de Serviço geradas
   serviceOrders MaintenanceServiceOrder[]
 
-  @@index([currentMaintenanceInstanceId, createdById, assignedToId, statusId, spaceId, buildingId, systemId, diagnosisId])
   @@map("maintenance_requests")
 }
 
@@ -465,15 +467,16 @@ model MaintenanceTimelineEvent {
 }
 
 model MaintenanceRequestStatus {
-  id                  Int                  @id @default(autoincrement())
-  name                String               @unique
-  description         String?
-  isFinal             Boolean              @default(false)
-  order               Int                  @default(0)
-  createdAt           DateTime             @default(now()) @db.Timestamp(0)
-  updatedAt           DateTime             @updatedAt @db.Timestamp(0)
-  maintenanceRequests MaintenanceRequest[]
+  status               MaintenanceRequestStatusOptions @default(PENDING)
+  maintenanceRequestId Int
+  description          String?
+  isFinal              Boolean                         @default(false)
+  order                Int                             @default(0)
+  createdAt            DateTime                        @default(now()) @db.Timestamp(0)
+  updatedAt            DateTime                        @updatedAt @db.Timestamp(0)
+  maintenanceRequest   MaintenanceRequest              @relation(fields: [maintenanceRequestId], references: [id])
 
+  @@id([status, maintenanceRequestId, createdAt])
   @@map("maintenance_request_statuses")
 }
 
@@ -513,11 +516,16 @@ enum ServiceOrderStatus {
 // ==                         ENUMS                               ==
 // =================================================================
 
-enum RequestPriority {
-  LOW
-  NORMAL
-  HIGH
-  URGENT
+model MaintenanceRequestPriority {
+  id                   Int                 @id @default(autoincrement())
+  priority             Int
+  maintenanceRequest   MaintenanceRequest? @relation(fields: [maintenanceRequestId], references: [id])
+  maintenanceRequestId Int?
+  createdAt            DateTime            @default(now()) @db.Timestamp(0)
+  updatedAt            DateTime            @updatedAt @db.Timestamp(0)
+
+  @@index([maintenanceRequestId])
+  @@map("maintenance_request_priorities")
 }
 
 enum MaintenanceRequestStatusOptions {

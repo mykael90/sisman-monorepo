@@ -25,7 +25,7 @@ export class MaintenanceRequestsService {
       system,
       // equipment: _, // não será implementado esse model de equipment nesse projeto de pesquisa => TODO: futuro
       serviceType,
-      status,
+      statuses,
       diagnosis,
       timelineEvents, //não utiliza
       materialRequests,
@@ -44,9 +44,9 @@ export class MaintenanceRequestsService {
         'O usuário criador (createdBy.id) é obrigatório para conectar.'
       );
     }
-    if (!status || !status.id) {
+    if (!statuses || !statuses.status) {
       throw new Error(
-        'O status da requisição (status.id) é obrigatório para conectar.'
+        'O status da requisição (status.status) é obrigatório para conectar.'
       );
     }
 
@@ -95,8 +95,12 @@ export class MaintenanceRequestsService {
         connect: { id: currentMaintenanceInstance.id }
       },
       createdBy: { connect: { id: createdBy.id } },
-      status: {
-        create: { name: status.name, description: status.description }
+      statuses: {
+        create: {
+          status: statuses.status,
+          description: statuses.description,
+          isFinal: statuses.isFinal
+        }
       },
       assignedTo: assignedTo?.id
         ? { connect: { id: assignedTo.id } }
@@ -129,7 +133,7 @@ export class MaintenanceRequestsService {
           system: true,
           // equipment: true,
           serviceType: true,
-          status: true,
+          statuses: true,
           diagnosis: true,
           // originatingOccurrences: true, // Cannot include reverse relation directly
           timelineEvents: true
@@ -158,7 +162,7 @@ export class MaintenanceRequestsService {
             system: true,
             // equipment: true,
             serviceType: true,
-            status: true,
+            statuses: true,
             diagnosis: true,
             // originatingOccurrences: true, // Cannot include reverse relation directly
             timelineEvents: true
@@ -188,7 +192,7 @@ export class MaintenanceRequestsService {
             system: true,
             // equipment: true,
             serviceType: true,
-            status: true,
+            statuses: true,
             diagnosis: true,
             // originatingOccurrences: true, // Cannot include reverse relation directly
             timelineEvents: true
@@ -226,7 +230,7 @@ export class MaintenanceRequestsService {
             system: true,
             // equipment: true,
             serviceType: true,
-            status: true,
+            statuses: true,
             diagnosis: true,
             // originatingOccurrences: true, // Cannot include reverse relation directly
             timelineEvents: true
@@ -252,7 +256,7 @@ export class MaintenanceRequestsService {
       system,
       // equipment: _, // não será implementado esse model de equipment nesse projeto de pesquisa => TODO: futuro
       serviceType,
-      status,
+      statuses,
       diagnosis,
       timelineEvents,
       materialRequests,
@@ -299,14 +303,22 @@ export class MaintenanceRequestsService {
     }
 
     // Handle status connection
-    if (status !== undefined) {
-      if (status === null) {
+    if (statuses !== undefined) {
+      if (statuses === null) {
         // statusId is mandatory, cannot disconnect to null
         this.logger.warn(
           `Attempted to set mandatory status relation to null for MaintenanceRequest ID ${id}. This operation is ignored.`
         );
-      } else if (status.id) {
-        updateInput.status = { connect: { id: status.id } };
+      } else if (statuses.status) {
+        updateInput.statuses = {
+          connect: {
+            status_maintenanceRequestId_createdAt: {
+              status: statuses.status,
+              maintenanceRequestId: id,
+              createdAt: new Date()
+            }
+          }
+        };
       } else {
         throw new Error(
           'Se o objeto "status" é fornecido para atualização, seu "id" é obrigatório para conectar.'
@@ -428,7 +440,7 @@ export class MaintenanceRequestsService {
           system: true,
           // equipment: true,
           serviceType: true,
-          status: true,
+          statuses: true,
           diagnosis: true,
           // originatingOccurrences: true, // Cannot include reverse relation directly
           timelineEvents: true,

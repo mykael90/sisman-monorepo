@@ -1,0 +1,310 @@
+// =================================================================
+// ==              MODELS PARA ATIVOS DE INFRAESTRUTURA           ==
+// =================================================================
+
+model InfrastructureFacilityComplex {
+    id         String               @id
+    name       String
+    address    String?
+    complement String?
+    city       String?
+    cep        String?
+    latitude   Decimal?             @db.Decimal(8, 6)
+    longitude  Decimal?             @db.Decimal(9, 6)
+    type       FacilityComplexType?
+
+    maintenanceInstance   MaintenanceInstance? @relation(fields: [maintenanceInstanceId], references: [id])
+    maintenanceInstanceId Int?
+
+    buildings                InfrastructureBuilding[]
+    InfrastructureOccurrence InfrastructureOccurrence[]
+    MaintenanceRequest       MaintenanceRequest[]
+
+    @@map("infrastructure_facilities_complexes")
+}
+
+//não precisa de endereço, herda o endereço do complexo
+model InfrastructureBuilding {
+    id                           String                           @id
+    name                         String
+    alias                        String?
+    description                  String?                          @db.Text
+    zone                         String?
+    latitude                     Decimal?                         @db.Decimal(8, 6)
+    longitude                    Decimal?                         @db.Decimal(9, 6)
+    createdAt                    DateTime                         @default(now())
+    updatedAt                    DateTime                         @updatedAt
+    restrictedAccess             Boolean                          @default(false) //Somente pessoas autorizadas acessam essa infraestrutura
+    managers                     User[]                           @relation("Managers")
+    spaces                       InfrastructureSpace[]
+    systems                      InfrastructureSystem[]
+    maintenanceRequests          MaintenanceRequest[]
+    infraOccurrences             InfrastructureOccurrence[]
+    facilityComplex              InfrastructureFacilityComplex?   @relation(fields: [facilityComplexId], references: [id])
+    facilityComplexId            String?
+    infrastructureBuildingTypeId Int?
+    primaryActivity              InfrastructureBuildingActivity?  @relation("PrimaryActivity", fields: [infrastructureBuildingTypeId], references: [id])
+    secondariesActivities        InfrastructureBuildingActivity[] @relation("SecondaryActivity")
+
+    maintenanceInstance   MaintenanceInstance? @relation(fields: [maintenanceInstanceId], references: [id])
+    maintenanceInstanceId Int?
+
+    unidadesSipacVinculadas SipacUnidade[] @relation("UnidadesVinculadasInfraestrutura")
+
+    @@index([facilityComplexId])
+    @@index([infrastructureBuildingTypeId])
+    @@map("infrastructure_buildings")
+}
+
+model InfrastructureBuildingActivity {
+    id          Int     @id @default(autoincrement())
+    name        String  @unique
+    description String?
+
+    buldingsSecondary          InfrastructureBuilding[]     @relation("SecondaryActivity")
+    buldingsPrimary            InfrastructureBuilding[]     @relation("PrimaryActivity")
+    infrastructureBuildingType InfrastructureBuildingType[]
+
+    @@map("infrastructure_buildings_activities")
+}
+
+model InfrastructureBuildingType {
+    id                               Int                            @id @default(autoincrement())
+    name                             String                         @unique
+    description                      String?
+    infrastructureBuildingActivity   InfrastructureBuildingActivity @relation(fields: [infrastructureBuildingActivityId], references: [id])
+    infrastructureBuildingActivityId Int
+
+    @@map("infrastructure_buildings_types")
+}
+
+// Modelo SpaceType, agora como um modelo para flexibilidade.
+model InfrastructureSpaceType {
+    id          Int                   @id @default(autoincrement())
+    name        String                @unique
+    description String?
+    icon        String?
+    isActive    Boolean               @default(true)
+    createdAt   DateTime              @default(now()) @db.Timestamp(0)
+    updatedAt   DateTime              @updatedAt @db.Timestamp(0)
+    spaces      InfrastructureSpace[]
+
+    @@map("infrastructure_space_types")
+}
+
+model InfrastructureSpace {
+    id                      Int                        @id @default(autoincrement())
+    name                    String
+    description             String?                    @db.Text
+    keyCode                 String?
+    spaceTypeId             Int
+    spaceType               InfrastructureSpaceType    @relation(fields: [spaceTypeId], references: [id], onDelete: Restrict)
+    regionType              RegionType                 @default(INTERNAL)
+    buildingId              String
+    building                InfrastructureBuilding     @relation(fields: [buildingId], references: [id], onDelete: Cascade)
+    parentId                Int?
+    parent                  InfrastructureSpace?       @relation("NestedSpaces", fields: [parentId], references: [id], onDelete: NoAction)
+    children                InfrastructureSpace[]      @relation("NestedSpaces")
+    maintenanceRequests     MaintenanceRequest[]
+    infraOccurrences        InfrastructureOccurrence[]
+    createdAt               DateTime                   @default(now()) @db.Timestamp(0)
+    updatedAt               DateTime                   @updatedAt @db.Timestamp(0)
+    InfrastructureSpaceUser InfrastructureSpaceUser[]
+
+    @@index([buildingId])
+    @@index([parentId])
+    @@index([spaceTypeId])
+    @@map("infrastructure_spaces")
+}
+
+model InfrastructureSpaceUser {
+    id                    Int                 @id @default(autoincrement())
+    spaceId               Int
+    space                 InfrastructureSpace @relation(fields: [infrastructureSpaceId], references: [id])
+    infrastructureSpaceId Int
+    user                  User                @relation(fields: [userId], references: [id])
+    userId                Int
+    createdAt             DateTime            @default(now()) @db.Timestamp(0)
+    updatedAt             DateTime            @updatedAt @db.Timestamp(0)
+
+    @@index([spaceId, userId])
+    @@map("infrastructure_space_users")
+}
+
+model InfrastructureSystem {
+    id                  Int                      @id @default(autoincrement())
+    name                String
+    type                String
+    description         String?                  @db.Text
+    buildings           InfrastructureBuilding[]
+    maintenanceRequests MaintenanceRequest[]
+    createdAt           DateTime                 @default(now()) @db.Timestamp(0)
+    updatedAt           DateTime                 @updatedAt @db.Timestamp(0)
+
+    @@unique([name, type])
+    @@map("infrastructure_systems")
+}
+
+// model Equipment {
+//     id                  Int                  @id @default(autoincrement())
+//     patrimonyTag        String?              @unique
+//     name                String
+//     description         String?              @db.Text
+//     location            String?
+//     serialNumber        String?
+//     manufacturer        String?
+//     model               String?
+//     acquisitionDate     DateTime?
+//     isActive            Boolean              @default(true)
+//     createdAt           DateTime             @default(now())
+//     updatedAt           DateTime             @updatedAt
+//     maintenanceRequests MaintenanceRequest[]
+
+//     @@map("equipments")
+// }
+
+// =================================================================
+// ==                 MODELS PARA O FLUXO DE MANUTENÇÃO           ==
+// =================================================================
+
+model InfrastructureOccurrence {
+    id                  Int                                     @id @default(autoincrement())
+    title               String
+    description         String                                  @db.Text
+    infrastructureType  InfrastructureType?                     @default(ISOLATED)
+    locationDescription String?
+    reportedAt          DateTime                                @default(now())
+    status              InfrastructureOccurrenceStatus          @default(REPORTED)
+    duplicateOfId       Int?
+    duplicateOf         InfrastructureOccurrence?               @relation("DuplicateOccurrences", fields: [duplicateOfId], references: [id], onDelete: NoAction)
+    duplicates          InfrastructureOccurrence[]              @relation("DuplicateOccurrences")
+    reinforcements      InfrastructureOccurrenceReinforcement[]
+    facilityComplex     InfrastructureFacilityComplex?          @relation(fields: [facilityComplexId], references: [id])
+    facilityComplexId   String?
+    buildingId          String?
+    building            InfrastructureBuilding?                 @relation(fields: [buildingId], references: [id], onDelete: SetNull)
+    spaceId             Int?
+    space               InfrastructureSpace?                    @relation(fields: [spaceId], references: [id], onDelete: SetNull)
+    reportedById        Int
+    reportedBy          User                                    @relation("ReportedOccurrences", fields: [reportedById], references: [id])
+    diagnosis           InfrastructureOccurrenceDiagnosis?
+    createdAt           DateTime                                @default(now()) @db.Timestamp(0)
+    updatedAt           DateTime                                @updatedAt @db.Timestamp(0)
+
+    @@index([reportedById, spaceId, buildingId, status, duplicateOfId])
+    @@map("infrastructure_occurrences")
+}
+
+model InfrastructureOccurrenceReinforcement {
+    occurrenceId Int
+    occurrence   InfrastructureOccurrence @relation(fields: [occurrenceId], references: [id], onDelete: Cascade)
+    userId       Int
+    user         User                     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    reinforcedAt DateTime                 @default(now())
+    comment      String?
+
+    @@id([occurrenceId, userId])
+    @@map("infrastructure_occurrence_reinforcements")
+}
+
+model InfrastructureOccurrenceDiagnosis {
+    id                   Int                      @id @default(autoincrement())
+    diagnosticDetails    String                   @db.Text
+    prognosis            String?                  @db.Text
+    resolutionNotes      String?                  @db.Text
+    outcome              DiagnosisOutcome         @default(PENDING)
+    occurrenceId         Int                      @unique
+    occurrence           InfrastructureOccurrence @relation(fields: [occurrenceId], references: [id], onDelete: Cascade)
+    analyzedById         Int
+    analyzedBy           User                     @relation("AnalyzedByUser", fields: [analyzedById], references: [id])
+    diagnosedAt          DateTime                 @default(now())
+    maintenanceRequestId Int?                     @unique
+    maintenanceRequest   MaintenanceRequest?
+    createdAt            DateTime                 @default(now()) @db.Timestamp(0)
+    updatedAt            DateTime                 @updatedAt @db.Timestamp(0)
+
+    estimatedResolutionTime Int? // Quantidade de tempo estimada. Ex: 4
+    estimatedResolutionUnit TimeUnit? // Unidade de tempo. Ex: HOURS -> "4 Horas"
+
+    requiresInterdiction Boolean @default(false) // Necessita de interdição da área?
+    interdictionDetails  String? @db.Text // Detalhes da interdição (qual área, por quê, recomendações).
+
+    wasteGenerated            Boolean @default(false) // A resolução gerará resíduos?
+    wasteDisposalInstructions String? @db.Text // Instruções para o descarte correto dos resíduos.
+
+    // Relação N-N com os tipos de risco associados
+    associatedRisks InfrastructureOccurrenceDiagnosisRiskType[]
+
+    @@index([analyzedById])
+    @@map("infrastructure_occurrence_diagnosis")
+}
+
+// Modelo para tipos de risco configuráveis.
+model InfrastructureOccurrenceDiagnosisRiskType {
+    id          Int     @id @default(autoincrement())
+    name        String  @unique // Ex: "Risco à Saúde", "Risco ao Patrimônio", "Risco Ambiental"
+    description String? // Descrição detalhada do risco.
+
+    // Relação N-N com os diagnósticos que possuem este risco.
+    diagnoses InfrastructureOccurrenceDiagnosis[]
+
+    @@map("infrastructure_occurrence_diagnosis_risk_types")
+}
+
+// =================================================================
+// ==                         ENUMS                               ==
+// =================================================================
+
+// Enum para unidades de tempo.
+enum TimeUnit {
+    MINUTES @map("MINUTOS")
+    HOURS   @map("HORAS")
+    DAYS    @map("DIAS")
+    WEEKS   @map("SEMANAS")
+    MONTHS  @map("MESES")
+}
+
+enum DiagnosisOutcome {
+    PENDING          @map("PENDENTE")
+    CREATED_REQUEST  @map("REQUISICAO CRIADA")
+    RESOLVED_ON_SITE @map("REPARO RAPIDO")
+    DISMISS          @map("FALSO ALARME")
+    REJECT           @map("NEGADO")
+}
+
+enum InfrastructureOccurrenceStatus {
+    REPORTED  @map("REPORTADO")
+    ANALYZING @map("ANALISANDO")
+    ACCEPTED  @map("ACEITO")
+    REJECTED  @map("NEGADO")
+    DISMISSED @map("IMPROCEDENTE")
+    RESOLVED  @map("RESOLVIDO")
+    DUPLICATE @map("DUPLICADA")
+}
+
+enum InfrastructureType {
+    ISOLATED @map("ISOLADO")
+    NETWORK  @map("REDE")
+}
+
+enum RegionType {
+    INTERNAL  @map("INTERNO") // Espaço interno da edificação
+    EXTERNAL  @map("EXTERNO") // Espaço externo da edificação, exemplo jardim, estacionamento, etc.
+    INTERFACE @map("INTERFACE") // Espaço de interface da edificação, exemplo fachada
+}
+
+enum FacilityComplexType {
+    BUILDING   @map("EDIFÍCIO/PRÉDIO")
+    FARM       @map("FAZENDA")
+    HOSPITAL   @map("HOSPITAL")
+    LABORATORY @map("LABORATÓRIO")
+    LAND       @map("TERRENO")
+    MUSEUM     @map("MUSEU")
+    OTHER      @map("OUTROS")
+    RESIDENCE  @map("RESIDÊNCIA")
+    OFFICE     @map("SALA")
+    STATION    @map("ESTAÇÃO")
+    UNIVERSITY @map("UNIVERSIDADE")
+    WAREHOUSE  @map("GALPÃO")
+    AUTARCHY   @map("AUTARQUIA")
+}

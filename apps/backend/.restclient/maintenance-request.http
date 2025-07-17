@@ -19,23 +19,17 @@ Authorization: Bearer {{token}}
 {
     "protocolNumber": "MANUT-{{$timestamp}}",
     "title": "Example Maintenance Request",
-    "description": "Details of the maintenance request",
-    "priority": "NORMAL",
     "requestedAt": "2023-10-27T10:00:00.000Z",
     "deadline": "2023-11-15T17:00:00.000Z",
     "solutionDetails": "Solution provided",
     "completedAt": "2023-11-10T14:30:00.000Z",
     "createdBy": {"id": 1},
     "assignedTo": {"id": 1},
-    "space": {"id": 1},
-    "building": {"id": 1},
-    "system": {"id": 1},
+    "building": {"id": "1639.00236.500-5-001"},
     "serviceType": {"id": 1},
-    "diagnosis": {"id": 1},
-    "currentStatus": "REJECTED",
     "currentMaintenanceInstance": {"id": 1},
     "createdBy": {"id": 1},
-    "status": {"id": 1, "name": "REJECTED"}
+    "statuses": {"status": "PENDING"}
 }
 
 ### PUT
