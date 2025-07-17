@@ -146,6 +146,9 @@ exports.Prisma.InfrastructureFacilityComplexScalarFieldEnum = {
   id: 'id',
   name: 'name',
   address: 'address',
+  complement: 'complement',
+  city: 'city',
+  cep: 'cep',
   latitude: 'latitude',
   longitude: 'longitude',
   type: 'type'
@@ -953,7 +956,10 @@ exports.Prisma.LogLoginOrderByRelevanceFieldEnum = {
 exports.Prisma.InfrastructureFacilityComplexOrderByRelevanceFieldEnum = {
   id: 'id',
   name: 'name',
-  address: 'address'
+  address: 'address',
+  complement: 'complement',
+  city: 'city',
+  cep: 'cep'
 };
 
 exports.Prisma.InfrastructureBuildingOrderByRelevanceFieldEnum = {
@@ -1349,7 +1355,8 @@ exports.FacilityComplexType = exports.$Enums.FacilityComplexType = {
   OFFICE: 'OFFICE',
   STATION: 'STATION',
   UNIVERSITY: 'UNIVERSITY',
-  WAREHOUSE: 'WAREHOUSE'
+  WAREHOUSE: 'WAREHOUSE',
+  AUTARCHY: 'AUTARCHY'
 };
 
 exports.RegionType = exports.$Enums.RegionType = {

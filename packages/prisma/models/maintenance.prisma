@@ -3,12 +3,15 @@
 // =================================================================
 
 model InfrastructureFacilityComplex {
-    id        String               @id
-    name      String
-    address   String?
-    latitude  Decimal?             @db.Decimal(8, 6)
-    longitude Decimal?             @db.Decimal(9, 6)
-    type      FacilityComplexType?
+    id         String               @id
+    name       String
+    address    String?
+    complement String?
+    city       String?
+    cep        String?
+    latitude   Decimal?             @db.Decimal(8, 6)
+    longitude  Decimal?             @db.Decimal(9, 6)
+    type       FacilityComplexType?
 
     buildings InfrastructureBuilding[]
 
@@ -16,18 +19,19 @@ model InfrastructureFacilityComplex {
 }
 
 enum FacilityComplexType {
-    BUILDING   @map("EDIFICIO")
+    BUILDING   @map("EDIFÍCIO/PRÉDIO")
     FARM       @map("FAZENDA")
     HOSPITAL   @map("HOSPITAL")
-    LABORATORY @map("LABORATORIO")
+    LABORATORY @map("LABORATÓRIO")
     LAND       @map("TERRENO")
     MUSEUM     @map("MUSEU")
-    OTHER      @map("OUTRO")
-    RESIDENCE  @map("RESIDENCIA")
-    OFFICE     @map("ESCRITORIO")
-    STATION    @map("ESTACAO")
+    OTHER      @map("OUTROS")
+    RESIDENCE  @map("RESIDÊNCIA")
+    OFFICE     @map("SALA")
+    STATION    @map("ESTAÇÃO")
     UNIVERSITY @map("UNIVERSIDADE")
-    WAREHOUSE  @map("GALPAO")
+    WAREHOUSE  @map("GALPÃO")
+    AUTARCHY   @map("AUTARQUIA")
 }
 
 model InfrastructureBuilding {
