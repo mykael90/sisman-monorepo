@@ -7,7 +7,7 @@
 	"settings": {
 		// Esta configuração oculta arquivos e pastas da árvore de arquivos do VS Code.
 		"files.exclude": {
-			"**/.git": true,
+			// "**/.git": true,
 			"**/.svn": true,
 			"**/.hg": true,
 			"**/CVS": true,
