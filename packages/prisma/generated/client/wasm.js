@@ -1450,13 +1450,22 @@ exports.TimelineEventType = exports.$Enums.TimelineEventType = {
 };
 
 exports.MaintenanceRequestStatusOptions = exports.$Enums.MaintenanceRequestStatusOptions = {
+  SIPAC_MANAGEMENT: 'SIPAC_MANAGEMENT',
   PENDING: 'PENDING',
   APPROVED: 'APPROVED',
   IN_PROGRESS: 'IN_PROGRESS',
   ON_HOLD: 'ON_HOLD',
   COMPLETED: 'COMPLETED',
   REJECTED: 'REJECTED',
-  CANCELLED: 'CANCELLED'
+  CANCELLED: 'CANCELLED',
+  CLOSED: 'CLOSED',
+  REOPENED: 'REOPENED',
+  TRANSFERRED: 'TRANSFERRED',
+  DIAGNOSED: 'DIAGNOSED',
+  MATERIAL_REQUESTED: 'MATERIAL_REQUESTED',
+  MATERIAL_RECEIVED: 'MATERIAL_RECEIVED',
+  MATERIAL_WITHDRAWN: 'MATERIAL_WITHDRAWN',
+  DEADLINE_CHANGED: 'DEADLINE_CHANGED'
 };
 
 exports.MaterialRequestType = exports.$Enums.MaterialRequestType = {
@@ -1487,7 +1496,10 @@ exports.MaterialRequestStatusOptions = exports.$Enums.MaterialRequestStatusOptio
   CANCELLED: 'CANCELLED',
   REVERSED: 'REVERSED',
   MATERIAL_SENT: 'MATERIAL_SENT',
-  MATERIAL_RECEIVED: 'MATERIAL_RECEIVED'
+  MATERIAL_RECEIVED: 'MATERIAL_RECEIVED',
+  CHANGED: 'CHANGED',
+  ITEM_RETURNED: 'ITEM_RETURNED',
+  RETURNED: 'RETURNED'
 };
 
 exports.MaterialRequestItemType = exports.$Enums.MaterialRequestItemType = {

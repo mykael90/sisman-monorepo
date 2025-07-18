@@ -200,6 +200,9 @@ enum MaterialRequestStatusOptions {
     REVERSED           @map("ESTORNADA") // Request has been reversed.
     MATERIAL_SENT      @map("MATERIAIS DESPACHADOS")
     MATERIAL_RECEIVED  @map("MATERIAIS RECEBIDOS")
+    CHANGED            @map("ALTERADA") // Request has been changed (e.g., items modified).
+    ITEM_RETURNED      @map("ITEM RETORNADO") // An item from the request has been returned.
+    RETURNED           @map("RETORNADA") // The entire request has been returned.
 }
 
 // Stores the history of status changes for a MaterialRequest.

@@ -21,7 +21,10 @@ type SipacStatus =
   | 'ESTORNADA'
   | 'MUDANÇA DE UNID. DE CUSTO'
   | 'FINALIZADA ATENDIMENTO'
-  | 'FINALIZADA';
+  | 'FINALIZADA'
+  | 'ALTERADA'
+  | 'ITEM ESTORNADO'
+  | 'RETORNADA';
 
 type SismanStatus =
   (typeof MaterialRequestStatusOptions)[keyof typeof MaterialRequestStatusOptions];
@@ -34,7 +37,10 @@ const StatusSipacToSisman: Record<SipacStatus, SismanStatus> = {
   ESTORNADA: MaterialRequestStatusOptions.REVERSED,
   'MUDANÇA DE UNID. DE CUSTO': MaterialRequestStatusOptions.CHANGE_SPONSOR,
   'FINALIZADA ATENDIMENTO': MaterialRequestStatusOptions.PARTIALLY_ATTENDED,
-  FINALIZADA: MaterialRequestStatusOptions.FULLY_ATTENDED
+  FINALIZADA: MaterialRequestStatusOptions.FULLY_ATTENDED,
+  ALTERADA: MaterialRequestStatusOptions.CHANGED,
+  'ITEM ESTORNADO': MaterialRequestStatusOptions.ITEM_RETURNED,
+  RETORNADA: MaterialRequestStatusOptions.RETURNED
 };
 
 export class MaterialRequestMapper {

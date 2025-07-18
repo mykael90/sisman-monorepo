@@ -548,13 +548,23 @@ model MaintenanceRequestPriority {
 // =================================================================
 
 enum MaintenanceRequestStatusOptions {
-  PENDING
-  APPROVED
-  IN_PROGRESS
-  ON_HOLD
-  COMPLETED
-  REJECTED
-  CANCELLED
+  // Statuses traduzidos para o português
+  SIPAC_MANAGEMENT   @map("SIPAC_GESTAO")
+  PENDING            @map("PENDENTE")
+  APPROVED           @map("APROVADO")
+  IN_PROGRESS        @map("EM_ANDAMENTO")
+  ON_HOLD            @map("EM_ESPERA")
+  COMPLETED          @map("CONCLUÍDO")
+  REJECTED           @map("REJEITADO")
+  CANCELLED          @map("CANCELADO")
+  CLOSED             @map("FECHADO")
+  REOPENED           @map("REABERTO")
+  TRANSFERRED        @map("TRANSFERIDO")
+  DIAGNOSED          @map("DIAGNOSTICADO")
+  MATERIAL_REQUESTED @map("MATERIAL_SOLICITADO")
+  MATERIAL_RECEIVED  @map("MATERIAL_RECEBIDO")
+  MATERIAL_WITHDRAWN @map("MATERIAL_RETIRADO")
+  DEADLINE_CHANGED   @map("PRAZO_ALTERADO")
 }
 
 enum TimelineEventType {
@@ -784,6 +794,9 @@ enum MaterialRequestStatusOptions {
   REVERSED           @map("ESTORNADA") // Request has been reversed.
   MATERIAL_SENT      @map("MATERIAIS DESPACHADOS")
   MATERIAL_RECEIVED  @map("MATERIAIS RECEBIDOS")
+  CHANGED            @map("ALTERADA") // Request has been changed (e.g., items modified).
+  ITEM_RETURNED      @map("ITEM RETORNADO") // An item from the request has been returned.
+  RETURNED           @map("RETORNADA") // The entire request has been returned.
 }
 
 // Stores the history of status changes for a MaterialRequest.

@@ -5,14 +5,38 @@ import {
   UpdateMaintenanceRequestWithRelationsDto
 } from './dto/maintenance-request.dto';
 import { handlePrismaError } from '../../shared/utils/prisma-error-handler';
-import { Prisma } from '@sisman/prisma';
+import { FacilityComplexType, Prisma } from '@sisman/prisma';
+import { InfrastructureBuildingsService } from '../infrastructure-buildings/infrastructure-buildings.service';
 
 @Injectable()
 export class MaintenanceRequestsService {
   private readonly logger = new Logger(MaintenanceRequestsService.name);
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly infrastructureBuildingsService: InfrastructureBuildingsService
+  ) {}
 
   async create(data: CreateMaintenanceRequestWithRelationsDto): Promise<any> {
+    //Include other fields based on building ID
+    const otherFields = await this.includeOtherFields(data.building);
+    if (!data.facilityComplex && otherFields.facilityComplex) {
+      data.facilityComplex = otherFields.facilityComplex;
+    }
+    if (
+      !data.currentMaintenanceInstance &&
+      otherFields.currentMaintenanceInstance
+    ) {
+      data.currentMaintenanceInstance = otherFields.currentMaintenanceInstance;
+    }
+
+    // Ensure currentMaintenanceInstance is set to a default value if not provided
+    if (!data.currentMaintenanceInstance) {
+      data.currentMaintenanceInstance = {
+        id: 1 // Default value
+      };
+    }
+
+    // Destructure data to separate relations and other fields
     const {
       currentMaintenanceInstance,
       createdBy,
@@ -580,6 +604,54 @@ export class MaintenanceRequestsService {
         operation: 'delete',
         id
       });
+      throw error;
+    }
+  }
+
+  private async includeOtherFields(
+    building: CreateMaintenanceRequestWithRelationsDto['building']
+  ): Promise<
+    Partial<{
+      facilityComplex: CreateMaintenanceRequestWithRelationsDto['facilityComplex'];
+      currentMaintenanceInstance: CreateMaintenanceRequestWithRelationsDto['currentMaintenanceInstance'];
+    }>
+  > {
+    if (!building?.id) {
+      this.logger.warn('Building ID is required to include other fields.');
+      return {};
+    }
+    // Assuming building.id is the ID of the infrastructure building
+
+    try {
+      const buildingFromDb = await this.infrastructureBuildingsService.show(
+        building.id
+      );
+
+      if (!buildingFromDb) {
+        this.logger.warn(`Building with ID ${building.id} not found.`);
+        return {};
+      }
+
+      const result: Partial<{
+        facilityComplex: CreateMaintenanceRequestWithRelationsDto['facilityComplex'];
+        currentMaintenanceInstance: CreateMaintenanceRequestWithRelationsDto['currentMaintenanceInstance'];
+      }> = {};
+
+      if (buildingFromDb.facilityComplexId) {
+        result.facilityComplex = { id: buildingFromDb.facilityComplexId };
+      }
+
+      if (buildingFromDb.maintenanceInstanceId) {
+        result.currentMaintenanceInstance = {
+          id: buildingFromDb.maintenanceInstanceId
+        };
+      }
+
+      return result;
+    } catch (error) {
+      this.logger.error(
+        `Error including other fields for building ID ${building.id}: ${error.message}`
+      );
       throw error;
     }
   }

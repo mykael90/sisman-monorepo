@@ -1,35 +1,12 @@
 import {
   Prisma,
   MaintenanceRequestOrigin,
-  SipacRequisicaoMaterial
+  SipacRequisicaoMaterial,
+  MaintenanceRequestStatusOptions
 } from '@sisman/prisma';
 import { getNowFormatted } from '../../../shared/utils/date-utils';
 import { CreateMaintenanceRequestWithRelationsDto } from '../dto/maintenance-request.dto';
 import { UpdateMaterialRequestWithRelationsDto } from '../../material-requests/dto/material-request.dto';
-
-// type SipacStatus =
-//   | 'CADASTRADA'
-//   | 'AGUARD. AUTORIZAÇÃO ORÇAMENTÁRIA'
-//   | 'AUTORIZADA'
-//   | 'ENVIADA'
-//   | 'ESTORNADA'
-//   | 'MUDANÇA DE UNID. DE CUSTO'
-//   | 'FINALIZADA ATENDIMENTO'
-//   | 'FINALIZADA';
-
-// type SismanStatus =
-//   (typeof MaterialRequestStatusOptions)[keyof typeof MaterialRequestStatusOptions];
-
-// const StatusSipacToSisman: Record<SipacStatus, SismanStatus> = {
-//   CADASTRADA: MaterialRequestStatusOptions.REGISTERED,
-//   'AGUARD. AUTORIZAÇÃO ORÇAMENTÁRIA': MaterialRequestStatusOptions.PENDING,
-//   AUTORIZADA: MaterialRequestStatusOptions.APPROVED,
-//   ENVIADA: MaterialRequestStatusOptions.FORWARDED,
-//   ESTORNADA: MaterialRequestStatusOptions.REVERSED,
-//   'MUDANÇA DE UNID. DE CUSTO': MaterialRequestStatusOptions.CHANGE_SPONSOR,
-//   'FINALIZADA ATENDIMENTO': MaterialRequestStatusOptions.PARTIALLY_ATTENDED,
-//   FINALIZADA: MaterialRequestStatusOptions.FULLY_ATTENDED
-// };
 
 export class MaintenanceRequestMapper {
   static toCreateDto(
@@ -39,6 +16,7 @@ export class MaintenanceRequestMapper {
         requisicoesMateriais: true;
         unidadeCusto: true;
         unidadeRequisitante: true;
+        historico: true;
       };
     }>
   ): CreateMaintenanceRequestWithRelationsDto {
@@ -50,18 +28,32 @@ export class MaintenanceRequestMapper {
       sipacUnitCost: item.unidadeCusto,
       sipacUserLoginRequest: item.usuarioGravacao,
       origin: MaintenanceRequestOrigin.SIPAC,
+      requestedAt: item.dataDeCadastro,
+      local: item.local,
+      completedAt:
+        item.status === 'FINALIZADA'
+          ? item.historico[item.historico.length - 1].data
+          : undefined,
 
       // relations
-      building: {
-        id: item.predios[0].subRip //id que vem do predioSipac
-      },
+      building:
+        item.predios.length > 0
+          ? {
+              id: item.predios[0].subRip
+            }
+          : undefined, //id que vem do predioSipac
       materialRequests: item.requisicoesMateriais?.map(
         (
           requisicaoMaterial: SipacRequisicaoMaterial
         ): UpdateMaterialRequestWithRelationsDto => ({
           protocolNumber: requisicaoMaterial.numeroDaRequisicao
         })
-      )
+      ),
+
+      statuses: {
+        status: MaintenanceRequestStatusOptions.SIPAC_MANAGEMENT,
+        description: `Requisição ${item.numeroRequisicao} gerenciada pelo SIPAC. Importada em ${getNowFormatted()}.`
+      }
     };
   }
 }

@@ -19,6 +19,7 @@ import {
   CreateSipacUnidadeDto
 } from './dto/sipac-unidade.dto';
 import { SipacUnidadeMapper } from './mappers/sipac-unidade.mapper';
+import { normalizeString } from '../../../shared/utils/string-utils';
 
 @Injectable()
 export class UnidadesService {
@@ -344,7 +345,7 @@ export class UnidadesService {
     nomeUnidade: string
   ): Promise<Prisma.SipacUnidadeGetPayload<{}>> {
     let unidade = await this.prisma.sipacUnidade.findFirst({
-      where: { nomeUnidade: nomeUnidade } // Assumes 'nomeUnidade'
+      where: { nomeUnidade: normalizeString(nomeUnidade) } // Assumes 'nomeUnidade'
     });
 
     if (unidade) {

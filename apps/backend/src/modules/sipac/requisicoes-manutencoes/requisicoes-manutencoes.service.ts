@@ -850,6 +850,7 @@ export class RequisicoesManutencoesService {
         requisicoesMateriais: true;
         unidadeCusto: true;
         unidadeRequisitante: true;
+        historico: true;
       };
     }>
   ): Promise<void> {
