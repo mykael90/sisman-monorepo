@@ -1,7 +1,7 @@
 {
 	"folders": [
 		{
-			"path": "apps/scraping-api"
+			"path": "apps/scraping-api/src"
 		}
 	]
 }

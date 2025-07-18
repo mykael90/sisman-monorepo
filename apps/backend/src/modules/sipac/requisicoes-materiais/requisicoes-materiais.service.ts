@@ -155,7 +155,7 @@ export class RequisicoesMateriaisService {
 
   // New method to sync with MaterialRequestsService
   private async syncMaterialRequest(
-    sipacRequisicao: Prisma.SipacRequisicaoMaterialGetPayload<{
+    sipacRequisicaoMaterial: Prisma.SipacRequisicaoMaterialGetPayload<{
       include: {
         itensDaRequisicao: true;
         unidadeCusto: true;
@@ -165,18 +165,19 @@ export class RequisicoesMateriaisService {
     }>
   ): Promise<void> {
     try {
-      const materialRequestDto =
-        MaterialRequestMapper.toCreateDto(sipacRequisicao);
+      const materialRequestDto = MaterialRequestMapper.toCreateDto(
+        sipacRequisicaoMaterial
+      );
 
       // Assuming protocolNumber in MaterialRequest stores the SIPAC request ID
       const existingMaterialRequest =
         await this.materialRequestsService.findByProtocolNumber(
-          sipacRequisicao.numeroDaRequisicao
+          sipacRequisicaoMaterial.numeroDaRequisicao
         );
 
       if (existingMaterialRequest) {
         this.logger.log(
-          `Updating MaterialRequest for SIPAC ID: ${sipacRequisicao.numeroDaRequisicao}`
+          `Updating MaterialRequest for SIPAC ID: ${sipacRequisicaoMaterial.numeroDaRequisicao}`
         );
         await this.materialRequestsService.update(
           existingMaterialRequest.id,
@@ -184,13 +185,13 @@ export class RequisicoesMateriaisService {
         );
       } else {
         this.logger.log(
-          `Creating MaterialRequest for SIPAC ID: ${sipacRequisicao.numeroDaRequisicao}`
+          `Creating MaterialRequest for SIPAC ID: ${sipacRequisicaoMaterial.numeroDaRequisicao}`
         );
         await this.materialRequestsService.create(materialRequestDto);
       }
     } catch (error) {
       this.logger.error(
-        `Failed to sync MaterialRequest for SIPAC ID: ${sipacRequisicao.numeroDaRequisicao}`,
+        `Failed to sync MaterialRequest for SIPAC ID: ${sipacRequisicaoMaterial.numeroDaRequisicao}`,
         error.stack
       );
       // Relança o erro para garantir que a transação pai seja revertida.
@@ -272,6 +273,8 @@ export class RequisicoesMateriaisService {
       this.logger.log(
         `Iniciando transação para criar requisição de material...`
       );
+
+      this.logger.log(`Persistindo a criação da requisição de material...`);
       const createdRequisicaoMaterial = await this.prisma.$transaction(
         async (prisma) => {
           const created = await prisma.sipacRequisicaoMaterial.create({
@@ -285,6 +288,7 @@ export class RequisicoesMateriaisService {
             }
           });
 
+          this.logger.log(`Sincronizando com MaterialRequest...`);
           await this.syncMaterialRequest(created);
 
           return created;
@@ -414,6 +418,8 @@ export class RequisicoesMateriaisService {
       this.logger.log(
         `Iniciando transação para atualizar requisição de material...`
       );
+
+      this.logger.log(`Persistindo a atualização da requisição de material...`);
       const updatedRequisicaoMaterial = await this.prisma.$transaction(
         async (prisma) => {
           const updated = await prisma.sipacRequisicaoMaterial.update({

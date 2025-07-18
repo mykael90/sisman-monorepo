@@ -28,6 +28,27 @@ Authorization: Bearer {{token}}
     "facilityComplex" : {"id": "1639.00236.500-5"},
     "building": {"id": "1639.00236.500-5-001"},
     "serviceType": {"id": 1},
+    "createdBy": {"id": 1},
+    "statuses": {"status": "PENDING"}
+}
+
+### POST
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "protocolNumber": "MANUT-{{$timestamp}}",
+    "title": "Example Maintenance Request",
+    "requestedAt": "2023-10-27T10:00:00.000Z",
+    "deadline": "2023-11-15T17:00:00.000Z",
+    "solutionDetails": "Solution provided",
+    "completedAt": "2023-11-10T14:30:00.000Z",
+    "createdBy": {"id": 1},
+    "assignedTo": {"id": 1},
+    "facilityComplex" : {"id": "1639.00236.500-5"},
+    "building": {"id": "1639.00236.500-5-001"},
+    "serviceType": {"id": 1},
     "currentMaintenanceInstance": {"id": 1},
     "createdBy": {"id": 1},
     "statuses": {"status": "PENDING"},

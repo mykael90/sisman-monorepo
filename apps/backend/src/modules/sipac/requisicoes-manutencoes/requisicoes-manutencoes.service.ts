@@ -27,6 +27,12 @@ import { RequisicoesMateriaisService } from '../requisicoes-materiais/requisicoe
 import { removeAccentsAndSpecialChars } from '../../../shared/prisma/seeds/seed-utils';
 import { normalizeString } from '../../../shared/utils/string-utils';
 import { UnidadesService } from '../unidades/unidades.service';
+import {
+  CreateMaintenanceRequestDto,
+  CreateMaintenanceRequestWithRelationsDto
+} from '../../maintenance-requests/dto/maintenance-request.dto';
+import { MaintenanceRequestMapper } from '../../maintenance-requests/mappers/maintenance-request.mapper';
+import { MaintenanceRequestsService } from '../../maintenance-requests/maintenance-requests.service';
 // import { MateriaisService } from '../materiais/materiais.service'; // TODO: Determine if MateriaisService is needed
 
 @Injectable()
@@ -45,7 +51,8 @@ export class RequisicoesManutencoesService {
     // private readonly materiaisService: MateriaisService, // TODO: Determine if MateriaisService is needed
     private readonly sipacScraping: SipacScrapingService,
     private readonly requisicoesMateriaisService: RequisicoesMateriaisService,
-    private readonly unidadesService: UnidadesService
+    private readonly unidadesService: UnidadesService,
+    private readonly maintenanceRequestsService: MaintenanceRequestsService
   ) {}
 
   private processRequisicaoManutencaoData<T extends object>(
@@ -253,20 +260,35 @@ export class RequisicoesManutencoesService {
       );
 
     try {
+      this.logger.log(
+        `Iniciando transação para criar requisição de manutenção...`
+      );
+
       this.logger.log(`Persistindo a criação da requisição de manutenção...`);
-      const result = await this.prisma.sipacRequisicaoManutencao.create({
-        data: prismaCreateInput as Prisma.SipacRequisicaoManutencaoCreateInput,
-        include: {
-          historico: true,
-          informacoesServico: true,
-          requisicoesMateriais: true,
-          predios: true,
-          requisicaoManutencaoMae: true,
-          requisicoesManutencaoFilhas: true,
-          unidadeCusto: true,
-          unidadeRequisitante: true
+
+      const createdRequisicaoMaterial = await this.prisma.$transaction(
+        async (prisma) => {
+          const created = await prisma.sipacRequisicaoManutencao.create({
+            data: prismaCreateInput as Prisma.SipacRequisicaoManutencaoCreateInput,
+            include: {
+              historico: true,
+              informacoesServico: true,
+              requisicoesMateriais: true,
+              predios: true,
+              requisicaoManutencaoMae: true,
+              requisicoesManutencaoFilhas: true,
+              unidadeCusto: true,
+              unidadeRequisitante: true
+            }
+          });
+
+          this.logger.log(`Sincronizando com MaintenanceRequest...`);
+
+          await this.syncMaintenanceRequest(created);
+
+          return created;
         }
-      });
+      );
 
       //antes de retornar o resultado é importante criar as requisicoes de manutencao filhas.
       //pensando melhor, não dá certo, gera inconsistência. É melhor engatilhar só com a mãe. fiz os teste tentando a req. 631/2024 e ela da certo mas tem inconsistencia
@@ -274,8 +296,10 @@ export class RequisicoesManutencoesService {
       //   data.requisicoesManutencaoFilhas
       // );
 
-      return result;
-      // return prismaCreateInput;
+      this.logger.log(
+        `Transação de criação de requisição de manutenção concluída.`
+      );
+      return createdRequisicaoMaterial;
     } catch (error) {
       handlePrismaError(error, this.logger, 'Requisição de Manutenção SIPAC', {
         operation: 'create',
@@ -440,16 +464,28 @@ export class RequisicoesManutencoesService {
 
     try {
       this.logger.log(
+        `Iniciando transação para atualizar requisição de material...`
+      );
+
+      this.logger.log(
         `Persistindo a atualização da requisição de manutenção...`
       );
-      const result = await this.prisma.sipacRequisicaoManutencao.update({
-        where: { id },
-        data: prismaUpdateInput as Prisma.SipacRequisicaoManutencaoUpdateInput,
-        include:
-          Object.keys(relationsToInclude).length > 0
-            ? relationsToInclude
-            : undefined
-      });
+      const updatedRequisicaoMaintenance = await this.prisma.$transaction(
+        async (prisma) => {
+          const updated = await prisma.sipacRequisicaoManutencao.update({
+            where: { id },
+            data: prismaUpdateInput as Prisma.SipacRequisicaoManutencaoUpdateInput,
+            include:
+              Object.keys(relationsToInclude).length > 0
+                ? relationsToInclude
+                : undefined
+          });
+
+          await this.syncMaintenanceRequest(updated);
+
+          return updated;
+        }
+      );
 
       //antes de retornar o resultado é importante criar as requisicoes de manutencao filhas.
       //pensando melhor, não dá certo, gera inconsistência. É melhor engatilhar só com a mãe. fiz os teste tentando a req. 631/2024 e ela da certo mas tem inconsistencia
@@ -457,8 +493,10 @@ export class RequisicoesManutencoesService {
       //   data.requisicoesManutencaoFilhas
       // );
 
-      return result;
-      // return prismaUpdateInput;
+      this.logger.log(
+        `Transação de atualização de requisição de manutenção concluída.`
+      );
+      return updatedRequisicaoMaintenance;
     } catch (error) {
       handlePrismaError(error, this.logger, 'Requisição de Manutenção SIPAC', {
         operation: 'update',
@@ -801,6 +839,53 @@ export class RequisicoesManutencoesService {
       await this.fetchCompleteAndPersistCreateOrUpdateRequisicaoManutencaoArray(
         numerosAnosNaoEncontrados
       );
+    }
+  }
+
+  // New method to sync with MaintenanceRequestsService
+  private async syncMaintenanceRequest(
+    sipacRequisicaoManutencao: Prisma.SipacRequisicaoManutencaoGetPayload<{
+      include: {
+        predios: true;
+        requisicoesMateriais: true;
+        unidadeCusto: true;
+        unidadeRequisitante: true;
+      };
+    }>
+  ): Promise<void> {
+    try {
+      const maintenanceRequestDto: CreateMaintenanceRequestWithRelationsDto =
+        MaintenanceRequestMapper.toCreateDto(sipacRequisicaoManutencao);
+
+      // Assuming protocolNumber in MaintenanceRequest stores the SIPAC request ID
+      const existingMaitenanceRequest =
+        await this.maintenanceRequestsService.findByProtocolNumber(
+          sipacRequisicaoManutencao.numeroRequisicao
+        );
+
+      if (existingMaitenanceRequest) {
+        this.logger.log(
+          `Updating MaintenanceRequest for SIPAC ID: ${sipacRequisicaoManutencao.numeroRequisicao}`
+        );
+
+        await this.maintenanceRequestsService.update(
+          existingMaitenanceRequest.id,
+          maintenanceRequestDto
+        );
+      } else {
+        this.logger.log(
+          `Creating MaintenanceRequest for SIPAC ID: ${sipacRequisicaoManutencao.numeroRequisicao}`
+        );
+
+        await this.maintenanceRequestsService.create(maintenanceRequestDto);
+      }
+    } catch (error) {
+      this.logger.error(
+        `Failed to sync MaintenanceRequest for SIPAC ID: ${sipacRequisicaoManutencao.numeroRequisicao}`,
+        error.stack
+      );
+      // Relança o erro para garantir que a transação pai seja revertida.
+      throw error;
     }
   }
 }

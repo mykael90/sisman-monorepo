@@ -34,21 +34,21 @@ export class MaintenanceRequestsService {
     } = data;
 
     // Validate mandatory relations for connect-only
-    if (!currentMaintenanceInstance || !currentMaintenanceInstance.id) {
-      throw new Error(
-        'A instância de manutenção atual (currentMaintenanceInstance.id) é obrigatória para conectar.'
-      );
-    }
-    if (!createdBy || !createdBy.id) {
-      throw new Error(
-        'O usuário criador (createdBy.id) é obrigatório para conectar.'
-      );
-    }
-    if (!statuses || !statuses.status) {
-      throw new Error(
-        'O status da requisição (status.status) é obrigatório para conectar.'
-      );
-    }
+    // if (!currentMaintenanceInstance || !currentMaintenanceInstance.id) {
+    //   throw new Error(
+    //     'A instância de manutenção atual (currentMaintenanceInstance.id) é obrigatória para conectar.'
+    //   );
+    // }
+    // if (!createdBy || !createdBy.id) {
+    //   throw new Error(
+    //     'O usuário criador (createdBy.id) é obrigatório para conectar.'
+    //   );
+    // }
+    // if (!statuses || !statuses.status) {
+    //   throw new Error(
+    //     'O status da requisição (status.status) é obrigatório para conectar.'
+    //   );
+    // }
 
     // Validate optional relations for connect-only
     if (assignedTo && !assignedTo.id) {
@@ -56,7 +56,7 @@ export class MaintenanceRequestsService {
         'Se o objeto "assignedTo" é fornecido, seu "id" é obrigatório para conectar.'
       );
     }
-    if (space && !space.id) {
+    if (space && !space?.id) {
       throw new Error(
         'Se o objeto "space" é fornecido, seu "id" é obrigatório para conectar.'
       );
@@ -110,17 +110,21 @@ export class MaintenanceRequestsService {
 
     const createInput: Prisma.MaintenanceRequestCreateInput = {
       ...restOfData,
-      currentMaintenanceInstance: {
-        connect: { id: currentMaintenanceInstance.id }
-      },
-      createdBy: { connect: { id: createdBy.id } },
-      statuses: {
-        create: {
-          status: statuses.status,
-          description: statuses.description,
-          isFinal: statuses.isFinal
-        }
-      },
+      currentMaintenanceInstance: currentMaintenanceInstance?.id
+        ? {
+            connect: { id: currentMaintenanceInstance.id }
+          }
+        : undefined,
+      createdBy: createdBy?.id ? { connect: { id: createdBy.id } } : undefined,
+      statuses: statuses?.status
+        ? {
+            create: {
+              status: statuses.status,
+              description: statuses.description,
+              isFinal: statuses.isFinal
+            }
+          }
+        : undefined,
       assignedTo: assignedTo?.id
         ? { connect: { id: assignedTo.id } }
         : undefined,
@@ -321,6 +325,8 @@ export class MaintenanceRequestsService {
       ...restOfData
     } = data;
 
+    this.logger.log(`data AQUIIIIIII!!! ${JSON.stringify(data, null, 2)}`);
+
     const updateInput: Prisma.MaintenanceRequestUpdateInput = {
       ...restOfData
     };
@@ -388,12 +394,12 @@ export class MaintenanceRequestsService {
               order: statuses.order
             }
           }
-        };
+        } as any;
+      } else {
+        throw new Error(
+          'Se o objeto "status" é fornecido para atualização, ele deve conter a propriedade "status".'
+        );
       }
-    } else {
-      throw new Error(
-        'Se o objeto "status" é fornecido para atualização, seu "id" é obrigatório para conectar.'
-      );
     }
 
     // Handle assignedTo (connect or disconnect)
