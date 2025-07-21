@@ -1,0 +1,47 @@
+### Variables
+@urlLocal = {{apiUrl}}/material-warehouse-stock
+@contentType = application/json
+
+### GET all
+GET {{urlLocal}}
+Authorization: Bearer {{token}}
+
+### GET one
+# @prompt id
+GET {{urlLocal}}/{{id}}
+Authorization: Bearer {{token}}
+
+### POST
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "warehouseId": 1,
+    "materialId": "3019000000182",
+    "physicalOnHandQuantity": 100,
+    "initialStockQuantity": 100,
+    "restrictedQuantity": 0,
+    "reservedQuantity": 0,
+    "minStockLevel": 10,
+    "maxStockLevel": 500,
+    "averageCost": 15.50
+}
+
+
+### PUT
+# @prompt id
+PUT {{urlLocal}}/{{id}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "physicalOnHandQuantity": 120
+}
+
+
+### DELETE one
+# @prompt id
+DELETE {{urlLocal}}/{{id}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}

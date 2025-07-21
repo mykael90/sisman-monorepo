@@ -40,6 +40,7 @@ import { MaintenanceServiceTypesModule } from './modules/maintenance-service-typ
 import { InfrastructureBuildingsActivitiesModule } from './modules/infrastructure-buildings-activities/infrastructure-buildings-activities.module';
 import { InfrastructureBuildingTypesModule } from './modules/infrastructure-buildings-types/infrastructure-buildings-types.module';
 import { InfrastructureFacilitiesComplexesModule } from './modules/infrastructure-facilities-complexes/infrastructure-facilities-complexes.module';
+import { MaterialWarehouseStocksModule } from './modules/material-warehouse-stocks/material-warehouse-stocks.module';
 
 @Module({
   imports: [
@@ -94,7 +95,8 @@ import { InfrastructureFacilitiesComplexesModule } from './modules/infrastructur
     MaintenanceServiceTypesModule,
     InfrastructureBuildingsActivitiesModule,
     InfrastructureBuildingTypesModule,
-    InfrastructureFacilitiesComplexesModule
+    InfrastructureFacilitiesComplexesModule,
+    MaterialWarehouseStocksModule
   ],
   controllers: [AppController],
   providers: [

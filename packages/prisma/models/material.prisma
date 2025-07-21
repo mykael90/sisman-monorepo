@@ -98,7 +98,7 @@ model MaterialWarehouseStock {
     minStockLevel       Decimal?  @db.Decimal(12, 2) // Reorder point for this material in this warehouse.
     maxStockLevel       Decimal?  @db.Decimal(12, 2) // Maximum desired stock level.
     lastStockCountDate  DateTime? // Date of the last physical stock count.
-    averageCost         Decimal?  @db.Decimal(12, 4) // Average cost of the material in this warehouse.
+    updatedCost         Decimal?  @db.Decimal(12, 4) // Updated cost of the material in this warehouse.
 
     createdAt DateTime @default(now()) @db.Timestamp(0) // Timestamp for when the record was created.
     updatedAt DateTime @updatedAt @db.Timestamp(0) // Timestamp for the last update of the record (e.g., when stock levels change).

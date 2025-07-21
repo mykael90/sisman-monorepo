@@ -66,7 +66,7 @@ export function handlePrismaError(
         // error.meta.field_name é o campo que causou a falha.
         // Ex: tentando criar um Post com um authorId que não existe em User.
         throw new BadRequestException(
-          `Falha na restrição de chave estrangeira no campo '${error.meta?.field_name}' ao processar o ${entityName}. O registro relacionado pode não existir.`
+          `Falha na restrição de chave estrangeira no campo '${error.meta?.field_name || error.meta?.constraint}' ao processar o ${entityName}. O registro relacionado pode não existir.`
         );
       case 'P2004':
         // A constraint check failed on the database
