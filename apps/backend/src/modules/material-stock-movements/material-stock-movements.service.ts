@@ -79,7 +79,11 @@ export class MaterialStockMovementsService {
    */
   private async applyStockMovementEffect(
     movement: Prisma.MaterialStockMovementGetPayload<{
-      include: { movementType: true; materialRequestItem: true };
+      include: {
+        movementType: true;
+        materialRequestItem: true;
+        warehouseMaterialStock: true;
+      };
     }>,
     prisma: PrismaTransactionClient
   ) {
@@ -87,10 +91,11 @@ export class MaterialStockMovementsService {
       quantity,
       warehouseMaterialStockId,
       globalMaterialId: materialId,
-      materialRequestItem
+      materialRequestItem,
+      warehouseMaterialStock
     } = movement;
     const { operation, code } = movement.movementType;
-    const movementQuantity = Number(quantity);
+    const movementQuantity = quantity.toNumber();
 
     if (!warehouseMaterialStockId) {
       throw new Error(
@@ -107,9 +112,17 @@ export class MaterialStockMovementsService {
     //TODO: Revisar lógica de cálculo de saldo dos itens
     switch (operation) {
       case MaterialStockOperationType.IN:
+        this.logger.debug(`Operação de entrada. ${movementQuantity} e ${code}`);
         if (code === MaterialStockOperationSubType.INITIAL_STOCK_LOAD) {
           //TODO: Lógica para calcular o valor inicial de estoque
-          updatePayload.initialStockQuantity = 100;
+          const initialQuantity =
+            movementQuantity -
+            (warehouseMaterialStock.physicalOnHandQuantity.toNumber() ?? 0);
+          if (initialQuantity > 0) {
+            updatePayload.initialStockQuantity = initialQuantity;
+          } else {
+            //TODO. Pensar como fazer. A quantidade inicial não pode ser menor que 0
+          }
         } else {
           updatePayload.physicalOnHandQuantity = {
             increment: movementQuantity
@@ -242,7 +255,8 @@ export class MaterialStockMovementsService {
           data: movementCreateInput,
           include: {
             movementType: true,
-            materialRequestItem: true // Incluído para a atualização do custo
+            materialRequestItem: true, // Incluído para a atualização do custo
+            warehouseMaterialStock: true
           }
         });
 
@@ -406,7 +420,11 @@ export class MaterialStockMovementsService {
         const movementToDelete =
           await prisma.materialStockMovement.findUniqueOrThrow({
             where: { id },
-            include: { movementType: true, materialRequestItem: true }
+            include: {
+              movementType: true,
+              materialRequestItem: true,
+              warehouseMaterialStock: true
+            }
           });
 
         // Reverte o efeito da movimentação no estoque.
