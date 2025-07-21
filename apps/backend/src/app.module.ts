@@ -42,6 +42,7 @@ import { InfrastructureBuildingTypesModule } from './modules/infrastructure-buil
 import { InfrastructureFacilitiesComplexesModule } from './modules/infrastructure-facilities-complexes/infrastructure-facilities-complexes.module';
 import { MaterialWarehouseStocksModule } from './modules/material-warehouse-stocks/material-warehouse-stocks.module';
 import { MaterialStockMovementTypesModule } from './modules/material-stock-movement-types/material-stock-movement-types.module';
+import { MaterialStockMovementsModule } from './modules/material-stock-movements/material-stock-movements.module';
 
 @Module({
   imports: [
@@ -98,7 +99,8 @@ import { MaterialStockMovementTypesModule } from './modules/material-stock-movem
     InfrastructureBuildingTypesModule,
     InfrastructureFacilitiesComplexesModule,
     MaterialWarehouseStocksModule,
-    MaterialStockMovementTypesModule
+    MaterialStockMovementTypesModule,
+    MaterialStockMovementsModule
   ],
   controllers: [AppController],
   providers: [

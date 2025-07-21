@@ -305,7 +305,8 @@ enum MaterialStockOperationType {
     IN          @map("ENTRADA") // Represents an increase in stock (e.g., purchase, return).
     OUT         @map("SAIDA") // Represents a decrease in stock (e.g., usage, disposal).
     ADJUSTMENT  @map("AJUSTE") // Represents an adjustment that could be positive or negative (e.g., stock count).
-    RESERVATION @map("RESERVA") // Represents a change in reserved/restricted quantity, not physical stock.
+    RESERVATION @map("RESERVA") // Represents a change in reserved quantity, not physical stock.
+    RESTRICTION @map("RESTRICAO") // Represents a change in restricted quantity, not physical stock.
 }
 
 // Records individual material stock transactions (log of all movements).

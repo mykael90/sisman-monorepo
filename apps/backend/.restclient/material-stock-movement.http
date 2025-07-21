@@ -1,0 +1,47 @@
+### Variables
+@urlLocal = {{apiUrl}}/material-stock-movement
+@contentType = application/json
+
+### GET all
+GET {{urlLocal}}
+Authorization: Bearer {{token}}
+
+### GET one
+# @prompt id
+GET {{urlLocal}}/{{id}}
+Authorization: Bearer {{token}}
+
+### POST
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "quantity": 54,
+    "unitOfMeasure": "UN",
+    "globalMaterial": {"id": "302400026280"},
+    "warehouse": {"id": 1},
+    "movementType": {"code": "ENTRADA_CENTRAL"},
+    "processedByUser": {"id": 1},
+    "collectedByUser": {"id": 1},
+    "materialRequestItem": {"id": 217},
+    "maintenanceRequest": {"id": 41}
+}
+
+
+### PUT
+# @prompt id
+PUT {{urlLocal}}/{{id}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "quantity": 12.0
+}
+
+
+### DELETE one
+# @prompt id
+DELETE {{urlLocal}}/{{id}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}

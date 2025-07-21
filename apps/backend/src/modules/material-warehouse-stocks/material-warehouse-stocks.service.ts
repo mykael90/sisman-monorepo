@@ -58,6 +58,27 @@ export class MaterialWarehouseStocksService {
     }
   }
 
+  showByWarehouseAndMaterial(warehouseId: number, materialId: string) {
+    try {
+      const materialWarehouseStock =
+        this.prisma.materialWarehouseStock.findUnique({
+          where: {
+            unique_warehouse_material_standard_stock: {
+              warehouseId,
+              materialId
+            }
+          }
+        });
+      return materialWarehouseStock;
+    } catch (error) {
+      handlePrismaError(error, this.logger, 'MaterialWarehouseStocksService', {
+        operation: 'show',
+        warehouseId,
+        materialId
+      });
+    }
+  }
+
   async update(id: number, data: UpdateMaterialWarehouseStockDto) {
     try {
       const updated = await this.prisma.materialWarehouseStock.update({

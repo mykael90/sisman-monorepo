@@ -1512,7 +1512,8 @@ exports.MaterialStockOperationType = exports.$Enums.MaterialStockOperationType =
   IN: 'IN',
   OUT: 'OUT',
   ADJUSTMENT: 'ADJUSTMENT',
-  RESERVATION: 'RESERVATION'
+  RESERVATION: 'RESERVATION',
+  RESTRICTION: 'RESTRICTION'
 };
 
 exports.MaterialPickingOrderStatus = exports.$Enums.MaterialPickingOrderStatus = {

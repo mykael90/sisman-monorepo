@@ -6,12 +6,13 @@ import {
   IsNumber,
   IsNotEmpty,
   IsString,
-  IsDate
+  IsDate,
+  IsDefined
 } from 'class-validator';
 import { UpdateStorageDto } from '../../storages/dto/storage.dto';
-import { UpdateSipacMaterialDto } from '../../sipac/materiais/dto/sipac-material.dto';
 import { MaterialWarehouseStockWithRelationsResponseDto } from '../../material-warehouse-stocks/dto/material-warehouse-stock.dto';
 import { IntersectionType, PartialType, PickType } from '@nestjs/swagger';
+import { UpdateMaterialDto } from '../../materials/dto/material.dto';
 
 // =================================================================
 // 1. "SUPER CLASSES" DE RESPOSTA (FONTE DA VERDADE)
@@ -195,7 +196,8 @@ const MaterialStockMovementRelationOnlyArgs =
       materialRequestItem: true,
       maintenanceRequest: true,
       materialWithdrawalItem: true,
-      materialReceiptItem: true
+      materialReceiptItem: true,
+      stockTransferOrderItem: true
     }
   });
 
@@ -226,7 +228,7 @@ export class MaterialStockMovementWithRelationsResponseDto
    */
   @IsOptional()
   @ValidateNested()
-  @Type(() => UpdateSipacMaterialDto)
+  @Type(() => UpdateMaterialDto)
   globalMaterial?: MaterialStockMovementRelationOnly['globalMaterial'];
 
   /**
@@ -242,10 +244,9 @@ export class MaterialStockMovementWithRelationsResponseDto
    * Dados do tipo de movimentação de estoque.
    * @example { "id": 1, "description": "Entrada por Compra" }
    */
-  @IsOptional()
   @ValidateNested()
   // @Type(() => MovementTypeDto) // TODO: Criar e importar o DTO apropriado
-  movementType?: MaterialStockMovementRelationOnly['movementType'];
+  movementType: MaterialStockMovementRelationOnly['movementType'];
 
   /**
    * Dados do usuário que processou a movimentação.
@@ -282,6 +283,45 @@ export class MaterialStockMovementWithRelationsResponseDto
   @ValidateNested()
   @Type(() => MaterialWarehouseStockWithRelationsResponseDto)
   warehouseMaterialStock?: MaterialStockMovementRelationOnly['warehouseMaterialStock'];
+
+  /**
+   * Item da requisição de material associado a este movimento de estoque.
+   * @example { id: 1, quantity: 10, materialId: 1, materialRequestId: 1 }
+   */
+  @IsOptional()
+  // @ValidateNested()
+  // @Type(() => UpdateMaterialRequestItemDto)
+  materialRequestItem?: MaterialStockMovementRelationOnly['materialRequestItem'];
+
+  /**
+   * Requisição de manutenção associada a este movimento de estoque.
+   * @example { id: 1, protocolNumber: "MANUT-2023-0001", title: "Reparo elétrico" }
+   */
+  @IsOptional()
+  // @ValidateNested()
+  // @Type(() => UpdateMaintenanceRequestDto)
+  maintenanceRequest?: MaterialStockMovementRelationOnly['maintenanceRequest'];
+
+  /**
+   * Item da retirada de material associado a este movimento de estoque.
+   * @example { id: 1, quantity: 5, materialWithdrawalId: 1, materialStockMovementId: 1 }
+   */
+  @IsOptional()
+  // @ValidateNested()
+  // @Type(() => UpdateMaterialWithdrawalItemDto)
+  materialWithdrawalItem?: MaterialStockMovementRelationOnly['materialWithdrawalItem'];
+
+  /**
+   * Item do recebimento de material associado a este movimento de estoque.
+   * @example { id: 1, quantity: 10, unitPrice: 50.00, materialReceiptId: 1 }
+   */
+  @IsOptional()
+  // @ValidateNested()
+  // @Type(() => UpdateMaterialReceiptItemDto)
+  materialReceiptItem?: MaterialStockMovementRelationOnly['materialReceiptItem'];
+
+  @IsOptional()
+  stockTransferOrderItem?: MaterialStockMovementRelationOnly['stockTransferOrderItem'];
 }
 
 // =================================================================
@@ -290,13 +330,121 @@ export class MaterialStockMovementWithRelationsResponseDto
 
 export class CreateMaterialStockMovementDto extends IntersectionType(
   PartialType(MaterialStockMovementBaseDto),
-  PickType(MaterialStockMovementBaseDto, [
-    'warehouseId',
-    'movementTypeId',
-    'quantity',
-    'unitOfMeasure'
-  ] as const)
+  PickType(MaterialStockMovementBaseDto, ['quantity', 'unitOfMeasure'] as const)
 ) {}
+
+export class CreateMaterialStockMovementWithRelationsDto extends CreateMaterialStockMovementDto {
+  /**
+   * Dados do almoxarifado onde a movimentação ocorreu.
+   * @example { "id": 1, "name": "Almoxarifado Central" }
+   */
+  // @IsOptional()
+  @ValidateNested()
+  @Type(() => UpdateStorageDto)
+  warehouse?: MaterialStockMovementRelationOnly['warehouse'];
+
+  /**
+   * Dados do material global associado a esta movimentação.
+   * @example { "id": "MAT001", "name": "Parafuso" }
+   */
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => UpdateMaterialDto)
+  globalMaterial?: MaterialStockMovementRelationOnly['globalMaterial'];
+
+  /**
+   * Dados da instância específica do material, se aplicável.
+   * @example { "id": 1, "serialNumber": "SN123" }
+   */
+  @IsOptional()
+  @ValidateNested()
+  // @Type(() => MaterialInstanceDto) // TODO: Criar e importar o DTO apropriado
+  materialInstance?: MaterialStockMovementRelationOnly['materialInstance'];
+
+  /**
+   * Dados do tipo de movimentação de estoque.
+   * @example { "id": 1, "description": "Entrada por Compra" }
+   */
+  // @ValidateNested()
+  @IsDefined()
+  // @Type(() => MovementTypeDto) // TODO: Criar e importar o DTO apropriado
+  movementType: MaterialStockMovementRelationOnly['movementType'];
+
+  /**
+   * Dados do usuário que processou a movimentação.
+   * @example { "id": 1, "name": "João Silva" }
+   */
+  @IsOptional()
+  // @ValidateNested()
+  // @Type(() => UserDto) // TODO: Criar e importar o DTO apropriado
+  processedByUser?: MaterialStockMovementRelationOnly['processedByUser'];
+
+  /**
+   * Dados do usuário que coletou o material.
+   * @example { "id": 2, "name": "Maria Souza" }
+   */
+  @IsOptional()
+  // @ValidateNested()
+  // @Type(() => UserDto) // TODO: Criar e importar o DTO apropriado
+  collectedByUser?: MaterialStockMovementRelationOnly['collectedByUser'];
+
+  /**
+   * Dados do trabalhador que coletou o material.
+   * @example { "id": 3, "name": "Pedro Santos" }
+   */
+  @IsOptional()
+  // @ValidateNested()
+  // @Type(() => WorkerDto) // TODO: Criar e importar o DTO apropriado
+  collectedByWorker?: MaterialStockMovementRelationOnly['collectedByWorker'];
+
+  /**
+   * Dados do estoque do material no almoxarifado.
+   * @example { "id": 1, "quantity": 100 }
+   */
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => MaterialWarehouseStockWithRelationsResponseDto)
+  warehouseMaterialStock?: MaterialStockMovementRelationOnly['warehouseMaterialStock'];
+
+  /**
+   * Item da requisição de material associado a este movimento de estoque.
+   * @example { id: 1, quantity: 10, materialId: 1, materialRequestId: 1 }
+   */
+  @IsOptional()
+  // @ValidateNested()
+  // @Type(() => UpdateMaterialRequestItemDto)
+  materialRequestItem?: MaterialStockMovementRelationOnly['materialRequestItem'];
+
+  /**
+   * Requisição de manutenção associada a este movimento de estoque.
+   * @example { id: 1, protocolNumber: "MANUT-2023-0001", title: "Reparo elétrico" }
+   */
+  @IsOptional()
+  // @ValidateNested()
+  // @Type(() => UpdateMaintenanceRequestDto)
+  maintenanceRequest?: MaterialStockMovementRelationOnly['maintenanceRequest'];
+
+  /**
+   * Item da retirada de material associado a este movimento de estoque.
+   * @example { id: 1, quantity: 5, materialWithdrawalId: 1, materialStockMovementId: 1 }
+   */
+  @IsOptional()
+  // @ValidateNested()
+  // @Type(() => UpdateMaterialWithdrawalItemDto)
+  materialWithdrawalItem?: MaterialStockMovementRelationOnly['materialWithdrawalItem'];
+
+  /**
+   * Item do recebimento de material associado a este movimento de estoque.
+   * @example { id: 1, quantity: 10, unitPrice: 50.00, materialReceiptId: 1 }
+   */
+  @IsOptional()
+  // @ValidateNested()
+  // @Type(() => UpdateMaterialReceiptItemDto)
+  materialReceiptItem?: MaterialStockMovementRelationOnly['materialReceiptItem'];
+
+  @IsOptional()
+  stockTransferOrderItem?: MaterialStockMovementRelationOnly['stockTransferOrderItem'];
+}
 
 // =================================================================
 // 4. DTOs DE ATUALIZAÇÃO (INPUT) - Derivadas com PartialType
@@ -304,4 +452,8 @@ export class CreateMaterialStockMovementDto extends IntersectionType(
 
 export class UpdateMaterialStockMovementDto extends PartialType(
   CreateMaterialStockMovementDto
+) {}
+
+export class UpdateMaterialStockMovementWithRelationsDto extends PartialType(
+  CreateMaterialStockMovementWithRelationsDto
 ) {}
