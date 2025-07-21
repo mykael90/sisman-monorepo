@@ -14,6 +14,7 @@ import { handlePrismaError } from '../../shared/utils/prisma-error-handler';
 import {
   Prisma,
   MaterialStockOperationType,
+  MaterialStockOperationSubType,
   MaterialWarehouseStock
 } from '@sisman/prisma';
 
@@ -88,7 +89,7 @@ export class MaterialStockMovementsService {
       globalMaterialId: materialId,
       materialRequestItem
     } = movement;
-    const { operation } = movement.movementType;
+    const { operation, code } = movement.movementType;
     const movementQuantity = Number(quantity);
 
     if (!warehouseMaterialStockId) {
@@ -106,7 +107,14 @@ export class MaterialStockMovementsService {
     //TODO: Revisar lógica de cálculo de saldo dos itens
     switch (operation) {
       case MaterialStockOperationType.IN:
-        updatePayload.physicalOnHandQuantity = { increment: movementQuantity };
+        if (code === MaterialStockOperationSubType.INITIAL_STOCK_LOAD) {
+          //TODO: Lógica para calcular o valor inicial de estoque
+          updatePayload.initialStockQuantity = 100;
+        } else {
+          updatePayload.physicalOnHandQuantity = {
+            increment: movementQuantity
+          };
+        }
         // Atualizar o custo na entrada, se a informação estiver disponível
         if (materialId && materialRequestItem?.unitPrice !== null) {
           updatePayload.updatedCost = materialRequestItem.unitPrice;
@@ -117,13 +125,27 @@ export class MaterialStockMovementsService {
         break;
       case MaterialStockOperationType.ADJUSTMENT:
         // Para ajuste, a quantidade da movimentação é o valor a ser somado (pode ser negativo)
-        updatePayload.physicalOnHandQuantity = { increment: movementQuantity };
+        // TODO:
+        if (
+          code === MaterialStockOperationSubType.ADJUSTMENT_INV_IN ||
+          code === MaterialStockOperationSubType.ADJUSTMENT_RECLASSIFY_IN
+        ) {
+          updatePayload.physicalOnHandQuantity = {
+            increment: movementQuantity
+          };
+        } else {
+          updatePayload.physicalOnHandQuantity = {
+            increment: -movementQuantity
+          };
+        }
         updatePayload.lastStockCountDate = new Date();
         break;
       case MaterialStockOperationType.RESERVATION:
+        // TODO:
         updatePayload.reservedQuantity = { increment: movementQuantity };
         break;
       case MaterialStockOperationType.RESTRICTION:
+        // TODO:
         updatePayload.restrictedQuantity = { increment: movementQuantity };
         break;
       default:
