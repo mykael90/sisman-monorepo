@@ -44,8 +44,8 @@ model User {
 
   // Relations: material.prisma (for MaterialRestrictionOrder)
   restrictionOrdersProcessed      MaterialRestrictionOrder[]              @relation("RestrictionOrdersProcessedBy") // Material restriction orders processed by this user.
-  materialStockMovementsProcessed MaterialStockMovement[]                 @relation("StockMovementsProcessedBy")
-  materialStockMovementsCollected MaterialStockMovement[]                 @relation("StockMovementsCollectedBy")
+  materialStockMovementsProcessed MaterialStockMovement[]                 @relation("StockMovementsProcessedByUser")
+  materialStockMovementsCollected MaterialStockMovement[]                 @relation("StockMovementsCollectedByUser")
   OccurrenceReinforcement         InfrastructureOccurrenceReinforcement[]
 
   madeAllocations MaintenanceServiceOrderAllocation[] @relation("AllocatedByUser")

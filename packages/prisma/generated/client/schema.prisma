@@ -692,7 +692,7 @@ model MaterialWarehouseStock {
   minStockLevel       Decimal?  @db.Decimal(12, 2) // Reorder point for this material in this warehouse.
   maxStockLevel       Decimal?  @db.Decimal(12, 2) // Maximum desired stock level.
   lastStockCountDate  DateTime? // Date of the last physical stock count.
-  averageCost         Decimal?  @db.Decimal(12, 4) // Average cost of the material in this warehouse.
+  updatedCost         Decimal?  @db.Decimal(12, 4) // Updated cost of the material in this warehouse.
 
   createdAt DateTime @default(now()) @db.Timestamp(0) // Timestamp for when the record was created.
   updatedAt DateTime @updatedAt @db.Timestamp(0) // Timestamp for the last update of the record (e.g., when stock levels change).
@@ -929,11 +929,15 @@ model MaterialStockMovement {
 
   // Usuário do almoxarifado que processou a saída
   processedByUserId Int? // Renomeado de userId para clareza, ou pode ser o almoxarife logado
-  processedByUser   User? @relation("StockMovementsProcessedBy", fields: [processedByUserId], references: [id], onDelete: SetNull)
+  processedByUser   User? @relation("StockMovementsProcessedByUser", fields: [processedByUserId], references: [id], onDelete: SetNull)
 
   // Usuário que EFETIVAMENTE RETIROU o material
   collectedByUserId Int? // Pode ser diferente do solicitante ou do técnico da OS
-  collectedByUser   User? @relation("StockMovementsCollectedBy", fields: [collectedByUserId], references: [id], onDelete: SetNull)
+  collectedByUser   User? @relation("StockMovementsCollectedByUser", fields: [collectedByUserId], references: [id], onDelete: SetNull)
+
+  // // Worker que EFETIVAMENTE RETIROU o material
+  collectedByWorkerId Int?
+  collectedByWorker   Worker? @relation("StockMovementsCollectedByWorker", fields: [collectedByWorkerId], references: [id], onDelete: SetNull)
 
   warehouseMaterialStock   MaterialWarehouseStock? @relation(fields: [warehouseMaterialStockId], references: [id]) // Relation to WarehouseMaterialStock.
   warehouseMaterialStockId Int? // Foreign key to WarehouseMaterialStock.
@@ -1911,8 +1915,8 @@ model User {
 
   // Relations: material.prisma (for MaterialRestrictionOrder)
   restrictionOrdersProcessed      MaterialRestrictionOrder[]              @relation("RestrictionOrdersProcessedBy") // Material restriction orders processed by this user.
-  materialStockMovementsProcessed MaterialStockMovement[]                 @relation("StockMovementsProcessedBy")
-  materialStockMovementsCollected MaterialStockMovement[]                 @relation("StockMovementsCollectedBy")
+  materialStockMovementsProcessed MaterialStockMovement[]                 @relation("StockMovementsProcessedByUser")
+  materialStockMovementsCollected MaterialStockMovement[]                 @relation("StockMovementsCollectedByUser")
   OccurrenceReinforcement         InfrastructureOccurrenceReinforcement[]
 
   madeAllocations MaintenanceServiceOrderAllocation[] @relation("AllocatedByUser")
@@ -1960,10 +1964,11 @@ model Worker {
   withdrawalsCollected MaterialWithdrawal[] @relation("WithdrawalsCollectedByWorker") // Material picking orders to be collected by this worker.
 
   // --- NOVAS RELAÇÕES ---
-  ledTeam         WorkerTeam?                         @relation("TeamLeader")
-  teams           WorkerTeam[]                        @relation("TeamMembers")
-  workAllocations MaintenanceServiceOrderAllocation[]
+  ledTeam                         WorkerTeam?                         @relation("TeamLeader")
+  teams                           WorkerTeam[]                        @relation("TeamMembers")
+  workAllocations                 MaintenanceServiceOrderAllocation[]
   // ----------------------
+  materialStockMovementsCollected MaterialStockMovement[]             @relation("StockMovementsCollectedByWorker")
 
   @@map("workers")
 }

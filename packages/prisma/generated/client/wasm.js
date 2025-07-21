@@ -418,7 +418,7 @@ exports.Prisma.MaterialWarehouseStockScalarFieldEnum = {
   minStockLevel: 'minStockLevel',
   maxStockLevel: 'maxStockLevel',
   lastStockCountDate: 'lastStockCountDate',
-  averageCost: 'averageCost',
+  updatedCost: 'updatedCost',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -493,6 +493,7 @@ exports.Prisma.MaterialStockMovementScalarFieldEnum = {
   updatedAt: 'updatedAt',
   processedByUserId: 'processedByUserId',
   collectedByUserId: 'collectedByUserId',
+  collectedByWorkerId: 'collectedByWorkerId',
   warehouseMaterialStockId: 'warehouseMaterialStockId',
   materialRequestItemId: 'materialRequestItemId',
   maintenanceRequestId: 'maintenanceRequestId',

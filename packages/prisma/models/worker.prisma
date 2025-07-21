@@ -8,10 +8,11 @@ model Worker {
     withdrawalsCollected MaterialWithdrawal[] @relation("WithdrawalsCollectedByWorker") // Material picking orders to be collected by this worker.
 
     // --- NOVAS RELAÇÕES ---
-    ledTeam         WorkerTeam?                         @relation("TeamLeader")
-    teams           WorkerTeam[]                        @relation("TeamMembers")
-    workAllocations MaintenanceServiceOrderAllocation[]
+    ledTeam                         WorkerTeam?                         @relation("TeamLeader")
+    teams                           WorkerTeam[]                        @relation("TeamMembers")
+    workAllocations                 MaintenanceServiceOrderAllocation[]
     // ----------------------
+    materialStockMovementsCollected MaterialStockMovement[]             @relation("StockMovementsCollectedByWorker")
 
     @@map("workers")
 }

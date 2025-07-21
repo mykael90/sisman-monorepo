@@ -17,6 +17,10 @@
 // 3. DTOs DE CRIAÇÃO (INPUT) - Derivadas com OmitType
 // =================================================================
 
+/**
+ * DTO para representar a resposta completa, incluindo suas relações.
+ */
+
 // =================================================================
 // 4. DTOs DE ATUALIZAÇÃO (INPUT) - Derivadas com PartialType
 // =================================================================

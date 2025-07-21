@@ -335,11 +335,15 @@ model MaterialStockMovement {
 
     // Usuário do almoxarifado que processou a saída
     processedByUserId Int? // Renomeado de userId para clareza, ou pode ser o almoxarife logado
-    processedByUser   User? @relation("StockMovementsProcessedBy", fields: [processedByUserId], references: [id], onDelete: SetNull)
+    processedByUser   User? @relation("StockMovementsProcessedByUser", fields: [processedByUserId], references: [id], onDelete: SetNull)
 
     // Usuário que EFETIVAMENTE RETIROU o material
     collectedByUserId Int? // Pode ser diferente do solicitante ou do técnico da OS
-    collectedByUser   User? @relation("StockMovementsCollectedBy", fields: [collectedByUserId], references: [id], onDelete: SetNull)
+    collectedByUser   User? @relation("StockMovementsCollectedByUser", fields: [collectedByUserId], references: [id], onDelete: SetNull)
+
+    // // Worker que EFETIVAMENTE RETIROU o material
+    collectedByWorkerId Int?
+    collectedByWorker   Worker? @relation("StockMovementsCollectedByWorker", fields: [collectedByWorkerId], references: [id], onDelete: SetNull)
 
     warehouseMaterialStock   MaterialWarehouseStock? @relation(fields: [warehouseMaterialStockId], references: [id]) // Relation to WarehouseMaterialStock.
     warehouseMaterialStockId Int? // Foreign key to WarehouseMaterialStock.
