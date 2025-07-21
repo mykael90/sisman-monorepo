@@ -127,7 +127,7 @@ class MaterialWarehouseStockBaseDto implements MaterialWarehouseStock {
   @IsNumber()
   @Min(0)
   @Type(() => Number)
-  averageCost: Decimal;
+  updatedCost: Decimal;
 
   /**
    * Data de criação do registro.

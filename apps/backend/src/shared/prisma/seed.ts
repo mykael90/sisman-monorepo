@@ -11,6 +11,7 @@ import { main as seedSipacPredios } from './seeds/sipac-predios.seed';
 import { main as seedWorkersSpecialties } from './seeds/workers-specialties.seed';
 import { main as seedInfrastructureSpaceTypes } from './seeds/infrastructure-space-types.seed';
 import { main as seedInfrastructureBuildings } from './seeds/infrastructure-buildings.seed';
+import { main as seedMaterialStockMovementTypes } from './seeds/material-stock-movement-types.seed';
 
 //
 
@@ -31,7 +32,8 @@ const seedFunctions: {
   seedSipacPredios,
   seedWorkersSpecialties,
   seedInfrastructureSpaceTypes,
-  seedInfrastructureBuildings
+  seedInfrastructureBuildings,
+  seedMaterialStockMovementTypes
 };
 
 // Main function to seed the database
@@ -62,6 +64,7 @@ async function mainSeed() {
       await seedWorkersSpecialties(prisma);
       await seedInfrastructureSpaceTypes(prisma);
       await seedInfrastructureBuildings(prisma);
+      await seedMaterialStockMovementTypes(prisma);
     }
 
     logger.log('Database seeding completed successfully.');

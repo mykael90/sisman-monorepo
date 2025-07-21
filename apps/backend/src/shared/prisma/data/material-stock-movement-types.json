@@ -1,0 +1,205 @@
+[
+  {
+    "operation": "IN",
+    "code": "ENTRADA_CENTRAL",
+    "name": "Entrada por Transferência da Central",
+    "description": "Recebimento de material transferido de almoxarifado central da instituição.",
+    "isActive": true
+  },
+  {
+    "operation": "IN",
+    "code": "ENTRADA_COMPRA",
+    "name": "Entrada por Compra",
+    "description": "Recebimento de material de fornecedor via processo de compra.",
+    "isActive": true
+  },
+  {
+    "operation": "IN",
+    "code": "ENTRADA_DOACAO",
+    "name": "Entrada por Doação (Recebida)",
+    "description": "Recebimento de material como doação de uma entidade externa.",
+    "isActive": true
+  },
+  {
+    "operation": "IN",
+    "code": "ENTRADA_TRANSFERENCIA",
+    "name": "Entrada por Transferência (Recebida)",
+    "description": "Recebimento de material transferido de outro almoxarifado da instituição.",
+    "isActive": true
+  },
+  {
+    "operation": "IN",
+    "code": "ENTRADA_SOBRA_SERVICO",
+    "name": "Entrada por Sobra de Serviço",
+    "description": "Devolução ao estoque de material novo/intacto que sobrou de uma Ordem de Serviço.",
+    "isActive": true
+  },
+  {
+    "operation": "IN",
+    "code": "ENTRADA_DEVOLUCAO_SAIDA",
+    "name": "Entrada por Devolução (Saída Revertida)",
+    "description": "Devolução ao estoque de material que foi retirado para uma OS mas não utilizado.",
+    "isActive": true
+  },
+  {
+    "operation": "IN",
+    "code": "CARGA_INICIAL_ESTOQUE",
+    "name": "Carga Inicial de Estoque",
+    "description": "Usado para registrar o saldo inicial de materiais na implantação do sistema.",
+    "isActive": true
+  },
+  {
+    "operation": "IN",
+    "code": "ENTRADA_DEVOLUCAO_EMPRESTIMO",
+    "name": "Entrada por Devolução de Empréstimo",
+    "description": "Recebimento de material que havia sido emprestado a um usuário ou entidade.",
+    "isActive": true
+  },
+  {
+    "operation": "OUT",
+    "code": "SAIDA_USO_SERVICO",
+    "name": "Saída para Uso em Serviço",
+    "description": "Consumo de material para uma Ordem de Serviço (retirada normal).",
+    "isActive": true
+  },
+  {
+    "operation": "OUT",
+    "code": "SAIDA_USO_EMERGENCIA",
+    "name": "Saída de Emergência para Serviço",
+    "description": "Consumo de material para uma OS em caráter de emergência (regularização posterior).",
+    "isActive": true
+  },
+  {
+    "operation": "OUT",
+    "code": "SAIDA_CENTRAL",
+    "name": "Saída por Transferência para Central",
+    "description": "Envio de material para almoxarifado central da instituição.",
+    "isActive": true
+  },
+  {
+    "operation": "OUT",
+    "code": "SAIDA_TRANSFERENCIA",
+    "name": "Saída por Transferência (Despachada)",
+    "description": "Envio de material para outro almoxarifado da instituição.",
+    "isActive": true
+  },
+  {
+    "operation": "OUT",
+    "code": "SAIDA_DESCARTE_DANO",
+    "name": "Saída por Descarte (Danificado)",
+    "description": "Baixa de material do estoque por estar danificado e sem condições de uso.",
+    "isActive": true
+  },
+  {
+    "operation": "OUT",
+    "code": "SAIDA_DESCARTE_OBSOLETO",
+    "name": "Saída por Descarte (Obsoleto)",
+    "description": "Baixa de material do estoque por se tornar obsoleto.",
+    "isActive": true
+  },
+  {
+    "operation": "OUT",
+    "code": "SAIDA_VENCIMENTO",
+    "name": "Saída por Vencimento",
+    "description": "Baixa de material do estoque devido à expiração do prazo de validade.",
+    "isActive": true
+  },
+  {
+    "operation": "OUT",
+    "code": "SAIDA_DOACAO",
+    "name": "Saída por Doação (Realizada)",
+    "description": "Doação de material do estoque para uma entidade externa.",
+    "isActive": true
+  },
+  {
+    "operation": "OUT",
+    "code": "SAIDA_PERDA_ROUBO",
+    "name": "Saída por Perda/Roubo",
+    "description": "Baixa de material do estoque devido a perda não identificada ou roubo.",
+    "isActive": true
+  },
+  {
+    "operation": "OUT",
+    "code": "SAIDA_BENEFICIAMENTO",
+    "name": "Saída para beneficiamento",
+    "description": "Consumo de material para produzir um material compósito.",
+    "isActive": true
+  },
+  {
+    "operation": "OUT",
+    "code": "SAIDA_EMPRESTIMO",
+    "name": "Saída por Empréstimo",
+    "description": "Saída de material do estoque para empréstimo a um usuário ou entidade.",
+    "isActive": true
+  },
+  {
+    "operation": "ADJUSTMENT",
+    "code": "AJUSTE_INVENTARIO_POSITIVO",
+    "name": "Ajuste de Inventário (Positivo)",
+    "description": "Aumento do saldo de estoque devido a contagem física que encontrou mais material do que o registrado.",
+    "isActive": true
+  },
+  {
+    "operation": "ADJUSTMENT",
+    "code": "AJUSTE_INVENTARIO_NEGATIVO",
+    "name": "Ajuste de Inventário (Negativo)",
+    "description": "Diminuição do saldo de estoque devido a contagem física que encontrou menos material do que o registrado.",
+    "isActive": true
+  },
+  {
+    "operation": "ADJUSTMENT",
+    "code": "AJUSTE_RECLASSIFICACAO_ENTRADA",
+    "name": "Ajuste por Reclassificação (Entrada)",
+    "description": "Entrada de material resultante de uma reclassificação de outro item ou estado. (Usar com cautela)",
+    "isActive": true
+  },
+  {
+    "operation": "ADJUSTMENT",
+    "code": "AJUSTE_RECLASSIFICACAO_SAIDA",
+    "name": "Ajuste por Reclassificação (Saída)",
+    "description": "Saída de material para ser reclassificado como outro item ou estado. (Usar com cautela)",
+    "isActive": true
+  },
+  {
+    "operation": "RESERVATION",
+    "code": "RESERVA_ORDEM_SEPARACAO",
+    "name": "Reserva para Ordem de Separação",
+    "description": "Marca uma quantidade de material como reservada para atender uma `MaterialPickingOrder`.",
+    "isActive": true
+  },
+  {
+    "operation": "RESERVATION",
+    "code": "LIBERACAO_RESERVA_SEPARACAO",
+    "name": "Liberação de Reserva (Ordem de Separação)",
+    "description": "Libera uma quantidade de material que estava reservada para uma `MaterialPickingOrder` (ex: cancelamento).",
+    "isActive": true
+  },
+  {
+    "operation": "RESERVATION",
+    "code": "RESERVA_DEMANDA_ESPECIFICA",
+    "name": "Reserva para Demanda Específica",
+    "description": "Reserva genérica para uma demanda futura não formalizada por Picking Order (uso menos comum).",
+    "isActive": true
+  },
+  {
+    "operation": "RESERVATION",
+    "code": "LIBERACAO_RESERVA_ESPECIFICA",
+    "name": "Liberação de Reserva (Demanda Específica)",
+    "description": "Libera uma reserva genérica.",
+    "isActive": true
+  },
+  {
+    "operation": "RESERVATION",
+    "code": "RESTRICAO_ITEM_PAGO",
+    "name": "Restrição para Item Pago",
+    "description": "Marca uma quantidade como restrita (ex: já paga por um cliente/projeto), afetando o saldo disponível.",
+    "isActive": true
+  },
+  {
+    "operation": "RESERVATION",
+    "code": "LIBERACAO_RESTRICAO_PAGA",
+    "name": "Liberação de Restrição (Item Pago)",
+    "description": "Libera uma quantidade que estava restrita.",
+    "isActive": true
+  }
+]

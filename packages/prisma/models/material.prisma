@@ -293,9 +293,9 @@ model MaterialStockMovementType {
     updatedAt DateTime @updatedAt @db.Timestamp(0) // Timestamp for the last update of the record.
 
     // Relation
-    stockMovements     MaterialStockMovement[] // Stock movements associated with this type.
-    MaterialWithdrawal MaterialWithdrawal[]
-    MaterialReceipt    MaterialReceipt[]
+    stockMovements      MaterialStockMovement[] // Stock movements associated with this type.
+    materialWithdrawals MaterialWithdrawal[]
+    materialReceipts    MaterialReceipt[]
 
     @@map("material_stock_movement_types") // Maps this model to the 'stock_movement_types' table.
 }
