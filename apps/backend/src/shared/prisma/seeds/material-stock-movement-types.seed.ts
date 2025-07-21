@@ -40,7 +40,8 @@ const transformAndValidateMovementType: TransformValidateFn<
   }
 
   // --- 3. Construção do Input para o Prisma ---
-  const createInput: Prisma.MaterialStockMovementTypeCreateInput = {
+  const createInput: Prisma.MaterialStockMovementTypeUncheckedCreateInput = {
+    id: movementTypeDto.id,
     name: movementTypeDto.name,
     code: movementTypeDto.code,
     description: movementTypeDto.description,

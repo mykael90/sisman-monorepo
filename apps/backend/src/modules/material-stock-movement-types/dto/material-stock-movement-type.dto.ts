@@ -1,4 +1,9 @@
-import { $Enums, MaterialStockMovementType, Prisma } from '@sisman/prisma';
+import {
+  $Enums,
+  MaterialStockMovementType,
+  Prisma,
+  MaterialStockOperationSubType
+} from '@sisman/prisma';
 import { Type } from 'class-transformer';
 import {
   IsArray,
@@ -40,15 +45,16 @@ class MaterialStockMovementTypeBaseDto implements MaterialStockMovementType {
    */
   @IsString()
   @IsNotEmpty()
-  name: string;
+  name: MaterialStockOperationSubType;
 
   /**
    * Código único para o tipo de movimentação.
    * @example "ENT-COMP"
    */
+  @IsEnum($Enums.MaterialStockOperationSubType)
   @IsString()
   @IsNotEmpty()
-  code: string;
+  code: MaterialStockOperationSubType;
 
   /**
    * Descrição detalhada do tipo de movimentação.

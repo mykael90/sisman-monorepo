@@ -282,12 +282,12 @@ enum MaterialRequestItemType {
 
 // Defines different types of stock movements, offering more flexibility than an enum.
 model MaterialStockMovementType {
-    id          Int                        @id @default(autoincrement()) // Unique identifier for the stock movement type.
-    code        String                     @unique // Short code for the type (e.g., "ENTRY_PURCHASE", "EXIT_USAGE").
+    id          Int                           @id @default(autoincrement()) // Unique identifier for the stock movement type.
+    code        MaterialStockOperationSubType @unique // Short code for the type (e.g., "ENTRY_PURCHASE", "EXIT_USAGE").
     name        String // User-friendly name (e.g., "Entry from Purchase", "Exit for Usage").
-    description String?                    @db.Text // Detailed description of the movement type.
+    description String?                       @db.Text // Detailed description of the movement type.
     operation   MaterialStockOperationType // Defines if it's an IN (increase), OUT (decrease), or ADJUSTMENT.
-    isActive    Boolean                    @default(true) // Indicates if the movement type is active.
+    isActive    Boolean                       @default(true) // Indicates if the movement type is active.
 
     createdAt DateTime @default(now()) @db.Timestamp(0) // Timestamp for when the record was created.
     updatedAt DateTime @updatedAt @db.Timestamp(0) // Timestamp for the last update of the record.
@@ -307,6 +307,49 @@ enum MaterialStockOperationType {
     ADJUSTMENT  @map("AJUSTE") // Represents an adjustment that could be positive or negative (e.g., stock count).
     RESERVATION @map("RESERVA") // Represents a change in reserved quantity, not physical stock.
     RESTRICTION @map("RESTRICAO") // Represents a change in restricted quantity, not physical stock.
+}
+
+/// Enum para os subtipos de operações de movimentação de estoque de material.
+/// Mapeia o código em inglês (padrão do sistema) para o código em português (usado no banco de dados).
+enum MaterialStockOperationSubType {
+    // --- 1. Operação: IN (ENTRADA) ---
+    IN_CENTRAL           @map("ENTRADA_CENTRAL") // Entrada por Transferência da Central
+    IN_PURCHASE          @map("ENTRADA_COMPRA") // Entrada por Compra
+    IN_DONATION          @map("ENTRADA_DOACAO") // Entrada por Doação (Recebida)
+    IN_TRANSFER          @map("ENTRADA_TRANSFERENCIA") // Entrada por Transferência (Recebida)
+    IN_SERVICE_SURPLUS   @map("ENTRADA_SOBRA_SERVICO") // Entrada por Sobra de Serviço
+    IN_RETURN_FROM_ISSUE @map("ENTRADA_DEVOLUCAO_SAIDA") // Entrada por Devolução (Saída Revertida)
+    INITIAL_STOCK_LOAD   @map("CARGA_INICIAL_ESTOQUE") // Carga Inicial de Estoque
+    IN_LOAN_RETURN       @map("ENTRADA_DEVOLUCAO_EMPRESTIMO") // Entrada por Devolução de Empréstimo
+
+    // --- 2. Operação: OUT (SAIDA) ---
+    OUT_SERVICE_USAGE     @map("SAIDA_USO_SERVICO") // Saída para Uso em Serviço
+    OUT_EMERGENCY_USAGE   @map("SAIDA_USO_EMERGENCIA") // Saída de Emergência para Serviço
+    OUT_CENTRAL           @map("SAIDA_CENTRAL") // Saída por Transferência para Central
+    OUT_TRANSFER          @map("SAIDA_TRANSFERENCIA") // Saída por Transferência (Despachada)
+    OUT_DISPOSAL_DAMAGE   @map("SAIDA_DESCARTE_DANO") // Saída por Descarte (Danificado)
+    OUT_DISPOSAL_OBSOLETE @map("SAIDA_DESCARTE_OBSOLETO") // Saída por Descarte (Obsoleto)
+    OUT_EXPIRATION        @map("SAIDA_VENCIMENTO") // Saída por Vencimento
+    OUT_DONATION          @map("SAIDA_DOACAO") // Saída por Doação (Realizada)
+    OUT_LOSS              @map("SAIDA_PERDA_ROUBO") // Saída por Perda/Roubo
+    OUT_PROCESSING        @map("SAIDA_BENEFICIAMENTO") // Saída para beneficiamento
+    OUT_LOAN              @map("SAIDA_EMPRESTIMO") // Saída por Empréstimo
+
+    // --- 3. Operação: ADJUSTMENT (AJUSTE) ---
+    ADJUSTMENT_INV_IN         @map("AJUSTE_INVENTARIO_ENTRADA") // Ajuste de Inventário (Positivo)
+    ADJUSTMENT_INV_OUT        @map("AJUSTE_INVENTARIO_SAIDA") // Ajuste de Inventário (Negativo)
+    ADJUSTMENT_RECLASSIFY_IN  @map("AJUSTE_RECLASSIFICACAO_ENTRADA") // Ajuste por Reclassificação (Entrada)
+    ADJUSTMENT_RECLASSIFY_OUT @map("AJUSTE_RECLASSIFICACAO_SAIDA") // Ajuste por Reclassificação (Saída)
+
+    // --- 4. Operação: RESERVATION (RESERVA) ---
+    RESERVE_FOR_PICKING_ORDER    @map("RESERVA_ORDEM_SEPARACAO") // Reserva para Ordem de Separação
+    RELEASE_PICKING_RESERVATION  @map("LIBERACAO_RESERVA_SEPARACAO") // Liberação de Reserva (Ordem de Separação)
+    RESERVE_FOR_SPECIFIC_DEMAND  @map("RESERVA_DEMANDA_ESPECIFICA") // Reserva para Demanda Específica
+    RELEASE_SPECIFIC_RESERVATION @map("LIBERACAO_RESERVA_ESPECIFICA") // Liberação de Reserva (Demanda Específica)
+
+    // --- 5. Operação: RESTRICTION (RESTRICAO) ---
+    RESTRICT_FOR_PAID_ITEM   @map("RESTRICAO_ITEM_PAGO") // Restrição para Item Pago
+    RELEASE_PAID_RESTRICTION @map("LIBERACAO_RESTRICAO_PAGA") // Liberação de Restrição (Item Pago)
 }
 
 // Records individual material stock transactions (log of all movements).

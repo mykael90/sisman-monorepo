@@ -21,7 +21,7 @@ Authorization: Bearer {{token}}
     "unitOfMeasure": "UN",
     "globalMaterial": {"id": "302400026280"},
     "warehouse": {"id": 1},
-    "movementType": {"code": "ENTRADA_CENTRAL"},
+    "movementType": {"code": "IN_CENTRAL"},
     "processedByUser": {"id": 1},
     "collectedByUser": {"id": 1},
     "materialRequestItem": {"id": 217},
