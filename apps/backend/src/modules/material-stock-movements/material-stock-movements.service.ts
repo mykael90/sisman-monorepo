@@ -18,11 +18,8 @@ import {
   MaterialWarehouseStock
 } from '@sisman/prisma';
 
-// Helper Type para o cliente Prisma transacional, para clareza
-type PrismaTransactionClient = Omit<
-  PrismaService,
-  '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'
->;
+// Definindo o tipo do cliente Prisma para clareza
+type PrismaClient = Prisma.TransactionClient | PrismaService;
 
 @Injectable()
 export class MaterialStockMovementsService {
@@ -53,7 +50,7 @@ export class MaterialStockMovementsService {
   private async ensureStockRecordExists(
     warehouseId: number,
     materialId: string,
-    prisma: PrismaTransactionClient
+    prisma: PrismaClient // Usamos o tipo genérico aqui
   ): Promise<MaterialWarehouseStock> {
     this.logger.log(
       `Garantindo a existência do registro de estoque para material ${materialId} no almoxarifado ${warehouseId}.`
@@ -85,7 +82,7 @@ export class MaterialStockMovementsService {
         warehouseMaterialStock: true;
       };
     }>,
-    prisma: PrismaTransactionClient
+    tx: PrismaClient
   ) {
     const {
       quantity,
@@ -121,7 +118,10 @@ export class MaterialStockMovementsService {
           if (initialQuantity > 0) {
             updatePayload.initialStockQuantity = initialQuantity;
           } else {
-            //TODO. Pensar como fazer. A quantidade inicial não pode ser menor que 0
+            //TODO. Pensar como fazer. A quantidade inicial não pode ser menor que 0. Acho que ele deve inserir um estravio primeiro.
+            throw new BadRequestException(
+              `A quantidade inicial calculada não pode ser negativa. Primeiramente, registre um estravio do material com id ${materialId} referente a ${-initialQuantity} unidades.`
+            );
           }
         } else {
           updatePayload.physicalOnHandQuantity = {
@@ -168,14 +168,60 @@ export class MaterialStockMovementsService {
         return; // Nenhuma ação necessária
     }
 
-    await prisma.materialWarehouseStock.update({
+    await tx.materialWarehouseStock.update({
       where: { id: warehouseMaterialStockId },
       data: updatePayload
     });
   }
 
+  /**
+   * Método público para criar uma movimentação de estoque.
+   * Gerencia a transação: inicia uma nova ou utiliza uma existente.
+   */
   async create(
-    data: CreateMaterialStockMovementWithRelationsDto
+    data: CreateMaterialStockMovementWithRelationsDto,
+    // O tx opcional já estava correto na sua assinatura
+    tx?: Prisma.TransactionClient
+  ): Promise<MaterialStockMovementWithRelationsResponseDto> {
+    try {
+      // Se um 'tx' (cliente de transação) for fornecido, use-o diretamente.
+      if (tx) {
+        this.logger.log(
+          `Executando a criação dentro de uma transação existente.`
+        );
+        // Passamos o 'tx' para o método que contém a lógica de negócio.
+        return await this._createMovementLogic(data, tx);
+      }
+
+      // Se nenhum 'tx' for fornecido, crie uma nova transação.
+      this.logger.log(
+        `Iniciando uma nova transação para criar a movimentação.`
+      );
+      return await this.prisma.$transaction(async (prismaTransactionClient) => {
+        // Passamos o cliente da nova transação para o método de lógica.
+        return await this._createMovementLogic(
+          data,
+          prismaTransactionClient as any
+        );
+      });
+    } catch (error) {
+      handlePrismaError(error, this.logger, 'MaterialStockMovementsService', {
+        operation: 'create',
+        data
+      });
+      throw error; // Re-lança o erro para ser tratado pela camada superior.
+    }
+  }
+
+  /**
+   * Método privado que contém a lógica de negócio principal para criar a movimentação.
+   * Ele é agnóstico à transação, apenas recebe um cliente Prisma para operar.
+   * @param data Os dados para a criação.
+   * @param prisma O cliente Prisma a ser usado (pode ser o principal ou um de transação).
+   */
+  private async _createMovementLogic(
+    data: CreateMaterialStockMovementWithRelationsDto,
+    prisma: PrismaClient // Usamos o tipo genérico aqui
   ): Promise<MaterialStockMovementWithRelationsResponseDto> {
     const {
       warehouse,
@@ -199,129 +245,72 @@ export class MaterialStockMovementsService {
       );
     }
 
-    try {
-      this.logger.log(
-        `Iniciando transação para registrar movimentação de material...`
-      );
+    // PASSO 1: Garantir que o "contêiner" do estoque exista.
+    const stockRecord = await this.ensureStockRecordExists(
+      warehouse.id,
+      globalMaterial.id,
+      prisma // Usar o cliente Prisma recebido
+    );
 
-      const createdMovement = await this.prisma.$transaction(async (prisma) => {
-        // PASSO 1: Garantir que o "contêiner" do estoque exista.
-        const stockRecord = await this.ensureStockRecordExists(
-          warehouse.id,
-          globalMaterial.id,
-          prisma
-        );
+    // PASSO 2: Registrar o evento da movimentação.
+    this.logger.log(`Registrando o evento de movimentação...`);
+    const movementCreateInput: Prisma.MaterialStockMovementCreateInput = {
+      ...restOfData,
+      warehouse: { connect: { id: warehouse.id } },
+      globalMaterial: { connect: { id: globalMaterial.id } },
+      warehouseMaterialStock: { connect: { id: stockRecord.id } },
+      movementType: movementType?.code
+        ? { connect: { code: movementType.code } }
+        : undefined,
+      processedByUser: processedByUser?.id
+        ? { connect: { id: processedByUser.id } }
+        : undefined,
+      collectedByUser: collectedByUser?.id
+        ? { connect: { id: collectedByUser.id } }
+        : undefined,
+      collectedByWorker: collectedByWorker?.id
+        ? { connect: { id: collectedByWorker.id } }
+        : undefined,
+      materialInstance: materialInstance?.id
+        ? { connect: { id: materialInstance.id } }
+        : undefined,
+      materialRequestItem: materialRequestItem?.id
+        ? { connect: { id: materialRequestItem.id } }
+        : undefined,
+      maintenanceRequest: maintenanceRequest?.id
+        ? { connect: { id: maintenanceRequest.id } }
+        : undefined,
+      materialWithdrawalItem: materialWithdrawalItem?.id
+        ? { connect: { id: materialWithdrawalItem.id } }
+        : undefined,
+      materialReceiptItem: materialReceiptItem?.id
+        ? { connect: { id: materialReceiptItem.id } }
+        : undefined,
+      stockTransferOrderItem: stockTransferOrderItem?.id
+        ? { connect: { id: stockTransferOrderItem.id } }
+        : undefined
+    };
 
-        // PASSO 2: Registrar o evento da movimentação, conectando ao contêiner de estoque.
-        this.logger.log(`Registrando o evento de movimentação...`);
-        const movementCreateInput: Prisma.MaterialStockMovementCreateInput = {
-          ...restOfData,
-          warehouse: { connect: { id: warehouse.id } },
-          globalMaterial: { connect: { id: globalMaterial.id } },
-          warehouseMaterialStock: { connect: { id: stockRecord.id } },
-          movementType: movementType?.code
-            ? { connect: { code: movementType.code } }
-            : undefined,
-          processedByUser: processedByUser?.id
-            ? { connect: { id: processedByUser.id } }
-            : undefined,
-          collectedByUser: collectedByUser?.id
-            ? { connect: { id: collectedByUser.id } }
-            : undefined,
-          collectedByWorker: collectedByWorker?.id
-            ? { connect: { id: collectedByWorker.id } }
-            : undefined,
-          materialInstance: materialInstance?.id
-            ? { connect: { id: materialInstance.id } }
-            : undefined,
-          materialRequestItem: materialRequestItem?.id
-            ? { connect: { id: materialRequestItem.id } }
-            : undefined,
-          maintenanceRequest: maintenanceRequest?.id
-            ? { connect: { id: maintenanceRequest.id } }
-            : undefined,
-          materialWithdrawalItem: materialWithdrawalItem?.id
-            ? { connect: { id: materialWithdrawalItem.id } }
-            : undefined,
-          materialReceiptItem: materialReceiptItem?.id
-            ? { connect: { id: materialReceiptItem.id } }
-            : undefined,
-          stockTransferOrderItem: stockTransferOrderItem?.id
-            ? { connect: { id: stockTransferOrderItem.id } }
-            : undefined
-        };
-
-        const newMovement = await prisma.materialStockMovement.create({
-          data: movementCreateInput,
-          include: {
-            movementType: true,
-            materialRequestItem: true, // Incluído para a atualização do custo
-            warehouseMaterialStock: true
-          }
-        });
-
-        // PASSO 3: Aplicar o efeito da movimentação que acabamos de criar ao saldo do estoque.
-        await this.applyStockMovementEffect(newMovement, prisma);
-
-        // Para retornar o objeto completo, buscamos novamente com todas as relações desejadas.
-        this.logger.log(
-          `Buscando o registro completo da movimentação para o retorno.`
-        );
-        return prisma.materialStockMovement.findUniqueOrThrow({
-          where: { id: newMovement.id },
-          include: this.includeRelations
-        });
-      });
-
-      this.logger.log(`Transação concluída com sucesso!`);
-      return createdMovement;
-    } catch (error) {
-      handlePrismaError(error, this.logger, 'MaterialStockMovementsService', {
-        operation: 'create',
-        data
-      });
-      throw error;
-    }
-  }
-
-  async list(): Promise<MaterialStockMovementWithRelationsResponseDto[]> {
-    try {
-      return this.prisma.materialStockMovement.findMany({
-        include: this.includeRelations
-      });
-    } catch (error) {
-      handlePrismaError(error, this.logger, 'MaterialStockMovementsService', {
-        operation: 'list'
-      });
-      throw error;
-    }
-  }
-
-  async show(
-    id: number
-  ): Promise<MaterialStockMovementWithRelationsResponseDto> {
-    try {
-      const materialStockMovement =
-        await this.prisma.materialStockMovement.findUnique({
-          where: { id },
-          include: this.includeRelations
-        });
-      if (!materialStockMovement) {
-        throw new NotFoundException(
-          `Material Stock Movement with ID ${id} not found`
-        );
+    const newMovement = await prisma.materialStockMovement.create({
+      data: movementCreateInput,
+      include: {
+        movementType: true,
+        materialRequestItem: true,
+        warehouseMaterialStock: true
       }
-      return materialStockMovement;
-    } catch (error) {
-      if (error instanceof NotFoundException) {
-        throw error;
-      }
-      handlePrismaError(error, this.logger, 'MaterialStockMovementsService', {
-        operation: 'show',
-        id
-      });
-      throw error;
-    }
+    });
+
+    // PASSO 3: Aplicar o efeito da movimentação ao saldo do estoque.
+    await this.applyStockMovementEffect(newMovement, prisma); // Usar o cliente Prisma recebido
+
+    // PASSO 4: Buscar o registro completo para o retorno.
+    this.logger.log(
+      `Buscando o registro completo da movimentação para o retorno.`
+    );
+    return prisma.materialStockMovement.findUniqueOrThrow({
+      where: { id: newMovement.id },
+      include: this.includeRelations
+    });
   }
 
   async update(
@@ -433,7 +422,7 @@ export class MaterialStockMovementsService {
           quantity: -movementToDelete.quantity as any // Inverte a quantidade
         };
 
-        await this.applyStockMovementEffect(reverseMovement, prisma);
+        await this.applyStockMovementEffect(reverseMovement, prisma as any);
 
         // Agora, exclui a movimentação.
         await prisma.materialStockMovement.delete({ where: { id } });
@@ -447,6 +436,46 @@ export class MaterialStockMovementsService {
     } catch (error) {
       handlePrismaError(error, this.logger, 'MaterialStockMovementsService', {
         operation: 'delete',
+        id
+      });
+      throw error;
+    }
+  }
+
+  async list(): Promise<MaterialStockMovementWithRelationsResponseDto[]> {
+    try {
+      return this.prisma.materialStockMovement.findMany({
+        include: this.includeRelations
+      });
+    } catch (error) {
+      handlePrismaError(error, this.logger, 'MaterialStockMovementsService', {
+        operation: 'list'
+      });
+      throw error;
+    }
+  }
+
+  async show(
+    id: number
+  ): Promise<MaterialStockMovementWithRelationsResponseDto> {
+    try {
+      const materialStockMovement =
+        await this.prisma.materialStockMovement.findUnique({
+          where: { id },
+          include: this.includeRelations
+        });
+      if (!materialStockMovement) {
+        throw new NotFoundException(
+          `Material Stock Movement with ID ${id} not found`
+        );
+      }
+      return materialStockMovement;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      handlePrismaError(error, this.logger, 'MaterialStockMovementsService', {
+        operation: 'show',
         id
       });
       throw error;
