@@ -66,7 +66,6 @@ export class MaterialReceiptsService {
           // Remova quaisquer campos que não pertençam a MaterialReceiptItem
           materialId: item.materialId,
           unitPrice: item.unitPrice,
-          unitOfMeasure: item.unitOfMeasure,
           quantityExpected: item.quantityExpected,
           quantityReceived: item.quantityReceived,
           quantityAccepted: item.quantityAccepted,
@@ -94,7 +93,7 @@ export class MaterialReceiptsService {
         });
 
         this.logger.log(
-          `Recibo ${newReceipt.id} e seus ${newReceipt.items.length} itens criados.`
+          `Recebimento de material nº ${newReceipt.id} e seus ${newReceipt.items.length} itens criados.`
         );
 
         this.logger.log(`Iniciando criação das movimentações de estoque...`);
@@ -112,7 +111,6 @@ export class MaterialReceiptsService {
           const materialStockMovement: CreateMaterialStockMovementWithRelationsDto =
             {
               quantity: createdItem.quantityAccepted,
-              unitOfMeasure: createdItem.unitOfMeasure,
               unitPrice: createdItem.unitPrice,
               globalMaterial: { id: createdItem.materialId } as any,
               warehouse: { id: destinationWarehouse.id } as any,
@@ -131,21 +129,6 @@ export class MaterialReceiptsService {
                   } as any)
                 : undefined
             };
-
-          // const materialStockMovement: CreateMaterialStockMovementWithRelationsDto =
-          //   {
-          //     quantity: items[0].quantityAccepted,
-          //     unitOfMeasure: items[0].unitOfMeasure,
-          //     unitPrice: items[0].unitPrice,
-          //     globalMaterial: { id: items[0].materialId } as any,
-          //     warehouse: { id: destinationWarehouse.id } as any,
-          //     movementType: { code: movementType.code } as any,
-          //     processedByUser: { id: processedByUser.id } as any,
-          //     materialRequestItem: { id: newReceipt.items[0].id } as any,
-          //     maintenanceRequest: {
-          //       id: materialRequest.maintenanceRequestId
-          //     } as any
-          //   };
 
           // Chama o serviço de movimentação, passando o cliente da transação (tx)
           await this.materialStockMovementsService.create(

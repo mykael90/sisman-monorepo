@@ -17,7 +17,7 @@ Content-Type: {{contentType}}
 Authorization: Bearer {{token}}
 
 {
-    "receiptNumber": "REC-013",
+    "receiptNumber": "REC-015",
     "receiptDate": "2024-07-25T10:00:00Z",
     "movementType": {
         "code": "IN_CENTRAL"
@@ -30,18 +30,17 @@ Authorization: Bearer {{token}}
     },
     "items": [
         {
-            "materialId": "302400023848",
-            "quantityExpected": 2,
-            "quantityReceived": 2,
-            "quantityAccepted": 2,
+            "materialId": "302400029547",
+            "quantityExpected": 3,
+            "quantityReceived": 3,
+            "quantityAccepted": 3,
             "quantityRejected": 0,
-            "unitPrice": 1.62,
-            "unitOfMeasure": "UN",
-            "materialRequestItemId": 238
+            "unitPrice": 0.66,
+            "materialRequestItemId": 292
         }
     ],
     "materialRequest": {
-        "id": 222
+        "id": 246
     }
 }
 

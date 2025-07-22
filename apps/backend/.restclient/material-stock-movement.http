@@ -18,7 +18,6 @@ Authorization: Bearer {{token}}
 
 {
     "quantity": 60,
-    "unitOfMeasure": "UN",
     "unitPrice": 15.50,
     "globalMaterial": {"id": "302400026280"},
     "warehouse": {"id": 1},

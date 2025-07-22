@@ -487,7 +487,6 @@ exports.Prisma.MaterialStockMovementScalarFieldEnum = {
   materialInstanceId: 'materialInstanceId',
   movementTypeId: 'movementTypeId',
   quantity: 'quantity',
-  unitOfMeasure: 'unitOfMeasure',
   movementDate: 'movementDate',
   unitPrice: 'unitPrice',
   createdAt: 'createdAt',
@@ -553,7 +552,6 @@ exports.Prisma.MaterialPickingOrderItemScalarFieldEnum = {
   materialPickingOrderId: 'materialPickingOrderId',
   materialRequestItemId: 'materialRequestItemId',
   quantityToPick: 'quantityToPick',
-  unitOfMeasure: 'unitOfMeasure',
   quantityPicked: 'quantityPicked',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -582,7 +580,6 @@ exports.Prisma.MaterialWithdrawalItemScalarFieldEnum = {
   globalMaterialId: 'globalMaterialId',
   materialInstanceId: 'materialInstanceId',
   quantityWithdrawn: 'quantityWithdrawn',
-  unitOfMeasure: 'unitOfMeasure',
   materialRequestItemId: 'materialRequestItemId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -613,7 +610,6 @@ exports.Prisma.MaterialTransferOrderItemScalarFieldEnum = {
   materialId: 'materialId',
   materialInstanceId: 'materialInstanceId',
   quantityRequested: 'quantityRequested',
-  unitOfMeasure: 'unitOfMeasure',
   quantityShipped: 'quantityShipped',
   quantityReceived: 'quantityReceived',
   createdAt: 'createdAt',
@@ -641,7 +637,6 @@ exports.Prisma.MaterialReceiptItemScalarFieldEnum = {
   materialReceiptId: 'materialReceiptId',
   materialId: 'materialId',
   quantityExpected: 'quantityExpected',
-  unitOfMeasure: 'unitOfMeasure',
   quantityReceived: 'quantityReceived',
   quantityAccepted: 'quantityAccepted',
   quantityRejected: 'quantityRejected',
@@ -674,7 +669,6 @@ exports.Prisma.MaterialRestrictionOrderItemScalarFieldEnum = {
   globalMaterialId: 'globalMaterialId',
   materialInstanceId: 'materialInstanceId',
   quantity: 'quantity',
-  unitOfMeasure: 'unitOfMeasure',
   targetMaterialRequestItemId: 'targetMaterialRequestItemId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -1137,8 +1131,7 @@ exports.Prisma.MaterialStockMovementTypeOrderByRelevanceFieldEnum = {
 };
 
 exports.Prisma.MaterialStockMovementOrderByRelevanceFieldEnum = {
-  globalMaterialId: 'globalMaterialId',
-  unitOfMeasure: 'unitOfMeasure'
+  globalMaterialId: 'globalMaterialId'
 };
 
 exports.Prisma.MaterialDerivedConditionOrderByRelevanceFieldEnum = {
@@ -1162,18 +1155,13 @@ exports.Prisma.MaterialPickingOrderOrderByRelevanceFieldEnum = {
   notes: 'notes'
 };
 
-exports.Prisma.MaterialPickingOrderItemOrderByRelevanceFieldEnum = {
-  unitOfMeasure: 'unitOfMeasure'
-};
-
 exports.Prisma.MaterialWithdrawalOrderByRelevanceFieldEnum = {
   withdrawalNumber: 'withdrawalNumber',
   notes: 'notes'
 };
 
 exports.Prisma.MaterialWithdrawalItemOrderByRelevanceFieldEnum = {
-  globalMaterialId: 'globalMaterialId',
-  unitOfMeasure: 'unitOfMeasure'
+  globalMaterialId: 'globalMaterialId'
 };
 
 exports.Prisma.MaterialTransferOrderOrderByRelevanceFieldEnum = {
@@ -1182,8 +1170,7 @@ exports.Prisma.MaterialTransferOrderOrderByRelevanceFieldEnum = {
 };
 
 exports.Prisma.MaterialTransferOrderItemOrderByRelevanceFieldEnum = {
-  materialId: 'materialId',
-  unitOfMeasure: 'unitOfMeasure'
+  materialId: 'materialId'
 };
 
 exports.Prisma.MaterialReceiptOrderByRelevanceFieldEnum = {
@@ -1195,7 +1182,6 @@ exports.Prisma.MaterialReceiptOrderByRelevanceFieldEnum = {
 
 exports.Prisma.MaterialReceiptItemOrderByRelevanceFieldEnum = {
   materialId: 'materialId',
-  unitOfMeasure: 'unitOfMeasure',
   rejectionReason: 'rejectionReason',
   batchNumber: 'batchNumber'
 };
@@ -1206,8 +1192,7 @@ exports.Prisma.MaterialRestrictionOrderOrderByRelevanceFieldEnum = {
 };
 
 exports.Prisma.MaterialRestrictionOrderItemOrderByRelevanceFieldEnum = {
-  globalMaterialId: 'globalMaterialId',
-  unitOfMeasure: 'unitOfMeasure'
+  globalMaterialId: 'globalMaterialId'
 };
 
 exports.Prisma.SipacMaterialOrderByRelevanceFieldEnum = {

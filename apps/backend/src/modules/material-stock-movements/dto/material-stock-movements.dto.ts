@@ -84,14 +84,6 @@ class MaterialStockMovementBaseDto implements MaterialStockMovement {
   quantity: Prisma.Decimal;
 
   /**
-   * Unidade de medida do material.
-   * @example "UN"
-   */
-  @IsString()
-  @IsNotEmpty()
-  unitOfMeasure: string;
-
-  /**
    * Data e hora da movimentação.
    * @example "2023-01-15T10:00:00Z"
    */
@@ -342,7 +334,7 @@ export class MaterialStockMovementWithRelationsResponseDto
 
 export class CreateMaterialStockMovementDto extends IntersectionType(
   PartialType(MaterialStockMovementBaseDto),
-  PickType(MaterialStockMovementBaseDto, ['quantity', 'unitOfMeasure'] as const)
+  PickType(MaterialStockMovementBaseDto, ['quantity'] as const)
 ) {}
 
 export class CreateMaterialStockMovementWithRelationsDto extends CreateMaterialStockMovementDto {
