@@ -1,0 +1,63 @@
+### Variables
+@urlLocal = {{apiUrl}}/material-withdrawal
+@contentType = application/json
+
+### GET all
+GET {{urlLocal}}
+Authorization: Bearer {{token}}
+
+### GET one
+# @prompt id
+GET {{urlLocal}}/{{id}}
+Authorization: Bearer {{token}}
+
+### POST
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "withdrawalNumber": "RET-007",
+    "withdrawalDate": "2024-07-25T10:00:00Z",
+    "maintenanceRequest": {"id": 79},
+    "warehouse": {
+        "id": 1
+    },
+    "processedByUser": {
+        "id": 1
+    },
+    "collectedByWorker": {
+    "id": 1
+    },
+    "movementType": {
+        "code": "OUT_SERVICE_USAGE"
+    },
+    "items": [
+        {
+            "globalMaterialId": "302400029547",
+            "quantityWithdrawn": 1,
+            "materialRequestItemId": 292
+        }
+    ],
+    "materialRequest": {
+        "id": 246
+    }
+}
+
+
+### PUT
+# @prompt id
+PUT {{urlLocal}}/{{id}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "withdrawalNumber": "RET-001-UPDATED"
+}
+
+
+### DELETE one
+# @prompt id
+DELETE {{urlLocal}}/{{id}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}

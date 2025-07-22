@@ -44,6 +44,7 @@ import { MaterialWarehouseStocksModule } from './modules/material-warehouse-stoc
 import { MaterialStockMovementTypesModule } from './modules/material-stock-movement-types/material-stock-movement-types.module';
 import { MaterialStockMovementsModule } from './modules/material-stock-movements/material-stock-movements.module';
 import { MaterialReceiptsModule } from './modules/material-receipts/material-receipts.module';
+import { MaterialWithdrawalsModule } from './modules/material-withdrawals/material-withdrawals.module';
 
 @Module({
   imports: [
@@ -102,7 +103,8 @@ import { MaterialReceiptsModule } from './modules/material-receipts/material-rec
     MaterialWarehouseStocksModule,
     MaterialStockMovementTypesModule,
     MaterialStockMovementsModule,
-    MaterialReceiptsModule
+    MaterialReceiptsModule,
+    MaterialWithdrawalsModule
   ],
   controllers: [AppController],
   providers: [
