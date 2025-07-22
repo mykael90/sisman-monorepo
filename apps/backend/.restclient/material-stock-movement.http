@@ -19,9 +19,10 @@ Authorization: Bearer {{token}}
 {
     "quantity": 60,
     "unitOfMeasure": "UN",
+    "unitPrice": 15.50,
     "globalMaterial": {"id": "302400026280"},
     "warehouse": {"id": 1},
-    "movementType": {"code": "INITIAL_STOCK_LOAD"},
+    "movementType": {"code": "IN_CENTRAL"},
     "processedByUser": {"id": 1},
     "collectedByUser": {"id": 1},
     "materialRequestItem": {"id": 217},

@@ -7,7 +7,8 @@ import {
   IsNotEmpty,
   IsString,
   IsDate,
-  IsDefined
+  IsDefined,
+  IsPositive
 } from 'class-validator';
 import { UpdateStorageDto } from '../../storages/dto/storage.dto';
 import { MaterialWarehouseStockWithRelationsResponseDto } from '../../material-warehouse-stocks/dto/material-warehouse-stock.dto';
@@ -177,6 +178,16 @@ class MaterialStockMovementBaseDto implements MaterialStockMovement {
   @IsNumber()
   @IsNotEmpty()
   stockTransferOrderItemId: number;
+
+  /**
+   * Preço unitário do do material.
+   * @example 8
+   */
+  @IsOptional()
+  @IsNumber()
+  @IsPositive()
+  @Type(() => Number)
+  unitPrice: Prisma.Decimal | null;
 }
 
 // =================================================================

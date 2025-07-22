@@ -4,6 +4,7 @@ import { MaterialReceiptsService } from './material-receipts.service';
 import { MaterialStockMovementsModule } from '../material-stock-movements/material-stock-movements.module';
 
 @Module({
+  imports: [MaterialStockMovementsModule],
   controllers: [MaterialReceiptsController],
   providers: [MaterialReceiptsService],
   exports: [MaterialReceiptsService]

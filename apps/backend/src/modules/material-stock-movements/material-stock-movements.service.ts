@@ -129,7 +129,7 @@ export class MaterialStockMovementsService {
           };
         }
         // Atualizar o custo na entrada, se a informação estiver disponível
-        if (materialId && materialRequestItem?.unitPrice !== null) {
+        if (materialId && materialRequestItem?.unitPrice) {
           updatePayload.updatedCost = materialRequestItem.unitPrice;
         }
         break;

@@ -12,11 +12,19 @@ import {
 } from './dto/material-receipt.dto';
 import { handlePrismaError } from '../../shared/utils/prisma-error-handler';
 import { Prisma, MaterialReceiptStatus } from '@sisman/prisma';
+import { MaterialStockMovementsService } from '../material-stock-movements/material-stock-movements.service';
+import {
+  CreateMaterialStockMovementDto,
+  CreateMaterialStockMovementWithRelationsDto
+} from '../material-stock-movements/dto/material-stock-movements.dto';
 
 @Injectable()
 export class MaterialReceiptsService {
   private readonly logger = new Logger(MaterialReceiptsService.name);
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly materialStockMovementsService: MaterialStockMovementsService
+  ) {}
 
   private readonly includeRelations: Prisma.MaterialReceiptInclude = {
     movementType: true,
@@ -29,43 +37,138 @@ export class MaterialReceiptsService {
   async create(
     data: CreateMaterialReceiptWithRelationsDto
   ): Promise<MaterialReceiptWithRelationsResponseDto> {
+    const {
+      movementType,
+      destinationWarehouse,
+      processedByUser,
+      materialRequest,
+      items,
+      ...restOfData
+    } = data;
+
+    const receiptCreateInput: Prisma.MaterialReceiptCreateInput = {
+      ...restOfData,
+      movementType: movementType?.code
+        ? { connect: { code: movementType.code } }
+        : undefined,
+      destinationWarehouse: destinationWarehouse?.id
+        ? { connect: { id: destinationWarehouse.id } }
+        : undefined,
+      processedByUser: processedByUser?.id
+        ? { connect: { id: processedByUser.id } }
+        : undefined,
+      materialRequest: materialRequest?.id
+        ? { connect: { id: materialRequest.id } }
+        : undefined,
+      items: {
+        create: items.map((item) => ({
+          // Mapeie os campos do DTO para o modelo do Prisma
+          // Remova quaisquer campos que não pertençam a MaterialReceiptItem
+          materialId: item.materialId,
+          unitPrice: item.unitPrice,
+          unitOfMeasure: item.unitOfMeasure,
+          quantityExpected: item.quantityExpected,
+          quantityReceived: item.quantityReceived,
+          quantityAccepted: item.quantityAccepted,
+          quantityRejected: item.quantityRejected,
+          materialRequestItemId: item.materialRequestItemId,
+          batchNumber: item.batchNumber,
+          expirationDate: item.expirationDate,
+          rejectionReason: item.rejectionReason
+          //TODO: Adicionar campos restantes
+          // Adicione outros campos de MaterialReceiptItem aqui, se houver
+        }))
+      }
+    };
     try {
-      const {
-        movementType,
-        destinationWarehouse,
-        processedByUser,
-        materialRequest,
-        items,
-        ...restOfData
-      } = data;
-
-      const receiptCreateInput: Prisma.MaterialReceiptCreateInput = {
-        ...restOfData,
-        movementType: movementType?.id
-          ? { connect: { id: movementType.id } }
-          : undefined,
-        destinationWarehouse: destinationWarehouse?.id
-          ? { connect: { id: destinationWarehouse.id } }
-          : undefined,
-        processedByUser: processedByUser?.id
-          ? { connect: { id: processedByUser.id } }
-          : undefined,
-        materialRequest: materialRequest?.id
-          ? { connect: { id: materialRequest.id } }
-          : undefined,
-        items: {
-          createMany: {
-            data: items
+      this.logger.log(`Iniciando transação para recebimento de material...`);
+      const createdReceipt = await this.prisma.$transaction(async (tx) => {
+        // ETAPA 1: Criar o Recibo de Material e seus Itens.
+        // O 'include' garante que 'newReceipt.items' conterá os itens com seus IDs.
+        const newReceipt = await tx.materialReceipt.create({
+          data: receiptCreateInput,
+          include: {
+            items: true, // Crucial para obter os IDs dos itens
+            materialRequest: true
           }
-        }
-      };
+        });
 
-      const newReceipt = await this.prisma.materialReceipt.create({
-        data: receiptCreateInput,
-        include: this.includeRelations
+        this.logger.log(
+          `Recibo ${newReceipt.id} e seus ${newReceipt.items.length} itens criados.`
+        );
+
+        this.logger.log(`Iniciando criação das movimentações de estoque...`);
+
+        // ETAPA 2: Iterar sobre CADA item criado para gerar a movimentação de estoque.
+        for (const createdItem of newReceipt.items) {
+          // Ignorar itens que não foram aceitos
+          if (createdItem.quantityAccepted.isZero()) {
+            this.logger.log(
+              `Item ${createdItem.id} com quantidade aceita 0, pulando movimentação.`
+            );
+            continue;
+          }
+
+          const materialStockMovement: CreateMaterialStockMovementWithRelationsDto =
+            {
+              quantity: createdItem.quantityAccepted,
+              unitOfMeasure: createdItem.unitOfMeasure,
+              unitPrice: createdItem.unitPrice,
+              globalMaterial: { id: createdItem.materialId } as any,
+              warehouse: { id: destinationWarehouse.id } as any,
+              movementType: { code: movementType.code } as any,
+              processedByUser: { id: processedByUser.id } as any,
+              // AQUI ESTÁ A MÁGICA: Usamos o ID do item que acabamos de criar.
+              materialReceiptItem: { id: createdItem.id } as any,
+              // Conectar à requisição de manutenção, se existir
+              materialRequestItem: {
+                id: createdItem.materialRequestItemId
+              } as any,
+              maintenanceRequest: newReceipt.materialRequest
+                ?.maintenanceRequestId
+                ? ({
+                    id: newReceipt.materialRequest.maintenanceRequestId
+                  } as any)
+                : undefined
+            };
+
+          // const materialStockMovement: CreateMaterialStockMovementWithRelationsDto =
+          //   {
+          //     quantity: items[0].quantityAccepted,
+          //     unitOfMeasure: items[0].unitOfMeasure,
+          //     unitPrice: items[0].unitPrice,
+          //     globalMaterial: { id: items[0].materialId } as any,
+          //     warehouse: { id: destinationWarehouse.id } as any,
+          //     movementType: { code: movementType.code } as any,
+          //     processedByUser: { id: processedByUser.id } as any,
+          //     materialRequestItem: { id: newReceipt.items[0].id } as any,
+          //     maintenanceRequest: {
+          //       id: materialRequest.maintenanceRequestId
+          //     } as any
+          //   };
+
+          // Chama o serviço de movimentação, passando o cliente da transação (tx)
+          await this.materialStockMovementsService.create(
+            materialStockMovement,
+            tx as any
+          );
+          this.logger.log(
+            `Movimentação para o item ${createdItem.id} criada com sucesso.`
+          );
+        }
+
+        this.logger.log(`Todas as movimentações de estoque foram criadas.`);
+
+        // ETAPA 3: Retornar o recibo completo com todas as relações definidas em `includeRelations`.
+        // É uma boa prática buscar novamente para garantir que todos os dados aninhados estejam consistentes.
+        return tx.materialReceipt.findUniqueOrThrow({
+          where: { id: newReceipt.id },
+          include: this.includeRelations
+        });
       });
 
-      return newReceipt;
+      this.logger.log(`Transação concluída com sucesso!`);
+      return createdReceipt;
     } catch (error) {
       handlePrismaError(error, this.logger, 'MaterialReceiptsService', {
         operation: 'create',
@@ -92,8 +195,8 @@ export class MaterialReceiptsService {
       ...restOfData
     };
 
-    if (movementType?.id)
-      updateInput.movementType = { connect: { id: movementType.id } };
+    if (movementType?.code)
+      updateInput.movementType = { connect: { code: movementType.code } };
     if (destinationWarehouse?.id)
       updateInput.destinationWarehouse = {
         connect: { id: destinationWarehouse.id }

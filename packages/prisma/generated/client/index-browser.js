@@ -489,6 +489,7 @@ exports.Prisma.MaterialStockMovementScalarFieldEnum = {
   quantity: 'quantity',
   unitOfMeasure: 'unitOfMeasure',
   movementDate: 'movementDate',
+  unitPrice: 'unitPrice',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   processedByUserId: 'processedByUserId',
@@ -648,6 +649,7 @@ exports.Prisma.MaterialReceiptItemScalarFieldEnum = {
   batchNumber: 'batchNumber',
   expirationDate: 'expirationDate',
   unitPrice: 'unitPrice',
+  materialRequestItemId: 'materialRequestItemId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
