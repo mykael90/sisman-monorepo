@@ -628,6 +628,7 @@ exports.Prisma.MaterialReceiptScalarFieldEnum = {
   sourceName: 'sourceName',
   destinationWarehouseId: 'destinationWarehouseId',
   processedByUserId: 'processedByUserId',
+  materialRequestId: 'materialRequestId',
   status: 'status',
   notes: 'notes',
   createdAt: 'createdAt',

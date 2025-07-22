@@ -13,6 +13,7 @@ import { UpdateStorageDto } from '../../storages/dto/storage.dto';
 import { MaterialWarehouseStockWithRelationsResponseDto } from '../../material-warehouse-stocks/dto/material-warehouse-stock.dto';
 import { IntersectionType, PartialType, PickType } from '@nestjs/swagger';
 import { UpdateMaterialDto } from '../../materials/dto/material.dto';
+import { UpdateWarehouseDto } from '../../warehouses/dto/warehouse.dto';
 
 // =================================================================
 // 1. "SUPER CLASSES" DE RESPOSTA (FONTE DA VERDADE)
@@ -219,7 +220,7 @@ export class MaterialStockMovementWithRelationsResponseDto
    */
   @IsOptional()
   @ValidateNested()
-  @Type(() => UpdateStorageDto)
+  @Type(() => UpdateWarehouseDto)
   warehouse?: MaterialStockMovementRelationOnly['warehouse'];
 
   /**
@@ -340,7 +341,7 @@ export class CreateMaterialStockMovementWithRelationsDto extends CreateMaterialS
    */
   // @IsOptional()
   @ValidateNested()
-  @Type(() => UpdateStorageDto)
+  @Type(() => UpdateWarehouseDto)
   warehouse?: MaterialStockMovementRelationOnly['warehouse'];
 
   /**

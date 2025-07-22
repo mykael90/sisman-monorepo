@@ -20,14 +20,10 @@ Authorization: Bearer {{token}}
     "protocolNumber": "REQ-{{$timestamp}}",
     "requestType": "NEW_MATERIALS",
     "justification": "Example material request",
-    "maintenanceRequestId": null,
-    "requestedById": 1,
-    "sipacUnitRequesting": "DEPTO-XYZ",
-    "sipacUnitCost": "CUSTO-ABC",
     "origin": "SISMAN",
     "requestValue": 100.50,
     "servedValue": 0,
-    "warehouseId": 1
+    "storage": {"id": 1}
 }
 
 ### PUT

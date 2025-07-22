@@ -1,0 +1,63 @@
+### Variables
+@urlLocal = {{apiUrl}}/material-receipt
+@contentType = application/json
+
+### GET all
+GET {{urlLocal}}
+Authorization: Bearer {{token}}
+
+### GET one
+# @prompt id
+GET {{urlLocal}}/{{id}}
+Authorization: Bearer {{token}}
+
+### POST
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "receiptNumber": "REC-004",
+    "receiptDate": "2024-07-25T10:00:00Z",
+    "movementType": {
+        "id": 1
+    },
+    "destinationWarehouse": {
+        "id": 1
+    },
+    "processedByUser": {
+        "id": 1
+    },
+    "items": [
+        {
+            "materialId": "302400026280",
+            "quantityExpected": 10,
+            "quantityReceived": 10,
+            "quantityAccepted": 10,
+            "quantityRejected": 0,
+            "unitPrice": 15.50,
+            "unitOfMeasure": "UN"
+        }
+    ],
+    "materialRequest": {
+        "id": 215
+    }
+}
+
+
+### PUT
+# @prompt id
+PUT {{urlLocal}}/{{id}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "receiptNumber": "REC-001-UPDATED"
+}
+
+
+### DELETE one
+# @prompt id
+DELETE {{urlLocal}}/{{id}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}

@@ -757,6 +757,8 @@ model MaterialRequest {
   materialPickingOrders MaterialPickingOrder[]
   materialWithdrawals   MaterialWithdrawal[]
 
+  materialReceipt MaterialReceipt? @relation("ReceiptsForMaterialRequest")
+
   @@index([maintenanceRequestId]) // Index for faster lookups by maintenance request.
   @@index([requestedById]) // Index for faster lookups by requesting user.
   @@index([requestType]) // Index for faster lookups by request type.
@@ -1358,7 +1360,7 @@ model MaterialReceipt {
   id                Int      @id @default(autoincrement())
   receiptNumber     String   @unique @default(uuid()) // Protocolo interno do recebimento
   externalReference String? // Número da Nota Fiscal, documento de doação, etc.
-  receiptDate       DateTime @default(now())
+  receiptDate       DateTime @default(now()) @db.Timestamp(0)
 
   movementTypeId Int // Foreign key to the type of stock movement for this receipt.
   movementType   MaterialStockMovementType @relation(fields: [movementTypeId], references: [id])
@@ -1371,7 +1373,10 @@ model MaterialReceipt {
   processedByUserId Int // Usuário que processou o recebimento
   processedByUser   User @relation("ReceiptsProcessedBy", fields: [processedByUserId], references: [id])
 
-  status MaterialReceiptStatus @default(PENDING_INSPECTION)
+  materialRequestId Int?             @unique
+  materialRequest   MaterialRequest? @relation("ReceiptsForMaterialRequest", fields: [materialRequestId], references: [id])
+
+  status MaterialReceiptStatus @default(FULLY_ACCEPTED)
 
   notes String? @db.Text
 
@@ -1407,10 +1412,10 @@ model MaterialReceiptItem {
   quantityExpected Decimal @db.Decimal(10, 3)
   unitOfMeasure    String
 
-  quantityReceived Decimal? @db.Decimal(10, 3)
-  quantityAccepted Decimal? @db.Decimal(10, 3)
-  quantityRejected Decimal? @db.Decimal(10, 3)
-  rejectionReason  String?  @db.Text
+  quantityReceived Decimal @db.Decimal(10, 3)
+  quantityAccepted Decimal @db.Decimal(10, 3)
+  quantityRejected Decimal @db.Decimal(10, 3)
+  rejectionReason  String? @db.Text
 
   batchNumber    String?
   expirationDate DateTime?
