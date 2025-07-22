@@ -966,7 +966,7 @@ model MaterialStockMovement {
 
   quantity      Decimal  @db.Decimal(12, 2) // Quantity of material moved in the unit of the instance or global material.
   unitOfMeasure String // Unit of measure for the movement.
-  movementDate  DateTime @default(now()) // The date and time of the movement.
+  movementDate  DateTime @default(now()) @db.Timestamp(0) // The date and time of the movement.
 
   createdAt DateTime @default(now()) @db.Timestamp(0) // Timestamp for when the record was created.
   updatedAt DateTime @updatedAt @db.Timestamp(0) // Timestamp for the last update of the record.
