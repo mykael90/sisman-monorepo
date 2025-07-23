@@ -223,8 +223,8 @@ export class CreateMaterialRestrictionOrderWithRelationsDto extends Intersection
   @IsOptional()
   targetMaterialRequest?: MaterialRestrictionOrderRelationOnly['targetMaterialRequest'];
 
-  @IsDefined()
-  items: MaterialRestrictionOrderRelationOnly['items'];
+  @IsOptional()
+  items?: MaterialRestrictionOrderRelationOnly['items'];
 }
 
 export class CreateMaterialRestrictionOrderItemDto extends IntersectionType(

@@ -24,7 +24,6 @@ import { MaterialStockMovementsService } from '../material-stock-movements/mater
 import { CreateMaterialStockMovementWithRelationsDto } from '../material-stock-movements/dto/material-stock-movements.dto';
 import { Decimal } from '@sisman/prisma/generated/client/runtime/library';
 
-// Helper type para o cliente de transação do Prisma, evitando 'as any'
 type PrismaTransactionClient = Omit<
   PrismaService,
   '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'
@@ -41,30 +40,79 @@ export class MaterialRestrictionOrdersService {
   private readonly includeRelations: Prisma.MaterialRestrictionOrderInclude = {
     warehouse: true,
     processedByUser: true,
-    targetMaterialRequest: true,
+    targetMaterialRequest: {
+      include: {
+        items: true
+      }
+    },
     items: {
       include: {
         globalMaterial: true,
-        materialInstance: true
+        materialInstance: true,
+        targetMaterialRequestItem: true
       }
     }
   };
 
   /**
-   * #1: LÓGICA DE CÁLCULO DE STATUS
-   * Calcula o status da ordem de restrição baseado na soma das quantidades.
+   * Utilitário para criar movimentos de estoque de forma consistente.
    */
-  private _calculateRestrictionStatus(
-    items: {
-      quantityRequested: Decimal;
-      quantityRestricted: Decimal;
-    }[]
-  ): RestrictionOrderStatus {
-    const totalRequested = items.reduce(
-      (sum, item) => sum.add(item.quantityRequested),
-      new Decimal(0)
-    );
-    const totalRestricted = items.reduce(
+  private async _createStockMovement(
+    tx: PrismaTransactionClient,
+    params: {
+      item: {
+        id: number;
+        globalMaterialId: string;
+        materialInstanceId?: number;
+        targetMaterialRequestItemId?: number;
+      };
+      quantityChange: Decimal;
+      order: {
+        warehouseId: number;
+        processedByUserId: number;
+        targetMaterialRequest?: { maintenanceRequestId?: number };
+      };
+    }
+  ) {
+    if (params.quantityChange.isZero()) return;
+
+    const movementType = params.quantityChange.isPositive()
+      ? MaterialStockOperationSubType.RESTRICT_FOR_PAID_ITEM
+      : MaterialStockOperationSubType.RELEASE_PAID_RESTRICTION;
+
+    const movementPayload: CreateMaterialStockMovementWithRelationsDto = {
+      quantity: params.quantityChange.abs(),
+      globalMaterial: { id: params.item.globalMaterialId } as any,
+      materialInstance: params.item.materialInstanceId
+        ? ({ id: params.item.materialInstanceId } as any)
+        : undefined,
+      warehouse: { id: params.order.warehouseId } as any,
+      processedByUser: { id: params.order.processedByUserId } as any,
+      movementType: { code: movementType } as any,
+      materialRestrictionItem: { id: params.item.id } as any,
+      materialRequestItem: params.item.targetMaterialRequestItemId
+        ? ({ id: params.item.targetMaterialRequestItemId } as any)
+        : undefined,
+      maintenanceRequest: params.order.targetMaterialRequest
+        ?.maintenanceRequestId
+        ? ({
+            id: params.order.targetMaterialRequest.maintenanceRequestId
+          } as any)
+        : undefined
+    };
+
+    await this.materialStockMovementsService.create(movementPayload, tx as any);
+  }
+
+  /**
+   * #1 & #4: Calcula o status da ordem comparando com a MaterialRequest.
+   */
+  private async _calculateRestrictionStatus(
+    tx: PrismaTransactionClient,
+    targetMaterialRequestId: number,
+    restrictionItems: { quantityRestricted: Decimal }[]
+  ): Promise<RestrictionOrderStatus> {
+    const totalRestricted = restrictionItems.reduce(
       (sum, item) => sum.add(item.quantityRestricted),
       new Decimal(0)
     );
@@ -72,10 +120,27 @@ export class MaterialRestrictionOrdersService {
     if (totalRestricted.isZero()) {
       return RestrictionOrderStatus.FREE;
     }
-    // Usamos gte (greater than or equal) para cobrir casos de excesso de restrição
+
+    const materialRequest = await tx.materialRequest.findUnique({
+      where: { id: targetMaterialRequestId },
+      include: { items: true }
+    });
+
+    if (!materialRequest) {
+      throw new BadRequestException(
+        `A requisição de material ID ${targetMaterialRequestId}, necessária para o cálculo de status, não foi encontrada.`
+      );
+    }
+
+    const totalRequested = materialRequest.items.reduce(
+      (sum, item) => sum.add(item.quantityRequested),
+      new Decimal(0)
+    );
+
     if (totalRestricted.gte(totalRequested)) {
       return RestrictionOrderStatus.FULLY_RESTRICTED;
     }
+
     return RestrictionOrderStatus.PARTIALLY_RESTRICTED;
   }
 
@@ -86,116 +151,92 @@ export class MaterialRestrictionOrdersService {
       warehouse,
       processedByUser,
       targetMaterialRequest,
-      items,
+      status,
       ...restOfData
     } = data;
+    let { items } = data;
 
-    // Calcula o status inicial com base nos itens fornecidos
-    const initialStatus = this._calculateRestrictionStatus(items);
-
-    const restrictionOrderCreateInput: Prisma.MaterialRestrictionOrderCreateInput =
-      {
-        ...restOfData,
-        status: initialStatus, // Salva o status calculado
-        warehouse: { connect: { id: warehouse.id } },
-        processedByUser: { connect: { id: processedByUser.id } },
-        targetMaterialRequest: targetMaterialRequest?.id
-          ? { connect: { id: targetMaterialRequest.id } }
-          : undefined,
-        items: {
-          create: items.map((item) => ({
-            globalMaterial: item.globalMaterialId
-              ? { connect: { id: item.globalMaterialId } }
-              : undefined,
-            materialInstance: item.materialInstanceId
-              ? { connect: { id: item.materialInstanceId } }
-              : undefined,
-            quantityRequested: item.quantityRequested,
-            quantityRestricted: item.quantityRestricted,
-            targetMaterialRequestItem: item.targetMaterialRequestItemId
-              ? { connect: { id: item.targetMaterialRequestItemId } }
-              : undefined
-          }))
-        }
-      };
+    if (!targetMaterialRequest?.id) {
+      throw new BadRequestException(
+        'targetMaterialRequest.id é obrigatório para criar uma ordem de restrição.'
+      );
+    }
 
     try {
-      this.logger.log(
-        `Iniciando transação para criar ordem de restrição de material...`
-      );
-      const createdRestrictionOrder = await this.prisma.$transaction(
-        async (tx) => {
-          // ETAPA 0: VERIFICAÇÃO DE UNICIDADE
-          if (targetMaterialRequest?.id) {
-            const existingOrder = await tx.materialRestrictionOrder.findUnique({
-              where: { targetMaterialRequestId: targetMaterialRequest.id }
-            });
-            if (existingOrder) {
-              throw new ConflictException(
-                `A requisição de material com ID ${targetMaterialRequest.id} já está associada à ordem de restrição nº ${existingOrder.restrictionOrderNumber}.`
-              );
-            }
-          }
+      const createdOrder = await this.prisma.$transaction(async (tx) => {
+        let finalStatus = status;
 
-          // ETAPA 1: Criar a Ordem de Restrição e seus Itens.
-          const newRestrictionOrder = await tx.materialRestrictionOrder.create({
-            data: restrictionOrderCreateInput,
-            include: { items: true, targetMaterialRequest: true }
+        if (status === RestrictionOrderStatus.FULLY_RESTRICTED) {
+          const request = await tx.materialRequest.findUnique({
+            where: { id: targetMaterialRequest.id },
+            include: { items: true }
           });
-
-          this.logger.log(
-            `Ordem de restrição nº ${newRestrictionOrder.restrictionOrderNumber} criada.`
-          );
-
-          // ETAPA 2: Iterar sobre os itens criados para gerar as movimentações de estoque.
-          for (const createdItem of newRestrictionOrder.items) {
-            if (createdItem.quantityRestricted.greaterThan(0)) {
-              const materialStockMovement: CreateMaterialStockMovementWithRelationsDto =
-                {
-                  quantity: createdItem.quantityRestricted,
-                  globalMaterial: createdItem.globalMaterialId
-                    ? ({ id: createdItem.globalMaterialId } as any)
-                    : undefined,
-                  materialInstance: createdItem.materialInstanceId
-                    ? ({ id: createdItem.materialInstanceId } as any)
-                    : undefined,
-                  warehouse: { id: warehouse.id } as any,
-                  movementType: {
-                    code: MaterialStockOperationSubType.RESTRICT_FOR_PAID_ITEM
-                  } as any,
-                  processedByUser: { id: processedByUser.id } as any,
-                  materialRestrictionItem: { id: createdItem.id } as any,
-                  materialRequestItem: createdItem.targetMaterialRequestItemId
-                    ? ({ id: createdItem.targetMaterialRequestItemId } as any)
-                    : undefined,
-                  maintenanceRequest: newRestrictionOrder.targetMaterialRequest
-                    ?.maintenanceRequestId
-                    ? ({
-                        id: newRestrictionOrder.targetMaterialRequest
-                          .maintenanceRequestId
-                      } as any)
-                    : undefined
-                };
-
-              // Chama o serviço de movimentação, passando o cliente da transação (tx)
-              await this.materialStockMovementsService.create(
-                materialStockMovement,
-                tx as any
-              );
-            }
+          if (!request || request.items.length === 0) {
+            throw new BadRequestException(
+              `Requisição de material ID ${targetMaterialRequest.id} não encontrada ou vazia para restrição total.`
+            );
           }
-          this.logger.log(`Movimentações de estoque criadas com sucesso.`);
+          items = request.items.map(
+            (reqItem) =>
+              ({
+                quantityRestricted: reqItem.quantityRequested,
+                globalMaterialId: reqItem.requestedGlobalMaterialId,
+                materialInstanceId: reqItem.fulfilledByInstanceId,
+                targetMaterialRequestItemId: reqItem.id
+              }) as any
+          );
+        } else if (!status) {
+          finalStatus = await this._calculateRestrictionStatus(
+            tx as PrismaTransactionClient,
+            targetMaterialRequest.id,
+            items ?? []
+          );
+        }
 
-          // ETAPA 3: Retornar a ordem de restrição completa.
-          return tx.materialRestrictionOrder.findUniqueOrThrow({
-            where: { id: newRestrictionOrder.id },
-            include: this.includeRelations
+        const createInput: Prisma.MaterialRestrictionOrderCreateInput = {
+          ...restOfData,
+          status: finalStatus,
+          warehouse: { connect: { id: warehouse.id } },
+          processedByUser: { connect: { id: processedByUser.id } },
+          targetMaterialRequest: { connect: { id: targetMaterialRequest.id } },
+          items: items
+            ? {
+                create: items.map((item) => ({
+                  quantityRestricted: item.quantityRestricted,
+                  globalMaterial: { connect: { id: item.globalMaterialId } },
+                  materialInstance: item.materialInstanceId
+                    ? { connect: { id: item.materialInstanceId } }
+                    : undefined,
+                  targetMaterialRequestItem: {
+                    connect: { id: item.targetMaterialRequestItemId }
+                  }
+                }))
+              }
+            : undefined
+        };
+
+        const newOrder = await tx.materialRestrictionOrder.create({
+          data: createInput,
+          include: { items: true }
+        });
+
+        for (const item of newOrder.items) {
+          await this._createStockMovement(tx as PrismaTransactionClient, {
+            item,
+            quantityChange: item.quantityRestricted,
+            order: {
+              warehouseId: warehouse.id,
+              processedByUserId: processedByUser.id
+            }
           });
         }
-      );
 
-      this.logger.log(`Transação concluída com sucesso!`);
-      return createdRestrictionOrder;
+        return tx.materialRestrictionOrder.findUniqueOrThrow({
+          where: { id: newOrder.id },
+          include: this.includeRelations
+        });
+      });
+      return createdOrder;
     } catch (error) {
       handlePrismaError(
         error,
@@ -210,91 +251,14 @@ export class MaterialRestrictionOrdersService {
     }
   }
 
-  /**
-   * #2: LÓGICA DE ATUALIZAÇÃO E MOVIMENTAÇÃO DE ESTOQUE
-   * Manipula as atualizações nos itens e cria os movimentos de estoque correspondentes.
-   */
-  private async _handleItemUpdatesAndStockMovements(
-    tx: PrismaTransactionClient,
-    orderData: {
-      id: number;
-      warehouseId: number;
-      processedByUserId: number;
-      maintenanceRequestId?: number;
-    },
-    currentItems: MaterialRestrictionOrderItem[],
-    itemsToUpdate: UpdateMaterialRestrictionOrderItemDto[]
-  ) {
-    for (const itemUpdate of itemsToUpdate) {
-      if (!itemUpdate.id) {
-        // Lógica para criar um novo item (se aplicável)
-        this.logger.warn(`Criação de item na atualização não implementada.`);
-        continue;
-      }
-
-      const currentItem = currentItems.find((i) => i.id === itemUpdate.id);
-      if (!currentItem) {
-        throw new NotFoundException(
-          `Item de restrição com ID ${itemUpdate.id} não encontrado na ordem.`
-        );
-      }
-
-      const oldQty = currentItem.quantityRestricted;
-      const newQty = new Decimal(itemUpdate.quantityRestricted);
-      const diff = newQty.sub(oldQty);
-
-      if (diff.isZero()) continue; // Nenhuma mudança na quantidade, pular.
-
-      const movementType = diff.isPositive()
-        ? MaterialStockOperationSubType.RESTRICT_FOR_PAID_ITEM
-        : MaterialStockOperationSubType.RELEASE_PAID_RESTRICTION;
-
-      const movementPayload: CreateMaterialStockMovementWithRelationsDto = {
-        quantity: diff.abs(), // A quantidade é sempre positiva
-        globalMaterial: currentItem.globalMaterialId
-          ? ({ id: currentItem.globalMaterialId } as any)
-          : undefined,
-        materialInstance: currentItem.materialInstanceId
-          ? ({ id: currentItem.materialInstanceId } as any)
-          : undefined,
-        warehouse: { id: orderData.warehouseId } as any,
-        processedByUser: { id: orderData.processedByUserId } as any,
-        movementType: { code: movementType } as any,
-        materialRestrictionItem: { id: currentItem.id } as any,
-        materialRequestItem: currentItem.targetMaterialRequestItemId
-          ? ({ id: currentItem.targetMaterialRequestItemId } as any)
-          : undefined,
-        maintenanceRequest: orderData.maintenanceRequestId
-          ? ({ id: orderData.maintenanceRequestId } as any)
-          : undefined
-      };
-
-      await this.materialStockMovementsService.create(
-        movementPayload,
-        tx as any
-      );
-      this.logger.log(
-        `Movimento de estoque [${movementType}] de ${diff.abs()} para o item ${currentItem.id} criado.`
-      );
-    }
-    // TODO: Implementar lógica para deletar itens que estão no `currentItems` mas não no `itemsToUpdate`
-  }
-
   async update(
     id: number,
     data: UpdateMaterialRestrictionOrderWithRelationsDto
   ): Promise<MaterialRestrictionOrderWithRelationsResponseDto> {
-    const {
-      warehouse,
-      processedByUser,
-      targetMaterialRequest,
-      items: itemsToUpdate, // Novos dados dos itens
-      ...restOfData
-    } = data;
+    const { status, items: itemsToUpdate, ...restOfData } = data;
 
     try {
       return await this.prisma.$transaction(async (tx) => {
-        // 1. Buscar o estado atual da ordem e seus itens
         const currentOrder = await tx.materialRestrictionOrder.findUnique({
           where: { id },
           include: { items: true, targetMaterialRequest: true }
@@ -302,86 +266,216 @@ export class MaterialRestrictionOrdersService {
 
         if (!currentOrder) {
           throw new NotFoundException(
-            `Ordem de restrição com ID ${id} não encontrada.`
+            `Ordem de restrição ID ${id} não encontrada.`
           );
         }
 
-        // 2. Lidar com atualizações de itens e criar movimentos de estoque
-        if (itemsToUpdate && itemsToUpdate.length > 0) {
-          // Garante que temos as informações necessárias para criar os movimentos.
-          const warehouseId = warehouse?.id ?? currentOrder.warehouseId;
-          const processedByUserId =
-            processedByUser?.id ?? currentOrder.processedByUserId;
-          if (!warehouseId || !processedByUserId) {
-            throw new BadRequestException(
-              'Warehouse e ProcessedByUser são necessários para atualizar itens.'
-            );
-          }
-
-          await this._handleItemUpdatesAndStockMovements(
-            tx as PrismaTransactionClient,
-            {
-              id: currentOrder.id,
-              warehouseId,
-              processedByUserId,
-              maintenanceRequestId:
-                currentOrder.targetMaterialRequest?.maintenanceRequestId
-            },
-            currentOrder.items,
-            itemsToUpdate
+        const targetRequestId =
+          data.targetMaterialRequest?.id ??
+          currentOrder.targetMaterialRequestId;
+        if (!targetRequestId) {
+          throw new BadRequestException(
+            'Não é possível atualizar sem uma requisição de material alvo.'
           );
         }
 
-        // 3. Preparar o payload de atualização para a ordem principal
-        const updatePayload: Prisma.MaterialRestrictionOrderUpdateInput = {
-          ...restOfData,
-          warehouse: warehouse?.id
-            ? { connect: { id: warehouse.id } }
-            : undefined,
-          processedByUser: processedByUser?.id
-            ? { connect: { id: processedByUser.id } }
-            : undefined,
-          targetMaterialRequest: targetMaterialRequest?.id
-            ? { connect: { id: targetMaterialRequest.id } }
-            : undefined,
-          // Atualiza os dados dos itens aninhados
-          items: itemsToUpdate
-            ? {
-                update: itemsToUpdate
-                  .filter((item) => item.id) // Apenas itens com ID podem ser atualizados
-                  .map((item) => ({
-                    where: { id: item.id },
-                    data: {
-                      quantityRestricted: item.quantityRestricted
-                      // Adicione outros campos do item que podem ser atualizados
-                    }
-                  }))
-              }
-            : undefined
+        const orderInfoForMovement = {
+          warehouseId: data.warehouse?.id ?? currentOrder.warehouseId,
+          processedByUserId:
+            data.processedByUser?.id ?? currentOrder.processedByUserId,
+          targetMaterialRequest: currentOrder.targetMaterialRequest
         };
 
-        // 4. Recalcular o status após as atualizações dos itens
-        if (itemsToUpdate) {
-          // Para recalcular, precisamos do estado final dos itens
-          const updatedItems = currentOrder.items.map((item) => {
-            const updateInfo = itemsToUpdate.find((u) => u.id === item.id);
-            return updateInfo
+        let finalStatus = status;
+        let itemsPayload: Prisma.MaterialRestrictionOrderItemUpdateManyWithoutMaterialRestrictionOrderNestedInput =
+          {};
+
+        // #3: Se o status for FREE, zera todos os itens e libera o estoque
+        if (status === RestrictionOrderStatus.FREE) {
+          for (const item of currentOrder.items) {
+            await this._createStockMovement(tx as PrismaTransactionClient, {
+              item,
+              quantityChange: item.quantityRestricted.negated(), // Libera o estoque
+              order: orderInfoForMovement
+            });
+          }
+          itemsPayload = {
+            updateMany: {
+              where: { materialRestrictionOrderId: id },
+              data: { quantityRestricted: 0 }
+            }
+          };
+        }
+        // #2: Se o status for FULLY_RESTRICTED, reconcilia todos os itens
+        else if (status === RestrictionOrderStatus.FULLY_RESTRICTED) {
+          const request = await tx.materialRequest.findUnique({
+            where: { id: targetRequestId },
+            include: { items: true }
+          });
+          if (!request)
+            throw new BadRequestException(
+              `Requisição de material ID ${targetRequestId} não encontrada para reconciliação.`
+            );
+
+          const currentItemsMap = new Map(
+            currentOrder.items.map((item) => [
+              item.targetMaterialRequestItemId,
+              item
+            ])
+          );
+          const requestItemsMap = new Map(
+            request.items.map((item) => [item.id, item])
+          );
+
+          const createOps: Prisma.MaterialRestrictionOrderItemCreateWithoutMaterialRestrictionOrderInput[] =
+            [];
+          const updateOps: {
+            where: { id: number };
+            data: { quantityRestricted: Decimal };
+          }[] = [];
+          const deleteOps: { id: number }[] = [];
+
+          // Verifica o que criar ou atualizar
+          for (const [reqItemId, reqItem] of requestItemsMap.entries()) {
+            const currentItem = currentItemsMap.get(reqItemId);
+            if (currentItem) {
+              // Item existe, precisa atualizar
+              const diff = reqItem.quantityRequested.sub(
+                currentItem.quantityRestricted
+              );
+              await this._createStockMovement(tx as PrismaTransactionClient, {
+                item: currentItem,
+                quantityChange: diff,
+                order: orderInfoForMovement
+              });
+              updateOps.push({
+                where: { id: currentItem.id },
+                data: { quantityRestricted: reqItem.quantityRequested }
+              });
+              currentItemsMap.delete(reqItemId); // Marca como processado
+            } else {
+              // Item não existe, precisa criar
+              const newRestrictionItemData = {
+                quantityRestricted: reqItem.quantityRequested,
+                globalMaterial: {
+                  connect: { id: reqItem.requestedGlobalMaterialId }
+                },
+                materialInstance: reqItem.fulfilledByInstanceId
+                  ? { connect: { id: reqItem.fulfilledByInstanceId } }
+                  : undefined,
+                targetMaterialRequestItem: { connect: { id: reqItem.id } }
+              };
+              createOps.push(newRestrictionItemData);
+              // O movimento de estoque será criado após a criação do item
+            }
+          }
+          // O que sobrou no currentItemsMap precisa ser deletado
+          for (const itemToDelete of currentItemsMap.values()) {
+            await this._createStockMovement(tx as PrismaTransactionClient, {
+              item: itemToDelete,
+              quantityChange: itemToDelete.quantityRestricted.negated(),
+              order: orderInfoForMovement
+            });
+            deleteOps.push({ id: itemToDelete.id });
+          }
+
+          itemsPayload = {
+            create: createOps,
+            update: updateOps,
+            delete: deleteOps
+          };
+        }
+        // #4: Atualização manual de itens, sem um status explícito
+        else if (itemsToUpdate && !status) {
+          const currentItemsMap = new Map(
+            currentOrder.items.map((item) => [item.id, item])
+          );
+          const updateOps: {
+            where: { id: number };
+            data: { quantityRestricted: Decimal };
+          }[] = [];
+
+          for (const itemUpdate of itemsToUpdate) {
+            const currentItem = currentItemsMap.get(itemUpdate.id);
+            if (!currentItem)
+              throw new NotFoundException(
+                `Item de restrição ID ${itemUpdate.id} não encontrado na ordem.`
+              );
+
+            const newQuantity = new Decimal(itemUpdate.quantityRestricted);
+            const diff = newQuantity.sub(currentItem.quantityRestricted);
+            await this._createStockMovement(tx as PrismaTransactionClient, {
+              item: currentItem,
+              quantityChange: diff,
+              order: orderInfoForMovement
+            });
+            updateOps.push({
+              where: { id: currentItem.id },
+              data: { quantityRestricted: newQuantity }
+            });
+          }
+          itemsPayload = { update: updateOps };
+
+          // Recalcula o status após as atualizações
+          const finalItemsState = currentOrder.items.map((item) => {
+            const updatedItem = itemsToUpdate.find((u) => u.id === item.id);
+            return updatedItem
               ? {
                   ...item,
-                  quantityRestricted: new Decimal(updateInfo.quantityRestricted)
+                  quantityRestricted: new Decimal(
+                    updatedItem.quantityRestricted
+                  )
                 }
               : item;
           });
-          updatePayload.status = this._calculateRestrictionStatus(updatedItems);
+          finalStatus = await this._calculateRestrictionStatus(
+            tx as PrismaTransactionClient,
+            targetRequestId,
+            finalItemsState
+          );
         }
 
-        // 5. Executar a atualização da ordem e seus itens
-        await tx.materialRestrictionOrder.update({
+        const updatePayload: Prisma.MaterialRestrictionOrderUpdateInput = {
+          ...restOfData,
+          targetMaterialRequest: data.targetMaterialRequest?.id
+            ? { connect: { id: data.targetMaterialRequest.id } }
+            : undefined,
+          status: finalStatus,
+          items: itemsPayload,
+          warehouse: data.warehouse?.id
+            ? { connect: { id: data.warehouse.id } }
+            : undefined,
+          processedByUser: data.processedByUser?.id
+            ? { connect: { id: data.processedByUser.id } }
+            : undefined
+        };
+
+        const updatedOrder = await tx.materialRestrictionOrder.update({
           where: { id },
           data: updatePayload
         });
 
-        // 6. Retornar a ordem completa com todas as relações atualizadas
+        // Se houve criação, precisamos gerar os movimentos para os novos itens
+        if (
+          itemsPayload.create &&
+          Array.isArray(itemsPayload.create) &&
+          itemsPayload.create.length > 0
+        ) {
+          const newItems = await tx.materialRestrictionOrderItem.findMany({
+            where: {
+              materialRestrictionOrderId: updatedOrder.id,
+              id: { notIn: currentOrder.items.map((i) => i.id) }
+            }
+          });
+          for (const newItem of newItems) {
+            await this._createStockMovement(tx as PrismaTransactionClient, {
+              item: newItem,
+              quantityChange: newItem.quantityRestricted,
+              order: orderInfoForMovement
+            });
+          }
+        }
+
         return tx.materialRestrictionOrder.findUniqueOrThrow({
           where: { id },
           include: this.includeRelations
@@ -402,69 +496,39 @@ export class MaterialRestrictionOrdersService {
     }
   }
 
-  /**
-   * #3: MELHORIA - EXCLUSÃO SEGURA
-   * Garante que o estoque restringido seja liberado antes de excluir a ordem.
-   */
   async delete(id: number): Promise<{ message: string; id: number }> {
     try {
       await this.prisma.$transaction(async (tx) => {
         const orderToDelete = await tx.materialRestrictionOrder.findUnique({
           where: { id },
-          include: { items: true, targetMaterialRequest: true }
+          include: { items: true }
         });
 
         if (!orderToDelete) {
-          // Se não encontrar, a operação já foi concluída, então não lançamos erro.
           this.logger.warn(
-            `Ordem de restrição ${id} não encontrada para exclusão.`
+            `Ordem de restrição ${id} não encontrada para exclusão (pode já ter sido deletada).`
           );
           return;
         }
 
-        // Liberar estoque para cada item que tem quantidade restringida
-        for (const item of orderToDelete.items) {
-          if (item.quantityRestricted.greaterThan(0)) {
-            const movementPayload: CreateMaterialStockMovementWithRelationsDto =
-              {
-                quantity: item.quantityRestricted,
-                globalMaterial: item.globalMaterialId
-                  ? ({ id: item.globalMaterialId } as any)
-                  : undefined,
-                materialInstance: item.materialInstanceId
-                  ? ({ id: item.materialInstanceId } as any)
-                  : undefined,
-                warehouse: { id: orderToDelete.warehouseId } as any,
-                processedByUser: { id: orderToDelete.processedByUserId } as any, // Poderia ser um usuário de sistema
-                movementType: {
-                  code: MaterialStockOperationSubType.RELEASE_PAID_RESTRICTION
-                } as any,
-                materialRestrictionItem: { id: item.id } as any,
-                maintenanceRequest: orderToDelete.targetMaterialRequest
-                  ?.maintenanceRequestId
-                  ? ({
-                      id: orderToDelete.targetMaterialRequest
-                        .maintenanceRequestId
-                    } as any)
-                  : undefined
-              };
-            await this.materialStockMovementsService.create(
-              movementPayload,
-              tx as any
-            );
-            this.logger.log(
-              `Estoque liberado para o item ${item.id} antes da exclusão da ordem ${id}.`
-            );
-          }
-        }
+        const orderInfo = {
+          warehouseId: orderToDelete.warehouseId,
+          processedByUserId: orderToDelete.processedByUserId
+        };
 
-        // Finalmente, deletar a ordem de restrição (o Prisma cuidará da exclusão em cascata dos itens)
+        for (const item of orderToDelete.items) {
+          await this._createStockMovement(tx as PrismaTransactionClient, {
+            item,
+            quantityChange: item.quantityRestricted.negated(),
+            order: orderInfo
+          });
+        }
         await tx.materialRestrictionOrder.delete({ where: { id } });
       });
 
       return {
         message:
-          'Material Restriction Order and associated stock released/deleted successfully',
+          'Material Restriction Order deleted and all associated stock released successfully',
         id: id
       };
     } catch (error) {

@@ -668,7 +668,6 @@ exports.Prisma.MaterialRestrictionOrderItemScalarFieldEnum = {
   materialRestrictionOrderId: 'materialRestrictionOrderId',
   globalMaterialId: 'globalMaterialId',
   materialInstanceId: 'materialInstanceId',
-  quantityRequested: 'quantityRequested',
   quantityRestricted: 'quantityRestricted',
   targetMaterialRequestItemId: 'targetMaterialRequestItemId',
   createdAt: 'createdAt',

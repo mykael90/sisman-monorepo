@@ -899,7 +899,6 @@ model MaterialRestrictionOrderItem {
     materialInstanceId Int?
     materialInstance   MaterialDerived?       @relation(fields: [materialInstanceId], references: [id])
 
-    quantityRequested  Decimal @db.Decimal(12, 2)
     quantityRestricted Decimal @db.Decimal(12, 2)
     // unitOfMeasure String
 

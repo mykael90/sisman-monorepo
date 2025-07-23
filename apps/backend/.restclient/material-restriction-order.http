@@ -30,11 +30,29 @@ Authorization: Bearer {{token}}
     "items": [
         {
             "globalMaterialId": "302400002280",
-            "quantityRequested": 1,
             "quantityRestricted":0,
             "targetMaterialRequestItemId": 496
         }
     ]
+}
+
+### POST
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "restrictionOrderNumber": "REST-010",
+    "warehouse": {
+        "id": 1
+    },
+    "processedByUser": {"id": 1},
+    "processedAt": "2024-07-25T10:00:00Z",
+    "targetMaterialRequest": {
+        "id": 420
+    },
+    "notes": "Restrição de materiais para o pedido X.",
+    "status": "FULLY_RESTRICTED"
 }
 
 
@@ -52,6 +70,17 @@ Authorization: Bearer {{token}}
             "quantityRestricted":1
         }
     ]
+}
+
+### PUT
+# @prompt id
+PUT {{urlLocal}}/{{id}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "notes": "Restrição atualizada com novas observações.",
+    "status": "FREE"
 }
 
 
