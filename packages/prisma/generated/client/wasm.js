@@ -498,6 +498,7 @@ exports.Prisma.MaterialStockMovementScalarFieldEnum = {
   materialRequestItemId: 'materialRequestItemId',
   maintenanceRequestId: 'maintenanceRequestId',
   materialWithdrawalItemId: 'materialWithdrawalItemId',
+  materialRestrictionItemId: 'materialRestrictionItemId',
   materialReceiptItemId: 'materialReceiptItemId',
   stockTransferOrderItemId: 'stockTransferOrderItemId'
 };
@@ -653,7 +654,6 @@ exports.Prisma.MaterialRestrictionOrderScalarFieldEnum = {
   id: 'id',
   restrictionOrderNumber: 'restrictionOrderNumber',
   warehouseId: 'warehouseId',
-  operationType: 'operationType',
   processedByUserId: 'processedByUserId',
   processedAt: 'processedAt',
   targetMaterialRequestId: 'targetMaterialRequestId',
@@ -668,7 +668,8 @@ exports.Prisma.MaterialRestrictionOrderItemScalarFieldEnum = {
   materialRestrictionOrderId: 'materialRestrictionOrderId',
   globalMaterialId: 'globalMaterialId',
   materialInstanceId: 'materialInstanceId',
-  quantity: 'quantity',
+  quantityRequested: 'quantityRequested',
+  quantityRestricted: 'quantityRestricted',
   targetMaterialRequestItemId: 'targetMaterialRequestItemId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -1564,17 +1565,10 @@ exports.MaterialReceiptStatus = exports.$Enums.MaterialReceiptStatus = {
   CANCELLED: 'CANCELLED'
 };
 
-exports.RestrictionOperationType = exports.$Enums.RestrictionOperationType = {
-  RESTRICT: 'RESTRICT',
-  RELEASE_RESTRICTION: 'RELEASE_RESTRICTION'
-};
-
 exports.RestrictionOrderStatus = exports.$Enums.RestrictionOrderStatus = {
-  PENDING: 'PENDING',
-  EFFECTIVE: 'EFFECTIVE',
-  PARTIALLY_REVERSED: 'PARTIALLY_REVERSED',
-  FULLY_REVERSED: 'FULLY_REVERSED',
-  CANCELLED: 'CANCELLED'
+  PARTIALLY_RESTRICTED: 'PARTIALLY_RESTRICTED',
+  FULLY_RESTRICTED: 'FULLY_RESTRICTED',
+  FREE: 'FREE'
 };
 
 exports.Prisma.ModelName = {

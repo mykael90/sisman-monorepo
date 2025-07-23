@@ -180,6 +180,14 @@ class MaterialStockMovementBaseDto implements MaterialStockMovement {
   @IsPositive()
   @Type(() => Number)
   unitPrice: Prisma.Decimal | null;
+
+  /**
+   * ID do item de restrição de material, se aplicável.
+   * @example 1
+   */
+  @IsNumber()
+  @IsNotEmpty()
+  materialRestrictionItemId: number;
 }
 
 // =================================================================
@@ -188,7 +196,7 @@ class MaterialStockMovementBaseDto implements MaterialStockMovement {
 
 const MaterialStockMovementRelationOnlyArgs =
   Prisma.validator<Prisma.MaterialStockMovementDefaultArgs>()({
-    select: {
+    include: {
       warehouse: true,
       globalMaterial: true,
       materialInstance: true,
@@ -201,7 +209,8 @@ const MaterialStockMovementRelationOnlyArgs =
       maintenanceRequest: true,
       materialWithdrawalItem: true,
       materialReceiptItem: true,
-      stockTransferOrderItem: true
+      stockTransferOrderItem: true,
+      materialRestrictionItem: true
     }
   });
 
@@ -326,6 +335,9 @@ export class MaterialStockMovementWithRelationsResponseDto
 
   @IsOptional()
   stockTransferOrderItem?: MaterialStockMovementRelationOnly['stockTransferOrderItem'];
+
+  @IsOptional()
+  materialRestrictionItem?: MaterialStockMovementRelationOnly['materialRestrictionItem'];
 }
 
 // =================================================================
@@ -448,6 +460,9 @@ export class CreateMaterialStockMovementWithRelationsDto extends CreateMaterialS
 
   @IsOptional()
   stockTransferOrderItem?: MaterialStockMovementRelationOnly['stockTransferOrderItem'];
+
+  @IsOptional()
+  materialRestrictionItem?: MaterialStockMovementRelationOnly['materialRestrictionItem'];
 }
 
 // =================================================================

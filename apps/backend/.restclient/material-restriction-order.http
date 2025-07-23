@@ -1,0 +1,62 @@
+### Variables
+@urlLocal = {{apiUrl}}/material-restriction-order
+@contentType = application/json
+
+### GET all
+GET {{urlLocal}}
+Authorization: Bearer {{token}}
+
+### GET one
+# @prompt id
+GET {{urlLocal}}/{{id}}
+Authorization: Bearer {{token}}
+
+### POST
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "restrictionOrderNumber": "REST-009",
+    "warehouse": {
+        "id": 1
+    },
+    "processedByUser": {"id": 1},
+    "processedAt": "2024-07-25T10:00:00Z",
+    "targetMaterialRequest": {
+        "id": 337
+    },
+    "notes": "Restrição de materiais para o pedido X.",
+    "items": [
+        {
+            "globalMaterialId": "302400002280",
+            "quantityRequested": 1,
+            "quantityRestricted":0,
+            "targetMaterialRequestItemId": 496
+        }
+    ]
+}
+
+
+### PUT
+# @prompt id
+PUT {{urlLocal}}/{{id}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "notes": "Restrição atualizada com novas observações.",
+        "items": [
+        {
+            "id": 12,
+            "quantityRestricted":1
+        }
+    ]
+}
+
+
+### DELETE one
+# @prompt id
+DELETE {{urlLocal}}/{{id}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}

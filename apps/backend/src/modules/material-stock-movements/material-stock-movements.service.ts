@@ -236,6 +236,7 @@ export class MaterialStockMovementsService {
       materialWithdrawalItem,
       materialReceiptItem,
       stockTransferOrderItem,
+      materialRestrictionItem,
       ...restOfData
     } = data;
 
@@ -288,6 +289,9 @@ export class MaterialStockMovementsService {
         : undefined,
       stockTransferOrderItem: stockTransferOrderItem?.id
         ? { connect: { id: stockTransferOrderItem.id } }
+        : undefined,
+      materialRestrictionItem: materialRestrictionItem?.id
+        ? { connect: { id: materialRestrictionItem.id } }
         : undefined
     };
 
@@ -336,6 +340,7 @@ export class MaterialStockMovementsService {
       materialWithdrawalItem,
       materialReceiptItem,
       stockTransferOrderItem,
+      materialRestrictionItem,
       ...restOfData
     } = data;
 
@@ -382,6 +387,11 @@ export class MaterialStockMovementsService {
       updateInput.stockTransferOrderItem = {
         connect: { id: stockTransferOrderItem.id }
       };
+    if (materialRestrictionItem?.id)
+      updateInput.materialRestrictionItem = {
+        connect: { id: materialRestrictionItem.id }
+      };
+
     // Adicione a lógica de desconexão (se um campo for passado como null) se necessário.
 
     try {

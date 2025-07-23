@@ -149,7 +149,7 @@ model MaterialRequest {
     servedValue  Decimal? @db.Decimal(12, 4) //valor atendido
 
     // Relations
-    restrictionOrders MaterialRestrictionOrder[] @relation("RestrictionsForMaterialRequest")
+    restrictionOrders MaterialRestrictionOrder? @relation("RestrictionsForMaterialRequest")
 
     // Items included in this material request. All items must adhere to the requestType of the header.
     items         MaterialRequestItem[]
@@ -268,9 +268,9 @@ model MaterialRequestItem {
 
     materialReceiptItems MaterialReceiptItem? //na modelagem eu não recebo itens fracionados, por isso a relação 1 para 1
 
-    materialRestrictionOrderItems MaterialRestrictionOrderItem[] @relation("RestrictionsForRequestItem")
+    materialRestrictionOrderItems MaterialRestrictionOrderItem? @relation("RestrictionsForRequestItem")
     materialPickingOrderItems     MaterialPickingOrderItem[]
-    materialWithdrawalsItems      MaterialWithdrawalItem[]       @relation("WithdrawalForRequestItem")
+    materialWithdrawalsItems      MaterialWithdrawalItem[]      @relation("WithdrawalForRequestItem")
 
     @@unique([materialRequestId, requestedGlobalMaterialId])
     @@map("material_request_items") // Maps this model to the 'material_request_items' table.
@@ -405,6 +405,9 @@ model MaterialStockMovement {
     // Referências de origem da movimentação (apenas UMA delas será preenchida)
     materialWithdrawalItemId Int?                    @unique // Se originado por um item de uma retirada efetiva
     materialWithdrawalItem   MaterialWithdrawalItem? @relation(fields: [materialWithdrawalItemId], references: [id]) // onDelete:SetNull ou Cascade? Se o item da retirada for deletado, o movimento deve sumir? Melhor SetNull e tratar.
+
+    materialRestrictionItemId Int?
+    materialRestrictionItem   MaterialRestrictionOrderItem? @relation(fields: [materialRestrictionItemId], references: [id])
 
     materialReceiptItemId Int?                 @unique
     materialReceiptItem   MaterialReceiptItem? @relation(fields: [materialReceiptItemId], references: [id], onDelete: SetNull)
@@ -849,7 +852,7 @@ model MaterialRestrictionOrder {
     warehouseId Int
     warehouse   Warehouse @relation(fields: [warehouseId], references: [id])
 
-    operationType RestrictionOperationType // RESTRICT, RELEASE_RESTRICTION
+    // operationType RestrictionOperationType
 
     processedByUserId Int
     processedByUser   User     @relation("RestrictionOrdersProcessedBy", fields: [processedByUserId], references: [id])
@@ -857,11 +860,11 @@ model MaterialRestrictionOrder {
 
     // Se a ordem de restrição como um todo está relacionada a UMA MaterialRequest específica
     // (Isso é útil se todos os itens da restrição são para a mesma MaterialRequest)
-    targetMaterialRequestId Int?
-    targetMaterialRequest   MaterialRequest? @relation("RestrictionsForMaterialRequest", fields: [targetMaterialRequestId], references: [id], onDelete: SetNull)
+    targetMaterialRequestId Int              @unique
+    targetMaterialRequest   MaterialRequest? @relation("RestrictionsForMaterialRequest", fields: [targetMaterialRequestId], references: [id])
 
-    status RestrictionOrderStatus @default(PENDING)
-    notes  String?                @db.Text
+    status RestrictionOrderStatus?
+    notes  String?                 @db.Text
 
     items MaterialRestrictionOrderItem[]
 
@@ -873,16 +876,14 @@ model MaterialRestrictionOrder {
 }
 
 enum RestrictionOperationType {
-    RESTRICT            @map("RESTRINGIR") // Marcar materiais como restritos
-    RELEASE_RESTRICTION @map("LIBERAR") // Liberar materiais que estavam restritos
+    RESTRICT_FOR_PAID_ITEM   @map("RESTRICAO_ITEM_PAGO") // Marcar materiais como restritos
+    RELEASE_PAID_RESTRICTION @map("LIBERACAO_RESTRICAO_PAGA") // Liberar materiais que estavam restritos
 }
 
 enum RestrictionOrderStatus {
-    PENDING            @map("PENDENTE") // Ordem criada, aguardando efetivação da restrição/liberação no estoque
-    EFFECTIVE          @map("EFETIVA") // Restrição/liberação aplicada ao estoque
-    PARTIALLY_REVERSED @map("PARCIALMENTE REVERSADA") // Se uma restrição foi parcialmente liberada por uma ordem subsequente
-    FULLY_REVERSED     @map("TOTALMENTE REVERSADA") // Se uma restrição foi totalmente liberada por uma ordem subsequente
-    CANCELLED          @map("CANCELADA") // Ordem cancelada antes da efetivação
+    PARTIALLY_RESTRICTED @map("PARCIALMENTE RESTRITA")
+    FULLY_RESTRICTED     @map("TOTALMENTE RESTRITA")
+    FREE                 @map("LIBERADA")
 }
 
 // --- Material Restriction Order Item (Detalhe da Ordem de Restrição/Liberação) ---
@@ -890,25 +891,25 @@ model MaterialRestrictionOrderItem {
     id Int @id @default(autoincrement())
 
     materialRestrictionOrderId Int
-    materialRestrictionOrder   MaterialRestrictionOrder @relation(fields: [materialRestrictionOrderId], references: [id], onDelete: Cascade)
+    materialRestrictionOrder   MaterialRestrictionOrder @relation(fields: [materialRestrictionOrderId], references: [id])
 
     // O material específico a ser restringido/liberado
     globalMaterialId   String?
-    globalMaterial     MaterialGlobalCatalog? @relation(fields: [globalMaterialId], references: [id], onDelete: Restrict)
+    globalMaterial     MaterialGlobalCatalog? @relation(fields: [globalMaterialId], references: [id])
     materialInstanceId Int?
-    materialInstance   MaterialDerived?       @relation(fields: [materialInstanceId], references: [id], onDelete: Restrict)
+    materialInstance   MaterialDerived?       @relation(fields: [materialInstanceId], references: [id])
 
-    quantity Decimal @db.Decimal(12, 2)
+    quantityRequested  Decimal @db.Decimal(12, 2)
+    quantityRestricted Decimal @db.Decimal(12, 2)
     // unitOfMeasure String
 
     // *** RELAÇÃO CRUCIAL ADICIONADA/REFORÇADA ***
     // Para qual MaterialRequestItem esta restrição/liberação específica se aplica.
     // Isso é essencial se a restrição é porque o material foi "comprado para" ou "alocado para" este item de demanda.
-    targetMaterialRequestItemId Int? // Tornar opcional se uma restrição puder existir sem um item de requisição direto (ex: reserva estratégica)
-    targetMaterialRequestItem   MaterialRequestItem? @relation("RestrictionsForRequestItem", fields: [targetMaterialRequestItemId], references: [id], onDelete: SetNull)
+    targetMaterialRequestItemId Int                  @unique // Tornar opcional se uma restrição puder existir sem um item de requisição direto (ex: reserva estratégica)
+    targetMaterialRequestItem   MaterialRequestItem? @relation("RestrictionsForRequestItem", fields: [targetMaterialRequestItemId], references: [id])
 
-    // stockMovementId          Int?     @unique
-    // stockMovement            MaterialStockMovement? @relation(fields: [stockMovementId], references: [id])
+    stockMovement MaterialStockMovement[]
 
     createdAt DateTime @default(now()) @db.Timestamp(0)
     updatedAt DateTime @updatedAt @db.Timestamp(0)
