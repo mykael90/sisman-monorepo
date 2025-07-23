@@ -226,7 +226,10 @@ export class MaterialRestrictionOrdersService {
             quantityChange: item.quantityRestricted,
             order: {
               warehouseId: warehouse.id,
-              processedByUserId: processedByUser.id
+              processedByUserId: processedByUser.id,
+              targetMaterialRequest: {
+                maintenanceRequestId: targetMaterialRequest.maintenanceRequestId
+              }
             }
           });
         }
@@ -544,8 +547,6 @@ export class MaterialRestrictionOrdersService {
       throw error;
     }
   }
-
-  // Os métodos list() e show() permanecem os mesmos, pois já estavam bons.
 
   async list(): Promise<MaterialRestrictionOrderWithRelationsResponseDto[]> {
     try {

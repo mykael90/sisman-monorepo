@@ -42,14 +42,14 @@ Content-Type: {{contentType}}
 Authorization: Bearer {{token}}
 
 {
-    "restrictionOrderNumber": "REST-010",
+    "restrictionOrderNumber": "REST-013",
     "warehouse": {
         "id": 1
     },
     "processedByUser": {"id": 1},
     "processedAt": "2024-07-25T10:00:00Z",
     "targetMaterialRequest": {
-        "id": 420
+        "id": 424
     },
     "notes": "Restrição de materiais para o pedido X.",
     "status": "FULLY_RESTRICTED"
