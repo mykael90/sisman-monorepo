@@ -535,6 +535,7 @@ exports.Prisma.MaterialPickingOrderScalarFieldEnum = {
   id: 'id',
   pickingOrderNumber: 'pickingOrderNumber',
   materialRequestId: 'materialRequestId',
+  maintenanceRequestId: 'maintenanceRequestId',
   warehouseId: 'warehouseId',
   requestedByUserId: 'requestedByUserId',
   requestedAt: 'requestedAt',

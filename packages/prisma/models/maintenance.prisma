@@ -42,6 +42,8 @@ model MaintenanceRequest {
     materialWithdrawals          MaterialWithdrawal[]
     notes                        String?                            @db.Text
 
+    materialPickingOrders MaterialPickingOrder[]
+
     // Relação 1-para-N com as Ordens de Serviço geradas
     serviceOrders MaintenanceServiceOrder[]
 

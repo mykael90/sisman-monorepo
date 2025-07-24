@@ -384,6 +384,8 @@ model MaintenanceRequest {
   materialWithdrawals          MaterialWithdrawal[]
   notes                        String?                            @db.Text
 
+  materialPickingOrders MaterialPickingOrder[]
+
   // Relação 1-para-N com as Ordens de Serviço geradas
   serviceOrders MaintenanceServiceOrder[]
 
@@ -1083,8 +1085,12 @@ model MaterialPickingOrder {
   pickingOrderNumber String @unique @default(uuid()) // Protocolo da ordem de separação
 
   // Para qual MaterialRequest esta ordem de separação se destina
-  materialRequestId Int
-  materialRequest   MaterialRequest @relation(fields: [materialRequestId], references: [id])
+  materialRequestId Int?
+  materialRequest   MaterialRequest? @relation(fields: [materialRequestId], references: [id])
+
+  // Para qual MaterialRequest esta ordem de separação se destina
+  maintenanceRequestId Int?
+  maintenanceRequest   MaintenanceRequest? @relation(fields: [maintenanceRequestId], references: [id])
 
   // Almoxarifado que deve separar os materiais
   warehouseId Int
@@ -1148,8 +1154,8 @@ model MaterialPickingOrderItem {
   materialPickingOrder   MaterialPickingOrder @relation(fields: [materialPickingOrderId], references: [id], onDelete: Cascade)
 
   // Referência ao item da Requisição de Material original
-  materialRequestItemId Int
-  materialRequestItem   MaterialRequestItem @relation(fields: [materialRequestItemId], references: [id])
+  materialRequestItemId Int?
+  materialRequestItem   MaterialRequestItem? @relation(fields: [materialRequestItemId], references: [id])
 
   // O material específico a ser separado (redundante se já está no materialRequestItem, mas útil para resumo)
   // globalMaterialId     Int?
