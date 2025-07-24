@@ -27,6 +27,7 @@ import { UpdateWarehouseDto } from '../../warehouses/dto/warehouse.dto';
  * @hidden
  */
 class MaterialStockMovementBaseDto implements MaterialStockMovement {
+  materialPickingOrderItemId: number;
   /**
    * ID do trabalhador que coletou o material.
    * @example 1
@@ -210,7 +211,8 @@ const MaterialStockMovementRelationOnlyArgs =
       materialWithdrawalItem: true,
       materialReceiptItem: true,
       stockTransferOrderItem: true,
-      materialRestrictionItem: true
+      materialRestrictionItem: true,
+      materialPickingOrderItem: true
     }
   });
 
@@ -338,6 +340,9 @@ export class MaterialStockMovementWithRelationsResponseDto
 
   @IsOptional()
   materialRestrictionItem?: MaterialStockMovementRelationOnly['materialRestrictionItem'];
+
+  @IsOptional()
+  materialPickingOrderItem?: MaterialStockMovementRelationOnly['materialPickingOrderItem'];
 }
 
 // =================================================================
@@ -463,6 +468,9 @@ export class CreateMaterialStockMovementWithRelationsDto extends CreateMaterialS
 
   @IsOptional()
   materialRestrictionItem?: MaterialStockMovementRelationOnly['materialRestrictionItem'];
+
+  @IsOptional()
+  materialPickingOrderItem?: MaterialStockMovementRelationOnly['materialPickingOrderItem'];
 }
 
 // =================================================================

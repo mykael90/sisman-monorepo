@@ -39,7 +39,9 @@ export class MaterialStockMovementsService {
     maintenanceRequest: true,
     materialWithdrawalItem: true,
     materialReceiptItem: true,
-    stockTransferOrderItem: true
+    stockTransferOrderItem: true,
+    materialRestrictionItem: true,
+    materialPickingOrderItem: true
   };
 
   /**
@@ -237,6 +239,7 @@ export class MaterialStockMovementsService {
       materialReceiptItem,
       stockTransferOrderItem,
       materialRestrictionItem,
+      materialPickingOrderItem,
       ...restOfData
     } = data;
 
@@ -292,6 +295,9 @@ export class MaterialStockMovementsService {
         : undefined,
       materialRestrictionItem: materialRestrictionItem?.id
         ? { connect: { id: materialRestrictionItem.id } }
+        : undefined,
+      materialPickingOrderItem: materialPickingOrderItem?.id
+        ? { connect: { id: materialPickingOrderItem.id } }
         : undefined
     };
 
@@ -341,6 +347,7 @@ export class MaterialStockMovementsService {
       materialReceiptItem,
       stockTransferOrderItem,
       materialRestrictionItem,
+      materialPickingOrderItem,
       ...restOfData
     } = data;
 
@@ -390,6 +397,10 @@ export class MaterialStockMovementsService {
     if (materialRestrictionItem?.id)
       updateInput.materialRestrictionItem = {
         connect: { id: materialRestrictionItem.id }
+      };
+    if (materialPickingOrderItem?.id)
+      updateInput.materialPickingOrderItem = {
+        connect: { id: materialPickingOrderItem.id }
       };
 
     // Adicione a lógica de desconexão (se um campo for passado como null) se necessário.

@@ -666,6 +666,7 @@ model MaterialGlobalCatalog {
   materialWithdrawalItems         MaterialWithdrawalItem[]
   materialReceiptItems            MaterialReceiptItem[]
   materialRestrictionOrderItems   MaterialRestrictionOrderItem[]
+  materialPickingOrderItems       MaterialPickingOrderItem[]
 
   // @@index([code]) // Index for faster lookups by global code.
   @@map("material_global_catalog") // Maps this model to the 'materials_global_catalog' table.
@@ -860,8 +861,6 @@ model MaterialRequestItem {
   createdAt DateTime @default(now()) @db.Timestamp(0) // Timestamp for when the record was created.
   updatedAt DateTime @updatedAt @db.Timestamp(0) // Timestamp for the last update of the record.
 
-  pickingOrders MaterialPickingOrder[]
-
   materialReceiptItems MaterialReceiptItem? //na modelagem eu não recebo itens fracionados, por isso a relação 1 para 1
 
   materialRestrictionOrderItems MaterialRestrictionOrderItem? @relation("RestrictionsForRequestItem")
@@ -1005,6 +1004,9 @@ model MaterialStockMovement {
   materialRestrictionItemId Int?
   materialRestrictionItem   MaterialRestrictionOrderItem? @relation(fields: [materialRestrictionItemId], references: [id])
 
+  materialPickingOrderItemId Int?
+  materialPickingOrderItem   MaterialPickingOrderItem? @relation(fields: [materialPickingOrderItemId], references: [id])
+
   materialReceiptItemId Int?                 @unique
   materialReceiptItem   MaterialReceiptItem? @relation(fields: [materialReceiptItemId], references: [id], onDelete: SetNull)
 
@@ -1065,11 +1067,12 @@ model MaterialDerived {
   stockMovements        MaterialStockMovement[] @relation("InstanceStockMovements") // Stock movements related to this instance.
   fulfilledRequestItems MaterialRequestItem[]   @relation("FulfilledByInstance") // Material request items fulfilled by this specific instance.
 
-  createdAt                    DateTime                       @default(now()) @db.Timestamp(0) // Timestamp for when the record was created.
-  updatedAt                    DateTime                       @updatedAt @db.Timestamp(0) // Timestamp for the last update of the record.
-  StockTransferOrderItem       MaterialTransferOrderItem[]
-  MaterialWithdrawalItem       MaterialWithdrawalItem[]
-  MaterialRestrictionOrderItem MaterialRestrictionOrderItem[]
+  createdAt                     DateTime                       @default(now()) @db.Timestamp(0) // Timestamp for when the record was created.
+  updatedAt                     DateTime                       @updatedAt @db.Timestamp(0) // Timestamp for the last update of the record.
+  StockTransferOrderItems       MaterialTransferOrderItem[]
+  materialWithdrawalItems       MaterialWithdrawalItem[]
+  materialRestrictionOrderItems MaterialRestrictionOrderItem[]
+  materialPickingOrderItems     MaterialPickingOrderItem[]
 
   @@index([globalMaterialId]) // Index for faster lookups by global material.
   @@index([warehouseId]) // Index for faster lookups by warehouse.
@@ -1122,10 +1125,8 @@ model MaterialPickingOrder {
   // Relação com as retiradas efetivas que atenderam esta ordem de separação
   materialWithdrawals MaterialWithdrawal[]
 
-  createdAt             DateTime             @default(now()) @db.Timestamp(0)
-  updatedAt             DateTime             @updatedAt @db.Timestamp(0)
-  MaterialRequestItem   MaterialRequestItem? @relation(fields: [materialRequestItemId], references: [id])
-  materialRequestItemId Int?
+  createdAt DateTime @default(now()) @db.Timestamp(0)
+  updatedAt DateTime @updatedAt @db.Timestamp(0)
 
   @@index([materialRequestId])
   @@index([warehouseId])
@@ -1158,10 +1159,10 @@ model MaterialPickingOrderItem {
   materialRequestItem   MaterialRequestItem? @relation(fields: [materialRequestItemId], references: [id])
 
   // O material específico a ser separado (redundante se já está no materialRequestItem, mas útil para resumo)
-  // globalMaterialId     Int?
-  // globalMaterial       Material? @relation(fields: [globalMaterialId], references: [id])
-  // materialInstanceId   Int?
-  // materialInstance     MaterialInstance? @relation(fields: [materialInstanceId], references: [id])
+  globalMaterialId   String?
+  globalMaterial     MaterialGlobalCatalog? @relation(fields: [globalMaterialId], references: [id])
+  materialInstanceId Int?
+  materialInstance   MaterialDerived?       @relation(fields: [materialInstanceId], references: [id])
 
   quantityToPick Decimal @db.Decimal(10, 3) // Quantidade a ser separada/reservada para este item
   // unitOfMeasure  String // Unidade de medida
@@ -1170,7 +1171,9 @@ model MaterialPickingOrderItem {
   quantityPicked Decimal? @db.Decimal(10, 3) // Quantidade efetivamente separada/reservada
   // pickedFromInstanceId Int? // Se uma instância específica foi alocada durante o picking
   // pickedFromInstance   MaterialInstance? @relation(fields: [pickedFromInstanceId], references: [id])
-  // notes                String? // Notas específicas do almoxarife sobre este item do picking
+  notes          String? // Notas específicas do almoxarife sobre este item do picking
+
+  stockMovement MaterialStockMovement[]
 
   createdAt DateTime @default(now()) @db.Timestamp(0)
   updatedAt DateTime @updatedAt @db.Timestamp(0)

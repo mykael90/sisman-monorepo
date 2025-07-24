@@ -64,7 +64,7 @@ export class MaterialRestrictionOrdersService {
     params: {
       item: {
         id: number;
-        globalMaterialId: string;
+        globalMaterialId?: string;
         materialInstanceId?: number;
         targetMaterialRequestItemId?: number;
       };

@@ -499,6 +499,7 @@ exports.Prisma.MaterialStockMovementScalarFieldEnum = {
   maintenanceRequestId: 'maintenanceRequestId',
   materialWithdrawalItemId: 'materialWithdrawalItemId',
   materialRestrictionItemId: 'materialRestrictionItemId',
+  materialPickingOrderItemId: 'materialPickingOrderItemId',
   materialReceiptItemId: 'materialReceiptItemId',
   stockTransferOrderItemId: 'stockTransferOrderItemId'
 };
@@ -545,16 +546,18 @@ exports.Prisma.MaterialPickingOrderScalarFieldEnum = {
   status: 'status',
   notes: 'notes',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  materialRequestItemId: 'materialRequestItemId'
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.MaterialPickingOrderItemScalarFieldEnum = {
   id: 'id',
   materialPickingOrderId: 'materialPickingOrderId',
   materialRequestItemId: 'materialRequestItemId',
+  globalMaterialId: 'globalMaterialId',
+  materialInstanceId: 'materialInstanceId',
   quantityToPick: 'quantityToPick',
   quantityPicked: 'quantityPicked',
+  notes: 'notes',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -1153,6 +1156,11 @@ exports.Prisma.MaterialDerivedOrderByRelevanceFieldEnum = {
 
 exports.Prisma.MaterialPickingOrderOrderByRelevanceFieldEnum = {
   pickingOrderNumber: 'pickingOrderNumber',
+  notes: 'notes'
+};
+
+exports.Prisma.MaterialPickingOrderItemOrderByRelevanceFieldEnum = {
+  globalMaterialId: 'globalMaterialId',
   notes: 'notes'
 };
 

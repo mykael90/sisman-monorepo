@@ -1,0 +1,126 @@
+### Variables
+@urlLocal = {{apiUrl}}/material-picking-order
+@contentType = application/json
+
+### GET all
+GET {{urlLocal}}
+Authorization: Bearer {{token}}
+
+### GET one
+# @prompt id
+GET {{urlLocal}}/{{id}}
+Authorization: Bearer {{token}}
+
+### POST - Create a new picking order with items
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "pickingOrderNumber": "PICK-{{$timestamp}}",
+    "warehouse": {
+        "id": 1
+    },
+    "requestedByUser": {"id": 1},
+    "requestedAt": "2024-07-25T10:00:00Z",
+    "notes": "Ordem de separação para manutenção preventiva.",
+    "items": [
+        {
+            "globalMaterialId": "3026000000032",
+            "quantityToPick": 5
+        },
+        {
+            "globalMaterialId": "302400026133",
+            "quantityToPick": 10
+        }
+    ]
+}
+
+### POST - Create a new picking order linked to a Material Request and Maintenance Request
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "pickingOrderNumber": "PICK-{{$timestamp}}",
+    "warehouse": {
+        "id": 1
+    },
+    "requestedByUser": {"id": 1},
+    "requestedAt": "2024-07-25T11:00:00Z",
+    "materialRequest": {
+        "id": 337
+    },
+    "items": [
+        {
+            "materialRequestItemId": 496,
+            "globalMaterialId": "302400002280",
+            "quantityToPick": 1
+        } 
+            ],
+    "desiredPickupDate": "2024-07-26T09:00:00Z",
+    "notes": "Materiais para a OS 123, retirada amanhã."
+    // Items can be omitted if materialRequest is provided and has items
+}
+
+### POST - Create a new picking order with specific collector
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "pickingOrderNumber": "PICK-003",
+    "warehouse": {
+        "id": 1
+    },
+    "requestedByUser": {"id": 1},
+    "requestedAt": "2024-07-25T12:00:00Z",
+    "beCollectedByUser": {"id": 2},
+    "notes": "Ordem para coleta pelo técnico João."
+}
+
+### PUT - Update notes and an item's quantity
+# @prompt id
+PUT {{urlLocal}}/{{id}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "notes": "Ordem atualizada: prioridade alta.",
+    "materialRequest": {
+        "id": 337
+    },
+    "items": [
+        {
+            "materialRequestItemId": 496,
+            "globalMaterialId": "302400002280",
+            "quantityToPick": 0
+        } 
+            ]
+}
+
+### PUT - Update status to READY_FOR_PICKUP
+# @prompt id
+PUT {{urlLocal}}/{{id}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "status": "READY_FOR_PICKUP"
+}
+
+### PUT - Update status to CANCELLED
+# @prompt id
+PUT {{urlLocal}}/{{id}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "status": "CANCELLED"
+}
+
+### DELETE one
+# @prompt id
+DELETE {{urlLocal}}/{{id}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}

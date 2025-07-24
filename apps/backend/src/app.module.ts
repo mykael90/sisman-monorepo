@@ -46,6 +46,7 @@ import { MaterialStockMovementsModule } from './modules/material-stock-movements
 import { MaterialReceiptsModule } from './modules/material-receipts/material-receipts.module';
 import { MaterialWithdrawalsModule } from './modules/material-withdrawals/material-withdrawals.module';
 import { MaterialRestrictionOrdersModule } from './modules/material-restriction-orders/material-restriction-orders.module';
+import { MaterialPickingOrdersModule } from './modules/material-picking-orders/material-picking-orders.module';
 
 @Module({
   imports: [
@@ -106,7 +107,8 @@ import { MaterialRestrictionOrdersModule } from './modules/material-restriction-
     MaterialStockMovementsModule,
     MaterialReceiptsModule,
     MaterialWithdrawalsModule,
-    MaterialRestrictionOrdersModule
+    MaterialRestrictionOrdersModule,
+    MaterialPickingOrdersModule
   ],
   controllers: [AppController],
   providers: [
