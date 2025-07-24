@@ -91,7 +91,7 @@ Authorization: Bearer {{token}}
     "notes": "Restrição atualizada com novas observações1.",
         "items": [
         {
-            "id": 35,
+            "id": 37,
             "globalMaterialId": "3026000000032",
             "quantityRestricted":49,
             "targetMaterialRequestItemId": 789
