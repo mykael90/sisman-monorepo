@@ -30,10 +30,35 @@ Authorization: Bearer {{token}}
     "items": [
         {
             "globalMaterialId": "302400002280",
-            "quantityRestricted":0,
+            "quantityRestricted":1,
             "targetMaterialRequestItemId": 496
         }
     ]
+}
+
+### POST
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "restrictionOrderNumber": "REST-014",
+    "warehouse": {
+        "id": 1
+    },
+    "processedByUser": {"id": 1},
+    "processedAt": "2024-07-25T10:00:00Z",
+    "targetMaterialRequest": {
+        "id": 424
+    },
+        "items": [
+        {
+            "globalMaterialId": "3026000000032",
+            "quantityRestricted":50,
+            "targetMaterialRequestItemId": 789
+        }
+    ],
+    "notes": "Restrição de materiais para o pedido X."
 }
 
 ### POST
@@ -63,11 +88,13 @@ Content-Type: {{contentType}}
 Authorization: Bearer {{token}}
 
 {
-    "notes": "Restrição atualizada com novas observações.",
+    "notes": "Restrição atualizada com novas observações1.",
         "items": [
         {
-            "id": 12,
-            "quantityRestricted":1
+            "id": 35,
+            "globalMaterialId": "3026000000032",
+            "quantityRestricted":49,
+            "targetMaterialRequestItemId": 789
         }
     ]
 }
