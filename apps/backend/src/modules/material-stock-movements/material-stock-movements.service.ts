@@ -68,7 +68,7 @@ export class MaterialStockMovementsService {
       create: {
         warehouseId,
         materialId,
-        physicalOnHandQuantity: 0
+        balanceInMinusOut: 0
       }
     });
   }
@@ -114,7 +114,7 @@ export class MaterialStockMovementsService {
         this.logger.debug(
           `Operação de entrada: ${quantity} para o tipo ${code}`
         );
-        updatePayload.physicalOnHandQuantity = {
+        updatePayload.balanceInMinusOut = {
           increment: quantity // Passa o Decimal diretamente
         };
         if (globalMaterialId && materialRequestItem?.unitPrice) {
@@ -124,7 +124,7 @@ export class MaterialStockMovementsService {
 
       case MaterialStockOperationType.OUT:
         this.logger.debug(`Operação de saída: ${quantity} para o tipo ${code}`);
-        updatePayload.physicalOnHandQuantity = {
+        updatePayload.balanceInMinusOut = {
           decrement: quantity // Passa o Decimal diretamente
         };
         break;
@@ -136,7 +136,7 @@ export class MaterialStockMovementsService {
 
         if (code === MaterialStockOperationSubType.INITIAL_STOCK_LOAD) {
           // Lógica de cálculo usando métodos Decimal, sem converter para número.
-          const currentOnHand = warehouseMaterialStock.physicalOnHandQuantity;
+          const currentOnHand = warehouseMaterialStock.balanceInMinusOut;
           const requiredInitialAdjustment = quantity.sub(currentOnHand); // quantity - currentOnHand
 
           // Verifica se o ajuste necessário é negativo.
@@ -151,7 +151,7 @@ export class MaterialStockMovementsService {
           code === MaterialStockOperationSubType.ADJUSTMENT_INV_IN ||
           code === MaterialStockOperationSubType.ADJUSTMENT_RECLASSIFY_IN
         ) {
-          updatePayload.physicalOnHandQuantity = {
+          updatePayload.balanceInMinusOut = {
             increment: quantity
           };
         } else if (
@@ -159,7 +159,7 @@ export class MaterialStockMovementsService {
           code === MaterialStockOperationSubType.ADJUSTMENT_RECLASSIFY_OUT
         ) {
           // CORREÇÃO: Usar 'decrement' para saídas, em vez de 'increment' com valor negativo.
-          updatePayload.physicalOnHandQuantity = {
+          updatePayload.balanceInMinusOut = {
             decrement: quantity
           };
         }

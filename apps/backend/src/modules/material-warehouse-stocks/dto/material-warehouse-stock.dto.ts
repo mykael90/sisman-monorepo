@@ -56,7 +56,7 @@ class MaterialWarehouseStockBaseDto implements MaterialWarehouseStock {
   @IsNumber()
   @Min(0)
   @Type(() => Number)
-  physicalOnHandQuantity: Decimal;
+  balanceInMinusOut: Decimal;
 
   /**
    * Quantidade inicial de estoque registrada.

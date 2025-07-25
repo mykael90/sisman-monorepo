@@ -685,10 +685,10 @@ model MaterialWarehouseStock {
   material   MaterialGlobalCatalog @relation(fields: [materialId], references: [id], onDelete: Restrict) // Relation to the Material model.
 
   // Stock Level Types
-  physicalOnHandQuantity Decimal  @default(0) @db.Decimal(12, 2) // Total physical quantity of the material currently in this warehouse.
-  initialStockQuantity   Decimal? @db.Decimal(12, 2) // Initial stock recorded upon system implementation or first entry.
-  restrictedQuantity     Decimal  @default(0) @db.Decimal(12, 2) // Quantity committed to a specific, paid-for maintenance request.
-  reservedQuantity       Decimal  @default(0) @db.Decimal(12, 2) // Quantity allocated for a specific demand, making it unavailable for others.
+  balanceInMinusOut    Decimal  @default(0) @db.Decimal(12, 2) // Total physical quantity of the material currently in this warehouse.
+  initialStockQuantity Decimal? @db.Decimal(12, 2) // Initial stock recorded upon system implementation or first entry.
+  restrictedQuantity   Decimal  @default(0) @db.Decimal(12, 2) // Quantity committed to a specific, paid-for maintenance request.
+  reservedQuantity     Decimal  @default(0) @db.Decimal(12, 2) // Quantity allocated for a specific demand, making it unavailable for others.
 
   // Other local information
   locationInWarehouse String? // Specific location within the warehouse (e.g., "Shelf A, Aisle 3").

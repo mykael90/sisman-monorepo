@@ -410,7 +410,7 @@ exports.Prisma.MaterialWarehouseStockScalarFieldEnum = {
   id: 'id',
   warehouseId: 'warehouseId',
   materialId: 'materialId',
-  physicalOnHandQuantity: 'physicalOnHandQuantity',
+  balanceInMinusOut: 'balanceInMinusOut',
   initialStockQuantity: 'initialStockQuantity',
   restrictedQuantity: 'restrictedQuantity',
   reservedQuantity: 'reservedQuantity',
