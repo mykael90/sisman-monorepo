@@ -74,7 +74,8 @@ export class MaterialStockMovementsService {
   }
 
   /**
-   * Aplica o efeito de uma movimentação de estoque ao saldo do registro correspondente.
+   * Aplica o efeito de uma movimentação de estoque ao saldo do registro correspondente,
+   * utilizando operações nativas do tipo Decimal para garantir a precisão.
    */
   private async applyStockMovementEffect(
     movement: Prisma.MaterialStockMovementGetPayload<{
@@ -86,113 +87,130 @@ export class MaterialStockMovementsService {
     }>,
     tx: PrismaClient
   ) {
+    // A variável 'quantity' agora é mantida como um objeto Decimal durante toda a operação.
     const {
       quantity,
       warehouseMaterialStockId,
-      globalMaterialId: materialId,
+      globalMaterialId,
       materialRequestItem,
       warehouseMaterialStock
     } = movement;
     const { operation, code } = movement.movementType;
-    const movementQuantity = quantity.toNumber();
 
     if (!warehouseMaterialStockId) {
       throw new Error(
-        'Movimentação de estoque não possui um ID de estoque associado para aplicar o efeito.'
+        `Movimentação de estoque ${movement.id} não possui um ID de estoque associado para aplicar o efeito.`
       );
     }
 
     this.logger.log(
-      `Aplicando efeito da movimentação ${movement.id} ao estoque ${warehouseMaterialStockId}.`
+      `Aplicando efeito da movimentação ${movement.id} (Quantidade: ${quantity}) ao estoque ${warehouseMaterialStockId}. Operação: ${operation} - Tipo: ${code}`
     );
 
     const updatePayload: Prisma.MaterialWarehouseStockUpdateInput = {};
 
-    //TODO: Revisar lógica de cálculo de saldo dos itens
     switch (operation) {
       case MaterialStockOperationType.IN:
-        this.logger.debug(`Operação de entrada. ${movementQuantity} e ${code}`);
-
+        this.logger.debug(
+          `Operação de entrada: ${quantity} para o tipo ${code}`
+        );
         updatePayload.physicalOnHandQuantity = {
-          increment: movementQuantity
+          increment: quantity // Passa o Decimal diretamente
         };
-
-        // Atualizar o custo na entrada, se a informação estiver disponível
-        if (materialId && materialRequestItem?.unitPrice) {
+        if (globalMaterialId && materialRequestItem?.unitPrice) {
           updatePayload.updatedCost = materialRequestItem.unitPrice;
         }
         break;
+
       case MaterialStockOperationType.OUT:
-        this.logger.debug(`Operação de saída. ${movementQuantity} e ${code}`);
-        updatePayload.physicalOnHandQuantity = { decrement: movementQuantity };
+        this.logger.debug(`Operação de saída: ${quantity} para o tipo ${code}`);
+        updatePayload.physicalOnHandQuantity = {
+          decrement: quantity // Passa o Decimal diretamente
+        };
         break;
+
       case MaterialStockOperationType.ADJUSTMENT:
-        // Para ajuste, a quantidade da movimentação é o valor a ser somado (pode ser negativo)
-        // TODO:
-        this.logger.debug(`Operação de ajuste. ${movementQuantity} e ${code}`);
+        this.logger.debug(
+          `Operação de ajuste: ${quantity} para o tipo ${code}`
+        );
+
         if (code === MaterialStockOperationSubType.INITIAL_STOCK_LOAD) {
-          //TODO: Lógica para calcular o valor inicial de estoque
-          const initialQuantity =
-            movementQuantity -
-            (warehouseMaterialStock.physicalOnHandQuantity.toNumber() ?? 0);
-          if (initialQuantity > 0) {
-            updatePayload.initialStockQuantity = initialQuantity;
-          } else {
-            //TODO. Pensar como fazer. A quantidade inicial não pode ser menor que 0. Acho que ele deve inserir um estravio primeiro.
+          // Lógica de cálculo usando métodos Decimal, sem converter para número.
+          const currentOnHand = warehouseMaterialStock.physicalOnHandQuantity;
+          const requiredInitialAdjustment = quantity.sub(currentOnHand); // quantity - currentOnHand
+
+          // Verifica se o ajuste necessário é negativo.
+          if (requiredInitialAdjustment.isNegative()) {
             throw new BadRequestException(
-              `A quantidade inicial calculada não pode ser negativa. Primeiramente, registre um estravio do material com id ${materialId} referente a ${-initialQuantity} unidades.`
+              `A quantidade de carga inicial (${quantity}) é menor que a quantidade já existente em estoque (${currentOnHand}). ` +
+                `Para corrigir, primeiro registre uma perda de ${requiredInitialAdjustment.abs()} unidades para o material ${globalMaterialId}.`
             );
           }
+          updatePayload.initialStockQuantity = requiredInitialAdjustment;
         } else if (
           code === MaterialStockOperationSubType.ADJUSTMENT_INV_IN ||
           code === MaterialStockOperationSubType.ADJUSTMENT_RECLASSIFY_IN
         ) {
           updatePayload.physicalOnHandQuantity = {
-            increment: movementQuantity
+            increment: quantity
           };
         } else if (
           code === MaterialStockOperationSubType.ADJUSTMENT_INV_OUT ||
           code === MaterialStockOperationSubType.ADJUSTMENT_RECLASSIFY_OUT
         ) {
+          // CORREÇÃO: Usar 'decrement' para saídas, em vez de 'increment' com valor negativo.
           updatePayload.physicalOnHandQuantity = {
-            increment: -movementQuantity
+            decrement: quantity
           };
         }
         updatePayload.lastStockCountDate = new Date();
         break;
+
       case MaterialStockOperationType.RESERVATION:
-        this.logger.debug(`Operação de reserva. ${movementQuantity} e ${code}`);
+        this.logger.debug(
+          `Operação de reserva: ${quantity} para o tipo ${code}`
+        );
         if (code === MaterialStockOperationSubType.RESERVE_FOR_PICKING_ORDER) {
-          updatePayload.reservedQuantity = { increment: movementQuantity };
+          updatePayload.reservedQuantity = { increment: quantity };
         } else if (
           code === MaterialStockOperationSubType.RELEASE_PICKING_RESERVATION
         ) {
-          updatePayload.reservedQuantity = { decrement: movementQuantity };
+          updatePayload.reservedQuantity = { decrement: quantity };
         }
         break;
+
       case MaterialStockOperationType.RESTRICTION:
         this.logger.debug(
-          `Operação de restrição. ${movementQuantity} e ${code}`
+          `Operação de restrição: ${quantity} para o tipo ${code}`
         );
         if (code === MaterialStockOperationSubType.RESTRICT_FOR_PAID_ITEM) {
-          updatePayload.restrictedQuantity = { increment: movementQuantity };
+          updatePayload.restrictedQuantity = { increment: quantity };
         } else if (
           code === MaterialStockOperationSubType.RELEASE_PAID_RESTRICTION
         ) {
-          updatePayload.restrictedQuantity = { increment: movementQuantity };
+          // CORREÇÃO DE BUG: Liberar uma restrição deve DECREMENTAR a quantidade restrita.
+          updatePayload.restrictedQuantity = { decrement: quantity };
         }
         break;
+
       default:
         this.logger.warn(
-          `Operação '${operation}' não tem efeito no saldo de estoque.`
+          `Operação '${operation}', tipo '${code}', não tem efeito no saldo de estoque e será ignorada.`
         );
         return; // Nenhuma ação necessária
     }
 
-    await tx.materialWarehouseStock.update({
-      where: { id: warehouseMaterialStockId },
-      data: updatePayload
-    });
+    // Apenas executa o update se houver algo para ser alterado.
+    if (Object.keys(updatePayload).length > 0) {
+      await tx.materialWarehouseStock.update({
+        where: { id: warehouseMaterialStockId },
+        data: updatePayload
+      });
+    } else {
+      this.logger.debug(
+        `Nenhuma alteração de estoque necessária para a movimentação ${movement.id}.`
+      );
+    }
   }
 
   /**

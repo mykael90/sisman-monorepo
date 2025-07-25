@@ -93,7 +93,7 @@ Authorization: Bearer {{token}}
         {
             "id": 2,
             "globalMaterialId": "3026000000032",
-            "quantityRestricted":49,
+            "quantityRestricted":60,
             "targetMaterialRequestItemId": 789
         }
     ]

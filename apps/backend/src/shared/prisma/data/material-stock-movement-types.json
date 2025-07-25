@@ -216,7 +216,7 @@
     "id": 27
   },
   {
-    "operation": "RESERVATION",
+    "operation": "RESTRICTION",
     "code": "RESTRICT_FOR_PAID_ITEM",
     "name": "Restrição para Item Pago",
     "description": "Marca uma quantidade como restrita (ex: já paga por um cliente/projeto), afetando o saldo disponível.",
@@ -224,7 +224,7 @@
     "id": 28
   },
   {
-    "operation": "RESERVATION",
+    "operation": "RESTRICTION",
     "code": "RELEASE_PAID_RESTRICTION",
     "name": "Liberação de Restrição (Item Pago)",
     "description": "Libera uma quantidade que estava restrita.",
