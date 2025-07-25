@@ -137,19 +137,21 @@ export class MaterialPickingOrdersService {
   }
 
   /**
-   * Valida se uma nova ordem de separação pode ser criada com base nas quantidades já reservadas.
+   * Valida se uma nova ordem de separação pode ser criada ou atualizada com base nas quantidades já reservadas.
    *
    * Este método verifica, para cada item da nova ordem de separação que está vinculado a uma requisição de material:
-   * 1. Busca todas as reservas (itens de outras ordens de separação) já feitas para o mesmo item da requisição.
-   * 2. Soma a quantidade da nova reserva com as quantidades já reservadas.
-   * 3. Compara essa soma com a quantidade total originalmente solicitada na requisição de material.
-   * 4. Lança uma exceção `ConflictException` se a soma ultrapassar o solicitado para qualquer item.
+   * 1. Mapeia a quantidade máxima permitida para cada item da requisição de material original.
+   * 2. Busca todas as reservas (itens de outras ordens de separação) já feitas para os mesmos itens da requisição.
+   * 3. Soma a quantidade da nova reserva (do item que está sendo validado) com as quantidades já reservadas.
+   * 4. Compara essa soma com a quantidade total originalmente solicitada na requisição de material.
+   * 5. Lança uma exceção `ConflictException` se a soma ultrapassar o solicitado para qualquer item.
    *
-   * @param tx O cliente Prisma da transação atual.
-   * @param itemsPickingOrder Os itens da nova ordem de separação que está sendo criada.
+   * @param tx O cliente Prisma da transação atual, para garantir consistência dos dados.
+   * @param itemsPickingOrder Os itens da nova ordem de separação (ou da ordem atualizada) que está sendo validada.
    * @param itemsMaterialRequest Os itens da requisição de material original à qual a ordem de separação está vinculada.
-   * @param pickingOrderIdToExclude O ID da ordem de separação a ser excluída da contagem de reservas (usado em atualizações).
+   * @param pickingOrderIdToExclude O ID da ordem de separação a ser excluída da contagem de reservas (essencial para atualizações, para não contar a própria ordem duas vezes).
    * @throws {ConflictException} Se a quantidade a ser reservada para qualquer item exceder o limite permitido.
+   * @throws {BadRequestException} Se houver uma inconsistência de dados, como um item de separação vinculado a uma requisição que não foi fornecida.
    */
   private async _canOrderPicking(
     tx: PrismaClient,
@@ -158,31 +160,56 @@ export class MaterialPickingOrdersService {
       materialRequestItemId?: number;
     }>,
     itemsMaterialRequest: MaterialRequestWithRelationsResponseDto['items'],
-    pickingOrderIdToExclude?: number // <-- NOVO PARÂMETRO
+    pickingOrderIdToExclude?: number
   ): Promise<void> {
     this.logger.debug(
-      'Iniciando validação de quantidades da ordem de separação.'
+      'Iniciando validação de quantidades da ordem de separação.',
+      { pickingOrderIdToExclude }
     );
 
-    // ... (lógica de mapeamento e extração de IDs permanece a mesma)
-    const allowedQuantitiesMap = new Map<number, Decimal>(/*...*/);
-    const relevantRequestItemIds = itemsPickingOrder
-      .map((item) => item.materialRequestItemId)
-      .filter((id): id is number => id != null);
+    // 1. Mapear as quantidades máximas permitidas pela requisição de material original.
+    // Isso cria um mapa de `materialRequestItemId` -> `quantityRequested` para consulta rápida.
+    const allowedQuantitiesMap = new Map<number, Decimal>();
+    for (const reqItem of itemsMaterialRequest) {
+      allowedQuantitiesMap.set(reqItem.id, reqItem.quantityRequested);
+    }
+    this.logger.debug(
+      {
+        message: 'Mapa de quantidades permitidas pela requisição criado.',
+        map: Object.fromEntries(allowedQuantitiesMap.entries()) // Converte para objeto para melhor visualização no log
+      },
+      'Contexto de Validação'
+    );
 
+    // 2. Validar e extrair os IDs dos itens da requisição.
+    // Se uma ordem de separação está vinculada a uma requisição de material,
+    // todos os seus itens devem obrigatoriamente estar vinculados a um item da requisição.
+    const relevantRequestItemIds: number[] = [];
+    for (const item of itemsPickingOrder) {
+      if (item.materialRequestItemId == null) {
+        throw new BadRequestException(
+          'Todos os itens da ordem de separação devem estar vinculados a um item de requisição de material (o campo materialRequestItemId é obrigatório).'
+        );
+      }
+      relevantRequestItemIds.push(item.materialRequestItemId);
+    }
+
+    // Se nenhum item estiver vinculado a uma requisição, não há o que validar.
     if (relevantRequestItemIds.length === 0) {
       this.logger.debug(
-        'Nenhum item vinculado a uma requisição de material. Validação pulada.'
+        'Nenhum item da ordem de separação está vinculado a uma requisição de material. Validação pulada.'
       );
       return;
     }
 
-    // 3. Buscar todas as reservas *existentes* para esses itens, excluindo a ordem atual se aplicável.
+    // 3. Buscar todas as reservas *existentes* para esses itens, excluindo os itens da própria
+    // ordem de separação que está sendo atualizada (se aplicável), ou seja, caso não seja uma nova ordem de reserva.
     const previouslyReservedItems = await tx.materialPickingOrderItem.findMany({
       where: {
         materialRequestItemId: { in: relevantRequestItemIds },
-        // AQUI ESTÁ A MUDANÇA CRÍTICA:
-        id: pickingOrderIdToExclude
+        // CRÍTICO: Se estamos atualizando, não contamos as quantidades antigas da mesma ordem.
+        // Filtramos pelo ID da ordem de separação pai.
+        materialPickingOrderId: pickingOrderIdToExclude
           ? { not: pickingOrderIdToExclude }
           : undefined
       },
@@ -191,45 +218,83 @@ export class MaterialPickingOrdersService {
         quantityToPick: true
       }
     });
+    this.logger.debug(
+      {
+        message: `Encontrados ${previouslyReservedItems.length} itens previamente reservados para os IDs de requisição relevantes.`,
+        items: previouslyReservedItems
+      },
+      'Contexto de Validação'
+    );
 
-    // 4. Calcular o total já reservado para cada item da requisição.
+    // 4. Calcular o total já reservado para cada item da requisição, agregando os resultados da busca.
+    // Isso cria um mapa de `materialRequestItemId` -> `totalAlreadyReserved`.
     const alreadyReservedMap = previouslyReservedItems.reduce((acc, item) => {
-      const currentReserved =
-        acc.get(item.materialRequestItemId) || new Decimal(0);
-      acc.set(
-        item.materialRequestItemId,
-        currentReserved.add(item.quantityToPick)
-      );
+      // Garante que o item.materialRequestItemId não seja nulo, embora a query deva garantir isso.
+      if (item.materialRequestItemId) {
+        const currentReserved =
+          acc.get(item.materialRequestItemId) || new Decimal(0);
+        acc.set(
+          item.materialRequestItemId,
+          currentReserved.add(item.quantityToPick)
+        );
+      }
       return acc;
     }, new Map<number, Decimal>());
 
-    // 5. Validar cada item da nova ordem de separação.
+    this.logger.debug(
+      {
+        message:
+          'Mapa de quantidades já reservadas em outras ordens calculado.',
+        map: Object.fromEntries(alreadyReservedMap.entries())
+      },
+      'Contexto de Validação'
+    );
+
+    // 5. Validar cada item da *nova* ordem de separação contra os limites.
     for (const newItem of itemsPickingOrder) {
+      // Ignora itens não vinculados a uma requisição, pois eles não têm um limite a ser verificado.
       if (!newItem.materialRequestItemId) {
-        continue; // Ignora itens não vinculados a uma requisição.
+        continue;
       }
 
       const totalAllowed = allowedQuantitiesMap.get(
         newItem.materialRequestItemId
       );
+
+      // Verificação de sanidade: se um item da ordem aponta para uma requisição
+      // que não está na lista de itens da requisição principal, é um erro de dados.
       if (!totalAllowed) {
-        // Isso indica uma inconsistência de dados, mas por segurança, tratamos como um erro.
+        this.logger.error(
+          `Inconsistência de dados detectada: Item de separação vinculado a um item de requisição (ID: ${newItem.materialRequestItemId}) que não pertence à requisição de material informada.`
+        );
         throw new BadRequestException(
           `O item da ordem de separação está vinculado a um item de requisição (ID: ${newItem.materialRequestItemId}) que não pertence à requisição de material informada.`
         );
       }
 
+      // Soma a quantidade já reservada em *outras* ordens com a quantidade desta *nova* reserva.
       const alreadyReserved =
         alreadyReservedMap.get(newItem.materialRequestItemId) || new Decimal(0);
       const newTotalReserved = alreadyReserved.add(newItem.quantityToPick);
 
+      this.logger.debug(
+        `Validando item de requisição ID ${newItem.materialRequestItemId}: ` +
+          `Permitido: ${totalAllowed}, ` +
+          `Já Reservado: ${alreadyReserved}, ` +
+          `Tentando Reservar: ${newItem.quantityToPick}, ` +
+          `Novo Total: ${newTotalReserved}`
+      );
+
+      // A nova quantidade total reservada não pode ser maior que a quantidade permitida na requisição.
       if (newTotalReserved.greaterThan(totalAllowed)) {
-        throw new ConflictException(
+        const errorMessage =
           `Não é possível reservar a quantidade de ${newItem.quantityToPick} para o item de requisição ID ${newItem.materialRequestItemId}. ` +
-            `Quantidade solicitada: ${totalAllowed}, ` +
-            `Quantidade já reservada: ${alreadyReserved}, ` +
-            `Nova quantidade total excederia o limite: ${newTotalReserved}.`
-        );
+          `Quantidade total solicitada na requisição: ${totalAllowed}. ` +
+          `Quantidade já reservada em outras ordens: ${alreadyReserved}. ` +
+          `A nova quantidade total (${newTotalReserved}) excederia o limite permitido.`;
+
+        this.logger.warn(`Falha na validação de quantidade: ${errorMessage}`);
+        throw new ConflictException(errorMessage);
       }
     }
 
@@ -496,140 +561,191 @@ export class MaterialPickingOrdersService {
       );
     }
 
-    const { items: updatedItems } = data;
+    const { items: itemsToUpdate } = data;
 
     // --- 3. VALIDAÇÃO DE QUANTIDADE (se aplicável) ---
     // Garante que a soma das reservas não exceda o solicitado na requisição.
-    if (updatedItems && existingOrder.materialRequest) {
+    if (itemsToUpdate && existingOrder.materialRequest) {
       await this._canOrderPicking(
         prisma,
-        updatedItems,
+        itemsToUpdate,
         existingOrder.materialRequest.items,
         id // Passa o ID da ordem atual para ser ignorado na validação
       );
     }
 
     // --- 4. LÓGICA DE MOVIMENTAÇÃO DE ESTOQUE (PRÉ-UPDATE) ---
-    // Calcula as diferenças de quantidade e cria as movimentações de estoque antes de salvar.
-    if (updatedItems) {
+    // ESTA PARTE SERÁ REFEITA PARA SER MAIS ROBUSTA
+    if (itemsToUpdate) {
+      // Mapeia itens existentes por uma chave de negócio (materialRequestItemId) se disponível
       const existingItemsMap = new Map(
-        existingOrder.items.map((item) => [item.id, item])
+        existingOrder.items.map((item) => [
+          item.materialRequestItemId || `temp_${item.id}`, // Usa uma chave única
+          item
+        ])
       );
+      const updatedItemKeys = new Set<number | string>();
+
       const orderInfoForMovement = {
         warehouseId: existingOrder.warehouseId,
-        processedByUserId: existingOrder.requestedByUserId, // Ou o ID do usuário que fez a atualização
+        processedByUserId: existingOrder.requestedByUserId,
         maintenanceRequestId: existingOrder.maintenanceRequestId
       };
 
-      // Itera sobre os itens recebidos para identificar criações e atualizações
-      for (const updatedItem of updatedItems) {
-        if (updatedItem.id) {
-          // É uma atualização de um item existente
-          const existingItem = existingItemsMap.get(updatedItem.id);
-          if (existingItem) {
-            const quantityDelta = new Decimal(updatedItem.quantityToPick).sub(
-              existingItem.quantityToPick
-            );
-            if (!quantityDelta.isZero()) {
-              await this._createStockMovement(prisma as any, {
-                item: updatedItem as any,
-                quantityChange: quantityDelta,
-                order: orderInfoForMovement,
-                movementSubType: quantityDelta.isPositive()
-                  ? MaterialStockOperationSubType.RESERVE_FOR_PICKING_ORDER
-                  : MaterialStockOperationSubType.RELEASE_PICKING_RESERVATION
-              });
-            }
+      for (const updatedItem of itemsToUpdate) {
+        // A chave de negócio para encontrar o item correspondente
+        const itemKey =
+          updatedItem.materialRequestItemId || `temp_${updatedItem.id}`;
+        updatedItemKeys.add(itemKey);
+
+        const existingItem = existingItemsMap.get(itemKey);
+
+        if (existingItem) {
+          // --- É UMA ATUALIZAÇÃO ---
+          const quantityDelta = new Decimal(updatedItem.quantityToPick).sub(
+            existingItem.quantityToPick
+          );
+          if (!quantityDelta.isZero()) {
+            await this._createStockMovement(prisma as any, {
+              item: existingItem, // Use o item existente para ter todos os IDs
+              quantityChange: quantityDelta,
+              order: orderInfoForMovement,
+              movementSubType: quantityDelta.isPositive()
+                ? MaterialStockOperationSubType.RESERVE_FOR_PICKING_ORDER
+                : MaterialStockOperationSubType.RELEASE_PICKING_RESERVATION
+            });
           }
         } else {
-          // É um item novo a ser criado
-          await this._createStockMovement(prisma as any, {
-            item: { ...updatedItem, id: -1 }, // ID temporário
-            quantityChange: updatedItem.quantityToPick,
-            order: orderInfoForMovement,
-            movementSubType:
-              MaterialStockOperationSubType.RESERVE_FOR_PICKING_ORDER
-          });
+          // --- É UM ITEM NOVO ---
+          // A quantidade a ser movimentada é a própria quantidade do item.
+          const quantityChange = new Decimal(updatedItem.quantityToPick);
+          if (!quantityChange.isZero()) {
+            await this._createStockMovement(prisma as any, {
+              item: { ...updatedItem, id: -1 }, // ID temporário
+              quantityChange: quantityChange, // Garantido ser Decimal
+              order: orderInfoForMovement,
+              movementSubType:
+                MaterialStockOperationSubType.RESERVE_FOR_PICKING_ORDER
+            });
+          }
         }
       }
 
-      // Itera sobre os itens existentes para identificar os que foram removidos
-      const updatedItemIds = new Set(
-        updatedItems.map((item) => item.id).filter(Boolean)
-      );
-      const itemsToDelete = existingOrder.items.filter(
-        (item) => !updatedItemIds.has(item.id)
-      );
-      for (const itemToDelete of itemsToDelete) {
-        await this._createStockMovement(prisma as any, {
-          item: itemToDelete,
-          quantityChange: itemToDelete.quantityToPick.negated(), // Devolve ao estoque
-          order: orderInfoForMovement,
-          movementSubType:
-            MaterialStockOperationSubType.RELEASE_PICKING_RESERVATION
-        });
+      // Identificar e processar itens removidos
+      for (const [key, itemToDelete] of existingItemsMap.entries()) {
+        if (!updatedItemKeys.has(key)) {
+          await this._createStockMovement(prisma as any, {
+            item: itemToDelete,
+            quantityChange: itemToDelete.quantityToPick.negated(), // Devolve ao estoque
+            order: orderInfoForMovement,
+            movementSubType:
+              MaterialStockOperationSubType.RELEASE_PICKING_RESERVATION
+          });
+        }
       }
     }
 
-    // --- 5. CONSTRUÇÃO DO PAYLOAD DE ATUALIZAÇÃO ---
-    // Cria o payload de forma controlada para evitar erros de tipagem.
+    // --- 5. CONSTRUÇÃO DO PAYLOAD DE ATUALIZAÇÃO (LÓGICA REFEITA) ---
+    this.logger.debug(
+      'Construindo payload de atualização granular para itens.'
+    );
     const updatePayload: Prisma.MaterialPickingOrderUpdateInput = {};
 
-    // Adiciona campos simples apenas se forem fornecidos no DTO
+    // Adiciona campos simples (não relacionados a itens)
     if (data.notes !== undefined) updatePayload.notes = data.notes;
     if (data.desiredPickupDate)
       updatePayload.desiredPickupDate = data.desiredPickupDate;
+    // ... outras relações simples como beCollectedByUser ...
 
-    // Lida com relações de conexão/desconexão
-    if (data.beCollectedByUser) {
-      updatePayload.beCollectedByUser = {
-        connect: { id: data.beCollectedByUser.id }
-      };
-    } else if (data.beCollectedByUser === null) {
-      updatePayload.beCollectedByUser = { disconnect: true };
-    }
-    if (data.beCollectedByWorker) {
-      updatePayload.beCollectedByWorker = {
-        connect: { id: data.beCollectedByWorker.id }
-      };
-    } else if (data.beCollectedByWorker === null) {
-      updatePayload.beCollectedByWorker = { disconnect: true };
-    }
+    // ** LÓGICA CENTRAL PARA ATUALIZAÇÃO GRANULAR DE ITENS **
+    if (itemsToUpdate) {
+      const existingItemsMap = new Map(
+        existingOrder.items.map((item) => [item.id, item])
+      );
+      // Usamos uma chave de negócio (materialRequestItemId) para identificar itens que não vêm com ID.
+      const existingItemsByBusinessKey = new Map(
+        existingOrder.items
+          .filter((item) => item.materialRequestItemId)
+          .map((item) => [item.materialRequestItemId, item])
+      );
 
-    // Lida com a atualização aninhada de itens
-    if (updatedItems) {
+      const itemsToActuallyCreate: Prisma.MaterialPickingOrderItemCreateWithoutMaterialPickingOrderInput[] =
+        [];
+      const itemsToActuallyUpdate: {
+        where: { id: number };
+        data: Prisma.MaterialPickingOrderItemUpdateInput;
+      }[] = [];
+      const processedExistingItemIds = new Set<number>();
+
+      for (const itemFromRequest of itemsToUpdate) {
+        let existingItem = null;
+
+        // Estratégia de correspondência:
+        // 1. Tentar encontrar pelo ID do item da ordem de separação (mais confiável).
+        if (itemFromRequest.id) {
+          existingItem = existingItemsMap.get(itemFromRequest.id);
+        }
+        // 2. Se não, tentar encontrar pela chave de negócio (ID do item da requisição).
+        else if (itemFromRequest.materialRequestItemId) {
+          existingItem = existingItemsByBusinessKey.get(
+            itemFromRequest.materialRequestItemId
+          );
+        }
+
+        if (existingItem) {
+          // --- CASO DE ATUALIZAÇÃO ---
+          // O item já existe, vamos preparar um payload de atualização para ele.
+          processedExistingItemIds.add(existingItem.id);
+          itemsToActuallyUpdate.push({
+            where: { id: existingItem.id },
+            data: {
+              // Apenas os campos que podem ser atualizados
+              quantityToPick: itemFromRequest.quantityToPick,
+              notes: itemFromRequest.notes
+              // Não atualizamos chaves estrangeiras como globalMaterialId aqui
+              // para manter a simplicidade. Se precisar, adicione-as.
+            }
+          });
+          this.logger.debug(`Item ID ${existingItem.id} será ATUALIZADO.`);
+        } else {
+          // --- CASO DE CRIAÇÃO ---
+          // Nenhum item correspondente encontrado, este é um novo item para a ordem.
+          itemsToActuallyCreate.push({
+            quantityToPick: itemFromRequest.quantityToPick,
+            notes: itemFromRequest.notes,
+            globalMaterial: {
+              connect: { id: itemFromRequest.globalMaterialId }
+            },
+            materialInstance: itemFromRequest.materialInstanceId
+              ? { connect: { id: itemFromRequest.materialInstanceId } }
+              : undefined,
+            materialRequestItem: itemFromRequest.materialRequestItemId
+              ? { connect: { id: itemFromRequest.materialRequestItemId } }
+              : undefined
+          });
+          this.logger.debug(
+            `Um novo item para o material ${itemFromRequest.globalMaterialId} será CRIADO.`
+          );
+        }
+      }
+
+      // --- CASO DE REMOÇÃO ---
+      // Itens existentes que não foram processados (nem por ID, nem por chave de negócio) devem ser removidos.
+      const itemIdsToDelete = existingOrder.items
+        .map((item) => item.id)
+        .filter((id) => !processedExistingItemIds.has(id));
+
+      if (itemIdsToDelete.length > 0) {
+        this.logger.debug(
+          `Itens com IDs [${itemIdsToDelete.join(', ')}] serão REMOVIDOS.`
+        );
+      }
+
+      // Monta o payload final para a relação `items`
       updatePayload.items = {
-        deleteMany: {
-          id: {
-            in: existingOrder.items
-              .filter((item) => !updatedItems.some((ui) => ui.id === item.id))
-              .map((i) => i.id)
-          }
-        },
-        upsert: updatedItems.map((item) => {
-          const createPayload: Prisma.MaterialPickingOrderItemCreateWithoutMaterialPickingOrderInput =
-            {
-              quantityToPick: item.quantityToPick,
-              notes: item.notes,
-              globalMaterial: { connect: { id: item.globalMaterialId } },
-              materialInstance: item.materialInstanceId
-                ? { connect: { id: item.materialInstanceId } }
-                : undefined,
-              materialRequestItem: item.materialRequestItemId
-                ? { connect: { id: item.materialRequestItemId } }
-                : undefined
-            };
-          const updatePayload: Prisma.MaterialPickingOrderItemCreateWithoutMaterialPickingOrderInput =
-            {
-              quantityToPick: item.quantityToPick,
-              notes: item.notes
-            };
-          return {
-            where: { id: item.id || -1 }, // -1 garante que itens sem ID sejam criados
-            create: createPayload,
-            update: updatePayload
-          };
-        })
+        create: itemsToActuallyCreate,
+        update: itemsToActuallyUpdate,
+        delete: itemIdsToDelete.map((id) => ({ id }))
       };
     }
 
