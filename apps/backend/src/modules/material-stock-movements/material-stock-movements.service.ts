@@ -112,6 +112,24 @@ export class MaterialStockMovementsService {
     switch (operation) {
       case MaterialStockOperationType.IN:
         this.logger.debug(`Operação de entrada. ${movementQuantity} e ${code}`);
+
+        updatePayload.physicalOnHandQuantity = {
+          increment: movementQuantity
+        };
+
+        // Atualizar o custo na entrada, se a informação estiver disponível
+        if (materialId && materialRequestItem?.unitPrice) {
+          updatePayload.updatedCost = materialRequestItem.unitPrice;
+        }
+        break;
+      case MaterialStockOperationType.OUT:
+        this.logger.debug(`Operação de saída. ${movementQuantity} e ${code}`);
+        updatePayload.physicalOnHandQuantity = { decrement: movementQuantity };
+        break;
+      case MaterialStockOperationType.ADJUSTMENT:
+        // Para ajuste, a quantidade da movimentação é o valor a ser somado (pode ser negativo)
+        // TODO:
+        this.logger.debug(`Operação de ajuste. ${movementQuantity} e ${code}`);
         if (code === MaterialStockOperationSubType.INITIAL_STOCK_LOAD) {
           //TODO: Lógica para calcular o valor inicial de estoque
           const initialQuantity =
@@ -125,30 +143,17 @@ export class MaterialStockMovementsService {
               `A quantidade inicial calculada não pode ser negativa. Primeiramente, registre um estravio do material com id ${materialId} referente a ${-initialQuantity} unidades.`
             );
           }
-        } else {
-          updatePayload.physicalOnHandQuantity = {
-            increment: movementQuantity
-          };
-        }
-        // Atualizar o custo na entrada, se a informação estiver disponível
-        if (materialId && materialRequestItem?.unitPrice) {
-          updatePayload.updatedCost = materialRequestItem.unitPrice;
-        }
-        break;
-      case MaterialStockOperationType.OUT:
-        updatePayload.physicalOnHandQuantity = { decrement: movementQuantity };
-        break;
-      case MaterialStockOperationType.ADJUSTMENT:
-        // Para ajuste, a quantidade da movimentação é o valor a ser somado (pode ser negativo)
-        // TODO:
-        if (
+        } else if (
           code === MaterialStockOperationSubType.ADJUSTMENT_INV_IN ||
           code === MaterialStockOperationSubType.ADJUSTMENT_RECLASSIFY_IN
         ) {
           updatePayload.physicalOnHandQuantity = {
             increment: movementQuantity
           };
-        } else {
+        } else if (
+          code === MaterialStockOperationSubType.ADJUSTMENT_INV_OUT ||
+          code === MaterialStockOperationSubType.ADJUSTMENT_RECLASSIFY_OUT
+        ) {
           updatePayload.physicalOnHandQuantity = {
             increment: -movementQuantity
           };
@@ -156,12 +161,26 @@ export class MaterialStockMovementsService {
         updatePayload.lastStockCountDate = new Date();
         break;
       case MaterialStockOperationType.RESERVATION:
-        // TODO:
-        updatePayload.reservedQuantity = { increment: movementQuantity };
+        this.logger.debug(`Operação de reserva. ${movementQuantity} e ${code}`);
+        if (code === MaterialStockOperationSubType.RESERVE_FOR_PICKING_ORDER) {
+          updatePayload.reservedQuantity = { increment: movementQuantity };
+        } else if (
+          code === MaterialStockOperationSubType.RELEASE_PICKING_RESERVATION
+        ) {
+          updatePayload.reservedQuantity = { decrement: movementQuantity };
+        }
         break;
       case MaterialStockOperationType.RESTRICTION:
-        // TODO:
-        updatePayload.restrictedQuantity = { increment: movementQuantity };
+        this.logger.debug(
+          `Operação de restrição. ${movementQuantity} e ${code}`
+        );
+        if (code === MaterialStockOperationSubType.RESTRICT_FOR_PAID_ITEM) {
+          updatePayload.restrictedQuantity = { increment: movementQuantity };
+        } else if (
+          code === MaterialStockOperationSubType.RELEASE_PAID_RESTRICTION
+        ) {
+          updatePayload.restrictedQuantity = { increment: movementQuantity };
+        }
         break;
       default:
         this.logger.warn(

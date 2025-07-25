@@ -74,6 +74,7 @@ export class MaterialRestrictionOrdersService {
         processedByUserId: number;
         maintenanceRequestId?: number;
       };
+      // movementSubType: MaterialStockOperationSubType;
     }
   ) {
     if (params.quantityChange.isZero()) {
@@ -154,6 +155,22 @@ export class MaterialRestrictionOrdersService {
     return RestrictionOrderStatus.PARTIALLY_RESTRICTED;
   }
 
+  private async _restrictionOrderForMaterialRequestExists(
+    prisma: PrismaClient,
+    materialRequestId: number
+  ): Promise<void> {
+    //a relação de RestrictionOrder com MaterialRequest é de 1 para 1, se já existir o registro retorne com o erro
+    const restrictionOrder = await prisma.materialRestrictionOrder.findFirst({
+      include: { targetMaterialRequest: true },
+      where: { targetMaterialRequest: { id: materialRequestId } }
+    });
+    if (restrictionOrder) {
+      throw new ConflictException(
+        `Já existe uma ordem de restrição para a requisição de material ID ${materialRequestId}, protocolo ${restrictionOrder.targetMaterialRequest.protocolNumber}.`
+      );
+    }
+  }
+
   /**
    * Método público para criar uma ordem de restrição.
    * Gerencia a transação: inicia uma nova ou utiliza uma existente.
@@ -221,6 +238,10 @@ export class MaterialRestrictionOrdersService {
       }
 
       try {
+        await this._restrictionOrderForMaterialRequestExists(
+          prisma,
+          targetMaterialRequest.id
+        );
         let finalStatus = status;
 
         this.logger.log(

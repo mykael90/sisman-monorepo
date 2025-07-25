@@ -17,7 +17,7 @@ Content-Type: {{contentType}}
 Authorization: Bearer {{token}}
 
 {
-    "restrictionOrderNumber": "REST-009",
+    "restrictionOrderNumber": "REST-{{$timestamp}}",
     "warehouse": {
         "id": 1
     },
