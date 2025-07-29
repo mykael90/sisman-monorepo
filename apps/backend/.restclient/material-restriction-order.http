@@ -60,6 +60,30 @@ Authorization: Bearer {{token}}
     ],
     "notes": "Restrição de materiais para o pedido X."
 }
+### POST
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "restrictionOrderNumber": "REST-{{$timestamp}}",
+    "warehouse": {
+        "id": 1
+    },
+    "processedByUser": {"id": 1},
+    "processedAt": "2024-07-25T10:00:00Z",
+    "targetMaterialRequest": {
+        "id": 322
+    },
+        "items": [
+        {
+            "globalMaterialId": "302400030155",
+            "quantityRestricted":1,
+            "targetMaterialRequestItemId": 469
+        }
+    ],
+    "notes": "Restrição de materiais para o pedido X."
+}
 
 ### POST
 POST {{urlLocal}}

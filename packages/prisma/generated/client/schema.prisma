@@ -760,7 +760,9 @@ model MaterialRequest {
   materialPickingOrders MaterialPickingOrder[]
   materialWithdrawals   MaterialWithdrawal[]
 
-  materialReceipt MaterialReceipt? @relation("ReceiptsForMaterialRequest")
+  //implementar lógica para recebimento do almoxarifado central única vez
+  //mas pode ter outros tipos de entrada relacionados a uma requisição de material como um retorno
+  materialReceipts MaterialReceipt[] @relation("ReceiptsForMaterialRequest")
 
   @@index([maintenanceRequestId]) // Index for faster lookups by maintenance request.
   @@index([requestedById]) // Index for faster lookups by requesting user.
@@ -861,7 +863,7 @@ model MaterialRequestItem {
   createdAt DateTime @default(now()) @db.Timestamp(0) // Timestamp for when the record was created.
   updatedAt DateTime @updatedAt @db.Timestamp(0) // Timestamp for the last update of the record.
 
-  materialReceiptItems MaterialReceiptItem? //na modelagem eu não recebo itens fracionados, por isso a relação 1 para 1
+  materialReceiptItems MaterialReceiptItem[] //
 
   materialRestrictionOrderItems MaterialRestrictionOrderItem? @relation("RestrictionsForRequestItem")
   materialPickingOrderItems     MaterialPickingOrderItem[]
@@ -1388,7 +1390,7 @@ model MaterialReceipt {
   processedByUserId Int // Usuário que processou o recebimento
   processedByUser   User @relation("ReceiptsProcessedBy", fields: [processedByUserId], references: [id])
 
-  materialRequestId Int?             @unique
+  materialRequestId Int?
   materialRequest   MaterialRequest? @relation("ReceiptsForMaterialRequest", fields: [materialRequestId], references: [id])
 
   status MaterialReceiptStatus @default(FULLY_ACCEPTED)
@@ -1424,11 +1426,14 @@ model MaterialReceiptItem {
   materialId String
   material   MaterialGlobalCatalog @relation(fields: [materialId], references: [id])
 
-  quantityExpected Decimal @db.Decimal(10, 3)
+  //opcional pois em um retorno ou doação não se espera nada
+  //pode ser interessante de usar em uma transferência também, já fica mais ou menos pronta a entrada
+  quantityExpected Decimal? @db.Decimal(10, 3)
   // unitOfMeasure    String
 
   quantityReceived Decimal @db.Decimal(10, 3)
-  quantityAccepted Decimal @db.Decimal(10, 3)
+  //só recebida ou recusada para simplicidade
+  // quantityAccepted Decimal @db.Decimal(10, 3)
   quantityRejected Decimal @db.Decimal(10, 3)
   rejectionReason  String? @db.Text
 
@@ -1439,7 +1444,7 @@ model MaterialReceiptItem {
   materialStockMovement MaterialStockMovement?
 
   materialRequestItem   MaterialRequestItem? @relation(fields: [materialRequestItemId], references: [id]) // Relation to MaterialRequestItem.
-  materialRequestItemId Int?                 @unique // //na modelagem eu não recebo itens fracionados, por isso a relação 1 para 1
+  materialRequestItemId Int? //um para muitos pois podem ter entradas diferentes, como vindo do almoxarifado central ou uma sobra referente a mesma requisicao de material
 
   createdAt DateTime @default(now()) @db.Timestamp(0)
   updatedAt DateTime @updatedAt @db.Timestamp(0)

@@ -1,11 +1,34 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+  Logger,
+  NotFoundException
+} from '@nestjs/common';
 import { PrismaService } from '../../shared/prisma/prisma.service';
 import {
   CreateMaterialRequestWithRelationsDto,
   UpdateMaterialRequestWithRelationsDto
 } from './dto/material-request.dto';
 import { handlePrismaError } from '../../shared/utils/prisma-error-handler';
-import { Prisma } from '@sisman/prisma';
+import { Prisma, RestrictionOrderStatus } from '@sisman/prisma';
+import { includes } from 'lodash';
+
+// Definir uma interface para as opções de exclusão para clareza
+export interface ShowBalanceOptions {
+  pickingOrderIdToExclude?: number;
+  withdrawalIdToExclude?: number;
+  restrictionIdToExclude?: number;
+}
+
+//  Definir os tipos para a configuração da operação
+type OperationType = 'RESERVATION' | 'WITHDRAWAL' | 'RESTRICTION';
+
+type OperationConfig = {
+  type: OperationType;
+  balanceToCheck: 'potential' | 'effective';
+  idToExclude?: ShowBalanceOptions; // Reutilizando a interface
+};
 
 @Injectable()
 export class MaterialRequestsService {
@@ -143,6 +166,231 @@ export class MaterialRequestsService {
         throw new NotFoundException(`MaterialRequest with ID ${id} not found`);
       }
       return materialRequest;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      handlePrismaError(error, this.logger, 'MaterialRequestsService', {
+        operation: 'show',
+        id
+      });
+      throw error;
+    }
+  }
+  async showBalance(id: number, options?: ShowBalanceOptions) {
+    try {
+      // 1. Executamos todas as consultas em paralelo para máxima eficiência
+      const [
+        materialRequest,
+        aggregatedReceiveds,
+        aggregatedWithdrawals,
+        aggregatedPickingOrders
+      ] = await this.prisma.$transaction([
+        // Consulta 1: Busca os dados principais da MaterialRequest e as relações simples
+        this.prisma.materialRequest.findUnique({
+          where: { id },
+          include: {
+            items: true,
+            // Removemos as relações que vamos agregar manualmente
+            // materialReceipts: { include: { items: true } },
+            // materialWithdrawals: true,
+            // materialPickingOrders: true,
+            restrictionOrders: {
+              include: { items: true },
+              where: {
+                status: { not: RestrictionOrderStatus.FREE },
+                ...(options?.restrictionIdToExclude && {
+                  id: {
+                    not: options.restrictionIdToExclude
+                  }
+                })
+              }
+            }
+          }
+        }),
+
+        // Consulta 2: Agrega os itens de materialReceipt
+        this.prisma.materialReceiptItem.groupBy({
+          by: ['materialId'],
+          where: {
+            // Filtra apenas os itens cujas retiradas pertencem à nossa MaterialRequest
+            materialReceipt: {
+              materialRequestId: id
+            }
+          },
+          _sum: {
+            quantityReceived: true
+          }
+        }),
+
+        // Consulta 3: Agrega os itens de MaterialWithdrawal
+        this.prisma.materialWithdrawalItem.groupBy({
+          by: ['globalMaterialId'],
+          where: {
+            // Filtra apenas os itens cujas retiradas pertencem à nossa MaterialRequest
+            materialWithdrawal: {
+              materialRequestId: id
+            }
+          },
+          _sum: {
+            quantityWithdrawn: true
+          }
+        }),
+
+        // Consulta 4: Agrega os itens de MaterialPickingOrder
+        this.prisma.materialPickingOrderItem.groupBy({
+          by: ['globalMaterialId'],
+          where: {
+            // Filtra apenas os itens cujas ordens de separação pertencem à nossa MaterialRequest
+            materialPickingOrder: {
+              materialRequestId: id,
+              ...(options?.pickingOrderIdToExclude && {
+                id: {
+                  not: options.pickingOrderIdToExclude
+                }
+              })
+            }
+          },
+          _sum: { quantityToPick: true }
+        })
+      ]);
+
+      // ----------------------------------------------------------------------
+      // PASSO 2: Preparar os dados para cálculo com o tipo Decimal do Prisma
+      // ----------------------------------------------------------------------
+
+      // Função auxiliar usando Prisma.Decimal
+      const createDecimalQuantityMap = (
+        items: any[] | undefined,
+        idKey: string,
+        quantityKey: string
+      ): Map<string, Prisma.Decimal> => {
+        const map = new Map<string, Prisma.Decimal>();
+        if (!items) return map;
+
+        for (const item of items) {
+          // A quantidade já é Prisma.Decimal | null. Usamos `new Prisma.Decimal(0)` se for nulo.
+          const quantity = item[quantityKey] ?? new Prisma.Decimal(0);
+          // Garantimos que estamos sempre trabalhando com uma instância de Prisma.Decimal
+          map.set(item[idKey], new Prisma.Decimal(quantity));
+        }
+        return map;
+      };
+
+      const restrictedMap = createDecimalQuantityMap(
+        materialRequest.restrictionOrders?.items,
+        'globalMaterialId',
+        'quantityRestricted'
+      );
+
+      const receivedMap = new Map<string, Prisma.Decimal>();
+      aggregatedReceiveds.forEach((item) => {
+        receivedMap.set(
+          item.materialId,
+          item._sum.quantityReceived ?? new Prisma.Decimal(0)
+        );
+      });
+
+      const withdrawnMap = new Map<string, Prisma.Decimal>();
+      aggregatedWithdrawals.forEach((item) => {
+        withdrawnMap.set(
+          item.globalMaterialId,
+          item._sum.quantityWithdrawn ?? new Prisma.Decimal(0)
+        );
+      });
+
+      const reservedMap = new Map<string, Prisma.Decimal>();
+      aggregatedPickingOrders.forEach((item) => {
+        reservedMap.set(
+          item.globalMaterialId,
+          item._sum.quantityToPick ?? new Prisma.Decimal(0)
+        );
+      });
+
+      // ----------------------------------------------------------------------
+      // PASSO 3: Calcular o `itemsBalance` usando a aritmética de Prisma.Decimal
+      // ----------------------------------------------------------------------
+
+      const itemsBalance = materialRequest.items.map((item) => {
+        const globalMaterialId = item.requestedGlobalMaterialId;
+        const materialRequestItemId = item.id;
+
+        // Obter todas as quantidades como objetos Prisma.Decimal
+        const quantityRequested =
+          item.quantityRequested ?? new Prisma.Decimal(0);
+        const quantityApproved = item.quantityApproved ?? new Prisma.Decimal(0);
+
+        const quantityReceivedSum =
+          receivedMap.get(globalMaterialId) ?? new Prisma.Decimal(0);
+        const quantityWithdrawnSum =
+          withdrawnMap.get(globalMaterialId) ?? new Prisma.Decimal(0);
+        const quantityReserved =
+          reservedMap.get(globalMaterialId) ?? new Prisma.Decimal(0);
+        const quantityRestricted =
+          restrictedMap.get(globalMaterialId) ?? new Prisma.Decimal(0);
+
+        // Realizar os cálculos usando os métodos de Decimal.js (a API é a mesma)
+        const quantityFreeBalanceEffective = quantityReceivedSum
+          .minus(quantityWithdrawnSum)
+          .minus(quantityReserved)
+          .minus(quantityRestricted);
+
+        const quantityFreeBalancePotential = quantityReceivedSum.equals(
+          new Prisma.Decimal(0)
+        )
+          ? quantityRequested
+              .minus(quantityWithdrawnSum)
+              .minus(quantityReserved)
+              .minus(quantityRestricted)
+          : quantityFreeBalanceEffective;
+
+        // Montar o objeto de retorno, convertendo para string no final
+        return {
+          globalMaterialId,
+          materialRequestItemId,
+          quantityRequested,
+          quantityApproved,
+          quantityReceivedSum,
+          quantityWithdrawnSum,
+          quantityReserved,
+          quantityRestricted,
+          quantityFreeBalanceEffective,
+          quantityFreeBalancePotential
+        };
+      });
+
+      // ----------------------------------------------------------------------
+      // PASSO 4: Montar a resposta final completa
+      // ----------------------------------------------------------------------
+
+      const finalResult = {
+        ...materialRequest,
+        // Formata os dados agregados para o formato final
+        materialReceipts: {
+          items: aggregatedReceiveds.map((item) => ({
+            globalMaterialId: item.materialId,
+            quntityReceivedSum:
+              item._sum.quantityReceived ?? new Prisma.Decimal(0)
+          }))
+        },
+        materialWithdrawals: {
+          items: aggregatedWithdrawals.map((item) => ({
+            globalMaterialId: item.globalMaterialId,
+            quantityWithdrawnSum:
+              item._sum.quantityWithdrawn ?? new Prisma.Decimal(0)
+          }))
+        },
+        materialPickingOrders: {
+          items: aggregatedPickingOrders.map((item) => ({
+            globalMaterialId: item.globalMaterialId,
+            quantityToPickSum: item._sum.quantityToPick ?? new Prisma.Decimal(0)
+          }))
+        },
+        // Adiciona o balanço calculado
+        itemsBalance
+      };
+
+      return finalResult;
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw error;
@@ -369,6 +617,76 @@ export class MaterialRequestsService {
         id
       });
       throw error;
+    }
+  }
+
+  // 2. O NOVO MÉTODO GENÉRICO
+  //faz a validação antes de permitir uma operação de saída, reserva ou restrição
+  // associada a uma requisição de material
+  async validateOperationAgainstBalance(
+    materialRequestId: number,
+    itemsToVerify: Array<{
+      materialRequestItemId: number;
+      quantity: Prisma.Decimal;
+    }>,
+    config: OperationConfig
+  ): Promise<void> {
+    if (!itemsToVerify || itemsToVerify.length === 0) {
+      return;
+    }
+
+    // Obter o balanço atual, aplicando as exclusões necessárias
+    const balanceData = await this.showBalance(
+      materialRequestId,
+      config.idToExclude
+    );
+
+    // Mapear balanço para busca rápida
+    const balanceMap = new Map(
+      balanceData.itemsBalance.map((b) => [b.materialRequestItemId, b])
+    );
+
+    // Mapear os itens da requisição original para obter o `globalMaterialId` para os logs
+    const materialRequestItemsMap = new Map(
+      balanceData.items.map((item) => [item.id, item])
+    );
+
+    // Definir textos para personalização das mensagens de erro
+    const opTexts = {
+      RESERVATION: { verb: 'reservar', noun: 'reserva' },
+      WITHDRAWAL: { verb: 'retirar', noun: 'retirada' },
+      RESTRICTION: { verb: 'restringir', noun: 'restrição' }
+    }[config.type];
+
+    for (const item of itemsToVerify) {
+      const balanceItem = balanceMap.get(item.materialRequestItemId);
+      if (!balanceItem) {
+        throw new BadRequestException(
+          `Inconsistência: O item de requisição ID ${item.materialRequestItemId} não foi encontrado no balanço.`
+        );
+      }
+
+      // Escolhe qual balanço usar para a validação
+      const availableBalance =
+        config.balanceToCheck === 'potential'
+          ? new Prisma.Decimal(balanceItem.quantityFreeBalancePotential)
+          : new Prisma.Decimal(balanceItem.quantityFreeBalanceEffective);
+
+      const quantityToVerify = new Prisma.Decimal(item.quantity);
+
+      // A validação principal
+      if (quantityToVerify.greaterThan(availableBalance)) {
+        const materialInfo = materialRequestItemsMap.get(
+          item.materialRequestItemId
+        );
+        const materialId =
+          materialInfo?.requestedGlobalMaterialId ?? 'desconhecido';
+
+        throw new ConflictException(
+          `Não é possível ${opTexts.verb} a quantidade ${quantityToVerify.toString()} para o material ${materialId}. ` +
+            `A quantidade para esta ${opTexts.noun} excede o saldo disponível de ${availableBalance.toString()}.`
+        );
+      }
     }
   }
 }

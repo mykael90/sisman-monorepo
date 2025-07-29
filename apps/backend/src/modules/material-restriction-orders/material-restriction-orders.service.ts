@@ -25,6 +25,7 @@ import { MaterialStockMovementsService } from '../material-stock-movements/mater
 import { CreateMaterialStockMovementWithRelationsDto } from '../material-stock-movements/dto/material-stock-movements.dto';
 import { Decimal } from '@sisman/prisma/generated/client/runtime/library';
 import { MaterialRequestWithRelationsResponseDto } from '../material-requests/dto/material-request.dto';
+import { MaterialRequestsService } from '../material-requests/material-requests.service';
 
 type PrismaTransactionClient = Omit<
   PrismaService,
@@ -36,7 +37,8 @@ export class MaterialRestrictionOrdersService {
   private readonly logger = new Logger(MaterialRestrictionOrdersService.name);
   constructor(
     private readonly prisma: PrismaService,
-    private readonly materialStockMovementsService: MaterialStockMovementsService
+    private readonly materialStockMovementsService: MaterialStockMovementsService,
+    private readonly materialRequestService: MaterialRequestsService
   ) {}
 
   private readonly includeRelations: Prisma.MaterialRestrictionOrderInclude = {
@@ -793,5 +795,31 @@ export class MaterialRestrictionOrdersService {
       );
       throw error;
     }
+  }
+
+  /**
+   * Valida se uma nova ordem de restrição pode ser criada ou atualizada.
+   * Verifica contra o saldo efetivo livre.
+   */
+  private async _canRestrict(
+    materialRequestId: number,
+    itemsToRestrict: Array<{
+      quantityRestricted: Prisma.Decimal;
+      targetMaterialRequestItemId: number;
+    }>,
+    restrictionIdToExclude?: number
+  ): Promise<void> {
+    await this.materialRequestService.validateOperationAgainstBalance(
+      materialRequestId,
+      itemsToRestrict.map((item) => ({
+        materialRequestItemId: item.targetMaterialRequestItemId,
+        quantity: item.quantityRestricted
+      })),
+      {
+        type: 'RESTRICTION',
+        balanceToCheck: 'effective', // Restrições também impactam o saldo físico
+        idToExclude: { restrictionIdToExclude }
+      }
+    );
   }
 }

@@ -26,6 +26,7 @@ import { Decimal } from '@sisman/prisma/generated/client/runtime/library';
 import { MaterialRequestWithRelationsResponseDto } from '../material-requests/dto/material-request.dto';
 import { MaintenanceRequestWithRelationsResponseDto } from '../../modules/maintenance-requests/dto/maintenance-request.dto'; // Assuming this DTO exists
 import { main } from '../../shared/prisma/seeds/users.seed';
+import { MaterialRequestsService } from '../material-requests/material-requests.service';
 
 type PrismaTransactionClient = Omit<
   PrismaService,
@@ -37,7 +38,8 @@ export class MaterialPickingOrdersService {
   private readonly logger = new Logger(MaterialPickingOrdersService.name);
   constructor(
     private readonly prisma: PrismaService,
-    private readonly materialStockMovementsService: MaterialStockMovementsService
+    private readonly materialStockMovementsService: MaterialStockMovementsService,
+    private readonly materialRequestsService: MaterialRequestsService
   ) {}
 
   private readonly includeRelations: Prisma.MaterialPickingOrderInclude = {
@@ -137,169 +139,29 @@ export class MaterialPickingOrdersService {
   }
 
   /**
-   * Valida se uma nova ordem de separação pode ser criada ou atualizada com base nas quantidades já reservadas.
-   *
-   * Este método verifica, para cada item da nova ordem de separação que está vinculado a uma requisição de material:
-   * 1. Mapeia a quantidade máxima permitida para cada item da requisição de material original.
-   * 2. Busca todas as reservas (itens de outras ordens de separação) já feitas para os mesmos itens da requisição.
-   * 3. Soma a quantidade da nova reserva (do item que está sendo validado) com as quantidades já reservadas.
-   * 4. Compara essa soma com a quantidade total originalmente solicitada na requisição de material.
-   * 5. Lança uma exceção `ConflictException` se a soma ultrapassar o solicitado para qualquer item.
-   *
-   * @param tx O cliente Prisma da transação atual, para garantir consistência dos dados.
-   * @param itemsPickingOrder Os itens da nova ordem de separação (ou da ordem atualizada) que está sendo validada.
-   * @param itemsMaterialRequest Os itens da requisição de material original à qual a ordem de separação está vinculada.
-   * @param pickingOrderIdToExclude O ID da ordem de separação a ser excluída da contagem de reservas (essencial para atualizações, para não contar a própria ordem duas vezes).
-   * @throws {ConflictException} Se a quantidade a ser reservada para qualquer item exceder o limite permitido.
-   * @throws {BadRequestException} Se houver uma inconsistência de dados, como um item de separação vinculado a uma requisição que não foi fornecida.
+   * Valida se uma nova ordem de separação (reserva) pode ser criada ou atualizada.
+   * Verifica contra o saldo potencial livre.
    */
   private async _canOrderPicking(
-    tx: PrismaClient,
+    materialRequestId: number,
     itemsPickingOrder: Array<{
-      quantityToPick: Decimal;
-      materialRequestItemId?: number;
+      quantityToPick: Prisma.Decimal;
+      materialRequestItemId: number;
     }>,
-    itemsMaterialRequest: MaterialRequestWithRelationsResponseDto['items'],
     pickingOrderIdToExclude?: number
   ): Promise<void> {
-    this.logger.debug(
-      'Iniciando validação de quantidades da ordem de separação.',
-      { pickingOrderIdToExclude }
-    );
-
-    // 1. Mapear as quantidades máximas permitidas pela requisição de material original.
-    // Isso cria um mapa de `materialRequestItemId` -> `quantityRequested` para consulta rápida.
-    const allowedQuantitiesMap = new Map<number, Decimal>();
-    for (const reqItem of itemsMaterialRequest) {
-      allowedQuantitiesMap.set(reqItem.id, reqItem.quantityRequested);
-    }
-    this.logger.debug(
+    await this.materialRequestsService.validateOperationAgainstBalance(
+      materialRequestId,
+      // Mapeia do formato específico para o genérico
+      itemsPickingOrder.map((item) => ({
+        materialRequestItemId: item.materialRequestItemId,
+        quantity: item.quantityToPick
+      })),
       {
-        message: 'Mapa de quantidades permitidas pela requisição criado.',
-        map: Object.fromEntries(allowedQuantitiesMap.entries()) // Converte para objeto para melhor visualização no log
-      },
-      'Contexto de Validação'
-    );
-
-    // 2. Validar e extrair os IDs dos itens da requisição.
-    // Se uma ordem de separação está vinculada a uma requisição de material,
-    // todos os seus itens devem obrigatoriamente estar vinculados a um item da requisição.
-    const relevantRequestItemIds: number[] = [];
-    for (const item of itemsPickingOrder) {
-      if (item.materialRequestItemId == null) {
-        throw new BadRequestException(
-          'Todos os itens da ordem de separação devem estar vinculados a um item de requisição de material (o campo materialRequestItemId é obrigatório).'
-        );
+        type: 'RESERVATION',
+        balanceToCheck: 'potential',
+        idToExclude: { pickingOrderIdToExclude }
       }
-      relevantRequestItemIds.push(item.materialRequestItemId);
-    }
-
-    // Se nenhum item estiver vinculado a uma requisição, não há o que validar.
-    if (relevantRequestItemIds.length === 0) {
-      this.logger.debug(
-        'Nenhum item da ordem de separação está vinculado a uma requisição de material. Validação pulada.'
-      );
-      return;
-    }
-
-    // 3. Buscar todas as reservas *existentes* para esses itens, excluindo os itens da própria
-    // ordem de separação que está sendo atualizada (se aplicável), ou seja, caso não seja uma nova ordem de reserva.
-    const previouslyReservedItems = await tx.materialPickingOrderItem.findMany({
-      where: {
-        materialRequestItemId: { in: relevantRequestItemIds },
-        // CRÍTICO: Se estamos atualizando, não contamos as quantidades antigas da mesma ordem.
-        // Filtramos pelo ID da ordem de separação pai.
-        materialPickingOrderId: pickingOrderIdToExclude
-          ? { not: pickingOrderIdToExclude }
-          : undefined
-      },
-      select: {
-        materialRequestItemId: true,
-        quantityToPick: true
-      }
-    });
-    this.logger.debug(
-      {
-        message: `Encontrados ${previouslyReservedItems.length} itens previamente reservados para os IDs de requisição relevantes.`,
-        items: previouslyReservedItems
-      },
-      'Contexto de Validação'
-    );
-
-    // 4. Calcular o total já reservado para cada item da requisição, agregando os resultados da busca.
-    // Isso cria um mapa de `materialRequestItemId` -> `totalAlreadyReserved`.
-    const alreadyReservedMap = previouslyReservedItems.reduce((acc, item) => {
-      // Garante que o item.materialRequestItemId não seja nulo, embora a query deva garantir isso.
-      if (item.materialRequestItemId) {
-        const currentReserved =
-          acc.get(item.materialRequestItemId) || new Decimal(0);
-        acc.set(
-          item.materialRequestItemId,
-          currentReserved.add(item.quantityToPick)
-        );
-      }
-      return acc;
-    }, new Map<number, Decimal>());
-
-    this.logger.debug(
-      {
-        message:
-          'Mapa de quantidades já reservadas em outras ordens calculado.',
-        map: Object.fromEntries(alreadyReservedMap.entries())
-      },
-      'Contexto de Validação'
-    );
-
-    // 5. Validar cada item da *nova* ordem de separação contra os limites.
-    for (const newItem of itemsPickingOrder) {
-      // Ignora itens não vinculados a uma requisição, pois eles não têm um limite a ser verificado.
-      if (!newItem.materialRequestItemId) {
-        continue;
-      }
-
-      const totalAllowed = allowedQuantitiesMap.get(
-        newItem.materialRequestItemId
-      );
-
-      // Verificação de sanidade: se um item da ordem aponta para uma requisição
-      // que não está na lista de itens da requisição principal, é um erro de dados.
-      if (!totalAllowed) {
-        this.logger.error(
-          `Inconsistência de dados detectada: Item de separação vinculado a um item de requisição (ID: ${newItem.materialRequestItemId}) que não pertence à requisição de material informada.`
-        );
-        throw new BadRequestException(
-          `O item da ordem de separação está vinculado a um item de requisição (ID: ${newItem.materialRequestItemId}) que não pertence à requisição de material informada.`
-        );
-      }
-
-      // Soma a quantidade já reservada em *outras* ordens com a quantidade desta *nova* reserva.
-      const alreadyReserved =
-        alreadyReservedMap.get(newItem.materialRequestItemId) || new Decimal(0);
-      const newTotalReserved = alreadyReserved.add(newItem.quantityToPick);
-
-      this.logger.debug(
-        `Validando item de requisição ID ${newItem.materialRequestItemId}: ` +
-          `Permitido: ${totalAllowed}, ` +
-          `Já Reservado: ${alreadyReserved}, ` +
-          `Tentando Reservar: ${newItem.quantityToPick}, ` +
-          `Novo Total: ${newTotalReserved}`
-      );
-
-      // A nova quantidade total reservada não pode ser maior que a quantidade permitida na requisição.
-      if (newTotalReserved.greaterThan(totalAllowed)) {
-        const errorMessage =
-          `Não é possível reservar a quantidade de ${newItem.quantityToPick} para o item de requisição ID ${newItem.materialRequestItemId}. ` +
-          `Quantidade total solicitada na requisição: ${totalAllowed}. ` +
-          `Quantidade já reservada em outras ordens: ${alreadyReserved}. ` +
-          `A nova quantidade total (${newTotalReserved}) excederia o limite permitido.`;
-
-        this.logger.warn(`Falha na validação de quantidade: ${errorMessage}`);
-        throw new ConflictException(errorMessage);
-      }
-    }
-
-    this.logger.debug(
-      'Validação de quantidades da ordem de separação concluída com sucesso.'
     );
   }
 
@@ -366,7 +228,7 @@ export class MaterialPickingOrdersService {
         include: { items: true }
       });
 
-      await this._canOrderPicking(prisma, items, materialRequestDB.items);
+      await this._canOrderPicking(materialRequest.id, items);
 
       if (maintenanceRequest) {
         if (!maintenanceRequest.id) {
@@ -567,9 +429,8 @@ export class MaterialPickingOrdersService {
     // Garante que a soma das reservas não exceda o solicitado na requisição.
     if (itemsToUpdate && existingOrder.materialRequest) {
       await this._canOrderPicking(
-        prisma,
+        existingOrder.materialRequest.id,
         itemsToUpdate,
-        existingOrder.materialRequest.items,
         id // Passa o ID da ordem atual para ser ignorado na validação
       );
     }

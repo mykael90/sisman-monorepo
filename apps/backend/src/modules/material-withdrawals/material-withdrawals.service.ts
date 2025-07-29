@@ -14,13 +14,15 @@ import { handlePrismaError } from '../../shared/utils/prisma-error-handler';
 import { Prisma, MaterialStockOperationSubType } from '@sisman/prisma';
 import { MaterialStockMovementsService } from '../material-stock-movements/material-stock-movements.service';
 import { CreateMaterialStockMovementWithRelationsDto } from '../material-stock-movements/dto/material-stock-movements.dto';
+import { MaterialRequestsService } from '../material-requests/material-requests.service';
 
 @Injectable()
 export class MaterialWithdrawalsService {
   private readonly logger = new Logger(MaterialWithdrawalsService.name);
   constructor(
     private readonly prisma: PrismaService,
-    private readonly materialStockMovementsService: MaterialStockMovementsService
+    private readonly materialStockMovementsService: MaterialStockMovementsService,
+    private readonly materialRequestsService: MaterialRequestsService
   ) {}
 
   private readonly includeRelations: Prisma.MaterialWithdrawalInclude = {
@@ -317,5 +319,34 @@ export class MaterialWithdrawalsService {
       });
       throw error;
     }
+  }
+
+  //esse método só vai fazer sentido se já tiver definido o saldo inicial para o material
+  private async _canWithdrawWarehouseStock() {}
+
+  /**
+   * Valida se uma nova retirada pode ser criada ou atualizada.
+   * Verifica contra o saldo efetivo livre (o que realmente está no estoque).
+   */
+  private async _canWithdrawWithMaterialRequest(
+    materialRequestId: number,
+    itemsToWithdraw: Array<{
+      quantityWithdrawn: Prisma.Decimal;
+      materialRequestItemId: number;
+    }>,
+    withdrawalIdToExclude?: number
+  ): Promise<void> {
+    await this.materialRequestsService.validateOperationAgainstBalance(
+      materialRequestId,
+      itemsToWithdraw.map((item) => ({
+        materialRequestItemId: item.materialRequestItemId,
+        quantity: item.quantityWithdrawn
+      })),
+      {
+        type: 'WITHDRAWAL',
+        balanceToCheck: 'effective', // Retiradas consomem o que está fisicamente disponível
+        idToExclude: { withdrawalIdToExclude }
+      }
+    );
   }
 }

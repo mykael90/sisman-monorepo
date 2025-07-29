@@ -63,6 +63,59 @@ Authorization: Bearer {{token}}
     // Items can be omitted if materialRequest is provided and has items
 }
 
+### POST - Create a new picking order linked to a Material Request and Maintenance Request
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "pickingOrderNumber": "PICK-{{$timestamp}}",
+    "warehouse": {
+        "id": 1
+    },
+    "requestedByUser": {"id": 1},
+    "requestedAt": "2024-07-25T11:00:00Z",
+    "materialRequest": {
+        "id": 322
+    },
+    "items": [
+        {
+            "materialRequestItemId": 467,
+            "globalMaterialId": "302800001627",
+            "quantityToPick": 1
+        } 
+            ],
+    "desiredPickupDate": "2024-07-26T09:00:00Z",
+    "notes": "Materiais para a OS 123, retirada amanhã."
+    // Items can be omitted if materialRequest is provided and has items
+}
+### POST - Create a new picking order linked to a Material Request and Maintenance Request
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "pickingOrderNumber": "PICK-{{$timestamp}}",
+    "warehouse": {
+        "id": 1
+    },
+    "requestedByUser": {"id": 1},
+    "requestedAt": "2024-07-25T11:00:00Z",
+    "materialRequest": {
+        "id": 322
+    },
+    "items": [
+        {
+            "materialRequestItemId": 469,
+            "globalMaterialId": "302400030155",
+            "quantityToPick": 5
+        } 
+            ],
+    "desiredPickupDate": "2024-07-26T09:00:00Z",
+    "notes": "Materiais para a OS 123, retirada amanhã."
+    // Items can be omitted if materialRequest is provided and has items
+}
+
 ### POST - Create a new picking order with specific collector
 POST {{urlLocal}}
 Content-Type: {{contentType}}
@@ -88,13 +141,13 @@ Authorization: Bearer {{token}}
 {
     "notes": "Ordem atualizada: prioridade alta.",
     "materialRequest": {
-        "id": 337
+        "id": 322
     },
     "items": [
         {
-            "materialRequestItemId": 496,
-            "globalMaterialId": "302400002280",
-            "quantityToPick": 1
+            "materialRequestItemId": 469,
+            "globalMaterialId": "302400030155",
+            "quantityToPick": 2
         } 
             ]
 }

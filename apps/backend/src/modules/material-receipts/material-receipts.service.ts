@@ -68,7 +68,7 @@ export class MaterialReceiptsService {
           unitPrice: item.unitPrice,
           quantityExpected: item.quantityExpected,
           quantityReceived: item.quantityReceived,
-          quantityAccepted: item.quantityAccepted,
+          // quantityAccepted: item.quantityAccepted,
           quantityRejected: item.quantityRejected,
           materialRequestItemId: item.materialRequestItemId,
           batchNumber: item.batchNumber,
@@ -101,7 +101,7 @@ export class MaterialReceiptsService {
         // ETAPA 2: Iterar sobre CADA item criado para gerar a movimentação de estoque.
         for (const createdItem of newReceipt.items) {
           // Ignorar itens que não foram aceitos
-          if (createdItem.quantityAccepted.isZero()) {
+          if (createdItem.quantityReceived.isZero()) {
             this.logger.log(
               `Item ${createdItem.id} com quantidade aceita 0, pulando movimentação.`
             );
@@ -110,7 +110,7 @@ export class MaterialReceiptsService {
 
           const materialStockMovement: CreateMaterialStockMovementWithRelationsDto =
             {
-              quantity: createdItem.quantityAccepted,
+              quantity: createdItem.quantityReceived,
               unitPrice: createdItem.unitPrice,
               globalMaterial: { id: createdItem.materialId } as any,
               warehouse: { id: destinationWarehouse.id } as any,

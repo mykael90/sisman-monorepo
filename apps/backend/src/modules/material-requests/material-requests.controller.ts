@@ -106,6 +106,32 @@ export class MaterialRequestsController {
   }
 
   /**
+   * Busca uma requisição de material específica pelo seu ID e apresenta o saldo livre baseado no consumo, restrições e reservas.
+   */
+  @Get('balance/:id')
+  @ApiEndpointSwagger({
+    summary: 'Buscar Requisição por ID',
+    description:
+      'Retorna uma requisição de material específica, incluindo suas relações.',
+    response: {
+      status: HttpStatus.OK,
+      description: 'Requisição de material encontrada.',
+      type: MaterialRequestWithRelationsResponseDto // Usa a DTO de resposta
+    },
+    errors: [
+      {
+        status: HttpStatus.NOT_FOUND,
+        description: 'Requisição de material não encontrada.'
+      }
+    ]
+  })
+  async showBalance(
+    @Param('id') id: number
+  ): Promise<MaterialRequestWithRelationsResponseDto> {
+    return this.materialRequestsService.showBalance(id);
+  }
+
+  /**
    * Atualiza uma requisição de material existente.
    */
   @Put(':id')

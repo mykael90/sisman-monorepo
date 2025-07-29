@@ -643,7 +643,6 @@ exports.Prisma.MaterialReceiptItemScalarFieldEnum = {
   materialId: 'materialId',
   quantityExpected: 'quantityExpected',
   quantityReceived: 'quantityReceived',
-  quantityAccepted: 'quantityAccepted',
   quantityRejected: 'quantityRejected',
   rejectionReason: 'rejectionReason',
   batchNumber: 'batchNumber',

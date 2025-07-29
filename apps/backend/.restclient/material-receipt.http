@@ -33,7 +33,6 @@ Authorization: Bearer {{token}}
             "materialId": "302400029547",
             "quantityExpected": 3,
             "quantityReceived": 3,
-            "quantityAccepted": 3,
             "quantityRejected": 0,
             "unitPrice": 0.66,
             "materialRequestItemId": 292
@@ -41,6 +40,87 @@ Authorization: Bearer {{token}}
     ],
     "materialRequest": {
         "id": 246
+    }
+}
+
+### POST
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "receiptNumber": "REC-{{$timestamp}}",
+    "receiptDate": "2024-07-25T10:00:00Z",
+    "movementType": {
+        "code": "IN_CENTRAL"
+    },
+    "destinationWarehouse": {
+        "id": 1
+    },
+    "processedByUser": {
+        "id": 1
+    },
+    "items": [
+    {
+      "materialRequestItemId": 468,
+      "materialId": "3024000000433",
+      "quantityExpected": 2,
+      "quantityReceived": 2,
+      "quantityAccepted": 2,
+      "quantityRejected": 0,
+      "unitPrice": "5.99"
+    },
+    {
+      "materialRequestItemId": 469,
+      "materialId": "302400030155",
+      "quantityExpected": 20,
+      "quantityReceived": 20,
+      "quantityAccepted": 20,
+      "quantityRejected": 0,
+      "unitPrice": "0.08"
+    },
+    {
+      "materialRequestItemId": 467,
+      "materialId": "302800001627",
+      "quantityExpected": 2,
+      "quantityReceived": 2,
+      "quantityAccepted": 2,
+      "quantityRejected": 0,
+      "unitPrice": "23.4"
+    }
+  ],
+    "materialRequest": {
+        "id": 322
+    }
+}
+### POST
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "receiptNumber": "REC-{{$timestamp}}",
+    "receiptDate": "2024-07-25T10:00:00Z",
+    "movementType": {
+        "code": "IN_SERVICE_SURPLUS"
+    },
+    "destinationWarehouse": {
+        "id": 1
+    },
+    "processedByUser": {
+        "id": 1
+    },
+    "items": [
+    {
+      "materialRequestItemId": 469,
+      "materialId": "302400030155",
+      "quantityReceived": 1,
+      "quantityAccepted": 1,
+      "quantityRejected": 0
+    }
+  ],
+    "materialRequest": {
+        "id": 322
     }
 }
 
