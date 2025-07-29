@@ -19,6 +19,34 @@ Authorization: Bearer {{token}}
 {
     "withdrawalNumber": "RET-007",
     "withdrawalDate": "2024-07-25T10:00:00Z",
+    "warehouse": {
+        "id": 1
+    },
+    "processedByUser": {
+        "id": 1
+    },
+    "collectedByWorker": {
+    "id": 1
+    },
+    "movementType": {
+        "code": "OUT_SERVICE_USAGE"
+    },
+    "items": [
+        {
+            "globalMaterialId": "302400026133",
+            "quantityWithdrawn": 10,
+        }
+    ],
+}
+
+### POST
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "withdrawalNumber": "RET-007",
+    "withdrawalDate": "2024-07-25T10:00:00Z",
     "maintenanceRequest": {"id": 79},
     "warehouse": {
         "id": 1

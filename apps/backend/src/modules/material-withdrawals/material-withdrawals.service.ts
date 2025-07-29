@@ -11,10 +11,15 @@ import {
   MaterialWithdrawalWithRelationsResponseDto
 } from './dto/material-withdrawal.dto';
 import { handlePrismaError } from '../../shared/utils/prisma-error-handler';
-import { Prisma, MaterialStockOperationSubType } from '@sisman/prisma';
+import {
+  Prisma,
+  MaterialStockOperationSubType,
+  PrismaClient
+} from '@sisman/prisma';
 import { MaterialStockMovementsService } from '../material-stock-movements/material-stock-movements.service';
 import { CreateMaterialStockMovementWithRelationsDto } from '../material-stock-movements/dto/material-stock-movements.dto';
 import { MaterialRequestsService } from '../material-requests/material-requests.service';
+import { WarehousesService } from '../warehouses/warehouses.service';
 
 @Injectable()
 export class MaterialWithdrawalsService {
@@ -22,7 +27,8 @@ export class MaterialWithdrawalsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly materialStockMovementsService: MaterialStockMovementsService,
-    private readonly materialRequestsService: MaterialRequestsService
+    private readonly materialRequestsService: MaterialRequestsService,
+    private readonly warehousesService: WarehousesService
   ) {}
 
   private readonly includeRelations: Prisma.MaterialWithdrawalInclude = {
@@ -97,6 +103,14 @@ export class MaterialWithdrawalsService {
       this.logger.log(`Iniciando transação para retirada/saída de material...`);
       const createdWithdrawal = await this.prisma.$transaction(async (tx) => {
         //Etapa 0 verificar para os itens que tem saldo inicial definido se a saída/retirada é possível
+        await this._canWithdrawWarehouseStock(
+          tx as any,
+          warehouse.id,
+          items.map((item) => ({
+            globalMaterialId: item.globalMaterialId,
+            quantityWithdrawn: item.quantityWithdrawn
+          }))
+        );
 
         // Etapa 01 se a retirada estiver relacionada a uma requisição de material, verificar o saldo efetivo livre dos itens
         if (materialRequest?.id) {
@@ -334,8 +348,39 @@ export class MaterialWithdrawalsService {
     }
   }
 
-  //esse método só vai fazer sentido se já tiver definido o saldo inicial para o material
-  private async _canWithdrawWarehouseStock() {}
+  /**
+   * Valida se uma retirada de estoque geral do almoxarifado pode ser realizada.
+   *
+   * @param tx O cliente Prisma da transação.
+   * @param warehouseId O ID do almoxarifado.
+   * @param itemsToWithdraw Os itens a serem retirados.
+   * @param withdrawalIdToExclude O ID de uma retirada existente a ser ignorada (para cenários de atualização).
+   */
+  private async _canWithdrawWarehouseStock(
+    tx: PrismaClient,
+    warehouseId: number,
+    itemsToWithdraw: Array<{
+      quantityWithdrawn: Prisma.Decimal;
+      globalMaterialId: string;
+    }>,
+    withdrawalIdToExclude?: number
+  ): Promise<void> {
+    // Chamamos o método genérico, adaptando os dados e passando a configuração correta.
+    await this.warehousesService.validateWarehouseOperation(
+      tx,
+      warehouseId,
+      // Adapta o formato do array de entrada para o formato genérico
+      itemsToWithdraw.map((item) => ({
+        globalMaterialId: item.globalMaterialId,
+        quantity: item.quantityWithdrawn
+      })),
+      // Configura a operação como uma 'WITHDRAWAL'
+      {
+        type: 'WITHDRAWAL',
+        idToExclude: { withdrawalId: withdrawalIdToExclude }
+      }
+    );
+  }
 
   /**
    * Valida se uma nova retirada pode ser criada ou atualizada.

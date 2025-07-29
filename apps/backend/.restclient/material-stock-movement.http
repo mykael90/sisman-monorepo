@@ -48,7 +48,7 @@ Authorization: Bearer {{token}}
 
 {
     "quantity": 50,
-    "globalMaterial": {"id": "302400026280"},
+    "globalMaterial": {"id": "3026000000032"},
     "warehouse": {"id": 1},
     "processedByUser": {"id": 1}
 }

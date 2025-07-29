@@ -27,6 +27,7 @@ import { MaterialRequestWithRelationsResponseDto } from '../material-requests/dt
 import { MaintenanceRequestWithRelationsResponseDto } from '../../modules/maintenance-requests/dto/maintenance-request.dto'; // Assuming this DTO exists
 import { main } from '../../shared/prisma/seeds/users.seed';
 import { MaterialRequestsService } from '../material-requests/material-requests.service';
+import { WarehousesService } from '../warehouses/warehouses.service';
 
 type PrismaTransactionClient = Omit<
   PrismaService,
@@ -39,7 +40,8 @@ export class MaterialPickingOrdersService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly materialStockMovementsService: MaterialStockMovementsService,
-    private readonly materialRequestsService: MaterialRequestsService
+    private readonly materialRequestsService: MaterialRequestsService,
+    private readonly warehousesService: WarehousesService
   ) {}
 
   private readonly includeRelations: Prisma.MaterialPickingOrderInclude = {
@@ -142,7 +144,7 @@ export class MaterialPickingOrdersService {
    * Valida se uma nova ordem de separação (reserva) pode ser criada ou atualizada.
    * Verifica contra o saldo potencial livre.
    */
-  private async _canOrderPicking(
+  private async _canOrderPickingMaterialRequest(
     materialRequestId: number,
     itemsPickingOrder: Array<{
       quantityToPick: Prisma.Decimal;
@@ -161,6 +163,43 @@ export class MaterialPickingOrdersService {
         type: 'RESERVATION',
         balanceToCheck: 'potential',
         idToExclude: { pickingOrderIdToExclude }
+      }
+    );
+  }
+
+  /**
+   * Valida se uma reserva de estoque (ordem de separação) geral do almoxarifado pode ser realizada.
+   *
+   * @param tx O cliente Prisma da transação.
+   * @param warehouseId O ID do almoxarifado.
+   * @param itemsToPick Os itens a serem reservados.
+   * @param pickingOrderIdToExclude O ID de uma reserva existente a ser ignorada (para cenários de atualização).
+   */
+  private async _canOrderPickingWarehouseStock(
+    tx: PrismaClient,
+    warehouseId: number,
+    itemsToPick: Array<{
+      quantityToPick: Prisma.Decimal;
+      globalMaterialId: string;
+    }>,
+    pickingOrderIdToExclude?: number
+  ): Promise<void> {
+    // A lógica de exclusão para Picking Orders precisa ser adicionada ao método genérico.
+    // Vamos primeiro adicioná-la em `_validateWarehouseOperation`.
+
+    // O "wrapper" chama o método genérico com a configuração para 'RESERVATION'.
+    await this.warehousesService.validateWarehouseOperation(
+      tx,
+      warehouseId,
+      // Adapta o formato do array de entrada para o formato genérico
+      itemsToPick.map((item) => ({
+        globalMaterialId: item.globalMaterialId,
+        quantity: item.quantityToPick
+      })),
+      // Configura a operação como uma 'RESERVATION'
+      {
+        type: 'RESERVATION',
+        idToExclude: { pickingOrderId: pickingOrderIdToExclude }
       }
     );
   }
@@ -228,7 +267,7 @@ export class MaterialPickingOrdersService {
         include: { items: true }
       });
 
-      await this._canOrderPicking(materialRequest.id, items);
+      await this._canOrderPickingMaterialRequest(materialRequest.id, items);
 
       if (maintenanceRequest) {
         if (!maintenanceRequest.id) {
@@ -246,6 +285,16 @@ export class MaterialPickingOrdersService {
         } as any;
       }
     }
+
+    // verificar de forma geral no deposito se tem saldo para os items que vão ser reservados.
+    await this._canOrderPickingWarehouseStock(
+      prisma as any,
+      warehouse.id,
+      items.map((item) => ({
+        globalMaterialId: item.globalMaterialId,
+        quantityToPick: item.quantityToPick
+      }))
+    );
 
     // If no items are provided, and no materialRequest is linked, it's a bad request.
     // If materialRequest is linked, items can be generated from it. Reserved all
@@ -426,14 +475,25 @@ export class MaterialPickingOrdersService {
     const { items: itemsToUpdate } = data;
 
     // --- 3. VALIDAÇÃO DE QUANTIDADE (se aplicável) ---
-    // Garante que a soma das reservas não exceda o solicitado na requisição.
+    // Garante que a soma das reservas não exceda o solicitado na requisição de material.
     if (itemsToUpdate && existingOrder.materialRequest) {
-      await this._canOrderPicking(
+      await this._canOrderPickingMaterialRequest(
         existingOrder.materialRequest.id,
         itemsToUpdate,
         id // Passa o ID da ordem atual para ser ignorado na validação
       );
     }
+
+    // verificar de forma geral no deposito se tem saldo para os items que vão ser reservados na atualização.
+    await this._canOrderPickingWarehouseStock(
+      prisma as any,
+      existingOrder.warehouseId,
+      itemsToUpdate.map((item) => ({
+        globalMaterialId: item.globalMaterialId,
+        quantityToPick: item.quantityToPick
+      })),
+      id
+    );
 
     // --- 4. LÓGICA DE MOVIMENTAÇÃO DE ESTOQUE (PRÉ-UPDATE) ---
     // ESTA PARTE SERÁ REFEITA PARA SER MAIS ROBUSTA
