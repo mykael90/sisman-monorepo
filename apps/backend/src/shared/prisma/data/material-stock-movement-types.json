@@ -48,7 +48,7 @@
     "id": 6
   },
   {
-    "operation": "IN",
+    "operation": "ADJUSTMENT",
     "code": "INITIAL_STOCK_LOAD",
     "name": "Carga Inicial de Estoque",
     "description": "Usado para registrar o saldo inicial de materiais na implantação do sistema.",

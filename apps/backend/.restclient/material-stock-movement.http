@@ -28,6 +28,19 @@ Authorization: Bearer {{token}}
     "maintenanceRequest": {"id": 41}
 }
 
+### POST
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "quantity": 50,
+    "globalMaterial": {"id": "302400026280"},
+    "warehouse": {"id": 1},
+    "movementType": {"code": "INITIAL_STOCK_LOAD"},
+    "processedByUser": {"id": 1}
+}
+
 
 ### PUT
 # @prompt id
