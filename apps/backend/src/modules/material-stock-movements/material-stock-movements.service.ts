@@ -17,6 +17,8 @@ import {
   MaterialStockOperationSubType,
   MaterialWarehouseStock
 } from '@sisman/prisma';
+import { any } from 'joi';
+import { Decimal } from '@sisman/prisma/generated/client/runtime/library';
 
 // Definindo o tipo do cliente Prisma para clareza
 type PrismaClient = Prisma.TransactionClient | PrismaService;
@@ -135,18 +137,8 @@ export class MaterialStockMovementsService {
         );
 
         if (code === MaterialStockOperationSubType.INITIAL_STOCK_LOAD) {
-          // Lógica de cálculo usando métodos Decimal, sem converter para número.
-          const currentOnHand = warehouseMaterialStock.balanceInMinusOut;
-          const requiredInitialAdjustment = quantity.sub(currentOnHand); // quantity - currentOnHand
-
-          // Verifica se o ajuste necessário é negativo.
-          if (requiredInitialAdjustment.isNegative()) {
-            throw new BadRequestException(
-              `A quantidade de carga inicial (${quantity}) é menor que a quantidade já existente em estoque (${currentOnHand}). ` +
-                `Para corrigir, primeiro registre uma perda de ${requiredInitialAdjustment.abs()} unidades para o material ${globalMaterialId}.`
-            );
-          }
-          updatePayload.initialStockQuantity = requiredInitialAdjustment;
+          //verificações já realizadas no método da contagem
+          updatePayload.initialStockQuantity = quantity;
         } else if (
           code === MaterialStockOperationSubType.ADJUSTMENT_INV_IN ||
           code === MaterialStockOperationSubType.ADJUSTMENT_RECLASSIFY_IN
@@ -538,5 +530,80 @@ export class MaterialStockMovementsService {
       });
       throw error;
     }
+  }
+
+  //Método utilizado quando é realizada uma contagem de algum material no almoxarifado.
+  async countGlobalMaterialInWarehouse(
+    data: Omit<CreateMaterialStockMovementWithRelationsDto, 'movementType'>
+  ) {
+    // Primeiro verifique se o material existe no catálogo do referido depósito
+    const globalMaterialInWarehouse = await this.ensureStockRecordExists(
+      data.warehouse.id,
+      data.globalMaterial.id,
+      this.prisma
+    );
+
+    // A quantidade 'contada', ou seja, levantada pelo almoxarifado
+    const quantityCount = new Prisma.Decimal(data.quantity);
+    let movementType: CreateMaterialStockMovementWithRelationsDto['movementType'];
+    let quantity: Decimal;
+
+    if (!globalMaterialInWarehouse.initialStockQuantity) {
+      const initialQuantity = quantityCount.minus(
+        globalMaterialInWarehouse.balanceInMinusOut
+      );
+
+      // Verifica se a quantidade inicial é negativa.
+      if (initialQuantity.isNegative()) {
+        throw new BadRequestException(
+          `A quantidade da contagem (${quantityCount}) é menor que a quantidade resultante das entradas e saídas atuais (${globalMaterialInWarehouse.balanceInMinusOut}). Resultando em uma definição de quantidade inicial negativa, o que não é permitido. ` +
+            `Para corrigir, primeiro registre uma perda/extravio de ${initialQuantity.abs()} unidades para o material ${globalMaterialInWarehouse.materialId}.`
+        );
+      }
+
+      movementType = {
+        code: MaterialStockOperationSubType.INITIAL_STOCK_LOAD
+      } as any;
+      quantity = initialQuantity;
+    } else if (
+      quantityCount.equals(
+        globalMaterialInWarehouse.initialStockQuantity.add(
+          globalMaterialInWarehouse.balanceInMinusOut
+        )
+      )
+    ) {
+      //Não tem ajuste para fazer, bad request
+      throw new BadRequestException(
+        `A quantidade de contagem (${quantityCount}) é igual à quantidade já presente no almoxarifado (${globalMaterialInWarehouse.initialStockQuantity.add(
+          globalMaterialInWarehouse.balanceInMinusOut
+        )}).`
+      );
+    } else if (
+      quantityCount.greaterThan(
+        globalMaterialInWarehouse.initialStockQuantity.add(
+          globalMaterialInWarehouse.balanceInMinusOut
+        )
+      )
+    ) {
+      movementType = {
+        code: MaterialStockOperationSubType.ADJUSTMENT_INV_IN
+      } as any;
+      quantity = quantityCount.minus(
+        globalMaterialInWarehouse.initialStockQuantity.add(
+          globalMaterialInWarehouse.balanceInMinusOut
+        )
+      );
+    } else {
+      movementType = {
+        code: MaterialStockOperationSubType.ADJUSTMENT_INV_OUT
+      } as any;
+      quantity = globalMaterialInWarehouse.initialStockQuantity
+        .add(globalMaterialInWarehouse.balanceInMinusOut)
+        .minus(quantityCount);
+    }
+    const dataWithMovementAndQuantityAdjust: CreateMaterialStockMovementWithRelationsDto =
+      { ...data, movementType, quantity };
+
+    return this.create(dataWithMovementAndQuantityAdjust);
   }
 }

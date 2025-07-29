@@ -159,4 +159,31 @@ export class MaterialStockMovementsController {
   async delete(@Param('id', ParseIntPipe) id: number): Promise<void> {
     await this.materialStockMovementsService.delete(id);
   }
+
+  /**
+   * Cria uma movimentação de estoque a partir de uma contagem de material.
+   */
+  @Post('count')
+  @ApiEndpointSwagger({
+    summary: 'Criar movimentação de estoque a partir da contagem de material',
+    description:
+      'Cria uma movimentação de ajuste de estoque com base na contagem de um material em um almoxarifado.',
+    response: {
+      status: HttpStatus.CREATED,
+      description:
+        'Movimentação de estoque criada a partir da contagem com sucesso.',
+      type: MaterialStockMovementWithRelationsResponseDto
+    },
+    errors: [
+      { status: HttpStatus.BAD_REQUEST, description: 'Dados inválidos.' }
+    ]
+  })
+  async creatFromCount(
+    @Body()
+    data: Omit<CreateMaterialStockMovementWithRelationsDto, 'movementType'>
+  ) {
+    return this.materialStockMovementsService.countGlobalMaterialInWarehouse(
+      data
+    );
+  }
 }
