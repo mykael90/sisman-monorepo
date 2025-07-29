@@ -78,7 +78,7 @@ Authorization: Bearer {{token}}
         "items": [
         {
             "globalMaterialId": "302400030155",
-            "quantityRestricted":1,
+            "quantityRestricted":50,
             "targetMaterialRequestItemId": 469
         }
     ],
@@ -121,6 +121,24 @@ Authorization: Bearer {{token}}
             "targetMaterialRequestItemId": 789
         }
     ]
+}
+
+### PUT
+# @prompt id
+PUT {{urlLocal}}/{{id}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+        "items": [
+        {
+            "id": 1,
+            "globalMaterialId": "302400030155",
+            "quantityRestricted":5,
+            "targetMaterialRequestItemId": 469
+        }
+    ],
+    "notes": "Restrição de materiais para o pedido X123."
 }
 
 ### PUT

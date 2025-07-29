@@ -94,8 +94,21 @@ export class MaterialWithdrawalsService {
     };
 
     try {
-      this.logger.log(`Iniciando transação para retirada de material...`);
+      this.logger.log(`Iniciando transação para retirada/saída de material...`);
       const createdWithdrawal = await this.prisma.$transaction(async (tx) => {
+        //Etapa 0 verificar para os itens que tem saldo inicial definido se a saída/retirada é possível
+
+        // Etapa 01 se a retirada estiver relacionada a uma requisição de material, verificar o saldo efetivo livre dos itens
+        if (materialRequest?.id) {
+          await this._canWithdrawWithMaterialRequest(
+            materialRequest.id,
+            items.map((item) => ({
+              materialRequestItemId: item.materialRequestItemId,
+              quantityWithdrawn: item.quantityWithdrawn
+            }))
+          );
+        }
+
         // ETAPA 1: Criar a Retirada de Material e seus Itens.
         const newWithdrawal = await tx.materialWithdrawal.create({
           data: withdrawalCreateInput,
@@ -326,7 +339,7 @@ export class MaterialWithdrawalsService {
 
   /**
    * Valida se uma nova retirada pode ser criada ou atualizada.
-   * Verifica contra o saldo efetivo livre (o que realmente está no estoque).
+   * Verifica contra o saldo efetivo potencial (pode ainda nao estar efetivamente, mas ta garantido de chegar).
    */
   private async _canWithdrawWithMaterialRequest(
     materialRequestId: number,
@@ -344,7 +357,7 @@ export class MaterialWithdrawalsService {
       })),
       {
         type: 'WITHDRAWAL',
-        balanceToCheck: 'effective', // Retiradas consomem o que está fisicamente disponível
+        balanceToCheck: 'potential', // Retiradas consomem o que está fisicamente disponível
         idToExclude: { withdrawalIdToExclude }
       }
     );

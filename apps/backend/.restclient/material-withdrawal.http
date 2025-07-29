@@ -67,8 +67,8 @@ Authorization: Bearer {{token}}
     "items": [
         {
             "globalMaterialId": "302400030155",
-            "quantityWithdrawn": 1,
-            "materialRequestItemId": 322
+            "quantityWithdrawn": 20,
+            "materialRequestItemId": 469
         }
     ],
     "materialRequest": {
