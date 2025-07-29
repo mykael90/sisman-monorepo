@@ -548,6 +548,21 @@ export class MaterialStockMovementsService {
     let movementType: CreateMaterialStockMovementWithRelationsDto['movementType'];
     let quantity: Decimal;
 
+    //A quantidade contada deve ser no mínimo igual a quantidade reservada + restrita. Caso contrário lance um erro
+    if (
+      quantityCount.lessThan(
+        globalMaterialInWarehouse.reservedQuantity.add(
+          globalMaterialInWarehouse.restrictedQuantity
+        )
+      )
+    ) {
+      throw new BadRequestException(
+        `A quantidade contada (${quantityCount}) é menor que a quantidade reservada (${globalMaterialInWarehouse.reservedQuantity}) mais a quantidade restrita (${globalMaterialInWarehouse.restrictedQuantity}). Isso não é possível. A quantidade mínima da contagem deve ser ${globalMaterialInWarehouse.reservedQuantity.add(
+          globalMaterialInWarehouse.restrictedQuantity
+        )}`
+      );
+    }
+
     if (!globalMaterialInWarehouse.initialStockQuantity) {
       const initialQuantity = quantityCount.minus(
         globalMaterialInWarehouse.balanceInMinusOut
