@@ -21,6 +21,11 @@ import { CreateMaterialStockMovementWithRelationsDto } from '../material-stock-m
 import { MaterialRequestsService } from '../material-requests/material-requests.service';
 import { WarehousesService } from '../warehouses/warehouses.service';
 
+type PrismaTransactionClient = Omit<
+  PrismaService,
+  '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'
+>;
+
 @Injectable()
 export class MaterialWithdrawalsService {
   private readonly logger = new Logger(MaterialWithdrawalsService.name);
@@ -43,8 +48,43 @@ export class MaterialWithdrawalsService {
     items: true
   };
 
+  /**
+   * Método público para criar uma ordem de separação.
+   * Gerencia a transação: inicia uma nova ou utiliza uma existente.
+   */
   async create(
-    data: CreateMaterialWithdrawalWithRelationsDto
+    data: CreateMaterialWithdrawalWithRelationsDto,
+    tx?: Prisma.TransactionClient
+  ): Promise<MaterialWithdrawalWithRelationsResponseDto> {
+    try {
+      if (tx) {
+        this.logger.log(
+          `Executando a criação dentro de uma transação existente.`
+        );
+        return await this._createWithdrawalLogic(data, tx as any);
+      }
+
+      this.logger.log(
+        `Iniciando uma nova transação para criar a retirada de material.`
+      );
+      return await this.prisma.$transaction(async (prismaTransactionClient) => {
+        return await this._createWithdrawalLogic(
+          data,
+          prismaTransactionClient as any
+        );
+      });
+    } catch (error) {
+      handlePrismaError(error, this.logger, 'MaterialWithdrawalsService', {
+        operation: 'create',
+        data
+      });
+      throw error;
+    }
+  }
+
+  private async _createWithdrawalLogic(
+    data: CreateMaterialWithdrawalWithRelationsDto,
+    prisma: PrismaClient
   ): Promise<MaterialWithdrawalWithRelationsResponseDto> {
     const {
       warehouse,
@@ -99,107 +139,94 @@ export class MaterialWithdrawalsService {
       }
     };
 
-    try {
-      this.logger.log(`Iniciando transação para retirada/saída de material...`);
-      const createdWithdrawal = await this.prisma.$transaction(async (tx) => {
-        //Etapa 0 verificar para os itens que tem saldo inicial definido se a saída/retirada é possível
-        await this._canWithdrawWarehouseStock(
-          tx as any,
-          warehouse.id,
-          items.map((item) => ({
-            globalMaterialId: item.globalMaterialId,
-            quantityWithdrawn: item.quantityWithdrawn
-          }))
-        );
+    this.logger.log(`Iniciando criação da retirada/saída de material...`);
+    //Etapa 0 verificar para os itens que tem saldo inicial definido se a saída/retirada é possível
+    await this._canWithdrawWarehouseStock(
+      prisma as any,
+      warehouse.id,
+      items.map((item) => ({
+        globalMaterialId: item.globalMaterialId,
+        quantityWithdrawn: item.quantityWithdrawn
+      }))
+    );
 
-        // Etapa 01 se a retirada estiver relacionada a uma requisição de material, verificar o saldo efetivo livre dos itens
-        if (materialRequest?.id) {
-          await this._canWithdrawWithMaterialRequest(
-            materialRequest.id,
-            items.map((item) => ({
-              materialRequestItemId: item.materialRequestItemId,
-              quantityWithdrawn: item.quantityWithdrawn
-            }))
-          );
-        }
-
-        // ETAPA 1: Criar a Retirada de Material e seus Itens.
-        const newWithdrawal = await tx.materialWithdrawal.create({
-          data: withdrawalCreateInput,
-          include: {
-            items: {
-              include: {
-                globalMaterial: true,
-                materialInstance: true,
-                materialRequestItem: true
-              }
-            }
-          }
-        });
-
-        this.logger.log(
-          `Retirada de material nº ${newWithdrawal.id} e seus ${newWithdrawal.items.length} itens criados.`
-        );
-
-        this.logger.log(`Iniciando criação das movimentações de estoque...`);
-
-        // ETAPA 2: Iterar sobre CADA item criado para gerar a movimentação de estoque.
-        for (const createdItem of newWithdrawal.items) {
-          const materialStockMovement: CreateMaterialStockMovementWithRelationsDto =
-            {
-              quantity: createdItem.quantityWithdrawn,
-              warehouse: { id: warehouse.id } as any,
-              movementType: { code: movementType.code } as any,
-              processedByUser: { id: processedByUser.id } as any,
-              collectedByUser: collectedByUser?.id
-                ? ({ id: collectedByUser.id } as any)
-                : undefined,
-              collectedByWorker: collectedByWorker?.id
-                ? ({ id: collectedByWorker.id } as any)
-                : undefined,
-              globalMaterial: createdItem.globalMaterialId
-                ? ({ id: createdItem.globalMaterialId } as any)
-                : undefined,
-              materialInstance: createdItem.materialInstanceId
-                ? ({ id: createdItem.materialInstanceId } as any)
-                : undefined,
-              materialRequestItem: createdItem.materialRequestItem?.id
-                ? ({ id: createdItem.materialRequestItem.id } as any)
-                : undefined,
-              materialWithdrawalItem: { id: createdItem.id } as any,
-              maintenanceRequest: maintenanceRequest?.id
-                ? ({ id: maintenanceRequest.id } as any)
-                : undefined
-            };
-
-          // Chama o serviço de movimentação, passando o cliente da transação (tx)
-          await this.materialStockMovementsService.create(
-            materialStockMovement,
-            tx as any
-          );
-          this.logger.log(
-            `Movimentação para o item ${createdItem.id} criada com sucesso.`
-          );
-        }
-
-        this.logger.log(`Todas as movimentações de estoque foram criadas.`);
-
-        // ETAPA 3: Retornar a retirada completa com todas as relações definidas em `includeRelations`.
-        return tx.materialWithdrawal.findUniqueOrThrow({
-          where: { id: newWithdrawal.id },
-          include: this.includeRelations
-        });
-      });
-
-      this.logger.log(`Transação concluída com sucesso!`);
-      return createdWithdrawal;
-    } catch (error) {
-      handlePrismaError(error, this.logger, 'MaterialWithdrawalsService', {
-        operation: 'create',
-        data
-      });
-      throw error;
+    // Etapa 01 se a retirada estiver relacionada a uma requisição de material, verificar o saldo efetivo livre dos itens
+    if (materialRequest?.id) {
+      await this._canWithdrawWithMaterialRequest(
+        materialRequest.id,
+        items.map((item) => ({
+          materialRequestItemId: item.materialRequestItemId,
+          quantityWithdrawn: item.quantityWithdrawn
+        }))
+      );
     }
+
+    // ETAPA 1: Criar a Retirada de Material e seus Itens.
+    const newWithdrawal = await prisma.materialWithdrawal.create({
+      data: withdrawalCreateInput,
+      include: {
+        items: {
+          include: {
+            globalMaterial: true,
+            materialInstance: true,
+            materialRequestItem: true
+          }
+        }
+      }
+    });
+
+    this.logger.log(
+      `Retirada de material nº ${newWithdrawal.id} e seus ${newWithdrawal.items.length} itens criados.`
+    );
+
+    this.logger.log(`Iniciando criação das movimentações de estoque...`);
+
+    // ETAPA 2: Iterar sobre CADA item criado para gerar a movimentação de estoque.
+    for (const createdItem of newWithdrawal.items) {
+      const materialStockMovement: CreateMaterialStockMovementWithRelationsDto =
+        {
+          quantity: createdItem.quantityWithdrawn,
+          warehouse: { id: warehouse.id } as any,
+          movementType: { code: movementType.code } as any,
+          processedByUser: { id: processedByUser.id } as any,
+          collectedByUser: collectedByUser?.id
+            ? ({ id: collectedByUser.id } as any)
+            : undefined,
+          collectedByWorker: collectedByWorker?.id
+            ? ({ id: collectedByWorker.id } as any)
+            : undefined,
+          globalMaterial: createdItem.globalMaterialId
+            ? ({ id: createdItem.globalMaterialId } as any)
+            : undefined,
+          materialInstance: createdItem.materialInstanceId
+            ? ({ id: createdItem.materialInstanceId } as any)
+            : undefined,
+          materialRequestItem: createdItem.materialRequestItem?.id
+            ? ({ id: createdItem.materialRequestItem.id } as any)
+            : undefined,
+          materialWithdrawalItem: { id: createdItem.id } as any,
+          maintenanceRequest: maintenanceRequest?.id
+            ? ({ id: maintenanceRequest.id } as any)
+            : undefined
+        };
+
+      // Chama o serviço de movimentação, passando o cliente da transação (tx)
+      await this.materialStockMovementsService.create(
+        materialStockMovement,
+        prisma as any
+      );
+      this.logger.log(
+        `Movimentação para o item ${createdItem.id} criada com sucesso.`
+      );
+    }
+
+    this.logger.log(`Todas as movimentações de estoque foram criadas.`);
+
+    // ETAPA 3: Retornar a retirada completa com todas as relações definidas em `includeRelations`.
+    return prisma.materialWithdrawal.findUniqueOrThrow({
+      where: { id: newWithdrawal.id },
+      include: this.includeRelations
+    });
   }
 
   async update(
