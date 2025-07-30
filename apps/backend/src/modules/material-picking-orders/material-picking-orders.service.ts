@@ -28,6 +28,11 @@ import { MaintenanceRequestWithRelationsResponseDto } from '../../modules/mainte
 import { main } from '../../shared/prisma/seeds/users.seed';
 import { MaterialRequestsService } from '../material-requests/material-requests.service';
 import { WarehousesService } from '../warehouses/warehouses.service';
+import {
+  CreateMaterialWithdrawalWithRelationsDto,
+  MaterialWithdrawalWithRelationsResponseDto
+} from '../material-withdrawals/dto/material-withdrawal.dto';
+import { MaterialWithdrawalsService } from '../material-withdrawals/material-withdrawals.service';
 
 type PrismaTransactionClient = Omit<
   PrismaService,
@@ -41,7 +46,8 @@ export class MaterialPickingOrdersService {
     private readonly prisma: PrismaService,
     private readonly materialStockMovementsService: MaterialStockMovementsService,
     private readonly materialRequestsService: MaterialRequestsService,
-    private readonly warehousesService: WarehousesService
+    private readonly warehousesService: WarehousesService,
+    private readonly materialWithdrawalsService: MaterialWithdrawalsService
   ) {}
 
   private readonly includeRelations: Prisma.MaterialPickingOrderInclude = {
@@ -117,7 +123,11 @@ export class MaterialPickingOrdersService {
    * PARTIALLY_WITHDRAWN e FULLY_WITHDRAWN serão atualizados por MaterialWithdrawal.
    */
   private async _calculatePickingOrderStatus(
-    pickingItems: { quantityToPick: Decimal; quantityPicked?: Decimal }[]
+    pickingItems: {
+      quantityToPick: Decimal;
+      quantityPicked?: Decimal;
+      quantityWithdrawn?: Decimal;
+    }[]
   ): Promise<MaterialPickingOrderStatus> {
     this.logger.debug(`Calculando status da ordem de separação.`);
     const totalToPick = pickingItems.reduce(
@@ -128,8 +138,12 @@ export class MaterialPickingOrdersService {
       (sum, item) => sum.add(item.quantityPicked || 0),
       new Decimal(0)
     );
+    const totalWithdrawn = pickingItems.reduce(
+      (sum, item) => sum.add(item.quantityWithdrawn || 0),
+      new Decimal(0)
+    );
 
-    if (totalPicked.isZero()) {
+    if (totalPicked.isZero() && totalWithdrawn.isZero()) {
       return MaterialPickingOrderStatus.PENDING_PREPARATION;
     }
 
@@ -137,7 +151,154 @@ export class MaterialPickingOrdersService {
       return MaterialPickingOrderStatus.READY_FOR_PICKUP;
     }
 
+    if (totalWithdrawn.gte(totalToPick)) {
+      return MaterialPickingOrderStatus.FULLY_WITHDRAWN;
+    }
+
+    if (totalPicked.lt(totalToPick)) {
+      return MaterialPickingOrderStatus.IN_PREPARATION;
+    }
+
+    //na lógica dessa aplicação esse status não vai ser mais permitido. a regra em _verifyQuantitiesConsistency garante isso!
+    if (totalWithdrawn.lt(totalToPick)) {
+      return MaterialPickingOrderStatus.PARTIALLY_WITHDRAWN;
+    }
+
     return MaterialPickingOrderStatus.IN_PREPARATION; // Or PARTIALLY_PREPARED if we want more granularity
+  }
+
+  /**
+   * Dispara a criação de um registro de 'MaterialWithdrawal' (Retirada de Material)
+   * quando uma ordem de separação atinge o estado 'FULLY_WITHDRAWN'.
+   *
+   * Esta função atua como uma ponte entre o processo de separação e o de retirada efetiva,
+   * automatizando a criação do registro de saída de material. Ela transforma os dados
+   * de uma ordem de separação concluída em um DTO de criação de retirada e invoca
+   * o serviço correspondente, garantindo a atomicidade da operação ao propagar
+   * a transação do Prisma.
+   *
+   * @param data - O objeto completo da ordem de separação, incluindo suas relações,
+   *               que servirá de base para a criação da retirada.
+   * @param tx - O cliente de transação do Prisma, para garantir que esta operação
+   *             seja parte de uma transação maior (geralmente a que atualiza a ordem de separação).
+   * @returns Uma promessa que resolve para o DTO de resposta da retirada de material recém-criada.
+   *          Retorna `undefined` se não houver itens a serem retirados.
+   */
+  private async _callMaterialWithdrawalLogicCreate(
+    data: MaterialPickingOrderWithRelationsResponseDto,
+    tx?: Prisma.TransactionClient
+  ): Promise<MaterialWithdrawalWithRelationsResponseDto> {
+    this.logger.log(
+      `Iniciando criação de retirada de material para a ordem de separação ID: ${data.id}`
+    );
+
+    const createWithdrawalDto: CreateMaterialWithdrawalWithRelationsDto = {
+      warehouse: data.warehouse,
+      processedByUser: data.requestedByUser, // Assumindo que o solicitante da separação é quem processa a retirada
+      collectedByUser: data.beCollectedByUser,
+      collectedByWorker: data.beCollectedByWorker,
+      withdrawalDate: new Date(),
+      maintenanceRequest: data.maintenanceRequest,
+      materialRequest: data.materialRequest,
+      materialPickingOrder: { id: data.id } as any,
+      // O tipo de movimento para uma retirada de uma ordem de separação.
+      // Pode ser ajustado conforme a regra de negócio.
+      movementType: {
+        code: MaterialStockOperationSubType.OUT_SERVICE_USAGE
+      } as any,
+      notes: `Retirada automática referente à Ordem de Separação nº ${data.pickingOrderNumber}`,
+      items: data.items
+        .filter((item) =>
+          new Decimal(item.quantityWithdrawn || 0).greaterThan(0)
+        )
+        .map((item) => ({
+          globalMaterialId: item.globalMaterialId,
+          materialInstanceId: item.materialInstanceId,
+          quantityWithdrawn: item.quantityWithdrawn,
+          materialRequestItemId: item.materialRequestItemId
+        }))
+    };
+
+    if (createWithdrawalDto.items.length === 0) {
+      this.logger.warn(
+        `Nenhum item com quantidade retirada encontrada para a ordem de separação ID: ${data.id}. A retirada não será criada.`
+      );
+      return;
+    }
+
+    // Chama o serviço de retirada, passando o cliente da transação para manter a atomicidade.
+    // Não precisamos do 'await' aqui se não formos usar o resultado, mas é bom para propagar erros.
+    return await this.materialWithdrawalsService.create(
+      createWithdrawalDto,
+      tx
+    );
+  }
+
+  /**
+   * Verifica a consistência das quantidades (a separar, separada, retirada) para uma lista de itens.
+   * A lógica de negócio é que o material retirado é um movimento que consome o material que foi previamente separado (reservado).
+   * Portanto, a quantidade retirada não pode exceder a quantidade separada.
+   *
+   * @param items - Um array de itens da ordem de separação a serem verificados.
+   * @throws {BadRequestException} se qualquer uma das quantidades for inconsistente.
+   */
+  private _verifyQuantitiesConsistency(
+    items: {
+      id?: number; // Opcional, mas útil para mensagens de erro
+      globalMaterialId?: string; // Alternativa para identificar o item
+      quantityToPick: Decimal | number | string;
+      quantityPicked?: Decimal | number | string;
+      quantityWithdrawn?: Decimal | number | string;
+    }[]
+  ) {
+    for (const item of items) {
+      // Garante que estamos trabalhando com instâncias de Decimal para comparações seguras
+      const quantityToPick = new Decimal(item.quantityToPick);
+      const quantityPicked = new Decimal(item.quantityPicked || 0);
+      const quantityWithdrawn = new Decimal(item.quantityWithdrawn || 0);
+
+      const itemIdentifier = item.id
+        ? `de ID ${item.id}`
+        : `do material ${item.globalMaterialId}`;
+
+      // 1. A quantidade separada (reservada para retirada) não pode ser maior que a quantidade solicitada.
+      if (quantityPicked.greaterThan(quantityToPick)) {
+        throw new BadRequestException(
+          `A quantidade separada (${quantityPicked}) para o item ${itemIdentifier} não pode ser maior que a quantidade solicitada para separação (${quantityToPick}).`
+        );
+      }
+
+      // 2. A quantidade retirada não pode ser maior que a quantidade que já foi separada. Esse não faz sentido para mim, eu vou precisar colocar diminuir quantidade reservada para aumentar a quantidade retirada.
+      // if (quantityWithdrawn.greaterThan(quantityPicked)) {
+      //   throw new BadRequestException(
+      //     `A quantidade retirada (${quantityWithdrawn}) para o item ${itemIdentifier} não pode ser maior que a quantidade que foi efetivamente separada (${quantityPicked}).`
+      //   );
+      // }
+
+      // 3. A soma da quantidade retirada mais reservada não pode superar a quantidade solicitada.
+      if (quantityWithdrawn.add(quantityPicked).greaterThan(quantityToPick)) {
+        throw new BadRequestException(
+          `A soma da quantidade retirada (${quantityWithdrawn}) e da quantidade reservada (${quantityPicked}) para o item ${itemIdentifier} não pode superar a quantidade solicitada para separação (${quantityToPick}).`
+        );
+      }
+
+      // 4. Não vou permitir saída parcial, complica muito a lógica para garantir a transação consistente (atomicidade)
+      // Dessa forma, se inserir item de retirada, quantityPicked deve está zerada, e quantitade retirada tem que ser igual a solicitada
+      if (quantityWithdrawn.greaterThan(0) && !quantityPicked.isZero()) {
+        throw new BadRequestException(
+          `Só é permitido fazer retiradas totais. A quantidade retirada da reserva deve ser igual a quantidade solicitada.`
+        );
+      }
+
+      if (
+        quantityWithdrawn.greaterThan(0) &&
+        !quantityWithdrawn.minus(quantityToPick).isZero()
+      ) {
+        throw new BadRequestException(
+          `A quantidade retirada deve ser igual a quantidade solicitada.`
+        );
+      }
+    }
   }
 
   /**
@@ -256,6 +417,8 @@ export class MaterialPickingOrdersService {
       );
     }
 
+    this._verifyQuantitiesConsistency(items);
+
     if (materialRequest) {
       if (!materialRequest.id) {
         throw new BadRequestException(
@@ -361,9 +524,7 @@ export class MaterialPickingOrdersService {
         items: true
       }
     });
-    this.logger.log(
-      `Ordem de separação ${newOrder.id} criada. Iniciando criação das movimentações de estoque (reserva)...`
-    );
+    this.logger.log(`Ordem de separação ${newOrder.id} criada.`);
 
     const orderInfoForMovement = {
       warehouseId: warehouse.id,
@@ -372,6 +533,12 @@ export class MaterialPickingOrdersService {
       materialRequestId: materialRequest?.id
     };
 
+    // vou comentar o código abaixo pois apenas o pedido de reserva não gera movimentação, é apenas uma intenção
+    // a reserva efetiva do item será na atualização, quando do preenchimento de quantityPicked
+    // nessa criação mexemos apenas em quantityToPick
+    /*     this.logger.log(
+      `Iniciando criação das movimentações de estoque (reserva)...`
+    );
     for (const item of newOrder.items) {
       this.logger.debug(
         `Processando item de separação ${item.id} para criar movimentação de estoque.`
@@ -397,7 +564,7 @@ export class MaterialPickingOrdersService {
 
     this.logger.log(
       `Todas as movimentações de estoque criadas. Buscando ordem completa para retorno.`
-    );
+    ); */
 
     return prisma.materialPickingOrder.findUniqueOrThrow({
       where: { id: newOrder.id },
@@ -463,7 +630,8 @@ export class MaterialPickingOrdersService {
     // Impede a edição de ordens em estados finais.
     const uneditableStatuses: MaterialPickingOrderStatus[] = [
       MaterialPickingOrderStatus.CANCELLED,
-      MaterialPickingOrderStatus.READY_FOR_PICKUP
+      MaterialPickingOrderStatus.FULLY_WITHDRAWN,
+      MaterialPickingOrderStatus.EXPIRED
       // Adicione outros status conforme necessário, ex: FULLY_WITHDRAWN
     ];
     if (uneditableStatuses.includes(existingOrder.status)) {
@@ -473,6 +641,9 @@ export class MaterialPickingOrdersService {
     }
 
     const { items: itemsToUpdate } = data;
+
+    //verificando consistencia entre quantidades solicitadas, reservadas e retiradas
+    this._verifyQuantitiesConsistency(itemsToUpdate);
 
     // --- 3. VALIDAÇÃO DE QUANTIDADE (se aplicável) ---
     // Garante que a soma das reservas não exceda o solicitado na requisição de material.
@@ -484,7 +655,7 @@ export class MaterialPickingOrdersService {
       );
     }
 
-    // verificar de forma geral no deposito se tem saldo para os items que vão ser reservados na atualização.
+    // verificar de forma geral no deposito se tem saldo para os items que vão estão sendo solicitados para reserva na atualização.
     await this._canOrderPickingWarehouseStock(
       prisma as any,
       existingOrder.warehouseId,
@@ -523,15 +694,24 @@ export class MaterialPickingOrdersService {
 
         if (existingItem) {
           // --- É UMA ATUALIZAÇÃO ---
-          const quantityDelta = new Decimal(updatedItem.quantityToPick).sub(
-            existingItem.quantityToPick
-          );
-          if (!quantityDelta.isZero()) {
+          const quantityDeltaToPick = new Decimal(
+            updatedItem.quantityToPick || 0
+          ).sub(existingItem.quantityToPick || 0);
+
+          const quantityDeltaPicked = new Decimal(
+            updatedItem.quantityPicked || 0
+          ).sub(existingItem.quantityPicked || 0);
+
+          const quantityDeltaWithdrawn = new Decimal(
+            updatedItem.quantityWithdrawn || 0
+          ).sub(existingItem.quantityWithdrawn || 0);
+
+          if (!quantityDeltaPicked.isZero()) {
             await this._createStockMovement(prisma as any, {
               item: existingItem, // Use o item existente para ter todos os IDs
-              quantityChange: quantityDelta,
+              quantityChange: quantityDeltaPicked,
               order: orderInfoForMovement,
-              movementSubType: quantityDelta.isPositive()
+              movementSubType: quantityDeltaPicked.isPositive()
                 ? MaterialStockOperationSubType.RESERVE_FOR_PICKING_ORDER
                 : MaterialStockOperationSubType.RELEASE_PICKING_RESERVATION
             });
@@ -539,7 +719,7 @@ export class MaterialPickingOrdersService {
         } else {
           // --- É UM ITEM NOVO ---
           // A quantidade a ser movimentada é a própria quantidade do item.
-          const quantityChange = new Decimal(updatedItem.quantityToPick);
+          const quantityChange = new Decimal(updatedItem.quantityPicked || 0);
           if (!quantityChange.isZero()) {
             await this._createStockMovement(prisma as any, {
               item: { ...updatedItem, id: -1 }, // ID temporário
@@ -554,10 +734,10 @@ export class MaterialPickingOrdersService {
 
       // Identificar e processar itens removidos
       for (const [key, itemToDelete] of existingItemsMap.entries()) {
-        if (!updatedItemKeys.has(key)) {
+        if (!updatedItemKeys.has(key) && itemToDelete.quantityPicked) {
           await this._createStockMovement(prisma as any, {
             item: itemToDelete,
-            quantityChange: itemToDelete.quantityToPick.negated(), // Devolve ao estoque
+            quantityChange: itemToDelete.quantityPicked.negated(), // Devolve ao estoque
             order: orderInfoForMovement,
             movementSubType:
               MaterialStockOperationSubType.RELEASE_PICKING_RESERVATION
@@ -622,6 +802,8 @@ export class MaterialPickingOrdersService {
             data: {
               // Apenas os campos que podem ser atualizados
               quantityToPick: itemFromRequest.quantityToPick,
+              quantityPicked: itemFromRequest.quantityPicked,
+              quantityWithdrawn: itemFromRequest.quantityWithdrawn,
               notes: itemFromRequest.notes
               // Não atualizamos chaves estrangeiras como globalMaterialId aqui
               // para manter a simplicidade. Se precisar, adicione-as.
@@ -633,6 +815,8 @@ export class MaterialPickingOrdersService {
           // Nenhum item correspondente encontrado, este é um novo item para a ordem.
           itemsToActuallyCreate.push({
             quantityToPick: itemFromRequest.quantityToPick,
+            quantityPicked: itemFromRequest.quantityPicked,
+            quantityWithdrawn: itemFromRequest.quantityWithdrawn,
             notes: itemFromRequest.notes,
             globalMaterial: {
               connect: { id: itemFromRequest.globalMaterialId }
@@ -690,13 +874,24 @@ export class MaterialPickingOrdersService {
       data: { status: newStatus }
     });
 
+    const finalUpdatedOrder =
+      await prisma.materialPickingOrder.findUniqueOrThrow({
+        where: { id },
+        include: this.includeRelations
+      });
+
+    if (newStatus === MaterialPickingOrderStatus.FULLY_WITHDRAWN) {
+      await this._callMaterialWithdrawalLogicCreate(finalUpdatedOrder, prisma);
+
+      this.logger.log(
+        `Saída de material após atualização da reserva concluída com sucesso.`
+      );
+    }
+
     this.logger.log(`Ordem de separação ${id} atualizada com sucesso.`);
 
     // --- 8. RETORNAR A ORDEM COMPLETA E FINAL ---
-    return prisma.materialPickingOrder.findUniqueOrThrow({
-      where: { id },
-      include: this.includeRelations
-    });
+    return finalUpdatedOrder;
   }
 
   async delete(id: number): Promise<{ message: string; id: number }> {

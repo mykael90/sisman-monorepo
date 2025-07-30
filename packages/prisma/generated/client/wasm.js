@@ -557,6 +557,7 @@ exports.Prisma.MaterialPickingOrderItemScalarFieldEnum = {
   materialInstanceId: 'materialInstanceId',
   quantityToPick: 'quantityToPick',
   quantityPicked: 'quantityPicked',
+  quantityWithdrawn: 'quantityWithdrawn',
   notes: 'notes',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

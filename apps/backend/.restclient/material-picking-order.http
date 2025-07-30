@@ -172,6 +172,51 @@ Authorization: Bearer {{token}}
     "status": "CANCELLED"
 }
 
+### PUT - Update 
+# @prompt id
+PUT {{urlLocal}}/{{id}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "notes": "Ordem atualizada.",
+    "items": [
+        {
+            "id": 4,
+            "globalMaterialId": "3026000000032",
+            "quantityToPick": 3,
+            "quantityPicked": 0,
+            "quantityWithdrawn": 3
+        },
+        {
+            "id": 3,
+            "globalMaterialId": "302400026133",
+            "quantityToPick": 5,
+            "quantityPicked": 0,
+            "quantityWithdrawn":5
+        }
+    ]
+}
+### PUT - Update 
+# @prompt id
+PUT {{urlLocal}}/{{id}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "notes": "Ordem atualizada.",
+        "items": [
+        {
+            "materialRequestItemId": 467,
+            "globalMaterialId": "302800001627",
+            "quantityToPick": 1,
+            "quantityPicked": 0,
+            "quantityWithdrawn":1
+        } 
+            ],
+    "desiredPickupDate": "2024-08-26T09:00:00Z"
+}
+
 ### DELETE one
 # @prompt id
 DELETE {{urlLocal}}/{{id}}

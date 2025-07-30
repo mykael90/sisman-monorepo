@@ -1173,7 +1173,10 @@ model MaterialPickingOrderItem {
   quantityPicked Decimal? @db.Decimal(10, 3) // Quantidade efetivamente separada/reservada
   // pickedFromInstanceId Int? // Se uma instância específica foi alocada durante o picking
   // pickedFromInstance   MaterialInstance? @relation(fields: [pickedFromInstanceId], references: [id])
-  notes          String? // Notas específicas do almoxarife sobre este item do picking
+
+  quantityWithdrawn Decimal? @db.Decimal(10, 3) // Quantidade retirada diretamente deste item
+
+  notes String? // Notas específicas do almoxarife sobre este item do picking
 
   stockMovement MaterialStockMovement[]
 

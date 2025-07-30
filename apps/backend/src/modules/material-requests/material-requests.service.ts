@@ -11,7 +11,11 @@ import {
   UpdateMaterialRequestWithRelationsDto
 } from './dto/material-request.dto';
 import { handlePrismaError } from '../../shared/utils/prisma-error-handler';
-import { Prisma, RestrictionOrderStatus } from '@sisman/prisma';
+import {
+  MaterialPickingOrderStatus,
+  Prisma,
+  RestrictionOrderStatus
+} from '@sisman/prisma';
 import { includes } from 'lodash';
 
 // Definir uma interface para as opções de exclusão para clareza
@@ -244,6 +248,13 @@ export class MaterialRequestsService {
             // Filtra apenas os itens cujas ordens de separação pertencem à nossa MaterialRequest
             materialPickingOrder: {
               materialRequestId: id,
+              status: {
+                in: [
+                  MaterialPickingOrderStatus.IN_PREPARATION,
+                  MaterialPickingOrderStatus.PARTIALLY_WITHDRAWN,
+                  MaterialPickingOrderStatus.READY_FOR_PICKUP
+                ]
+              },
               ...(options?.pickingOrderIdToExclude && {
                 id: {
                   not: options.pickingOrderIdToExclude
@@ -251,7 +262,7 @@ export class MaterialRequestsService {
               })
             }
           },
-          _sum: { quantityToPick: true }
+          _sum: { quantityPicked: true }
         })
       ]);
 
@@ -303,7 +314,7 @@ export class MaterialRequestsService {
       aggregatedPickingOrders.forEach((item) => {
         reservedMap.set(
           item.globalMaterialId,
-          item._sum.quantityToPick ?? new Prisma.Decimal(0)
+          item._sum.quantityPicked ?? new Prisma.Decimal(0)
         );
       });
 
@@ -383,7 +394,7 @@ export class MaterialRequestsService {
         materialPickingOrders: {
           items: aggregatedPickingOrders.map((item) => ({
             globalMaterialId: item.globalMaterialId,
-            quantityToPickSum: item._sum.quantityToPick ?? new Prisma.Decimal(0)
+            quantityPickedSum: item._sum.quantityPicked ?? new Prisma.Decimal(0)
           }))
         },
         // Adiciona o balanço calculado

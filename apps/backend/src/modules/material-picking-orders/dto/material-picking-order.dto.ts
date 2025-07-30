@@ -156,6 +156,7 @@ class MaterialPickingOrderItemBaseDto implements MaterialPickingOrderItem {
   materialRequestItemId: number;
   quantityToPick: Prisma.Decimal;
   quantityPicked: Prisma.Decimal;
+  quantityWithdrawn: Prisma.Decimal;
 }
 
 // =================================================================
