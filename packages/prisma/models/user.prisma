@@ -41,6 +41,7 @@ model User {
   // Relations: material.prisma (for MaterialPickingOrder)
   pickingOrdersRequested   MaterialPickingOrder[] @relation("PickingOrdersRequestedBy") // Material picking orders requested by this user.
   pickingOrdersBeCollected MaterialPickingOrder[] @relation("PickingOrdersBeCollectedByUser") // Material picking orders to be collected by this user.
+  pickingOrdersProcessed   MaterialPickingOrder[] @relation("PickingOrdersProcessedBy") // Material picking orders processed by this user.
 
   // Relations: material.prisma (for MaterialRestrictionOrder)
   restrictionOrdersProcessed      MaterialRestrictionOrder[]              @relation("RestrictionOrdersProcessedBy") // Material restriction orders processed by this user.

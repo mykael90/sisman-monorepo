@@ -98,6 +98,14 @@ class MaterialPickingOrderBaseDto implements MaterialPickingOrder {
   beCollectedByUserId: number;
 
   /**
+   * ID do usuário que processa (separa, entrega) a reserva no almoxarifado.
+   * @example 11
+   */
+  @IsOptional()
+  @IsNumber()
+  proccessedByUserId: number;
+
+  /**
    * ID do trabalhador que efetivamente coletará os materiais.
    * @example 12
    */
@@ -172,6 +180,7 @@ const MaterialPickingOrderRelationOnlyArgs =
       requestedByUser: true,
       beCollectedByUser: true,
       beCollectedByWorker: true,
+      proccessedByUser: true,
       items: true
     }
   });
@@ -224,6 +233,14 @@ export class MaterialPickingOrderWithRelationsResponseDto
   @ValidateNested()
   @Type(() => UpdateUserDto)
   beCollectedByUser?: MaterialPickingOrderRelationOnly['beCollectedByUser'];
+
+  /**
+   * Dados do usuário que processa no almoxarifado.
+   */
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => UpdateUserDto)
+  proccessedByUser?: MaterialPickingOrderRelationOnly['proccessedByUser'];
 
   /**
    * Dados do trabalhador que efetivamente coletará os materiais.
@@ -291,6 +308,12 @@ export class CreateMaterialPickingOrderWithRelationsDto extends IntersectionType
    */
   @IsOptional()
   beCollectedByUser?: MaterialPickingOrderRelationOnly['beCollectedByUser'];
+
+  /**
+   * Dados do usuário que processa no almoxarifado.
+   */
+  @IsOptional()
+  proccessedByUser?: MaterialPickingOrderRelationOnly['proccessedByUser'];
 
   /**
    * Dados do trabalhador que efetivamente coletará os materiais.

@@ -1106,6 +1106,10 @@ model MaterialPickingOrder {
   requestedByUser   User     @relation("PickingOrdersRequestedBy", fields: [requestedByUserId], references: [id])
   requestedAt       DateTime @default(now())
 
+  // Usuário do almoxarifado que processou a saída no sistema
+  proccessedByUserId Int?
+  proccessedByUser   User? @relation("PickingOrdersProcessedBy", fields: [proccessedByUserId], references: [id])
+
   // Usuário que EFETIVAMENTE coletará o conjunto de materiais
   beCollectedByUserId Int?
   beCollectedByUser   User? @relation("PickingOrdersBeCollectedByUser", fields: [beCollectedByUserId], references: [id])
@@ -1984,6 +1988,7 @@ model User {
   // Relations: material.prisma (for MaterialPickingOrder)
   pickingOrdersRequested   MaterialPickingOrder[] @relation("PickingOrdersRequestedBy") // Material picking orders requested by this user.
   pickingOrdersBeCollected MaterialPickingOrder[] @relation("PickingOrdersBeCollectedByUser") // Material picking orders to be collected by this user.
+  pickingOrdersProcessed   MaterialPickingOrder[] @relation("PickingOrdersProcessedBy") // Material picking orders processed by this user.
 
   // Relations: material.prisma (for MaterialRestrictionOrder)
   restrictionOrdersProcessed      MaterialRestrictionOrder[]              @relation("RestrictionOrdersProcessedBy") // Material restriction orders processed by this user.

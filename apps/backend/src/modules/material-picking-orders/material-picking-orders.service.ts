@@ -404,7 +404,13 @@ export class MaterialPickingOrdersService {
     prisma: PrismaClient
   ): Promise<MaterialPickingOrderWithRelationsResponseDto> {
     this.logger.log(`Iniciando processo de criação de ordem de separação...`);
-    const { warehouse, requestedByUser, materialRequest, ...restOfData } = data;
+    const {
+      warehouse,
+      requestedByUser,
+      materialRequest,
+      proccessedByUser,
+      ...restOfData
+    } = data;
 
     let { items } = data;
     let { maintenanceRequest } = data;
@@ -500,6 +506,9 @@ export class MaterialPickingOrdersService {
         : undefined,
       beCollectedByWorker: data.beCollectedByWorker?.id
         ? { connect: { id: data.beCollectedByWorker.id } }
+        : undefined,
+      proccessedByUser: data.proccessedByUser?.id
+        ? { connect: { id: data.proccessedByUser.id } }
         : undefined,
       status: MaterialPickingOrderStatus.PENDING_PREPARATION, // Initial status
       items: {
@@ -756,6 +765,11 @@ export class MaterialPickingOrdersService {
     if (data.notes !== undefined) updatePayload.notes = data.notes;
     if (data.desiredPickupDate)
       updatePayload.desiredPickupDate = data.desiredPickupDate;
+    if (data.proccessedByUser) {
+      updatePayload.proccessedByUser = {
+        connect: { id: data.proccessedByUser.id }
+      };
+    }
     // ... outras relações simples como beCollectedByUser ...
 
     // ** LÓGICA CENTRAL PARA ATUALIZAÇÃO GRANULAR DE ITENS **
@@ -866,9 +880,11 @@ export class MaterialPickingOrdersService {
     });
 
     // --- 7. PÓS-ATUALIZAÇÃO (RECALCULAR STATUS) ---
-    const newStatus = await this._calculatePickingOrderStatus(
-      updatedOrderWithItems.items
-    );
+    // calcule apenas se o status não vir no corpo da requisição em "data"
+    const newStatus =
+      data.status ??
+      (await this._calculatePickingOrderStatus(updatedOrderWithItems.items));
+
     await prisma.materialPickingOrder.update({
       where: { id },
       data: { status: newStatus }
@@ -999,5 +1015,79 @@ export class MaterialPickingOrdersService {
       });
       throw error;
     }
+  }
+
+  /**
+   * Executa uma operação em massa em uma ordem de separação (Cancelar, Expirar, Retirar Tudo).
+   * Este método serve como um atalho para modificar o estado e os itens de uma ordem de
+   * separação de forma consistente, reutilizando a lógica de atualização principal.
+   *
+   * @param id - O ID da ordem de separação a ser modificada.
+   * @param operatorId - O ID do usuário que está realizando a operação (para fins de auditoria).
+   * @param operation - A operação a ser executada. Apenas `CANCELLED`, `EXPIRED`, e `FULLY_WITHDRAWN` são permitidas.
+   * @returns A ordem de separação atualizada.
+   * @throws {BadRequestException} se a operação for inválida.
+   * @throws {NotFoundException} se a ordem de separação não for encontrada.
+   * @throws {ConflictException} se a ordem já estiver em um estado final.
+   */
+  async operationInPickingOrder(
+    id: number,
+    operatorId: number,
+    operation: MaterialPickingOrderStatus
+  ): Promise<MaterialPickingOrderWithRelationsResponseDto> {
+    const allowedOperations: MaterialPickingOrderStatus[] = [
+      MaterialPickingOrderStatus.CANCELLED,
+      MaterialPickingOrderStatus.EXPIRED,
+      MaterialPickingOrderStatus.FULLY_WITHDRAWN
+    ];
+
+    if (!allowedOperations.includes(operation)) {
+      throw new BadRequestException(
+        `A operação '${operation}' não é permitida. Operações válidas são: ${allowedOperations.join(
+          ', '
+        )}.`
+      );
+    }
+
+    this.logger.log(
+      `Iniciando operação '${operation}' na ordem de separação ID ${id} pelo operador ${operatorId}.`
+    );
+
+    const existingOrder =
+      await this.prisma.materialPickingOrder.findUniqueOrThrow({
+        where: { id },
+        include: { items: true }
+      });
+
+    const updateDto: UpdateMaterialPickingOrderWithRelationsDto = {
+      status: operation,
+      proccessedByUser: { id: operatorId } as any,
+      items: []
+    };
+
+    switch (operation) {
+      case MaterialPickingOrderStatus.FULLY_WITHDRAWN:
+        this.logger.debug(`Preparando payload para retirada total.`);
+        updateDto.items = existingOrder.items.map((item) => ({
+          ...item, // Mantém IDs e outras informações
+          quantityPicked: new Decimal(0), // Libera qualquer reserva existente
+          quantityWithdrawn: item.quantityToPick // Define a quantidade retirada como o total a ser separado
+        }));
+        break;
+
+      case MaterialPickingOrderStatus.CANCELLED:
+      case MaterialPickingOrderStatus.EXPIRED:
+        this.logger.debug(`Preparando payload para cancelamento/expiração.`);
+        updateDto.items = existingOrder.items.map((item) => ({
+          ...item, // Mantém IDs e outras informações
+          quantityPicked: new Decimal(0) // Libera qualquer reserva existente
+          // quantityWithdrawn e quantityToPick não são alterados
+        }));
+        break;
+    }
+
+    // Reutiliza a lógica de atualização principal, que já lida com transações,
+    // movimentações de estoque, e outras validações.
+    return this.update(id, updateDto);
   }
 }
