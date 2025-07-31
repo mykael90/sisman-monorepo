@@ -21,6 +21,7 @@ Authorization: Bearer {{token}}
     "warehouse": {
         "id": 1
     },
+    "proccessedByUser": {"id": 3},
     "requestedByUser": {"id": 1},
     "requestedAt": "2024-07-25T10:00:00Z",
     "notes": "Ordem de separação para manutenção preventiva.",

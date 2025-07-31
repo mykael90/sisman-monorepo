@@ -570,16 +570,34 @@ export class MaterialStockMovementsService {
 
       // Verifica se a quantidade inicial é negativa.
       if (initialQuantity.isNegative()) {
-        throw new BadRequestException(
-          `A quantidade da contagem (${quantityCount}) é menor que a quantidade resultante das entradas e saídas atuais (${globalMaterialInWarehouse.balanceInMinusOut}). Resultando em uma definição de quantidade inicial negativa, o que não é permitido. ` +
-            `Para corrigir, primeiro registre uma perda/extravio de ${initialQuantity.abs()} unidades para o material ${globalMaterialInWarehouse.materialId}.`
-        );
+        // throw new BadRequestException(
+        //   `A quantidade da contagem (${quantityCount}) é menor que a quantidade resultante das entradas e saídas atuais (${globalMaterialInWarehouse.balanceInMinusOut}). Resultando em uma definição de quantidade inicial negativa, o que não é permitido. ` +
+        //     `Para corrigir, primeiro registre uma perda/extravio de ${initialQuantity.abs()} unidades para o material ${globalMaterialInWarehouse.materialId}.`
+        // );
+
+        //mudar a lógica, ao invez de lançar erro vai inserir um ajuste negativo e em seguida inserir uma quantidade 0 na carga inicial
+        // serão 2 operações
+
+        //lançar a operaçao de ajuste de saída
+        const movementType = {
+          code: MaterialStockOperationSubType.ADJUSTMENT_INV_OUT
+        } as any;
+        const quantity = initialQuantity.abs();
+        //chamar operação 1. a outra operação permanece no mesmo fluxo
+        await this.create({
+          ...data,
+          movementType,
+          quantity
+        });
       }
 
       movementType = {
         code: MaterialStockOperationSubType.INITIAL_STOCK_LOAD
       } as any;
-      quantity = initialQuantity;
+
+      quantity = initialQuantity.isPositive()
+        ? initialQuantity.abs()
+        : new Prisma.Decimal(0);
     } else if (
       quantityCount.equals(
         globalMaterialInWarehouse.initialStockQuantity.add(
