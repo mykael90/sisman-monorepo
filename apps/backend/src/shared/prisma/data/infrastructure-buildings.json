@@ -1,5 +1,125 @@
 [
   {
+    "id": "NAO_IDENTIFICADO_01",
+    "name": "ADM. CENTRAL - COMPRAS - DIRETORIA DE COMPRAS",
+    "zone": "2",
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "NAO_IDENTIFICADO_02",
+    "name": "ADM. CENTRAL - COORDENADORIA DE GESTAO DA INFORMACAOCGI - ARQUIVO GERAL",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "NAO_IDENTIFICADO_03",
+    "name": "ADM. CENTRAL - DLOG - DIVISAO DE ALMOXARIFADO CENTRAL",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "NAO_IDENTIFICADO_04",
+    "name": "ADM. CENTRAL - DLOG - DIVISAO DE PATRIMONIO MOVEL",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "NAO_IDENTIFICADO_05",
+    "name": "ADM. CENTRAL - DLOGCGI ANTIGO SETOR DE LICITACOES",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "NAO_IDENTIFICADO_06",
+    "name": "ADM. CENTRAL - SIN - SUPERINTENDENCIA DE INFRAESTRUTURA - CENTRAL MAT. CONSTRUCAO",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "NAO_IDENTIFICADO_07",
+    "name": "ADM. CENTRAL - SINDIMAN - DIRETORIA DE MANUTENCAO - CENTRAL DE MEDICAO ELETRICA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "NAO_IDENTIFICADO_08",
+    "name": "ANEXO DO IMD - INSTITUTO METROPOLE DIGITAL",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "NAO_IDENTIFICADO_09",
+    "name": "CCET - DG - LABORATORIOS DE GEOPROCESSAMENTO  GEOLOGIA E GEOFISICA MARINHA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "NAO_IDENTIFICADO_10",
+    "name": "CT - DARQ - LABSEC - ESTOCAGEM DE MATERIAL DO LABORATORIO DE SISTEMAS ESTRUTURAIS E CONSTRUTIVOS",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "NAO_IDENTIFICADO_11",
+    "name": "CT-NTI-LEAFT-LAB ENG ALTERNATIVAS E FENOMENOS TRANSPLAB MAT NANOESTRUTURADOS E REATORES CATALITICOS",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "NAO_IDENTIFICADO_12",
+    "name": "CT-NTI-LIMELABMETROL-LAB INSTIT MICROSCOPIA ELETRONICA E CARACTERIZACAO DE MATERIAISLAB METROLOGIA",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1761.00464.500-8"
+  },
+  {
+    "id": "NAO_IDENTIFICADO_13",
+    "name": "EMCM CAICO - EDIFICACAO PRINCIPAL",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1639.00236.500-5"
+  },
+  {
+    "id": "NAO_IDENTIFICADO_14",
+    "name": "ESCRITORIO DE REPRESENTACAO EM BRASILIADF",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "9701.22173.500-5"
+  },
+  {
+    "id": "NAO_IDENTIFICADO_15",
+    "name": "LOCACAO - DIVISAO ACADEMICA - GERENCIA DE ENSINO E PESQUISA DO HUAB ANEXO III",
+    "zone": null,
+    "latitude": null,
+    "longitude": null,
+    "facilityComplexId": "1823.00048.500-0"
+  },
+  {
     "id": "1639.00236.500-5-001",
     "name": "CERES CAICO - BLOCO DE SALAS DE AULA",
     "zone": null,

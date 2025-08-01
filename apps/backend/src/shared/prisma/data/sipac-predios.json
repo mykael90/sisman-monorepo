@@ -1,5 +1,95 @@
 [
   {
+    "denominacaoPredio": "ADM. CENTRAL - COMPRAS - DIRETORIA DE COMPRAS",
+    "idZona": null,
+    "subRip": "NAO_IDENTIFICADO_01",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - COORDENADORIA DE GESTAO DA INFORMACAOCGI - ARQUIVO GERAL",
+    "idZona": null,
+    "subRip": "NAO_IDENTIFICADO_02",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - DLOG - DIVISAO DE ALMOXARIFADO CENTRAL",
+    "idZona": null,
+    "subRip": "NAO_IDENTIFICADO_03",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - DLOG - DIVISAO DE PATRIMONIO MOVEL",
+    "idZona": null,
+    "subRip": "NAO_IDENTIFICADO_04",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - DLOGCGI ANTIGO SETOR DE LICITACOES",
+    "idZona": null,
+    "subRip": "NAO_IDENTIFICADO_05",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - SIN - SUPERINTENDENCIA DE INFRAESTRUTURA - CENTRAL MAT. CONSTRUCAO",
+    "idZona": null,
+    "subRip": "NAO_IDENTIFICADO_06",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ADM. CENTRAL - SINDIMAN - DIRETORIA DE MANUTENCAO - CENTRAL DE MEDICAO ELETRICA",
+    "idZona": null,
+    "subRip": "NAO_IDENTIFICADO_07",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "ANEXO DO IMD - INSTITUTO METROPOLE DIGITAL",
+    "idZona": null,
+    "subRip": "NAO_IDENTIFICADO_08",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CCET - DG - LABORATORIOS DE GEOPROCESSAMENTO  GEOLOGIA E GEOFISICA MARINHA",
+    "idZona": null,
+    "subRip": "NAO_IDENTIFICADO_09",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CT - DARQ - LABSEC - ESTOCAGEM DE MATERIAL DO LABORATORIO DE SISTEMAS ESTRUTURAIS E CONSTRUTIVOS",
+    "idZona": null,
+    "subRip": "NAO_IDENTIFICADO_10",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CT-NTI-LEAFT-LAB ENG ALTERNATIVAS E FENOMENOS TRANSPLAB MAT NANOESTRUTURADOS E REATORES CATALITICOS",
+    "idZona": null,
+    "subRip": "NAO_IDENTIFICADO_11",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "CT-NTI-LIMELABMETROL-LAB INSTIT MICROSCOPIA ELETRONICA E CARACTERIZACAO DE MATERIAISLAB METROLOGIA",
+    "idZona": null,
+    "subRip": "NAO_IDENTIFICADO_12",
+    "ripImovel": "1761.00464.500-8"
+  },
+  {
+    "denominacaoPredio": "EMCM CAICO - EDIFICACAO PRINCIPAL",
+    "idZona": null,
+    "subRip": "NAO_IDENTIFICADO_13",
+    "ripImovel": "1639.00236.500-5"
+  },
+  {
+    "denominacaoPredio": "ESCRITORIO DE REPRESENTACAO EM BRASILIADF",
+    "idZona": null,
+    "subRip": "NAO_IDENTIFICADO_14",
+    "ripImovel": "9701.22173.500-5"
+  },
+  {
+    "denominacaoPredio": "LOCACAO - DIVISAO ACADEMICA - GERENCIA DE ENSINO E PESQUISA DO HUAB ANEXO III",
+    "idZona": null,
+    "subRip": "NAO_IDENTIFICADO_15",
+    "ripImovel": "1823.00048.500-0"
+  },
+  {
     "denominacaoPredio": "CERES CAICÓ - BLOCO DE SALAS DE AULA",
     "idZona": "",
     "subRip": "1639.00236.500-5-001",
