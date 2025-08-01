@@ -11,7 +11,7 @@ import {
   UpdateMaterialPickingOrderWithRelationsDto,
   MaterialPickingOrderWithRelationsResponseDto,
   UpdateMaterialPickingOrderItemDto
-} from './dto/material-picking-order.dto';
+} from '@sisman/types';
 import { handlePrismaError } from '../../shared/utils/prisma-error-handler';
 import {
   MaterialStockOperationSubType,
@@ -21,17 +21,17 @@ import {
   PrismaClient
 } from '@sisman/prisma';
 import { MaterialStockMovementsService } from '../material-stock-movements/material-stock-movements.service';
-import { CreateMaterialStockMovementWithRelationsDto } from '../material-stock-movements/dto/material-stock-movements.dto';
+import { CreateMaterialStockMovementWithRelationsDto } from '@sisman/types';
 import { Decimal } from '@sisman/prisma/generated/client/runtime/library';
-import { MaterialRequestWithRelationsResponseDto } from '../material-requests/dto/material-request.dto';
-import { MaintenanceRequestWithRelationsResponseDto } from '../../modules/maintenance-requests/dto/maintenance-request.dto'; // Assuming this DTO exists
+import { MaterialRequestWithRelationsResponseDto } from '@sisman/types';
+import { MaintenanceRequestWithRelationsResponseDto } from '@sisman/types';
 import { main } from '../../shared/prisma/seeds/users.seed';
 import { MaterialRequestsService } from '../material-requests/material-requests.service';
 import { WarehousesService } from '../warehouses/warehouses.service';
 import {
   CreateMaterialWithdrawalWithRelationsDto,
   MaterialWithdrawalWithRelationsResponseDto
-} from '../material-withdrawals/dto/material-withdrawal.dto';
+} from '@sisman/types';
 import { MaterialWithdrawalsService } from '../material-withdrawals/material-withdrawals.service';
 
 type PrismaTransactionClient = Omit<

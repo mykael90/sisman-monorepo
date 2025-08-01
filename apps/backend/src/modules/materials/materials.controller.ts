@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { MaterialsService } from './materials.service';
 import { ApiTags } from '@nestjs/swagger';
-import { CreateMaterialDto, UpdateMaterialDto } from './dto/material.dto';
+import { CreateMaterialDto, UpdateMaterialDto } from '@sisman/types';
 
 @Controller('materials')
 @ApiTags('materials')

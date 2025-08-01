@@ -10,7 +10,7 @@ import {
 import {
   CreateMaterialRequestItemDto,
   CreateMaterialRequestWithRelationsDto
-} from '../dto/material-request.dto';
+} from '@sisman/types';
 import { getNowFormatted } from '../../../shared/utils/date-utils';
 
 type SipacStatus =

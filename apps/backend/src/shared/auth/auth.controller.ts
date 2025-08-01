@@ -14,7 +14,7 @@ import {
   ValidationPipe,
   Req
 } from '@nestjs/common';
-import { AuthRegisterDTO } from './dto/auth-register.dto';
+import { AuthRegisterDTO } from '@sisman/types';
 import { AuthService } from './auth.service';
 import { AuthGuard } from 'src/shared/auth/guards/auth.guard';
 import { User } from 'src/shared/decorators/user-decorator';
@@ -25,15 +25,15 @@ import {
 } from '@nestjs/platform-express';
 import { FilesService } from 'src/shared/files/files.service';
 import { ApiTags } from '@nestjs/swagger';
-import { AuthRegisterAuthorizationTokenDTO } from './dto/auth-register-authorization-token.dto';
-import { AuthLoginAuthorizationTokenDTO } from './dto/auth-login-authorization-token.dto';
+import { AuthRegisterAuthorizationTokenDTO } from '@sisman/types';
+import { AuthLoginAuthorizationTokenDTO } from '@sisman/types';
 import { Roles } from '../decorators/roles.decorator';
 import { Role } from '../enums/role.enum';
 import { RoleGuard } from './guards/role.guard';
 import { Request as RequestExpress } from 'express'; // Importe Request
-import { MagicLinkLoginDto } from './dto/magic-link-login.dto';
-import { VerifyCodeDto } from './dto/verify-code-magic-link.dto';
-import { CreateUserDto } from '../../modules/users/dto/user.dto';
+import { MagicLinkLoginDto } from '@sisman/types';
+import { VerifyCodeDto } from '@sisman/types';
+import { CreateUserDto } from '@sisman/types';
 
 @Controller('auth')
 @ApiTags('auth')

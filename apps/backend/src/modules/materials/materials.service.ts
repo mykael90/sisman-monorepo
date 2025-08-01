@@ -6,7 +6,7 @@ import {
   NotFoundException
 } from '@nestjs/common';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
-import { CreateMaterialDto, UpdateMaterialDto } from './dto/material.dto';
+import { CreateMaterialDto, UpdateMaterialDto } from '@sisman/types';
 import { MaterialsMapper } from './mappers/materials.mapper';
 import { Prisma } from '@sisman/prisma';
 

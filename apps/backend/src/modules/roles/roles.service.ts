@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../../shared/prisma/prisma.service';
-import { CreateRoleDto, UpdateRoleDto } from './dto/roles/role.dto';
+import { CreateRoleDto, UpdateRoleDto } from '@sisman/types';
 import { handlePrismaError } from '../../shared/utils/prisma-error-handler';
 
 @Injectable()

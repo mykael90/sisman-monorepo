@@ -2,7 +2,7 @@ import {
   IsEmail,
   IsNotEmpty,
   IsString,
-  IsStrongPassword,
+  IsStrongPassword
 } from 'class-validator';
 
 export class AuthRegisterDTO {

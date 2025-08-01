@@ -16,7 +16,7 @@ import {
   SipacImovelPredioManutencaoDto,
   SipacHistoricoManutencaoDto,
   SipacItemRequisicaoMaterialManutencaoDto
-} from '../dto/sipac-requisicao-manutencao.dto';
+} from '@sisman/types';
 import { DecimalJsLike } from '@sisman/prisma/generated/client/runtime/library';
 
 export class SipacRequisicaoManutencaoMapper {

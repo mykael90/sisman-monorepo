@@ -16,7 +16,7 @@ import {
   CreateMaterialRestrictionOrderWithRelationsDto,
   MaterialRestrictionOrderWithRelationsResponseDto,
   UpdateMaterialRestrictionOrderWithRelationsDto
-} from './dto/material-restriction-order.dto';
+} from '@sisman/types';
 import { AuthGuard } from '../../shared/auth/guards/auth.guard';
 import { ApiTags } from '@nestjs/swagger';
 import { ApiEndpointSwagger } from '../../shared/decorators/swagger/api-endpoint.decorator';

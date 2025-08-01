@@ -1,4 +1,4 @@
-import { CreateSipacMaterialDto } from '../dto/sipac-material.dto';
+import { CreateSipacMaterialDto } from '@sisman/types';
 import { SipacMaterialResponseItem } from '../../sipac-api.interfaces';
 
 export class SipacMaterialMapper {

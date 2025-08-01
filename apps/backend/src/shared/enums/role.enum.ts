@@ -9,5 +9,5 @@ export enum Role {
   UserWorkers = 302,
   AdmSuppliers = 400,
   SuperSuppliers = 401,
-  UserSuppliers = 402,
+  UserSuppliers = 402
 }

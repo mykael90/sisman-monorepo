@@ -8,7 +8,7 @@ import {
   removeNullOrEmptyStringProps,
   removeAccentsAndSpecialChars // <-- Importe a nova função aqui
 } from './seed-utils';
-import { CreateSipacPredioDto } from '../../../modules/sipac/predios/dto/sipac-predio.dto';
+import { CreateSipacPredioDto } from '@sisman/types';
 
 const logger = console;
 

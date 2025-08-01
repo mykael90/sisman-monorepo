@@ -1,4 +1,10 @@
-import { BadRequestException, Controller, Get, HttpException, HttpStatus } from '@nestjs/common';
+import {
+  BadRequestException,
+  Controller,
+  Get,
+  HttpException,
+  HttpStatus
+} from '@nestjs/common';
 import { AppService } from './app.service';
 
 @Controller()
@@ -21,12 +27,9 @@ export class AppController {
     throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
   }
 
-
-
   //error not http for test
   @Get('error-not-http')
   errorNotHttp() {
     throw new Error('This is a non-HTTP exception');
   }
-
 }

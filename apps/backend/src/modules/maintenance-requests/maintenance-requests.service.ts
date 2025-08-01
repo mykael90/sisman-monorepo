@@ -3,7 +3,7 @@ import { PrismaService } from '../../shared/prisma/prisma.service';
 import {
   CreateMaintenanceRequestWithRelationsDto,
   UpdateMaintenanceRequestWithRelationsDto
-} from './dto/maintenance-request.dto';
+} from '@sisman/types';
 import { handlePrismaError } from '../../shared/utils/prisma-error-handler';
 import { FacilityComplexType, Prisma } from '@sisman/prisma';
 import { InfrastructureBuildingsService } from '../infrastructure-buildings/infrastructure-buildings.service';

@@ -3,6 +3,6 @@ import { LogErrorService } from './log-error.service';
 
 @Module({
   providers: [LogErrorService],
-  exports: [LogErrorService],
+  exports: [LogErrorService]
 })
 export class LogErrorModule {}

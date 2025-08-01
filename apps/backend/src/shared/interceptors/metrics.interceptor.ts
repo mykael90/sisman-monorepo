@@ -3,7 +3,7 @@ import {
   Injectable,
   NestInterceptor,
   ExecutionContext,
-  CallHandler,
+  CallHandler
 } from '@nestjs/common';
 import { Observable, throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
@@ -32,16 +32,16 @@ export class MetricsInterceptor implements NestInterceptor {
         this.metricsService.httpRequestCounter.inc({
           method: request.method,
           route: route,
-          status_code: statusCode,
+          status_code: statusCode
         });
 
         this.metricsService.httpRequestDurationHistogram.observe(
           {
             method: request.method,
             route: route,
-            status_code: statusCode,
+            status_code: statusCode
           },
-          duration,
+          duration
         );
       }),
       catchError((err) => {
@@ -53,20 +53,20 @@ export class MetricsInterceptor implements NestInterceptor {
         this.metricsService.httpRequestCounter.inc({
           method: request.method,
           route: route,
-          status_code: statusCode,
+          status_code: statusCode
         });
 
         this.metricsService.httpRequestDurationHistogram.observe(
           {
             method: request.method,
             route: route,
-            status_code: statusCode,
+            status_code: statusCode
           },
-          duration,
+          duration
         );
         // Re-lança o erro para que outros handlers (como seus filtros de exceção) o peguem
         return throwError(() => err);
-      }),
+      })
     );
   }
 }

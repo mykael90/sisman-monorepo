@@ -8,7 +8,7 @@ import {
   removeNullOrEmptyStringProps,
   removeAccentsAndSpecialChars // <-- Importe a nova função aqui
 } from './seed-utils';
-import { CreateInfrastructureBuildingDto } from '../../../modules/infrastructure-buildings/dto/infrastructure-building.dto';
+import { CreateInfrastructureBuildingDto } from '@sisman/types';
 
 const logger = console;
 

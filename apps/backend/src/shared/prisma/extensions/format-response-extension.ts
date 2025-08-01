@@ -15,12 +15,12 @@ export class FormatResponseExtension {
         const time = end - start;
         console.log(
           { model, operation, args, time, result },
-          { showHidden: false, depth: null, colors: true },
+          { showHidden: false, depth: null, colors: true }
         );
 
         return formatDates(result);
-      },
-    },
+      }
+    }
   });
 
   upperCase = Prisma.defineExtension({
@@ -33,11 +33,11 @@ export class FormatResponseExtension {
         const time = end - start;
         console.log(
           { model, operation, args, time, result },
-          { showHidden: false, depth: null, colors: true },
+          { showHidden: false, depth: null, colors: true }
         );
 
         return toUpperCaseRecursive(result);
-      },
-    },
+      }
+    }
   });
 }

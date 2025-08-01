@@ -10,7 +10,7 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { FotoService } from './foto.service';
 import { Response } from 'express';
-import { FetchFotoDto } from './dto/foto.dto';
+import { FetchFotoDto } from '@sisman/types';
 import { ApiEndpointSwagger } from '../../../shared/decorators/swagger/api-endpoint.decorator';
 
 @ApiTags('SIPAC - Fotos')

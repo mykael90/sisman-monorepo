@@ -7,7 +7,7 @@ import {
   seedModel,
   TransformValidateFn
 } from './seed-utils';
-import { UpdateUserWithRelationsDto } from '../../../modules/users/dto/user.dto';
+import { UpdateUserWithRelationsDto } from '@sisman/types';
 
 const logger = console;
 const userRolesJsonPath = '../data/users-roles.json'; // Assuming data is in this file

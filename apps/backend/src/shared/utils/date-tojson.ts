@@ -21,5 +21,5 @@ Object.defineProperty(Date.prototype, 'toJSON', {
   value: function toJSON(this: Date) {
     const zonedTime = toZonedTime(this, timeZone);
     return format(zonedTime, "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-  },
+  }
 });

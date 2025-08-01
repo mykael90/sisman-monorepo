@@ -22,7 +22,7 @@ import { UsersEntity } from '../../shared/entities/users.entity';
 import {
   CreateUserWithRelationsDto,
   UpdateUserWithRelationsDto
-} from './dto/user.dto';
+} from '@sisman/types';
 
 @Roles(Role.Adm)
 @UseGuards(AuthGuard, RoleGuard)

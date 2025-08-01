@@ -1,3 +1,3 @@
-import { AuthRegisterAuthorizationTokenDTO } from './auth-register-authorization-token.dto';
+import { AuthRegisterAuthorizationTokenDTO } from '@sisman/types';
 
 export class AuthLoginAuthorizationTokenDTO extends AuthRegisterAuthorizationTokenDTO {}

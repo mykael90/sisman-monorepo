@@ -14,7 +14,7 @@ import {
 import {
   CreateManySipacListaRequisicaoMaterialDto,
   CreateSipacListaRequisicaoMaterialDto
-} from './dto/sipac-requisicao-material.dto';
+} from '@sisman/types';
 import { SipacListaRequisicaoMaterialMapper } from './mappers/sipac-requisicao-material.mapper';
 import { AxiosRequestConfig } from 'axios';
 

@@ -16,7 +16,7 @@ import {
   CreateInfrastructureBuildingActivityDto,
   InfrastructureBuildingActivityResponseDto,
   UpdateInfrastructureBuildingActivityDto
-} from './dto/infrastructure-building-activity.dto';
+} from '@sisman/types';
 import { Roles } from '../../shared/decorators/roles.decorator';
 import { Role } from '../../shared/enums/role.enum';
 import { AuthGuard } from '../../shared/auth/guards/auth.guard';

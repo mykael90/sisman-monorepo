@@ -5,8 +5,8 @@ import {
   MaintenanceRequestStatusOptions
 } from '@sisman/prisma';
 import { getNowFormatted } from '../../../shared/utils/date-utils';
-import { CreateMaintenanceRequestWithRelationsDto } from '../dto/maintenance-request.dto';
-import { UpdateMaterialRequestWithRelationsDto } from '../../material-requests/dto/material-request.dto';
+import { CreateMaintenanceRequestWithRelationsDto } from '@sisman/types';
+import { UpdateMaterialRequestWithRelationsDto } from '@sisman/types';
 
 export class MaintenanceRequestMapper {
   static toCreateDto(

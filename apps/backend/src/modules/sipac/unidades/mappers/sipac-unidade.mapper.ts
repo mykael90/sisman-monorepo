@@ -1,6 +1,6 @@
 import { normalizeString } from '../../../../shared/utils/string-utils';
 import { SipacUnidadeResponseItem } from '../../sipac-api.interfaces';
-import { CreateSipacUnidadeDto } from '../dto/sipac-unidade.dto';
+import { CreateSipacUnidadeDto } from '@sisman/types';
 
 export class SipacUnidadeMapper {
   static toCreateDto(
