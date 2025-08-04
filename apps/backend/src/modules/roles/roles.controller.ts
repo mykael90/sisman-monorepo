@@ -12,11 +12,7 @@ import {
   UseGuards
 } from '@nestjs/common';
 import { RolesService } from './roles.service';
-import {
-  CreateRoleDto,
-  RoleResponseDto,
-  UpdateRoleDto
-} from './dto/roles/role.dto';
+import { CreateRoleDto, RoleResponseDto, UpdateRoleDto } from './dto/role.dto';
 import { Roles } from '../../shared/decorators/roles.decorator';
 import { Role } from '../../shared/enums/role.enum';
 import { AuthGuard } from '../../shared/auth/guards/auth.guard';
