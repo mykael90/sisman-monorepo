@@ -7,7 +7,7 @@ import {
   TransformValidateFn,
   removeNullOrEmptyStringProps // <-- Importe aqui
 } from './seed-utils';
-import { CreateMaterialDto } from '@sisman/types';
+import { CreateMaterialDto } from '@sisman/types/backend';
 
 const logger = console;
 

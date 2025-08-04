@@ -7,12 +7,12 @@ import { CirclePlus, Save } from 'lucide-react'; // Using CirclePlus and Save ic
 import { IActionResultForm } from '../../../../../types/types-server-actions';
 import { FormSuccessDisplay } from '../../../../../components/form-tanstack/form-success-display';
 import { ErrorServerForm } from '../../../../../components/form-tanstack/error-server-form';
-import { IRole, IRoleAdd, IRoleEdit } from '../../role-types';
+import { RoleBase, RoleFormSchemaAdd, RoleFormSchemaEdit } from '@sisman/types';
 
 // Helper type for form data based on mode
 type RoleFormData<TMode extends 'add' | 'edit'> = TMode extends 'add'
-  ? IRoleAdd
-  : IRoleEdit;
+  ? RoleFormSchemaAdd
+  : RoleFormSchemaEdit;
 
 // Componente genérico RoleForm
 export default function RoleForm<TMode extends 'add' | 'edit'>({
@@ -34,10 +34,10 @@ export default function RoleForm<TMode extends 'add' | 'edit'>({
   mode: TMode;
   defaultData: RoleFormData<TMode>;
   formActionProp: (
-    prevState: IActionResultForm<RoleFormData<TMode>, IRole>,
+    prevState: IActionResultForm<RoleFormData<TMode>, RoleBase>,
     data: RoleFormData<TMode>
-  ) => Promise<IActionResultForm<RoleFormData<TMode>, IRole>>;
-  initialServerState?: IActionResultForm<RoleFormData<TMode>, IRole>;
+  ) => Promise<IActionResultForm<RoleFormData<TMode>, RoleBase>>;
+  initialServerState?: IActionResultForm<RoleFormData<TMode>, RoleBase>;
   fieldLabels: {
     [k: string]: string;
   };
@@ -81,7 +81,7 @@ export default function RoleForm<TMode extends 'add' | 'edit'>({
 
   if (serverState?.isSubmitSuccessful && serverState.responseData) {
     return (
-      <FormSuccessDisplay<RoleFormData<TMode>, IRole>
+      <FormSuccessDisplay<RoleFormData<TMode>, RoleBase>
         serverState={serverState}
         handleActions={{
           handleResetForm: handleReset,

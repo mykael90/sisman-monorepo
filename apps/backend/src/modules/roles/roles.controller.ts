@@ -12,7 +12,11 @@ import {
   UseGuards
 } from '@nestjs/common';
 import { RolesService } from './roles.service';
-import { CreateRoleDto, RoleResponseDto, UpdateRoleDto } from '@sisman/types';
+import {
+  CreateRoleDto,
+  RoleResponseDto,
+  UpdateRoleDto
+} from '@sisman/types/backend';
 import { Roles } from '../../shared/decorators/roles.decorator';
 import { Role } from '../../shared/enums/role.enum';
 import { AuthGuard } from '../../shared/auth/guards/auth.guard';

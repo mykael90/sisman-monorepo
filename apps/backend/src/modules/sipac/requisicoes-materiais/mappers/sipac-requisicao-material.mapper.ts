@@ -14,7 +14,7 @@ import {
   CreateSipacHistoricoRequisicaoMaterialDto,
   CreateSipacTotalizacaoElementoDespesaMaterialDto,
   CreateSipacDetalheAquisicaoItemMaterialDto
-} from '@sisman/types';
+} from '@sisman/types/backend';
 
 export class SipacListaRequisicaoMaterialMapper {
   // Helper to parse date string (DD/MM/YYYY) to Date or undefined

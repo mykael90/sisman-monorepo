@@ -18,7 +18,7 @@ import {
   SortingState
 } from '@tanstack/react-table';
 import { InputDebounceRef } from '@/components/ui/input'; // Importe o tipo da Ref
-import { IUserList } from '../../user-types';
+import { UserWithRoles } from '@sisman/types';
 import { useRouter } from 'next/navigation';
 import { columns, createActions } from './user-columns';
 import { User2Icon, UserCog, UserPlus } from 'lucide-react';
@@ -27,7 +27,7 @@ export function UserListPage({
   initialUsers,
   refreshAction
 }: {
-  initialUsers: IUserList[];
+  initialUsers: UserWithRoles[];
   refreshAction: () => void;
 }) {
   const router = useRouter(); // Obtenha a função de navegação
@@ -135,12 +135,12 @@ export function UserListPage({
 }
 
 export interface UserTableProps {
-  users: IUserList[];
+  users: UserWithRoles[];
   columnFilters: ColumnFiltersState;
   setColumnFilters?: Dispatch<SetStateAction<ColumnFiltersState>>;
   pagination: PaginationState;
   setPagination: Dispatch<SetStateAction<any>>;
   setSorting: Dispatch<SetStateAction<SortingState>>;
   sorting: SortingState;
-  columns: ColumnDef<IUserList, any>[];
+  columns: ColumnDef<UserWithRoles, any>[];
 }

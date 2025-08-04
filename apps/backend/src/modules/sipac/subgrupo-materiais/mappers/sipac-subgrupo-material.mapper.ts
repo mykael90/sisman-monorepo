@@ -1,5 +1,5 @@
 import { SipacSubGrupoMaterialResponseItem } from '../../sipac-api.interfaces';
-import { CreateSipacSubGrupoMaterialDto } from '@sisman/types';
+import { CreateSipacSubGrupoMaterialDto } from '@sisman/types/backend';
 
 export class SipacSubGrupoMaterialMapper {
   static toCreateDto(

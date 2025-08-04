@@ -9,14 +9,14 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
 import { User, Role, Prisma } from '@sisman/prisma';
-import { AuthRegisterDTO } from '@sisman/types';
+import { AuthRegisterDTO } from '@sisman/types/backend';
 import { UsersService } from 'src/modules/users/users.service';
-import { AuthRegisterAuthorizationTokenDTO } from '@sisman/types';
-import { AuthLoginAuthorizationTokenDTO } from '@sisman/types';
+import { AuthRegisterAuthorizationTokenDTO } from '@sisman/types/backend';
+import { AuthLoginAuthorizationTokenDTO } from '@sisman/types/backend';
 import { Request as RequestExpress } from 'express'; // <-- Importe Request
 import { randomInt } from 'crypto';
-import { MagicLinkLoginDto } from '@sisman/types';
-import { VerifyCodeDto } from '@sisman/types';
+import { MagicLinkLoginDto } from '@sisman/types/backend';
+import { VerifyCodeDto } from '@sisman/types/backend';
 import { ConfigType } from '@nestjs/config';
 import generalConfig from '../../config/general.config';
 import { EventEmitter2 } from '@nestjs/event-emitter';

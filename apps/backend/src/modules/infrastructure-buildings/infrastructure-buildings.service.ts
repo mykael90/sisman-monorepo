@@ -3,7 +3,7 @@ import { PrismaService } from '../../shared/prisma/prisma.service';
 import {
   CreateInfrastructureBuildingDto,
   UpdateInfrastructureBuildingDto
-} from '@sisman/types';
+} from '@sisman/types/backend';
 import { handlePrismaError } from '../../shared/utils/prisma-error-handler';
 
 @Injectable()

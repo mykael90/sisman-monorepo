@@ -8,7 +8,7 @@ import {
   removeNullOrEmptyStringProps,
   removeAccentsAndSpecialChars // <-- Importe a nova função aqui
 } from './seed-utils';
-import { createSipacImovelDtoWithRelations } from '@sisman/types';
+import { createSipacImovelDtoWithRelations } from '@sisman/types/backend';
 
 const logger = console;
 

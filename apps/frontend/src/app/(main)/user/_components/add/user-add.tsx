@@ -4,12 +4,15 @@ import type React from 'react';
 import { useState } from 'react';
 import FormAddHeader from '../../../../../components/form-tanstack/form-add-header';
 import UserForm from '../form/user-form';
-import { IUser, IUserAdd } from '../../user-types';
 import { IActionResultForm } from '../../../../../types/types-server-actions';
 import { UserPlus } from 'lucide-react';
 import { addUser } from '../../user-actions';
-import { userFormSchemaAdd } from '../form/user-form-validation';
-import { IRoleList } from '../../../role/role-types';
+import {
+  RoleBase,
+  UserWithRoles,
+  UserFormSchemaAdd,
+  userFormSchemaAdd
+} from '@sisman/types';
 import { NonOptionalKeys } from '../../../../../types/utils-types';
 import { useRouter } from 'next/navigation';
 
@@ -20,11 +23,11 @@ export default function UserAdd({
   isInDialog = false,
   preDefaultData = {}
 }: {
-  possibleRoles: IRoleList[];
+  possibleRoles: RoleBase[];
   isInDialog?: boolean;
-  preDefaultData?: Partial<IUserAdd>;
+  preDefaultData?: Partial<UserFormSchemaAdd>;
 }) {
-  const defaultData: IUserAdd = {
+  const defaultData: UserFormSchemaAdd = {
     name: '',
     login: '',
     email: '',
@@ -32,14 +35,17 @@ export default function UserAdd({
     ...preDefaultData
   };
 
-  const fieldLabels: Record<NonOptionalKeys<IUserAdd>, string> = {
+  const fieldLabels: Record<NonOptionalKeys<UserFormSchemaAdd>, string> = {
     name: 'Nome',
     login: 'Login',
     email: 'E-mail',
     roles: 'Permissões'
   };
 
-  const initialServerState: IActionResultForm<IUserAdd, IUser> = {
+  const initialServerState: IActionResultForm<
+    UserFormSchemaAdd,
+    UserWithRoles
+  > = {
     errorsServer: [],
     message: ''
   };

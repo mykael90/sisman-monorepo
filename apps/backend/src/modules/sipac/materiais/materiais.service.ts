@@ -12,7 +12,7 @@ import {
 import {
   CreateManySipacMaterialDto,
   CreateSipacMaterialDto
-} from '@sisman/types';
+} from '@sisman/types/backend';
 import { SipacMaterialMapper } from './mappers/sipac-material.mapper';
 import { MaterialsMapper } from 'src/modules/materials/mappers/materials.mapper';
 import { MaterialsService } from 'src/modules/materials/materials.service';

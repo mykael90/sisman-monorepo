@@ -9,14 +9,14 @@ import {
   CreateMaterialReceiptWithRelationsDto,
   UpdateMaterialReceiptWithRelationsDto,
   MaterialReceiptWithRelationsResponseDto
-} from '@sisman/types';
+} from '@sisman/types/backend';
 import { handlePrismaError } from '../../shared/utils/prisma-error-handler';
 import { Prisma, MaterialReceiptStatus } from '@sisman/prisma';
 import { MaterialStockMovementsService } from '../material-stock-movements/material-stock-movements.service';
 import {
   CreateMaterialStockMovementDto,
   CreateMaterialStockMovementWithRelationsDto
-} from '@sisman/types';
+} from '@sisman/types/backend';
 
 @Injectable()
 export class MaterialReceiptsService {

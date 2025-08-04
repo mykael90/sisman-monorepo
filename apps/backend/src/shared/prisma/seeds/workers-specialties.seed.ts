@@ -7,7 +7,7 @@ import {
   seedModel,
   TransformValidateFn
 } from './seed-utils';
-import { WorkerSpecialtyCreateDto } from '@sisman/types';
+import { WorkerSpecialtyCreateDto } from '@sisman/types/backend';
 
 const logger = console;
 const specialtiesJsonPath = '../data/workers-specialties.json';

@@ -3,27 +3,27 @@
 import { useRouter } from 'next/navigation';
 import FormAddHeader from '../../../../../components/form-tanstack/form-add-header';
 import RoleForm from '../form/role-form';
-import { IRole, IRoleEdit } from '../../role-types';
+import { RoleBase, RoleFormSchemaEdit } from '@sisman/types';
 import { IActionResultForm } from '../../../../../types/types-server-actions';
 import { Save, CircleUserRound } from 'lucide-react'; // Using CircleUserRound for Role Edit header
 import { updateRole } from '../../role-actions';
-import { roleFormSchemaEdit } from '../form/role-form-validation';
+import { roleFormSchemaEdit } from '@sisman/types';
 import { NonOptionalKeys } from '../../../../../types/utils-types';
 
 export default function RoleEdit({
   initialRole,
   isInDialog = false
 }: {
-  initialRole: IRoleEdit;
+  initialRole: RoleFormSchemaEdit;
   isInDialog?: boolean;
 }) {
-  const defaultData: IRoleEdit = { ...initialRole };
+  const defaultData: RoleFormSchemaEdit = { ...initialRole };
 
   // Note: IRoleEdit from role-types.ts includes 'id' and other Prisma fields
   // but the form only needs 'id', 'role' and 'description' for editing.
   // We define fieldLabels for the fields the form will actually use.
   const fieldLabels: Record<
-    keyof Pick<IRoleEdit, 'id' | 'role' | 'description'>,
+    keyof Pick<RoleFormSchemaEdit, 'id' | 'role' | 'description'>,
     string
   > = {
     id: 'ID',
@@ -31,7 +31,7 @@ export default function RoleEdit({
     description: 'Descrição'
   };
 
-  const initialServerState: IActionResultForm<IRoleEdit, IRole> = {
+  const initialServerState: IActionResultForm<RoleFormSchemaEdit, RoleBase> = {
     errorsServer: [],
     message: ''
   };

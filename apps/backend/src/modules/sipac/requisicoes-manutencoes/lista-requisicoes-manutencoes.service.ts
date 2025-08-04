@@ -12,7 +12,7 @@ import {
 import {
   CreateManySipacListaRequisicaoManutencaoDto,
   CreateSipacListaRequisicaoManutencaoDto
-} from '@sisman/types';
+} from '@sisman/types/backend';
 import { SipacListaRequisicaoManutencaoMapper } from './mappers/sipac-lista-requisicao-manutencao.mapper';
 import { AxiosRequestConfig } from 'axios';
 

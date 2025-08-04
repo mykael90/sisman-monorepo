@@ -12,7 +12,7 @@ import { Roles } from '../../shared/decorators/roles.decorator';
 import { Role } from '../../shared/enums/role.enum';
 import { AuthGuard } from '../../shared/auth/guards/auth.guard';
 import { RoleGuard } from '../../shared/auth/guards/role.guard';
-import { CreateStorageDto, UpdateStorageDto } from '@sisman/types';
+import { CreateStorageDto, UpdateStorageDto } from '@sisman/types/backend';
 import { StoragesService } from './storages.service';
 
 @Roles(Role.Adm) // Assumindo que apenas Adm pode gerenciar, ajuste conforme necessário

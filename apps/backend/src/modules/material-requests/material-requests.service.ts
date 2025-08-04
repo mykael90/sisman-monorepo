@@ -9,7 +9,7 @@ import { PrismaService } from '../../shared/prisma/prisma.service';
 import {
   CreateMaterialRequestWithRelationsDto,
   UpdateMaterialRequestWithRelationsDto
-} from '@sisman/types';
+} from '@sisman/types/backend';
 import { handlePrismaError } from '../../shared/utils/prisma-error-handler';
 import {
   MaterialPickingOrderStatus,

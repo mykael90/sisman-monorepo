@@ -13,13 +13,17 @@ import { UserPlus, Save } from 'lucide-react';
 import { IActionResultForm } from '../../../../../types/types-server-actions';
 import { FormSuccessDisplay } from '../../../../../components/form-tanstack/form-success-display';
 import { ErrorServerForm } from '../../../../../components/form-tanstack/error-server-form';
-import { IUser, IUserAdd, IUserEdit } from '../../user-types'; // Added IUser, IUserEdit
-import { IRoleList } from '../../../role/role-types';
+import {
+  UserWithRoles,
+  UserFormSchemaAdd,
+  UserFormSchemaEdit
+} from '@sisman/types'; // Added IUser, IUserEdit
+import { RoleBase } from '@sisman/types';
 
 // Helper type for form data based on mode
 type UserFormData<TMode extends 'add' | 'edit'> = TMode extends 'add'
-  ? IUserAdd
-  : IUserEdit;
+  ? UserFormSchemaAdd
+  : UserFormSchemaEdit;
 
 // Componente genérico UserForm
 export default function UserForm<TMode extends 'add' | 'edit'>({
@@ -44,10 +48,10 @@ export default function UserForm<TMode extends 'add' | 'edit'>({
   mode: TMode;
   defaultData: UserFormData<TMode>;
   formActionProp: (
-    prevState: IActionResultForm<UserFormData<TMode>, IUser>, // Adjusted prevState type
+    prevState: IActionResultForm<UserFormData<TMode>, UserWithRoles>, // Adjusted prevState type
     data: UserFormData<TMode> // Data is now an object
-  ) => Promise<IActionResultForm<UserFormData<TMode>, IUser>>;
-  initialServerState?: IActionResultForm<UserFormData<TMode>, IUser>;
+  ) => Promise<IActionResultForm<UserFormData<TMode>, UserWithRoles>>;
+  initialServerState?: IActionResultForm<UserFormData<TMode>, UserWithRoles>;
   fieldLabels: {
     [k: string]: string;
   };
@@ -56,7 +60,7 @@ export default function UserForm<TMode extends 'add' | 'edit'>({
   onClean?: () => void;
   submitButtonText?: string;
   SubmitButtonIcon?: FC<{ className?: string }>;
-  possibleRoles?: IRoleList[];
+  possibleRoles?: RoleBase[];
   isInDialog?: boolean;
 }) {
   const [serverState, dispatchFormAction, isPending] = useActionState(
@@ -98,7 +102,7 @@ export default function UserForm<TMode extends 'add' | 'edit'>({
   if (serverState?.isSubmitSuccessful && serverState.responseData) {
     // serverState.responseData ensures we have something for IUser
     return (
-      <FormSuccessDisplay<UserFormData<TMode>, IUser> // Specify both generics
+      <FormSuccessDisplay<UserFormData<TMode>, UserWithRoles> // Specify both generics
         serverState={serverState} // serverState is IActionResultForm<UserFormData<TMode>, IUser>
         handleActions={{
           handleResetForm: handleReset,

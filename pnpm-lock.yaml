@@ -435,6 +435,9 @@ importers:
       class-validator:
         specifier: ^0.14.2
         version: 0.14.2
+      zod:
+        specifier: ^3.23.8
+        version: 3.24.4
     devDependencies:
       '@sisman/prisma':
         specifier: workspace:*

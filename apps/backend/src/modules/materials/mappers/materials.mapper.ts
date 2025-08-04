@@ -1,5 +1,5 @@
 import { SipacMaterial } from '@sisman/prisma';
-import { CreateMaterialDto } from '@sisman/types';
+import { CreateMaterialDto } from '@sisman/types/backend';
 
 export class MaterialsMapper {
   static toCreateDto(item: SipacMaterial): CreateMaterialDto {

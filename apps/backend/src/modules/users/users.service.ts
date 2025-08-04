@@ -10,7 +10,7 @@ import { handlePrismaError } from '../../shared/utils/prisma-error-handler';
 import {
   CreateUserWithRelationsDto,
   UpdateUserWithRelationsDto
-} from '@sisman/types';
+} from '@sisman/types/backend';
 
 @Injectable()
 export class UsersService {
