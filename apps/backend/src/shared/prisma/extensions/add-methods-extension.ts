@@ -12,14 +12,14 @@ export class AddMethodsExtension {
       $allModels: {
         async exists<T>(
           this: T,
-          where: Prisma.Args<T, 'findFirst'>['where']
+          where: Prisma.Args<T, 'findFirst'>['where'],
         ): Promise<boolean> {
           const context = Prisma.getExtensionContext(this);
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const result = await (context as any).findFirst({ where });
           return result !== null;
-        }
-      }
-    }
+        },
+      },
+    },
   });
 }

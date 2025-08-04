@@ -6,7 +6,7 @@ import {
   HttpException,
   Injectable,
   HttpStatus,
-  Logger
+  Logger,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { LogErrorService } from '../log-error/log-error.service';
@@ -43,12 +43,9 @@ export class AllExceptionsFilter implements ExceptionFilter {
           message: exceptionResponse, // Manter como 'message' por consistência
           error: HttpStatus[status] || 'Error',
           timestamp: new Date().toISOString(),
-          path: request.url
+          path: request.url,
         };
-      } else if (
-        typeof exceptionResponse === 'object' &&
-        exceptionResponse !== null
-      ) {
+      } else if (typeof exceptionResponse === 'object' && exceptionResponse !== null) {
         const exceptionResponseMessage = (exceptionResponse as any).message;
 
         if (Array.isArray(exceptionResponseMessage)) {
@@ -56,20 +53,19 @@ export class AllExceptionsFilter implements ExceptionFilter {
         } else if (typeof exceptionResponseMessage === 'string') {
           messageForLog = exceptionResponseMessage;
         } else {
-          messageForLog =
-            exception.message || JSON.stringify(exceptionResponse);
+          messageForLog = exception.message || JSON.stringify(exceptionResponse);
         }
 
         clientResponseBody = {
           ...(exceptionResponse as object),
           timestamp: new Date().toISOString(),
-          path: request.url
+          path: request.url,
         };
         if (!clientResponseBody.statusCode) {
           clientResponseBody.statusCode = status;
         }
         if (!clientResponseBody.error && status >= 400) {
-          clientResponseBody.error = HttpStatus[status] || 'Error';
+            clientResponseBody.error = HttpStatus[status] || 'Error';
         }
       } else {
         // Fallback caso getResponse() de HttpException retorne algo inesperado
@@ -79,7 +75,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
           message: exception.message,
           error: HttpStatus[status] || 'Error',
           timestamp: new Date().toISOString(),
-          path: request.url
+          path: request.url,
         };
       }
     } else {
@@ -97,12 +93,12 @@ export class AllExceptionsFilter implements ExceptionFilter {
         try {
           messageForLog = JSON.stringify(exception);
         } catch (e) {
-          messageForLog =
-            'An unexpected error occurred, and it could not be serialized.';
+          messageForLog = 'An unexpected error occurred, and it could not be serialized.';
         }
       }
       // Adiciona um prefixo para clareza no log, já que a origem é desconhecida
       messageForLog = `[Non-HttpException]: ${messageForLog}`;
+
 
       // Para o cliente, NUNCA exponha detalhes de erros não-HttpException
       clientResponseBody = {
@@ -110,7 +106,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
         message: 'Internal Server Error', // Mensagem genérica e segura
         error: 'Internal Server Error',
         timestamp: new Date().toISOString(),
-        path: request.url
+        path: request.url,
       };
 
       // Logar o erro completo no console para visibilidade imediata
@@ -118,7 +114,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
       this.logger.error(
         `[AllExceptionsFilter] Unexpected non-HttpException caught for path ${request.url}:`,
         exception, // Loga o objeto/valor da exceção original
-        stack // Loga o stack se disponível
+        stack      // Loga o stack se disponível
       );
     }
 
@@ -131,7 +127,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
       stackTrace: stack,
       ipAddress: request.ip,
       userId: request.user?.id,
-      requestBody: JSON.stringify(request.body) // CUIDADO: Dados sensíveis!
+      requestBody: JSON.stringify(request.body), // CUIDADO: Dados sensíveis!
     };
 
     this.logErrorService.createLog(errorLogData).catch((err) => {

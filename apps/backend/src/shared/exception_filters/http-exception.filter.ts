@@ -6,7 +6,7 @@ import {
   HttpException,
   Injectable,
   HttpStatus,
-  Logger
+  Logger,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { LogErrorService } from '../log-error/log-error.service';
@@ -40,12 +40,9 @@ export class HttpExceptionFilter implements ExceptionFilter {
         message: exceptionResponse, // Manter como 'message' por consistência
         error: HttpStatus[status] || 'Error', // Adiciona um título de erro genérico se não houver
         timestamp: new Date().toISOString(),
-        path: request.url
+        path: request.url,
       };
-    } else if (
-      typeof exceptionResponse === 'object' &&
-      exceptionResponse !== null
-    ) {
+    } else if (typeof exceptionResponse === 'object' && exceptionResponse !== null) {
       // Ex: Erros de validação do class-validator, ou um objeto customizado
       // exceptionResponse pode ser { message: ["err1", "err2"], error: "Bad Request", statusCode: 400 }
       // ou { message: "Erro singular", error: "Bad Request", statusCode: 400 }
@@ -71,7 +68,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
       clientResponseBody = {
         ...(exceptionResponse as object), // Espalha a resposta original
         timestamp: new Date().toISOString(), // Garante timestamp
-        path: request.url // Garante path
+        path: request.url, // Garante path
       };
 
       // Garante que statusCode esteja presente, caso o objeto de resposta não o tenha
@@ -91,7 +88,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
         message: exception.message,
         error: HttpStatus[status] || 'Error',
         timestamp: new Date().toISOString(),
-        path: request.url
+        path: request.url,
       };
     }
 
@@ -104,7 +101,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
       stackTrace: exception.stack,
       ipAddress: request.ip,
       userId: request.user?.id,
-      requestBody: JSON.stringify(request.body) // CUIDADO com dados sensíveis
+      requestBody: JSON.stringify(request.body), // CUIDADO com dados sensíveis
     };
 
     this.errorLogService.createLog(errorLogData).catch((err) => {

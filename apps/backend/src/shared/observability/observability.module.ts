@@ -7,6 +7,6 @@ import { MetricsService } from './metrics.service';
 @Module({
   controllers: [MetricsController],
   providers: [MetricsService],
-  exports: [MetricsService] // Exporta o serviço para ser injetado em outros módulos/serviços
+  exports: [MetricsService], // Exporta o serviço para ser injetado em outros módulos/serviços
 })
 export class ObservabilityModule {}

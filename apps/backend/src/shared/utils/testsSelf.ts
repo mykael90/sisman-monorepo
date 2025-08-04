@@ -18,9 +18,9 @@ const data = {
     hobbies: ['reading', 'gaming'],
     address: {
       city: 'New York',
-      zip: '10001'
-    }
-  }
+      zip: '10001',
+    },
+  },
 };
 
 const result = toUpperCaseRecursive(data);

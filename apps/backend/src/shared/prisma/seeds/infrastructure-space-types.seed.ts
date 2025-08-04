@@ -7,7 +7,7 @@ import {
   seedModel,
   TransformValidateFn
 } from './seed-utils';
-import { CreateInfrastructureSpaceTypeDto } from '@sisman/types/backend';
+import { CreateInfrastructureSpaceTypeDto } from '../../../modules/infrastructure-space-types/dto/infrastructure-space-type.dto';
 
 const logger = console;
 const spaceTypesJsonPath = '../data/infrastructure-space-types.json';

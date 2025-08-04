@@ -16,7 +16,7 @@ import {
   CreateMaterialReceiptWithRelationsDto,
   MaterialReceiptWithRelationsResponseDto,
   UpdateMaterialReceiptWithRelationsDto
-} from '@sisman/types/backend';
+} from './dto/material-receipt.dto';
 import { AuthGuard } from '../../shared/auth/guards/auth.guard';
 import { ApiTags } from '@nestjs/swagger';
 import { ApiEndpointSwagger } from '../../shared/decorators/swagger/api-endpoint.decorator';

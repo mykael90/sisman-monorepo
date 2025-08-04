@@ -1,12 +1,12 @@
 import { ColumnDef, createColumnHelper, Row } from '@tanstack/react-table';
 import { Button } from '@/components/ui/button';
 import { Edit, Trash2 } from 'lucide-react';
-import { RoleBase } from '@sisman/types';
+import { IRoleList } from '../../role-types';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { format } from 'date-fns'; // Assuming date-fns is available for date formatting
 import { ptBR } from 'date-fns/locale'; // Assuming ptBR locale
 
-const columnHelper = createColumnHelper<RoleBase>();
+const columnHelper = createColumnHelper<IRoleList>();
 
 type ActionHandlers<TData> = {
   [key: string]: (row: Row<TData>) => void;
@@ -14,8 +14,8 @@ type ActionHandlers<TData> = {
 
 export const createActions = (
   router: AppRouterInstance
-): ActionHandlers<RoleBase> => ({
-  onEdit: (row: Row<RoleBase>) => {
+): ActionHandlers<IRoleList> => ({
+  onEdit: (row: Row<IRoleList>) => {
     console.log('Edit role', row.original);
     if (row.original.id) {
       router.push(`role/edit/${row.original.id}`);
@@ -24,7 +24,7 @@ export const createActions = (
       throw new Error('Role ID is missing, cannot navigate to edit page.');
     }
   },
-  onDelete: (row: Row<RoleBase>) => {
+  onDelete: (row: Row<IRoleList>) => {
     console.log('Delete role', row.original);
     // Implement delete logic here (e.g., confirmation modal, API call)
     // You might need to pass a delete function down from the list page
@@ -32,8 +32,8 @@ export const createActions = (
 });
 
 export const columns = (
-  configuredActions: ActionHandlers<RoleBase>
-): ColumnDef<RoleBase, any>[] => [
+  configuredActions: ActionHandlers<IRoleList>
+): ColumnDef<IRoleList, any>[] => [
   columnHelper.accessor('id', {
     header: 'ID',
     cell: (props) => props.getValue(),

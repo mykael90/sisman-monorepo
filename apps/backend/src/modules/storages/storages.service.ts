@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../../shared/prisma/prisma.service';
-import { CreateStorageDto, UpdateStorageDto } from '@sisman/types/backend';
+import { CreateStorageDto, UpdateStorageDto } from './dto/storage.dto';
 import { handlePrismaError } from '../../shared/utils/prisma-error-handler';
 
 @Injectable()

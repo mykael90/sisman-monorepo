@@ -7,7 +7,7 @@ import {
   seedModel,
   TransformValidateFn
 } from './seed-utils';
-import { CreateRoleDto } from '@sisman/types/backend';
+import { CreateRoleDto } from '../../../modules/roles/dto/roles/role.dto';
 
 // Adjust the path if your DTO is located elsewhere
 

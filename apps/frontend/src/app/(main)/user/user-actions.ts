@@ -5,13 +5,11 @@ import { revalidatePath } from 'next/cache';
 import { getSismanAccessToken } from '../../../lib/auth/get-access-token';
 import { fetchApiSisman } from '../../../lib/fetch/api-sisman';
 import { IActionResultForm } from '../../../types/types-server-actions';
+import { IUser, IUserAdd, IUserEdit, IUserList } from './user-types';
 import {
   userFormSchemaAdd,
-  userFormSchemaEdit,
-  UserWithRoles,
-  UserFormSchemaAdd,
-  UserFormSchemaEdit
-} from '@sisman/types';
+  userFormSchemaEdit
+} from './_components/form/user-form-validation';
 import { handleApiAction } from '../../../lib/fetch/handle-form-action-sisman';
 import { validateFormData } from '../../../lib/validate-form-data';
 
@@ -24,7 +22,7 @@ const logger = new Logger(`${PAGE_PATH}/user-actions`);
 
 export async function getUsers(
   accessTokenSisman: string
-): Promise<UserWithRoles[]> {
+): Promise<IUserList[]> {
   logger.info(`(Server Action) getUsers: Buscando lista de usuários.`);
   try {
     const response = await fetchApiSisman(
@@ -48,7 +46,7 @@ export async function getUsers(
 export async function showUser(
   accessTokenSisman: string,
   id: number
-): Promise<UserFormSchemaEdit> {
+): Promise<IUserEdit> {
   logger.info(`(Server Action) showUser: Buscando usuário com ID ${id}.`);
   try {
     const response = await fetchApiSisman(
@@ -96,8 +94,8 @@ export async function getRefreshedUsers() {
 
 export async function addUser(
   prevState: unknown, // Or IActionResultForm<IUserAdd, IUser> if you prefer stricter prev state typing
-  data: UserFormSchemaAdd // Changed from formData: FormData
-): Promise<IActionResultForm<UserFormSchemaAdd, UserWithRoles>> {
+  data: IUserAdd // Changed from formData: FormData
+): Promise<IActionResultForm<IUserAdd, IUser>> {
   // const rawData = formDataToObject<IUserAdd>(formData); // NO LONGER NEEDED, 'data' is the object
   logger.info(
     `(Server Action) addUser: Tentativa de adicionar usuário.`,
@@ -129,11 +127,7 @@ export async function addUser(
   // 2. Chamar a ação genérica da API
   try {
     const accessToken = await getSismanAccessToken();
-    return await handleApiAction<
-      UserFormSchemaAdd,
-      UserWithRoles,
-      UserFormSchemaAdd
-    >(
+    return await handleApiAction<IUserAdd, IUser, IUserAdd>(
       validatedUserData,
       data, // Pass the original 'data' object as submittedData for handleApiAction
       {
@@ -161,8 +155,8 @@ export async function addUser(
 
 export async function updateUser(
   prevState: unknown, // Or IActionResultForm<IUserEdit, IUser>
-  data: UserFormSchemaEdit // Changed from formData: FormData
-): Promise<IActionResultForm<UserFormSchemaEdit, UserWithRoles>> {
+  data: IUserEdit // Changed from formData: FormData
+): Promise<IActionResultForm<IUserEdit, IUser>> {
   // const rawData = formDataToObject<IUserEdit>(formData); // NO LONGER NEEDED
   logger.info(
     `(Server Action) updateUser: Tentativa de atualizar usuário ${data.id}.`,
@@ -191,11 +185,7 @@ export async function updateUser(
   // 2. Chamar a ação genérica da API
   try {
     const accessToken = await getSismanAccessToken();
-    return await handleApiAction<
-      UserFormSchemaEdit,
-      UserWithRoles,
-      UserFormSchemaEdit
-    >(
+    return await handleApiAction<IUserEdit, IUser, IUserEdit>(
       validatedUserData,
       data, // Pass the original 'data' object as submittedData
       {

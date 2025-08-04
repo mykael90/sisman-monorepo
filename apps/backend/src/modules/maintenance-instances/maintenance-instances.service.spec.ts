@@ -6,12 +6,10 @@ describe('MaintenanceInstancesService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [MaintenanceInstancesService]
+      providers: [MaintenanceInstancesService],
     }).compile();
 
-    service = module.get<MaintenanceInstancesService>(
-      MaintenanceInstancesService
-    );
+    service = module.get<MaintenanceInstancesService>(MaintenanceInstancesService);
   });
 
   it('should be defined', () => {

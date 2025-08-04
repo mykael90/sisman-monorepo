@@ -15,7 +15,7 @@ import {
   CreateInfrastructureFacilityComplexDto,
   InfrastructureFacilityComplexWithRelationsResponseDto,
   UpdateInfrastructureFacilityComplexDto
-} from '@sisman/types/backend';
+} from './dto/infrastructure-facility-complex.dto';
 import { AuthGuard } from '../../shared/auth/guards/auth.guard';
 import { ApiTags } from '@nestjs/swagger';
 import { ApiEndpointSwagger } from '../../shared/decorators/swagger/api-endpoint.decorator';

@@ -16,7 +16,7 @@ import {
   CreateMaterialWithdrawalWithRelationsDto,
   MaterialWithdrawalWithRelationsResponseDto,
   UpdateMaterialWithdrawalWithRelationsDto
-} from '@sisman/types/backend';
+} from './dto/material-withdrawal.dto';
 import { AuthGuard } from '../../shared/auth/guards/auth.guard';
 import { ApiTags } from '@nestjs/swagger';
 import { ApiEndpointSwagger } from '../../shared/decorators/swagger/api-endpoint.decorator';

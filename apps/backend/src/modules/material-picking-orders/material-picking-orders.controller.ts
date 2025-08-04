@@ -16,7 +16,7 @@ import {
   CreateMaterialPickingOrderWithRelationsDto,
   MaterialPickingOrderWithRelationsResponseDto,
   UpdateMaterialPickingOrderWithRelationsDto
-} from '@sisman/types/backend';
+} from './dto/material-picking-order.dto';
 import { AuthGuard } from '../../shared/auth/guards/auth.guard';
 import { ApiTags } from '@nestjs/swagger';
 import { ApiEndpointSwagger } from '../../shared/decorators/swagger/api-endpoint.decorator';

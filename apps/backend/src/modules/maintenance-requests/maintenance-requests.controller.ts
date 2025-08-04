@@ -12,7 +12,7 @@ import { MaintenanceRequestsService } from './maintenance-requests.service';
 import {
   CreateMaintenanceRequestWithRelationsDto,
   UpdateMaintenanceRequestWithRelationsDto
-} from '@sisman/types/backend';
+} from './dto/maintenance-request.dto';
 import { Roles } from '../../shared/decorators/roles.decorator';
 import { Role } from '../../shared/enums/role.enum';
 import { AuthGuard } from '../../shared/auth/guards/auth.guard';

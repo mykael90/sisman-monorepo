@@ -12,7 +12,7 @@ export function formatDateMiddleware(): Prisma.Middleware {
         if (obj[key] instanceof Date) {
           obj[key] = formatWithLocale(
             'dd/MM/yyyy HH:mm:ss',
-            new Date(obj[key])
+            new Date(obj[key]),
           );
         } else if (typeof obj[key] === 'object' && obj[key] !== null) {
           formatDates(obj[key]);

@@ -16,7 +16,7 @@ import {
   CreateInfrastructureBuildingTypeDto,
   InfrastructureBuildingTypeWithRelationsResponseDto,
   UpdateInfrastructureBuildingTypeDto
-} from '@sisman/types/backend';
+} from './dto/infrastructure-building-type.dto';
 import { Roles } from '../../shared/decorators/roles.decorator';
 import { Role } from '../../shared/enums/role.enum';
 import { AuthGuard } from '../../shared/auth/guards/auth.guard';

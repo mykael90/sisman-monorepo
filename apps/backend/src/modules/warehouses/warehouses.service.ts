@@ -5,7 +5,7 @@ import {
   Logger
 } from '@nestjs/common';
 import { PrismaService } from '../../shared/prisma/prisma.service';
-import { CreateWarehouseDto, UpdateWarehouseDto } from '@sisman/types/backend';
+import { CreateWarehouseDto, UpdateWarehouseDto } from './dto/warehouse.dto';
 import { handlePrismaError } from '../../shared/utils/prisma-error-handler';
 import { Prisma, PrismaClient } from '@sisman/prisma';
 

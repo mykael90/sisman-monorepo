@@ -22,7 +22,7 @@ import {
   CreateSipacListaRequisicaoMaterialDto,
   CreateSipacRequisicaoMaterialCompletoDto,
   UpdateSipacRequisicaoMaterialDto
-} from '@sisman/types/backend';
+} from './dto/sipac-requisicao-material.dto';
 import {
   SipacListaRequisicaoMaterialMapper,
   SipacRequisicaoMaterialMapper

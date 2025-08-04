@@ -3,7 +3,7 @@ import { PrismaService } from '../../shared/prisma/prisma.service';
 import {
   CreateMaterialWarehouseStockDto,
   UpdateMaterialWarehouseStockDto
-} from '@sisman/types/backend';
+} from './dto/material-warehouse-stock.dto';
 import { handlePrismaError } from '../../shared/utils/prisma-error-handler';
 
 @Injectable()

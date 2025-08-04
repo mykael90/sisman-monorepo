@@ -8,7 +8,7 @@ describe('FileController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [FilesController],
-      providers: [FilesService]
+      providers: [FilesService],
     }).compile();
 
     controller = module.get<FilesController>(FilesController);

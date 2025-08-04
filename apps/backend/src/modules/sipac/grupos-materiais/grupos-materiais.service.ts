@@ -12,7 +12,7 @@ import {
 import {
   CreateManySipacGrupoMaterialDto,
   CreateSipacGrupoMaterialDto
-} from '@sisman/types/backend';
+} from './dto/sipac-grupo-material.dto';
 import { SipacGrupoMaterialMapper } from './mappers/sipac-grupo-material.mapper';
 
 @Injectable()

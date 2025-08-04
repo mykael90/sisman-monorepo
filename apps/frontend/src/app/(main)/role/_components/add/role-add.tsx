@@ -2,11 +2,11 @@
 
 import FormAddHeader from '../../../../../components/form-tanstack/form-add-header';
 import RoleForm from '../form/role-form';
-import { RoleBase, RoleFormSchemaAdd } from '@sisman/types';
+import { IRole, IRoleAdd } from '../../role-types';
 import { IActionResultForm } from '../../../../../types/types-server-actions';
 import { CirclePlus } from 'lucide-react'; // Using CirclePlus for Role
 import { addRole } from '../../role-actions';
-import { roleFormSchemaAdd } from '@sisman/types';
+import { roleFormSchemaAdd } from '../form/role-form-validation';
 import { NonOptionalKeys } from '../../../../../types/utils-types';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -16,7 +16,7 @@ export default function RoleAdd({
 }: {
   isInDialog?: boolean;
 }) {
-  const defaultData: RoleFormSchemaAdd = {
+  const defaultData: IRoleAdd = {
     id: '' as any,
     role: '',
     description: ''
@@ -26,7 +26,7 @@ export default function RoleAdd({
   // but the form only needs 'role' and 'description' for adding.
   // We define fieldLabels for the fields the form will actually use.
   const fieldLabels: Record<
-    keyof Pick<RoleFormSchemaAdd, 'id' | 'role' | 'description'>,
+    keyof Pick<IRoleAdd, 'id' | 'role' | 'description'>,
     string
   > = {
     id: 'ID',
@@ -34,7 +34,7 @@ export default function RoleAdd({
     description: 'Descrição'
   };
 
-  const initialServerState: IActionResultForm<RoleFormSchemaAdd, RoleBase> = {
+  const initialServerState: IActionResultForm<IRoleAdd, IRole> = {
     errorsServer: [],
     message: ''
   };

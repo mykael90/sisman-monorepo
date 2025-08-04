@@ -11,7 +11,7 @@ import {
   UpdateMaterialRestrictionOrderWithRelationsDto,
   MaterialRestrictionOrderWithRelationsResponseDto,
   UpdateMaterialRestrictionOrderItemDto
-} from '@sisman/types/backend';
+} from './dto/material-restriction-order.dto';
 import { handlePrismaError } from '../../shared/utils/prisma-error-handler';
 import {
   MaterialStockOperationSubType,
@@ -22,9 +22,9 @@ import {
   PrismaClient
 } from '@sisman/prisma';
 import { MaterialStockMovementsService } from '../material-stock-movements/material-stock-movements.service';
-import { CreateMaterialStockMovementWithRelationsDto } from '@sisman/types/backend';
+import { CreateMaterialStockMovementWithRelationsDto } from '../material-stock-movements/dto/material-stock-movements.dto';
 import { Decimal } from '@sisman/prisma/generated/client/runtime/library';
-import { MaterialRequestWithRelationsResponseDto } from '@sisman/types/backend';
+import { MaterialRequestWithRelationsResponseDto } from '../material-requests/dto/material-request.dto';
 import { MaterialRequestsService } from '../material-requests/material-requests.service';
 
 type PrismaTransactionClient = Omit<

@@ -17,7 +17,7 @@ import {
 import {
   CreateManySipacUnidadeDto,
   CreateSipacUnidadeDto
-} from '@sisman/types/backend';
+} from './dto/sipac-unidade.dto';
 import { SipacUnidadeMapper } from './mappers/sipac-unidade.mapper';
 import { normalizeString } from '../../../shared/utils/string-utils';
 

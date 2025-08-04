@@ -9,7 +9,7 @@ import {
   CreateMaterialStockMovementWithRelationsDto,
   UpdateMaterialStockMovementWithRelationsDto,
   MaterialStockMovementWithRelationsResponseDto
-} from '@sisman/types/backend';
+} from './dto/material-stock-movements.dto';
 import { handlePrismaError } from '../../shared/utils/prisma-error-handler';
 import {
   Prisma,

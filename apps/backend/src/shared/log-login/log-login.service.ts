@@ -9,7 +9,7 @@ export class LogLoginService {
   constructor(private readonly prisma: PrismaService) {}
 
   async recordLoginAttempt(
-    data: Prisma.LogLoginCreateWithoutUserInput & { userId: number }
+    data: Prisma.LogLoginCreateWithoutUserInput & { userId: number },
   ): Promise<void> {
     // Extrai userId para usar no connect
     const { userId, ...createData } = data;
@@ -18,15 +18,15 @@ export class LogLoginService {
         data: {
           ...createData,
           user: {
-            connect: { id: userId }
-          }
-        }
+            connect: { id: userId },
+          },
+        },
       });
     } catch (error) {
       // Logar o erro, mas não necessariamente impedir o fluxo principal
       this.logger.error(
         `Failed to record login attempt for user ${userId}`,
-        error
+        error,
       );
       // Considere mecanismos de retry ou fila se isso for crítico
     }

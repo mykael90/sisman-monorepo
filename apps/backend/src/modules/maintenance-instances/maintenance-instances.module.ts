@@ -4,6 +4,6 @@ import { MaintenanceInstancesController } from './maintenance-instances.controll
 
 @Module({
   controllers: [MaintenanceInstancesController],
-  providers: [MaintenanceInstancesService]
+  providers: [MaintenanceInstancesService],
 })
 export class MaintenanceInstancesModule {}

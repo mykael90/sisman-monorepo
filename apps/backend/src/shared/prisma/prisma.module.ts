@@ -14,9 +14,9 @@ import { ComputedFieldExtension } from './extensions/computed-field-extension';
     AddLogsExtension,
     ComputedFieldExtension,
     PrismaClientProvider,
-    PrismaService
+    PrismaService,
   ],
-  exports: [PrismaService]
+  exports: [PrismaService],
 })
 export class PrismaModule {
   constructor() {}

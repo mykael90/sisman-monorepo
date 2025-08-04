@@ -7,7 +7,7 @@ import {
   seedModel,
   TransformValidateFn
 } from './seed-utils';
-import { CreateUserDto } from '@sisman/types/backend';
+import { CreateUserDto } from '../../../modules/users/dto/user.dto';
 
 const logger = console;
 const usersJsonPath = '../data/users.json';

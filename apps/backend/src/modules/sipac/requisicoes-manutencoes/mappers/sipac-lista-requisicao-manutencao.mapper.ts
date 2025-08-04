@@ -1,5 +1,5 @@
 import { SipacListaRequisicaoManutencaoResponseItem } from '../../sipac-scraping.interfaces';
-import { CreateSipacListaRequisicaoManutencaoDto } from '@sisman/types/backend';
+import { CreateSipacListaRequisicaoManutencaoDto } from '../dto/sipac-requisicao-manutencao.dto';
 
 export class SipacListaRequisicaoManutencaoMapper {
   static toCreateDto(

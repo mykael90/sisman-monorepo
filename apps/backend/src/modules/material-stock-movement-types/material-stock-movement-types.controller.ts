@@ -16,7 +16,7 @@ import {
   CreateMaterialStockMovementTypeDto,
   MaterialStockMovementTypeWithRelationsResponseDto,
   UpdateMaterialStockMovementTypeDto
-} from '@sisman/types/backend';
+} from './dto/material-stock-movement-type.dto';
 import { Roles } from '../../shared/decorators/roles.decorator';
 import { Role } from '../../shared/enums/role.enum';
 import { AuthGuard } from '../../shared/auth/guards/auth.guard';

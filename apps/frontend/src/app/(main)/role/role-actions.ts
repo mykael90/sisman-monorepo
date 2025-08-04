@@ -5,12 +5,11 @@ import { revalidatePath } from 'next/cache';
 import { getSismanAccessToken } from '../../../lib/auth/get-access-token';
 import { fetchApiSisman } from '../../../lib/fetch/api-sisman';
 import { IActionResultForm } from '../../../types/types-server-actions';
+import { IRole, IRoleAdd, IRoleEdit, IRoleList } from './role-types';
 import {
-  RoleWithUsers,
-  RoleFormSchemaAdd,
-  RoleFormSchemaEdit
-} from '@sisman/types';
-import { roleFormSchemaAdd, roleFormSchemaEdit } from '@sisman/types';
+  roleFormSchemaAdd,
+  roleFormSchemaEdit
+} from './_components/form/role-form-validation';
 import { handleApiAction } from '../../../lib/fetch/handle-form-action-sisman';
 import { validateFormData } from '../../../lib/validate-form-data';
 
@@ -23,7 +22,7 @@ const logger = new Logger(`${PAGE_PATH}/role-actions`);
 
 export async function getRoles(
   accessTokenSisman: string
-): Promise<RoleWithUsers[]> {
+): Promise<IRoleList[]> {
   logger.info(`(Server Action) getRoles: Buscando lista de papéis.`);
   try {
     const response = await fetchApiSisman(
@@ -46,7 +45,7 @@ export async function getRoles(
 export async function showRole(
   accessTokenSisman: string,
   id: number
-): Promise<RoleFormSchemaEdit> {
+): Promise<IRoleEdit> {
   // Retorna IRoleEdit para popular o formulário de edição
   logger.info(`(Server Action) showRole: Buscando papel com ID ${id}.`);
   try {
@@ -58,7 +57,7 @@ export async function showRole(
         cache: 'no-store'
       }
     );
-    const data = (await response.json()) as RoleWithUsers;
+    const data = (await response.json()) as IRole;
     logger.info(`(Server Action) showRole: Papel com ID ${id} retornado.`);
     // Adapta para IRoleEdit se necessário (ex: se a API retorna campos extras)
     return {
@@ -90,8 +89,8 @@ export async function getRefreshedRoles(): Promise<void> {
 
 export async function addRole(
   prevState: unknown, // Or IActionResultForm<IRoleAdd, IRole>
-  data: RoleFormSchemaAdd // Directly accept the object, not FormData
-): Promise<IActionResultForm<RoleFormSchemaAdd, RoleWithUsers>> {
+  data: IRoleAdd // Directly accept the object, not FormData
+): Promise<IActionResultForm<IRoleAdd, IRole>> {
   logger.info(`(Server Action) addRole: Tentativa de adicionar papel.`, data);
 
   // 1. Validação específica para RoleAdd
@@ -114,11 +113,7 @@ export async function addRole(
   // 2. Chamar a ação genérica da API
   try {
     const accessToken = await getSismanAccessToken();
-    return await handleApiAction<
-      RoleFormSchemaAdd,
-      RoleWithUsers,
-      RoleFormSchemaAdd
-    >(
+    return await handleApiAction<IRoleAdd, IRole, IRoleAdd>(
       validatedRoleData,
       data, // Pass the original 'data' object as submittedData for handleApiAction
       {
@@ -146,8 +141,8 @@ export async function addRole(
 
 export async function updateRole(
   prevState: unknown, // Or IActionResultForm<IRoleEdit, IRole>
-  data: RoleFormSchemaEdit // Directly accept the object, not FormData
-): Promise<IActionResultForm<RoleFormSchemaEdit, RoleWithUsers>> {
+  data: IRoleEdit // Directly accept the object, not FormData
+): Promise<IActionResultForm<IRoleEdit, IRole>> {
   logger.info(
     `(Server Action) updateRole: Tentativa de atualizar papel ${data.id}.`,
     data
@@ -175,11 +170,7 @@ export async function updateRole(
   // 2. Chamar a ação genérica da API
   try {
     const accessToken = await getSismanAccessToken();
-    return await handleApiAction<
-      RoleFormSchemaEdit,
-      RoleWithUsers,
-      RoleFormSchemaEdit
-    >(
+    return await handleApiAction<IRoleEdit, IRole, IRoleEdit>(
       validatedRoleData,
       data, // Pass the original 'data' object as submittedData
       {

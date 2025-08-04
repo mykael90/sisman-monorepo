@@ -16,7 +16,7 @@ import {
   CreateMaterialWarehouseStockDto,
   MaterialWarehouseStockWithRelationsResponseDto,
   UpdateMaterialWarehouseStockDto
-} from '@sisman/types/backend';
+} from './dto/material-warehouse-stock.dto';
 import { AuthGuard } from '../../shared/auth/guards/auth.guard';
 import { ApiTags } from '@nestjs/swagger';
 import { ApiEndpointSwagger } from '../../shared/decorators/swagger/api-endpoint.decorator';

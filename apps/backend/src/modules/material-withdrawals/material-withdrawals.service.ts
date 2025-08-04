@@ -9,7 +9,7 @@ import {
   CreateMaterialWithdrawalWithRelationsDto,
   UpdateMaterialWithdrawalWithRelationsDto,
   MaterialWithdrawalWithRelationsResponseDto
-} from '@sisman/types/backend';
+} from './dto/material-withdrawal.dto';
 import { handlePrismaError } from '../../shared/utils/prisma-error-handler';
 import {
   Prisma,
@@ -17,7 +17,7 @@ import {
   PrismaClient
 } from '@sisman/prisma';
 import { MaterialStockMovementsService } from '../material-stock-movements/material-stock-movements.service';
-import { CreateMaterialStockMovementWithRelationsDto } from '@sisman/types/backend';
+import { CreateMaterialStockMovementWithRelationsDto } from '../material-stock-movements/dto/material-stock-movements.dto';
 import { MaterialRequestsService } from '../material-requests/material-requests.service';
 import { WarehousesService } from '../warehouses/warehouses.service';
 

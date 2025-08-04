@@ -1,16 +1,5 @@
 ## Comandos pnpm
 
-Instalar todos os pacotes de todos os workspaces:
-`pnpm install`
-
-Forçar a reinstalação de todos os pacotes de todos os workspaces:
-`pnpm install --force`
-
-
-Forçar a reinstalação de pacotes de um workspace específico:
-`pnpm install --force --filter <workspace-name>`
-
-
 - No PNPM, você pode adicionar um pacote a um workspace específico usando o seguinte comando:  
 `pnpm add <package-name> --filter <workspace-name>`
 

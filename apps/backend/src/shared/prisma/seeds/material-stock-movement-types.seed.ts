@@ -7,7 +7,7 @@ import {
   seedModel,
   TransformValidateFn
 } from './seed-utils';
-import { CreateMaterialStockMovementTypeDto } from '@sisman/types/backend';
+import { CreateMaterialStockMovementTypeDto } from '../../../modules/material-stock-movement-types/dto/material-stock-movement-type.dto';
 
 const logger = console;
 const movementTypesJsonPath = '../data/material-stock-movement-types.json';

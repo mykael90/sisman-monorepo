@@ -18,7 +18,7 @@ import {
   CreateSipacRequisicaoManutencaoCompletoDto,
   SipacRequisicaoManutencaoMaeAssociadaDto,
   UpdateSipacRequisicaoManutencaoDto
-} from '@sisman/types/backend';
+} from './dto/sipac-requisicao-manutencao.dto';
 import { SipacRequisicaoManutencaoMapper } from './mappers/sipac-requisicao-manutencao.mapper';
 import { AxiosRequestConfig } from 'axios';
 import { handlePrismaError } from '../../../shared/utils/prisma-error-handler';
@@ -30,7 +30,7 @@ import { UnidadesService } from '../unidades/unidades.service';
 import {
   CreateMaintenanceRequestDto,
   CreateMaintenanceRequestWithRelationsDto
-} from '@sisman/types/backend';
+} from '../../maintenance-requests/dto/maintenance-request.dto';
 import { MaintenanceRequestMapper } from '../../maintenance-requests/mappers/maintenance-request.mapper';
 import { MaintenanceRequestsService } from '../../maintenance-requests/maintenance-requests.service';
 // import { MateriaisService } from '../materiais/materiais.service'; // TODO: Determine if MateriaisService is needed

@@ -8,12 +8,10 @@ describe('MaintenanceInstancesController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [MaintenanceInstancesController],
-      providers: [MaintenanceInstancesService]
+      providers: [MaintenanceInstancesService],
     }).compile();
 
-    controller = module.get<MaintenanceInstancesController>(
-      MaintenanceInstancesController
-    );
+    controller = module.get<MaintenanceInstancesController>(MaintenanceInstancesController);
   });
 
   it('should be defined', () => {

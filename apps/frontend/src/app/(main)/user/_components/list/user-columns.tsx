@@ -2,11 +2,11 @@ import { ColumnDef, createColumnHelper, Row } from '@tanstack/react-table';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Edit, Trash2 } from 'lucide-react';
-import { UserWithRoles } from '@sisman/types';
+import { IUserList } from '../../user-types';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
 // 1. Definir as colunas com createColumnHelper
-const columnHelper = createColumnHelper<UserWithRoles>();
+const columnHelper = createColumnHelper<IUserList>();
 
 // Define the actions type more specifically if possible, or keep as is
 // Using Row<UserWithRoles1> is often better than RowData
@@ -18,8 +18,8 @@ type ActionHandlers<TData> = {
 // recebendo a função de navegação.
 export const createActions = (
   router: AppRouterInstance // Recebe a função de navegação
-): ActionHandlers<UserWithRoles> => ({
-  onEdit: (row: Row<UserWithRoles>) => {
+): ActionHandlers<IUserList> => ({
+  onEdit: (row: Row<IUserList>) => {
     console.log('Edit user', row.original);
     // Certifique-se que row.original.id existe e é o identificador correto.
     // Se seu ID estiver em outra propriedade (ex: _id, userId), ajuste abaixo.
@@ -33,15 +33,15 @@ export const createActions = (
       throw new Error('User ID is missing, cannot navigate to edit page.');
     }
   },
-  onDelete: (row: Row<UserWithRoles>) => {
+  onDelete: (row: Row<IUserList>) => {
     console.log('Delete user', row.original);
     // Implemente sua lógica de deleção aqui (ex: modal de confirmação, chamada de API)
   }
 });
 
 export const columns = (
-  configuredActions: ActionHandlers<UserWithRoles>
-): ColumnDef<UserWithRoles, any>[] => [
+  configuredActions: ActionHandlers<IUserList>
+): ColumnDef<IUserList, any>[] => [
   columnHelper.accessor('name', {
     header: 'Nome',
     cell: (props) => {

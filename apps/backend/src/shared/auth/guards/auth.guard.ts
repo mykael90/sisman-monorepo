@@ -2,7 +2,7 @@ import {
   CanActivate,
   ExecutionContext,
   Injectable,
-  Logger
+  Logger,
 } from '@nestjs/common';
 import { AuthService } from 'src/shared/auth/auth.service';
 import { UsersService } from 'src/modules/users/users.service';
@@ -13,7 +13,7 @@ export class AuthGuard implements CanActivate {
 
   constructor(
     private readonly authService: AuthService,
-    private readonly userService: UsersService
+    private readonly userService: UsersService,
   ) {}
 
   async canActivate(context: ExecutionContext) {
@@ -39,7 +39,7 @@ export class AuthGuard implements CanActivate {
         name: data.name,
         login: data.login,
         email: data.email,
-        roles: data.roles
+        roles: data.roles,
       };
 
       // abaixo está se fosse pegar do banco as informações do user

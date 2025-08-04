@@ -3,15 +3,12 @@
 import { useRouter } from 'next/navigation';
 import FormAddHeader from '../../../../../components/form-tanstack/form-add-header';
 import UserForm from '../form/user-form';
+import { IUser, IUserEdit } from '../../user-types';
 import { IActionResultForm } from '../../../../../types/types-server-actions';
 import { Save, UserPlus } from 'lucide-react';
 import { updateUser } from '../../user-actions';
-import {
-  RoleBase,
-  userFormSchemaEdit,
-  UserWithRoles,
-  UserFormSchemaEdit
-} from '@sisman/types';
+import { userFormSchemaEdit } from '../form/user-form-validation';
+import { IRoleList } from '../../../role/role-types';
 import { NonOptionalKeys } from '../../../../../types/utils-types';
 
 // We are transforming this into a page, so it won't take props like onClose or onSubmit.
@@ -21,13 +18,13 @@ export default function UserEdit({
   possibleRoles,
   isInDialog = false
 }: {
-  initialUser: UserFormSchemaEdit;
-  possibleRoles: RoleBase[];
+  initialUser: IUserEdit;
+  possibleRoles: IRoleList[];
   isInDialog?: boolean;
 }) {
   const defaultData = { ...initialUser };
 
-  const fieldLabels: Record<NonOptionalKeys<UserFormSchemaEdit>, string> = {
+  const fieldLabels: Record<NonOptionalKeys<IUserEdit>, string> = {
     id: 'ID',
     name: 'Nome',
     login: 'Login',
@@ -36,10 +33,7 @@ export default function UserEdit({
     isActive: 'Ativo'
   };
 
-  const initialServerState: IActionResultForm<
-    UserFormSchemaEdit,
-    UserWithRoles
-  > = {
+  const initialServerState: IActionResultForm<IUserEdit, IUser> = {
     errorsServer: [],
     message: ''
   };
