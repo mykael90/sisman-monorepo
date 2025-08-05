@@ -50,7 +50,7 @@ export const sidebarItems: SidebarItem[] = [
     href: '/maintenance', //Optional, could be omitted if you don't want a direct link to Materiais
     icon: <Construction className='h-6 w-6' />,
     children: [
-      { label: 'Todos os Materiais', href: '/maintenance/all' },
+      { label: 'Instâncias', href: '/maintenance/instance' },
       { label: 'Adicionar Material', href: '/maintenance/add' },
       { label: 'Categorias', href: '/maintenance/category' }
     ]

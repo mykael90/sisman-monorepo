@@ -462,6 +462,7 @@ model MaintenanceInstance {
   warehouses                    Warehouse[]
   InfrastructureBuilding        InfrastructureBuilding[]
   InfrastructureFacilityComplex InfrastructureFacilityComplex[]
+  users                         User[]
 
   @@map("maintenance_instances")
 }
@@ -1994,13 +1995,16 @@ model User {
   restrictionOrdersProcessed      MaterialRestrictionOrder[]              @relation("RestrictionOrdersProcessedBy") // Material restriction orders processed by this user.
   materialStockMovementsProcessed MaterialStockMovement[]                 @relation("StockMovementsProcessedByUser")
   materialStockMovementsCollected MaterialStockMovement[]                 @relation("StockMovementsCollectedByUser")
-  OccurrenceReinforcement         InfrastructureOccurrenceReinforcement[]
+  occurrenceReinforcement         InfrastructureOccurrenceReinforcement[]
 
   madeAllocations MaintenanceServiceOrderAllocation[] @relation("AllocatedByUser")
 
-  InfrastructureBuildings InfrastructureBuilding[] @relation("Managers")
+  infrastructureBuildings InfrastructureBuilding[] @relation("Managers")
 
-  InfrastructureSpaceUser InfrastructureSpaceUser[]
+  infrastructureSpaceUser InfrastructureSpaceUser[]
+
+  maintenanceInstance   MaintenanceInstance? @relation(fields: [maintenanceInstanceId], references: [id])
+  maintenanceInstanceId Int?
 
   @@map("users") // Maps this model to the 'users' table.
 }

@@ -898,7 +898,8 @@ exports.Prisma.UserScalarFieldEnum = {
   image: 'image',
   isActive: 'isActive',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  maintenanceInstanceId: 'maintenanceInstanceId'
 };
 
 exports.Prisma.MagicLinkScalarFieldEnum = {

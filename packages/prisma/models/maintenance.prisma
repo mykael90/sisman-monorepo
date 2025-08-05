@@ -120,6 +120,7 @@ model MaintenanceInstance {
     warehouses                    Warehouse[]
     InfrastructureBuilding        InfrastructureBuilding[]
     InfrastructureFacilityComplex InfrastructureFacilityComplex[]
+    users                         User[]
 
     @@map("maintenance_instances")
 }

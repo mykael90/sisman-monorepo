@@ -32,11 +32,14 @@ export async function getUsers(
         cache: 'force-cache' // Cache agressivo para dados que mudam pouco
       }
     );
-    const data = await response.json();
-    logger.info(
-      `(Server Action) getUsers: ${data.length} usuários retornados.`
-    );
-    return data;
+    if (response instanceof Response) {
+      const data = await response.json();
+      logger.info(
+        `(Server Action) getUsers: ${data.length} usuários retornados.`
+      );
+      return data;
+    }
+    throw new Error('Unexpected response type from API');
   } catch (error) {
     logger.error(`(Server Action) getUsers: Erro ao buscar usuários.`, error);
     throw error; // Re-lança para ser tratado pelo Next.js ou error boundary
@@ -56,9 +59,12 @@ export async function showUser(
         cache: 'force-cache' // Quando atualizar um usuário é eliminar o cache dele com revalidatePath, e a rota geral
       }
     );
-    const data = await response.json();
-    logger.info(`(Server Action) showUser: Usuário com ID ${id} retornado.`);
-    return data;
+    if (response instanceof Response) {
+      const data = await response.json();
+      logger.info(`(Server Action) showUser: Usuário com ID ${id} retornado.`);
+      return data;
+    }
+    throw new Error('Unexpected response type from API');
   } catch (error) {
     logger.error(
       `(Server Action) showUser: Erro ao buscar usuário com ID ${id}.`,

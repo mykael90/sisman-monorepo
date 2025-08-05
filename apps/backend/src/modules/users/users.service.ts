@@ -19,17 +19,21 @@ export class UsersService {
   constructor(private readonly prisma: PrismaService) {}
 
   private readonly includeRelations: Prisma.UserInclude = {
-    roles: true
+    roles: true,
+    maintenanceInstance: true
   };
 
   async create(data: CreateUserWithRelationsDto): Promise<User> {
     this.logger.log(`Criando usuário com dados: ${JSON.stringify(data)}`);
-    const { roles, ...restOfData } = data;
+    const { roles, maintenanceInstance, ...restOfData } = data;
 
     const prismaCreateInput: Prisma.UserCreateInput = {
       ...restOfData,
       roles: roles
         ? { connect: roles.map((role) => ({ id: role.id })) }
+        : undefined,
+      maintenanceInstance: maintenanceInstance
+        ? { connect: { id: maintenanceInstance.id } }
         : undefined
     };
 
@@ -51,7 +55,7 @@ export class UsersService {
     userId: number,
     data: UpdateUserWithRelationsDto
   ): Promise<User> {
-    const { roles, ...restOfData } = data;
+    const { roles, maintenanceInstance, ...restOfData } = data;
 
     const prismaUpdateInput: Prisma.UserUpdateInput = {
       ...restOfData
@@ -59,6 +63,12 @@ export class UsersService {
 
     if (roles) {
       prismaUpdateInput.roles = { set: roles.map((role) => ({ id: role.id })) };
+    }
+
+    if (maintenanceInstance) {
+      prismaUpdateInput.maintenanceInstance = {
+        connect: { id: maintenanceInstance.id }
+      };
     }
 
     try {

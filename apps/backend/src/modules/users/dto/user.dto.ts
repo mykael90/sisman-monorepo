@@ -14,6 +14,7 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { UpdateRoleDto } from '../../roles/dto/role.dto';
+import { UpdateMaintenanceInstance } from '../../maintenance-instances/dto/maintenance-instance.dto';
 
 // =================================================================
 // 1. "SUPER CLASSES" DE RESPOSTA (FONTE DA VERDADE)
@@ -85,6 +86,14 @@ class UserBaseDto implements User {
    */
   @IsBoolean()
   isActive: boolean;
+
+  /**
+   * ID da instância de manutenção a qual o usuário está vinculado.
+   * @example 1
+   */
+  @IsOptional()
+  @IsNumber()
+  maintenanceInstanceId: number;
 }
 
 // =================================================================
@@ -93,7 +102,8 @@ class UserBaseDto implements User {
 
 const UserRelationOnlyArgs = Prisma.validator<Prisma.UserDefaultArgs>()({
   include: {
-    roles: true
+    roles: true,
+    maintenanceInstance: true
   }
 });
 
@@ -116,6 +126,13 @@ export class UserWithRelationsResponseDto
   @ValidateNested({ each: true }) // Validate each item in the array
   @Type(() => UpdateRoleDto) // Transform plain objects to UpdateRoleDto instances
   roles?: UserRelationsOnly['roles'];
+
+  /**
+   * Instância de manutenção vinculada ao usuário.
+   */
+  @IsOptional()
+  @Type(() => UpdateMaintenanceInstance) // Transform plain objects to UpdateRoleDto instances
+  maintenanceInstance?: UserRelationsOnly['maintenanceInstance'];
 }
 
 // =================================================================
@@ -138,6 +155,13 @@ export class CreateUserWithRelationsDto extends CreateUserDto {
   @ValidateNested({ each: true }) // Validate each item in the array
   @Type(() => UpdateRoleDto) // Transform plain objects to UpdateRoleDto instances
   roles?: UpdateRoleDto[];
+
+  /**
+   * Instância de manutenção vinculada ao usuário.
+   */
+  @IsOptional()
+  @Type(() => UpdateMaintenanceInstance) // Transform plain objects to UpdateRoleDto instances
+  maintenanceInstance?: UserRelationsOnly['maintenanceInstance'];
 }
 
 // =================================================================
