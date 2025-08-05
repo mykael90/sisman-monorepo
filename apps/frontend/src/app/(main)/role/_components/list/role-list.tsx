@@ -15,6 +15,7 @@ import { IRoleList } from '../../role-types';
 import { useRouter } from 'next/navigation';
 import { columns, createActions } from './role-columns';
 import { KeyRound, CirclePlus } from 'lucide-react'; // Using KeyRound for Role list header
+import { TableTanstack } from '../../../../../components/table-tanstack/table-tanstack';
 
 export function RoleListPage({
   initialRoles,
@@ -106,26 +107,15 @@ export function RoleListPage({
         />
       </div>
 
-      <RoleTable
-        roles={roles}
+      <TableTanstack
+        data={roles}
+        columns={columns(columnActions)}
         columnFilters={columnFilters}
         pagination={pagination}
         setPagination={setPagination}
         setSorting={setSorting}
         sorting={sorting}
-        columns={columns(columnActions)}
       />
     </div>
   );
-}
-
-export interface RoleTableProps {
-  roles: IRoleList[];
-  columnFilters: ColumnFiltersState;
-  setColumnFilters?: Dispatch<SetStateAction<ColumnFiltersState>>; // Optional if filtering is external
-  pagination: PaginationState;
-  setPagination: Dispatch<SetStateAction<any>>;
-  setSorting: Dispatch<SetStateAction<SortingState>>;
-  sorting: SortingState;
-  columns: ColumnDef<IRoleList, any>[];
 }
