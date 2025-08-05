@@ -45,7 +45,6 @@ export class SismanApiError extends Error {
     this.path = errorDetails.path;
     this.rawErrorResponse = errorDetails;
 
-    // This line is important for instances of custom errors to work correctly
     Object.setPrototypeOf(this, SismanApiError.prototype);
   }
 }
@@ -66,50 +65,33 @@ function isSismanApiErrorResponse(obj: any): obj is ISismanApiErrorResponse {
   );
 }
 
-/**
- * Fetches data from the SISMAN API.
- *
- * This function is designed to be called from server-side contexts (Server Components,
- * Route Handlers, etc.). If an `accessTokenSisman` is provided, it will be used
- * for authentication.
- *
- * @param relativeUrl - The relative URL of the SISMAN API endpoint to fetch data from.
- * @param accessTokenSisman - Optional. The SISMAN access token for the authenticated user.
- *                            If provided, it will be included in the Authorization header.
- * @param options - Optional request initialization options (RequestInit).
- * @returns A Promise that resolves with the Response object from the fetch.
- * @throws Throws an error if necessary environment variables are missing.
- * @throws Throws a generic `Error` if the fetch request fails for non-API reasons
- *         or if the API error response is not in the expected JSON format.
- * @throws Throws {@link SismanApiError} if the API returns an error response
- *         in the expected JSON format.
- */
+// ========================================================================
+// 1. FUNÇÃO BASE (PRIVADA AO MÓDULO)
+// Esta função contém toda a lógica repetida e retorna a `Response` bruta
+// em caso de sucesso, para que as funções públicas possam processá-la como quiserem.
+// ========================================================================
 
-export type ResponseType = 'json' | 'arraybuffer';
-
-export async function fetchApiSisman(
+async function baseFetch(
   relativeUrl: string,
   accessTokenSisman?: string,
-  options: RequestInit & { body?: any; responseType?: ResponseType } = {}
-): Promise<Response | ArrayBuffer> {
+  options: RequestInit & { body?: any } = {}
+): Promise<Response> {
   const baseUrl = process.env.SISMAN_API_URL;
   if (!baseUrl) {
     const errorMessage =
       'API configuration incomplete. SISMAN API base URL missing.';
-    logger.error(`fetchApiSisman: ${errorMessage}`);
+    logger.error(`baseFetch: ${errorMessage}`);
     throw new Error(errorMessage);
   }
 
-  // Ensure no double slashes and no missing slash
   const cleanBaseUrl = baseUrl.replace(/\/$/, '');
   const cleanRelativeUrl = relativeUrl.replace(/^\//, '');
   const fullUrl = `${cleanBaseUrl}/${cleanRelativeUrl}`;
 
-  const headers = new Headers(options.headers); // Handles various HeadersInit types
+  const headers = new Headers(options.headers);
 
-  if (options.body instanceof ArrayBuffer) {
-    headers.set('Content-Type', 'image/jpeg'); // Or other appropriate image type
-  } else if (!headers.has('Content-Type')) {
+  // Define o Content-Type apenas se não for FormData e não estiver definido
+  if (!(options.body instanceof FormData) && !headers.has('Content-Type')) {
     headers.set('Content-Type', 'application/json');
   }
 
@@ -119,20 +101,17 @@ export async function fetchApiSisman(
 
   try {
     logger.info(
-      `fetchApiSisman: Fetching ${fullUrl} with method ${options.method || 'GET'}`
+      `baseFetch: Fetching ${fullUrl} with method ${options.method || 'GET'}`
     );
 
-    const response = await fetch(fullUrl, {
-      ...options,
-      headers,
-      body: options.body
-    });
+    const response = await fetch(fullUrl, { ...options, headers });
 
+    // O tratamento de erro é idêntico e centralizado aqui.
     if (!response.ok) {
       const errorBodyText = await response.text();
       const statusInfo = `${response.status} ${response.statusText}`;
       logger.error(
-        `fetchApiSisman: Request to ${fullUrl} failed with status: ${statusInfo}. Body: ${errorBodyText}`
+        `baseFetch: Request to ${fullUrl} failed with status: ${statusInfo}. Body: ${errorBodyText}`
       );
 
       let parsedError: any;
@@ -140,69 +119,122 @@ export async function fetchApiSisman(
         parsedError = JSON.parse(errorBodyText);
       } catch (jsonParseError) {
         logger.warn(
-          `fetchApiSisman: Failed to parse error response body from ${fullUrl} as JSON. Body: ${errorBodyText}`,
+          `baseFetch: Failed to parse error response from ${fullUrl} as JSON.`,
           jsonParseError
         );
         throw new Error(
-          `SISMAN API request failed (${statusInfo}) for URL: ${relativeUrl}. Non-JSON response: ${errorBodyText}`
+          `SISMAN API request failed (${statusInfo}). Non-JSON response: ${errorBodyText}`
         );
       }
 
       if (isSismanApiErrorResponse(parsedError)) {
-        // Now parsedError is typed as ISismanApiErrorResponse
         const apiMessages = Array.isArray(parsedError.message)
           ? parsedError.message.join('; ')
           : parsedError.message;
-
-        const userFriendlyErrorMessage = `SISMAN API Erro: ${parsedError.statusCode} ${parsedError.error} em ${parsedError.path || relativeUrl}. API Mensagens(s): ${apiMessages}`;
-
-        throw new SismanApiError(
-          userFriendlyErrorMessage, // User-friendly message for Error.message
-          parsedError // The full parsed error object conforming to ISismanApiErrorResponse
-        );
+        const userFriendlyErrorMessage = `SISMAN API Erro: ${parsedError.statusCode} ${parsedError.error}. Mensagem: ${apiMessages}`;
+        throw new SismanApiError(userFriendlyErrorMessage, parsedError);
       } else {
-        // The JSON is valid, but not in the expected SISMAN error format
         logger.warn(
-          `fetchApiSisman: Error response from ${fullUrl} has unexpected JSON structure. Body: ${errorBodyText}`
+          `baseFetch: Error response from ${fullUrl} has unexpected JSON structure. Body: ${errorBodyText}`
         );
         throw new Error(
-          `SISMAN API request failed (${statusInfo}) for URL: ${relativeUrl}. Unexpected error structure: ${errorBodyText}`
+          `SISMAN API request failed (${statusInfo}). Unexpected error structure: ${errorBodyText}`
         );
       }
     }
 
-    logger.info(`fetchApiSisman: Request to ${fullUrl} successful.`);
-
-    if (options.responseType === 'arraybuffer') {
-      return response.arrayBuffer();
-    }
-
+    // Em caso de sucesso, simplesmente retorna o objeto Response
     return response;
   } catch (error) {
-    // Re-throw SismanApiError instances directly
+    // A lógica de `catch` também é centralizada aqui.
     if (error instanceof SismanApiError) {
-      // Already logged when creating SismanApiError or by the logger in its constructor if implemented
-      // For consistency, we can log its re-throw point too.
-      logger.error(
-        `fetchApiSisman: Re-throwing SismanApiError for ${fullUrl}. Status: ${error.statusCode}, Type: ${error.errorType}, API Msg: ${error.apiMessage}`
-      );
-      throw error;
+      throw error; // Apenas repassa o erro já tratado
     }
-    // Handle other generic errors
     if (error instanceof Error) {
       logger.error(
-        `fetchApiSisman: Generic error during request to ${fullUrl}: ${error.message}`,
+        `baseFetch: Generic error during request to ${fullUrl}: ${error.message}`,
         { stack: error.stack }
       );
-      // Re-throw if it's not already one of our specific types from above
       throw error;
     }
-    // Handle non-Error objects thrown
     logger.error(
-      `fetchApiSisman: Unexpected non-Error type caught during request to ${fullUrl}: ${String(error)}`
+      `baseFetch: Unexpected non-Error type caught during request to ${fullUrl}: ${String(error)}`
     );
     throw new Error(
       `An unexpected error occurred during the fetch to ${fullUrl}: ${String(error)}`
     );
   }
+}
+
+// ========================================================================
+// 2. FUNÇÃO PÚBLICA PARA JSON (REFATORADA)
+// Agora é mais simples, mais limpa e fortemente tipada com genéricos.
+// ========================================================================
+
+/**
+ * Fetches JSON data from the SISMAN API.
+ * Always expects a JSON response. For file downloads, use `fetchApiSismanFile`.
+ *
+ * @param relativeUrl The relative URL of the SISMAN API endpoint.
+ * @param accessTokenSisman Optional. The SISMAN access token.
+ * @param options Optional request initialization options (RequestInit).
+ * @returns A Promise that resolves with the parsed JSON data of type T.
+ * @throws {SismanApiError} If the API returns a structured error.
+ * @throws {Error} For network issues or other non-API errors.
+ */
+export async function fetchApiSisman<T = any>(
+  relativeUrl: string,
+  accessTokenSisman?: string,
+  options: RequestInit & { body?: any } = {}
+): Promise<T> {
+  const response = await baseFetch(relativeUrl, accessTokenSisman, options);
+
+  // Trata respostas sem conteúdo (ex: 204 No Content) que causam erro no .json()
+  if (
+    response.status === 204 ||
+    response.headers.get('content-length') === '0'
+  ) {
+    return null as T; // ou undefined, como preferir.
+  }
+
+  const data = await response.json();
+  return data as T;
+}
+
+// ========================================================================
+// 3. NOVA FUNÇÃO PÚBLICA PARA ARQUIVOS
+// Clara, explícita e com um único propósito.
+// ========================================================================
+
+/**
+ * Retorna um objeto contendo os dados do arquivo e seu tipo de conteúdo.
+ */
+export interface ISismanFileResponse {
+  buffer: ArrayBuffer;
+  contentType: string | null;
+}
+
+/**
+ * Fetches a file (binary data) from the SISMAN API.
+ * Always expects a binary response (e.g., image, PDF). For JSON data, use `fetchApiSisman`.
+ *
+ * @param relativeUrl The relative URL of the SISMAN API endpoint.
+ * @param accessTokenSisman Optional. The SISMAN access token.
+ * @param options Optional request initialization options (RequestInit).
+ * @returns A Promise that resolves with an object containing the ArrayBuffer and the Content-Type header.
+ * @throws {SismanApiError} If the API returns a structured error (e.g., file not found).
+ * @throws {Error} For network issues or other non-API errors.
+ */
+export async function fetchApiSismanFile(
+  relativeUrl: string,
+  accessTokenSisman?: string,
+  options: RequestInit & { body?: any } = {}
+): Promise<ISismanFileResponse> {
+  // <-- MUDANÇA AQUI
+  const response = await baseFetch(relativeUrl, accessTokenSisman, options);
+
+  const buffer = await response.arrayBuffer();
+  const contentType = response.headers.get('content-type');
+
+  return { buffer, contentType }; // <-- MUDANÇA AQUI
 }

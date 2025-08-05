@@ -18,11 +18,9 @@ export async function getMaintenanceInstances(
   accessToken: string
 ): Promise<MaintenanceInstanceList[]> {
   try {
-    const response = await fetchApiSisman(API_PATH, accessToken);
-    if (response instanceof Response) {
-      return (await response.json()) as MaintenanceInstanceList[];
-    }
-    throw new Error('Unexpected response type from API');
+    const data = await fetchApiSisman(API_PATH, accessToken);
+
+    return data as MaintenanceInstanceList[];
   } catch (error) {
     console.error('Failed to fetch maintenance instances:', error);
     throw error;

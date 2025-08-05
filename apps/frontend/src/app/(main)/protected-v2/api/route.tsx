@@ -34,18 +34,8 @@ export async function GET(request: NextRequest) {
   }
   try {
     // Use o session.accessTokenSisman para chamar sua outra API backend
-    const backendApiResponse = await fetchApiSisman(
-      '/user',
-      session.accessTokenSisman
-    );
+    const data = await fetchApiSisman('/user', session.accessTokenSisman);
 
-    if (!backendApiResponse.ok) {
-      throw new Error(
-        `Backend API call failed with status ${backendApiResponse.status}`
-      );
-    }
-
-    const data = await backendApiResponse.json();
     return NextResponse.json(data, {
       status: 200
     });

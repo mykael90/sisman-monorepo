@@ -13,17 +13,12 @@ export default async function ServerPage() {
   if (session) {
     // Só tenta buscar se houver uma sessão (opcional, a função fetch já verifica)
     try {
-      const response = await fetchApiSisman(
+      const data = await fetchApiSisman(
         '/user', // <-- Substitua pela rota correta da API Sisman
         session.accessTokenSisman as string
       );
-      // Verifica se a resposta foi realmente OK antes de tentar ler o JSON
-      if (response.ok) {
-        apiSismanData = await response.json();
-      } else {
-        // O erro já foi logado dentro da função fetch, aqui podemos definir uma mensagem para a UI
-        fetchError = `Erro ao buscar dados: ${response.status} ${response.statusText}`;
-      }
+
+      apiSismanData = data;
     } catch (error) {
       console.error('Erro ao chamar fetchApiSisman:', error);
       fetchError =

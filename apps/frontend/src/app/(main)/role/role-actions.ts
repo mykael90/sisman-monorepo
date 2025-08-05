@@ -25,15 +25,10 @@ export async function getRoles(
 ): Promise<IRoleList[]> {
   logger.info(`(Server Action) getRoles: Buscando lista de papéis.`);
   try {
-    const response = await fetchApiSisman(
-      API_RELATIVE_PATH,
-      accessTokenSisman,
-      {
-        // next: { tags: ['roles'] }, // Para revalidação baseada em tags
-        cache: 'no-store' // Ou 'force-cache' com revalidação por path/tag
-      }
-    );
-    const data = await response.json();
+    const data = await fetchApiSisman(API_RELATIVE_PATH, accessTokenSisman, {
+      // next: { tags: ['roles'] }, // Para revalidação baseada em tags
+      cache: 'no-store' // Ou 'force-cache' com revalidação por path/tag
+    });
     logger.info(`(Server Action) getRoles: ${data.length} papéis retornados.`);
     return data;
   } catch (error) {
@@ -49,7 +44,7 @@ export async function showRole(
   // Retorna IRoleEdit para popular o formulário de edição
   logger.info(`(Server Action) showRole: Buscando papel com ID ${id}.`);
   try {
-    const response = await fetchApiSisman(
+    const data = await fetchApiSisman(
       `${API_RELATIVE_PATH}/${id}`,
       accessTokenSisman,
       {
@@ -57,7 +52,6 @@ export async function showRole(
         cache: 'no-store'
       }
     );
-    const data = (await response.json()) as IRole;
     logger.info(`(Server Action) showRole: Papel com ID ${id} retornado.`);
     // Adapta para IRoleEdit se necessário (ex: se a API retorna campos extras)
     return {

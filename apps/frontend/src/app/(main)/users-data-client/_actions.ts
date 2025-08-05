@@ -8,10 +8,9 @@ const logger = new Logger('users-data-client/_actions');
 
 export async function getUsers(accessTokenSisman: string) {
   logger.info('(Server Action) getUsers: Called for initial page load.');
-  const response = await fetchApiSisman('/users', accessTokenSisman, {
+  const data = await fetchApiSisman('/users', accessTokenSisman, {
     cache: 'no-store'
   });
-  const data = await response.json();
   // console.log(data);
   // const aguarde = await new Promise(resolve => setTimeout(resolve, 2000));
 

@@ -3,7 +3,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession, Session } from 'next-auth';
 import { authOptions } from '@/app/api/auth/_options';
-import { fetchApiSisman, SismanApiError } from '@/lib/fetch/api-sisman';
+import { fetchApiSismanFile, SismanApiError } from '@/lib/fetch/api-sisman';
 import Logger from '@/lib/logger';
 
 const logger = new Logger('ProtectedImageAPI');
@@ -45,29 +45,29 @@ async function fetchAndProcessImage(
   queryString: string,
   accessToken: string
 ): Promise<{ imageBuffer: ArrayBuffer; contentType: string }> {
-  const sismanApiResponse = await fetchApiSisman(
+  const sismanApiResponse = await fetchApiSismanFile(
     `/sipac/foto?${queryString}`,
     accessToken,
     {
       method: 'GET',
-      responseType: 'arraybuffer', // Esperamos um buffer
+      // O 'responseType' não é mais necessário, a função já cuida disso.
       cache: 'no-cache'
     }
   );
 
   // Caso 1: A API retornou um objeto Response padrão.
-  if (sismanApiResponse instanceof Response) {
-    const contentType =
-      sismanApiResponse.headers.get('Content-Type') || 'image/jpeg';
-    const imageBuffer = await sismanApiResponse.arrayBuffer();
-    return { imageBuffer, contentType };
-  }
+  // if (sismanApiResponse instanceof Response) {
+  //   const contentType =
+  //     sismanApiResponse.headers.get('Content-Type') || 'image/jpeg';
+  //   const imageBuffer = await sismanApiResponse.arrayBuffer();
+  //   return { imageBuffer, contentType };
+  // }
 
   // Caso 2: A API retornou diretamente um ArrayBuffer (conforme o código original sugeria ser possível).
   // Se este caso não deveria acontecer, pode ser removido.
   return {
-    imageBuffer: sismanApiResponse,
-    contentType: 'image/jpeg' // Default para este caso
+    imageBuffer: sismanApiResponse.buffer,
+    contentType: sismanApiResponse.contentType || 'image/jpeg' // Default para este caso
   };
 }
 

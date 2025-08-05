@@ -20,19 +20,13 @@ export async function requestMagicLink(
 
   // 2. Chamar a ação genérica da API
   try {
-    const response = await fetchApiSisman(
+    const responseDataFromApi = await fetchApiSisman(
       RELATIVE_REQUEST_MAGIC_LINK,
       undefined,
       {
         method: 'POST',
         body: JSON.stringify(rawData)
       }
-    );
-
-    const responseDataFromApi = await response.json();
-    logger.info(
-      `(Server Action) handleApiAction: Operação API bem-sucedida.`,
-      responseDataFromApi
     );
 
     return {

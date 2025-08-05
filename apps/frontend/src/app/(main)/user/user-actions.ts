@@ -25,21 +25,13 @@ export async function getUsers(
 ): Promise<IUserList[]> {
   logger.info(`(Server Action) getUsers: Buscando lista de usuários.`);
   try {
-    const response = await fetchApiSisman(
-      API_RELATIVE_PATH,
-      accessTokenSisman,
-      {
-        cache: 'force-cache' // Cache agressivo para dados que mudam pouco
-      }
+    const data = await fetchApiSisman(API_RELATIVE_PATH, accessTokenSisman, {
+      cache: 'force-cache' // Cache agressivo para dados que mudam pouco
+    });
+    logger.info(
+      `(Server Action) getUsers: ${data.length} usuários retornados.`
     );
-    if (response instanceof Response) {
-      const data = await response.json();
-      logger.info(
-        `(Server Action) getUsers: ${data.length} usuários retornados.`
-      );
-      return data;
-    }
-    throw new Error('Unexpected response type from API');
+    return data;
   } catch (error) {
     logger.error(`(Server Action) getUsers: Erro ao buscar usuários.`, error);
     throw error; // Re-lança para ser tratado pelo Next.js ou error boundary
@@ -52,19 +44,15 @@ export async function showUser(
 ): Promise<IUserEdit> {
   logger.info(`(Server Action) showUser: Buscando usuário com ID ${id}.`);
   try {
-    const response = await fetchApiSisman(
+    const data = await fetchApiSisman(
       `${API_RELATIVE_PATH}/${id}`,
       accessTokenSisman,
       {
         cache: 'force-cache' // Quando atualizar um usuário é eliminar o cache dele com revalidatePath, e a rota geral
       }
     );
-    if (response instanceof Response) {
-      const data = await response.json();
-      logger.info(`(Server Action) showUser: Usuário com ID ${id} retornado.`);
-      return data;
-    }
-    throw new Error('Unexpected response type from API');
+    logger.info(`(Server Action) showUser: Usuário com ID ${id} retornado.`);
+    return data;
   } catch (error) {
     logger.error(
       `(Server Action) showUser: Erro ao buscar usuário com ID ${id}.`,

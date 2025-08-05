@@ -32,7 +32,7 @@ export async function handleApiAction<
   );
 
   try {
-    const response = await fetchApiSisman(
+    const responseDataFromApi = (await fetchApiSisman(
       apiConfig.endpoint,
       apiConfig.accessToken,
       {
@@ -40,9 +40,8 @@ export async function handleApiAction<
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(validatedData)
       }
-    );
+    )) as TApiResponseData;
 
-    const responseDataFromApi = (await response.json()) as TApiResponseData;
     logger.info(
       `(Server Action) handleApiAction: Operação API bem-sucedida.`,
       responseDataFromApi
