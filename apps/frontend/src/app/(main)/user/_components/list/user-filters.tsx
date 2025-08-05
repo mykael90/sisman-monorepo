@@ -79,7 +79,7 @@ const UserFilters = memo(function UserFilters({
         className='flex items-center'
       >
         <FilterX className='mr-2 h-4 w-4' />
-        Clear Filters
+        Limpar Filtros
       </Button>
     </div>
   );

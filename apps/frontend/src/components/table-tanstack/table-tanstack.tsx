@@ -1,11 +1,14 @@
 import {
   ColumnDef, //tipagem
-  ColumnFiltersState, //tipagem
+  ColumnFiltersState,
+  CustomFilterFns,
+  FilterFnOption, //tipagem
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  GlobalFilterTableState,
   PaginationState, //tipagem
   SortingState, //tipagem
   useReactTable
@@ -29,6 +32,9 @@ interface TableProps<TData> {
   setPagination?: React.Dispatch<React.SetStateAction<any>>;
   setSorting?: React.Dispatch<React.SetStateAction<SortingState>>;
   sorting?: SortingState;
+  globalFilterFn?: FilterFnOption<TData>;
+  globalFilter?: any;
+  setGlobalFilter?: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export function TableTanstack<TData>({
@@ -39,7 +45,10 @@ export function TableTanstack<TData>({
   pagination,
   setPagination,
   setSorting,
-  sorting
+  sorting,
+  globalFilterFn,
+  globalFilter,
+  setGlobalFilter
 }: TableProps<TData>) {
   // 2. Instanciar a tabela com useReactTable
   const table = useReactTable({
@@ -52,8 +61,11 @@ export function TableTanstack<TData>({
     onPaginationChange: setPagination,
     getSortedRowModel: getSortedRowModel(),
     onSortingChange: setSorting,
+    onGlobalFilterChange: setGlobalFilter,
     filterFns: {},
+    globalFilterFn,
     state: {
+      globalFilter,
       columnFilters,
       sorting,
       pagination

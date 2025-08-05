@@ -22,6 +22,7 @@ import { IUserList } from '../../user-types';
 import { useRouter } from 'next/navigation';
 import { columns, createActions } from './user-columns';
 import { User2Icon, UserCog, UserPlus } from 'lucide-react';
+import { TableTanstack } from '../../../../../components/table-tanstack/table-tanstack';
 
 export function UserListPage({
   initialUsers,
@@ -116,8 +117,8 @@ export function UserListPage({
         />
       </div>
 
-      <UserTable
-        users={users} // Passa os dados (potencialmente já filtrados se a lógica for no backend)
+      {/* <UserTable
+        data={users} // Passa os dados (potencialmente já filtrados se a lógica for no backend)
         // Passa o estado calculado dos filtros para a tabela
         columnFilters={columnFilters}
         // A tabela PODE precisar de setColumnFilters se ela tiver sua própria lógica interna de filtro,
@@ -129,18 +130,28 @@ export function UserListPage({
         setSorting={setSorting}
         sorting={sorting}
         columns={columns(columnActions)}
+      /> */}
+
+      <TableTanstack
+        data={users}
+        columns={columns(columnActions)}
+        columnFilters={columnFilters}
+        pagination={pagination}
+        setPagination={setPagination}
+        setSorting={setSorting}
+        sorting={sorting}
       />
     </div>
   );
 }
 
-export interface UserTableProps {
-  users: IUserList[];
-  columnFilters: ColumnFiltersState;
-  setColumnFilters?: Dispatch<SetStateAction<ColumnFiltersState>>;
-  pagination: PaginationState;
-  setPagination: Dispatch<SetStateAction<any>>;
-  setSorting: Dispatch<SetStateAction<SortingState>>;
-  sorting: SortingState;
-  columns: ColumnDef<IUserList, any>[];
-}
+// export interface DefaultTableProps<TData> {
+//   data: TData[];
+//   columnFilters: ColumnFiltersState;
+//   setColumnFilters?: Dispatch<SetStateAction<ColumnFiltersState>>;
+//   pagination: PaginationState;
+//   setPagination: Dispatch<SetStateAction<any>>;
+//   setSorting: Dispatch<SetStateAction<SortingState>>;
+//   sorting: SortingState;
+//   columns: ColumnDef<TData, any>[];
+// }

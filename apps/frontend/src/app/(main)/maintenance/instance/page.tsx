@@ -15,12 +15,12 @@ export default async function Page() {
   const listKey = Date.now().toString() + Math.random().toString();
 
   return (
-    <Suspense fallback={<Loading />}>
-      <MaintenanceInstanceListPage
-        initialInstances={initialInstances}
-        refreshAction={getRefreshedInstances}
-        key={listKey}
-      />
-    </Suspense>
+    // <Suspense fallback={<Loading />}>
+    <MaintenanceInstanceListPage
+      initialInstances={initialInstances}
+      refreshAction={getRefreshedInstances}
+      key={listKey}
+    />
+    // </Suspense>
   );
 }

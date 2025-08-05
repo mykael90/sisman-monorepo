@@ -5,21 +5,23 @@ import { Button } from '@/components/ui/button';
 import { Search, FilterX } from 'lucide-react';
 import { memo } from 'react';
 
-interface RoleFiltersProps {
-  roleValue: string;
-  setRoleValue: React.Dispatch<React.SetStateAction<string>>;
-  onClearFilters: () => void;
+interface DefaultGlobalFilterProps {
+  globalFilterValue: string;
+  setGlobalFilterValue: React.Dispatch<React.SetStateAction<string>>;
+  onClearFilter: () => void;
   inputDebounceRef: React.Ref<InputDebounceRef>;
+  label: string;
 }
 
-const RoleFilters = memo(function RoleFilters({
-  roleValue,
-  setRoleValue,
-  onClearFilters,
-  inputDebounceRef
-}: RoleFiltersProps) {
-  const handleClearFilters = () => {
-    onClearFilters();
+const DefaultGlobalFilter = memo(function DefaultGlobalFilter({
+  globalFilterValue,
+  setGlobalFilterValue,
+  onClearFilter,
+  inputDebounceRef,
+  label
+}: DefaultGlobalFilterProps) {
+  const handleClearFilter = () => {
+    onClearFilter();
   };
 
   return (
@@ -29,25 +31,25 @@ const RoleFilters = memo(function RoleFilters({
         <InputDebounce
           imperativeRef={inputDebounceRef}
           type='text'
-          placeholder='Search roles by name or description...'
+          placeholder={`Procurar ${label}...`}
           className='pl-8'
-          inputValue={roleValue}
-          setInputValue={setRoleValue}
+          inputValue={globalFilterValue}
+          setInputValue={setGlobalFilterValue}
         />
       </div>
 
-      {/* No status filter needed for roles based on IRoleList */}
+      {/* No status filter needed for defaults based on IDefaultList */}
 
       <Button
         variant='outline'
-        onClick={handleClearFilters}
+        onClick={handleClearFilter}
         className='flex items-center'
       >
         <FilterX className='mr-2 h-4 w-4' />
-        Limpar Filtros
+        Limpar Filtro
       </Button>
     </div>
   );
 });
 
-export { RoleFilters };
+export { DefaultGlobalFilter };
