@@ -37,6 +37,19 @@ export async function getRefreshedInstances() {
   }
 }
 
+export async function showInstance(
+  accessToken: string,
+  id: number
+): Promise<MaintenanceInstanceEdit> {
+  try {
+    const data = await fetchApiSisman(`${API_PATH}/${id}`, accessToken);
+    return data as MaintenanceInstanceEdit;
+  } catch (error) {
+    console.error('Failed to fetch maintenance instance:', error);
+    throw error;
+  }
+}
+
 export async function addInstance(
   _prevState: unknown,
   data: MaintenanceInstanceAdd

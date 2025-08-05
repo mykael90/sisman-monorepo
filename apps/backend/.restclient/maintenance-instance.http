@@ -17,8 +17,8 @@ Content-Type: {{contentType}}
 Authorization: Bearer {{token}}
 
 {
-    "sipacId": "sipac-457",
-    "name": "Instance Example Name"
+    "sipacId": "CB458",
+    "name": "CBDS"
 }
 
 ### PUT
