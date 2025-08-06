@@ -59,6 +59,7 @@ flowchart TD
    - Known issues
    - Evolution of project decisions
 
+
 ### Additional Context
 Create additional files/folders within memory-bank/ when they help organize:
 - Complex feature documentation
@@ -116,4 +117,6 @@ REMEMBER: After every memory reset, I begin completely fresh. The Memory Bank is
 
 ## MCPs
 
-- Maintain a file named library.md to store the Library IDs that you search for and before searching make sure that you check the file and use the library ID already available. Otherwise, search for it.
+Core file for configure MCP use:: `.clinerules.json`
+
+- Maintain a file `./.mcp/library-context7.md` to store the Library IDs from context7 mcp that you search for and before searching make sure that you check the file and use the library ID already available. Otherwise, search for it.

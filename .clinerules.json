@@ -1,0 +1,18 @@
+{
+  "mcpRules": {
+    "contextManagement": {
+      "servers": ["context7"],
+      "triggers": ["context", "memory", "memory bank", "project state", "project context"],
+      "description": "Ferramentas para leitura e manipulação de contexto/memória de projeto"
+    },
+    "uiComponents": {
+      "servers": ["shadcn-ui"],
+      "triggers": ["ui", "component", "interface", "shadcn", "tailwind", "design system"],
+      "description": "Ferramentas para geração de interfaces com ShadCN e Tailwind CSS"
+    }
+  },
+  "defaultBehavior": {
+    "priorityOrder": ["contextManagement", "uiComponents"],
+    "fallbackBehavior": "Ask user which tool would be most appropriate"
+  }
+}
