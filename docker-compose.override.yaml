@@ -19,6 +19,8 @@ services:
     volumes:
     # HOT-RELOAD
       - .:/home/node/sisman-monorepo
+      - ${HOME}/Cline:/home/node/Documents/Cline #Configuração MCP
+      - ${HOME}/.vscode-server/data/User/globalStorage/saoudrizwan.claude-dev/settings:/tmp/mcp-settings:ro #Configuração MCP
     restart: unless-stopped
     depends_on:
       - db

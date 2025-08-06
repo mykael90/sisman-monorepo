@@ -66,7 +66,7 @@
 	  },
 "mounts": [
 	 "source=${localEnv:HOME}/.ssh,target=/home/node/.ssh,type=bind,consistency=cached"
-]
+],
 	//   "postStartCommand": "git config --global --add safe.directory /workspaces && zsh"
 	  // Use 'forwardPorts' to make a list of ports inside the container available locally.
 	  // "forwardPorts": [],
@@ -76,6 +76,8 @@
 	  // "shutdownAction": "none",
 	  // Uncomment the next line to run commands after the container is created.
 	  // "postCreateCommand": "cat /etc/os-release",
+	  //Configuração MCP Cline abaixo
+  	"postStartCommand": "if [ -d /tmp/mcp-settings ]; then mkdir -p /home/node/.vscode-server/data/User/globalStorage/saoudrizwan.claude-dev/settings/ && cp -a /tmp/mcp-settings/cline_mcp_settings.json /home/node/.vscode-server/data/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json; fi",
 	  // Uncomment to connect as an existing user other than the container default. More info: https://aka.ms/dev-containers-non-root.
-	  // "remoteUser": "devcontainer"
+	"remoteUser": "node"
 	}

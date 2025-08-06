@@ -6,9 +6,16 @@ RUN apt update && apt install -y openssl procps
 # instalar pnpm 10.0.0 globally
 RUN npm install -g pnpm@10.0.0
 
+# Adicionar a instalação do pacote MCP como dependência global
+RUN npm install -g pnpm@10.0.0 @upstash/context7-mcp@latest
+
+
 # 1. Crie o diretório de trabalho *como root*, depois mude sua propriedade para 'node'.
 #    Use `mkdir -p` para garantir que o diretório seja criado se não existir.
 RUN mkdir -p /home/node/sisman-monorepo/ && chown -R node:node /home/node/sisman-monorepo/
+
+#MCP config 
+RUN mkdir -p /home/node/Documents/Cline/ && chown -R node:node /home/node/Documents/Cline/
 
 # Mude para o usuário 'node' antes de definir o WORKDIR e copiar os arquivos.
 USER node

@@ -1,0 +1,1 @@
+- You can now use the **Context7 MCP** server whenever needed by including "use context7" in your prompts or through automatic tool invocation.
