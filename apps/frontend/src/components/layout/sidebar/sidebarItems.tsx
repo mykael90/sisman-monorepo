@@ -70,7 +70,8 @@ export const sidebarItems: SidebarItem[] = [
     icon: <Package className='h-6 w-6' />,
     children: [
       { label: 'Todos os Materiais', href: '/material/all' },
-      { label: 'Adicionar Material', href: '/material/add' },
+      { label: 'Entrada: Material', href: '/material/add' },
+      { label: 'Saída: Material', href: '/material/withdrawal' },
       { label: 'Categorias', href: '/material/category' }
     ]
   },

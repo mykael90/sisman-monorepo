@@ -40,10 +40,13 @@ export async function getRefreshedInstances() {
 export async function showInstance(
   accessToken: string,
   id: number
-): Promise<IMaintenanceInstanceEdit> {
+): Promise<IMaintenanceInstanceList> {
   try {
-    const data = await fetchApiSisman(`${API_PATH}/${id}`, accessToken);
-    return data as IMaintenanceInstanceEdit;
+    const data = await fetchApiSisman<IMaintenanceInstanceList>(
+      `${API_PATH}/${id}`,
+      accessToken
+    );
+    return data;
   } catch (error) {
     console.error('Failed to fetch maintenance instance:', error);
     throw error;

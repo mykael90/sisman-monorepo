@@ -79,18 +79,10 @@ export default function WarehouseForm<TMode extends 'add' | 'edit'>({
       [serverState]
     ),
     validators: formSchema ? { onChange: formSchema } : undefined, // Integrated formSchema
-    onSubmit: async ({ value, formApi }) => {
+    onSubmit: async ({ value }) => {
       console.log('Warehouse Form submitted with values:', value);
 
-      const payload = getFilteredPayloadForUpdate(
-        mode,
-        value,
-        defaultData,
-        formApi,
-        'id' as keyof WarehouseFormData<TMode>
-      );
-
-      await dispatchFormAction(payload as any);
+      await dispatchFormAction(value);
     }
   });
 
@@ -207,24 +199,6 @@ export default function WarehouseForm<TMode extends 'add' | 'edit'>({
           />
         )}
       />
-
-      {/* <form.Field
-        name='isActive'
-        children={(field: any) => {
-          const value = field.state.value as boolean;
-          return (
-            <div className='mb-4 flex items-center justify-between rounded-lg border p-4'>
-              <label className='text-base'>{fieldLabels.isActive}</label>
-              <input
-                type='checkbox'
-                checked={value}
-                onChange={(e) => field.handleChange(e.target.checked as any)}
-                className='h-5 w-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-              />
-            </div>
-          );
-        }}
-      /> */}
 
       <div className='mt-8 flex justify-end gap-3'>
         {mode === 'add' && (

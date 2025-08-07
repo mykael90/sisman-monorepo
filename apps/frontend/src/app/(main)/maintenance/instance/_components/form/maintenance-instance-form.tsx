@@ -1,11 +1,6 @@
 'use client';
 
-import {
-  mergeForm,
-  useForm,
-  useTransform,
-  FieldApi
-} from '@tanstack/react-form';
+import { mergeForm, useForm, useTransform } from '@tanstack/react-form';
 import { useStore } from '@tanstack/react-store';
 import { FC, useActionState } from 'react';
 import { FormInputField } from '@/components/form-tanstack/form-input-fields';
@@ -18,7 +13,6 @@ import {
   IMaintenanceInstanceEdit,
   IMaintenanceInstanceList
 } from '../../maintenance-instance-types';
-import { getFilteredPayloadForUpdate } from '@/lib/form-utils'; // Import the new utility
 import { FilePlus, Save } from 'lucide-react';
 
 type MaintenanceInstanceFormData<TMode extends 'add' | 'edit'> =
@@ -74,18 +68,10 @@ export default function MaintenanceInstanceForm<TMode extends 'add' | 'edit'>({
       [serverState]
     ),
     validators: formSchema ? { onChange: formSchema } : undefined,
-    onSubmit: async ({ value, formApi }) => {
+    onSubmit: async ({ value }) => {
       console.log('Maintenance Instance Form submitted with values:', value);
 
-      const payload = getFilteredPayloadForUpdate(
-        mode,
-        value,
-        defaultData,
-        formApi,
-        'id' as keyof MaintenanceInstanceFormData<TMode>
-      );
-
-      await dispatchFormAction(payload as any);
+      await dispatchFormAction(value);
     }
   });
 
