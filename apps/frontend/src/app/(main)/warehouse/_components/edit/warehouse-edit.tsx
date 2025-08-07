@@ -10,6 +10,7 @@ import { IActionResultForm } from '../../../../../types/types-server-actions';
 import { warehouseFormSchemaEdit } from '../form/warehouse-form-validation';
 import { IWarehouseEdit } from '../../warehouse-types';
 import { IMaintenanceInstanceList } from '../../../maintenance/instance/maintenance-instance-types';
+import { removeUnreferencedKeys } from '../../../../../lib/form-utils';
 
 interface WarehouseEditProps {
   initialWarehouse: IWarehouseEdit;
@@ -22,8 +23,6 @@ export function WarehouseEdit({
   isInDialog = false,
   relatedData
 }: WarehouseEditProps) {
-  const defaultData: IWarehouseEdit = initialWarehouse;
-
   const fieldLabels: Partial<Record<keyof IWarehouseEdit, string>> = {
     name: 'Nome do Depósito',
     code: 'Código',
@@ -31,6 +30,11 @@ export function WarehouseEdit({
     isActive: 'Ativo',
     maintenanceInstanceId: 'Instância de Manutenção'
   };
+
+  const defaultData: IWarehouseEdit = removeUnreferencedKeys(
+    initialWarehouse,
+    fieldLabels
+  );
 
   const initialServerState: IActionResultForm<IWarehouseEdit, any> = {
     errorsServer: [],

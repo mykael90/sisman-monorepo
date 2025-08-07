@@ -9,6 +9,7 @@ import { useState } from 'react'; // useEffect and getSismanAccessToken are no l
 import { IActionResultForm } from '../../../../../../types/types-server-actions';
 import { maintenanceInstanceFormSchemaEdit } from '../form/maintenance-instance-form-validation';
 import { IMaintenanceInstanceEdit } from '../../maintenance-instance-types';
+import { removeUnreferencedKeys } from '../../../../../../lib/form-utils';
 
 export default function MaintenanceInstanceEdit({
   initialInstance,
@@ -17,8 +18,6 @@ export default function MaintenanceInstanceEdit({
   initialInstance: IMaintenanceInstanceEdit; // Now receives the full instance object
   isInDialog?: boolean;
 }) {
-  const defaultData: IMaintenanceInstanceEdit = initialInstance; // Use the passed initialInstance directly
-
   const fieldLabels: Record<
     keyof Pick<IMaintenanceInstanceEdit, 'id' | 'name' | 'sipacId'>,
     string
@@ -27,6 +26,11 @@ export default function MaintenanceInstanceEdit({
     name: 'Nome da Instância',
     sipacId: 'Código SIPAC'
   };
+
+  const defaultData: IMaintenanceInstanceEdit = removeUnreferencedKeys(
+    initialInstance,
+    fieldLabels
+  ); // Use the passed initialInstance directly
 
   const initialServerState: IActionResultForm<IMaintenanceInstanceEdit, any> = {
     errorsServer: [],

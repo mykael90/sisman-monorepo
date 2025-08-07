@@ -33,3 +33,25 @@ export function getFilteredPayloadForUpdate<TFormValues extends object>(
   }
   return values; // For 'add' mode, return all values
 }
+
+type ReferenceObject = {
+  [key: string]: any;
+};
+
+// Usa o tipo "infer" para criar um novo tipo com as chaves que existem em ambos os objetos
+type Intersect<T, R> = Pick<T, keyof T & keyof R>;
+
+export function removeUnreferencedKeys<
+  T extends ReferenceObject,
+  R extends ReferenceObject
+>(objectToClean: T, referenceObject: R): Intersect<T, R> {
+  const newObject = {} as Intersect<T, R>;
+
+  for (const key in objectToClean) {
+    if (Object.prototype.hasOwnProperty.call(referenceObject, key)) {
+      newObject[key as keyof Intersect<T, R>] = objectToClean[key] as any;
+    }
+  }
+
+  return newObject;
+}

@@ -10,6 +10,7 @@ import { updateUser } from '../../user-actions';
 import { userFormSchemaEdit } from '../form/user-form-validation';
 import { IRoleList } from '../../../role/role-types';
 import { NonOptionalKeys } from '../../../../../types/utils-types';
+import { removeUnreferencedKeys } from '../../../../../lib/form-utils';
 
 // We are transforming this into a page, so it won't take props like onClose or onSubmit.
 // The page will manage its own state and submission logic.
@@ -22,8 +23,6 @@ export default function UserEdit({
   possibleRoles: IRoleList[];
   isInDialog?: boolean;
 }) {
-  const defaultData = { ...initialUser };
-
   const fieldLabels: Record<NonOptionalKeys<IUserEdit>, string> = {
     id: 'ID',
     name: 'Nome',
@@ -32,6 +31,8 @@ export default function UserEdit({
     roles: 'Permissões',
     isActive: 'Ativo'
   };
+
+  const defaultData = removeUnreferencedKeys(initialUser, fieldLabels);
 
   const initialServerState: IActionResultForm<IUserEdit, IUser> = {
     errorsServer: [],

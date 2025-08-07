@@ -2,6 +2,7 @@ import MaintenanceInstanceEdit from '../../_components/edit/maintenance-instance
 import { getSismanAccessToken } from '@/lib/auth/get-access-token';
 import { showInstance } from '../../maintenance-instance-actions';
 import { IMaintenanceInstanceEdit } from '../../maintenance-instance-types';
+import { removeUnreferencedKeys } from '../../../../../../lib/form-utils';
 
 export default async function Page({
   params,

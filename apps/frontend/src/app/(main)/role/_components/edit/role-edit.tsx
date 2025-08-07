@@ -9,6 +9,7 @@ import { Save, CircleUserRound } from 'lucide-react'; // Using CircleUserRound f
 import { updateRole } from '../../role-actions';
 import { roleFormSchemaEdit } from '../form/role-form-validation';
 import { NonOptionalKeys } from '../../../../../types/utils-types';
+import { removeUnreferencedKeys } from '../../../../../lib/form-utils';
 
 export default function RoleEdit({
   initialRole,
@@ -17,8 +18,6 @@ export default function RoleEdit({
   initialRole: IRoleEdit;
   isInDialog?: boolean;
 }) {
-  const defaultData: IRoleEdit = { ...initialRole };
-
   // Note: IRoleEdit from role-types.ts includes 'id' and other Prisma fields
   // but the form only needs 'id', 'role' and 'description' for editing.
   // We define fieldLabels for the fields the form will actually use.
@@ -30,6 +29,11 @@ export default function RoleEdit({
     role: 'Nome do Papel',
     description: 'Descrição'
   };
+
+  const defaultData: IRoleEdit = removeUnreferencedKeys(
+    initialRole,
+    fieldLabels
+  );
 
   const initialServerState: IActionResultForm<IRoleEdit, IRole> = {
     errorsServer: [],
