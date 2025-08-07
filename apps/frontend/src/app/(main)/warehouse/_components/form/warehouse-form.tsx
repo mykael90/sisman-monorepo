@@ -1,21 +1,35 @@
 'use client';
 
-import { mergeForm, useForm, useTransform } from '@tanstack/react-form';
+import {
+  mergeForm,
+  useForm,
+  useTransform,
+  FieldApi
+} from '@tanstack/react-form';
 import { useStore } from '@tanstack/react-store';
 import { FC, useActionState } from 'react';
 import { FormInputField } from '@/components/form-tanstack/form-input-fields';
 import { Button } from '@/components/ui/button';
-import { CirclePlus, Save } from 'lucide-react';
-import { IActionResultForm } from '../../../../../types/types-server-actions';
+import { FormSuccessDisplay } from '@/components/form-tanstack/form-success-display';
+import { ErrorServerForm } from '@/components/form-tanstack/error-server-form';
+import type { IActionResultForm } from '../../../../../types/types-server-actions';
 import {
   IWarehouse,
   IWarehouseAdd,
   IWarehouseEdit
 } from '../../warehouse-types';
+import { getFilteredPayloadForUpdate } from '@/lib/form-utils';
+import { FilePlus, Save } from 'lucide-react';
 
 type WarehouseFormData<TMode extends 'add' | 'edit'> = TMode extends 'add'
-  ? IWarehouseAdd
-  : IWarehouseEdit;
+  ? Pick<
+      IWarehouseAdd,
+      'name' | 'code' | 'location' | 'isActive' | 'maintenanceInstanceId'
+    >
+  : Pick<
+      IWarehouseEdit,
+      'id' | 'name' | 'code' | 'location' | 'isActive' | 'maintenanceInstanceId'
+    >;
 
 export default function WarehouseForm<TMode extends 'add' | 'edit'>({
   mode,
@@ -25,32 +39,30 @@ export default function WarehouseForm<TMode extends 'add' | 'edit'>({
     isSubmitSuccessful: false,
     message: ''
   },
-  fieldLabels = {
-    name: 'Nome',
-    code: 'Código',
-    location: 'Localização',
-    maintenanceInstanceId: 'ID Instância Manutenção',
-    isActive: 'Ativo'
-  },
+  fieldLabels,
+  formSchema, // Added formSchema prop
   onCancel,
   onClean,
+  isInDialog = false,
   submitButtonText,
-  SubmitButtonIcon,
-  isInDialog = false
+  SubmitButtonIcon
 }: {
   mode: TMode;
   defaultData: WarehouseFormData<TMode>;
   formActionProp: (
-    prevState: IActionResultForm<WarehouseFormData<TMode>, IWarehouse>,
+    prevState: IActionResultForm<WarehouseFormData<TMode>, any>,
     data: WarehouseFormData<TMode>
-  ) => Promise<IActionResultForm<WarehouseFormData<TMode>, IWarehouse>>;
-  initialServerState?: IActionResultForm<WarehouseFormData<TMode>, IWarehouse>;
-  fieldLabels?: Record<string, string>;
+  ) => Promise<IActionResultForm<WarehouseFormData<TMode>, any>>;
+  initialServerState?: IActionResultForm<WarehouseFormData<TMode>, any>;
+  fieldLabels: {
+    [k: string]: string;
+  };
+  formSchema?: any; // Zod schema type
   onCancel?: () => void;
   onClean?: () => void;
+  isInDialog?: boolean;
   submitButtonText?: string;
   SubmitButtonIcon?: FC<{ className?: string }>;
-  isInDialog?: boolean;
 }) {
   const [serverState, dispatchFormAction, isPending] = useActionState(
     formActionProp,
@@ -63,17 +75,55 @@ export default function WarehouseForm<TMode extends 'add' | 'edit'>({
       (baseForm) => mergeForm(baseForm, serverState ?? {}),
       [serverState]
     ),
-    onSubmit: async ({ value }: { value: WarehouseFormData<TMode> }) => {
-      await dispatchFormAction(value);
+    validators: formSchema ? { onChange: formSchema } : undefined, // Integrated formSchema
+    onSubmit: async ({ value, formApi }) => {
+      console.log('Warehouse Form submitted with values:', value);
+
+      const payload = getFilteredPayloadForUpdate(
+        mode,
+        value,
+        defaultData,
+        formApi,
+        'id' as keyof WarehouseFormData<TMode>
+      );
+
+      await dispatchFormAction(payload as any);
     }
   });
 
   const handleReset = onClean
     ? () => {
         form.reset();
-        onClean();
+        onClean?.();
       }
     : undefined;
+
+  const handleCancel = () => {
+    onCancel && onCancel();
+  };
+
+  useStore(
+    form.store,
+    (formState: typeof form.store.state) => formState.errorsServer
+  );
+
+  if (serverState?.isSubmitSuccessful) {
+    return (
+      <FormSuccessDisplay
+        serverState={serverState}
+        handleActions={{
+          handleResetForm: handleReset,
+          handleCancelForm: handleCancel
+        }}
+        dataAddLabel={fieldLabels}
+        messageActions={{
+          handleResetForm: 'Cadastrar novo depósito',
+          handleCancel: 'Voltar para a lista'
+        }}
+        isInDialog={isInDialog}
+      />
+    );
+  }
 
   const currentSubmitButtonText =
     submitButtonText ||
@@ -82,7 +132,7 @@ export default function WarehouseForm<TMode extends 'add' | 'edit'>({
   const CurrentSubmitButtonIcon =
     (SubmitButtonIcon && <SubmitButtonIcon className='mr-2 h-5 w-5' />) ||
     (mode === 'add' ? (
-      <CirclePlus className='mr-2 h-5 w-5' />
+      <FilePlus className='mr-2 h-5 w-5' />
     ) : (
       <Save className='mr-2 h-5 w-5' />
     ));
@@ -92,56 +142,71 @@ export default function WarehouseForm<TMode extends 'add' | 'edit'>({
       onSubmit={(e) => {
         e.preventDefault();
         e.stopPropagation();
-        form.handleSubmit();
+        form.handleSubmit(); // Call the form's handleSubmit method
       }}
-      className='space-y-4'
+      onReset={(e) => {
+        e.preventDefault();
+        handleReset && handleReset();
+      }}
+      className='rounded-lg bg-white p-6 shadow-md'
     >
-      <form.Field name='name'>
-        {(field) => (
+      <ErrorServerForm serverState={serverState} />
+
+      <form.Field
+        name='name'
+        children={(field: any) => (
           <FormInputField
             field={field}
             label={fieldLabels.name}
             placeholder='Nome do depósito'
+            className='mb-4'
           />
         )}
-      </form.Field>
+      />
 
-      <form.Field name='code'>
-        {(field) => (
+      <form.Field
+        name='code'
+        children={(field: any) => (
           <FormInputField
             field={field}
             label={fieldLabels.code}
             placeholder='Código do depósito'
+            className='mb-4'
           />
         )}
-      </form.Field>
+      />
 
-      <form.Field name='location'>
-        {(field) => (
+      <form.Field
+        name='location'
+        children={(field: any) => (
           <FormInputField
             field={field}
             label={fieldLabels.location}
             placeholder='Localização do depósito'
+            className='mb-4'
           />
         )}
-      </form.Field>
+      />
 
-      <form.Field name='maintenanceInstanceId'>
-        {(field) => (
+      <form.Field
+        name='maintenanceInstanceId'
+        children={(field: any) => (
           <FormInputField
             field={field}
             type='number'
             label={fieldLabels.maintenanceInstanceId}
             placeholder='ID da instância de manutenção'
+            className='mb-4'
           />
         )}
-      </form.Field>
+      />
 
-      <form.Field name='isActive'>
-        {(field) => {
+      {/* <form.Field
+        name='isActive'
+        children={(field: any) => {
           const value = field.state.value as boolean;
           return (
-            <div className='flex items-center justify-between rounded-lg border p-4'>
+            <div className='mb-4 flex items-center justify-between rounded-lg border p-4'>
               <label className='text-base'>{fieldLabels.isActive}</label>
               <input
                 type='checkbox'
@@ -152,26 +217,37 @@ export default function WarehouseForm<TMode extends 'add' | 'edit'>({
             </div>
           );
         }}
-      </form.Field>
+      /> */}
 
-      <div className='flex justify-end gap-3'>
-        {mode === 'add' && handleReset && (
+      <div className='mt-8 flex justify-end gap-3'>
+        {mode === 'add' && (
           <Button type='button' variant='outline' onClick={handleReset}>
             Limpar
           </Button>
         )}
         <form.Subscribe
-          selector={(state) => [state.canSubmit, state.isSubmitting]}
+          selector={(state: typeof form.state) =>
+            [state.canSubmit, state.isTouched, state.isValidating] as [
+              boolean,
+              boolean,
+              boolean
+            ]
+          }
         >
-          {([canSubmit, isSubmitting]) => (
+          {([canSubmit, isTouched, isValidating]) => (
             <Button
               type='submit'
-              disabled={!canSubmit || isPending || isSubmitting}
+              disabled={
+                !canSubmit ||
+                isPending ||
+                isValidating ||
+                (mode === 'add' && !isTouched)
+              }
             >
-              {isPending || isSubmitting
+              {isPending || isValidating
                 ? 'Processando...'
                 : CurrentSubmitButtonIcon}
-              {isPending || isSubmitting ? '' : currentSubmitButtonText}
+              {isPending || isValidating ? '' : currentSubmitButtonText}
             </Button>
           )}
         </form.Subscribe>
