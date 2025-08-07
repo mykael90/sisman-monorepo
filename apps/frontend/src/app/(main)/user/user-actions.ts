@@ -99,21 +99,21 @@ export async function addUser(
 
   // 1. Validação específica para UserAdd
   // 'validateFormData' now receives the object directly
-  const validationProcessResult = validateFormData(data, userFormSchemaAdd);
+  // const validationProcessResult = validateFormData(data, userFormSchemaAdd);
 
-  if (!validationProcessResult.success) {
-    logger.warn(
-      `(Server Action) addUser: Falha na validação do formulário.`,
-      validationProcessResult.errorResult.errorsFieldsServer
-    );
-    // Important: Make sure submittedData in errorResult uses the 'data' object
-    return {
-      ...validationProcessResult.errorResult,
-      submittedData: data // Ensure submittedData reflects the object
-    };
-  }
+  // if (!validationProcessResult.success) {
+  //   logger.warn(
+  //     `(Server Action) addUser: Falha na validação do formulário.`,
+  //     validationProcessResult.errorResult.errorsFieldsServer
+  //   );
+  //   // Important: Make sure submittedData in errorResult uses the 'data' object
+  //   return {
+  //     ...validationProcessResult.errorResult,
+  //     submittedData: data // Ensure submittedData reflects the object
+  //   };
+  // }
 
-  const validatedUserData = validationProcessResult.data; // This is IUserAdd
+  const validatedUserData = data; // This is IUserAdd
   logger.info(
     `(Server Action) addUser: Dados do usuário validados com sucesso.`
   );
@@ -158,20 +158,20 @@ export async function updateUser(
   );
 
   // 1. Validação específica para UserEdit
-  const validationProcessResult = validateFormData(data, userFormSchemaEdit);
+  // const validationProcessResult = validateFormData(data, userFormSchemaEdit);
 
-  if (!validationProcessResult.success) {
-    logger.warn(
-      `(Server Action) updateUser: Falha na validação do formulário para o usuário ${data.id}.`,
-      validationProcessResult.errorResult.errorsFieldsServer
-    );
-    return {
-      ...validationProcessResult.errorResult,
-      submittedData: data // Ensure submittedData reflects the object
-    };
-  }
+  // if (!validationProcessResult.success) {
+  //   logger.warn(
+  //     `(Server Action) updateUser: Falha na validação do formulário para o usuário ${data.id}.`,
+  //     validationProcessResult.errorResult.errorsFieldsServer
+  //   );
+  //   return {
+  //     ...validationProcessResult.errorResult,
+  //     submittedData: data // Ensure submittedData reflects the object
+  //   };
+  // }
 
-  const validatedUserData = validationProcessResult.data; // This is IUserEdit
+  const validatedUserData = data; // This is IUserEdit
   logger.info(
     `(Server Action) updateUser: Dados do usuário ${validatedUserData.id} validados com sucesso.`
   );

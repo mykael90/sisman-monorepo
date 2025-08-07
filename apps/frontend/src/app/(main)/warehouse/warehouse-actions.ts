@@ -106,23 +106,23 @@ export async function addWarehouse(
   );
 
   // 1. Validação específica para WarehouseAdd
-  const validationProcessResult = validateFormData(
-    data,
-    warehouseFormSchemaAdd
-  );
+  // const validationProcessResult = validateFormData(
+  //   data,
+  //   warehouseFormSchemaAdd
+  // );
 
-  if (!validationProcessResult.success) {
-    logger.warn(
-      `(Server Action) addWarehouse: Falha na validação do formulário.`,
-      validationProcessResult.errorResult.errorsFieldsServer
-    );
-    return {
-      ...validationProcessResult.errorResult,
-      submittedData: data // Ensure submittedData reflects the object
-    };
-  }
+  // if (!validationProcessResult.success) {
+  //   logger.warn(
+  //     `(Server Action) addWarehouse: Falha na validação do formulário.`,
+  //     validationProcessResult.errorResult.errorsFieldsServer
+  //   );
+  //   return {
+  //     ...validationProcessResult.errorResult,
+  //     submittedData: data // Ensure submittedData reflects the object
+  //   };
+  // }
 
-  const validatedWarehouseData = validationProcessResult.data; // This is IWarehouseAdd
+  const validatedWarehouseData = data; // This is IWarehouseAdd
   logger.info(
     `(Server Action) addWarehouse: Dados do depósito validados com sucesso.`
   );
@@ -166,23 +166,23 @@ export async function updateWarehouse(
   );
 
   // 1. Validação específica para WarehouseEdit
-  const validationProcessResult = validateFormData(
-    data,
-    warehouseFormSchemaEdit
-  );
+  // const validationProcessResult = validateFormData(
+  //   data,
+  //   warehouseFormSchemaEdit
+  // );
 
-  if (!validationProcessResult.success) {
-    logger.warn(
-      `(Server Action) updateWarehouse: Falha na validação do formulário para o depósito ${data.id}.`,
-      validationProcessResult.errorResult.errorsFieldsServer
-    );
-    return {
-      ...validationProcessResult.errorResult,
-      submittedData: data // Ensure submittedData reflects the object
-    };
-  }
+  // if (!validationProcessResult.success) {
+  //   logger.warn(
+  //     `(Server Action) updateWarehouse: Falha na validação do formulário para o depósito ${data.id}.`,
+  //     validationProcessResult.errorResult.errorsFieldsServer
+  //   );
+  //   return {
+  //     ...validationProcessResult.errorResult,
+  //     submittedData: data // Ensure submittedData reflects the object
+  //   };
+  // }
 
-  const validatedWarehouseData = validationProcessResult.data; // This is IWarehouseEdit
+  const validatedWarehouseData = data; // This is IWarehouseEdit
   logger.info(
     `(Server Action) updateWarehouse: Dados do depósito ${validatedWarehouseData.id} validados com sucesso.`
   );

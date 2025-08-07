@@ -4,8 +4,8 @@ import { getSismanAccessToken } from '@/lib/auth/get-access-token';
 import { fetchApiSisman } from '@/lib/fetch/api-sisman';
 import { revalidatePath } from 'next/cache';
 import {
-  MaintenanceInstanceAdd,
-  MaintenanceInstanceEdit
+  IMaintenanceInstanceAdd,
+  IMaintenanceInstanceEdit
 } from './maintenance-instance-types';
 import { handleApiAction } from '@/lib/fetch/handle-form-action-sisman';
 import type { IActionResultForm } from '../../../../types/types-server-actions';
@@ -40,10 +40,10 @@ export async function getRefreshedInstances() {
 export async function showInstance(
   accessToken: string,
   id: number
-): Promise<MaintenanceInstanceEdit> {
+): Promise<IMaintenanceInstanceEdit> {
   try {
     const data = await fetchApiSisman(`${API_PATH}/${id}`, accessToken);
-    return data as MaintenanceInstanceEdit;
+    return data as IMaintenanceInstanceEdit;
   } catch (error) {
     console.error('Failed to fetch maintenance instance:', error);
     throw error;
@@ -52,14 +52,15 @@ export async function showInstance(
 
 export async function addInstance(
   _prevState: unknown,
-  data: MaintenanceInstanceAdd
-): Promise<IActionResultForm<MaintenanceInstanceAdd>> {
+  data: IMaintenanceInstanceAdd
+): Promise<IActionResultForm<IMaintenanceInstanceAdd>> {
+  // No server-side validation for addInstance
   try {
     const accessToken = await getSismanAccessToken();
     return await handleApiAction<
-      MaintenanceInstanceAdd,
+      IMaintenanceInstanceAdd,
       any,
-      MaintenanceInstanceAdd
+      IMaintenanceInstanceAdd
     >(
       data,
       data,
@@ -81,14 +82,15 @@ export async function addInstance(
 
 export async function updateInstance(
   _prevState: unknown,
-  { id, ...data }: MaintenanceInstanceEdit
-): Promise<IActionResultForm<MaintenanceInstanceEdit>> {
+  { id, ...data }: IMaintenanceInstanceEdit
+): Promise<IActionResultForm<IMaintenanceInstanceEdit>> {
+  // No server-side validation for updateInstance
   try {
     const accessToken = await getSismanAccessToken();
     return await handleApiAction<
-      MaintenanceInstanceEdit,
+      IMaintenanceInstanceEdit,
       any,
-      MaintenanceInstanceEdit
+      IMaintenanceInstanceEdit
     >(
       { id, ...data },
       { id, ...data },

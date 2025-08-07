@@ -1,7 +1,15 @@
 import { AnyFieldApi } from '@tanstack/react-form';
 import { Input } from '../ui/input';
 import { Search } from 'lucide-react';
-
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue
+} from '../ui/select';
 // Componente FormInputField usando AnyFieldApi
 export function FormInputField({
   field,
@@ -58,6 +66,83 @@ export function FormInputField({
         // Usar errors.length > 0 é muitas vezes mais direto.
         <em className='mt-1 block text-xs text-red-500'>
           {/* Mapeia os erros para extrair apenas a propriedade 'message' e depois junta com vírgula */}
+          {field.state.meta.errors
+            .map((error: any) => error.message)
+            .join('; ')}
+        </em>
+      ) : null}
+      {field.state.meta.isValidating ? (
+        <em className='mt-1 text-xs text-blue-500'>Validating...</em>
+      ) : null}
+    </div>
+  );
+}
+
+export function FormDropdown({
+  field,
+  label,
+  placeholder,
+  showLabel = true,
+  className = '',
+  options,
+  onValueChange,
+  ...props
+}: {
+  field: AnyFieldApi;
+  label: string;
+  placeholder?: string;
+  showLabel?: boolean;
+  className?: string;
+  options: { value: string | number; label: string }[];
+  onValueChange?: (value: string) => void;
+  [key: string]: any;
+}) {
+  const value = String(field.state.value);
+
+  return (
+    <div className={className}>
+      {showLabel && (
+        <label
+          htmlFor={field.name}
+          className='mb-1 block text-sm font-medium text-gray-700'
+        >
+          {label}
+        </label>
+      )}
+      <Select
+        value={value}
+        onValueChange={(val) => {
+          field.handleChange(val);
+          if (onValueChange) {
+            onValueChange(val);
+          }
+        }}
+        onOpenChange={(open) => {
+          if (!open) {
+            field.handleBlur();
+          }
+        }}
+        {...props}
+      >
+        <SelectTrigger className='w-full'>
+          <SelectValue placeholder={placeholder} />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            <SelectLabel>{label}</SelectLabel>
+            {options.map((option) => (
+              <SelectItem
+                key={String(option.value)}
+                value={String(option.value)}
+              >
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+      {!field.state.meta.isValid && field.state.meta.isBlurred ? (
+        <em className='mt-1 block text-xs text-red-500'>
           {field.state.meta.errors
             .map((error: any) => error.message)
             .join('; ')}

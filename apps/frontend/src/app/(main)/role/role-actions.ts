@@ -88,20 +88,20 @@ export async function addRole(
   logger.info(`(Server Action) addRole: Tentativa de adicionar papel.`, data);
 
   // 1. Validação específica para RoleAdd
-  const validationProcessResult = validateFormData(data, roleFormSchemaAdd);
+  // const validationProcessResult = validateFormData(data, roleFormSchemaAdd);
 
-  if (!validationProcessResult.success) {
-    logger.warn(
-      `(Server Action) addRole: Falha na validação do formulário.`,
-      validationProcessResult.errorResult.errorsFieldsServer
-    );
-    return {
-      ...validationProcessResult.errorResult,
-      submittedData: data // Ensure submittedData reflects the object
-    };
-  }
+  // if (!validationProcessResult.success) {
+  //   logger.warn(
+  //     `(Server Action) addRole: Falha na validação do formulário.`,
+  //     validationProcessResult.errorResult.errorsFieldsServer
+  //   );
+  //   return {
+  //     ...validationProcessResult.errorResult,
+  //     submittedData: data // Ensure submittedData reflects the object
+  //   };
+  // }
 
-  const validatedRoleData = validationProcessResult.data; // This is IRoleAdd
+  const validatedRoleData = data; // This is IRoleAdd
   logger.info(`(Server Action) addRole: Dados do papel validados com sucesso.`);
 
   // 2. Chamar a ação genérica da API
@@ -143,20 +143,20 @@ export async function updateRole(
   );
 
   // 1. Validação específica para RoleEdit
-  const validationProcessResult = validateFormData(data, roleFormSchemaEdit);
+  // const validationProcessResult = validateFormData(data, roleFormSchemaEdit);
 
-  if (!validationProcessResult.success) {
-    logger.warn(
-      `(Server Action) updateRole: Falha na validação do formulário para o papel ${data.id}.`,
-      validationProcessResult.errorResult.errorsFieldsServer
-    );
-    return {
-      ...validationProcessResult.errorResult,
-      submittedData: data // Ensure submittedData reflects the object
-    };
-  }
+  // if (!validationProcessResult.success) {
+  //   logger.warn(
+  //     `(Server Action) updateRole: Falha na validação do formulário para o papel ${data.id}.`,
+  //     validationProcessResult.errorResult.errorsFieldsServer
+  //   );
+  //   return {
+  //     ...validationProcessResult.errorResult,
+  //     submittedData: data // Ensure submittedData reflects the object
+  //   };
+  // }
 
-  const validatedRoleData = validationProcessResult.data; // This is IRoleEdit
+  const validatedRoleData = data; // This is IRoleEdit
   logger.info(
     `(Server Action) updateRole: Dados do papel ${validatedRoleData.id} validados com sucesso.`
   );

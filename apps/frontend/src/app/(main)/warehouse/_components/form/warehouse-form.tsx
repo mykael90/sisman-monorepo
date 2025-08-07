@@ -1,14 +1,12 @@
 'use client';
 
-import {
-  mergeForm,
-  useForm,
-  useTransform,
-  FieldApi
-} from '@tanstack/react-form';
+import { mergeForm, useForm, useTransform } from '@tanstack/react-form';
 import { useStore } from '@tanstack/react-store';
 import { FC, useActionState } from 'react';
-import { FormInputField } from '@/components/form-tanstack/form-input-fields';
+import {
+  FormInputField,
+  FormDropdown
+} from '@/components/form-tanstack/form-input-fields';
 import { Button } from '@/components/ui/button';
 import { FormSuccessDisplay } from '@/components/form-tanstack/form-success-display';
 import { ErrorServerForm } from '@/components/form-tanstack/error-server-form';
@@ -72,7 +70,7 @@ export default function WarehouseForm<TMode extends 'add' | 'edit'>({
     initialServerState
   );
 
-  const listMaintenanceInstances = { relatedData };
+  const listMaintenanceInstances = relatedData.listMaitenanceInstances;
 
   const form = useForm({
     defaultValues: defaultData,
@@ -196,12 +194,16 @@ export default function WarehouseForm<TMode extends 'add' | 'edit'>({
       <form.Field
         name='maintenanceInstanceId'
         children={(field: any) => (
-          <FormInputField
+          <FormDropdown
             field={field}
-            type='number'
             label={fieldLabels.maintenanceInstanceId}
-            placeholder='ID da instância de manutenção'
+            placeholder={fieldLabels.maintenanceInstanceId}
             className='mb-4'
+            options={listMaintenanceInstances.map((instance) => ({
+              value: String(instance.id),
+              label: `${instance.name} (${instance.sipacId})`
+            }))}
+            onValueChange={(value) => field.handleChange(Number(value))}
           />
         )}
       />
