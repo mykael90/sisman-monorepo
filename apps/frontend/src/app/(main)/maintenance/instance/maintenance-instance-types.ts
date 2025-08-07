@@ -1,6 +1,7 @@
 import { Prisma } from '@sisman/prisma';
 
-export type MaintenanceInstanceList = Prisma.MaintenanceInstanceGetPayload<{
+// Interface para listar instâncias de manutenção
+export type IMaintenanceInstanceList = Prisma.MaintenanceInstanceGetPayload<{
   select: {
     id: true;
     name: true;
@@ -11,12 +12,17 @@ export type MaintenanceInstanceList = Prisma.MaintenanceInstanceGetPayload<{
   };
 }>;
 
-export type MaintenanceInstanceAdd = Prisma.MaintenanceInstanceCreateInput;
-export type MaintenanceInstanceEdit = Prisma.MaintenanceInstanceUpdateInput & {
-  id: number;
-};
+// Interface para adicionar uma nova instância de manutenção
+export interface IMaintenanceInstanceAdd
+  extends Prisma.MaintenanceInstanceCreateManyInput {}
 
-export type MaintenanceInstanceWithRelations =
+// Interface para editar uma instância de manutenção
+export interface IMaintenanceInstanceEdit extends IMaintenanceInstanceAdd {
+  id: number;
+}
+
+// Interface para dados completos de uma instância de manutenção com relações
+export type IMaintenanceInstanceWithRelations =
   Prisma.MaintenanceInstanceGetPayload<{
     include: {
       currentMaintenanceRequests: true;

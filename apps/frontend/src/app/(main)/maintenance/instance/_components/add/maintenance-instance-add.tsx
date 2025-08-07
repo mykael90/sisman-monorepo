@@ -7,8 +7,8 @@ import MaintenanceInstanceForm from '../form/maintenance-instance-form';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { IActionResultForm } from '../../../../../../types/types-server-actions';
-import { IMaintenanceInstanceAdd } from '../maintenance-instance-types';
 import { maintenanceInstanceFormSchemaAdd } from '../form/maintenance-instance-form-validation';
+import { IMaintenanceInstanceAdd } from '../../maintenance-instance-types';
 
 export default function MaintenanceInstanceAdd({
   isInDialog = false
@@ -20,7 +20,7 @@ export default function MaintenanceInstanceAdd({
     sipacId: ''
   };
 
-  const fieldLabels: Record<keyof IMaintenanceInstanceAdd, string> = {
+  const fieldLabels: Partial<Record<keyof IMaintenanceInstanceAdd, string>> = {
     name: 'Nome da Instância',
     sipacId: 'Código SIPAC'
   };

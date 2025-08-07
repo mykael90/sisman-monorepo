@@ -1,5 +1,5 @@
 import { ColumnDef, createColumnHelper, Row } from '@tanstack/react-table';
-import { MaintenanceInstanceList } from '../../maintenance-instance-types';
+import { IMaintenanceInstanceList } from '../../maintenance-instance-types';
 import { DataTableColumnHeader } from '@/components/table-tanstack/data-table-column-header';
 import { Button } from '@/components/ui/button';
 import { Edit, Trash2 } from 'lucide-react';
@@ -7,7 +7,7 @@ import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
-const columnHelper = createColumnHelper<MaintenanceInstanceList>();
+const columnHelper = createColumnHelper<IMaintenanceInstanceList>();
 
 type ActionHandlers<TData> = {
   [key: string]: (row: Row<TData>) => void;
@@ -15,24 +15,24 @@ type ActionHandlers<TData> = {
 
 export const createActions = (
   router: AppRouterInstance
-): ActionHandlers<MaintenanceInstanceList> => ({
-  onEdit: (row: Row<MaintenanceInstanceList>) => {
+): ActionHandlers<IMaintenanceInstanceList> => ({
+  onEdit: (row: Row<IMaintenanceInstanceList>) => {
     if (row.original.id) {
-      router.push(`maintenance/instance/edit/${row.original.id}`);
+      router.push(`instance/edit/${row.original.id}`);
     } else {
       console.error('Instance ID missing');
       throw new Error('Instance ID required for navigation');
     }
   },
-  onDelete: (row: Row<MaintenanceInstanceList>) => {
+  onDelete: (row: Row<IMaintenanceInstanceList>) => {
     console.log('Delete instance', row.original);
     // Implementar lógica de deleção
   }
 });
 
 export const columns = (
-  configuredActions: ActionHandlers<MaintenanceInstanceList>
-): ColumnDef<MaintenanceInstanceList, any>[] => [
+  configuredActions: ActionHandlers<IMaintenanceInstanceList>
+): ColumnDef<IMaintenanceInstanceList, any>[] => [
   columnHelper.accessor('name', {
     header: 'Nome',
     cell: (props) => props.getValue()

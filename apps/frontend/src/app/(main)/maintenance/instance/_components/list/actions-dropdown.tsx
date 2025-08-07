@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { MaintenanceInstanceWithRelations } from '../../maintenance-instance-types';
+import { IMaintenanceInstanceWithRelations } from '../../maintenance-instance-types';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,7 +14,7 @@ import { MoreHorizontal } from 'lucide-react';
 export function ActionsDropdown({
   instance
 }: {
-  instance: MaintenanceInstanceWithRelations;
+  instance: IMaintenanceInstanceWithRelations;
 }) {
   const router = useRouter();
 

@@ -1,6 +1,11 @@
 'use client';
 
-import { mergeForm, useForm, useTransform } from '@tanstack/react-form';
+import {
+  mergeForm,
+  useForm,
+  useTransform,
+  FieldApi
+} from '@tanstack/react-form';
 import { useStore } from '@tanstack/react-store';
 import { FC, useActionState } from 'react';
 import { FormInputField } from '@/components/form-tanstack/form-input-fields';
@@ -8,14 +13,18 @@ import { Button } from '@/components/ui/button';
 import { FormSuccessDisplay } from '@/components/form-tanstack/form-success-display';
 import { ErrorServerForm } from '@/components/form-tanstack/error-server-form';
 import type { IActionResultForm } from '../../../../../../types/types-server-actions';
-import type {
-  MaintenanceInstanceAdd,
-  MaintenanceInstanceEdit
+import {
+  IMaintenanceInstanceAdd,
+  IMaintenanceInstanceEdit,
+  IMaintenanceInstanceList
 } from '../../maintenance-instance-types';
+import { getFilteredPayloadForUpdate } from '@/lib/form-utils'; // Import the new utility
 import { FilePlus, Save } from 'lucide-react';
 
 type MaintenanceInstanceFormData<TMode extends 'add' | 'edit'> =
-  TMode extends 'add' ? MaintenanceInstanceAdd : MaintenanceInstanceEdit;
+  TMode extends 'add'
+    ? Pick<IMaintenanceInstanceAdd, 'name' | 'sipacId'>
+    : Pick<IMaintenanceInstanceEdit, 'id' | 'name' | 'sipacId'>;
 
 export default function MaintenanceInstanceForm<TMode extends 'add' | 'edit'>({
   mode,
@@ -64,13 +73,19 @@ export default function MaintenanceInstanceForm<TMode extends 'add' | 'edit'>({
       (baseForm) => mergeForm(baseForm, serverState ?? {}),
       [serverState]
     ),
-    onSubmit: async ({
-      value
-    }: {
-      value: MaintenanceInstanceFormData<TMode>;
-    }) => {
+    validators: formSchema ? { onChange: formSchema } : undefined,
+    onSubmit: async ({ value, formApi }) => {
       console.log('Maintenance Instance Form submitted with values:', value);
-      await dispatchFormAction(value);
+
+      const payload = getFilteredPayloadForUpdate(
+        mode,
+        value,
+        defaultData,
+        formApi,
+        'id' as keyof MaintenanceInstanceFormData<TMode>
+      );
+
+      await dispatchFormAction(payload as any);
     }
   });
 
@@ -85,7 +100,10 @@ export default function MaintenanceInstanceForm<TMode extends 'add' | 'edit'>({
     onCancel && onCancel();
   };
 
-  useStore(form.store, (formState) => formState.errorsServer);
+  useStore(
+    form.store,
+    (formState: typeof form.store.state) => formState.errorsServer
+  );
 
   if (serverState?.isSubmitSuccessful) {
     return (
@@ -122,7 +140,7 @@ export default function MaintenanceInstanceForm<TMode extends 'add' | 'edit'>({
       onSubmit={(e) => {
         e.preventDefault();
         e.stopPropagation();
-        form.handleSubmit();
+        form.handleSubmit(); // Call the form's handleSubmit method
       }}
       onReset={(e) => {
         e.preventDefault();
@@ -134,7 +152,7 @@ export default function MaintenanceInstanceForm<TMode extends 'add' | 'edit'>({
 
       <form.Field
         name='name'
-        children={(field) => (
+        children={(field: any) => (
           <FormInputField
             field={field}
             label={fieldLabels.name}
@@ -146,7 +164,7 @@ export default function MaintenanceInstanceForm<TMode extends 'add' | 'edit'>({
 
       <form.Field
         name='sipacId'
-        children={(field) => (
+        children={(field: any) => (
           <FormInputField
             field={field}
             label={fieldLabels.sipacId}
@@ -162,11 +180,13 @@ export default function MaintenanceInstanceForm<TMode extends 'add' | 'edit'>({
           </Button>
         )}
         <form.Subscribe
-          selector={(state) => [
-            state.canSubmit,
-            state.isTouched,
-            state.isValidating
-          ]}
+          selector={(state: typeof form.state) =>
+            [state.canSubmit, state.isTouched, state.isValidating] as [
+              boolean,
+              boolean,
+              boolean
+            ]
+          }
         >
           {([canSubmit, isTouched, isValidating]) => (
             <Button
