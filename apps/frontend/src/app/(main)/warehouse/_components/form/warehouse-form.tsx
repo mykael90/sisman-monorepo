@@ -20,6 +20,7 @@ import {
 } from '../../warehouse-types';
 import { getFilteredPayloadForUpdate } from '@/lib/form-utils';
 import { FilePlus, Save } from 'lucide-react';
+import { IMaintenanceInstanceList } from '../../../maintenance/instance/maintenance-instance-types';
 
 type WarehouseFormData<TMode extends 'add' | 'edit'> = TMode extends 'add'
   ? Pick<
@@ -45,7 +46,8 @@ export default function WarehouseForm<TMode extends 'add' | 'edit'>({
   onClean,
   isInDialog = false,
   submitButtonText,
-  SubmitButtonIcon
+  SubmitButtonIcon,
+  relatedData
 }: {
   mode: TMode;
   defaultData: WarehouseFormData<TMode>;
@@ -63,11 +65,14 @@ export default function WarehouseForm<TMode extends 'add' | 'edit'>({
   isInDialog?: boolean;
   submitButtonText?: string;
   SubmitButtonIcon?: FC<{ className?: string }>;
+  relatedData: { listMaitenanceInstances: IMaintenanceInstanceList[] };
 }) {
   const [serverState, dispatchFormAction, isPending] = useActionState(
     formActionProp,
     initialServerState
   );
+
+  const listMaintenanceInstances = { relatedData };
 
   const form = useForm({
     defaultValues: defaultData,

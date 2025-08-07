@@ -9,8 +9,15 @@ import { useState } from 'react';
 import { IActionResultForm } from '../../../../../types/types-server-actions';
 import { warehouseFormSchemaAdd } from '../form/warehouse-form-validation';
 import { IWarehouseAdd } from '../../warehouse-types';
+import { IMaintenanceInstanceList } from '../../../maintenance/instance/maintenance-instance-types';
 
-export function WarehouseAdd({ isInDialog = false }: { isInDialog?: boolean }) {
+export function WarehouseAdd({
+  isInDialog = false,
+  relatedData
+}: {
+  isInDialog?: boolean;
+  relatedData: { listMaitenanceInstances: IMaintenanceInstanceList[] };
+}) {
   const defaultData: IWarehouseAdd = {
     name: '',
     code: '',
@@ -61,6 +68,7 @@ export function WarehouseAdd({ isInDialog = false }: { isInDialog?: boolean }) {
         SubmitButtonIcon={FilePlus}
         submitButtonText='Criar Depósito'
         isInDialog={isInDialog}
+        relatedData={relatedData}
       />
     </div>
   );

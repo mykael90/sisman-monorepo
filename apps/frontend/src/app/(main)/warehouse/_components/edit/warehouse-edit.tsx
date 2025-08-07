@@ -9,15 +9,18 @@ import { useState } from 'react';
 import { IActionResultForm } from '../../../../../types/types-server-actions';
 import { warehouseFormSchemaEdit } from '../form/warehouse-form-validation';
 import { IWarehouseEdit } from '../../warehouse-types';
+import { IMaintenanceInstanceList } from '../../../maintenance/instance/maintenance-instance-types';
 
 interface WarehouseEditProps {
   initialWarehouse: IWarehouseEdit;
   isInDialog?: boolean;
+  relatedData: { listMaitenanceInstances: IMaintenanceInstanceList[] };
 }
 
 export function WarehouseEdit({
   initialWarehouse,
-  isInDialog = false
+  isInDialog = false,
+  relatedData
 }: WarehouseEditProps) {
   const defaultData: IWarehouseEdit = initialWarehouse;
 
@@ -63,6 +66,7 @@ export function WarehouseEdit({
         SubmitButtonIcon={Save}
         submitButtonText='Salvar Alterações'
         isInDialog={isInDialog}
+        relatedData={relatedData}
       />
     </div>
   );
