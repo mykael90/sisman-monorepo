@@ -2,6 +2,7 @@ import UserAdd from '../_components/add/user-add';
 import { getSismanAccessToken } from '../../../../lib/auth/get-access-token';
 import Logger from '../../../../lib/logger';
 import { getRoles } from '../../role/role-actions';
+import { getMaintenanceInstances } from '../../maintenance/instance/maintenance-instance-actions';
 
 const logger = new Logger('user/add/page.tsx');
 
@@ -11,7 +12,15 @@ export default async function Page({
   isInDialog?: boolean;
 }) {
   const accessTokenSisman = await getSismanAccessToken();
-  const [possibleRoles] = await Promise.all([getRoles(accessTokenSisman)]);
+  const [listRoles, listMaintenanceInstances] = await Promise.all([
+    getRoles(accessTokenSisman),
+    getMaintenanceInstances(accessTokenSisman)
+  ]);
 
-  return <UserAdd possibleRoles={possibleRoles} isInDialog={isInDialog} />;
+  return (
+    <UserAdd
+      relatedData={{ listRoles, listMaintenanceInstances }}
+      isInDialog={isInDialog}
+    />
+  );
 }

@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import FormAddHeader from '../../../../../components/form-tanstack/form-add-header';
 import UserForm from '../form/user-form';
-import { IUser, IUserEdit } from '../../user-types';
+import { IUser, IUserEdit, IUserRelatedData } from '../../user-types';
 import { IActionResultForm } from '../../../../../types/types-server-actions';
 import { Save, UserPlus } from 'lucide-react';
 import { updateUser } from '../../user-actions';
@@ -16,11 +16,11 @@ import { removeUnreferencedKeys } from '../../../../../lib/form-utils';
 // The page will manage its own state and submission logic.
 export default function UserEdit({
   initialUser,
-  possibleRoles,
+  relatedData,
   isInDialog = false
 }: {
   initialUser: IUserEdit;
-  possibleRoles: IRole[];
+  relatedData: IUserRelatedData;
   isInDialog?: boolean;
 }) {
   const fieldLabels: Record<NonOptionalKeys<IUserEdit>, string> = {
@@ -29,7 +29,8 @@ export default function UserEdit({
     login: 'Login',
     email: 'E-mail',
     roles: 'Permissões',
-    isActive: 'Ativo'
+    isActive: 'Ativo',
+    maintenanceInstanceId: 'Instância de Manutenção'
   };
 
   const defaultData = removeUnreferencedKeys(initialUser, fieldLabels);
@@ -48,7 +49,7 @@ export default function UserEdit({
 
   return (
     <div className='mx-auto w-full rounded-lg bg-white shadow-lg'>
-      {/* {JSON.stringify(possibleRoles)} */}
+      {/* {JSON.stringify(listRoles)} */}
       {/* Header */}
       <FormAddHeader
         Icon={UserPlus}
@@ -67,7 +68,7 @@ export default function UserEdit({
         formSchema={userFormSchemaEdit}
         SubmitButtonIcon={Save}
         submitButtonText='Salvar'
-        possibleRoles={possibleRoles}
+        relatedData={relatedData}
         isInDialog={isInDialog}
       ></UserForm>
     </div>

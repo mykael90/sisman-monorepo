@@ -14,12 +14,12 @@ export default async function page(props: {
   const preDefaultData = { name, login, email };
 
   const accessTokenSisman = await getSismanAccessToken();
-  const [possibleRoles] = await Promise.all([getRoles(accessTokenSisman)]);
+  const [listRoles] = await Promise.all([getRoles(accessTokenSisman)]);
 
   return (
     <Modal>
       <UserAdd
-        possibleRoles={possibleRoles}
+        relatedData={listRoles}
         isInDialog={true}
         preDefaultData={preDefaultData}
       />

@@ -1,5 +1,5 @@
-import { User, UserRole, UserRoletype, Prisma } from '@sisman/prisma';
-import { IRole, IRoleAdd, IRole } from '../role/role-types';
+import { User, Prisma } from '@sisman/prisma';
+import { IRole, IRoleAdd } from '../role/role-types';
 import { IMaintenanceInstance } from '../maintenance/instance/maintenance-instance-types';
 
 const dateFields = ['createdAt', 'updatedAt'];
@@ -41,6 +41,7 @@ export type IUserWithRelations = Prisma.UserGetPayload<{
 
 export interface IUserAdd extends Prisma.UserCreateManyInput {
   roles: Record<'id', number>[];
+  maintenanceInstanceId: number;
 }
 
 export interface IUserEdit extends IUserAdd {

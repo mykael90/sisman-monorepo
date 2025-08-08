@@ -2,6 +2,7 @@ import UserEdit from '../../_components/edit/user-edit';
 import { getSismanAccessToken } from '../../../../../lib/auth/get-access-token';
 import { showUser } from '../../user-actions';
 import { getRoles } from '../../../role/role-actions';
+import { getMaintenanceInstances } from '../../../maintenance/instance/maintenance-instance-actions';
 
 export default async function Page({
   params,
@@ -13,15 +14,16 @@ export default async function Page({
   const { id } = await params;
   const accessTokenSisman = await getSismanAccessToken();
 
-  const [initialUser, possibleRoles] = await Promise.all([
+  const [initialUser, listRoles, listMaintenanceInstances] = await Promise.all([
     showUser(accessTokenSisman, id),
-    getRoles(accessTokenSisman)
+    getRoles(accessTokenSisman),
+    getMaintenanceInstances(accessTokenSisman)
   ]);
 
   return (
     <UserEdit
       initialUser={initialUser}
-      possibleRoles={possibleRoles}
+      relatedData={{ listRoles, listMaintenanceInstances }}
       isInDialog={isInDialog}
     />
   );

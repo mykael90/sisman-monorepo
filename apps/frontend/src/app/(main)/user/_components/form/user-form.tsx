@@ -4,7 +4,10 @@
 import { mergeForm, useForm, useTransform } from '@tanstack/react-form';
 import { useStore } from '@tanstack/react-store';
 import { FC, useActionState } from 'react';
-import { FormInputField } from '@/components/form-tanstack/form-input-fields';
+import {
+  FormDropdown,
+  FormInputField
+} from '@/components/form-tanstack/form-input-fields';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
@@ -12,7 +15,7 @@ import { UserPlus, Save } from 'lucide-react';
 import { IActionResultForm } from '../../../../../types/types-server-actions';
 import { FormSuccessDisplay } from '../../../../../components/form-tanstack/form-success-display';
 import { ErrorServerForm } from '../../../../../components/form-tanstack/error-server-form';
-import { IUser, IUserAdd, IUserEdit } from '../../user-types'; // Added IUser, IUserEdit
+import { IUser, IUserAdd, IUserEdit, IUserRelatedData } from '../../user-types'; // Added IUser, IUserEdit
 import { IRole } from '../../../role/role-types';
 
 // Helper type for form data based on mode
@@ -36,7 +39,7 @@ export default function UserForm<TMode extends 'add' | 'edit'>({
   onClean,
   submitButtonText,
   SubmitButtonIcon,
-  possibleRoles,
+  relatedData,
   isInDialog = false
 }: {
   // Explicitly defining props for the generic component
@@ -55,13 +58,15 @@ export default function UserForm<TMode extends 'add' | 'edit'>({
   onClean?: () => void;
   submitButtonText?: string;
   SubmitButtonIcon?: FC<{ className?: string }>;
-  possibleRoles?: IRole[];
+  relatedData: IUserRelatedData;
   isInDialog?: boolean;
 }) {
   const [serverState, dispatchFormAction, isPending] = useActionState(
     formActionProp,
     initialServerState
   );
+
+  const { listRoles, listMaintenanceInstances } = relatedData;
 
   const form = useForm({
     defaultValues: defaultData,
@@ -217,6 +222,23 @@ export default function UserForm<TMode extends 'add' | 'edit'>({
         )}
       </form.Field>
 
+      <form.Field
+        name='maintenanceInstanceId'
+        children={(field: any) => (
+          <FormDropdown
+            field={field}
+            label={fieldLabels.maintenanceInstanceId}
+            placeholder={fieldLabels.maintenanceInstanceId}
+            className='mb-4'
+            options={listMaintenanceInstances.map((instance) => ({
+              value: String(instance.id),
+              label: `${instance.name} (${instance.sipacId})`
+            }))}
+            onValueChange={(value) => field.handleChange(Number(value))}
+          />
+        )}
+      />
+
       {/* Roles Selection Field - STYLED TABLE SECTION */}
       <form.Field
         name='roles'
@@ -243,9 +265,9 @@ export default function UserForm<TMode extends 'add' | 'edit'>({
                 </div>
 
                 {/* Table Body */}
-                {possibleRoles && possibleRoles.length > 0 ? (
+                {listRoles && listRoles.length > 0 ? (
                   <div className='divide-y divide-slate-200'>
-                    {possibleRoles.map((role) => {
+                    {listRoles.map((role) => {
                       const roleId = role.id;
                       const isChecked = currentSelectedRoleObjects.some(
                         (selectedRole) => selectedRole.id === roleId

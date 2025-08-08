@@ -4,7 +4,7 @@ import type React from 'react';
 import { useState } from 'react';
 import FormAddHeader from '../../../../../components/form-tanstack/form-add-header';
 import UserForm from '../form/user-form';
-import { IUser, IUserAdd } from '../../user-types';
+import { IUser, IUserAdd, IUserRelatedData } from '../../user-types';
 import { IActionResultForm } from '../../../../../types/types-server-actions';
 import { UserPlus } from 'lucide-react';
 import { addUser } from '../../user-actions';
@@ -16,11 +16,11 @@ import { useRouter } from 'next/navigation';
 // We are transforming this into a page, so it won't take props like onClose or onSubmit.
 // The page will manage its own state and submission logic.
 export default function UserAdd({
-  possibleRoles,
+  relatedData,
   isInDialog = false,
   preDefaultData = {}
 }: {
-  possibleRoles: IRole[];
+  relatedData: IUserRelatedData;
   isInDialog?: boolean;
   preDefaultData?: Partial<IUserAdd>;
 }) {
@@ -29,6 +29,7 @@ export default function UserAdd({
     login: '',
     email: '',
     roles: [],
+    maintenanceInstanceId: 0,
     ...preDefaultData
   };
 
@@ -36,7 +37,8 @@ export default function UserAdd({
     name: 'Nome',
     login: 'Login',
     email: 'E-mail',
-    roles: 'Permissões'
+    roles: 'Permissões',
+    maintenanceInstanceId: 'Instância de Manutenção'
   };
 
   const initialServerState: IActionResultForm<IUserAdd, IUser> = {
@@ -76,7 +78,7 @@ export default function UserAdd({
         formSchema={userFormSchemaAdd}
         SubmitButtonIcon={UserPlus}
         submitButtonText='Criar Usuário'
-        possibleRoles={possibleRoles}
+        relatedData={relatedData}
         isInDialog={isInDialog}
       ></UserForm>
     </div>

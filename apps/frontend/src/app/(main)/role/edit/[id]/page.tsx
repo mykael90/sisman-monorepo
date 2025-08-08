@@ -15,7 +15,7 @@ export default async function Page({
   // Fetch the specific role data
   const initialRole = await showRole(accessTokenSisman, id);
 
-  // No extra data like possibleRoles needed for Role edit based on current types
+  // No extra data like listRoles needed for Role edit based on current types
 
   return <RoleEdit initialRole={initialRole} isInDialog={isInDialog} />;
 }
