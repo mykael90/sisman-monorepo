@@ -20,13 +20,15 @@ interface MaterialTableProps {
   onRemove: (id: number) => void;
   onUpdateQuantity: (id: number, quantity: number) => void;
   hideMaterialRequestItemId?: boolean;
+  readOnly?: boolean;
 }
 
 export function MaterialTable({
   materials,
   onRemove,
   onUpdateQuantity,
-  hideMaterialRequestItemId // Destructure the prop here
+  hideMaterialRequestItemId,
+  readOnly = false // Destructure the prop here, with a default of false
 }: MaterialTableProps) {
   const handleQuantityChange = (id: number, change: number) => {
     const material = materials.find((m) => m.id === id);
@@ -42,7 +44,9 @@ export function MaterialTable({
   if (materials.length === 0) {
     return (
       <div className='text-muted-foreground py-8 text-center'>
-        No materials added yet. Use the search above to add materials.
+        {readOnly
+          ? 'No materials for this request.'
+          : 'No materials added yet. Use the search above to add materials.'}
       </div>
     );
   }
@@ -73,9 +77,11 @@ export function MaterialTable({
                   Material Request Item ID
                 </th>
               )}
-              <th className='px-4 py-3 text-left text-sm font-medium text-gray-900'>
-                Actions
-              </th>
+              {!readOnly && (
+                <th className='px-4 py-3 text-left text-sm font-medium text-gray-900'>
+                  Actions
+                </th>
+              )}
             </tr>
           </thead>
           <tbody className='divide-y divide-gray-200'>
@@ -104,53 +110,59 @@ export function MaterialTable({
                   </Badge>
                 </td>
                 <td className='px-4 py-3'>
-                  <div className='flex items-center gap-2'>
-                    <Button
-                      variant='outline'
-                      size='sm'
-                      onClick={() => handleQuantityChange(material.id, -1)}
-                      disabled={material.qtyToRemove <= 0}
-                    >
-                      <Minus className='h-3 w-3' />
-                    </Button>
-                    <Input
-                      type='number'
-                      value={material.qtyToRemove}
-                      onChange={(e) =>
-                        onUpdateQuantity(
-                          material.id,
-                          parseInt(e.target.value) || 0
-                        )
-                      }
-                      className='w-16 text-center'
-                      min='0'
-                      max={material.stockQty}
-                    />
-                    <Button
-                      variant='outline'
-                      size='sm'
-                      onClick={() => handleQuantityChange(material.id, 1)}
-                      disabled={material.qtyToRemove >= material.stockQty}
-                    >
-                      <Plus className='h-3 w-3' />
-                    </Button>
-                  </div>
+                  {readOnly ? (
+                    <p className='text-gray-900'>{material.qtyToRemove}</p>
+                  ) : (
+                    <div className='flex items-center gap-2'>
+                      <Button
+                        variant='outline'
+                        size='sm'
+                        onClick={() => handleQuantityChange(material.id, -1)}
+                        disabled={material.qtyToRemove <= 0}
+                      >
+                        <Minus className='h-3 w-3' />
+                      </Button>
+                      <Input
+                        type='number'
+                        value={material.qtyToRemove}
+                        onChange={(e) =>
+                          onUpdateQuantity(
+                            material.id,
+                            parseInt(e.target.value) || 0
+                          )
+                        }
+                        className='w-16 text-center'
+                        min='0'
+                        max={material.stockQty}
+                      />
+                      <Button
+                        variant='outline'
+                        size='sm'
+                        onClick={() => handleQuantityChange(material.id, 1)}
+                        disabled={material.qtyToRemove >= material.stockQty}
+                      >
+                        <Plus className='h-3 w-3' />
+                      </Button>
+                    </div>
+                  )}
                 </td>
                 {!hideMaterialRequestItemId && (
                   <td className='px-4 py-3 text-sm text-gray-900'>
                     {material.materialRequestItemId}
                   </td>
                 )}
-                <td className='px-4 py-3'>
-                  <Button
-                    variant='outline'
-                    size='sm'
-                    onClick={() => onRemove(material.id)}
-                    className='text-red-600 hover:text-red-700'
-                  >
-                    <Trash2 className='h-4 w-4' />
-                  </Button>
-                </td>
+                {!readOnly && (
+                  <td className='px-4 py-3'>
+                    <Button
+                      variant='outline'
+                      size='sm'
+                      onClick={() => onRemove(material.id)}
+                      className='text-red-600 hover:text-red-700'
+                    >
+                      <Trash2 className='h-4 w-4' />
+                    </Button>
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>
