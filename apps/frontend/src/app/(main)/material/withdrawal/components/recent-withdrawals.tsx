@@ -5,8 +5,8 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Clock, Eye, Package } from 'lucide-react';
 
-export function RecentOutputs() {
-  const recentOutputs = [
+export function RecentWithdrawals() {
+  const recentWithdrawals = [
     {
       id: 'OUT-2024-001',
       date: '2024-01-15',
@@ -49,22 +49,22 @@ export function RecentOutputs() {
       <CardHeader>
         <CardTitle className='flex items-center gap-2 text-lg'>
           <Clock className='h-5 w-5' />
-          Recent Outputs
+          Recent Withdrawals
         </CardTitle>
       </CardHeader>
       <CardContent className='space-y-4'>
-        {recentOutputs.map((output) => (
-          <div key={output.id} className='space-y-2 rounded-lg border p-3'>
+        {recentWithdrawals.map((withdrawal) => (
+          <div key={withdrawal.id} className='space-y-2 rounded-lg border p-3'>
             <div className='flex items-center justify-between'>
-              <span className='text-sm font-medium'>{output.id}</span>
-              {getStatusBadge(output.status)}
+              <span className='text-sm font-medium'>{withdrawal.id}</span>
+              {getStatusBadge(withdrawal.status)}
             </div>
             <div className='text-xs text-gray-600'>
-              <div>{output.date}</div>
+              <div>{withdrawal.date}</div>
               <div>
-                {output.type} • {output.items} items
+                {withdrawal.type} • {withdrawal.items} items
               </div>
-              <div>Recipient: {output.recipient}</div>
+              <div>Recipient: {withdrawal.recipient}</div>
             </div>
             <Button variant='outline' size='sm' className='w-full'>
               <Eye className='mr-1 h-3 w-3' />
@@ -74,7 +74,7 @@ export function RecentOutputs() {
         ))}
 
         <Button variant='outline' className='w-full'>
-          View All Outputs
+          View All Withdrawals
         </Button>
       </CardContent>
     </Card>

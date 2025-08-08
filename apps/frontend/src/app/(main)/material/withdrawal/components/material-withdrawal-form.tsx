@@ -35,11 +35,13 @@ import { AnyFieldApi, useField, useForm } from '@tanstack/react-form';
 import { MapPin, Building, User } from 'lucide-react';
 import Image from 'next/image';
 
-interface MaterialOutputFormProps {
-  outputType: string;
+interface MaterialWithdrawalFormProps {
+  withdrawalType: string;
 }
 
-export function MaterialOutputForm({ outputType }: MaterialOutputFormProps) {
+export function MaterialWithdrawalForm({
+  withdrawalType
+}: MaterialWithdrawalFormProps) {
   const [withdrawalDate, setWithdrawalDate] = useState<Date>(new Date());
   const [maintenanceRequest, setMaintenanceRequest] = useState<any>(null);
   const [warehouse, setWarehouse] = useState<any>(null);
@@ -293,7 +295,7 @@ export function MaterialOutputForm({ outputType }: MaterialOutputFormProps) {
           </Card>
         </details>
 
-        {/* Output Details */}
+        {/* Withdrawal Details */}
         <Card>
           <CardHeader>
             <CardTitle className='text-lg'>Formulário de Retirada</CardTitle>
@@ -631,7 +633,7 @@ export function MaterialOutputForm({ outputType }: MaterialOutputFormProps) {
             </CardContent>
           </Card>
         </details>
-        {/* Items for Output */}
+        {/* Items for Withdrawal */}
         {!linkMaterialRequest && (
           <Card>
             <CardHeader>
