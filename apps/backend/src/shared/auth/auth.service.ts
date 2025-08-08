@@ -27,6 +27,7 @@ import {
   UserRegisteredEvent
 } from './events/auth.events';
 import { SendEmailEvent } from '../notifications/events/notification.events';
+import { UserWithRelationsResponseDto } from '../../modules/users/dto/user.dto';
 
 type UserWithRoles = Prisma.UserGetPayload<{
   include: { roles: true };
@@ -47,7 +48,7 @@ export class AuthService {
     private gnConfig: ConfigType<typeof generalConfig>
   ) {}
 
-  createToken(user: User, roles: Role[] = []) {
+  createToken(user: UserWithRelationsResponseDto, roles: Role[] = []) {
     this.logger.log(`Criando token para o usuário ${user.name}`);
     return {
       access_token: this.jwtService.sign(
@@ -56,7 +57,8 @@ export class AuthService {
           login: user.login,
           name: user.name,
           email: user.email,
-          roles: roles.map((role) => role.id)
+          roles: roles.map((role) => role.id),
+          maintenanceInstanceId: user.maintenanceInstanceId
         },
         {
           expiresIn: 1 * 60 * 60 * 24, //in seconds (24hs)
@@ -71,6 +73,8 @@ export class AuthService {
       email: user.email,
       login: user.login,
       image: user.image,
+      maintenanceInstanceId: user.maintenanceInstanceId,
+      maintenanceInstance: user.maintenanceInstance,
       //implementar a chave expires_in baseado no valor da assinatura já informado
       expires_in: 1 * 60 * 60 * 24 //valor em segundos (corresponde a 24hs)
     };
@@ -130,13 +134,15 @@ export class AuthService {
         ? await this.prisma.user.findFirst({
             where: { login: token.login },
             include: {
-              roles: true
+              roles: true,
+              maintenanceInstance: true
             }
           })
         : await this.prisma.user.findFirst({
             where: { email: token.email },
             include: {
-              roles: true
+              roles: true,
+              maintenanceInstance: true
             }
           });
 
@@ -368,7 +374,8 @@ export class AuthService {
       const user: UserWithRoles | null = await this.prisma.user.findFirst({
         where: { email },
         include: {
-          roles: true
+          roles: true,
+          maintenanceInstance: true
         }
       });
       if (!user) {
