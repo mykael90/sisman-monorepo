@@ -626,6 +626,9 @@ model Warehouse {
   createdAt DateTime @default(now()) @db.Timestamp(0) // Timestamp for when the record was created.
   updatedAt DateTime @updatedAt @db.Timestamp(0) // Timestamp for the last update of the record.
 
+  //Indica se o depósito é o padrão do sistema ou não
+  isSystemDefault Boolean @default(false) // Indica se o depósito é o padrão do sistema ou não.
+
   defaultForInstance Boolean?
 
   // Relations
@@ -1235,6 +1238,9 @@ model MaterialWithdrawal {
   movementType   MaterialStockMovementType @relation(fields: [movementTypeId], references: [id])
 
   notes String? @db.Text
+
+  //campo para compatibilidade com base de dados antiga
+  legacy_place String?
 
   items MaterialWithdrawalItem[] // Os materiais que compõem esta retirada
 

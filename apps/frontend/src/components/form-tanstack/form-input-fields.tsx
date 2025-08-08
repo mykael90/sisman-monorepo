@@ -10,8 +10,8 @@ import {
   SelectTrigger,
   SelectValue
 } from '../ui/select';
-// Componente FormInputField usando AnyFieldApi
-export function FormInputField({
+// Componente FormInput usando AnyFieldApi
+export function FormInput({
   field,
   label,
   type = 'text',

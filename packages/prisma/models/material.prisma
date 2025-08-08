@@ -642,6 +642,9 @@ model MaterialWithdrawal {
 
     notes String? @db.Text
 
+    //campo para compatibilidade com base de dados antiga
+    legacy_place String?
+
     items MaterialWithdrawalItem[] // Os materiais que compõem esta retirada
 
     createdAt DateTime @default(now()) @db.Timestamp(0)

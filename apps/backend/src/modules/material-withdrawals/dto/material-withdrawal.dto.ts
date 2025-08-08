@@ -145,6 +145,10 @@ class MaterialWithdrawalBaseDto implements MaterialWithdrawal {
   @IsDate()
   @IsNotEmpty()
   updatedAt: Date;
+
+  @IsOptional()
+  @IsString()
+  legacy_place: string;
 }
 
 /**

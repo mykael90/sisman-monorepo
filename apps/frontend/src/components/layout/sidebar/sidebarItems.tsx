@@ -71,7 +71,7 @@ export const sidebarItems: SidebarItem[] = [
     children: [
       { label: 'Todos os Materiais', href: '/material/all' },
       { label: 'Entrada: Material', href: '/material/add' },
-      { label: 'Saída: Material', href: '/material/withdrawal' },
+      { label: 'Operação Saída', href: '/material/withdrawal' },
       { label: 'Categorias', href: '/material/category' }
     ]
   },

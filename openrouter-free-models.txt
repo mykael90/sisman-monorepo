@@ -1,0 +1,14 @@
+Decent Free Models from OpenRouter (did some testing today)
+Hey everyone,
+
+I was testing some of the free models from OpenRouter today. Here are the ones I found most usable:
+
+- deepseek/deepseek-chat-v3-0324:free
+(é lento, mas apresentou ser mais preciso que o deepseek-r1:free)
+
+- meta-llama/llama-4-maverick:free
+
+- deepseek/deepseek-r1:free
+(achei lento, para serviços mais complexos, muitos erros também)
+
+- qwen/qwen3-235b-a22b:free

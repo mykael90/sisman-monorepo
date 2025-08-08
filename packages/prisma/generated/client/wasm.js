@@ -390,6 +390,7 @@ exports.Prisma.WarehouseScalarFieldEnum = {
   maintenanceInstanceId: 'maintenanceInstanceId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
+  isSystemDefault: 'isSystemDefault',
   defaultForInstance: 'defaultForInstance'
 };
 
@@ -578,6 +579,7 @@ exports.Prisma.MaterialWithdrawalScalarFieldEnum = {
   materialPickingOrderId: 'materialPickingOrderId',
   movementTypeId: 'movementTypeId',
   notes: 'notes',
+  legacy_place: 'legacy_place',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -1169,7 +1171,8 @@ exports.Prisma.MaterialPickingOrderItemOrderByRelevanceFieldEnum = {
 
 exports.Prisma.MaterialWithdrawalOrderByRelevanceFieldEnum = {
   withdrawalNumber: 'withdrawalNumber',
-  notes: 'notes'
+  notes: 'notes',
+  legacy_place: 'legacy_place'
 };
 
 exports.Prisma.MaterialWithdrawalItemOrderByRelevanceFieldEnum = {

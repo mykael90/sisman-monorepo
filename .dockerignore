@@ -27,3 +27,4 @@ docker-compose.yml
 
 # Ignorar arquivos de ambiente (eles devem ser injetados no container, não copiados)
 .env*
+.token*
