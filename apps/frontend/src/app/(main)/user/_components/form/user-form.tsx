@@ -4,10 +4,9 @@
 import { mergeForm, useForm, useTransform } from '@tanstack/react-form';
 import { useStore } from '@tanstack/react-store';
 import { FC, useActionState } from 'react';
-import {
-  FormInputCheckbox,
-  FormInputField
-} from '@/components/form-tanstack/form-input-fields';
+import { FormInputField } from '@/components/form-tanstack/form-input-fields';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { UserPlus, Save } from 'lucide-react';
 import { IActionResultForm } from '../../../../../types/types-server-actions';
@@ -158,18 +157,21 @@ export default function UserForm<TMode extends 'add' | 'edit'>({
       {/* Conditionally render ID field if mode is 'edit' and id exists in defaultData */}
       {mode === 'edit' && 'id' in defaultData && defaultData.id && (
         <div className='flex h-8 flex-row items-center justify-end gap-2'>
-          <div className='text-sm font-medium text-indigo-600'>
+          {/* <div className='text-sm font-medium text-indigo-600'>
             Usuário Ativo{' '}
-          </div>
+          </div> */}
           <form.Field name='isActive'>
             {(field) => (
-              <FormInputCheckbox
-                field={field} // Cast if TS complains
-                label={fieldLabels.isActive}
-                className=''
-                type='checkbox'
-                showLabel={false}
-              />
+              <div className='flex items-center space-x-2'>
+                <Switch
+                  id='isActive'
+                  checked={field.state.value as boolean}
+                  onCheckedChange={(checked) =>
+                    field.handleChange(checked as any)
+                  }
+                />
+                <Label htmlFor='isActive'>{fieldLabels.isActive}</Label>
+              </div>
             )}
           </form.Field>
         </div>
