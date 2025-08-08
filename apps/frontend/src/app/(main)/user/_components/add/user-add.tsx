@@ -29,11 +29,11 @@ export default function UserAdd({
     login: '',
     email: '',
     roles: [],
-    maintenanceInstanceId: 0,
+    maintenanceInstanceId: undefined,
     ...preDefaultData
   };
 
-  const fieldLabels: Record<NonOptionalKeys<IUserAdd>, string> = {
+  const fieldLabels: Partial<Record<keyof IUserAdd, string>> = {
     name: 'Nome',
     login: 'Login',
     email: 'E-mail',

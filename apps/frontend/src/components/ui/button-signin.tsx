@@ -49,9 +49,14 @@ const SignInButton = () => {
                 }
               />
               <span className='hidden text-sm text-gray-600 sm:block dark:text-gray-300'>
-                {session?.user?.login
-                  ? getNameFromLogin(session.user.login)
-                  : getFirstAndLastName(session?.user?.name)}
+                <div className='font-medium'>
+                  {session?.user?.maintenanceInstance?.name}
+                </div>
+                <div>
+                  {session?.user?.login
+                    ? getNameFromLogin(session.user.login)
+                    : getFirstAndLastName(session?.user?.name)}
+                </div>
               </span>
             </div>
           </DropdownMenuTrigger>

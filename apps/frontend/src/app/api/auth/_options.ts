@@ -123,6 +123,8 @@ export const authOptions: AuthOptions = {
             );
             token.idSisman = typedUser.id; // Assumindo que o ID do usuário do magic link é o idSisman
             token.roles = typedUser.roles;
+            token.maintenanceInstance = typedUser.maintenanceInstance;
+            token.maintenanceInstanceId = typedUser.maintenanceInstanceId;
             // Aqui você pode querer buscar 'roles' ou outros dados do Sisman se não vieram no 'authorize'
           } else {
             logger.warn('Magic link verifier não retornou accessTokenSisman.');
@@ -208,6 +210,8 @@ export const authOptions: AuthOptions = {
       session.user.idSisman = token.idSisman;
       session.accessTokenSisman = token.accessTokenSisman || null;
       session.user.roles = token.roles;
+      session.user.maintenanceInstance = token.maintenanceInstance;
+      session.user.maintenanceInstanceId = token.maintenanceInstanceId;
       session.authorizationError = token.authorizationError;
 
       // Expõe erro genérico do next-auth (incluindo erros de refresh)

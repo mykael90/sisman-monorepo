@@ -23,7 +23,7 @@ export default function UserEdit({
   relatedData: IUserRelatedData;
   isInDialog?: boolean;
 }) {
-  const fieldLabels: Record<NonOptionalKeys<IUserEdit>, string> = {
+  const fieldLabels: Partial<Record<keyof IUserEdit, string>> = {
     id: 'ID',
     name: 'Nome',
     login: 'Login',

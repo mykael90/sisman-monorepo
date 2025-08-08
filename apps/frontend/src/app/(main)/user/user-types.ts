@@ -41,7 +41,6 @@ export type IUserWithRelations = Prisma.UserGetPayload<{
 
 export interface IUserAdd extends Prisma.UserCreateManyInput {
   roles: Record<'id', number>[];
-  maintenanceInstanceId: number;
 }
 
 export interface IUserEdit extends IUserAdd {

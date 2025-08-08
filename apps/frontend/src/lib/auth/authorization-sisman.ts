@@ -3,6 +3,7 @@ import { SignJWT, jwtVerify } from 'jose';
 import type { JWT } from 'next-auth/jwt';
 import type { AdapterUser } from 'next-auth/adapters';
 import Logger from '@/lib/logger';
+import { MaintenanceInstance } from '@sisman/prisma';
 
 const logger = new Logger('authorization');
 
@@ -18,6 +19,8 @@ export interface AuthorizationRequestUserData {
 export interface AuthorizationApiResponse {
   access_token: string;
   roles?: number[];
+  maintenanceInstanceId?: number;
+  maintenanceInstance?: MaintenanceInstance;
   error?: string;
   expires_in?: number;
   refresh_token?: string;
@@ -109,6 +112,8 @@ export async function handleAuthorizationLogic(
   const fieldsToAdd: Partial<JWT> = {
     accessTokenSisman: undefined,
     roles: [],
+    maintenanceInstanceId: undefined,
+    maintenanceInstance: undefined,
     authorizationError: undefined,
     expiresAtSisman: undefined
   };
@@ -137,6 +142,9 @@ export async function handleAuthorizationLogic(
         fieldsToAdd.accessTokenSisman = authorizationData.access_token;
         fieldsToAdd.idSisman = authorizationData.id;
         fieldsToAdd.roles = authorizationData.roles;
+        fieldsToAdd.maintenanceInstanceId =
+          authorizationData.maintenanceInstanceId;
+        fieldsToAdd.maintenanceInstance = authorizationData.maintenanceInstance;
         fieldsToAdd.expiresAtSisman = Math.floor(
           Date.now() / 1000 + (authorizationData.expires_in || 3600)
         );
@@ -146,7 +154,9 @@ export async function handleAuthorizationLogic(
           expiresAtSisman: Math.floor(
             Date.now() / 1000 + (authorizationData.expires_in || 3600)
           ),
-          roles: authorizationData.roles
+          roles: authorizationData.roles,
+          maintenanceInstanceId: authorizationData.maintenanceInstanceId,
+          maintenanceInstance: authorizationData.maintenanceInstance
         });
       } else {
         fieldsToAdd.authorizationError = 'Failed to fetch authorization token';

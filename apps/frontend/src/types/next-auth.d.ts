@@ -1,3 +1,4 @@
+import { MaintenanceInstance } from '@sisman/prisma';
 import NextAuth, {
   AuthOptions,
   Profile,
@@ -15,6 +16,8 @@ interface ExtendedUser extends NextAuthUser {
   roles?: number[];
   authorizationError?: string;
   error?: string;
+  maintenanceInstanceId?: number;
+  maintenanceInstance?: MaintenanceInstance;
 }
 
 // Tipagem para o token JWT
@@ -34,6 +37,8 @@ interface ExtendedJWT extends JWT, DefaultJWT {
   authorizationError?: string;
   // Erro genérico do NextAuth (ex: RefreshAccessTokenError)
   error?: string;
+  maintenanceInstance: MaintenanceInstance;
+  maintenanceInstanceId: number;
 }
 
 // Tipagem para a sessão
@@ -44,6 +49,8 @@ declare module 'next-auth' {
       idSisman?: string;
       login?: string | null;
       roles?: number[];
+      maintenanceInstance: MaintenanceInstance;
+      maintenanceInstanceId: number;
       // campos padrão do NextAuth (name, email, image) já estão aqui
     } & NextAuthUser; // Inclui name, email, image
     provider?: string;

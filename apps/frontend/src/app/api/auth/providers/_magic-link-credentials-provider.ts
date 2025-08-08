@@ -62,7 +62,9 @@ export const magicLinkCredentialsProviderConfig: CredentialsConfig = {
           // Importante: dados para o JWT callback para criar o accessTokenSisman
           accessTokenSisman: user.access_token,
           expiresInSisman: user.expires_in,
-          roles: user.roles
+          roles: user.roles,
+          maintenanceInstanceId: user.maintenanceInstanceId,
+          maintenanceInstance: user.maintenanceInstance
           // Outros campos retornados pelo backend que você queira passar para o JWT
         };
       } else {
