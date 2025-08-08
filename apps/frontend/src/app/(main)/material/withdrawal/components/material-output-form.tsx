@@ -28,7 +28,7 @@ import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import {
   FormDropdown,
-  FormInput
+  FormInputField
 } from '../../../../../components/form-tanstack/form-input-fields';
 import { FormListBox } from '../../../../../components/form-tanstack/form-list-box';
 import { AnyFieldApi, useField, useForm } from '@tanstack/react-form';
@@ -304,7 +304,7 @@ export function MaterialOutputForm({ outputType }: MaterialOutputFormProps) {
                 <form.Field
                   name='withdrawalNumber'
                   children={(field) => (
-                    <FormInput
+                    <FormInputField
                       field={field}
                       label='Número da Retirada'
                       type='hidden'
@@ -315,7 +315,7 @@ export function MaterialOutputForm({ outputType }: MaterialOutputFormProps) {
                 <form.Field
                   name='movementTypeCode'
                   children={(field) => (
-                    <FormInput
+                    <FormInputField
                       field={field}
                       label='Tipo de Movimento'
                       type='hidden'
@@ -326,7 +326,7 @@ export function MaterialOutputForm({ outputType }: MaterialOutputFormProps) {
                 <form.Field
                   name='maintenanceRequestId'
                   children={(field) => (
-                    <FormInput
+                    <FormInputField
                       field={field}
                       label='ID da Requisição de Manutenção'
                       type='hidden'
@@ -337,7 +337,7 @@ export function MaterialOutputForm({ outputType }: MaterialOutputFormProps) {
                 <form.Field
                   name='processedByUserId'
                   children={(field) => (
-                    <FormInput
+                    <FormInputField
                       field={field}
                       label='Processado por'
                       type='hidden'
