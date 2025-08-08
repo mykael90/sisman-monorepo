@@ -9,14 +9,14 @@ import { useState } from 'react';
 import { IActionResultForm } from '../../../../../types/types-server-actions';
 import { warehouseFormSchemaAdd } from '../form/warehouse-form-validation';
 import { IWarehouseAdd } from '../../warehouse-types';
-import { IMaintenanceInstanceList } from '../../../maintenance/instance/maintenance-instance-types';
+import { IMaintenanceInstance } from '../../../maintenance/instance/maintenance-instance-types';
 
 export function WarehouseAdd({
   isInDialog = false,
   relatedData
 }: {
   isInDialog?: boolean;
-  relatedData: { listMaitenanceInstances: IMaintenanceInstanceList[] };
+  relatedData: { listMaitenanceInstances: IMaintenanceInstance[] };
 }) {
   const defaultData: IWarehouseAdd = {
     name: '',

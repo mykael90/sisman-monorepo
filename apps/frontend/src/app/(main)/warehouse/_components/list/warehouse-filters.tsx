@@ -1,9 +1,9 @@
 import { Table } from '@tanstack/react-table';
 import { Input } from '@/components/ui/input';
-import { IWarehouseList } from '../../warehouse-types';
+import { IWarehouse } from '../../warehouse-types';
 
 interface WarehouseFiltersProps {
-  table: Table<IWarehouseList>;
+  table: Table<IWarehouse>;
 }
 
 export function WarehouseFilters({ table }: WarehouseFiltersProps) {

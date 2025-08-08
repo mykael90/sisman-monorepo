@@ -18,17 +18,11 @@ import {
 } from '../../warehouse-types';
 import { getFilteredPayloadForUpdate } from '@/lib/form-utils';
 import { FilePlus, Save } from 'lucide-react';
-import { IMaintenanceInstanceList } from '../../../maintenance/instance/maintenance-instance-types';
+import { IMaintenanceInstance } from '../../../maintenance/instance/maintenance-instance-types';
 
 type WarehouseFormData<TMode extends 'add' | 'edit'> = TMode extends 'add'
-  ? Pick<
-      IWarehouseAdd,
-      'name' | 'code' | 'location' | 'isActive' | 'maintenanceInstanceId'
-    >
-  : Pick<
-      IWarehouseEdit,
-      'id' | 'name' | 'code' | 'location' | 'isActive' | 'maintenanceInstanceId'
-    >;
+  ? IWarehouseAdd
+  : IWarehouseEdit;
 
 export default function WarehouseForm<TMode extends 'add' | 'edit'>({
   mode,
@@ -50,10 +44,10 @@ export default function WarehouseForm<TMode extends 'add' | 'edit'>({
   mode: TMode;
   defaultData: WarehouseFormData<TMode>;
   formActionProp: (
-    prevState: IActionResultForm<WarehouseFormData<TMode>, any>,
+    prevState: IActionResultForm<WarehouseFormData<TMode>, IWarehouse>,
     data: WarehouseFormData<TMode>
-  ) => Promise<IActionResultForm<WarehouseFormData<TMode>, any>>;
-  initialServerState?: IActionResultForm<WarehouseFormData<TMode>, any>;
+  ) => Promise<IActionResultForm<WarehouseFormData<TMode>, IWarehouse>>;
+  initialServerState?: IActionResultForm<WarehouseFormData<TMode>, IWarehouse>;
   fieldLabels: {
     [k: string]: string;
   };
@@ -63,7 +57,7 @@ export default function WarehouseForm<TMode extends 'add' | 'edit'>({
   isInDialog?: boolean;
   submitButtonText?: string;
   SubmitButtonIcon?: FC<{ className?: string }>;
-  relatedData: { listMaitenanceInstances: IMaintenanceInstanceList[] };
+  relatedData: { listMaitenanceInstances: IMaintenanceInstance[] };
 }) {
   const [serverState, dispatchFormAction, isPending] = useActionState(
     formActionProp,
@@ -207,13 +201,11 @@ export default function WarehouseForm<TMode extends 'add' | 'edit'>({
           </Button>
         )}
         <form.Subscribe
-          selector={(state: typeof form.state) =>
-            [state.canSubmit, state.isTouched, state.isValidating] as [
-              boolean,
-              boolean,
-              boolean
-            ]
-          }
+          selector={(state) => [
+            state.canSubmit,
+            state.isTouched,
+            state.isValidating
+          ]}
         >
           {([canSubmit, isTouched, isValidating]) => (
             <Button

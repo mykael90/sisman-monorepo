@@ -8,7 +8,7 @@ import { IActionResultForm } from '../../../../../types/types-server-actions';
 import { Save, UserPlus } from 'lucide-react';
 import { updateUser } from '../../user-actions';
 import { userFormSchemaEdit } from '../form/user-form-validation';
-import { IRoleList } from '../../../role/role-types';
+import { IRole } from '../../../role/role-types';
 import { NonOptionalKeys } from '../../../../../types/utils-types';
 import { removeUnreferencedKeys } from '../../../../../lib/form-utils';
 
@@ -20,7 +20,7 @@ export default function UserEdit({
   isInDialog = false
 }: {
   initialUser: IUserEdit;
-  possibleRoles: IRoleList[];
+  possibleRoles: IRole[];
   isInDialog?: boolean;
 }) {
   const fieldLabels: Record<NonOptionalKeys<IUserEdit>, string> = {

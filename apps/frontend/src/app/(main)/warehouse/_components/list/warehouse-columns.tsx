@@ -1,5 +1,5 @@
 import { ColumnDef, createColumnHelper, Row } from '@tanstack/react-table';
-import { IWarehouseList } from '../../warehouse-types';
+import { IWarehouse } from '../../warehouse-types';
 import { DataTableColumnHeader } from '@/components/table-tanstack/data-table-column-header';
 import { Button } from '@/components/ui/button';
 import { Edit, Trash2 } from 'lucide-react';
@@ -7,7 +7,7 @@ import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
-const columnHelper = createColumnHelper<IWarehouseList>();
+const columnHelper = createColumnHelper<IWarehouse>();
 
 type ActionHandlers<TData> = {
   [key: string]: (row: Row<TData>) => void;
@@ -15,8 +15,8 @@ type ActionHandlers<TData> = {
 
 export const createActions = (
   router: AppRouterInstance
-): ActionHandlers<IWarehouseList> => ({
-  onEdit: (row: Row<IWarehouseList>) => {
+): ActionHandlers<IWarehouse> => ({
+  onEdit: (row: Row<IWarehouse>) => {
     if (row.original.id) {
       router.push(`warehouse/edit/${row.original.id}`);
     } else {
@@ -24,15 +24,15 @@ export const createActions = (
       throw new Error('Warehouse ID required for navigation');
     }
   },
-  onDelete: (row: Row<IWarehouseList>) => {
+  onDelete: (row: Row<IWarehouse>) => {
     console.log('Delete warehouse', row.original);
     // Implementar lógica de deleção
   }
 });
 
 export const warehouseColumns = (
-  configuredActions: ActionHandlers<IWarehouseList>
-): ColumnDef<IWarehouseList, any>[] => [
+  configuredActions: ActionHandlers<IWarehouse>
+): ColumnDef<IWarehouse, any>[] => [
   columnHelper.accessor('name', {
     header: 'Nome',
     cell: (props) => props.getValue()

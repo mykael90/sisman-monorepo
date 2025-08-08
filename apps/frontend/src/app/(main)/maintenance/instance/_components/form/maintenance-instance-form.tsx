@@ -11,7 +11,7 @@ import type { IActionResultForm } from '../../../../../../types/types-server-act
 import {
   IMaintenanceInstanceAdd,
   IMaintenanceInstanceEdit,
-  IMaintenanceInstanceList
+  IMaintenanceInstance
 } from '../../maintenance-instance-types';
 import { FilePlus, Save } from 'lucide-react';
 

@@ -9,18 +9,18 @@ import {
 } from './maintenance-instance-types';
 import { handleApiAction } from '@/lib/fetch/handle-form-action-sisman';
 import type { IActionResultForm } from '../../../../types/types-server-actions';
-import type { IMaintenanceInstanceList } from './maintenance-instance-types';
+import type { IMaintenanceInstance } from './maintenance-instance-types';
 
 const PAGE_PATH = '/maintenance/instance';
 const API_PATH = '/maintenance-instance';
 
 export async function getMaintenanceInstances(
   accessToken: string
-): Promise<IMaintenanceInstanceList[]> {
+): Promise<IMaintenanceInstance[]> {
   try {
     const data = await fetchApiSisman(API_PATH, accessToken);
 
-    return data as IMaintenanceInstanceList[];
+    return data as IMaintenanceInstance[];
   } catch (error) {
     console.error('Failed to fetch maintenance instances:', error);
     throw error;
@@ -40,9 +40,9 @@ export async function getRefreshedInstances() {
 export async function showInstance(
   accessToken: string,
   id: number
-): Promise<IMaintenanceInstanceList> {
+): Promise<IMaintenanceInstance> {
   try {
-    const data = await fetchApiSisman<IMaintenanceInstanceList>(
+    const data = await fetchApiSisman<IMaintenanceInstance>(
       `${API_PATH}/${id}`,
       accessToken
     );

@@ -1,8 +1,5 @@
 import { Role, Prisma } from '@sisman/prisma';
 
-// Interface para listar roles
-export type IRoleList = Pick<Role, 'id' | 'role' | 'description' | 'updatedAt'>;
-
 // Interface para dados completos de uma role (pode ser igual a Role)
 export type IRole = Role;
 

@@ -13,7 +13,7 @@ import { IActionResultForm } from '../../../../../types/types-server-actions';
 import { FormSuccessDisplay } from '../../../../../components/form-tanstack/form-success-display';
 import { ErrorServerForm } from '../../../../../components/form-tanstack/error-server-form';
 import { IUser, IUserAdd, IUserEdit } from '../../user-types'; // Added IUser, IUserEdit
-import { IRoleList } from '../../../role/role-types';
+import { IRole } from '../../../role/role-types';
 
 // Helper type for form data based on mode
 type UserFormData<TMode extends 'add' | 'edit'> = TMode extends 'add'
@@ -55,7 +55,7 @@ export default function UserForm<TMode extends 'add' | 'edit'>({
   onClean?: () => void;
   submitButtonText?: string;
   SubmitButtonIcon?: FC<{ className?: string }>;
-  possibleRoles?: IRoleList[];
+  possibleRoles?: IRole[];
   isInDialog?: boolean;
 }) {
   const [serverState, dispatchFormAction, isPending] = useActionState(

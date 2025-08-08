@@ -11,7 +11,7 @@ import {
   SortingState
 } from '@tanstack/react-table';
 import { InputDebounceRef } from '@/components/ui/input';
-import { IRoleList } from '../../role-types';
+import { IRole } from '../../role-types';
 import { useRouter } from 'next/navigation';
 import { columns, createActions } from './role-columns';
 import { KeyRound, CirclePlus } from 'lucide-react'; // Using KeyRound for Role list header
@@ -21,7 +21,7 @@ export function RoleListPage({
   initialRoles,
   refreshAction
 }: {
-  initialRoles: IRoleList[];
+  initialRoles: IRole[];
   refreshAction: () => void;
 }) {
   const router = useRouter();
@@ -60,7 +60,7 @@ export function RoleListPage({
       // or a custom global filter logic in the table component.
       // filters.push({ id: 'description', value: roleValue }); // Example for description filter
     }
-    // No status filter for roles based on IRoleList
+    // No status filter for roles based on IRole
     return filters;
   }, [roleValue]); // Recalculate only when roleValue changes
 

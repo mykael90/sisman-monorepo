@@ -9,7 +9,7 @@ import {
   IWarehouse,
   IWarehouseAdd,
   IWarehouseEdit,
-  IWarehouseList
+  IWarehouse
 } from './warehouse-types';
 import {
   warehouseFormSchemaAdd,
@@ -27,7 +27,7 @@ const logger = new Logger(`${PAGE_PATH}/warehouse-actions`);
 
 export async function getWarehouses(
   accessTokenSisman: string
-): Promise<IWarehouseList[]> {
+): Promise<IWarehouse[]> {
   logger.info(`(Server Action) getWarehouses: Buscando lista de depósitos.`);
   try {
     const data = await fetchApiSisman(API_RELATIVE_PATH, accessTokenSisman, {

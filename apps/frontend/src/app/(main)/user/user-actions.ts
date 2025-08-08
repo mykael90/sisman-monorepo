@@ -5,7 +5,7 @@ import { revalidatePath } from 'next/cache';
 import { getSismanAccessToken } from '../../../lib/auth/get-access-token';
 import { fetchApiSisman } from '../../../lib/fetch/api-sisman';
 import { IActionResultForm } from '../../../types/types-server-actions';
-import { IUser, IUserAdd, IUserEdit, IUserList } from './user-types';
+import { IUser, IUserAdd, IUserEdit, IUserWithRelations } from './user-types';
 import {
   userFormSchemaAdd,
   userFormSchemaEdit
@@ -22,7 +22,7 @@ const logger = new Logger(`${PAGE_PATH}/user-actions`);
 
 export async function getUsers(
   accessTokenSisman: string
-): Promise<IUserList[]> {
+): Promise<IUserWithRelations[]> {
   logger.info(`(Server Action) getUsers: Buscando lista de usuários.`);
   try {
     const data = await fetchApiSisman(API_RELATIVE_PATH, accessTokenSisman, {

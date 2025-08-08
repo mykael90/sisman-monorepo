@@ -9,7 +9,7 @@ import { IActionResultForm } from '../../../../../types/types-server-actions';
 import { UserPlus } from 'lucide-react';
 import { addUser } from '../../user-actions';
 import { userFormSchemaAdd } from '../form/user-form-validation';
-import { IRoleList } from '../../../role/role-types';
+import { IRole } from '../../../role/role-types';
 import { NonOptionalKeys } from '../../../../../types/utils-types';
 import { useRouter } from 'next/navigation';
 
@@ -20,7 +20,7 @@ export default function UserAdd({
   isInDialog = false,
   preDefaultData = {}
 }: {
-  possibleRoles: IRoleList[];
+  possibleRoles: IRole[];
   isInDialog?: boolean;
   preDefaultData?: Partial<IUserAdd>;
 }) {

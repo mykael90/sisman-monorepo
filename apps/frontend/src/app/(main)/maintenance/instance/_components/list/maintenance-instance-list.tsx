@@ -1,7 +1,7 @@
 'use client';
 
 import { columns, createActions } from './maintenance-instance-columns';
-import { IMaintenanceInstanceList } from '../../maintenance-instance-types';
+import { IMaintenanceInstance } from '../../maintenance-instance-types';
 import { Button } from '@/components/ui/button';
 import { Construction, FilePlus, Plus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -13,7 +13,7 @@ import { DefaultGlobalFilter } from '../../../../../../components/table-tanstack
 import { InputDebounceRef } from '../../../../../../components/ui/input';
 
 interface Props {
-  initialInstances: IMaintenanceInstanceList[];
+  initialInstances: IMaintenanceInstance[];
   refreshAction: () => Promise<boolean>;
 }
 

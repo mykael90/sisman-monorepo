@@ -36,7 +36,7 @@ const RoleFilters = memo(function RoleFilters({
         />
       </div>
 
-      {/* No status filter needed for roles based on IRoleList */}
+      {/* No status filter needed for roles based on IRole */}
 
       <Button
         variant='outline'

@@ -5,7 +5,7 @@ import { revalidatePath } from 'next/cache';
 import { getSismanAccessToken } from '../../../lib/auth/get-access-token';
 import { fetchApiSisman } from '../../../lib/fetch/api-sisman';
 import { IActionResultForm } from '../../../types/types-server-actions';
-import { IRole, IRoleAdd, IRoleEdit, IRoleList } from './role-types';
+import { IRole, IRoleAdd, IRoleEdit, IRole } from './role-types';
 import {
   roleFormSchemaAdd,
   roleFormSchemaEdit
@@ -20,9 +20,7 @@ const logger = new Logger(`${PAGE_PATH}/role-actions`);
 
 // --- Funções de Leitura de Dados ---
 
-export async function getRoles(
-  accessTokenSisman: string
-): Promise<IRoleList[]> {
+export async function getRoles(accessTokenSisman: string): Promise<IRole[]> {
   logger.info(`(Server Action) getRoles: Buscando lista de papéis.`);
   try {
     const data = await fetchApiSisman(API_RELATIVE_PATH, accessTokenSisman, {

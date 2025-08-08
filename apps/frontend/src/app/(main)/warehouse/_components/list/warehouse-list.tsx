@@ -10,10 +10,10 @@ import { TableTanstack } from '../../../../../components/table-tanstack/table-ta
 import { DefaultGlobalFilter } from '../../../../../components/table-tanstack/default-global-filter';
 import { InputDebounceRef } from '../../../../../components/ui/input';
 import { createActions, warehouseColumns } from './warehouse-columns'; // Updated import
-import { IWarehouseList } from '../../warehouse-types';
+import { IWarehouse } from '../../warehouse-types';
 
 interface WarehouseListPageProps {
-  initialWarehouses: IWarehouseList[];
+  initialWarehouses: IWarehouse[];
   refreshAction: () => Promise<void>;
 }
 

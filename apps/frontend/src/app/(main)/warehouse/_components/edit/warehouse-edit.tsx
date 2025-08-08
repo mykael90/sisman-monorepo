@@ -9,13 +9,13 @@ import { useState } from 'react';
 import { IActionResultForm } from '../../../../../types/types-server-actions';
 import { warehouseFormSchemaEdit } from '../form/warehouse-form-validation';
 import { IWarehouseEdit } from '../../warehouse-types';
-import { IMaintenanceInstanceList } from '../../../maintenance/instance/maintenance-instance-types';
+import { IMaintenanceInstance } from '../../../maintenance/instance/maintenance-instance-types';
 import { removeUnreferencedKeys } from '../../../../../lib/form-utils';
 
 interface WarehouseEditProps {
   initialWarehouse: IWarehouseEdit;
   isInDialog?: boolean;
-  relatedData: { listMaitenanceInstances: IMaintenanceInstanceList[] };
+  relatedData: { listMaitenanceInstances: IMaintenanceInstance[] };
 }
 
 export function WarehouseEdit({
@@ -24,6 +24,7 @@ export function WarehouseEdit({
   relatedData
 }: WarehouseEditProps) {
   const fieldLabels: Partial<Record<keyof IWarehouseEdit, string>> = {
+    id: 'ID',
     name: 'Nome do Depósito',
     code: 'Código',
     location: 'Localização',

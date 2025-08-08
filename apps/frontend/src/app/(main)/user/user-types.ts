@@ -1,5 +1,6 @@
 import { User, UserRole, UserRoletype, Prisma } from '@sisman/prisma';
-import { IRole, IRoleAdd } from '../role/role-types';
+import { IRole, IRoleAdd, IRole } from '../role/role-types';
+import { IMaintenanceInstance } from '../maintenance/instance/maintenance-instance-types';
 
 const dateFields = ['createdAt', 'updatedAt'];
 
@@ -18,7 +19,7 @@ const dateFields = ['createdAt', 'updatedAt'];
 //   userRoles: UserRole[];
 // }
 
-export type IUserList = Prisma.UserGetPayload<{
+export type IUserWithRelations = Prisma.UserGetPayload<{
   // select: {
   //   name: true;
   //   login: true;
@@ -56,3 +57,8 @@ export type IUserRemove = {
 };
 
 export type IUserSelect = Prisma.UserSelect;
+
+export type IUserRelatedData = {
+  listRoles: IRole[];
+  listMaintenanceInstances: IMaintenanceInstance[];
+};
