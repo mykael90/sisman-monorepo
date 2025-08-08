@@ -154,28 +154,6 @@ export default function UserForm<TMode extends 'add' | 'edit'>({
           )}
         />
       )}
-      {/* Conditionally render ID field if mode is 'edit' and id exists in defaultData */}
-      {mode === 'edit' && 'id' in defaultData && defaultData.id && (
-        <div className='flex h-8 flex-row items-center justify-end gap-2'>
-          {/* <div className='text-sm font-medium text-indigo-600'>
-            Usuário Ativo{' '}
-          </div> */}
-          <form.Field name='isActive'>
-            {(field) => (
-              <div className='flex items-center space-x-2'>
-                <Switch
-                  id='isActive'
-                  checked={field.state.value as boolean}
-                  onCheckedChange={(checked) =>
-                    field.handleChange(checked as any)
-                  }
-                />
-                <Label htmlFor='isActive'>{fieldLabels.isActive}</Label>
-              </div>
-            )}
-          </form.Field>
-        </div>
-      )}
 
       <form.Field name='name'>
         {(field) => (
@@ -188,16 +166,44 @@ export default function UserForm<TMode extends 'add' | 'edit'>({
         )}
       </form.Field>
 
-      <form.Field name='login'>
-        {(field) => (
-          <FormInputField
-            field={field}
-            label={fieldLabels.login}
-            placeholder='Digite o login'
-            className='mb-4'
-          />
+      <div className='flex items-center justify-baseline gap-4'>
+        <div className='flex-1'>
+          <form.Field name='login'>
+            {(field) => (
+              <FormInputField
+                field={field}
+                label={fieldLabels.login}
+                placeholder='Digite o login'
+                className='mb-4'
+              />
+            )}
+          </form.Field>
+        </div>
+        {/* Conditionally render ID field if mode is 'edit' and id exists in defaultData */}
+        {mode === 'edit' && 'id' in defaultData && defaultData.id && (
+          <div className='flex'>
+            {/* <div className='text-sm font-medium text-indigo-600'>
+              Usuário Ativo{' '}
+            </div> */}
+            <form.Field name='isActive'>
+              {(field) => (
+                <div className='flex items-center space-x-2'>
+                  <Switch
+                    id='isActive'
+                    checked={field.state.value as boolean}
+                    onCheckedChange={(checked) =>
+                      field.handleChange(checked as any)
+                    }
+                  />
+                  <Label htmlFor='isActive'>
+                    {field.state.value ? fieldLabels.isActive : 'Inativo'}
+                  </Label>
+                </div>
+              )}
+            </form.Field>
+          </div>
         )}
-      </form.Field>
+      </div>
 
       <form.Field name='email'>
         {(field) => (
