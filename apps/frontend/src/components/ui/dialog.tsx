@@ -38,7 +38,7 @@ function DialogOverlay({
     <DialogPrimitive.Overlay
       data-slot='dialog-overlay'
       className={cn(
-        'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/50',
+        'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 pointer-events-none fixed inset-0 z-50 bg-black/50',
         className
       )}
       {...props}
@@ -57,11 +57,31 @@ function DialogContent({
       <DialogPrimitive.Content
         data-slot='dialog-content'
         className={cn(
-          'bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-50 grid w-full max-w-sm translate-x-[-50%] translate-y-[-50%] rounded-lg border shadow-lg duration-200 sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-3xl',
+          'bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 pointer-events-auto fixed top-[50%] left-[50%] z-50 grid w-full max-w-sm translate-x-[-50%] translate-y-[-50%] rounded-lg border shadow-lg duration-200 sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-3xl',
           // ADICIONE ESTAS CLASSES:
           'max-h-[90vh] overflow-y-auto sm:max-h-[95vh]', // ou max-h-[90vh], etc.
           className // className prop deve vir por último para permitir overrides
         )}
+        onOpenAutoFocus={(e: Event) => {
+          const selectContent = document.querySelector(
+            '[data-slot="select-content"][data-state="open"]'
+          );
+          if (!selectContent) {
+            const dialogContent = e.currentTarget as HTMLElement;
+            const firstFocusable = dialogContent.querySelector(
+              'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+            );
+            if (firstFocusable) (firstFocusable as HTMLElement).focus();
+            e.preventDefault();
+          }
+        }}
+        onCloseAutoFocus={(e: Event) => e.preventDefault()}
+        onInteractOutside={(e: Event) => {
+          const selectContent = document.querySelector(
+            '[data-slot="select-content"]'
+          );
+          if (!selectContent) e.preventDefault();
+        }}
         {...props}
       >
         {children}
