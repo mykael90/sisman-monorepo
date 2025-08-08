@@ -626,6 +626,8 @@ model Warehouse {
   createdAt DateTime @default(now()) @db.Timestamp(0) // Timestamp for when the record was created.
   updatedAt DateTime @updatedAt @db.Timestamp(0) // Timestamp for the last update of the record.
 
+  defaultForInstance Boolean?
+
   // Relations
   standardMaterialStocks         MaterialWarehouseStock[] // Stock levels for "new" materials in this warehouse.
   materialDerived                MaterialDerived[] // Instances/batches of derived materials in this warehouse.
@@ -637,6 +639,7 @@ model Warehouse {
   materialReceipts               MaterialReceipt[]          @relation("ReceiptsAtWarehouse")
   materialRestrictionOrders      MaterialRestrictionOrder[]
 
+  @@unique([maintenanceInstanceId, defaultForInstance])
   @@index([maintenanceInstanceId]) // Index for faster lookups by maintenance instance.
   @@map("warehouses") // Maps this model to the 'warehouses' table.
 }

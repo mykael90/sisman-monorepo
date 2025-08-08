@@ -389,7 +389,8 @@ exports.Prisma.WarehouseScalarFieldEnum = {
   isActive: 'isActive',
   maintenanceInstanceId: 'maintenanceInstanceId',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  defaultForInstance: 'defaultForInstance'
 };
 
 exports.Prisma.MaterialGlobalCatalogScalarFieldEnum = {
