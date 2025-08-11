@@ -1,12 +1,12 @@
-import { MaintenanceRequestList } from '@/src/app/(main)/maintenance-request/_components/list/maintenance-request-list';
 import { Suspense } from 'react';
-import { getSismanAccessToken } from '../../../lib/auth/get-access-token';
 import {
   getRefreshedMaintenanceRequests,
   getMaintenanceRequests
 } from './maintenance-request-actions';
-import Logger from '../../../lib/logger';
-import Loading from '../../../components/loading';
+import Logger from '../../../../lib/logger';
+import { getSismanAccessToken } from '../../../../lib/auth/get-access-token';
+import Loading from '../../loading';
+import { MaintenanceRequestList } from './_components/list/maintenance-request-list';
 
 const logger = new Logger('maintenance-requests-management');
 
