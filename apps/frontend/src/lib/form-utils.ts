@@ -55,3 +55,13 @@ export function removeUnreferencedKeys<
 
   return newObject;
 }
+
+export function formatRequestNumber(req: string): string {
+  const currentYear = new Date().getFullYear();
+
+  if (req.includes('/')) {
+    return req;
+  } else {
+    return `${req}/${currentYear}`;
+  }
+}

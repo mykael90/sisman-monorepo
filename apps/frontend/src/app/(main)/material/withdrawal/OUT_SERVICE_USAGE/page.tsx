@@ -1,30 +1,21 @@
-'use client';
-
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select';
 import { MaterialWithdrawalForm } from '../components/material-withdrawal-form';
-import { MaterialWithdrawalSummary } from '../components/material-withdrawal-summary';
-import { RecentWithdrawals } from '../components/recent-withdrawals';
-import { Package, Warehouse } from 'lucide-react';
-import { usePathname } from 'next/navigation';
+import { showMaintenanceRequest } from '../../../maintenance/request/request-actions';
+import { getSismanAccessToken } from '../../../../../lib/auth/get-access-token';
 
-export default function InternalUsePage() {
-  const pathname = usePathname();
-  const withdrawalType = pathname.split('/').pop() || 'internal-use'; // Get the last segment of the URL
+export default async function Page() {
+  const accessTokenSisman = await getSismanAccessToken();
+
+  const requestDataSearch = (protocolNumber: string) =>
+    showMaintenanceRequest(accessTokenSisman, protocolNumber);
+  // const pathname = usePathname();
+  // const withdrawalType = pathname.split('/').pop() || 'internal-use'; // Get the last segment of the URL
 
   return (
     <div>
       {/* <div className='grid grid-cols-1 gap-6 lg:grid-cols-3'> */}
       <div>
         {/* Main Form */}
-        <MaterialWithdrawalForm withdrawalType={withdrawalType} />
+        <MaterialWithdrawalForm requestDataSearch={showMaintenanceRequest} />
 
         {/* Sidebar */}
         {/* <div className='space-y-6'>
