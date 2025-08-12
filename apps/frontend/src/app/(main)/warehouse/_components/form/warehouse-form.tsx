@@ -5,7 +5,7 @@ import { useStore } from '@tanstack/react-store';
 import { FC, useActionState } from 'react';
 import {
   FormInputField,
-  FormDropdown
+  FormDropdownModal
 } from '@/components/form-tanstack/form-input-fields';
 import { Button } from '@/components/ui/button';
 import { FormSuccessDisplay } from '@/components/form-tanstack/form-success-display';
@@ -180,7 +180,7 @@ export default function WarehouseForm<TMode extends 'add' | 'edit'>({
       <form.Field
         name='maintenanceInstanceId'
         children={(field: any) => (
-          <FormDropdown
+          <FormDropdownModal
             field={field}
             label={fieldLabels.maintenanceInstanceId}
             placeholder={fieldLabels.maintenanceInstanceId}
