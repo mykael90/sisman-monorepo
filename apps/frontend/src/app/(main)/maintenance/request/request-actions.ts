@@ -2,67 +2,105 @@
 
 import Logger from '@/lib/logger';
 import { revalidatePath } from 'next/cache';
-import { getSismanAccessToken } from '../../../lib/auth/get-access-token';
-import { fetchApiSisman } from '../../../lib/fetch/api-sisman';
-import { IActionResultForm } from '../../../types/types-server-actions';
-import { IRequestAdd, IRequestEdit } from './request-types';
-import { handleApiAction } from '../../../lib/fetch/handle-form-action-sisman';
+import { getSismanAccessToken } from '../../../../lib/auth/get-access-token';
+import { fetchApiSisman } from '../../../../lib/fetch/api-sisman';
+import { IActionResultForm } from '../../../../types/types-server-actions';
+import {
+  IMaintenanceRequest,
+  IMaintenanceRequestAdd,
+  IMaintenanceRequestEdit,
+  IMaintenanceRequestWithRelations
+} from './request-types';
+import { handleApiAction } from '../../../../lib/fetch/handle-form-action-sisman';
 
-const PAGE_PATH = '/maintenance/request';
-const API_RELATIVE_PATH = '/maintenance/request';
+const PAGE_PATH = '/maintenance-request';
+const API_RELATIVE_PATH = '/maintenance-request';
 
-const logger = new Logger(`${PAGE_PATH}/request-actions`);
+const logger = new Logger(`${PAGE_PATH}/maintenance-request-actions`);
 
-export async function getRequests(accessTokenSisman: string) {
-  logger.info(`(Server Action) getRequests: Fetching requests`);
+export async function getMaintenanceRequests(
+  accessTokenSisman: string
+): Promise<IMaintenanceRequestWithRelations[]> {
+  logger.info(
+    `(Server Action) getMaintenanceRequests: Buscando lista de requisições de manutenção.`
+  );
   try {
     const data = await fetchApiSisman(API_RELATIVE_PATH, accessTokenSisman, {
       cache: 'force-cache'
     });
-    logger.info(`(Server Action) getRequests: ${data.length} requests returned`);
+    logger.info(
+      `(Server Action) getMaintenanceRequests: ${data.length} requisições retornadas.`
+    );
     return data;
   } catch (error) {
-    logger.error(`(Server Action) getRequests: Error fetching requests`, error);
+    logger.error(
+      `(Server Action) getMaintenanceRequests: Erro ao buscar requisições.`,
+      error
+    );
     throw error;
   }
 }
 
-export async function showRequest(accessTokenSisman: string, id: number) {
-  logger.info(`(Server Action) showRequest: Fetching request ${id}`);
+export async function showMaintenanceRequest(
+  accessTokenSisman: string,
+  id: number
+): Promise<IMaintenanceRequestEdit> {
+  logger.info(
+    `(Server Action) showMaintenanceRequest: Buscando requisição com ID ${id}.`
+  );
   try {
     const data = await fetchApiSisman(
       `${API_RELATIVE_PATH}/${id}`,
       accessTokenSisman,
       { cache: 'force-cache' }
     );
-    logger.info(`(Server Action) showRequest: request ${id} returned`);
+    logger.info(
+      `(Server Action) showMaintenanceRequest: Requisição com ID ${id} retornada.`
+    );
     return data;
   } catch (error) {
-    logger.error(`(Server Action) showRequest: Error fetching request ${id}`, error);
+    logger.error(
+      `(Server Action) showMaintenanceRequest: Erro ao buscar requisição com ID ${id}.`,
+      error
+    );
     throw error;
   }
 }
 
-export async function getRefreshedRequests() {
-  logger.info(`(Server Action) getRefreshedRequests: Revalidating ${PAGE_PATH}`);
+export async function getRefreshedMaintenanceRequests() {
+  logger.info(
+    `(Server Action) getRefreshedMaintenanceRequests: Iniciando revalidação de dados para ${PAGE_PATH}.`
+  );
   try {
     revalidatePath(PAGE_PATH);
-    logger.info(`(Server Action) getRefreshedRequests: Path ${PAGE_PATH} revalidated`);
+    logger.info(
+      `(Server Action) getRefreshedMaintenanceRequests: Caminho "${PAGE_PATH}" revalidado com sucesso.`
+    );
     return true;
   } catch (error) {
-    logger.error(`(Server Action) getRefreshedRequests: Error revalidating path`, error);
+    logger.error(
+      `(Server Action) getRefreshedMaintenanceRequests: Erro ao revalidar caminho ${PAGE_PATH}.`,
+      error
+    );
   }
 }
 
-export async function addRequest(
+export async function addMaintenanceRequest(
   prevState: unknown,
-  data: IRequestAdd
-): Promise<IActionResultForm<IRequestAdd, any>> {
-  logger.info(`(Server Action) addRequest: Attempt to add request`, data);
-  
+  data: IMaintenanceRequestAdd
+): Promise<IActionResultForm<IMaintenanceRequestAdd, IMaintenanceRequest>> {
+  logger.info(
+    `(Server Action) addMaintenanceRequest: Tentativa de adicionar requisição.`,
+    data
+  );
+
   try {
     const accessToken = await getSismanAccessToken();
-    return await handleApiAction<IRequestAdd, any, IRequestAdd>(
+    return await handleApiAction<
+      IMaintenanceRequestAdd,
+      IMaintenanceRequest,
+      IMaintenanceRequestAdd
+    >(
       data,
       data,
       {
@@ -73,28 +111,40 @@ export async function addRequest(
       {
         mainPath: PAGE_PATH
       },
-      'Request added successfully!'
+      'Requisição de manutenção cadastrada com sucesso!'
     );
   } catch (error) {
-    logger.error(`(Server Action) addRequest: Unexpected error`, error);
+    logger.error(
+      `(Server Action) addMaintenanceRequest: Erro inesperado.`,
+      error
+    );
     return {
       isSubmitSuccessful: false,
-      errorsServer: ['An unexpected error occurred'],
+      errorsServer: [
+        'Ocorreu um erro inesperado ao processar sua solicitação.'
+      ],
       submittedData: data,
-      message: 'Unexpected error'
+      message: 'Erro inesperado.'
     };
   }
 }
 
-export async function updateRequest(
+export async function updateMaintenanceRequest(
   prevState: unknown,
-  data: IRequestEdit
-): Promise<IActionResultForm<IRequestEdit, any>> {
-  logger.info(`(Server Action) updateRequest: Attempt to update request ${data.id}`, data);
-  
+  data: IMaintenanceRequestEdit
+): Promise<IActionResultForm<IMaintenanceRequestEdit, IMaintenanceRequest>> {
+  logger.info(
+    `(Server Action) updateMaintenanceRequest: Tentativa de atualizar requisição ${data.id}.`,
+    data
+  );
+
   try {
     const accessToken = await getSismanAccessToken();
-    return await handleApiAction<IRequestEdit, any, IRequestEdit>(
+    return await handleApiAction<
+      IMaintenanceRequestEdit,
+      IMaintenanceRequest,
+      IMaintenanceRequestEdit
+    >(
       data,
       data,
       {
@@ -106,15 +156,20 @@ export async function updateRequest(
         mainPath: PAGE_PATH,
         detailPath: `${PAGE_PATH}/edit/${data.id}`
       },
-      'Request updated successfully!'
+      'Requisição de manutenção atualizada com sucesso!'
     );
   } catch (error) {
-    logger.error(`(Server Action) updateRequest: Error updating request ${data.id}`, error);
+    logger.error(
+      `(Server Action) updateMaintenanceRequest: Erro inesperado para a requisição ${data.id}.`,
+      error
+    );
     return {
       isSubmitSuccessful: false,
-      errorsServer: ['An unexpected error occurred'],
+      errorsServer: [
+        'Ocorreu um erro inesperado ao processar sua solicitação.'
+      ],
       submittedData: data,
-      message: 'Unexpected error'
+      message: 'Erro inesperado.'
     };
   }
 }

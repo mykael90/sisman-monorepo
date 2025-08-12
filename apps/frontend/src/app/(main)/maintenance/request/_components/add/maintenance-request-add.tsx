@@ -1,9 +1,9 @@
 'use client';
 
 import { MaintenanceRequestForm } from '../form/maintenance-request-form';
-import { addMaintenanceRequest } from '../../maintenance-request-actions';
+import { addMaintenanceRequest } from '../../request-actions';
 import { useRouter } from 'next/navigation';
-import { IMaintenanceRequestRelatedData } from '../../maintenance-request-types';
+import { IMaintenanceRequestRelatedData } from '../../request-types';
 
 interface MaintenanceRequestAddProps {
   relatedData: IMaintenanceRequestRelatedData;
@@ -12,7 +12,7 @@ interface MaintenanceRequestAddProps {
 
 export function MaintenanceRequestAdd({
   relatedData,
-  isInDialog = false,
+  isInDialog = false
 }: MaintenanceRequestAddProps) {
   const router = useRouter();
 
@@ -26,7 +26,10 @@ export function MaintenanceRequestAdd({
   return (
     <div>
       <h1 className='text-2xl font-bold'>Adicionar Requisição de Manutenção</h1>
-      <MaintenanceRequestForm onSubmit={handleSubmit} relatedData={relatedData} />
+      <MaintenanceRequestForm
+        onSubmit={handleSubmit}
+        relatedData={relatedData}
+      />
     </div>
   );
 }

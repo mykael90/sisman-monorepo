@@ -5,7 +5,10 @@ import { revalidatePath } from 'next/cache';
 import { getSismanAccessToken } from '../../../../lib/auth/get-access-token';
 import { fetchApiSisman } from '../../../../lib/fetch/api-sisman';
 import { IActionResultForm } from '../../../../types/types-server-actions';
-import { IInstanceAdd, IInstanceEdit } from './instance-types';
+import {
+  IMaintenanceInstanceAdd,
+  IMaintenanceInstanceEdit
+} from './instance-types';
 import { handleApiAction } from '../../../../lib/fetch/handle-form-action-sisman';
 
 const PAGE_PATH = '/maintenance/instance';
@@ -72,13 +75,17 @@ export async function getRefreshedInstances() {
 
 export async function addInstance(
   _prevState: unknown,
-  data: IInstanceAdd
-): Promise<IActionResultForm<IInstanceAdd, any>> {
+  data: IMaintenanceInstanceAdd
+): Promise<IActionResultForm<IMaintenanceInstanceAdd, any>> {
   logger.info(`(Server Action) addInstance: Attempt to add instance`, data);
 
   try {
     const accessToken = await getSismanAccessToken();
-    return await handleApiAction<IInstanceAdd, any, IInstanceAdd>(
+    return await handleApiAction<
+      IMaintenanceInstanceAdd,
+      any,
+      IMaintenanceInstanceAdd
+    >(
       data,
       data,
       {
@@ -104,8 +111,8 @@ export async function addInstance(
 
 export async function updateInstance(
   _prevState: unknown,
-  data: IInstanceEdit
-): Promise<IActionResultForm<IInstanceEdit, any>> {
+  data: IMaintenanceInstanceEdit
+): Promise<IActionResultForm<IMaintenanceInstanceEdit, any>> {
   logger.info(
     `(Server Action) updateInstance: Attempt to update instance ${data.id}`,
     data
@@ -113,7 +120,11 @@ export async function updateInstance(
 
   try {
     const accessToken = await getSismanAccessToken();
-    return await handleApiAction<IInstanceEdit, any, IInstanceEdit>(
+    return await handleApiAction<
+      IMaintenanceInstanceEdit,
+      any,
+      IMaintenanceInstanceEdit
+    >(
       data,
       data,
       {

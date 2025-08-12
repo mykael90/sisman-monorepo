@@ -2,11 +2,14 @@
 
 import Logger from '@/lib/logger';
 import { revalidatePath } from 'next/cache';
-import { getSismanAccessToken } from '../../../lib/auth/get-access-token';
-import { fetchApiSisman } from '../../../lib/fetch/api-sisman';
-import { IActionResultForm } from '../../../types/types-server-actions';
-import { IWithdrawalAdd, IWithdrawalEdit } from './withdrawal-types';
-import { handleApiAction } from '../../../lib/fetch/handle-form-action-sisman';
+import { getSismanAccessToken } from '../../../../lib/auth/get-access-token';
+import { fetchApiSisman } from '../../../../lib/fetch/api-sisman';
+import { IActionResultForm } from '../../../../types/types-server-actions';
+import {
+  IMaterialWithdrawalAdd,
+  IMaterialWithdrawalEdit
+} from './withdrawal-types';
+import { handleApiAction } from '../../../../lib/fetch/handle-form-action-sisman';
 
 const PAGE_PATH = '/material/withdrawal';
 const API_RELATIVE_PATH = '/material/withdrawal';
@@ -19,10 +22,15 @@ export async function getWithdrawals(accessTokenSisman: string) {
     const data = await fetchApiSisman(API_RELATIVE_PATH, accessTokenSisman, {
       cache: 'force-cache'
     });
-    logger.info(`(Server Action) getWithdrawals: ${data.length} withdrawals returned`);
+    logger.info(
+      `(Server Action) getWithdrawals: ${data.length} withdrawals returned`
+    );
     return data;
   } catch (error) {
-    logger.error(`(Server Action) getWithdrawals: Error fetching withdrawals`, error);
+    logger.error(
+      `(Server Action) getWithdrawals: Error fetching withdrawals`,
+      error
+    );
     throw error;
   }
 }
@@ -38,31 +46,45 @@ export async function showWithdrawal(accessTokenSisman: string, id: number) {
     logger.info(`(Server Action) showWithdrawal: withdrawal ${id} returned`);
     return data;
   } catch (error) {
-    logger.error(`(Server Action) showWithdrawal: Error fetching withdrawal ${id}`, error);
+    logger.error(
+      `(Server Action) showWithdrawal: Error fetching withdrawal ${id}`,
+      error
+    );
     throw error;
   }
 }
 
 export async function getRefreshedWithdrawals() {
-  logger.info(`(Server Action) getRefreshedWithdrawals: Revalidating ${PAGE_PATH}`);
+  logger.info(
+    `(Server Action) getRefreshedWithdrawals: Revalidating ${PAGE_PATH}`
+  );
   try {
     revalidatePath(PAGE_PATH);
-    logger.info(`(Server Action) getRefreshedWithdrawals: Path ${PAGE_PATH} revalidated`);
+    logger.info(
+      `(Server Action) getRefreshedWithdrawals: Path ${PAGE_PATH} revalidated`
+    );
     return true;
   } catch (error) {
-    logger.error(`(Server Action) getRefreshedWithdrawals: Error revalidating path`, error);
+    logger.error(
+      `(Server Action) getRefreshedWithdrawals: Error revalidating path`,
+      error
+    );
   }
 }
 
 export async function addWithdrawal(
   prevState: unknown,
-  data: IWithdrawalAdd
-): Promise<IActionResultForm<IWithdrawalAdd, any>> {
+  data: IMaterialWithdrawalAdd
+): Promise<IActionResultForm<IMaterialWithdrawalAdd, any>> {
   logger.info(`(Server Action) addWithdrawal: Attempt to add withdrawal`, data);
-  
+
   try {
     const accessToken = await getSismanAccessToken();
-    return await handleApiAction<IWithdrawalAdd, any, IWithdrawalAdd>(
+    return await handleApiAction<
+      IMaterialWithdrawalAdd,
+      any,
+      IMaterialWithdrawalAdd
+    >(
       data,
       data,
       {
@@ -88,13 +110,20 @@ export async function addWithdrawal(
 
 export async function updateWithdrawal(
   prevState: unknown,
-  data: IWithdrawalEdit
-): Promise<IActionResultForm<IWithdrawalEdit, any>> {
-  logger.info(`(Server Action) updateWithdrawal: Attempt to update withdrawal ${data.id}`, data);
-  
+  data: IMaterialWithdrawalEdit
+): Promise<IActionResultForm<IMaterialWithdrawalEdit, any>> {
+  logger.info(
+    `(Server Action) updateWithdrawal: Attempt to update withdrawal ${data.id}`,
+    data
+  );
+
   try {
     const accessToken = await getSismanAccessToken();
-    return await handleApiAction<IWithdrawalEdit, any, IWithdrawalEdit>(
+    return await handleApiAction<
+      IMaterialWithdrawalEdit,
+      any,
+      IMaterialWithdrawalEdit
+    >(
       data,
       data,
       {
@@ -109,7 +138,10 @@ export async function updateWithdrawal(
       'Withdrawal updated successfully!'
     );
   } catch (error) {
-    logger.error(`(Server Action) updateWithdrawal: Error updating withdrawal ${data.id}`, error);
+    logger.error(
+      `(Server Action) updateWithdrawal: Error updating withdrawal ${data.id}`,
+      error
+    );
     return {
       isSubmitSuccessful: false,
       errorsServer: ['An unexpected error occurred'],

@@ -1,5 +1,5 @@
 import { ColumnDef } from '@tanstack/react-table';
-import { IMaintenanceRequestWithRelations } from '../../maintenance-request-types';
+import { IMaintenanceRequestWithRelations } from '../../request-types';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 

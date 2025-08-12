@@ -2,11 +2,11 @@
 
 import Logger from '@/lib/logger';
 import { revalidatePath } from 'next/cache';
-import { getSismanAccessToken } from '../../../lib/auth/get-access-token';
-import { fetchApiSisman } from '../../../lib/fetch/api-sisman';
-import { IActionResultForm } from '../../../types/types-server-actions';
+import { getSismanAccessToken } from '../../../../lib/auth/get-access-token';
+import { fetchApiSisman } from '../../../../lib/fetch/api-sisman';
+import { IActionResultForm } from '../../../../types/types-server-actions';
 import { IReceiptAdd, IReceiptEdit } from './receipt-types';
-import { handleApiAction } from '../../../lib/fetch/handle-form-action-sisman';
+import { handleApiAction } from '../../../../lib/fetch/handle-form-action-sisman';
 
 const PAGE_PATH = '/material/receipt';
 const API_RELATIVE_PATH = '/material/receipt';
@@ -19,7 +19,9 @@ export async function getReceipts(accessTokenSisman: string) {
     const data = await fetchApiSisman(API_RELATIVE_PATH, accessTokenSisman, {
       cache: 'force-cache'
     });
-    logger.info(`(Server Action) getReceipts: ${data.length} receipts returned`);
+    logger.info(
+      `(Server Action) getReceipts: ${data.length} receipts returned`
+    );
     return data;
   } catch (error) {
     logger.error(`(Server Action) getReceipts: Error fetching receipts`, error);
@@ -38,19 +40,29 @@ export async function showReceipt(accessTokenSisman: string, id: number) {
     logger.info(`(Server Action) showReceipt: receipt ${id} returned`);
     return data;
   } catch (error) {
-    logger.error(`(Server Action) showReceipt: Error fetching receipt ${id}`, error);
+    logger.error(
+      `(Server Action) showReceipt: Error fetching receipt ${id}`,
+      error
+    );
     throw error;
   }
 }
 
 export async function getRefreshedReceipts() {
-  logger.info(`(Server Action) getRefreshedReceipts: Revalidating ${PAGE_PATH}`);
+  logger.info(
+    `(Server Action) getRefreshedReceipts: Revalidating ${PAGE_PATH}`
+  );
   try {
     revalidatePath(PAGE_PATH);
-    logger.info(`(Server Action) getRefreshedReceipts: Path ${PAGE_PATH} revalidated`);
+    logger.info(
+      `(Server Action) getRefreshedReceipts: Path ${PAGE_PATH} revalidated`
+    );
     return true;
   } catch (error) {
-    logger.error(`(Server Action) getRefreshedReceipts: Error revalidating path`, error);
+    logger.error(
+      `(Server Action) getRefreshedReceipts: Error revalidating path`,
+      error
+    );
   }
 }
 
@@ -59,7 +71,7 @@ export async function addReceipt(
   data: IReceiptAdd
 ): Promise<IActionResultForm<IReceiptAdd, any>> {
   logger.info(`(Server Action) addReceipt: Attempt to add receipt`, data);
-  
+
   try {
     const accessToken = await getSismanAccessToken();
     return await handleApiAction<IReceiptAdd, any, IReceiptAdd>(
@@ -90,8 +102,11 @@ export async function updateReceipt(
   prevState: unknown,
   data: IReceiptEdit
 ): Promise<IActionResultForm<IReceiptEdit, any>> {
-  logger.info(`(Server Action) updateReceipt: Attempt to update receipt ${data.id}`, data);
-  
+  logger.info(
+    `(Server Action) updateReceipt: Attempt to update receipt ${data.id}`,
+    data
+  );
+
   try {
     const accessToken = await getSismanAccessToken();
     return await handleApiAction<IReceiptEdit, any, IReceiptEdit>(
@@ -109,7 +124,10 @@ export async function updateReceipt(
       'Receipt updated successfully!'
     );
   } catch (error) {
-    logger.error(`(Server Action) updateReceipt: Error updating receipt ${data.id}`, error);
+    logger.error(
+      `(Server Action) updateReceipt: Error updating receipt ${data.id}`,
+      error
+    );
     return {
       isSubmitSuccessful: false,
       errorsServer: ['An unexpected error occurred'],

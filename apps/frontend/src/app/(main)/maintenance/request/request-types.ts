@@ -1,25 +1,52 @@
 import { MaintenanceRequest, Prisma } from '@sisman/prisma';
 
-export type IRequestWithRelations = Prisma.MaintenanceRequestGetPayload<{
-  include: {priorities:true,facilityComplex:true,building:true,space:true,system:true,currentMaintenanceInstance:true,createdBy:true,assignedTo:true,serviceType:true,statuses:true,diagnosis:true,timelineEvents:true,materialRequests:true,materialStockMovements:true,materialWithdrawals:true,materialPickingOrders:true,serviceOrders:true,sipacUnitRequesting:true,sipacUnitCost:true}
-}>;
+const dateFields = ['createdAt', 'updatedAt'];
 
-export interface IRequestAdd extends Omit<Prisma.MaintenanceRequestCreateInput, 
-  'priorities' | 'facilityComplex' | 'building' | 'space' | 'system' | 'currentMaintenanceInstance' | 'createdBy' | 'assignedTo' | 'serviceType' | 'statuses' | 'diagnosis' | 'timelineEvents' | 'materialRequests' | 'materialStockMovements' | 'materialWithdrawals' | 'materialPickingOrders' | 'serviceOrders' | 'sipacUnitRequesting' | 'sipacUnitCost'
-> {}
+export type IMaintenanceRequestWithRelations =
+  Prisma.MaintenanceRequestGetPayload<{
+    include: {
+      facilityComplex: true;
+      building: true;
+      space: true;
+      system: true;
+      createdBy: true;
+      assignedTo: true;
+      serviceType: true;
+      currentMaintenanceInstance: true;
+    };
+  }>;
 
-export interface IRequestEdit extends IRequestAdd {
+export interface IMaintenanceRequestAdd {
+  title: string;
+  description?: string;
+  deadline?: Date;
+  facilityComplexId?: string;
+  buildingId?: string;
+  spaceId?: number;
+  systemId?: number;
+  local?: string;
+  serviceTypeId?: number;
+  assignedToId?: number;
+}
+
+export interface IMaintenanceRequestEdit extends IMaintenanceRequestAdd {
   id: number;
 }
 
-export type IRequest = MaintenanceRequest;
+export type IMaintenanceRequest = MaintenanceRequest;
 
-export type IRequestRemove = {
+export type IMaintenanceRequestRemove = {
   id: number;
 };
 
-export type IRequestSelect = Prisma.MaintenanceRequestSelect;
+export type IMaintenanceRequestSelect = Prisma.MaintenanceRequestSelect;
 
-export type IRequestRelatedData = {
-  // Will be added later
+export type IMaintenanceRequestRelatedData = {
+  listFacilityComplexes: any[];
+  listBuildings: any[];
+  listSpaces: any[];
+  listSystems: any[];
+  listServiceTypes: any[];
+  listUsers: any[];
+  listMaintenanceInstances: any[];
 };

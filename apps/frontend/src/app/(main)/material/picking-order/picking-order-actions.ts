@@ -2,11 +2,11 @@
 
 import Logger from '@/lib/logger';
 import { revalidatePath } from 'next/cache';
-import { getSismanAccessToken } from '../../../lib/auth/get-access-token';
-import { fetchApiSisman } from '../../../lib/fetch/api-sisman';
-import { IActionResultForm } from '../../../types/types-server-actions';
+import { getSismanAccessToken } from '../../../../lib/auth/get-access-token';
+import { fetchApiSisman } from '../../../../lib/fetch/api-sisman';
+import { IActionResultForm } from '../../../../types/types-server-actions';
 import { IPickingOrderAdd, IPickingOrderEdit } from './picking-order-types';
-import { handleApiAction } from '../../../lib/fetch/handle-form-action-sisman';
+import { handleApiAction } from '../../../../lib/fetch/handle-form-action-sisman';
 
 const PAGE_PATH = '/material/picking-order';
 const API_RELATIVE_PATH = '/material/picking-order';
@@ -19,10 +19,15 @@ export async function getPickingOrders(accessTokenSisman: string) {
     const data = await fetchApiSisman(API_RELATIVE_PATH, accessTokenSisman, {
       cache: 'force-cache'
     });
-    logger.info(`(Server Action) getPickingOrders: ${data.length} picking-orders returned`);
+    logger.info(
+      `(Server Action) getPickingOrders: ${data.length} picking-orders returned`
+    );
     return data;
   } catch (error) {
-    logger.error(`(Server Action) getPickingOrders: Error fetching picking-orders`, error);
+    logger.error(
+      `(Server Action) getPickingOrders: Error fetching picking-orders`,
+      error
+    );
     throw error;
   }
 }
@@ -35,22 +40,34 @@ export async function showPickingOrder(accessTokenSisman: string, id: number) {
       accessTokenSisman,
       { cache: 'force-cache' }
     );
-    logger.info(`(Server Action) showPickingOrder: picking-order ${id} returned`);
+    logger.info(
+      `(Server Action) showPickingOrder: picking-order ${id} returned`
+    );
     return data;
   } catch (error) {
-    logger.error(`(Server Action) showPickingOrder: Error fetching picking-order ${id}`, error);
+    logger.error(
+      `(Server Action) showPickingOrder: Error fetching picking-order ${id}`,
+      error
+    );
     throw error;
   }
 }
 
 export async function getRefreshedPickingOrders() {
-  logger.info(`(Server Action) getRefreshedPickingOrders: Revalidating ${PAGE_PATH}`);
+  logger.info(
+    `(Server Action) getRefreshedPickingOrders: Revalidating ${PAGE_PATH}`
+  );
   try {
     revalidatePath(PAGE_PATH);
-    logger.info(`(Server Action) getRefreshedPickingOrders: Path ${PAGE_PATH} revalidated`);
+    logger.info(
+      `(Server Action) getRefreshedPickingOrders: Path ${PAGE_PATH} revalidated`
+    );
     return true;
   } catch (error) {
-    logger.error(`(Server Action) getRefreshedPickingOrders: Error revalidating path`, error);
+    logger.error(
+      `(Server Action) getRefreshedPickingOrders: Error revalidating path`,
+      error
+    );
   }
 }
 
@@ -58,8 +75,11 @@ export async function addPickingOrder(
   prevState: unknown,
   data: IPickingOrderAdd
 ): Promise<IActionResultForm<IPickingOrderAdd, any>> {
-  logger.info(`(Server Action) addPickingOrder: Attempt to add picking-order`, data);
-  
+  logger.info(
+    `(Server Action) addPickingOrder: Attempt to add picking-order`,
+    data
+  );
+
   try {
     const accessToken = await getSismanAccessToken();
     return await handleApiAction<IPickingOrderAdd, any, IPickingOrderAdd>(
@@ -90,8 +110,11 @@ export async function updatePickingOrder(
   prevState: unknown,
   data: IPickingOrderEdit
 ): Promise<IActionResultForm<IPickingOrderEdit, any>> {
-  logger.info(`(Server Action) updatePickingOrder: Attempt to update picking-order ${data.id}`, data);
-  
+  logger.info(
+    `(Server Action) updatePickingOrder: Attempt to update picking-order ${data.id}`,
+    data
+  );
+
   try {
     const accessToken = await getSismanAccessToken();
     return await handleApiAction<IPickingOrderEdit, any, IPickingOrderEdit>(
@@ -109,7 +132,10 @@ export async function updatePickingOrder(
       'PickingOrder updated successfully!'
     );
   } catch (error) {
-    logger.error(`(Server Action) updatePickingOrder: Error updating picking-order ${data.id}`, error);
+    logger.error(
+      `(Server Action) updatePickingOrder: Error updating picking-order ${data.id}`,
+      error
+    );
     return {
       isSubmitSuccessful: false,
       errorsServer: ['An unexpected error occurred'],

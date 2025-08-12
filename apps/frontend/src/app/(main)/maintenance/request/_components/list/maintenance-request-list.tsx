@@ -9,7 +9,7 @@ import {
 import { useRouter } from 'next/navigation';
 import { Plus, Wrench } from 'lucide-react';
 
-import { IMaintenanceRequestWithRelations } from '../../maintenance-request-types';
+import { IMaintenanceRequestWithRelations } from '../../request-types';
 import { columns } from './maintenance-request-columns';
 import { MaintenanceRequestFilters } from './maintenance-request-filters';
 import { SectionListHeader } from '@/components/section-list-header';

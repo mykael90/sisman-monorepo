@@ -1,25 +1,35 @@
-import { MaterialWithdrawal, Prisma } from '@sisman/prisma';
+import {
+  MaterialWithdrawal,
+  MaterialWithdrawalItem,
+  Prisma
+} from '@sisman/prisma';
 
-export type IWithdrawalWithRelations = Prisma.MaterialWithdrawalGetPayload<{
-  include: {maintenanceRequest:true}
-}>;
+export type IMaterialWithdrawal = MaterialWithdrawal;
 
-export interface IWithdrawalAdd extends Omit<Prisma.MaterialWithdrawalCreateInput, 
-  'maintenanceRequest'
-> {}
+export interface IMaterialWithdrawalAdd
+  extends Prisma.MaterialWithdrawalCreateManyInput {}
 
-export interface IWithdrawalEdit extends IWithdrawalAdd {
-  id: number;
-}
+export interface IMaterialWithdrawalEdit extends IMaterialWithdrawalAdd {}
 
-export type IWithdrawal = MaterialWithdrawal;
+export type IMaterialWithdrawalItem = MaterialWithdrawalItem;
 
-export type IWithdrawalRemove = {
-  id: number;
-};
+export interface IMaterialWithdrawalItemAdd
+  extends Prisma.MaterialWithdrawalItemCreateManyInput {}
 
-export type IWithdrawalSelect = Prisma.MaterialWithdrawalSelect;
+export interface IMaterialWithdrawalItemEdit
+  extends IMaterialWithdrawalItemAdd {}
 
-export type IWithdrawalRelatedData = {
-  // Will be added later
-};
+export type IMaterialWithdrawalWithRelations =
+  Prisma.MaterialWithdrawalGetPayload<{
+    include: {
+      items: true;
+      maintenanceRequest: true;
+      collectedByUser: true;
+      collectedByWorker: true;
+      materialPickingOrder: true;
+      materialRequest: true;
+      movementType: true;
+      processedByUser: true;
+      warehouse: true;
+    };
+  }>;
