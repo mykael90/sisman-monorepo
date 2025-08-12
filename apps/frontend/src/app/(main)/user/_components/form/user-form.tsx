@@ -6,6 +6,7 @@ import { useStore } from '@tanstack/react-store';
 import { FC, useActionState } from 'react';
 import {
   FormDropdown,
+  FormDropdownModal,
   FormInputField
 } from '@/components/form-tanstack/form-input-fields';
 import { Switch } from '@/components/ui/switch';
@@ -225,7 +226,7 @@ export default function UserForm<TMode extends 'add' | 'edit'>({
       <form.Field
         name='maintenanceInstanceId'
         children={(field: any) => (
-          <FormDropdown
+          <FormDropdownModal
             field={field}
             label={fieldLabels.maintenanceInstanceId}
             placeholder={fieldLabels.maintenanceInstanceId}
