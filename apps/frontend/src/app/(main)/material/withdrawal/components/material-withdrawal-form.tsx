@@ -39,6 +39,15 @@ import { IActionResultForm } from '../../../../../types/types-server-actions';
 import { formatRequestNumber } from '../../../../../lib/form-utils';
 import { IMaterialWithdrawalAdd } from '../withdrawal-types';
 
+interface IMaterial {
+  id: number;
+  code: string;
+  description: string;
+  unit: string;
+  stockQty: number;
+  qtyToRemove: number;
+}
+
 const requestFormDataSchema = z.object({
   newReq: z
     .string()
@@ -50,7 +59,7 @@ const requestFormDataSchema = z.object({
 });
 
 interface IMaterialWithdrawalAddServiceUsage extends IMaterialWithdrawalAdd {
-  items: any;
+  items: IMaterial[];
   collectorType: string;
 }
 
@@ -155,25 +164,6 @@ export function MaterialWithdrawalForm({
     }
   ]);
 
-  const [materials, setMaterials] = useState([
-    {
-      id: 1,
-      code: 'PAR-001',
-      description: 'M8 Hex Bolt',
-      unit: 'UN',
-      stockQty: 250,
-      qtyToRemove: 50
-    },
-    {
-      id: 2,
-      code: 'ELE-045',
-      description: 'Electrical Wire 2.5mm',
-      unit: 'M',
-      stockQty: 15,
-      qtyToRemove: 10
-    }
-  ]);
-
   const [maintenanceRequestData, setMaintenanceRequestData] = useState({});
 
   // Estado referente ao formulário de consulta da requisição
@@ -236,20 +226,6 @@ export function MaterialWithdrawalForm({
       console.log('Form submitted:', values);
     }
   });
-
-  const handleAddMaterial = (material: any) => {
-    setMaterials([...materials, { ...material, id: Date.now() }]);
-  };
-
-  const handleRemoveMaterial = (id: number) => {
-    setMaterials(materials.filter((m) => m.id !== id));
-  };
-
-  const handleUpdateQuantity = (id: number, quantity: number) => {
-    setMaterials(
-      materials.map((m) => (m.id === id ? { ...m, qtyToRemove: quantity } : m))
-    );
-  };
 
   const currentSubmitButtonText = submitButtonText || 'Realizar retirada';
 
@@ -782,7 +758,7 @@ export function MaterialWithdrawalForm({
                             })
                           )}
                           onRemove={() => {}} // No remove action for linked items
-                          onUpdateQuantity={handleUpdateQuantity} // Allow quantity update for linked items
+                          onUpdateQuantity={() => {}} // No quantity update for linked items
                           readOnly={false} // Make quantity editable for linked items
                         />
                       </div>
@@ -801,26 +777,75 @@ export function MaterialWithdrawalForm({
                 </CardTitle>
               </CardHeader>
               <CardContent className='space-y-4'>
-                <div className='flex gap-2'>
-                  <Input
-                    placeholder='Enter the material code or name to add'
-                    className='flex-1'
-                  />
-                  <Button>
-                    <Plus className='mr-2 h-4 w-4' />
-                    Add
-                  </Button>
-                </div>
-                <MaterialTable
-                  materials={materials}
-                  onRemove={handleRemoveMaterial}
-                  onUpdateQuantity={handleUpdateQuantity}
-                />
+                <formWithdrawal.Field name='items' mode='array'>
+                  {(field) => {
+                    const handleAddMaterial = (material: IMaterial) => {
+                      field.pushValue({ ...material, id: Date.now() });
+                    };
+
+                    const handleRemoveMaterial = (id: number) => {
+                      const index = field.state.value.findIndex(
+                        (m) => m.id === id
+                      );
+                      if (index !== -1) {
+                        field.removeValue(index);
+                      }
+                    };
+
+                    const handleUpdateQuantity = (
+                      id: number,
+                      quantity: number
+                    ) => {
+                      const index = field.state.value.findIndex(
+                        (m) => m.id === id
+                      );
+                      if (index !== -1) {
+                        const updatedMaterial = {
+                          ...field.state.value[index],
+                          qtyToRemove: quantity
+                        };
+                        field.replaceValue(index, updatedMaterial);
+                      }
+                    };
+
+                    return (
+                      <>
+                        <div className='flex gap-2'>
+                          <Input
+                            placeholder='Enter the material code or name to add'
+                            className='flex-1'
+                          />
+                          <Button
+                            type='button'
+                            onClick={() =>
+                              handleAddMaterial({
+                                id: Date.now(),
+                                code: 'NEW-MAT',
+                                description: 'New Material',
+                                unit: 'UN',
+                                stockQty: 100,
+                                qtyToRemove: 1
+                              })
+                            }
+                          >
+                            <Plus className='mr-2 h-4 w-4' />
+                            Add
+                          </Button>
+                        </div>
+                        <MaterialTable
+                          materials={field.state.value}
+                          onRemove={handleRemoveMaterial}
+                          onUpdateQuantity={handleUpdateQuantity}
+                        />
+                      </>
+                    );
+                  }}
+                </formWithdrawal.Field>
                 <div className='mt-8 flex justify-end gap-3'>
                   <Button
                     type='button'
                     variant='outline'
-                    // onClick={handleReset}
+                    onClick={() => formWithdrawal.reset()}
                   >
                     Limpar
                   </Button>
