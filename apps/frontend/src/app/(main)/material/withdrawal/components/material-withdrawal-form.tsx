@@ -1,11 +1,10 @@
 'use client';
 
-import { useState, useMemo, useActionState, startTransition } from 'react';
+import { useState, useMemo, useActionState, startTransition, FC } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Calendar } from '@/components/ui/calendar';
 import {
   Popover,
@@ -16,7 +15,14 @@ import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import { MaterialTable } from './material-table';
 import { SearchInput } from './search-input';
-import { CalendarIcon, FilePlus, Plus, Search } from 'lucide-react';
+import {
+  CalendarIcon,
+  FilePlus,
+  Plus,
+  Search,
+  UserPlus,
+  Save
+} from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import {
@@ -25,19 +31,13 @@ import {
   FormInputTextArea
 } from '../../../../../components/form-tanstack/form-input-fields';
 import { FormListBox } from '../../../../../components/form-tanstack/form-list-box';
-import {
-  AnyFieldApi,
-  mergeForm,
-  useForm,
-  useTransform
-} from '@tanstack/react-form';
+import { mergeForm, useForm, useTransform } from '@tanstack/react-form';
 import { MapPin, Building, User } from 'lucide-react';
 import Image from 'next/image';
 import { z } from 'zod';
 import { IActionResultForm } from '../../../../../types/types-server-actions';
 import { formatRequestNumber } from '../../../../../lib/form-utils';
 import { IMaterialWithdrawalAdd } from '../withdrawal-types';
-import { labelPrevious } from 'react-day-picker';
 
 const requestFormDataSchema = z.object({
   newReq: z
@@ -111,16 +111,23 @@ const defaultDataRequest: IRequestDataSearch = {
 
 export function MaterialWithdrawalForm({
   promiseMaintenanceRequest,
-  formActionProp
+  formActionProp,
+  onCancel,
+  onClean,
+  submitButtonText,
+  SubmitButtonIcon,
+  relatedData
   // withdrawalType
 }: {
   promiseMaintenanceRequest: any;
   formActionProp: any;
+  onCancel?: () => void;
+  onClean?: () => void;
+  submitButtonText?: string;
+  SubmitButtonIcon?: FC<{ className?: string }>;
+  relatedData: any;
   // withdrawalType: string;
 }) {
-  const [withdrawalDate, setWithdrawalDate] = useState<Date>(new Date());
-  const [collectedByWorker, setCollectedByWorker] = useState<any>(null);
-  const [materialRequest, setMaterialRequest] = useState<any>(null);
   const [linkMaterialRequest, setLinkMaterialRequest] = useState(false);
   const [linkedMaterialRequestData, setLinkedMaterialRequestData] =
     useState<any>(null);
@@ -166,7 +173,6 @@ export function MaterialWithdrawalForm({
       qtyToRemove: 10
     }
   ]);
-  const [collectorType, setCollectorType] = useState('worker');
 
   const [maintenanceRequestData, setMaintenanceRequestData] = useState({});
 
@@ -245,6 +251,11 @@ export function MaterialWithdrawalForm({
     );
   };
 
+  const currentSubmitButtonText = submitButtonText || 'Realizar retirada';
+
+  const CurrentSubmitButtonIcon = (SubmitButtonIcon && (
+    <SubmitButtonIcon className='mr-2 h-5 w-5' />
+  )) || <FilePlus className='mr-2 h-5 w-5' />;
   return (
     <div className='space-y-6'>
       {JSON.stringify(maintenanceRequestData, null, 2)}
@@ -503,32 +514,43 @@ export function MaterialWithdrawalForm({
                   />
                 </div>
                 <div className='space-y-2'>
-                  <Label htmlFor='withdrawalDate'>Data da Retirada</Label>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant='outline'
-                        className={cn(
-                          'w-full justify-start text-left font-normal',
-                          !withdrawalDate && 'text-muted-foreground'
-                        )}
-                      >
-                        <CalendarIcon className='mr-2 h-4 w-4' />
-                        {withdrawalDate ? (
-                          format(withdrawalDate, 'PPP')
-                        ) : (
-                          <span>Selecione uma data</span>
-                        )}
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className='w-auto p-0'>
-                      <Calendar
-                        mode='single'
-                        selected={withdrawalDate}
-                        onSelect={(date) => date && setWithdrawalDate(date)}
-                      />
-                    </PopoverContent>
-                  </Popover>
+                  <formWithdrawal.Field
+                    name='withdrawalDate'
+                    children={(field) => (
+                      <>
+                        <Label htmlFor='withdrawalDate'>Data da Retirada</Label>
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <Button
+                              variant='outline'
+                              className={cn(
+                                'w-full justify-start text-left font-normal',
+                                !field.state.value && 'text-muted-foreground'
+                              )}
+                            >
+                              <CalendarIcon className='mr-2 h-4 w-4' />
+                              {field.state.value ? (
+                                format(field.state.value, 'PPP')
+                              ) : (
+                                <span>Selecione uma data</span>
+                              )}
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent className='w-auto p-0'>
+                            <Calendar
+                              mode='single'
+                              selected={
+                                field.state.value
+                                  ? new Date(field.state.value)
+                                  : undefined
+                              }
+                              onSelect={(date) => date && field.setValue(date)}
+                            />
+                          </PopoverContent>
+                        </Popover>
+                      </>
+                    )}
+                  />
                 </div>
                 <div className='flex items-center gap-4'>
                   <formWithdrawal.Field
@@ -553,23 +575,29 @@ export function MaterialWithdrawalForm({
                   />
 
                   <div className='flex-1'>
-                    <formWithdrawal.Field
-                      name='collectedByWorkerId'
-                      children={(field) => (
-                        <FormDropdown
-                          field={field}
-                          label={`Nome do ${collectorType === 'worker' ? 'profissional' : 'servidor'}`}
-                          placeholder='Selecione um trabalhador'
-                          options={[
-                            { value: '1', label: 'Trabalhador 1' },
-                            { value: '2', label: 'Trabalhador 2' }
-                          ]}
-                          onValueChange={(value) =>
-                            setCollectedByWorker({ id: parseInt(value) })
-                          }
+                    <formWithdrawal.Subscribe
+                      selector={(state) => state.values.collectorType}
+                    >
+                      {(collectorType) => (
+                        <formWithdrawal.Field
+                          name='collectedByWorkerId'
+                          children={(field) => (
+                            <FormDropdown
+                              field={field}
+                              label={`Nome do ${collectorType === 'worker' ? 'profissional' : 'servidor'}`}
+                              placeholder='Selecione um trabalhador'
+                              options={[
+                                { value: '1', label: 'Trabalhador 1' },
+                                { value: '2', label: 'Trabalhador 2' }
+                              ]}
+                              onValueChange={(value) =>
+                                field.handleChange(Number(value))
+                              }
+                            />
+                          )}
                         />
                       )}
-                    />
+                    </formWithdrawal.Subscribe>
                   </div>
                 </div>
               </div>
@@ -690,7 +718,6 @@ export function MaterialWithdrawalForm({
                             } else {
                               setLinkedMaterialRequestData(null);
                             }
-                            setMaterialRequest({ id: parseInt(value) });
                           }}
                         />
                       )}
@@ -789,11 +816,40 @@ export function MaterialWithdrawalForm({
                   onRemove={handleRemoveMaterial}
                   onUpdateQuantity={handleUpdateQuantity}
                 />
-                <div className='flex justify-end gap-2 pt-4'>
-                  <Button variant='outline'>Cancel</Button>
-                  <Button className='bg-accent hover:bg-accent/90'>
-                    Check Out
+                <div className='mt-8 flex justify-end gap-3'>
+                  <Button
+                    type='button'
+                    variant='outline'
+                    // onClick={handleReset}
+                  >
+                    Limpar
                   </Button>
+                  <formWithdrawal.Subscribe
+                    selector={(state) => [
+                      state.canSubmit,
+                      state.isTouched,
+                      state.isValidating
+                    ]}
+                  >
+                    {([canSubmit, isTouched, isValidating]) => (
+                      <Button
+                        type='submit'
+                        disabled={
+                          !canSubmit ||
+                          isPendingWithdrawal || // from useActionState
+                          isValidating ||
+                          !isTouched
+                        }
+                      >
+                        {isPendingWithdrawal || isValidating
+                          ? 'Processando...'
+                          : CurrentSubmitButtonIcon}
+                        {isPendingWithdrawal || isValidating
+                          ? ''
+                          : currentSubmitButtonText}
+                      </Button>
+                    )}
+                  </formWithdrawal.Subscribe>
                 </div>
               </CardContent>
             </Card>
