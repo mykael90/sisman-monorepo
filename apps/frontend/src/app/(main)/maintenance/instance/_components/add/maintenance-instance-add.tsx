@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { IActionResultForm } from '../../../../../../types/types-server-actions';
 import { maintenanceInstanceFormSchemaAdd } from '../form/maintenance-instance-form-validation';
-import { IMaintenanceInstanceAdd } from '../../maintenance-instance-types';
+import { IMaintenanceInstanceAdd } from '../../instance-types';
 
 export default function MaintenanceInstanceAdd({
   isInDialog = false

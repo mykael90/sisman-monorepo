@@ -4,7 +4,7 @@ import { showWarehouse } from '../../warehouse-actions';
 import { notFound } from 'next/navigation';
 import { IWarehouseEdit } from '../../warehouse-types';
 import { getMaintenanceInstances } from '../../../maintenance/instance/instance-actions';
-import { IMaintenanceInstance } from '../../../maintenance/instance/maintenance-instance-types';
+import { IMaintenanceInstance } from '../../../maintenance/instance/instance-types';
 
 export default async function Page({
   params,

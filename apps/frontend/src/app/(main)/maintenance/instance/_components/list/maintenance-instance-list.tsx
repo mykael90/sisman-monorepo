@@ -1,7 +1,7 @@
 'use client';
 
 import { columns, createActions } from './maintenance-instance-columns';
-import { IMaintenanceInstance } from '../../maintenance-instance-types';
+import { IMaintenanceInstance } from '../../instance-types';
 import { Button } from '@/components/ui/button';
 import { Construction, FilePlus, Plus } from 'lucide-react';
 import { useRouter } from 'next/navigation';

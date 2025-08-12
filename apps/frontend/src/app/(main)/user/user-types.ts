@@ -1,6 +1,6 @@
 import { User, Prisma } from '@sisman/prisma';
 import { IRole, IRoleAdd } from '../role/role-types';
-import { IMaintenanceInstance } from '../maintenance/instance/maintenance-instance-types';
+import { IMaintenanceInstance } from '../maintenance/instance/instance-types';
 
 const dateFields = ['createdAt', 'updatedAt'];
 

@@ -1,6 +1,6 @@
 import { getSismanAccessToken } from '../../../../lib/auth/get-access-token';
 import { getMaintenanceInstances } from '../../maintenance/instance/instance-actions';
-import { IMaintenanceInstance } from '../../maintenance/instance/maintenance-instance-types';
+import { IMaintenanceInstance } from '../../maintenance/instance/instance-types';
 import { WarehouseAdd } from '../_components/add/warehouse-add';
 
 export default async function Page({

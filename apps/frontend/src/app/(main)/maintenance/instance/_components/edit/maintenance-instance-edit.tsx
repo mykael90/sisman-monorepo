@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react'; // useEffect and getSismanAccessToken are no longer needed here
 import { IActionResultForm } from '../../../../../../types/types-server-actions';
 import { maintenanceInstanceFormSchemaEdit } from '../form/maintenance-instance-form-validation';
-import { IMaintenanceInstanceEdit } from '../../maintenance-instance-types';
+import { IMaintenanceInstanceEdit } from '../../instance-types';
 import { removeUnreferencedKeys } from '../../../../../../lib/form-utils';
 
 export default function MaintenanceInstanceEdit({

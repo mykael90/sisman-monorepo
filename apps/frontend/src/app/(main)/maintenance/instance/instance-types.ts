@@ -1,25 +1,20 @@
 import { MaintenanceInstance, Prisma } from '@sisman/prisma';
 
-export type IInstanceWithRelations = Prisma.MaintenanceInstanceGetPayload<{
-  include: {currentMaintenanceRequests:true,timelineEventsTransferredFrom:true,timelineEventsTransferredTo:true,warehouses:true,InfrastructureBuilding:true,InfrastructureFacilityComplex:true,users:true}
-}>;
+// Interface para listar instâncias de manutenção
+export type IMaintenanceInstance = MaintenanceInstance;
 
-export interface IInstanceAdd extends Omit<Prisma.MaintenanceInstanceCreateInput, 
-  'currentMaintenanceRequests' | 'timelineEventsTransferredFrom' | 'timelineEventsTransferredTo' | 'warehouses' | 'InfrastructureBuilding' | 'InfrastructureFacilityComplex' | 'users'
-> {}
+// Interface para adicionar uma nova instância de manutenção
+export interface IMaintenanceInstanceAdd
+  extends Prisma.MaintenanceInstanceCreateManyInput {}
 
-export interface IInstanceEdit extends IInstanceAdd {
-  id: number;
-}
+// Interface para editar uma instância de manutenção
+export interface IMaintenanceInstanceEdit extends IMaintenanceInstanceAdd {}
 
-export type IInstance = MaintenanceInstance;
-
-export type IInstanceRemove = {
-  id: number;
-};
-
-export type IInstanceSelect = Prisma.MaintenanceInstanceSelect;
-
-export type IInstanceRelatedData = {
-  // Will be added later
-};
+// Interface para dados completos de uma instância de manutenção com relações
+export type IMaintenanceInstanceWithRelations =
+  Prisma.MaintenanceInstanceGetPayload<{
+    include: {
+      currentMaintenanceRequests: true;
+      warehouses: true;
+    };
+  }>;

@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { IMaintenanceInstanceWithRelations } from '../../maintenance-instance-types';
+import { IMaintenanceInstanceWithRelations } from '../../instance-types';
 import {
   DropdownMenu,
   DropdownMenuContent,

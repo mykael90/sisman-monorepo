@@ -12,7 +12,7 @@ import {
   IMaintenanceInstanceAdd,
   IMaintenanceInstanceEdit,
   IMaintenanceInstance
-} from '../../maintenance-instance-types';
+} from '../../instance-types';
 import { FilePlus, Save } from 'lucide-react';
 
 type MaintenanceInstanceFormData<TMode extends 'add' | 'edit'> =

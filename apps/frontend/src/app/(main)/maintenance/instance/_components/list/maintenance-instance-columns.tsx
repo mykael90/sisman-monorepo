@@ -1,5 +1,5 @@
 import { ColumnDef, createColumnHelper, Row } from '@tanstack/react-table';
-import { IMaintenanceInstance } from '../../maintenance-instance-types';
+import { IMaintenanceInstance } from '../../instance-types';
 import { DataTableColumnHeader } from '@/components/table-tanstack/data-table-column-header';
 import { Button } from '@/components/ui/button';
 import { Edit, Trash2 } from 'lucide-react';

@@ -9,7 +9,7 @@ import { useState } from 'react';
 import { IActionResultForm } from '../../../../../types/types-server-actions';
 import { warehouseFormSchemaEdit } from '../form/warehouse-form-validation';
 import { IWarehouseEdit } from '../../warehouse-types';
-import { IMaintenanceInstance } from '../../../maintenance/instance/maintenance-instance-types';
+import { IMaintenanceInstance } from '../../../maintenance/instance/instance-types';
 import { removeUnreferencedKeys } from '../../../../../lib/form-utils';
 
 interface WarehouseEditProps {

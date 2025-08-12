@@ -18,7 +18,7 @@ import {
 } from '../../warehouse-types';
 import { getFilteredPayloadForUpdate } from '@/lib/form-utils';
 import { FilePlus, Save } from 'lucide-react';
-import { IMaintenanceInstance } from '../../../maintenance/instance/maintenance-instance-types';
+import { IMaintenanceInstance } from '../../../maintenance/instance/instance-types';
 
 type WarehouseFormData<TMode extends 'add' | 'edit'> = TMode extends 'add'
   ? IWarehouseAdd
