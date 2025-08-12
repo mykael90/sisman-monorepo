@@ -2,11 +2,14 @@
 
 import Logger from '@/lib/logger';
 import { revalidatePath } from 'next/cache';
-import { getSismanAccessToken } from '../../../lib/auth/get-access-token';
-import { fetchApiSisman } from '../../../lib/fetch/api-sisman';
-import { IActionResultForm } from '../../../types/types-server-actions';
-import { IOccurrenceDiagnosisAdd, IOccurrenceDiagnosisEdit } from './occurrence-diagnosis-types';
-import { handleApiAction } from '../../../lib/fetch/handle-form-action-sisman';
+import { getSismanAccessToken } from '../../../../lib/auth/get-access-token';
+import { fetchApiSisman } from '../../../../lib/fetch/api-sisman';
+import { IActionResultForm } from '../../../../types/types-server-actions';
+import {
+  IOccurrenceDiagnosisAdd,
+  IOccurrenceDiagnosisEdit
+} from './occurrence-diagnosis-types';
+import { handleApiAction } from '../../../../lib/fetch/handle-form-action-sisman';
 
 const PAGE_PATH = '/infrastructure/occurrence-diagnosis';
 const API_RELATIVE_PATH = '/infrastructure/occurrence-diagnosis';
@@ -14,43 +17,67 @@ const API_RELATIVE_PATH = '/infrastructure/occurrence-diagnosis';
 const logger = new Logger(`${PAGE_PATH}/occurrence-diagnosis-actions`);
 
 export async function getOccurrenceDiagnosiss(accessTokenSisman: string) {
-  logger.info(`(Server Action) getOccurrenceDiagnosiss: Fetching occurrence-diagnosiss`);
+  logger.info(
+    `(Server Action) getOccurrenceDiagnosiss: Fetching occurrence-diagnosiss`
+  );
   try {
     const data = await fetchApiSisman(API_RELATIVE_PATH, accessTokenSisman, {
       cache: 'force-cache'
     });
-    logger.info(`(Server Action) getOccurrenceDiagnosiss: ${data.length} occurrence-diagnosiss returned`);
+    logger.info(
+      `(Server Action) getOccurrenceDiagnosiss: ${data.length} occurrence-diagnosiss returned`
+    );
     return data;
   } catch (error) {
-    logger.error(`(Server Action) getOccurrenceDiagnosiss: Error fetching occurrence-diagnosiss`, error);
+    logger.error(
+      `(Server Action) getOccurrenceDiagnosiss: Error fetching occurrence-diagnosiss`,
+      error
+    );
     throw error;
   }
 }
 
-export async function showOccurrenceDiagnosis(accessTokenSisman: string, id: number) {
-  logger.info(`(Server Action) showOccurrenceDiagnosis: Fetching occurrence-diagnosis ${id}`);
+export async function showOccurrenceDiagnosis(
+  accessTokenSisman: string,
+  id: number
+) {
+  logger.info(
+    `(Server Action) showOccurrenceDiagnosis: Fetching occurrence-diagnosis ${id}`
+  );
   try {
     const data = await fetchApiSisman(
       `${API_RELATIVE_PATH}/${id}`,
       accessTokenSisman,
       { cache: 'force-cache' }
     );
-    logger.info(`(Server Action) showOccurrenceDiagnosis: occurrence-diagnosis ${id} returned`);
+    logger.info(
+      `(Server Action) showOccurrenceDiagnosis: occurrence-diagnosis ${id} returned`
+    );
     return data;
   } catch (error) {
-    logger.error(`(Server Action) showOccurrenceDiagnosis: Error fetching occurrence-diagnosis ${id}`, error);
+    logger.error(
+      `(Server Action) showOccurrenceDiagnosis: Error fetching occurrence-diagnosis ${id}`,
+      error
+    );
     throw error;
   }
 }
 
 export async function getRefreshedOccurrenceDiagnosiss() {
-  logger.info(`(Server Action) getRefreshedOccurrenceDiagnosiss: Revalidating ${PAGE_PATH}`);
+  logger.info(
+    `(Server Action) getRefreshedOccurrenceDiagnosiss: Revalidating ${PAGE_PATH}`
+  );
   try {
     revalidatePath(PAGE_PATH);
-    logger.info(`(Server Action) getRefreshedOccurrenceDiagnosiss: Path ${PAGE_PATH} revalidated`);
+    logger.info(
+      `(Server Action) getRefreshedOccurrenceDiagnosiss: Path ${PAGE_PATH} revalidated`
+    );
     return true;
   } catch (error) {
-    logger.error(`(Server Action) getRefreshedOccurrenceDiagnosiss: Error revalidating path`, error);
+    logger.error(
+      `(Server Action) getRefreshedOccurrenceDiagnosiss: Error revalidating path`,
+      error
+    );
   }
 }
 
@@ -58,11 +85,18 @@ export async function addOccurrenceDiagnosis(
   prevState: unknown,
   data: IOccurrenceDiagnosisAdd
 ): Promise<IActionResultForm<IOccurrenceDiagnosisAdd, any>> {
-  logger.info(`(Server Action) addOccurrenceDiagnosis: Attempt to add occurrence-diagnosis`, data);
-  
+  logger.info(
+    `(Server Action) addOccurrenceDiagnosis: Attempt to add occurrence-diagnosis`,
+    data
+  );
+
   try {
     const accessToken = await getSismanAccessToken();
-    return await handleApiAction<IOccurrenceDiagnosisAdd, any, IOccurrenceDiagnosisAdd>(
+    return await handleApiAction<
+      IOccurrenceDiagnosisAdd,
+      any,
+      IOccurrenceDiagnosisAdd
+    >(
       data,
       data,
       {
@@ -76,7 +110,10 @@ export async function addOccurrenceDiagnosis(
       'OccurrenceDiagnosis added successfully!'
     );
   } catch (error) {
-    logger.error(`(Server Action) addOccurrenceDiagnosis: Unexpected error`, error);
+    logger.error(
+      `(Server Action) addOccurrenceDiagnosis: Unexpected error`,
+      error
+    );
     return {
       isSubmitSuccessful: false,
       errorsServer: ['An unexpected error occurred'],
@@ -90,11 +127,18 @@ export async function updateOccurrenceDiagnosis(
   prevState: unknown,
   data: IOccurrenceDiagnosisEdit
 ): Promise<IActionResultForm<IOccurrenceDiagnosisEdit, any>> {
-  logger.info(`(Server Action) updateOccurrenceDiagnosis: Attempt to update occurrence-diagnosis ${data.id}`, data);
-  
+  logger.info(
+    `(Server Action) updateOccurrenceDiagnosis: Attempt to update occurrence-diagnosis ${data.id}`,
+    data
+  );
+
   try {
     const accessToken = await getSismanAccessToken();
-    return await handleApiAction<IOccurrenceDiagnosisEdit, any, IOccurrenceDiagnosisEdit>(
+    return await handleApiAction<
+      IOccurrenceDiagnosisEdit,
+      any,
+      IOccurrenceDiagnosisEdit
+    >(
       data,
       data,
       {
@@ -109,7 +153,10 @@ export async function updateOccurrenceDiagnosis(
       'OccurrenceDiagnosis updated successfully!'
     );
   } catch (error) {
-    logger.error(`(Server Action) updateOccurrenceDiagnosis: Error updating occurrence-diagnosis ${data.id}`, error);
+    logger.error(
+      `(Server Action) updateOccurrenceDiagnosis: Error updating occurrence-diagnosis ${data.id}`,
+      error
+    );
     return {
       isSubmitSuccessful: false,
       errorsServer: ['An unexpected error occurred'],

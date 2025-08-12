@@ -2,11 +2,11 @@
 
 import Logger from '@/lib/logger';
 import { revalidatePath } from 'next/cache';
-import { getSismanAccessToken } from '../../../lib/auth/get-access-token';
-import { fetchApiSisman } from '../../../lib/fetch/api-sisman';
-import { IActionResultForm } from '../../../types/types-server-actions';
+import { getSismanAccessToken } from '../../../../lib/auth/get-access-token';
+import { fetchApiSisman } from '../../../../lib/fetch/api-sisman';
+import { IActionResultForm } from '../../../../types/types-server-actions';
 import { ISpaceTypeAdd, ISpaceTypeEdit } from './space-type-types';
-import { handleApiAction } from '../../../lib/fetch/handle-form-action-sisman';
+import { handleApiAction } from '../../../../lib/fetch/handle-form-action-sisman';
 
 const PAGE_PATH = '/infrastructure/space-type';
 const API_RELATIVE_PATH = '/infrastructure/space-type';
@@ -19,10 +19,15 @@ export async function getSpaceTypes(accessTokenSisman: string) {
     const data = await fetchApiSisman(API_RELATIVE_PATH, accessTokenSisman, {
       cache: 'force-cache'
     });
-    logger.info(`(Server Action) getSpaceTypes: ${data.length} space-types returned`);
+    logger.info(
+      `(Server Action) getSpaceTypes: ${data.length} space-types returned`
+    );
     return data;
   } catch (error) {
-    logger.error(`(Server Action) getSpaceTypes: Error fetching space-types`, error);
+    logger.error(
+      `(Server Action) getSpaceTypes: Error fetching space-types`,
+      error
+    );
     throw error;
   }
 }
@@ -38,19 +43,29 @@ export async function showSpaceType(accessTokenSisman: string, id: number) {
     logger.info(`(Server Action) showSpaceType: space-type ${id} returned`);
     return data;
   } catch (error) {
-    logger.error(`(Server Action) showSpaceType: Error fetching space-type ${id}`, error);
+    logger.error(
+      `(Server Action) showSpaceType: Error fetching space-type ${id}`,
+      error
+    );
     throw error;
   }
 }
 
 export async function getRefreshedSpaceTypes() {
-  logger.info(`(Server Action) getRefreshedSpaceTypes: Revalidating ${PAGE_PATH}`);
+  logger.info(
+    `(Server Action) getRefreshedSpaceTypes: Revalidating ${PAGE_PATH}`
+  );
   try {
     revalidatePath(PAGE_PATH);
-    logger.info(`(Server Action) getRefreshedSpaceTypes: Path ${PAGE_PATH} revalidated`);
+    logger.info(
+      `(Server Action) getRefreshedSpaceTypes: Path ${PAGE_PATH} revalidated`
+    );
     return true;
   } catch (error) {
-    logger.error(`(Server Action) getRefreshedSpaceTypes: Error revalidating path`, error);
+    logger.error(
+      `(Server Action) getRefreshedSpaceTypes: Error revalidating path`,
+      error
+    );
   }
 }
 
@@ -59,7 +74,7 @@ export async function addSpaceType(
   data: ISpaceTypeAdd
 ): Promise<IActionResultForm<ISpaceTypeAdd, any>> {
   logger.info(`(Server Action) addSpaceType: Attempt to add space-type`, data);
-  
+
   try {
     const accessToken = await getSismanAccessToken();
     return await handleApiAction<ISpaceTypeAdd, any, ISpaceTypeAdd>(
@@ -90,8 +105,11 @@ export async function updateSpaceType(
   prevState: unknown,
   data: ISpaceTypeEdit
 ): Promise<IActionResultForm<ISpaceTypeEdit, any>> {
-  logger.info(`(Server Action) updateSpaceType: Attempt to update space-type ${data.id}`, data);
-  
+  logger.info(
+    `(Server Action) updateSpaceType: Attempt to update space-type ${data.id}`,
+    data
+  );
+
   try {
     const accessToken = await getSismanAccessToken();
     return await handleApiAction<ISpaceTypeEdit, any, ISpaceTypeEdit>(
@@ -109,7 +127,10 @@ export async function updateSpaceType(
       'SpaceType updated successfully!'
     );
   } catch (error) {
-    logger.error(`(Server Action) updateSpaceType: Error updating space-type ${data.id}`, error);
+    logger.error(
+      `(Server Action) updateSpaceType: Error updating space-type ${data.id}`,
+      error
+    );
     return {
       isSubmitSuccessful: false,
       errorsServer: ['An unexpected error occurred'],

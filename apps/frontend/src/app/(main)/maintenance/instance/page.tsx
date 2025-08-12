@@ -4,7 +4,7 @@ import { getSismanAccessToken } from '@/lib/auth/get-access-token';
 import {
   getMaintenanceInstances,
   getRefreshedInstances
-} from './maintenance-instance-actions';
+} from './instance-actions';
 import Loading from '@/components/loading';
 
 export default async function Page() {

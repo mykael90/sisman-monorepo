@@ -2,7 +2,7 @@
 
 import { FilePlus } from 'lucide-react';
 import FormAddHeader from '../../../../../../components/form-tanstack/form-add-header';
-import { addInstance } from '../../maintenance-instance-actions';
+import { addInstance } from '../../instance-actions';
 import MaintenanceInstanceForm from '../form/maintenance-instance-form';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';

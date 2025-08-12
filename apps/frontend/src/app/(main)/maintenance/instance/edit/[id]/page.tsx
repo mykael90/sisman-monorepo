@@ -1,6 +1,6 @@
 import MaintenanceInstanceEdit from '../../_components/edit/maintenance-instance-edit';
 import { getSismanAccessToken } from '@/lib/auth/get-access-token';
-import { showInstance } from '../../maintenance-instance-actions';
+import { showInstance } from '../../instance-actions';
 import { IMaintenanceInstanceEdit } from '../../maintenance-instance-types';
 import { removeUnreferencedKeys } from '../../../../../../lib/form-utils';
 

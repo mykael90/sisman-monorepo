@@ -2,7 +2,7 @@ import UserAdd from '../_components/add/user-add';
 import { getSismanAccessToken } from '../../../../lib/auth/get-access-token';
 import Logger from '../../../../lib/logger';
 import { getRoles } from '../../role/role-actions';
-import { getMaintenanceInstances } from '../../maintenance/instance/maintenance-instance-actions';
+import { getMaintenanceInstances } from '../../maintenance/instance/instance-actions';
 
 const logger = new Logger('user/add/page.tsx');
 

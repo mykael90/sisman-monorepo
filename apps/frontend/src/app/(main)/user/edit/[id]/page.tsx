@@ -2,7 +2,7 @@ import UserEdit from '../../_components/edit/user-edit';
 import { getSismanAccessToken } from '../../../../../lib/auth/get-access-token';
 import { showUser } from '../../user-actions';
 import { getRoles } from '../../../role/role-actions';
-import { getMaintenanceInstances } from '../../../maintenance/instance/maintenance-instance-actions';
+import { getMaintenanceInstances } from '../../../maintenance/instance/instance-actions';
 
 export default async function Page({
   params,

@@ -2,7 +2,7 @@
 
 import { Pencil, Save } from 'lucide-react';
 import FormAddHeader from '../../../../../../components/form-tanstack/form-add-header';
-import { updateInstance } from '../../maintenance-instance-actions'; // showInstance is no longer needed here
+import { updateInstance } from '../../instance-actions'; // showInstance is no longer needed here
 import MaintenanceInstanceForm from '../form/maintenance-instance-form';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react'; // useEffect and getSismanAccessToken are no longer needed here

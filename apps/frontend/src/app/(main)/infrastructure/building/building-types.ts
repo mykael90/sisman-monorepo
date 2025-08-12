@@ -1,5 +1,5 @@
 import { InfrastructureBuilding, Prisma } from '@sisman/prisma';
-import { InfrastructureFacilityComplex } from '../facility-complex/facility-complex-types';
+import { IFacilityComplex } from '../facility-complex/facility-complex-types';
 import { InfrastructureBuildingActivity } from '../building-activity/building-activity-types';
 
 export type IBuildingWithRelations = Prisma.InfrastructureBuildingGetPayload<{
@@ -33,6 +33,6 @@ export type IBuildingRemove = {
 export type IBuildingSelect = Prisma.InfrastructureBuildingSelect;
 
 export type IBuildingRelatedData = {
-  listFacilityComplexes: InfrastructureFacilityComplex[];
+  listFacilityComplexes: IFacilityComplex[];
   listBuildingActivities: InfrastructureBuildingActivity[];
 };
