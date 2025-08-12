@@ -8,7 +8,8 @@ import {
   Post,
   Put,
   UseGuards,
-  Logger
+  Logger,
+  Query
 } from '@nestjs/common';
 import { MaterialRequestsService } from './material-requests.service';
 
@@ -79,6 +80,11 @@ export class MaterialRequestsController {
     return this.materialRequestsService.list();
   }
 
+  @Get('/protocol')
+  async showByProtocolNumber(@Query('value') value: string) {
+    return this.materialRequestsService.findByProtocolNumber(value);
+  }
+
   /**
    * Busca uma requisição de material específica pelo seu ID.
    */
@@ -103,6 +109,12 @@ export class MaterialRequestsController {
     @Param('id') id: number
   ): Promise<MaterialRequestWithRelationsResponseDto> {
     return this.materialRequestsService.show(id);
+  }
+
+  //TODO: tem que criar o metodo ainda do balanco por protocolo.
+  @Get('/balance/protocol')
+  async showBalanceByProtocolNumber(@Query('value') value: string) {
+    return this.materialRequestsService.findByProtocolNumber(value);
   }
 
   /**

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useActionState } from 'react';
+import { useState, useMemo, useActionState, startTransition } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -21,7 +21,8 @@ import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import {
   FormDropdown,
-  FormInputField
+  FormInputField,
+  FormInputTextArea
 } from '../../../../../components/form-tanstack/form-input-fields';
 import { FormListBox } from '../../../../../components/form-tanstack/form-list-box';
 import {
@@ -35,6 +36,8 @@ import Image from 'next/image';
 import { z } from 'zod';
 import { IActionResultForm } from '../../../../../types/types-server-actions';
 import { formatRequestNumber } from '../../../../../lib/form-utils';
+import { IMaterialWithdrawalAdd } from '../withdrawal-types';
+import { labelPrevious } from 'react-day-picker';
 
 const requestFormDataSchema = z.object({
   newReq: z
@@ -46,21 +49,45 @@ const requestFormDataSchema = z.object({
     )
 });
 
-const getRequestData = (value: IRequestDataSearch) => {
-  if (value.requestType === 'maintenanceRequest') {
-    return formatRequestNumber(value.requestProtocolNumber);
-  } else if (value.requestType === 'materialRequest') {
-    return null;
-  } else {
-    console.error('Invalid request type:', value.requestType);
-  }
-  return formatRequestNumber(value.requestProtocolNumber);
+interface IMaterialWithdrawalAddServiceUsage extends IMaterialWithdrawalAdd {
+  items: any;
+  collectorType: string;
+}
+
+const defaultDataWithdrawalServiceUsage: IMaterialWithdrawalAddServiceUsage = {
+  withdrawalNumber: '',
+  withdrawalDate: new Date(),
+  maintenanceRequestId: null,
+  warehouseId: 1,
+  processedByUserId: 1,
+  collectedByWorkerId: null,
+  movementTypeId: 1,
+  items: [],
+  materialRequestId: null,
+  notes: '',
+  collectorType: 'worker'
 };
 
-interface MaterialWithdrawalFormProps {
-  // withdrawalType: string;
-  requestDataSearch: any;
-}
+const fieldsLabelsWithdrawalServiceUsage: Partial<
+  Record<keyof IMaterialWithdrawalAddServiceUsage, string>
+> = {
+  collectedByUserId: 'Coletado pelo usuário',
+  withdrawalNumber: 'Número da Retirada',
+  withdrawalDate: 'Data da Retirada',
+  maintenanceRequestId: 'Requisição de Manutenção',
+  warehouseId: 'Depósito',
+  processedByUserId: 'Processado por',
+  movementTypeId: 'Tipo de Movimento',
+  materialRequestId: 'Requisição de Material',
+  notes: 'Observações',
+  collectorType: 'Coletado por'
+};
+
+const initialServerStateWithdrawal: IActionResultForm<IMaterialWithdrawalAddServiceUsage> =
+  {
+    isSubmitSuccessful: false,
+    message: ''
+  };
 
 interface IRequestDataSearch {
   requestType: string;
@@ -83,9 +110,14 @@ const defaultDataRequest: IRequestDataSearch = {
 };
 
 export function MaterialWithdrawalForm({
-  requestDataSearch
+  promiseMaintenanceRequest,
+  formActionProp
   // withdrawalType
-}: MaterialWithdrawalFormProps) {
+}: {
+  promiseMaintenanceRequest: any;
+  formActionProp: any;
+  // withdrawalType: string;
+}) {
   const [withdrawalDate, setWithdrawalDate] = useState<Date>(new Date());
   const [collectedByWorker, setCollectedByWorker] = useState<any>(null);
   const [materialRequest, setMaterialRequest] = useState<any>(null);
@@ -134,12 +166,47 @@ export function MaterialWithdrawalForm({
       qtyToRemove: 10
     }
   ]);
-  const [requestType, setRequestType] = useState('maintenance');
   const [collectorType, setCollectorType] = useState('worker');
 
-  const [serverStateDataSearch, formActionDataSearch, isPendingDataSearch] =
-    useActionState(requestDataSearch, initialServerStateRequestData);
+  const [maintenanceRequestData, setMaintenanceRequestData] = useState({});
 
+  // Estado referente ao formulário de consulta da requisição
+  const [serverStateDataSearch, formActionDataSearch, isPendingDataSearch] =
+    useActionState(promiseMaintenanceRequest, initialServerStateRequestData);
+
+  // Função para buscar os dados referente a requisição de manutenção
+  const handleRequestMaintenanceData = async (protocolNumber: string) => {
+    startTransition(async () => {
+      try {
+        const response = await promiseMaintenanceRequest(protocolNumber); // Chama a Server Action
+        setMaintenanceRequestData(response);
+      } catch (error) {
+        console.error('Error refreshing data:', error);
+        // Lidar com erro
+      }
+    });
+  };
+
+  const getRequestData = (value: IRequestDataSearch) => {
+    if (value.requestType === 'maintenanceRequest') {
+      const requestNumberFormatted = formatRequestNumber(
+        value.requestProtocolNumber
+      );
+      handleRequestMaintenanceData(requestNumberFormatted);
+      return formatRequestNumber(value.requestProtocolNumber);
+    } else if (value.requestType === 'materialRequest') {
+      return null;
+    } else {
+      console.error('Invalid request type:', value.requestType);
+    }
+    return formatRequestNumber(value.requestProtocolNumber);
+  };
+
+  // Estado referente ao formulário de retirada
+  const [serverStateWithdrawal, formActionWithdrawal, isPendingWithdrawal] =
+    useActionState(formActionProp, initialServerStateWithdrawal);
+
+  //Formulario de consulta de informações da requisição de manutenção ou material
   const formRequest = useForm({
     defaultValues: defaultDataRequest,
     transform: useTransform(
@@ -152,19 +219,13 @@ export function MaterialWithdrawalForm({
     }
   });
 
+  //Formulário para inserir nova retirada de materiais
   const formWithdrawal = useForm({
-    defaultValues: {
-      withdrawalNumber: 'RET-007',
-      withdrawalDate: new Date(),
-      maintenanceRequestId: '',
-      warehouseId: '',
-      processedByUserId: '',
-      collectedByWorkerId: '',
-      movementTypeCode: 'OUT_SERVICE_USAGE',
-      items: [],
-      materialRequestId: '',
-      notes: ''
-    },
+    defaultValues: defaultDataWithdrawalServiceUsage,
+    transform: useTransform(
+      (baseform) => mergeForm(baseform, serverStateWithdrawal ?? {}),
+      [serverStateWithdrawal]
+    ),
     onSubmit: (values) => {
       console.log('Form submitted:', values);
     }
@@ -186,6 +247,7 @@ export function MaterialWithdrawalForm({
 
   return (
     <div className='space-y-6'>
+      {JSON.stringify(maintenanceRequestData, null, 2)}
       <form
         id='form-request'
         onSubmit={(e) => {
@@ -293,6 +355,8 @@ export function MaterialWithdrawalForm({
                 </svg>
               </span>
             </summary>
+
+            {/* Informações extraídas da requisição de manutenção */}
             <Card className='rounded-t-none shadow-sm'>
               <CardContent className='space-y-6'>
                 <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
@@ -367,12 +431,12 @@ export function MaterialWithdrawalForm({
                 <h3 className='text-md font-semibold'>
                   Resumo da Movimentação de Materiais
                 </h3>
-                <MaterialTable
+                {/* <MaterialTable
                   materials={maintenanceRequestMaterialsSummary}
                   onRemove={() => {}} // No remove action for summary items
                   onUpdateQuantity={() => {}} // No quantity update for summary items
                   readOnly={true} // This table should be read-only
-                />
+                /> */}
               </CardContent>
             </Card>
           </details>
@@ -389,18 +453,22 @@ export function MaterialWithdrawalForm({
                     children={(field) => (
                       <FormInputField
                         field={field}
-                        label='Número da Retirada'
+                        label={
+                          fieldsLabelsWithdrawalServiceUsage.withdrawalNumber as string
+                        }
                         type='hidden'
                         showLabel={false}
                       />
                     )}
                   />
                   <formWithdrawal.Field
-                    name='movementTypeCode'
+                    name='movementTypeId'
                     children={(field) => (
                       <FormInputField
                         field={field}
-                        label='Tipo de Movimento'
+                        label={
+                          fieldsLabelsWithdrawalServiceUsage.movementTypeId as string
+                        }
                         type='hidden'
                         showLabel={false}
                       />
@@ -411,7 +479,9 @@ export function MaterialWithdrawalForm({
                     children={(field) => (
                       <FormInputField
                         field={field}
-                        label='ID da Requisição de Manutenção'
+                        label={
+                          fieldsLabelsWithdrawalServiceUsage.maintenanceRequestId as string
+                        }
                         type='hidden'
                         showLabel={false}
                       />
@@ -422,7 +492,9 @@ export function MaterialWithdrawalForm({
                     children={(field) => (
                       <FormInputField
                         field={field}
-                        label='Processado por'
+                        label={
+                          fieldsLabelsWithdrawalServiceUsage.processedByUserId as string
+                        }
                         type='hidden'
                         // type='hidden'
                         showLabel={false}
@@ -459,35 +531,27 @@ export function MaterialWithdrawalForm({
                   </Popover>
                 </div>
                 <div className='flex items-center gap-4'>
-                  <FormDropdown
-                    field={
-                      {
-                        name: 'collectorType',
-                        state: {
-                          value: collectorType,
-                          meta: {
-                            isValid: true,
-                            isBlurred: false,
-                            errors: [],
-                            isValidating: false
-                          }
-                        },
-                        handleChange: (value: string) =>
-                          setCollectorType(value),
-                        handleBlur: () => {}
-                      } as unknown as AnyFieldApi
-                    }
-                    label='Coletado por'
-                    placeholder='Escolha o tipo'
-                    options={[
-                      { value: 'worker', label: 'Profissional' },
-                      { value: 'user', label: 'Servidor' }
-                      // { value: 'emergencyRequest', label: 'Emergencial' }
-                    ]}
-                    onValueChange={setCollectorType}
-                    className='w-35'
-                    showLabel={true}
+                  <formWithdrawal.Field
+                    name='collectorType'
+                    children={(field) => (
+                      <FormDropdown
+                        field={field}
+                        label={
+                          fieldsLabelsWithdrawalServiceUsage.collectorType as string
+                        }
+                        placeholder={
+                          fieldsLabelsWithdrawalServiceUsage.collectorType as string
+                        }
+                        options={[
+                          { value: 'worker', label: 'Profissional' },
+                          { value: 'user', label: 'Servidor' }
+                        ]}
+                        onValueChange={(value) => field.handleChange(value)}
+                        className='w-35'
+                      />
+                    )}
                   />
+
                   <div className='flex-1'>
                     <formWithdrawal.Field
                       name='collectedByWorkerId'
@@ -513,17 +577,7 @@ export function MaterialWithdrawalForm({
               <formWithdrawal.Field
                 name='notes'
                 children={(field) => (
-                  <div className='space-y-2'>
-                    <Label htmlFor='notes'>Observações</Label>
-                    <Textarea
-                      id='notes'
-                      placeholder='Add any additional notes or comments...'
-                      className='min-h-[100px]'
-                      value={field.state.value}
-                      onBlur={field.handleBlur}
-                      onChange={(e) => field.handleChange(e.target.value)}
-                    />
-                  </div>
+                  <FormInputTextArea field={field} label='Notas' />
                 )}
               />
             </CardContent>
@@ -571,7 +625,10 @@ export function MaterialWithdrawalForm({
                               value: '1',
                               label: 'Requisição 16349/2025 - Manutenção'
                             },
-                            { value: '2', label: 'Requisição 12345/2024 - TI' },
+                            {
+                              value: '2',
+                              label: 'Requisição 12345/2024 - TI'
+                            },
                             {
                               value: '3',
                               label: 'Requisição 20001/2025 - Elétrica'

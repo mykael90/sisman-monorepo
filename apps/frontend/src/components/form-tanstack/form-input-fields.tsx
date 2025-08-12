@@ -10,6 +10,8 @@ import {
   SelectTrigger,
   SelectValue
 } from '../ui/select';
+import { Textarea } from '../ui/textarea';
+
 // Componente FormInputField usando AnyFieldApi
 export function FormInputField({
   field,
@@ -42,7 +44,7 @@ export function FormInputField({
       {showLabel && (
         <label
           htmlFor={field.name}
-          className='mb-1 block text-sm font-medium text-gray-700'
+          className="mb-1 block text-sm font-medium text-gray-700"
         >
           {label}
         </label>
@@ -64,7 +66,7 @@ export function FormInputField({
         // A biblioteca garante que errors é um array.
         // O exemplo original usava !field.state.meta.isValid, o que também é válido.
         // Usar errors.length > 0 é muitas vezes mais direto.
-        <em className='mt-1 block text-xs text-red-500'>
+        <em className="mt-1 block text-xs text-red-500">
           {/* Mapeia os erros para extrair apenas a propriedade 'message' e depois junta com vírgula */}
           {field.state.meta.errors
             .map((error: any) => error.message)
@@ -72,7 +74,7 @@ export function FormInputField({
         </em>
       ) : null}
       {field.state.meta.isValidating ? (
-        <em className='mt-1 text-xs text-blue-500'>Validating...</em>
+        <em className="mt-1 text-xs text-blue-500">Validating...</em>
       ) : null}
     </div>
   );
@@ -104,7 +106,7 @@ export function FormDropdown({
       {showLabel && (
         <label
           htmlFor={field.name}
-          className='mb-1 block text-sm font-medium text-gray-700'
+          className="mb-1 block text-sm font-medium text-gray-700"
         >
           {label}
         </label>
@@ -124,7 +126,7 @@ export function FormDropdown({
         }}
         {...props}
       >
-        <SelectTrigger className='w-full'>
+        <SelectTrigger className="w-full">
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         <SelectContent>
@@ -142,14 +144,14 @@ export function FormDropdown({
         </SelectContent>
       </Select>
       {!field.state.meta.isValid && field.state.meta.isBlurred ? (
-        <em className='mt-1 block text-xs text-red-500'>
+        <em className="mt-1 block text-xs text-red-500">
           {field.state.meta.errors
             .map((error: any) => error.message)
             .join('; ')}
         </em>
       ) : null}
       {field.state.meta.isValidating ? (
-        <em className='mt-1 text-xs text-blue-500'>Validating...</em>
+        <em className="mt-1 text-xs text-blue-500">Validating...</em>
       ) : null}
     </div>
   );
@@ -173,35 +175,35 @@ export function FormInputCheckbox({
 
   return (
     <div className={className}>
-      <div className='flex items-center'>
+      <div className="flex items-center">
         <input
           id={field.name}
           name={field.name}
-          type='checkbox'
+          type="checkbox"
           checked={checked}
           onBlur={field.handleBlur}
           onChange={(e) => field.handleChange(e.target.checked)}
-          className='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500' // Estilo básico, ajuste conforme necessário
+          className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" // Estilo básico, ajuste conforme necessário
           {...props}
         />
         {showLabel && (
           <label
             htmlFor={field.name}
-            className='ml-2 block text-sm font-medium text-gray-700'
+            className="ml-2 block text-sm font-medium text-gray-700"
           >
             {label}
           </label>
         )}
       </div>
       {!field.state.meta.isValid && field.state.meta.isBlurred ? (
-        <em className='mt-1 block text-xs text-red-500'>
+        <em className="mt-1 block text-xs text-red-500">
           {field.state.meta.errors
             .map((error: any) => error.message)
             .join('; ')}
         </em>
       ) : null}
       {field.state.meta.isValidating ? (
-        <em className='mt-1 text-xs text-blue-500'>Validating...</em>
+        <em className="mt-1 text-xs text-blue-500">Validating...</em>
       ) : null}
     </div>
   );
@@ -238,12 +240,12 @@ export function FormInputFieldSearch({
       {showLabel && (
         <label
           htmlFor={field.name}
-          className='mb-1 block text-sm font-medium text-gray-700'
+          className="mb-1 block text-sm font-medium text-gray-700"
         >
           {label}
         </label>
       )}
-      <Search className='text-muted-foreground absolute top-2.5 left-2.5 h-4 w-4' />
+      <Search className="text-muted-foreground absolute top-2.5 left-2.5 h-4 w-4" />
       <Input
         id={field.name}
         name={field.name}
@@ -252,7 +254,7 @@ export function FormInputFieldSearch({
         onChange={(e) => field.handleChange(e.target.value)}
         type={type}
         placeholder={placeholder}
-        className='pl-8'
+        className="pl-8"
         {...props}
       />
       {/* Exibindo informações de erro e validação como no exemplo fornecido */}
@@ -262,7 +264,7 @@ export function FormInputFieldSearch({
         // A biblioteca garante que errors é um array.
         // O exemplo original usava !field.state.meta.isValid, o que também é válido.
         // Usar errors.length > 0 é muitas vezes mais direto.
-        <em className='mt-1 block text-xs text-red-500'>
+        <em className="mt-1 block text-xs text-red-500">
           {/* Mapeia os erros para extrair apenas a propriedade 'message' e depois junta com vírgula */}
           {field.state.meta.errors
             .map((error: any) => error.message)
@@ -270,7 +272,57 @@ export function FormInputFieldSearch({
         </em>
       ) : null}
       {field.state.meta.isValidating ? (
-        <em className='mt-1 text-xs text-blue-500'>Validating...</em>
+        <em className="mt-1 text-xs text-blue-500">Validating...</em>
+      ) : null}
+    </div>
+  );
+}
+
+export function FormInputTextArea({
+  field,
+  label,
+  placeholder,
+  showLabel = true,
+  className = '',
+  ...props
+}: {
+  field: AnyFieldApi;
+  label: string;
+  placeholder?: string;
+  showLabel?: boolean;
+  className?: string;
+  [key: string]: any;
+}) {
+  const value = field.state.value as string;
+
+  return (
+    <div className={className}>
+      {showLabel && (
+        <label
+          htmlFor={field.name}
+          className="mb-1 block text-sm font-medium text-gray-700"
+        >
+          {label}
+        </label>
+      )}
+      <Textarea
+        id={field.name}
+        name={field.name}
+        value={value}
+        onBlur={field.handleBlur}
+        onChange={(e) => field.handleChange(e.target.value)}
+        placeholder={placeholder}
+        {...props}
+      />
+      {!field.state.meta.isValid && field.state.meta.isBlurred ? (
+        <em className="mt-1 block text-xs text-red-500">
+          {field.state.meta.errors
+            .map((error: any) => error.message)
+            .join('; ')}
+        </em>
+      ) : null}
+      {field.state.meta.isValidating ? (
+        <em className="mt-1 text-xs text-blue-500">Validating...</em>
       ) : null}
     </div>
   );

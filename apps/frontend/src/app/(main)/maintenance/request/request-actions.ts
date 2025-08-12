@@ -66,6 +66,31 @@ export async function showMaintenanceRequest(
     throw error;
   }
 }
+export async function showMaintenanceRequestByProtocol(
+  accessTokenSisman: string,
+  protocolNumber: string
+): Promise<IMaintenanceRequestEdit> {
+  logger.info(
+    `(Server Action) showMaintenanceRequest: Buscando requisição com ID ${protocolNumber}.`
+  );
+  try {
+    const data = await fetchApiSisman(
+      `${API_RELATIVE_PATH}/protocol?value=${protocolNumber}`,
+      accessTokenSisman,
+      { cache: 'force-cache' }
+    );
+    logger.info(
+      `(Server Action) showMaintenanceRequest: Requisição com ID ${protocolNumber} retornada.`
+    );
+    return data;
+  } catch (error) {
+    logger.error(
+      `(Server Action) showMaintenanceRequest: Erro ao buscar requisição com ID ${protocolNumber}.`,
+      error
+    );
+    throw error;
+  }
+}
 
 export async function getRefreshedMaintenanceRequests() {
   logger.info(
