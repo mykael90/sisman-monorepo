@@ -15,6 +15,7 @@ import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import { MaterialTable } from './material-table';
 import { SearchInput } from './search-input';
+import { MaterialItemsField } from './material-items-field';
 import {
   CalendarIcon,
   FilePlus,
@@ -58,7 +59,8 @@ const requestFormDataSchema = z.object({
     )
 });
 
-interface IMaterialWithdrawalAddServiceUsage extends IMaterialWithdrawalAdd {
+export interface IMaterialWithdrawalAddServiceUsage
+  extends IMaterialWithdrawalAdd {
   items: IMaterial[];
   collectorType: string;
 }
@@ -778,68 +780,7 @@ export function MaterialWithdrawalForm({
               </CardHeader>
               <CardContent className='space-y-4'>
                 <formWithdrawal.Field name='items' mode='array'>
-                  {(field) => {
-                    const handleAddMaterial = (material: IMaterial) => {
-                      field.pushValue({ ...material, id: Date.now() });
-                    };
-
-                    const handleRemoveMaterial = (id: number) => {
-                      const index = field.state.value.findIndex(
-                        (m) => m.id === id
-                      );
-                      if (index !== -1) {
-                        field.removeValue(index);
-                      }
-                    };
-
-                    const handleUpdateQuantity = (
-                      id: number,
-                      quantity: number
-                    ) => {
-                      const index = field.state.value.findIndex(
-                        (m) => m.id === id
-                      );
-                      if (index !== -1) {
-                        const updatedMaterial = {
-                          ...field.state.value[index],
-                          qtyToRemove: quantity
-                        };
-                        field.replaceValue(index, updatedMaterial);
-                      }
-                    };
-
-                    return (
-                      <>
-                        <div className='flex gap-2'>
-                          <Input
-                            placeholder='Enter the material code or name to add'
-                            className='flex-1'
-                          />
-                          <Button
-                            type='button'
-                            onClick={() =>
-                              handleAddMaterial({
-                                id: Date.now(),
-                                code: 'NEW-MAT',
-                                description: 'New Material',
-                                unit: 'UN',
-                                stockQty: 100,
-                                qtyToRemove: 1
-                              })
-                            }
-                          >
-                            <Plus className='mr-2 h-4 w-4' />
-                            Add
-                          </Button>
-                        </div>
-                        <MaterialTable
-                          materials={field.state.value}
-                          onRemove={handleRemoveMaterial}
-                          onUpdateQuantity={handleUpdateQuantity}
-                        />
-                      </>
-                    );
-                  }}
+                  {(field) => <MaterialItemsField field={field} />}
                 </formWithdrawal.Field>
                 <div className='mt-8 flex justify-end gap-3'>
                   <Button
