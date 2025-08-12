@@ -3,7 +3,6 @@
 import { useState, useMemo, useActionState, startTransition, FC } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Calendar } from '@/components/ui/calendar';
 import {
@@ -14,16 +13,8 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import { MaterialTable } from './material-table';
-import { SearchInput } from './search-input';
 import { MaterialItemsField } from './material-items-field';
-import {
-  CalendarIcon,
-  FilePlus,
-  Plus,
-  Search,
-  UserPlus,
-  Save
-} from 'lucide-react';
+import { CalendarIcon, FilePlus, Search } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import {
@@ -123,22 +114,30 @@ const defaultDataRequest: IRequestDataSearch = {
 export function MaterialWithdrawalForm({
   promiseMaintenanceRequest,
   formActionProp,
-  onCancel,
-  onClean,
+  // onCancel,
+  // onClean,
   submitButtonText,
-  SubmitButtonIcon,
-  relatedData
+  SubmitButtonIcon
+  // relatedData
   // withdrawalType
 }: {
   promiseMaintenanceRequest: any;
   formActionProp: any;
-  onCancel?: () => void;
-  onClean?: () => void;
+  // onCancel?: () => void;
+  // onClean?: () => void;
   submitButtonText?: string;
   SubmitButtonIcon?: FC<{ className?: string }>;
-  relatedData: any;
+  // relatedData: any;
   // withdrawalType: string;
 }) {
+  // Estado referente ao formulário de retirada
+  const [serverStateWithdrawal, formActionWithdrawal, isPendingWithdrawal] =
+    useActionState(formActionProp, initialServerStateWithdrawal);
+
+  // Estado referente ao formulário de consulta da requisição
+  const [serverStateDataSearch, formActionDataSearch, isPendingDataSearch] =
+    useActionState(promiseMaintenanceRequest, initialServerStateRequestData);
+
   const [linkMaterialRequest, setLinkMaterialRequest] = useState(false);
   const [linkedMaterialRequestData, setLinkedMaterialRequestData] =
     useState<any>(null);
@@ -168,10 +167,6 @@ export function MaterialWithdrawalForm({
 
   const [maintenanceRequestData, setMaintenanceRequestData] = useState({});
 
-  // Estado referente ao formulário de consulta da requisição
-  const [serverStateDataSearch, formActionDataSearch, isPendingDataSearch] =
-    useActionState(promiseMaintenanceRequest, initialServerStateRequestData);
-
   // Função para buscar os dados referente a requisição de manutenção
   const handleRequestMaintenanceData = async (protocolNumber: string) => {
     startTransition(async () => {
@@ -199,10 +194,6 @@ export function MaterialWithdrawalForm({
     }
     return formatRequestNumber(value.requestProtocolNumber);
   };
-
-  // Estado referente ao formulário de retirada
-  const [serverStateWithdrawal, formActionWithdrawal, isPendingWithdrawal] =
-    useActionState(formActionProp, initialServerStateWithdrawal);
 
   //Formulario de consulta de informações da requisição de manutenção ou material
   const formRequest = useForm({
@@ -234,6 +225,7 @@ export function MaterialWithdrawalForm({
   const CurrentSubmitButtonIcon = (SubmitButtonIcon && (
     <SubmitButtonIcon className='mr-2 h-5 w-5' />
   )) || <FilePlus className='mr-2 h-5 w-5' />;
+
   return (
     <div className='space-y-6'>
       {JSON.stringify(maintenanceRequestData, null, 2)}
@@ -553,29 +545,30 @@ export function MaterialWithdrawalForm({
                   />
 
                   <div className='flex-1'>
-                    <formWithdrawal.Subscribe
-                      selector={(state) => state.values.collectorType}
-                    >
-                      {(collectorType) => (
-                        <formWithdrawal.Field
-                          name='collectedByWorkerId'
-                          children={(field) => (
-                            <FormDropdown
-                              field={field}
-                              label={`Nome do ${collectorType === 'worker' ? 'profissional' : 'servidor'}`}
-                              placeholder='Selecione um trabalhador'
-                              options={[
-                                { value: '1', label: 'Trabalhador 1' },
-                                { value: '2', label: 'Trabalhador 2' }
-                              ]}
-                              onValueChange={(value) =>
-                                field.handleChange(Number(value))
-                              }
-                            />
-                          )}
+                    <formWithdrawal.Field
+                      name='collectedByWorkerId'
+                      children={(field) => (
+                        // <formWithdrawal.Subscribe
+                        //   selector={(state) => state.values.collectorType}
+                        // >
+                        //   {(collectorType) => (
+                        <FormDropdown
+                          key={field.name} // The key is still good practice
+                          field={field}
+                          label={`Nome do colaborador`}
+                          placeholder='Selecione um trabalhador'
+                          options={[
+                            { value: '1', label: 'Trabalhador 1' },
+                            { value: '2', label: 'Trabalhador 2' }
+                          ]}
+                          onValueChange={(value) =>
+                            field.handleChange(Number(value))
+                          }
                         />
+                        // )}
+                        // </formWithdrawal.Subscribe>
                       )}
-                    </formWithdrawal.Subscribe>
+                    />
                   </div>
                 </div>
               </div>
@@ -782,44 +775,44 @@ export function MaterialWithdrawalForm({
                 <formWithdrawal.Field name='items' mode='array'>
                   {(field) => <MaterialItemsField field={field} />}
                 </formWithdrawal.Field>
-                <div className='mt-8 flex justify-end gap-3'>
-                  <Button
-                    type='button'
-                    variant='outline'
-                    onClick={() => formWithdrawal.reset()}
-                  >
-                    Limpar
-                  </Button>
-                  <formWithdrawal.Subscribe
-                    selector={(state) => [
-                      state.canSubmit,
-                      state.isTouched,
-                      state.isValidating
-                    ]}
-                  >
-                    {([canSubmit, isTouched, isValidating]) => (
-                      <Button
-                        type='submit'
-                        disabled={
-                          !canSubmit ||
-                          isPendingWithdrawal || // from useActionState
-                          isValidating ||
-                          !isTouched
-                        }
-                      >
-                        {isPendingWithdrawal || isValidating
-                          ? 'Processando...'
-                          : CurrentSubmitButtonIcon}
-                        {isPendingWithdrawal || isValidating
-                          ? ''
-                          : currentSubmitButtonText}
-                      </Button>
-                    )}
-                  </formWithdrawal.Subscribe>
-                </div>
               </CardContent>
             </Card>
           )}
+        </div>
+        <div className='mt-8 flex justify-end gap-3'>
+          <Button
+            type='button'
+            variant='outline'
+            onClick={() => formWithdrawal.reset()}
+          >
+            Limpar
+          </Button>
+          <formWithdrawal.Subscribe
+            selector={(state) => [
+              state.canSubmit,
+              state.isTouched,
+              state.isValidating
+            ]}
+          >
+            {([canSubmit, isTouched, isValidating]) => (
+              <Button
+                type='submit'
+                disabled={
+                  !canSubmit ||
+                  isPendingWithdrawal || // from useActionState
+                  isValidating ||
+                  !isTouched
+                }
+              >
+                {isPendingWithdrawal || isValidating
+                  ? 'Processando...'
+                  : CurrentSubmitButtonIcon}
+                {isPendingWithdrawal || isValidating
+                  ? ''
+                  : currentSubmitButtonText}
+              </Button>
+            )}
+          </formWithdrawal.Subscribe>
         </div>
       </form>
     </div>
