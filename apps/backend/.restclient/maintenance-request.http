@@ -11,6 +11,11 @@ Authorization: Bearer {{token}}
 GET {{urlLocal}}/{{id}}
 Authorization: Bearer {{token}}
 
+### GET one by protocol
+GET {{urlLocal}}/protocol
+?value=4506/2025
+Authorization: Bearer {{token}}
+
 ### POST
 POST {{urlLocal}}
 Content-Type: {{contentType}}

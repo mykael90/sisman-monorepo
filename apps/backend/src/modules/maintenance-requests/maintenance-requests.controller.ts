@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UseGuards
 } from '@nestjs/common';
 import { MaintenanceRequestsService } from './maintenance-requests.service';
@@ -29,6 +30,11 @@ export class MaintenanceRequestsController {
   @Post()
   async create(@Body() data: CreateMaintenanceRequestWithRelationsDto) {
     return this.maintenanceRequestsService.create(data);
+  }
+
+  @Get('/protocol')
+  async showByProtocolNumber(@Query('value') value: string) {
+    return this.maintenanceRequestsService.findByProtocolNumber(value);
   }
 
   @Get(':id')
