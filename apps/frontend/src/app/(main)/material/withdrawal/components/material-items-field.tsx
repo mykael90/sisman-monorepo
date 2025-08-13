@@ -146,7 +146,7 @@ export const MaterialItemsField: FC<MaterialItemsFieldProps> = ({
             }}
             placeholder='Adicionar material para retirada...'
             emptyMessage='No materials found.'
-            className='w-full min-w-full'
+            className='w-full'
           />
         </div>
         {/* <Button type='button' onClick={handleAddMaterial}>

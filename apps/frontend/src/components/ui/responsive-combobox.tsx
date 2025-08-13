@@ -112,7 +112,10 @@ export function ResponsiveCombobox({
     return (
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>{triggerButton}</PopoverTrigger>
-        <PopoverContent className={cn('p-0', className)}>
+        <PopoverContent
+          className={cn('p-0', className)}
+          style={{ width: 'var(--radix-popover-trigger-width)' }}
+        >
           {commandContent}
         </PopoverContent>
       </Popover>
