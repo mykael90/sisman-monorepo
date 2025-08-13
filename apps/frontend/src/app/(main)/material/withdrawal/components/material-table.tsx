@@ -108,6 +108,7 @@ export function MaterialTable({
                   ) : (
                     <div className='flex items-center gap-2'>
                       <Button
+                        type='button'
                         variant='outline'
                         size='sm'
                         onClick={() => handleQuantityChange(material.key, -1)}
@@ -129,6 +130,7 @@ export function MaterialTable({
                         // max={material.stockQty}
                       />
                       <Button
+                        type='button'
                         variant='outline'
                         size='sm'
                         onClick={() => handleQuantityChange(material.key, 1)}
