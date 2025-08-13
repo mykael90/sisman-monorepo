@@ -8,8 +8,8 @@ import { IMaterialWithdrawalItemAddServiceUsage } from './material-withdrawal-fo
 
 interface MaterialTableProps {
   materials: IMaterialWithdrawalItemAddServiceUsage[];
-  onRemove: (id: number) => void;
-  onUpdateQuantity: (id: number, quantity: number) => void;
+  onRemove: (key: number) => void;
+  onUpdateQuantity: (key: number, quantity: number) => void;
   hideMaterialRequestItemId?: boolean;
   readOnly?: boolean;
 }
@@ -21,14 +21,14 @@ export function MaterialTable({
   hideMaterialRequestItemId,
   readOnly = false // Destructure the prop here, with a default of false
 }: MaterialTableProps) {
-  const handleQuantityChange = (id: number, change: number) => {
-    const material = materials.find((m) => m.id === id);
+  const handleQuantityChange = (key: number, change: number) => {
+    const material = materials.find((m) => m.key === key);
     if (material) {
       const newQuantity = Math.max(
         0,
         Math.min(material.stockQty, Number(material.quantityWithdrawn) + change)
       );
-      onUpdateQuantity(id, newQuantity);
+      onUpdateQuantity(key, newQuantity);
     }
   };
 
@@ -77,7 +77,7 @@ export function MaterialTable({
           </thead>
           <tbody className='divide-y divide-gray-200'>
             {materials.map((material) => (
-              <tr key={material.id} className='hover:bg-gray-50'>
+              <tr key={material.key} className='hover:bg-gray-50'>
                 <td className='px-4 py-3 text-sm font-medium text-gray-900'>
                   {material.globalMaterialId}
                 </td>
@@ -110,7 +110,7 @@ export function MaterialTable({
                       <Button
                         variant='outline'
                         size='sm'
-                        onClick={() => handleQuantityChange(material.id, -1)}
+                        onClick={() => handleQuantityChange(material.key, -1)}
                         disabled={Number(material.quantityWithdrawn) <= 0}
                       >
                         <Minus className='h-3 w-3' />
@@ -120,7 +120,7 @@ export function MaterialTable({
                         value={Number(material.quantityWithdrawn)}
                         onChange={(e) =>
                           onUpdateQuantity(
-                            material.id,
+                            material.key,
                             parseInt(e.target.value) || 0
                           )
                         }
@@ -131,7 +131,7 @@ export function MaterialTable({
                       <Button
                         variant='outline'
                         size='sm'
-                        onClick={() => handleQuantityChange(material.id, 1)}
+                        onClick={() => handleQuantityChange(material.key, 1)}
                         disabled={
                           Number(material.quantityWithdrawn) >=
                           material.stockQty
@@ -152,7 +152,7 @@ export function MaterialTable({
                     <Button
                       variant='outline'
                       size='sm'
-                      onClick={() => onRemove(material.id)}
+                      onClick={() => onRemove(material.key)}
                       className='text-red-600 hover:text-red-700'
                     >
                       <Trash2 className='h-4 w-4' />

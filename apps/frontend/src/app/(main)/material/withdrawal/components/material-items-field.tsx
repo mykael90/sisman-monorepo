@@ -103,7 +103,7 @@ export const MaterialItemsField: FC<MaterialItemsFieldProps> = ({
       );
       if (materialToAdd) {
         field.pushValue({
-          id: Date.now(), // Temporary ID
+          key: Date.now(), // Temporary ID
           materialWithdrawalId: 1, // Placeholder
           name: materialToAdd.name,
           globalMaterialId: materialToAdd.id,
@@ -111,25 +111,25 @@ export const MaterialItemsField: FC<MaterialItemsFieldProps> = ({
           description: materialToAdd.description,
           unitOfMeasure: materialToAdd.unitOfMeasure,
           quantityWithdrawn: 1, // Default quantity
-          stockQty: 0 // Default stockQty as it's not in IMaterialGlobalCatalog
+          stockQty: 10 // Default stockQty as it's not in IMaterialGlobalCatalog
         });
         // setSelectedMaterialId(undefined); // Clear selection after adding
       }
     }
   };
 
-  const handleRemoveMaterial = (id: number) => {
+  const handleRemoveMaterial = (key: number) => {
     const index = field.state.value.findIndex(
-      (m: IMaterialWithdrawalItemAddServiceUsage) => m.id === id
+      (m: IMaterialWithdrawalItemAddServiceUsage) => m.key === key
     );
     if (index !== -1) {
       field.removeValue(index);
     }
   };
 
-  const handleUpdateQuantity = (id: number, quantity: number) => {
+  const handleUpdateQuantity = (key: number, quantity: number) => {
     const index = field.state.value.findIndex(
-      (m: IMaterialWithdrawalItemAddServiceUsage) => m.id === id
+      (m: IMaterialWithdrawalItemAddServiceUsage) => m.key === key
     );
     if (index !== -1) {
       const updatedMaterial = {

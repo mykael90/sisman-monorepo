@@ -52,7 +52,7 @@ const requestFormDataSchema = z.object({
 //TODO:
 export type IMaterialWithdrawalItemAddServiceUsage =
   IMaterialWithdrawalItemAdd &
-    Omit<IMaterialGlobalCatalogAdd, 'id'> & { id: number; stockQty: number };
+    Omit<IMaterialGlobalCatalogAdd, 'id'> & { key: number; stockQty: number };
 
 export interface IMaterialWithdrawalAddServiceUsage
   extends IMaterialWithdrawalAdd {
