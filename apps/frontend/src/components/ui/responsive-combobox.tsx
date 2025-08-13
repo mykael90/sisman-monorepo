@@ -35,15 +35,21 @@ interface ResponsiveComboboxProps {
   placeholder?: string;
   emptyMessage?: string;
   className?: string;
+  closeOnSelect?: boolean; // New prop
+  drawerTitle?: string;
+  drawerDescription?: string;
 }
 
 export function ResponsiveCombobox({
   options,
   value,
   onValueChange,
-  placeholder = 'Select option...',
-  emptyMessage = 'No option found.',
-  className
+  placeholder = 'Selecione uma opção...',
+  emptyMessage = 'Nenhuma opção encontrada.',
+  className,
+  closeOnSelect = true, // Default to true for existing behavior
+  drawerTitle,
+  drawerDescription
 }: ResponsiveComboboxProps) {
   const [open, setOpen] = React.useState(false);
   const isDesktop = useMediaQuery('(min-width: 768px)');
@@ -91,7 +97,9 @@ export function ResponsiveCombobox({
               value={option.value} // Keep value as material ID for onSelect
               onSelect={(currentValue: string) => {
                 onValueChange(currentValue === value ? '' : currentValue);
-                setOpen(false);
+                if (closeOnSelect) {
+                  setOpen(false);
+                }
               }}
             >
               <Check
@@ -127,9 +135,9 @@ export function ResponsiveCombobox({
       <DrawerTrigger asChild>{triggerButton}</DrawerTrigger>
       <DrawerContent>
         <DrawerHeader>
-          <DrawerTitle>Select Material</DrawerTitle>
+          <DrawerTitle>{drawerTitle || 'Command Palette'}</DrawerTitle>
           <DrawerDescription>
-            Search for a material by code or name.
+            {drawerDescription || 'Search for a command to run...'}
           </DrawerDescription>
         </DrawerHeader>
         {commandContent}

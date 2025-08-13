@@ -84,10 +84,17 @@ export const MaterialItemsField: FC<MaterialItemsFieldProps> = ({
   >(undefined);
 
   const materialOptions =
-    listGlobalMaterials?.map((material) => ({
-      value: material.id,
-      label: `${material.codeSidec} - ${material.name}`
-    })) || [];
+    listGlobalMaterials
+      ?.filter(
+        (material) =>
+          !field.state.value.some(
+            (addedMaterial) => addedMaterial.globalMaterialId === material.id
+          )
+      )
+      .map((material) => ({
+        value: material.id,
+        label: `(${material.id}) ${material.name}`
+      })) || [];
 
   const handleAddMaterial = (selectedMaterialId: string) => {
     if (selectedMaterialId) {
@@ -145,8 +152,11 @@ export const MaterialItemsField: FC<MaterialItemsFieldProps> = ({
               handleAddMaterial(value);
             }}
             placeholder='Adicionar material para retirada...'
-            emptyMessage='No materials found.'
+            emptyMessage='Nenhum material encontrado.'
             className='w-full'
+            closeOnSelect={false} // Added to allow alternative behavior
+            drawerTitle='Consulta a materiais'
+            drawerDescription='Selecione um material para adicionar à retirada.'
           />
         </div>
         {/* <Button type='button' onClick={handleAddMaterial}>
