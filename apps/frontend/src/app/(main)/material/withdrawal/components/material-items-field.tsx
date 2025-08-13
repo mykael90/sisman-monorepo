@@ -89,7 +89,7 @@ export const MaterialItemsField: FC<MaterialItemsFieldProps> = ({
       label: `${material.codeSidec} - ${material.name}`
     })) || [];
 
-  const handleAddMaterial = () => {
+  const handleAddMaterial = (selectedMaterialId: string) => {
     if (selectedMaterialId) {
       const materialToAdd = listGlobalMaterials?.find(
         (m) => m.id === selectedMaterialId
@@ -106,7 +106,7 @@ export const MaterialItemsField: FC<MaterialItemsFieldProps> = ({
           quantityWithdrawn: 1, // Default quantity
           stockQty: 0 // Default stockQty as it's not in IMaterialGlobalCatalog
         });
-        setSelectedMaterialId(undefined); // Clear selection after adding
+        // setSelectedMaterialId(undefined); // Clear selection after adding
       }
     }
   };
@@ -139,11 +139,14 @@ export const MaterialItemsField: FC<MaterialItemsFieldProps> = ({
         <div className='flex-1'>
           <ResponsiveCombobox
             options={materialOptions}
-            value={selectedMaterialId}
-            onValueChange={setSelectedMaterialId}
+            // value={selectedMaterialId}
+            onValueChange={(value) => {
+              // setSelectedMaterialId(value);
+              handleAddMaterial(value);
+            }}
             placeholder='Adicionar material para retirada...'
             emptyMessage='No materials found.'
-            className='w-full'
+            className='w-full min-w-full'
           />
         </div>
         {/* <Button type='button' onClick={handleAddMaterial}>
