@@ -3,6 +3,8 @@ import {
   MaterialWithdrawalItem,
   Prisma
 } from '@sisman/prisma';
+import { IMaterialGlobalCatalog } from '../material-types';
+import { IUser } from '../../user/user-types';
 
 export type IMaterialWithdrawal = MaterialWithdrawal;
 
@@ -33,3 +35,8 @@ export type IMaterialWithdrawalWithRelations =
       warehouse: true;
     };
   }>;
+
+export interface IMaterialWithdrawalRelatedData {
+  listGlobalMaterials?: IMaterialGlobalCatalog[];
+  listUsers?: IUser[];
+}

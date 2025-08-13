@@ -29,16 +29,15 @@ import Image from 'next/image';
 import { z } from 'zod';
 import { IActionResultForm } from '../../../../../types/types-server-actions';
 import { formatRequestNumber } from '../../../../../lib/form-utils';
-import { IMaterialWithdrawalAdd } from '../withdrawal-types';
-
-interface IMaterial {
-  id: number;
-  code: string;
-  description: string;
-  unit: string;
-  stockQty: number;
-  qtyToRemove: number;
-}
+import {
+  IMaterialWithdrawalAdd,
+  IMaterialWithdrawalItemAdd,
+  IMaterialWithdrawalRelatedData
+} from '../withdrawal-types';
+import {
+  IMaterialGlobalCatalog,
+  IMaterialGlobalCatalogAdd
+} from '../../material-types';
 
 const requestFormDataSchema = z.object({
   newReq: z
@@ -50,9 +49,12 @@ const requestFormDataSchema = z.object({
     )
 });
 
+export type IMaterialWithdrawalItemAddServiceUsage =
+  IMaterialWithdrawalItemAdd & Omit<IMaterialGlobalCatalogAdd, 'id'>;
+
 export interface IMaterialWithdrawalAddServiceUsage
   extends IMaterialWithdrawalAdd {
-  items: IMaterial[];
+  items: IMaterialWithdrawalItemAdd[];
   collectorType: string;
 }
 
@@ -114,6 +116,7 @@ const defaultDataRequest: IRequestDataSearch = {
 export function MaterialWithdrawalForm({
   promiseMaintenanceRequest,
   formActionProp,
+  relatedData,
   // onCancel,
   // onClean,
   submitButtonText,
@@ -127,16 +130,11 @@ export function MaterialWithdrawalForm({
   // onClean?: () => void;
   submitButtonText?: string;
   SubmitButtonIcon?: FC<{ className?: string }>;
+  relatedData: IMaterialWithdrawalRelatedData;
   // relatedData: any;
   // withdrawalType: string;
 }) {
-  // Estado referente ao formulário de retirada
-  const [serverStateWithdrawal, formActionWithdrawal, isPendingWithdrawal] =
-    useActionState(formActionProp, initialServerStateWithdrawal);
-
-  // Estado referente ao formulário de consulta da requisição
-  const [serverStateDataSearch, formActionDataSearch, isPendingDataSearch] =
-    useActionState(promiseMaintenanceRequest, initialServerStateRequestData);
+  const { listGlobalMaterials, listUsers } = relatedData;
 
   const [linkMaterialRequest, setLinkMaterialRequest] = useState(false);
   const [linkedMaterialRequestData, setLinkedMaterialRequestData] =
@@ -165,6 +163,14 @@ export function MaterialWithdrawalForm({
     }
   ]);
 
+  // Estado referente ao formulário de retirada
+  const [serverStateWithdrawal, formActionWithdrawal, isPendingWithdrawal] =
+    useActionState(formActionProp, initialServerStateWithdrawal);
+
+  // Estado referente ao formulário de consulta da requisição
+  const [serverStateDataSearch, formActionDataSearch, isPendingDataSearch] =
+    useActionState(promiseMaintenanceRequest, initialServerStateRequestData);
+
   // Define interface for maintenance request data
   interface IMaintenanceRequestData {
     id?: number;
@@ -187,6 +193,7 @@ export function MaterialWithdrawalForm({
       longitude?: number;
     };
     local?: string;
+    protocolNumber?: string;
   }
 
   const [maintenanceRequestData, setMaintenanceRequestData] =
@@ -254,6 +261,7 @@ export function MaterialWithdrawalForm({
   return (
     <div className='space-y-6'>
       {/* {JSON.stringify(maintenanceRequestData, null, 2)} */}
+      {/* {JSON.stringify(listUsers, null, 2)} */}
       <form
         id='form-request'
         onSubmit={(e) => {
@@ -341,30 +349,31 @@ export function MaterialWithdrawalForm({
         }}
       >
         <div className='space-y-6'>
-          <details className='group'>
-            <summary className='bg-card text-card-foreground flex cursor-pointer items-center justify-between rounded-lg border p-6 shadow-sm group-open:rounded-b-none group-open:shadow-sm'>
-              <h2 className='text-lg font-semibold'>
-                Informações: Requisição de Manutenção
-              </h2>
-              <span className='shrink-0 transition duration-300 group-open:-rotate-180'>
-                <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  className='h-5 w-5'
-                  viewBox='0 0 20 20'
-                  fill='currentColor'
-                >
-                  <path
-                    fillRule='evenodd'
-                    d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z'
-                    clipRule='evenodd'
-                  />
-                </svg>
-              </span>
-            </summary>
-
-            {/* Informações extraídas da requisição de manutenção */}
-            {/* Só renderiza o card se houver dados da requisição */}
-            {maintenanceRequestData?.id && (
+          {/* Informações extraídas da requisição de manutenção */}
+          {/* Só renderiza o card se houver dados da requisição */}
+          {maintenanceRequestData?.id && (
+            <details className='group'>
+              <summary className='bg-card text-card-foreground flex cursor-pointer items-center justify-between rounded-lg border p-6 shadow-sm group-open:rounded-b-none group-open:shadow-sm'>
+                <h2 className='text-lg font-semibold'>
+                  Requisição de Manutenção:{' '}
+                  {maintenanceRequestData?.protocolNumber} -{' '}
+                  {maintenanceRequestData?.building?.name}
+                </h2>
+                <span className='shrink-0 transition duration-300 group-open:-rotate-180'>
+                  <svg
+                    xmlns='http://www.w3.org/2000/svg'
+                    className='h-5 w-5'
+                    viewBox='0 0 20 20'
+                    fill='currentColor'
+                  >
+                    <path
+                      fillRule='evenodd'
+                      d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z'
+                      clipRule='evenodd'
+                    />
+                  </svg>
+                </span>
+              </summary>
               <Card className='rounded-t-none shadow-sm'>
                 <CardContent className='space-y-6 pt-6'>
                   {/* Seção de Descrição e Data */}
@@ -513,8 +522,8 @@ export function MaterialWithdrawalForm({
       /> */}
                 </CardContent>
               </Card>
-            )}
-          </details>
+            </details>
+          )}
           {/* Withdrawal Details */}
           <Card>
             <CardHeader>

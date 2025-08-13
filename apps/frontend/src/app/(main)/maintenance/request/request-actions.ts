@@ -44,7 +44,7 @@ export async function getMaintenanceRequests(
 export async function showMaintenanceRequest(
   accessTokenSisman: string,
   id: number
-): Promise<IMaintenanceRequestEdit> {
+): Promise<IMaintenanceRequestWithRelations> {
   logger.info(
     `(Server Action) showMaintenanceRequest: Buscando requisição com ID ${id}.`
   );
@@ -69,7 +69,7 @@ export async function showMaintenanceRequest(
 export async function showMaintenanceRequestByProtocol(
   accessTokenSisman: string,
   protocolNumber: string
-): Promise<IMaintenanceRequestEdit> {
+): Promise<IMaintenanceRequestWithRelations> {
   logger.info(
     `(Server Action) showMaintenanceRequest: Buscando requisição com ID ${protocolNumber}.`
   );

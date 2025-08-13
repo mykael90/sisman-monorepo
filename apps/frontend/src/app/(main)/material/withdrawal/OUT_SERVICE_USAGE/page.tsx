@@ -1,9 +1,13 @@
 import { MaterialWithdrawalForm } from '../components/material-withdrawal-form';
 import { showMaintenanceRequestByProtocol } from '../../../maintenance/request/request-actions';
 import { getSismanAccessToken } from '../../../../../lib/auth/get-access-token';
+import { getUsers } from '../../../user/user-actions';
+import { getMaterialGlobalCatalogs } from '../../global-catalog/material-global-catalog-actions';
+import { FilePlus } from 'lucide-react';
+import { addWithdrawal } from '../withdrawal-actions';
 
 export default async function Page() {
-  // const accessTokenSisman = await getSismanAccessToken();
+  const accessTokenSisman = await getSismanAccessToken();
 
   // const requestDataSearch = (protocolNumber: string) => ({
   //   getMaintenanceRequest: showMaintenanceRequestByProtocol(
@@ -14,9 +18,13 @@ export default async function Page() {
 
   async function getMaintenanceRequest(protocolNumber: string) {
     'use server';
-    const accessTokenSisman = await getSismanAccessToken();
     return showMaintenanceRequestByProtocol(accessTokenSisman, protocolNumber);
   }
+
+  const [listGlobalMaterials, listUsers] = await Promise.all([
+    getMaterialGlobalCatalogs(accessTokenSisman),
+    getUsers(accessTokenSisman)
+  ]);
 
   const response = await getMaintenanceRequest('4506/2025');
   console.log(response);
@@ -30,6 +38,14 @@ export default async function Page() {
         {/* Main Form */}
         <MaterialWithdrawalForm
           promiseMaintenanceRequest={getMaintenanceRequest}
+          relatedData={{
+            listGlobalMaterials,
+            listUsers
+          }}
+          // SubmitButtonIcon={FilePlus}
+          // submitButtonText='Criar Usuário'
+          formActionProp={addWithdrawal}
+          // withdrawalType={withdrawalType}
         />
 
         {/* Sidebar */}
