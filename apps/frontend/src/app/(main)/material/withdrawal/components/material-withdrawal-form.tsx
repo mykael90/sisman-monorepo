@@ -878,7 +878,12 @@ export function MaterialWithdrawalForm({
               </CardHeader>
               <CardContent className='space-y-4'>
                 <formWithdrawal.Field name='items' mode='array'>
-                  {(field) => <MaterialItemsField field={field} />}
+                  {(field) => (
+                    <MaterialItemsField
+                      field={field}
+                      listGlobalMaterials={listGlobalMaterials}
+                    />
+                  )}
                 </formWithdrawal.Field>
               </CardContent>
             </Card>
