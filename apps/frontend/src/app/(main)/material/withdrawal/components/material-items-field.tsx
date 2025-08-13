@@ -5,7 +5,7 @@ import { FieldApi } from '@tanstack/react-form';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
 import { MaterialTable } from './material-table';
-import { Combobox } from '@/components/ui/combobox';
+import { ResponsiveCombobox } from '@/components/ui/responsive-combobox';
 import * as React from 'react';
 import {
   IMaterialWithdrawalAddServiceUsage,
@@ -137,19 +137,19 @@ export const MaterialItemsField: FC<MaterialItemsFieldProps> = ({
     <>
       <div className='flex gap-4'>
         <div className='flex-1'>
-          <Combobox
+          <ResponsiveCombobox
             options={materialOptions}
             value={selectedMaterialId}
             onValueChange={setSelectedMaterialId}
-            placeholder='Select material...'
+            placeholder='Adicionar material para retirada...'
             emptyMessage='No materials found.'
             className='w-full'
           />
         </div>
-        <Button type='button' onClick={handleAddMaterial}>
+        {/* <Button type='button' onClick={handleAddMaterial}>
           <Plus className='mr-2 h-4 w-4' />
           Add
-        </Button>
+        </Button> */}
       </div>
       <MaterialTable
         materials={field.state.value}
