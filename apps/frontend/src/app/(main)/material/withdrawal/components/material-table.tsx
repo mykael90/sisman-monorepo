@@ -4,19 +4,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Trash2, Minus, Plus } from 'lucide-react';
-
-interface Material {
-  id: number;
-  code: string;
-  description: string;
-  unit: string;
-  stockQty: number;
-  qtyToRemove: number;
-  materialRequestItemId?: number; // Add this field
-}
+import { IMaterialWithdrawalItemAddServiceUsage } from './material-withdrawal-form';
 
 interface MaterialTableProps {
-  materials: Material[];
+  materials: IMaterialWithdrawalItemAddServiceUsage[];
   onRemove: (id: number) => void;
   onUpdateQuantity: (id: number, quantity: number) => void;
   hideMaterialRequestItemId?: boolean;
@@ -35,7 +26,7 @@ export function MaterialTable({
     if (material) {
       const newQuantity = Math.max(
         0,
-        Math.min(material.stockQty, material.qtyToRemove + change)
+        Math.min(material.stockQty, Number(material.quantityWithdrawn) + change)
       );
       onUpdateQuantity(id, newQuantity);
     }
@@ -58,13 +49,13 @@ export function MaterialTable({
           <thead className='bg-gray-50'>
             <tr>
               <th className='px-4 py-3 text-left text-sm font-medium text-gray-900'>
-                Code/SKU
+                Código
               </th>
               <th className='px-4 py-3 text-left text-sm font-medium text-gray-900'>
-                Material Description
+                Descrição
               </th>
               <th className='px-4 py-3 text-left text-sm font-medium text-gray-900'>
-                Unit
+                Unidade
               </th>
               <th className='px-4 py-3 text-left text-sm font-medium text-gray-900'>
                 Stock Qty
@@ -88,13 +79,13 @@ export function MaterialTable({
             {materials.map((material) => (
               <tr key={material.id} className='hover:bg-gray-50'>
                 <td className='px-4 py-3 text-sm font-medium text-gray-900'>
-                  {material.code}
+                  {material.globalMaterialId}
                 </td>
                 <td className='px-4 py-3 text-sm text-gray-900'>
                   {material.description}
                 </td>
                 <td className='px-4 py-3 text-sm text-gray-900'>
-                  {material.unit}
+                  {material.unitOfMeasure}
                 </td>
                 <td className='px-4 py-3 text-sm'>
                   <Badge
@@ -111,20 +102,22 @@ export function MaterialTable({
                 </td>
                 <td className='px-4 py-3'>
                   {readOnly ? (
-                    <p className='text-gray-900'>{material.qtyToRemove}</p>
+                    <p className='text-gray-900'>
+                      {Number(material.quantityWithdrawn)}
+                    </p>
                   ) : (
                     <div className='flex items-center gap-2'>
                       <Button
                         variant='outline'
                         size='sm'
                         onClick={() => handleQuantityChange(material.id, -1)}
-                        disabled={material.qtyToRemove <= 0}
+                        disabled={Number(material.quantityWithdrawn) <= 0}
                       >
                         <Minus className='h-3 w-3' />
                       </Button>
                       <Input
                         type='number'
-                        value={material.qtyToRemove}
+                        value={Number(material.quantityWithdrawn)}
                         onChange={(e) =>
                           onUpdateQuantity(
                             material.id,
@@ -133,13 +126,16 @@ export function MaterialTable({
                         }
                         className='w-16 text-center'
                         min='0'
-                        max={material.stockQty}
+                        // max={material.stockQty}
                       />
                       <Button
                         variant='outline'
                         size='sm'
                         onClick={() => handleQuantityChange(material.id, 1)}
-                        disabled={material.qtyToRemove >= material.stockQty}
+                        disabled={
+                          Number(material.quantityWithdrawn) >=
+                          material.stockQty
+                        }
                       >
                         <Plus className='h-3 w-3' />
                       </Button>
