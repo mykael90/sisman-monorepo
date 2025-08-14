@@ -6,7 +6,12 @@ export type IMaterialGlobalCatalogWithRelations =
       warehouseStandardStocks: true;
     };
     // No specific includes for now, similar to picking-order-types.ts initial state
-  }>;
+  }> & {
+    warehouseStandardStocks: {
+      physicalOnHandQuantity: number;
+      freeBalanceQuantity: number;
+    }[];
+  };
 
 export interface IMaterialGlobalCatalogAdd
   extends Omit<

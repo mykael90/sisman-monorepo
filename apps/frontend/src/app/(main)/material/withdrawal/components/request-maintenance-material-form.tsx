@@ -175,6 +175,7 @@ export function RequestMaintenanceMaterialForm({
                     placeholder='Digite o número...'
                     showLabel={true}
                     className='w-38'
+                    onValueBlurParser={(value) => formatRequestNumber(value)}
                   />
                 )}
               </formRequest.Field>

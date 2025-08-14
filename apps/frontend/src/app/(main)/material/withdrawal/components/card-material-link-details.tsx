@@ -5,7 +5,7 @@ import { Switch } from '../../../../../components/ui/switch';
 import { FormListBox } from '../../../../../components/form-tanstack/form-list-box';
 import { Label } from '../../../../../components/ui/label';
 import { format } from 'date-fns';
-import { MaterialTable } from './material-table';
+import { ItemsTableFormArray } from './items-table-form-array';
 import { IMaintenanceRequestData } from './request-maintenance-material-form';
 
 export function CardMaterialLinkDetails({
@@ -166,14 +166,16 @@ export function CardMaterialLinkDetails({
                   </div>
                 </div>
                 <h3 className='text-md font-semibold'>Itens da Requisição</h3>
-                <MaterialTable
+                <ItemsTableFormArray
                   materials={materialRequestDataLinked.itemsBalance.map(
                     (item: any) => ({
                       id: item.materialRequestItemId,
                       code: item.globalMaterialId,
                       description: 'Material Description (Placeholder)', // You might need to fetch this based on globalMaterialId
                       unit: 'UN', // Placeholder
-                      stockQty: parseInt(item.quantityFreeBalancePotential),
+                      freeBalanceQuantity: parseInt(
+                        item.quantityFreeBalancePotential
+                      ),
                       qtyToRemove: parseInt(item.quantityRequested)
                     })
                   )}

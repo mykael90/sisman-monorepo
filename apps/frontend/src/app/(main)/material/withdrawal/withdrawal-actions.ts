@@ -12,7 +12,7 @@ import {
 import { handleApiAction } from '../../../../lib/fetch/handle-form-action-sisman';
 
 const PAGE_PATH = '/material/withdrawal';
-const API_RELATIVE_PATH = '/material/withdrawal';
+const API_RELATIVE_PATH = '/material-withdrawal';
 
 const logger = new Logger(`${PAGE_PATH}/withdrawal-actions`);
 

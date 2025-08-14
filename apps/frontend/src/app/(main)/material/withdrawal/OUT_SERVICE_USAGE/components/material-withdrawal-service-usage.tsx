@@ -28,17 +28,23 @@ import {
 } from '../../withdrawal-types';
 import { CardMaintenanceSummary } from '../../components/card-maintenance-summary';
 import { CardMaterialLinkDetails } from '../../components/card-material-link-details';
-import { MaterialItemsField } from '../../components/material-items-field';
+import { ItemsFieldArray } from '../../components/items-field-array';
 import {
   IMaintenanceRequestData,
   RequestMaintenanceMaterialForm
 } from '../../components/request-maintenance-material-form';
 import { IMaterialRequest } from '../../../request/request-types';
+import { createPayload } from '../../../../../../lib/payload-creator';
+import { withdrawalServiceUsageMapping } from './mapper-to-payload';
 
 //TODO:
 export type IMaterialWithdrawalItemAddServiceUsage =
   IMaterialWithdrawalItemAdd &
-    Omit<IMaterialGlobalCatalogAdd, 'id'> & { key: number; stockQty: number };
+    Omit<IMaterialGlobalCatalogAdd, 'id'> & {
+      key: number;
+      freeBalanceQuantity: number;
+      physicalOnHandQuantity: number;
+    };
 
 export interface IMaterialWithdrawalAddServiceUsage
   extends IMaterialWithdrawalAdd {
@@ -47,7 +53,7 @@ export interface IMaterialWithdrawalAddServiceUsage
 }
 
 const defaultDataWithdrawalServiceUsage: IMaterialWithdrawalAddServiceUsage = {
-  withdrawalNumber: '',
+  withdrawalNumber: undefined,
   withdrawalDate: new Date(),
   maintenanceRequestId: undefined,
   warehouseId: 1,
@@ -56,7 +62,7 @@ const defaultDataWithdrawalServiceUsage: IMaterialWithdrawalAddServiceUsage = {
   movementTypeId: 1,
   items: [],
   materialRequestId: undefined,
-  notes: '',
+  notes: undefined,
   collectorType: 'worker'
 };
 
@@ -126,7 +132,12 @@ export function MaterialWithdrawalServiceUsage({
       [serverStateWithdrawal]
     ),
     onSubmit: (values) => {
-      console.log('Form submitted:', values);
+      const payload = createPayload(
+        values.value,
+        withdrawalServiceUsageMapping
+      );
+      console.log(`form values = ${JSON.stringify(values.value, null, 2)}`);
+      console.log(`payload = ${JSON.stringify(payload, null, 2)}`);
     }
   });
 
@@ -347,7 +358,7 @@ export function MaterialWithdrawalServiceUsage({
               <CardContent className='space-y-4'>
                 <formWithdrawal.Field name='items' mode='array'>
                   {(field) => (
-                    <MaterialItemsField
+                    <ItemsFieldArray
                       field={field}
                       listGlobalMaterials={listGlobalMaterials}
                     />

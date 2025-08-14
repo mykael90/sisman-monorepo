@@ -3,8 +3,8 @@ import {
   MaterialWithdrawalItem,
   Prisma
 } from '@sisman/prisma';
-import { IMaterialGlobalCatalog } from '../material-types';
 import { IUser } from '../../user/user-types';
+import { IMaterialGlobalCatalogWithRelations } from '../global-catalog/material-global-catalog-types';
 
 export type IMaterialWithdrawal = MaterialWithdrawal;
 
@@ -17,6 +17,19 @@ export type IMaterialWithdrawalItem = MaterialWithdrawalItem;
 
 export interface IMaterialWithdrawalItemAdd
   extends Prisma.MaterialWithdrawalItemCreateManyInput {}
+
+export interface IMaterialWithdrawalAddWithRelations
+  extends IMaterialWithdrawalAdd {
+  items: IMaterialWithdrawalItemAdd[];
+  warehouse: { id: number };
+  movementType: { code: string };
+  processedByUser: { id: number };
+  collectedByUser: { id: number };
+  collectedByWorker: { id: number };
+  materialRequest: { id: number };
+  maintenanceRequest: { id: number };
+  materialPickingOrder: { id: number };
+}
 
 export interface IMaterialWithdrawalItemEdit
   extends IMaterialWithdrawalItemAdd {}
@@ -37,6 +50,6 @@ export type IMaterialWithdrawalWithRelations =
   }>;
 
 export interface IMaterialWithdrawalRelatedData {
-  listGlobalMaterials?: IMaterialGlobalCatalog[];
+  listGlobalMaterials?: IMaterialGlobalCatalogWithRelations[];
   listUsers?: IUser[];
 }

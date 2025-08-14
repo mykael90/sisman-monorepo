@@ -28,6 +28,7 @@ export function FormInputField({
   placeholder,
   showLabel = true,
   className = '',
+  onValueBlurParser,
   ...props
 }: {
   field: AnyFieldApi;
@@ -36,6 +37,7 @@ export function FormInputField({
   placeholder?: string;
   showLabel?: boolean;
   className?: string;
+  onValueBlurParser?: (value: string) => any;
   [key: string]: any;
 }) {
   // Como AnyFieldApi é genérico (any para muitos tipos internos),
@@ -61,7 +63,13 @@ export function FormInputField({
         id={field.name}
         name={field.name}
         value={value}
-        onBlur={field.handleBlur}
+        onBlur={(e) => {
+          if (onValueBlurParser) {
+            const parsedValue = onValueBlurParser(e.target.value);
+            field.handleChange(parsedValue);
+          }
+          field.handleBlur();
+        }}
         onChange={(e) => field.handleChange(e.target.value)}
         type={type}
         placeholder={placeholder}
@@ -96,6 +104,7 @@ export function FormDropdown({
   className = '',
   options,
   onValueChange,
+  onValueBlurParser,
   modal = false,
   ...props
 }: {
@@ -106,6 +115,7 @@ export function FormDropdown({
   className?: string;
   options: { value: string | number; label: string }[];
   onValueChange?: (value: string) => void;
+  onValueBlurParser?: (value: string) => any;
   modal?: boolean;
   [key: string]: any;
 }) {
@@ -124,9 +134,10 @@ export function FormDropdown({
       <Select
         value={value}
         onValueChange={(val) => {
-          field.handleChange(val);
+          const finalValue = onValueBlurParser ? onValueBlurParser(val) : val;
+          field.handleChange(finalValue);
           if (onValueChange) {
-            onValueChange(val);
+            onValueChange(finalValue);
           }
         }}
         onOpenChange={(open) => {
@@ -174,6 +185,7 @@ export function FormDropdownModal({
   className = '',
   options,
   onValueChange,
+  onValueBlurParser,
   modal = false,
   ...props
 }: {
@@ -184,6 +196,7 @@ export function FormDropdownModal({
   className?: string;
   options: { value: string | number; label: string }[];
   onValueChange?: (value: string) => void;
+  onValueBlurParser?: (value: string) => any;
   modal?: boolean;
   [key: string]: any;
 }) {
@@ -202,9 +215,10 @@ export function FormDropdownModal({
       <Select
         value={value}
         onValueChange={(val) => {
-          field.handleChange(val);
+          const finalValue = onValueBlurParser ? onValueBlurParser(val) : val;
+          field.handleChange(finalValue);
           if (onValueChange) {
-            onValueChange(val);
+            onValueChange(finalValue);
           }
         }}
         onOpenChange={(open) => {
@@ -304,6 +318,7 @@ export function FormInputFieldSearch({
   placeholder,
   showLabel = true,
   className = '',
+  onValueBlurParser,
   ...props
 }: {
   field: AnyFieldApi;
@@ -312,6 +327,7 @@ export function FormInputFieldSearch({
   placeholder?: string;
   showLabel?: boolean;
   className?: string;
+  onValueBlurParser?: (value: string) => any;
   [key: string]: any;
 }) {
   // Como AnyFieldApi é genérico (any para muitos tipos internos),
@@ -338,7 +354,13 @@ export function FormInputFieldSearch({
         id={field.name}
         name={field.name}
         value={value}
-        onBlur={field.handleBlur}
+        onBlur={(e) => {
+          if (onValueBlurParser) {
+            const parsedValue = onValueBlurParser(e.target.value);
+            field.handleChange(parsedValue);
+          }
+          field.handleBlur();
+        }}
         onChange={(e) => field.handleChange(e.target.value)}
         type={type}
         placeholder={placeholder}
@@ -372,6 +394,7 @@ export function FormInputTextArea({
   placeholder,
   showLabel = true,
   className = '',
+  onValueBlurParser,
   ...props
 }: {
   field: AnyFieldApi;
@@ -379,6 +402,7 @@ export function FormInputTextArea({
   placeholder?: string;
   showLabel?: boolean;
   className?: string;
+  onValueBlurParser?: (value: string) => any;
   [key: string]: any;
 }) {
   const value = field.state.value as string;
@@ -397,13 +421,20 @@ export function FormInputTextArea({
         id={field.name}
         name={field.name}
         value={value}
-        onBlur={field.handleBlur}
+        onBlur={(e) => {
+          if (onValueBlurParser) {
+            const parsedValue = onValueBlurParser(e.target.value);
+            field.handleChange(parsedValue);
+          }
+          field.handleBlur();
+        }}
         onChange={(e) => field.handleChange(e.target.value)}
         placeholder={placeholder}
         {...props}
       />
       {!field.state.meta.isValid && field.state.meta.isBlurred ? (
         <em className='mt-1 block text-xs text-red-500'>
+          {/* Mapeia os erros para extrair apenas a propriedade 'message' e depois junta com vírgula */}
           {field.state.meta.errors
             .map((error: any) => error.message)
             .join('; ')}

@@ -4,15 +4,15 @@ import { FC } from 'react';
 import { FieldApi } from '@tanstack/react-form';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
-import { MaterialTable } from './material-table';
+import { ItemsTableFormArray } from './items-table-form-array';
 import { ResponsiveCombobox } from '@/components/ui/responsive-combobox';
 import * as React from 'react';
 import {
   IMaterialWithdrawalAddServiceUsage,
   IMaterialWithdrawalItemAddServiceUsage
 } from '../OUT_SERVICE_USAGE/components/material-withdrawal-service-usage';
-import { IMaterialGlobalCatalog } from '../../material-types';
 import Logger from '../../../../../lib/logger';
+import { IMaterialGlobalCatalogWithRelations } from '../../global-catalog/material-global-catalog-types';
 
 const logger = new Logger(`material-items-field`);
 interface MaterialItemsFieldProps {
@@ -37,45 +37,10 @@ interface MaterialItemsFieldProps {
     any,
     any
   >;
-  listGlobalMaterials?: IMaterialGlobalCatalog[];
+  listGlobalMaterials?: IMaterialGlobalCatalogWithRelations[];
 }
 
-// function findMaterialIndexInField(
-//   material: IMaterialWithdrawalItemAddServiceUsage,
-//   fieldValue: IMaterialWithdrawalItemAddServiceUsage[]
-// ): number {
-//   if (!material.globalMaterialId && !material.materialInstanceId) {
-//     logger.error('globalMaterialId or materialInstanceId are required');
-//     throw new Error('globalMaterialId or materialInstanceId are required');
-//   } else {
-//     logger.info(
-//       `globalMaterialId: ${material.globalMaterialId}, materialInstanceId: ${material.materialInstanceId}`
-//     );
-
-//     logger.info(JSON.stringify(material, null, 2));
-
-//     logger.info(JSON.stringify(fieldValue, null, 2));
-
-//     const index = fieldValue.findIndex(
-//       (m: IMaterialWithdrawalItemAddServiceUsage) => {
-//         // Se ambos globalMaterialId existirem, compare-os.
-//         if (material.globalMaterialId && m.globalMaterialId) {
-//           return m.globalMaterialId === material.globalMaterialId;
-//         }
-//         // Se ambos materialInstanceId existirem, compare-os.
-//         if (material.materialInstanceId && m.materialInstanceId) {
-//           return m.materialInstanceId === material.materialInstanceId;
-//         }
-//         // Caso nenhum dos cenários acima seja verdadeiro, retorne false.
-//         return false;
-//       }
-//     );
-//     logger.info(`index: ${index}`);
-//     return index;
-//   }
-// }
-
-export const MaterialItemsField: FC<MaterialItemsFieldProps> = ({
+export const ItemsFieldArray: FC<MaterialItemsFieldProps> = ({
   field,
   listGlobalMaterials
 }) => {
@@ -101,7 +66,11 @@ export const MaterialItemsField: FC<MaterialItemsFieldProps> = ({
       const materialToAdd = listGlobalMaterials?.find(
         (m) => m.id === selectedMaterialId
       );
+
       if (materialToAdd) {
+        console.log(
+          `materialToAdd.warehouseStandardStocks ${JSON.stringify(materialToAdd.warehouseStandardStocks, null, 2)}`
+        );
         field.pushValue({
           key: Date.now(), // Temporary ID
           materialWithdrawalId: 1, // Placeholder
@@ -111,7 +80,12 @@ export const MaterialItemsField: FC<MaterialItemsFieldProps> = ({
           description: materialToAdd.description,
           unitOfMeasure: materialToAdd.unitOfMeasure,
           quantityWithdrawn: 1, // Default quantity
-          stockQty: 10 // Default stockQty as it's not in IMaterialGlobalCatalog
+          freeBalanceQuantity: Number(
+            materialToAdd.warehouseStandardStocks?.[0]?.freeBalanceQuantity
+          ),
+          physicalOnHandQuantity: Number(
+            materialToAdd.warehouseStandardStocks?.[0]?.physicalOnHandQuantity
+          )
         });
         // setSelectedMaterialId(undefined); // Clear selection after adding
       }
@@ -164,7 +138,7 @@ export const MaterialItemsField: FC<MaterialItemsFieldProps> = ({
           Add
         </Button> */}
       </div>
-      <MaterialTable
+      <ItemsTableFormArray
         materials={field.state.value}
         onRemove={handleRemoveMaterial}
         onUpdateQuantity={handleUpdateQuantity}
