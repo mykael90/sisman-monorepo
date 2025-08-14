@@ -155,21 +155,23 @@ Authorization: Bearer {{token}}
 
 ### PUT - Update status to READY_FOR_PICKUP
 # @prompt id
-PUT {{urlLocal}}/{{id}}
+PUT {{urlLocal}}/operation-by-status/{{id}}
 Content-Type: {{contentType}}
 Authorization: Bearer {{token}}
 
 {
+    "userId": 2,
     "status": "READY_FOR_PICKUP"
 }
 
 ### PUT - Update status to CANCELLED
 # @prompt id
-PUT {{urlLocal}}/{{id}}
+PUT {{urlLocal}}/operation-by-status/{{id}}
 Content-Type: {{contentType}}
 Authorization: Bearer {{token}}
 
 {
+    "userId": 2,
     "status": "CANCELLED"
 }
 

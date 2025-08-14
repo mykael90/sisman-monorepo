@@ -20,6 +20,7 @@ import {
 import { AuthGuard } from '../../shared/auth/guards/auth.guard';
 import { ApiTags } from '@nestjs/swagger';
 import { ApiEndpointSwagger } from '../../shared/decorators/swagger/api-endpoint.decorator';
+import { MaterialPickingOrderStatus } from '@sisman/prisma';
 
 @ApiTags('Material Picking Orders') // Agrupa os endpoints na UI do Swagger
 @UseGuards(AuthGuard)
@@ -97,6 +98,47 @@ export class MaterialPickingOrdersController {
   })
   async list() {
     return this.materialPickingOrdersService.list();
+  }
+
+  /**
+   * Atualiza uma ordem de separação de material existente.
+   */
+  @Put('operation-by-status/:id')
+  @ApiEndpointSwagger({
+    summary:
+      'Atualizar Ordem de Separação de Material fornecendo apenas o status',
+    description:
+      'Atualiza os dados de uma ordem de separação de material existente pelo seu ID.',
+    response: {
+      status: HttpStatus.OK,
+      description: 'Ordem de separação de material atualizada com sucesso.',
+      type: MaterialPickingOrderWithRelationsResponseDto // Usa a DTO de resposta
+    },
+    errors: [
+      {
+        status: HttpStatus.NOT_FOUND,
+        description: 'Ordem de separação de material não encontrada.'
+      },
+      {
+        status: HttpStatus.BAD_REQUEST,
+        description: 'Dados de entrada inválidos ou formato incorreto.'
+      },
+      {
+        status: HttpStatus.CONFLICT,
+        description:
+          'Já existe uma ordem de separação de material com os dados fornecidos.'
+      }
+    ]
+  })
+  async updateOperationStatus(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() data: { userId: number; status: MaterialPickingOrderStatus }
+  ) {
+    return this.materialPickingOrdersService.operationInPickingOrder(
+      id,
+      data.userId,
+      data.status
+    );
   }
 
   /**

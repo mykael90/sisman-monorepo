@@ -1042,7 +1042,8 @@ export class MaterialPickingOrdersService {
     const allowedOperations: MaterialPickingOrderStatus[] = [
       MaterialPickingOrderStatus.CANCELLED,
       MaterialPickingOrderStatus.EXPIRED,
-      MaterialPickingOrderStatus.FULLY_WITHDRAWN
+      MaterialPickingOrderStatus.FULLY_WITHDRAWN,
+      MaterialPickingOrderStatus.READY_FOR_PICKUP
     ];
 
     if (!allowedOperations.includes(operation)) {
@@ -1076,6 +1077,15 @@ export class MaterialPickingOrdersService {
           ...item, // Mantém IDs e outras informações
           quantityPicked: new Decimal(0), // Libera qualquer reserva existente
           quantityWithdrawn: item.quantityToPick // Define a quantidade retirada como o total a ser separado
+        }));
+        break;
+
+      case MaterialPickingOrderStatus.READY_FOR_PICKUP:
+        this.logger.debug(`Preparando payload para reserva total.`);
+        updateDto.items = existingOrder.items.map((item) => ({
+          ...item, // Mantém IDs e outras informações
+          //Não zere as quantidades solicitadas. Ela serve como lembrança do que foi pedido. É a logica implementada
+          quantityPicked: item.quantityToPick // Define a quantidade separada para reserva como o total a ser separado
         }));
         break;
 

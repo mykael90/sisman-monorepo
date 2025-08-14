@@ -1,9 +1,4 @@
-import {
-  Inject,
-  Injectable,
-  Logger,
-  NotFoundException
-} from '@nestjs/common';
+import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@sisman/prisma';
 import {
   ExtendedPrismaClient,
@@ -22,7 +17,7 @@ export class MaterialsService {
   private logger = new Logger(MaterialsService.name);
 
   constructor(
-    @Inject(PrismaService) private readonly prisma: ExtendedPrismaClient,
+    @Inject(PrismaService) private readonly prisma: ExtendedPrismaClient
   ) {}
   async create(data: CreateMaterialDto) {
     try {
@@ -30,7 +25,7 @@ export class MaterialsService {
     } catch (error) {
       handlePrismaError(error, this.logger, 'MaterialsService', {
         operation: 'create',
-        data,
+        data
       });
       throw error;
     }
@@ -48,17 +43,21 @@ export class MaterialsService {
         findManyArgs.include = {
           warehouseStandardStocks: {
             where: {
-              warehouseId: queryParams.warehouseId,
-            },
-          },
+              warehouseId: queryParams.warehouseId
+            }
+          }
         };
       }
+
+      findManyArgs.where = {
+        id: '302800001627'
+      };
 
       return await this.prisma.materialGlobalCatalog.findMany(findManyArgs);
     } catch (error) {
       handlePrismaError(error, this.logger, 'MaterialsService', {
         operation: 'findAll',
-        queryParams,
+        queryParams
       });
       throw error;
     }
@@ -69,12 +68,12 @@ export class MaterialsService {
       const exists = await this.exists(id);
       if (!exists) throw new NotFoundException('Material not found');
       return await this.prisma.materialGlobalCatalog.findFirst({
-        where: { id },
+        where: { id }
       });
     } catch (error) {
       handlePrismaError(error, this.logger, 'MaterialsService', {
         operation: 'findOne',
-        id,
+        id
       });
       throw error;
     }
@@ -86,13 +85,13 @@ export class MaterialsService {
       if (!exists) throw new NotFoundException('Material not found');
       return await this.prisma.materialGlobalCatalog.update({
         where: { id },
-        data,
+        data
       });
     } catch (error) {
       handlePrismaError(error, this.logger, 'MaterialsService', {
         operation: 'update',
         id,
-        data,
+        data
       });
       throw error;
     }
@@ -106,7 +105,7 @@ export class MaterialsService {
     } catch (error) {
       handlePrismaError(error, this.logger, 'MaterialsService', {
         operation: 'remove',
-        id,
+        id
       });
       throw error;
     }
@@ -141,9 +140,9 @@ export class MaterialsService {
       const sipacMateriais = await this.prisma.sipacMaterial.findMany({
         where: {
           idGrupo: {
-            in: idsInterestGroups.map((item) => item.idGrupoMaterial),
-          },
-        },
+            in: idsInterestGroups.map((item) => item.idGrupoMaterial)
+          }
+        }
       });
 
       if (!sipacMateriais || sipacMateriais.length === 0) {
@@ -151,18 +150,18 @@ export class MaterialsService {
       }
 
       const createMaterialDtos = sipacMateriais.map((item) =>
-        MaterialsMapper.toCreateDto(item),
+        MaterialsMapper.toCreateDto(item)
       );
 
       const result = await this.prisma.materialGlobalCatalog.createMany({
         data: createMaterialDtos,
-        skipDuplicates: true, // Ignora registros duplicados (baseado na chave primária 'id').
+        skipDuplicates: true // Ignora registros duplicados (baseado na chave primária 'id').
       });
 
       return result; // Retorna a lista original de materiais do Sipac.
     } catch (error) {
       handlePrismaError(error, this.logger, 'MaterialsService', {
-        operation: 'syncFromSipacMateriais',
+        operation: 'syncFromSipacMateriais'
       });
       throw error;
     }
