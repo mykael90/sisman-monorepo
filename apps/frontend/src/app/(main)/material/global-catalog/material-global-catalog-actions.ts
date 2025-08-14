@@ -3,11 +3,12 @@
 import Logger from '@/lib/logger';
 import { revalidatePath } from 'next/cache';
 import { getSismanAccessToken } from '../../../../lib/auth/get-access-token';
-import { fetchApiSisman } from '../../../../lib/fetch/api-sisman';
+import { fetchApiSisman, TQueryParams } from '../../../../lib/fetch/api-sisman';
 import { IActionResultForm } from '../../../../types/types-server-actions';
 import {
   IMaterialGlobalCatalogAdd,
-  IMaterialGlobalCatalogEdit
+  IMaterialGlobalCatalogEdit,
+  IMaterialGlobalCatalogWithRelations
 } from './material-global-catalog-types';
 import { handleApiAction } from '../../../../lib/fetch/handle-form-action-sisman';
 
@@ -16,14 +17,22 @@ const API_RELATIVE_PATH = '/materials';
 
 const logger = new Logger(`${PAGE_PATH}/material-global-catalog-actions`);
 
-export async function getMaterialGlobalCatalogs(accessTokenSisman: string) {
+export async function getMaterialGlobalCatalogs(
+  accessTokenSisman: string,
+  queryParams?: TQueryParams
+): Promise<IMaterialGlobalCatalogWithRelations> {
   logger.info(
     `(Server Action) getMaterialGlobalCatalogs: Fetching material-global-catalogs`
   );
   try {
-    const data = await fetchApiSisman(API_RELATIVE_PATH, accessTokenSisman, {
-      cache: 'force-cache'
-    });
+    const data = await fetchApiSisman(
+      API_RELATIVE_PATH,
+      accessTokenSisman,
+      {
+        cache: 'force-cache'
+      },
+      queryParams
+    );
     logger.info(
       `(Server Action) getMaterialGlobalCatalogs: ${data.length} material-global-catalogs returned`
     );

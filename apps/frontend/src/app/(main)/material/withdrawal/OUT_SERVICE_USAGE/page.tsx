@@ -22,7 +22,7 @@ export default async function Page() {
   }
 
   const [listGlobalMaterials, listUsers] = await Promise.all([
-    getMaterialGlobalCatalogs(accessTokenSisman),
+    getMaterialGlobalCatalogs(accessTokenSisman, { warehouseId: 1 }),
     getUsers(accessTokenSisman)
   ]);
 

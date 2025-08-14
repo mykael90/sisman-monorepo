@@ -2,6 +2,9 @@ import { MaterialGlobalCatalog, Prisma } from '@sisman/prisma';
 
 export type IMaterialGlobalCatalogWithRelations =
   Prisma.MaterialGlobalCatalogGetPayload<{
+    include: {
+      warehouseStandardStocks: true;
+    };
     // No specific includes for now, similar to picking-order-types.ts initial state
   }>;
 
