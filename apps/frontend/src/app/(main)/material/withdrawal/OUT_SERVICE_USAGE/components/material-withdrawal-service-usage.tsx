@@ -18,22 +18,22 @@ import {
   FormDropdown,
   FormInputField,
   FormInputTextArea
-} from '../../../../../components/form-tanstack/form-input-fields';
-import { IActionResultForm } from '../../../../../types/types-server-actions';
-import { IMaterialGlobalCatalogAdd } from '../../material-types';
+} from '../../../../../../components/form-tanstack/form-input-fields';
+import { IActionResultForm } from '../../../../../../types/types-server-actions';
+import { IMaterialGlobalCatalogAdd } from '../../../material-types';
 import {
   IMaterialWithdrawalAdd,
   IMaterialWithdrawalItemAdd,
   IMaterialWithdrawalRelatedData
-} from '../withdrawal-types';
-import { CardMaintenanceSummary } from './card-maintenance-summary';
-import { CardMaterialLinkDetails } from './card-material-link-details';
-import { MaterialItemsField } from './material-items-field';
+} from '../../withdrawal-types';
+import { CardMaintenanceSummary } from '../../components/card-maintenance-summary';
+import { CardMaterialLinkDetails } from '../../components/card-material-link-details';
+import { MaterialItemsField } from '../../components/material-items-field';
 import {
   IMaintenanceRequestData,
   RequestMaintenanceMaterialForm
-} from './request-maintenance-material-form';
-import { IMaterialRequest } from '../../request/request-types';
+} from '../../components/request-maintenance-material-form';
+import { IMaterialRequest } from '../../../request/request-types';
 
 //TODO:
 export type IMaterialWithdrawalItemAddServiceUsage =
@@ -81,7 +81,7 @@ const initialServerStateWithdrawal: IActionResultForm<IMaterialWithdrawalAddServ
     message: ''
   };
 
-export function MaterialWithdrawalForm({
+export function MaterialWithdrawalServiceUsage({
   promiseMaintenanceRequest,
   formActionProp,
   relatedData,

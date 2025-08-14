@@ -10,7 +10,7 @@ import * as React from 'react';
 import {
   IMaterialWithdrawalAddServiceUsage,
   IMaterialWithdrawalItemAddServiceUsage
-} from './material-withdrawal-form';
+} from '../OUT_SERVICE_USAGE/components/material-withdrawal-service-usage';
 import { IMaterialGlobalCatalog } from '../../material-types';
 import Logger from '../../../../../lib/logger';
 

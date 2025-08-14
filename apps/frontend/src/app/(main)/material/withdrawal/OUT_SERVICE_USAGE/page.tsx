@@ -1,4 +1,4 @@
-import { MaterialWithdrawalForm } from '../components/material-withdrawal-form';
+import { MaterialWithdrawalServiceUsage } from './components/material-withdrawal-service-usage';
 import { showMaintenanceRequestByProtocol } from '../../../maintenance/request/request-actions';
 import { getSismanAccessToken } from '../../../../../lib/auth/get-access-token';
 import { getUsers } from '../../../user/user-actions';
@@ -36,7 +36,7 @@ export default async function Page() {
       {/* <div className='grid grid-cols-1 gap-6 lg:grid-cols-3'> */}
       <div>
         {/* Main Form */}
-        <MaterialWithdrawalForm
+        <MaterialWithdrawalServiceUsage
           promiseMaintenanceRequest={getMaintenanceRequest}
           relatedData={{
             listGlobalMaterials,
