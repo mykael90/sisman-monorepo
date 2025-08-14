@@ -44,7 +44,7 @@ export default function RootLayout({
         className={`${notoSans.variable} ${notoSansMono.variable} ${geistSans.variable} ${geistMono.variable} ${geistSans.className} antialiased`}
       >
         <Providers>{children}</Providers>
-        <Toaster position='top-right' />
+        <Toaster />
       </body>
     </html>
   );
