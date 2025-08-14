@@ -37,7 +37,7 @@ export function MaterialTable({
       <div className='text-muted-foreground py-8 text-center'>
         {readOnly
           ? 'No materials for this request.'
-          : 'No materials added yet. Use the search above to add materials.'}
+          : 'Nenhum material adicionado, utilize o botão para adicionar.'}
       </div>
     );
   }
