@@ -49,10 +49,6 @@ export class MaterialsService {
         };
       }
 
-      findManyArgs.where = {
-        id: '302800001627'
-      };
-
       return await this.prisma.materialGlobalCatalog.findMany(findManyArgs);
     } catch (error) {
       handlePrismaError(error, this.logger, 'MaterialsService', {
