@@ -6,15 +6,23 @@ import {
   Patch,
   Param,
   Delete,
-  ParseIntPipe
+  ParseIntPipe,
+  Query,
+  Logger
 } from '@nestjs/common';
 import { MaterialsService } from './materials.service';
 import { ApiTags } from '@nestjs/swagger';
-import { CreateMaterialDto, UpdateMaterialDto } from './dto/material.dto';
+import {
+  CreateMaterialDto,
+  FindAllMaterialQueryDto,
+  UpdateMaterialDto
+} from './dto/material.dto';
 
 @Controller('materials')
 @ApiTags('materials')
 export class MaterialsController {
+  private readonly logger = new Logger(MaterialsController.name);
+
   constructor(private readonly materialsService: MaterialsService) {}
 
   @Post()
@@ -23,8 +31,8 @@ export class MaterialsController {
   }
 
   @Get()
-  findAll() {
-    return this.materialsService.findAll();
+  findAll(@Query() params: FindAllMaterialQueryDto) {
+    return this.materialsService.findAll(params);
   }
 
   @Get(':id')

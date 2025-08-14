@@ -47,3 +47,13 @@ export class CreateMaterialDto
 }
 
 export class UpdateMaterialDto extends PartialType(CreateMaterialDto) {}
+
+export class FindAllMaterialQueryDto {
+  /**
+   * Id do depósito associado a requisição para filtragem.
+   * @example 1
+   */
+  @IsOptional()
+  @IsNumber()
+  warehouseId: number;
+}

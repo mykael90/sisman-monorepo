@@ -10,7 +10,11 @@ import {
   PrismaService,
   ExtendedPrismaClient
 } from 'src/shared/prisma/prisma.module';
-import { CreateMaterialDto, UpdateMaterialDto } from './dto/material.dto';
+import {
+  CreateMaterialDto,
+  FindAllMaterialQueryDto,
+  UpdateMaterialDto
+} from './dto/material.dto';
 import { MaterialsMapper } from './mappers/materials.mapper';
 import { Prisma } from '@sisman/prisma';
 
@@ -25,8 +29,24 @@ export class MaterialsService {
     return await this.prisma.materialGlobalCatalog.create({ data });
   }
 
-  async findAll() {
-    return await this.prisma.materialGlobalCatalog.findMany();
+  async findAll(queryParams?: FindAllMaterialQueryDto) {
+    if (!queryParams) {
+      return await this.prisma.materialGlobalCatalog.findMany();
+    }
+
+    const findManyArgs: Prisma.MaterialGlobalCatalogFindManyArgs = {};
+
+    if (queryParams.warehouseId) {
+      findManyArgs.include = {
+        warehouseStandardStocks: {
+          where: {
+            warehouseId: queryParams.warehouseId
+          }
+        }
+      };
+    }
+
+    return await this.prisma.materialGlobalCatalog.findMany(findManyArgs);
   }
 
   async findOne(id: string) {

@@ -32,7 +32,7 @@ Authorization: Bearer {{token}}
         },
         {
             "globalMaterialId": "302400026133",
-            "quantityToPick": 10
+            "quantityToPick": 1
         }
     ]
 }
