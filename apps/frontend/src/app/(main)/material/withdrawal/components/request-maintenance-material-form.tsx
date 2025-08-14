@@ -13,6 +13,8 @@ import { IActionResultForm } from '../../../../../types/types-server-actions';
 import { formatRequestNumber } from '../../../../../lib/form-utils';
 import { Search } from 'lucide-react';
 import { IMaterialRequest } from '../../request/request-types';
+import { toast } from 'sonner';
+import { useEffect } from 'react';
 
 const requestFormDataSchema = z.object({
   newReq: z
@@ -74,34 +76,82 @@ export function RequestMaintenanceMaterialForm({
   promiseMaintenanceRequest,
   setMaintenanceRequestData
 }: {
-  promiseMaintenanceRequest: any;
+  promiseMaintenanceRequest: (
+    protocolNumber: string
+  ) => Promise<IMaintenanceRequestData | null>;
   setMaintenanceRequestData: React.Dispatch<
     React.SetStateAction<IMaintenanceRequestData | null>
   >;
 }) {
+  const wrappedPromiseMaintenanceRequest = async (
+    prevState: IActionResultForm<IRequestDataSearch>,
+    formData: FormData | string
+  ): Promise<IActionResultForm<IRequestDataSearch>> => {
+    let protocolNumber: string | null = null;
+    if (typeof formData === 'string') {
+      protocolNumber = formData;
+    } else if (formData instanceof FormData) {
+      protocolNumber =
+        formData.get('requestProtocolNumber')?.toString() || null;
+    }
+
+    if (!protocolNumber) {
+      return {
+        ...prevState,
+        isSubmitSuccessful: false,
+        message: 'Número de protocolo não fornecido.'
+      };
+    }
+
+    try {
+      const response = await promiseMaintenanceRequest(protocolNumber);
+      if (response) {
+        setMaintenanceRequestData(response);
+        return {
+          ...prevState,
+          isSubmitSuccessful: true,
+          message: 'Dados da requisição carregados com sucesso.',
+          responseData: {
+            requestType: 'maintenanceRequest',
+            requestProtocolNumber: protocolNumber
+          }
+        };
+      } else {
+        return {
+          ...prevState,
+          isSubmitSuccessful: false,
+          message: 'Requisição não encontrada ou dados inválidos.'
+        };
+      }
+    } catch (error: any) {
+      console.error('Error in wrappedPromiseMaintenanceRequest:', error);
+      return {
+        ...prevState,
+        isSubmitSuccessful: false,
+        message: error.message || 'Erro ao buscar dados da requisição.'
+      };
+    }
+  };
+
   // Estado referente ao formulário de consulta da requisição
   const [serverStateDataSearch, formActionDataSearch, isPendingDataSearch] =
-    useActionState(promiseMaintenanceRequest, initialServerStateRequestData);
+    useActionState(
+      wrappedPromiseMaintenanceRequest,
+      initialServerStateRequestData
+    );
 
-  // Função para buscar os dados referente a requisição de manutenção
-  const handleRequestMaintenanceData = async (protocolNumber: string) => {
-    startTransition(async () => {
-      try {
-        const response = await promiseMaintenanceRequest(protocolNumber); // Chama a Server Action
-        setMaintenanceRequestData(response);
-      } catch (error) {
-        console.error('Error refreshing data:', error);
-        // Lidar com erro
+  useEffect(() => {
+    if (serverStateDataSearch?.message) {
+      if (serverStateDataSearch.isSubmitSuccessful) {
+        toast.success(serverStateDataSearch.message);
+      } else {
+        toast.error(serverStateDataSearch.message);
       }
-    });
-  };
+    }
+  }, [serverStateDataSearch]);
 
   const getRequestData = (value: IRequestDataSearch) => {
     if (value.requestType === 'maintenanceRequest') {
-      const requestNumberFormatted = formatRequestNumber(
-        value.requestProtocolNumber
-      );
-      handleRequestMaintenanceData(requestNumberFormatted);
       return formatRequestNumber(value.requestProtocolNumber);
     } else if (value.requestType === 'materialRequest') {
       return null;
@@ -118,9 +168,11 @@ export function RequestMaintenanceMaterialForm({
       (baseForm) => mergeForm(baseForm, serverStateDataSearch ?? {}),
       [serverStateDataSearch]
     ),
-    onSubmit: ({ value }) => {
-      console.log('Form submitted:', value);
-      console.log(getRequestData(value));
+    onSubmit: async ({ value }) => {
+      const formattedRequestNumber = getRequestData(value);
+      if (formattedRequestNumber) {
+        await formActionDataSearch(formattedRequestNumber);
+      }
     }
   });
 
