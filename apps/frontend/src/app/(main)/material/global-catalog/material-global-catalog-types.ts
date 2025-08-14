@@ -1,17 +1,18 @@
-import { MaterialGlobalCatalog, Prisma } from '@sisman/prisma';
+import {
+  MaterialGlobalCatalog,
+  MaterialWarehouseStock,
+  Prisma
+} from '@sisman/prisma';
+import { IWarehouseStockIncludedComputed } from '../warehouse-stock/warehouse-stock-types';
 
-export type IMaterialGlobalCatalogWithRelations =
-  Prisma.MaterialGlobalCatalogGetPayload<{
-    include: {
-      warehouseStandardStocks: true;
-    };
-    // No specific includes for now, similar to picking-order-types.ts initial state
-  }> & {
-    warehouseStandardStocks: {
-      physicalOnHandQuantity: number;
-      freeBalanceQuantity: number;
-    }[];
-  };
+export interface IMaterialGlobalCatalog extends MaterialGlobalCatalog {}
+
+export interface IMaterialGlobalCatalogWithRelations
+  extends IMaterialGlobalCatalog {
+  warehouseStandardStocks?: IWarehouseStockIncludedComputed[];
+}
+
+type IMaterialWareHouseStock = MaterialWarehouseStock;
 
 export interface IMaterialGlobalCatalogAdd
   extends Omit<
@@ -32,8 +33,6 @@ export interface IMaterialGlobalCatalogAdd
 export interface IMaterialGlobalCatalogEdit extends IMaterialGlobalCatalogAdd {
   id: string; // MaterialGlobalCatalog has string id
 }
-
-export type IMaterialGlobalCatalog = MaterialGlobalCatalog;
 
 export type IMaterialGlobalCatalogRemove = {
   id: string; // MaterialGlobalCatalog has string id

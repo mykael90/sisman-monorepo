@@ -20,7 +20,6 @@ import {
   FormInputTextArea
 } from '../../../../../../components/form-tanstack/form-input-fields';
 import { IActionResultForm } from '../../../../../../types/types-server-actions';
-import { IMaterialGlobalCatalogAdd } from '../../../material-types';
 import {
   IMaterialWithdrawalAdd,
   IMaterialWithdrawalItemAdd,
@@ -36,6 +35,7 @@ import {
 import { IMaterialRequest } from '../../../request/request-types';
 import { createPayload } from '../../../../../../lib/payload-creator';
 import { withdrawalServiceUsageMapping } from './mapper-to-payload';
+import { IMaterialGlobalCatalogAdd } from '../../../global-catalog/material-global-catalog-types';
 
 //TODO:
 export type IMaterialWithdrawalItemAddServiceUsage =
@@ -99,7 +99,10 @@ export function MaterialWithdrawalServiceUsage({
   // withdrawalType
 }: {
   promiseMaintenanceRequest: any;
-  formActionProp: any;
+  formActionProp: (
+    prevState: IActionResultForm<IMaterialWithdrawalAddServiceUsage>, // Adjusted prevState type
+    data: IMaterialWithdrawalAddServiceUsage // Data is now an object
+  ) => Promise<IActionResultForm<IMaterialWithdrawalAddServiceUsage>>;
   // onCancel?: () => void;
   // onClean?: () => void;
   submitButtonText?: string;
@@ -131,13 +134,8 @@ export function MaterialWithdrawalServiceUsage({
       (baseform) => mergeForm(baseform, serverStateWithdrawal ?? {}),
       [serverStateWithdrawal]
     ),
-    onSubmit: (values) => {
-      const payload = createPayload(
-        values.value,
-        withdrawalServiceUsageMapping
-      );
-      console.log(`form values = ${JSON.stringify(values.value, null, 2)}`);
-      console.log(`payload = ${JSON.stringify(payload, null, 2)}`);
+    onSubmit: async ({ value }) => {
+      await formActionWithdrawal(value);
     }
   });
 

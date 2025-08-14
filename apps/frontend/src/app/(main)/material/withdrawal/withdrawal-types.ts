@@ -9,7 +9,7 @@ import { IMaterialGlobalCatalogWithRelations } from '../global-catalog/material-
 export type IMaterialWithdrawal = MaterialWithdrawal;
 
 export interface IMaterialWithdrawalAdd
-  extends Prisma.MaterialWithdrawalCreateManyInput {}
+  extends Partial<Prisma.MaterialWithdrawalCreateManyInput> {}
 
 export interface IMaterialWithdrawalEdit extends IMaterialWithdrawalAdd {}
 

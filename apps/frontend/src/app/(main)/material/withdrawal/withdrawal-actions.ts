@@ -7,9 +7,14 @@ import { fetchApiSisman } from '../../../../lib/fetch/api-sisman';
 import { IActionResultForm } from '../../../../types/types-server-actions';
 import {
   IMaterialWithdrawalAdd,
-  IMaterialWithdrawalEdit
+  IMaterialWithdrawalAddWithRelations,
+  IMaterialWithdrawalEdit,
+  IMaterialWithdrawalWithRelations
 } from './withdrawal-types';
 import { handleApiAction } from '../../../../lib/fetch/handle-form-action-sisman';
+import { createPayload } from '../../../../lib/payload-creator';
+import { withdrawalServiceUsageMapping } from './OUT_SERVICE_USAGE/components/mapper-to-payload';
+import { IMaterialWithdrawalAddServiceUsage } from './OUT_SERVICE_USAGE/components/material-withdrawal-service-usage';
 
 const PAGE_PATH = '/material/withdrawal';
 const API_RELATIVE_PATH = '/material-withdrawal';
@@ -74,18 +79,26 @@ export async function getRefreshedWithdrawals() {
 
 export async function addWithdrawal(
   prevState: unknown,
-  data: IMaterialWithdrawalAdd
-): Promise<IActionResultForm<IMaterialWithdrawalAdd, any>> {
+  data: IMaterialWithdrawalAddServiceUsage
+): Promise<
+  IActionResultForm<
+    IMaterialWithdrawalAddServiceUsage,
+    IMaterialWithdrawalWithRelations
+  >
+> {
   logger.info(`(Server Action) addWithdrawal: Attempt to add withdrawal`, data);
+
+  //Precisa construir o payload, formulario complexo
+  const payload = createPayload(data, withdrawalServiceUsageMapping);
 
   try {
     const accessToken = await getSismanAccessToken();
     return await handleApiAction<
-      IMaterialWithdrawalAdd,
-      any,
-      IMaterialWithdrawalAdd
+      IMaterialWithdrawalAddWithRelations,
+      IMaterialWithdrawalWithRelations,
+      IMaterialWithdrawalAddServiceUsage
     >(
-      data,
+      payload,
       data,
       {
         endpoint: API_RELATIVE_PATH,

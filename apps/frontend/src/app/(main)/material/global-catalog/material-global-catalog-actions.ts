@@ -20,7 +20,7 @@ const logger = new Logger(`${PAGE_PATH}/material-global-catalog-actions`);
 export async function getMaterialGlobalCatalogs(
   accessTokenSisman: string,
   queryParams?: TQueryParams
-): Promise<IMaterialGlobalCatalogWithRelations> {
+): Promise<IMaterialGlobalCatalogWithRelations[]> {
   logger.info(
     `(Server Action) getMaterialGlobalCatalogs: Fetching material-global-catalogs`
   );
