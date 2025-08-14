@@ -1,10 +1,10 @@
 import type { MappingConfig } from '@/lib/payload-creator';
 
-import type { IMaterialWithdrawalAddServiceUsage } from './material-withdrawal-service-usage';
+import type { IMaterialWithdrawalAddForm } from '../../components/form/material-withdrawal-form-add';
 import type { IMaterialWithdrawalAddWithRelations } from '../../withdrawal-types';
 
 export const withdrawalServiceUsageMapping: MappingConfig<
-  IMaterialWithdrawalAddServiceUsage,
+  IMaterialWithdrawalAddForm,
   IMaterialWithdrawalAddWithRelations
 > = {
   // Mapeamento direto: chave do payload -> chave do formulário

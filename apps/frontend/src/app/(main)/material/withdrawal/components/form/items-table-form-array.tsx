@@ -4,10 +4,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Trash2, Minus, Plus } from 'lucide-react';
-import { IMaterialWithdrawalItemAddServiceUsage } from '../OUT_SERVICE_USAGE/components/material-withdrawal-service-usage';
+import { IMaterialWithdrawalItemAddForm } from './withdrawal-base-form-add';
 
 interface MaterialTableProps {
-  materials: IMaterialWithdrawalItemAddServiceUsage[];
+  materials: IMaterialWithdrawalItemAddForm[];
   onRemove: (key: number) => void;
   onUpdateQuantity: (key: number, quantity: number) => void;
   hideMaterialRequestItemId?: boolean;
@@ -23,7 +23,7 @@ export function ItemsTableFormArray({
 }: MaterialTableProps) {
   //função para limitar a quantidade até o saldo livre
   const getClampedQuantity = (
-    material: IMaterialWithdrawalItemAddServiceUsage,
+    material: IMaterialWithdrawalItemAddForm,
     newQuantity: number
   ): number => {
     const isfreeBalanceDefined =

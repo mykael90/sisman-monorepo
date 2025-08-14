@@ -1,10 +1,15 @@
-import { MaterialWithdrawalServiceUsage } from './components/material-withdrawal-service-usage';
+import { MaterialWithdrawalFormAdd } from '../components/form/material-withdrawal-form-add';
 import { showMaintenanceRequestByProtocol } from '../../../maintenance/request/request-actions';
 import { getSismanAccessToken } from '../../../../../lib/auth/get-access-token';
 import { getUsers } from '../../../user/user-actions';
 import { getMaterialGlobalCatalogs } from '../../global-catalog/material-global-catalog-actions';
 import { FilePlus } from 'lucide-react';
 import { addWithdrawal } from '../withdrawal-actions';
+import { CardMaintenanceSummary } from '../components/card-maintenance-summary';
+import { Card } from '../../../../../components/ui/card';
+import { CardMaterialLinkDetails } from '../components/card-material-link-details';
+import { RequestMaintenanceMaterialForm } from '../components/request-maintenance-material-form';
+import { WithdrawalDetailUsageService } from './components/withdrawal-details-usage-service';
 
 export default async function Page() {
   const accessTokenSisman = await getSismanAccessToken();
@@ -36,7 +41,7 @@ export default async function Page() {
       {/* <div className='grid grid-cols-1 gap-6 lg:grid-cols-3'> */}
       <div>
         {/* Main Form */}
-        <MaterialWithdrawalServiceUsage
+        <MaterialWithdrawalFormAdd
           promiseMaintenanceRequest={getMaintenanceRequest}
           relatedData={{
             listGlobalMaterials,
@@ -45,6 +50,10 @@ export default async function Page() {
           // SubmitButtonIcon={FilePlus}
           // submitButtonText='Criar Usuário'
           formActionProp={addWithdrawal}
+          CardMaintenanceSummary={CardMaintenanceSummary}
+          CardMaterialLinkDetails={CardMaterialLinkDetails}
+          RequestMaintenanceMaterialForm={RequestMaintenanceMaterialForm}
+          WithdrawalDetailsForm={WithdrawalDetailUsageService}
           // withdrawalType={withdrawalType}
         />
 

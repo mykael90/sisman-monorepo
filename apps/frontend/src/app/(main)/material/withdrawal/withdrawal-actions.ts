@@ -14,7 +14,7 @@ import {
 import { handleApiAction } from '../../../../lib/fetch/handle-form-action-sisman';
 import { createPayload } from '../../../../lib/payload-creator';
 import { withdrawalServiceUsageMapping } from './OUT_SERVICE_USAGE/components/mapper-to-payload';
-import { IMaterialWithdrawalAddServiceUsage } from './OUT_SERVICE_USAGE/components/material-withdrawal-service-usage';
+import { IMaterialWithdrawalAddForm } from './components/form/material-withdrawal-form-add';
 
 const PAGE_PATH = '/material/withdrawal';
 const API_RELATIVE_PATH = '/material-withdrawal';
@@ -79,10 +79,10 @@ export async function getRefreshedWithdrawals() {
 
 export async function addWithdrawal(
   prevState: unknown,
-  data: IMaterialWithdrawalAddServiceUsage
+  data: IMaterialWithdrawalAddForm
 ): Promise<
   IActionResultForm<
-    IMaterialWithdrawalAddServiceUsage,
+    IMaterialWithdrawalAddForm,
     IMaterialWithdrawalWithRelations
   >
 > {
@@ -96,7 +96,7 @@ export async function addWithdrawal(
     return await handleApiAction<
       IMaterialWithdrawalAddWithRelations,
       IMaterialWithdrawalWithRelations,
-      IMaterialWithdrawalAddServiceUsage
+      IMaterialWithdrawalAddForm
     >(
       payload,
       data,

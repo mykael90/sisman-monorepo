@@ -1,7 +1,4 @@
-'use client';
-
 import { Warehouse } from 'lucide-react';
-import Header from '@/components/layout/header'; // Assuming this is the mainNavbar
 import { WarehouseSelector } from './components/warehouse-selector';
 import { TabSelector } from './components/tab-selector';
 

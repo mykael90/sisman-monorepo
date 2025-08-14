@@ -4,22 +4,22 @@ import { FC } from 'react';
 import { FieldApi } from '@tanstack/react-form';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
-import { ItemsTableFormArray } from './items-table-form-array';
 import { ResponsiveCombobox } from '@/components/ui/responsive-combobox';
 import * as React from 'react';
+import Logger from '../../../../../../lib/logger';
 import {
-  IMaterialWithdrawalAddServiceUsage,
-  IMaterialWithdrawalItemAddServiceUsage
-} from '../OUT_SERVICE_USAGE/components/material-withdrawal-service-usage';
-import Logger from '../../../../../lib/logger';
-import { IMaterialGlobalCatalogWithRelations } from '../../global-catalog/material-global-catalog-types';
+  IMaterialWithdrawalAddForm,
+  IMaterialWithdrawalItemAddForm
+} from './withdrawal-base-form-add';
+import { IMaterialGlobalCatalogWithRelations } from '../../../global-catalog/material-global-catalog-types';
+import { ItemsTableFormArray } from './items-table-form-array';
 
 const logger = new Logger(`material-items-field`);
 interface MaterialItemsFieldProps {
   field: FieldApi<
-    IMaterialWithdrawalAddServiceUsage,
+    IMaterialWithdrawalAddForm,
     'items',
-    IMaterialWithdrawalItemAddServiceUsage[],
+    IMaterialWithdrawalItemAddForm[],
     any,
     any,
     any,
@@ -94,7 +94,7 @@ export const ItemsFieldArray: FC<MaterialItemsFieldProps> = ({
 
   const handleRemoveMaterial = (key: number) => {
     const index = field.state.value.findIndex(
-      (m: IMaterialWithdrawalItemAddServiceUsage) => m.key === key
+      (m: IMaterialWithdrawalItemAddForm) => m.key === key
     );
     if (index !== -1) {
       field.removeValue(index);
@@ -103,7 +103,7 @@ export const ItemsFieldArray: FC<MaterialItemsFieldProps> = ({
 
   const handleUpdateQuantity = (key: number, quantity: number) => {
     const index = field.state.value.findIndex(
-      (m: IMaterialWithdrawalItemAddServiceUsage) => m.key === key
+      (m: IMaterialWithdrawalItemAddForm) => m.key === key
     );
     if (index !== -1) {
       const updatedMaterial = {
