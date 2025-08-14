@@ -14,7 +14,7 @@ import { formatRequestNumber } from '../../../../../lib/form-utils';
 import { Search } from 'lucide-react';
 import { IMaterialRequest } from '../../request/request-types';
 import { toast } from 'sonner';
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 
 const requestFormDataSchema = z.object({
   newReq: z
@@ -142,18 +142,16 @@ export function RequestMaintenanceMaterialForm({
 
   const lastMessageRef = useRef('');
 
-  useEffect(() => {
-    if (!isPendingDataSearch && serverStateDataSearch?.message) {
-      if (serverStateDataSearch.message !== lastMessageRef.current) {
-        if (serverStateDataSearch.isSubmitSuccessful) {
-          toast.success(serverStateDataSearch.message);
-        } else {
-          toast.error(serverStateDataSearch.message);
-        }
-        lastMessageRef.current = serverStateDataSearch.message;
+  if (!isPendingDataSearch && serverStateDataSearch?.message) {
+    if (serverStateDataSearch.message !== lastMessageRef.current) {
+      if (serverStateDataSearch.isSubmitSuccessful) {
+        toast.success(serverStateDataSearch.message);
+      } else {
+        toast.error(serverStateDataSearch.message);
       }
+      lastMessageRef.current = serverStateDataSearch.message;
     }
-  }, [serverStateDataSearch, isPendingDataSearch]);
+  }
 
   const getRequestData = (value: IRequestDataSearch) => {
     if (value.requestType === 'maintenanceRequest') {
