@@ -2,42 +2,31 @@ import Logger from '@/lib/logger';
 
 const logger = new Logger('ApiSisman');
 
-/**
- * Interface representing the expected structure of an error response from the SISMAN API.
- */
+// (Nenhuma mudança na interface ISismanApiErrorResponse)
 export interface ISismanApiErrorResponse {
   statusCode: number;
-  error: string; // Corresponds to errorType
-  message: string | string[]; // API message can be a single string or an array of strings
+  error: string;
+  message: string | string[];
   timestamp?: string;
   path?: string;
-  [key: string]: any; // Allow for other potential properties
+  [key: string]: any;
 }
 
-/**
- * Custom error class for errors originating from the SISMAN API.
- * It includes specific details from the API's error response.
- */
+// (Nenhuma mudança na classe SismanApiError)
 export class SismanApiError extends Error {
   public readonly statusCode: number;
   public readonly errorType: string;
-  public readonly apiMessage: string; // This will be a unified string message
+  public readonly apiMessage: string;
   public readonly timestamp?: string;
   public readonly path?: string;
   public readonly rawErrorResponse?: ISismanApiErrorResponse;
 
-  constructor(
-    // User-friendly message for the Error object (this.message)
-    message: string,
-    // Details from the API error response
-    errorDetails: ISismanApiErrorResponse
-  ) {
+  constructor(message: string, errorDetails: ISismanApiErrorResponse) {
     super(message);
     this.name = 'SismanApiError';
 
     this.statusCode = errorDetails.statusCode;
     this.errorType = errorDetails.error;
-    // Unify API message into a single string for easier consumption
     this.apiMessage = Array.isArray(errorDetails.message)
       ? errorDetails.message.join('; ')
       : errorDetails.message;
@@ -49,9 +38,7 @@ export class SismanApiError extends Error {
   }
 }
 
-/**
- * Type guard to check if an object conforms to the ISismanApiErrorResponse structure.
- */
+// (Nenhuma mudança na função isSismanApiErrorResponse)
 function isSismanApiErrorResponse(obj: any): obj is ISismanApiErrorResponse {
   if (!obj || typeof obj !== 'object') {
     return false;
@@ -66,9 +53,51 @@ function isSismanApiErrorResponse(obj: any): obj is ISismanApiErrorResponse {
 }
 
 // ========================================================================
-// 1. FUNÇÃO BASE (PRIVADA AO MÓDULO)
-// Esta função contém toda a lógica repetida e retorna a `Response` bruta
-// em caso de sucesso, para que as funções públicas possam processá-la como quiserem.
+// 0. NOVA FUNÇÃO AUXILIAR PARA QUERY PARAMS
+// ========================================================================
+
+/**
+ * Type for query parameters. Allows for values that can be converted to strings.
+ */
+export type TQueryParams = Record<
+  string,
+  string | number | boolean | null | undefined
+>;
+
+/**
+ * Appends query parameters to a given URL.
+ * Skips null or undefined values.
+ *
+ * @param url The base URL or relative path.
+ * @param params The object containing query parameters.
+ * @returns The new URL with the query string appended.
+ */
+function appendQueryParams(url: string, params?: TQueryParams): string {
+  if (!params || Object.keys(params).length === 0) {
+    return url;
+  }
+
+  // URLSearchParams lida com a codificação de valores automaticamente (ex: espaços para %20)
+  const searchParams = new URLSearchParams();
+  for (const key in params) {
+    // Adiciona o parâmetro apenas se o valor não for nulo ou indefinido
+    const value = params[key];
+    if (value !== null && value !== undefined) {
+      searchParams.append(key, String(value));
+    }
+  }
+
+  const queryString = searchParams.toString();
+  if (!queryString) {
+    return url;
+  }
+
+  // Adiciona '?' ou '&' conforme necessário
+  return url.includes('?') ? `${url}&${queryString}` : `${url}?${queryString}`;
+}
+
+// ========================================================================
+// 1. FUNÇÃO BASE (Nenhuma mudança aqui)
 // ========================================================================
 
 async function baseFetch(
@@ -90,7 +119,6 @@ async function baseFetch(
 
   const headers = new Headers(options.headers);
 
-  // Define o Content-Type apenas se não for FormData e não estiver definido
   if (!(options.body instanceof FormData) && !headers.has('Content-Type')) {
     headers.set('Content-Type', 'application/json');
   }
@@ -106,7 +134,6 @@ async function baseFetch(
 
     const response = await fetch(fullUrl, { ...options, headers });
 
-    // O tratamento de erro é idêntico e centralizado aqui.
     if (!response.ok) {
       const errorBodyText = await response.text();
       const statusInfo = `${response.status} ${response.statusText}`;
@@ -143,12 +170,10 @@ async function baseFetch(
       }
     }
 
-    // Em caso de sucesso, simplesmente retorna o objeto Response
     return response;
   } catch (error) {
-    // A lógica de `catch` também é centralizada aqui.
     if (error instanceof SismanApiError) {
-      throw error; // Apenas repassa o erro já tratado
+      throw error;
     }
     if (error instanceof Error) {
       logger.error(
@@ -167,8 +192,7 @@ async function baseFetch(
 }
 
 // ========================================================================
-// 2. FUNÇÃO PÚBLICA PARA JSON (REFATORADA)
-// Agora é mais simples, mais limpa e fortemente tipada com genéricos.
+// 2. FUNÇÃO PÚBLICA PARA JSON (REFATORADA) // <-- MUDANÇA AQUI
 // ========================================================================
 
 /**
@@ -178,6 +202,7 @@ async function baseFetch(
  * @param relativeUrl The relative URL of the SISMAN API endpoint.
  * @param accessTokenSisman Optional. The SISMAN access token.
  * @param options Optional request initialization options (RequestInit).
+ * @param queryParams Optional. An object of query parameters to be appended to the URL.
  * @returns A Promise that resolves with the parsed JSON data of type T.
  * @throws {SismanApiError} If the API returns a structured error.
  * @throws {Error} For network issues or other non-API errors.
@@ -185,16 +210,19 @@ async function baseFetch(
 export async function fetchApiSisman<T = any>(
   relativeUrl: string,
   accessTokenSisman?: string,
-  options: RequestInit & { body?: any } = {}
+  options: RequestInit & { body?: any } = {},
+  queryParams?: TQueryParams // <-- NOVO PARÂMETRO
 ): Promise<T> {
-  const response = await baseFetch(relativeUrl, accessTokenSisman, options);
+  // Constrói a URL final com os parâmetros antes de chamar o baseFetch
+  const finalUrl = appendQueryParams(relativeUrl, queryParams);
 
-  // Trata respostas sem conteúdo (ex: 204 No Content) que causam erro no .json()
+  const response = await baseFetch(finalUrl, accessTokenSisman, options);
+
   if (
     response.status === 204 ||
     response.headers.get('content-length') === '0'
   ) {
-    return null as T; // ou undefined, como preferir.
+    return null as T;
   }
 
   const data = await response.json();
@@ -202,13 +230,9 @@ export async function fetchApiSisman<T = any>(
 }
 
 // ========================================================================
-// 3. NOVA FUNÇÃO PÚBLICA PARA ARQUIVOS
-// Clara, explícita e com um único propósito.
+// 3. FUNÇÃO PÚBLICA PARA ARQUIVOS (REFATORADA) // <-- MUDANÇA AQUI
 // ========================================================================
 
-/**
- * Retorna um objeto contendo os dados do arquivo e seu tipo de conteúdo.
- */
 export interface ISismanFileResponse {
   buffer: ArrayBuffer;
   contentType: string | null;
@@ -216,25 +240,29 @@ export interface ISismanFileResponse {
 
 /**
  * Fetches a file (binary data) from the SISMAN API.
- * Always expects a binary response (e.g., image, PDF). For JSON data, use `fetchApiSisman`.
+ * Always expects a binary response. For JSON data, use `fetchApiSisman`.
  *
  * @param relativeUrl The relative URL of the SISMAN API endpoint.
  * @param accessTokenSisman Optional. The SISMAN access token.
  * @param options Optional request initialization options (RequestInit).
+ * @param queryParams Optional. An object of query parameters to be appended to the URL.
  * @returns A Promise that resolves with an object containing the ArrayBuffer and the Content-Type header.
- * @throws {SismanApiError} If the API returns a structured error (e.g., file not found).
+ * @throws {SismanApiError} If the API returns a structured error.
  * @throws {Error} For network issues or other non-API errors.
  */
 export async function fetchApiSismanFile(
   relativeUrl: string,
   accessTokenSisman?: string,
-  options: RequestInit & { body?: any } = {}
+  options: RequestInit & { body?: any } = {},
+  queryParams?: TQueryParams // <-- NOVO PARÂMETRO
 ): Promise<ISismanFileResponse> {
-  // <-- MUDANÇA AQUI
-  const response = await baseFetch(relativeUrl, accessTokenSisman, options);
+  // Constrói a URL final com os parâmetros antes de chamar o baseFetch
+  const finalUrl = appendQueryParams(relativeUrl, queryParams);
+
+  const response = await baseFetch(finalUrl, accessTokenSisman, options);
 
   const buffer = await response.arrayBuffer();
   const contentType = response.headers.get('content-type');
 
-  return { buffer, contentType }; // <-- MUDANÇA AQUI
+  return { buffer, contentType };
 }
