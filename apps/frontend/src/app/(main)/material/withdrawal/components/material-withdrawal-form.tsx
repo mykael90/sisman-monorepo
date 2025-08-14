@@ -33,6 +33,7 @@ import {
   IMaintenanceRequestData,
   RequestMaintenanceMaterialForm
 } from './request-maintenance-material-form';
+import { IMaterialRequest } from '../../request/request-types';
 
 //TODO:
 export type IMaterialWithdrawalItemAddServiceUsage =
@@ -103,39 +104,19 @@ export function MaterialWithdrawalForm({
 }) {
   const { listGlobalMaterials, listUsers } = relatedData;
 
+  const [maintenanceRequestData, setMaintenanceRequestData] =
+    useState<IMaintenanceRequestData | null>(null);
+
+  const [materialRequestData, setMaterialRequestData] =
+    useState<IMaterialRequest | null>(null);
+
   const [linkMaterialRequest, setLinkMaterialRequest] = useState(false);
-  const [linkedMaterialRequestData, setLinkedMaterialRequestData] =
+  const [materialRequestDataLinked, setMaterialRequestDataLinked] =
     useState<any>(null);
-  const [
-    maintenanceRequestMaterialsSummary,
-    setMaintenanceRequestMaterialsSummary
-  ] = useState<any>([
-    {
-      id: 101,
-      code: 'MAT-001',
-      description: 'Material A',
-      unit: 'UN',
-      stockQty: 100,
-      qtyToRemove: 20, // This would represent quantity moved out
-      movementType: 'OUT'
-    },
-    {
-      id: 102,
-      code: 'MAT-002',
-      description: 'Material B',
-      unit: 'KG',
-      stockQty: 50,
-      qtyToRemove: 5, // This would represent quantity moved out
-      movementType: 'OUT'
-    }
-  ]);
 
   // Estado referente ao formulário de retirada
   const [serverStateWithdrawal, formActionWithdrawal, isPendingWithdrawal] =
     useActionState(formActionProp, initialServerStateWithdrawal);
-
-  const [maintenanceRequestData, setMaintenanceRequestData] =
-    useState<IMaintenanceRequestData | null>(null);
 
   //Formulário para inserir nova retirada de materiais
   const formWithdrawal = useForm({
@@ -346,8 +327,13 @@ export function MaterialWithdrawalForm({
             linkMaterialRequest={linkMaterialRequest}
             setLinkMaterialRequest={setLinkMaterialRequest}
             formWithdrawal={formWithdrawal}
-            setLinkedMaterialRequestData={setLinkedMaterialRequestData}
-            linkedMaterialRequestData={linkedMaterialRequestData}
+            setMaterialRequestDataLinked={setMaterialRequestDataLinked}
+            materialRequestDataLinked={materialRequestDataLinked}
+            materialRequestData={
+              maintenanceRequestData?.materialRequests ||
+              materialRequestData ||
+              []
+            }
           />
 
           {/* Items for Withdrawal */}

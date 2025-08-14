@@ -12,6 +12,7 @@ import { z } from 'zod';
 import { IActionResultForm } from '../../../../../types/types-server-actions';
 import { formatRequestNumber } from '../../../../../lib/form-utils';
 import { Search } from 'lucide-react';
+import { IMaterialRequest } from '../../request/request-types';
 
 const requestFormDataSchema = z.object({
   newReq: z
@@ -66,6 +67,7 @@ export interface IMaintenanceRequestData {
   };
   local?: string;
   protocolNumber?: string;
+  materialRequests?: IMaterialRequest[];
 }
 
 export function RequestMaintenanceMaterialForm({

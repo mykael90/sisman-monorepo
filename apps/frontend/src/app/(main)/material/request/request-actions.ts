@@ -5,7 +5,7 @@ import { revalidatePath } from 'next/cache';
 import { getSismanAccessToken } from '../../../../lib/auth/get-access-token';
 import { fetchApiSisman } from '../../../../lib/fetch/api-sisman';
 import { IActionResultForm } from '../../../../types/types-server-actions';
-import { IRequestAdd, IRequestEdit } from './request-types';
+import { IMaterialRequestAdd, IRequestEdit } from './request-types';
 import { handleApiAction } from '../../../../lib/fetch/handle-form-action-sisman';
 
 const PAGE_PATH = '/material/request';
@@ -68,13 +68,13 @@ export async function getRefreshedRequests() {
 
 export async function addRequest(
   prevState: unknown,
-  data: IRequestAdd
-): Promise<IActionResultForm<IRequestAdd, any>> {
+  data: IMaterialRequestAdd
+): Promise<IActionResultForm<IMaterialRequestAdd, any>> {
   logger.info(`(Server Action) addRequest: Attempt to add request`, data);
 
   try {
     const accessToken = await getSismanAccessToken();
-    return await handleApiAction<IRequestAdd, any, IRequestAdd>(
+    return await handleApiAction<IMaterialRequestAdd, any, IMaterialRequestAdd>(
       data,
       data,
       {

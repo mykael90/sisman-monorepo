@@ -1,25 +1,24 @@
 import { MaterialRequest, Prisma } from '@sisman/prisma';
 
-export type IRequestWithRelations = Prisma.MaterialRequestGetPayload<{
-  include: {maintenanceRequest:true}
+export type IMaterialRequestWithRelations = Prisma.MaterialRequestGetPayload<{
+  include: { maintenanceRequest: true };
 }>;
 
-export interface IRequestAdd extends Omit<Prisma.MaterialRequestCreateInput, 
-  'maintenanceRequest'
-> {}
+export interface IMaterialRequestAdd
+  extends Omit<Prisma.MaterialRequestCreateInput, 'maintenanceRequest'> {}
 
-export interface IRequestEdit extends IRequestAdd {
+export interface IRequestEdit extends IMaterialRequestAdd {
   id: number;
 }
 
-export type IRequest = MaterialRequest;
+export type IMaterialRequest = MaterialRequest;
 
-export type IRequestRemove = {
+export type IMaterialRequestRemove = {
   id: number;
 };
 
-export type IRequestSelect = Prisma.MaterialRequestSelect;
+export type IMaterialRequestSelect = Prisma.MaterialRequestSelect;
 
-export type IRequestRelatedData = {
+export type IMaterialRequestRelatedData = {
   // Will be added later
 };
