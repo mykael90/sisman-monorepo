@@ -858,10 +858,9 @@ export class RequisicoesManutencoesService {
       };
     }>
   ): Promise<void> {
+    const maintenanceRequestDto: CreateMaintenanceRequestWithRelationsDto =
+      MaintenanceRequestMapper.toCreateDto(sipacRequisicaoManutencao);
     try {
-      const maintenanceRequestDto: CreateMaintenanceRequestWithRelationsDto =
-        MaintenanceRequestMapper.toCreateDto(sipacRequisicaoManutencao);
-
       // Assuming protocolNumber in MaintenanceRequest stores the SIPAC request ID
       const existingMaitenanceRequest =
         await this.maintenanceRequestsService.findByProtocolNumber(
@@ -877,14 +876,20 @@ export class RequisicoesManutencoesService {
           existingMaitenanceRequest.id,
           maintenanceRequestDto
         );
-      } else {
-        this.logger.log(
-          `Creating MaintenanceRequest for SIPAC ID: ${sipacRequisicaoManutencao.numeroRequisicao}`
-        );
-
-        await this.maintenanceRequestsService.create(maintenanceRequestDto);
       }
+      return;
     } catch (error) {
+      //Esse erro é porque não existe, então a gente deve criar.
+      if (error instanceof NotFoundException) {
+        if (error.getStatus() === 404) {
+          this.logger.log(
+            `Creating MaintenanceRequest for SIPAC ID: ${sipacRequisicaoManutencao.numeroRequisicao}`
+          );
+          await this.maintenanceRequestsService.create(maintenanceRequestDto);
+          return;
+        }
+      }
+
       this.logger.error(
         `Failed to sync MaintenanceRequest for SIPAC ID: ${sipacRequisicaoManutencao.numeroRequisicao}`,
         error.stack

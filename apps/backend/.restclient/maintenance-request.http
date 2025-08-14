@@ -13,7 +13,7 @@ Authorization: Bearer {{token}}
 
 ### GET one by protocol
 GET {{urlLocal}}/protocol
-?value=4506/2025
+?value=4506/2026
 Authorization: Bearer {{token}}
 
 ### POST

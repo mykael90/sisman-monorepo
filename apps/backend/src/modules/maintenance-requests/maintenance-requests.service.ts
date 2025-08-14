@@ -321,6 +321,11 @@ export class MaintenanceRequestsService {
             sipacUnitCost: true
           }
         });
+      if (!maintenanceRequest) {
+        throw new NotFoundException(
+          `MaintenanceRequest with ID ${protocolNumber} not found`
+        );
+      }
       return maintenanceRequest;
     } catch (error) {
       handlePrismaError(error, this.logger, 'MaintenanceRequestsService', {
