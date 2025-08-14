@@ -31,8 +31,8 @@ export default async function Page() {
     getUsers(accessTokenSisman)
   ]);
 
-  const response = await getMaintenanceRequest('4506/2025');
-  console.log(response);
+  // const response = await getMaintenanceRequest('4506/2025');
+  // console.log(response);
   // const pathname = usePathname();
   // const withdrawalType = pathname.split('/').pop() || 'internal-use'; // Get the last segment of the URL
 

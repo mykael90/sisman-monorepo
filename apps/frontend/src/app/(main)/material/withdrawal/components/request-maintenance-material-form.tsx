@@ -125,11 +125,19 @@ export function RequestMaintenanceMaterialForm({
       }
     } catch (error: any) {
       console.error('Error in wrappedPromiseMaintenanceRequest:', error);
-      return {
-        ...prevState,
-        isSubmitSuccessful: false,
-        message: error.message || 'Erro ao buscar dados da requisição.'
-      };
+      console.log(
+        `AQUIIIII! Error in wrappedPromiseMaintenanceRequest: ${JSON.stringify(error, null, 2)}`
+      );
+      if (error?.statusCode === 404) {
+        return {
+          ...prevState,
+          isSubmitSuccessful: false,
+          message:
+            'Requisição não encontrada. Favor verifique as informações e tente novamente.'
+        };
+      } else {
+        // throw error;
+      }
     }
   };
 
