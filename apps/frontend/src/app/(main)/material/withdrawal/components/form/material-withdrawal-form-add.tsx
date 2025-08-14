@@ -14,17 +14,17 @@ import {
   initialServerStateWithdrawal
 } from './withdrawal-base-form-add';
 import { ItemsFieldArray } from './items-field-array';
+import { FormSuccessDisplay } from '@/components/form-tanstack/form-success-display';
+import { ErrorServerForm } from '@/components/form-tanstack/error-server-form';
 
 export function MaterialWithdrawalFormAdd({
   promiseMaintenanceRequest,
   formActionProp,
   relatedData,
-  // onCancel,
-  // onClean,
+  onCancel,
+  onClean,
   submitButtonText,
   SubmitButtonIcon,
-  // relatedData
-  // withdrawalType
   CardMaintenanceSummary,
   CardMaterialLinkDetails,
   RequestMaintenanceMaterialForm,
@@ -32,11 +32,11 @@ export function MaterialWithdrawalFormAdd({
 }: {
   promiseMaintenanceRequest: any;
   formActionProp: (
-    prevState: IActionResultForm<IMaterialWithdrawalAddForm>, // Adjusted prevState type
-    data: IMaterialWithdrawalAddForm // Data is now an object
+    prevState: IActionResultForm<IMaterialWithdrawalAddForm>,
+    data: IMaterialWithdrawalAddForm
   ) => Promise<IActionResultForm<IMaterialWithdrawalAddForm>>;
-  // onCancel?: () => void;
-  // onClean?: () => void;
+  onCancel?: () => void;
+  onClean?: () => void;
   submitButtonText?: string;
   SubmitButtonIcon?: FC<{ className?: string }>;
   relatedData: IMaterialWithdrawalRelatedData;
@@ -44,8 +44,6 @@ export function MaterialWithdrawalFormAdd({
   CardMaterialLinkDetails?: any;
   RequestMaintenanceMaterialForm?: any;
   WithdrawalDetailsForm: any;
-  // relatedData: any;
-  // withdrawalType: string;
 }) {
   const { listGlobalMaterials, listUsers } = relatedData;
 
@@ -59,11 +57,9 @@ export function MaterialWithdrawalFormAdd({
   const [materialRequestDataLinked, setMaterialRequestDataLinked] =
     useState<any>(null);
 
-  // Estado referente ao formulário de retirada
   const [serverStateWithdrawal, formActionWithdrawal, isPendingWithdrawal] =
     useActionState(formActionProp, initialServerStateWithdrawal);
 
-  //Formulário para inserir nova retirada de materiais
   const formWithdrawal = useForm({
     defaultValues: defaultDataWithdrawalForm,
     transform: useTransform(
@@ -75,7 +71,36 @@ export function MaterialWithdrawalFormAdd({
     }
   });
 
-  type TFormWithDrawal = typeof formWithdrawal;
+  const handleReset = onClean
+    ? () => {
+        formWithdrawal.reset();
+        onClean && onClean();
+      }
+    : () => formWithdrawal.reset();
+
+  const handleCancel = () => {
+    onCancel && onCancel();
+  };
+
+  if (
+    serverStateWithdrawal?.isSubmitSuccessful &&
+    serverStateWithdrawal.responseData
+  ) {
+    return (
+      <FormSuccessDisplay
+        serverState={serverStateWithdrawal}
+        handleActions={{
+          handleResetForm: handleReset,
+          handleCancelForm: handleCancel
+        }}
+        messageActions={{
+          handleResetForm: 'Realizar nova retirada',
+          handleCancel: 'Voltar para a lista'
+        }}
+        isInDialog={false}
+      />
+    );
+  }
 
   const currentSubmitButtonText = submitButtonText || 'Realizar retirada';
 
@@ -99,7 +124,12 @@ export function MaterialWithdrawalFormAdd({
           e.stopPropagation();
           formWithdrawal.handleSubmit();
         }}
+        onReset={(e) => {
+          e.preventDefault();
+          handleReset();
+        }}
       >
+        <ErrorServerForm serverState={serverStateWithdrawal} />
         <div className='space-y-6'>
           {/* Informações extraídas da requisição de manutenção 
           Só renderiza o card se houver dados da requisição
@@ -152,11 +182,10 @@ export function MaterialWithdrawalFormAdd({
           )}
         </div>
         <div className='mt-8 flex justify-end gap-3'>
-          <Button
-            type='button'
-            variant='outline'
-            onClick={() => formWithdrawal.reset()}
-          >
+          <Button type='button' variant='outline' onClick={handleCancel}>
+            Cancelar
+          </Button>
+          <Button type='reset' variant='outline'>
             Limpar
           </Button>
           <formWithdrawal.Subscribe
@@ -171,7 +200,7 @@ export function MaterialWithdrawalFormAdd({
                 type='submit'
                 disabled={
                   !canSubmit ||
-                  isPendingWithdrawal || // from useActionState
+                  isPendingWithdrawal ||
                   isValidating ||
                   !isTouched
                 }
