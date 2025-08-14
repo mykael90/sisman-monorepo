@@ -1,11 +1,15 @@
 import {
   BadRequestException,
   ConflictException,
+  Inject,
   Injectable,
   Logger,
   NotFoundException
 } from '@nestjs/common';
-import { PrismaService } from 'src/shared/prisma/prisma.service';
+import {
+  PrismaService,
+  ExtendedPrismaClient
+} from 'src/shared/prisma/prisma.module';
 import { CreateMaterialDto, UpdateMaterialDto } from './dto/material.dto';
 import { MaterialsMapper } from './mappers/materials.mapper';
 import { Prisma } from '@sisman/prisma';
@@ -14,7 +18,9 @@ import { Prisma } from '@sisman/prisma';
 export class MaterialsService {
   private logger = new Logger(MaterialsService.name);
 
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    @Inject(PrismaService) private readonly prisma: ExtendedPrismaClient
+  ) {}
   async create(data: CreateMaterialDto) {
     return await this.prisma.materialGlobalCatalog.create({ data });
   }

@@ -7,7 +7,10 @@ import {
   NotFoundException
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { PrismaService } from 'src/shared/prisma/prisma.service';
+import {
+  PrismaService,
+  ExtendedPrismaClient
+} from 'src/shared/prisma/prisma.module';
 import { User, Role, Prisma } from '@sisman/prisma';
 import { AuthRegisterDTO } from './dto/auth-register.dto';
 import { UsersService } from 'src/modules/users/users.service';
@@ -41,7 +44,7 @@ export class AuthService {
   private readonly audience = 'users';
   constructor(
     private readonly jwtService: JwtService,
-    private readonly prisma: PrismaService,
+    @Inject(PrismaService) private readonly prisma: ExtendedPrismaClient,
     private readonly usersService: UsersService,
     private readonly eventEmitter: EventEmitter2,
     @Inject(generalConfig.KEY)

@@ -1,5 +1,5 @@
 // src/shared/observability/metrics.service.ts
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, Inject } from '@nestjs/common';
 import {
   Registry,
   collectDefaultMetrics,

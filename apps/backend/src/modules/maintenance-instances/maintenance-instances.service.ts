@@ -1,5 +1,8 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { PrismaService } from '../../shared/prisma/prisma.service';
+import { Injectable, Logger, Inject } from '@nestjs/common';
+import {
+  PrismaService,
+  ExtendedPrismaClient
+} from '../../shared/prisma/prisma.module';
 import {
   CreateMaintenanceInstanceDto,
   UpdateMaintenanceInstance
@@ -9,7 +12,9 @@ import { handlePrismaError } from '../../shared/utils/prisma-error-handler';
 @Injectable()
 export class MaintenanceInstancesService {
   private readonly logger = new Logger(MaintenanceInstancesService.name);
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    @Inject(PrismaService) private readonly prisma: ExtendedPrismaClient
+  ) {}
 
   async create(data: CreateMaintenanceInstanceDto) {
     try {

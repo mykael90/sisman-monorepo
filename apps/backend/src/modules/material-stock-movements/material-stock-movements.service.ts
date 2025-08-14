@@ -2,9 +2,13 @@ import {
   Injectable,
   Logger,
   NotFoundException,
-  BadRequestException
+  BadRequestException,
+  Inject
 } from '@nestjs/common';
-import { PrismaService } from '../../shared/prisma/prisma.service';
+import {
+  PrismaService,
+  ExtendedPrismaClient
+} from '../../shared/prisma/prisma.module';
 import {
   CreateMaterialStockMovementWithRelationsDto,
   UpdateMaterialStockMovementWithRelationsDto,
@@ -21,12 +25,14 @@ import { any } from 'joi';
 import { Decimal } from '@sisman/prisma/generated/client/runtime/library';
 
 // Definindo o tipo do cliente Prisma para clareza
-type PrismaClient = Prisma.TransactionClient | PrismaService;
+type TransactionClient = ExtendedPrismaClient;
 
 @Injectable()
 export class MaterialStockMovementsService {
   private readonly logger = new Logger(MaterialStockMovementsService.name);
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    @Inject(PrismaService) private readonly prisma: ExtendedPrismaClient
+  ) {}
 
   private readonly includeRelations: Prisma.MaterialStockMovementInclude = {
     warehouse: true,
@@ -54,7 +60,7 @@ export class MaterialStockMovementsService {
   private async ensureStockRecordExists(
     warehouseId: number,
     materialId: string,
-    prisma: PrismaClient // Usamos o tipo genérico aqui
+    prisma: TransactionClient // Usamos o tipo genérico aqui
   ): Promise<MaterialWarehouseStock> {
     this.logger.log(
       `Garantindo a existência do registro de estoque para material ${materialId} no almoxarifado ${warehouseId}.`
@@ -87,7 +93,7 @@ export class MaterialStockMovementsService {
         warehouseMaterialStock: true;
       };
     }>,
-    tx: PrismaClient
+    tx: TransactionClient
   ) {
     // A variável 'quantity' agora é mantida como um objeto Decimal durante toda a operação.
     const {
@@ -212,7 +218,7 @@ export class MaterialStockMovementsService {
   async create(
     data: CreateMaterialStockMovementWithRelationsDto,
     // O tx opcional já estava correto na sua assinatura
-    tx?: Prisma.TransactionClient
+    tx?: TransactionClient
   ): Promise<MaterialStockMovementWithRelationsResponseDto> {
     try {
       // Se um 'tx' (cliente de transação) for fornecido, use-o diretamente.
@@ -221,7 +227,7 @@ export class MaterialStockMovementsService {
           `Executando a criação dentro de uma transação existente.`
         );
         // Passamos o 'tx' para o método que contém a lógica de negócio.
-        return await this._createMovementLogic(data, tx);
+        return await this._createMovementLogic(data, tx as any);
       }
 
       // Se nenhum 'tx' for fornecido, crie uma nova transação.
@@ -252,7 +258,7 @@ export class MaterialStockMovementsService {
    */
   private async _createMovementLogic(
     data: CreateMaterialStockMovementWithRelationsDto,
-    prisma: PrismaClient // Usamos o tipo genérico aqui
+    prisma: TransactionClient // Usamos o tipo genérico aqui
   ): Promise<MaterialStockMovementWithRelationsResponseDto> {
     const {
       warehouse,

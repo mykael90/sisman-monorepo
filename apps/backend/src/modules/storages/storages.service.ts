@@ -1,12 +1,17 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { PrismaService } from '../../shared/prisma/prisma.service';
+import { Injectable, Logger, Inject } from '@nestjs/common';
+import {
+  PrismaService,
+  ExtendedPrismaClient
+} from '../../shared/prisma/prisma.module';
 import { CreateStorageDto, UpdateStorageDto } from './dto/storage.dto';
 import { handlePrismaError } from '../../shared/utils/prisma-error-handler';
 
 @Injectable()
 export class StoragesService {
   private readonly logger = new Logger(StoragesService.name);
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    @Inject(PrismaService) private readonly prisma: ExtendedPrismaClient
+  ) {}
 
   async create(data: CreateStorageDto) {
     try {

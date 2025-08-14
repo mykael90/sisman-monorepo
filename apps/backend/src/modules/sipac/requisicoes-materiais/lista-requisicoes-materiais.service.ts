@@ -1,7 +1,10 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, Inject } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { ConfigService } from '@nestjs/config';
-import { PrismaService } from 'src/shared/prisma/prisma.service';
+import {
+  PrismaService,
+  ExtendedPrismaClient
+} from 'src/shared/prisma/prisma.module';
 import { Prisma } from '@sisman/prisma';
 import { SipacScrapingService } from '../sipac-scraping.service';
 import {
@@ -32,7 +35,7 @@ export class ListaRequisicoesMateriaisService {
   };
 
   constructor(
-    private readonly prisma: PrismaService,
+    @Inject(PrismaService) private readonly prisma: ExtendedPrismaClient,
     private readonly sipacScraping: SipacScrapingService
   ) {}
 

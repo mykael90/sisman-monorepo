@@ -1,5 +1,8 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { PrismaService } from '../../shared/prisma/prisma.service';
+import { Injectable, Logger, Inject } from '@nestjs/common';
+import {
+  PrismaService,
+  ExtendedPrismaClient
+} from '../../shared/prisma/prisma.module';
 import {
   CreateMaterialWarehouseStockDto,
   UpdateMaterialWarehouseStockDto
@@ -9,7 +12,9 @@ import { handlePrismaError } from '../../shared/utils/prisma-error-handler';
 @Injectable()
 export class MaterialWarehouseStocksService {
   private readonly logger = new Logger(MaterialWarehouseStocksService.name);
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    @Inject(PrismaService) private readonly prisma: ExtendedPrismaClient
+  ) {}
 
   async create(data: CreateMaterialWarehouseStockDto) {
     try {

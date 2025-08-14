@@ -1,5 +1,8 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { PrismaService } from '../../shared/prisma/prisma.service';
+import { Injectable, Logger, Inject, NotFoundException } from '@nestjs/common';
+import {
+  PrismaService,
+  ExtendedPrismaClient
+} from '../../shared/prisma/prisma.module';
 import {
   CreateMaintenanceRequestWithRelationsDto,
   UpdateMaintenanceRequestWithRelationsDto
@@ -12,7 +15,7 @@ import { InfrastructureBuildingsService } from '../infrastructure-buildings/infr
 export class MaintenanceRequestsService {
   private readonly logger = new Logger(MaintenanceRequestsService.name);
   constructor(
-    private readonly prisma: PrismaService,
+    @Inject(PrismaService) private readonly prisma: ExtendedPrismaClient,
     private readonly infrastructureBuildingsService: InfrastructureBuildingsService
   ) {}
 

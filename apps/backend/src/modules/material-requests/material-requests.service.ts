@@ -1,11 +1,15 @@
 import {
   BadRequestException,
   ConflictException,
+  Inject,
   Injectable,
   Logger,
   NotFoundException
 } from '@nestjs/common';
-import { PrismaService } from '../../shared/prisma/prisma.service';
+import {
+  PrismaService,
+  ExtendedPrismaClient
+} from '../../shared/prisma/prisma.module';
 import {
   CreateMaterialRequestWithRelationsDto,
   UpdateMaterialRequestWithRelationsDto
@@ -37,7 +41,9 @@ type OperationConfig = {
 @Injectable()
 export class MaterialRequestsService {
   private readonly logger = new Logger(MaterialRequestsService.name);
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    @Inject(PrismaService) private readonly prisma: ExtendedPrismaClient
+  ) {}
 
   async create(data: CreateMaterialRequestWithRelationsDto): Promise<any> {
     const {

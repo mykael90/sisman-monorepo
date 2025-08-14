@@ -2,9 +2,13 @@ import {
   Injectable,
   Logger,
   NotFoundException,
-  BadRequestException
+  BadRequestException,
+  Inject
 } from '@nestjs/common';
-import { PrismaService } from '../../shared/prisma/prisma.service';
+import {
+  PrismaService,
+  ExtendedPrismaClient
+} from '../../shared/prisma/prisma.module';
 import {
   CreateMaterialReceiptWithRelationsDto,
   UpdateMaterialReceiptWithRelationsDto,
@@ -22,7 +26,7 @@ import {
 export class MaterialReceiptsService {
   private readonly logger = new Logger(MaterialReceiptsService.name);
   constructor(
-    private readonly prisma: PrismaService,
+    @Inject(PrismaService) private readonly prisma: ExtendedPrismaClient,
     private readonly materialStockMovementsService: MaterialStockMovementsService
   ) {}
 

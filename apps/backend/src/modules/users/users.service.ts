@@ -1,10 +1,14 @@
 import {
   BadRequestException,
+  Inject,
   Injectable,
   Logger,
   NotFoundException
 } from '@nestjs/common';
-import { PrismaService } from 'src/shared/prisma/prisma.service';
+import {
+  PrismaService,
+  ExtendedPrismaClient
+} from 'src/shared/prisma/prisma.module';
 import { Prisma, User } from '@sisman/prisma';
 import { handlePrismaError } from '../../shared/utils/prisma-error-handler';
 import {
@@ -16,7 +20,9 @@ import {
 export class UsersService {
   private readonly logger = new Logger(UsersService.name);
 
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    @Inject(PrismaService) private readonly prisma: ExtendedPrismaClient
+  ) {}
 
   private readonly includeRelations: Prisma.UserInclude = {
     roles: true,

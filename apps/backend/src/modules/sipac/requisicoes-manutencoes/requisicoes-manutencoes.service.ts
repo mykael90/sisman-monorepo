@@ -1,12 +1,16 @@
 import {
   BadRequestException,
+  Inject,
   Injectable,
   Logger,
   NotFoundException
 } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { ConfigService } from '@nestjs/config';
-import { PrismaService } from 'src/shared/prisma/prisma.service';
+import {
+  PrismaService,
+  ExtendedPrismaClient
+} from 'src/shared/prisma/prisma.module';
 import { Prisma } from '@sisman/prisma';
 import { SipacScrapingService } from '../sipac-scraping.service';
 import {
@@ -46,7 +50,7 @@ export class RequisicoesManutencoesService {
   };
 
   constructor(
-    private readonly prisma: PrismaService,
+    @Inject(PrismaService) private readonly prisma: ExtendedPrismaClient,
     private readonly listaRequisicoesManutencoesService: ListaRequisicoesManutencoesService,
     // private readonly materiaisService: MateriaisService, // TODO: Determine if MateriaisService is needed
     private readonly sipacScraping: SipacScrapingService,

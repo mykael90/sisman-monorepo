@@ -1,12 +1,16 @@
 import {
   BadRequestException,
+  Inject,
   Injectable,
   Logger,
   NotFoundException
 } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { ConfigService } from '@nestjs/config';
-import { PrismaService } from 'src/shared/prisma/prisma.service';
+import {
+  PrismaService,
+  ExtendedPrismaClient
+} from 'src/shared/prisma/prisma.module';
 import { Prisma } from '@sisman/prisma';
 import { SipacApiService } from '../sipac-api.service';
 import {
@@ -28,7 +32,7 @@ export class UnidadesService {
   private readonly URL_PATH = 'internacionalizacao/v1/unidades';
 
   constructor(
-    private readonly prisma: PrismaService,
+    @Inject(PrismaService) private readonly prisma: ExtendedPrismaClient,
     private readonly sipacHttp: SipacApiService
   ) {}
 

@@ -4,9 +4,10 @@ import { Logger } from '@nestjs/common';
 import { ValidationPipe } from '@nestjs/common';
 // import { LogInterceptor } from './interceptors/log.interceptor';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import 'src/shared/utils/bigint-tojson';
-import 'src/shared/utils/date-tojson';
+import './shared/utils/bigint-tojson';
+import './shared/utils/date-tojson';
 import { ConfigService } from '@nestjs/config';
+import { PrismaLifecycleManager } from './shared/prisma/prisma.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -14,6 +15,7 @@ async function bootstrap() {
   const port = configService.get<number>('PORT_BACKEND', 3080);
   const logger = new Logger('Bootstrap');
 
+  // --- Bloco de Configurações Globais da Aplicação --
   // Habilita o CORS. É uma boa prática tornar as origens configuráveis.
   // Ex: configService.get('CORS_ORIGIN').split(',')
   // app.enableCors({
@@ -40,6 +42,7 @@ async function bootstrap() {
 
   // app.useGlobalInterceptors(new LogInterceptor());
 
+  // --- Configuração de Módulos Específicos (Swagger) --
   const config = new DocumentBuilder()
     .setTitle('Sisman')
     .setDescription('The Sisman API description')
@@ -49,6 +52,11 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
+
+  // --- Hooks de Ciclo de Vida Personalizados (Prisma) ---
+  // Obtenha a instância do nosso gerenciador de ciclo de vida
+  const prismaManager = app.get(PrismaLifecycleManager);
+  await prismaManager.enableShutdownHooks(app);
 
   await app.listen(port);
   logger.log(`🚀 Aplicação rodando em: http://localhost:${port}`);

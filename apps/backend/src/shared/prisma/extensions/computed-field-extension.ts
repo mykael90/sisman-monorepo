@@ -12,15 +12,15 @@ export class ComputedFieldExtension {
           needs: {},
           compute(data: { updatedAt: Date }) {
             return formatDates(data.updatedAt);
-          },
+          }
         },
         createdAtBr: {
           needs: {},
           compute(data: { createdAt: Date }) {
             return formatDates(data.createdAt);
-          },
-        },
-      },
-    },
+          }
+        }
+      }
+    }
   });
 }

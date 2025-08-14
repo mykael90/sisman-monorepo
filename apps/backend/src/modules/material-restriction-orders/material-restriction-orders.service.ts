@@ -3,9 +3,13 @@ import {
   Logger,
   NotFoundException,
   BadRequestException,
-  ConflictException
+  ConflictException,
+  Inject
 } from '@nestjs/common';
-import { PrismaService } from '../../shared/prisma/prisma.service';
+import {
+  PrismaService,
+  ExtendedPrismaClient
+} from '../../shared/prisma/prisma.module';
 import {
   CreateMaterialRestrictionOrderWithRelationsDto,
   UpdateMaterialRestrictionOrderWithRelationsDto,
@@ -36,7 +40,7 @@ type PrismaTransactionClient = Omit<
 export class MaterialRestrictionOrdersService {
   private readonly logger = new Logger(MaterialRestrictionOrdersService.name);
   constructor(
-    private readonly prisma: PrismaService,
+    @Inject(PrismaService) private readonly prisma: ExtendedPrismaClient,
     private readonly materialStockMovementsService: MaterialStockMovementsService,
     private readonly materialRequestService: MaterialRequestsService
   ) {}

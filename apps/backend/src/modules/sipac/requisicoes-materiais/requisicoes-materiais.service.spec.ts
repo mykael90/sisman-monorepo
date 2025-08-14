@@ -1,6 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ListaRequisicoesMateriaisService } from './lista-requisicoes-materiais.service';
-import { PrismaService } from 'src/shared/prisma/prisma.service';
+import {
+  PrismaService,
+  ExtendedPrismaClient
+} from 'src/shared/prisma/prisma.module';
 import { SipacScrapingService } from '../sipac-scraping.service';
 
 describe('RequisicoesMateriaisService', () => {

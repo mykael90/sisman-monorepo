@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, Inject } from '@nestjs/common';
 import { SipacScrapingService } from '../sipac-scraping.service';
 
 @Injectable()

@@ -1,10 +1,14 @@
 import {
   BadRequestException,
   ConflictException,
+  Inject,
   Injectable,
   Logger
 } from '@nestjs/common';
-import { PrismaService } from '../../shared/prisma/prisma.service';
+import {
+  PrismaService,
+  ExtendedPrismaClient
+} from '../../shared/prisma/prisma.module';
 import { CreateWarehouseDto, UpdateWarehouseDto } from './dto/warehouse.dto';
 import { handlePrismaError } from '../../shared/utils/prisma-error-handler';
 import { Prisma, PrismaClient } from '@sisman/prisma';
@@ -22,7 +26,9 @@ interface WarehouseOperationConfig {
 @Injectable()
 export class WarehousesService {
   private readonly logger = new Logger(WarehousesService.name);
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    @Inject(PrismaService) private readonly prisma: ExtendedPrismaClient
+  ) {}
 
   async create(data: CreateWarehouseDto) {
     try {

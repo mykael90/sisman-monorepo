@@ -1,15 +1,20 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { PrismaService } from 'src/shared/prisma/prisma.service';
+import { Injectable, Logger, Inject } from '@nestjs/common';
+import {
+  PrismaService,
+  ExtendedPrismaClient
+} from 'src/shared/prisma/prisma.module';
 import type { Prisma } from '@sisman/prisma';
 
 @Injectable()
 export class LogLoginService {
   private readonly logger = new Logger(LogLoginService.name);
 
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    @Inject(PrismaService) private readonly prisma: ExtendedPrismaClient
+  ) {}
 
   async recordLoginAttempt(
-    data: Prisma.LogLoginCreateWithoutUserInput & { userId: number },
+    data: Prisma.LogLoginCreateWithoutUserInput & { userId: number }
   ): Promise<void> {
     // Extrai userId para usar no connect
     const { userId, ...createData } = data;
@@ -18,15 +23,15 @@ export class LogLoginService {
         data: {
           ...createData,
           user: {
-            connect: { id: userId },
-          },
-        },
+            connect: { id: userId }
+          }
+        }
       });
     } catch (error) {
       // Logar o erro, mas não necessariamente impedir o fluxo principal
       this.logger.error(
         `Failed to record login attempt for user ${userId}`,
-        error,
+        error
       );
       // Considere mecanismos de retry ou fila se isso for crítico
     }

@@ -1,12 +1,17 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { PrismaService } from 'src/shared/prisma/prisma.service';
+import { Injectable, Logger, Inject } from '@nestjs/common';
+import {
+  PrismaService,
+  ExtendedPrismaClient
+} from 'src/shared/prisma/prisma.module';
 import type { Prisma } from '@sisman/prisma';
 
 @Injectable()
 export class LogErrorService {
   private readonly logger = new Logger(LogErrorService.name);
 
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    @Inject(PrismaService) private readonly prisma: ExtendedPrismaClient
+  ) {}
 
   async createLog(data: Prisma.LogErrorCreateInput): Promise<void> {
     try {
