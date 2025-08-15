@@ -1,6 +1,6 @@
 'use client';
 
-import { useActionState } from 'react';
+import { useActionState, useEffect, useTransition } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import {
@@ -56,20 +56,24 @@ export function RequestMaintenanceMaterialForm({
       initialServerStateRequestData
     );
 
+  const [isPendingTransition, startTransition] = useTransition();
+
   const lastMessageRef = useRef('');
 
-  if (!isPendingDataSearch && serverStateDataSearch?.message) {
-    if (serverStateDataSearch.message !== lastMessageRef.current) {
-      if (serverStateDataSearch.isSubmitSuccessful) {
-        toast.success(serverStateDataSearch.message);
-        setMaintenanceRequestData(serverStateDataSearch.responseData || null);
-      } else {
-        toast.error(serverStateDataSearch.message);
-        setMaintenanceRequestData(null);
+  useEffect(() => {
+    if (!isPendingDataSearch && serverStateDataSearch?.message) {
+      if (serverStateDataSearch.message !== lastMessageRef.current) {
+        if (serverStateDataSearch.isSubmitSuccessful) {
+          toast.success(serverStateDataSearch.message);
+          setMaintenanceRequestData(serverStateDataSearch.responseData || null);
+        } else {
+          toast.error(serverStateDataSearch.message);
+          setMaintenanceRequestData(null);
+        }
+        lastMessageRef.current = serverStateDataSearch.message;
       }
-      lastMessageRef.current = serverStateDataSearch.message;
     }
-  }
+  }, [isPendingDataSearch, serverStateDataSearch, setMaintenanceRequestData]);
 
   const getRequestData = (value: IRequestDataSearch) => {
     if (value.requestType === 'maintenanceRequest') {
@@ -92,7 +96,9 @@ export function RequestMaintenanceMaterialForm({
     onSubmit: async ({ value }) => {
       const formattedRequestNumber = getRequestData(value);
       if (formattedRequestNumber) {
-        await formActionDataSearch(formattedRequestNumber);
+        startTransition(() => {
+          formActionDataSearch(formattedRequestNumber);
+        });
       }
     }
   });

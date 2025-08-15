@@ -1,6 +1,5 @@
 'use client';
 
-import { useActionState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { FormInputField } from '@/components/form-tanstack/form-input-fields';
@@ -9,7 +8,7 @@ import { IActionResultForm } from '@/types/types-server-actions';
 import { formatRequestNumber } from '@/lib/form-utils';
 import { Search } from 'lucide-react';
 import { toast } from 'sonner';
-import { useEffect, useRef, useTransition } from 'react';
+import { useEffect, useRef, useTransition, useActionState } from 'react';
 import { schemaZodRequisicoesSipac } from '@/lib/schema-zod-requisicoes-sipac';
 import { ISipacRequisicaoManutencaoWithRelations } from '../../requisicoes-manutencoes-types';
 import {
@@ -81,7 +80,9 @@ export function ImportarRequisicaoSipacForm({
     onSubmit: async ({ value }) => {
       const formattedRequestNumber = formatRequestNumber(value.numeroAno);
       if (formattedRequestNumber) {
-        await formActionDataSearch(formattedRequestNumber);
+        startTransition(() => {
+          formActionDataSearch(formattedRequestNumber);
+        });
       }
     }
   });

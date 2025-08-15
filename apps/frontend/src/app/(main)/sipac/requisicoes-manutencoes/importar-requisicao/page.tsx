@@ -1,6 +1,12 @@
 'use client';
 
-import { useActionState, useEffect, useRef, useState } from 'react';
+import {
+  useActionState,
+  useEffect,
+  useRef,
+  useState,
+  useTransition
+} from 'react';
 import { ImportarRequisicaoSipacForm } from '../_components/importar-requisicao/importar-requisicao-sipac-form';
 import { ISipacRequisicaoManutencaoWithRelations } from '../requisicoes-manutencoes-types';
 import { ManutencaoDadosSipacDisplay } from '../_components/importar-requisicao/manutencao-dados-sipac-display';
@@ -28,6 +34,8 @@ export default function Page() {
       initialServerStateImportData
     );
 
+  const [isPendingTransition, startTransition] = useTransition();
+
   const lastMessageRef = useRef('');
 
   useEffect(() => {
@@ -52,11 +60,14 @@ export default function Page() {
         onClick={() => {
           console.log('Dados da manutenção:', manutencaoDadosSipac);
           if (manutencaoDadosSipac) {
-            formActionDataImport(manutencaoDadosSipac);
+            startTransition(() => {
+              formActionDataImport(manutencaoDadosSipac);
+            });
           }
         }}
+        disabled={isPendingDataImport} // Use o isPending do useActionState
       >
-        Importar
+        {isPendingDataImport ? 'Importando...' : 'Importar'}
       </Button>
       {manutencaoDadosSipac && (
         <ManutencaoDadosSipacDisplay data={manutencaoDadosSipac} />
