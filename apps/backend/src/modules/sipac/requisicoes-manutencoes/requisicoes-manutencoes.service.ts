@@ -282,7 +282,8 @@ export class RequisicoesManutencoesService {
               requisicaoManutencaoMae: true,
               requisicoesManutencaoFilhas: true,
               unidadeCusto: true,
-              unidadeRequisitante: true
+              unidadeRequisitante: true,
+              arquivos: true
             }
           });
 
@@ -702,7 +703,8 @@ export class RequisicoesManutencoesService {
         requisicaoManutencaoMae: true,
         requisicoesManutencaoFilhas: true,
         unidadeCusto: true,
-        unidadeRequisitante: true
+        unidadeRequisitante: true,
+        arquivos: true
       }
     });
   }
@@ -855,6 +857,7 @@ export class RequisicoesManutencoesService {
         unidadeCusto: true;
         unidadeRequisitante: true;
         historico: true;
+        arquivos: true;
       };
     }>
   ): Promise<void> {

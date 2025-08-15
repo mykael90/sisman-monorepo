@@ -850,6 +850,15 @@ exports.Prisma.SipacHistoricoManutencaoScalarFieldEnum = {
   requisicaoManutencaoId: 'requisicaoManutencaoId'
 };
 
+exports.Prisma.SipacArquivoManutencaoScalarFieldEnum = {
+  id: 'id',
+  descricao: 'descricao',
+  nomeArquivo: 'nomeArquivo',
+  urlRelativo: 'urlRelativo',
+  extensao: 'extensao',
+  requisicaoManutencaoId: 'requisicaoManutencaoId'
+};
+
 exports.Prisma.SipacImovelScalarFieldEnum = {
   rip: 'rip',
   nomeImovel: 'nomeImovel',
@@ -1304,6 +1313,13 @@ exports.Prisma.SipacHistoricoManutencaoOrderByRelevanceFieldEnum = {
   observacoes: 'observacoes'
 };
 
+exports.Prisma.SipacArquivoManutencaoOrderByRelevanceFieldEnum = {
+  descricao: 'descricao',
+  nomeArquivo: 'nomeArquivo',
+  urlRelativo: 'urlRelativo',
+  extensao: 'extensao'
+};
+
 exports.Prisma.SipacImovelOrderByRelevanceFieldEnum = {
   rip: 'rip',
   nomeImovel: 'nomeImovel',
@@ -1640,6 +1656,7 @@ exports.Prisma.ModelName = {
   SipacRequisicaoManutencao: 'SipacRequisicaoManutencao',
   SipacInformacaoServicoManutencao: 'SipacInformacaoServicoManutencao',
   SipacHistoricoManutencao: 'SipacHistoricoManutencao',
+  SipacArquivoManutencao: 'SipacArquivoManutencao',
   SipacImovel: 'SipacImovel',
   SipacImovelEndereco: 'SipacImovelEndereco',
   SipacCampus: 'SipacCampus',

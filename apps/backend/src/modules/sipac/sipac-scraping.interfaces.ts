@@ -97,6 +97,7 @@ export interface SipacRequisicaoManutencaoResponseItem {
   requisicoesAssociadasDeMateriais: SipacRequisicaoMaterialAssociadaManutencaoResponse[];
   'imoveis/prediosInseridos': SipacImovelPredioManutencaoResponse[];
   historico: SipacHistoricoManutencaoResponse[];
+  arquivosInseridos: SipacArquivoAnexadoResponse[];
 }
 
 /**
@@ -263,4 +264,14 @@ export interface SipacHistoricoManutencaoResponse {
   usuario: string;
   ramal: string;
   observacoes: string;
+}
+
+/**
+ * Representa a estrutura de um único arquivo extraído pelo parser.
+ */
+export interface SipacArquivoAnexadoResponse {
+  descricaoDoDocumento: string;
+  arquivo: string;
+  urlRelativoRecurso: string; // Nota: Usando 'urlRecurso' como definido no parser.
+  extensaoArquivo?: string;
 }

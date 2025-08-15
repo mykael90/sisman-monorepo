@@ -1798,6 +1798,8 @@ model SipacRequisicaoManutencao {
   unidadeCustoId        Int?
   unidadeCusto          SipacUnidade? @relation("unidadeCustoManutencao", fields: [unidadeCustoId], references: [id])
 
+  arquivos SipacArquivoManutencao[]
+
   @@index([numeroRequisicao])
   @@map("sipac_requisicoes_manutencao")
 }
@@ -1831,6 +1833,20 @@ model SipacHistoricoManutencao {
 
   @@index([requisicaoManutencaoId])
   @@map("sipac_historico_manutencao")
+}
+
+model SipacArquivoManutencao {
+  id          Int     @id @default(autoincrement())
+  descricao   String // Mapeado de "descricaoDoDocumento"
+  nomeArquivo String // Mapeado de "arquivo"
+  urlRelativo String // Mapeado de "urlRelativoRecurso"
+  extensao    String? // Mapeado de "extensaoArquivo". O '?' torna o campo opcional.
+
+  requisicaoManutencaoId Int
+  requisicaoManutencao   SipacRequisicaoManutencao @relation(fields: [requisicaoManutencaoId], references: [id], onDelete: Cascade)
+
+  @@index([requisicaoManutencaoId])
+  @@map("sipac_arquivos_manutencao")
 }
 
 // Representa um imóvel no sistema SIPAC.

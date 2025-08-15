@@ -6,7 +6,8 @@ import {
   SipacRequisicaoMaterialAssociadaManutencaoResponse,
   SipacImovelPredioManutencaoResponse,
   SipacHistoricoManutencaoResponse,
-  SipacItemRequisicaoMaterialManutencaoResponse
+  SipacItemRequisicaoMaterialManutencaoResponse,
+  SipacArquivoAnexadoResponse
 } from '../../sipac-scraping.interfaces';
 import {
   CreateSipacRequisicaoManutencaoCompletoDto,
@@ -15,7 +16,8 @@ import {
   SipacRequisicaoMaterialAssociadaManutencaoDto,
   SipacImovelPredioManutencaoDto,
   SipacHistoricoManutencaoDto,
-  SipacItemRequisicaoMaterialManutencaoDto
+  SipacItemRequisicaoMaterialManutencaoDto,
+  SipacArquivoAnexadoDto
 } from '../dto/sipac-requisicao-manutencao.dto';
 import { DecimalJsLike } from '@sisman/prisma/generated/client/runtime/library';
 
@@ -126,6 +128,9 @@ export class SipacRequisicaoManutencaoMapper {
       ),
       historico: item.historico.map(
         SipacRequisicaoManutencaoMapper?.toHistoricoManutencaoDto
+      ),
+      arquivos: item.arquivosInseridos.map(
+        SipacRequisicaoManutencaoMapper?.toArquivoAnexadoDto
       )
     };
   }
@@ -233,6 +238,20 @@ export class SipacRequisicaoManutencaoMapper {
       usuario: item.usuario,
       ramal: item.ramal,
       observacoes: item.observacoes
+    };
+  }
+
+  static toArquivoAnexadoDto(
+    item: SipacArquivoAnexadoResponse
+  ): SipacArquivoAnexadoDto {
+    return {
+      // O campo requisicaoManutencaoId será definido posteriormente pelo serviço
+      // durante a criação da entidade principal.
+
+      descricao: item.descricaoDoDocumento,
+      nomeArquivo: item.arquivo,
+      urlRelativo: item.urlRelativoRecurso, // Mapeia 'urlRecurso' para 'urlRelativo'
+      extensao: item.extensaoArquivo
     };
   }
 }

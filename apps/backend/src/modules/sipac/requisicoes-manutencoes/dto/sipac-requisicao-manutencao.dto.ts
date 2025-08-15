@@ -544,6 +544,59 @@ export class SipacHistoricoManutencaoDto {
 }
 
 /**
+ * DTO for an attached file in a maintenance requisition.
+ * Corresponds to the `ArquivoAnexado` Prisma model.
+ * It validates the data coming from the parser's `arquivosInseridos` array.
+ */
+export class SipacArquivoAnexadoDto {
+  /**
+   * ID da requisição de manutenção pai, para vincular o arquivo.
+   * Este campo é opcional aqui, pois será preenchido durante a criação aninhada.
+   * @example 1
+   */
+  @IsOptional()
+  @IsNumber()
+  requisicaoManutencaoId?: number;
+
+  /**
+   * Descrição do documento fornecida pelo usuário.
+   * Mapeado do campo `descricaoDoDocumento` do JSON.
+   * @example "WhatsApp Image 2025-08-12 at 10.27.28 (1).jpeg"
+   */
+  @IsNotEmpty()
+  @IsString()
+  descricao: string;
+
+  /**
+   * O nome do arquivo, incluindo a extensão.
+   * Mapeado do campo `arquivo` do JSON.
+   * @example "WhatsApp Image 2025-08-12 at 10.27.28 (1).jpeg"
+   */
+  @IsNotEmpty()
+  @IsString()
+  nomeArquivo: string;
+
+  /**
+   * Caminho relativo para download do recurso no sistema de origem.
+   * Mapeado do campo `urlRelativoRecurso` do JSON.
+   * @example "/sipac/downloadArquivo?idArquivo=17063348&key=723466e7052752ca45a1755c442f9ea3"
+   */
+  @IsNotEmpty()
+  @IsString()
+  urlRelativo: string;
+
+  /**
+   * Extensão do arquivo, extraída do nome do arquivo.
+   * Mapeado do campo `extensaoArquivo` do JSON.
+   * É opcional, pois um arquivo pode não ter extensão.
+   * @example "jpeg"
+   */
+  @IsOptional()
+  @IsString()
+  extensao?: string;
+}
+
+/**
  * DTO for creating a complete SipacRequisicaoManutencao record.
  * This DTO reflects the comprehensive structure from the example JSON and Prisma schema.
  */
@@ -676,6 +729,13 @@ export class CreateSipacRequisicaoManutencaoCompletoDto extends CreateSipacLista
   @ValidateNested({ each: true })
   @Type(() => SipacHistoricoManutencaoDto)
   historico?: SipacHistoricoManutencaoDto[];
+
+  /** Arquivos da requisição de manutenção */
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => SipacArquivoAnexadoDto)
+  arquivos?: SipacArquivoAnexadoDto[];
 
   /** Unidade requisitante associada */
   @IsOptional()
