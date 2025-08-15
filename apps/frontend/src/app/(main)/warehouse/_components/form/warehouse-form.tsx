@@ -10,7 +10,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { FormSuccessDisplay } from '@/components/form-tanstack/form-success-display';
 import { ErrorServerForm } from '@/components/form-tanstack/error-server-form';
-import type { IActionResultForm } from '../../../../../types/types-server-actions';
+import type { IActionResultForm } from '@/types/types-server-actions';
 import {
   IWarehouse,
   IWarehouseAdd,

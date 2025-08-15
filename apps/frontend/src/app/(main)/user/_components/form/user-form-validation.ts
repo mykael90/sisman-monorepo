@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { IActionResultForm } from '../../../../../types/types-server-actions';
+import { IActionResultForm } from '@/types/types-server-actions';
 
 // Schema Zod (adapte conforme sua necessidade)
 const userFormSchemaAdd = z.object({

@@ -6,7 +6,7 @@ import { addWarehouse } from '../../warehouse-actions';
 import WarehouseForm from '../form/warehouse-form';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { IActionResultForm } from '../../../../../types/types-server-actions';
+import { IActionResultForm } from '@/types/types-server-actions';
 import { warehouseFormSchemaAdd } from '../form/warehouse-form-validation';
 import { IWarehouseAdd } from '../../warehouse-types';
 import { IMaintenanceInstance } from '../../../maintenance/instance/instance-types';

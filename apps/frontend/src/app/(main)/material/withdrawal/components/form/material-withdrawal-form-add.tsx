@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { mergeForm, useForm, useTransform } from '@tanstack/react-form';
 import { FilePlus } from 'lucide-react';
 import { FC, useActionState, useState } from 'react';
-import { IActionResultForm } from '../../../../../../types/types-server-actions';
+import { IActionResultForm } from '@/types/types-server-actions';
 import { IMaterialWithdrawalRelatedData } from '../../withdrawal-types';
 import { IMaintenanceRequestData } from '../request-maintenance-material-form';
 import { IMaterialRequest } from '../../../request/request-types';

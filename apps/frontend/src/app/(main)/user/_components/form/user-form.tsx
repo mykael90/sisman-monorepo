@@ -12,7 +12,7 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { UserPlus, Save } from 'lucide-react';
-import { IActionResultForm } from '../../../../../types/types-server-actions';
+import { IActionResultForm } from '@/types/types-server-actions';
 import { FormSuccessDisplay } from '@/components/form-tanstack/form-success-display';
 import { ErrorServerForm } from '@/components/form-tanstack/error-server-form';
 import { IUser, IUserAdd, IUserEdit, IUserRelatedData } from '../../user-types'; // Added IUser, IUserEdit

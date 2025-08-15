@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { IActionResultForm } from '../../../../../types/types-server-actions';
+import { IActionResultForm } from '@/types/types-server-actions';
 import { IRoleAdd, IRoleEdit } from '../../role-types';
 
 // Schema Zod para adicionar Role

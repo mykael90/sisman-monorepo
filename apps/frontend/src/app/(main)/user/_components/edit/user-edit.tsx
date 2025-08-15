@@ -4,12 +4,12 @@ import { useRouter } from 'next/navigation';
 import FormAddHeader from '@/components/form-tanstack/form-add-header';
 import UserForm from '../form/user-form';
 import { IUser, IUserEdit, IUserRelatedData } from '../../user-types';
-import { IActionResultForm } from '../../../../../types/types-server-actions';
+import { IActionResultForm } from '@/types/types-server-actions';
 import { Save, UserPlus } from 'lucide-react';
 import { updateUser } from '../../user-actions';
 import { userFormSchemaEdit } from '../form/user-form-validation';
 import { IRole } from '../../../role/role-types';
-import { NonOptionalKeys } from '../../../../../types/utils-types';
+import { NonOptionalKeys } from '@/types/utils-types';
 import { removeUnreferencedKeys } from '@/lib/form-utils';
 
 // We are transforming this into a page, so it won't take props like onClose or onSubmit.

@@ -5,7 +5,7 @@ import { useStore } from '@tanstack/react-store';
 import { useActionState, useMemo } from 'react';
 import { FormInputField } from '@/components/form-tanstack/form-input-fields';
 import { Button } from '@/components/ui/button';
-import { IActionResultForm } from '../../../../../types/types-server-actions';
+import { IActionResultForm } from '@/types/types-server-actions';
 import { ErrorServerForm } from '@/components/form-tanstack/error-server-form';
 import { z } from 'zod';
 import { requestMagicLink } from '../../signin-actions';

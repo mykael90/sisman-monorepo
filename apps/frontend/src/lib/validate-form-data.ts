@@ -1,5 +1,5 @@
 import { ZodError, ZodSchema } from 'zod';
-import { IActionResultForm } from '../types/types-server-actions';
+import { IActionResultForm } from '@/types/types-server-actions';
 
 // Tipos para o resultado da validação
 interface ValidationSuccess<TData> {

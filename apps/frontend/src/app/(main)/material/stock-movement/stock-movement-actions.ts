@@ -4,7 +4,7 @@ import Logger from '@/lib/logger';
 import { revalidatePath } from 'next/cache';
 import { getSismanAccessToken } from '@/lib/auth/get-access-token';
 import { fetchApiSisman } from '@/lib/fetch/api-sisman';
-import { IActionResultForm } from '../../../../types/types-server-actions';
+import { IActionResultForm } from '@/types/types-server-actions';
 import { IStockMovementAdd, IStockMovementEdit } from './stock-movement-types';
 import { handleApiAction } from '@/lib/fetch/handle-form-action-sisman';
 

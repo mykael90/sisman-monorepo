@@ -2,7 +2,7 @@
 'use client';
 
 import { ReactNode } from 'react'; // Importação necessária para ReactNode
-import { IActionResultForm } from '../../types/types-server-actions'; // Ajuste o caminho se necessário
+import { IActionResultForm } from '@/types/types-server-actions'; // Ajuste o caminho se necessário
 import { Button } from '../ui/button'; // Ajuste o caminho se necessário
 import { DialogClose } from '@/components/ui/dialog'; // Importar DialogClose
 

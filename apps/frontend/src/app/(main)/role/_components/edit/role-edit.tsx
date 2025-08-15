@@ -4,11 +4,11 @@ import { useRouter } from 'next/navigation';
 import FormAddHeader from '@/components/form-tanstack/form-add-header';
 import RoleForm from '../form/role-form';
 import { IRole, IRoleEdit } from '../../role-types';
-import { IActionResultForm } from '../../../../../types/types-server-actions';
+import { IActionResultForm } from '@/types/types-server-actions';
 import { Save, CircleUserRound } from 'lucide-react'; // Using CircleUserRound for Role Edit header
 import { updateRole } from '../../role-actions';
 import { roleFormSchemaEdit } from '../form/role-form-validation';
-import { NonOptionalKeys } from '../../../../../types/utils-types';
+import { NonOptionalKeys } from '@/types/utils-types';
 import { removeUnreferencedKeys } from '@/lib/form-utils';
 
 export default function RoleEdit({

@@ -5,12 +5,12 @@ import { useState } from 'react';
 import FormAddHeader from '@/components/form-tanstack/form-add-header';
 import UserForm from '../form/user-form';
 import { IUser, IUserAdd, IUserRelatedData } from '../../user-types';
-import { IActionResultForm } from '../../../../../types/types-server-actions';
+import { IActionResultForm } from '@/types/types-server-actions';
 import { UserPlus } from 'lucide-react';
 import { addUser } from '../../user-actions';
 import { userFormSchemaAdd } from '../form/user-form-validation';
 import { IRole } from '../../../role/role-types';
-import { NonOptionalKeys } from '../../../../../types/utils-types';
+import { NonOptionalKeys } from '@/types/utils-types';
 import { useRouter } from 'next/navigation';
 
 // We are transforming this into a page, so it won't take props like onClose or onSubmit.

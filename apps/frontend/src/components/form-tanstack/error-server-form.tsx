@@ -1,6 +1,6 @@
 'use client';
 
-import type { IActionResultForm } from '../../types/types-server-actions';
+import type { IActionResultForm } from '@/types/types-server-actions';
 import { AlertCircle } from 'lucide-react';
 
 // TApiResponse can be 'unknown' if responseData is not used by this component

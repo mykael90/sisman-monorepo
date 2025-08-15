@@ -6,7 +6,7 @@ import { updateInstance } from '../../instance-actions'; // showInstance is no l
 import MaintenanceInstanceForm from '../form/maintenance-instance-form';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react'; // useEffect and getSismanAccessToken are no longer needed here
-import { IActionResultForm } from '../../../../../../types/types-server-actions';
+import { IActionResultForm } from '@/types/types-server-actions';
 import { maintenanceInstanceFormSchemaEdit } from '../form/maintenance-instance-form-validation';
 import { IMaintenanceInstanceEdit } from '../../instance-types';
 import { removeUnreferencedKeys } from '@/lib/form-utils';

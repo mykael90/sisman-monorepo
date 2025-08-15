@@ -1,5 +1,5 @@
 import { revalidatePath } from 'next/cache';
-import { IActionResultForm } from '../../types/types-server-actions';
+import { IActionResultForm } from '@/types/types-server-actions';
 import { fetchApiSisman, SismanApiError } from './api-sisman';
 
 import Logger from '@/lib/logger';

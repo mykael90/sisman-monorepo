@@ -9,7 +9,7 @@ import {
 } from '@/components/form-tanstack/form-input-fields';
 import { mergeForm, useForm, useTransform } from '@tanstack/react-form';
 import { z } from 'zod';
-import { IActionResultForm } from '../../../../../types/types-server-actions';
+import { IActionResultForm } from '@/types/types-server-actions';
 import { formatRequestNumber } from '@/lib/form-utils';
 import { Search } from 'lucide-react';
 import { toast } from 'sonner';

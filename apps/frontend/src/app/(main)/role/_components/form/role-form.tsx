@@ -4,7 +4,7 @@ import { FC, useActionState } from 'react';
 import { FormInputField } from '@/components/form-tanstack/form-input-fields';
 import { Button } from '@/components/ui/button';
 import { CirclePlus, Save } from 'lucide-react'; // Using CirclePlus and Save icons
-import { IActionResultForm } from '../../../../../types/types-server-actions';
+import { IActionResultForm } from '@/types/types-server-actions';
 import { FormSuccessDisplay } from '@/components/form-tanstack/form-success-display';
 import { ErrorServerForm } from '@/components/form-tanstack/error-server-form';
 import { IRole, IRoleAdd, IRoleEdit } from '../../role-types';
