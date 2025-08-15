@@ -139,6 +139,10 @@ export const sidebarItems: SidebarItem[] = [
     children: [
       { label: 'Servidores', href: '/sipac/servidores' },
       { label: 'Tipos de Permissões', href: '/sipac/role' },
+      {
+        label: 'Requisições de Manutenção',
+        href: '/sipac/requisicoes-manutencoes'
+      },
       { label: 'Usuários', href: '/sipac/usuario' }
     ]
   },

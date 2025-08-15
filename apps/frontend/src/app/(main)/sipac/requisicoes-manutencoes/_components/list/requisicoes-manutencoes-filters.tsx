@@ -37,7 +37,7 @@ export function RequisicoesManutencoesFilters({
         <InputDebounce
           imperativeRef={inputDebounceRef}
           id='search'
-          placeholder='Ex: 12345/2023 ou Vazamento'
+          placeholder='Número da requisição...'
           inputValue={searchValue}
           setInputValue={setSearchValue}
         />

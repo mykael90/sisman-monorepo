@@ -1,6 +1,6 @@
 'use client';
 
-import { useActionState, startTransition } from 'react';
+import { useActionState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import {
@@ -16,16 +16,7 @@ import { toast } from 'sonner';
 import { useRef, useEffect } from 'react';
 import { handleMaintenanceRequestSearch } from '../../../maintenance/request/request-actions';
 import { IMaintenanceRequestWithRelations } from '../../../maintenance/request/request-types';
-
-const requestFormDataSchema = z.object({
-  newReq: z
-    .string()
-    .min(1, 'Requerido')
-    .regex(
-      /^[0-9]{1,5}$|^[0-9]+[/]{1}[0-9]{4}$/,
-      'Formato de requisição não permitido'
-    )
-});
+import { schemaZodRequisicoesSipac } from '../../../../../lib/schema-zod-requisicoes-sipac';
 
 interface IRequestDataSearch {
   requestType: string;
@@ -147,7 +138,7 @@ export function RequestMaintenanceMaterialForm({
               <formRequest.Field
                 name='requestProtocolNumber'
                 validators={{
-                  onBlur: requestFormDataSchema.shape.newReq
+                  onBlur: schemaZodRequisicoesSipac.shape.newReq
                 }}
               >
                 {(field) => (

@@ -93,8 +93,8 @@ export function RequisicoesManutencoesListPage({
   return (
     <div className='container mx-auto p-4'>
       <SectionListHeader
-        title='Gerenciamento de Requisições de Manutenção'
-        subtitle='Sistema de gerenciamento de requisições de manutenção do SIPAC'
+        title='SIPAC: Gerenciamento de Requisições de Manutenção Sincronizadas do SIPAC'
+        subtitle='Sistema de gerenciamento de requisições de manutenção obtidas do SIPAC'
         TitleIcon={Wrench}
         actionButton={{
           text: 'Cadastrar Requisição',
