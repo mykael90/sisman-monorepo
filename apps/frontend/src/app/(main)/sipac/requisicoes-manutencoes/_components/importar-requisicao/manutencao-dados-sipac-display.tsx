@@ -224,9 +224,9 @@ export function ManutencaoDadosSipacDisplay({
                                 <th className='px-4 py-2 text-left font-medium text-gray-700'>
                                   Total
                                 </th>
-                                <th className='px-4 py-2 text-left font-medium text-gray-700'>
+                                {/* <th className='px-4 py-2 text-left font-medium text-gray-700'>
                                   Código
-                                </th>
+                                </th> */}
                               </tr>
                             </thead>
                             <tbody className='divide-y divide-gray-200 bg-white'>
@@ -247,9 +247,9 @@ export function ManutencaoDadosSipacDisplay({
                                   <td className='px-4 py-2 text-gray-900'>
                                     {item.total}
                                   </td>
-                                  <td className='px-4 py-2 text-gray-900'>
+                                  {/* <td className='px-4 py-2 text-gray-900'>
                                     {item.codigo}
-                                  </td>
+                                  </td> */}
                                 </tr>
                               ))}
                             </tbody>
