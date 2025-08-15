@@ -24,7 +24,7 @@ interface InputDebounceProps
   setInputValue: (value: string) => void;
   debounce?: number;
   // Aceita a ref através de uma prop nomeada
-  imperativeRef?: React.Ref<InputDebounceRef>; // Use '?' se for opcional
+  imperativeRef?: React.Ref<InputDebounceRef | null>; // Use '?' se for opcional
 }
 
 // Interface para o que será exposto pela ref (inalterada)
