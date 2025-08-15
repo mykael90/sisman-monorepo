@@ -13,7 +13,7 @@ import { IActionResultForm } from '../../../../../types/types-server-actions';
 import { formatRequestNumber } from '../../../../../lib/form-utils';
 import { Search } from 'lucide-react';
 import { toast } from 'sonner';
-import { useRef, useEffect } from 'react';
+import { useRef } from 'react';
 import { handleMaintenanceRequestSearch } from '../../../maintenance/request/request-actions';
 import { IMaintenanceRequestWithRelations } from '../../../maintenance/request/request-types';
 import { schemaZodRequisicoesSipac } from '../../../../../lib/schema-zod-requisicoes-sipac';
@@ -28,7 +28,8 @@ const initialServerStateRequestData: IActionResultForm<
   IMaintenanceRequestWithRelations
 > = {
   isSubmitSuccessful: false,
-  message: ''
+  message: '',
+  submissionAttempts: 0
 };
 
 const fieldLabelsRequestData: IRequestDataSearch = {
@@ -57,20 +58,18 @@ export function RequestMaintenanceMaterialForm({
 
   const lastMessageRef = useRef('');
 
-  useEffect(() => {
-    if (!isPendingDataSearch && serverStateDataSearch?.message) {
-      if (serverStateDataSearch.message !== lastMessageRef.current) {
-        if (serverStateDataSearch.isSubmitSuccessful) {
-          toast.success(serverStateDataSearch.message);
-          setMaintenanceRequestData(serverStateDataSearch.responseData || null);
-        } else {
-          toast.error(serverStateDataSearch.message);
-          setMaintenanceRequestData(null);
-        }
-        lastMessageRef.current = serverStateDataSearch.message;
+  if (!isPendingDataSearch && serverStateDataSearch?.message) {
+    if (serverStateDataSearch.message !== lastMessageRef.current) {
+      if (serverStateDataSearch.isSubmitSuccessful) {
+        toast.success(serverStateDataSearch.message);
+        setMaintenanceRequestData(serverStateDataSearch.responseData || null);
+      } else {
+        toast.error(serverStateDataSearch.message);
+        setMaintenanceRequestData(null);
       }
+      lastMessageRef.current = serverStateDataSearch.message;
     }
-  }, [isPendingDataSearch, serverStateDataSearch, setMaintenanceRequestData]);
+  }
 
   const getRequestData = (value: IRequestDataSearch) => {
     if (value.requestType === 'maintenanceRequest') {

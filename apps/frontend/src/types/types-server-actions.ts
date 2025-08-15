@@ -9,6 +9,7 @@ export interface IActionResultForm<
   // Changed from: submittedData?: FormData | Partial<TSubmittedData>;
   submittedData?: Partial<TSubmittedData>; // Or Partial<TSubmittedData> if it can indeed be partial
   message?: string;
+  submissionAttempts?: number;
 }
 
 export interface IActionResultFormData<
@@ -21,4 +22,5 @@ export interface IActionResultFormData<
   responseData?: TApiResponse | null; // Changed to allow full TApiResponse or null
   submittedData?: FormData;
   message?: string;
+  submissionAttempts?: number;
 }

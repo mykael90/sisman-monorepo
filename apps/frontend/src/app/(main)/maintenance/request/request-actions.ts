@@ -56,6 +56,12 @@ export async function handleMaintenanceRequestSearch(
   IActionResultForm<IRequestDataSearch, IMaintenanceRequestWithRelations>
 > {
   let protocolNumber: string | null = null;
+
+  //Contador para tentativas de submissão do formulário
+  prevState.submissionAttempts = prevState.submissionAttempts
+    ? prevState.submissionAttempts + 1
+    : 1;
+
   if (typeof formData === 'string') {
     protocolNumber = formData;
   } else if (formData instanceof FormData) {
