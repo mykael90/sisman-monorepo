@@ -72,6 +72,20 @@ export class RequisicoesMateriaisController {
     };
   }
 
+  @Post('persist-create-one')
+  async persistCreateOne(@Body() data: any) {
+    return await this.requisicoesMateriaisService.persistCreateRequisicaoMateiral(
+      data
+    );
+  }
+  @Put('persist-update-one')
+  async persistUpdateOne(@Body() data: any) {
+    return await this.requisicoesMateriaisService.persistUpdateRequisicaoMaterial(
+      data.id,
+      data
+    );
+  }
+
   @Post('list/sync-one')
   async triggerSyncOne(@Body('numeroAno') numeroAno: string) {
     return await this.listaRequisicoesMateriaisService.fetchByNumeroAnoAndPersistListaRequisicaoMaterial(

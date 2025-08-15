@@ -219,7 +219,7 @@ export class RequisicoesMateriaisService {
   // }
 
   //persiste uma criação
-  private async persistCreateRequisicaoMateiral(
+  async persistCreateRequisicaoMateiral(
     data: CreateSipacRequisicaoMaterialCompletoDto
   ) {
     const sipacRequisicaoMaterialModel = Prisma.dmmf.datamodel.models.find(
@@ -313,7 +313,7 @@ export class RequisicoesMateriaisService {
   }
 
   //persiste uma atualização
-  private async persistUpdateRequisicaoMaterial(
+  async persistUpdateRequisicaoMaterial(
     id: number,
     data: UpdateSipacRequisicaoMaterialDto
   ) {

@@ -170,7 +170,7 @@ export class RequisicoesManutencoesService {
   //   );
   // }
 
-  private async persistCreateRequisicaoManutencao(
+  async persistCreateRequisicaoManutencao(
     data: CreateSipacRequisicaoManutencaoCompletoDto
   ) {
     // this.logger.log(data);
@@ -312,7 +312,7 @@ export class RequisicoesManutencoesService {
       throw error;
     }
   }
-  private async persistUpdateRequisicaoManutencao(
+  async persistUpdateRequisicaoManutencao(
     id: number,
     data: CreateSipacRequisicaoManutencaoCompletoDto
   ) {

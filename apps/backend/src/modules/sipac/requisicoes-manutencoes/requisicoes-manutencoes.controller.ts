@@ -13,6 +13,7 @@ import {
 } from '@nestjs/common';
 import { ListaRequisicoesManutencoesService } from './lista-requisicoes-manutencoes.service';
 import { RequisicoesManutencoesService } from './requisicoes-manutencoes.service';
+import { CreateSipacRequisicaoManutencaoCompletoDto } from './dto/sipac-requisicao-manutencao.dto';
 
 @Controller('sipac/requisicoes-manutencoes') // API route for maintenance requisitions
 export class RequisicoesManutencoesController {
@@ -56,6 +57,20 @@ export class RequisicoesManutencoesController {
       message:
         'Sincronização de requisições de manutenções do SIPAC iniciada em background. Verifique os logs para o progresso.'
     };
+  }
+
+  @Post('persist-create-one')
+  async persistCreateOne(@Body() data: any) {
+    return await this.requisicoesManutencoesService.persistCreateRequisicaoManutencao(
+      data
+    );
+  }
+  @Put('persist-update-one')
+  async persistUpdateOne(@Body() data: any) {
+    return await this.requisicoesManutencoesService.persistUpdateRequisicaoManutencao(
+      data.id,
+      data
+    );
   }
 
   // Example endpoint to trigger sync of a single maintenance requisition by numero/ano
