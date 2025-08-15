@@ -1,7 +1,7 @@
 'use client';
 
 import { FilePlus } from 'lucide-react';
-import FormAddHeader from '../../../../../../components/form-tanstack/form-add-header';
+import FormAddHeader from '@/components/form-tanstack/form-add-header';
 import { addInstance } from '../../instance-actions';
 import MaintenanceInstanceForm from '../form/maintenance-instance-form';
 import { useRouter } from 'next/navigation';

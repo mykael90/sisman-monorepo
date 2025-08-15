@@ -2,7 +2,7 @@
 
 import { Suspense, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { Button } from '../../../components/ui/button'; // Assuming this path is correct for your project
+import { Button } from '@/components/ui/button'; // Assuming this path is correct for your project
 
 // Parent component that now does NOT use useSearchParams directly
 export default function ErrorTestPage() {

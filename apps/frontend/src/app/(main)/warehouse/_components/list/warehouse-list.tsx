@@ -8,7 +8,7 @@ import { Plus, Warehouse, FilePlus } from 'lucide-react'; // Added Warehouse and
 import { SectionListHeader } from '../../../../../components/section-list-header';
 import { TableTanstack } from '../../../../../components/table-tanstack/table-tanstack';
 import { DefaultGlobalFilter } from '../../../../../components/table-tanstack/default-global-filter';
-import { InputDebounceRef } from '../../../../../components/ui/input';
+import { InputDebounceRef } from '@/components/ui/input';
 import { createActions, warehouseColumns } from './warehouse-columns'; // Updated import
 import { IWarehouse } from '../../warehouse-types';
 

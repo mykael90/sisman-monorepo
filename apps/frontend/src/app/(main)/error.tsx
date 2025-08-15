@@ -2,8 +2,8 @@
 
 import { useRouter } from 'next/navigation';
 import { AlertTriangle, Home, MessageSquare, RefreshCw } from 'lucide-react';
-import { Alert, AlertDescription, AlertTitle } from '../../components/ui/alert';
-import { Button } from '../../components/ui/button';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Button } from '@/components/ui/button';
 
 export default function Error({
   error,

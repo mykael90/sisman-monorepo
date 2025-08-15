@@ -1,7 +1,7 @@
 'use client';
 
 import { signIn } from 'next-auth/react';
-import { Button } from '../../../../components/ui/button';
+import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { ExternalLink, Info, ArrowRight } from 'lucide-react';
 import LogoUFRNDark from '@/assets/img/logo-ufrn-dark.png';

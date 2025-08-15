@@ -1,4 +1,4 @@
-import Modal from '../../../../../../components/ui/modal';
+import Modal from '@/components/ui/modal';
 import MaintenanceAddPage from '../../add/page';
 
 export default function page() {

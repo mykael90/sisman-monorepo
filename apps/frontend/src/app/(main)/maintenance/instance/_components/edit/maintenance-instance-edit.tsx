@@ -1,7 +1,7 @@
 'use client';
 
 import { Pencil, Save } from 'lucide-react';
-import FormAddHeader from '../../../../../../components/form-tanstack/form-add-header';
+import FormAddHeader from '@/components/form-tanstack/form-add-header';
 import { updateInstance } from '../../instance-actions'; // showInstance is no longer needed here
 import MaintenanceInstanceForm from '../form/maintenance-instance-form';
 import { useRouter } from 'next/navigation';

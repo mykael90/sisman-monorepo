@@ -10,7 +10,7 @@ import { useRef, useState } from 'react';
 import { PaginationState, SortingState } from '@tanstack/react-table';
 import { TableTanstack } from '../../../../../../components/table-tanstack/table-tanstack';
 import { DefaultGlobalFilter } from '../../../../../../components/table-tanstack/default-global-filter';
-import { InputDebounceRef } from '../../../../../../components/ui/input';
+import { InputDebounceRef } from '@/components/ui/input';
 
 interface Props {
   initialInstances: IMaintenanceInstance[];

@@ -1,9 +1,9 @@
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Switch } from '../../../../../components/ui/switch';
-import { FormListBox } from '../../../../../components/form-tanstack/form-list-box';
-import { Label } from '../../../../../components/ui/label';
+import { Switch } from '@/components/ui/switch';
+import { FormListBox } from '@/components/form-tanstack/form-list-box';
+import { Label } from '@/components/ui/label';
 import { format } from 'date-fns';
 import { IMaintenanceRequestData } from './request-maintenance-material-form';
 import { ItemsTableFormArray } from './form/items-table-form-array';

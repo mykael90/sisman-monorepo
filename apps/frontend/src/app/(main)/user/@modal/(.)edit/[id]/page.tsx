@@ -1,4 +1,4 @@
-import Modal from '../../../../../../components/ui/modal';
+import Modal from '@/components/ui/modal';
 import UserEditPage from '../../../edit/[id]/page';
 
 export default async function Page({

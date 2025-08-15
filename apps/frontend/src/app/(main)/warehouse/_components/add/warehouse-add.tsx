@@ -1,7 +1,7 @@
 'use client';
 
 import { FilePlus } from 'lucide-react';
-import FormAddHeader from '../../../../../components/form-tanstack/form-add-header';
+import FormAddHeader from '@/components/form-tanstack/form-add-header';
 import { addWarehouse } from '../../warehouse-actions';
 import WarehouseForm from '../form/warehouse-form';
 import { useRouter } from 'next/navigation';

@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import FormAddHeader from '../../../../../components/form-tanstack/form-add-header';
+import FormAddHeader from '@/components/form-tanstack/form-add-header';
 import UserForm from '../form/user-form';
 import { IUser, IUserEdit, IUserRelatedData } from '../../user-types';
 import { IActionResultForm } from '../../../../../types/types-server-actions';

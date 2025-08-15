@@ -2,7 +2,7 @@
 'use client';
 
 import { useState, use, useTransition } from 'react';
-import { Button } from '../../../components/ui/button'; // Ajuste o caminho se necessário
+import { Button } from '@/components/ui/button'; // Ajuste o caminho se necessário
 // import Logger from '../../../lib/logger'; // Se precisar logar no cliente
 
 // const logger = new Logger('display-data-client');

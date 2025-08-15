@@ -2,7 +2,7 @@
 
 import type React from 'react';
 import { useState } from 'react';
-import FormAddHeader from '../../../../../components/form-tanstack/form-add-header';
+import FormAddHeader from '@/components/form-tanstack/form-add-header';
 import UserForm from '../form/user-form';
 import { IUser, IUserAdd, IUserRelatedData } from '../../user-types';
 import { IActionResultForm } from '../../../../../types/types-server-actions';

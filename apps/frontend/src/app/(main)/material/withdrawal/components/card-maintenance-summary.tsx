@@ -1,15 +1,10 @@
 'use client';
 
 import Image from 'next/image';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle
-} from '../../../../../components/ui/card';
-import { Label } from '../../../../../components/ui/label';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Label } from '@/components/ui/label';
 import { Building, MapPin, User } from 'lucide-react';
-import { Badge } from '../../../../../components/ui/badge';
+import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
 import { IMaintenanceRequestData } from './request-maintenance-material-form';
 
