@@ -271,3 +271,47 @@ export async function getRefreshedSipacRequisicoesManutencao() {
     );
   }
 }
+
+export async function persistSipacRequisicoesManutencao(
+  _prevState: unknown,
+  data: any
+): Promise<IActionResultForm<any, ISipacRequisicaoManutencaoWithRelations>> {
+  logger.info(
+    `(Server Action) PersistSipacRequisicoesManutencao: Tentativa de persistir requisição. ${data.numeroRequisicao}`,
+    data
+  );
+
+  try {
+    const accessToken = await getSismanAccessToken();
+    return await handleApiAction<
+      any,
+      ISipacRequisicaoManutencaoWithRelations,
+      any
+    >(
+      data, // validatedData (no validation schema for this simple action)
+      data, // submittedData
+      {
+        endpoint: `${API_RELATIVE_PATH}/persist-create-one`,
+        method: 'POST',
+        accessToken: accessToken
+      },
+      {
+        mainPath: PAGE_PATH
+      },
+      `Requisição ${data.numeroRequisicao} persistida com sucesso!`
+    );
+  } catch (error) {
+    logger.error(
+      `(Server Action) fetchOneAndPersistSipacRequisicoesManutencao: Erro inesperado para ${data.numeroRequisicao}.`,
+      error
+    );
+    return {
+      isSubmitSuccessful: false,
+      errorsServer: [
+        'Ocorreu um erro inesperado ao processar sua solicitação.'
+      ],
+      submittedData: data,
+      message: 'Erro inesperado.'
+    };
+  }
+}

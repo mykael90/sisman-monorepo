@@ -12,13 +12,16 @@ import { toast } from 'sonner';
 import { useEffect, useRef, useTransition } from 'react';
 import { schemaZodRequisicoesSipac } from '@/lib/schema-zod-requisicoes-sipac';
 import { ISipacRequisicaoManutencaoWithRelations } from '../../requisicoes-manutencoes-types';
-import { handleFetchRequisicaoManutencao } from '../../requisicoes-manutencoes-actions';
+import {
+  handleFetchRequisicaoManutencao,
+  persistSipacRequisicoesManutencao
+} from '../../requisicoes-manutencoes-actions';
 
 interface IRequestDataSearch {
   numeroAno: string;
 }
 
-const initialServerStateRequestData: IActionResultForm<
+const initialServerStateSearchData: IActionResultForm<
   IRequestDataSearch,
   ISipacRequisicaoManutencaoWithRelations
 > = {
@@ -44,10 +47,11 @@ export function ImportarRequisicaoSipacForm({
 }) {
   // Estado referente ao formulário de consulta da requisição
   const [isPendingTransition, startTransition] = useTransition();
+
   const [serverStateDataSearch, formActionDataSearch, isPendingDataSearch] =
     useActionState(
       handleFetchRequisicaoManutencao,
-      initialServerStateRequestData
+      initialServerStateSearchData
     );
 
   const lastMessageRef = useRef('');
