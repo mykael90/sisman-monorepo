@@ -21,10 +21,10 @@ export default async function Page() {
   //   )
   // });
 
-  async function getMaintenanceRequest(protocolNumber: string) {
-    'use server';
-    return showMaintenanceRequestByProtocol(accessTokenSisman, protocolNumber);
-  }
+  // async function getMaintenanceRequest(protocolNumber: string) {
+  //   'use server';
+  //   return showMaintenanceRequestByProtocol(accessTokenSisman, protocolNumber);
+  // }
 
   const [listGlobalMaterials, listUsers] = await Promise.all([
     getMaterialGlobalCatalogs(accessTokenSisman, { warehouseId: 1 }),
@@ -42,7 +42,7 @@ export default async function Page() {
       <div>
         {/* Main Form */}
         <MaterialWithdrawalFormAdd
-          promiseMaintenanceRequest={getMaintenanceRequest}
+          // promiseMaintenanceRequest={getMaintenanceRequest}
           relatedData={{
             listGlobalMaterials,
             listUsers

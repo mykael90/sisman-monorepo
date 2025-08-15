@@ -18,7 +18,6 @@ import { FormSuccessDisplay } from '@/components/form-tanstack/form-success-disp
 import { ErrorServerForm } from '@/components/form-tanstack/error-server-form';
 
 export function MaterialWithdrawalFormAdd({
-  promiseMaintenanceRequest,
   formActionProp,
   relatedData,
   onCancel,
@@ -30,7 +29,6 @@ export function MaterialWithdrawalFormAdd({
   RequestMaintenanceMaterialForm,
   WithdrawalDetailsForm
 }: {
-  promiseMaintenanceRequest: any;
   formActionProp: (
     prevState: IActionResultForm<IMaterialWithdrawalAddForm>,
     data: IMaterialWithdrawalAddForm
@@ -113,7 +111,6 @@ export function MaterialWithdrawalFormAdd({
       {/* Formulário para fazer consulta de requisição de manutenção ou material */}
       {RequestMaintenanceMaterialForm && (
         <RequestMaintenanceMaterialForm
-          promiseMaintenanceRequest={promiseMaintenanceRequest}
           setMaintenanceRequestData={setMaintenanceRequestData}
         />
       )}

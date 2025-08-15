@@ -45,6 +45,14 @@ GET {{urlLocal}}/fetch-one/2043649
 
 
 ### POST
+POST {{urlLocal}}/fetch-one-complete
+Content-Type: {{contentType}}
+
+{
+    "numeroAno": "5327/2025"
+}
+
+### POST
 POST {{urlLocal}}/fetch-one-complete-and-persist
 Content-Type: {{contentType}}
 
