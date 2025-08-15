@@ -210,7 +210,28 @@ export class ReqManutencaoParserService implements IHtmlParser {
             value = this.cleanValue(link.text());
 
             // --- INÍCIO DA MODIFICAÇÃO ---
-            // Extrai o 'id' do atributo onclick se ele existir
+            // 1. Extrai o endereço do recurso (URL) do atributo href
+            const urlRelativoRecurso = link.attr('href');
+            if (urlRelativoRecurso) {
+              rowData['urlRelativoRecurso'] = urlRelativoRecurso.trim();
+            }
+
+            // 2. Extrai a extensão do arquivo a partir do nome
+            const nomeArquivo = value;
+            if (nomeArquivo) {
+              const parts = nomeArquivo.split('.');
+              if (parts.length > 1) {
+                // Pega o último elemento após o split e converte para minúsculas
+                rowData['extensaoArquivo'] =
+                  parts[parts.length - 1].toLowerCase();
+              } else {
+                // Caso não encontre uma extensão
+                rowData['extensaoArquivo'] = null;
+              }
+            }
+            // --- FIM DA MODIFICAÇÃO ---
+
+            // Mantém a lógica existente para extrair 'id' do onclick, se houver
             const onclickAttr = link.attr('onclick');
             if (onclickAttr) {
               const idMatch = onclickAttr.match(/id=(\d+)/);
