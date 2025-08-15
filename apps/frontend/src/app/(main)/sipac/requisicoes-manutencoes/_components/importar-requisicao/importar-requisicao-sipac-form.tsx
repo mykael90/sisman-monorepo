@@ -3,27 +3,24 @@
 import { useActionState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import {
-  FormDropdown,
-  FormInputField
-} from '@/components/form-tanstack/form-input-fields';
+import { FormInputField } from '@/components/form-tanstack/form-input-fields';
 import { mergeForm, useForm, useTransform } from '@tanstack/react-form';
 import { IActionResultForm } from '@/types/types-server-actions';
 import { formatRequestNumber } from '@/lib/form-utils';
 import { Search } from 'lucide-react';
 import { toast } from 'sonner';
-import { useRef } from 'react';
-import { handleMaintenanceRequestSearch } from '../../../maintenance/request/request-actions';
-import { IMaintenanceRequestWithRelations } from '../../../maintenance/request/request-types';
+import { useEffect, useRef, useTransition } from 'react';
 import { schemaZodRequisicoesSipac } from '@/lib/schema-zod-requisicoes-sipac';
+import { ISipacRequisicaoManutencaoWithRelations } from '../../requisicoes-manutencoes-types';
+import { handleFetchRequisicaoManutencao } from '../../requisicoes-manutencoes-actions';
 
 interface IRequestDataSearch {
-  requestProtocolNumber: string;
+  numeroAno: string;
 }
 
 const initialServerStateRequestData: IActionResultForm<
   IRequestDataSearch,
-  IMaintenanceRequestWithRelations
+  ISipacRequisicaoManutencaoWithRelations
 > = {
   isSubmitSuccessful: false,
   message: '',
@@ -31,54 +28,44 @@ const initialServerStateRequestData: IActionResultForm<
 };
 
 const fieldLabelsRequestData: IRequestDataSearch = {
-  requestType: 'Tipo de requisição',
-  requestProtocolNumber: 'Número da requisição'
+  numeroAno: 'Número da requisição'
 };
 
 const defaultDataRequest: IRequestDataSearch = {
-  requestType: 'maintenanceRequest',
-  requestProtocolNumber: ''
+  numeroAno: ''
 };
 
-export function RequestMaintenanceMaterialForm({
-  setMaintenanceRequestData
+export function ImportarRequisicaoSipacForm({
+  setManutencaoDadosSipac
 }: {
-  setMaintenanceRequestData: React.Dispatch<
-    React.SetStateAction<IMaintenanceRequestWithRelations | null>
+  setManutencaoDadosSipac: React.Dispatch<
+    React.SetStateAction<ISipacRequisicaoManutencaoWithRelations | null>
   >;
 }) {
   // Estado referente ao formulário de consulta da requisição
+  const [isPendingTransition, startTransition] = useTransition();
   const [serverStateDataSearch, formActionDataSearch, isPendingDataSearch] =
     useActionState(
-      handleMaintenanceRequestSearch,
+      handleFetchRequisicaoManutencao,
       initialServerStateRequestData
     );
 
   const lastMessageRef = useRef('');
 
-  if (!isPendingDataSearch && serverStateDataSearch?.message) {
-    if (serverStateDataSearch.message !== lastMessageRef.current) {
-      if (serverStateDataSearch.isSubmitSuccessful) {
-        toast.success(serverStateDataSearch.message);
-        setMaintenanceRequestData(serverStateDataSearch.responseData || null);
-      } else {
-        toast.error(serverStateDataSearch.message);
-        setMaintenanceRequestData(null);
+  useEffect(() => {
+    if (!isPendingDataSearch && serverStateDataSearch?.message) {
+      if (serverStateDataSearch.message !== lastMessageRef.current) {
+        if (serverStateDataSearch.isSubmitSuccessful) {
+          toast.success(serverStateDataSearch.message);
+          setManutencaoDadosSipac(serverStateDataSearch.responseData || null);
+        } else {
+          toast.error(serverStateDataSearch.message);
+          setManutencaoDadosSipac(null);
+        }
+        lastMessageRef.current = serverStateDataSearch.message;
       }
-      lastMessageRef.current = serverStateDataSearch.message;
     }
-  }
-
-  const getRequestData = (value: IRequestDataSearch) => {
-    if (value.requestType === 'maintenanceRequest') {
-      return formatRequestNumber(value.requestProtocolNumber);
-    } else if (value.requestType === 'materialRequest') {
-      return null;
-    } else {
-      console.error('Invalid request type:', value.requestType);
-    }
-    return formatRequestNumber(value.requestProtocolNumber);
-  };
+  }, [isPendingDataSearch, serverStateDataSearch, setManutencaoDadosSipac]);
 
   //Formulario de consulta de informações da requisição de manutenção ou material
   const formRequest = useForm({
@@ -88,7 +75,7 @@ export function RequestMaintenanceMaterialForm({
       [serverStateDataSearch]
     ),
     onSubmit: async ({ value }) => {
-      const formattedRequestNumber = getRequestData(value);
+      const formattedRequestNumber = formatRequestNumber(value.numeroAno);
       if (formattedRequestNumber) {
         await formActionDataSearch(formattedRequestNumber);
       }
@@ -108,32 +95,18 @@ export function RequestMaintenanceMaterialForm({
         {/* Request number */}
         <Card>
           <CardHeader>
-            <CardTitle className='text-lg'>Número da Requisição</CardTitle>
+            <CardTitle className='text-lg'>
+              Importar requisição de manutenção
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <div className='flex items-end gap-4'>
-              <formRequest.Field
-                name='requestType'
-                children={(field: any) => (
-                  <FormDropdown
-                    field={field}
-                    label={fieldLabelsRequestData.requestType}
-                    placeholder={fieldLabelsRequestData.requestType}
-                    options={[
-                      { value: 'maintenanceRequest', label: 'Manutenção' },
-                      { value: 'materialRequest', label: 'Material' }
-                      // { value: 'emergencyRequest', label: 'Emergencial' }
-                    ]}
-                    onValueChange={(value) => field.handleChange(value)}
-                  />
-                )}
-              />
               {/* <SearchInput
                   placeholder='Search for WO by number or person responsible'
                   onSearch={(value) => console.log('WO Search:', value)}
                 /> */}
               <formRequest.Field
-                name='requestProtocolNumber'
+                name='numeroAno'
                 validators={{
                   onBlur: schemaZodRequisicoesSipac.shape.newReq
                 }}
@@ -141,7 +114,7 @@ export function RequestMaintenanceMaterialForm({
                 {(field) => (
                   <FormInputField
                     field={field}
-                    label={fieldLabelsRequestData.requestProtocolNumber}
+                    label={fieldLabelsRequestData.numeroAno}
                     type='tel'
                     placeholder='Digite o número...'
                     showLabel={true}

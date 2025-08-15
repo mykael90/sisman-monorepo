@@ -15,6 +15,10 @@ const logger = new Logger(`${PAGE_PATH}/requisicoes-manutencoes-actions`);
 
 // --- Funções de Leitura de Dados ---
 
+interface IRequestDataSearch {
+  numeroAno: string;
+}
+
 export async function getSipacRequisicoesManutencao(
   accessTokenSisman: string
 ): Promise<ISipacRequisicaoManutencaoWithRelations[]> {
@@ -35,6 +39,86 @@ export async function getSipacRequisicoesManutencao(
       error
     );
     throw error;
+  }
+}
+
+export async function handleFetchRequisicaoManutencao(
+  prevState: IActionResultForm<
+    IRequestDataSearch,
+    ISipacRequisicaoManutencaoWithRelations
+  >,
+  formData: FormData | string
+): Promise<
+  IActionResultForm<IRequestDataSearch, ISipacRequisicaoManutencaoWithRelations>
+> {
+  let numeroAno: string | null = null;
+
+  //Contador para tentativas de submissão do formulário
+  prevState.submissionAttempts = prevState.submissionAttempts
+    ? prevState.submissionAttempts + 1
+    : 1;
+
+  if (typeof formData === 'string') {
+    numeroAno = formData;
+  } else if (formData instanceof FormData) {
+    numeroAno = formData.get('numeroAno')?.toString() || null;
+  }
+
+  if (!numeroAno) {
+    return {
+      ...prevState,
+      isSubmitSuccessful: false,
+      message: 'Número de protocolo não fornecido.'
+    };
+  }
+
+  try {
+    const accessToken = await getSismanAccessToken();
+    const response = await fetchApiSisman(
+      `${API_RELATIVE_PATH}/fetch-one-complete`,
+      accessToken,
+      {
+        method: 'POST',
+        body: JSON.stringify({ numeroAno }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+
+    if (response) {
+      return {
+        ...prevState,
+        isSubmitSuccessful: true,
+        message: 'Dados da requisição carregados com sucesso.',
+        responseData: response
+      };
+    } else {
+      return {
+        ...prevState,
+        isSubmitSuccessful: false,
+        message: 'Requisição não encontrada ou dados inválidos.'
+      };
+    }
+  } catch (error: any) {
+    logger.error(
+      `(Server Action) handleFetchRequisicaoManutencao: Erro ao buscar requisição com protocolo ${numeroAno}.`,
+      error
+    );
+    if (error?.statusCode === 404) {
+      return {
+        ...prevState,
+        isSubmitSuccessful: false,
+        message:
+          'Requisição não encontrada. Favor verifique as informações e tente novamente.'
+      };
+    } else {
+      return {
+        ...prevState,
+        isSubmitSuccessful: false,
+        message: 'Ocorreu um erro inesperado ao buscar a requisição.'
+      };
+    }
   }
 }
 
