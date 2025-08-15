@@ -71,11 +71,10 @@ export function RequestMaintenanceMaterialForm({
       if (serverStateDataSearch.message !== lastMessageRef.current) {
         if (serverStateDataSearch.isSubmitSuccessful) {
           toast.success(serverStateDataSearch.message);
-          if (serverStateDataSearch.responseData) {
-            setMaintenanceRequestData(serverStateDataSearch.responseData);
-          }
+          setMaintenanceRequestData(serverStateDataSearch.responseData || null);
         } else {
           toast.error(serverStateDataSearch.message);
+          setMaintenanceRequestData(null);
         }
         lastMessageRef.current = serverStateDataSearch.message;
       }
