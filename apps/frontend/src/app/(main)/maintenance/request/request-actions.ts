@@ -41,6 +41,79 @@ export async function getMaintenanceRequests(
   }
 }
 
+interface IRequestDataSearch {
+  requestType: string;
+  requestProtocolNumber: string;
+}
+
+export async function handleMaintenanceRequestSearch(
+  prevState: IActionResultForm<
+    IRequestDataSearch,
+    IMaintenanceRequestWithRelations
+  >,
+  formData: FormData | string
+): Promise<
+  IActionResultForm<IRequestDataSearch, IMaintenanceRequestWithRelations>
+> {
+  let protocolNumber: string | null = null;
+  if (typeof formData === 'string') {
+    protocolNumber = formData;
+  } else if (formData instanceof FormData) {
+    protocolNumber = formData.get('requestProtocolNumber')?.toString() || null;
+  }
+
+  if (!protocolNumber) {
+    return {
+      ...prevState,
+      isSubmitSuccessful: false,
+      message: 'Número de protocolo não fornecido.'
+    };
+  }
+
+  try {
+    const accessToken = await getSismanAccessToken();
+    const response = await fetchApiSisman(
+      `${API_RELATIVE_PATH}/protocol?value=${protocolNumber}`,
+      accessToken,
+      { cache: 'force-cache' }
+    );
+
+    if (response) {
+      return {
+        ...prevState,
+        isSubmitSuccessful: true,
+        message: 'Dados da requisição carregados com sucesso.',
+        responseData: response
+      };
+    } else {
+      return {
+        ...prevState,
+        isSubmitSuccessful: false,
+        message: 'Requisição não encontrada ou dados inválidos.'
+      };
+    }
+  } catch (error: any) {
+    logger.error(
+      `(Server Action) handleMaintenanceRequestSearch: Erro ao buscar requisição com protocolo ${protocolNumber}.`,
+      error
+    );
+    if (error?.statusCode === 404) {
+      return {
+        ...prevState,
+        isSubmitSuccessful: false,
+        message:
+          'Requisição não encontrada. Favor verifique as informações e tente novamente.'
+      };
+    } else {
+      return {
+        ...prevState,
+        isSubmitSuccessful: false,
+        message: 'Ocorreu um erro inesperado ao buscar a requisição.'
+      };
+    }
+  }
+}
+
 export async function showMaintenanceRequest(
   accessTokenSisman: string,
   id: number

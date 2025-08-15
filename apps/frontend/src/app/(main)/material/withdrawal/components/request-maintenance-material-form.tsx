@@ -12,9 +12,10 @@ import { z } from 'zod';
 import { IActionResultForm } from '../../../../../types/types-server-actions';
 import { formatRequestNumber } from '../../../../../lib/form-utils';
 import { Search } from 'lucide-react';
-import { IMaterialRequest } from '../../request/request-types';
 import { toast } from 'sonner';
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
+import { handleMaintenanceRequestSearch } from '../../../maintenance/request/request-actions';
+import { IMaintenanceRequestWithRelations } from '../../../maintenance/request/request-types';
 
 const requestFormDataSchema = z.object({
   newReq: z
@@ -31,7 +32,10 @@ interface IRequestDataSearch {
   requestProtocolNumber: string;
 }
 
-const initialServerStateRequestData: IActionResultForm<IRequestDataSearch> = {
+const initialServerStateRequestData: IActionResultForm<
+  IRequestDataSearch,
+  IMaintenanceRequestWithRelations
+> = {
   isSubmitSuccessful: false,
   message: ''
 };
@@ -46,120 +50,37 @@ const defaultDataRequest: IRequestDataSearch = {
   requestProtocolNumber: ''
 };
 
-// Define interface for maintenance request data
-export interface IMaintenanceRequestData {
-  id?: number;
-  description?: string;
-  requestedAt?: string;
-  sipacUnitRequesting?: {
-    nomeUnidade?: string;
-    sigla?: string;
-  };
-  sipacUserLoginRequest?: string;
-  facilityComplex?: {
-    name?: string;
-  };
-  space?: {
-    name?: string;
-  };
-  building?: {
-    name?: string;
-    latitude?: number;
-    longitude?: number;
-  };
-  local?: string;
-  protocolNumber?: string;
-  materialRequests?: IMaterialRequest[];
-}
-
 export function RequestMaintenanceMaterialForm({
-  promiseMaintenanceRequest,
   setMaintenanceRequestData
 }: {
-  promiseMaintenanceRequest: (
-    protocolNumber: string
-  ) => Promise<IMaintenanceRequestData | null>;
   setMaintenanceRequestData: React.Dispatch<
-    React.SetStateAction<IMaintenanceRequestData | null>
+    React.SetStateAction<IMaintenanceRequestWithRelations | null>
   >;
 }) {
-  const wrappedPromiseMaintenanceRequest = async (
-    prevState: IActionResultForm<IRequestDataSearch>,
-    formData: FormData | string
-  ): Promise<IActionResultForm<IRequestDataSearch>> => {
-    let protocolNumber: string | null = null;
-    if (typeof formData === 'string') {
-      protocolNumber = formData;
-    } else if (formData instanceof FormData) {
-      protocolNumber =
-        formData.get('requestProtocolNumber')?.toString() || null;
-    }
-
-    if (!protocolNumber) {
-      return {
-        ...prevState,
-        isSubmitSuccessful: false,
-        message: 'Número de protocolo não fornecido.'
-      };
-    }
-
-    try {
-      const response = await promiseMaintenanceRequest(protocolNumber);
-      if (response) {
-        setMaintenanceRequestData(response);
-        return {
-          ...prevState,
-          isSubmitSuccessful: true,
-          message: 'Dados da requisição carregados com sucesso.',
-          responseData: {
-            requestType: 'maintenanceRequest',
-            requestProtocolNumber: protocolNumber
-          }
-        };
-      } else {
-        return {
-          ...prevState,
-          isSubmitSuccessful: false,
-          message: 'Requisição não encontrada ou dados inválidos.'
-        };
-      }
-    } catch (error: any) {
-      console.error('Error in wrappedPromiseMaintenanceRequest:', error);
-      console.log(
-        `AQUIIIII! Error in wrappedPromiseMaintenanceRequest: ${JSON.stringify(error, null, 2)}`
-      );
-      if (error?.statusCode === 404) {
-        return {
-          ...prevState,
-          isSubmitSuccessful: false,
-          message:
-            'Requisição não encontrada. Favor verifique as informações e tente novamente.'
-        };
-      } else {
-        // throw error;
-      }
-    }
-  };
-
   // Estado referente ao formulário de consulta da requisição
   const [serverStateDataSearch, formActionDataSearch, isPendingDataSearch] =
     useActionState(
-      wrappedPromiseMaintenanceRequest,
+      handleMaintenanceRequestSearch,
       initialServerStateRequestData
     );
 
   const lastMessageRef = useRef('');
 
-  if (!isPendingDataSearch && serverStateDataSearch?.message) {
-    if (serverStateDataSearch.message !== lastMessageRef.current) {
-      if (serverStateDataSearch.isSubmitSuccessful) {
-        toast.success(serverStateDataSearch.message);
-      } else {
-        toast.error(serverStateDataSearch.message);
+  useEffect(() => {
+    if (!isPendingDataSearch && serverStateDataSearch?.message) {
+      if (serverStateDataSearch.message !== lastMessageRef.current) {
+        if (serverStateDataSearch.isSubmitSuccessful) {
+          toast.success(serverStateDataSearch.message);
+          if (serverStateDataSearch.responseData) {
+            setMaintenanceRequestData(serverStateDataSearch.responseData);
+          }
+        } else {
+          toast.error(serverStateDataSearch.message);
+        }
+        lastMessageRef.current = serverStateDataSearch.message;
       }
-      lastMessageRef.current = serverStateDataSearch.message;
     }
-  }
+  }, [isPendingDataSearch, serverStateDataSearch, setMaintenanceRequestData]);
 
   const getRequestData = (value: IRequestDataSearch) => {
     if (value.requestType === 'maintenanceRequest') {
