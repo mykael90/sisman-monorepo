@@ -9,13 +9,13 @@ import {
 } from '@/components/form-tanstack/form-input-fields';
 import { mergeForm, useForm, useTransform } from '@tanstack/react-form';
 import { IActionResultForm } from '../../../../../types/types-server-actions';
-import { formatRequestNumber } from '../../../../../lib/form-utils';
+import { formatRequestNumber } from '@/lib/form-utils';
 import { Search } from 'lucide-react';
 import { toast } from 'sonner';
 import { useRef } from 'react';
 import { handleMaintenanceRequestSearch } from '../../../maintenance/request/request-actions';
 import { IMaintenanceRequestWithRelations } from '../../../maintenance/request/request-types';
-import { schemaZodRequisicoesSipac } from '../../../../../lib/schema-zod-requisicoes-sipac';
+import { schemaZodRequisicoesSipac } from '@/lib/schema-zod-requisicoes-sipac';
 
 interface IRequestDataSearch {
   requestProtocolNumber: string;

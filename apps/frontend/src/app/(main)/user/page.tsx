@@ -1,8 +1,8 @@
 import { UserListPage } from '@/src/app/(main)/user/_components/list/user-list';
 import { Suspense } from 'react';
-import { getSismanAccessToken } from '../../../lib/auth/get-access-token';
+import { getSismanAccessToken } from '@/lib/auth/get-access-token';
 import { getRefreshedUsers, getUsers } from './user-actions';
-import Logger from '../../../lib/logger';
+import Logger from '@/lib/logger';
 import Loading from '../../../components/loading';
 
 const logger = new Logger('users-management');

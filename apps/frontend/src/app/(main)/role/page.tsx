@@ -1,6 +1,6 @@
-import { getSismanAccessToken } from '../../../lib/auth/get-access-token';
+import { getSismanAccessToken } from '@/lib/auth/get-access-token';
 import { getRefreshedRoles, getRoles } from './role-actions';
-import Logger from '../../../lib/logger';
+import Logger from '@/lib/logger';
 import { RoleListPage } from './_components/list/role-list';
 
 const logger = new Logger('roles-management');

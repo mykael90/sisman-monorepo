@@ -1,6 +1,6 @@
 import { MaterialWithdrawalFormAdd } from '../components/form/material-withdrawal-form-add';
 import { showMaintenanceRequestByProtocol } from '../../../maintenance/request/request-actions';
-import { getSismanAccessToken } from '../../../../../lib/auth/get-access-token';
+import { getSismanAccessToken } from '@/lib/auth/get-access-token';
 import { getUsers } from '../../../user/user-actions';
 import { getMaterialGlobalCatalogs } from '../../global-catalog/material-global-catalog-actions';
 import { FilePlus } from 'lucide-react';

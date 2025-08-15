@@ -2,16 +2,16 @@
 
 import Logger from '@/lib/logger';
 import { revalidatePath } from 'next/cache';
-import { getSismanAccessToken } from '../../../lib/auth/get-access-token';
-import { fetchApiSisman } from '../../../lib/fetch/api-sisman';
+import { getSismanAccessToken } from '@/lib/auth/get-access-token';
+import { fetchApiSisman } from '@/lib/fetch/api-sisman';
 import { IActionResultForm } from '../../../types/types-server-actions';
 import { IUser, IUserAdd, IUserEdit, IUserWithRelations } from './user-types';
 import {
   userFormSchemaAdd,
   userFormSchemaEdit
 } from './_components/form/user-form-validation';
-import { handleApiAction } from '../../../lib/fetch/handle-form-action-sisman';
-import { validateFormData } from '../../../lib/validate-form-data';
+import { handleApiAction } from '@/lib/fetch/handle-form-action-sisman';
+import { validateFormData } from '@/lib/validate-form-data';
 
 const PAGE_PATH = '/user'; // Usar maiúsculas para constantes globais ao módulo
 const API_RELATIVE_PATH = '/user'; // Para chamadas de API relacionadas a usuários

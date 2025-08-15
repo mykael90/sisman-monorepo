@@ -2,14 +2,14 @@
 
 import Logger from '@/lib/logger';
 import { revalidatePath } from 'next/cache';
-import { getSismanAccessToken } from '../../../../lib/auth/get-access-token';
-import { fetchApiSisman } from '../../../../lib/fetch/api-sisman';
+import { getSismanAccessToken } from '@/lib/auth/get-access-token';
+import { fetchApiSisman } from '@/lib/fetch/api-sisman';
 import { IActionResultForm } from '../../../../types/types-server-actions';
 import {
   IWarehouseStockAdd,
   IWarehouseStockEdit
 } from './warehouse-stock-types';
-import { handleApiAction } from '../../../../lib/fetch/handle-form-action-sisman';
+import { handleApiAction } from '@/lib/fetch/handle-form-action-sisman';
 
 const PAGE_PATH = '/material/warehouse-stock';
 const API_RELATIVE_PATH = '/material/warehouse-stock';

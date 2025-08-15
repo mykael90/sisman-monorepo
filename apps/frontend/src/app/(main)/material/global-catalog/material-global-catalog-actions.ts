@@ -2,15 +2,15 @@
 
 import Logger from '@/lib/logger';
 import { revalidatePath } from 'next/cache';
-import { getSismanAccessToken } from '../../../../lib/auth/get-access-token';
-import { fetchApiSisman, TQueryParams } from '../../../../lib/fetch/api-sisman';
+import { getSismanAccessToken } from '@/lib/auth/get-access-token';
+import { fetchApiSisman, TQueryParams } from '@/lib/fetch/api-sisman';
 import { IActionResultForm } from '../../../../types/types-server-actions';
 import {
   IMaterialGlobalCatalogAdd,
   IMaterialGlobalCatalogEdit,
   IMaterialGlobalCatalogWithRelations
 } from './material-global-catalog-types';
-import { handleApiAction } from '../../../../lib/fetch/handle-form-action-sisman';
+import { handleApiAction } from '@/lib/fetch/handle-form-action-sisman';
 
 const PAGE_PATH = '/material/global-catalog';
 const API_RELATIVE_PATH = '/materials';

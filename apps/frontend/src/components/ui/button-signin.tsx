@@ -15,12 +15,12 @@ import ButtonNavBar from './button-navbar';
 import { Badge } from './badge';
 import UserAvatar from './user-avatar';
 import { usePathname } from 'next/navigation'; // Import for getting current route
-import getFirstAndLastName from '../../lib/getFirstAndLastName';
-import getNameFromLogin from '../../lib/getNameFromLogin';
-import handleManualSignOut from '../../lib/auth/signout-ufrn';
+import getFirstAndLastName from '@/lib/getFirstAndLastName';
+import getNameFromLogin from '@/lib/getNameFromLogin';
+import handleManualSignOut from '@/lib/auth/signout-ufrn';
 import { useEffect, useState } from 'react';
 import SignInButtonSkeleton from '../skeletons/button-signin-skeleton';
-import { getPublicFotoSigaa } from '../../lib/fetch/get-public-foto-sigaa';
+import { getPublicFotoSigaa } from '@/lib/fetch/get-public-foto-sigaa';
 
 const SignInButton = () => {
   const { data: session } = useSession();

@@ -9,7 +9,7 @@ import { Save, CircleUserRound } from 'lucide-react'; // Using CircleUserRound f
 import { updateRole } from '../../role-actions';
 import { roleFormSchemaEdit } from '../form/role-form-validation';
 import { NonOptionalKeys } from '../../../../../types/utils-types';
-import { removeUnreferencedKeys } from '../../../../../lib/form-utils';
+import { removeUnreferencedKeys } from '@/lib/form-utils';
 
 export default function RoleEdit({
   initialRole,

@@ -1,8 +1,8 @@
 'use server';
 
 import Logger from '@/lib/logger';
-import { fetchApiUFRN } from '../../../../lib/fetch/api-ufrn';
-import { getUfrnAccessToken } from '../../../../lib/auth/get-access-token';
+import { fetchApiUFRN } from '@/lib/fetch/api-ufrn';
+import { getUfrnAccessToken } from '@/lib/auth/get-access-token';
 import { IUsuario } from './usuario-types';
 
 // --- Constantes ---

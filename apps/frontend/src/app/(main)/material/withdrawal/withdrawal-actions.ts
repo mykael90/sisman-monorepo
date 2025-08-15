@@ -2,8 +2,8 @@
 
 import Logger from '@/lib/logger';
 import { revalidatePath } from 'next/cache';
-import { getSismanAccessToken } from '../../../../lib/auth/get-access-token';
-import { fetchApiSisman } from '../../../../lib/fetch/api-sisman';
+import { getSismanAccessToken } from '@/lib/auth/get-access-token';
+import { fetchApiSisman } from '@/lib/fetch/api-sisman';
 import { IActionResultForm } from '../../../../types/types-server-actions';
 import {
   IMaterialWithdrawalAdd,
@@ -11,8 +11,8 @@ import {
   IMaterialWithdrawalEdit,
   IMaterialWithdrawalWithRelations
 } from './withdrawal-types';
-import { handleApiAction } from '../../../../lib/fetch/handle-form-action-sisman';
-import { createPayload } from '../../../../lib/payload-creator';
+import { handleApiAction } from '@/lib/fetch/handle-form-action-sisman';
+import { createPayload } from '@/lib/payload-creator';
 import { withdrawalServiceUsageMapping } from './OUT_SERVICE_USAGE/components/mapper-to-payload';
 import { IMaterialWithdrawalAddForm } from './components/form/material-withdrawal-form-add';
 

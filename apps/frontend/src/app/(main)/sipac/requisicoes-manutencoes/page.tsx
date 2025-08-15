@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
-import { getSismanAccessToken } from '../../../../lib/auth/get-access-token';
-import Logger from '../../../../lib/logger';
+import { getSismanAccessToken } from '@/lib/auth/get-access-token';
+import Logger from '@/lib/logger';
 import Loading from '../../../../components/loading';
 import {
   getRefreshedSipacRequisicoesManutencao,

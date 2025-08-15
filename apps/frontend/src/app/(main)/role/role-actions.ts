@@ -2,16 +2,16 @@
 
 import Logger from '@/lib/logger';
 import { revalidatePath } from 'next/cache';
-import { getSismanAccessToken } from '../../../lib/auth/get-access-token';
-import { fetchApiSisman } from '../../../lib/fetch/api-sisman';
+import { getSismanAccessToken } from '@/lib/auth/get-access-token';
+import { fetchApiSisman } from '@/lib/fetch/api-sisman';
 import { IActionResultForm } from '../../../types/types-server-actions';
 import { IRole, IRoleAdd, IRoleEdit, IRole } from './role-types';
 import {
   roleFormSchemaAdd,
   roleFormSchemaEdit
 } from './_components/form/role-form-validation';
-import { handleApiAction } from '../../../lib/fetch/handle-form-action-sisman';
-import { validateFormData } from '../../../lib/validate-form-data';
+import { handleApiAction } from '@/lib/fetch/handle-form-action-sisman';
+import { validateFormData } from '@/lib/validate-form-data';
 
 const PAGE_PATH = '/role';
 const API_RELATIVE_PATH = '/role'; // Endpoint da API para UserRoletype

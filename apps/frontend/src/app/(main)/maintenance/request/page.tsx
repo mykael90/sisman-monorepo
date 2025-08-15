@@ -3,8 +3,8 @@ import {
   getRefreshedMaintenanceRequests,
   getMaintenanceRequests
 } from './request-actions';
-import Logger from '../../../../lib/logger';
-import { getSismanAccessToken } from '../../../../lib/auth/get-access-token';
+import Logger from '@/lib/logger';
+import { getSismanAccessToken } from '@/lib/auth/get-access-token';
 import Loading from '../../loading';
 import { MaintenanceRequestList } from './_components/list/maintenance-request-list';
 

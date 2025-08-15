@@ -1,5 +1,5 @@
 import UserEdit from '../../_components/edit/user-edit';
-import { getSismanAccessToken } from '../../../../../lib/auth/get-access-token';
+import { getSismanAccessToken } from '@/lib/auth/get-access-token';
 import { showUser } from '../../user-actions';
 import { getRoles } from '../../../role/role-actions';
 import { getMaintenanceInstances } from '../../../maintenance/instance/instance-actions';

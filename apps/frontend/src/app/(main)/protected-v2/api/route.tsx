@@ -1,7 +1,7 @@
 import { getServerSession } from 'next-auth';
 import { NextRequest, NextResponse } from 'next/server';
 import { authOptions } from '@/app/api/auth/_options';
-import { fetchApiSisman } from '../../../../lib/fetch/api-sisman';
+import { fetchApiSisman } from '@/lib/fetch/api-sisman';
 
 export async function GET(request: NextRequest) {
   const session = await getServerSession(authOptions);

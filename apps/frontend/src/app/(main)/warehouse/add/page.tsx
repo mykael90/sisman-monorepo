@@ -1,4 +1,4 @@
-import { getSismanAccessToken } from '../../../../lib/auth/get-access-token';
+import { getSismanAccessToken } from '@/lib/auth/get-access-token';
 import { getMaintenanceInstances } from '../../maintenance/instance/instance-actions';
 import { IMaintenanceInstance } from '../../maintenance/instance/instance-types';
 import { WarehouseAdd } from '../_components/add/warehouse-add';

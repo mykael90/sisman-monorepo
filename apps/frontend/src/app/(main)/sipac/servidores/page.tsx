@@ -1,4 +1,4 @@
-import { getUfrnAccessToken } from '../../../../lib/auth/get-access-token';
+import { getUfrnAccessToken } from '@/lib/auth/get-access-token';
 import { ServidoresListPage } from './_components/list/servidores-list';
 import { getServidores } from './servidores-actions';
 

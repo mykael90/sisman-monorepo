@@ -1,6 +1,6 @@
 // export const dynamic = 'force-dynamic';
 
-import { fetchApiUFRNBuildTime } from '../../../../lib/fetch/api-ufrn-build-time';
+import { fetchApiUFRNBuildTime } from '@/lib/fetch/api-ufrn-build-time';
 
 interface sistemaInterface {
   ['id-sistema']: number;

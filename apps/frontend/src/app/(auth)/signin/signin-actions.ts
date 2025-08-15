@@ -1,8 +1,8 @@
 'use server';
 
-import { fetchApiSisman, SismanApiError } from '../../../lib/fetch/api-sisman';
-import formDataToObject from '../../../lib/formdata-to-object';
-import Logger from '../../../lib/logger';
+import { fetchApiSisman, SismanApiError } from '@/lib/fetch/api-sisman';
+import formDataToObject from '@/lib/formdata-to-object';
+import Logger from '@/lib/logger';
 import { IActionResultForm } from '../../../types/types-server-actions';
 
 const PAGE_PATH = '/signin'; // Usar maiúsculas para constantes globais ao módulo

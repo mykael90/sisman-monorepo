@@ -1,5 +1,5 @@
 import RoleEdit from '../../_components/edit/role-edit';
-import { getSismanAccessToken } from '../../../../../lib/auth/get-access-token';
+import { getSismanAccessToken } from '@/lib/auth/get-access-token';
 import { showRole } from '../../role-actions';
 
 export default async function Page({

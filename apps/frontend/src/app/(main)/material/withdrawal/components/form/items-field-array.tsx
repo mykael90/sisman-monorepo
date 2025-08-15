@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
 import { ResponsiveCombobox } from '@/components/ui/responsive-combobox';
 import * as React from 'react';
-import Logger from '../../../../../../lib/logger';
+import Logger from '@/lib/logger';
 import {
   IMaterialWithdrawalAddForm,
   IMaterialWithdrawalItemAddForm

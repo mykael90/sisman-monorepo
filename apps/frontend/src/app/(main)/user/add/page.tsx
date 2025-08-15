@@ -1,6 +1,6 @@
 import UserAdd from '../_components/add/user-add';
-import { getSismanAccessToken } from '../../../../lib/auth/get-access-token';
-import Logger from '../../../../lib/logger';
+import { getSismanAccessToken } from '@/lib/auth/get-access-token';
+import Logger from '@/lib/logger';
 import { getRoles } from '../../role/role-actions';
 import { getMaintenanceInstances } from '../../maintenance/instance/instance-actions';
 

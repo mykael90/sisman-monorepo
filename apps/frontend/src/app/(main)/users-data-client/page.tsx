@@ -2,8 +2,8 @@
 import { Suspense } from 'react';
 import { getRefreshedUsers, getUsers } from './_actions'; // Sua Server Action
 import { DisplayData } from './display-data'; // Seu Client Component
-import Logger from '../../../lib/logger'; // Seu logger
-import { getSismanAccessToken } from '../../../lib/auth/get-access-token';
+import Logger from '@/lib/logger'; // Seu logger
+import { getSismanAccessToken } from '@/lib/auth/get-access-token';
 
 const logger = new Logger('users-data-page');
 

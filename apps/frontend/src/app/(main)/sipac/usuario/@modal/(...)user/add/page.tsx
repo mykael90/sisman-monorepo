@@ -1,5 +1,5 @@
 import Modal from '@/components/ui/modal';
-import { getSismanAccessToken } from '../../../../../../../lib/auth/get-access-token';
+import { getSismanAccessToken } from '@/lib/auth/get-access-token';
 import { getRoles } from '../../../../../role/role-actions';
 import UserAdd from '../../../../../user/_components/add/user-add';
 

@@ -2,11 +2,11 @@
 
 import Logger from '@/lib/logger';
 import { revalidatePath } from 'next/cache';
-import { getSismanAccessToken } from '../../../../lib/auth/get-access-token';
-import { fetchApiSisman } from '../../../../lib/fetch/api-sisman';
+import { getSismanAccessToken } from '@/lib/auth/get-access-token';
+import { fetchApiSisman } from '@/lib/fetch/api-sisman';
 import { IActionResultForm } from '../../../../types/types-server-actions';
 import { ISipacRequisicaoManutencaoWithRelations } from './requisicoes-manutencoes-types';
-import { handleApiAction } from '../../../../lib/fetch/handle-form-action-sisman';
+import { handleApiAction } from '@/lib/fetch/handle-form-action-sisman';
 
 const PAGE_PATH = '/sipac/requisicoes-manutencoes';
 const API_RELATIVE_PATH = '/sipac/requisicoes-manutencoes';

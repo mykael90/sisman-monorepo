@@ -12,9 +12,9 @@ import UFRNOAuthProvider, { UFRNProfile } from './providers/_ufrn-provider';
 import { magicLinkCredentialsProviderConfig } from './providers/_magic-link-credentials-provider';
 
 // Funções auxiliares
-import { handleAuthorizationLogic } from '../../../lib/auth/authorization-sisman';
-import refreshSismanAccessToken from '../../../lib/auth/refresh-sisman-access-token';
-import refreshUfrnAccessToken from '../../../lib/auth/refresh-ufrn-access-token';
+import { handleAuthorizationLogic } from '@/lib/auth/authorization-sisman';
+import refreshSismanAccessToken from '@/lib/auth/refresh-sisman-access-token';
+import refreshUfrnAccessToken from '@/lib/auth/refresh-ufrn-access-token';
 import { ExtendedJWT, ExtendedUser } from '../../../types/next-auth';
 
 const logger = new Logger('authOptions');

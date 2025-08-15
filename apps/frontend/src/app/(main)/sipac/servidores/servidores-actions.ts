@@ -3,8 +3,8 @@
 import Logger from '@/lib/logger';
 import { revalidatePath } from 'next/cache';
 import { IServidor, IServidoresList } from './servidores-types';
-import { fetchApiUFRN } from '../../../../lib/fetch/api-ufrn';
-import { getUfrnAccessToken } from '../../../../lib/auth/get-access-token';
+import { fetchApiUFRN } from '@/lib/fetch/api-ufrn';
+import { getUfrnAccessToken } from '@/lib/auth/get-access-token';
 
 const PAGE_PATH = '/sipac/servidores'; // Usar maiúsculas para constantes globais ao módulo
 const API_RELATIVE_PATH = '/site/v1/servidores'; // Para chamadas de API relacionadas a usuários

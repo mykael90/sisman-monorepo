@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { UserPlus } from 'lucide-react';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { IUsuario } from '../../usuario-types';
-import { getPublicFotoSigaa } from '../../../../../../lib/fetch/get-public-foto-sigaa';
+import { getPublicFotoSigaa } from '@/lib/fetch/get-public-foto-sigaa';
 
 // 1. Definir as colunas com createColumnHelper
 const columnHelper = createColumnHelper<IUsuario>();
