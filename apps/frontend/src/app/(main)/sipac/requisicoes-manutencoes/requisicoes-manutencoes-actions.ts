@@ -47,10 +47,12 @@ export async function handleFetchRequisicaoManutencao(
     IRequestDataSearch,
     ISipacRequisicaoManutencaoWithRelations
   >,
-  formData: FormData | string
+  data: FormData | string
 ): Promise<
   IActionResultForm<IRequestDataSearch, ISipacRequisicaoManutencaoWithRelations>
 > {
+  logger.info(`Type and value of formdata: ${typeof data} - ${data}`);
+
   let numeroAno: string | null = null;
 
   //Contador para tentativas de submissão do formulário
@@ -58,10 +60,10 @@ export async function handleFetchRequisicaoManutencao(
     ? prevState.submissionAttempts + 1
     : 1;
 
-  if (typeof formData === 'string') {
-    numeroAno = formData;
-  } else if (formData instanceof FormData) {
-    numeroAno = formData.get('numeroAno')?.toString() || null;
+  if (typeof data === 'string') {
+    numeroAno = data;
+  } else if (data instanceof FormData) {
+    numeroAno = data.get('numeroAno')?.toString() || null;
   }
 
   if (!numeroAno) {

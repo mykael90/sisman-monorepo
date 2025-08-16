@@ -93,7 +93,8 @@ export async function handleApiAction<
             'Ocorreu um erro ao comunicar com o servidor. Tente novamente.'
         ],
         submittedData: originalRawData,
-        message: 'Erro na comunicação com a API.'
+        message: 'Erro na comunicação com a API.',
+        statusCode: error.statusCode
       };
     }
     // Para erros inesperados não capturados pelo SismanApiError

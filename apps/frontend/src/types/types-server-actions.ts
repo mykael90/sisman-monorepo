@@ -10,6 +10,7 @@ export interface IActionResultForm<
   submittedData?: Partial<TSubmittedData>; // Or Partial<TSubmittedData> if it can indeed be partial
   message?: string;
   submissionAttempts?: number;
+  statusCode?: number;
 }
 
 export interface IActionResultFormData<
@@ -23,4 +24,5 @@ export interface IActionResultFormData<
   submittedData?: FormData;
   message?: string;
   submissionAttempts?: number;
+  statusCode?: number;
 }
