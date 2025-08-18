@@ -112,48 +112,16 @@ export async function handleFetchRequisicaoManutencao(
   }
 }
 
-export async function fetchOneSipacRequisicoesManutencao(
-  accessTokenSisman: string,
-  numeroAno: string
-): Promise<ISipacRequisicaoManutencaoWithRelations> {
-  logger.info(
-    `(Server Action) fetchOneSipacRequisicoesManutencao: Buscando requisição de manutenção completa para ${numeroAno}.`
-  );
-  try {
-    const data = await fetchApiSisman(
-      `${API_RELATIVE_PATH}/fetch-one-complete`,
-      accessTokenSisman,
-      {
-        method: 'POST',
-        body: JSON.stringify({ numeroAno }),
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }
-    );
-    logger.info(
-      `(Server Action) fetchOneSipacRequisicoesManutencao: Requisição ${numeroAno} retornada.`
-    );
-    return data;
-  } catch (error) {
-    logger.error(
-      `(Server Action) fetchOneSipacRequisicoesManutencao: Erro ao buscar requisição ${numeroAno}.`,
-      error
-    );
-    throw error;
-  }
-}
-
 // --- Ações de Formulário Exportadas (com persistência) ---
 
 export async function fetchOneAndPersistSipacRequisicoesManutencao(
-  prevState: unknown,
-  data: { numeroAno: string }
-): Promise<
-  IActionResultForm<
-    { numeroAno: string },
+  prevState: IActionResultForm<
+    IRequestDataSearch,
     ISipacRequisicaoManutencaoWithRelations
-  >
+  >,
+  data: IRequestDataSearch
+): Promise<
+  IActionResultForm<IRequestDataSearch, ISipacRequisicaoManutencaoWithRelations>
 > {
   logger.info(
     `(Server Action) fetchOneAndPersistSipacRequisicoesManutencao: Tentativa de buscar e persistir requisição ${data.numeroAno}.`,
@@ -162,10 +130,10 @@ export async function fetchOneAndPersistSipacRequisicoesManutencao(
 
   try {
     const accessToken = await getSismanAccessToken();
-    return await handleApiAction<
-      { numeroAno: string },
+    const response = await handleApiAction<
+      IRequestDataSearch,
       ISipacRequisicaoManutencaoWithRelations,
-      { numeroAno: string }
+      IRequestDataSearch
     >(
       data, // validatedData (no validation schema for this simple action)
       data, // submittedData
@@ -179,6 +147,29 @@ export async function fetchOneAndPersistSipacRequisicoesManutencao(
       },
       `Requisição ${data.numeroAno} buscada e persistida com sucesso!`
     );
+
+    //Vamos intervir se vier com erro 404, quero modificar a resposta
+    if (!response.isSubmitSuccessful) {
+      if (response.statusCode === 404) {
+        return {
+          ...prevState,
+          ...response,
+          message: `Requisição nº ${data.numeroAno} não encontrada. Verifique se as informações fornecidas estão corretas`
+        };
+      } else {
+        return {
+          ...prevState,
+          ...response
+        };
+      }
+    }
+
+    //se vier sem erro só retorne
+    return {
+      ...prevState,
+      ...response,
+      message: `Dados da requisição nº ${data.numeroAno} carregados e persistidos com sucesso.`
+    };
   } catch (error) {
     logger.error(
       `(Server Action) fetchOneAndPersistSipacRequisicoesManutencao: Erro inesperado para ${data.numeroAno}.`,

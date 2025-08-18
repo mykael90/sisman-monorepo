@@ -112,6 +112,7 @@ export function MaterialWithdrawalFormAdd({
       {RequestMaintenanceMaterialForm && (
         <RequestMaintenanceMaterialForm
           setMaintenanceRequestData={setMaintenanceRequestData}
+          maintenanceRequestData={maintenanceRequestData}
         />
       )}
       <form
