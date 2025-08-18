@@ -457,6 +457,7 @@ export class MaterialRequestsService {
       statusHistory,
       sipacUnitRequesting,
       sipacUnitCost,
+      maintenanceRequestId: _, //removendo do payload maintenanceRequestId, estava dando erro.
       ...restOfData
     } = data;
 

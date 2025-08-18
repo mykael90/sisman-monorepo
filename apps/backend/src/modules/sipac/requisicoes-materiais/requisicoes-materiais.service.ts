@@ -38,7 +38,6 @@ import { ListaRequisicoesMateriaisService } from './lista-requisicoes-materiais.
 import { MateriaisService } from '../materiais/materiais.service';
 import { MaterialRequestsService } from 'src/modules/material-requests/material-requests.service';
 import { UnidadesService } from '../unidades/unidades.service';
-// import { RequisicoesManutencoesService } from '../requisicoes-manutencoes/requisicoes-manutencoes.service';
 
 @Injectable()
 export class RequisicoesMateriaisService {
@@ -57,7 +56,6 @@ export class RequisicoesMateriaisService {
     private readonly sipacScraping: SipacScrapingService,
     private readonly materialRequestsService: MaterialRequestsService,
     private readonly unidadesService: UnidadesService
-    // private readonly requisicoesManutencoesService: RequisicoesManutencoesService
   ) {}
 
   //método compartilhado com lógica para processar os dados a serem criados ou atualizados no banco
@@ -733,55 +731,6 @@ export class RequisicoesMateriaisService {
       },
       details: results
     };
-  }
-
-  // persiste os dados de uma requisição de material no banco
-  async fetchCompleteAndPersistCreateOrUpdateRequisicaoMaterialComManutencaoVinculada(
-    numeroAno: string
-  ) {
-    {
-      const exists = await this.prisma.sipacRequisicaoMaterial.findFirst({
-        where: {
-          numeroDaRequisicao: numeroAno
-        }
-      });
-
-      if (exists) {
-        this.logger.log(`A requisição de material já existe. Atualizando...`);
-        const newData =
-          await this.fetchByNumeroAnoAndReturnRequisicaoMaterialComplete(
-            numeroAno
-          );
-        const reqMaterial = await this.persistUpdateRequisicaoMaterial(
-          exists.id,
-          newData
-        );
-
-        //criando também a requisicao de manutencao relacionada
-        // if (reqMaterial.numeroDaRequisicaoRelacionada) {
-        //   await this.requisicoesManutencoesService.fetchCompleteAndPersistCreateOrUpdateRequisicaoManutencao(
-        //     reqMaterial.numeroDaRequisicaoRelacionada
-        //   );
-        // }
-        return reqMaterial;
-      } else {
-        this.logger.log(`A requisição de material não existe. Criando...`);
-        const createData =
-          await this.fetchByNumeroAnoAndReturnRequisicaoMaterialComplete(
-            numeroAno
-          );
-        const reqMaterial =
-          await this.persistCreateRequisicaoMateiral(createData);
-
-        //criando também a requisicao de manutencao relacionada
-        // if (reqMaterial.numeroDaRequisicaoRelacionada) {
-        //   await this.requisicoesManutencoesService.fetchCompleteAndPersistCreateOrUpdateRequisicaoManutencao(
-        //     reqMaterial.numeroDaRequisicaoRelacionada
-        //   );
-        // }
-        return reqMaterial;
-      }
-    }
   }
 }
 export interface ProcessNumeroAnoResult {

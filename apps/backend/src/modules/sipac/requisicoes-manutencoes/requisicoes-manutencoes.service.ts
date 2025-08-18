@@ -901,6 +901,34 @@ export class RequisicoesManutencoesService {
       throw error;
     }
   }
+
+  // Ficou aqui dentro das requisições de manutenção por causa de questões de referencia cirular.
+  // persiste os dados de uma requisição de material no banco
+  async fetchCompleteAndPersistCreateOrUpdateRequisicaoMaterialComManutencaoVinculada(
+    numeroAno: string
+  ) {
+    const reqMaterial =
+      await this.requisicoesMateriaisService.fetchCompleteAndPersistCreateOrUpdateRequisicaoMaterial(
+        numeroAno
+      );
+
+    if (
+      reqMaterial.numeroDaRequisicaoRelacionada &&
+      !reqMaterial.sipacRequisicaoManutencaoId
+    ) {
+      const reqManutencao =
+        await this.fetchCompleteAndPersistCreateOrUpdateRequisicaoManutencao(
+          reqMaterial.numeroDaRequisicaoRelacionada
+        );
+
+      return {
+        ...reqMaterial,
+        sipacRequisicaoManutencaoId: reqManutencao.id,
+        sipacRequisicaoManutencao: reqManutencao
+      };
+    }
+    return reqMaterial;
+  }
 }
 
 export interface ProcessNumeroAnoResult {

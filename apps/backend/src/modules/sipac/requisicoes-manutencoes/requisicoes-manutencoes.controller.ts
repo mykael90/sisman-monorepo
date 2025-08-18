@@ -115,6 +115,16 @@ export class RequisicoesManutencoesController {
     );
   }
 
+  // Example endpoint to fetch a complete detailed maintenance requisition by numero/ano and persist (create or update)
+  @Post('material-fetch-one-complete-and-persist')
+  async triggerMaterialFetchOneCompleteAndPersist(
+    @Body('numeroAno') numeroAno: string
+  ) {
+    return await this.requisicoesManutencoesService.fetchCompleteAndPersistCreateOrUpdateRequisicaoMaterialComManutencaoVinculada(
+      numeroAno
+    );
+  }
+
   // Example endpoint to fetch multiple complete detailed maintenance requisitions by numero/ano array and persist (create or update)
   @Post('fetch-many-complete-and-persist')
   async triggerFetchManyCompleteAndPersist(

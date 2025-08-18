@@ -10,6 +10,8 @@ import { handleApiAction } from '@/lib/fetch/handle-form-action-sisman';
 
 const PAGE_PATH = '/sipac/requisicoes-materiais';
 const API_RELATIVE_PATH = '/sipac/requisicoes-materiais';
+const API_RELATIVE_PATH_WITH_MANUTENCAO =
+  '/sipac/requisicoes-manutencoes/material-fetch-one-complete-and-persist';
 
 const logger = new Logger(`${PAGE_PATH}/requisicoes-materiais-actions`);
 
@@ -80,6 +82,75 @@ export async function handleFetchRequisicaoMaterial(
           ...prevState,
           ...response,
           message: `Requisição nº ${data.numeroAno} não encontrada. Verifique se as informações fornecidas estão corretas`
+        };
+      } else {
+        return {
+          ...prevState,
+          ...response
+        };
+      }
+    }
+
+    //se vier sem erro só retorne
+    return {
+      ...prevState,
+      ...response,
+      message: `Dados da requisição nº ${data.numeroAno} carregados com sucesso.`
+    };
+  } catch (error) {
+    logger.error(
+      `(Server Action) handleFetchRequisicaoMaterial: Erro ao buscar requisição com protocolo ${data.numeroAno}.`,
+      error
+    );
+
+    return {
+      isSubmitSuccessful: false,
+      errorsServer: [
+        'Ocorreu um erro inesperado ao processar sua solicitação.'
+      ],
+      submittedData: data,
+      message: 'Erro inesperado.'
+    };
+  }
+}
+export async function handleFetchRequisicaoMaterialComRequisicaoManutencaoVinculada(
+  prevState: IActionResultForm<
+    IRequestDataSearch,
+    ISipacRequisicaoMaterialWithRelations
+  >,
+  data: IRequestDataSearch
+): Promise<
+  IActionResultForm<IRequestDataSearch, ISipacRequisicaoMaterialWithRelations>
+> {
+  logger.info(`Type and value of data: ${typeof data} - ${data}`);
+
+  try {
+    const accessToken = await getSismanAccessToken();
+    const response = await handleApiAction<
+      IRequestDataSearch,
+      ISipacRequisicaoMaterialWithRelations,
+      IRequestDataSearch
+    >(
+      data, // validatedData (no validation schema for this simple action)
+      data, // submittedData
+      {
+        endpoint: `${API_RELATIVE_PATH_WITH_MANUTENCAO}`,
+        method: 'POST',
+        accessToken: accessToken
+      },
+      {
+        mainPath: PAGE_PATH
+      },
+      `Requisição de material ${data.numeroAno} buscada com sucesso!`
+    );
+
+    //Vamos intervir se vier com erro 404, quero modificar a resposta
+    if (!response.isSubmitSuccessful) {
+      if (response.statusCode === 404) {
+        return {
+          ...prevState,
+          ...response,
+          message: `Requisição de material nº ${data.numeroAno} não encontrada. Verifique se as informações fornecidas estão corretas`
         };
       } else {
         return {
