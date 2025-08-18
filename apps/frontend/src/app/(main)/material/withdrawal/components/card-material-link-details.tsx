@@ -6,7 +6,21 @@ import { FormListBox } from '@/components/form-tanstack/form-list-box';
 import { Label } from '@/components/ui/label';
 import { format } from 'date-fns';
 import { ItemsTableFormArray } from './form/items-table-form-array';
-import { useState } from 'react';
+import { startTransition, useState } from 'react';
+import { IActionResultForm } from '../../../../../types/types-server-actions';
+import {
+  handleMaterialRequestBalanceSearch,
+  IMaterialRequestBalanceWithRelations
+} from '../../request/material-request-actions';
+
+const initialServerStateRequestMaterialBalance: IActionResultForm<
+  string,
+  IMaterialRequestBalanceWithRelations
+> = {
+  isSubmitSuccessful: false,
+  message: '',
+  submissionAttempts: 0
+};
 
 export function CardMaterialRequestLinkDetails({
   linkMaterialRequest,
@@ -20,13 +34,12 @@ export function CardMaterialRequestLinkDetails({
   materialRequestDataLinked: any;
 }) {
   const [materialRequestBalance, setMaterialRequestBalance] =
-    useState<any>(null);
+    useState<IMaterialRequestBalanceWithRelations>(null);
 
   return (
     <Card>
       <CardHeader>
         <CardTitle className='text-lg'>
-          {JSON.stringify(materialRequestDataLinked)}
           <div className='flex items-center gap-2'>
             <h2 className='text-lg font-semibold'>
               Vincular Requisição de Material
@@ -42,6 +55,7 @@ export function CardMaterialRequestLinkDetails({
       {linkMaterialRequest && (
         <CardContent className='space-y-4'>
           <>
+            {/* {JSON.stringify(materialRequestBalance)} */}
             <formWithdrawal.Field
               name='materialRequestId'
               children={(field) => (
@@ -55,29 +69,41 @@ export function CardMaterialRequestLinkDetails({
                   onValueChange={(value) => {
                     // Simulate fetching data based on selected requisition
                     //TODO: implementar logica
-                    if (true) {
-                      setMaterialRequestBalance({
-                        protocolNumber: '16349/2025',
-                        sipacUserLoginRequest: 'eduardo.kennedi',
-                        requestValue: '77.97',
-                        servedValue: '77.97',
-                        currentStatus: 'FULLY_ATTENDED',
-                        requestDate: '2025-06-04T00:00:00.000-03:00',
-                        itemsBalance: [
-                          {
-                            globalMaterialId: '302400026133',
-                            materialRequestItemId: 247,
-                            quantityRequested: '1',
-                            quantityApproved: '1',
-                            quantityReceivedSum: '0',
-                            quantityWithdrawnSum: '0',
-                            quantityReserved: '0',
-                            quantityRestricted: '0',
-                            quantityFreeBalanceEffective: '0',
-                            quantityFreeBalancePotential: '1'
-                          }
-                        ]
+                    if (value) {
+                      startTransition(async () => {
+                        const response =
+                          await handleMaterialRequestBalanceSearch(
+                            initialServerStateRequestMaterialBalance,
+                            value
+                          );
+                        if (response.isSubmitSuccessful) {
+                          setMaterialRequestBalance(
+                            response.responseData as IMaterialRequestBalanceWithRelations
+                          );
+                        }
                       });
+                      // setMaterialRequestBalance({
+                      //   protocolNumber: '16349/2025',
+                      //   sipacUserLoginRequest: 'eduardo.kennedi',
+                      //   requestValue: '77.97',
+                      //   servedValue: '77.97',
+                      //   currentStatus: 'FULLY_ATTENDED',
+                      //   requestDate: '2025-06-04T00:00:00.000-03:00',
+                      //   itemsBalance: [
+                      //     {
+                      //       globalMaterialId: '302400026133',
+                      //       materialRequestItemId: 247,
+                      //       quantityRequested: '1',
+                      //       quantityApproved: '1',
+                      //       quantityReceivedSum: '0',
+                      //       quantityWithdrawnSum: '0',
+                      //       quantityReserved: '0',
+                      //       quantityRestricted: '0',
+                      //       quantityFreeBalanceEffective: '0',
+                      //       quantityFreeBalancePotential: '1'
+                      //     }
+                      //   ]
+                      // });
                     } else {
                     }
                   }}
@@ -90,31 +116,32 @@ export function CardMaterialRequestLinkDetails({
                   <div className='space-y-2'>
                     <Label>Número do Protocolo</Label>
                     <p className='text-muted-foreground'>
-                      {materialRequestDataLinked.protocolNumber}
+                      {materialRequestBalance.protocolNumber}
                     </p>
                   </div>
                   <div className='space-y-2'>
                     <Label>Login do Usuário SIPAC</Label>
                     <p className='text-muted-foreground'>
-                      {materialRequestDataLinked.sipacUserLoginRequest}
+                      {materialRequestBalance.sipacUserLoginRequest}
                     </p>
                   </div>
                   <div className='space-y-2'>
                     <Label>Valor da Requisição</Label>
                     <p className='text-muted-foreground'>
-                      R$ {materialRequestDataLinked.requestValue}
+                      R${' '}
+                      {Number(materialRequestBalance.requestValue).toFixed(2)}
                     </p>
                   </div>
                   <div className='space-y-2'>
                     <Label>Valor Atendido</Label>
                     <p className='text-muted-foreground'>
-                      R$ {materialRequestDataLinked.servedValue}
+                      R$ {Number(materialRequestBalance.servedValue).toFixed(2)}
                     </p>
                   </div>
                   <div className='space-y-2'>
                     <Label>Status Atual</Label>
                     <p className='text-muted-foreground'>
-                      {materialRequestDataLinked.currentStatus}
+                      {materialRequestBalance.currentStatus}
                     </p>
                   </div>
                   <div className='space-y-2'>
@@ -125,23 +152,21 @@ export function CardMaterialRequestLinkDetails({
                   </div>
                 </div>
                 <h3 className='text-md font-semibold'>Itens da Requisição</h3>
-                <ItemsTableFormArray
-                  materials={materialRequestBalance.itemsBalance.map(
-                    (item: any) => ({
-                      id: item.materialRequestItemId,
-                      code: item.globalMaterialId,
-                      description: 'Material Description (Placeholder)', // You might need to fetch this based on globalMaterialId
-                      unit: 'UN', // Placeholder
-                      freeBalanceQuantity: parseInt(
-                        item.quantityFreeBalancePotential
-                      ),
-                      qtyToRemove: parseInt(item.quantityRequested)
-                    })
-                  )}
+                {/* <ItemsTableFormArray
+                  materials={materialRequestBalance.items.map((item: any) => ({
+                    id: item.materialRequestItemId,
+                    code: item.globalMaterialId,
+                    description: 'Material Description (Placeholder)', // You might need to fetch this based on globalMaterialId
+                    unit: 'UN', // Placeholder
+                    freeBalanceQuantity: parseInt(
+                      item.quantityFreeBalancePotential
+                    ),
+                    qtyToRemove: parseInt(item.quantityRequested)
+                  }))}
                   onRemove={() => {}} // No remove action for linked items
                   onUpdateQuantity={() => {}} // No quantity update for linked items
                   readOnly={false} // Make quantity editable for linked items
-                />
+                /> */}
               </div>
             )}
           </>

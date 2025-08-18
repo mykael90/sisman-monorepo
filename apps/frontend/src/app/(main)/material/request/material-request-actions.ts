@@ -135,6 +135,97 @@ export async function handleMaterialRequestSearch(
   }
 }
 
+interface ItemBalance {
+  id: number;
+  materialRequestId: number;
+  itemRequestType: 'GLOBAL_CATALOG' | string; // Pode ser mais específico se houver outros tipos
+  requestedGlobalMaterialId: string;
+  fulfilledByInstanceId: number | null;
+  quantityRequested: string; // Pode ser string ou number, dependendo do uso
+  quantityApproved: string;
+  quantityDelivered: string;
+  unitPrice: string;
+  notes: string | null;
+  createdAt: string; // Pode ser Date se for convertido
+  updatedAt: string;
+}
+
+export interface IMaterialRequestBalanceWithRelations
+  extends IMaterialRequestWithRelations {
+  items: ItemBalance[];
+}
+
+export async function handleMaterialRequestBalanceSearch(
+  prevState: IActionResultForm<string, IMaterialRequestBalanceWithRelations>,
+  id: string
+): Promise<IActionResultForm<string, IMaterialRequestBalanceWithRelations>> {
+  logger.info(`Type and value of data: ${typeof id} - ${id}`);
+
+  try {
+    const accessToken = await getSismanAccessToken();
+
+    const response = await handleApiAction<
+      string,
+      IMaterialRequestBalanceWithRelations,
+      string
+    >(
+      id,
+      id,
+      {
+        endpoint: `${API_RELATIVE_PATH}/balance/${id}`,
+        method: 'GET',
+        accessToken: accessToken
+      },
+      {
+        mainPath: PAGE_PATH
+      },
+      `Dados da requisição carregados com sucesso.`
+    );
+
+    //Vamos intervir se vier com erro 404, quero modificar a resposta
+    if (!response.isSubmitSuccessful) {
+      if (response.statusCode === 404) {
+        return {
+          ...prevState,
+          ...response,
+          message: `Requisição id ${id} não encontrada. Verifique se as informações fornecidas estão corretas`
+        };
+      } else {
+        return {
+          ...prevState,
+          ...response
+        };
+      }
+    }
+
+    //se vier sem erro só retorne
+    return {
+      ...prevState,
+      ...response,
+      message: `Dados da requisição id ${id} carregados com sucesso.`
+    };
+  } catch (error: any) {
+    logger.error(
+      `(Server Action) handleMaterialRequestSearch: Erro ao buscar requisição id ${id}.`,
+      error
+    );
+    if (error?.statusCode === 404) {
+      return {
+        ...prevState,
+        isSubmitSuccessful: false,
+        message:
+          'Requisição não encontrada. Favor verifique as informações e tente novamente.'
+      };
+    } else {
+      return {
+        ...prevState,
+        isSubmitSuccessful: false,
+        message: 'Ocorreu um erro inesperado ao buscar a requisição.'
+      };
+    }
+  }
+}
+
 export async function getRefreshedRequests() {
   logger.info(
     `(Server Action) getRefreshedRequests: Revalidating ${PAGE_PATH}`
