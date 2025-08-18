@@ -2,6 +2,7 @@ import {
   Inject,
   Injectable,
   Logger,
+  NotFoundException,
   OnModuleInit,
   ServiceUnavailableException
 } from '@nestjs/common';
@@ -62,6 +63,16 @@ export class SipacScrapingService implements OnModuleInit {
             const serviceUrl = new URL(config.url);
             throw new ServiceUnavailableException(
               `A conexão com o serviço em '${serviceUrl.host}' foi recusada. O serviço pode estar indisponível.`
+            );
+          }
+
+          //Captura erros para registros não encontrados a partir da resposta do erro na api scraping e lança um erro adequado
+          if (error.response.data.statusCode === 404) {
+            this.logger.error(
+              `Registro não encontrado para ${config.url}. ${JSON.stringify(config, null, 2)}`
+            );
+            throw new NotFoundException(
+              `Registro não encontrado para url ${config.url}.`
             );
           }
 

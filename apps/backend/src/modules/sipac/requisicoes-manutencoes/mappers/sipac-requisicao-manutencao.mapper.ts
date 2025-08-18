@@ -126,10 +126,10 @@ export class SipacRequisicaoManutencaoMapper {
       predios: item['imoveis/prediosInseridos']?.map(
         SipacRequisicaoManutencaoMapper.toImovelPredioManutencaoDto
       ),
-      historico: item.historico.map(
+      historico: item.historico?.map(
         SipacRequisicaoManutencaoMapper?.toHistoricoManutencaoDto
       ),
-      arquivos: item.arquivosInseridos.map(
+      arquivos: item.arquivosInseridos?.map(
         SipacRequisicaoManutencaoMapper?.toArquivoAnexadoDto
       )
     };
