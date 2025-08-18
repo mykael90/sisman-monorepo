@@ -47,80 +47,128 @@ export async function handleFetchRequisicaoManutencao(
     IRequestDataSearch,
     ISipacRequisicaoManutencaoWithRelations
   >,
-  data: FormData | string
+  data: IRequestDataSearch
 ): Promise<
   IActionResultForm<IRequestDataSearch, ISipacRequisicaoManutencaoWithRelations>
 > {
-  logger.info(`Type and value of formdata: ${typeof data} - ${data}`);
+  logger.info(`Type and value of data: ${typeof data} - ${data}`);
 
-  let numeroAno: string | null = null;
+  // let numeroAno: string | null = null;
 
   //Contador para tentativas de submissão do formulário
-  prevState.submissionAttempts = prevState.submissionAttempts
-    ? prevState.submissionAttempts + 1
-    : 1;
+  // prevState.submissionAttempts = prevState.submissionAttempts
+  //   ? prevState.submissionAttempts + 1
+  //   : 1;
 
-  if (typeof data === 'string') {
-    numeroAno = data;
-  } else if (data instanceof FormData) {
-    numeroAno = data.get('numeroAno')?.toString() || null;
-  }
+  // if (typeof data === 'string') {
+  //   numeroAno = data;
+  // } else if (data instanceof FormData) {
+  //   numeroAno = data.get('numeroAno')?.toString() || null;
+  // }
 
-  if (!numeroAno) {
-    return {
-      ...prevState,
-      isSubmitSuccessful: false,
-      message: 'Número de protocolo não fornecido.'
-    };
-  }
+  // if (!numeroAno) {
+  //   return {
+  //     ...prevState,
+  //     isSubmitSuccessful: false,
+  //     message: 'Número de protocolo não fornecido.'
+  //   };
+  // }
 
   try {
     const accessToken = await getSismanAccessToken();
-    const response = await fetchApiSisman(
-      `${API_RELATIVE_PATH}/fetch-one-complete`,
-      accessToken,
+    // const response = await fetchApiSisman(
+    //   `${API_RELATIVE_PATH}/fetch-one-complete`,
+    //   accessToken,
+    //   {
+    //     method: 'POST',
+    //     body: JSON.stringify({ numeroAno }),
+    //     headers: {
+    //       'Content-Type': 'application/json'
+    //     }
+    //   }
+    // );
+
+    // if (response) {
+    //   return {
+    //     ...prevState,
+    //     isSubmitSuccessful: true,
+    //     message: 'Dados da requisição carregados com sucesso.',
+    //     responseData: response
+    //   };
+    // } else {
+    //   return {
+    //     ...prevState,
+    //     isSubmitSuccessful: false,
+    //     message: 'Requisição não encontrada ou dados inválidos.'
+    //   };
+    // }
+
+    const response = await handleApiAction<
+      IRequestDataSearch,
+      ISipacRequisicaoManutencaoWithRelations,
+      IRequestDataSearch
+    >(
+      data, // validatedData (no validation schema for this simple action)
+      data, // submittedData
       {
+        endpoint: `${API_RELATIVE_PATH}/fetch-one-complete`,
         method: 'POST',
-        body: JSON.stringify({ numeroAno }),
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }
+        accessToken: accessToken
+      },
+      {
+        mainPath: PAGE_PATH
+      },
+      `Requisição ${data.numeroAno} buscada com sucesso!`
     );
 
-    if (response) {
-      return {
-        ...prevState,
-        isSubmitSuccessful: true,
-        message: 'Dados da requisição carregados com sucesso.',
-        responseData: response
-      };
-    } else {
-      return {
-        ...prevState,
-        isSubmitSuccessful: false,
-        message: 'Requisição não encontrada ou dados inválidos.'
-      };
+    //Vamos intervir se vier com erro, quero modificar a resposta
+    if (!response.isSubmitSuccessful) {
+      if (response.statusCode === 404) {
+        return {
+          ...prevState,
+          ...response,
+          message: `Requisição nº ${data.numeroAno} não encontrada.`
+        };
+      } else {
+        return {
+          ...prevState,
+          ...response
+        };
+      }
     }
-  } catch (error: any) {
+
+    return {
+      ...prevState,
+      ...response,
+      message: 'Dados da requisição carregados com sucesso.'
+    };
+  } catch (error) {
     logger.error(
-      `(Server Action) handleFetchRequisicaoManutencao: Erro ao buscar requisição com protocolo ${numeroAno}.`,
+      `(Server Action) handleFetchRequisicaoManutencao: Erro ao buscar requisição com protocolo ${data.numeroAno}.`,
       error
     );
-    if (error?.statusCode === 404) {
-      return {
-        ...prevState,
-        isSubmitSuccessful: false,
-        message:
-          'Requisição não encontrada. Favor verifique as informações e tente novamente.'
-      };
-    } else {
-      return {
-        ...prevState,
-        isSubmitSuccessful: false,
-        message: 'Ocorreu um erro inesperado ao buscar a requisição.'
-      };
-    }
+    //   if (error?.statusCode === 404) {
+    //     return {
+    //       ...prevState,
+    //       isSubmitSuccessful: false,
+    //       message:
+    //         'Requisição não encontrada. Favor verifique as informações e tente novamente.'
+    //     };
+    //   } else {
+    //     return {
+    //       ...prevState,
+    //       isSubmitSuccessful: false,
+    //       message: 'Ocorreu um erro inesperado ao buscar a requisição.'
+    //     };
+    //   }
+    return {
+      isSubmitSuccessful: false,
+      errorsServer: [
+        'Ocorreu um erro inesperado ao processar sua solicitação.'
+      ],
+      submittedData: data,
+      message: 'Erro inesperado.'
+    };
   }
 }
 

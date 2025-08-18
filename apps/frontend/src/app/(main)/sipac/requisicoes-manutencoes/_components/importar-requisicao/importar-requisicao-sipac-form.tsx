@@ -81,7 +81,7 @@ export function ImportarRequisicaoSipacForm({
       const formattedRequestNumber = formatRequestNumber(value.numeroAno);
       if (formattedRequestNumber) {
         startTransition(() => {
-          formActionDataSearch(formattedRequestNumber);
+          formActionDataSearch({ numeroAno: formattedRequestNumber });
         });
       }
     }

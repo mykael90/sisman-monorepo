@@ -82,7 +82,8 @@ export async function handleApiAction<
             error.apiMessage || 'Conflito com registro existente.'
           ],
           submittedData: originalRawData,
-          message: 'Conflito com registro existente.'
+          message: 'Conflito com registro existente.',
+          statusCode: error.statusCode
         };
       }
       // Outros erros da API
