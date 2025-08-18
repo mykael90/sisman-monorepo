@@ -22,7 +22,7 @@ Content-Type: {{contentType}}
 
 ### GET requisição de manutencao
 GET {{urlLocal}}/requisicao/manutencao
-?id=2175376
+?id=2175876
 Content-Type: {{contentType}}
 
 ### GET lista de manutencao
@@ -79,8 +79,8 @@ GET {{urlLocal}}/lista/requisicao/material
 &buscaData=true
 # &buscaUnidadeReq=false
 # &buscaUnidadeCusto=false
-&dataInicial=01/01/2023
-&dataFinal=05/01/2023
+&dataInicial=01/01/2025
+&dataFinal=05/01/2025
 # &proposto.cpf_cnpj=-1
 # &usuario.id=0
 # &numero=0

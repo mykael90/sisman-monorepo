@@ -658,6 +658,10 @@ export class SipacService {
     if (result && typeof result === 'object' && 'rawHtml' in result) {
       delete result.rawHtml;
     }
+    // If parser issue throw error for not found
+    if (Object.keys(result.data).length === 0) {
+      throw new NotFoundException(`Registro não encontrado.`);
+    }
 
     //including more metadata (second update)
     result.metadata = {
@@ -708,6 +712,11 @@ export class SipacService {
       this.logger.warn(
         `Pagination data not found in parser result for key '${parserKey}'. Assuming single page or parser issue.`,
       );
+      // If parser issue throw error for not found
+      if (firstPageResult.data.items.length === 0) {
+        throw new NotFoundException(`Registro(s) não encontrado(s) na lista.`);
+      }
+
       // including more metadata
       firstPageResult.metadata = {
         ...firstPageResult.metadata,
