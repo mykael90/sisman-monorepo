@@ -295,6 +295,10 @@ export function RequestMaintenanceMaterialForm({
       [serverStateMaintenanceSearch]
     ),
     onSubmit: async ({ value }) => {
+      //limpar dados
+      setMaintenanceRequestData(null);
+      setMaterialRequestData(null);
+
       if (value.requestProtocolNumber) {
         value.requestProtocolNumber = formatRequestNumber(
           value.requestProtocolNumber
@@ -323,8 +327,6 @@ export function RequestMaintenanceMaterialForm({
     >
       <div className='space-y-6'>
         {/* Request number */}
-        {JSON.stringify(materialRequestData, null, 2)}
-        {JSON.stringify(serverStateMaterialSearch, null, 2)}
         <Card>
           <CardHeader>
             <CardTitle className='text-lg'>Número da Requisição</CardTitle>
@@ -400,40 +402,78 @@ export function RequestMaintenanceMaterialForm({
                   )}
                 </formRequest.Subscribe>
               </div>
-              {maintenanceRequestData?.origin === 'SIPAC' ? (
-                <div className='flex flex-col self-end'>
-                  <div className='text-muted-foreground pb-1 text-center text-sm'>
-                    Última sincronização: <br />
-                    Requisição de Manutenção <br />
-                    {format(
-                      new Date(maintenanceRequestData?.updatedAt),
-                      'dd/MM/yyyy HH:mm'
-                    )}
-                  </div>
-                  <Button
-                    variant='outline'
-                    size='sm'
-                    disabled={isPendingScrapingManutencao}
-                    onClick={() => {
-                      startTransition(() => {
-                        formActionScrapingManutencao({
-                          numeroAno: maintenanceRequestData.protocolNumber
+              <div className='flex gap-4'>
+                {maintenanceRequestData?.origin === 'SIPAC' ? (
+                  <div className='flex flex-col self-end'>
+                    <div className='text-muted-foreground pb-1 text-center text-sm'>
+                      Última sincronização: <br />
+                      Requisição de Manutenção <br />
+                      {format(
+                        new Date(maintenanceRequestData?.updatedAt),
+                        'dd/MM/yyyy HH:mm'
+                      )}
+                    </div>
+                    <Button
+                      type='button'
+                      variant='outline'
+                      size='sm'
+                      disabled={isPendingScrapingManutencao}
+                      onClick={() => {
+                        startTransition(() => {
+                          formActionScrapingManutencao({
+                            numeroAno: maintenanceRequestData.protocolNumber
+                          });
                         });
-                      });
-                    }}
-                  >
-                    <RefreshCcw className='mr-2 h-4 w-4' /> Sincronizar com
-                    SIPAC
-                  </Button>
-                  <div>
-                    {isPendingScrapingManutencao && (
-                      <div className='text-muted-foreground pt-1 text-xs'>
-                        Aguarde...
-                      </div>
-                    )}
+                      }}
+                    >
+                      <RefreshCcw className='mr-2 h-4 w-4' /> Sincronizar com
+                      SIPAC
+                    </Button>
+                    <div>
+                      {isPendingScrapingManutencao && (
+                        <div className='text-muted-foreground pt-1 text-xs'>
+                          Aguarde...
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
-              ) : null}
+                ) : null}
+                {materialRequestData?.origin === 'SIPAC' ? (
+                  <div className='flex flex-col self-end'>
+                    <div className='text-muted-foreground pb-1 text-center text-sm'>
+                      Última sincronização: <br />
+                      Requisição de Material <br />
+                      {format(
+                        new Date(materialRequestData?.updatedAt),
+                        'dd/MM/yyyy HH:mm'
+                      )}
+                    </div>
+                    <Button
+                      type='button'
+                      variant='outline'
+                      size='sm'
+                      disabled={isPendingScrapingMaterial}
+                      onClick={() => {
+                        startTransition(() => {
+                          formActionScrapingMaterial({
+                            numeroAno: materialRequestData.protocolNumber
+                          });
+                        });
+                      }}
+                    >
+                      <RefreshCcw className='mr-2 h-4 w-4' /> Sincronizar com
+                      SIPAC
+                    </Button>
+                    <div>
+                      {isPendingScrapingMaterial && (
+                        <div className='text-muted-foreground pt-1 text-xs'>
+                          Aguarde...
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ) : null}
+              </div>
             </div>
           </CardContent>
         </Card>
