@@ -7,7 +7,7 @@ import { FilePlus } from 'lucide-react';
 import { addWithdrawal } from '../withdrawal-actions';
 import { CardMaintenanceSummary } from '../components/card-maintenance-summary';
 import { Card } from '../../../../../components/ui/card';
-import { CardMaterialLinkDetails } from '../components/card-material-link-details';
+import { CardMaterialRequestLinkDetails } from '../components/card-material-link-details';
 import { RequestMaintenanceMaterialForm } from '../components/request-maintenance-material-form';
 import { WithdrawalDetailUsageService } from './components/withdrawal-details-usage-service';
 
@@ -51,7 +51,7 @@ export default async function Page() {
           // submitButtonText='Criar Usuário'
           formActionProp={addWithdrawal}
           CardMaintenanceSummary={CardMaintenanceSummary}
-          CardMaterialLinkDetails={CardMaterialLinkDetails}
+          CardMaterialLinkDetails={CardMaterialRequestLinkDetails}
           RequestMaintenanceMaterialForm={RequestMaintenanceMaterialForm}
           WithdrawalDetailsForm={WithdrawalDetailUsageService}
           // withdrawalType={withdrawalType}

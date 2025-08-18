@@ -5,28 +5,28 @@ import { Switch } from '@/components/ui/switch';
 import { FormListBox } from '@/components/form-tanstack/form-list-box';
 import { Label } from '@/components/ui/label';
 import { format } from 'date-fns';
-import { IMaintenanceRequestData } from './request-maintenance-material-form';
 import { ItemsTableFormArray } from './form/items-table-form-array';
+import { useState } from 'react';
 
-export function CardMaterialLinkDetails({
+export function CardMaterialRequestLinkDetails({
   linkMaterialRequest,
   setLinkMaterialRequest,
   formWithdrawal,
-  setMaterialRequestDataLinked,
-  materialRequestDataLinked,
-  materialRequestData
+  materialRequestDataLinked
 }: {
   linkMaterialRequest: boolean;
   setLinkMaterialRequest: (value: boolean) => void;
   formWithdrawal: any;
-  setMaterialRequestDataLinked: (value: any) => void;
   materialRequestDataLinked: any;
-  materialRequestData: any;
 }) {
+  const [materialRequestBalance, setMaterialRequestBalance] =
+    useState<any>(null);
+
   return (
     <Card>
       <CardHeader>
         <CardTitle className='text-lg'>
+          {JSON.stringify(materialRequestDataLinked)}
           <div className='flex items-center gap-2'>
             <h2 className='text-lg font-semibold'>
               Vincular Requisição de Material
@@ -48,52 +48,15 @@ export function CardMaterialLinkDetails({
                 <FormListBox
                   field={field}
                   label='Requisições de Material Disponíveis'
-                  options={[
-                    {
-                      value: '1',
-                      label: 'Requisição 16349/2025 - Manutenção'
-                    },
-                    {
-                      value: '2',
-                      label: 'Requisição 12345/2024 - TI'
-                    },
-                    {
-                      value: '3',
-                      label: 'Requisição 20001/2025 - Elétrica'
-                    },
-                    {
-                      value: '4',
-                      label: 'Requisição 20002/2025 - Hidráulica'
-                    },
-                    {
-                      value: '5',
-                      label: 'Requisição 20003/2025 - Civil'
-                    },
-                    {
-                      value: '6',
-                      label: 'Requisição 20004/2025 - Mecânica'
-                    },
-                    {
-                      value: '7',
-                      label: 'Requisição 20005/2025 - Limpeza'
-                    },
-                    {
-                      value: '8',
-                      label: 'Requisição 20006/2025 - Informática'
-                    },
-                    {
-                      value: '9',
-                      label: 'Requisição 20007/2025 - Segurança'
-                    },
-                    {
-                      value: '10',
-                      label: 'Requisição 20008/2025 - Transporte'
-                    }
-                  ]}
+                  options={materialRequestDataLinked?.map((item: any) => ({
+                    value: item.id,
+                    label: item.protocolNumber
+                  }))}
                   onValueChange={(value) => {
                     // Simulate fetching data based on selected requisition
-                    if (value === '1') {
-                      setMaterialRequestDataLinked({
+                    //TODO: implementar logica
+                    if (true) {
+                      setMaterialRequestBalance({
                         protocolNumber: '16349/2025',
                         sipacUserLoginRequest: 'eduardo.kennedi',
                         requestValue: '77.97',
@@ -116,13 +79,12 @@ export function CardMaterialLinkDetails({
                         ]
                       });
                     } else {
-                      setMaterialRequestDataLinked(null);
                     }
                   }}
                 />
               )}
             />
-            {materialRequestDataLinked && (
+            {materialRequestBalance && (
               <div className='space-y-4'>
                 <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
                   <div className='space-y-2'>
@@ -158,16 +120,13 @@ export function CardMaterialLinkDetails({
                   <div className='space-y-2'>
                     <Label>Data da Requisição</Label>
                     <p className='text-muted-foreground'>
-                      {format(
-                        new Date(materialRequestDataLinked.requestDate),
-                        'PPP'
-                      )}
+                      {format(new Date(), 'PPP')}
                     </p>
                   </div>
                 </div>
                 <h3 className='text-md font-semibold'>Itens da Requisição</h3>
                 <ItemsTableFormArray
-                  materials={materialRequestDataLinked.itemsBalance.map(
+                  materials={materialRequestBalance.itemsBalance.map(
                     (item: any) => ({
                       id: item.materialRequestItemId,
                       code: item.globalMaterialId,

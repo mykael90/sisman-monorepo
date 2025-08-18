@@ -6,7 +6,6 @@ import { FilePlus } from 'lucide-react';
 import { FC, useActionState, useState } from 'react';
 import { IActionResultForm } from '@/types/types-server-actions';
 import { IMaterialWithdrawalRelatedData } from '../../withdrawal-types';
-import { IMaintenanceRequestData } from '../request-maintenance-material-form';
 import { IMaterialRequest } from '../../../request/material-request-types';
 import {
   defaultDataWithdrawalForm,
@@ -16,6 +15,7 @@ import {
 import { ItemsFieldArray } from './items-field-array';
 import { FormSuccessDisplay } from '@/components/form-tanstack/form-success-display';
 import { ErrorServerForm } from '@/components/form-tanstack/error-server-form';
+import { IMaintenanceRequestWithRelations } from '../../../../maintenance/request/request-types';
 
 export function MaterialWithdrawalFormAdd({
   formActionProp,
@@ -46,14 +46,13 @@ export function MaterialWithdrawalFormAdd({
   const { listGlobalMaterials, listUsers } = relatedData;
 
   const [maintenanceRequestData, setMaintenanceRequestData] =
-    useState<IMaintenanceRequestData | null>(null);
+    useState<IMaintenanceRequestWithRelations | null>(null);
 
   const [materialRequestData, setMaterialRequestData] =
     useState<IMaterialRequest | null>(null);
 
-  const [linkMaterialRequest, setLinkMaterialRequest] = useState(false);
-  const [materialRequestDataLinked, setMaterialRequestDataLinked] =
-    useState<any>(null);
+  const [linkMaterialRequest, setLinkMaterialRequest] =
+    useState<boolean>(false);
 
   const [serverStateWithdrawal, formActionWithdrawal, isPendingWithdrawal] =
     useActionState(formActionProp, initialServerStateWithdrawal);
@@ -150,12 +149,8 @@ export function MaterialWithdrawalFormAdd({
               linkMaterialRequest={linkMaterialRequest}
               setLinkMaterialRequest={setLinkMaterialRequest}
               formWithdrawal={formWithdrawal}
-              setMaterialRequestDataLinked={setMaterialRequestDataLinked}
-              materialRequestDataLinked={materialRequestDataLinked}
-              materialRequestData={
-                maintenanceRequestData?.materialRequests ||
-                materialRequestData ||
-                []
+              materialRequestDataLinked={
+                maintenanceRequestData?.materialRequests
               }
             />
           )}

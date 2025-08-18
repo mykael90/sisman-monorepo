@@ -13,6 +13,7 @@ export type IMaintenanceRequestWithRelations =
       assignedTo: true;
       serviceType: true;
       currentMaintenanceInstance: true;
+      materialRequests: true;
     };
   }>;
 
