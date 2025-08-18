@@ -429,11 +429,17 @@ export class MaterialRequestsService {
         include: {
           // Optional: include relations if needed
           items: true,
-          statusHistory: true
+          statusHistory: true,
+          maintenanceRequest: true
         }
       });
-      // No NotFoundException here, as the method is often used to check existence.
-      // The caller (e.g., RequisicoesMateriaisService) handles the null case.
+
+      if (!materialRequest) {
+        throw new NotFoundException(
+          `MaterialRequest with protocolNumber ${protocolNumber} not found`
+        );
+      }
+
       return materialRequest;
     } catch (error) {
       handlePrismaError(error, this.logger, 'MaterialRequestsService', {

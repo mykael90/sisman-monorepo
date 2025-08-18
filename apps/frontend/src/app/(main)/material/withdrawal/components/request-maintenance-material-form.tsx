@@ -21,13 +21,17 @@ import { fetchOneAndPersistSipacRequisicoesManutencao } from '../../../sipac/req
 import { ISipacRequisicaoManutencaoWithRelations } from '../../../sipac/requisicoes-manutencoes/requisicoes-manutencoes-types';
 import { format } from 'date-fns';
 import { is } from 'date-fns/locale';
+import { IMaterialRequestWithRelations } from '../../request/material-request-types';
+import { fetchOneAndPersistSipacRequisicoesMaterial } from '../../../sipac/requisicoes-materiais/requisicoes-materiais-actions';
+import { ISipacRequisicaoMaterialWithRelations } from '../../../sipac/requisicoes-materiais/requisicoes-materiais-types';
+import { handleMaterialRequestSearch } from '../../request/material-request-actions';
 
 interface IRequestDataSearch {
   requestType: string;
   requestProtocolNumber: string;
 }
 
-const initialServerStateRequestData: IActionResultForm<
+const initialServerStateRequestMaintenance: IActionResultForm<
   IRequestDataSearch,
   IMaintenanceRequestWithRelations
 > = {
@@ -36,9 +40,27 @@ const initialServerStateRequestData: IActionResultForm<
   submissionAttempts: 0
 };
 
-const initialServerStateScraping: IActionResultForm<
+const initialServerStateScrapingManutencao: IActionResultForm<
   { numeroAno: string },
   ISipacRequisicaoManutencaoWithRelations
+> = {
+  isSubmitSuccessful: false,
+  message: '',
+  submissionAttempts: 0
+};
+
+const initialServerStateRequestMaterial: IActionResultForm<
+  IRequestDataSearch,
+  IMaterialRequestWithRelations
+> = {
+  isSubmitSuccessful: false,
+  message: '',
+  submissionAttempts: 0
+};
+
+const initialServerStateScrapingMaterial: IActionResultForm<
+  { numeroAno: string },
+  ISipacRequisicaoMaterialWithRelations
 > = {
   isSubmitSuccessful: false,
   message: '',
@@ -57,113 +79,236 @@ const defaultDataRequest: IRequestDataSearch = {
 
 export function RequestMaintenanceMaterialForm({
   setMaintenanceRequestData,
-  maintenanceRequestData
+  maintenanceRequestData,
+  setMaterialRequestData,
+  materialRequestData
 }: {
   setMaintenanceRequestData: React.Dispatch<
     React.SetStateAction<IMaintenanceRequestWithRelations | null>
   >;
   maintenanceRequestData?: IMaintenanceRequestWithRelations | null;
+  setMaterialRequestData: React.Dispatch<
+    React.SetStateAction<IMaterialRequestWithRelations | null>
+  >;
+  materialRequestData?: IMaterialRequestWithRelations | null;
 }) {
-  // Estado referente ao formulário de consulta da requisição
-  const [serverStateDataSearch, formActionDataSearch, isPendingDataSearch] =
-    useActionState(
-      handleMaintenanceRequestSearch,
-      initialServerStateRequestData
-    );
-
+  // Estado referente ao formulário de consulta da requisição de manutenção SISMAN
   const [
-    serverStateDataScraping,
-    formActionDataScraping,
-    isPendingDataScraping
+    serverStateMaintenanceSearch,
+    formActionMaintenanceSearch,
+    isPendingMaintenanceSearch
+  ] = useActionState(
+    handleMaintenanceRequestSearch,
+    initialServerStateRequestMaintenance
+  );
+
+  // Estado referente ao formulário de scraping da requisição de manutenção SIPAC
+  const [
+    serverStateScrapingManutencao,
+    formActionScrapingManutencao,
+    isPendingScrapingManutencao
   ] = useActionState(
     fetchOneAndPersistSipacRequisicoesManutencao,
-    initialServerStateScraping
+    initialServerStateScrapingManutencao
+  );
+  // Estado referente ao formulário de consulta da requisição de manutenção SISMAN
+  const [
+    serverStateMaterialSearch,
+    formActionMaterialSearch,
+    isPendingMaterialSearch
+  ] = useActionState(
+    handleMaterialRequestSearch,
+    initialServerStateRequestMaterial
+  );
+
+  // Estado referente ao formulário de scraping da requisição de manutenção SIPAC
+  const [
+    serverStateScrapingMaterial,
+    formActionScrapingMaterial,
+    isPendingScrapingMaterial
+  ] = useActionState(
+    fetchOneAndPersistSipacRequisicoesMaterial,
+    initialServerStateScrapingMaterial
   );
 
   const [isPendingTransition, startTransition] = useTransition();
 
-  const lastMessageSearchSismanRef = useRef('');
-  const lastMessageScrapingSipacRef = useRef('');
+  const lastMessageSearchMaintenanceSismanRef = useRef('');
+  const lastMessageScrapingManutencaoSipacRef = useRef('');
+  const lastMessageSearchMaterialSismanRef = useRef('');
+  const lastMessageScrapingMaterialSipacRef = useRef('');
 
+  //atualização do estado da maintenanceRequest sisman
   useEffect(() => {
-    if (!isPendingDataSearch && serverStateDataSearch?.message) {
+    if (!isPendingMaintenanceSearch && serverStateMaintenanceSearch?.message) {
       if (
-        serverStateDataSearch.message !== lastMessageSearchSismanRef.current
+        serverStateMaintenanceSearch.message !==
+        lastMessageSearchMaintenanceSismanRef.current
       ) {
-        if (serverStateDataSearch.isSubmitSuccessful) {
-          toast.success(serverStateDataSearch.message);
-          setMaintenanceRequestData(serverStateDataSearch.responseData || null);
+        if (serverStateMaintenanceSearch.isSubmitSuccessful) {
+          toast.success(serverStateMaintenanceSearch.message);
+          setMaintenanceRequestData(
+            serverStateMaintenanceSearch.responseData || null
+          );
         } else {
           toast.warning(
-            `Requisição de nº ${serverStateDataSearch.submittedData?.requestProtocolNumber} não encontrada. Será realizada uma tentativa de importação via SIPAC. Favor aguarde.`
+            `Requisição de nº ${serverStateMaintenanceSearch.submittedData?.requestProtocolNumber} não encontrada. Será realizada uma tentativa de importação via SIPAC. Favor aguarde.`
           );
           setMaintenanceRequestData(null);
 
           // se o statusCode for 404, vamos tentar importar do api-scraping
           if (
-            serverStateDataSearch.statusCode === 404 &&
+            serverStateMaintenanceSearch.statusCode === 404 &&
             !isPendingTransition
           ) {
             console.log('iniciar importação');
             startTransition(() => {
-              formActionDataScraping({
-                numeroAno: serverStateDataSearch.submittedData
+              formActionScrapingManutencao({
+                numeroAno: serverStateMaintenanceSearch.submittedData
                   ?.requestProtocolNumber as string
               });
             });
           }
-          lastMessageSearchSismanRef.current = serverStateDataSearch.message;
+          lastMessageSearchMaintenanceSismanRef.current =
+            serverStateMaintenanceSearch.message;
         }
       }
     }
-  }, [isPendingDataSearch, serverStateDataSearch, setMaintenanceRequestData]);
+  }, [
+    isPendingMaintenanceSearch,
+    serverStateMaintenanceSearch,
+    setMaintenanceRequestData
+  ]);
 
+  //atualizacao de estado de requisicaod de manutencao scraping sipac
   useEffect(() => {
-    if (!isPendingDataScraping && serverStateDataScraping?.message) {
+    if (
+      !isPendingScrapingManutencao &&
+      serverStateScrapingManutencao?.message
+    ) {
       if (
-        serverStateDataScraping.message !== lastMessageScrapingSipacRef.current
+        serverStateScrapingManutencao.message !==
+        lastMessageScrapingManutencaoSipacRef.current
       ) {
-        if (serverStateDataScraping.isSubmitSuccessful) {
+        if (serverStateScrapingManutencao.isSubmitSuccessful) {
           toast.success(
-            `Requisicão nº ${serverStateDataScraping.submittedData?.numeroAno} importada com sucesso!`
+            `Requisicão nº ${serverStateScrapingManutencao.submittedData?.numeroAno} importada com sucesso!`
           );
           startTransition(() => {
-            formActionDataSearch(
-              serverStateDataSearch.submittedData as IRequestDataSearch
+            formActionMaintenanceSearch(
+              serverStateMaintenanceSearch.submittedData as IRequestDataSearch
             );
           });
         } else {
-          toast.error(serverStateDataScraping.message);
+          toast.error(serverStateScrapingManutencao.message);
         }
-        lastMessageScrapingSipacRef.current = serverStateDataScraping.message;
+        lastMessageScrapingManutencaoSipacRef.current =
+          serverStateScrapingManutencao.message;
       }
     }
-  }, [isPendingDataScraping, serverStateDataScraping]);
+  }, [isPendingScrapingManutencao, serverStateScrapingManutencao]);
 
-  const getRequestData = (value: IRequestDataSearch) => {
-    if (value.requestType === 'maintenanceRequest') {
-      return formatRequestNumber(value.requestProtocolNumber);
-    } else if (value.requestType === 'materialRequest') {
-      return formatRequestNumber(value.requestProtocolNumber);
-    } else {
-      console.error('Invalid request type:', value.requestType);
+  //atualização do estado da materialRequest sisman
+  useEffect(() => {
+    if (!isPendingMaterialSearch && serverStateMaterialSearch?.message) {
+      if (
+        serverStateMaterialSearch.message !==
+        lastMessageSearchMaterialSismanRef.current
+      ) {
+        if (serverStateMaterialSearch.isSubmitSuccessful) {
+          toast.success(serverStateMaterialSearch.message);
+          setMaterialRequestData(
+            serverStateMaterialSearch.responseData || null
+          );
+
+          if (
+            serverStateMaterialSearch.responseData?.maintenanceRequest
+              ?.protocolNumber
+          ) {
+            startTransition(() => {
+              formActionMaintenanceSearch({
+                requestType: 'maintenanceRequest',
+                requestProtocolNumber: serverStateMaterialSearch.responseData
+                  ?.maintenanceRequest?.protocolNumber as string
+              });
+            });
+          }
+        } else {
+          toast.warning(
+            `Requisição de nº ${serverStateMaterialSearch.submittedData?.requestProtocolNumber} não encontrada. Será realizada uma tentativa de importação via SIPAC. Favor aguarde.`
+          );
+          setMaterialRequestData(null);
+
+          // se o statusCode for 404, vamos tentar importar do api-scraping
+          if (
+            serverStateMaterialSearch.statusCode === 404 &&
+            !isPendingTransition
+          ) {
+            console.log('iniciar importação');
+            startTransition(() => {
+              formActionScrapingMaterial({
+                numeroAno: serverStateMaterialSearch.submittedData
+                  ?.requestProtocolNumber as string
+              });
+            });
+          }
+          lastMessageSearchMaterialSismanRef.current =
+            serverStateMaterialSearch.message;
+        }
+      }
     }
-    return formatRequestNumber(value.requestProtocolNumber);
-  };
+  }, [
+    isPendingMaterialSearch,
+    serverStateMaterialSearch,
+    setMaterialRequestData
+  ]);
+
+  //atualizacao de estado de requisicaod de material scraping sipac
+  useEffect(() => {
+    if (!isPendingScrapingMaterial && serverStateScrapingMaterial?.message) {
+      if (
+        serverStateScrapingMaterial.message !==
+        lastMessageScrapingMaterialSipacRef.current
+      ) {
+        if (serverStateScrapingMaterial.isSubmitSuccessful) {
+          toast.success(
+            `Requisicão nº ${serverStateScrapingMaterial.submittedData?.numeroAno} importada com sucesso!`
+          );
+          startTransition(() => {
+            formActionMaterialSearch(
+              serverStateMaterialSearch.submittedData as IRequestDataSearch
+            );
+          });
+        } else {
+          toast.error(serverStateScrapingMaterial.message);
+        }
+        lastMessageScrapingMaterialSipacRef.current =
+          serverStateScrapingMaterial.message;
+      }
+    }
+  }, [isPendingScrapingMaterial, serverStateScrapingMaterial]);
 
   //Formulario de consulta de informações da requisição de manutenção ou material
   const formRequest = useForm({
     defaultValues: defaultDataRequest,
     transform: useTransform(
-      (baseForm) => mergeForm(baseForm, serverStateDataSearch ?? {}),
-      [serverStateDataSearch]
+      (baseForm) => mergeForm(baseForm, serverStateMaintenanceSearch ?? {}),
+      [serverStateMaintenanceSearch]
     ),
     onSubmit: async ({ value }) => {
       if (value.requestProtocolNumber) {
-        value.requestProtocolNumber = getRequestData(value);
-        startTransition(() => {
-          formActionDataSearch(value);
-        });
+        value.requestProtocolNumber = formatRequestNumber(
+          value.requestProtocolNumber
+        );
+        if (value.requestType === 'materialRequest') {
+          startTransition(() => {
+            formActionMaterialSearch(value);
+          });
+        } else if (value.requestType === 'maintenanceRequest') {
+          startTransition(() => {
+            formActionMaintenanceSearch(value);
+          });
+        }
       }
     }
   });
@@ -179,6 +324,8 @@ export function RequestMaintenanceMaterialForm({
     >
       <div className='space-y-6'>
         {/* Request number */}
+        {JSON.stringify(materialRequestData, null, 2)}
+        {JSON.stringify(serverStateMaterialSearch, null, 2)}
         <Card>
           <CardHeader>
             <CardTitle className='text-lg'>Número da Requisição</CardTitle>
@@ -241,8 +388,8 @@ export function RequestMaintenanceMaterialForm({
                         !canSubmit ||
                         isSubmitting ||
                         !isTouched ||
-                        isPendingDataSearch ||
-                        isPendingDataScraping
+                        isPendingMaintenanceSearch ||
+                        isPendingScrapingManutencao
                       }
                     >
                       {isSubmitting ? (
@@ -255,9 +402,10 @@ export function RequestMaintenanceMaterialForm({
                 </formRequest.Subscribe>
               </div>
               {maintenanceRequestData?.origin === 'SIPAC' ? (
-                <div className='flex flex-col items-center'>
-                  <div className='text-muted-foreground pb-1 text-sm'>
-                    Última sincronização:{' '}
+                <div className='flex flex-col self-end'>
+                  <div className='text-muted-foreground pb-1 text-center text-sm'>
+                    Última sincronização: <br />
+                    Requisição de Manutenção <br />
                     {format(
                       new Date(maintenanceRequestData?.updatedAt),
                       'dd/MM/yyyy HH:mm'
@@ -266,10 +414,10 @@ export function RequestMaintenanceMaterialForm({
                   <Button
                     variant='outline'
                     size='sm'
-                    disabled={isPendingDataScraping}
+                    disabled={isPendingScrapingManutencao}
                     onClick={() => {
                       startTransition(() => {
-                        formActionDataScraping({
+                        formActionScrapingManutencao({
                           numeroAno: maintenanceRequestData.protocolNumber
                         });
                       });
@@ -279,7 +427,7 @@ export function RequestMaintenanceMaterialForm({
                     SIPAC
                   </Button>
                   <div>
-                    {isPendingDataScraping && (
+                    {isPendingScrapingManutencao && (
                       <div className='text-muted-foreground pt-1 text-xs'>
                         Aguarde...
                       </div>

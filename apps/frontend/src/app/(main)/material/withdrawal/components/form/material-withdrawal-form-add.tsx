@@ -7,7 +7,7 @@ import { FC, useActionState, useState } from 'react';
 import { IActionResultForm } from '@/types/types-server-actions';
 import { IMaterialWithdrawalRelatedData } from '../../withdrawal-types';
 import { IMaintenanceRequestData } from '../request-maintenance-material-form';
-import { IMaterialRequest } from '../../../request/request-types';
+import { IMaterialRequest } from '../../../request/material-request-types';
 import {
   defaultDataWithdrawalForm,
   IMaterialWithdrawalAddForm,
@@ -113,6 +113,8 @@ export function MaterialWithdrawalFormAdd({
         <RequestMaintenanceMaterialForm
           setMaintenanceRequestData={setMaintenanceRequestData}
           maintenanceRequestData={maintenanceRequestData}
+          setMaterialRequestData={setMaterialRequestData}
+          materialRequestData={materialRequestData}
         />
       )}
       <form

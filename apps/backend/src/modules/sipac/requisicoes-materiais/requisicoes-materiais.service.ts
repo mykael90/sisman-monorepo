@@ -38,6 +38,7 @@ import { ListaRequisicoesMateriaisService } from './lista-requisicoes-materiais.
 import { MateriaisService } from '../materiais/materiais.service';
 import { MaterialRequestsService } from 'src/modules/material-requests/material-requests.service';
 import { UnidadesService } from '../unidades/unidades.service';
+// import { RequisicoesManutencoesService } from '../requisicoes-manutencoes/requisicoes-manutencoes.service';
 
 @Injectable()
 export class RequisicoesMateriaisService {
@@ -56,6 +57,7 @@ export class RequisicoesMateriaisService {
     private readonly sipacScraping: SipacScrapingService,
     private readonly materialRequestsService: MaterialRequestsService,
     private readonly unidadesService: UnidadesService
+    // private readonly requisicoesManutencoesService: RequisicoesManutencoesService
   ) {}
 
   //método compartilhado com lógica para processar os dados a serem criados ou atualizados no banco
@@ -168,11 +170,10 @@ export class RequisicoesMateriaisService {
       };
     }>
   ): Promise<void> {
+    const materialRequestDto = MaterialRequestMapper.toCreateDto(
+      sipacRequisicaoMaterial
+    );
     try {
-      const materialRequestDto = MaterialRequestMapper.toCreateDto(
-        sipacRequisicaoMaterial
-      );
-
       // Assuming protocolNumber in MaterialRequest stores the SIPAC request ID
       const existingMaterialRequest =
         await this.materialRequestsService.findByProtocolNumber(
@@ -187,13 +188,26 @@ export class RequisicoesMateriaisService {
           existingMaterialRequest.id,
           materialRequestDto
         );
-      } else {
-        this.logger.log(
-          `Creating MaterialRequest for SIPAC ID: ${sipacRequisicaoMaterial.numeroDaRequisicao}`
-        );
-        await this.materialRequestsService.create(materialRequestDto);
       }
+      // else {
+      //   this.logger.log(
+      //     `Creating MaterialRequest for SIPAC ID: ${sipacRequisicaoMaterial.numeroDaRequisicao}`
+      //   );
+      //   await this.materialRequestsService.create(materialRequestDto);
+      // }
+      return;
     } catch (error) {
+      //Esse erro é porque não existe, então a gente deve criar.
+      if (error instanceof NotFoundException) {
+        if (error.getStatus() === 404) {
+          this.logger.log(
+            `Creating MaterialRequest for SIPAC ID: ${sipacRequisicaoMaterial.numeroDaRequisicao}`
+          );
+          await this.materialRequestsService.create(materialRequestDto);
+          return;
+        }
+      }
+
       this.logger.error(
         `Failed to sync MaterialRequest for SIPAC ID: ${sipacRequisicaoMaterial.numeroDaRequisicao}`,
         error.stack
@@ -719,6 +733,55 @@ export class RequisicoesMateriaisService {
       },
       details: results
     };
+  }
+
+  // persiste os dados de uma requisição de material no banco
+  async fetchCompleteAndPersistCreateOrUpdateRequisicaoMaterialComManutencaoVinculada(
+    numeroAno: string
+  ) {
+    {
+      const exists = await this.prisma.sipacRequisicaoMaterial.findFirst({
+        where: {
+          numeroDaRequisicao: numeroAno
+        }
+      });
+
+      if (exists) {
+        this.logger.log(`A requisição de material já existe. Atualizando...`);
+        const newData =
+          await this.fetchByNumeroAnoAndReturnRequisicaoMaterialComplete(
+            numeroAno
+          );
+        const reqMaterial = await this.persistUpdateRequisicaoMaterial(
+          exists.id,
+          newData
+        );
+
+        //criando também a requisicao de manutencao relacionada
+        // if (reqMaterial.numeroDaRequisicaoRelacionada) {
+        //   await this.requisicoesManutencoesService.fetchCompleteAndPersistCreateOrUpdateRequisicaoManutencao(
+        //     reqMaterial.numeroDaRequisicaoRelacionada
+        //   );
+        // }
+        return reqMaterial;
+      } else {
+        this.logger.log(`A requisição de material não existe. Criando...`);
+        const createData =
+          await this.fetchByNumeroAnoAndReturnRequisicaoMaterialComplete(
+            numeroAno
+          );
+        const reqMaterial =
+          await this.persistCreateRequisicaoMateiral(createData);
+
+        //criando também a requisicao de manutencao relacionada
+        // if (reqMaterial.numeroDaRequisicaoRelacionada) {
+        //   await this.requisicoesManutencoesService.fetchCompleteAndPersistCreateOrUpdateRequisicaoManutencao(
+        //     reqMaterial.numeroDaRequisicaoRelacionada
+        //   );
+        // }
+        return reqMaterial;
+      }
+    }
   }
 }
 export interface ProcessNumeroAnoResult {

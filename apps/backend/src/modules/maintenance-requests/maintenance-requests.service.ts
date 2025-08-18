@@ -323,7 +323,7 @@ export class MaintenanceRequestsService {
         });
       if (!maintenanceRequest) {
         throw new NotFoundException(
-          `MaintenanceRequest with ID ${protocolNumber} not found`
+          `MaintenanceRequest with protocolNumber ${protocolNumber} not found`
         );
       }
       return maintenanceRequest;

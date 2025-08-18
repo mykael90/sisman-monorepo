@@ -5,11 +5,15 @@ import { revalidatePath } from 'next/cache';
 import { getSismanAccessToken } from '@/lib/auth/get-access-token';
 import { fetchApiSisman } from '@/lib/fetch/api-sisman';
 import { IActionResultForm } from '@/types/types-server-actions';
-import { IMaterialRequestAdd, IRequestEdit } from './request-types';
+import {
+  IMaterialRequestAdd,
+  IMaterialRequestWithRelations,
+  IRequestEdit
+} from './material-request-types';
 import { handleApiAction } from '@/lib/fetch/handle-form-action-sisman';
 
 const PAGE_PATH = '/material/request';
-const API_RELATIVE_PATH = '/material/request';
+const API_RELATIVE_PATH = '/material-request';
 
 const logger = new Logger(`${PAGE_PATH}/request-actions`);
 
@@ -45,6 +49,89 @@ export async function showRequest(accessTokenSisman: string, id: number) {
       error
     );
     throw error;
+  }
+}
+interface IRequestDataSearch {
+  requestType: string;
+  requestProtocolNumber: string;
+}
+
+export async function handleMaterialRequestSearch(
+  prevState: IActionResultForm<
+    IRequestDataSearch,
+    IMaterialRequestWithRelations
+  >,
+  data: IRequestDataSearch
+): Promise<
+  IActionResultForm<IRequestDataSearch, IMaterialRequestWithRelations>
+> {
+  let protocolNumber: string | null = null;
+
+  logger.info(`Type and value of data: ${typeof data} - ${data}`);
+
+  try {
+    const accessToken = await getSismanAccessToken();
+
+    const response = await handleApiAction<
+      IRequestDataSearch,
+      IMaterialRequestWithRelations,
+      IRequestDataSearch
+    >(
+      data,
+      data,
+      {
+        endpoint: `${API_RELATIVE_PATH}/protocol`,
+        method: 'GET',
+        accessToken: accessToken,
+        queryParams: { value: data.requestProtocolNumber }
+      },
+      {
+        mainPath: PAGE_PATH
+      },
+      `Dados da requisição de ${data.requestType} nº ${data.requestProtocolNumber} carregados com sucesso.`
+    );
+
+    //Vamos intervir se vier com erro 404, quero modificar a resposta
+    if (!response.isSubmitSuccessful) {
+      if (response.statusCode === 404) {
+        return {
+          ...prevState,
+          ...response,
+          message: `Requisição nº ${data.requestProtocolNumber} não encontrada. Verifique se as informações fornecidas estão corretas`
+        };
+      } else {
+        return {
+          ...prevState,
+          ...response
+        };
+      }
+    }
+
+    //se vier sem erro só retorne
+    return {
+      ...prevState,
+      ...response,
+      message: `Dados da requisição nº ${data.requestProtocolNumber} carregados com sucesso.`
+    };
+  } catch (error: any) {
+    logger.error(
+      `(Server Action) handleMaterialRequestSearch: Erro ao buscar requisição com protocolo ${protocolNumber}.`,
+      error
+    );
+    if (error?.statusCode === 404) {
+      return {
+        ...prevState,
+        isSubmitSuccessful: false,
+        message:
+          'Requisição não encontrada. Favor verifique as informações e tente novamente.'
+      };
+    } else {
+      return {
+        ...prevState,
+        isSubmitSuccessful: false,
+        message: 'Ocorreu um erro inesperado ao buscar a requisição.'
+      };
+    }
   }
 }
 
