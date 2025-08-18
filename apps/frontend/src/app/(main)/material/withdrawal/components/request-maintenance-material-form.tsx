@@ -20,9 +20,8 @@ import { schemaZodRequisicoesSipac } from '@/lib/schema-zod-requisicoes-sipac';
 import { fetchOneAndPersistSipacRequisicoesManutencao } from '../../../sipac/requisicoes-manutencoes/requisicoes-manutencoes-actions';
 import { ISipacRequisicaoManutencaoWithRelations } from '../../../sipac/requisicoes-manutencoes/requisicoes-manutencoes-types';
 import { format } from 'date-fns';
-import { is } from 'date-fns/locale';
 import { IMaterialRequestWithRelations } from '../../request/material-request-types';
-import { fetchOneAndPersistSipacRequisicoesMaterial } from '../../../sipac/requisicoes-materiais/requisicoes-materiais-actions';
+import { handleFetchRequisicaoMaterialComRequisicaoManutencaoVinculada } from '../../../sipac/requisicoes-materiais/requisicoes-materiais-actions';
 import { ISipacRequisicaoMaterialWithRelations } from '../../../sipac/requisicoes-materiais/requisicoes-materiais-types';
 import { handleMaterialRequestSearch } from '../../request/material-request-actions';
 
@@ -127,7 +126,7 @@ export function RequestMaintenanceMaterialForm({
     formActionScrapingMaterial,
     isPendingScrapingMaterial
   ] = useActionState(
-    fetchOneAndPersistSipacRequisicoesMaterial,
+    handleFetchRequisicaoMaterialComRequisicaoManutencaoVinculada,
     initialServerStateScrapingMaterial
   );
 
@@ -263,7 +262,7 @@ export function RequestMaintenanceMaterialForm({
     setMaterialRequestData
   ]);
 
-  //atualizacao de estado de requisicaod de material scraping sipac
+  //atualizacao de estado de requisicao de material scraping sipac
   useEffect(() => {
     if (!isPendingScrapingMaterial && serverStateScrapingMaterial?.message) {
       if (
