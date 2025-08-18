@@ -18,8 +18,9 @@ export async function handleApiAction<
   originalRawData: TSubmittedData, // Recebe os dados brutos originais para retorno em caso de erro
   apiConfig: {
     endpoint: string;
-    method: 'POST' | 'PUT' | 'DELETE' | 'PATCH'; // Métodos comuns de escrita
+    method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
     accessToken: string;
+    queryParams?: Record<string, string>; // Opcional, para passar parâmetros na URL
   },
   revalidationConfig: {
     mainPath: string;
@@ -38,8 +39,10 @@ export async function handleApiAction<
       {
         method: apiConfig.method,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(validatedData)
-      }
+        body:
+          apiConfig.method === 'GET' ? undefined : JSON.stringify(validatedData)
+      },
+      apiConfig.queryParams
     )) as TApiResponseData;
 
     logger.info(

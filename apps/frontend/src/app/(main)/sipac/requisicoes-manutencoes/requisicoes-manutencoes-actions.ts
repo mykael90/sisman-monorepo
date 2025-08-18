@@ -53,56 +53,8 @@ export async function handleFetchRequisicaoManutencao(
 > {
   logger.info(`Type and value of data: ${typeof data} - ${data}`);
 
-  // let numeroAno: string | null = null;
-
-  //Contador para tentativas de submissão do formulário
-  // prevState.submissionAttempts = prevState.submissionAttempts
-  //   ? prevState.submissionAttempts + 1
-  //   : 1;
-
-  // if (typeof data === 'string') {
-  //   numeroAno = data;
-  // } else if (data instanceof FormData) {
-  //   numeroAno = data.get('numeroAno')?.toString() || null;
-  // }
-
-  // if (!numeroAno) {
-  //   return {
-  //     ...prevState,
-  //     isSubmitSuccessful: false,
-  //     message: 'Número de protocolo não fornecido.'
-  //   };
-  // }
-
   try {
     const accessToken = await getSismanAccessToken();
-    // const response = await fetchApiSisman(
-    //   `${API_RELATIVE_PATH}/fetch-one-complete`,
-    //   accessToken,
-    //   {
-    //     method: 'POST',
-    //     body: JSON.stringify({ numeroAno }),
-    //     headers: {
-    //       'Content-Type': 'application/json'
-    //     }
-    //   }
-    // );
-
-    // if (response) {
-    //   return {
-    //     ...prevState,
-    //     isSubmitSuccessful: true,
-    //     message: 'Dados da requisição carregados com sucesso.',
-    //     responseData: response
-    //   };
-    // } else {
-    //   return {
-    //     ...prevState,
-    //     isSubmitSuccessful: false,
-    //     message: 'Requisição não encontrada ou dados inválidos.'
-    //   };
-    // }
-
     const response = await handleApiAction<
       IRequestDataSearch,
       ISipacRequisicaoManutencaoWithRelations,
@@ -121,13 +73,13 @@ export async function handleFetchRequisicaoManutencao(
       `Requisição ${data.numeroAno} buscada com sucesso!`
     );
 
-    //Vamos intervir se vier com erro, quero modificar a resposta
+    //Vamos intervir se vier com erro 404, quero modificar a resposta
     if (!response.isSubmitSuccessful) {
       if (response.statusCode === 404) {
         return {
           ...prevState,
           ...response,
-          message: `Requisição nº ${data.numeroAno} não encontrada.`
+          message: `Requisição nº ${data.numeroAno} não encontrada. Verifique se as informações fornecidas estão corretas`
         };
       } else {
         return {
@@ -137,30 +89,18 @@ export async function handleFetchRequisicaoManutencao(
       }
     }
 
+    //se vier sem erro só retorne
     return {
       ...prevState,
       ...response,
-      message: 'Dados da requisição carregados com sucesso.'
+      message: `Dados da requisição nº ${data.numeroAno} carregados com sucesso.`
     };
   } catch (error) {
     logger.error(
       `(Server Action) handleFetchRequisicaoManutencao: Erro ao buscar requisição com protocolo ${data.numeroAno}.`,
       error
     );
-    //   if (error?.statusCode === 404) {
-    //     return {
-    //       ...prevState,
-    //       isSubmitSuccessful: false,
-    //       message:
-    //         'Requisição não encontrada. Favor verifique as informações e tente novamente.'
-    //     };
-    //   } else {
-    //     return {
-    //       ...prevState,
-    //       isSubmitSuccessful: false,
-    //       message: 'Ocorreu um erro inesperado ao buscar a requisição.'
-    //     };
-    //   }
+
     return {
       isSubmitSuccessful: false,
       errorsServer: [

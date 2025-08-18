@@ -51,53 +51,66 @@ export async function handleMaintenanceRequestSearch(
     IRequestDataSearch,
     IMaintenanceRequestWithRelations
   >,
-  formData: FormData | string
+  data: IRequestDataSearch
 ): Promise<
   IActionResultForm<IRequestDataSearch, IMaintenanceRequestWithRelations>
 > {
   let protocolNumber: string | null = null;
 
-  //Contador para tentativas de submissão do formulário
-  prevState.submissionAttempts = prevState.submissionAttempts
-    ? prevState.submissionAttempts + 1
-    : 1;
-
-  if (typeof formData === 'string') {
-    protocolNumber = formData;
-  } else if (formData instanceof FormData) {
-    protocolNumber = formData.get('requestProtocolNumber')?.toString() || null;
-  }
-
-  if (!protocolNumber) {
-    return {
-      ...prevState,
-      isSubmitSuccessful: false,
-      message: 'Número de protocolo não fornecido.'
-    };
-  }
+  logger.info(`Type and value of data: ${typeof data} - ${data}`);
 
   try {
     const accessToken = await getSismanAccessToken();
-    const response = await fetchApiSisman(
-      `${API_RELATIVE_PATH}/protocol?value=${protocolNumber}`,
-      accessToken,
-      { cache: 'force-cache' }
+
+    const response = await handleApiAction<
+      IRequestDataSearch,
+      IMaintenanceRequestWithRelations,
+      IRequestDataSearch
+    >(
+      data,
+      data,
+      {
+        endpoint: `${API_RELATIVE_PATH}/protocol`,
+        method: 'GET',
+        accessToken: accessToken,
+        queryParams: { value: data.requestProtocolNumber }
+      },
+      {
+        mainPath: PAGE_PATH
+      },
+      `Dados da requisição de ${data.requestType} nº ${data.requestProtocolNumber} carregados com sucesso.`
     );
 
-    if (response) {
-      return {
-        ...prevState,
-        isSubmitSuccessful: true,
-        message: 'Dados da requisição carregados com sucesso.',
-        responseData: response
-      };
-    } else {
-      return {
-        ...prevState,
-        isSubmitSuccessful: false,
-        message: 'Requisição não encontrada ou dados inválidos.'
-      };
+    //Vamos intervir se vier com erro 404, quero modificar a resposta
+
+    // const response = await fetchApiSisman(
+    //   `${API_RELATIVE_PATH}/protocol?value=${protocolNumber}`,
+    //   accessToken,
+    //   { cache: 'force-cache' }
+    // );
+
+    //Vamos intervir se vier com erro 404, quero modificar a resposta
+    if (!response.isSubmitSuccessful) {
+      if (response.statusCode === 404) {
+        return {
+          ...prevState,
+          ...response,
+          message: `Requisição nº ${data.requestProtocolNumber} não encontrada. Verifique se as informações fornecidas estão corretas`
+        };
+      } else {
+        return {
+          ...prevState,
+          ...response
+        };
+      }
     }
+
+    //se vier sem erro só retorne
+    return {
+      ...prevState,
+      ...response,
+      message: `Dados da requisição nº ${data.requestProtocolNumber} carregados com sucesso.`
+    };
   } catch (error: any) {
     logger.error(
       `(Server Action) handleMaintenanceRequestSearch: Erro ao buscar requisição com protocolo ${protocolNumber}.`,

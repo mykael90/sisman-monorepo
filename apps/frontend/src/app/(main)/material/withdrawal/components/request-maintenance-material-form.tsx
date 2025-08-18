@@ -14,7 +14,7 @@ import { formatRequestNumber } from '@/lib/form-utils';
 import { Search } from 'lucide-react';
 import { toast } from 'sonner';
 import { useRef } from 'react';
-import { handleMaintenanceRequestSearch } from '../../../maintenance/request/request-actions';
+import { handleMaintenanceRequestSearch } from '../../../maintenance/request/maintenance-request-actions';
 import { IMaintenanceRequestWithRelations } from '../../../maintenance/request/request-types';
 import { schemaZodRequisicoesSipac } from '@/lib/schema-zod-requisicoes-sipac';
 
@@ -79,7 +79,7 @@ export function RequestMaintenanceMaterialForm({
     if (value.requestType === 'maintenanceRequest') {
       return formatRequestNumber(value.requestProtocolNumber);
     } else if (value.requestType === 'materialRequest') {
-      return null;
+      return formatRequestNumber(value.requestProtocolNumber);
     } else {
       console.error('Invalid request type:', value.requestType);
     }
@@ -94,10 +94,10 @@ export function RequestMaintenanceMaterialForm({
       [serverStateDataSearch]
     ),
     onSubmit: async ({ value }) => {
-      const formattedRequestNumber = getRequestData(value);
-      if (formattedRequestNumber) {
+      if (value.requestProtocolNumber) {
+        value.requestProtocolNumber = getRequestData(value);
         startTransition(() => {
-          formActionDataSearch(formattedRequestNumber);
+          formActionDataSearch(value);
         });
       }
     }

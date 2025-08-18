@@ -2,7 +2,7 @@ import { Suspense } from 'react';
 import {
   getRefreshedMaintenanceRequests,
   getMaintenanceRequests
-} from './request-actions';
+} from './maintenance-request-actions';
 import Logger from '@/lib/logger';
 import { getSismanAccessToken } from '@/lib/auth/get-access-token';
 import Loading from '../../loading';

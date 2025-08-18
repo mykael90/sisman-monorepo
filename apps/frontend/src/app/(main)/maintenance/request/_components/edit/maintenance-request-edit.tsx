@@ -1,7 +1,7 @@
 'use client';
 
 import { MaintenanceRequestForm } from '../form/maintenance-request-form';
-import { updateMaintenanceRequest } from '../../request-actions';
+import { updateMaintenanceRequest } from '../../maintenance-request-actions';
 import { useRouter } from 'next/navigation';
 
 export function MaintenanceRequestEdit({ id }: { id: number }) {

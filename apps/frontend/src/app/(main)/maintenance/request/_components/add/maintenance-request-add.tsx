@@ -1,7 +1,7 @@
 'use client';
 
 import { MaintenanceRequestForm } from '../form/maintenance-request-form';
-import { addMaintenanceRequest } from '../../request-actions';
+import { addMaintenanceRequest } from '../../maintenance-request-actions';
 import { useRouter } from 'next/navigation';
 import { IMaintenanceRequestRelatedData } from '../../request-types';
 
