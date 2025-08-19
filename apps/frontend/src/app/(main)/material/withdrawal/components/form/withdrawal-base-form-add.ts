@@ -5,15 +5,16 @@ import {
   IMaterialWithdrawalItemAdd
 } from '../../withdrawal-types';
 
-export type IMaterialWithdrawalItemAddForm = IMaterialWithdrawalItemAdd &
-  Omit<IMaterialGlobalCatalogAdd, 'id'> & {
-    key: number;
-    freeBalanceQuantity: number;
-    physicalOnHandQuantity: number;
-  };
+export type IMaterialWithdrawalItemAddForm =
+  Partial<IMaterialWithdrawalItemAdd> &
+    Omit<IMaterialGlobalCatalogAdd, 'id' | 'materialWithdrawalId'> & {
+      key: number;
+      freeBalanceQuantity: number;
+      physicalOnHandQuantity: number;
+    };
 
 export interface IMaterialWithdrawalAddForm extends IMaterialWithdrawalAdd {
-  items: IMaterialWithdrawalItemAdd[];
+  items: IMaterialWithdrawalItemAddForm[];
   collectorType: string;
 }
 

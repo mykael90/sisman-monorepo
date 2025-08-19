@@ -14,7 +14,7 @@ interface MaterialTableProps {
   readOnly?: boolean;
 }
 
-export function ItemsTableFormArray({
+export function ItemsGlobalWithdrawalTableFormArray({
   materials,
   onRemove,
   onUpdateQuantity,

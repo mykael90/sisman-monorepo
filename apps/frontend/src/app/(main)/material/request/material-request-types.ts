@@ -1,4 +1,5 @@
 import { MaterialRequest, Prisma } from '@sisman/prisma';
+import { IMaterialGlobalCatalog } from '../global-catalog/material-global-catalog-types';
 
 export type IMaterialRequestWithRelations = Prisma.MaterialRequestGetPayload<{
   include: { maintenanceRequest: true };
@@ -25,20 +26,22 @@ export type IMaterialRequestRelatedData = {
 
 export interface IMaterialRequestBalanceWithRelations
   extends IMaterialRequestWithRelations {
-  items: ItemMaterialRequestBalance[];
+  items?: IMaterialGlobalCatalog[];
+  itemsBalance?: IItemMaterialRequestBalance[];
 }
 
-export interface ItemMaterialRequestBalance {
-  id: number;
-  materialRequestId: number;
-  itemRequestType: 'GLOBAL_CATALOG' | string; // Pode ser mais específico se houver outros tipos
-  requestedGlobalMaterialId: string;
-  fulfilledByInstanceId: number | null;
-  quantityRequested: string; // Pode ser string ou number, dependendo do uso
+export interface IItemMaterialRequestBalance {
+  globalMaterialId: string;
+  materialRequestItemId: number;
+  name: string;
+  description: string;
+  unitOfMeasure: string;
+  quantityRequested: string;
   quantityApproved: string;
-  quantityDelivered: string;
-  unitPrice: string;
-  notes: string | null;
-  createdAt: string; // Pode ser Date se for convertido
-  updatedAt: string;
+  quantityReceivedSum: string;
+  quantityWithdrawnSum: string;
+  quantityReserved: string;
+  quantityRestricted: string;
+  quantityFreeBalanceEffective: string;
+  quantityFreeBalancePotential: string;
 }

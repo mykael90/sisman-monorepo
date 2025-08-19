@@ -12,7 +12,7 @@ import {
   IMaterialWithdrawalItemAddForm
 } from './withdrawal-base-form-add';
 import { IMaterialGlobalCatalogWithRelations } from '../../../global-catalog/material-global-catalog-types';
-import { ItemsTableFormArray } from './items-table-form-array';
+import { ItemsGlobalWithdrawalTableFormArray } from './items-global-withdrawal-table-form-array';
 
 const logger = new Logger(`material-items-field`);
 interface MaterialItemsFieldProps {
@@ -73,7 +73,7 @@ export const ItemsFieldArray: FC<MaterialItemsFieldProps> = ({
         );
         field.pushValue({
           key: Date.now(), // Temporary ID
-          materialWithdrawalId: 1, // Placeholder
+          // materialWithdrawalId: 1, // Placeholder
           name: materialToAdd.name,
           globalMaterialId: materialToAdd.id,
           materialInstanceId: undefined, // Assuming global material for now
@@ -138,7 +138,7 @@ export const ItemsFieldArray: FC<MaterialItemsFieldProps> = ({
           Add
         </Button> */}
       </div>
-      <ItemsTableFormArray
+      <ItemsGlobalWithdrawalTableFormArray
         materials={field.state.value}
         onRemove={handleRemoveMaterial}
         onUpdateQuantity={handleUpdateQuantity}

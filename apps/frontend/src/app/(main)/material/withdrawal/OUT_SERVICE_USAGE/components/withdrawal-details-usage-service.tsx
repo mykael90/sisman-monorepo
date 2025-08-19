@@ -30,17 +30,7 @@ import {
 export function WithdrawalDetailUsageService({
   formWithdrawal
 }: {
-  formWithdrawal: FormApi<
-    IMaterialWithdrawalAddForm,
-    FormValidateOrFn<IMaterialWithdrawalAddForm> | undefined,
-    FormValidateOrFn<IMaterialWithdrawalAddForm> | undefined,
-    FormAsyncValidateOrFn<IMaterialWithdrawalAddForm> | undefined,
-    FormValidateOrFn<IMaterialWithdrawalAddForm> | undefined,
-    FormAsyncValidateOrFn<IMaterialWithdrawalAddForm> | undefined,
-    any,
-    any,
-    any
-  >;
+  formWithdrawal: any;
 }) {
   return (
     <Card>

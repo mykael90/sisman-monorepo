@@ -12,15 +12,19 @@ export function FormListBox({
   options,
   onValueChange,
   highlightFirstOnNoMatch = false,
+  placeholder = 'Filtrar registros...',
+  notFoundMessage = 'Nenhum registro encontrado.',
   ...props
 }: {
   field: AnyFieldApi;
   label: string;
   showLabel?: boolean;
   className?: string;
-  options: { value: string | number; label: string }[];
+  options: { value: string | number; label: string }[] | null;
   onValueChange?: (value: string) => void;
   highlightFirstOnNoMatch?: boolean;
+  placeholder?: string;
+  notFoundMessage?: string;
   [key: string]: any;
 }) {
   const [filter, setFilter] = useState('');
@@ -29,14 +33,16 @@ export function FormListBox({
   const listRef = useRef<HTMLDivElement>(null);
 
   const filteredOptions = useMemo(() => {
-    return options.filter((option) =>
-      String(option.label).toLowerCase().includes(filter.toLowerCase())
+    return (
+      options?.filter((option) =>
+        String(option.label).toLowerCase().includes(filter.toLowerCase())
+      ) ?? []
     );
   }, [options, filter]);
 
   // Determine the index of the currently selected value
   const selectedValueIndex = useMemo(() => {
-    return filteredOptions.findIndex(
+    return filteredOptions?.findIndex(
       (option) => String(option.value) === value
     );
   }, [filteredOptions, value]);
@@ -57,7 +63,7 @@ export function FormListBox({
     keyboardFocusedIndex,
     selectedValueIndex,
     filteredOptions.length,
-    highlightFirstOnNoMatch,
+    highlightFirstOnNoMatch
   ]);
 
   // This useEffect is for scrolling the focused item into view, which is a valid side effect.
@@ -118,7 +124,7 @@ export function FormListBox({
       )}
       <Input
         type='text'
-        placeholder='Filtrar requisições...'
+        placeholder={placeholder}
         value={filter}
         onChange={(e) => {
           setFilter(e.target.value);
@@ -159,9 +165,7 @@ export function FormListBox({
             </div>
           ))
         ) : (
-          <p className='text-muted-foreground p-1 text-sm'>
-            Nenhuma requisição encontrada.
-          </p>
+          <p className='text-muted-foreground p-1 text-sm'>{notFoundMessage}</p>
         )}
       </div>
       {!field.state.meta.isValid && field.state.meta.isBlurred ? (

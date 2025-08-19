@@ -200,7 +200,11 @@ export class MaterialRequestsService {
         this.prisma.materialRequest.findUnique({
           where: { id },
           include: {
-            items: true,
+            items: {
+              include: {
+                requestedGlobalMaterial: true
+              }
+            },
             // Removemos as relações que vamos agregar manualmente
             // materialReceipts: { include: { items: true } },
             // materialWithdrawals: true,
@@ -365,6 +369,9 @@ export class MaterialRequestsService {
         return {
           globalMaterialId,
           materialRequestItemId,
+          name: item.requestedGlobalMaterial?.name,
+          description: item.requestedGlobalMaterial?.description,
+          unitOfMeasure: item.requestedGlobalMaterial?.unitOfMeasure,
           quantityRequested,
           quantityApproved,
           quantityReceivedSum,

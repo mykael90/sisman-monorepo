@@ -59,9 +59,12 @@ export function removeUnreferencedKeys<
 export function formatRequestNumber(req: string): string {
   const currentYear = new Date().getFullYear();
 
-  if (req.includes('/')) {
-    return req;
-  } else {
-    return `${req}/${currentYear}`;
+  if (req.length > 0) {
+    if (req.includes('/')) {
+      return req;
+    } else {
+      return `${req}/${currentYear}`;
+    }
   }
+  return '';
 }

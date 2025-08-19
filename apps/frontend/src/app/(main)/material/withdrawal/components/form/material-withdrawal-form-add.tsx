@@ -1,7 +1,15 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { mergeForm, useForm, useTransform } from '@tanstack/react-form';
+import {
+  FormApi,
+  FormAsyncValidateOrFn,
+  FormValidateFn,
+  mergeForm,
+  useForm,
+  useTransform,
+  ValidatorFn
+} from '@tanstack/react-form';
 import { FilePlus } from 'lucide-react';
 import { FC, useActionState, useState } from 'react';
 import { IActionResultForm } from '@/types/types-server-actions';
@@ -107,6 +115,8 @@ export function MaterialWithdrawalFormAdd({
 
   return (
     <div className='space-y-6'>
+      {console.log(typeof formWithdrawal)}
+
       {/* Formulário para fazer consulta de requisição de manutenção ou material */}
       {RequestMaintenanceMaterialForm && (
         <RequestMaintenanceMaterialForm
@@ -144,16 +154,17 @@ export function MaterialWithdrawalFormAdd({
           )}
 
           {/* Material Requisition Link */}
-          {CardMaterialLinkDetails && (
-            <CardMaterialLinkDetails
-              linkMaterialRequest={linkMaterialRequest}
-              setLinkMaterialRequest={setLinkMaterialRequest}
-              formWithdrawal={formWithdrawal}
-              materialRequestDataLinked={
-                maintenanceRequestData?.materialRequests
-              }
-            />
-          )}
+          {CardMaterialLinkDetails &&
+            maintenanceRequestData?.materialRequests && (
+              <CardMaterialLinkDetails
+                linkMaterialRequest={linkMaterialRequest}
+                setLinkMaterialRequest={setLinkMaterialRequest}
+                formWithdrawal={formWithdrawal}
+                materialRequestDataLinked={
+                  maintenanceRequestData?.materialRequests
+                }
+              />
+            )}
 
           {/* Items for Withdrawal */}
           {!linkMaterialRequest && (

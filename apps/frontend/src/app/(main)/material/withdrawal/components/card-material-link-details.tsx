@@ -5,11 +5,19 @@ import { Switch } from '@/components/ui/switch';
 import { FormListBox } from '@/components/form-tanstack/form-list-box';
 import { Label } from '@/components/ui/label';
 import { format } from 'date-fns';
-import { ItemsTableFormArray } from './form/items-table-form-array';
+import { ItemsGlobalWithdrawalTableFormArray } from './form/items-global-withdrawal-table-form-array';
 import { startTransition, useState } from 'react';
 import { IActionResultForm } from '../../../../../types/types-server-actions';
 import { handleMaterialRequestBalanceSearch } from '../../request/material-request-actions';
-import { IMaterialRequestBalanceWithRelations } from '../../request/material-request-types';
+import {
+  IItemMaterialRequestBalance,
+  IMaterialRequestBalanceWithRelations
+} from '../../request/material-request-types';
+import { IMaterialWithdrawalItemAddForm } from './form/withdrawal-base-form-add';
+import {
+  IMaterialWithdrawalItemMatRequestAddForm,
+  ItemsRequestMatWithdrawalTableFormArray
+} from './form/items-request-mat-withdrawal-table-form-array';
 
 const initialServerStateRequestMaterialBalance: IActionResultForm<
   string,
@@ -52,65 +60,72 @@ export function CardMaterialRequestLinkDetails({
       </CardHeader>
       {linkMaterialRequest && (
         <CardContent className='space-y-4'>
-          <>
+          <div className='flex flex-col gap-4 md:flex-row'>
             {/* {JSON.stringify(materialRequestBalance)} */}
-            <formWithdrawal.Field
-              name='materialRequestId'
-              children={(field) => (
-                <FormListBox
-                  field={field}
-                  label='Requisições de Material Disponíveis'
-                  options={materialRequestDataLinked?.map((item: any) => ({
-                    value: item.id,
-                    label: item.protocolNumber
-                  }))}
-                  onValueChange={(value) => {
-                    // Simulate fetching data based on selected requisition
-                    //TODO: implementar logica
-                    if (value) {
-                      startTransition(async () => {
-                        const response =
-                          await handleMaterialRequestBalanceSearch(
-                            initialServerStateRequestMaterialBalance,
-                            value
-                          );
-                        if (response.isSubmitSuccessful) {
-                          setMaterialRequestBalance(
-                            response.responseData as IMaterialRequestBalanceWithRelations
-                          );
-                        }
-                      });
-                      // setMaterialRequestBalance({
-                      //   protocolNumber: '16349/2025',
-                      //   sipacUserLoginRequest: 'eduardo.kennedi',
-                      //   requestValue: '77.97',
-                      //   servedValue: '77.97',
-                      //   currentStatus: 'FULLY_ATTENDED',
-                      //   requestDate: '2025-06-04T00:00:00.000-03:00',
-                      //   itemsBalance: [
-                      //     {
-                      //       globalMaterialId: '302400026133',
-                      //       materialRequestItemId: 247,
-                      //       quantityRequested: '1',
-                      //       quantityApproved: '1',
-                      //       quantityReceivedSum: '0',
-                      //       quantityWithdrawnSum: '0',
-                      //       quantityReserved: '0',
-                      //       quantityRestricted: '0',
-                      //       quantityFreeBalanceEffective: '0',
-                      //       quantityFreeBalancePotential: '1'
-                      //     }
-                      //   ]
-                      // });
-                    } else {
-                    }
-                  }}
-                />
-              )}
-            />
+            <div className='w-full md:w-1/4'>
+              <formWithdrawal.Field
+                name='materialRequestId'
+                children={(field) => (
+                  <FormListBox
+                    field={field}
+                    label='Requisições de Material Associadas'
+                    placeholder='Filtrar requisições...'
+                    notFoundMessage='Nenhuma requisição encontrada.'
+                    options={materialRequestDataLinked?.map(
+                      (item: IMaterialRequestBalanceWithRelations) => ({
+                        value: item.id,
+                        label: `${item.protocolNumber} (${item.sipacUserLoginRequest})`
+                      })
+                    )}
+                    onValueChange={(value) => {
+                      // Simulate fetching data based on selected requisition
+                      //TODO: implementar logica
+                      if (value) {
+                        startTransition(async () => {
+                          const response =
+                            await handleMaterialRequestBalanceSearch(
+                              initialServerStateRequestMaterialBalance,
+                              value
+                            );
+                          if (response.isSubmitSuccessful) {
+                            setMaterialRequestBalance(
+                              response.responseData as IMaterialRequestBalanceWithRelations
+                            );
+                          }
+                        });
+                        // setMaterialRequestBalance({
+                        //   protocolNumber: '16349/2025',
+                        //   sipacUserLoginRequest: 'eduardo.kennedi',
+                        //   requestValue: '77.97',
+                        //   servedValue: '77.97',
+                        //   currentStatus: 'FULLY_ATTENDED',
+                        //   requestDate: '2025-06-04T00:00:00.000-03:00',
+                        //   itemsBalance: [
+                        //     {
+                        //       globalMaterialId: '302400026133',
+                        //       materialRequestItemId: 247,
+                        //       quantityRequested: '1',
+                        //       quantityApproved: '1',
+                        //       quantityReceivedSum: '0',
+                        //       quantityWithdrawnSum: '0',
+                        //       quantityReserved: '0',
+                        //       quantityRestricted: '0',
+                        //       quantityFreeBalanceEffective: '0',
+                        //       quantityFreeBalancePotential: '1'
+                        //     }
+                        //   ]
+                        // });
+                      } else {
+                      }
+                    }}
+                    showLabel={false}
+                  />
+                )}
+              />
+            </div>
             {materialRequestBalance && (
-              <div className='space-y-4'>
-                <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+              <div className='w-full'>
+                <div className='grid grid-cols-1 gap-4 md:grid-cols-3'>
                   <div className='space-y-2'>
                     <Label>Número do Protocolo</Label>
                     <p className='text-muted-foreground'>
@@ -149,25 +164,44 @@ export function CardMaterialRequestLinkDetails({
                     </p>
                   </div>
                 </div>
-                <h3 className='text-md font-semibold'>Itens da Requisição</h3>
-                {/* <ItemsTableFormArray
-                  materials={materialRequestBalance.items.map((item: any) => ({
-                    id: item.materialRequestItemId,
-                    code: item.globalMaterialId,
-                    description: 'Material Description (Placeholder)', // You might need to fetch this based on globalMaterialId
-                    unit: 'UN', // Placeholder
-                    freeBalanceQuantity: parseInt(
-                      item.quantityFreeBalancePotential
-                    ),
-                    qtyToRemove: parseInt(item.quantityRequested)
-                  }))}
-                  onRemove={() => {}} // No remove action for linked items
-                  onUpdateQuantity={() => {}} // No quantity update for linked items
-                  readOnly={false} // Make quantity editable for linked items
-                /> */}
               </div>
             )}
-          </>
+          </div>
+          <div>
+            <h3 className='text-md font-semibold'>Itens da Requisição</h3>
+            {materialRequestBalance && (
+              <ItemsRequestMatWithdrawalTableFormArray
+                materials={
+                  materialRequestBalance?.itemsBalance?.map(
+                    (item: IItemMaterialRequestBalance) => ({
+                      key: Date.now() + Math.random(),
+                      name: item.name,
+                      globalMaterialId: item.globalMaterialId,
+                      materialInstanceId: undefined, // Assuming global material for now
+                      description: item.description,
+                      unitOfMeasure: item.unitOfMeasure, // You might need to fetch this based on globalMaterialId
+                      quantityWithdrawn: 1, // Default quantity
+                      quantityFreeBalancePotential: Number(
+                        item.quantityFreeBalancePotential
+                      ),
+                      quantityRequested: Number(item.quantityRequested),
+                      quantityApproved: Number(item.quantityApproved),
+                      quantityReceivedSum: Number(item.quantityReceivedSum),
+                      quantityWithdrawnSum: Number(item.quantityWithdrawnSum),
+                      quantityReserved: Number(item.quantityReserved),
+                      quantityRestricted: Number(item.quantityRestricted),
+                      quantityFreeBalanceEffective: Number(
+                        item.quantityFreeBalanceEffective
+                      )
+                    })
+                  ) as IMaterialWithdrawalItemMatRequestAddForm[]
+                }
+                onRemove={() => {}} // No remove action for linked items
+                onUpdateQuantity={() => {}} // No quantity update for linked items
+                readOnly={false} // Make quantity editable for linked items
+              />
+            )}
+          </div>
         </CardContent>
       )}
     </Card>
