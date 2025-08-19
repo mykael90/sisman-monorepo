@@ -151,7 +151,7 @@ export function RequestMaintenanceMaterialForm({
           );
         } else {
           toast.warning(
-            `Requisição de nº ${serverStateMaintenanceSearch.submittedData?.requestProtocolNumber} não encontrada. Será realizada uma tentativa de importação via SIPAC. Favor aguarde.`
+            `Requisição de manutenção nº ${serverStateMaintenanceSearch.submittedData?.requestProtocolNumber} não encontrada. Será realizada uma tentativa de importação via SIPAC. Favor aguarde.`
           );
           setMaintenanceRequestData(null);
 
@@ -234,7 +234,7 @@ export function RequestMaintenanceMaterialForm({
           }
         } else {
           toast.warning(
-            `Requisição de nº ${serverStateMaterialSearch.submittedData?.requestProtocolNumber} não encontrada. Será realizada uma tentativa de importação via SIPAC. Favor aguarde.`
+            `Requisição de material nº ${serverStateMaterialSearch.submittedData?.requestProtocolNumber} não encontrada. Será realizada uma tentativa de importação via SIPAC. Favor aguarde.`
           );
           setMaterialRequestData(null);
 

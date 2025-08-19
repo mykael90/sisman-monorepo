@@ -7,6 +7,7 @@ import { fetchApiSisman } from '@/lib/fetch/api-sisman';
 import { IActionResultForm } from '@/types/types-server-actions';
 import {
   IMaterialRequestAdd,
+  IMaterialRequestBalanceWithRelations,
   IMaterialRequestWithRelations,
   IRequestEdit
 } from './material-request-types';
@@ -88,7 +89,7 @@ export async function handleMaterialRequestSearch(
       {
         mainPath: PAGE_PATH
       },
-      `Dados da requisição de ${data.requestType} nº ${data.requestProtocolNumber} carregados com sucesso.`
+      `Dados da requisição de material nº ${data.requestProtocolNumber} carregados com sucesso.`
     );
 
     //Vamos intervir se vier com erro 404, quero modificar a resposta
@@ -97,7 +98,7 @@ export async function handleMaterialRequestSearch(
         return {
           ...prevState,
           ...response,
-          message: `Requisição nº ${data.requestProtocolNumber} não encontrada. Verifique se as informações fornecidas estão corretas`
+          message: `Requisição de material nº ${data.requestProtocolNumber} não encontrada. Verifique se as informações fornecidas estão corretas`
         };
       } else {
         return {
@@ -110,8 +111,7 @@ export async function handleMaterialRequestSearch(
     //se vier sem erro só retorne
     return {
       ...prevState,
-      ...response,
-      message: `Dados da requisição nº ${data.requestProtocolNumber} carregados com sucesso.`
+      ...response
     };
   } catch (error: any) {
     logger.error(
@@ -122,8 +122,7 @@ export async function handleMaterialRequestSearch(
       return {
         ...prevState,
         isSubmitSuccessful: false,
-        message:
-          'Requisição não encontrada. Favor verifique as informações e tente novamente.'
+        message: `Requisição de material nº ${data.requestProtocolNumber} não encontrada. Favor verifique as informações e tente novamente.`
       };
     } else {
       return {
@@ -133,26 +132,6 @@ export async function handleMaterialRequestSearch(
       };
     }
   }
-}
-
-interface ItemBalance {
-  id: number;
-  materialRequestId: number;
-  itemRequestType: 'GLOBAL_CATALOG' | string; // Pode ser mais específico se houver outros tipos
-  requestedGlobalMaterialId: string;
-  fulfilledByInstanceId: number | null;
-  quantityRequested: string; // Pode ser string ou number, dependendo do uso
-  quantityApproved: string;
-  quantityDelivered: string;
-  unitPrice: string;
-  notes: string | null;
-  createdAt: string; // Pode ser Date se for convertido
-  updatedAt: string;
-}
-
-export interface IMaterialRequestBalanceWithRelations
-  extends IMaterialRequestWithRelations {
-  items: ItemBalance[];
 }
 
 export async function handleMaterialRequestBalanceSearch(
@@ -179,7 +158,7 @@ export async function handleMaterialRequestBalanceSearch(
       {
         mainPath: PAGE_PATH
       },
-      `Dados da requisição carregados com sucesso.`
+      `Dados da requisição de material id ${id} carregados com sucesso.`
     );
 
     //Vamos intervir se vier com erro 404, quero modificar a resposta
@@ -202,7 +181,7 @@ export async function handleMaterialRequestBalanceSearch(
     return {
       ...prevState,
       ...response,
-      message: `Dados da requisição id ${id} carregados com sucesso.`
+      message: `Dados da requisição de material id ${id} carregados com sucesso.`
     };
   } catch (error: any) {
     logger.error(

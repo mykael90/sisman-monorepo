@@ -11,6 +11,7 @@ export function FormListBox({
   className = '',
   options,
   onValueChange,
+  highlightFirstOnNoMatch = false,
   ...props
 }: {
   field: AnyFieldApi;
@@ -19,6 +20,7 @@ export function FormListBox({
   className?: string;
   options: { value: string | number; label: string }[];
   onValueChange?: (value: string) => void;
+  highlightFirstOnNoMatch?: boolean;
   [key: string]: any;
 }) {
   const [filter, setFilter] = useState('');
@@ -44,12 +46,19 @@ export function FormListBox({
     if (keyboardFocusedIndex !== -1) {
       return keyboardFocusedIndex;
     }
-    // If no keyboard focus, highlight the selected value or the first item if available
     if (selectedValueIndex !== -1) {
       return selectedValueIndex;
     }
-    return filteredOptions.length > 0 ? 0 : -1;
-  }, [keyboardFocusedIndex, selectedValueIndex, filteredOptions.length]);
+    if (highlightFirstOnNoMatch && filteredOptions.length > 0) {
+      return 0;
+    }
+    return -1;
+  }, [
+    keyboardFocusedIndex,
+    selectedValueIndex,
+    filteredOptions.length,
+    highlightFirstOnNoMatch,
+  ]);
 
   // This useEffect is for scrolling the focused item into view, which is a valid side effect.
   useEffect(() => {

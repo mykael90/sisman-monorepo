@@ -8,10 +8,8 @@ import { format } from 'date-fns';
 import { ItemsTableFormArray } from './form/items-table-form-array';
 import { startTransition, useState } from 'react';
 import { IActionResultForm } from '../../../../../types/types-server-actions';
-import {
-  handleMaterialRequestBalanceSearch,
-  IMaterialRequestBalanceWithRelations
-} from '../../request/material-request-actions';
+import { handleMaterialRequestBalanceSearch } from '../../request/material-request-actions';
+import { IMaterialRequestBalanceWithRelations } from '../../request/material-request-types';
 
 const initialServerStateRequestMaterialBalance: IActionResultForm<
   string,
@@ -34,7 +32,7 @@ export function CardMaterialRequestLinkDetails({
   materialRequestDataLinked: any;
 }) {
   const [materialRequestBalance, setMaterialRequestBalance] =
-    useState<IMaterialRequestBalanceWithRelations>(null);
+    useState<IMaterialRequestBalanceWithRelations | null>(null);
 
   return (
     <Card>

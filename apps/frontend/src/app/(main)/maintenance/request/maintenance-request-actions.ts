@@ -78,7 +78,7 @@ export async function handleMaintenanceRequestSearch(
       {
         mainPath: PAGE_PATH
       },
-      `Dados da requisição de ${data.requestType} nº ${data.requestProtocolNumber} carregados com sucesso.`
+      `Dados da requisição de manutenção nº ${data.requestProtocolNumber} carregados com sucesso.`
     );
 
     //Vamos intervir se vier com erro 404, quero modificar a resposta
@@ -95,7 +95,7 @@ export async function handleMaintenanceRequestSearch(
         return {
           ...prevState,
           ...response,
-          message: `Requisição nº ${data.requestProtocolNumber} não encontrada. Verifique se as informações fornecidas estão corretas`
+          message: `Requisição de manutenção nº ${data.requestProtocolNumber} não encontrada. Verifique se as informações fornecidas estão corretas`
         };
       } else {
         return {
@@ -108,8 +108,7 @@ export async function handleMaintenanceRequestSearch(
     //se vier sem erro só retorne
     return {
       ...prevState,
-      ...response,
-      message: `Dados da requisição nº ${data.requestProtocolNumber} carregados com sucesso.`
+      ...response
     };
   } catch (error: any) {
     logger.error(
