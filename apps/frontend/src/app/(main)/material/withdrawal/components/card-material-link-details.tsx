@@ -187,9 +187,9 @@ export function CardMaterialRequestLinkDetails({
               </div>
             )}
           </div>
-          <div>
-            <h3 className='text-md font-semibold'>Itens da Requisição</h3>
-            {materialRequestBalance && (
+          {materialRequestBalance && (
+            <div>
+              <h3 className='text-md font-semibold'>Itens da Requisição</h3>
               <ItemsRequestMatWithdrawalTableFormArray
                 materials={
                   materialRequestBalance?.itemsBalance?.map(
@@ -220,8 +220,8 @@ export function CardMaterialRequestLinkDetails({
                 onUpdateQuantity={() => {}} // No quantity update for linked items
                 readOnly={false} // Make quantity editable for linked items
               />
-            )}
-          </div>
+            </div>
+          )}
         </CardContent>
       )}
     </Card>
