@@ -92,6 +92,22 @@ export function CardMaterialRequestLinkDetails({
                             setMaterialRequestBalance(
                               response.responseData as IMaterialRequestBalanceWithRelations
                             );
+                            formWithdrawal.setFieldValue(
+                              'items',
+                              response.responseData?.itemsBalance?.map(
+                                (item: IItemMaterialRequestBalance) => ({
+                                  key: Date.now() + Math.random(),
+                                  name: item.name,
+                                  globalMaterialId: item.globalMaterialId,
+                                  materialInstanceId: undefined, // Assuming global material for now
+                                  description: item.description,
+                                  unitOfMeasure: item.unitOfMeasure,
+                                  quantityWithdrawn: Number(
+                                    item.quantityFreeBalancePotential
+                                  )
+                                })
+                              )
+                            );
                           }
                         });
                         // setMaterialRequestBalance({
