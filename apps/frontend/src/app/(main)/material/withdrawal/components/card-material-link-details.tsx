@@ -6,7 +6,7 @@ import { FormListBox } from '@/components/form-tanstack/form-list-box';
 import { Label } from '@/components/ui/label';
 import { format } from 'date-fns';
 import { ItemsGlobalWithdrawalTableFormArray } from './form/items-global-withdrawal-table-form-array';
-import { startTransition, useState } from 'react';
+import { startTransition, useState, useEffect } from 'react';
 import { IActionResultForm } from '../../../../../types/types-server-actions';
 import { handleMaterialRequestBalanceSearch } from '../../request/material-request-actions';
 import {
@@ -42,6 +42,30 @@ export function CardMaterialRequestLinkDetails({
 }) {
   const [materialRequestBalance, setMaterialRequestBalance] =
     useState<IMaterialRequestBalanceWithRelations | null>(null);
+
+  useEffect(() => {
+    if (
+      materialRequestBalance?.itemsBalance &&
+      materialRequestBalance?.itemsBalance?.length > 0
+    ) {
+      formWithdrawal.setFieldValue(
+        'items',
+        materialRequestBalance?.itemsBalance?.map(
+          (item: IItemMaterialRequestBalance) => ({
+            key: Date.now() + Math.random(),
+            name: item.name,
+            globalMaterialId: item.globalMaterialId,
+            materialInstanceId: undefined, // Assuming global material for now
+            description: item.description,
+            unitOfMeasure: item.unitOfMeasure,
+            quantityWithdrawn: Number(item.quantityFreeBalancePotential),
+            freeBalanceQuantity: Number(item.quantityFreeBalancePotential), // Adicionado para corresponder ao tipo
+            physicalOnHandQuantity: 0 // Adicionado para corresponder ao tipo, assumindo 0 ou um valor padrão
+          })
+        )
+      );
+    }
+  }, [materialRequestBalance, formWithdrawal]);
 
   return (
     <Card>
@@ -92,47 +116,24 @@ export function CardMaterialRequestLinkDetails({
                             setMaterialRequestBalance(
                               response.responseData as IMaterialRequestBalanceWithRelations
                             );
-                            formWithdrawal.setFieldValue(
-                              'items',
-                              response.responseData?.itemsBalance?.map(
-                                (item: IItemMaterialRequestBalance) => ({
-                                  key: Date.now() + Math.random(),
-                                  name: item.name,
-                                  globalMaterialId: item.globalMaterialId,
-                                  materialInstanceId: undefined, // Assuming global material for now
-                                  description: item.description,
-                                  unitOfMeasure: item.unitOfMeasure,
-                                  quantityWithdrawn: Number(
-                                    item.quantityFreeBalancePotential
-                                  )
-                                })
-                              )
-                            );
+                            // formWithdrawal.setFieldValue(
+                            //   'items',
+                            //   response.responseData?.itemsBalance?.map(
+                            //     (item: IItemMaterialRequestBalance) => ({
+                            //       key: Date.now() + Math.random(),
+                            //       name: item.name,
+                            //       globalMaterialId: item.globalMaterialId,
+                            //       materialInstanceId: undefined, // Assuming global material for now
+                            //       description: item.description,
+                            //       unitOfMeasure: item.unitOfMeasure,
+                            //       quantityWithdrawn: Number(
+                            //         item.quantityFreeBalancePotential
+                            //       )
+                            //     })
+                            //   )
+                            // );
                           }
                         });
-                        // setMaterialRequestBalance({
-                        //   protocolNumber: '16349/2025',
-                        //   sipacUserLoginRequest: 'eduardo.kennedi',
-                        //   requestValue: '77.97',
-                        //   servedValue: '77.97',
-                        //   currentStatus: 'FULLY_ATTENDED',
-                        //   requestDate: '2025-06-04T00:00:00.000-03:00',
-                        //   itemsBalance: [
-                        //     {
-                        //       globalMaterialId: '302400026133',
-                        //       materialRequestItemId: 247,
-                        //       quantityRequested: '1',
-                        //       quantityApproved: '1',
-                        //       quantityReceivedSum: '0',
-                        //       quantityWithdrawnSum: '0',
-                        //       quantityReserved: '0',
-                        //       quantityRestricted: '0',
-                        //       quantityFreeBalanceEffective: '0',
-                        //       quantityFreeBalancePotential: '1'
-                        //     }
-                        //   ]
-                        // });
-                      } else {
                       }
                     }}
                     showLabel={false}
