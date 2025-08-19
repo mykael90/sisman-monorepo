@@ -18,7 +18,7 @@ import {
   IMaterialWithdrawalItemMatRequestAddForm,
   ItemsRequestMatWithdrawalTableFormArray
 } from './form/items-request-mat-withdrawal-table-form-array';
-import { WithdrawalFormApi } from '../../../../../hooks/useWithdrawalForm';
+import { IWithdrawalFormApi } from '../../../../../hooks/useWithdrawalForm';
 
 const initialServerStateRequestMaterialBalance: IActionResultForm<
   string,
@@ -37,7 +37,7 @@ export function CardMaterialRequestLinkDetails({
 }: {
   linkMaterialRequest: boolean;
   setLinkMaterialRequest: (value: boolean) => void;
-  formWithdrawal: WithdrawalFormApi;
+  formWithdrawal: IWithdrawalFormApi;
   materialRequestDataLinked: any;
 }) {
   const [materialRequestBalance, setMaterialRequestBalance] =

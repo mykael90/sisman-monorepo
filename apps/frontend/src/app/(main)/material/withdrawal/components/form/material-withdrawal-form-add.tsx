@@ -18,7 +18,7 @@ import { ErrorServerForm } from '@/components/form-tanstack/error-server-form';
 import { IMaintenanceRequestWithRelations } from '../../../../maintenance/request/request-types';
 import {
   useWithdrawalForm,
-  type WithdrawalFormApi
+  type IWithdrawalFormApi
 } from '@/hooks/useWithdrawalForm';
 
 export function MaterialWithdrawalFormAdd({
@@ -73,7 +73,7 @@ export function MaterialWithdrawalFormAdd({
   // });
 
   // Use o hook para obter a instância do formulário
-  const formWithdrawal: WithdrawalFormApi = useWithdrawalForm({
+  const formWithdrawal: IWithdrawalFormApi = useWithdrawalForm({
     defaultDataWithdrawalForm: defaultDataWithdrawalForm,
     serverStateWithdrawal: serverStateWithdrawal,
     formActionWithdrawal: async (value) => await formActionWithdrawal(value)

@@ -39,4 +39,4 @@ export function useWithdrawalForm({
 // `ReturnType` inspeciona a função `useWithdrawalForm` e extrai o tipo exato do que ela retorna.
 // Este tipo `WithdrawalFormApi` será o tipo completo, com `Field`, `Subscribe`, `state`,
 // e todos os outros membros, sem nenhuma abreviação.
-export type WithdrawalFormApi = ReturnType<typeof useWithdrawalForm>;
+export type IWithdrawalFormApi = ReturnType<typeof useWithdrawalForm>;
