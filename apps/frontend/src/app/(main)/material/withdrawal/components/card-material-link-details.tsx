@@ -33,12 +33,14 @@ export function CardMaterialRequestLinkDetails({
   linkMaterialRequest,
   setLinkMaterialRequest,
   formWithdrawal,
-  materialRequestDataLinked
+  materialRequestDataLinked,
+  setFieldValue
 }: {
   linkMaterialRequest: boolean;
   setLinkMaterialRequest: (value: boolean) => void;
   formWithdrawal: IWithdrawalFormApi;
   materialRequestDataLinked: any;
+  setFieldValue: IWithdrawalFormApi['setFieldValue'];
 }) {
   const [materialRequestBalance, setMaterialRequestBalance] =
     useState<IMaterialRequestBalanceWithRelations | null>(null);
@@ -48,7 +50,7 @@ export function CardMaterialRequestLinkDetails({
       materialRequestBalance?.itemsBalance &&
       materialRequestBalance?.itemsBalance?.length > 0
     ) {
-      formWithdrawal.setFieldValue(
+      setFieldValue(
         'items',
         materialRequestBalance?.itemsBalance?.map(
           (item: IItemMaterialRequestBalance) => ({

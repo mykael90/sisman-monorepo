@@ -63,7 +63,7 @@ export function WithdrawalDetailUsageService({
                 />
               )}
             />
-            <formWithdrawal.Field
+            {/* <formWithdrawal.Field
               name='maintenanceRequestId'
               children={(field) => (
                 <FormInputField
@@ -75,7 +75,7 @@ export function WithdrawalDetailUsageService({
                   showLabel={false}
                 />
               )}
-            />
+            /> */}
             <formWithdrawal.Field
               name='processedByUserId'
               children={(field) => (

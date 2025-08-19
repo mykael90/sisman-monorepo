@@ -12,12 +12,22 @@ import {
   IMaintenanceRequest,
   IMaintenanceRequestWithRelations
 } from '../../../maintenance/request/request-types';
+import { IWithdrawalFormApi } from '../../../../../hooks/useWithdrawalForm';
+import { useEffect } from 'react';
 
 export function CardMaintenanceSummary({
-  maintenanceRequestData
+  maintenanceRequestData,
+  setFieldValue
 }: {
   maintenanceRequestData: IMaintenanceRequestWithRelations;
+  setFieldValue: IWithdrawalFormApi['setFieldValue'];
 }) {
+  useEffect(() => {
+    if (maintenanceRequestData.id) {
+      setFieldValue('maintenanceRequestId', maintenanceRequestData.id);
+    }
+  }, [maintenanceRequestData]);
+
   return (
     <Card>
       <CardHeader>

@@ -149,6 +149,7 @@ export function MaterialWithdrawalFormAdd({
           {CardMaintenanceSummary && maintenanceRequestData?.id && (
             <CardMaintenanceSummary
               maintenanceRequestData={maintenanceRequestData}
+              setFieldValue={formWithdrawal.setFieldValue}
             />
           )}
           {/* Withdrawal Details */}
@@ -166,6 +167,7 @@ export function MaterialWithdrawalFormAdd({
                 materialRequestDataLinked={
                   maintenanceRequestData?.materialRequests
                 }
+                setFieldValue={formWithdrawal.setFieldValue}
               />
             )}
 
