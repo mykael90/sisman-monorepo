@@ -26,11 +26,12 @@ import {
   FormAsyncValidateOrFn,
   FormValidateOrFn
 } from '@tanstack/react-form';
+import { WithdrawalFormApi } from '../../../../../../hooks/useWithdrawalForm';
 
 export function WithdrawalDetailUsageService({
   formWithdrawal
 }: {
-  formWithdrawal: any;
+  formWithdrawal: WithdrawalFormApi;
 }) {
   return (
     <Card>

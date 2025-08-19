@@ -1,15 +1,7 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-  FormApi,
-  FormAsyncValidateOrFn,
-  FormValidateFn,
-  mergeForm,
-  useForm,
-  useTransform,
-  ValidatorFn
-} from '@tanstack/react-form';
+import { mergeForm, useForm, useTransform } from '@tanstack/react-form';
 import { FilePlus } from 'lucide-react';
 import { FC, useActionState, useState } from 'react';
 import { IActionResultForm } from '@/types/types-server-actions';
@@ -24,6 +16,10 @@ import { ItemsFieldArray } from './items-field-array';
 import { FormSuccessDisplay } from '@/components/form-tanstack/form-success-display';
 import { ErrorServerForm } from '@/components/form-tanstack/error-server-form';
 import { IMaintenanceRequestWithRelations } from '../../../../maintenance/request/request-types';
+import {
+  useWithdrawalForm,
+  type WithdrawalFormApi
+} from '@/hooks/useWithdrawalForm';
 
 export function MaterialWithdrawalFormAdd({
   formActionProp,
@@ -65,15 +61,22 @@ export function MaterialWithdrawalFormAdd({
   const [serverStateWithdrawal, formActionWithdrawal, isPendingWithdrawal] =
     useActionState(formActionProp, initialServerStateWithdrawal);
 
-  const formWithdrawal = useForm({
-    defaultValues: defaultDataWithdrawalForm,
-    transform: useTransform(
-      (baseform) => mergeForm(baseform, serverStateWithdrawal ?? {}),
-      [serverStateWithdrawal]
-    ),
-    onSubmit: async ({ value }) => {
-      await formActionWithdrawal(value);
-    }
+  // const formWithdrawal = useForm({
+  //   defaultValues: defaultDataWithdrawalForm,
+  //   transform: useTransform(
+  //     (baseform) => mergeForm(baseform, serverStateWithdrawal ?? {}),
+  //     [serverStateWithdrawal]
+  //   ),
+  //   onSubmit: async ({ value }) => {
+  //     await formActionWithdrawal(value);
+  //   }
+  // });
+
+  // Use o hook para obter a instância do formulário
+  const formWithdrawal: WithdrawalFormApi = useWithdrawalForm({
+    defaultDataWithdrawalForm: defaultDataWithdrawalForm,
+    serverStateWithdrawal: serverStateWithdrawal,
+    formActionWithdrawal: async (value) => await formActionWithdrawal(value)
   });
 
   const handleReset = onClean
