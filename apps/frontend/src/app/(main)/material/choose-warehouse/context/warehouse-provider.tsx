@@ -1,10 +1,11 @@
 'use client';
 
 import { createContext, useContext, useState } from 'react';
+import { IWarehouse } from '../../../warehouse/warehouse-types';
 
 interface WarehouseContextProps {
-  warehouseId: number;
-  setWarehouseId: (warehouseId: number) => void;
+  warehouse: IWarehouse | null;
+  setWarehouse: (warehouse: IWarehouse) => void;
 }
 
 export const WarehouseContext = createContext<
@@ -13,18 +14,20 @@ export const WarehouseContext = createContext<
 
 interface WarehouseProviderProps {
   children: React.ReactNode;
-  initialWarehouseId: number;
+  initialWarehouse: IWarehouse;
 }
 
 export const WarehouseProvider: React.FC<WarehouseProviderProps> = ({
   children,
-  initialWarehouseId
+  initialWarehouse
 }) => {
-  const [warehouseId, setWarehouseId] = useState<number>(initialWarehouseId); // Initial state
+  const [warehouse, setWarehouse] = useState<IWarehouse | null>(
+    initialWarehouse
+  ); // Initial state
 
   const contextValue: WarehouseContextProps = {
-    warehouseId,
-    setWarehouseId
+    warehouse,
+    setWarehouse
   };
 
   return (

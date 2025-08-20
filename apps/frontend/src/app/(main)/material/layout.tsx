@@ -25,17 +25,17 @@ export default async function MaterialWithdrawalLayout({
     { maintenanceInstanceId: session.user.maintenanceInstanceId }
   );
 
-  const initialWarehouseId = warehousesForMaintenanceInstance.find(
+  const initialWarehouse = warehousesForMaintenanceInstance.find(
     (warehouse) => warehouse.defaultForInstance
-  )?.id;
+  );
 
-  if (!initialWarehouseId) {
+  if (!initialWarehouse) {
     logger.error(`Nenhum depósito padrão encontrado.`);
     return null;
   }
 
   return (
-    <WarehouseProvider initialWarehouseId={initialWarehouseId}>
+    <WarehouseProvider initialWarehouse={initialWarehouse}>
       <div className='bg-background min-h-screen'>
         <main>{children}</main>
       </div>

@@ -1,23 +1,21 @@
-// 'use client';
+'use client';
 
 import { Warehouse } from 'lucide-react';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/_options';
 import Logger from '@/lib/logger';
 import { TabSelector } from './withdrawal/components/tab-selector';
+import { useSession } from 'next-auth/react';
+import { useWarehouseContext } from '../choose-warehouse/context/warehouse-provider';
 
 const logger = new Logger(`src/app/(main)/material/withdrawal/layout.tsx`);
 
-export default async function MaterialWithdrawalLayout({
+export default function MaterialWithdrawalLayout({
   children
 }: {
   children: React.ReactNode;
 }) {
-  const session = await getServerSession(authOptions);
-  // 1. Chama a Server Action no servidor
-  if (!session?.user.maintenanceInstanceId) {
-    return null;
-  }
+  const { data: session, status, update } = useSession();
+
+  const { warehouse } = useWarehouseContext();
 
   return (
     <div className='bg-background min-h-screen'>
@@ -25,7 +23,9 @@ export default async function MaterialWithdrawalLayout({
         <div className='mx-auto flex max-w-7xl items-center justify-between'>
           <div className='flex items-center gap-3'>
             <Warehouse className='h-8 w-8' />
-            <h1 className='text-2xl font-semibold'>Depósito Provisório: XXX</h1>
+            <h1 className='text-2xl font-semibold'>
+              Depósito Provisório: {warehouse?.name}
+            </h1>
           </div>
         </div>
       </div>

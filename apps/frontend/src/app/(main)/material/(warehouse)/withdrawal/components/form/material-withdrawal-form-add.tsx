@@ -52,7 +52,7 @@ export function MaterialWithdrawalFormAdd({
   WithdrawalDetailsForm: any;
 }) {
   // --- 1. CHAMAR TODOS OS HOOKS NO TOPO, INCONDICIONALMENTE ---
-  const { warehouseId } = useWarehouseContext();
+  const { warehouse } = useWarehouseContext();
 
   const [maintenanceRequestData, setMaintenanceRequestData] =
     useState<IMaintenanceRequestWithRelations | null>(null);
@@ -70,7 +70,7 @@ export function MaterialWithdrawalFormAdd({
   const formWithdrawal: IWithdrawalFormApi = useWithdrawalForm({
     defaultDataWithdrawalForm: {
       ...defaultData,
-      warehouseId: warehouseId
+      warehouseId: warehouse?.id
     },
     serverStateWithdrawal: serverStateWithdrawal,
     formActionWithdrawal: async (value) => await formActionWithdrawal(value)
@@ -90,7 +90,7 @@ export function MaterialWithdrawalFormAdd({
   // });
 
   // A verificação `!userId` também protege contra o valor `NaN`.
-  if (!warehouseId) {
+  if (!warehouse?.id) {
     return <p>Acesso negado. Por favor, selecione um almoxarifado.</p>;
   }
 
