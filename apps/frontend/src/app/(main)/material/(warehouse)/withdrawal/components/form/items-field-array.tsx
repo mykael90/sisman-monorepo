@@ -11,7 +11,7 @@ import {
   IMaterialWithdrawalAddForm,
   IMaterialWithdrawalItemAddForm
 } from './withdrawal-base-form-add';
-import { IMaterialGlobalCatalogWithRelations } from '../../../global-catalog/material-global-catalog-types';
+import { IMaterialGlobalCatalogWithRelations } from '../../../../global-catalog/material-global-catalog-types';
 import { ItemsGlobalWithdrawalTableFormArray } from './items-global-withdrawal-table-form-array';
 
 const logger = new Logger(`material-items-field`);

@@ -4,7 +4,7 @@ import { Warehouse } from 'lucide-react'; // Import Warehouse icon
 import { FormDropdown } from '@/components/form-tanstack/form-input-fields';
 import { AnyFieldApi } from '@tanstack/react-form';
 import { useWarehouseContext } from '../context/warehouse-provider';
-import { IWarehouse } from '../../../warehouse/warehouse-types';
+import { IWarehouse } from '../../../../warehouse/warehouse-types';
 
 export function WarehouseSelector({
   warehousesForMaintenanceInstance

@@ -26,7 +26,7 @@ import {
   FormAsyncValidateOrFn,
   FormValidateOrFn
 } from '@tanstack/react-form';
-import { IWithdrawalFormApi } from '../../../../../../hooks/useWithdrawalForm';
+import { IWithdrawalFormApi } from '../../../../../../../hooks/useWithdrawalForm';
 
 export function WithdrawalDetailUsageService({
   formWithdrawal

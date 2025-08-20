@@ -1,5 +1,5 @@
 import { IActionResultForm } from '@/types/types-server-actions';
-import { IMaterialGlobalCatalogAdd } from '../../../global-catalog/material-global-catalog-types';
+import { IMaterialGlobalCatalogAdd } from '../../../../global-catalog/material-global-catalog-types';
 import {
   IMaterialWithdrawalAdd,
   IMaterialWithdrawalItemAdd

@@ -3,7 +3,7 @@ import {
   MaterialWarehouseStock,
   Prisma
 } from '@sisman/prisma';
-import { IWarehouseStockIncludedComputed } from '../warehouse-stock/warehouse-stock-types';
+import { IWarehouseStockIncludedComputed } from '../(warehouse)/warehouse-stock/warehouse-stock-types';
 
 export interface IMaterialGlobalCatalog extends MaterialGlobalCatalog {}
 

@@ -3,8 +3,8 @@ import {
   MaterialWithdrawalItem,
   Prisma
 } from '@sisman/prisma';
-import { IUser } from '../../user/user-types';
-import { IMaterialGlobalCatalogWithRelations } from '../global-catalog/material-global-catalog-types';
+import { IUser } from '../../../user/user-types';
+import { IMaterialGlobalCatalogWithRelations } from '../../global-catalog/material-global-catalog-types';
 
 export type IMaterialWithdrawal = MaterialWithdrawal;
 
