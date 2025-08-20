@@ -6,13 +6,18 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UseGuards
 } from '@nestjs/common';
 import { Roles } from '../../shared/decorators/roles.decorator';
 import { Role } from '../../shared/enums/role.enum';
 import { AuthGuard } from '../../shared/auth/guards/auth.guard';
 import { RoleGuard } from '../../shared/auth/guards/role.guard';
-import { CreateWarehouseDto, UpdateWarehouseDto } from './dto/warehouse.dto';
+import {
+  CreateWarehouseDto,
+  FindAllWarehouseQueryDto,
+  UpdateWarehouseDto
+} from './dto/warehouse.dto';
 import { WarehousesService } from './warehouses.service';
 
 @Roles(Role.Adm) // Assumindo que apenas Adm pode gerenciar, ajuste conforme necessário
@@ -32,8 +37,8 @@ export class WarehousesController {
   }
 
   @Get()
-  async list() {
-    return this.warehousesService.list();
+  async list(@Query() params: FindAllWarehouseQueryDto) {
+    return this.warehousesService.list(params);
   }
 
   @Put(':id')

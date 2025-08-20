@@ -4,8 +4,13 @@ import { Warehouse } from 'lucide-react'; // Import Warehouse icon
 import { FormDropdown } from '@/components/form-tanstack/form-input-fields';
 import { AnyFieldApi } from '@tanstack/react-form';
 import { useWarehouseContext } from '../context/warehouse-provider';
+import { IWarehouse } from '../../../warehouse/warehouse-types';
 
-export function WarehouseSelector() {
+export function WarehouseSelector({
+  warehousesForMaintenanceInstance
+}: {
+  warehousesForMaintenanceInstance: IWarehouse[];
+}) {
   const { warehouseId, setWarehouseId } = useWarehouseContext();
 
   return (
@@ -32,11 +37,10 @@ export function WarehouseSelector() {
         }
         label='Depósito Atual:'
         placeholder='Selecione um depósito'
-        options={[
-          { value: 100, label: 'Head Office - SP' },
-          { value: 101, label: 'Warehouse - RJ' },
-          { value: 102, label: 'Distribution - MG' }
-        ]}
+        options={warehousesForMaintenanceInstance.map((warehouse) => ({
+          value: warehouse.id,
+          label: warehouse.name
+        }))}
         onValueChange={(value) => setWarehouseId(Number(value))}
         className='w-48'
         showLabel={false}

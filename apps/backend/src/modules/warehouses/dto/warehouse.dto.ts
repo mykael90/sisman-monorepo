@@ -66,3 +66,17 @@ export class CreateWarehouseDto implements Prisma.WarehouseCreateManyInput {
 }
 
 export class UpdateWarehouseDto extends PartialType(CreateWarehouseDto) {}
+
+export class FindAllWarehouseQueryDto {
+  /**
+   * Id da instancia de manutencao associada para filtragem.
+   * @example 1
+   */
+  @IsOptional()
+  @IsNumber()
+  maintenanceInstanceId: number;
+
+  @IsOptional()
+  @IsBoolean()
+  defaultForInstance: boolean;
+}

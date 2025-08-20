@@ -10,9 +10,31 @@ import { Card } from '../../../../../components/ui/card';
 import { CardMaterialRequestLinkDetails } from '../components/card-material-link-details';
 import { RequestMaintenanceMaterialForm } from '../components/request-maintenance-material-form';
 import { WithdrawalDetailUsageService } from './components/withdrawal-details-usage-service';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../../../../api/auth/_options';
+import { IMaterialWithdrawalAddForm } from '../components/form/withdrawal-base-form-add';
 
 export default async function Page() {
+  const session = await getServerSession(authOptions);
   const accessTokenSisman = await getSismanAccessToken();
+
+  if (!session?.user.idSisman) {
+    return <p>Acesso negado. Por favor, faça login.</p>;
+  }
+
+  const defaultDataWithdrawalForm: IMaterialWithdrawalAddForm = {
+    withdrawalNumber: undefined,
+    withdrawalDate: new Date(),
+    maintenanceRequestId: undefined,
+    warehouseId: undefined,
+    processedByUserId: Number(session.user.idSisman),
+    collectedByWorkerId: undefined,
+    movementTypeId: 1,
+    items: [],
+    materialRequestId: undefined,
+    notes: undefined,
+    collectorType: 'worker'
+  };
 
   // const requestDataSearch = (protocolNumber: string) => ({
   //   getMaintenanceRequest: showMaintenanceRequestByProtocol(
@@ -49,6 +71,7 @@ export default async function Page() {
           }}
           // SubmitButtonIcon={FilePlus}
           // submitButtonText='Criar Usuário'
+          defaultData={defaultDataWithdrawalForm}
           formActionProp={addWithdrawal}
           CardMaintenanceSummary={CardMaintenanceSummary}
           CardMaterialLinkDetails={CardMaterialRequestLinkDetails}

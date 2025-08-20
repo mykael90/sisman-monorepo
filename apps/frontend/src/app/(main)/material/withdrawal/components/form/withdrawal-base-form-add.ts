@@ -18,20 +18,6 @@ export interface IMaterialWithdrawalAddForm extends IMaterialWithdrawalAdd {
   collectorType: string;
 }
 
-export const defaultDataWithdrawalForm: IMaterialWithdrawalAddForm = {
-  withdrawalNumber: undefined,
-  withdrawalDate: new Date(),
-  maintenanceRequestId: undefined,
-  warehouseId: 1,
-  processedByUserId: 1,
-  collectedByWorkerId: undefined,
-  movementTypeId: 1,
-  items: [],
-  materialRequestId: undefined,
-  notes: undefined,
-  collectorType: 'worker'
-};
-
 export const fieldsLabelsWithdrawalForm: Partial<
   Record<keyof IMaterialWithdrawalAddForm, string>
 > = {

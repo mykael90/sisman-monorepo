@@ -5,12 +5,7 @@ import { revalidatePath } from 'next/cache';
 import { getSismanAccessToken } from '@/lib/auth/get-access-token';
 import { fetchApiSisman } from '@/lib/fetch/api-sisman';
 import { IActionResultForm } from '@/types/types-server-actions';
-import {
-  IWarehouse,
-  IWarehouseAdd,
-  IWarehouseEdit,
-  IWarehouse
-} from './warehouse-types';
+import { IWarehouse, IWarehouseAdd, IWarehouseEdit } from './warehouse-types';
 import {
   warehouseFormSchemaAdd,
   warehouseFormSchemaEdit
@@ -26,14 +21,20 @@ const logger = new Logger(`${PAGE_PATH}/warehouse-actions`);
 // --- Funções de Leitura de Dados ---
 
 export async function getWarehouses(
-  accessTokenSisman: string
+  accessTokenSisman: string,
+  queryParams?: Record<string, any>
 ): Promise<IWarehouse[]> {
   logger.info(`(Server Action) getWarehouses: Buscando lista de depósitos.`);
   try {
-    const data = await fetchApiSisman(API_RELATIVE_PATH, accessTokenSisman, {
-      // next: { tags: ['warehouses'] }, // Para revalidação baseada em tags
-      cache: 'no-store' // Ou 'force-cache' com revalidação por path/tag
-    });
+    const data = await fetchApiSisman(
+      API_RELATIVE_PATH,
+      accessTokenSisman,
+      {
+        // next: { tags: ['warehouses'] }, // Para revalidação baseada em tags
+        cache: 'no-store' // Ou 'force-cache' com revalidação por path/tag
+      },
+      queryParams
+    );
     logger.info(
       `(Server Action) getWarehouses: ${data.length} depósitos retornados.`
     );
@@ -220,12 +221,43 @@ export async function updateWarehouse(
   }
 }
 
-// Simula uma chamada de API ou banco de dados
-export async function fetchDefaultWarehouseId(
-  maintenanceInstanceId: number,
-  defaultForInstance: boolean
-): Promise<number> {
-  console.log('Fetching default warehouse ID on the server...');
-  // Lógica real aqui: await db.query(...) ou await fetch(...)
-  return new Promise((resolve) => setTimeout(() => resolve(101), 1000));
+export async function getDefaultWarehouseId(queryParams: {
+  maintenanceInstanceId: number;
+  defaultForInstance: boolean;
+}): Promise<number> {
+  logger.info(
+    `(Server Action) fetchDefaultWarehouseId: Buscando ID do depósito padrão para maintenanceInstanceId: ${queryParams.maintenanceInstanceId}.`
+  );
+  try {
+    const accessToken = await getSismanAccessToken();
+
+    // Assuming the API returns an array of IWarehouse objects
+    const warehouses: IWarehouse[] = await fetchApiSisman(
+      API_RELATIVE_PATH,
+      accessToken,
+      {
+        cache: 'no-store'
+      },
+      queryParams
+    );
+
+    if (!warehouses || warehouses.length === 0) {
+      logger.warn(
+        `(Server Action) fetchDefaultWarehouseId: Nenhum depósito padrão encontrado.`
+      );
+      throw new Error('Nenhum depósito padrão encontrado.');
+    }
+
+    const warehouseId = warehouses[0].id;
+    logger.info(
+      `(Server Action) fetchDefaultWarehouseId: ID do depósito padrão retornado: ${warehouseId}.`
+    );
+    return warehouseId;
+  } catch (error) {
+    logger.error(
+      `(Server Action) fetchDefaultWarehouseId: Erro ao buscar ID do depósito padrão.`,
+      error
+    );
+    throw error;
+  }
 }

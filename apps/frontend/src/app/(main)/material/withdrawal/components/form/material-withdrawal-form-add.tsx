@@ -8,7 +8,6 @@ import { IActionResultForm } from '@/types/types-server-actions';
 import { IMaterialWithdrawalRelatedData } from '../../withdrawal-types';
 import { IMaterialRequest } from '../../../request/material-request-types';
 import {
-  defaultDataWithdrawalForm,
   IMaterialWithdrawalAddForm,
   initialServerStateWithdrawal
 } from './withdrawal-base-form-add';
@@ -20,8 +19,12 @@ import {
   useWithdrawalForm,
   type IWithdrawalFormApi
 } from '@/hooks/useWithdrawalForm';
+import { useWarehouseContext } from '../../context/warehouse-provider';
+import { useSession } from 'next-auth/react';
+import Loading from '../../../../../../components/loading';
 
 export function MaterialWithdrawalFormAdd({
+  defaultData,
   formActionProp,
   relatedData,
   onCancel,
@@ -33,6 +36,7 @@ export function MaterialWithdrawalFormAdd({
   RequestMaintenanceMaterialForm,
   WithdrawalDetailsForm
 }: {
+  defaultData: IMaterialWithdrawalAddForm;
   formActionProp: (
     prevState: IActionResultForm<IMaterialWithdrawalAddForm>,
     data: IMaterialWithdrawalAddForm
@@ -47,7 +51,8 @@ export function MaterialWithdrawalFormAdd({
   RequestMaintenanceMaterialForm?: any;
   WithdrawalDetailsForm: any;
 }) {
-  const { listGlobalMaterials, listUsers } = relatedData;
+  // --- 1. CHAMAR TODOS OS HOOKS NO TOPO, INCONDICIONALMENTE ---
+  const { warehouseId } = useWarehouseContext();
 
   const [maintenanceRequestData, setMaintenanceRequestData] =
     useState<IMaintenanceRequestWithRelations | null>(null);
@@ -61,6 +66,18 @@ export function MaterialWithdrawalFormAdd({
   const [serverStateWithdrawal, formActionWithdrawal, isPendingWithdrawal] =
     useActionState(formActionProp, initialServerStateWithdrawal);
 
+  // Use o hook para obter a instância do formulário
+  const formWithdrawal: IWithdrawalFormApi = useWithdrawalForm({
+    defaultDataWithdrawalForm: {
+      ...defaultData,
+      warehouseId: warehouseId
+    },
+    serverStateWithdrawal: serverStateWithdrawal,
+    formActionWithdrawal: async (value) => await formActionWithdrawal(value)
+  });
+
+  const { listGlobalMaterials, listUsers } = relatedData;
+
   // const formWithdrawal = useForm({
   //   defaultValues: defaultDataWithdrawalForm,
   //   transform: useTransform(
@@ -72,12 +89,13 @@ export function MaterialWithdrawalFormAdd({
   //   }
   // });
 
-  // Use o hook para obter a instância do formulário
-  const formWithdrawal: IWithdrawalFormApi = useWithdrawalForm({
-    defaultDataWithdrawalForm: defaultDataWithdrawalForm,
-    serverStateWithdrawal: serverStateWithdrawal,
-    formActionWithdrawal: async (value) => await formActionWithdrawal(value)
-  });
+  // A verificação `!userId` também protege contra o valor `NaN`.
+  if (!warehouseId) {
+    return <p>Acesso negado. Por favor, selecione um almoxarifado.</p>;
+  }
+
+  // --- 3. O RESTO DO SEU COMPONENTE ---
+  // A partir daqui, você tem a garantia de que `session` e `warehouseId` existem e `userId` é um número válido.
 
   const handleReset = onClean
     ? () => {

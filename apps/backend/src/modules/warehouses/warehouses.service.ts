@@ -45,9 +45,30 @@ export class WarehousesService {
     }
   }
 
-  async list() {
+  async list(queryParams?: any) {
     try {
-      const warehouses = await this.prisma.warehouse.findMany();
+      if (!queryParams) {
+        const warehouses = await this.prisma.warehouse.findMany();
+        return warehouses;
+      }
+
+      const findManyArgs: Prisma.WarehouseFindManyArgs = {};
+
+      if (queryParams.maintenanceInstanceId && queryParams.defaultForInstance) {
+        findManyArgs.where = {
+          maintenanceInstanceId: queryParams.maintenanceInstanceId,
+          defaultForInstance: true
+        };
+      }
+
+      if (queryParams.maintenanceInstanceId) {
+        findManyArgs.where = {
+          maintenanceInstanceId: queryParams.maintenanceInstanceId
+        };
+      }
+
+      //Default value for InstanceId
+      const warehouses = await this.prisma.warehouse.findMany(findManyArgs);
       return warehouses;
     } catch (error) {
       handlePrismaError(error, this.logger, 'WarehousesService', {
