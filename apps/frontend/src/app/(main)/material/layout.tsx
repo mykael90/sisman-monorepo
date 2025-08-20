@@ -4,7 +4,6 @@ import { authOptions } from '@/app/api/auth/_options';
 import { getSismanAccessToken } from '@/lib/auth/get-access-token';
 import Logger from '@/lib/logger';
 import { getWarehouses } from '../warehouse/warehouse-actions';
-import ChooseWarehouseClient from './choose-warehouse/page';
 
 const logger = new Logger(`src/app/(main)/material/withdrawal/layout.tsx`);
 
@@ -20,11 +19,6 @@ export default async function MaterialWithdrawalLayout({
   }
 
   const accessTokenSisman = await getSismanAccessToken();
-
-  // const initialWarehouse = await getWarehouses(accessTokenSisman, {
-  //   maintenanceInstanceId: session.user.maintenanceInstanceId,
-  //   defaultForInstance: true
-  // });
 
   const warehousesForMaintenanceInstance = await getWarehouses(
     accessTokenSisman,
@@ -44,11 +38,6 @@ export default async function MaterialWithdrawalLayout({
     <WarehouseProvider initialWarehouseId={initialWarehouseId}>
       <div className='bg-background min-h-screen'>
         <main>{children}</main>
-        {/* <main>
-          <ChooseWarehouseClient
-            warehouses={warehousesForMaintenanceInstance}
-          />
-        </main> */}
       </div>
     </WarehouseProvider>
   );

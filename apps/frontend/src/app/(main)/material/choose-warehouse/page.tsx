@@ -8,13 +8,11 @@ import { AnyFieldApi } from '@tanstack/react-form';
 import { IWarehouse } from '@/app/(main)/warehouse/warehouse-types';
 import { Button } from '@/components/ui/button';
 
-interface ChooseWarehouseClientProps {
+interface ChooseWarehouseProps {
   warehouses: IWarehouse[];
 }
 
-export default function ChooseWarehouseClient({
-  warehouses
-}: ChooseWarehouseClientProps) {
+export default function ChooseWarehouse({ warehouses }: ChooseWarehouseProps) {
   const router = useRouter();
   const [selectedWarehouseId, setSelectedWarehouseId] = useState<number | null>(
     null

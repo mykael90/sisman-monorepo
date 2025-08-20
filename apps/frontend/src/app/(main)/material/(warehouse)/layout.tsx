@@ -1,3 +1,5 @@
+// 'use client';
+
 import { Warehouse } from 'lucide-react';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/_options';
@@ -32,7 +34,6 @@ export default async function MaterialWithdrawalLayout({
         <TabSelector />
         {/* Main Content */}
         <main>{children}</main>
-        {/* <main>{children}</main> */}
       </div>
     </div>
   );
