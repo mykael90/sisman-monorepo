@@ -219,3 +219,13 @@ export async function updateWarehouse(
     };
   }
 }
+
+// Simula uma chamada de API ou banco de dados
+export async function fetchDefaultWarehouseId(
+  maintenanceInstanceId: number,
+  defaultForInstance: boolean
+): Promise<number> {
+  console.log('Fetching default warehouse ID on the server...');
+  // Lógica real aqui: await db.query(...) ou await fetch(...)
+  return new Promise((resolve) => setTimeout(() => resolve(101), 1000));
+}
