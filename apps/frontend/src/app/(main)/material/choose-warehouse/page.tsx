@@ -5,26 +5,33 @@ import { useRouter } from 'next/navigation';
 import { Warehouse } from 'lucide-react';
 import { FormDropdown } from '@/components/form-tanstack/form-input-fields';
 import { AnyFieldApi } from '@tanstack/react-form';
-import { IWarehouse } from '@/app/(main)/warehouse/warehouse-types';
 import { Button } from '@/components/ui/button';
+import { useWarehouseContext } from './context/warehouse-provider';
+import { set } from 'date-fns';
+import { IWarehouse } from '../../warehouse/warehouse-types';
 
-interface ChooseWarehouseProps {
-  warehouses: IWarehouse[];
-}
-
-export default function ChooseWarehouse({ warehouses }: ChooseWarehouseProps) {
-  const router = useRouter();
+export default function ChooseWarehouse() {
   const [selectedWarehouseId, setSelectedWarehouseId] = useState<number | null>(
     null
   );
 
+  const { warehousesForMaintenanceInstance, setWarehouse } =
+    useWarehouseContext();
+
+  const router = useRouter();
+
   const handleWarehouseChange = (value: string | number) => {
     setSelectedWarehouseId(Number(value));
+    setWarehouse(
+      warehousesForMaintenanceInstance.find(
+        (warehouse) => warehouse.id === Number(value)
+      ) as IWarehouse
+    );
   };
 
   const handleConfirmSelection = () => {
     if (selectedWarehouseId) {
-      router.push(`/material/withdrawal?warehouseId=${selectedWarehouseId}`);
+      router.push(`/material/withdrawal`);
     } else {
       alert('Por favor, selecione um depósito.');
     }
@@ -62,7 +69,7 @@ export default function ChooseWarehouse({ warehouses }: ChooseWarehouseProps) {
             }
             label='Selecione um Depósito:'
             placeholder='Selecione um depósito'
-            options={warehouses.map((warehouse) => ({
+            options={warehousesForMaintenanceInstance.map((warehouse) => ({
               value: warehouse.id,
               label: warehouse.name
             }))}

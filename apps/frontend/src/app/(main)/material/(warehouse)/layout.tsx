@@ -5,6 +5,8 @@ import Logger from '@/lib/logger';
 import { TabSelector } from './withdrawal/components/tab-selector';
 import { useSession } from 'next-auth/react';
 import { useWarehouseContext } from '../choose-warehouse/context/warehouse-provider';
+import { Button } from '../../../../components/ui/button';
+import { useRouter } from 'next/navigation';
 
 const logger = new Logger(`src/app/(main)/material/withdrawal/layout.tsx`);
 
@@ -17,6 +19,8 @@ export default function MaterialWithdrawalLayout({
 
   const { warehouse } = useWarehouseContext();
 
+  const router = useRouter();
+
   return (
     <div className='bg-background min-h-screen'>
       <div className='border-primary-foreground/10 bg-primary/80 text-primary-foreground sticky top-0 z-10 border-b p-4 backdrop-blur-sm'>
@@ -26,6 +30,12 @@ export default function MaterialWithdrawalLayout({
             <h1 className='text-2xl font-semibold'>
               Depósito Provisório: {warehouse?.name}
             </h1>
+            <Button
+              variant='outline'
+              onClick={() => router.push('/material/choose-warehouse')}
+            >
+              Aqui
+            </Button>
           </div>
         </div>
       </div>

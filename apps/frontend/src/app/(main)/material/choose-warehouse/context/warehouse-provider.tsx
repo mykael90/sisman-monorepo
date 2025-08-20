@@ -6,6 +6,7 @@ import { IWarehouse } from '../../../warehouse/warehouse-types';
 interface WarehouseContextProps {
   warehouse: IWarehouse | null;
   setWarehouse: (warehouse: IWarehouse) => void;
+  warehousesForMaintenanceInstance: IWarehouse[] | null;
 }
 
 export const WarehouseContext = createContext<
@@ -15,11 +16,13 @@ export const WarehouseContext = createContext<
 interface WarehouseProviderProps {
   children: React.ReactNode;
   initialWarehouse: IWarehouse;
+  warehousesForMaintenanceInstance: IWarehouse[];
 }
 
 export const WarehouseProvider: React.FC<WarehouseProviderProps> = ({
   children,
-  initialWarehouse
+  initialWarehouse,
+  warehousesForMaintenanceInstance
 }) => {
   const [warehouse, setWarehouse] = useState<IWarehouse | null>(
     initialWarehouse
@@ -27,7 +30,8 @@ export const WarehouseProvider: React.FC<WarehouseProviderProps> = ({
 
   const contextValue: WarehouseContextProps = {
     warehouse,
-    setWarehouse
+    setWarehouse,
+    warehousesForMaintenanceInstance
   };
 
   return (
