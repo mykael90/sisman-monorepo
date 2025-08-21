@@ -34,7 +34,10 @@ export default function MaterialWithdrawalLayout({
           </div>
         </div>
         <div className='flex w-full justify-end sm:w-auto'>
-          <Button variant='outline' onClick={() => router.push('/material')}>
+          <Button
+            variant='outline'
+            onClick={() => router.push('/material/withdrawal')}
+          >
             <ArrowLeft className='mr-2 h-4 w-4' />
             Voltar para listagem
           </Button>
