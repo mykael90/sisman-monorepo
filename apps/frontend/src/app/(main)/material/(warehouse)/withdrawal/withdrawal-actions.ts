@@ -101,7 +101,7 @@ export async function getRefreshedWithdrawals() {
 }
 
 export async function addWithdrawal(
-  prevState: unknown,
+  prevState: any,
   data: IMaterialWithdrawalAddForm
 ): Promise<
   IActionResultForm<

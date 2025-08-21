@@ -21,9 +21,10 @@ export type IMaterialWithdrawalItem = MaterialWithdrawalItem;
 export interface IMaterialWithdrawalItemAdd
   extends Prisma.MaterialWithdrawalItemCreateManyInput {}
 
+// TODO:
 export interface IMaterialWithdrawalAddWithRelations
   extends IMaterialWithdrawalAdd {
-  items: IMaterialWithdrawalItemAdd[];
+  items: IMaterialWithdrawalItemAddForm[];
   warehouse: { id: number };
   movementType: { code: string };
   processedByUser: { id: number };
