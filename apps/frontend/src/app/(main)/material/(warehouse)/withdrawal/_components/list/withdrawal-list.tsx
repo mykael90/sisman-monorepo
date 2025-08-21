@@ -1,12 +1,13 @@
 'use client';
 
 import {
-  use,
   useState,
   useMemo,
   useRef,
   Dispatch,
-  SetStateAction
+  SetStateAction,
+  useEffect,
+  use
 } from 'react';
 import { SectionListHeader } from '@/components/section-list-header';
 import { WithdrawalFilters } from './withdrawal-filters';
@@ -23,17 +24,20 @@ import { columns, createActions } from './withdrawal-columns';
 import { TableTanstack } from '@/components/table-tanstack/table-tanstack';
 import { Package, PackagePlus } from 'lucide-react';
 import { SectionListHeaderSmall } from '../../../../../../../components/section-list-header-small';
+import { useWarehouseContext } from '../../../../choose-warehouse/context/warehouse-provider';
+import { useQuery } from '@tanstack/react-query'; // <-- IMPORTANTE
+import Loading from '@/components/loading';
+import { getWithdrawalsByWarehouse } from '../../withdrawal-actions';
 
-export function WithdrawalListPage({
-  initialWithdrawals,
-  refreshAction
-}: {
-  initialWithdrawals: IMaterialWithdrawalWithRelations[];
-  refreshAction: () => void;
-}) {
+export function WithdrawalListPage() {
+  // 1. Consuma o contexto
+  const { warehouse } = useWarehouseContext();
   const router = useRouter();
 
-  const [withdrawals, setWithdrawals] = useState(initialWithdrawals);
+  // console.log(JSON.stringify(initialWithdrawalsByWarehouse2));
+  // console.log(JSON.stringify(initialWithdrawalsByWarehouse));
+
+  // const [withdrawals, setWithdrawals] = useState(initialWithdrawalsByWarehouse);
 
   const [withdrawalValue, setWithdrawalValue] = useState('');
   const inputDebounceRef = useRef<InputDebounceRef>(null);
@@ -49,6 +53,25 @@ export function WithdrawalListPage({
       desc: false
     }
   ]);
+
+  // 1. USE O HOOK useQuery PARA BUSCAR E GERENCIAR OS DADOS
+  const {
+    data: withdrawals, // 'data' é renomeado para 'withdrawals'
+    isLoading, // Estado de carregamento, gerenciado para você
+    isError, // Estado de erro, gerenciado para você
+    error // O objeto de erro, se houver
+  } = useQuery({
+    // 2. Chave da Query: um array que identifica unicamente esta busca.
+    //    Quando 'warehouse.id' mudar, o TanStack Query refaz a busca automaticamente!
+    queryKey: ['withdrawals', warehouse?.id],
+
+    // 3. Função da Query: a função assíncrona que retorna os dados.
+    queryFn: () => getWithdrawalsByWarehouse(warehouse?.id as number),
+
+    // 4. Habilitar/Desabilitar: A busca só será executada se 'warehouse' existir.
+    //    Isso é crucial e muito mais limpo que um 'if' dentro do useEffect.
+    enabled: !!warehouse
+  });
 
   const columnFilters = useMemo<ColumnFiltersState>(() => {
     const filters: ColumnFiltersState = [];
@@ -92,15 +115,20 @@ export function WithdrawalListPage({
         />
       </div>
 
-      <TableTanstack
-        data={withdrawals}
-        columns={columns(columnActions)}
-        columnFilters={columnFilters}
-        pagination={pagination}
-        setPagination={setPagination}
-        setSorting={setSorting}
-        sorting={sorting}
-      />
+      {/* A verificação de 'isLoading' vem diretamente do useQuery */}
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <TableTanstack
+          data={withdrawals}
+          columns={columns(columnActions)}
+          columnFilters={columnFilters}
+          pagination={pagination}
+          setPagination={setPagination}
+          setSorting={setSorting}
+          sorting={sorting}
+        />
+      )}
     </div>
   );
 }

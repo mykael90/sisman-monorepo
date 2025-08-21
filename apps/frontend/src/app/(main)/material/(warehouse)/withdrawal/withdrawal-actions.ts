@@ -39,6 +39,29 @@ export async function getWithdrawals(accessTokenSisman: string) {
     throw error;
   }
 }
+export async function getWithdrawalsByWarehouse(warehouseId: number) {
+  const accessTokenSisman = await getSismanAccessToken();
+  logger.info(`(Server Action) getWithdrawals: Fetching withdrawals`);
+  try {
+    const data = await fetchApiSisman(
+      `${API_RELATIVE_PATH}/warehouse/${warehouseId}`,
+      accessTokenSisman,
+      {
+        cache: 'force-cache'
+      }
+    );
+    logger.info(
+      `(Server Action) getWithdrawals: ${data.length} withdrawals returned`
+    );
+    return data;
+  } catch (error) {
+    logger.error(
+      `(Server Action) getWithdrawals: Error fetching withdrawals`,
+      error
+    );
+    throw error;
+  }
+}
 
 export async function showWithdrawal(accessTokenSisman: string, id: number) {
   logger.info(`(Server Action) showWithdrawal: Fetching withdrawal ${id}`);
