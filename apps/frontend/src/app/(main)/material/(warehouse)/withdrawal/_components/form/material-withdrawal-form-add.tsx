@@ -7,8 +7,9 @@ import { FC, useActionState, useState } from 'react';
 import { IActionResultForm } from '@/types/types-server-actions';
 import {
   IMaterialWithdrawalAddForm,
-  IMaterialWithdrawalAddWithRelations,
-  IMaterialWithdrawalRelatedData
+  IMaterialWithdrawalAddPayload,
+  IMaterialWithdrawalRelatedData,
+  IMaterialWithdrawalWithRelations
 } from '../../withdrawal-types';
 import { IMaterialRequest } from '../../../../request/material-request-types';
 import { ItemsFieldArray } from './items-field-array';
@@ -42,9 +43,17 @@ export function MaterialWithdrawalFormAdd({
 }: {
   defaultData: IMaterialWithdrawalAddForm;
   formActionProp: (
-    prevState: IActionResultForm<IMaterialWithdrawalAddForm>,
+    prevState: IActionResultForm<
+      IMaterialWithdrawalAddForm,
+      IMaterialWithdrawalWithRelations
+    >,
     data: IMaterialWithdrawalAddForm
-  ) => Promise<IActionResultForm<IMaterialWithdrawalAddForm>>;
+  ) => Promise<
+    IActionResultForm<
+      IMaterialWithdrawalAddForm,
+      IMaterialWithdrawalWithRelations
+    >
+  >;
   onCancel?: () => void;
   onClean?: () => void;
   submitButtonText?: string;
@@ -56,7 +65,7 @@ export function MaterialWithdrawalFormAdd({
   WithdrawalDetailsForm: any;
   initialServerStateWithdrawal?: IActionResultForm<
     IMaterialWithdrawalAddForm,
-    IMaterialWithdrawalAddWithRelations
+    IMaterialWithdrawalWithRelations
   >;
 }) {
   // --- 1. CHAMAR TODOS OS HOOKS NO TOPO, INCONDICIONALMENTE ---
