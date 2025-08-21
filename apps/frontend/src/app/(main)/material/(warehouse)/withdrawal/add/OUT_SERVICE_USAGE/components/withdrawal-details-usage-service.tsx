@@ -9,10 +9,6 @@ import {
   FormInputTextArea
 } from '@/components/form-tanstack/form-input-fields';
 import {
-  fieldsLabelsWithdrawalForm,
-  IMaterialWithdrawalAddForm
-} from '../../../_components/form/withdrawal-base-form-add';
-import {
   Popover,
   PopoverContent,
   PopoverTrigger
@@ -27,6 +23,7 @@ import {
   FormValidateOrFn
 } from '@tanstack/react-form';
 import { IWithdrawalFormApi } from '../../../../../../../../hooks/use-withdrawal-form';
+import { fieldsLabelsWithdrawalForm } from '../../../withdrawal-types';
 
 export function WithdrawalDetailUsageService({
   formWithdrawal

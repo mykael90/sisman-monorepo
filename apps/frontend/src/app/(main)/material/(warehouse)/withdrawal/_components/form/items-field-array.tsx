@@ -7,12 +7,12 @@ import { Plus } from 'lucide-react';
 import { ResponsiveCombobox } from '@/components/ui/responsive-combobox';
 import * as React from 'react';
 import Logger from '@/lib/logger';
+import { IMaterialGlobalCatalogWithRelations } from '../../../../global-catalog/material-global-catalog-types';
+import { ItemsGlobalWithdrawalTableFormArray } from './items-global-withdrawal-table-form-array';
 import {
   IMaterialWithdrawalAddForm,
   IMaterialWithdrawalItemAddForm
-} from './withdrawal-base-form-add';
-import { IMaterialGlobalCatalogWithRelations } from '../../../../global-catalog/material-global-catalog-types';
-import { ItemsGlobalWithdrawalTableFormArray } from './items-global-withdrawal-table-form-array';
+} from '../../withdrawal-types';
 
 const logger = new Logger(`material-items-field`);
 interface MaterialItemsFieldProps {

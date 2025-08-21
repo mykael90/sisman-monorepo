@@ -5,12 +5,12 @@ import { mergeForm, useForm, useTransform } from '@tanstack/react-form';
 import { FilePlus } from 'lucide-react';
 import { FC, useActionState, useState } from 'react';
 import { IActionResultForm } from '@/types/types-server-actions';
-import { IMaterialWithdrawalRelatedData } from '../../withdrawal-types';
-import { IMaterialRequest } from '../../../../request/material-request-types';
 import {
   IMaterialWithdrawalAddForm,
-  initialServerStateWithdrawal
-} from './withdrawal-base-form-add';
+  IMaterialWithdrawalAddWithRelations,
+  IMaterialWithdrawalRelatedData
+} from '../../withdrawal-types';
+import { IMaterialRequest } from '../../../../request/material-request-types';
 import { ItemsFieldArray } from './items-field-array';
 import { FormSuccessDisplay } from '@/components/form-tanstack/form-success-display';
 import { ErrorServerForm } from '@/components/form-tanstack/error-server-form';
@@ -34,7 +34,11 @@ export function MaterialWithdrawalFormAdd({
   CardMaintenanceSummary,
   CardMaterialLinkDetails,
   RequestMaintenanceMaterialForm,
-  WithdrawalDetailsForm
+  WithdrawalDetailsForm,
+  initialServerStateWithdrawal = {
+    isSubmitSuccessful: false,
+    message: ''
+  }
 }: {
   defaultData: IMaterialWithdrawalAddForm;
   formActionProp: (
@@ -50,6 +54,10 @@ export function MaterialWithdrawalFormAdd({
   CardMaterialLinkDetails?: any;
   RequestMaintenanceMaterialForm?: any;
   WithdrawalDetailsForm: any;
+  initialServerStateWithdrawal?: IActionResultForm<
+    IMaterialWithdrawalAddForm,
+    IMaterialWithdrawalAddWithRelations
+  >;
 }) {
   // --- 1. CHAMAR TODOS OS HOOKS NO TOPO, INCONDICIONALMENTE ---
   const { warehouse } = useWarehouseContext();

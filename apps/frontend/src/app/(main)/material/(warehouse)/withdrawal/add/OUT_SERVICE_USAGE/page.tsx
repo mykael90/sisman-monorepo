@@ -12,7 +12,7 @@ import { RequestMaintenanceMaterialForm } from '../../_components/form/request-m
 import { WithdrawalDetailUsageService } from './components/withdrawal-details-usage-service';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../../../../../../api/auth/_options';
-import { IMaterialWithdrawalAddForm } from '../../_components/form/withdrawal-base-form-add';
+import { IMaterialWithdrawalAddForm } from '../../withdrawal-types';
 
 export default async function Page() {
   const session = await getServerSession(authOptions);

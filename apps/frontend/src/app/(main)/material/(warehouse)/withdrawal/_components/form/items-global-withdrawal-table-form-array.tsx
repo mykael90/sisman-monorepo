@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Trash2, Minus, Plus } from 'lucide-react';
-import { IMaterialWithdrawalItemAddForm } from './withdrawal-base-form-add';
+import { IMaterialWithdrawalItemAddForm } from '../../withdrawal-types';
 
 interface MaterialTableProps {
   materials: IMaterialWithdrawalItemAddForm[];

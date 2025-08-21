@@ -1,8 +1,8 @@
 // src/hooks/useWithdrawalForm.ts
 
 import { useForm, useTransform, mergeForm } from '@tanstack/react-form';
-import { IMaterialWithdrawalAddForm } from '../app/(main)/material/(warehouse)/withdrawal/_components/form/withdrawal-base-form-add';
 import { IActionResultForm } from '../types/types-server-actions';
+import { IMaterialWithdrawalAddForm } from '../app/(main)/material/(warehouse)/withdrawal/withdrawal-types';
 
 // Tipamos os parâmetros que nosso hook receberá para ser reutilizável
 type UseWithdrawalFormProps = {

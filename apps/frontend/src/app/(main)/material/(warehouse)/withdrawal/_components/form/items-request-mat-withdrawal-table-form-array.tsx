@@ -4,12 +4,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Trash2, Minus, Plus, Info } from 'lucide-react';
-import { IMaterialWithdrawalItemAddForm } from './withdrawal-base-form-add';
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger
 } from '@/components/ui/hover-card';
+import { IMaterialWithdrawalItemAddForm } from '../../withdrawal-types';
 
 export interface IMaterialWithdrawalItemMatRequestAddForm
   extends IMaterialWithdrawalItemAddForm {
