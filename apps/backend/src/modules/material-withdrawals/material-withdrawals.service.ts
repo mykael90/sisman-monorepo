@@ -354,6 +354,20 @@ export class MaterialWithdrawalsService {
     }
   }
 
+  async listByWarehouse(warehouseId: number) {
+    try {
+      return this.prisma.materialWithdrawal.findMany({
+        where: { warehouseId: warehouseId },
+        include: this.includeRelations
+      });
+    } catch (error) {
+      handlePrismaError(error, this.logger, 'MaterialWithdrawalsService', {
+        operation: 'listByWarehouse'
+      });
+      throw error;
+    }
+  }
+
   async show(id: number): Promise<MaterialWithdrawalWithRelationsResponseDto> {
     try {
       const materialWithdrawal =

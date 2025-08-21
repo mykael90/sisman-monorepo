@@ -58,6 +58,27 @@ export class MaterialWithdrawalsController {
   }
 
   /**
+   * Lista todas as retiradas de material por depósito.
+   */
+  @Get('warehouse/:warehouseId')
+  @ApiEndpointSwagger({
+    summary: 'Listar retiradas de material por depósito',
+    description: 'Retorna uma lista de todas as retiradas de material.',
+    response: {
+      status: HttpStatus.OK,
+      description: 'Lista de retiradas de material.',
+      type: MaterialWithdrawalWithRelationsResponseDto, // Usa a DTO de resposta
+      isArray: true // Indica que a resposta é um array
+    }
+  })
+  async listByWarehouse(
+    @Param('warehouseId', ParseIntPipe) warehouseId: number
+  ) {
+    console.log(warehouseId);
+    return this.materialWithdrawalsService.listByWarehouse(warehouseId);
+  }
+
+  /**
    * Busca uma retirada de material específica pelo seu ID.
    */
   @Get(':id')
