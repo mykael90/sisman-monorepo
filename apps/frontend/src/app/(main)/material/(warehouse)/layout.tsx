@@ -6,7 +6,7 @@ import { TabSelector } from './withdrawal/components/tab-selector';
 import { useSession } from 'next-auth/react';
 import { useWarehouseContext } from '../choose-warehouse/context/warehouse-provider';
 import { Button } from '../../../../components/ui/button';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 const logger = new Logger(`src/app/(main)/material/withdrawal/layout.tsx`);
 
@@ -20,6 +20,7 @@ export default function MaterialWithdrawalLayout({
   const { warehouse } = useWarehouseContext();
 
   const router = useRouter();
+  const pathname = usePathname();
 
   return (
     <div className='bg-background min-h-screen'>
@@ -32,7 +33,11 @@ export default function MaterialWithdrawalLayout({
             </h1>
             <Button
               variant='outline'
-              onClick={() => router.push('/material/choose-warehouse')}
+              onClick={() =>
+                router.push(
+                  `/material/choose-warehouse?callbackUrl=${pathname}`
+                )
+              }
             >
               Aqui
             </Button>

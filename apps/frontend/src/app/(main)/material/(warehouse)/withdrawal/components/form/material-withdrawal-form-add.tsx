@@ -18,7 +18,7 @@ import { IMaintenanceRequestWithRelations } from '../../../../../maintenance/req
 import {
   useWithdrawalForm,
   type IWithdrawalFormApi
-} from '@/hooks/useWithdrawalForm';
+} from '@/src/hooks/use-withdrawal-form';
 import { useSession } from 'next-auth/react';
 import Loading from '../../../../../../../components/loading';
 import { useWarehouseContext } from '../../../../choose-warehouse/context/warehouse-provider';

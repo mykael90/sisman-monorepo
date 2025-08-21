@@ -18,7 +18,7 @@ import {
   IMaterialWithdrawalItemMatRequestAddForm,
   ItemsRequestMatWithdrawalTableFormArray
 } from './form/items-request-mat-withdrawal-table-form-array';
-import { IWithdrawalFormApi } from '../../../../../../hooks/useWithdrawalForm';
+import { IWithdrawalFormApi } from '../../../../../../hooks/use-withdrawal-form';
 
 const initialServerStateRequestMaterialBalance: IActionResultForm<
   string,

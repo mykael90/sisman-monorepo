@@ -101,6 +101,7 @@ export function FormDropdown({
   label,
   placeholder,
   showLabel = true,
+  showLabelOnSelect = true,
   className = '',
   options,
   onValueChange,
@@ -112,6 +113,7 @@ export function FormDropdown({
   label: string;
   placeholder?: string;
   showLabel?: boolean;
+  showLabelOnSelect?: boolean;
   className?: string;
   options: { value: string | number; label: string }[];
   onValueChange?: (value: string) => void;
@@ -152,7 +154,7 @@ export function FormDropdown({
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
-            <SelectLabel>{label}</SelectLabel>
+            {showLabelOnSelect && <SelectLabel>{label}</SelectLabel>}
             {options.map((option) => (
               <SelectItem
                 key={String(option.value)}

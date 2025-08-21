@@ -12,7 +12,7 @@ import {
   IMaintenanceRequest,
   IMaintenanceRequestWithRelations
 } from '../../../../maintenance/request/request-types';
-import { IWithdrawalFormApi } from '../../../../../../hooks/useWithdrawalForm';
+import { IWithdrawalFormApi } from '../../../../../../hooks/use-withdrawal-form';
 import { useEffect } from 'react';
 
 export function CardMaintenanceSummary({
