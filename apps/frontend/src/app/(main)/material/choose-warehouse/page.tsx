@@ -10,9 +10,9 @@ import { useWarehouseContext } from './context/warehouse-provider';
 import { IWarehouse } from '../../warehouse/warehouse-types';
 
 export default function ChooseWarehouse() {
-  const [selectedWarehouseId, setSelectedWarehouseId] = useState<number | null>(
-    null
-  );
+  const [selectedWarehouseId, setSelectedWarehouseId] = useState<
+    number | string
+  >('');
 
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get('callbackUrl') || '/material';
@@ -70,7 +70,7 @@ export default function ChooseWarehouse() {
               } as unknown as AnyFieldApi
             }
             label='Selecione um Depósito'
-            placeholder='Selecione um depósito'
+            placeholder='Nenhum depósito selecionado'
             showLabelOnSelect={false}
             options={
               warehousesForMaintenanceInstance?.map((warehouse) => ({
