@@ -18,7 +18,7 @@ export default function MaterialWithdrawalLayout({
   const router = useRouter();
 
   return (
-    <div className='mx-auto max-w-7xl space-y-6'>
+    <div className='mx-auto space-y-6'>
       <div className='flex flex-col items-start justify-between gap-4 rounded-lg border p-4 sm:flex-row sm:items-center'>
         <div className='flex items-center'>
           <div className='mr-4 flex h-14 w-14 shrink-0 items-center justify-center rounded-lg'>

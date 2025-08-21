@@ -16,7 +16,7 @@ export default function MaterialWithdrawalLayout({
   return (
     <div className='min-h-screen'>
       <MaterialWarehouseHeader />
-      <div className='mx-auto max-w-7xl space-y-6 p-4'>
+      <div className='container mx-auto space-y-6 pt-2'>
         {/* Main Content */}
         <main>{children}</main>
       </div>

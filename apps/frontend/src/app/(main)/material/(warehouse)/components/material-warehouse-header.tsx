@@ -12,7 +12,7 @@ export default function MaterialWarehouseHeader() {
 
   return (
     <div className='border-border text-primary z-10 border-b p-4 backdrop-blur-sm'>
-      <div className='mx-auto flex max-w-7xl items-center justify-between'>
+      <div className='container mx-auto flex items-center justify-between'>
         <div className='flex items-center gap-3'>
           <Warehouse className='h-8 w-8' />
           <h1 className='text-2xl font-semibold'>
