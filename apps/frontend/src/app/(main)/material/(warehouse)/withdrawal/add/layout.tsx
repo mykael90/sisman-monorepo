@@ -5,7 +5,7 @@ import Logger from '@/lib/logger';
 import { ArrowLeft, PackageMinus, Warehouse } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { TabSelector } from '../components/tab-selector';
+import { TabSelector } from '../_components/add/tab-selector';
 
 const logger = new Logger(`src/app/(main)/material/withdrawal/layout.tsx`);
 

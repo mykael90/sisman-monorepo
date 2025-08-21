@@ -3,7 +3,7 @@
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { materialOperationOutDisplayMap as op } from '../../../../../../mappers/material-operations-mappers';
+import { materialOperationOutDisplayMap as op } from '@/mappers/material-operations-mappers';
 
 export function TabSelector() {
   const pathname = usePathname();

@@ -25,6 +25,7 @@
       "@/hooks/*": ["./src/hooks/*"],
       "@/lib/*": ["./src/lib/*"],
       "@/types/*": ["./src/types/*"],
+      "@/mappers/*": ["./src/mappers/*"],
       "@/app/*": ["./src/app/*"]
     }
   },

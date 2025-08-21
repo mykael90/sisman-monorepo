@@ -1,6 +1,6 @@
 import type { MappingConfig } from '@/lib/payload-creator';
 
-import type { IMaterialWithdrawalAddForm } from '../../../components/form/material-withdrawal-form-add';
+import type { IMaterialWithdrawalAddForm } from '../../../_components/form/material-withdrawal-form-add';
 import type { IMaterialWithdrawalAddWithRelations } from '../../../withdrawal-types';
 
 export const withdrawalServiceUsageMapping: MappingConfig<

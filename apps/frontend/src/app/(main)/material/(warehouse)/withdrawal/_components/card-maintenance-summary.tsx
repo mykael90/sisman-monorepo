@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Building, MapPin, RefreshCcw, User } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
-import { IMaintenanceRequestData } from './request-maintenance-material-form';
+import { IMaintenanceRequestData } from './form/request-maintenance-material-form';
 import { Button } from '../../../../../../components/ui/button';
 import {
   IMaintenanceRequest,

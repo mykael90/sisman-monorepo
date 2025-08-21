@@ -11,7 +11,7 @@ import {
 import {
   fieldsLabelsWithdrawalForm,
   IMaterialWithdrawalAddForm
-} from '../../../components/form/withdrawal-base-form-add';
+} from '../../../_components/form/withdrawal-base-form-add';
 import {
   Popover,
   PopoverContent,
