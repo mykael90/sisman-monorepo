@@ -69,10 +69,11 @@ export const sidebarItems: SidebarItem[] = [
     href: '/material', //Optional, could be omitted if you don't want a direct link to Materiais
     icon: <Package className='h-6 w-6' />,
     children: [
-      { label: 'Todos os Materiais', href: '/material/all' },
-      { label: 'Entrada: Material', href: '/material/add' },
-      { label: 'Operação Saída', href: '/material/withdrawal' },
-      { label: 'Categorias', href: '/material/category' }
+      // { label: 'Todos os Materiais', href: '/material/all' },
+      // { label: 'Entrada: Material', href: '/material/add' },
+      { label: 'Entradas', href: '/material/receipt' },
+      { label: 'Retiradas', href: '/material/withdrawal' },
+      { label: 'Inventário', href: '/material/category' }
     ]
   },
   {

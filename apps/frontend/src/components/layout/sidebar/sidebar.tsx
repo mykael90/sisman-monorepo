@@ -76,7 +76,7 @@ const SidebarItemComponent: React.FC<SidebarItemProps> = ({
         <ul
           className={`mt-2 ml-6 space-y-1 ${isCollapsed ? 'hidden' : ''} rounded-tl-md rounded-bl-3xl bg-gray-100 dark:bg-gray-700`}
         >
-          {item.children.map(child =>
+          {item.children.map((child) =>
             child.label === DIVIDER_LABEL ? (
               <li
                 key={child.label}
@@ -142,11 +142,11 @@ const Sidebar: React.FC = () => {
       ref={sidebarRef}
       className={`${sidebarRef.current ? 'flex' : 'hidden'} overflow-x-hidden overflow-y-auto bg-gray-50 text-gray-700 transition-all duration-300 sm:flex dark:bg-gray-800 dark:text-gray-300 ${
         isCollapsed ? 'w:0 sm:w-16' : 'w-full sm:w-64'
-      }`}
+      } border-r`}
     >
       <nav className='mt-1 flex w-full flex-col'>
         <ul className='space-y-2'>
-          {sidebarItems.map(item => (
+          {sidebarItems.map((item) => (
             <li key={item.label}>
               <SidebarItemComponent
                 item={item}
