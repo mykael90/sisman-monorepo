@@ -1,12 +1,8 @@
 'use client';
 
-import { Warehouse } from 'lucide-react';
 import Logger from '@/lib/logger';
-import { TabSelector } from './withdrawal/components/tab-selector';
 import { useSession } from 'next-auth/react';
-import { useWarehouseContext } from '../choose-warehouse/context/warehouse-provider';
-import { Button } from '../../../../components/ui/button';
-import { usePathname, useRouter } from 'next/navigation';
+import MaterialWarehouseHeader from './components/material-warehouse-header';
 
 const logger = new Logger(`src/app/(main)/material/withdrawal/layout.tsx`);
 
@@ -17,36 +13,10 @@ export default function MaterialWithdrawalLayout({
 }) {
   const { data: session, status, update } = useSession();
 
-  const { warehouse } = useWarehouseContext();
-
-  const router = useRouter();
-  const pathname = usePathname();
-
   return (
     <div className='bg-background min-h-screen'>
-      <div className='border-primary-foreground/10 bg-primary/80 text-primary-foreground sticky top-0 z-10 border-b p-4 backdrop-blur-sm'>
-        <div className='mx-auto flex max-w-7xl items-center justify-between'>
-          <div className='flex items-center gap-3'>
-            <Warehouse className='h-8 w-8' />
-            <h1 className='text-2xl font-semibold'>
-              Depósito Provisório: {warehouse?.name}
-            </h1>
-            <Button
-              variant='outline'
-              onClick={() =>
-                router.push(
-                  `/material/choose-warehouse?callbackUrl=${pathname}`
-                )
-              }
-            >
-              Aqui
-            </Button>
-          </div>
-        </div>
-      </div>
+      <MaterialWarehouseHeader />
       <div className='mx-auto max-w-7xl space-y-6 p-4'>
-        {/* Output Type Tabs */}
-        <TabSelector />
         {/* Main Content */}
         <main>{children}</main>
       </div>
