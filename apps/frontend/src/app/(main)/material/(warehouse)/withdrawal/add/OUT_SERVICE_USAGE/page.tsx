@@ -60,32 +60,29 @@ export default async function Page() {
 
   return (
     <div>
-      {/* <div className='grid grid-cols-1 gap-6 lg:grid-cols-3'> */}
-      <div>
-        {/* Main Form */}
-        <MaterialWithdrawalFormAdd
-          // promiseMaintenanceRequest={getMaintenanceRequest}
-          relatedData={{
-            listGlobalMaterials,
-            listUsers
-          }}
-          // SubmitButtonIcon={FilePlus}
-          // submitButtonText='Criar Usuário'
-          defaultData={defaultDataWithdrawalForm}
-          formActionProp={addWithdrawal}
-          CardMaintenanceSummary={CardMaintenanceSummary}
-          CardMaterialLinkDetails={CardMaterialRequestLinkDetails}
-          RequestMaintenanceMaterialForm={RequestMaintenanceMaterialForm}
-          WithdrawalDetailsForm={WithdrawalDetailUsageService}
-          // withdrawalType={withdrawalType}
-        />
+      {/* Main Form */}
+      <MaterialWithdrawalFormAdd
+        // promiseMaintenanceRequest={getMaintenanceRequest}
+        relatedData={{
+          listGlobalMaterials,
+          listUsers
+        }}
+        // SubmitButtonIcon={FilePlus}
+        // submitButtonText='Criar Usuário'
+        defaultData={defaultDataWithdrawalForm}
+        formActionProp={addWithdrawal}
+        CardMaintenanceSummary={CardMaintenanceSummary}
+        CardMaterialLinkDetails={CardMaterialRequestLinkDetails}
+        RequestMaintenanceMaterialForm={RequestMaintenanceMaterialForm}
+        WithdrawalDetailsForm={WithdrawalDetailUsageService}
+        // withdrawalType={withdrawalType}
+      />
 
-        {/* Sidebar */}
-        {/* <div className='space-y-6'>
+      {/* Sidebar */}
+      {/* <div className='space-y-6'>
           <MaterialWithdrawalSummary />
           <RecentWithdrawals />
         </div> */}
-      </div>
     </div>
   );
 }

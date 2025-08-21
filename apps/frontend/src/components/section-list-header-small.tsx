@@ -1,18 +1,18 @@
 'use client';
 
-import { type FC } from 'react'; // FC for functional component types
-import { type VariantProps } from 'class-variance-authority'; // To get variant types
-import { Button, buttonVariants } from '@/components/ui/button'; // Button and its props type
+import { type FC } from 'react';
+import { type VariantProps } from 'class-variance-authority';
+import { Button, buttonVariants } from '@/components/ui/button';
 
-interface SectionListHeaderSmall {
+interface SectionListHeaderSmallProps {
   title: string;
   subtitle?: string;
-  TitleIcon?: FC<{ className?: string }>; // Optional icon for the title area
+  TitleIcon?: FC<{ className?: string }>;
   actionButton?: {
     text: string;
-    Icon?: FC<{ className?: string }>; // Optional icon for the button
+    Icon?: FC<{ className?: string }>;
     onClick: () => void;
-    variant?: VariantProps<typeof buttonVariants>['variant']; // Corrected button variant type
+    variant?: VariantProps<typeof buttonVariants>['variant'];
   };
 }
 
@@ -21,26 +21,26 @@ export function SectionListHeaderSmall({
   subtitle,
   TitleIcon,
   actionButton
-}: SectionListHeaderSmall) {
+}: SectionListHeaderSmallProps) {
   return (
-    <div className='flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center'>
+    <div className='mt-4 flex flex-col items-start justify-between gap-4 rounded-lg border p-4 sm:flex-row sm:items-center'>
       <div className='flex items-center'>
         {TitleIcon && (
-          <div className='mr-3 flex h-6 w-6 shrink-0 items-center justify-center'>
-            <TitleIcon className='text-muted-foreground h-12 w-12' />
+          <div className='mr-4 flex h-14 w-14 shrink-0 items-center justify-center rounded-lg'>
+            <TitleIcon className='h-6 w-6' />
           </div>
         )}
         <div>
-          <h1 className='text-sisman-blue text-xl font-bold'>{title}</h1>
+          <h1 className='text-primary text-xl font-bold'>{title}</h1>
           {subtitle && (
-            <p className='text-muted-foreground text-md'>{subtitle}</p>
+            <p className='text-md text-muted-foreground'>{subtitle}</p>
           )}
         </div>
       </div>
       {actionButton && (
         <div className='flex w-full justify-end sm:w-auto'>
           <Button
-            variant={actionButton.variant || 'default'}
+            variant={actionButton.variant || 'outline'}
             onClick={actionButton.onClick}
           >
             {actionButton.Icon && (
