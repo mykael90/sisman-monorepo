@@ -13,7 +13,7 @@ import {
 } from './withdrawal-types';
 import { handleApiAction } from '@/lib/fetch/handle-form-action-sisman';
 import { createPayload } from '@/lib/payload-creator';
-import { withdrawalServiceUsageMapping } from './OUT_SERVICE_USAGE/components/mapper-to-payload';
+import { withdrawalServiceUsageMapping } from './add/OUT_SERVICE_USAGE/components/mapper-to-payload';
 import { IMaterialWithdrawalAddForm } from './components/form/material-withdrawal-form-add';
 
 const PAGE_PATH = '/material/withdrawal';

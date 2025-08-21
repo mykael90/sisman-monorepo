@@ -11,7 +11,7 @@ import {
 import {
   fieldsLabelsWithdrawalForm,
   IMaterialWithdrawalAddForm
-} from '../../components/form/withdrawal-base-form-add';
+} from '../../../components/form/withdrawal-base-form-add';
 import {
   Popover,
   PopoverContent,
@@ -26,7 +26,7 @@ import {
   FormAsyncValidateOrFn,
   FormValidateOrFn
 } from '@tanstack/react-form';
-import { IWithdrawalFormApi } from '../../../../../../../hooks/use-withdrawal-form';
+import { IWithdrawalFormApi } from '../../../../../../../../hooks/use-withdrawal-form';
 
 export function WithdrawalDetailUsageService({
   formWithdrawal

@@ -5,7 +5,7 @@ import Logger from '@/lib/logger';
 import { ArrowLeft, PackageMinus, Warehouse } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { TabSelector } from './components/tab-selector';
+import { TabSelector } from '../components/tab-selector';
 
 const logger = new Logger(`src/app/(main)/material/withdrawal/layout.tsx`);
 
@@ -19,7 +19,7 @@ export default function MaterialWithdrawalLayout({
 
   return (
     <div className='mx-auto max-w-7xl space-y-6'>
-      <div className='bg-card flex flex-col items-start justify-between gap-4 rounded-lg border p-4 sm:flex-row sm:items-center'>
+      <div className='flex flex-col items-start justify-between gap-4 rounded-lg border p-4 sm:flex-row sm:items-center'>
         <div className='flex items-center'>
           <div className='mr-4 flex h-14 w-14 shrink-0 items-center justify-center rounded-lg'>
             <PackageMinus className='h-6 w-6' />

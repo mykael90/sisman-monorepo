@@ -41,7 +41,7 @@ export default function ChooseWarehouse() {
 
   return (
     <div className='flex min-h-screen flex-col items-center justify-between p-24'>
-      <div className='bg-card text-card-foreground w-full max-w-md rounded-lg border p-8 shadow-sm'>
+      <div className='text-card-foreground w-full max-w-md rounded-lg border p-8 shadow-sm'>
         <div className='mb-6 flex items-center justify-center gap-4'>
           <Warehouse className='text-primary h-8 w-8' />
           <h1 className='text-2xl font-bold'>Escolha um Depósito</h1>

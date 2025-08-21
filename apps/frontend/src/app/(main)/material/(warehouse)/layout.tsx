@@ -14,7 +14,7 @@ export default function MaterialWithdrawalLayout({
   const { data: session, status, update } = useSession();
 
   return (
-    <div className='bg-background min-h-screen'>
+    <div className='min-h-screen'>
       <MaterialWarehouseHeader />
       <div className='mx-auto max-w-7xl space-y-6 p-4'>
         {/* Main Content */}

@@ -39,7 +39,7 @@ export default async function MaterialWithdrawalLayout({
       initialWarehouse={initialWarehouse}
       warehousesForMaintenanceInstance={warehousesForMaintenanceInstance}
     >
-      <div className='bg-background min-h-screen'>
+      <div className='min-h-screen'>
         <main>{children}</main>
       </div>
     </WarehouseProvider>
