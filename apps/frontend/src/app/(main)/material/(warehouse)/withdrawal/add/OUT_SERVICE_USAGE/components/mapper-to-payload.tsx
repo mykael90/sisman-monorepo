@@ -1,7 +1,9 @@
 import type { MappingConfig } from '@/lib/payload-creator';
 
-import type { IMaterialWithdrawalAddForm } from '../../../_components/form/material-withdrawal-form-add';
-import type { IMaterialWithdrawalAddPayload } from '../../../withdrawal-types';
+import type {
+  IMaterialWithdrawalAddForm,
+  IMaterialWithdrawalAddPayload
+} from '../../../withdrawal-types';
 
 export const withdrawalServiceUsageMapping: MappingConfig<
   IMaterialWithdrawalAddForm,
@@ -24,7 +26,7 @@ export const withdrawalServiceUsageMapping: MappingConfig<
   collectedByWorker: (data) =>
     data.collectedByWorkerId && { id: data.collectedByWorkerId },
   materialRequest: (data) =>
-    data.materialRequestId && { id: data.materialRequestId },
+    data.materialRequestId && { id: Number(data.materialRequestId) },
   maintenanceRequest: (data) =>
     data.maintenanceRequestId && { id: data.maintenanceRequestId },
   materialPickingOrder: (data) =>

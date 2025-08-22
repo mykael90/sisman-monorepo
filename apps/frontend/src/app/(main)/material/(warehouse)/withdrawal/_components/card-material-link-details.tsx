@@ -149,7 +149,11 @@ export function CardMaterialRequestLinkDetails({
                                   freeBalanceQuantity: Number(
                                     item.quantityFreeBalancePotential
                                   ), // Adicionado para corresponder ao tipo
-                                  physicalOnHandQuantity: 0 // Adicionado para corresponder ao tipo, assumindo 0 ou um valor padrão
+                                  physicalOnHandQuantity: Number(
+                                    item.quantityFreeBalanceEffective
+                                  ),
+                                  materialRequestItemId:
+                                    item.materialRequestItemId
                                 })
                               )
                             );
