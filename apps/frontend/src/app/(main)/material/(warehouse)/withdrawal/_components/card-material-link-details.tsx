@@ -76,7 +76,13 @@ export function CardMaterialRequestLinkDetails({
             </h2>
             <Switch
               checked={linkMaterialRequest}
-              onCheckedChange={setLinkMaterialRequest}
+              onCheckedChange={(e) => {
+                setLinkMaterialRequest(e);
+                if (!e) {
+                  setMaterialRequestBalance(null);
+                  setFieldValue('items', []);
+                }
+              }}
               aria-label='Vincular Requisição de Material'
             />
           </div>

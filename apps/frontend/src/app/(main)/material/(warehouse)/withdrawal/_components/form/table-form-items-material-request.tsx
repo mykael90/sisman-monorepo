@@ -13,7 +13,7 @@ import { IMaterialWithdrawalItemAddForm } from '../../withdrawal-types';
 import { IItemMaterialRequestBalance } from '../../../../request/material-request-types';
 import { useMemo } from 'react';
 
-export type IMaterialWithdrawalItemMatRequestAddForm =
+export type IMaterialWithdrawalItemAddFormMaterialRequest =
   IMaterialWithdrawalItemAddForm &
     Partial<
       Pick<
@@ -30,7 +30,7 @@ export type IMaterialWithdrawalItemMatRequestAddForm =
     >;
 
 interface TableFormItemsMaterialRequestProps {
-  materialsInfo: IMaterialWithdrawalItemMatRequestAddForm[];
+  materialsInfo: IMaterialWithdrawalItemAddFormMaterialRequest[];
   materials: IMaterialWithdrawalItemAddForm[];
   onRemove: (key: number) => void;
   onUpdateQuantity: (key: number, quantity: number) => void;
@@ -50,7 +50,10 @@ export function TableFormItemsMaterialRequest({
   // Isso é uma otimização de performance crucial!
   console.log(`materialsInfo: ${JSON.stringify(materialsInfo)}`);
   const infoMap = useMemo(() => {
-    const map = new Map<number, IMaterialWithdrawalItemMatRequestAddForm>();
+    const map = new Map<
+      number,
+      IMaterialWithdrawalItemAddFormMaterialRequest
+    >();
 
     // Adiciona uma verificação para garantir que materialsInfo é um array
     if (Array.isArray(materialsInfo)) {
@@ -75,7 +78,7 @@ export function TableFormItemsMaterialRequest({
 
   // Função para limitar a quantidade até o saldo potencial livre
   const getClampedQuantity = (
-    material: IMaterialWithdrawalItemMatRequestAddForm,
+    material: IMaterialWithdrawalItemAddFormMaterialRequest,
     newQuantity: number
   ): number => {
     const freeBalancePotential = Number(material.quantityFreeBalancePotential);
