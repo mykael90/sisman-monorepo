@@ -26,7 +26,6 @@ export type IMaterialWithdrawalItemMatRequestAddForm =
         | 'quantityFreeBalanceEffective'
         | 'quantityFreeBalancePotential'
         | 'quantityRequested'
-        | 'materialRequestItemId'
       >
     >;
 
@@ -90,7 +89,7 @@ export function TableFormItemsMaterialRequest({
   };
 
   const handleQuantityChange = (key: number, change: number) => {
-    const material = materialsInfo.find((m) => m.key === key);
+    const material = materials.find((m) => m.key === key);
     if (material) {
       const newQuantity = Number(material.quantityWithdrawn) + change;
       onUpdateQuantity(key, getClampedQuantity(material, newQuantity));
