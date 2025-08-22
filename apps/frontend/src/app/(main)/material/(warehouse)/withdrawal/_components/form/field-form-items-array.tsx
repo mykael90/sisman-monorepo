@@ -8,7 +8,7 @@ import { ResponsiveCombobox } from '@/components/ui/responsive-combobox';
 import * as React from 'react';
 import Logger from '@/lib/logger';
 import { IMaterialGlobalCatalogWithRelations } from '../../../../global-catalog/material-global-catalog-types';
-import { ItemsGlobalWithdrawalTableFormArray } from './items-global-withdrawal-table-form-array';
+import { TableFormItemsGlobal } from './table-form-items-global';
 import {
   IMaterialWithdrawalAddForm,
   IMaterialWithdrawalItemAddForm
@@ -48,6 +48,7 @@ export const ItemsFieldArray: FC<MaterialItemsFieldProps> = ({
     string | undefined
   >(undefined);
 
+  //remover da lista os materiais que ja foram adicionados para retirada
   const materialOptions =
     listGlobalMaterials
       ?.filter(
@@ -138,7 +139,7 @@ export const ItemsFieldArray: FC<MaterialItemsFieldProps> = ({
           Add
         </Button> */}
       </div>
-      <ItemsGlobalWithdrawalTableFormArray
+      <TableFormItemsGlobal
         materials={field.state.value}
         onRemove={handleRemoveMaterial}
         onUpdateQuantity={handleUpdateQuantity}

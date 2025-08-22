@@ -5,7 +5,7 @@ import { Switch } from '@/components/ui/switch';
 import { FormListBox } from '@/components/form-tanstack/form-list-box';
 import { Label } from '@/components/ui/label';
 import { format } from 'date-fns';
-import { ItemsGlobalWithdrawalTableFormArray } from './form/items-global-withdrawal-table-form-array';
+import { TableFormItemsGlobal } from './form/table-form-items-global';
 import { startTransition, useState, useEffect } from 'react';
 import { IActionResultForm } from '../../../../../../types/types-server-actions';
 import { handleMaterialRequestBalanceSearch } from '../../../request/material-request-actions';
@@ -15,8 +15,8 @@ import {
 } from '../../../request/material-request-types';
 import {
   IMaterialWithdrawalItemMatRequestAddForm,
-  ItemsRequestMatWithdrawalTableFormArray
-} from './form/items-request-mat-withdrawal-table-form-array';
+  TableFormItemsMaterialRequest
+} from './form/table-form-items-material-request';
 import { IWithdrawalFormApi } from '../../../../../../hooks/use-withdrawal-form';
 
 const initialServerStateRequestMaterialBalance: IActionResultForm<
@@ -41,8 +41,14 @@ export function CardMaterialRequestLinkDetails({
   materialRequestDataLinked: any;
   setFieldValue: IWithdrawalFormApi['setFieldValue'];
 }) {
-  const [materialRequestBalance, setMaterialRequestBalance] =
-    useState<IMaterialRequestBalanceWithRelations | null>(null);
+  const [materialRequestBalance, setMaterialRequestBalance] = useState<
+    | (IMaterialRequestBalanceWithRelations & {
+        itemsBalance: (IItemMaterialRequestBalance & {
+          quantityWithdrawn: number;
+        })[];
+      })
+    | null
+  >(null);
 
   useEffect(() => {
     if (
@@ -113,26 +119,25 @@ export function CardMaterialRequestLinkDetails({
                               initialServerStateRequestMaterialBalance,
                               value
                             );
-                          if (response.isSubmitSuccessful) {
+                          if (
+                            response.isSubmitSuccessful &&
+                            response.responseData
+                          ) {
+                            const newMaterialRequestBalance = {
+                              ...response.responseData,
+                              itemsBalance:
+                                response.responseData.itemsBalance?.map(
+                                  (item) => ({
+                                    ...item,
+                                    quantityWithdrawn: Number(
+                                      item.quantityFreeBalancePotential
+                                    )
+                                  })
+                                )
+                            };
                             setMaterialRequestBalance(
-                              response.responseData as IMaterialRequestBalanceWithRelations
+                              newMaterialRequestBalance
                             );
-                            // formWithdrawal.setFieldValue(
-                            //   'items',
-                            //   response.responseData?.itemsBalance?.map(
-                            //     (item: IItemMaterialRequestBalance) => ({
-                            //       key: Date.now() + Math.random(),
-                            //       name: item.name,
-                            //       globalMaterialId: item.globalMaterialId,
-                            //       materialInstanceId: undefined, // Assuming global material for now
-                            //       description: item.description,
-                            //       unitOfMeasure: item.unitOfMeasure,
-                            //       quantityWithdrawn: Number(
-                            //         item.quantityFreeBalancePotential
-                            //       )
-                            //     })
-                            //   )
-                            // );
                           }
                         });
                       }
@@ -189,9 +194,9 @@ export function CardMaterialRequestLinkDetails({
           {materialRequestBalance && (
             <div>
               <h3 className='text-md font-semibold'>Itens da Requisição</h3>
-              <ItemsRequestMatWithdrawalTableFormArray
+              <TableFormItemsMaterialRequest
                 materials={
-                  materialRequestBalance?.itemsBalance?.map(
+                  materialRequestBalance?.itemsBalance.map(
                     (item: IItemMaterialRequestBalance) => ({
                       key: Date.now() + Math.random(),
                       name: item.name,

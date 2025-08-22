@@ -10,25 +10,24 @@ import {
   HoverCardTrigger
 } from '@/components/ui/hover-card';
 import { IMaterialWithdrawalItemAddForm } from '../../withdrawal-types';
+import { IItemMaterialRequestBalance } from '../../../../request/material-request-types';
 
-export interface IMaterialWithdrawalItemMatRequestAddForm
-  extends IMaterialWithdrawalItemAddForm {
-  key: number;
-  globalMaterialId: string;
-  description: string;
-  unitOfMeasure: string;
-  quantityRequested: number | string;
-  quantityApproved: number | string; // Adicionado para clareza no cálculo
-  quantityReceivedSum: number | string;
-  quantityWithdrawnSum: number | string;
-  quantityReserved: number | string;
-  quantityRestricted: number | string;
-  quantityFreeBalanceEffective: number | string;
-  quantityFreeBalancePotential: number | string;
-  quantityWithdrawn: number | string;
-}
+export type IMaterialWithdrawalItemMatRequestAddForm =
+  IMaterialWithdrawalItemAddForm &
+    Pick<
+      IItemMaterialRequestBalance,
+      | 'quantityApproved'
+      | 'quantityReceivedSum'
+      | 'quantityWithdrawnSum'
+      | 'quantityReserved'
+      | 'quantityRestricted'
+      | 'quantityFreeBalanceEffective'
+      | 'quantityFreeBalancePotential'
+      | 'quantityRequested'
+      | 'materialRequestItemId'
+    >;
 
-interface MaterialTableProps {
+interface TableFormItemsMaterialRequestProps {
   materials: IMaterialWithdrawalItemMatRequestAddForm[];
   onRemove: (key: number) => void;
   onUpdateQuantity: (key: number, quantity: number) => void;
@@ -36,12 +35,12 @@ interface MaterialTableProps {
   readOnly?: boolean;
 }
 
-export function ItemsRequestMatWithdrawalTableFormArray({
+export function TableFormItemsMaterialRequest({
   materials,
   onRemove,
   onUpdateQuantity,
   readOnly = false
-}: MaterialTableProps) {
+}: TableFormItemsMaterialRequestProps) {
   // Função para limitar a quantidade até o saldo potencial livre
   const getClampedQuantity = (
     material: IMaterialWithdrawalItemMatRequestAddForm,

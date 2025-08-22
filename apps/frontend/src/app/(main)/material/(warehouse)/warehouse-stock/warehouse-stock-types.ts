@@ -15,8 +15,8 @@ export interface IWarehouseStockEdit extends IWarehouseStockAdd {
 export type IWarehouseStock = MaterialWarehouseStock;
 
 export type IWarehouseStockIncludedComputed = IWarehouseStock & {
-  physicalOnHandQuantity: null | Prisma.Decimal;
-  freeBalanceQuantity: null | Prisma.Decimal;
+  physicalOnHandQuantity: null | number | string | Prisma.Decimal;
+  freeBalanceQuantity: null | number | string | Prisma.Decimal;
 };
 
 export type IWarehouseStockRemove = {

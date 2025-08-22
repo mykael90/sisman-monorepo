@@ -6,10 +6,9 @@ import { getSismanAccessToken } from '@/lib/auth/get-access-token';
 import { fetchApiSisman } from '@/lib/fetch/api-sisman';
 import { IActionResultForm } from '@/types/types-server-actions';
 import {
-  IMaterialWithdrawalAdd,
   IMaterialWithdrawalAddForm,
   IMaterialWithdrawalAddPayload,
-  IMaterialWithdrawalEdit,
+  IMaterialWithdrawalEditForm,
   IMaterialWithdrawalWithRelations
 } from './withdrawal-types';
 import { handleApiAction } from '@/lib/fetch/handle-form-action-sisman';
@@ -146,8 +145,8 @@ export async function addWithdrawal(
 
 export async function updateWithdrawal(
   prevState: unknown,
-  data: IMaterialWithdrawalEdit
-): Promise<IActionResultForm<IMaterialWithdrawalEdit, any>> {
+  data: IMaterialWithdrawalEditForm
+): Promise<IActionResultForm<IMaterialWithdrawalEditForm, any>> {
   logger.info(
     `(Server Action) updateWithdrawal: Attempt to update withdrawal ${data.id}`,
     data
@@ -156,9 +155,9 @@ export async function updateWithdrawal(
   try {
     const accessToken = await getSismanAccessToken();
     return await handleApiAction<
-      IMaterialWithdrawalEdit,
+      IMaterialWithdrawalEditForm,
       any,
-      IMaterialWithdrawalEdit
+      IMaterialWithdrawalEditForm
     >(
       data,
       data,

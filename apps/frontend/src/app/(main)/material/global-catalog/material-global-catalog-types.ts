@@ -30,7 +30,8 @@ export interface IMaterialGlobalCatalogAdd
     | 'updatedAt'
   > {}
 
-export interface IMaterialGlobalCatalogEdit extends IMaterialGlobalCatalogAdd {
+export interface IMaterialGlobalCatalogEdit
+  extends Partial<IMaterialGlobalCatalogAdd> {
   id: string; // MaterialGlobalCatalog has string id
 }
 

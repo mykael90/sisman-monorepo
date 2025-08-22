@@ -12,7 +12,7 @@ import {
   IMaterialWithdrawalWithRelations
 } from '../../withdrawal-types';
 import { IMaterialRequest } from '../../../../request/material-request-types';
-import { ItemsFieldArray } from './items-field-array';
+import { ItemsFieldArray } from './field-form-items-array';
 import { FormSuccessDisplay } from '@/components/form-tanstack/form-success-display';
 import { ErrorServerForm } from '@/components/form-tanstack/error-server-form';
 import { IMaintenanceRequestWithRelations } from '../../../../../maintenance/request/request-types';

@@ -5,37 +5,15 @@ import {
 } from '@sisman/prisma';
 import { IUser } from '../../../user/user-types';
 import {
-  IMaterialGlobalCatalogAdd,
+  IMaterialGlobalCatalogEdit,
   IMaterialGlobalCatalogWithRelations
 } from '../../global-catalog/material-global-catalog-types';
+import {
+  IWarehouseStock,
+  IWarehouseStockIncludedComputed
+} from '../warehouse-stock/warehouse-stock-types';
 
 export type IMaterialWithdrawal = MaterialWithdrawal;
-
-export interface IMaterialWithdrawalAdd
-  extends Partial<Prisma.MaterialWithdrawalCreateManyInput> {}
-
-export interface IMaterialWithdrawalEdit extends IMaterialWithdrawalAdd {}
-
-export type IMaterialWithdrawalItem = MaterialWithdrawalItem;
-
-export interface IMaterialWithdrawalItemAdd
-  extends Prisma.MaterialWithdrawalItemCreateManyInput {}
-
-// TODO:
-export interface IMaterialWithdrawalAddPayload extends IMaterialWithdrawalAdd {
-  items: IMaterialWithdrawalItemAddForm[];
-  warehouse: { id: number };
-  movementType: { code: string };
-  processedByUser: { id: number };
-  collectedByUser: { id: number };
-  collectedByWorker: { id: number };
-  materialRequest: { id: number };
-  maintenanceRequest: { id: number };
-  materialPickingOrder: { id: number };
-}
-
-export interface IMaterialWithdrawalItemEdit
-  extends IMaterialWithdrawalItemAdd {}
 
 export type IMaterialWithdrawalWithRelations =
   Prisma.MaterialWithdrawalGetPayload<{
@@ -52,22 +30,48 @@ export type IMaterialWithdrawalWithRelations =
     };
   }>;
 
+export type IMaterialWithdrawalItem = MaterialWithdrawalItem;
+
+// TODO:
+export interface IMaterialWithdrawalAddPayload
+  extends Prisma.MaterialWithdrawalCreateManyInput {
+  items: Prisma.MaterialWithdrawalItemCreateManyMaterialWithdrawalInput[];
+  warehouse: { id: number };
+  movementType: { code: string };
+  processedByUser: { id: number };
+  collectedByUser?: { id: number };
+  collectedByWorker?: { id: number };
+  materialRequest?: { id: number };
+  maintenanceRequest?: { id: number };
+  materialPickingOrder?: { id: number };
+}
+
 export interface IMaterialWithdrawalRelatedData {
   listGlobalMaterials?: IMaterialGlobalCatalogWithRelations[];
   listUsers?: IUser[];
 }
 
-export interface IMaterialWithdrawalAddForm extends IMaterialWithdrawalAdd {
+export interface IMaterialWithdrawalAddForm
+  extends Prisma.MaterialWithdrawalCreateManyInput {
   items: IMaterialWithdrawalItemAddForm[];
   collectorType: string;
 }
 
+export interface IMaterialWithdrawalEditForm
+  extends Partial<IMaterialWithdrawalAddForm> {}
+
 export type IMaterialWithdrawalItemAddForm =
-  Partial<IMaterialWithdrawalItemAdd> &
-    Omit<IMaterialGlobalCatalogAdd, 'id' | 'materialWithdrawalId'> & {
+  Prisma.MaterialWithdrawalItemCreateManyMaterialWithdrawalInput &
+    Partial<
+      Pick<IMaterialGlobalCatalogEdit, 'name' | 'description' | 'unitOfMeasure'>
+    > &
+    Partial<
+      Pick<
+        IWarehouseStockIncludedComputed,
+        'freeBalanceQuantity' | 'physicalOnHandQuantity'
+      >
+    > & {
       key: number;
-      freeBalanceQuantity: number;
-      physicalOnHandQuantity: number;
     };
 
 export const fieldsLabelsWithdrawalForm: Partial<
@@ -82,5 +86,9 @@ export const fieldsLabelsWithdrawalForm: Partial<
   movementTypeId: 'Tipo de Movimento',
   materialRequestId: 'Requisição de Material',
   notes: 'Observações',
-  collectorType: 'Coletado por'
+  collectorType: 'Coletado por',
+  collectedByWorkerId: 'Coletado por funcionário',
+  materialPickingOrderId: 'Requisição de Coleta',
+  items: 'Itens para retirada',
+  legacy_place: 'Local'
 };

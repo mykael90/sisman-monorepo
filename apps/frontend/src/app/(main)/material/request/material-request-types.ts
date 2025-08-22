@@ -27,7 +27,7 @@ export type IMaterialRequestRelatedData = {
 export interface IMaterialRequestBalanceWithRelations
   extends IMaterialRequestWithRelations {
   items?: IMaterialGlobalCatalog[];
-  itemsBalance?: IItemMaterialRequestBalance[];
+  itemsBalance: IItemMaterialRequestBalance[];
 }
 
 export interface IItemMaterialRequestBalance {
@@ -36,12 +36,12 @@ export interface IItemMaterialRequestBalance {
   name: string;
   description: string;
   unitOfMeasure: string;
-  quantityRequested: string;
-  quantityApproved: string;
-  quantityReceivedSum: string;
-  quantityWithdrawnSum: string;
-  quantityReserved: string;
-  quantityRestricted: string;
-  quantityFreeBalanceEffective: string;
-  quantityFreeBalancePotential: string;
+  quantityRequested: number;
+  quantityApproved: number;
+  quantityReceivedSum: number;
+  quantityWithdrawnSum: number;
+  quantityReserved: number;
+  quantityRestricted: number;
+  quantityFreeBalanceEffective: number;
+  quantityFreeBalancePotential: number;
 }

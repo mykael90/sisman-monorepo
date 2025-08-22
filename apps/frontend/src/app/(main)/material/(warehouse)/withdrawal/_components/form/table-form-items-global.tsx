@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Trash2, Minus, Plus } from 'lucide-react';
 import { IMaterialWithdrawalItemAddForm } from '../../withdrawal-types';
 
-interface MaterialTableProps {
+interface TableFormItemsGlobalProps {
   materials: IMaterialWithdrawalItemAddForm[];
   onRemove: (key: number) => void;
   onUpdateQuantity: (key: number, quantity: number) => void;
@@ -14,13 +14,13 @@ interface MaterialTableProps {
   readOnly?: boolean;
 }
 
-export function ItemsGlobalWithdrawalTableFormArray({
+export function TableFormItemsGlobal({
   materials,
   onRemove,
   onUpdateQuantity,
   hideMaterialRequestItemId,
   readOnly = false
-}: MaterialTableProps) {
+}: TableFormItemsGlobalProps) {
   //função para limitar a quantidade até o saldo livre
   const getClampedQuantity = (
     material: IMaterialWithdrawalItemAddForm,
@@ -33,7 +33,7 @@ export function ItemsGlobalWithdrawalTableFormArray({
     let quantity = Math.max(0, newQuantity);
 
     if (isfreeBalanceDefined) {
-      quantity = Math.min(material.freeBalanceQuantity, quantity);
+      quantity = Math.min(Number(material.freeBalanceQuantity), quantity);
     }
 
     return quantity;
@@ -67,7 +67,7 @@ export function ItemsGlobalWithdrawalTableFormArray({
       <div className='text-muted-foreground py-8 text-center'>
         {readOnly
           ? 'No materials for this request.'
-          : 'Nenhum material adicionado, utilize o botão para adicionar.'}
+          : 'Nenhum material adicionado, utilize a consulta da listagem para adicionar.'}
       </div>
     );
   }
@@ -133,14 +133,14 @@ export function ItemsGlobalWithdrawalTableFormArray({
                     {isphysicalOnHandQuantityDefined ? (
                       <Badge
                         variant={
-                          material.freeBalanceQuantity > 50
+                          Number(material.freeBalanceQuantity) > 50
                             ? 'default'
-                            : material.freeBalanceQuantity > 10
+                            : Number(material.freeBalanceQuantity) > 10
                               ? 'secondary'
                               : 'destructive'
                         }
                       >
-                        {material.physicalOnHandQuantity}
+                        {Number(material.physicalOnHandQuantity)}
                       </Badge>
                     ) : (
                       <Badge variant='outline'>Indefinido</Badge>
@@ -150,14 +150,14 @@ export function ItemsGlobalWithdrawalTableFormArray({
                     {isFreeBalanceDefined ? (
                       <Badge
                         variant={
-                          material.freeBalanceQuantity > 50
+                          Number(material.freeBalanceQuantity) > 50
                             ? 'default'
-                            : material.freeBalanceQuantity > 10
+                            : Number(material.freeBalanceQuantity) > 10
                               ? 'secondary'
                               : 'destructive'
                         }
                       >
-                        {material.freeBalanceQuantity}
+                        {Number(material.freeBalanceQuantity)}
                       </Badge>
                     ) : (
                       <Badge variant='outline'>Indefinido</Badge>
@@ -199,7 +199,7 @@ export function ItemsGlobalWithdrawalTableFormArray({
                           disabled={
                             isFreeBalanceDefined &&
                             Number(material.quantityWithdrawn) >=
-                              material.freeBalanceQuantity
+                              Number(material.freeBalanceQuantity)
                           }
                         >
                           <Plus className='h-3 w-3' />
