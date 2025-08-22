@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/hover-card';
 import { IMaterialWithdrawalItemAddForm } from '../../withdrawal-types';
 import { IItemMaterialRequestBalance } from '../../../../request/material-request-types';
+import { useMemo } from 'react';
 
 export type IMaterialWithdrawalItemMatRequestAddForm =
   IMaterialWithdrawalItemAddForm &
@@ -30,7 +31,8 @@ export type IMaterialWithdrawalItemMatRequestAddForm =
     >;
 
 interface TableFormItemsMaterialRequestProps {
-  materials: IMaterialWithdrawalItemMatRequestAddForm[];
+  materialsInfo: IMaterialWithdrawalItemMatRequestAddForm[];
+  materials: IMaterialWithdrawalItemAddForm[];
   onRemove: (key: number) => void;
   onUpdateQuantity: (key: number, quantity: number) => void;
   hideMaterialRequestItemId?: boolean;
@@ -38,11 +40,40 @@ interface TableFormItemsMaterialRequestProps {
 }
 
 export function TableFormItemsMaterialRequest({
+  materialsInfo,
   materials,
   onRemove,
   onUpdateQuantity,
   readOnly = false
 }: TableFormItemsMaterialRequestProps) {
+  // Criamos um mapa para busca rápida das informações.
+  // Usamos `useMemo` para que este mapa seja criado apenas uma vez, e não a cada renderização.
+  // Isso é uma otimização de performance crucial!
+  console.log(`materialsInfo: ${JSON.stringify(materialsInfo)}`);
+  const infoMap = useMemo(() => {
+    const map = new Map<number, IMaterialWithdrawalItemMatRequestAddForm>();
+
+    // Adiciona uma verificação para garantir que materialsInfo é um array
+    if (Array.isArray(materialsInfo)) {
+      materialsInfo.forEach((material) => {
+        map.set(material.key, material);
+      });
+    }
+    return map;
+  }, [materialsInfo]); // O array de dependências vazio [] garante que isso só rode uma vez.
+
+  // 2. Corrigido: Forma correta de inspecionar o Map no console.
+  console.log('Prop materialsInfo recebida:', materialsInfo);
+  console.log('Objeto infoMap (inspecione no console):', infoMap);
+
+  // Exemplo de como ver o conteúdo de forma mais explícita se precisar
+  if (infoMap.size > 0) {
+    console.log(
+      'Conteúdo do infoMap como objeto:',
+      Object.fromEntries(infoMap)
+    );
+  }
+
   // Função para limitar a quantidade até o saldo potencial livre
   const getClampedQuantity = (
     material: IMaterialWithdrawalItemMatRequestAddForm,
@@ -59,7 +90,7 @@ export function TableFormItemsMaterialRequest({
   };
 
   const handleQuantityChange = (key: number, change: number) => {
-    const material = materials.find((m) => m.key === key);
+    const material = materialsInfo.find((m) => m.key === key);
     if (material) {
       const newQuantity = Number(material.quantityWithdrawn) + change;
       onUpdateQuantity(key, getClampedQuantity(material, newQuantity));
@@ -67,7 +98,7 @@ export function TableFormItemsMaterialRequest({
   };
 
   const handleManualQuantityChange = (key: number, value: string) => {
-    const material = materials.find((m) => m.key === key);
+    const material = materialsInfo.find((m) => m.key === key);
     if (!material) return;
 
     if (value === '') {
@@ -81,7 +112,7 @@ export function TableFormItemsMaterialRequest({
     }
   };
 
-  if (materials.length === 0) {
+  if (materialsInfo.length === 0) {
     return (
       <div className='text-muted-foreground py-8 text-center'>
         {readOnly
@@ -170,14 +201,21 @@ export function TableFormItemsMaterialRequest({
           </thead>
           <tbody className='divide-y divide-gray-200'>
             {materials.map((material) => {
+              // Para cada item do estado, buscamos a informação estática no nosso mapa.
+              const info = infoMap.get(material.key);
+
+              console.log(`key: ${material.key}`);
+              console.log(infoMap);
+
+              //  Campo NÃO vinculado ao estado: vem do `infoMap`
               const freeBalanceEffective = Number(
-                material.quantityFreeBalanceEffective
+                info?.quantityFreeBalanceEffective
               );
               const isFreeBalanceEffectiveDefined =
                 !isNaN(freeBalanceEffective);
 
               const freeBalancePotential = Number(
-                material.quantityFreeBalancePotential
+                info?.quantityFreeBalancePotential
               );
               const isFreeBalanceDefined = !isNaN(freeBalancePotential);
 
@@ -210,7 +248,7 @@ export function TableFormItemsMaterialRequest({
                   <td className='px-4 py-3 text-center text-sm'>
                     <div className='flex items-center justify-center gap-2'>
                       <Badge variant='outline'>
-                        {Number(material.quantityRequested)}
+                        {Number(info?.quantityRequested)}
                       </Badge>
                       <HoverCard>
                         <HoverCardTrigger asChild>
@@ -222,23 +260,19 @@ export function TableFormItemsMaterialRequest({
                             <hr className='my-2' />
                             <div className='flex justify-between'>
                               <span>Recebido:</span>
-                              <span>
-                                {Number(material.quantityReceivedSum)}
-                              </span>
+                              <span>{Number(info?.quantityReceivedSum)}</span>
                             </div>
                             <div className='flex justify-between'>
                               <span>Retirado:</span>
-                              <span>
-                                {Number(material.quantityWithdrawnSum)}
-                              </span>
+                              <span>{Number(info?.quantityWithdrawnSum)}</span>
                             </div>
                             <div className='flex justify-between'>
                               <span>Reservado:</span>
-                              <span>{Number(material.quantityReserved)}</span>
+                              <span>{Number(info?.quantityReserved)}</span>
                             </div>
                             <div className='flex justify-between'>
                               <span>Restrito:</span>
-                              <span>{Number(material.quantityRestricted)}</span>
+                              <span>{Number(info?.quantityRestricted)}</span>
                             </div>
                           </div>
                         </HoverCardContent>
