@@ -5,7 +5,6 @@ import { Switch } from '@/components/ui/switch';
 import { FormListBox } from '@/components/form-tanstack/form-list-box';
 import { Label } from '@/components/ui/label';
 import { format } from 'date-fns';
-import { TableFormItemsGlobal } from './form/table-form-items-global';
 import { startTransition, useState, useEffect } from 'react';
 import { IActionResultForm } from '../../../../../../types/types-server-actions';
 import { handleMaterialRequestBalanceSearch } from '../../../request/material-request-actions';

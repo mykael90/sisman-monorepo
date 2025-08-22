@@ -3,6 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale/pt-BR';
 import {
   FormDropdown,
   FormInputField,
@@ -103,7 +104,7 @@ export function WithdrawalDetailUsageService({
                       >
                         <CalendarIcon className='mr-2 h-4 w-4' />
                         {field.state.value ? (
-                          format(field.state.value, 'PPP')
+                          format(field.state.value, 'PPP', { locale: ptBR })
                         ) : (
                           <span>Selecione uma data</span>
                         )}
@@ -118,6 +119,7 @@ export function WithdrawalDetailUsageService({
                             : undefined
                         }
                         onSelect={(date) => date && field.setValue(date)}
+                        locale={ptBR}
                       />
                     </PopoverContent>
                   </Popover>

@@ -72,6 +72,9 @@ export const ItemsFieldArray: FC<MaterialItemsFieldProps> = ({
         console.log(
           `materialToAdd.warehouseStandardStocks ${JSON.stringify(materialToAdd.warehouseStandardStocks, null, 2)}`
         );
+        // Armazena o valor em uma variável temporária para legibilidade
+        const stockData = materialToAdd.warehouseStandardStocks?.[0];
+
         field.pushValue({
           key: Date.now(), // Temporary ID
           // materialWithdrawalId: 1, // Placeholder
@@ -81,12 +84,17 @@ export const ItemsFieldArray: FC<MaterialItemsFieldProps> = ({
           description: materialToAdd.description,
           unitOfMeasure: materialToAdd.unitOfMeasure,
           quantityWithdrawn: 1, // Default quantity
-          freeBalanceQuantity: Number(
-            materialToAdd.warehouseStandardStocks?.[0]?.freeBalanceQuantity
-          ),
-          physicalOnHandQuantity: Number(
-            materialToAdd.warehouseStandardStocks?.[0]?.physicalOnHandQuantity
-          )
+
+          // SOLUÇÃO: Use o operador ternário para verificar antes de converter
+          freeBalanceQuantity:
+            stockData?.freeBalanceQuantity != null
+              ? Number(stockData.freeBalanceQuantity)
+              : null,
+
+          physicalOnHandQuantity:
+            stockData?.physicalOnHandQuantity != null
+              ? Number(stockData.physicalOnHandQuantity)
+              : null
         });
         // setSelectedMaterialId(undefined); // Clear selection after adding
       }

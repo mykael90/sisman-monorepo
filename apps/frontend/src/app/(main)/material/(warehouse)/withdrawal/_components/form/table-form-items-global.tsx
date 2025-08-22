@@ -82,7 +82,7 @@ export function TableFormItemsGlobal({
                 Código
               </th>
               <th className='px-4 py-3 text-left text-sm font-medium text-gray-900'>
-                Descrição
+                Nome
               </th>
               <th className='px-4 py-3 text-left text-sm font-medium text-gray-900'>
                 Unidade
@@ -124,7 +124,7 @@ export function TableFormItemsGlobal({
                     {material.globalMaterialId}
                   </td>
                   <td className='px-4 py-3 text-sm text-gray-900'>
-                    {material.description}
+                    {material.name}
                   </td>
                   <td className='px-4 py-3 text-sm text-gray-900'>
                     {material.unitOfMeasure}
