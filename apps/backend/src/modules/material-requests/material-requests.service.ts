@@ -365,21 +365,21 @@ export class MaterialRequestsService {
               .minus(quantityRestricted)
           : quantityFreeBalanceEffective;
 
-        // Montar o objeto de retorno, convertendo para string no final
+        // Montar o objeto de retorno, convertendo para número no final
         return {
           globalMaterialId,
           materialRequestItemId,
           name: item.requestedGlobalMaterial?.name,
           description: item.requestedGlobalMaterial?.description,
           unitOfMeasure: item.requestedGlobalMaterial?.unitOfMeasure,
-          quantityRequested,
-          quantityApproved,
-          quantityReceivedSum,
-          quantityWithdrawnSum,
-          quantityReserved,
-          quantityRestricted,
-          quantityFreeBalanceEffective,
-          quantityFreeBalancePotential
+          quantityRequested: quantityRequested.toNumber(),
+          quantityApproved: quantityApproved.toNumber(),
+          quantityReceivedSum: quantityReceivedSum.toNumber(),
+          quantityWithdrawnSum: quantityWithdrawnSum.toNumber(),
+          quantityReserved: quantityReserved.toNumber(),
+          quantityRestricted: quantityRestricted.toNumber(),
+          quantityFreeBalanceEffective: quantityFreeBalanceEffective.toNumber(),
+          quantityFreeBalancePotential: quantityFreeBalancePotential.toNumber()
         };
       });
 
