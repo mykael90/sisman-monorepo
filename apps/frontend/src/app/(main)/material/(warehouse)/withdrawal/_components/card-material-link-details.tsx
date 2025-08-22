@@ -13,11 +13,9 @@ import {
   IItemMaterialRequestBalance,
   IMaterialRequestBalanceWithRelations
 } from '../../../request/material-request-types';
-import {
-  IMaterialWithdrawalItemMatRequestAddForm,
-  TableFormItemsMaterialRequest
-} from './form/table-form-items-material-request';
+import { TableFormItemsMaterialRequest } from './form/table-form-items-material-request';
 import { IWithdrawalFormApi } from '../../../../../../hooks/use-withdrawal-form';
+import { IMaterialWithdrawalItemAddForm } from '../withdrawal-types';
 
 const initialServerStateRequestMaterialBalance: IActionResultForm<
   string,
@@ -26,6 +24,30 @@ const initialServerStateRequestMaterialBalance: IActionResultForm<
   isSubmitSuccessful: false,
   message: '',
   submissionAttempts: 0
+};
+
+export type IItemWithdrawalMaterialRequestForm =
+  IMaterialWithdrawalItemAddForm &
+    Partial<
+      Pick<
+        IItemMaterialRequestBalance,
+        | 'quantityApproved'
+        | 'quantityReceivedSum'
+        | 'quantityWithdrawnSum'
+        | 'quantityReserved'
+        | 'quantityRestricted'
+        | 'quantityFreeBalanceEffective'
+        | 'quantityFreeBalancePotential'
+        | 'quantityRequested'
+        | 'materialRequestItemId'
+      >
+    >;
+
+export type IMaterialRequestBalanceWithRelationsForm = Omit<
+  IMaterialRequestBalanceWithRelations,
+  'itemsBalance'
+> & {
+  itemsBalance: IItemWithdrawalMaterialRequestForm[];
 };
 
 export function CardMaterialRequestLinkDetails({
@@ -41,14 +63,8 @@ export function CardMaterialRequestLinkDetails({
   materialRequestDataLinked: any;
   setFieldValue: IWithdrawalFormApi['setFieldValue'];
 }) {
-  const [materialRequestBalance, setMaterialRequestBalance] = useState<
-    | (IMaterialRequestBalanceWithRelations & {
-        itemsBalance: (IItemMaterialRequestBalance & {
-          quantityWithdrawn: number;
-        })[];
-      })
-    | null
-  >(null);
+  const [materialRequestBalance, setMaterialRequestBalance] =
+    useState<IMaterialRequestBalanceWithRelationsForm | null>(null);
 
   useEffect(() => {
     if (
@@ -58,8 +74,10 @@ export function CardMaterialRequestLinkDetails({
       setFieldValue(
         'items',
         materialRequestBalance?.itemsBalance?.map(
-          (item: IItemMaterialRequestBalance) => ({
-            key: Date.now() + Math.random(),
+          (
+            item: IItemWithdrawalMaterialRequestForm
+          ): IItemWithdrawalMaterialRequestForm => ({
+            key: item.key,
             name: item.name,
             globalMaterialId: item.globalMaterialId,
             materialInstanceId: undefined, // Assuming global material for now
@@ -73,6 +91,46 @@ export function CardMaterialRequestLinkDetails({
       );
     }
   }, [materialRequestBalance, formWithdrawal]);
+
+  const handleUpdateQuantity = (key: number, quantity: number) => {
+    if (!materialRequestBalance?.itemsBalance) return;
+
+    const index = materialRequestBalance.itemsBalance.findIndex(
+      (m: IItemWithdrawalMaterialRequestForm) => m.key === key
+    );
+
+    if (index !== -1) {
+      const updatedMaterials = [...materialRequestBalance.itemsBalance];
+      updatedMaterials[index] = {
+        ...updatedMaterials[index],
+        quantityWithdrawn: quantity
+      };
+
+      setMaterialRequestBalance({
+        ...materialRequestBalance,
+        itemsBalance: updatedMaterials
+      });
+    }
+  };
+
+  const handleRemoveMaterial = (key: number) => {
+    if (!materialRequestBalance?.itemsBalance) return;
+
+    const index = materialRequestBalance.itemsBalance.findIndex(
+      (m: IItemWithdrawalMaterialRequestForm) => m.key === key
+    );
+
+    if (index !== -1) {
+      const updatedMaterials = [...materialRequestBalance.itemsBalance].splice(
+        index,
+        1
+      );
+      setMaterialRequestBalance({
+        ...materialRequestBalance,
+        itemsBalance: updatedMaterials
+      });
+    }
+  };
 
   return (
     <Card>
@@ -131,7 +189,8 @@ export function CardMaterialRequestLinkDetails({
                                     ...item,
                                     quantityWithdrawn: Number(
                                       item.quantityFreeBalancePotential
-                                    )
+                                    ),
+                                    key: Date.now() + Math.random()
                                   })
                                 )
                             };
@@ -197,7 +256,7 @@ export function CardMaterialRequestLinkDetails({
               <TableFormItemsMaterialRequest
                 materials={
                   materialRequestBalance?.itemsBalance.map(
-                    (item: IItemMaterialRequestBalance) => ({
+                    (item: IItemWithdrawalMaterialRequestForm) => ({
                       key: Date.now() + Math.random(),
                       name: item.name,
                       globalMaterialId: item.globalMaterialId,
@@ -218,10 +277,10 @@ export function CardMaterialRequestLinkDetails({
                         item.quantityFreeBalanceEffective
                       )
                     })
-                  ) as IMaterialWithdrawalItemMatRequestAddForm[]
+                  ) as IItemWithdrawalMaterialRequestForm[]
                 }
-                onRemove={() => {}} // No remove action for linked items
-                onUpdateQuantity={() => {}} // No quantity update for linked items
+                onRemove={handleRemoveMaterial} // No remove action for linked items
+                onUpdateQuantity={handleUpdateQuantity} // No quantity update for linked items
                 readOnly={false} // Make quantity editable for linked items
               />
             </div>

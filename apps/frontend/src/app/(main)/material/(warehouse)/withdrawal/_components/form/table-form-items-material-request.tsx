@@ -14,17 +14,19 @@ import { IItemMaterialRequestBalance } from '../../../../request/material-reques
 
 export type IMaterialWithdrawalItemMatRequestAddForm =
   IMaterialWithdrawalItemAddForm &
-    Pick<
-      IItemMaterialRequestBalance,
-      | 'quantityApproved'
-      | 'quantityReceivedSum'
-      | 'quantityWithdrawnSum'
-      | 'quantityReserved'
-      | 'quantityRestricted'
-      | 'quantityFreeBalanceEffective'
-      | 'quantityFreeBalancePotential'
-      | 'quantityRequested'
-      | 'materialRequestItemId'
+    Partial<
+      Pick<
+        IItemMaterialRequestBalance,
+        | 'quantityApproved'
+        | 'quantityReceivedSum'
+        | 'quantityWithdrawnSum'
+        | 'quantityReserved'
+        | 'quantityRestricted'
+        | 'quantityFreeBalanceEffective'
+        | 'quantityFreeBalancePotential'
+        | 'quantityRequested'
+        | 'materialRequestItemId'
+      >
     >;
 
 interface TableFormItemsMaterialRequestProps {
