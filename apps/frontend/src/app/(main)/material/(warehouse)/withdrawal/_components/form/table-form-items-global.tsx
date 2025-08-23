@@ -97,7 +97,9 @@ export function TableFormItemsGlobal({
       return;
     }
 
-    const newQuantity = parseInt(value, 10);
+    // Para permitir decimais, trocamos parseInt por parseFloat.
+    // Também substituímos a vírgula pelo ponto para garantir a conversão correta.
+    const newQuantity = parseFloat(value.replace(',', '.'));
     if (!isNaN(newQuantity)) {
       onUpdateQuantity(key, getClampedQuantity(material, newQuantity));
     }
@@ -228,7 +230,8 @@ export function TableFormItemsGlobal({
                           <Minus className='h-3 w-3' />
                         </Button>
                         <Input
-                          type='tel'
+                          type='number'
+                          step='any'
                           value={String(material.quantityWithdrawn)}
                           onChange={(e) =>
                             handleManualQuantityChange(
