@@ -5,8 +5,25 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Trash2, Minus, Plus } from 'lucide-react';
 import { IMaterialWithdrawalItemAddForm } from '../../withdrawal-types';
+import { useMemo } from 'react';
+import { IMaterialGlobalCatalog } from '../../../../global-catalog/material-global-catalog-types';
+import {
+  IWarehouseStock,
+  IWarehouseStockIncludedComputed
+} from '../../../warehouse-stock/warehouse-stock-types';
+
+export type IMaterialWithdrawalItemAddFormInfo = Pick<
+  IMaterialWithdrawalItemAddForm,
+  'key' | 'globalMaterialId'
+> &
+  Pick<IMaterialGlobalCatalog, 'description' | 'name' | 'unitOfMeasure'> &
+  Pick<
+    IWarehouseStockIncludedComputed,
+    'freeBalanceQuantity' | 'physicalOnHandQuantity'
+  >;
 
 interface TableFormItemsGlobalProps {
+  materialsInfo: IMaterialWithdrawalItemAddFormInfo[];
   materials: IMaterialWithdrawalItemAddForm[];
   onRemove: (key: number) => void;
   onUpdateQuantity: (key: number, quantity: number) => void;
@@ -15,12 +32,36 @@ interface TableFormItemsGlobalProps {
 }
 
 export function TableFormItemsGlobal({
+  materialsInfo,
   materials,
   onRemove,
   onUpdateQuantity,
   hideMaterialRequestItemId,
   readOnly = false
 }: TableFormItemsGlobalProps) {
+  // Criamos um mapa para busca rápida das informações.
+  // Usamos `useMemo` para que este mapa seja criado apenas uma vez, e não a cada renderização.
+
+  const infoMap = useMemo(() => {
+    const map = new Map<number, IMaterialWithdrawalItemAddFormInfo>();
+
+    // Adiciona uma verificação para garantir que materialsInfo é um array
+    if (Array.isArray(materialsInfo)) {
+      materialsInfo.forEach((material) => {
+        map.set(material.key, material);
+      });
+    }
+    return map;
+  }, [materialsInfo]);
+
+  // Exemplo de como ver o conteúdo de forma mais explícita se precisar
+  // if (infoMap.size > 0) {
+  //   console.log(
+  //     'Conteúdo do infoMap como objeto:',
+  //     Object.fromEntries(infoMap)
+  //   );
+  // }
+
   //função para limitar a quantidade até o saldo livre
   const getClampedQuantity = (
     material: IMaterialWithdrawalItemAddForm,
@@ -110,13 +151,20 @@ export function TableFormItemsGlobal({
           </thead>
           <tbody className='divide-y divide-gray-200'>
             {materials.map((material) => {
+              const info = infoMap.get(material.key);
+
+              console.log(`key: ${material.key}`);
+              console.log(infoMap);
+
+              // Campo NÃO vinculado ao estado: vem do `infoMap`
+
               const isFreeBalanceDefined =
-                typeof material.freeBalanceQuantity === 'number' &&
-                !isNaN(material.freeBalanceQuantity);
+                typeof info?.freeBalanceQuantity === 'number' &&
+                !isNaN(info?.freeBalanceQuantity);
 
               const isphysicalOnHandQuantityDefined =
-                typeof material.physicalOnHandQuantity === 'number' &&
-                !isNaN(material.physicalOnHandQuantity);
+                typeof info?.physicalOnHandQuantity === 'number' &&
+                !isNaN(info?.physicalOnHandQuantity);
 
               return (
                 <tr key={material.key} className='hover:bg-gray-50'>
@@ -124,23 +172,23 @@ export function TableFormItemsGlobal({
                     {material.globalMaterialId}
                   </td>
                   <td className='px-4 py-3 text-sm text-gray-900'>
-                    {material.name}
+                    {info?.name}
                   </td>
                   <td className='px-4 py-3 text-sm text-gray-900'>
-                    {material.unitOfMeasure}
+                    {info?.unitOfMeasure}
                   </td>
                   <td className='px-4 py-3 text-sm'>
                     {isphysicalOnHandQuantityDefined ? (
                       <Badge
                         variant={
-                          Number(material.freeBalanceQuantity) > 50
+                          Number(info?.freeBalanceQuantity) > 50
                             ? 'default'
-                            : Number(material.freeBalanceQuantity) > 10
+                            : Number(info?.freeBalanceQuantity) > 10
                               ? 'secondary'
                               : 'destructive'
                         }
                       >
-                        {Number(material.physicalOnHandQuantity)}
+                        {Number(info?.physicalOnHandQuantity)}
                       </Badge>
                     ) : (
                       <Badge variant='outline'>Indefinido</Badge>
@@ -150,14 +198,14 @@ export function TableFormItemsGlobal({
                     {isFreeBalanceDefined ? (
                       <Badge
                         variant={
-                          Number(material.freeBalanceQuantity) > 50
+                          Number(info?.freeBalanceQuantity) > 50
                             ? 'default'
-                            : Number(material.freeBalanceQuantity) > 10
+                            : Number(info?.freeBalanceQuantity) > 10
                               ? 'secondary'
                               : 'destructive'
                         }
                       >
-                        {Number(material.freeBalanceQuantity)}
+                        {Number(info?.freeBalanceQuantity)}
                       </Badge>
                     ) : (
                       <Badge variant='outline'>Indefinido</Badge>

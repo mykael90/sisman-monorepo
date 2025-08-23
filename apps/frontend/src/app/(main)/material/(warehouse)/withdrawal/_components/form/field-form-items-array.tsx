@@ -8,7 +8,10 @@ import { ResponsiveCombobox } from '@/components/ui/responsive-combobox';
 import * as React from 'react';
 import Logger from '@/lib/logger';
 import { IMaterialGlobalCatalogWithRelations } from '../../../../global-catalog/material-global-catalog-types';
-import { TableFormItemsGlobal } from './table-form-items-global';
+import {
+  IMaterialWithdrawalItemAddFormInfo,
+  TableFormItemsGlobal
+} from './table-form-items-global';
 import {
   IMaterialWithdrawalAddForm,
   IMaterialWithdrawalItemAddForm
@@ -44,9 +47,20 @@ export const ItemsFieldArray: FC<MaterialItemsFieldProps> = ({
   field,
   listGlobalMaterials
 }) => {
-  const [selectedMaterialId, setSelectedMaterialId] = React.useState<
-    string | undefined
-  >(undefined);
+  const [selectedMaterials, setSelectedMaterials] = React.useState<
+    IMaterialWithdrawalItemAddFormInfo[] | []
+  >([]);
+
+  // const optionsMap = React.useMemo(() => {
+  //   const map = new Map<number, IMaterialGlobalCatalogWithRelations>();
+
+  //   if (Array.isArray(listGlobalMaterials)) {
+  //     listGlobalMaterials.forEach((material) => {
+  //       map.set(Number(material.id), material);
+  //     });
+  //   }
+  //   return map;
+  // }, [listGlobalMaterials]);
 
   //remover da lista os materiais que ja foram adicionados para retirada
   const materialOptions =
@@ -68,35 +82,56 @@ export const ItemsFieldArray: FC<MaterialItemsFieldProps> = ({
         (m) => m.id === selectedMaterialId
       );
 
+      // const materialToAdd = optionsMap.get(Number(selectedMaterialId));
+
       if (materialToAdd) {
         console.log(
           `materialToAdd.warehouseStandardStocks ${JSON.stringify(materialToAdd.warehouseStandardStocks, null, 2)}`
         );
-        // Armazena o valor em uma variável temporária para legibilidade
+
+        const {
+          name,
+          description,
+          unitOfMeasure,
+          id: globalMaterialId
+        } = materialToAdd;
+        const key = Date.now() + Math.random(); // Temporary ID for table operations
+        const quantityWithdrawn = 1; // Default quantity
+
+        // Armazena o valor em uma variável temporária de informações de estoque para legibilidade
         const stockData = materialToAdd.warehouseStandardStocks?.[0];
 
-        field.pushValue({
-          key: Date.now(), // Temporary ID
-          // materialWithdrawalId: 1, // Placeholder
-          name: materialToAdd.name,
-          globalMaterialId: materialToAdd.id,
-          materialInstanceId: undefined, // Assuming global material for now
-          description: materialToAdd.description,
-          unitOfMeasure: materialToAdd.unitOfMeasure,
-          quantityWithdrawn: 1, // Default quantity
+        let freeBalanceQuantity = null;
+        let physicalOnHandQuantity = null;
 
-          // SOLUÇÃO: Use o operador ternário para verificar antes de converter
-          freeBalanceQuantity:
-            stockData?.freeBalanceQuantity != null
-              ? Number(stockData.freeBalanceQuantity)
-              : null,
+        if (stockData) {
+          if (stockData.freeBalanceQuantity != null)
+            freeBalanceQuantity = Number(stockData.freeBalanceQuantity);
+          if (stockData.physicalOnHandQuantity != null)
+            physicalOnHandQuantity = Number(stockData.physicalOnHandQuantity);
+        }
 
-          physicalOnHandQuantity:
-            stockData?.physicalOnHandQuantity != null
-              ? Number(stockData.physicalOnHandQuantity)
-              : null
-        });
-        // setSelectedMaterialId(undefined); // Clear selection after adding
+        const materialStateField = {
+          key,
+          globalMaterialId,
+          quantityWithdrawn
+        };
+
+        const materialInfo = {
+          key,
+          name,
+          description,
+          unitOfMeasure,
+          freeBalanceQuantity,
+          physicalOnHandQuantity
+        };
+
+        field.pushValue(materialStateField);
+
+        setSelectedMaterials((prevMaterials) => [
+          ...prevMaterials,
+          materialInfo
+        ]);
       }
     }
   };
@@ -148,6 +183,7 @@ export const ItemsFieldArray: FC<MaterialItemsFieldProps> = ({
         </Button> */}
       </div>
       <TableFormItemsGlobal
+        materialsInfo={selectedMaterials}
         materials={field.state.value}
         onRemove={handleRemoveMaterial}
         onUpdateQuantity={handleUpdateQuantity}
