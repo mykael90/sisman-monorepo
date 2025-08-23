@@ -12,9 +12,9 @@ import {
   IItemMaterialRequestBalance,
   IMaterialRequestBalanceWithRelations
 } from '../../../request/material-request-types';
-import { TableFormItemsMaterialRequest } from './form/table-form-items-material-request';
 import { IWithdrawalFormApi } from '../../../../../../hooks/use-withdrawal-form';
 import { IMaterialWithdrawalItemAddForm } from '../withdrawal-types';
+import { MaterialItemsMaterialRequestField } from './form/field-form-items-material-request-array';
 
 const initialServerStateRequestMaterialBalance: IActionResultForm<
   string,
@@ -65,6 +65,69 @@ export function CardMaterialRequestLinkDetails({
   const [materialRequestBalance, setMaterialRequestBalance] =
     useState<IMaterialRequestBalanceWithRelationsForm | null>(null);
 
+  const handleAddMaterialsFromRequest = (materialRequestId: string) => {
+    if (materialRequestId) {
+      startTransition(async () => {
+        const response = await handleMaterialRequestBalanceSearch(
+          initialServerStateRequestMaterialBalance,
+          materialRequestId
+        );
+        if (response.isSubmitSuccessful && response.responseData) {
+          const newMaterialRequestBalance = {
+            ...response.responseData,
+            itemsBalance: response.responseData.itemsBalance?.map((item) => ({
+              ...item,
+              quantityWithdrawn: Number(item.quantityFreeBalancePotential),
+              key: Date.now() + Math.random()
+            }))
+          };
+          setMaterialRequestBalance(newMaterialRequestBalance);
+
+          // const { itemsBalance: materialInfo } = newMaterialRequestBalance;
+
+          // const key = Date.now() + Math.random();
+
+          // const materialStateField = {
+          //   key,
+          //   globalMaterialId,
+          //   quantityWithdrawn
+          // };
+
+          // const materialInfo = {
+          //   key,
+          //   name,
+          //   description,
+          //   unitOfMeasure,
+          //   freeBalanceQuantity,
+          //   physicalOnHandQuantity
+          // };
+
+          setFieldValue(
+            'items',
+            newMaterialRequestBalance.itemsBalance?.map(
+              (
+                item: IItemWithdrawalMaterialRequestForm
+              ): IItemWithdrawalMaterialRequestForm => ({
+                key: item.key,
+                name: item.name,
+                globalMaterialId: item.globalMaterialId,
+                materialInstanceId: undefined, // Assuming global material for now
+                description: item.description,
+                unitOfMeasure: item.unitOfMeasure,
+                quantityWithdrawn: Number(item.quantityFreeBalancePotential),
+                freeBalanceQuantity: Number(item.quantityFreeBalancePotential), // Adicionado para corresponder ao tipo
+                physicalOnHandQuantity: Number(
+                  item.quantityFreeBalanceEffective
+                ),
+                materialRequestItemId: item.materialRequestItemId
+              })
+            )
+          );
+        }
+      });
+    }
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -106,66 +169,7 @@ export function CardMaterialRequestLinkDetails({
                         label: `${item.protocolNumber} (${item.sipacUserLoginRequest})`
                       })
                     )}
-                    onValueChange={(value) => {
-                      // Simulate fetching data based on selected requisition
-                      //TODO: implementar logica
-                      if (value) {
-                        startTransition(async () => {
-                          const response =
-                            await handleMaterialRequestBalanceSearch(
-                              initialServerStateRequestMaterialBalance,
-                              value
-                            );
-                          if (
-                            response.isSubmitSuccessful &&
-                            response.responseData
-                          ) {
-                            const newMaterialRequestBalance = {
-                              ...response.responseData,
-                              itemsBalance:
-                                response.responseData.itemsBalance?.map(
-                                  (item) => ({
-                                    ...item,
-                                    quantityWithdrawn: Number(
-                                      item.quantityFreeBalancePotential
-                                    ),
-                                    key: Date.now() + Math.random()
-                                  })
-                                )
-                            };
-                            setMaterialRequestBalance(
-                              newMaterialRequestBalance
-                            );
-                            setFieldValue(
-                              'items',
-                              newMaterialRequestBalance.itemsBalance?.map(
-                                (
-                                  item: IItemWithdrawalMaterialRequestForm
-                                ): IItemWithdrawalMaterialRequestForm => ({
-                                  key: item.key,
-                                  name: item.name,
-                                  globalMaterialId: item.globalMaterialId,
-                                  materialInstanceId: undefined, // Assuming global material for now
-                                  description: item.description,
-                                  unitOfMeasure: item.unitOfMeasure,
-                                  quantityWithdrawn: Number(
-                                    item.quantityFreeBalancePotential
-                                  ),
-                                  freeBalanceQuantity: Number(
-                                    item.quantityFreeBalancePotential
-                                  ), // Adicionado para corresponder ao tipo
-                                  physicalOnHandQuantity: Number(
-                                    item.quantityFreeBalanceEffective
-                                  ),
-                                  materialRequestItemId:
-                                    item.materialRequestItemId
-                                })
-                              )
-                            );
-                          }
-                        });
-                      }
-                    }}
+                    onValueChange={handleAddMaterialsFromRequest}
                     showLabel={false}
                   />
                 )}
@@ -222,65 +226,10 @@ export function CardMaterialRequestLinkDetails({
                 name='items'
                 mode='array'
                 children={(field) => {
-                  const handleRemoveMaterial = (key: number) => {
-                    const index = field.state.value.findIndex(
-                      (m: IMaterialWithdrawalItemAddForm) => m.key === key
-                    );
-                    if (index !== -1) {
-                      field.removeValue(index);
-                    }
-                  };
-
-                  const handleUpdateQuantity = (
-                    key: number,
-                    quantity: number
-                  ) => {
-                    const index = field.state.value.findIndex(
-                      (m: IMaterialWithdrawalItemAddForm) => m.key === key
-                    );
-                    if (index !== -1) {
-                      const updatedMaterial = {
-                        ...field.state.value[index],
-                        quantityWithdrawn: quantity
-                      };
-                      field.replaceValue(index, updatedMaterial);
-                    }
-                  };
                   return (
-                    <TableFormItemsMaterialRequest
-                      materialsInfo={
-                        materialRequestBalance?.itemsBalance.map(
-                          (item: IItemWithdrawalMaterialRequestForm) => ({
-                            key: item.key,
-                            name: item.name,
-                            globalMaterialId: item.globalMaterialId,
-                            materialInstanceId: undefined, // Assuming global material for now
-                            description: item.description,
-                            unitOfMeasure: item.unitOfMeasure, // You might need to fetch this based on globalMaterialId
-                            quantityWithdrawn: 1, // Default quantity
-                            quantityFreeBalancePotential: Number(
-                              item.quantityFreeBalancePotential
-                            ),
-                            quantityRequested: Number(item.quantityRequested),
-                            quantityApproved: Number(item.quantityApproved),
-                            quantityReceivedSum: Number(
-                              item.quantityReceivedSum
-                            ),
-                            quantityWithdrawnSum: Number(
-                              item.quantityWithdrawnSum
-                            ),
-                            quantityReserved: Number(item.quantityReserved),
-                            quantityRestricted: Number(item.quantityRestricted),
-                            quantityFreeBalanceEffective: Number(
-                              item.quantityFreeBalanceEffective
-                            )
-                          })
-                        ) as IItemWithdrawalMaterialRequestForm[]
-                      }
-                      materials={field.state.value}
-                      onRemove={handleRemoveMaterial} // No remove action for linked items
-                      onUpdateQuantity={handleUpdateQuantity} // No quantity update for linked items
-                      readOnly={false} // Make quantity editable for linked items
+                    <MaterialItemsMaterialRequestField
+                      field={field}
+                      materialRequestBalance={materialRequestBalance}
                     />
                   );
                 }}
