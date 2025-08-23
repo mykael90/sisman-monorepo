@@ -34,10 +34,18 @@ export class MaterialsService {
   async findAll(queryParams?: FindAllMaterialQueryDto) {
     try {
       if (!queryParams) {
-        return await this.prisma.materialGlobalCatalog.findMany();
+        return await this.prisma.materialGlobalCatalog.findMany({
+          orderBy: {
+            name: 'asc'
+          }
+        });
       }
 
       const findManyArgs: Prisma.MaterialGlobalCatalogFindManyArgs = {};
+
+      findManyArgs.orderBy = {
+        name: 'asc'
+      };
 
       if (queryParams.warehouseId) {
         findManyArgs.include = {
@@ -61,6 +69,9 @@ export class MaterialsService {
   async findAllByWarehouseId(warehouseId: number) {
     try {
       return await this.prisma.materialGlobalCatalog.findMany({
+        orderBy: {
+          name: 'asc'
+        },
         where: {
           warehouseStandardStocks: {
             some: {
