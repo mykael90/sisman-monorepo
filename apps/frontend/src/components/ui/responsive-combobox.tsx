@@ -9,7 +9,7 @@ import {
   Command,
   CommandEmpty,
   CommandGroup,
-  CommandInput,
+  CommandInputDebounce,
   CommandItem,
   CommandList
 } from '@/components/ui/command';
@@ -30,29 +30,47 @@ import { useMediaQuery } from '@/hooks/use-media-query';
 
 interface ResponsiveComboboxProps {
   options: { value: string; label: string }[];
-  value?: string;
-  onValueChange: (value: string) => void;
+  onValueChange: (value: string) => void; // Para o item SELECIONADO
+
+  // MUDANÇA: Props para controlar o estado da busca vindo do pai
+  searchValue: string;
+  onSearchValueChange: (search: string) => void;
+
   placeholder?: string;
   emptyMessage?: string;
   className?: string;
-  closeOnSelect?: boolean; // New prop
+  closeOnSelect?: boolean;
   drawerTitle?: string;
   drawerDescription?: string;
+  debounce?: number;
 }
 
 export function ResponsiveCombobox({
   options,
-  value,
   onValueChange,
+  searchValue,
+  onSearchValueChange,
   placeholder = 'Selecione uma opção...',
   emptyMessage = 'Nenhuma opção encontrada.',
   className,
-  closeOnSelect = true, // Default to true for existing behavior
+  closeOnSelect = true,
   drawerTitle,
-  drawerDescription
+  drawerDescription,
+  debounce
 }: ResponsiveComboboxProps) {
   const [open, setOpen] = React.useState(false);
   const isDesktop = useMediaQuery('(min-width: 768px)');
+
+  const handleOpenChange = React.useCallback(
+    (isOpen: boolean) => {
+      setOpen(isOpen);
+      // Limpa a busca quando o combobox é fechado
+      if (!isOpen) {
+        onSearchValueChange('');
+      }
+    },
+    [onSearchValueChange]
+  );
 
   const triggerButton = (
     <Button
@@ -61,56 +79,46 @@ export function ResponsiveCombobox({
       aria-expanded={open}
       className={cn('justify-between', className)}
     >
-      {value
-        ? options.find((option) => option.value === value)?.label
-        : placeholder}
+      {/* MUDANÇA 2: O botão sempre mostra o placeholder. O estado está na tabela. */}
+      {placeholder}
       <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
     </Button>
   );
 
+  // O Command não tem mais a prop 'filter'. Ele só exibe o que recebe.
   const commandContent = (
     <Command
-      filter={(valueFromItem, search) => {
-        const option = options.find((opt) => opt.value === valueFromItem);
-        if (!option) {
-          return 0; // No match if option not found
-        }
-
-        const normalizedLabel = normalizeString(option.label).toLowerCase();
-        const normalizedSearchTerms = normalizeString(search)
-          .toLowerCase()
-          .split(' ')
-          .filter(Boolean);
-
-        // Check if all search terms are included in the label
-        const allTermsMatch = normalizedSearchTerms.every((term: string) =>
-          normalizedLabel.includes(term)
-        );
-
-        return allTermsMatch ? 1 : 0;
+      filter={() => {
+        // Retornar 1 (ou qualquer valor "truthy") diz ao cmdk para sempre considerar o item uma correspondência.
+        // Isso desabilita efetivamente seu filtro interno.
+        return 1;
       }}
     >
-      <CommandInput placeholder='Search option...' />
+      <div className='flex h-9 items-center border-b px-3'>
+        {' '}
+        {/* Adicionei este wrapper para layout */}
+        <CommandInputDebounce
+          placeholder='Buscar material...'
+          value={searchValue}
+          onValueChange={onSearchValueChange}
+          debounce={debounce}
+        />
+      </div>
       <CommandList>
         <CommandEmpty>{emptyMessage}</CommandEmpty>
         <CommandGroup>
           {options.map((option) => (
             <CommandItem
               key={option.value}
-              value={option.value} // Keep value as material ID for onSelect
+              value={option.value}
               onSelect={(currentValue: string) => {
-                onValueChange(currentValue === value ? '' : currentValue);
+                onValueChange(currentValue); // A lógica de 'currentValue === value' não é mais necessária
                 if (closeOnSelect) {
-                  setOpen(false);
+                  // MUDANÇA 4: Usamos handleOpenChange para garantir que a busca seja limpa
+                  handleOpenChange(false);
                 }
               }}
             >
-              <Check
-                className={cn(
-                  'mr-2 h-4 w-4',
-                  value === option.value ? 'opacity-100' : 'opacity-0'
-                )}
-              />
               {option.label}
             </CommandItem>
           ))}
@@ -121,7 +129,7 @@ export function ResponsiveCombobox({
 
   if (isDesktop) {
     return (
-      <Popover open={open} onOpenChange={setOpen}>
+      <Popover open={open} onOpenChange={handleOpenChange}>
         <PopoverTrigger asChild>{triggerButton}</PopoverTrigger>
         <PopoverContent
           className={cn('p-0', className)}
@@ -134,16 +142,16 @@ export function ResponsiveCombobox({
   }
 
   return (
-    <Drawer open={open} onOpenChange={setOpen}>
+    <Drawer open={open} onOpenChange={handleOpenChange}>
       <DrawerTrigger asChild>{triggerButton}</DrawerTrigger>
       <DrawerContent>
         <DrawerHeader>
-          <DrawerTitle>{drawerTitle || 'Command Palette'}</DrawerTitle>
+          <DrawerTitle>{drawerTitle || 'Selecione uma opção'}</DrawerTitle>
           <DrawerDescription>
-            {drawerDescription || 'Search for a command to run...'}
+            {drawerDescription || 'Busque e selecione um item da lista.'}
           </DrawerDescription>
         </DrawerHeader>
-        {commandContent}
+        <div className='p-4 pb-0'>{commandContent}</div>
       </DrawerContent>
     </Drawer>
   );

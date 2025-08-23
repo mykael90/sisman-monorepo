@@ -16,6 +16,7 @@ import {
   IMaterialWithdrawalAddForm,
   IMaterialWithdrawalItemAddForm
 } from '../../withdrawal-types';
+import { normalizeString } from '@/lib/utils'; // Supondo que você tenha essa função
 
 const logger = new Logger(`material-items-field`);
 interface MaterialItemsFieldProps {
@@ -51,32 +52,53 @@ export const ItemsFieldArray: FC<MaterialItemsFieldProps> = ({
     IMaterialWithdrawalItemAddFormInfo[] | []
   >([]);
 
-  // const optionsMap = React.useMemo(() => {
-  //   const map = new Map<number, IMaterialGlobalCatalogWithRelations>();
+  // MUDANÇA 1: Estado para o termo de busca (controlado pelo pai)
+  const [searchQuery, setSearchQuery] = React.useState('');
 
-  //   if (Array.isArray(listGlobalMaterials)) {
-  //     listGlobalMaterials.forEach((material) => {
-  //       map.set(Number(material.id), material);
-  //     });
-  //   }
-  //   return map;
-  // }, [listGlobalMaterials]);
-
-  //remover da lista os materiais que ja foram adicionados para retirada
-  const materialOptions =
-    listGlobalMaterials
-      ?.filter(
+  // MUDANÇA 2: Use `useMemo` para filtrar a lista de materiais.
+  // Esta lógica só re-executa quando `listGlobalMaterials` ou `searchQuery` (com debounce) muda.
+  const filteredMaterialOptions = React.useMemo(() => {
+    // Primeiro, remove os materiais que já foram adicionados
+    const availableMaterials =
+      listGlobalMaterials?.filter(
         (material) =>
           !field.state.value.some(
             (addedMaterial) => addedMaterial.globalMaterialId === material.id
           )
-      )
+      ) || [];
+
+    // Se não houver busca, retorna todos os materiais disponíveis
+    if (!searchQuery) {
+      return availableMaterials.map((material) => ({
+        value: material.id,
+        label: `(${material.id}) ${material.name}`
+      }));
+    }
+
+    // Se houver busca, aplica o filtro
+    const normalizedSearchTerms = normalizeString(searchQuery)
+      .toLowerCase()
+      .split(' ')
+      .filter(Boolean);
+
+    return availableMaterials
+      .filter((material) => {
+        const normalizedLabel = normalizeString(
+          `(${material.id}) ${material.name}`
+        ).toLowerCase();
+        return normalizedSearchTerms.every((term) =>
+          normalizedLabel.includes(term)
+        );
+      })
       .map((material) => ({
         value: material.id,
         label: `(${material.id}) ${material.name}`
-      })) || [];
+      }));
+  }, [listGlobalMaterials, field.state.value, searchQuery]);
 
   const handleAddMaterial = (selectedMaterialId: string) => {
+    if (!selectedMaterialId) return; // Guarda contra valores vazios
+
     if (selectedMaterialId) {
       const materialToAdd = listGlobalMaterials?.find(
         (m) => m.id === selectedMaterialId
@@ -132,6 +154,10 @@ export const ItemsFieldArray: FC<MaterialItemsFieldProps> = ({
           ...prevMaterials,
           materialInfo
         ]);
+
+        // MUDANÇA CRÍTICA: Limpe a busca após adicionar com sucesso.
+        // Isso garante que a lista de opções seja resetada, evitando bugs.
+        setSearchQuery('');
       }
     }
   };
@@ -162,19 +188,19 @@ export const ItemsFieldArray: FC<MaterialItemsFieldProps> = ({
     <>
       <div className='flex gap-4'>
         <div className='flex-1'>
+          {/* MUDANÇA 3: Passa as novas props para o Combobox */}
           <ResponsiveCombobox
-            options={materialOptions}
-            // value={selectedMaterialId}
-            onValueChange={(value) => {
-              // setSelectedMaterialId(value);
-              handleAddMaterial(value);
-            }}
+            options={filteredMaterialOptions}
+            onValueChange={handleAddMaterial}
+            searchValue={searchQuery}
+            onSearchValueChange={setSearchQuery}
             placeholder='Adicionar material para retirada...'
             emptyMessage='Nenhum material encontrado.'
             className='w-full'
-            closeOnSelect={false} // Added to allow alternative behavior
+            closeOnSelect={true}
             drawerTitle='Consulta a materiais'
             drawerDescription='Selecione um material para adicionar à retirada.'
+            debounce={500}
           />
         </div>
         {/* <Button type='button' onClick={handleAddMaterial}>

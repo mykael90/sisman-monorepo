@@ -166,6 +166,73 @@ function CommandShortcut({
   );
 }
 
+export interface CommandInputDebounceRef {
+  clearInput: () => void;
+}
+
+export interface CommandInputDebounceProps
+  extends Omit<
+    React.ComponentProps<typeof CommandPrimitive.Input>,
+    'value' | 'onValueChange'
+  > {
+  value: string;
+  onValueChange: (value: string) => void;
+  debounce?: number;
+}
+
+const CommandInputDebounce = React.forwardRef<
+  CommandInputDebounceRef,
+  CommandInputDebounceProps
+>(({ value, onValueChange, debounce = 500, className, ...props }, ref) => {
+  const [internalValue, setInternalValue] = React.useState(value);
+  const timeoutRef = React.useRef<NodeJS.Timeout | undefined>(undefined);
+
+  React.useImperativeHandle(
+    ref,
+    () => ({
+      clearInput: () => {
+        setInternalValue('');
+        onValueChange('');
+        clearTimeout(timeoutRef.current);
+      }
+    }),
+    [onValueChange]
+  );
+
+  React.useEffect(() => {
+    setInternalValue(value);
+  }, [value]);
+
+  React.useEffect(() => {
+    return () => clearTimeout(timeoutRef.current);
+  }, []);
+
+  const handleValueChange = React.useCallback(
+    (newValue: string) => {
+      setInternalValue(newValue);
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = setTimeout(() => {
+        onValueChange(newValue);
+      }, debounce);
+    },
+    [debounce, onValueChange]
+  );
+
+  return (
+    <CommandPrimitive.Input
+      {...props}
+      value={internalValue}
+      onValueChange={handleValueChange}
+      className={cn(
+        'placeholder:text-muted-foreground flex h-10 w-full rounded-md bg-transparent py-3 text-sm outline-none disabled:cursor-not-allowed disabled:opacity-50',
+        className
+      )}
+    />
+  );
+});
+
+CommandInputDebounce.displayName = 'CommandInputDebounce';
+
 export {
   Command,
   CommandDialog,
@@ -175,5 +242,6 @@ export {
   CommandGroup,
   CommandItem,
   CommandShortcut,
-  CommandSeparator
+  CommandSeparator,
+  CommandInputDebounce
 };
