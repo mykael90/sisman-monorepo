@@ -46,6 +46,34 @@ export async function getMaterialGlobalCatalogs(
   }
 }
 
+export async function getMaterialGlobalCatalogsByWarehouse(
+  warehouseId: number
+): Promise<IMaterialGlobalCatalogWithRelations[]> {
+  logger.info(
+    `(Server Action) getMaterialGlobalCatalogs: Fetching material-global-catalogs`
+  );
+  try {
+    const accessTokenSisman = await getSismanAccessToken();
+    const data = await fetchApiSisman(
+      `${API_RELATIVE_PATH}/warehouse/${warehouseId}`,
+      accessTokenSisman,
+      {
+        cache: 'no-cache'
+      }
+    );
+    logger.info(
+      `(Server Action) getMaterialGlobalCatalogs: ${data.length} material-global-catalogs returned`
+    );
+    return data;
+  } catch (error) {
+    logger.error(
+      `(Server Action) getMaterialGlobalCatalogs: Error fetching material-global-catalogs`,
+      error
+    );
+    throw error;
+  }
+}
+
 export async function showMaterialGlobalCatalog(
   accessTokenSisman: string,
   id: string
