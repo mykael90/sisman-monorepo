@@ -87,7 +87,7 @@ export function MaterialWithdrawalFormAdd({
   const formWithdrawal: IWithdrawalFormApi = useWithdrawalForm({
     defaultDataWithdrawalForm: {
       ...defaultData,
-      warehouseId: warehouse?.id
+      warehouseId: warehouse?.id as number
     },
     serverStateWithdrawal: serverStateWithdrawal,
     formActionWithdrawal: async (value) => await formActionWithdrawal(value)

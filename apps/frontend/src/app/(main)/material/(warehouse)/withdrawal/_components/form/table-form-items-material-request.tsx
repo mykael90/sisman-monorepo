@@ -12,25 +12,10 @@ import {
 import { IMaterialWithdrawalItemAddForm } from '../../withdrawal-types';
 import { IItemMaterialRequestBalance } from '../../../../request/material-request-types';
 import { useMemo } from 'react';
-
-export type IMaterialWithdrawalItemAddFormMaterialRequest =
-  IMaterialWithdrawalItemAddForm &
-    Partial<
-      Pick<
-        IItemMaterialRequestBalance,
-        | 'quantityApproved'
-        | 'quantityReceivedSum'
-        | 'quantityWithdrawnSum'
-        | 'quantityReserved'
-        | 'quantityRestricted'
-        | 'quantityFreeBalanceEffective'
-        | 'quantityFreeBalancePotential'
-        | 'quantityRequested'
-      >
-    >;
+import { IItemWithdrawalMaterialRequestForm } from '../card-material-link-details';
 
 interface TableFormItemsMaterialRequestProps {
-  materialsInfo: IMaterialWithdrawalItemAddFormMaterialRequest[];
+  materialsInfo: IItemWithdrawalMaterialRequestForm[];
   materials: IMaterialWithdrawalItemAddForm[];
   onRemove: (key: number) => void;
   onUpdateQuantity: (key: number, quantity: number) => void;
@@ -49,10 +34,7 @@ export function TableFormItemsMaterialRequest({
   // Usamos `useMemo` para que este mapa seja criado apenas uma vez, e não a cada renderização.
   console.log(`materialsInfo: ${JSON.stringify(materialsInfo)}`);
   const infoMap = useMemo(() => {
-    const map = new Map<
-      number,
-      IMaterialWithdrawalItemAddFormMaterialRequest
-    >();
+    const map = new Map<number, IItemWithdrawalMaterialRequestForm>();
 
     // Adiciona uma verificação para garantir que materialsInfo é um array
     if (Array.isArray(materialsInfo)) {
@@ -73,7 +55,7 @@ export function TableFormItemsMaterialRequest({
 
   // Função para limitar a quantidade até o saldo potencial livre
   const getClampedQuantity = (
-    material: IMaterialWithdrawalItemAddFormMaterialRequest,
+    material: IItemWithdrawalMaterialRequestForm,
     newQuantity: number
   ): number => {
     const freeBalancePotential = Number(material.quantityFreeBalancePotential);
@@ -88,15 +70,17 @@ export function TableFormItemsMaterialRequest({
 
   const handleQuantityChange = (key: number, change: number) => {
     const material = materials.find((m) => m.key === key);
-    if (material) {
+    const materialInfo = infoMap.get(key);
+
+    if (material && materialInfo) {
       const newQuantity = Number(material.quantityWithdrawn) + change;
-      onUpdateQuantity(key, getClampedQuantity(material, newQuantity));
+      onUpdateQuantity(key, getClampedQuantity(materialInfo, newQuantity));
     }
   };
 
   const handleManualQuantityChange = (key: number, value: string) => {
-    const material = materialsInfo.find((m) => m.key === key);
-    if (!material) return;
+    const materialInfo = infoMap.get(key);
+    if (!materialInfo) return;
 
     if (value === '') {
       onUpdateQuantity(key, 0);
@@ -105,7 +89,7 @@ export function TableFormItemsMaterialRequest({
 
     const newQuantity = parseInt(value, 10);
     if (!isNaN(newQuantity)) {
-      onUpdateQuantity(key, getClampedQuantity(material, newQuantity));
+      onUpdateQuantity(key, getClampedQuantity(materialInfo, newQuantity));
     }
   };
 

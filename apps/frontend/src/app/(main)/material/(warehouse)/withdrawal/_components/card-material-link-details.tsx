@@ -25,22 +25,11 @@ const initialServerStateRequestMaterialBalance: IActionResultForm<
   submissionAttempts: 0
 };
 
-export type IItemWithdrawalMaterialRequestForm =
-  IMaterialWithdrawalItemAddForm &
-    Partial<
-      Pick<
-        IItemMaterialRequestBalance,
-        | 'quantityApproved'
-        | 'quantityReceivedSum'
-        | 'quantityWithdrawnSum'
-        | 'quantityReserved'
-        | 'quantityRestricted'
-        | 'quantityFreeBalanceEffective'
-        | 'quantityFreeBalancePotential'
-        | 'quantityRequested'
-        | 'materialRequestItemId'
-      >
-    >;
+export type IItemWithdrawalMaterialRequestForm = Pick<
+  IMaterialWithdrawalItemAddForm,
+  'key'
+> &
+  Partial<IItemMaterialRequestBalance>;
 
 export type IMaterialRequestBalanceWithRelationsForm = Omit<
   IMaterialRequestBalanceWithRelations,
@@ -73,52 +62,25 @@ export function CardMaterialRequestLinkDetails({
           materialRequestId
         );
         if (response.isSubmitSuccessful && response.responseData) {
-          const newMaterialRequestBalance = {
+          const materialInfoBalance = {
             ...response.responseData,
             itemsBalance: response.responseData.itemsBalance?.map((item) => ({
               ...item,
-              quantityWithdrawn: Number(item.quantityFreeBalancePotential),
-              key: Date.now() + Math.random()
+              key: Date.now() + Math.random() //é necessário inserir uma chave para realizar operacoes na tabela (localizar o item)
             }))
           };
-          setMaterialRequestBalance(newMaterialRequestBalance);
-
-          // const { itemsBalance: materialInfo } = newMaterialRequestBalance;
-
-          // const key = Date.now() + Math.random();
-
-          // const materialStateField = {
-          //   key,
-          //   globalMaterialId,
-          //   quantityWithdrawn
-          // };
-
-          // const materialInfo = {
-          //   key,
-          //   name,
-          //   description,
-          //   unitOfMeasure,
-          //   freeBalanceQuantity,
-          //   physicalOnHandQuantity
-          // };
+          setMaterialRequestBalance(materialInfoBalance);
 
           setFieldValue(
             'items',
-            newMaterialRequestBalance.itemsBalance?.map(
+            materialInfoBalance.itemsBalance?.map(
               (
                 item: IItemWithdrawalMaterialRequestForm
-              ): IItemWithdrawalMaterialRequestForm => ({
+              ): IMaterialWithdrawalItemAddForm => ({
                 key: item.key,
-                name: item.name,
                 globalMaterialId: item.globalMaterialId,
                 materialInstanceId: undefined, // Assuming global material for now
-                description: item.description,
-                unitOfMeasure: item.unitOfMeasure,
                 quantityWithdrawn: Number(item.quantityFreeBalancePotential),
-                freeBalanceQuantity: Number(item.quantityFreeBalancePotential), // Adicionado para corresponder ao tipo
-                physicalOnHandQuantity: Number(
-                  item.quantityFreeBalanceEffective
-                ),
                 materialRequestItemId: item.materialRequestItemId
               })
             )

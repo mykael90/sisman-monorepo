@@ -67,13 +67,7 @@ export function MaterialItemsMaterialRequestField({
       materialsInfo={
         materialRequestBalance?.itemsBalance.map(
           (item: IItemWithdrawalMaterialRequestForm) => ({
-            key: item.key,
-            name: item.name,
-            globalMaterialId: item.globalMaterialId,
-            materialInstanceId: undefined, // Assuming global material for now
-            description: item.description,
-            unitOfMeasure: item.unitOfMeasure, // You might need to fetch this based on globalMaterialId
-            quantityWithdrawn: 1, // Default quantity
+            ...item,
             quantityFreeBalancePotential: Number(
               item.quantityFreeBalancePotential
             ),
