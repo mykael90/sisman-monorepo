@@ -29,7 +29,7 @@ export async function getMaterialGlobalCatalogs(
       API_RELATIVE_PATH,
       accessTokenSisman,
       {
-        cache: 'force-cache'
+        cache: 'no-cache'
       },
       queryParams
     );

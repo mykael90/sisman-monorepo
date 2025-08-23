@@ -36,6 +36,27 @@ Authorization: Bearer {{token}}
         }
     ]
 }
+### POST - Create a new picking order with items
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "pickingOrderNumber": "PICK-{{$timestamp}}",
+    "warehouse": {
+        "id": 1
+    },
+    "proccessedByUser": {"id": 3},
+    "requestedByUser": {"id": 1},
+    "requestedAt": "2024-07-25T10:00:00Z",
+    "notes": "Ordem de separação para manutenção preventiva.",
+    "items": [
+        {
+            "globalMaterialId": "302400026280",
+            "quantityToPick": 5
+        }
+    ]
+}
 
 ### POST - Create a new picking order linked to a Material Request and Maintenance Request
 POST {{urlLocal}}

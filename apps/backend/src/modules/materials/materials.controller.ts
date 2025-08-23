@@ -35,6 +35,13 @@ export class MaterialsController {
     return this.materialsService.findAll(params);
   }
 
+  @Get('warehouse/:warehouseId')
+  findAllByWarehouseId(
+    @Param('warehouseId', ParseIntPipe) warehouseId: number
+  ) {
+    return this.materialsService.findAllByWarehouseId(warehouseId);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.materialsService.findOne(id);

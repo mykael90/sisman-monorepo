@@ -58,13 +58,38 @@ export class MaterialsService {
       throw error;
     }
   }
+  async findAllByWarehouseId(warehouseId: number) {
+    try {
+      return await this.prisma.materialGlobalCatalog.findMany({
+        where: {
+          warehouseStandardStocks: {
+            some: {
+              warehouseId: warehouseId
+            }
+          }
+        },
+        include: {
+          warehouseStandardStocks: true
+        }
+      });
+    } catch (error) {
+      handlePrismaError(error, this.logger, 'MaterialsService', {
+        operation: 'findAllByWarehouseId',
+        warehouseId
+      });
+      throw error;
+    }
+  }
 
   async findOne(id: string) {
     try {
       const exists = await this.exists(id);
       if (!exists) throw new NotFoundException('Material not found');
       return await this.prisma.materialGlobalCatalog.findFirst({
-        where: { id }
+        where: { id },
+        include: {
+          warehouseStandardStocks: true
+        }
       });
     } catch (error) {
       handlePrismaError(error, this.logger, 'MaterialsService', {
