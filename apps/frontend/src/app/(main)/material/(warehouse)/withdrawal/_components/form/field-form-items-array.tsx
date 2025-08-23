@@ -157,7 +157,7 @@ export const ItemsFieldArray: FC<MaterialItemsFieldProps> = ({
 
         // MUDANÇA CRÍTICA: Limpe a busca após adicionar com sucesso.
         // Isso garante que a lista de opções seja resetada, evitando bugs.
-        setSearchQuery('');
+        // setSearchQuery('');
       }
     }
   };
