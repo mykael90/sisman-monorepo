@@ -1,0 +1,144 @@
+### Variables
+@urlAuth=https://autenticacao.info.ufrn.br
+@urlBase=https://api.info.ufrn.br
+@contentType=application/x-www-form-urlencoded
+@grant_type=client_credentials
+
+### POST authentication
+# @name login
+POST {{urlAuth}}/authz-server/oauth/token
+?client_id={{sipac_client_id}}
+&client_secret={{sipac_client_secret}}
+&grant_type=client_credentials
+Content-Type: {{contentType}}
+
+
+### GET example
+# tem que se autenticar pelo método Authorization Code para funcionar essa rota
+GET {{urlBase}}/usuario/v1/usuarios/info
+# Content-Type: {{contentType}}
+Authorization: Bearer cb45049e-52d9-4720-b717-bb58074d3c64
+X-API-Key: {{sipac_x_api_key}}
+
+
+### GET example
+@authToken = {{login.response.body.access_token}}
+GET {{urlBase}}/comum/v1/sistemas
+# Content-Type: {{contentType}}
+Authorization: Bearer {{authToken}}
+X-API-Key: {{sipac_x_api_key}}
+
+### GET example
+@authToken = {{login.response.body.access_token}}
+GET {{urlBase}}/internacionalizacao/v1/unidades
+?limit=100
+# Content-Type: {{contentType}}
+Authorization: Bearer {{authToken}}
+X-API-Key: {{sipac_x_api_key}}
+
+
+### GET example
+@authToken = {{login.response.body.access_token}}
+GET {{urlBase}}/compra/v1/notas-fiscais
+?limit=100
+# Content-Type: {{contentType}}
+Authorization: Bearer {{authToken}}
+X-API-Key: {{sipac_x_api_key}}
+
+
+### GET example
+@authToken = {{login.response.body.access_token}}
+GET {{urlBase}}/compra/v1/notas-fiscais/8351
+# Content-Type: {{contentType}}
+Authorization: Bearer 123456
+X-API-Key: {{sipac_x_api_key}}
+
+### GET example
+@authToken = {{login.response.body.access_token}}
+GET {{urlBase}}/compra/v1/itens-notas-fiscais
+?limit=100
+# Content-Type: {{contentType}}
+Authorization: Bearer {{authToken}}
+X-API-Key: {{sipac_x_api_key}}
+
+### GET example
+@authToken = {{login.response.body.access_token}}
+GET {{urlBase}}/compra/v1/itens-notas-fiscais/10018
+# Content-Type: {{contentType}}
+Authorization: Bearer {{authToken}}
+X-API-Key: {{sipac_x_api_key}}
+
+### GET example
+@authToken = {{login.response.body.access_token}}
+GET {{urlBase}}/bem/v1/bens
+?limit=100
+# &id-grupo-material=3024
+# &denominacao-bem=bomba
+# Content-Type: {{contentType}}
+Authorization: Bearer {{authToken}}
+X-API-Key: {{sipac_x_api_key}}
+paginado: yes
+#paginado insere parametros de resposta no header x-total e x-pages
+
+### GET example
+@authToken = {{login.response.body.access_token}}
+GET {{urlBase}}/requisicoes/v1/manutencao
+?limit=100
+&denominacao-bem=bomba
+# Content-Type: {{contentType}}
+Authorization: Bearer {{authToken}}
+X-API-Key: {{sipac_x_api_key}}
+
+### GET example
+@authToken = {{login.response.body.access_token}}
+GET {{urlBase}}/material/v1/materiais
+?limit=100
+# &denominacao-material=bomba
+&codigo=3028000000217
+# &id-grupo=3024
+# Content-Type: {{contentType}}
+Authorization: Bearer {{authToken}}
+X-API-Key: {{sipac_x_api_key}}
+
+### GET example
+@authToken = {{login.response.body.access_token}}
+GET {{urlBase}}/requisicao/v1/materiais
+?limit=100
+# &denominacao-material=bomba
+# &codigo=3028000000217
+# &id-grupo=3024
+# Content-Type: {{contentType}}
+Authorization: Bearer {{authToken}}
+X-API-Key: {{sipac_x_api_key}}
+
+### GET example
+@authToken = {{login.response.body.access_token}}
+GET {{urlBase}}/site/v1/unidades
+?limit=100
+# &denominacao-material=bomba
+# &codigo=3028000000217
+# &id-grupo=3024
+# Content-Type: {{contentType}}
+Authorization: Bearer {{authToken}}
+X-API-Key: {{sipac_x_api_key}}
+
+### GET example
+@authToken = {{login.response.body.access_token}}
+GET {{urlBase}}/site/v1/servidores
+?limit=100
+&nome=vitorias
+# &codigo=3028000000217
+# &id-grupo=3024
+# Content-Type: {{contentType}}
+Authorization: Bearer {{authToken}}
+X-API-Key: {{sipac_x_api_key}}
+
+### GET example
+@authToken = {{login.response.body.access_token}}
+GET {{urlBase}}/usuario/v1/usuarios
+?limit=100
+&login=mykael.mello
+# &nome-pessoa=mykael
+# Content-Type: {{contentType}}
+Authorization: Bearer {{authToken}}
+X-API-Key: {{sipac_x_api_key}}
