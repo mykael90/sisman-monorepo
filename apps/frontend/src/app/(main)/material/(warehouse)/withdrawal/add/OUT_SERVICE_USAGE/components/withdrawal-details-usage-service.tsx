@@ -133,7 +133,7 @@ export function WithdrawalDetailUsageService({
               )}
             />
           </div>
-          <div className='flex items-center gap-4'>
+          <div className='flex flex-col gap-4 md:flex-row md:items-center'>
             <formWithdrawal.Field
               name='collectorType'
               children={(field) => (

@@ -333,7 +333,7 @@ export function RequestMaintenanceMaterialForm({
           </CardHeader>
           <CardContent>
             <div className='flex justify-between'>
-              <div className='flex items-baseline gap-4'>
+              <div className='flex flex-col gap-4 md:flex-row md:items-baseline'>
                 <formRequest.Field
                   name='requestType'
                   children={(field: any) => (
@@ -350,57 +350,63 @@ export function RequestMaintenanceMaterialForm({
                     />
                   )}
                 />
-                {/* <SearchInput
+                <div className='flex w-full items-baseline gap-4'>
+                  {/* <SearchInput
                     placeholder='Search for WO by number or person responsible'
                     onSearch={(value) => console.log('WO Search:', value)}
                   /> */}
-                <formRequest.Field
-                  name='requestProtocolNumber'
-                  validators={{
-                    onBlur: schemaZodRequisicoesSipac.shape.newReq
-                  }}
-                >
-                  {(field) => (
-                    <FormInputField
-                      field={field}
-                      label={fieldLabelsRequestData.requestProtocolNumber}
-                      type='tel'
-                      placeholder='Digite o número...'
-                      showLabel={true}
-                      className='w-38'
-                      onValueBlurParser={(value) => formatRequestNumber(value)}
-                    />
-                  )}
-                </formRequest.Field>
-                <formRequest.Subscribe
-                  selector={(state) => [
-                    state.canSubmit,
-                    state.isTouched,
-                    state.isSubmitting
-                  ]}
-                >
-                  {([canSubmit, isTouched, isSubmitting]) => (
-                    <Button
-                      className='mt-6 self-start'
-                      type='submit'
-                      variant='outline'
-                      size='sm'
-                      disabled={
-                        !canSubmit ||
-                        isSubmitting ||
-                        !isTouched ||
-                        isPendingMaintenanceSearch ||
-                        isPendingScrapingManutencao
-                      }
+                  <div className='flex-grow'>
+                    <formRequest.Field
+                      name='requestProtocolNumber'
+                      validators={{
+                        onBlur: schemaZodRequisicoesSipac.shape.newReq
+                      }}
                     >
-                      {isSubmitting ? (
-                        'Vefificando...'
-                      ) : (
-                        <Search className='h-4 w-4' />
+                      {(field) => (
+                        <FormInputField
+                          field={field}
+                          label={fieldLabelsRequestData.requestProtocolNumber}
+                          type='tel'
+                          placeholder='Digite o número...'
+                          showLabel={true}
+                          className='w-full'
+                          onValueBlurParser={(value) =>
+                            formatRequestNumber(value)
+                          }
+                        />
                       )}
-                    </Button>
-                  )}
-                </formRequest.Subscribe>
+                    </formRequest.Field>
+                  </div>
+                  <formRequest.Subscribe
+                    selector={(state) => [
+                      state.canSubmit,
+                      state.isTouched,
+                      state.isSubmitting
+                    ]}
+                  >
+                    {([canSubmit, isTouched, isSubmitting]) => (
+                      <Button
+                        className='mt-6 self-start'
+                        type='submit'
+                        variant='outline'
+                        size='sm'
+                        disabled={
+                          !canSubmit ||
+                          isSubmitting ||
+                          !isTouched ||
+                          isPendingMaintenanceSearch ||
+                          isPendingScrapingManutencao
+                        }
+                      >
+                        {isSubmitting ? (
+                          'Vefificando...'
+                        ) : (
+                          <Search className='h-4 w-4' />
+                        )}
+                      </Button>
+                    )}
+                  </formRequest.Subscribe>
+                </div>
               </div>
               <div className='hidden gap-4 lg:flex'>
                 {maintenanceRequestData?.origin === 'SIPAC' ? (

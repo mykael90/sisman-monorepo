@@ -17,7 +17,7 @@ export default function MaterialWarehouseHeader() {
           <div>
             <p className='text-muted-foreground text-sm'>Depósito Provisório</p>
             <div className='flex items-center gap-2'>
-              <Warehouse className='text-muted-foreground h-4 w-4' />
+              <Warehouse className='text-muted-foreground h-4 w-4 flex-shrink-0' />
               <h1 className='text-xl font-semibold'>{warehouse?.name}</h1>
             </div>
           </div>
