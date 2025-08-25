@@ -1,0 +1,101 @@
+import { FC, useState, useMemo } from 'react';
+import { IMaterialGlobalCatalogWithRelations } from '../../global-catalog/material-global-catalog-types';
+import { normalizeString } from '@/lib/utils';
+import { ResponsiveCombobox } from '@/components/ui/responsive-combobox';
+import { useQuery } from '@tanstack/react-query';
+import { useWarehouseContext } from '../../choose-warehouse/context/warehouse-provider';
+import { getMaterialGlobalCatalogsByWarehouse } from '../../global-catalog/material-global-catalog-actions';
+
+interface SearchMaterialGlobalByWarehouseProps {
+  handleAddMaterial: (selectedMaterialId: string) => void;
+  listGlobalMaterials?: IMaterialGlobalCatalogWithRelations[];
+  excludedFromList?: { globalMaterialId?: string | null | undefined }[];
+}
+
+export const SearchMaterialByWarehouse: FC<
+  SearchMaterialGlobalByWarehouseProps
+> = ({ handleAddMaterial, listGlobalMaterials, excludedFromList = [] }) => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const { warehouse } = useWarehouseContext();
+
+  // 1. USE O HOOK useQuery PARA BUSCAR E GERENCIAR OS DADOS
+  const {
+    data: listGlobalMaterialsByWarehouse, // 'data' é renomeado para 'listGlobalMaterialsByWarehouse'
+    isLoading, // Estado de carregamento, gerenciado para você
+    isError, // Estado de erro, gerenciado para você
+    error // O objeto de erro, se houver
+  } = useQuery({
+    // 2. Chave da Query: um array que identifica unicamente esta busca.
+    //    Quando 'warehouse.id' mudar, o TanStack Query refaz a busca automaticamente!
+    queryKey: ['listGlobalMaterialsByWarehouse', warehouse?.id],
+
+    // 3. Função da Query: a função assíncrona que retorna os dados.
+    queryFn: () =>
+      getMaterialGlobalCatalogsByWarehouse(warehouse?.id as number),
+
+    // 4. Habilitar/Desabilitar: A busca só será executada se 'warehouse' existir.
+    //    Isso é crucial e muito mais limpo que um 'if' dentro do useEffect.
+    enabled: !!warehouse
+  });
+
+  const filteredMaterialOptions = useMemo(() => {
+    const availableMaterials =
+      listGlobalMaterialsByWarehouse?.filter(
+        (material) =>
+          !excludedFromList.some(
+            (addedMaterial) => addedMaterial.globalMaterialId === material.id
+          )
+      ) || [];
+
+    if (!searchQuery) {
+      return availableMaterials.map((material) => ({
+        value: material.id,
+        label: `(${material.id}) ${material.name}`
+      }));
+    }
+
+    const normalizedSearchTerms = normalizeString(searchQuery)
+      .toLowerCase()
+      .split(' ')
+      .filter(Boolean);
+
+    return availableMaterials
+      .filter((material) => {
+        const normalizedLabel = normalizeString(
+          `(${material.id}) ${material.name}`
+        ).toLowerCase();
+        return normalizedSearchTerms.every((term) =>
+          normalizedLabel.includes(term)
+        );
+      })
+      .map((material) => ({
+        value: material.id,
+        label: `(${material.id}) ${material.name}`
+      }));
+  }, [listGlobalMaterialsByWarehouse, excludedFromList, searchQuery]);
+
+  return (
+    <>
+      {isLoading ? (
+        'Carregando...'
+      ) : (
+        <div>
+          {/* {JSON.stringify(listGlobalMaterialsByWarehouse, null, 2)} */}
+          <ResponsiveCombobox
+            options={filteredMaterialOptions}
+            onValueChange={handleAddMaterial}
+            searchValue={searchQuery}
+            onSearchValueChange={setSearchQuery}
+            placeholder='Adicionar material para retirada...'
+            emptyMessage='Nenhum material encontrado.'
+            className='w-full'
+            closeOnSelect={false}
+            drawerTitle='Consulta a materiais'
+            drawerDescription='Selecione um material para adicionar à retirada.'
+            debounce={500}
+          />
+        </div>
+      )}
+    </>
+  );
+};

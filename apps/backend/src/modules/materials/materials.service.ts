@@ -72,15 +72,12 @@ export class MaterialsService {
         orderBy: {
           name: 'asc'
         },
-        where: {
+        include: {
           warehouseStandardStocks: {
-            some: {
+            where: {
               warehouseId: warehouseId
             }
           }
-        },
-        include: {
-          warehouseStandardStocks: true
         }
       });
     } catch (error) {

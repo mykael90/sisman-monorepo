@@ -2,9 +2,6 @@
 
 import { FC } from 'react';
 import { FieldApi } from '@tanstack/react-form';
-import { Button } from '@/components/ui/button';
-import { Plus } from 'lucide-react';
-import { ResponsiveCombobox } from '@/components/ui/responsive-combobox';
 import * as React from 'react';
 import Logger from '@/lib/logger';
 import { IMaterialGlobalCatalogWithRelations } from '../../../../global-catalog/material-global-catalog-types';
@@ -16,9 +13,10 @@ import {
   IMaterialWithdrawalAddForm,
   IMaterialWithdrawalItemAddForm
 } from '../../withdrawal-types';
-import { normalizeString } from '@/lib/utils'; // Supondo que você tenha essa função
+import { SearchMaterialByWarehouse } from '../../../components/search-material-global-by-warehouse';
 
 const logger = new Logger(`material-items-field`);
+
 interface MaterialItemsFieldProps {
   field: FieldApi<
     IMaterialWithdrawalAddForm,
@@ -51,50 +49,6 @@ export const ItemsFieldArray: FC<MaterialItemsFieldProps> = ({
   const [selectedMaterials, setSelectedMaterials] = React.useState<
     IMaterialWithdrawalItemAddFormInfo[] | []
   >([]);
-
-  // MUDANÇA 1: Estado para o termo de busca (controlado pelo pai)
-  const [searchQuery, setSearchQuery] = React.useState('');
-
-  // MUDANÇA 2: Use `useMemo` para filtrar a lista de materiais.
-  // Esta lógica só re-executa quando `listGlobalMaterials` ou `searchQuery` (com debounce) muda.
-  const filteredMaterialOptions = React.useMemo(() => {
-    // Primeiro, remove os materiais que já foram adicionados
-    const availableMaterials =
-      listGlobalMaterials?.filter(
-        (material) =>
-          !field.state.value.some(
-            (addedMaterial) => addedMaterial.globalMaterialId === material.id
-          )
-      ) || [];
-
-    // Se não houver busca, retorna todos os materiais disponíveis
-    if (!searchQuery) {
-      return availableMaterials.map((material) => ({
-        value: material.id,
-        label: `(${material.id}) ${material.name}`
-      }));
-    }
-
-    // Se houver busca, aplica o filtro
-    const normalizedSearchTerms = normalizeString(searchQuery)
-      .toLowerCase()
-      .split(' ')
-      .filter(Boolean);
-
-    return availableMaterials
-      .filter((material) => {
-        const normalizedLabel = normalizeString(
-          `(${material.id}) ${material.name}`
-        ).toLowerCase();
-        return normalizedSearchTerms.every((term) =>
-          normalizedLabel.includes(term)
-        );
-      })
-      .map((material) => ({
-        value: material.id,
-        label: `(${material.id}) ${material.name}`
-      }));
-  }, [listGlobalMaterials, field.state.value, searchQuery]);
 
   const handleAddMaterial = (selectedMaterialId: string) => {
     if (!selectedMaterialId) return; // Guarda contra valores vazios
@@ -188,19 +142,10 @@ export const ItemsFieldArray: FC<MaterialItemsFieldProps> = ({
     <>
       <div className='flex gap-4'>
         <div className='flex-1'>
-          {/* MUDANÇA 3: Passa as novas props para o Combobox */}
-          <ResponsiveCombobox
-            options={filteredMaterialOptions}
-            onValueChange={handleAddMaterial}
-            searchValue={searchQuery}
-            onSearchValueChange={setSearchQuery}
-            placeholder='Adicionar material para retirada...'
-            emptyMessage='Nenhum material encontrado.'
-            className='w-full'
-            closeOnSelect={false}
-            drawerTitle='Consulta a materiais'
-            drawerDescription='Selecione um material para adicionar à retirada.'
-            debounce={500}
+          <SearchMaterialByWarehouse
+            handleAddMaterial={handleAddMaterial}
+            listGlobalMaterials={listGlobalMaterials}
+            excludedFromList={field.state.value}
           />
         </div>
         {/* <Button type='button' onClick={handleAddMaterial}>
