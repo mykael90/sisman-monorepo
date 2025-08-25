@@ -6,6 +6,7 @@ import {
   IMaterialWithdrawalAddForm,
   IMaterialWithdrawalWithRelations
 } from '../app/(main)/material/(warehouse)/withdrawal/withdrawal-types';
+import { toast } from 'sonner';
 
 // Tipamos os parâmetros que nosso hook receberá para ser reutilizável
 type UseWithdrawalFormProps = {
@@ -40,6 +41,12 @@ export function useWithdrawalForm({
       : undefined,
     onSubmit: async ({ value }) => {
       await formActionWithdrawal(value);
+    },
+    onSubmitInvalid: (props) => {
+      console.log('onSubmitInvalid', props);
+      toast.error(
+        `Erro no envio do formulário, verifique os campos e tente novamente`
+      );
     }
   });
 
