@@ -139,6 +139,10 @@ export const ItemsFieldArray: FC<MaterialItemsFieldProps> = ({ field }) => {
           Add
         </Button> */}
       </div>
+      <em className='mt-1 block text-xs text-red-500'>
+        {field.state.meta.errors.map((error: any) => error.message).join('; ')}
+      </em>
+
       <TableFormItemsGlobal
         materialsInfo={insertedMaterials}
         materials={field.state.value}
