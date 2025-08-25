@@ -67,7 +67,7 @@ const initialServerStateScrapingMaterial: IActionResultForm<
 };
 
 const fieldLabelsRequestData: IRequestDataSearch = {
-  requestType: 'Tipo de requisição',
+  requestType: 'Requisição',
   requestProtocolNumber: 'Número da requisição'
 };
 
@@ -402,7 +402,7 @@ export function RequestMaintenanceMaterialForm({
                   )}
                 </formRequest.Subscribe>
               </div>
-              <div className='flex gap-4'>
+              <div className='hidden gap-4 lg:flex'>
                 {maintenanceRequestData?.origin === 'SIPAC' ? (
                   <div className='flex flex-col self-end'>
                     <div className='text-muted-foreground pb-1 text-center text-sm'>

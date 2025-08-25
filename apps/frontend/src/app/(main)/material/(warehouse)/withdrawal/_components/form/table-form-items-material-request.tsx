@@ -13,6 +13,8 @@ import { IMaterialWithdrawalItemAddForm } from '../../withdrawal-types';
 import { IItemMaterialRequestBalance } from '../../../../request/material-request-types';
 import { useMemo } from 'react';
 import { IItemWithdrawalMaterialRequestForm } from '../card-material-link-details';
+import { useMediaQuery } from '@/hooks/use-media-query';
+import { CardFormItemMaterialRequest } from './card-form-item-material-request';
 
 interface TableFormItemsMaterialRequestProps {
   materialsInfo: IItemWithdrawalMaterialRequestForm[];
@@ -30,6 +32,8 @@ export function TableFormItemsMaterialRequest({
   onUpdateQuantity,
   readOnly = false
 }: TableFormItemsMaterialRequestProps) {
+  const isDesktop = useMediaQuery('(min-width: 768px)');
+
   // Criamos um mapa para busca rápida das informações.
   // Usamos `useMemo` para que este mapa seja criado apenas uma vez, e não a cada renderização.
   console.log(`materialsInfo: ${JSON.stringify(materialsInfo)}`);
@@ -101,6 +105,25 @@ export function TableFormItemsMaterialRequest({
         {readOnly
           ? 'No materials for this request.'
           : 'Nenhum material adicionado, utilize o botão para adicionar.'}
+      </div>
+    );
+  }
+
+  if (!isDesktop) {
+    return (
+      <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3'>
+        {materials.map((material) => (
+          <CardFormItemMaterialRequest
+            key={material.key}
+            material={material}
+            info={infoMap.get(material.key)}
+            onRemove={onRemove}
+            onUpdateQuantity={onUpdateQuantity}
+            handleQuantityChange={handleQuantityChange}
+            handleManualQuantityChange={handleManualQuantityChange}
+            readOnly={readOnly}
+          />
+        ))}
       </div>
     );
   }
@@ -209,8 +232,8 @@ export function TableFormItemsMaterialRequest({
                   </td>
                   <td className='px-4 py-3 text-sm text-gray-900'>
                     <div className='flex items-center gap-2'>
-                      <span>{material.name}</span>
-                      {material.description && (
+                      <span>{info?.name}</span>
+                      {info?.description && (
                         <HoverCard>
                           <HoverCardTrigger asChild>
                             <Info className='h-4 w-4 flex-shrink-0 cursor-pointer text-gray-500' />
@@ -218,14 +241,14 @@ export function TableFormItemsMaterialRequest({
                           <HoverCardContent className='w-xl text-sm'>
                             <p className='font-bold'>Descrição do material</p>
                             <hr className='my-2' />
-                            <p className='pl-2'>{material.description}</p>
+                            <p className='pl-2'>{info?.description}</p>
                           </HoverCardContent>
                         </HoverCard>
                       )}
                     </div>
                   </td>
                   <td className='px-4 py-3 text-sm text-gray-900'>
-                    {material.unitOfMeasure}
+                    {info?.unitOfMeasure}
                   </td>
                   {/* AJUSTE: Adicionado HoverCard com detalhes na coluna Solicitado */}
                   <td className='px-4 py-3 text-center text-sm'>

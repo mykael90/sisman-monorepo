@@ -158,9 +158,7 @@ export function MaterialWithdrawalFormAdd({
       {console.log(typeof formWithdrawal)}
 
       {/* Erros lado cliente */}
-      <formWithdrawal.Subscribe
-        selector={(state) => [state.errors]}
-      >
+      <formWithdrawal.Subscribe selector={(state) => [state.errors]}>
         {([errors]) => {
           const errorMessages = (errors ?? [])
             .flatMap((errorGroup: any) => Object.values(errorGroup))
@@ -171,11 +169,11 @@ export function MaterialWithdrawalFormAdd({
           if (errorMessages.length === 0) return null;
 
           return (
-            <Card className="border-destructive bg-destructive/10 text-destructive">
+            <Card className='border-destructive bg-destructive/10 text-destructive'>
               <CardHeader>
                 <CardTitle>Corrija os seguintes erros:</CardTitle>
               </CardHeader>
-              <CardContent className="flex flex-col gap-1 text-sm">
+              <CardContent className='flex flex-col gap-1 text-sm'>
                 {errorMessages.map((msg, i) => (
                   <p key={i}>- {msg}</p>
                 ))}
@@ -255,39 +253,43 @@ export function MaterialWithdrawalFormAdd({
             </Card>
           )}
         </div>
-        <div className='mt-8 flex justify-end gap-3'>
-          <Button type='button' variant='outline' onClick={handleCancel}>
-            Cancelar
-          </Button>
-          <Button type='reset' variant='outline'>
-            Limpar
-          </Button>
-          <formWithdrawal.Subscribe
-            selector={(state) => [
-              state.canSubmit,
-              state.isTouched,
-              state.isValidating
-            ]}
-          >
-            {([canSubmit, isTouched, isValidating]) => (
-              <Button
-                type='submit'
-                disabled={
-                  !canSubmit ||
-                  isPendingWithdrawal ||
-                  isValidating ||
-                  !isTouched
-                }
-              >
-                {isPendingWithdrawal || isValidating
-                  ? 'Processando...'
-                  : CurrentSubmitButtonIcon}
-                {isPendingWithdrawal || isValidating
-                  ? ''
-                  : currentSubmitButtonText}
-              </Button>
-            )}
-          </formWithdrawal.Subscribe>
+        <div className='mt-8 flex flex-wrap justify-end gap-3'>
+          <div className='flex gap-3'>
+            <Button type='button' variant='outline' onClick={handleCancel}>
+              Cancelar
+            </Button>
+            <Button type='reset' variant='outline'>
+              Limpar
+            </Button>
+          </div>
+          <div className='flex'>
+            <formWithdrawal.Subscribe
+              selector={(state) => [
+                state.canSubmit,
+                state.isTouched,
+                state.isValidating
+              ]}
+            >
+              {([canSubmit, isTouched, isValidating]) => (
+                <Button
+                  type='submit'
+                  disabled={
+                    !canSubmit ||
+                    isPendingWithdrawal ||
+                    isValidating ||
+                    !isTouched
+                  }
+                >
+                  {isPendingWithdrawal || isValidating
+                    ? 'Processando...'
+                    : CurrentSubmitButtonIcon}
+                  {isPendingWithdrawal || isValidating
+                    ? ''
+                    : currentSubmitButtonText}
+                </Button>
+              )}
+            </formWithdrawal.Subscribe>
+          </div>
         </div>
       </form>
     </div>

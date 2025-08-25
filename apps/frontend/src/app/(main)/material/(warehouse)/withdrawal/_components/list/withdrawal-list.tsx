@@ -28,11 +28,14 @@ import { useWarehouseContext } from '../../../../choose-warehouse/context/wareho
 import { useQuery } from '@tanstack/react-query'; // <-- IMPORTANTE
 import Loading from '@/components/loading';
 import { getWithdrawalsByWarehouse } from '../../withdrawal-actions';
+import { useMediaQuery } from '@/hooks/use-media-query';
+import { WithdrawalCard } from './withdrawal-card';
 
 export function WithdrawalListPage() {
   // 1. Consuma o contexto
   const { warehouse } = useWarehouseContext();
   const router = useRouter();
+  const isDesktop = useMediaQuery('(min-width: 768px)');
 
   // console.log(JSON.stringify(initialWithdrawalsByWarehouse2));
   // console.log(JSON.stringify(initialWithdrawalsByWarehouse));
@@ -118,7 +121,7 @@ export function WithdrawalListPage() {
       {/* A verificação de 'isLoading' vem diretamente do useQuery */}
       {isLoading ? (
         <Loading />
-      ) : (
+      ) : isDesktop ? (
         <TableTanstack
           data={withdrawals}
           columns={columns(columnActions)}
@@ -128,6 +131,12 @@ export function WithdrawalListPage() {
           setSorting={setSorting}
           sorting={sorting}
         />
+      ) : (
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {withdrawals.map((withdrawal: IMaterialWithdrawalWithRelations) => (
+            <WithdrawalCard key={withdrawal.id} withdrawal={withdrawal} />
+          ))}
+        </div>
       )}
     </div>
   );
