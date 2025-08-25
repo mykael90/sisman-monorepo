@@ -54,6 +54,16 @@ export function TableFormItemsGlobal({
     return map;
   }, [materialsInfo]);
 
+  const materialsMap = useMemo(() => {
+    const map = new Map<number, IMaterialWithdrawalItemAddForm>();
+    if (Array.isArray(materials)) {
+      materials.forEach((material) => {
+        map.set(material.key, material);
+      });
+    }
+    return map;
+  }, [materials]);
+
   // Exemplo de como ver o conteúdo de forma mais explícita se precisar
   // if (infoMap.size > 0) {
   //   console.log(
@@ -81,7 +91,7 @@ export function TableFormItemsGlobal({
   };
 
   const handleQuantityChange = (key: number, change: number) => {
-    const material = materials.find((m) => m.key === key);
+    const material = materialsMap.get(key);
     if (material) {
       const newQuantity = Number(material.quantityWithdrawn) + change;
       onUpdateQuantity(key, getClampedQuantity(material, newQuantity));
@@ -89,7 +99,7 @@ export function TableFormItemsGlobal({
   };
 
   const handleManualQuantityChange = (key: number, value: string) => {
-    const material = materials.find((m) => m.key === key);
+    const material = materialsMap.get(key);
     if (!material) return;
 
     if (value === '') {

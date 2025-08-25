@@ -40,6 +40,16 @@ export const SearchMaterialByWarehouse: FC<
     enabled: !!warehouse
   });
 
+  const materialsMap = useMemo(() => {
+    const map = new Map<string, IMaterialGlobalCatalogWithRelations>();
+    if (Array.isArray(listGlobalMaterialsByWarehouse)) {
+      listGlobalMaterialsByWarehouse.forEach((material) => {
+        map.set(material.id, material);
+      });
+    }
+    return map;
+  }, [listGlobalMaterialsByWarehouse]);
+
   const filteredMaterialOptions = useMemo(() => {
     const availableMaterials =
       listGlobalMaterialsByWarehouse?.filter(
@@ -77,9 +87,7 @@ export const SearchMaterialByWarehouse: FC<
   }, [listGlobalMaterialsByWarehouse, excludedFromList, searchQuery]);
 
   const selectedMaterialObject = (selectedeMaterialId: string) => {
-    const selectedMaterial = listGlobalMaterialsByWarehouse?.find(
-      (material) => material.id === selectedeMaterialId
-    );
+    const selectedMaterial = materialsMap.get(selectedeMaterialId);
 
     if (!selectedMaterial) return null;
 
