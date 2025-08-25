@@ -25,7 +25,7 @@ export const withdrawalServiceUsageMapping: MappingConfig<
   processedByUser: (data) =>
     data.processedByUserId && { id: Number(data.processedByUserId) },
   collectedByUser: (data) =>
-    data.collectedByUserId && { id: Number(data.collectedByWorkerId) },
+    data.collectedByUserId && { id: Number(data.collectedByUserId) },
   collectedByWorker: (data) =>
     data.collectedByWorkerId && { id: Number(data.collectedByWorkerId) },
   materialRequest: (data) =>

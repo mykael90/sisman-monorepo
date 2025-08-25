@@ -22,6 +22,8 @@ import {
 import { useSession } from 'next-auth/react';
 import Loading from '../../../../../../../components/loading';
 import { useWarehouseContext } from '../../../../choose-warehouse/context/warehouse-provider';
+import { WithdrawalDetailUsageServiceProps } from '../../add/OUT_SERVICE_USAGE/components/withdrawal-details-usage-service';
+import { materialWithdrawalFormSchemaAdd } from './material-withdrawal-form-validation';
 
 export function MaterialWithdrawalFormAdd({
   defaultData,
@@ -61,7 +63,7 @@ export function MaterialWithdrawalFormAdd({
   CardMaintenanceSummary?: any;
   CardMaterialLinkDetails?: any;
   RequestMaintenanceMaterialForm?: any;
-  WithdrawalDetailsForm: any;
+  WithdrawalDetailsForm: FC<WithdrawalDetailUsageServiceProps>;
   initialServerStateWithdrawal?: IActionResultForm<
     IMaterialWithdrawalAddForm,
     IMaterialWithdrawalWithRelations
@@ -89,6 +91,7 @@ export function MaterialWithdrawalFormAdd({
       warehouseId: warehouse?.id as number
     },
     serverStateWithdrawal: serverStateWithdrawal,
+    formSchema: materialWithdrawalFormSchemaAdd,
     formActionWithdrawal: async (value) => await formActionWithdrawal(value)
   });
 
@@ -188,7 +191,10 @@ export function MaterialWithdrawalFormAdd({
           )}
           {/* Withdrawal Details */}
           {WithdrawalDetailsForm && (
-            <WithdrawalDetailsForm formWithdrawal={formWithdrawal} />
+            <WithdrawalDetailsForm
+              formWithdrawal={formWithdrawal}
+              listUsers={listUsers}
+            />
           )}
 
           {/* Material Requisition Link */}

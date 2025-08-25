@@ -23,14 +23,16 @@ export default async function Page() {
     return <p>Acesso negado. Por favor, faça login.</p>;
   }
 
-  const defaultDataWithdrawalForm: IMaterialWithdrawalAddForm = {
+  const defaultDataWithdrawalForm: Partial<
+    Record<keyof IMaterialWithdrawalAddForm, any>
+  > = {
     withdrawalDate: new Date(),
     maintenanceRequestId: undefined,
     materialRequestId: undefined,
     materialPickingOrderId: undefined,
-    warehouseId: 0,
     processedByUserId: Number(session.user.idSisman),
-    collectedByWorkerId: undefined,
+    collectedByWorkerId: '',
+    collectedByUserId: '',
     movementTypeCode: materialOperationOutDisplayMap.OUT_SERVICE_USAGE,
     items: [],
     notes: undefined,

@@ -25,12 +25,18 @@ import {
 } from '@tanstack/react-form';
 import { IWithdrawalFormApi } from '../../../../../../../../hooks/use-withdrawal-form';
 import { fieldsLabelsWithdrawalForm } from '../../../withdrawal-types';
+import { IUser } from '../../../../../../user/user-types';
+import { FC } from 'react';
+
+export type WithdrawalDetailUsageServiceProps = {
+  formWithdrawal: IWithdrawalFormApi;
+  listUsers?: IUser[];
+};
 
 export function WithdrawalDetailUsageService({
-  formWithdrawal
-}: {
-  formWithdrawal: IWithdrawalFormApi;
-}) {
+  formWithdrawal,
+  listUsers = []
+}: WithdrawalDetailUsageServiceProps) {
   return (
     <Card>
       <CardHeader>
@@ -44,18 +50,18 @@ export function WithdrawalDetailUsageService({
               children={(field) => (
                 <FormInputField
                   field={field}
-                  label={fieldsLabelsWithdrawalForm.withdrawalNumber as string}
+                  label={fieldsLabelsWithdrawalForm.withdrawalNumber}
                   type='hidden'
                   showLabel={false}
                 />
               )}
             />
             <formWithdrawal.Field
-              name='movementTypeId'
+              name='movementTypeCode'
               children={(field) => (
                 <FormInputField
                   field={field}
-                  label={fieldsLabelsWithdrawalForm.movementTypeId as string}
+                  label={fieldsLabelsWithdrawalForm.movementTypeCode}
                   type='hidden'
                   showLabel={false}
                 />
@@ -148,26 +154,49 @@ export function WithdrawalDetailUsageService({
             />
 
             <div className='flex-1'>
-              <formWithdrawal.Field
-                name='collectedByWorkerId'
-                children={(field) => (
-                  // <formWithdrawal.Subscribe
-                  //   selector={(state) => state.values.collectorType}
-                  // >
-                  //   {(collectorType) => (
-                  <FormDropdown
-                    key={field.name} // The key is still good practice
-                    field={field}
-                    label={`Nome do colaborador`}
-                    placeholder='Selecione um trabalhador'
-                    options={[
-                      { value: '1', label: 'Trabalhador 1' },
-                      { value: '2', label: 'Trabalhador 2' }
-                    ]}
-                    onValueChange={(value) => field.handleChange(Number(value))}
-                  />
-                  // )}
-                  // </formWithdrawal.Subscribe>
+              <formWithdrawal.Subscribe
+                selector={(state) => state.values.collectorType}
+                children={(collectorType) => (
+                  <>
+                    <formWithdrawal.Field
+                      name='collectedByWorkerId'
+                      children={(field) => (
+                        <FormDropdown
+                          className={`${collectorType === 'worker' ? 'block' : 'hidden'}`}
+                          key={field.name} // The key is still good practice
+                          field={field}
+                          label={`Nome do colaborador`}
+                          placeholder='Selecione um trabalhador'
+                          options={[
+                            { value: '1', label: 'Trabalhador 1' },
+                            { value: '2', label: 'Trabalhador 2' }
+                          ]}
+                          onValueChange={(value) =>
+                            field.handleChange(Number(value))
+                          }
+                        />
+                      )}
+                    />
+                    <formWithdrawal.Field
+                      name='collectedByUserId'
+                      children={(field) => (
+                        <FormDropdown
+                          className={`${collectorType === 'user' ? 'block' : 'hidden'}`}
+                          key={field.name} // The key is still good practice
+                          field={field}
+                          label={`Nome do servidor`}
+                          placeholder='Selecione um servidor'
+                          options={listUsers.map((user) => ({
+                            value: user.id,
+                            label: user.name
+                          }))}
+                          onValueChange={(value) =>
+                            field.handleChange(Number(value))
+                          }
+                        />
+                      )}
+                    />
+                  </>
                 )}
               />
             </div>

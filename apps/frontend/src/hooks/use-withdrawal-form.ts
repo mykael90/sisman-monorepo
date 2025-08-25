@@ -14,6 +14,7 @@ type UseWithdrawalFormProps = {
     IMaterialWithdrawalAddForm,
     IMaterialWithdrawalWithRelations
   >;
+  formSchema?: any;
   formActionWithdrawal: (value: IMaterialWithdrawalAddForm) => Promise<void>;
 };
 
@@ -21,6 +22,7 @@ type UseWithdrawalFormProps = {
 export function useWithdrawalForm({
   defaultDataWithdrawalForm,
   serverStateWithdrawal,
+  formSchema,
   formActionWithdrawal
 }: UseWithdrawalFormProps) {
   // A única vez que `useForm` é chamado. A inferência de tipo acontece aqui.
@@ -30,6 +32,12 @@ export function useWithdrawalForm({
       (baseform) => mergeForm(baseform, serverStateWithdrawal ?? {}),
       [serverStateWithdrawal]
     ),
+    validators: formSchema
+      ? {
+          onChange: formSchema
+          // onSubmit: formSchema
+        }
+      : undefined,
     onSubmit: async ({ value }) => {
       await formActionWithdrawal(value);
     }
