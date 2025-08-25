@@ -11,26 +11,29 @@ export const withdrawalServiceUsageMapping: MappingConfig<
 > = {
   // Mapeamento direto: chave do payload -> chave do formulário
   //   title: 'title',
+  withdrawalDate: 'withdrawalDate',
+  notes: 'notes',
 
   // Mapeamento com transformação (função)
-  withdrawalNumber: () => `WITHDRAWAL-${Date.now()}`, // Gerado na hora
+  // withdrawalNumber: () => `WITHDRAWAL-${Date.now()}`, // Gerado na hora
 
   // Transformação de ID para objeto {id: ...}
   warehouse: (data) => ({ id: data.warehouseId }),
   //TODO: EMBAIXO!!!
-  movementType: (data) => data.movementTypeId && { code: 'OUT_SERVICE_USAGE' },
+  movementType: (data) =>
+    data.movementTypeCode && { code: data.movementTypeCode },
   processedByUser: (data) =>
-    data.processedByUserId && { id: data.processedByUserId },
+    data.processedByUserId && { id: Number(data.processedByUserId) },
   collectedByUser: (data) =>
-    data.collectedByUserId && { id: data.collectedByWorkerId },
+    data.collectedByUserId && { id: Number(data.collectedByWorkerId) },
   collectedByWorker: (data) =>
-    data.collectedByWorkerId && { id: data.collectedByWorkerId },
+    data.collectedByWorkerId && { id: Number(data.collectedByWorkerId) },
   materialRequest: (data) =>
     data.materialRequestId && { id: Number(data.materialRequestId) },
   maintenanceRequest: (data) =>
-    data.maintenanceRequestId && { id: data.maintenanceRequestId },
+    data.maintenanceRequestId && { id: Number(data.maintenanceRequestId) },
   materialPickingOrder: (data) =>
-    data.materialPickingOrderId && { id: data.materialPickingOrderId },
+    data.materialPickingOrderId && { id: Number(data.materialPickingOrderId) },
 
   items: (data) =>
     data.items.map((item) => ({
@@ -38,16 +41,14 @@ export const withdrawalServiceUsageMapping: MappingConfig<
       materialInstanceId: item.materialInstanceId,
       quantityWithdrawn: item.quantityWithdrawn,
       materialRequestItemId: item.materialRequestItemId
-    })),
+    }))
 
-  withdrawalDate: 'withdrawalDate',
   //   maintenanceRequestId: 'maintenanceRequestId',
   //   warehouseId: 'warehouseId',
   //   processedByUserId: 'processedByUserId',
   //   collectedByWorkerId: 'collectedByWorkerId',
   //   movementTypeId: 'movementTypeId',
   //   materialRequestId: 'materialRequestId',
-  notes: 'notes'
 
   //     // Transformação com lógica condicional
   //   materialRequests: (data) =>

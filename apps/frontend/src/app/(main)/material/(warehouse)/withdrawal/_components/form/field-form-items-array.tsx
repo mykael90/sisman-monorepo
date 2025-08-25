@@ -39,80 +39,67 @@ interface MaterialItemsFieldProps {
     any,
     any
   >;
-  listGlobalMaterials?: IMaterialGlobalCatalogWithRelations[];
 }
 
-export const ItemsFieldArray: FC<MaterialItemsFieldProps> = ({
-  field,
-  listGlobalMaterials
-}) => {
-  const [selectedMaterials, setSelectedMaterials] = React.useState<
+export const ItemsFieldArray: FC<MaterialItemsFieldProps> = ({ field }) => {
+  const [insertedMaterials, setInsertedMaterials] = React.useState<
     IMaterialWithdrawalItemAddFormInfo[] | []
   >([]);
 
-  const handleAddMaterial = (selectedMaterialId: string) => {
-    if (!selectedMaterialId) return; // Guarda contra valores vazios
+  const handleAddMaterial = (
+    materialToAdd: IMaterialGlobalCatalogWithRelations | null
+  ) => {
+    if (!materialToAdd) return; // Guarda contra valores vazios
 
-    if (selectedMaterialId) {
-      const materialToAdd = listGlobalMaterials?.find(
-        (m) => m.id === selectedMaterialId
+    if (materialToAdd) {
+      console.log(
+        `materialToAdd.warehouseStandardStocks ${JSON.stringify(materialToAdd.warehouseStandardStocks, null, 2)}`
       );
 
-      // const materialToAdd = optionsMap.get(Number(selectedMaterialId));
+      const {
+        name,
+        description,
+        unitOfMeasure,
+        id: globalMaterialId
+      } = materialToAdd;
+      const key = Date.now() + Math.random(); // Temporary ID for table operations
+      const quantityWithdrawn = 1; // Default quantity
 
-      if (materialToAdd) {
-        console.log(
-          `materialToAdd.warehouseStandardStocks ${JSON.stringify(materialToAdd.warehouseStandardStocks, null, 2)}`
-        );
+      // Armazena o valor em uma variável temporária de informações de estoque para legibilidade
+      const stockData = materialToAdd.warehouseStandardStocks?.[0];
 
-        const {
-          name,
-          description,
-          unitOfMeasure,
-          id: globalMaterialId
-        } = materialToAdd;
-        const key = Date.now() + Math.random(); // Temporary ID for table operations
-        const quantityWithdrawn = 1; // Default quantity
+      let freeBalanceQuantity = null;
+      let physicalOnHandQuantity = null;
 
-        // Armazena o valor em uma variável temporária de informações de estoque para legibilidade
-        const stockData = materialToAdd.warehouseStandardStocks?.[0];
-
-        let freeBalanceQuantity = null;
-        let physicalOnHandQuantity = null;
-
-        if (stockData) {
-          if (stockData.freeBalanceQuantity != null)
-            freeBalanceQuantity = Number(stockData.freeBalanceQuantity);
-          if (stockData.physicalOnHandQuantity != null)
-            physicalOnHandQuantity = Number(stockData.physicalOnHandQuantity);
-        }
-
-        const materialStateField = {
-          key,
-          globalMaterialId,
-          quantityWithdrawn
-        };
-
-        const materialInfo = {
-          key,
-          name,
-          description,
-          unitOfMeasure,
-          freeBalanceQuantity,
-          physicalOnHandQuantity
-        };
-
-        field.pushValue(materialStateField);
-
-        setSelectedMaterials((prevMaterials) => [
-          ...prevMaterials,
-          materialInfo
-        ]);
-
-        // MUDANÇA CRÍTICA: Limpe a busca após adicionar com sucesso.
-        // Isso garante que a lista de opções seja resetada, evitando bugs.
-        // setSearchQuery('');
+      if (stockData) {
+        if (stockData.freeBalanceQuantity != null)
+          freeBalanceQuantity = Number(stockData.freeBalanceQuantity);
+        if (stockData.physicalOnHandQuantity != null)
+          physicalOnHandQuantity = Number(stockData.physicalOnHandQuantity);
       }
+
+      const materialStateField = {
+        key,
+        globalMaterialId,
+        quantityWithdrawn
+      };
+
+      const materialInfo = {
+        key,
+        name,
+        description,
+        unitOfMeasure,
+        freeBalanceQuantity,
+        physicalOnHandQuantity
+      };
+
+      field.pushValue(materialStateField);
+
+      setInsertedMaterials((prevMaterials) => [...prevMaterials, materialInfo]);
+
+      // MUDANÇA CRÍTICA: Limpe a busca após adicionar com sucesso.
+      // Isso garante que a lista de opções seja resetada, evitando bugs.
+      // setSearchQuery('');
     }
   };
 
@@ -144,7 +131,6 @@ export const ItemsFieldArray: FC<MaterialItemsFieldProps> = ({
         <div className='flex-1'>
           <SearchMaterialByWarehouse
             handleAddMaterial={handleAddMaterial}
-            listGlobalMaterials={listGlobalMaterials}
             excludedFromList={field.state.value}
           />
         </div>
@@ -154,7 +140,7 @@ export const ItemsFieldArray: FC<MaterialItemsFieldProps> = ({
         </Button> */}
       </div>
       <TableFormItemsGlobal
-        materialsInfo={selectedMaterials}
+        materialsInfo={insertedMaterials}
         materials={field.state.value}
         onRemove={handleRemoveMaterial}
         onUpdateQuantity={handleUpdateQuantity}

@@ -7,15 +7,17 @@ import { useWarehouseContext } from '../../choose-warehouse/context/warehouse-pr
 import { getMaterialGlobalCatalogsByWarehouse } from '../../global-catalog/material-global-catalog-actions';
 
 interface SearchMaterialGlobalByWarehouseProps {
-  handleAddMaterial: (selectedMaterialId: string) => void;
-  listGlobalMaterials?: IMaterialGlobalCatalogWithRelations[];
+  handleAddMaterial: (
+    material: IMaterialGlobalCatalogWithRelations | null
+  ) => void;
   excludedFromList?: { globalMaterialId?: string | null | undefined }[];
 }
 
 export const SearchMaterialByWarehouse: FC<
   SearchMaterialGlobalByWarehouseProps
-> = ({ handleAddMaterial, listGlobalMaterials, excludedFromList = [] }) => {
+> = ({ handleAddMaterial, excludedFromList = [] }) => {
   const [searchQuery, setSearchQuery] = useState('');
+
   const { warehouse } = useWarehouseContext();
 
   // 1. USE O HOOK useQuery PARA BUSCAR E GERENCIAR OS DADOS
@@ -74,6 +76,16 @@ export const SearchMaterialByWarehouse: FC<
       }));
   }, [listGlobalMaterialsByWarehouse, excludedFromList, searchQuery]);
 
+  const selectedMaterialObject = (selectedeMaterialId: string) => {
+    const selectedMaterial = listGlobalMaterialsByWarehouse?.find(
+      (material) => material.id === selectedeMaterialId
+    );
+
+    if (!selectedMaterial) return null;
+
+    return selectedMaterial;
+  };
+
   return (
     <>
       {isLoading ? (
@@ -83,7 +95,9 @@ export const SearchMaterialByWarehouse: FC<
           {/* {JSON.stringify(listGlobalMaterialsByWarehouse, null, 2)} */}
           <ResponsiveCombobox
             options={filteredMaterialOptions}
-            onValueChange={handleAddMaterial}
+            onValueChange={(value) =>
+              handleAddMaterial(selectedMaterialObject(value))
+            }
             searchValue={searchQuery}
             onSearchValueChange={setSearchQuery}
             placeholder='Adicionar material para retirada...'

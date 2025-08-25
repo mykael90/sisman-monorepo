@@ -4,14 +4,9 @@ import {
   Prisma
 } from '@sisman/prisma';
 import { IUser } from '../../../user/user-types';
-import {
-  IMaterialGlobalCatalogEdit,
-  IMaterialGlobalCatalogWithRelations
-} from '../../global-catalog/material-global-catalog-types';
-import {
-  IWarehouseStock,
-  IWarehouseStockIncludedComputed
-} from '../warehouse-stock/warehouse-stock-types';
+import { IMaterialGlobalCatalogEdit } from '../../global-catalog/material-global-catalog-types';
+import { IWarehouseStockIncludedComputed } from '../warehouse-stock/warehouse-stock-types';
+import { MaterialOperationOutKey } from '@/mappers/material-operations-mappers';
 
 export type IMaterialWithdrawal = MaterialWithdrawal;
 
@@ -40,7 +35,7 @@ export interface IMaterialWithdrawalAddPayload
   > {
   items: Prisma.MaterialWithdrawalItemCreateManyMaterialWithdrawalInput[];
   warehouse: { id: number };
-  movementType: { code: string };
+  movementType: { code: MaterialOperationOutKey };
   processedByUser: { id: number };
   collectedByUser?: { id: number };
   collectedByWorker?: { id: number };
@@ -50,12 +45,12 @@ export interface IMaterialWithdrawalAddPayload
 }
 
 export interface IMaterialWithdrawalRelatedData {
-  listGlobalMaterials?: IMaterialGlobalCatalogWithRelations[];
   listUsers?: IUser[];
 }
 
 export interface IMaterialWithdrawalAddForm
-  extends Prisma.MaterialWithdrawalCreateManyInput {
+  extends Omit<Prisma.MaterialWithdrawalCreateManyInput, 'movementTypeId'> {
+  movementTypeCode: MaterialOperationOutKey;
   items: IMaterialWithdrawalItemAddForm[];
   collectorType: string;
 }
@@ -86,7 +81,7 @@ export const fieldsLabelsWithdrawalForm: Partial<
   maintenanceRequestId: 'Requisição de Manutenção',
   warehouseId: 'Depósito',
   processedByUserId: 'Processado por',
-  movementTypeId: 'Tipo de Movimento',
+  movementTypeCode: 'Código do Movimento',
   materialRequestId: 'Requisição de Material',
   notes: 'Observações',
   collectorType: 'Coletado por',

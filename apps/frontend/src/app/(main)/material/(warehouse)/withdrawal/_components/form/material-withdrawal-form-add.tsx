@@ -7,7 +7,6 @@ import { FC, useActionState, useState } from 'react';
 import { IActionResultForm } from '@/types/types-server-actions';
 import {
   IMaterialWithdrawalAddForm,
-  IMaterialWithdrawalAddPayload,
   IMaterialWithdrawalRelatedData,
   IMaterialWithdrawalWithRelations
 } from '../../withdrawal-types';
@@ -93,7 +92,7 @@ export function MaterialWithdrawalFormAdd({
     formActionWithdrawal: async (value) => await formActionWithdrawal(value)
   });
 
-  const { listGlobalMaterials, listUsers } = relatedData;
+  const { listUsers } = relatedData;
 
   // const formWithdrawal = useForm({
   //   defaultValues: defaultDataWithdrawalForm,
@@ -216,12 +215,7 @@ export function MaterialWithdrawalFormAdd({
               </CardHeader>
               <CardContent className='space-y-4'>
                 <formWithdrawal.Field name='items' mode='array'>
-                  {(field) => (
-                    <ItemsFieldArray
-                      field={field}
-                      listGlobalMaterials={listGlobalMaterials}
-                    />
-                  )}
+                  {(field) => <ItemsFieldArray field={field} />}
                 </formWithdrawal.Field>
               </CardContent>
             </Card>

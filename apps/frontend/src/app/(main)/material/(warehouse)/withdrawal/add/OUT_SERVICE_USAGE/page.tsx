@@ -13,6 +13,7 @@ import { WithdrawalDetailUsageService } from './components/withdrawal-details-us
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../../../../../../api/auth/_options';
 import { IMaterialWithdrawalAddForm } from '../../withdrawal-types';
+import { materialOperationOutDisplayMap } from '../../../../../../../mappers/material-operations-mappers';
 
 export default async function Page() {
   const session = await getServerSession(authOptions);
@@ -23,17 +24,18 @@ export default async function Page() {
   }
 
   const defaultDataWithdrawalForm: IMaterialWithdrawalAddForm = {
-    withdrawalNumber: undefined,
     withdrawalDate: new Date(),
     maintenanceRequestId: undefined,
-    warehouseId: undefined,
+    materialRequestId: undefined,
+    materialPickingOrderId: undefined,
+    warehouseId: 0,
     processedByUserId: Number(session.user.idSisman),
     collectedByWorkerId: undefined,
-    movementTypeId: 1,
+    movementTypeCode: materialOperationOutDisplayMap.OUT_SERVICE_USAGE,
     items: [],
-    materialRequestId: undefined,
     notes: undefined,
-    collectorType: 'worker'
+    collectorType: 'worker',
+    legacy_place: undefined
   };
 
   // const requestDataSearch = (protocolNumber: string) => ({
@@ -48,10 +50,7 @@ export default async function Page() {
   //   return showMaintenanceRequestByProtocol(accessTokenSisman, protocolNumber);
   // }
 
-  const [listGlobalMaterials, listUsers] = await Promise.all([
-    getMaterialGlobalCatalogs(accessTokenSisman, { warehouseId: 1 }),
-    getUsers(accessTokenSisman)
-  ]);
+  const [listUsers] = await Promise.all([getUsers(accessTokenSisman)]);
 
   // const response = await getMaintenanceRequest('4506/2025');
   // console.log(response);
@@ -64,7 +63,6 @@ export default async function Page() {
       <MaterialWithdrawalFormAdd
         // promiseMaintenanceRequest={getMaintenanceRequest}
         relatedData={{
-          listGlobalMaterials,
           listUsers
         }}
         // SubmitButtonIcon={FilePlus}
