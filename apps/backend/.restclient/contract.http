@@ -1,0 +1,43 @@
+### Variables
+@urlLocal = {{apiUrl}}/contracts
+@contentType = application/json
+
+### GET all contracts
+GET {{urlLocal}}
+Authorization: Bearer {{token}}
+
+### GET one contract
+# @prompt contractId
+GET {{urlLocal}}/{{contractId}}
+Authorization: Bearer {{token}}
+
+### POST create contract
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "providerId": 1,
+  "codigoSipac": "CONTR/2025/12345",
+  "value": 150000.50,
+  "objeto": "Construção de infraestrutura",
+  "startDate": "2025-01-01T00:00:00.000Z",
+  "maxEndDate": "2025-12-31T23:59:59.000Z"
+}
+
+### PUT update contract
+# @prompt contractId
+PUT {{urlLocal}}/{{contractId}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "value": 175000.75,
+  "objeto": "Construção de infraestrutura e manutenção"
+}
+
+### DELETE contract
+# @prompt contractId
+DELETE {{urlLocal}}/{{contractId}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}

@@ -1,0 +1,49 @@
+### Variables
+@urlLocal = {{apiUrl}}/contract-providers
+@contentType = application/json
+
+### GET all
+GET {{urlLocal}}
+Authorization: Bearer {{token}}
+
+### GET one
+# @prompt contractProviderId
+GET {{urlLocal}}/{{contractProviderId}}
+Authorization: Bearer {{token}}
+
+### POST (Pessoa Jurídica)
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "cnpj": "12345678000199",
+    "razaoSocial": "Fornecedor XYZ LTDA",
+    "nomeFantasia": "Fornecedor XYZ"
+}
+
+### POST (Pessoa Física)
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "cpf": "12345678901",
+    "nome": "João da Silva"
+}
+
+### PUT
+# @prompt contractProviderId
+PUT {{urlLocal}}/{{contractProviderId}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "nomeFantasia": "Novo Nome Fantasia"
+}
+
+### DELETE one
+# @prompt contractProviderId
+DELETE {{urlLocal}}/{{contractProviderId}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}

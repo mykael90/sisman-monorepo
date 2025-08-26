@@ -48,6 +48,8 @@ import { MaterialWithdrawalsModule } from './modules/material-withdrawals/materi
 import { MaterialRestrictionOrdersModule } from './modules/material-restriction-orders/material-restriction-orders.module';
 import { MaterialPickingOrdersModule } from './modules/material-picking-orders/material-picking-orders.module';
 import { WorkersModule } from './modules/workers/workers.module';
+import { ContractsModule } from './modules/contracts/contracts.module';
+import { ContractProvidersModule } from './modules/contract-providers/contract-providers.module';
 
 @Module({
   imports: [
@@ -110,7 +112,9 @@ import { WorkersModule } from './modules/workers/workers.module';
     MaterialWithdrawalsModule,
     MaterialRestrictionOrdersModule,
     MaterialPickingOrdersModule,
-    WorkersModule
+    WorkersModule,
+    ContractsModule,
+    ContractProvidersModule
   ],
   controllers: [AppController],
   providers: [

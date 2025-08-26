@@ -132,7 +132,7 @@ exports.Prisma.ContractScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
-exports.Prisma.ProviderScalarFieldEnum = {
+exports.Prisma.ContractProviderScalarFieldEnum = {
   id: 'id',
   cnpj: 'cnpj',
   cpf: 'cpf',
@@ -1021,7 +1021,7 @@ exports.Prisma.ContractOrderByRelevanceFieldEnum = {
   objeto: 'objeto'
 };
 
-exports.Prisma.ProviderOrderByRelevanceFieldEnum = {
+exports.Prisma.ContractProviderOrderByRelevanceFieldEnum = {
   cnpj: 'cnpj',
   cpf: 'cpf',
   razaoSocial: 'razaoSocial',
@@ -1678,7 +1678,7 @@ exports.RestrictionOrderStatus = exports.$Enums.RestrictionOrderStatus = {
 
 exports.Prisma.ModelName = {
   Contract: 'Contract',
-  Provider: 'Provider',
+  ContractProvider: 'ContractProvider',
   InfrastructureFacilityComplex: 'InfrastructureFacilityComplex',
   InfrastructureBuilding: 'InfrastructureBuilding',
   InfrastructureBuildingActivity: 'InfrastructureBuildingActivity',
