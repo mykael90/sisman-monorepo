@@ -1,0 +1,77 @@
+### Variables
+@urlLocal = {{apiUrl}}/worker
+@contentType = application/json
+
+### GET all workers
+GET {{urlLocal}}
+Authorization: Bearer {{token}}
+
+### GET one worker
+# @prompt workerId
+GET {{urlLocal}}/{{workerId}}
+Authorization: Bearer {{token}}
+
+### POST create worker
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "name": "João Silva",
+    "email": "joao.silva@empresa.com",
+    "phone": "11987654321"
+}
+
+### POST WITH RELATIONS
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "name": "Maria Oliveira",
+    "email": "maria.oliveira@empresa.com",
+    "maintenanceInstance": {"id": 1},
+    "workerContracts": [
+        {
+            "contractId": 1,
+            "workerSpecialtyId": 1,
+            "sipacUnitLocationId": 1,
+            "start": "2023-01-01T00:00:00.000Z"
+        }
+    ]
+}
+
+### PUT update worker
+# @prompt workerId
+PUT {{urlLocal}}/{{workerId}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "name": "João Silva Souza",
+    "phone": "11987654322"
+}
+
+### PUT update worker relations
+# @prompt workerId
+PUT {{urlLocal}}/{{workerId}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "maintenanceInstance": {"id": 2},
+    "workerContracts": [
+        {
+            "contractId": 2,
+            "workerSpecialtyId": 2,
+            "sipacUnitLocationId": 2,
+            "start": "2023-02-01T00:00:00.000Z"
+        }
+    ]
+}
+
+### DELETE worker
+# @prompt workerId
+DELETE {{urlLocal}}/{{workerId}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}

@@ -47,6 +47,7 @@ import { MaterialReceiptsModule } from './modules/material-receipts/material-rec
 import { MaterialWithdrawalsModule } from './modules/material-withdrawals/material-withdrawals.module';
 import { MaterialRestrictionOrdersModule } from './modules/material-restriction-orders/material-restriction-orders.module';
 import { MaterialPickingOrdersModule } from './modules/material-picking-orders/material-picking-orders.module';
+import { WorkersModule } from './modules/workers/workers.module';
 
 @Module({
   imports: [
@@ -108,7 +109,8 @@ import { MaterialPickingOrdersModule } from './modules/material-picking-orders/m
     MaterialReceiptsModule,
     MaterialWithdrawalsModule,
     MaterialRestrictionOrdersModule,
-    MaterialPickingOrdersModule
+    MaterialPickingOrdersModule,
+    WorkersModule
   ],
   controllers: [AppController],
   providers: [
