@@ -1,3 +1,37 @@
+model Contract {
+  id               Int              @id @default(autoincrement())
+  providerId       Int
+  codigoSipac      String?          @db.VarChar(45)
+  value            Decimal?         @db.Decimal(10, 4)
+  objeto           String?          @db.Text
+  startDate        DateTime?
+  maxEndDate       DateTime?
+  providers        Provider         @relation(fields: [providerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  workersContracts WorkerContract[]
+  // workers_manualfrequencies workers_manualfrequencies[]
+
+  createdAt DateTime @default(now()) @db.Timestamp(0)
+  updatedAt DateTime @updatedAt @db.Timestamp(0)
+
+  @@index([providerId])
+  @@map("contracts")
+}
+
+model Provider {
+  id           Int        @id @default(autoincrement())
+  cnpj         String?    @db.Char(14)
+  cpf          String?    @db.Char(20)
+  razaoSocial  String?
+  nomeFantasia String?
+  nome         String?
+  contracts    Contract[]
+
+  createdAt DateTime @default(now()) @db.Timestamp(0)
+  updatedAt DateTime @updatedAt @db.Timestamp(0)
+
+  @@map("providers")
+}
+
 // =================================================================
 // ==              MODELS PARA ATIVOS DE INFRAESTRUTURA           ==
 // =================================================================
@@ -463,6 +497,7 @@ model MaintenanceInstance {
   InfrastructureBuilding        InfrastructureBuilding[]
   InfrastructureFacilityComplex InfrastructureFacilityComplex[]
   users                         User[]
+  workers                       Worker[]
 
   @@map("maintenance_instances")
 }
@@ -1936,6 +1971,8 @@ model SipacUnidade {
 
   infrastructureBuilding InfrastructureBuilding[] @relation("UnidadesVinculadasInfraestrutura")
 
+  workersContractsLocation WorkerContract[] @relation("unidadeLocalizacaoWorkerContract")
+
   @@index([codigoUnidade])
   @@index([nomeUnidade])
   @@index([sigla])
@@ -2063,6 +2100,22 @@ model Role {
 model Worker {
   id Int @id @default(autoincrement())
 
+  name      String
+  email     String?
+  birthdate DateTime? @db.Date
+  urlPhoto  String?   @unique @db.VarChar(255)
+  rg        String?   @unique @db.VarChar(11)
+  cpf       String?   @unique @db.VarChar(14)
+  phone     String?   @db.VarChar(11)
+  isActive  Boolean   @default(true) // Indicates if the worker is active.
+  notes     String?
+
+  workerContracts WorkerContract[]
+
+  // Define qual instancia de manutencao vai fazer o gerenciamento desse trabalhador
+  maintenanceInstance   MaintenanceInstance? @relation(fields: [maintenanceInstanceId], references: [id])
+  maintenanceInstanceId Int?
+
   // Relations: material.prisma (for MaterialPickingOrder)
   pickingOrdersBeCollected MaterialPickingOrder[] @relation("PickingOrdersBeCollectedByWorker") // Material picking orders to be collected by this worker.
 
@@ -2075,6 +2128,9 @@ model Worker {
   workAllocations                 MaintenanceServiceOrderAllocation[]
   // ----------------------
   materialStockMovementsCollected MaterialStockMovement[]             @relation("StockMovementsCollectedByWorker")
+
+  createdAt DateTime @default(now()) @db.Timestamp(0)
+  updatedAt DateTime @updatedAt @db.Timestamp(0)
 
   @@map("workers")
 }
@@ -2116,8 +2172,45 @@ model WorkerSpecialty {
   // Relações
   teams WorkerTeam[] // Todas as equipes que possuem esta especialidade.
 
-  createdAt DateTime @default(now()) @db.Timestamp(0)
-  updatedAt DateTime @updatedAt @db.Timestamp(0)
+  createdAt       DateTime         @default(now()) @db.Timestamp(0)
+  updatedAt       DateTime         @updatedAt @db.Timestamp(0)
+  workerContracts WorkerContract[]
 
   @@map("workers_specialties")
+}
+
+model WorkerContract {
+  id                  Int       @id @default(autoincrement())
+  workerId            Int
+  contractId          Int
+  workerSpecialtyId   Int
+  sipacUnitLocationId Int
+  start               DateTime  @default(now()) @db.Timestamp(0)
+  end                 DateTime? @db.Timestamp(0)
+  located             String?   @db.VarChar(255)
+  notes               String?   @db.Text
+  // workerContractDangerId    Int?n
+  // workerContractRegimeId    Int?
+  // workerContractUnhealthyId Int?
+  // acting              String?   @db.VarChar(255)
+
+  // workers_contracts_dangers     workers_contracts_dangers?     @relation(fields: [worker_contract_danger_id], references: [id])
+  // workers_contracts_regimes     workers_contracts_regimes?     @relation(fields: [worker_contract_regime_id], references: [id])
+  // workers_contracts_unhealthies workers_contracts_unhealthies? @relation(fields: [worker_contract_unhealthy_id], references: [id])
+
+  worker          Worker          @relation(fields: [workerId], references: [id])
+  contract        Contract        @relation(fields: [contractId], references: [id])
+  workerSpecialty WorkerSpecialty @relation(fields: [workerSpecialtyId], references: [id])
+
+  //unidades
+  sipacUnitLocation SipacUnidade @relation("unidadeLocalizacaoWorkerContract", fields: [sipacUnitLocationId], references: [id])
+
+  @@unique([workerId, contractId, workerSpecialtyId])
+  @@index([contractId])
+  @@index([workerSpecialtyId])
+  @@index([sipacUnitLocationId])
+  // @@index([worker_contract_danger_id])
+  // @@index([worker_contract_regime_id])
+  // @@index([worker_contract_unhealthy_id])
+  @@map("workers_contracts")
 }

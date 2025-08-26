@@ -380,6 +380,8 @@ model SipacUnidade {
 
     infrastructureBuilding InfrastructureBuilding[] @relation("UnidadesVinculadasInfraestrutura")
 
+    workersContractsLocation WorkerContract[] @relation("unidadeLocalizacaoWorkerContract")
+
     @@index([codigoUnidade])
     @@index([nomeUnidade])
     @@index([sigla])

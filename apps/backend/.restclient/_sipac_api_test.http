@@ -124,6 +124,42 @@ X-API-Key: {{sipac_x_api_key}}
 
 ### GET example
 @authToken = {{login.response.body.access_token}}
+GET {{urlBase}}/fornecedor/v1/credores
+?limit=100
+# &cnpj-fornecedor=09172237000124
+# &nome-fornecedor=D%20%26%20L
+# &nome-contratado=CICERO MARCOS CANDIDO
+# &cpf-contratado=63271405050
+# Content-Type: {{contentType}}
+Authorization: Bearer {{authToken}}
+X-API-Key: {{sipac_x_api_key}}
+
+### GET example
+@authToken = {{login.response.body.access_token}}
+GET {{urlBase}}/fornecedor/v1/credores/82833
+# ?limit=100
+# &cnpj-fornecedor=09172237000124
+# &nome-fornecedor=D%20%26%20L
+# &nome-contratado=CICERO MARCOS CANDIDO
+# &cpf-contratado=63271405050
+# Content-Type: {{contentType}}
+Authorization: Bearer {{authToken}}
+X-API-Key: {{sipac_x_api_key}}
+
+### GET example
+@authToken = {{login.response.body.access_token}}
+GET {{urlBase}}/contrato/v1/contratados
+?limit=100
+# &cnpj-fornecedor=09172237000124
+&nome-fornecedor=D%20%26%20L
+# &nome-contratado=CICERO MARCOS CANDIDO
+# &cpf-contratado=63271405050
+# Content-Type: {{contentType}}
+Authorization: Bearer {{authToken}}
+X-API-Key: {{sipac_x_api_key}}
+
+### GET example
+@authToken = {{login.response.body.access_token}}
 GET {{urlBase}}/site/v1/servidores
 ?limit=100
 &nome=vitorias

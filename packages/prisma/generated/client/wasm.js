@@ -120,6 +120,29 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
+exports.Prisma.ContractScalarFieldEnum = {
+  id: 'id',
+  providerId: 'providerId',
+  codigoSipac: 'codigoSipac',
+  value: 'value',
+  objeto: 'objeto',
+  startDate: 'startDate',
+  maxEndDate: 'maxEndDate',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ProviderScalarFieldEnum = {
+  id: 'id',
+  cnpj: 'cnpj',
+  cpf: 'cpf',
+  razaoSocial: 'razaoSocial',
+  nomeFantasia: 'nomeFantasia',
+  nome: 'nome',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.InfrastructureFacilityComplexScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -932,7 +955,19 @@ exports.Prisma.RoleScalarFieldEnum = {
 };
 
 exports.Prisma.WorkerScalarFieldEnum = {
-  id: 'id'
+  id: 'id',
+  name: 'name',
+  email: 'email',
+  birthdate: 'birthdate',
+  urlPhoto: 'urlPhoto',
+  rg: 'rg',
+  cpf: 'cpf',
+  phone: 'phone',
+  isActive: 'isActive',
+  notes: 'notes',
+  maintenanceInstanceId: 'maintenanceInstanceId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.WorkerTeamScalarFieldEnum = {
@@ -954,6 +989,18 @@ exports.Prisma.WorkerSpecialtyScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.WorkerContractScalarFieldEnum = {
+  id: 'id',
+  workerId: 'workerId',
+  contractId: 'contractId',
+  workerSpecialtyId: 'workerSpecialtyId',
+  sipacUnitLocationId: 'sipacUnitLocationId',
+  start: 'start',
+  end: 'end',
+  located: 'located',
+  notes: 'notes'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -967,6 +1014,19 @@ exports.Prisma.NullableJsonNullValueInput = {
 exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
+};
+
+exports.Prisma.ContractOrderByRelevanceFieldEnum = {
+  codigoSipac: 'codigoSipac',
+  objeto: 'objeto'
+};
+
+exports.Prisma.ProviderOrderByRelevanceFieldEnum = {
+  cnpj: 'cnpj',
+  cpf: 'cpf',
+  razaoSocial: 'razaoSocial',
+  nomeFantasia: 'nomeFantasia',
+  nome: 'nome'
 };
 
 exports.Prisma.InfrastructureFacilityComplexOrderByRelevanceFieldEnum = {
@@ -1373,6 +1433,16 @@ exports.Prisma.RoleOrderByRelevanceFieldEnum = {
   description: 'description'
 };
 
+exports.Prisma.WorkerOrderByRelevanceFieldEnum = {
+  name: 'name',
+  email: 'email',
+  urlPhoto: 'urlPhoto',
+  rg: 'rg',
+  cpf: 'cpf',
+  phone: 'phone',
+  notes: 'notes'
+};
+
 exports.Prisma.WorkerTeamOrderByRelevanceFieldEnum = {
   name: 'name',
   description: 'description'
@@ -1381,6 +1451,11 @@ exports.Prisma.WorkerTeamOrderByRelevanceFieldEnum = {
 exports.Prisma.WorkerSpecialtyOrderByRelevanceFieldEnum = {
   name: 'name',
   description: 'description'
+};
+
+exports.Prisma.WorkerContractOrderByRelevanceFieldEnum = {
+  located: 'located',
+  notes: 'notes'
 };
 exports.FacilityComplexType = exports.$Enums.FacilityComplexType = {
   BUILDING: 'BUILDING',
@@ -1602,6 +1677,8 @@ exports.RestrictionOrderStatus = exports.$Enums.RestrictionOrderStatus = {
 };
 
 exports.Prisma.ModelName = {
+  Contract: 'Contract',
+  Provider: 'Provider',
   InfrastructureFacilityComplex: 'InfrastructureFacilityComplex',
   InfrastructureBuilding: 'InfrastructureBuilding',
   InfrastructureBuildingActivity: 'InfrastructureBuildingActivity',
@@ -1667,7 +1744,8 @@ exports.Prisma.ModelName = {
   Role: 'Role',
   Worker: 'Worker',
   WorkerTeam: 'WorkerTeam',
-  WorkerSpecialty: 'WorkerSpecialty'
+  WorkerSpecialty: 'WorkerSpecialty',
+  WorkerContract: 'WorkerContract'
 };
 
 /**

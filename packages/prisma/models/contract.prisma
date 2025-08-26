@@ -1,0 +1,33 @@
+model Contract {
+    id               Int              @id @default(autoincrement())
+    providerId       Int
+    codigoSipac      String?           @db.VarChar(45)
+    value            Decimal?         @db.Decimal(10, 4)
+    objeto           String?          @db.Text
+    startDate        DateTime?
+    maxEndDate       DateTime?
+    providers        Provider         @relation(fields: [providerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    workersContracts WorkerContract[]
+    // workers_manualfrequencies workers_manualfrequencies[]
+
+    createdAt DateTime @default(now()) @db.Timestamp(0)
+    updatedAt DateTime @updatedAt @db.Timestamp(0)
+
+    @@index([providerId])
+    @@map("contracts")
+}
+
+model Provider {
+    id           Int        @id @default(autoincrement())
+    cnpj         String?    @db.Char(14)
+    cpf          String?    @db.Char(20)
+    razaoSocial  String?
+    nomeFantasia String?
+    nome         String?
+    contracts    Contract[]
+
+    createdAt DateTime @default(now()) @db.Timestamp(0)
+    updatedAt DateTime @updatedAt @db.Timestamp(0)
+
+    @@map("providers")
+}

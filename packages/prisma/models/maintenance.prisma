@@ -121,6 +121,7 @@ model MaintenanceInstance {
     InfrastructureBuilding        InfrastructureBuilding[]
     InfrastructureFacilityComplex InfrastructureFacilityComplex[]
     users                         User[]
+    workers                       Worker[]
 
     @@map("maintenance_instances")
 }
