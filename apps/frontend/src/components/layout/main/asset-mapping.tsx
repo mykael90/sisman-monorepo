@@ -1,37 +1,49 @@
-import { Building } from "lucide-react"
+import { Building } from 'lucide-react';
 
 export default function AssetMapping() {
   return (
     <div>
-      <h2 className="text-xl font-bold text-gray-800 mb-6">Asset and Team Mapping</h2>
+      <h2 className='mb-6 text-xl font-bold text-gray-800'>
+        Mapeamento de Ativos e Equipes
+      </h2>
 
-      <div className="flex gap-6">
-        <div className="flex-1 bg-white rounded-lg overflow-hidden border relative">
-          <img src="/placeholder.svg?height=300&width=800" alt="Map" className="w-full h-40 object-cover" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-2 py-1 rounded shadow text-sm">
-            Head Office
+      <div className='flex gap-6'>
+        <div className='relative flex-1 overflow-hidden rounded-lg border bg-white'>
+          <img
+            src='/placeholder.svg?height=300&width=800'
+            alt='Mapa'
+            className='h-40 w-full object-cover'
+          />
+          <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded bg-white px-2 py-1 text-sm shadow'>
+            Escritório Central
           </div>
         </div>
 
-        <div className="w-64 space-y-3">
-          <LocationButton label="Head Office" active />
-          <LocationButton label="Branch 1" />
-          <LocationButton label="Branch 2" />
+        <div className='w-64 space-y-3'>
+          <LocationButton label='Escritório Central' active />
+          <LocationButton label='Filial 1' />
+          <LocationButton label='Filial 2' />
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-function LocationButton({ label, active = false }: { label: string; active?: boolean }) {
+function LocationButton({
+  label,
+  active = false
+}: {
+  label: string;
+  active?: boolean;
+}) {
   return (
     <button
-      className={`flex items-center gap-2 w-full p-3 rounded-lg border ${
-        active ? "bg-white" : "bg-white/50 hover:bg-white"
+      className={`flex w-full items-center gap-2 rounded-lg border p-3 ${
+        active ? 'bg-white' : 'bg-white/50 hover:bg-white'
       }`}
     >
-      <Building className="h-4 w-4 text-gray-600" />
-      <span className="text-sm font-medium">{label}</span>
+      <Building className='h-4 w-4 text-gray-600' />
+      <span className='text-sm font-medium'>{label}</span>
     </button>
-  )
+  );
 }
