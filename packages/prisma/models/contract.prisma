@@ -1,5 +1,5 @@
 model Contract {
-    id               Int              @id //usar o id do sipac
+    id               Int              @id //usar o id do sipac id-institucional-fornecedor
     providerId       Int
     codigoSipac      String?           @db.VarChar(45)
     value            Decimal?         @db.Decimal(10, 2)
