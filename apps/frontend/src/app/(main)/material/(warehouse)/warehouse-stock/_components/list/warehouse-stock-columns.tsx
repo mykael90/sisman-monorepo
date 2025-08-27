@@ -1,4 +1,5 @@
 import { ColumnDef, createColumnHelper, Row } from '@tanstack/react-table';
+import { format } from 'date-fns';
 import { Button } from '@/components/ui/button';
 import { Edit, Info, Trash2 } from 'lucide-react';
 import { IWarehouseStockWithRelations } from '../../warehouse-stock-types';
@@ -45,10 +46,27 @@ export const columns = (
     header: 'ID',
     cell: (props) => props.getValue()
   }),
+
+  columnHelper.accessor('materialId', {
+    header: 'ID Global',
+    cell: (props) => props.getValue()
+  }),
   columnHelper.accessor((row) => row.material?.name, {
     id: 'materialName',
     header: 'Material',
     cell: (props) => props.getValue() || 'N/A'
+  }),
+  columnHelper.accessor((row) => row.lastStockCountDate, {
+    id: 'lastStockCountDate',
+    header: 'Última Contagem',
+    cell: (props) => {
+      const dateValue = props.getValue();
+      return (
+        <div className='text-center'>
+          {dateValue ? format(new Date(dateValue), 'dd/MM/yyyy') : 'N/A'}
+        </div>
+      );
+    }
   }),
   // columnHelper.accessor((row) => row.warehouse?.name, {
   //   id: 'warehouseName',
@@ -61,6 +79,9 @@ export const columns = (
     columns: [
       columnHelper.accessor((row) => row.initialStockQuantity, {
         id: 'initialStockQuantity',
+        minSize: 500,
+        maxSize: 500,
+        size: 500,
         header: () => {
           return (
             <div className='flex items-center justify-center gap-2'>
