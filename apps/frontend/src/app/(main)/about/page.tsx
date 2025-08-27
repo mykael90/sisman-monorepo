@@ -44,6 +44,9 @@ export default function About() {
             <p className='text-gray-600 dark:text-gray-400'>
               Servidor da equipe de manutenção da UFRN (2020-2023)
             </p>
+            <p className='text-gray-600 dark:text-gray-400'>
+              Professor do IFPB (Desde 2023)
+            </p>
             <a
               href='http://lattes.cnpq.br/5862165900761875'
               target='_blank'
