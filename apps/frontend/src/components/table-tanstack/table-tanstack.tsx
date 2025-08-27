@@ -64,6 +64,8 @@ export function TableTanstack<TData>({
     onGlobalFilterChange: setGlobalFilter,
     filterFns: {},
     globalFilterFn,
+    enableColumnResizing: true,
+    columnResizeMode: 'onChange',
     state: {
       globalFilter,
       columnFilters,
@@ -84,18 +86,26 @@ export function TableTanstack<TData>({
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id}>
+                  <TableHead
+                    key={header.id}
+                    colSpan={header.colSpan}
+                    style={{ width: header.getSize() }}
+                  >
                     {header.isPlaceholder
                       ? null
                       : flexRender(
                           header.column.columnDef.header,
                           header.getContext()
                         )}
-                    {/* {header.column.getCanFilter() ? (
-                      <div>
-                        <Filter column={header.column} />
-                      </div>
-                    ) : null} */}
+                    {header.column.getCanResize() && (
+                      <div
+                        onMouseDown={header.getResizeHandler()}
+                        onTouchStart={header.getResizeHandler()}
+                        className={`resizer ${
+                          header.column.getIsResizing() ? 'isResizing' : ''
+                        }`}
+                      />
+                    )}
                   </TableHead>
                 ))}
               </TableRow>

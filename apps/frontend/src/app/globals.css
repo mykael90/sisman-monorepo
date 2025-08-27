@@ -146,4 +146,27 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+
+  .resizer {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 5px;
+    background: rgba(0, 0, 0, 0.5);
+    cursor: col-resize;
+    user-select: none;
+    touch-action: none;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+  }
+
+  .resizer.isResizing {
+    background: #007bff; /* Cor de destaque quando redimensionando */
+    opacity: 1;
+  }
+
+  .resizer:hover {
+    opacity: 1;
+  }
 }

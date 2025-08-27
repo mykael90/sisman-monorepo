@@ -79,9 +79,7 @@ export const columns = (
     columns: [
       columnHelper.accessor((row) => row.initialStockQuantity, {
         id: 'initialStockQuantity',
-        minSize: 500,
-        maxSize: 500,
-        size: 500,
+        size: 100,
         header: () => {
           return (
             <div className='flex items-center justify-center gap-2'>
