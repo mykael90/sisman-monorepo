@@ -6,6 +6,11 @@
 GET {{urlLocal}}
 Authorization: Bearer {{token}}
 
+### GET all by warehouseId
+# @prompt warehouseId
+GET {{urlLocal}}/warehouse/{{warehouseId}}
+Authorization: Bearer {{token}}
+
 ### GET one
 # @prompt id
 GET {{urlLocal}}/{{id}}

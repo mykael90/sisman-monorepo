@@ -160,6 +160,19 @@ X-API-Key: {{sipac_x_api_key}}
 
 ### GET example
 @authToken = {{login.response.body.access_token}}
+GET {{urlBase}}/fornecedor/v1/fornecedores-notificados
+?limit=100
+# &cpf-cnpj=80503065000199
+# &fornecedor=D%20%26%20L
+# &fornecedor=D%20%26%20L
+# &nome-contratado=CICERO MARCOS CANDIDO
+# &cpf-contratado=63271405050
+# Content-Type: {{contentType}}
+Authorization: Bearer {{authToken}}
+X-API-Key: {{sipac_x_api_key}}
+
+### GET example
+@authToken = {{login.response.body.access_token}}
 GET {{urlBase}}/site/v1/servidores
 ?limit=100
 &nome=vitorias

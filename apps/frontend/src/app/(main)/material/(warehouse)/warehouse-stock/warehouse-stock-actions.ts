@@ -12,16 +12,47 @@ import {
 import { handleApiAction } from '@/lib/fetch/handle-form-action-sisman';
 
 const PAGE_PATH = '/material/warehouse-stock';
-const API_RELATIVE_PATH = '/material/warehouse-stock';
+const API_RELATIVE_PATH = '/material-warehouse-stock';
 
 const logger = new Logger(`${PAGE_PATH}/warehouse-stock-actions`);
 
-export async function getWarehouseStocks(accessTokenSisman: string) {
+export async function getWarehouseStocks(warehouseId: number) {
+  const accessTokenSisman = await getSismanAccessToken();
   logger.info(`(Server Action) getWarehouseStocks: Fetching warehouse-stocks`);
   try {
-    const data = await fetchApiSisman(API_RELATIVE_PATH, accessTokenSisman, {
-      cache: 'force-cache'
-    });
+    const data = await fetchApiSisman(
+      `${API_RELATIVE_PATH}/warehouse/${warehouseId}`,
+      accessTokenSisman,
+      {
+        // cache: 'force-cache'
+      }
+    );
+    logger.info(
+      `(Server Action) getWarehouseStocks: ${data.length} warehouse-stocks returned`
+    );
+    return data;
+  } catch (error) {
+    logger.error(
+      `(Server Action) getWarehouseStocks: Error fetching warehouse-stocks`,
+      error
+    );
+    throw error;
+  }
+}
+
+export async function getWarehouseStockByWarehouseId(warehouseId: number) {
+  const accessTokenSisman = await getSismanAccessToken();
+  logger.info(
+    `(Server Action) getWarehouseStockByWarehouseId: Fetching warehouse-stock by warehouseId`
+  );
+  try {
+    const data = await fetchApiSisman(
+      `${API_RELATIVE_PATH}/warehouse/${warehouseId}`,
+      accessTokenSisman,
+      {
+        cache: 'force-cache'
+      }
+    );
     logger.info(
       `(Server Action) getWarehouseStocks: ${data.length} warehouse-stocks returned`
     );

@@ -2,8 +2,12 @@ import { MaterialWarehouseStock, Prisma } from '@sisman/prisma';
 
 export type IWarehouseStockWithRelations =
   Prisma.MaterialWarehouseStockGetPayload<{
-    include: {};
-  }>;
+    include: {
+      material: true;
+      warehouse: true;
+    };
+  }> &
+    IWarehouseStockIncludedComputed;
 
 export interface IWarehouseStockAdd
   extends Prisma.MaterialWarehouseStockCreateInput {}

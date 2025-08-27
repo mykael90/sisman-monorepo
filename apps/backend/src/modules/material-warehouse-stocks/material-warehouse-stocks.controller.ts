@@ -59,6 +59,27 @@ export class MaterialWarehouseStocksController {
   }
 
   /**
+   * Lista todos os registros de estoque de material em um almoxarifado específico.
+   */
+  @Get('/warehouse/:warehouseId')
+  @ApiEndpointSwagger({
+    summary: 'Listar registros de estoque de materiais em almoxarifados',
+    description:
+      'Retorna uma lista de todos os registros de estoque de materiais em almoxarifados.',
+    response: {
+      status: HttpStatus.OK,
+      description: 'Lista de registros de estoque.',
+      type: MaterialWarehouseStockWithRelationsResponseDto,
+      isArray: true
+    }
+  })
+  async listByWarehouseId(
+    @Param('warehouseId', ParseIntPipe) warehouseId: number
+  ) {
+    return this.materialWarehouseStocksService.listByWarehouseId(warehouseId);
+  }
+
+  /**
    * Busca um registro de estoque específico pelo seu ID.
    */
   @Get(':id')

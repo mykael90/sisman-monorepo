@@ -35,11 +35,37 @@ export class MaterialWarehouseStocksService {
   async list() {
     try {
       const materialWarehouseStocks =
-        await this.prisma.materialWarehouseStock.findMany();
+        await this.prisma.materialWarehouseStock.findMany({
+          include: {
+            material: true,
+            warehouse: true
+          }
+        });
       return materialWarehouseStocks;
     } catch (error) {
       handlePrismaError(error, this.logger, 'MaterialWarehouseStocksService', {
         operation: 'list'
+      });
+      throw error;
+    }
+  }
+
+  async listByWarehouseId(warehouseId: number) {
+    try {
+      const materialWarehouseStocks =
+        await this.prisma.materialWarehouseStock.findMany({
+          where: {
+            warehouseId
+          },
+          include: {
+            material: true,
+            warehouse: true
+          }
+        });
+      return materialWarehouseStocks;
+    } catch (error) {
+      handlePrismaError(error, this.logger, 'MaterialWarehouseStocksService', {
+        operation: 'listByWarehouseId'
       });
       throw error;
     }

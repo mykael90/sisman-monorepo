@@ -13,6 +13,14 @@ import { IsString, IsOptional, IsDate, Length } from 'class-validator';
  */
 class ContractProviderBaseDto implements ContractProvider {
   /**
+   * ID único do fornecedor no campo instituciona-fornecedor-id.
+   * @example "20225454"
+   */
+  @IsOptional()
+  @IsString()
+  idInstitucionalFornecedor: string;
+
+  /**
    * ID único do fornecedor.
    * @example 1
    */
