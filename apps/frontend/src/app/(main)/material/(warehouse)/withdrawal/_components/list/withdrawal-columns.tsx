@@ -7,6 +7,7 @@ import {
   materialOperationOutDisplayMapPorguguese,
   TMaterialOperationOutKey
 } from '../../../../../../../mappers/material-operations-mappers-translate';
+import { Badge } from '@/components/ui/badge';
 
 const columnHelper = createColumnHelper<IMaterialWithdrawalWithRelations>();
 
@@ -63,16 +64,28 @@ export const columns = (
     header: 'Processado Por',
     cell: (props) => props.getValue()
   }),
-  columnHelper.accessor((row) => row.collectedByUser?.name, {
-    id: 'collectedByUserName',
-    header: 'Coletado Por (Usuário)',
-    cell: (props) => props.getValue()
-  }),
-  // columnHelper.accessor((row) => row.collectedByWorker?.name, {
-  //   id: 'collectedByWorkerName',
-  //   header: 'Coletado Por (Funcionário)',
-  //   cell: (props) => props.getValue()
-  // }),
+  columnHelper.accessor(
+    (row) => row.collectedByUser?.name || row.collectedByWorker?.name,
+    {
+      id: 'collectedBy',
+      header: 'Coletado Por',
+      cell: (props) => {
+        const name = props.getValue();
+        if (!name) {
+          return 'Não informado';
+        }
+        const isUser = !!props.row.original.collectedByUser;
+        return (
+          <div className='flex items-center gap-2'>
+            <Badge variant={'outline'}>
+              {isUser ? 'Usuário' : 'Profissional'}
+            </Badge>
+            <span>{name}</span>
+          </div>
+        );
+      }
+    }
+  ),
   // columnHelper.accessor((row) => row.materialRequest?.id, {
   //   id: 'materialRequestId',
   //   header: 'Requisição de Material',
