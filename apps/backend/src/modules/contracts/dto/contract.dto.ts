@@ -1,6 +1,7 @@
 import { IntersectionType, PartialType, PickType } from '@nestjs/swagger';
 import { Prisma, Contract } from '@sisman/prisma';
 import {
+  IsBoolean,
   IsDate,
   IsNumber,
   IsOptional,
@@ -20,7 +21,12 @@ class UpdateContractProviderDto {
 
 class ContractBaseDto implements Contract {
   /**
-   * ID único do contrato.
+   * Indica se o contrato está ativo/vigente.
+   */
+  @IsBoolean()
+  isActive: boolean;
+  /**
+   * ID único do contrato, obtido do SIPAC.
    * @example 1
    */
   @IsNumber()
@@ -55,7 +61,7 @@ class ContractBaseDto implements Contract {
    */
   @IsOptional()
   @IsString()
-  objeto: string | null;
+  subject: string | null;
 
   /**
    * Data de início do contrato.

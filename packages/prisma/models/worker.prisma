@@ -86,9 +86,9 @@ model WorkerContract {
     contractId          Int
     workerSpecialtyId   Int
     sipacUnitLocationId Int
-    start               DateTime  @default(now()) @db.Timestamp(0)
-    end                 DateTime? @db.Timestamp(0)
-    located             String?   @db.VarChar(255)
+    startDate           DateTime? @db.Date
+    endDate             DateTime? @db.Date
+    // located             String?   @db.VarChar(255)
     notes               String?   @db.Text
     // workerContractDangerId    Int?n
     // workerContractRegimeId    Int?

@@ -125,9 +125,10 @@ exports.Prisma.ContractScalarFieldEnum = {
   providerId: 'providerId',
   codigoSipac: 'codigoSipac',
   value: 'value',
-  objeto: 'objeto',
+  subject: 'subject',
   startDate: 'startDate',
   maxEndDate: 'maxEndDate',
+  isActive: 'isActive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -995,9 +996,8 @@ exports.Prisma.WorkerContractScalarFieldEnum = {
   contractId: 'contractId',
   workerSpecialtyId: 'workerSpecialtyId',
   sipacUnitLocationId: 'sipacUnitLocationId',
-  start: 'start',
-  end: 'end',
-  located: 'located',
+  startDate: 'startDate',
+  endDate: 'endDate',
   notes: 'notes'
 };
 
@@ -1018,7 +1018,7 @@ exports.Prisma.NullsOrder = {
 
 exports.Prisma.ContractOrderByRelevanceFieldEnum = {
   codigoSipac: 'codigoSipac',
-  objeto: 'objeto'
+  subject: 'subject'
 };
 
 exports.Prisma.ContractProviderOrderByRelevanceFieldEnum = {
@@ -1454,7 +1454,6 @@ exports.Prisma.WorkerSpecialtyOrderByRelevanceFieldEnum = {
 };
 
 exports.Prisma.WorkerContractOrderByRelevanceFieldEnum = {
-  located: 'located',
   notes: 'notes'
 };
 exports.FacilityComplexType = exports.$Enums.FacilityComplexType = {

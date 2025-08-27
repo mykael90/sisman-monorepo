@@ -1,13 +1,14 @@
 model Contract {
-    id               Int              @id
+    id               Int              @id //usar o id do sipac
     providerId       Int
     codigoSipac      String?           @db.VarChar(45)
-    value            Decimal?         @db.Decimal(10, 4)
-    objeto           String?          @db.Text
+    value            Decimal?         @db.Decimal(10, 2)
+    subject          String?          @db.Text //objeto
     startDate        DateTime?
     maxEndDate       DateTime?
-    providers        ContractProvider         @relation(fields: [providerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    providers        ContractProvider @relation(fields: [providerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
     workersContracts WorkerContract[]
+    isActive         Boolean          @default(true) // Indicates if the contract is active.
     // workers_manualfrequencies workers_manualfrequencies[]
 
     createdAt DateTime @default(now()) @db.Timestamp(0)
