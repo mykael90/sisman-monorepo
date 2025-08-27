@@ -139,7 +139,7 @@ export const sidebarItems: SidebarItem[] = [
     icon: <Database className='h-6 w-6' />,
     children: [
       { label: 'Servidores', href: '/sipac/servidores' },
-      { label: 'Tipos de Permissões', href: '/sipac/role' },
+      { label: 'Terceiros', href: '/sipac/terceiro' },
       {
         label: 'Requisições de Manutenção',
         href: '/sipac/requisicoes-manutencoes'
