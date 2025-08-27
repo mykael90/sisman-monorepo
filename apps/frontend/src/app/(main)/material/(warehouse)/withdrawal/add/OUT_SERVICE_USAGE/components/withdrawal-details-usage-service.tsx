@@ -27,15 +27,18 @@ import { IWithdrawalFormApi } from '../../../../../../../../hooks/use-withdrawal
 import { fieldsLabelsWithdrawalForm } from '../../../withdrawal-types';
 import { IUser } from '../../../../../../user/user-types';
 import { FC } from 'react';
+import { IWorker } from '../../../../../../worker/worker-types';
 
 export type WithdrawalDetailUsageServiceProps = {
   formWithdrawal: IWithdrawalFormApi;
   listUsers?: IUser[];
+  listWorkers?: IWorker[];
 };
 
 export function WithdrawalDetailUsageService({
   formWithdrawal,
-  listUsers = []
+  listUsers = [],
+  listWorkers = []
 }: WithdrawalDetailUsageServiceProps) {
   return (
     <Card>
@@ -167,10 +170,10 @@ export function WithdrawalDetailUsageService({
                           field={field}
                           label={`Nome do colaborador`}
                           placeholder='Selecione um trabalhador'
-                          options={[
-                            { value: '1', label: 'Trabalhador 1' },
-                            { value: '2', label: 'Trabalhador 2' }
-                          ]}
+                          options={listWorkers.map((worker) => ({
+                            value: worker.id,
+                            label: worker.name
+                          }))}
                           onValueChange={(value) =>
                             field.handleChange(Number(value))
                           }

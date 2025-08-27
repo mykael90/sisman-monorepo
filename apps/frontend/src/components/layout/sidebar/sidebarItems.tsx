@@ -65,37 +65,39 @@ export const sidebarItems: SidebarItem[] = [
     ]
   },
   {
-    label: 'Materiais Novos',
+    label: 'Materiais',
     href: '/material', //Optional, could be omitted if you don't want a direct link to Materiais
     icon: <Package className='h-6 w-6' />,
     children: [
       // { label: 'Todos os Materiais', href: '/material/all' },
       // { label: 'Entrada: Material', href: '/material/add' },
+      { label: 'Reservas', href: '/material/receipt' },
       { label: 'Entradas', href: '/material/receipt' },
       { label: 'Retiradas', href: '/material/withdrawal' },
-      { label: 'Inventário', href: '/material/category' }
+      { label: 'Inventário', href: '/material/category' },
+      { label: 'Requisições', href: '/material/request' }
     ]
   },
-  {
-    label: 'Materiais Usados',
-    href: '/material-used', //Optional, could be omitted if you don't want a direct link to Materiais
-    icon: <PackageOpen className='h-6 w-6' />,
-    children: [
-      { label: 'Todos os Materiais', href: '/material/all' },
-      { label: 'Adicionar Material', href: '/material/add' },
-      { label: 'Categorias', href: '/material/category' }
-    ]
-  },
-  {
-    label: 'Materiais Beneficiados',
-    href: '/material-processed', //Optional, could be omitted if you don't want a direct link to Materiais
-    icon: <PackagePlus className='h-6 w-6' />,
-    children: [
-      { label: 'Todos os Materiais', href: '/material/all' },
-      { label: 'Adicionar Material', href: '/material/add' },
-      { label: 'Categorias', href: '/material/category' }
-    ]
-  },
+  // {
+  //   label: 'Materiais Usados',
+  //   href: '/material-used', //Optional, could be omitted if you don't want a direct link to Materiais
+  //   icon: <PackageOpen className='h-6 w-6' />,
+  //   children: [
+  //     { label: 'Todos os Materiais', href: '/material/all' },
+  //     { label: 'Adicionar Material', href: '/material/add' },
+  //     { label: 'Categorias', href: '/material/category' }
+  //   ]
+  // },
+  // {
+  //   label: 'Materiais Beneficiados',
+  //   href: '/material-processed', //Optional, could be omitted if you don't want a direct link to Materiais
+  //   icon: <PackagePlus className='h-6 w-6' />,
+  //   children: [
+  //     { label: 'Todos os Materiais', href: '/material/all' },
+  //     { label: 'Adicionar Material', href: '/material/add' },
+  //     { label: 'Categorias', href: '/material/category' }
+  //   ]
+  // },
   {
     label: 'Equipamentos',
     icon: <Drill className='h-6 w-6' />,

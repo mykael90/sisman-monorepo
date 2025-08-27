@@ -14,6 +14,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '../../../../../../api/auth/_options';
 import { IMaterialWithdrawalAddForm } from '../../withdrawal-types';
 import { materialOperationOutDisplayMap } from '../../../../../../../mappers/material-operations-mappers';
+import { getWorkers } from '../../../../../worker/worker-actions';
 
 export default async function Page() {
   const session = await getServerSession(authOptions);
@@ -52,7 +53,10 @@ export default async function Page() {
   //   return showMaintenanceRequestByProtocol(accessTokenSisman, protocolNumber);
   // }
 
-  const [listUsers] = await Promise.all([getUsers(accessTokenSisman)]);
+  const [listUsers, listWorkers] = await Promise.all([
+    getUsers(accessTokenSisman),
+    getWorkers(accessTokenSisman)
+  ]);
 
   // const response = await getMaintenanceRequest('4506/2025');
   // console.log(response);
@@ -65,7 +69,8 @@ export default async function Page() {
       <MaterialWithdrawalFormAdd
         // promiseMaintenanceRequest={getMaintenanceRequest}
         relatedData={{
-          listUsers
+          listUsers,
+          listWorkers
         }}
         // SubmitButtonIcon={FilePlus}
         // submitButtonText='Criar Usuário'

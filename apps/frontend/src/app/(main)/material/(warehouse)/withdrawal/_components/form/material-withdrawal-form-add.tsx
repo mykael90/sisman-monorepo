@@ -12,7 +12,6 @@ import {
 } from '../../withdrawal-types';
 import { IMaterialRequest } from '../../../../request/material-request-types';
 import { ItemsFieldArray } from './field-form-items-array';
-import { FormSuccessDisplay } from '@/components/form-tanstack/form-success-display';
 import { ErrorServerForm } from '@/components/form-tanstack/error-server-form';
 import { IMaintenanceRequestWithRelations } from '../../../../../maintenance/request/request-types';
 import {
@@ -25,13 +24,14 @@ import { useWarehouseContext } from '../../../../choose-warehouse/context/wareho
 import { WithdrawalDetailUsageServiceProps } from '../../add/OUT_SERVICE_USAGE/components/withdrawal-details-usage-service';
 import { materialWithdrawalFormSchemaAdd } from './material-withdrawal-form-validation';
 import { ErrorClientValidationFormCard } from '../../../../../../../components/form-tanstack/error-client-validation-form-card';
+import { FormSuccessDisplayCard } from '../../../../../../../components/form-tanstack/form-success-display-card';
+import { useRouter } from 'next/navigation';
+import { set } from 'date-fns';
 
 export function MaterialWithdrawalFormAdd({
   defaultData,
   formActionProp,
   relatedData,
-  onCancel,
-  onClean,
   submitButtonText,
   SubmitButtonIcon,
   CardMaintenanceSummary,
@@ -43,7 +43,7 @@ export function MaterialWithdrawalFormAdd({
     message: ''
   }
 }: {
-  defaultData: IMaterialWithdrawalAddForm;
+  defaultData: Partial<Record<keyof IMaterialWithdrawalAddForm, any>>;
   formActionProp: (
     prevState: IActionResultForm<
       IMaterialWithdrawalAddForm,
@@ -56,8 +56,6 @@ export function MaterialWithdrawalFormAdd({
       IMaterialWithdrawalWithRelations
     >
   >;
-  onCancel?: () => void;
-  onClean?: () => void;
   submitButtonText?: string;
   SubmitButtonIcon?: FC<{ className?: string }>;
   relatedData: IMaterialWithdrawalRelatedData;
@@ -96,7 +94,13 @@ export function MaterialWithdrawalFormAdd({
     formActionWithdrawal: async (value) => await formActionWithdrawal(value)
   });
 
-  const { listUsers } = relatedData;
+  const router = useRouter();
+
+  const redirectList = () => {
+    router.push('/material/withdrawal/');
+  };
+
+  const { listUsers, listWorkers } = relatedData;
 
   // const formWithdrawal = useForm({
   //   defaultValues: defaultDataWithdrawalForm,
@@ -117,15 +121,19 @@ export function MaterialWithdrawalFormAdd({
   // --- 3. O RESTO DO SEU COMPONENTE ---
   // A partir daqui, você tem a garantia de que `session` e `warehouseId` existem e `userId` é um número válido.
 
-  const handleReset = onClean
-    ? () => {
-        formWithdrawal.reset();
-        onClean && onClean();
-      }
-    : () => formWithdrawal.reset();
+  const handleReset = () => {
+    console.log('resetando form');
+    // TODO: depois utilizar um reset mais suave. o problema é resetar o action state.
+    // formWithdrawal.reset();
+    // formActionWithdrawal(initialServerStateWithdrawal);
+    // setMaintenanceRequestData(null);
+    // setMaterialRequestData(null);
+    // setLinkMaterialRequest(false);
+    window.location.reload();
+  };
 
   const handleCancel = () => {
-    onCancel && onCancel();
+    redirectList();
   };
 
   if (
@@ -133,7 +141,7 @@ export function MaterialWithdrawalFormAdd({
     serverStateWithdrawal.responseData
   ) {
     return (
-      <FormSuccessDisplay
+      <FormSuccessDisplayCard
         serverState={serverStateWithdrawal}
         handleActions={{
           handleResetForm: handleReset,
@@ -200,6 +208,7 @@ export function MaterialWithdrawalFormAdd({
             <WithdrawalDetailsForm
               formWithdrawal={formWithdrawal}
               listUsers={listUsers}
+              listWorkers={listWorkers}
             />
           )}
 

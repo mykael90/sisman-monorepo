@@ -140,6 +140,7 @@ exports.Prisma.ContractProviderScalarFieldEnum = {
   razaoSocial: 'razaoSocial',
   nomeFantasia: 'nomeFantasia',
   nome: 'nome',
+  idInstitucionalFornecedor: 'idInstitucionalFornecedor',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -1026,7 +1027,8 @@ exports.Prisma.ContractProviderOrderByRelevanceFieldEnum = {
   cpf: 'cpf',
   razaoSocial: 'razaoSocial',
   nomeFantasia: 'nomeFantasia',
-  nome: 'nome'
+  nome: 'nome',
+  idInstitucionalFornecedor: 'idInstitucionalFornecedor'
 };
 
 exports.Prisma.InfrastructureFacilityComplexOrderByRelevanceFieldEnum = {

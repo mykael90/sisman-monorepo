@@ -10,7 +10,9 @@ import { toast } from 'sonner';
 
 // Tipamos os parâmetros que nosso hook receberá para ser reutilizável
 type UseWithdrawalFormProps = {
-  defaultDataWithdrawalForm: IMaterialWithdrawalAddForm;
+  defaultDataWithdrawalForm: Partial<
+    Record<keyof IMaterialWithdrawalAddForm, any>
+  >;
   serverStateWithdrawal?: IActionResultForm<
     IMaterialWithdrawalAddForm,
     IMaterialWithdrawalWithRelations

@@ -1,5 +1,5 @@
 model Contract {
-    id               Int              @id //usar o id do sipac id-institucional-fornecedor
+    id               Int              @id @default(autoincrement()) //TODO: tentar depois usar o mesmo id do sipac
     providerId       Int
     codigoSipac      String?           @db.VarChar(45)
     value            Decimal?         @db.Decimal(10, 2)
@@ -19,13 +19,16 @@ model Contract {
 }
 
 model ContractProvider {
-    id           Int        @id
+    id           Int        @id @default(autoincrement()) //TODO: tentar depois usar o mesmo id do sipac
     cnpj         String?    @db.Char(14)
     cpf          String?    @db.Char(20)
     razaoSocial  String?
     nomeFantasia String?
     nome         String?
     contracts    Contract[]
+
+    //compatiblidade sipac
+    idInstitucionalFornecedor String? @unique // vem de sipac id-institucional-fornecedor
 
     createdAt DateTime @default(now()) @db.Timestamp(0)
     updatedAt DateTime @updatedAt @db.Timestamp(0)

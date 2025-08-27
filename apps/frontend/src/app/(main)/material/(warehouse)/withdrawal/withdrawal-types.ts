@@ -7,6 +7,7 @@ import { IUser } from '../../../user/user-types';
 import { IMaterialGlobalCatalogEdit } from '../../global-catalog/material-global-catalog-types';
 import { IWarehouseStockIncludedComputed } from '../warehouse-stock/warehouse-stock-types';
 import { MaterialOperationOutKey } from '@/mappers/material-operations-mappers';
+import { IWorker } from '../../../worker/worker-types';
 
 export type IMaterialWithdrawal = MaterialWithdrawal;
 
@@ -46,6 +47,7 @@ export interface IMaterialWithdrawalAddPayload
 
 export interface IMaterialWithdrawalRelatedData {
   listUsers?: IUser[];
+  listWorkers?: IWorker[];
 }
 
 export interface IMaterialWithdrawalAddForm

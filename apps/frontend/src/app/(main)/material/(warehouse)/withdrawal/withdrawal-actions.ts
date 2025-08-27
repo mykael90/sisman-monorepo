@@ -130,7 +130,7 @@ export async function addWithdrawal(
       {
         mainPath: PAGE_PATH
       },
-      'Withdrawal added successfully!'
+      'Retirada realizada com sucesso!'
     );
   } catch (error) {
     logger.error(`(Server Action) addWithdrawal: Unexpected error`, error);
@@ -170,7 +170,7 @@ export async function updateWithdrawal(
         mainPath: PAGE_PATH,
         detailPath: `${PAGE_PATH}/edit/${data.id}`
       },
-      'Withdrawal updated successfully!'
+      'Retirada atualizada com sucesso!'
     );
   } catch (error) {
     logger.error(
