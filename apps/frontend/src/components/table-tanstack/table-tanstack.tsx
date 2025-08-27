@@ -114,7 +114,11 @@ export function TableTanstack<TData>({
           <TableBody className='bg-white'>
             {/* 4. Renderizar linhas e células usando table.getRowModel e flexRender */}
             {table.getRowModel().rows.map((row) => (
-              <TableRow key={row.id}>
+              <TableRow
+                key={row.id}
+                // className='odd:bg-white even:bg-gray-50'
+                className='hover:bg-accent/10 odd:bg-white even:bg-gray-50'
+              >
                 {row.getVisibleCells().map((cell) => (
                   // Aplica a classe específica apenas na célula 'name' para manter o layout do Avatar
                   <TableCell key={cell.id}>
