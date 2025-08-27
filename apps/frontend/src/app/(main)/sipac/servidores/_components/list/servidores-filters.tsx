@@ -1,54 +1,38 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { memo } from 'react';
+import { memo, Dispatch, SetStateAction, useTransition } from 'react';
 import { useForm } from '@tanstack/react-form';
-import {
-  FormInputField,
-  FormInputFieldSearch
-} from '@/components/form-tanstack/form-input-fields';
-import { IServidor } from '../../servidores-types';
+import { FormInputFieldSearch } from '@/components/form-tanstack/form-input-fields';
+import { IServidor, IServidoresList } from '../../servidores-types';
 import { searchServidores } from '../../servidores-actions';
-import { useTransition, ReactNode } from 'react';
 import { Search } from 'lucide-react';
+
+interface ServidoresFiltersProps {
+  setServidores: Dispatch<SetStateAction<IServidoresList[]>>;
+}
 
 const fieldLabels: Partial<IServidor> = {
   nome: 'Nome'
 };
 
-// Usando desestruturação nas props para clareza
 const ServidoresFilters = memo(function ServidoresFilters({
-  setServidores,
-  onClearFilters // Recebe a função de limpar
-}) {
+  setServidores
+}: ServidoresFiltersProps) {
   const [isPending, startTransition] = useTransition();
   const defaultData: Partial<IServidor> = {
     nome: ''
-  };
-  // O handleClearFilters agora simplesmente chama a função do pai
-  const handleClearFilters = () => {
-    onClearFilters();
   };
 
   const handleSearch = (value: Partial<IServidor>) => {
     if (searchServidores) {
       startTransition(() => {
-        // Chamar searchServidores() aqui (que é getUsers, uma Server Action).
-        // Isso deve, idealmente, fazer com que o Server Component `Page`
-        // seja revalidado e re-renderizado. Ao re-renderizar, `Page`
-        // gerará uma nova `currentDataPromise` e uma nova `keyForDisplayData`.
-        // A nova `key` fará com que esta instância de `DisplayData` seja
-        // desmontada e uma nova seja montada, resetando todo o seu estado.
         searchServidores(`nome=${value.nome}`)
           .then((result) => {
             const servidores = result;
             setServidores(servidores);
-            // logger.info('searchServidores completed on client, Page should revalidate and re-render.');
-            // Não é necessário fazer setCurrentData aqui, pois o componente será remontado
           })
           .catch((error) => {
-            // logger.error('Error during searchServidores:', error);
-            // Lidar com erro, se necessário
             throw error;
           });
       });
@@ -61,12 +45,7 @@ const ServidoresFilters = memo(function ServidoresFilters({
 
   const form = useForm({
     defaultValues: defaultData,
-    // Add onSubmit to get validated values
     onSubmit: async ({ value }) => {
-      // `value` is the validated form data as an object
-      // `dispatchFormAction` is the function returned by `useActionState`
-      // It expects the new "payload" as its argument.
-      // The `prevState` is managed internally by `useActionState`.
       console.log('Form submitted with values:', value);
       handleSearch(value);
     }
@@ -76,8 +55,8 @@ const ServidoresFilters = memo(function ServidoresFilters({
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        e.stopPropagation(); // Good practice with manual handleSubmit
-        form.handleSubmit(); // This will call the `onSubmit` defined in `useForm` options
+        e.stopPropagation();
+        form.handleSubmit();
       }}
       onReset={(e) => {
         e.preventDefault();

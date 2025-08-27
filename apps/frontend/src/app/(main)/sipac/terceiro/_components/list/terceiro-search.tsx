@@ -71,14 +71,14 @@ export function TerceiroSearch({
         e.preventDefault();
         form.reset();
       }}
-      className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3'
+      className='flex flex-row items-start justify-between gap-4'
     >
       <form.Field name='nome-contratado'>
         {(field) => (
           <div className='relative flex-1'>
             <FormInputFieldSearch
               field={field}
-              label={fieldLabels['nome-contratado'] as string}
+              // label={fieldLabels['nome-contratado'] as string}
               placeholder='Digite o nome do contratado...'
               showLabel={true}
               className=''
@@ -105,7 +105,7 @@ export function TerceiroSearch({
           <div className='relative flex-1'>
             <FormInputFieldSearch
               field={field}
-              label={fieldLabels['nome-fornecedor'] as string}
+              // label={fieldLabels['nome-fornecedor'] as string}
               placeholder='Digite o nome do fornecedor...'
               showLabel={true}
               className=''
@@ -113,12 +113,12 @@ export function TerceiroSearch({
           </div>
         )}
       </form.Field>
-      <form.Field name='cnpj-fornecedor'>
+      {/* <form.Field name='cnpj-fornecedor'>
         {(field) => (
           <div className='relative flex-1'>
             <FormInputFieldSearch
               field={field}
-              label={fieldLabels['cnpj-fornecedor'] as string}
+              // label={fieldLabels['cnpj-fornecedor'] as string}
               placeholder='Digite o CNPJ do fornecedor (somente números)...'
               showLabel={true}
               className=''
@@ -126,13 +126,13 @@ export function TerceiroSearch({
             />
           </div>
         )}
-      </form.Field>
-      <form.Field name='numero-contrato'>
+      </form.Field> */}
+      {/* <form.Field name='numero-contrato'>
         {(field) => (
           <div className='relative flex-1'>
             <FormInputFieldSearch
               field={field}
-              label={fieldLabels['numero-contrato'] as string}
+              // label={fieldLabels['numero-contrato'] as string}
               placeholder='Digite o número do contrato (somente números)...'
               showLabel={true}
               className=''
@@ -140,7 +140,7 @@ export function TerceiroSearch({
             />
           </div>
         )}
-      </form.Field>
+      </form.Field> */}
 
       <form.Subscribe
         selector={(state) => [
@@ -171,7 +171,7 @@ export function TerceiroSearch({
       <div>
         <form.Subscribe selector={(state) => [state.isSubmitting]}>
           {([isSubmitting]) => (
-            <div className='py-1 text-sm text-gray-500'>
+            <div className='text-sm text-gray-500'>
               {isSubmitting && <> Realizando nova busca... </>}
             </div>
           )}
