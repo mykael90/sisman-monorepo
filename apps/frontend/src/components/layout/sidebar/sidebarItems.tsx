@@ -74,7 +74,7 @@ export const sidebarItems: SidebarItem[] = [
       { label: 'Reservas', href: '/material/receipt' },
       { label: 'Entradas', href: '/material/receipt' },
       { label: 'Retiradas', href: '/material/withdrawal' },
-      { label: 'Inventário', href: '/material/category' },
+      { label: 'Inventário', href: '/material/warehouse-stock' },
       { label: 'Requisições', href: '/material/request' }
     ]
   },

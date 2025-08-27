@@ -44,6 +44,7 @@ export const columns = (
 ): ColumnDef<IWarehouseStockWithRelations, any>[] => [
   columnHelper.accessor('id', {
     header: 'ID',
+    size: 50,
     cell: (props) => props.getValue()
   }),
 
@@ -110,6 +111,7 @@ export const columns = (
       columnHelper.accessor((row) => row.balanceInMinusOut, {
         // balanceInMinusOut não está no tipo atual
         id: 'balanceInMinusOut',
+        size: 100,
         header: () => {
           return (
             <div className='flex items-center justify-center gap-2'>
@@ -137,6 +139,7 @@ export const columns = (
       }),
       columnHelper.accessor((row) => row.physicalOnHandQuantity, {
         id: 'physicalOnHandQuantity',
+        size: 100,
         header: () => {
           return (
             <div className='flex items-center justify-center gap-2'>
@@ -162,6 +165,7 @@ export const columns = (
       }),
       columnHelper.accessor((row) => row.restrictedQuantity, {
         id: 'restrictedQuantity',
+        size: 100,
         header: () => {
           return (
             <div className='flex items-center justify-center gap-2'>
@@ -181,6 +185,7 @@ export const columns = (
       }),
       columnHelper.accessor((row) => row.reservedQuantity, {
         id: 'reservedQuantity',
+        size: 100,
         header: () => {
           return (
             <div className='flex items-center justify-center gap-2'>
@@ -200,6 +205,7 @@ export const columns = (
       }),
       columnHelper.accessor((row) => row.freeBalanceQuantity, {
         id: 'freeBalanceQuantity',
+        size: 100,
         header: () => {
           return (
             <div className='flex items-center justify-center gap-2'>
