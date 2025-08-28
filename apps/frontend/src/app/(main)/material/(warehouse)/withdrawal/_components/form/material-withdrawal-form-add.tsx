@@ -167,8 +167,14 @@ export function MaterialWithdrawalFormAdd({
       {console.log(typeof formWithdrawal)}
 
       {/* Erros lado cliente */}
-      <formWithdrawal.Subscribe selector={(state) => [state.errors]}>
-        {([errors]) => <ErrorClientValidationFormCard errors={errors} />}
+      <formWithdrawal.Subscribe
+        selector={(state) => [state.errors, state.submissionAttempts]}
+      >
+        {([errors, submissionAttempts]) => {
+          if (submissionAttempts === 0 || !errors || !submissionAttempts)
+            return null;
+          return <ErrorClientValidationFormCard errors={errors} />;
+        }}
       </formWithdrawal.Subscribe>
 
       {/* Formulário para fazer consulta de requisição de manutenção ou material */}

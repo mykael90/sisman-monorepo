@@ -132,6 +132,7 @@ export const ItemsFieldArray: FC<MaterialItemsFieldProps> = ({ field }) => {
           <SearchMaterialByWarehouse
             handleAddMaterial={handleAddMaterial}
             excludedFromList={field.state.value}
+            handleBlurredField={() => field.handleBlur()}
           />
         </div>
         {/* <Button type='button' onClick={handleAddMaterial}>
@@ -139,10 +140,13 @@ export const ItemsFieldArray: FC<MaterialItemsFieldProps> = ({ field }) => {
           Add
         </Button> */}
       </div>
-      <em className='mt-1 block text-xs text-red-500'>
-        {field.state.meta.errors.map((error: any) => error.message).join('; ')}
-      </em>
-
+      {!field.state.meta.isValid && field.state.meta.isBlurred ? (
+        <em className='mt-1 block text-xs text-red-500'>
+          {field.state.meta.errors
+            .map((error: any) => error.message)
+            .join('; ')}
+        </em>
+      ) : null}
       <TableFormItemsGlobal
         materialsInfo={insertedMaterials}
         materials={field.state.value}

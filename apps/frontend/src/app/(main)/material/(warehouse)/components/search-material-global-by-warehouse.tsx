@@ -11,11 +11,12 @@ interface SearchMaterialGlobalByWarehouseProps {
     material: IMaterialGlobalCatalogWithRelations | null
   ) => void;
   excludedFromList?: { globalMaterialId?: string | null | undefined }[];
+  handleBlurredField?: () => void;
 }
 
 export const SearchMaterialByWarehouse: FC<
   SearchMaterialGlobalByWarehouseProps
-> = ({ handleAddMaterial, excludedFromList = [] }) => {
+> = ({ handleAddMaterial, excludedFromList = [], handleBlurredField }) => {
   const [searchQuery, setSearchQuery] = useState('');
 
   const { warehouse } = useWarehouseContext();
@@ -99,7 +100,7 @@ export const SearchMaterialByWarehouse: FC<
       {isLoading ? (
         'Carregando...'
       ) : (
-        <div>
+        <div onClick={handleBlurredField}>
           {/* {JSON.stringify(listGlobalMaterialsByWarehouse, null, 2)} */}
           <ResponsiveCombobox
             options={filteredMaterialOptions}
