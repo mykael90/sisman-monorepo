@@ -344,7 +344,10 @@ export class MaterialWithdrawalsService {
   async list(): Promise<MaterialWithdrawalWithRelationsResponseDto[]> {
     try {
       return this.prisma.materialWithdrawal.findMany({
-        include: this.includeRelations
+        include: this.includeRelations,
+        orderBy: {
+          withdrawalDate: 'desc'
+        }
       });
     } catch (error) {
       handlePrismaError(error, this.logger, 'MaterialWithdrawalsService', {
@@ -358,7 +361,10 @@ export class MaterialWithdrawalsService {
     try {
       return this.prisma.materialWithdrawal.findMany({
         where: { warehouseId: warehouseId },
-        include: this.includeRelations
+        include: this.includeRelations,
+        orderBy: {
+          withdrawalDate: 'desc'
+        }
       });
     } catch (error) {
       handlePrismaError(error, this.logger, 'MaterialWithdrawalsService', {

@@ -50,12 +50,12 @@ export function WithdrawalListPage() {
     pageSize: 10
   });
 
-  const [sorting, setSorting] = useState<SortingState>([
-    {
-      id: 'id',
-      desc: false
-    }
-  ]);
+  // const [sorting, setSorting] = useState<SortingState>([
+  //   {
+  //     id: 'id',
+  //     desc: false
+  //   }
+  // ]);
 
   // 1. USE O HOOK useQuery PARA BUSCAR E GERENCIAR OS DADOS
   const {
@@ -128,8 +128,8 @@ export function WithdrawalListPage() {
           columnFilters={columnFilters}
           pagination={pagination}
           setPagination={setPagination}
-          setSorting={setSorting}
-          sorting={sorting}
+          // setSorting={setSorting}
+          // sorting={sorting}
           renderSubComponent={SubRowComponent}
         />
       ) : (

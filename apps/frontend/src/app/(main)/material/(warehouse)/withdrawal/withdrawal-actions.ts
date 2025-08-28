@@ -24,7 +24,7 @@ export async function getWithdrawals(accessTokenSisman: string) {
   logger.info(`(Server Action) getWithdrawals: Fetching withdrawals`);
   try {
     const data = await fetchApiSisman(API_RELATIVE_PATH, accessTokenSisman, {
-      cache: 'force-cache'
+      // cache: 'force-cache'
     });
     logger.info(
       `(Server Action) getWithdrawals: ${data.length} withdrawals returned`
@@ -46,7 +46,7 @@ export async function getWithdrawalsByWarehouse(warehouseId: number) {
       `${API_RELATIVE_PATH}/warehouse/${warehouseId}`,
       accessTokenSisman,
       {
-        cache: 'force-cache'
+        // cache: 'force-cache'
       }
     );
     logger.info(
@@ -67,8 +67,8 @@ export async function showWithdrawal(accessTokenSisman: string, id: number) {
   try {
     const data = await fetchApiSisman(
       `${API_RELATIVE_PATH}/${id}`,
-      accessTokenSisman,
-      { cache: 'force-cache' }
+      accessTokenSisman
+      // { cache: 'force-cache' }
     );
     logger.info(`(Server Action) showWithdrawal: withdrawal ${id} returned`);
     return data;
