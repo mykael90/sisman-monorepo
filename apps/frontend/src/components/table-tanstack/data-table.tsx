@@ -2,8 +2,11 @@ import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
-  useReactTable
+  useReactTable,
+  getExpandedRowModel,
+  Row
 } from '@tanstack/react-table';
+import React, { useState } from 'react';
 import {
   Table,
   TableBody,
@@ -18,18 +21,27 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
   entityType: string;
   filterColumn?: string;
+  renderSubComponent?: (props: { row: Row<TData> }) => React.ReactElement;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   entityType,
-  filterColumn
+  filterColumn,
+  renderSubComponent
 }: DataTableProps<TData, TValue>) {
+  const [expanded, setExpanded] = useState({});
+
   const table = useReactTable({
     data,
     columns,
-    getCoreRowModel: getCoreRowModel()
+    getCoreRowModel: getCoreRowModel(),
+    getExpandedRowModel: getExpandedRowModel(),
+    onExpandedChange: setExpanded,
+    state: {
+      expanded
+    }
   });
 
   return (
@@ -54,16 +66,25 @@ export function DataTable<TData, TValue>({
         <TableBody>
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && 'selected'}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-              </TableRow>
+              <React.Fragment key={row.id}>
+                <TableRow data-state={row.getIsSelected() && 'selected'}>
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+                {row.getIsExpanded() && renderSubComponent && (
+                  <TableRow>
+                    <TableCell colSpan={row.getVisibleCells().length}>
+                      {renderSubComponent({ row })}
+                    </TableCell>
+                  </TableRow>
+                )}
+              </React.Fragment>
             ))
           ) : (
             <TableRow>

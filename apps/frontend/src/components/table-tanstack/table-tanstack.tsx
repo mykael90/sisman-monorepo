@@ -11,8 +11,11 @@ import {
   GlobalFilterTableState,
   PaginationState, //tipagem
   SortingState, //tipagem
-  useReactTable
+  useReactTable,
+  getExpandedRowModel,
+  Row
 } from '@tanstack/react-table';
+import React, { useState } from 'react';
 import {
   Table,
   TableBody,
@@ -35,6 +38,7 @@ interface TableProps<TData> {
   globalFilterFn?: FilterFnOption<TData>;
   globalFilter?: any;
   setGlobalFilter?: React.Dispatch<React.SetStateAction<string>>;
+  renderSubComponent?: (props: { row: Row<TData> }) => React.ReactElement;
 }
 
 export function TableTanstack<TData>({
@@ -48,8 +52,11 @@ export function TableTanstack<TData>({
   sorting,
   globalFilterFn,
   globalFilter,
-  setGlobalFilter
+  setGlobalFilter,
+  renderSubComponent
 }: TableProps<TData>) {
+  const [expanded, setExpanded] = useState({});
+
   // 2. Instanciar a tabela com useReactTable
   const table = useReactTable({
     data: data,
@@ -62,6 +69,8 @@ export function TableTanstack<TData>({
     getSortedRowModel: getSortedRowModel(),
     onSortingChange: setSorting,
     onGlobalFilterChange: setGlobalFilter,
+    getExpandedRowModel: getExpandedRowModel(),
+    onExpandedChange: setExpanded,
     filterFns: {},
     globalFilterFn,
     enableColumnResizing: true,
@@ -70,7 +79,8 @@ export function TableTanstack<TData>({
       globalFilter,
       columnFilters,
       sorting,
-      pagination
+      pagination,
+      expanded
     },
     debugTable: true,
     debugHeaders: true,
@@ -114,18 +124,29 @@ export function TableTanstack<TData>({
           <TableBody className='bg-white'>
             {/* 4. Renderizar linhas e células usando table.getRowModel e flexRender */}
             {table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                // className='odd:bg-white even:bg-gray-50'
-                className='hover:bg-accent/10 odd:bg-white even:bg-gray-50'
-              >
-                {row.getVisibleCells().map((cell) => (
-                  // Aplica a classe específica apenas na célula 'name' para manter o layout do Avatar
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-              </TableRow>
+              <React.Fragment key={row.id}>
+                <TableRow
+                  // className='odd:bg-white even:bg-gray-50'
+                  className='hover:bg-accent/10 odd:bg-white even:bg-gray-50'
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    // Aplica a classe específica apenas na célula 'name' para manter o layout do Avatar
+                    <TableCell key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+                {row.getIsExpanded() && renderSubComponent && (
+                  <TableRow>
+                    <TableCell colSpan={row.getVisibleCells().length}>
+                      {renderSubComponent({ row })}
+                    </TableCell>
+                  </TableRow>
+                )}
+              </React.Fragment>
             ))}
           </TableBody>
         </Table>

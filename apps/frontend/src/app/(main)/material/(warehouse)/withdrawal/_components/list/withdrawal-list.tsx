@@ -20,7 +20,7 @@ import {
 import { InputDebounceRef } from '@/components/ui/input';
 import { IMaterialWithdrawalWithRelations } from '../../withdrawal-types';
 import { useRouter } from 'next/navigation';
-import { columns, createActions } from './withdrawal-columns';
+import { columns, createActions, SubRowComponent } from './withdrawal-columns';
 import { TableTanstack } from '@/components/table-tanstack/table-tanstack';
 import { Package, PackagePlus } from 'lucide-react';
 import { SectionListHeaderSmall } from '../../../../../../../components/section-list-header-small';
@@ -130,9 +130,10 @@ export function WithdrawalListPage() {
           setPagination={setPagination}
           setSorting={setSorting}
           sorting={sorting}
+          renderSubComponent={SubRowComponent}
         />
       ) : (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3'>
           {withdrawals.map((withdrawal: IMaterialWithdrawalWithRelations) => (
             <WithdrawalCard key={withdrawal.id} withdrawal={withdrawal} />
           ))}

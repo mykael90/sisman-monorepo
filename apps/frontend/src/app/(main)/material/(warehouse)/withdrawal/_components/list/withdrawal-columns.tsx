@@ -1,6 +1,21 @@
-import { ColumnDef, createColumnHelper, Row } from '@tanstack/react-table';
+import {
+  ColumnDef,
+  createColumnHelper,
+  Row,
+  flexRender,
+  getCoreRowModel,
+  useReactTable
+} from '@tanstack/react-table';
 import { Button } from '@/components/ui/button';
-import { Edit, Trash2 } from 'lucide-react';
+import { Edit, Trash2, ChevronRight, ChevronDown } from 'lucide-react';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
+} from '@/components/ui/table';
 import { IMaterialWithdrawalWithRelations } from '../../../withdrawal/withdrawal-types';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import {
@@ -37,8 +52,42 @@ export const createActions = (
 export const columns = (
   configuredActions: ActionHandlers<IMaterialWithdrawalWithRelations>
 ): ColumnDef<IMaterialWithdrawalWithRelations, any>[] => [
+  columnHelper.display({
+    id: 'expander',
+    size: 30,
+    header: ({ table }) => (
+      <Button
+        variant='ghost'
+        size='icon'
+        onClick={table.getToggleAllRowsExpandedHandler()}
+      >
+        {table.getIsAllRowsExpanded() ? (
+          <ChevronDown className='h-4 w-4' />
+        ) : (
+          <ChevronRight className='h-4 w-4' />
+        )}
+      </Button>
+    ),
+    cell: ({ row }) => (
+      <Button
+        variant='ghost'
+        size='icon'
+        onClick={(e) => {
+          e.stopPropagation();
+          row.toggleExpanded();
+        }}
+      >
+        {row.getIsExpanded() ? (
+          <ChevronDown className='h-4 w-4' />
+        ) : (
+          <ChevronRight className='h-4 w-4' />
+        )}
+      </Button>
+    )
+  }),
   columnHelper.accessor('id', {
     header: 'ID',
+    size: 30,
     cell: (props) => props.getValue()
   }),
   columnHelper.accessor((row) => row.movementType?.code, {
@@ -124,3 +173,41 @@ export const columns = (
     )
   })
 ];
+
+export const SubRowComponent = ({
+  row
+}: {
+  row: Row<IMaterialWithdrawalWithRelations>;
+}) => {
+  const items = row.original.items || [];
+
+  return (
+    <div className='p-2 pl-8'>
+      <h4 className='mb-2 text-sm font-semibold'>Itens Retirados:</h4>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>ID Material Global</TableHead>
+            <TableHead>Quantidade Retirada</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {items.length > 0 ? (
+            items.map((item, index) => (
+              <TableRow key={index}>
+                <TableCell>{item.globalMaterialId}</TableCell>
+                <TableCell>{item.quantityWithdrawn.toString()}</TableCell>
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={2} className='h-24 text-center'>
+                Nenhum item encontrado.
+              </TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+    </div>
+  );
+};
