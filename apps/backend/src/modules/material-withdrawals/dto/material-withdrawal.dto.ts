@@ -36,6 +36,14 @@ import {
  */
 class MaterialWithdrawalBaseDto implements MaterialWithdrawal {
   /**
+   * Nome de entidade (empresa ou pessoa) que retirou o material.
+   * @example Empresa Example Ltda
+   */
+  @IsOptional()
+  @IsString()
+  collectedByOther: string;
+
+  /**
    * ID único da retirada de material.
    * @example 1
    */

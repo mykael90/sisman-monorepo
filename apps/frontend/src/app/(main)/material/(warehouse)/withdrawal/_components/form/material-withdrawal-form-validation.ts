@@ -30,6 +30,7 @@ const materialWithdrawalFormBase = z.object({
   }),
   collectedByUserId: z.coerce.number().optional().nullable(),
   collectedByWorkerId: z.coerce.number().optional().nullable(),
+  collectedByOther: z.string().optional().nullable(),
   maintenanceRequestId: z.coerce.number().optional().nullable(),
   materialRequestId: z.coerce.number().optional().nullable(),
   materialPickingOrderId: z.coerce.number().optional().nullable(),
@@ -54,8 +55,14 @@ const materialWithdrawalFormSchemaAdd = materialWithdrawalFormBase
       message: 'Coletado por funcionário é obrigatório.',
       path: ['collectedByWorkerId']
     }
+  )
+  .refine(
+    (data) => !(data.collectorType === 'other' && !data.collectedByOther),
+    {
+      message: 'Coletado por outro é obrigatório.',
+      path: ['collectedByOther']
+    }
   );
-
 // 🔹 EDIT mode
 const materialWithdrawalFormSchemaEdit = materialWithdrawalFormBase
   .extend({

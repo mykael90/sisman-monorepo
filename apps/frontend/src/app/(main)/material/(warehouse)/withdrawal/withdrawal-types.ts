@@ -59,6 +59,7 @@ export interface IMaterialWithdrawalAddForm
   movementTypeCode: MaterialOperationOutKey;
   items: IMaterialWithdrawalItemAddForm[];
   collectorType: string;
+  collectedByOther?: string;
 }
 
 export interface IMaterialWithdrawalEditForm
@@ -82,6 +83,7 @@ export const fieldsLabelsWithdrawalForm: Partial<
   Record<keyof IMaterialWithdrawalAddForm, string>
 > = {
   collectedByUserId: 'Coletado pelo usuário',
+  collectedByOther: 'Coletado por outro',
   withdrawalNumber: 'Número da Retirada',
   withdrawalDate: 'Data da Retirada',
   maintenanceRequestId: 'Requisição de Manutenção',

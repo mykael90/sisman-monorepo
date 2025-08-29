@@ -148,7 +148,8 @@ export function WithdrawalDetailUsageService({
                   }
                   options={[
                     { value: 'worker', label: 'Profissional' },
-                    { value: 'user', label: 'Servidor' }
+                    { value: 'user', label: 'Servidor' },
+                    { value: 'other', label: 'Outro' }
                   ]}
                   onValueChange={(value) => field.handleChange(value)}
                   className='w-35'
@@ -196,6 +197,17 @@ export function WithdrawalDetailUsageService({
                           onValueChange={(value) =>
                             field.handleChange(Number(value))
                           }
+                        />
+                      )}
+                    />
+                    <formWithdrawal.Field
+                      name='collectedByOther'
+                      children={(field) => (
+                        <FormInputField
+                          className={`${collectorType === 'other' ? 'block' : 'hidden'}`}
+                          field={field}
+                          label={fieldsLabelsWithdrawalForm.collectedByOther}
+                          placeholder='Digite o nome completo'
                         />
                       )}
                     />

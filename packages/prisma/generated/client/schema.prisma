@@ -28,7 +28,7 @@ model ContractProvider {
   contracts    Contract[]
 
   //compatiblidade sipac
-  idInstitucionalFornecedor String? @unique // vem de //usar o id do sipac id-institucional-fornecedor
+  idInstitucionalFornecedor String? @unique // vem de sipac id-institucional-fornecedor
 
   createdAt DateTime @default(now()) @db.Timestamp(0)
   updatedAt DateTime @updatedAt @db.Timestamp(0)
@@ -1258,6 +1258,9 @@ model MaterialWithdrawal {
   // Trabalhador que EFETIVAMENTE RETIROU o conjunto de materiais
   collectedByWorkerId Int?
   collectedByWorker   Worker? @relation("WithdrawalsCollectedByWorker", fields: [collectedByWorkerId], references: [id])
+
+  // Coleta realizada por entidade que nao seja user nem worker
+  collectedByOther String?
 
   withdrawalDate DateTime @default(now()) // Data e hora da retirada
 

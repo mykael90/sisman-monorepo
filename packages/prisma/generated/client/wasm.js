@@ -598,6 +598,7 @@ exports.Prisma.MaterialWithdrawalScalarFieldEnum = {
   processedByUserId: 'processedByUserId',
   collectedByUserId: 'collectedByUserId',
   collectedByWorkerId: 'collectedByWorkerId',
+  collectedByOther: 'collectedByOther',
   withdrawalDate: 'withdrawalDate',
   maintenanceRequestId: 'maintenanceRequestId',
   materialRequestId: 'materialRequestId',
@@ -1242,6 +1243,7 @@ exports.Prisma.MaterialPickingOrderItemOrderByRelevanceFieldEnum = {
 
 exports.Prisma.MaterialWithdrawalOrderByRelevanceFieldEnum = {
   withdrawalNumber: 'withdrawalNumber',
+  collectedByOther: 'collectedByOther',
   notes: 'notes',
   legacy_place: 'legacy_place'
 };

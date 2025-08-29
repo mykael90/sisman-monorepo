@@ -34,6 +34,7 @@ export default async function Page() {
     processedByUserId: Number(session.user.idSisman),
     collectedByWorkerId: '',
     collectedByUserId: '',
+    collectedByOther: '',
     movementTypeCode: materialOperationOutDisplayMap.OUT_SERVICE_USAGE,
     items: [],
     notes: undefined,

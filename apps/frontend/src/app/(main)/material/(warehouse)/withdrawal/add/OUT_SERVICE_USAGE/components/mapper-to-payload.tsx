@@ -13,6 +13,8 @@ export const withdrawalServiceUsageMapping: MappingConfig<
   //   title: 'title',
   withdrawalDate: 'withdrawalDate',
   notes: 'notes',
+  collectedByOther: 'collectedByOther',
+  legacy_place: 'legacy_place',
 
   // Mapeamento com transformação (função)
   // withdrawalNumber: () => `WITHDRAWAL-${Date.now()}`, // Gerado na hora

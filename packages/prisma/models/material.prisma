@@ -623,6 +623,9 @@ model MaterialWithdrawal {
     collectedByWorkerId Int?
     collectedByWorker   Worker? @relation("WithdrawalsCollectedByWorker", fields: [collectedByWorkerId], references: [id])
 
+    // Coleta realizada por entidade que nao seja user nem worker
+    collectedByOther String?
+
     withdrawalDate DateTime @default(now()) // Data e hora da retirada
 
     // Referência à demanda principal que motivou esta retirada
