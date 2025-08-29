@@ -86,7 +86,8 @@ export function MaterialWithdrawalAdd({
         handleReset={triggerReset}
       />
       {/* Formulário para fazer consulta de requisição de manutenção ou material */}
-      {RequestMaintenanceMaterialForm && (
+      {movementTypeCode ===
+        materialOperationOutDisplayMap.OUT_SERVICE_USAGE && (
         <RequestMaintenanceMaterialForm
           // key={formKey}
           setMaintenanceRequestData={setMaintenanceRequestData}
