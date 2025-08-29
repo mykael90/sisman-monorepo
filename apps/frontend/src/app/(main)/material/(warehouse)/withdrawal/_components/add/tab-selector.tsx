@@ -6,38 +6,27 @@ import {
   materialOperationOutDisplayMap as op
 } from '@/mappers/material-operations-mappers';
 import { useMediaQuery } from '@/hooks/use-media-query';
-import { FieldApi } from '@tanstack/react-form';
 import {
-  fieldsLabelsWithdrawalForm,
-  IMaterialWithdrawalAddForm
-} from '../../withdrawal-types';
-import { FormDropdown } from '../../../../../../../components/form-tanstack/form-input-fields';
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@radix-ui/react-select';
 
 interface TabSelectorProps {
-  field: FieldApi<
-    Partial<IMaterialWithdrawalAddForm>,
-    'movementTypeCode',
-    MaterialOperationOutKey,
-    any,
-    any,
-    any,
-    any,
-    any,
-    any,
-    any,
-    any,
-    any,
-    any,
-    any,
-    any,
-    any,
-    any,
-    any,
-    any
+  movementTypeCode: MaterialOperationOutKey;
+  setMovementTypeCode: React.Dispatch<
+    React.SetStateAction<MaterialOperationOutKey>
   >;
+  handleReset: () => void;
 }
 
-export function TabSelector({ field }: TabSelectorProps) {
+export function TabSelector({
+  movementTypeCode,
+  setMovementTypeCode,
+  handleReset
+}: TabSelectorProps) {
   const isDesktop = useMediaQuery('(min-width: 768px)');
 
   const tabs = [
@@ -50,44 +39,45 @@ export function TabSelector({ field }: TabSelectorProps) {
 
   const handleValueChange = (value: string) => {
     console.log(value);
+    setMovementTypeCode(value as MaterialOperationOutKey);
+    handleReset();
   };
 
-  if (!field.state.value) return;
-
   if (isDesktop) {
-    console.log(field.state.value);
     return (
-      <>
-        <Tabs
-          value={field.state.value || tabs[0].value}
-          onValueChange={(value) =>
-            field.handleChange(value as MaterialOperationOutKey)
-          }
-          className='w-full'
-        >
-          <TabsList className='grid w-full grid-cols-5'>
-            {tabs.map((tab) => (
-              <TabsTrigger key={tab.value} value={tab.value}>
-                {tab.label}
-              </TabsTrigger>
-            ))}
-          </TabsList>
-        </Tabs>
-      </>
+      <Tabs
+        value={movementTypeCode || tabs[0].value}
+        onValueChange={(value) =>
+          handleValueChange(value as MaterialOperationOutKey)
+        }
+        className='w-full'
+      >
+        <TabsList className='grid w-full grid-cols-5'>
+          {tabs.map((tab) => (
+            <TabsTrigger key={tab.value} value={tab.value}>
+              {tab.label}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+      </Tabs>
     );
   }
 
   return (
-    <FormDropdown
-      field={field}
-      label={fieldsLabelsWithdrawalForm.movementTypeCode}
-      placeholder={fieldsLabelsWithdrawalForm.movementTypeCode}
-      options={tabs.map((tab) => ({
-        value: tab.value,
-        label: tab.label
-      }))}
-      onValueChange={(value) => field.handleChange(value)}
-      // className='w-35'
-    />
+    <Select
+      value={movementTypeCode || tabs[0].value}
+      onValueChange={handleValueChange}
+    >
+      <SelectTrigger className='bg-primary/80 w-full text-gray-200'>
+        <SelectValue placeholder='Selecione um tipo de retirada' />
+      </SelectTrigger>
+      <SelectContent>
+        {tabs.map((tab) => (
+          <SelectItem key={tab.value} value={tab.value}>
+            {tab.label}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
   );
 }

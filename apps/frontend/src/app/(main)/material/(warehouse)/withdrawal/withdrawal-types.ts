@@ -8,6 +8,7 @@ import { IMaterialGlobalCatalogEdit } from '../../global-catalog/material-global
 import { IWarehouseStockIncludedComputed } from '../warehouse-stock/warehouse-stock-types';
 import { MaterialOperationOutKey } from '@/mappers/material-operations-mappers';
 import { IWorker } from '../../../worker/worker-types';
+import { Session } from 'next-auth';
 
 export type IMaterialWithdrawal = MaterialWithdrawal;
 
@@ -50,6 +51,7 @@ export interface IMaterialWithdrawalAddPayload
 }
 
 export interface IMaterialWithdrawalRelatedData {
+  session?: Session;
   listUsers?: IUser[];
   listWorkers?: IWorker[];
 }

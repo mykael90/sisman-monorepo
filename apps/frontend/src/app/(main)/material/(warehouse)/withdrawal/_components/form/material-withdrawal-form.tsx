@@ -1,7 +1,6 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { mergeForm, useForm, useTransform } from '@tanstack/react-form';
 import { FilePlus } from 'lucide-react';
 import { FC, useActionState, useState } from 'react';
 import { IActionResultForm } from '@/types/types-server-actions';
@@ -18,31 +17,33 @@ import {
   useWithdrawalForm,
   type IWithdrawalFormApi
 } from '@/src/hooks/use-withdrawal-form';
-import { useSession } from 'next-auth/react';
-import Loading from '../../../../../../../components/loading';
-import { useWarehouseContext } from '../../../../choose-warehouse/context/warehouse-provider';
-import { WithdrawalDetailUsageServiceProps } from '../../add/OUT_SERVICE_USAGE/components/withdrawal-details-usage-service';
 import { materialWithdrawalFormSchemaAdd } from './material-withdrawal-form-validation';
 import { ErrorClientValidationFormCard } from '../../../../../../../components/form-tanstack/error-client-validation-form-card';
 import { FormSuccessDisplayCard } from '../../../../../../../components/form-tanstack/form-success-display-card';
 import { useRouter } from 'next/navigation';
-import { set } from 'date-fns';
-import { TabSelector } from '../add/tab-selector';
+import { CardMaintenanceSummary } from '../card-maintenance-summary';
+import { CardMaterialRequestLinkDetails } from '../card-material-link-details';
+import { WithdrawalDetailUsageService } from '../add/withdrawal-details-usage-service';
+import {
+  materialOperationOutDisplayMap,
+  MaterialOperationOutKey
+} from '../../../../../../../mappers/material-operations-mappers';
 
-export function MaterialWithdrawalFormAdd({
+export function MaterialWithdrawalForm({
   defaultData,
   formActionProp,
   relatedData,
   submitButtonText,
   SubmitButtonIcon,
-  CardMaintenanceSummary,
-  CardMaterialLinkDetails,
-  RequestMaintenanceMaterialForm,
-  WithdrawalDetailsForm,
   initialServerStateWithdrawal = {
     isSubmitSuccessful: false,
     message: ''
-  }
+  },
+  maintenanceRequestData,
+  materialRequestData,
+  onCancel,
+  onClean,
+  movementTypeCode
 }: {
   defaultData: Partial<Record<keyof IMaterialWithdrawalAddForm, any>>;
   formActionProp: (
@@ -60,81 +61,41 @@ export function MaterialWithdrawalFormAdd({
   submitButtonText?: string;
   SubmitButtonIcon?: FC<{ className?: string }>;
   relatedData: IMaterialWithdrawalRelatedData;
-  CardMaintenanceSummary?: any;
-  CardMaterialLinkDetails?: any;
-  RequestMaintenanceMaterialForm?: any;
-  WithdrawalDetailsForm: FC<WithdrawalDetailUsageServiceProps>;
   initialServerStateWithdrawal?: IActionResultForm<
     IMaterialWithdrawalAddForm,
     IMaterialWithdrawalWithRelations
   >;
+  maintenanceRequestData?: IMaintenanceRequestWithRelations | null;
+  materialRequestData?: IMaterialRequest | null;
+  onCancel?: () => void;
+  onClean?: () => void;
+  movementTypeCode: MaterialOperationOutKey;
 }) {
-  // --- 1. CHAMAR TODOS OS HOOKS NO TOPO, INCONDICIONALMENTE ---
-  const { warehouse } = useWarehouseContext();
-
-  const [maintenanceRequestData, setMaintenanceRequestData] =
-    useState<IMaintenanceRequestWithRelations | null>(null);
-
-  const [materialRequestData, setMaterialRequestData] =
-    useState<IMaterialRequest | null>(null);
-
   const [linkMaterialRequest, setLinkMaterialRequest] =
     useState<boolean>(false);
 
   const [serverStateWithdrawal, formActionWithdrawal, isPendingWithdrawal] =
     useActionState(formActionProp, initialServerStateWithdrawal);
 
-  // Use o hook para obter a instância do formulário
+  // Use o hook para obter a instância do formulário, a partir do hook tipei o formulario
   const formWithdrawal: IWithdrawalFormApi = useWithdrawalForm({
     defaultDataWithdrawalForm: {
-      ...defaultData,
-      warehouseId: warehouse?.id as number
+      ...defaultData
     },
     serverStateWithdrawal: serverStateWithdrawal,
     formSchema: materialWithdrawalFormSchemaAdd,
     formActionWithdrawal: async (value) => await formActionWithdrawal(value)
   });
 
-  const router = useRouter();
-
-  const redirectList = () => {
-    router.push('/material/withdrawal/');
-  };
-
   const { listUsers, listWorkers } = relatedData;
 
-  // const formWithdrawal = useForm({
-  //   defaultValues: defaultDataWithdrawalForm,
-  //   transform: useTransform(
-  //     (baseform) => mergeForm(baseform, serverStateWithdrawal ?? {}),
-  //     [serverStateWithdrawal]
-  //   ),
-  //   onSubmit: async ({ value }) => {
-  //     await formActionWithdrawal(value);
-  //   }
-  // });
-
-  // A verificação `!userId` também protege contra o valor `NaN`.
-  if (!warehouse?.id) {
-    return <p>Acesso negado. Por favor, selecione um almoxarifado.</p>;
-  }
-
-  // --- 3. O RESTO DO SEU COMPONENTE ---
-  // A partir daqui, você tem a garantia de que `session` e `warehouseId` existem e `userId` é um número válido.
-
   const handleReset = () => {
-    console.log('resetando form');
-    // TODO: depois utilizar um reset mais suave. o problema é resetar o action state.
-    // formWithdrawal.reset();
-    // formActionWithdrawal(initialServerStateWithdrawal);
-    // setMaintenanceRequestData(null);
-    // setMaterialRequestData(null);
-    // setLinkMaterialRequest(false);
-    window.location.reload();
+    formWithdrawal.reset();
+    onClean && onClean();
   };
 
   const handleCancel = () => {
-    redirectList();
+    onCancel && onCancel();
   };
 
   if (
@@ -159,29 +120,12 @@ export function MaterialWithdrawalFormAdd({
 
   const currentSubmitButtonText = submitButtonText || 'Realizar retirada';
 
-  const CurrentSubmitButtonIcon = (SubmitButtonIcon && (
+  const currentSubmitButtonIcon = (SubmitButtonIcon && (
     <SubmitButtonIcon className='mr-2 h-5 w-5' />
   )) || <FilePlus className='mr-2 h-5 w-5' />;
 
   return (
     <div className='space-y-6'>
-      {console.log(typeof formWithdrawal)}
-
-      {/* Tab Selector do tipo de saída */}
-      <formWithdrawal.Field
-        name='movementTypeCode'
-        children={(field) => <TabSelector field={field} />}
-      />
-
-      {/* Formulário para fazer consulta de requisição de manutenção ou material */}
-      {RequestMaintenanceMaterialForm && (
-        <RequestMaintenanceMaterialForm
-          setMaintenanceRequestData={setMaintenanceRequestData}
-          maintenanceRequestData={maintenanceRequestData}
-          setMaterialRequestData={setMaterialRequestData}
-          materialRequestData={materialRequestData}
-        />
-      )}
       <form
         id='form-withdrawal'
         onSubmit={(e) => {
@@ -212,15 +156,17 @@ export function MaterialWithdrawalFormAdd({
           {/* Informações extraídas da requisição de manutenção 
           Só renderiza o card se houver dados da requisição
           */}
-          {CardMaintenanceSummary && maintenanceRequestData?.id && (
+          {maintenanceRequestData && (
             <CardMaintenanceSummary
               maintenanceRequestData={maintenanceRequestData}
               setFieldValue={formWithdrawal.setFieldValue}
             />
           )}
+
           {/* Withdrawal Details */}
-          {WithdrawalDetailsForm && (
-            <WithdrawalDetailsForm
+          {movementTypeCode ===
+            materialOperationOutDisplayMap.OUT_SERVICE_USAGE && (
+            <WithdrawalDetailUsageService
               formWithdrawal={formWithdrawal}
               listUsers={listUsers}
               listWorkers={listWorkers}
@@ -228,9 +174,10 @@ export function MaterialWithdrawalFormAdd({
           )}
 
           {/* Material Requisition Link */}
-          {CardMaterialLinkDetails &&
+          {movementTypeCode ===
+            materialOperationOutDisplayMap.OUT_SERVICE_USAGE &&
             maintenanceRequestData?.materialRequests && (
-              <CardMaterialLinkDetails
+              <CardMaterialRequestLinkDetails
                 linkMaterialRequest={linkMaterialRequest}
                 setLinkMaterialRequest={setLinkMaterialRequest}
                 formWithdrawal={formWithdrawal}
@@ -240,7 +187,6 @@ export function MaterialWithdrawalFormAdd({
                 setFieldValue={formWithdrawal.setFieldValue}
               />
             )}
-
           {/* Items for Withdrawal */}
           {!linkMaterialRequest && (
             <Card>
@@ -257,6 +203,7 @@ export function MaterialWithdrawalFormAdd({
             </Card>
           )}
         </div>
+        {/* Botões reset, cancel e submit */}
         <div className='mt-8 flex flex-wrap justify-end gap-3'>
           <div className='flex gap-3'>
             <Button type='button' variant='outline' onClick={handleCancel}>
@@ -286,7 +233,7 @@ export function MaterialWithdrawalFormAdd({
                 >
                   {isPendingWithdrawal || isValidating
                     ? 'Processando...'
-                    : CurrentSubmitButtonIcon}
+                    : currentSubmitButtonIcon}
                   {isPendingWithdrawal || isValidating
                     ? ''
                     : currentSubmitButtonText}

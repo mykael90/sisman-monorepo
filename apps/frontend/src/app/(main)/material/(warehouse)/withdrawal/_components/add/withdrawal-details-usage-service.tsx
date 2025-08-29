@@ -18,16 +18,10 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { CalendarIcon } from 'lucide-react';
 import { Calendar } from '@/components/ui/calendar';
-import {
-  FormApi,
-  FormAsyncValidateOrFn,
-  FormValidateOrFn
-} from '@tanstack/react-form';
-import { IWithdrawalFormApi } from '../../../../../../../../hooks/use-withdrawal-form';
-import { fieldsLabelsWithdrawalForm } from '../../../withdrawal-types';
-import { IUser } from '../../../../../../user/user-types';
-import { FC } from 'react';
-import { IWorker } from '../../../../../../worker/worker-types';
+import { IWithdrawalFormApi } from '@/hooks/use-withdrawal-form';
+import { fieldsLabelsWithdrawalForm } from '../../withdrawal-types';
+import { IUser } from '@/app/(main)/user/user-types';
+import { IWorker } from '@/app/(main)/worker/worker-types';
 
 export type WithdrawalDetailUsageServiceProps = {
   formWithdrawal: IWithdrawalFormApi;
