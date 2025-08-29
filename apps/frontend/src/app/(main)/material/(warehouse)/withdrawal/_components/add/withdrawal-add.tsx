@@ -31,18 +31,7 @@ import { TabSelector } from '../add/tab-selector';
 
 export function MaterialWithdrawalFormAdd({
   defaultData,
-  formActionProp,
-  relatedData,
-  submitButtonText,
-  SubmitButtonIcon,
-  CardMaintenanceSummary,
-  CardMaterialLinkDetails,
-  RequestMaintenanceMaterialForm,
-  WithdrawalDetailsForm,
-  initialServerStateWithdrawal = {
-    isSubmitSuccessful: false,
-    message: ''
-  }
+  relatedData
 }: {
   defaultData: Partial<Record<keyof IMaterialWithdrawalAddForm, any>>;
   formActionProp: (
