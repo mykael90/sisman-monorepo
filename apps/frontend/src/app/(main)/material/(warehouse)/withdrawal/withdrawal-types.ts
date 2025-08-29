@@ -83,7 +83,7 @@ export const fieldsLabelsWithdrawalForm: Partial<
   Record<keyof IMaterialWithdrawalAddForm, string>
 > = {
   collectedByUserId: 'Coletado pelo usuário',
-  collectedByOther: 'Coletado por outro',
+  collectedByOther: 'Nome da entidade (pessoa física ou jurídica)',
   withdrawalNumber: 'Número da Retirada',
   withdrawalDate: 'Data da Retirada',
   maintenanceRequestId: 'Requisição de Manutenção',
