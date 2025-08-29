@@ -14,7 +14,11 @@ export type IMaterialWithdrawal = MaterialWithdrawal;
 export type IMaterialWithdrawalWithRelations =
   Prisma.MaterialWithdrawalGetPayload<{
     include: {
-      items: true;
+      items: {
+        include: {
+          globalMaterial: true;
+        };
+      };
       maintenanceRequest: true;
       collectedByUser: true;
       collectedByWorker: true;

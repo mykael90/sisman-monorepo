@@ -49,7 +49,11 @@ export class MaterialWithdrawalsService {
     materialRequest: true,
     materialPickingOrder: true,
     movementType: true,
-    items: true
+    items: {
+      include: {
+        globalMaterial: true
+      }
+    }
   };
 
   /**

@@ -135,13 +135,13 @@ export function TableFormItemsMaterialRequest({
           <thead className='bg-gray-50'>
             <tr>
               <th className='px-4 py-3 text-left text-sm font-medium text-gray-900'>
-                Código
+                ID Material Global
               </th>
               <th className='px-4 py-3 text-left text-sm font-medium text-gray-900'>
-                Nome
+                Nome do Material
               </th>
               <th className='px-4 py-3 text-left text-sm font-medium text-gray-900'>
-                Unidade
+                Unidade de Medida
               </th>
               <th className='px-4 py-3 text-center text-sm font-medium text-gray-900'>
                 Solicitado
@@ -231,21 +231,7 @@ export function TableFormItemsMaterialRequest({
                     {material.globalMaterialId}
                   </td>
                   <td className='px-4 py-3 text-sm text-gray-900'>
-                    <div className='flex items-center gap-2'>
-                      <span>{info?.name}</span>
-                      {info?.description && (
-                        <HoverCard>
-                          <HoverCardTrigger asChild>
-                            <Info className='h-4 w-4 flex-shrink-0 cursor-pointer text-gray-500' />
-                          </HoverCardTrigger>
-                          <HoverCardContent className='w-xl text-sm'>
-                            <p className='font-bold'>Descrição do material</p>
-                            <hr className='my-2' />
-                            <p className='pl-2'>{info?.description}</p>
-                          </HoverCardContent>
-                        </HoverCard>
-                      )}
-                    </div>
+                    {info?.name}
                   </td>
                   <td className='px-4 py-3 text-sm text-gray-900'>
                     {info?.unitOfMeasure}

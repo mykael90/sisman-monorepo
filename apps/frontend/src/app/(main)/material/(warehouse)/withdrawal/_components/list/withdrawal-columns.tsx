@@ -23,6 +23,7 @@ import {
   TMaterialOperationOutKey
 } from '../../../../../../../mappers/material-operations-mappers-translate';
 import { Badge } from '@/components/ui/badge';
+import { useMemo } from 'react';
 
 const columnHelper = createColumnHelper<IMaterialWithdrawalWithRelations>();
 
@@ -180,6 +181,17 @@ export const SubRowComponent = ({
   row: Row<IMaterialWithdrawalWithRelations>;
 }) => {
   const items = row.original.items || [];
+  // const itemsInfo = row.original.items.
+
+  // const infoMap = useMemo(() => {
+  //   const map = new Map<number, IMaterialWithdrawalWithRelations>();
+  //   if (Array.isArray(items)) {
+  //     items.forEach((item) => {
+  //       map.set(item.key, item);
+  //     });
+  //   }
+  //   return map;
+  // }, []);
 
   return (
     <div className='p-2 pl-8'>
@@ -188,6 +200,8 @@ export const SubRowComponent = ({
         <TableHeader>
           <TableRow>
             <TableHead>ID Material Global</TableHead>
+            <TableHead>Nome do Material</TableHead>
+            <TableHead>Unidade de Medida</TableHead>
             <TableHead>Quantidade Retirada</TableHead>
           </TableRow>
         </TableHeader>
@@ -196,12 +210,14 @@ export const SubRowComponent = ({
             items.map((item, index) => (
               <TableRow key={index}>
                 <TableCell>{item.globalMaterialId}</TableCell>
+                <TableCell>{item.globalMaterial?.name}</TableCell>
+                <TableCell>{item.globalMaterial?.unitOfMeasure}</TableCell>
                 <TableCell>{item.quantityWithdrawn.toString()}</TableCell>
               </TableRow>
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={2} className='h-24 text-center'>
+              <TableCell colSpan={4} className='h-24 text-center'>
                 Nenhum item encontrado.
               </TableCell>
             </TableRow>
