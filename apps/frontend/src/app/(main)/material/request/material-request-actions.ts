@@ -3,7 +3,7 @@
 import Logger from '@/lib/logger';
 import { revalidatePath } from 'next/cache';
 import { getSismanAccessToken } from '@/lib/auth/get-access-token';
-import { fetchApiSisman } from '@/lib/fetch/api-sisman';
+import { fetchApiSisman, SismanApiError } from '@/lib/fetch/api-sisman';
 import { IActionResultForm } from '@/types/types-server-actions';
 import {
   IMaterialRequestAdd,
@@ -49,6 +49,48 @@ export async function showRequest(accessTokenSisman: string, id: number) {
       `(Server Action) showRequest: Error fetching request ${id}`,
       error
     );
+    throw error;
+  }
+}
+interface IRequestDataSearch {
+  requestType: string;
+  requestProtocolNumber: string;
+}
+
+export async function showMaterialRequestByProtocol(protocolNumber: string) {
+  logger.info(
+    `(Server Action) showRequest: Fetching request ${protocolNumber}`
+  );
+  try {
+    const accessTokenSisman = await getSismanAccessToken();
+    const data = await fetchApiSisman(
+      `${API_RELATIVE_PATH}/protocol`,
+      accessTokenSisman,
+      {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+        body: undefined
+        // cache: 'force-cache'
+      },
+      { value: protocolNumber }
+    );
+    logger.info(
+      `(Server Action) showRequest: request ${protocolNumber} returned`
+    );
+    return data;
+  } catch (error: any) {
+    logger.error(
+      `(Server Action) showRequest: Error fetching request ${protocolNumber}`,
+      error
+    );
+
+    if (error instanceof SismanApiError) {
+      if (error.statusCode === 404) {
+        return null;
+      } else {
+        throw error;
+      }
+    }
     throw error;
   }
 }

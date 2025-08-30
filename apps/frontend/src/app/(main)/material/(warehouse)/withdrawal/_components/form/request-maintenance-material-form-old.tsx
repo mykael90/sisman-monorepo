@@ -21,7 +21,7 @@ import { fetchOneAndPersistSipacRequisicoesManutencao } from '../../../../../sip
 import { ISipacRequisicaoManutencaoWithRelations } from '../../../../../sipac/requisicoes-manutencoes/requisicoes-manutencoes-types';
 import { format } from 'date-fns';
 import { IMaterialRequestWithRelations } from '../../../../request/material-request-types';
-import { handleFetchRequisicaoMaterialComRequisicaoManutencaoVinculada } from '../../../../../sipac/requisicoes-materiais/requisicoes-materiais-actions';
+import { handleFetchOneAndPersistRequisicaoMaterialComRequisicaoManutencaoVinculada } from '../../../../../sipac/requisicoes-materiais/requisicoes-materiais-actions';
 import { ISipacRequisicaoMaterialWithRelations } from '../../../../../sipac/requisicoes-materiais/requisicoes-materiais-types';
 import { handleMaterialRequestSearch } from '../../../../request/material-request-actions';
 
@@ -76,7 +76,7 @@ const defaultDataRequest: IRequestDataSearch = {
   requestProtocolNumber: ''
 };
 
-export function RequestMaintenanceMaterialForm({
+export function RequestMaintenanceMaterialFormNew({
   setMaintenanceRequestData,
   maintenanceRequestData,
   setMaterialRequestData,
@@ -126,7 +126,7 @@ export function RequestMaintenanceMaterialForm({
     formActionScrapingMaterial,
     isPendingScrapingMaterial
   ] = useActionState(
-    handleFetchRequisicaoMaterialComRequisicaoManutencaoVinculada,
+    handleFetchOneAndPersistRequisicaoMaterialComRequisicaoManutencaoVinculada,
     initialServerStateScrapingMaterial
   );
 

@@ -3,7 +3,7 @@
 import Logger from '@/lib/logger';
 import { revalidatePath } from 'next/cache';
 import { getSismanAccessToken } from '@/lib/auth/get-access-token';
-import { fetchApiSisman } from '@/lib/fetch/api-sisman';
+import { fetchApiSisman, SismanApiError } from '@/lib/fetch/api-sisman';
 import { IActionResultForm } from '@/types/types-server-actions';
 import { ISipacRequisicaoManutencaoWithRelations } from './requisicoes-manutencoes-types';
 import { handleApiAction } from '@/lib/fetch/handle-form-action-sisman';
@@ -115,76 +115,116 @@ export async function handleFetchRequisicaoManutencao(
 // --- Ações de Formulário Exportadas (com persistência) ---
 
 export async function fetchOneAndPersistSipacRequisicoesManutencao(
-  prevState: IActionResultForm<
-    IRequestDataSearch,
-    ISipacRequisicaoManutencaoWithRelations
-  >,
-  data: IRequestDataSearch
-): Promise<
-  IActionResultForm<IRequestDataSearch, ISipacRequisicaoManutencaoWithRelations>
-> {
+  numeroAno: string
+): Promise<ISipacRequisicaoManutencaoWithRelations | null> {
   logger.info(
-    `(Server Action) fetchOneAndPersistSipacRequisicoesManutencao: Tentativa de buscar e persistir requisição ${data.numeroAno}.`,
-    data
+    `(Server Action) fetchOneAndPersistSipacRequisicoesManutencao: Tentativa de buscar e persistir requisição ${numeroAno}.`
   );
 
   try {
-    const accessToken = await getSismanAccessToken();
-    const response = await handleApiAction<
-      IRequestDataSearch,
-      ISipacRequisicaoManutencaoWithRelations,
-      IRequestDataSearch
-    >(
-      data, // validatedData (no validation schema for this simple action)
-      data, // submittedData
-      {
-        endpoint: `${API_RELATIVE_PATH}/fetch-one-complete-and-persist`,
-        method: 'POST',
-        accessToken: accessToken
-      },
-      {
-        mainPath: PAGE_PATH
-      },
-      `Requisição ${data.numeroAno} buscada e persistida com sucesso!`
-    );
+    const accessTokenSisman = await getSismanAccessToken();
 
-    //Vamos intervir se vier com erro 404, quero modificar a resposta
-    if (!response.isSubmitSuccessful) {
-      if (response.statusCode === 404) {
-        return {
-          ...prevState,
-          ...response,
-          message: `Requisição nº ${data.numeroAno} não encontrada. Verifique se as informações fornecidas estão corretas`
-        };
-      } else {
-        return {
-          ...prevState,
-          ...response
-        };
+    const data = await fetchApiSisman(
+      `${API_RELATIVE_PATH}/fetch-one-complete-and-persist`,
+      accessTokenSisman,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ numeroAno })
+        // cache: 'force-cache'
       }
-    }
+    );
 
     //se vier sem erro só retorne
-    return {
-      ...prevState,
-      ...response,
-      message: `Dados da requisição nº ${data.numeroAno} carregados e persistidos com sucesso.`
-    };
-  } catch (error) {
+    return data;
+  } catch (error: any) {
     logger.error(
-      `(Server Action) fetchOneAndPersistSipacRequisicoesManutencao: Erro inesperado para ${data.numeroAno}.`,
+      `(Server Action) fetchOneAndPersistSipacRequisicoesManutencao: Erro inesperado para ${numeroAno}.`,
       error
     );
-    return {
-      isSubmitSuccessful: false,
-      errorsServer: [
-        'Ocorreu um erro inesperado ao processar sua solicitação.'
-      ],
-      submittedData: data,
-      message: 'Erro inesperado.'
-    };
+    if (error instanceof SismanApiError) {
+      if (error.statusCode === 404) {
+        return null;
+      } else {
+        throw error;
+      }
+    }
+    throw error;
   }
 }
+// export async function fetchOneAndPersistSipacRequisicoesManutencaoOld(
+//   prevState: IActionResultForm<
+//     IRequestDataSearch,
+//     ISipacRequisicaoManutencaoWithRelations
+//   >,
+//   data: IRequestDataSearch
+// ): Promise<
+//   IActionResultForm<IRequestDataSearch, ISipacRequisicaoManutencaoWithRelations>
+// > {
+//   logger.info(
+//     `(Server Action) fetchOneAndPersistSipacRequisicoesManutencao: Tentativa de buscar e persistir requisição ${data.numeroAno}.`,
+//     data
+//   );
+
+//   try {
+//     const accessToken = await getSismanAccessToken();
+//     const response = await handleApiAction<
+//       IRequestDataSearch,
+//       ISipacRequisicaoManutencaoWithRelations,
+//       IRequestDataSearch
+//     >(
+//       data, // validatedData (no validation schema for this simple action)
+//       data, // submittedData
+//       {
+//         endpoint: `${API_RELATIVE_PATH}/fetch-one-complete-and-persist`,
+//         method: 'POST',
+//         accessToken: accessToken
+//       },
+//       {
+//         mainPath: PAGE_PATH
+//       },
+//       `Requisição ${data.numeroAno} buscada e persistida com sucesso!`
+//     );
+
+//     //Vamos intervir se vier com erro 404, quero modificar a resposta
+//     if (!response.isSubmitSuccessful) {
+//       if (response.statusCode === 404) {
+//         return {
+//           ...prevState,
+//           ...response,
+//           message: `Requisição nº ${data.numeroAno} não encontrada. Verifique se as informações fornecidas estão corretas`
+//         };
+//       } else {
+//         return {
+//           ...prevState,
+//           ...response
+//         };
+//       }
+//     }
+
+//     //se vier sem erro só retorne
+//     return {
+//       ...prevState,
+//       ...response,
+//       message: `Dados da requisição nº ${data.numeroAno} carregados e persistidos com sucesso.`
+//     };
+//   } catch (error) {
+//     logger.error(
+//       `(Server Action) fetchOneAndPersistSipacRequisicoesManutencao: Erro inesperado para ${data.numeroAno}.`,
+//       error
+//     );
+//     return {
+//       isSubmitSuccessful: false,
+//       errorsServer: [
+//         'Ocorreu um erro inesperado ao processar sua solicitação.'
+//       ],
+//       submittedData: data,
+//       message: 'Erro inesperado.'
+//     };
+//   }
+// }
 
 export async function fetchManyAndPersistSipacRequisicoesManutencao(
   prevState: unknown,

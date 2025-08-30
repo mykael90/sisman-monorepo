@@ -12,11 +12,12 @@ import {
   materialOperationOutDisplayMap,
   MaterialOperationOutKey
 } from '../../../../../../../mappers/material-operations-mappers';
-import { RequestMaintenanceMaterialForm } from '../form/request-maintenance-material-form';
 import { addWithdrawal } from '../../withdrawal-actions';
 import { MaterialWithdrawalForm } from '../form/material-withdrawal-form';
 import { useRouter } from 'next/navigation';
 import { FilePlus, UserPlus } from 'lucide-react';
+import { RequestMaintenanceForm } from '../form/request-maintenance-form';
+import { RequestMaterialForm } from '../form/request-material-form';
 
 export function MaterialWithdrawalAdd({
   relatedData
@@ -88,7 +89,7 @@ export function MaterialWithdrawalAdd({
       {/* Formulário para fazer consulta de requisição de manutenção ou material */}
       {movementTypeCode ===
         materialOperationOutDisplayMap.OUT_SERVICE_USAGE && (
-        <RequestMaintenanceMaterialForm
+        <RequestMaterialForm
           // key={formKey}
           setMaintenanceRequestData={setMaintenanceRequestData}
           maintenanceRequestData={maintenanceRequestData}

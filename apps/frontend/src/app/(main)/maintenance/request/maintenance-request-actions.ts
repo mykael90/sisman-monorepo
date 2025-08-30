@@ -3,7 +3,7 @@
 import Logger from '@/lib/logger';
 import { revalidatePath } from 'next/cache';
 import { getSismanAccessToken } from '@/lib/auth/get-access-token';
-import { fetchApiSisman } from '@/lib/fetch/api-sisman';
+import { fetchApiSisman, SismanApiError } from '@/lib/fetch/api-sisman';
 import { IActionResultForm } from '@/types/types-server-actions';
 import {
   IMaintenanceRequest,
@@ -157,28 +157,44 @@ export async function showMaintenanceRequest(
     throw error;
   }
 }
+
 export async function showMaintenanceRequestByProtocol(
-  accessTokenSisman: string,
   protocolNumber: string
-): Promise<IMaintenanceRequestWithRelations> {
+): Promise<IMaintenanceRequestWithRelations | null> {
   logger.info(
     `(Server Action) showMaintenanceRequest: Buscando requisição com ID ${protocolNumber}.`
   );
   try {
+    const accessTokenSisman = await getSismanAccessToken();
     const data = await fetchApiSisman(
-      `${API_RELATIVE_PATH}/protocol?value=${protocolNumber}`,
+      `${API_RELATIVE_PATH}/protocol`,
       accessTokenSisman,
-      { cache: 'force-cache' }
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+        // cache: 'force-cache'
+      },
+      { value: protocolNumber }
     );
     logger.info(
       `(Server Action) showMaintenanceRequest: Requisição com ID ${protocolNumber} retornada.`
     );
     return data;
-  } catch (error) {
+  } catch (error: any) {
     logger.error(
       `(Server Action) showMaintenanceRequest: Erro ao buscar requisição com ID ${protocolNumber}.`,
       error
     );
+
+    if (error instanceof SismanApiError) {
+      if (error.statusCode === 404) {
+        return null;
+      } else {
+        throw error;
+      }
+    }
     throw error;
   }
 }

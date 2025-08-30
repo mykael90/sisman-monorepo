@@ -3,7 +3,7 @@
 import Logger from '@/lib/logger';
 import { revalidatePath } from 'next/cache';
 import { getSismanAccessToken } from '@/lib/auth/get-access-token';
-import { fetchApiSisman } from '@/lib/fetch/api-sisman';
+import { fetchApiSisman, SismanApiError } from '@/lib/fetch/api-sisman';
 import { IActionResultForm } from '@/types/types-server-actions';
 import { ISipacRequisicaoMaterialWithRelations } from './requisicoes-materiais-types';
 import { handleApiAction } from '@/lib/fetch/handle-form-action-sisman';
@@ -114,76 +114,170 @@ export async function handleFetchRequisicaoMaterial(
   }
 }
 
-// essa função
-export async function handleFetchRequisicaoMaterialComRequisicaoManutencaoVinculada(
-  prevState: IActionResultForm<
-    IRequestDataSearch,
-    ISipacRequisicaoMaterialWithRelations
-  >,
-  data: IRequestDataSearch
-): Promise<
-  IActionResultForm<IRequestDataSearch, ISipacRequisicaoMaterialWithRelations>
-> {
-  logger.info(`Type and value of data: ${typeof data} - ${data}`);
-
+export async function showSipacRequisicaoMaterial(
+  accessTokenSisman: string,
+  id: number
+): Promise<ISipacRequisicaoMaterialWithRelations> {
+  logger.info(
+    `(Server Action) showSipacRequisicaoMaterial: Buscando requisição
+    com ID ${id}.`
+  );
   try {
-    const accessToken = await getSismanAccessToken();
-    const response = await handleApiAction<
-      IRequestDataSearch,
-      ISipacRequisicaoMaterialWithRelations,
-      IRequestDataSearch
-    >(
-      data, // validatedData (no validation schema for this simple action)
-      data, // submittedData
-      {
-        endpoint: `${API_RELATIVE_PATH_WITH_MANUTENCAO}`,
-        method: 'POST',
-        accessToken: accessToken
-      },
-      {
-        mainPath: PAGE_PATH
-      },
-      `Requisição de material ${data.numeroAno} buscada com sucesso!`
+    const data = await fetchApiSisman(
+      `${API_RELATIVE_PATH}/${id}`,
+      accessTokenSisman,
+      { cache: 'force-cache' }
     );
-
-    //Vamos intervir se vier com erro 404, quero modificar a resposta
-    if (!response.isSubmitSuccessful) {
-      if (response.statusCode === 404) {
-        return {
-          ...prevState,
-          ...response,
-          message: `Requisição de material nº ${data.numeroAno} não encontrada. Verifique se as informações fornecidas estão corretas`
-        };
-      } else {
-        return {
-          ...prevState,
-          ...response
-        };
-      }
-    }
-
-    //se vier sem erro só retorne
-    return {
-      ...prevState,
-      ...response,
-      message: `Dados da requisição nº ${data.numeroAno} carregados com sucesso.`
-    };
+    logger.info(
+      `(Server Action) showSipacRequisicaoMaterial: Requisição com ID ${id}
+      retornada.`
+    );
+    return data;
   } catch (error) {
     logger.error(
-      `(Server Action) handleFetchRequisicaoMaterial: Erro ao buscar requisição com protocolo ${data.numeroAno}.`,
+      `(Server Action) showSipacRequisicaoMaterial: Erro ao buscar requisição com ID ${id}.`,
       error
     );
-
-    return {
-      isSubmitSuccessful: false,
-      errorsServer: [
-        'Ocorreu um erro inesperado ao processar sua solicitação.'
-      ],
-      submittedData: data,
-      message: 'Erro inesperado.'
-    };
+    throw error;
   }
 }
+
+export async function showSipacRequisicaoMaterialComRequisicaoManutencaoVinculada(
+  numeroAno: string
+): Promise<ISipacRequisicaoMaterialWithRelations> {
+  logger.info(
+    `(Server Action) showSipacRequisicaoMaterial: Buscando requisição
+    com codigo ${numeroAno}.`
+  );
+  try {
+    const accessTokenSisman = await getSismanAccessToken();
+    const data = await fetchApiSisman(
+      API_RELATIVE_PATH_WITH_MANUTENCAO,
+      accessTokenSisman,
+      {
+        method: 'POST',
+        body: JSON.stringify({ numeroAno })
+      }
+    );
+    logger.info(
+      `(Server Action) showSipacRequisicaoMaterial: Requisição com ID ${id}
+      retornada.`
+    );
+    return data;
+  } catch (error) {
+    logger.error(
+      `(Server Action) showSipacRequisicaoMaterial: Erro ao buscar requisição com ID ${id}.`,
+      error
+    );
+    throw error;
+  }
+}
+
+// essa função
+export async function handleFetchOneAndPersistRequisicaoMaterialComRequisicaoManutencaoVinculada(
+  numeroAno: string
+): Promise<ISipacRequisicaoMaterialWithRelations | null> {
+  try {
+    const accessTokenSisman = await getSismanAccessToken();
+
+    const data = await fetchApiSisman(
+      API_RELATIVE_PATH_WITH_MANUTENCAO,
+      accessTokenSisman,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ numeroAno })
+        // cache: 'force-cache'
+      }
+    );
+
+    return data;
+  } catch (error: any) {
+    logger.error(
+      `(Server Action) handleFetchRequisicaoMaterial: Erro ao buscar requisição com protocolo ${numeroAno}.`,
+      error
+    );
+    if (error instanceof SismanApiError) {
+      if (error.statusCode === 404) {
+        return null;
+      } else {
+        throw error;
+      }
+    }
+    throw error;
+  }
+}
+// export async function handleFetchRequisicaoMaterialComRequisicaoManutencaoVinculadaOld(
+//   prevState: IActionResultForm<
+//     IRequestDataSearch,
+//     ISipacRequisicaoMaterialWithRelations
+//   >,
+//   data: IRequestDataSearch
+// ): Promise<
+//   IActionResultForm<IRequestDataSearch, ISipacRequisicaoMaterialWithRelations>
+// > {
+//   logger.info(`Type and value of data: ${typeof data} - ${data}`);
+
+//   try {
+//     const accessToken = await getSismanAccessToken();
+//     const response = await handleApiAction<
+//       IRequestDataSearch,
+//       ISipacRequisicaoMaterialWithRelations,
+//       IRequestDataSearch
+//     >(
+//       data, // validatedData (no validation schema for this simple action)
+//       data, // submittedData
+//       {
+//         endpoint: `${API_RELATIVE_PATH_WITH_MANUTENCAO}`,
+//         method: 'POST',
+//         accessToken: accessToken
+//       },
+//       {
+//         mainPath: PAGE_PATH
+//       },
+//       `Requisição de material ${data.numeroAno} buscada com sucesso!`
+//     );
+
+//     //Vamos intervir se vier com erro 404, quero modificar a resposta
+//     if (!response.isSubmitSuccessful) {
+//       if (response.statusCode === 404) {
+//         return {
+//           ...prevState,
+//           ...response,
+//           message: `Requisição de material nº ${data.numeroAno} não encontrada. Verifique se as informações fornecidas estão corretas`
+//         };
+//       } else {
+//         return {
+//           ...prevState,
+//           ...response
+//         };
+//       }
+//     }
+
+//     //se vier sem erro só retorne
+//     return {
+//       ...prevState,
+//       ...response,
+//       message: `Dados da requisição nº ${data.numeroAno} carregados com sucesso.`
+//     };
+//   } catch (error) {
+//     logger.error(
+//       `(Server Action) handleFetchRequisicaoMaterial: Erro ao buscar requisição com protocolo ${data.numeroAno}.`,
+//       error
+//     );
+
+//     return {
+//       isSubmitSuccessful: false,
+//       errorsServer: [
+//         'Ocorreu um erro inesperado ao processar sua solicitação.'
+//       ],
+//       submittedData: data,
+//       message: 'Erro inesperado.'
+//     };
+//   }
+// }
 
 // --- Ações de Formulário Exportadas (com persistência) ---
 

@@ -6,12 +6,8 @@ import { Label } from '@/components/ui/label';
 import { Building, MapPin, RefreshCcw, User } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
-import { IMaintenanceRequestData } from './form/request-maintenance-material-form';
 import { Button } from '../../../../../../components/ui/button';
-import {
-  IMaintenanceRequest,
-  IMaintenanceRequestWithRelations
-} from '../../../../maintenance/request/request-types';
+import { IMaintenanceRequestWithRelations } from '../../../../maintenance/request/request-types';
 import { IWithdrawalFormApi } from '../../../../../../hooks/use-withdrawal-form';
 import { useEffect } from 'react';
 
