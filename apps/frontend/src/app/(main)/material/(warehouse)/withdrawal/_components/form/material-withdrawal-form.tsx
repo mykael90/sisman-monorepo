@@ -28,6 +28,8 @@ import {
   materialOperationOutDisplayMap,
   MaterialOperationOutKey
 } from '../../../../../../../mappers/material-operations-mappers';
+import { totalmem } from 'os';
+import { toast } from 'sonner';
 
 export function MaterialWithdrawalForm({
   defaultData,
@@ -102,20 +104,22 @@ export function MaterialWithdrawalForm({
     serverStateWithdrawal?.isSubmitSuccessful &&
     serverStateWithdrawal.responseData
   ) {
-    return (
-      <FormSuccessDisplayCard
-        serverState={serverStateWithdrawal}
-        handleActions={{
-          handleResetForm: handleReset,
-          handleCancelForm: handleCancel
-        }}
-        messageActions={{
-          handleResetForm: 'Realizar nova retirada',
-          handleCancel: 'Voltar para a lista'
-        }}
-        isInDialog={false}
-      />
-    );
+    toast.success(serverStateWithdrawal.message);
+    handleReset();
+    // return (
+    //   <FormSuccessDisplayCard
+    //     serverState={serverStateWithdrawal}
+    //     handleActions={{
+    //       handleResetForm: handleReset,
+    //       handleCancelForm: handleCancel
+    //     }}
+    //     messageActions={{
+    //       handleResetForm: 'Realizar nova retirada',
+    //       handleCancel: 'Voltar para a lista'
+    //     }}
+    //     isInDialog={false}
+    //   />
+    // );
   }
 
   const currentSubmitButtonText = submitButtonText || 'Realizar retirada';

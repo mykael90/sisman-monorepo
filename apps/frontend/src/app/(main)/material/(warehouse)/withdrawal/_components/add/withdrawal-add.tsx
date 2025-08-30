@@ -97,7 +97,10 @@ export function MaterialWithdrawalAdd({
         materialOperationOutDisplayMap.OUT_SERVICE_USAGE && (
         <RadioGroup
           defaultValue={requestSearchType}
-          onValueChange={(value) => setRequestSearchType(value as any)}
+          onValueChange={(value) => {
+            triggerReset();
+            setRequestSearchType(value as any);
+          }}
           className='flex gap-4'
         >
           <div className='flex items-center gap-2'>
@@ -118,7 +121,7 @@ export function MaterialWithdrawalAdd({
       {movementTypeCode === materialOperationOutDisplayMap.OUT_SERVICE_USAGE &&
         requestSearchType === 'maintenance' && (
           <RequestMaintenanceForm
-            key={formKey}
+            // key={formKey}
             setMaintenanceRequestData={setMaintenanceRequestData}
             maintenanceRequestData={maintenanceRequestData}
           />
@@ -136,7 +139,7 @@ export function MaterialWithdrawalAdd({
         )}
       {/* Formulário de retirada */}
       <MaterialWithdrawalForm
-        // key={formKey}
+        key={formKey}
         onClean={triggerReset}
         onCancel={redirectList}
         relatedData={relatedData}
