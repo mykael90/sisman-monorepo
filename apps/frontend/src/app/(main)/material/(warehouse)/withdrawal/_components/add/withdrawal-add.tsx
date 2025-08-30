@@ -11,13 +11,15 @@ import { TabSelector } from '../add/tab-selector';
 import {
   materialOperationOutDisplayMap,
   MaterialOperationOutKey
-} from '../../../../../../../mappers/material-operations-mappers';
+} from '@/mappers/material-operations-mappers';
 import { addWithdrawal } from '../../withdrawal-actions';
 import { MaterialWithdrawalForm } from '../form/material-withdrawal-form';
 import { useRouter } from 'next/navigation';
 import { FilePlus, UserPlus } from 'lucide-react';
 import { RequestMaintenanceForm } from '../form/request-maintenance-form';
 import { RequestMaterialForm } from '../form/request-material-form';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Label } from '@/components/ui/label';
 
 export function MaterialWithdrawalAdd({
   relatedData
@@ -28,6 +30,10 @@ export function MaterialWithdrawalAdd({
 
   // --- 1. CHAMAR TODOS OS HOOKS NO TOPO, INCONDICIONALMENTE ---
   const { warehouse } = useWarehouseContext();
+
+  const [requestSearchType, setRequestSearchType] = useState<
+    'material' | 'maintenance' | 'none'
+  >('maintenance');
 
   const [maintenanceRequestData, setMaintenanceRequestData] =
     useState<IMaintenanceRequestWithRelations | null>(null);
@@ -86,24 +92,55 @@ export function MaterialWithdrawalAdd({
         setMovementTypeCode={setMovementTypeCode}
         handleReset={triggerReset}
       />
-      {/* Formulário para fazer consulta de requisição de manutenção ou material */}
+      {/* Mudar entre consulta a requisicao de material ou manutenção */}
       {movementTypeCode ===
         materialOperationOutDisplayMap.OUT_SERVICE_USAGE && (
-        <RequestMaterialForm
-          // key={formKey}
-          setMaintenanceRequestData={setMaintenanceRequestData}
-          maintenanceRequestData={maintenanceRequestData}
-          setMaterialRequestData={setMaterialRequestData}
-          materialRequestData={materialRequestData}
-        />
+        <RadioGroup
+          defaultValue={requestSearchType}
+          onValueChange={(value) => setRequestSearchType(value as any)}
+          className='flex gap-4'
+        >
+          <div className='flex items-center gap-2'>
+            <RadioGroupItem value='maintenance' id='maintenance' />
+            <Label htmlFor='maintenance'>Requisição de Manutenção</Label>
+          </div>
+          <div className='flex items-center gap-2'>
+            <RadioGroupItem value='material' id='material' />
+            <Label htmlFor='material'>Requisição de Material</Label>
+          </div>
+          <div className='flex items-center gap-2'>
+            <RadioGroupItem value='none' id='none' />
+            <Label htmlFor='none'>Urgência</Label>
+          </div>
+        </RadioGroup>
       )}
+      {/* Formulário para fazer consulta de requisição de manutenção */}
+      {movementTypeCode === materialOperationOutDisplayMap.OUT_SERVICE_USAGE &&
+        requestSearchType === 'maintenance' && (
+          <RequestMaintenanceForm
+            key={formKey}
+            setMaintenanceRequestData={setMaintenanceRequestData}
+            maintenanceRequestData={maintenanceRequestData}
+          />
+        )}
+      {/* Formulário para fazer consulta de requisição de material */}
+      {movementTypeCode === materialOperationOutDisplayMap.OUT_SERVICE_USAGE &&
+        requestSearchType === 'material' && (
+          <RequestMaterialForm
+            // key={formKey}
+            setMaintenanceRequestData={setMaintenanceRequestData}
+            maintenanceRequestData={maintenanceRequestData}
+            setMaterialRequestData={setMaterialRequestData}
+            materialRequestData={materialRequestData}
+          />
+        )}
       {/* Formulário de retirada */}
       <MaterialWithdrawalForm
-        key={formKey}
+        // key={formKey}
         onClean={triggerReset}
         onCancel={redirectList}
         relatedData={relatedData}
-        SubmitButtonIcon={UserPlus}
+        SubmitButtonIcon={FilePlus}
         submitButtonText='Realizar Retirada'
         defaultData={defaultData}
         formActionProp={addWithdrawal}

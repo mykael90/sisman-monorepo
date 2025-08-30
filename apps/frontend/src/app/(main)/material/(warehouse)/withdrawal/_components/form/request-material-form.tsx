@@ -168,7 +168,6 @@ export function RequestMaterialForm({
     >
       <div className='space-y-6'>
         {/* Request number */}
-        {JSON.stringify(materialRequestData, null, 2)}
         <Card>
           <CardHeader>
             <CardTitle className='text-lg'>
