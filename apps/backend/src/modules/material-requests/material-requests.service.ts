@@ -426,7 +426,7 @@ export class MaterialRequestsService {
         throw error;
       }
       handlePrismaError(error, this.logger, 'MaterialRequestsService', {
-        operation: 'show',
+        operation: 'showBalance',
         id
       });
       throw error;

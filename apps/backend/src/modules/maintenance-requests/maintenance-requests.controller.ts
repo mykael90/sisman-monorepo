@@ -12,6 +12,7 @@ import {
 import { MaintenanceRequestsService } from './maintenance-requests.service';
 import {
   CreateMaintenanceRequestWithRelationsDto,
+  MaintenanceRequestWithRelationsResponseDto,
   UpdateMaintenanceRequestWithRelationsDto
 } from './dto/maintenance-request.dto';
 import { Roles } from '../../shared/decorators/roles.decorator';
@@ -34,12 +35,24 @@ export class MaintenanceRequestsController {
 
   @Get('/protocol')
   async showByProtocolNumber(@Query('value') value: string) {
-    return this.maintenanceRequestsService.findByProtocolNumber(value);
+    return this.maintenanceRequestsService.showByProtocolNumber(value);
   }
 
   @Get(':id')
   async show(@Param('id') id: number) {
     return this.maintenanceRequestsService.show(id);
+  }
+
+  @Get('/balance/protocol')
+  async showBalanceMaterialsByProtocolNumber(@Query('value') value: string) {
+    return this.maintenanceRequestsService.showBalanceMaterialsByProtocolNumber(
+      value
+    );
+  }
+
+  @Get('balance/:id')
+  async showBalanceMaterials(@Param('id') id: number) {
+    return this.maintenanceRequestsService.showBalanceMaterials(id);
   }
 
   @Get()

@@ -866,7 +866,7 @@ export class RequisicoesManutencoesService {
     try {
       // Assuming protocolNumber in MaintenanceRequest stores the SIPAC request ID
       const existingMaitenanceRequest =
-        await this.maintenanceRequestsService.findByProtocolNumber(
+        await this.maintenanceRequestsService.showByProtocolNumber(
           sipacRequisicaoManutencao.numeroRequisicao
         );
 

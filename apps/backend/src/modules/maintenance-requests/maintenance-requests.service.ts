@@ -297,7 +297,7 @@ export class MaintenanceRequestsService {
     }
   }
 
-  async findByProtocolNumber(protocolNumber: string) {
+  async showByProtocolNumber(protocolNumber: string) {
     try {
       const maintenanceRequest =
         await this.prisma.maintenanceRequest.findUnique({
@@ -332,6 +332,179 @@ export class MaintenanceRequestsService {
         operation: 'findByProtocolNumber',
         protocolNumber
       });
+      throw error;
+    }
+  }
+
+  async showBalanceMaterials(id: number) {
+    try {
+      // 1. Executamos todas as consultas em paralelo para máxima eficiência
+      const [maintenanceRequest, aggregatedReceiveds, aggregatedWithdrawals] =
+        await this.prisma.$transaction([
+          // Consulta 1: Busca os dados principais da MaintenanceRequest e as relações simples
+          this.prisma.maintenanceRequest.findUnique({
+            where: { id },
+            include: {
+              building: true,
+              materialRequests: true
+            }
+          }),
+
+          // Consulta 2: Agrega os itens de materialReceipt
+          this.prisma.materialReceiptItem.groupBy({
+            by: ['materialId'],
+            where: {
+              // Filtra apenas os itens cujas retiradas pertencem à nossa MaintenanceRequest
+              materialReceipt: {
+                materialRequest: {
+                  maintenanceRequestId: id
+                }
+              }
+            },
+            _sum: {
+              quantityReceived: true
+            }
+          }),
+
+          // Consulta 3: Agrega os itens de MaterialWithdrawal
+          this.prisma.materialWithdrawalItem.groupBy({
+            by: ['globalMaterialId'],
+            where: {
+              // Filtra apenas os itens cujas retiradas pertencem à nossa MaintenanceRequest
+              materialWithdrawal: {
+                maintenanceRequestId: id
+              }
+            },
+            _sum: {
+              quantityWithdrawn: true
+            }
+          })
+        ]);
+
+      // ----------------------------------------------------------------------
+      // PASSO 2: Retornar as informações globais dos materiais envolvidos na consulta
+      // ----------------------------------------------------------------------
+      const materialGlobalIdMap = new Map<string, undefined>();
+      aggregatedReceiveds.forEach((materialReceived) => {
+        materialGlobalIdMap.set(materialReceived.materialId, undefined);
+      });
+
+      aggregatedWithdrawals.forEach((materialWithdrawn) => {
+        materialGlobalIdMap.set(materialWithdrawn.globalMaterialId, undefined);
+      });
+
+      const items = await this.prisma.materialGlobalCatalog.findMany({
+        where: {
+          id: { in: Array.from(materialGlobalIdMap.keys()) }
+        }
+      });
+
+      // ----------------------------------------------------------------------
+      // PASSO 3: Preparar os dados para cálculo com o tipo Decimal do Prisma
+      // ----------------------------------------------------------------------
+
+      const receivedMap = new Map<string, Prisma.Decimal>();
+      aggregatedReceiveds.forEach((item) => {
+        receivedMap.set(
+          item.materialId,
+          item._sum.quantityReceived ?? new Prisma.Decimal(0)
+        );
+      });
+
+      const withdrawnMap = new Map<string, Prisma.Decimal>();
+      aggregatedWithdrawals.forEach((item) => {
+        withdrawnMap.set(
+          item.globalMaterialId,
+          item._sum.quantityWithdrawn ?? new Prisma.Decimal(0)
+        );
+      });
+
+      // ----------------------------------------------------------------------
+      // PASSO 3: Calcular o `itemsBalance` usando a aritmética de Prisma.Decimal
+      // ----------------------------------------------------------------------
+
+      const itemsBalance = items.map((item) => {
+        const globalMaterialId = item.id;
+
+        const quantityReceivedSum =
+          receivedMap.get(globalMaterialId) ?? new Prisma.Decimal(0);
+        const quantityWithdrawnSum =
+          withdrawnMap.get(globalMaterialId) ?? new Prisma.Decimal(0);
+
+        // Realizar os cálculos usando os métodos de Decimal.js (a API é a mesma)
+        const quantityBalance = quantityReceivedSum.minus(quantityWithdrawnSum);
+
+        // Montar o objeto de retorno, convertendo para número no final
+        return {
+          globalMaterialId,
+          name: item.name,
+          description: item.description,
+          unitOfMeasure: item.unitOfMeasure,
+          quantityReceivedSum: quantityReceivedSum.toNumber(),
+          quantityWithdrawnSum: quantityWithdrawnSum.toNumber(),
+          quantityBalance: quantityBalance.toNumber()
+        };
+      });
+
+      // ----------------------------------------------------------------------
+      // PASSO 4: Montar a resposta final completa
+      // ----------------------------------------------------------------------
+
+      const finalResult = {
+        ...maintenanceRequest,
+        // Formata os dados agregados para o formato final
+        materialReceipts: {
+          items: aggregatedReceiveds.map((item) => ({
+            globalMaterialId: item.materialId,
+            quntityReceivedSum:
+              item._sum.quantityReceived ?? new Prisma.Decimal(0)
+          }))
+        },
+        materialWithdrawals: {
+          items: aggregatedWithdrawals.map((item) => ({
+            globalMaterialId: item.globalMaterialId,
+            quantityWithdrawnSum:
+              item._sum.quantityWithdrawn ?? new Prisma.Decimal(0)
+          }))
+        },
+        // Adiciona o balanço calculado
+        itemsBalance
+      };
+
+      return finalResult;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      handlePrismaError(error, this.logger, 'MaintenanceRequestsService', {
+        operation: 'showBalanceMaterials',
+        id
+      });
+      throw error;
+    }
+  }
+
+  async showBalanceMaterialsByProtocolNumber(protocolNumber: string) {
+    // Obter id e chamar o metodo showBalance
+
+    try {
+      const id = await this.prisma.maintenanceRequest.findUnique({
+        where: {
+          protocolNumber
+        },
+        select: {
+          id: true
+        }
+      });
+
+      if (!id) {
+        throw new NotFoundException(
+          `Id não encontrado para o protocolo ${protocolNumber}`
+        );
+      }
+
+      return this.showBalanceMaterials(id.id);
+    } catch (error) {
       throw error;
     }
   }

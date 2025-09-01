@@ -13,7 +13,17 @@ Authorization: Bearer {{token}}
 
 ### GET one by protocol
 GET {{urlLocal}}/protocol
-?value=4506/2026
+?value=4506/2025
+Authorization: Bearer {{token}}
+
+### GET one balance
+# @prompt id
+GET {{urlLocal}}/balance/{{id}}
+Authorization: Bearer {{token}}
+
+### GET one by protocol
+GET {{urlLocal}}/balance/protocol
+?value=4506/2025
 Authorization: Bearer {{token}}
 
 ### POST

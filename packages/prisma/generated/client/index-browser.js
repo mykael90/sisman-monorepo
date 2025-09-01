@@ -616,6 +616,7 @@ exports.Prisma.MaterialWithdrawalItemScalarFieldEnum = {
   globalMaterialId: 'globalMaterialId',
   materialInstanceId: 'materialInstanceId',
   quantityWithdrawn: 'quantityWithdrawn',
+  unitPrice: 'unitPrice',
   materialRequestItemId: 'materialRequestItemId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
