@@ -339,51 +339,78 @@ export class MaintenanceRequestsService {
   async showBalanceMaterials(id: number) {
     try {
       // 1. Executamos todas as consultas em paralelo para máxima eficiência
-      const [maintenanceRequest, aggregatedReceiveds, aggregatedWithdrawals] =
-        await this.prisma.$transaction([
-          // Consulta 1: Busca os dados principais da MaintenanceRequest e as relações simples
-          this.prisma.maintenanceRequest.findUnique({
-            where: { id },
-            include: {
-              building: true,
-              materialRequests: true
-            }
-          }),
-
-          // Consulta 2: Agrega os itens de materialReceipt
-          this.prisma.materialReceiptItem.groupBy({
-            by: ['materialId'],
-            where: {
-              // Filtra apenas os itens cujas retiradas pertencem à nossa MaintenanceRequest
-              materialReceipt: {
-                materialRequest: {
-                  maintenanceRequestId: id
-                }
+      const [
+        maintenanceRequest,
+        aggregatedReceiveds,
+        aggregatedWithdrawals,
+        aggregatedRequesteds
+      ] = await this.prisma.$transaction([
+        // Consulta 1: Busca os dados principais da MaintenanceRequest e as relações simples
+        this.prisma.maintenanceRequest.findUnique({
+          where: { id },
+          include: {
+            building: true,
+            materialRequests: {
+              include: {
+                items: true,
+                materialReceipts: true,
+                materialWithdrawals: true
               }
-            },
-            _sum: {
-              quantityReceived: true
             }
-          }),
+          }
+        }),
 
-          // Consulta 3: Agrega os itens de MaterialWithdrawal
-          this.prisma.materialWithdrawalItem.groupBy({
-            by: ['globalMaterialId'],
-            where: {
-              // Filtra apenas os itens cujas retiradas pertencem à nossa MaintenanceRequest
-              materialWithdrawal: {
+        // Consulta 2: Agrega os itens de materialReceipt
+        this.prisma.materialReceiptItem.groupBy({
+          by: ['materialId'],
+          where: {
+            // Filtra apenas os itens cujas retiradas pertencem à nossa MaintenanceRequest
+            materialReceipt: {
+              materialRequest: {
                 maintenanceRequestId: id
               }
-            },
-            _sum: {
-              quantityWithdrawn: true
             }
-          })
-        ]);
+          },
+          _sum: {
+            quantityReceived: true
+          }
+        }),
+
+        // Consulta 3: Agrega os itens de MaterialWithdrawal
+        this.prisma.materialWithdrawalItem.groupBy({
+          by: ['globalMaterialId'],
+          where: {
+            // Filtra apenas os itens cujas retiradas pertencem à nossa MaintenanceRequest
+            materialWithdrawal: {
+              maintenanceRequestId: id
+            }
+          },
+          _sum: {
+            quantityWithdrawn: true
+          }
+        }),
+
+        // Consulta 4: Agrega os itens de MaterialRequest
+        this.prisma.materialRequestItem.groupBy({
+          by: ['requestedGlobalMaterialId'],
+          where: {
+            // Filtra apenas os itens cujas retiradas pertencem à nossa MaintenanceRequest
+            materialRequest: {
+              maintenanceRequestId: id
+            }
+          },
+          _sum: {
+            quantityRequested: true
+          }
+        })
+      ]);
 
       // ----------------------------------------------------------------------
       // PASSO 2: Retornar as informações globais dos materiais envolvidos na consulta
       // ----------------------------------------------------------------------
+
+      // TODO; ggregatedRequesteds
+
       const materialGlobalIdMap = new Map<string, undefined>();
       aggregatedReceiveds.forEach((materialReceived) => {
         materialGlobalIdMap.set(materialReceived.materialId, undefined);
@@ -393,9 +420,30 @@ export class MaintenanceRequestsService {
         materialGlobalIdMap.set(materialWithdrawn.globalMaterialId, undefined);
       });
 
-      const items = await this.prisma.materialGlobalCatalog.findMany({
-        where: {
-          id: { in: Array.from(materialGlobalIdMap.keys()) }
+      aggregatedRequesteds.forEach((materialWithdrawn) => {
+        materialGlobalIdMap.set(
+          materialWithdrawn.requestedGlobalMaterialId,
+          undefined
+        );
+      });
+
+      const warehouseId =
+        maintenanceRequest.materialRequests[0]?.materialReceipts[0]
+          .destinationWarehouseId ||
+        maintenanceRequest.materialRequests[0]?.materialWithdrawals[0]
+          .warehouseId;
+
+      const items = await this.prisma.materialWarehouseStock.findMany({
+        where: warehouseId
+          ? {
+              materialId: { in: Array.from(materialGlobalIdMap.keys()) },
+              warehouseId
+            }
+          : {
+              materialId: { in: Array.from(materialGlobalIdMap.keys()) }
+            },
+        include: {
+          material: true
         }
       });
 
@@ -419,30 +467,46 @@ export class MaintenanceRequestsService {
         );
       });
 
+      const requestedMap = new Map<string, Prisma.Decimal>();
+      aggregatedRequesteds.forEach((item) => {
+        requestedMap.set(
+          item.requestedGlobalMaterialId,
+          item._sum.quantityRequested ?? new Prisma.Decimal(0)
+        );
+      });
+
       // ----------------------------------------------------------------------
       // PASSO 3: Calcular o `itemsBalance` usando a aritmética de Prisma.Decimal
       // ----------------------------------------------------------------------
 
       const itemsBalance = items.map((item) => {
-        const globalMaterialId = item.id;
+        const globalMaterialId = item.materialId;
 
         const quantityReceivedSum =
           receivedMap.get(globalMaterialId) ?? new Prisma.Decimal(0);
         const quantityWithdrawnSum =
           withdrawnMap.get(globalMaterialId) ?? new Prisma.Decimal(0);
+        const quantityRequestedSum =
+          requestedMap.get(globalMaterialId) ?? new Prisma.Decimal(0);
 
         // Realizar os cálculos usando os métodos de Decimal.js (a API é a mesma)
-        const quantityBalance = quantityReceivedSum.minus(quantityWithdrawnSum);
+        const effectiveBalance =
+          quantityReceivedSum.minus(quantityWithdrawnSum);
+
+        const potentialBalance =
+          quantityRequestedSum.minus(quantityWithdrawnSum);
 
         // Montar o objeto de retorno, convertendo para número no final
         return {
           globalMaterialId,
-          name: item.name,
-          description: item.description,
-          unitOfMeasure: item.unitOfMeasure,
+          name: item.material.name,
+          description: item.material.description,
+          unitOfMeasure: item.material.unitOfMeasure,
           quantityReceivedSum: quantityReceivedSum.toNumber(),
           quantityWithdrawnSum: quantityWithdrawnSum.toNumber(),
-          quantityBalance: quantityBalance.toNumber()
+          effectiveBalance: effectiveBalance.toNumber(),
+          potentialBalance: potentialBalance.toNumber(),
+          unitPrice: item.updatedCost
         };
       });
 
@@ -453,6 +517,13 @@ export class MaintenanceRequestsService {
       const finalResult = {
         ...maintenanceRequest,
         // Formata os dados agregados para o formato final
+        materialRequesteds: {
+          items: aggregatedRequesteds.map((item) => ({
+            requestedGlobalMaterialId: item.requestedGlobalMaterialId,
+            quantityRequestedSum:
+              item._sum.quantityRequested ?? new Prisma.Decimal(0)
+          }))
+        },
         materialReceipts: {
           items: aggregatedReceiveds.map((item) => ({
             globalMaterialId: item.materialId,
