@@ -11,6 +11,7 @@ import {
   IWarehouseStock,
   IWarehouseStockIncludedComputed
 } from '../../../warehouse-stock/warehouse-stock-types';
+import { formatToBRL } from '../../../../../../../lib/utils';
 
 export type IMaterialWithdrawalItemAddFormInfo = Pick<
   IMaterialWithdrawalItemAddForm,
@@ -140,6 +141,9 @@ export function TableFormItemsGlobal({
               <th className='px-4 py-3 text-left text-sm font-medium text-gray-900'>
                 Unidade
               </th>
+              <th className='px-4 py-3 text-left text-sm font-medium text-gray-900'>
+                Preço R$
+              </th>
               <th className='px-4 py-3 text-center text-sm font-medium text-gray-900'>
                 Estoque
               </th>
@@ -188,6 +192,13 @@ export function TableFormItemsGlobal({
                   </td>
                   <td className='px-4 py-3 text-sm text-gray-900'>
                     {info?.unitOfMeasure}
+                  </td>
+                  <td className='px-4 py-3 text-right text-sm text-gray-900'>
+                    {material.unitPrice?.toString ? (
+                      formatToBRL(material.unitPrice?.toString())
+                    ) : (
+                      <Badge variant='outline'>Indefinido</Badge>
+                    )}
                   </td>
                   <td className='px-4 py-3 text-sm'>
                     {isphysicalOnHandQuantityDefined ? (

@@ -142,7 +142,8 @@ export class MaterialWithdrawalsService {
           quantityWithdrawn: item.quantityWithdrawn,
           materialRequestItem: item.materialRequestItemId
             ? { connect: { id: item.materialRequestItemId } }
-            : undefined
+            : undefined,
+          unitPrice: item.unitPrice
         }))
       }
     };

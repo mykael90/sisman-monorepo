@@ -78,10 +78,13 @@ export const ItemsFieldArray: FC<MaterialItemsFieldProps> = ({ field }) => {
           physicalOnHandQuantity = Number(stockData.physicalOnHandQuantity);
       }
 
+      const unitPrice = stockData?.updatedCost;
+
       const materialStateField = {
         key,
         globalMaterialId,
-        quantityWithdrawn
+        quantityWithdrawn,
+        unitPrice
       };
 
       const materialInfo = {

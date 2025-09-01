@@ -216,6 +216,14 @@ class MaterialWithdrawalItemBaseDto {
   @IsDate()
   @IsOptional() // Optional for creation DTOs
   updatedAt: Date;
+
+  /**
+   * Preço do item.
+   * @example 3.65
+   */
+  @IsOptional()
+  @IsNumber()
+  unitPrice: Prisma.Decimal;
 }
 
 // =================================================================
