@@ -65,7 +65,7 @@ export function TabSelector({
           </TabsList>
         </Tabs>
       </div>
-      <div id='tab-selector-mobile' className='block md:hidden'>
+      <div id='selector-mobile' className='block md:hidden'>
         <Select
           value={movementTypeCode || tabs[0].value}
           onValueChange={handleValueChange}

@@ -9,7 +9,6 @@ import {
   IMaterialWithdrawalRelatedData,
   IMaterialWithdrawalWithRelations
 } from '../../withdrawal-types';
-import { IMaterialRequest } from '../../../../request/material-request-types';
 import { ItemsFieldArray } from './field-form-items-array';
 import { ErrorServerForm } from '@/components/form-tanstack/error-server-form';
 import { IMaintenanceRequestWithRelations } from '../../../../../maintenance/request/request-types';
@@ -18,18 +17,20 @@ import {
   type IWithdrawalFormApi
 } from '@/src/hooks/use-withdrawal-form';
 import { materialWithdrawalFormSchemaAdd } from './material-withdrawal-form-validation';
-import { ErrorClientValidationFormCard } from '../../../../../../../components/form-tanstack/error-client-validation-form-card';
-import { FormSuccessDisplayCard } from '../../../../../../../components/form-tanstack/form-success-display-card';
-import { useRouter } from 'next/navigation';
+import { ErrorClientValidationFormCard } from '@/components/form-tanstack/error-client-validation-form-card';
+import { FormSuccessDisplayCard } from '@/components/form-tanstack/form-success-display-card';
 import { CardMaintenanceSummary } from '../card-maintenance-summary';
 import { CardMaterialRequestLinkDetails } from '../card-material-link-details';
 import { WithdrawalDetailUsageService } from '../add/withdrawal-details-usage-service';
 import {
   materialOperationOutDisplayMap,
   MaterialOperationOutKey
-} from '../../../../../../../mappers/material-operations-mappers';
-import { totalmem } from 'os';
-import { toast } from 'sonner';
+} from '@/mappers/material-operations-mappers';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { IMaterialRequestWithRelations } from '../../../../request/material-request-types';
+import { Label } from '@/components/ui/label';
+import { RequestMaintenanceForm } from './request-maintenance-form';
+import { RequestMaterialForm } from './request-material-form';
 
 export function MaterialWithdrawalForm({
   defaultData,
@@ -41,8 +42,6 @@ export function MaterialWithdrawalForm({
     isSubmitSuccessful: false,
     message: ''
   },
-  maintenanceRequestData,
-  materialRequestData,
   onCancel,
   onClean,
   movementTypeCode
@@ -67,12 +66,20 @@ export function MaterialWithdrawalForm({
     IMaterialWithdrawalAddForm,
     IMaterialWithdrawalWithRelations
   >;
-  maintenanceRequestData?: IMaintenanceRequestWithRelations | null;
-  materialRequestData?: IMaterialRequest | null;
   onCancel?: () => void;
   onClean?: () => void;
   movementTypeCode: MaterialOperationOutKey;
 }) {
+  const [requestSearchType, setRequestSearchType] = useState<
+    'material' | 'maintenance' | 'none'
+  >('maintenance');
+
+  const [maintenanceRequestData, setMaintenanceRequestData] =
+    useState<IMaintenanceRequestWithRelations | null>(null);
+
+  const [materialRequestData, setMaterialRequestData] =
+    useState<IMaterialRequestWithRelations | null>(null);
+
   const [linkMaterialRequest, setLinkMaterialRequest] =
     useState<boolean>(false);
 
@@ -91,8 +98,21 @@ export function MaterialWithdrawalForm({
 
   const { listUsers, listWorkers } = relatedData;
 
-  const handleReset = () => {
+  const cleanFormAndStates = () => {
+    //não dispara mudança da key do componente, mais contido
     formWithdrawal.reset();
+    setMaintenanceRequestData(null);
+    setMaterialRequestData(null);
+    setLinkMaterialRequest(false);
+  };
+
+  const handleReset = () => {
+    //dispara mudança da key do compomente, faz um novo fecth, renderiza tudo novamente
+    formWithdrawal.reset();
+    //     setMaintenanceRequestData(null);
+    // setMaterialRequestData(null);
+    // setLinkMaterialRequest(false);
+    // setRequestSearchType('maintenance');
     onClean && onClean();
   };
 
@@ -130,6 +150,78 @@ export function MaterialWithdrawalForm({
 
   return (
     <div className='space-y-6'>
+      {/* Erros do lado do servidor */}
+      <ErrorServerForm serverState={serverStateWithdrawal} />
+
+      {/* Erros lado cliente */}
+      <formWithdrawal.Subscribe
+        selector={(state) => [state.errors, state.submissionAttempts]}
+      >
+        {([errors, submissionAttempts]) => {
+          if (submissionAttempts === 0 || !errors || !submissionAttempts)
+            return null;
+          return <ErrorClientValidationFormCard errors={errors} />;
+        }}
+      </formWithdrawal.Subscribe>
+
+      {/* Mudar entre consulta a requisicao de material ou manutenção */}
+      {movementTypeCode ===
+        materialOperationOutDisplayMap.OUT_SERVICE_USAGE && (
+        <RadioGroup
+          defaultValue={requestSearchType}
+          onValueChange={(value) => {
+            cleanFormAndStates();
+            setRequestSearchType(value as any);
+            if (value === 'maintenance') {
+              setLinkMaterialRequest(false);
+            } else if (value === 'material') {
+              setLinkMaterialRequest(true);
+            } else if (value === 'none') {
+              setLinkMaterialRequest(false);
+              formWithdrawal.setFieldValue(
+                'movementTypeCode',
+                materialOperationOutDisplayMap.OUT_EMERGENCY_USAGE
+              );
+            }
+          }}
+          className='flex gap-4'
+        >
+          <div className='flex items-center gap-2'>
+            <RadioGroupItem value='maintenance' id='maintenance' />
+            <Label htmlFor='maintenance'>Requisição de Manutenção</Label>
+          </div>
+          <div className='flex items-center gap-2'>
+            <RadioGroupItem value='material' id='material' />
+            <Label htmlFor='material'>Requisição de Material</Label>
+          </div>
+          <div className='flex items-center gap-2'>
+            <RadioGroupItem value='none' id='none' />
+            <Label htmlFor='none'>Urgência</Label>
+          </div>
+        </RadioGroup>
+      )}
+
+      {/* Formulário para fazer consulta de requisição de manutenção */}
+      {movementTypeCode === materialOperationOutDisplayMap.OUT_SERVICE_USAGE &&
+        requestSearchType === 'maintenance' && (
+          <RequestMaintenanceForm
+            // key={formKey}
+            setMaintenanceRequestData={setMaintenanceRequestData}
+            maintenanceRequestData={maintenanceRequestData}
+          />
+        )}
+      {/* Formulário para fazer consulta de requisição de material */}
+      {movementTypeCode === materialOperationOutDisplayMap.OUT_SERVICE_USAGE &&
+        requestSearchType === 'material' && (
+          <RequestMaterialForm
+            // key={formKey}
+            setMaintenanceRequestData={setMaintenanceRequestData}
+            maintenanceRequestData={maintenanceRequestData}
+            setMaterialRequestData={setMaterialRequestData}
+            materialRequestData={materialRequestData}
+          />
+        )}
+
       <form
         id='form-withdrawal'
         onSubmit={(e) => {
@@ -142,20 +234,6 @@ export function MaterialWithdrawalForm({
           handleReset();
         }}
       >
-        {/* Erros do lado do servidor */}
-        <ErrorServerForm serverState={serverStateWithdrawal} />
-
-        {/* Erros lado cliente */}
-        <formWithdrawal.Subscribe
-          selector={(state) => [state.errors, state.submissionAttempts]}
-        >
-          {([errors, submissionAttempts]) => {
-            if (submissionAttempts === 0 || !errors || !submissionAttempts)
-              return null;
-            return <ErrorClientValidationFormCard errors={errors} />;
-          }}
-        </formWithdrawal.Subscribe>
-
         <div className='space-y-6'>
           {/* Informações extraídas da requisição de manutenção 
           Só renderiza o card se houver dados da requisição

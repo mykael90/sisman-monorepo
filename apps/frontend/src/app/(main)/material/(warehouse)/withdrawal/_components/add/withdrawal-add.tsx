@@ -4,8 +4,6 @@ import {
   IMaterialWithdrawalAddForm,
   IMaterialWithdrawalRelatedData
 } from '../../withdrawal-types';
-import { IMaterialRequestWithRelations } from '../../../../request/material-request-types';
-import { IMaintenanceRequestWithRelations } from '../../../../../maintenance/request/request-types';
 import { useWarehouseContext } from '../../../../choose-warehouse/context/warehouse-provider';
 import { TabSelector } from '../add/tab-selector';
 import {
@@ -15,11 +13,7 @@ import {
 import { addWithdrawal } from '../../withdrawal-actions';
 import { MaterialWithdrawalForm } from '../form/material-withdrawal-form';
 import { useRouter } from 'next/navigation';
-import { FilePlus, UserPlus } from 'lucide-react';
-import { RequestMaintenanceForm } from '../form/request-maintenance-form';
-import { RequestMaterialForm } from '../form/request-material-form';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Label } from '@/components/ui/label';
+import { FilePlus } from 'lucide-react';
 
 export function MaterialWithdrawalAdd({
   relatedData
@@ -30,16 +24,6 @@ export function MaterialWithdrawalAdd({
 
   // --- 1. CHAMAR TODOS OS HOOKS NO TOPO, INCONDICIONALMENTE ---
   const { warehouse } = useWarehouseContext();
-
-  const [requestSearchType, setRequestSearchType] = useState<
-    'material' | 'maintenance' | 'none'
-  >('maintenance');
-
-  const [maintenanceRequestData, setMaintenanceRequestData] =
-    useState<IMaintenanceRequestWithRelations | null>(null);
-
-  const [materialRequestData, setMaterialRequestData] =
-    useState<IMaterialRequestWithRelations | null>(null);
 
   const [movementTypeCode, setMovementTypeCode] =
     useState<MaterialOperationOutKey>(
@@ -55,8 +39,6 @@ export function MaterialWithdrawalAdd({
   const [formKey, setFormKey] = useState(() => Date.now().toString());
   const triggerReset = () => {
     setFormKey(Date.now().toString());
-    setMaintenanceRequestData(null);
-    setMaterialRequestData(null);
   };
 
   // A verificação `!userId` também protege contra o valor `NaN`.
@@ -92,51 +74,6 @@ export function MaterialWithdrawalAdd({
         setMovementTypeCode={setMovementTypeCode}
         handleReset={triggerReset}
       />
-      {/* Mudar entre consulta a requisicao de material ou manutenção */}
-      {movementTypeCode ===
-        materialOperationOutDisplayMap.OUT_SERVICE_USAGE && (
-        <RadioGroup
-          defaultValue={requestSearchType}
-          onValueChange={(value) => {
-            triggerReset();
-            setRequestSearchType(value as any);
-          }}
-          className='flex gap-4'
-        >
-          <div className='flex items-center gap-2'>
-            <RadioGroupItem value='maintenance' id='maintenance' />
-            <Label htmlFor='maintenance'>Requisição de Manutenção</Label>
-          </div>
-          <div className='flex items-center gap-2'>
-            <RadioGroupItem value='material' id='material' />
-            <Label htmlFor='material'>Requisição de Material</Label>
-          </div>
-          <div className='flex items-center gap-2'>
-            <RadioGroupItem value='none' id='none' />
-            <Label htmlFor='none'>Urgência</Label>
-          </div>
-        </RadioGroup>
-      )}
-      {/* Formulário para fazer consulta de requisição de manutenção */}
-      {movementTypeCode === materialOperationOutDisplayMap.OUT_SERVICE_USAGE &&
-        requestSearchType === 'maintenance' && (
-          <RequestMaintenanceForm
-            // key={formKey}
-            setMaintenanceRequestData={setMaintenanceRequestData}
-            maintenanceRequestData={maintenanceRequestData}
-          />
-        )}
-      {/* Formulário para fazer consulta de requisição de material */}
-      {movementTypeCode === materialOperationOutDisplayMap.OUT_SERVICE_USAGE &&
-        requestSearchType === 'material' && (
-          <RequestMaterialForm
-            // key={formKey}
-            setMaintenanceRequestData={setMaintenanceRequestData}
-            maintenanceRequestData={maintenanceRequestData}
-            setMaterialRequestData={setMaterialRequestData}
-            materialRequestData={materialRequestData}
-          />
-        )}
       {/* Formulário de retirada */}
       <MaterialWithdrawalForm
         key={formKey}
@@ -147,8 +84,6 @@ export function MaterialWithdrawalAdd({
         submitButtonText='Realizar Retirada'
         defaultData={defaultData}
         formActionProp={addWithdrawal}
-        maintenanceRequestData={maintenanceRequestData}
-        materialRequestData={materialRequestData}
         movementTypeCode={movementTypeCode}
         //
         // withdrawalType={withdrawalType}
