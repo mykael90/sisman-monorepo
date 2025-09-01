@@ -128,6 +128,14 @@ class MaterialReceiptBaseDto implements MaterialReceipt {
   @IsDate()
   @IsNotEmpty()
   updatedAt: Date;
+
+  /**
+   * Valor total da entrada.
+   * @example 234.65
+   */
+  @IsOptional()
+  @IsNumber()
+  valueReceipt: Prisma.Decimal;
 }
 
 // =================================================================

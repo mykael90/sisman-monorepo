@@ -4,7 +4,11 @@ import {
   OmitType,
   PickType
 } from '@nestjs/swagger';
-import { Prisma, MaterialWithdrawal } from '@sisman/prisma';
+import {
+  Prisma,
+  MaterialWithdrawal,
+  MaterialWithdrawalItem
+} from '@sisman/prisma';
 import { Type } from 'class-transformer';
 import {
   IsArray,
@@ -23,6 +27,7 @@ import {
   MaterialDerived,
   MaterialRequestItem
 } from '@sisman/prisma'; // Import related models for items
+import { Material } from '../../../shared/entities/material.entity';
 
 // =================================================================
 // 1. "SUPER CLASSES" DE RESPOSTA (FONTE DA VERDADE)
@@ -157,13 +162,29 @@ class MaterialWithdrawalBaseDto implements MaterialWithdrawal {
   @IsOptional()
   @IsString()
   legacy_place: string;
+
+  /**
+   * Valor total da retirada.
+   * @example 234.65
+   */
+  @IsOptional()
+  @IsNumber()
+  valueWithdrawal: Prisma.Decimal;
 }
 
 /**
  * Classe base para MaterialWithdrawalItem.
  * @hidden
  */
-class MaterialWithdrawalItemBaseDto {
+class MaterialWithdrawalItemBaseDto implements MaterialWithdrawalItem {
+  /**
+   * ID único da retirada item de material.
+   * @example 1
+   */
+  @IsNumber()
+  @IsNotEmpty()
+  id: number;
+
   /**
    * ID da retirada de material pai.
    * @example 1

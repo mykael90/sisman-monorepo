@@ -604,6 +604,7 @@ exports.Prisma.MaterialWithdrawalScalarFieldEnum = {
   materialRequestId: 'materialRequestId',
   materialPickingOrderId: 'materialPickingOrderId',
   movementTypeId: 'movementTypeId',
+  valueWithdrawal: 'valueWithdrawal',
   notes: 'notes',
   legacy_place: 'legacy_place',
   createdAt: 'createdAt',
@@ -664,6 +665,7 @@ exports.Prisma.MaterialReceiptScalarFieldEnum = {
   processedByUserId: 'processedByUserId',
   materialRequestId: 'materialRequestId',
   status: 'status',
+  valueReceipt: 'valueReceipt',
   notes: 'notes',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

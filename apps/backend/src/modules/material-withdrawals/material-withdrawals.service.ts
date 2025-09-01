@@ -24,6 +24,7 @@ import { MaterialStockMovementsService } from '../material-stock-movements/mater
 import { CreateMaterialStockMovementWithRelationsDto } from '../material-stock-movements/dto/material-stock-movements.dto';
 import { MaterialRequestsService } from '../material-requests/material-requests.service';
 import { WarehousesService } from '../warehouses/warehouses.service';
+import { Decimal } from '@sisman/prisma/generated/client/runtime/library';
 
 type PrismaTransactionClient = Omit<
   PrismaService,
@@ -169,6 +170,20 @@ export class MaterialWithdrawalsService {
         }))
       );
     }
+
+    //realizar um reduce para calcular o valor da retirada baseado na quantidade e valor unitario dos items
+    const valueWithdrawal = items.reduce<Decimal | undefined>((total, item) => {
+      if (!item.unitPrice) return undefined;
+
+      const quantity = new Decimal(item.quantityWithdrawn);
+      const unitPrice = new Decimal(item.unitPrice);
+
+      if (total === undefined) return quantity.times(unitPrice);
+
+      return total.plus(quantity.times(unitPrice));
+    }, new Decimal(0));
+
+    withdrawalCreateInput.valueWithdrawal = valueWithdrawal;
 
     // ETAPA 1: Criar a Retirada de Material e seus Itens.
     const newWithdrawal = await prisma.materialWithdrawal.create({

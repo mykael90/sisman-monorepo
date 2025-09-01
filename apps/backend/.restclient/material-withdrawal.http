@@ -21,7 +21,7 @@ Content-Type: {{contentType}}
 Authorization: Bearer {{token}}
 
 {
-    "withdrawalNumber": "RET-007",
+    "withdrawalNumber": "RET-{{$timestamp}}",
     "withdrawalDate": "2024-07-25T10:00:00Z",
     "warehouse": {
         "id": 1
@@ -37,8 +37,9 @@ Authorization: Bearer {{token}}
     },
     "items": [
         {
-            "globalMaterialId": "302400026133",
-            "quantityWithdrawn": 2
+            "globalMaterialId": "3028000000047",
+            "quantityWithdrawn": 2,
+            "unitPrice": 2.35
         }
     ]
 }

@@ -21,6 +21,7 @@ import {
   CreateMaterialStockMovementDto,
   CreateMaterialStockMovementWithRelationsDto
 } from '../material-stock-movements/dto/material-stock-movements.dto';
+import { Decimal } from '@sisman/prisma/generated/client/runtime/library';
 
 @Injectable()
 export class MaterialReceiptsService {
@@ -86,7 +87,25 @@ export class MaterialReceiptsService {
     try {
       this.logger.log(`Iniciando transação para recebimento de material...`);
       const createdReceipt = await this.prisma.$transaction(async (tx) => {
-        // ETAPA 1: Criar o Recibo de Material e seus Itens.
+        // ETAPA 1: Criar o Recebimento de Entrada Material e seus Itens.
+
+        //realizar um reduce para calcular o valor da entrada baseado na quantidade e valor unitario dos items
+        const valueReceipt = items.reduce<Decimal | undefined>(
+          (total, item) => {
+            if (!item.unitPrice) return undefined;
+
+            const quantity = new Decimal(item.quantityReceived);
+            const unitPrice = new Decimal(item.unitPrice);
+
+            if (total === undefined) return quantity.times(unitPrice);
+
+            return total.plus(quantity.times(unitPrice));
+          },
+          new Decimal(0)
+        );
+
+        receiptCreateInput.valueReceipt = valueReceipt;
+
         // O 'include' garante que 'newReceipt.items' conterá os itens com seus IDs.
         const newReceipt = await tx.materialReceipt.create({
           data: receiptCreateInput,

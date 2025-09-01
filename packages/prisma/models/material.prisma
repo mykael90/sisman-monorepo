@@ -643,6 +643,8 @@ model MaterialWithdrawal {
     movementTypeId Int
     movementType   MaterialStockMovementType @relation(fields: [movementTypeId], references: [id])
 
+    valueWithdrawal         Decimal?  @db.Decimal(12, 4) // custo total da retirada, considerando todos os materiais
+
     notes String? @db.Text
 
     //campo para compatibilidade com base de dados antiga
@@ -819,6 +821,8 @@ model MaterialReceipt {
     materialRequest   MaterialRequest? @relation("ReceiptsForMaterialRequest", fields: [materialRequestId], references: [id])
 
     status MaterialReceiptStatus @default(FULLY_ACCEPTED)
+
+    valueReceipt        Decimal?  @db.Decimal(12, 4) // custo total da entrada, considerando todos os materiais
 
     notes String? @db.Text
 
