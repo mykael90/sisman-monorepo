@@ -114,7 +114,7 @@ export class MaterialRequestsController {
   //TODO: tem que criar o metodo ainda do balanco por protocolo.
   @Get('/balance/protocol')
   async showBalanceByProtocolNumber(@Query('value') value: string) {
-    return this.materialRequestsService.findByProtocolNumber(value);
+    return this.materialRequestsService.showBalanceByProtocolNumber(value);
   }
 
   /**

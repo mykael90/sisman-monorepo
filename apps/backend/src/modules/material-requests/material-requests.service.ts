@@ -187,6 +187,7 @@ export class MaterialRequestsService {
       throw error;
     }
   }
+
   async showBalance(id: number, options?: ShowBalanceOptions) {
     try {
       // 1. Executamos todas as consultas em paralelo para máxima eficiência
@@ -203,6 +204,11 @@ export class MaterialRequestsService {
             items: {
               include: {
                 requestedGlobalMaterial: true
+              }
+            },
+            maintenanceRequest: {
+              include: {
+                building: true
               }
             },
             // Removemos as relações que vamos agregar manualmente
@@ -423,6 +429,34 @@ export class MaterialRequestsService {
         operation: 'show',
         id
       });
+      throw error;
+    }
+  }
+
+  async showBalanceByProtocolNumber(
+    protocolNumber: string,
+    options?: ShowBalanceOptions
+  ) {
+    // Obter id e chamar o metodo showBalance
+
+    try {
+      const id = await this.prisma.materialRequest.findUnique({
+        where: {
+          protocolNumber
+        },
+        select: {
+          id: true
+        }
+      });
+
+      if (!id) {
+        throw new NotFoundException(
+          `Id não encontrado para o protocolo ${protocolNumber}`
+        );
+      }
+
+      return this.showBalance(id.id, options);
+    } catch (error) {
       throw error;
     }
   }
