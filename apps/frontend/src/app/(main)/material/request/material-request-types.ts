@@ -44,4 +44,5 @@ export interface IItemMaterialRequestBalance {
   quantityRestricted: number;
   quantityFreeBalanceEffective: number;
   quantityFreeBalancePotential: number;
+  unitPrice: number;
 }

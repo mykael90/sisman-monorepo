@@ -143,6 +143,9 @@ export function TableFormItemsMaterialRequest({
               <th className='px-4 py-3 text-left text-sm font-medium text-gray-900'>
                 Unidade de Medida
               </th>
+              <th className='px-4 py-3 text-left text-sm font-medium text-gray-900'>
+                R$ Unitário
+              </th>
               <th className='px-4 py-3 text-center text-sm font-medium text-gray-900'>
                 Solicitado
               </th>
@@ -235,6 +238,20 @@ export function TableFormItemsMaterialRequest({
                   </td>
                   <td className='px-4 py-3 text-sm text-gray-900'>
                     {info?.unitOfMeasure}
+                  </td>
+                  <td className='px-4 py-3 text-right text-sm text-gray-900'>
+                    {material.unitPrice ? (
+                      // Number(material.unitPrice).toLocaleString('pt-BR', {
+                      //   style: 'currency',
+                      //   currency: 'BRL'
+                      // })
+                      Number(material.unitPrice).toLocaleString('pt-BR', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                      })
+                    ) : (
+                      <Badge variant='outline'>Indefinido</Badge>
+                    )}
                   </td>
                   {/* AJUSTE: Adicionado HoverCard com detalhes na coluna Solicitado */}
                   <td className='px-4 py-3 text-center text-sm'>

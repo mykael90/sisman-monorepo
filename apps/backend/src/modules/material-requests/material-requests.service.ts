@@ -385,7 +385,8 @@ export class MaterialRequestsService {
           quantityReserved: quantityReserved.toNumber(),
           quantityRestricted: quantityRestricted.toNumber(),
           quantityFreeBalanceEffective: quantityFreeBalanceEffective.toNumber(),
-          quantityFreeBalancePotential: quantityFreeBalancePotential.toNumber()
+          quantityFreeBalancePotential: quantityFreeBalancePotential.toNumber(),
+          unitPrice: item.unitPrice.toNumber()
         };
       });
 

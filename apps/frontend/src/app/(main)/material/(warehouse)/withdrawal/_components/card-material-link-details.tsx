@@ -81,7 +81,8 @@ export function CardMaterialRequestLinkDetails({
                 globalMaterialId: item.globalMaterialId,
                 materialInstanceId: undefined, // Assuming global material for now
                 quantityWithdrawn: Number(item.quantityFreeBalancePotential),
-                materialRequestItemId: item.materialRequestItemId
+                materialRequestItemId: item.materialRequestItemId,
+                unitPrice: item.unitPrice
               })
             )
           );

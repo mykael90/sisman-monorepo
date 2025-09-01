@@ -142,7 +142,7 @@ export function TableFormItemsGlobal({
                 Unidade
               </th>
               <th className='px-4 py-3 text-left text-sm font-medium text-gray-900'>
-                Preço R$
+                R$ Unitário
               </th>
               <th className='px-4 py-3 text-center text-sm font-medium text-gray-900'>
                 Estoque
@@ -195,7 +195,10 @@ export function TableFormItemsGlobal({
                   </td>
                   <td className='px-4 py-3 text-right text-sm text-gray-900'>
                     {material.unitPrice?.toString ? (
-                      formatToBRL(material.unitPrice?.toString())
+                      Number(material.unitPrice).toLocaleString('pt-BR', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                      })
                     ) : (
                       <Badge variant='outline'>Indefinido</Badge>
                     )}
