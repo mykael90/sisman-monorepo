@@ -13,7 +13,7 @@ Authorization: Bearer {{token}}
 
 ### GET one by protocol
 GET {{urlLocal}}/protocol
-?value=5815/2025
+?value=16136/2025
 Authorization: Bearer {{token}}
 
 ### GET one balance
