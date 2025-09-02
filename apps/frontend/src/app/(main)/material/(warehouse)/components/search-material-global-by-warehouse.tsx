@@ -18,6 +18,9 @@ export const SearchMaterialByWarehouse: FC<
   SearchMaterialGlobalByWarehouseProps
 > = ({ handleAddMaterial, excludedFromList = [], handleBlurredField }) => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [listToUse, setListToUse] = useState<
+    IMaterialGlobalCatalogWithRelations[]
+  >([]);
 
   const { warehouse } = useWarehouseContext();
 
@@ -40,6 +43,17 @@ export const SearchMaterialByWarehouse: FC<
     //    Isso é crucial e muito mais limpo que um 'if' dentro do useEffect.
     enabled: !!warehouse
   });
+
+  //filtar os materiais que já tenham sido movimentados no depósito
+  const listGlobalMaterialsByWarehouseWithWarehouseIncluded = useMemo(() => {
+    if (!listGlobalMaterialsByWarehouse) return [];
+
+    return listGlobalMaterialsByWarehouse.filter(
+      (material) =>
+        material.warehouseStandardStocks?.length &&
+        material.warehouseStandardStocks?.length > 0
+    );
+  }, [listGlobalMaterialsByWarehouse]);
 
   const materialsMap = useMemo(() => {
     const map = new Map<string, IMaterialGlobalCatalogWithRelations>();

@@ -133,19 +133,19 @@ export function TableFormItemsGlobal({
         <table className='w-full'>
           <thead className='bg-gray-50'>
             <tr>
-              <th className='px-4 py-3 text-left text-sm font-medium text-gray-900'>
+              <th className='w-20 px-4 py-3 text-left text-sm font-medium text-gray-900'>
                 ID Material Global
               </th>
               <th className='px-4 py-3 text-left text-sm font-medium text-gray-900'>
                 Nome do Material
               </th>
-              <th className='px-4 py-3 text-left text-sm font-medium text-gray-900'>
-                Unidade de Medida
+              <th className='w-30 px-4 py-3 text-left text-sm font-medium text-gray-900'>
+                Unidade Medida
               </th>
-              <th className='px-4 py-3 text-left text-sm font-medium text-gray-900'>
+              <th className='w-32 px-4 py-3 text-left text-sm font-medium text-gray-900'>
                 R$ Unitário
               </th>
-              <th className='px-4 py-3 text-center text-sm font-medium text-gray-900'>
+              <th className='w-32 px-4 py-3 text-center text-sm font-medium text-gray-900'>
                 <div className='flex items-center justify-center gap-2'>
                   <div className='w-min'>Saldo</div>
                   <InfoHoverCard
@@ -160,7 +160,7 @@ export function TableFormItemsGlobal({
                   />
                 </div>
               </th>
-              <th className='px-4 py-3 text-center text-sm font-medium text-gray-900'>
+              <th className='w-32 px-4 py-3 text-center text-sm font-medium text-gray-900'>
                 <div className='flex items-center justify-center gap-2'>
                   <div className='w-min'>Saldo Livre</div>
                   <InfoHoverCard
@@ -180,7 +180,7 @@ export function TableFormItemsGlobal({
                   />
                 </div>
               </th>
-              <th className='px-4 py-3 text-center text-sm font-medium text-gray-900'>
+              <th className='w-40 px-4 py-3 text-center text-sm font-medium text-gray-900'>
                 Retirar
               </th>
               {/* {!hideMaterialRequestItemId && (
@@ -284,7 +284,7 @@ export function TableFormItemsGlobal({
                         {Number(material.quantityWithdrawn)}
                       </p>
                     ) : (
-                      <div className='flex items-center gap-2'>
+                      <div className='flex items-center justify-center gap-2'>
                         <Button
                           type='button'
                           variant='outline'
@@ -334,7 +334,7 @@ export function TableFormItemsGlobal({
                         variant='outline'
                         size='sm'
                         onClick={() => onRemove(material.key)}
-                        className='text-red-600 hover:text-red-700'
+                        className='hover:bg-destructive text-destructive hover:text-white'
                       >
                         <Trash2 className='h-4 w-4' />
                       </Button>
