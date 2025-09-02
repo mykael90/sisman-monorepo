@@ -47,7 +47,8 @@ export async function getMaterialGlobalCatalogs(
 }
 
 export async function getMaterialGlobalCatalogsByWarehouse(
-  warehouseId: number
+  warehouseId: number,
+  queryParams?: TQueryParams
 ): Promise<IMaterialGlobalCatalogWithRelations[]> {
   logger.info(
     `(Server Action) getMaterialGlobalCatalogs: Fetching material-global-catalogs`
@@ -59,7 +60,8 @@ export async function getMaterialGlobalCatalogsByWarehouse(
       accessTokenSisman,
       {
         cache: 'no-cache'
-      }
+      },
+      queryParams
     );
     logger.info(
       `(Server Action) getMaterialGlobalCatalogs: ${data.length} material-global-catalogs returned`

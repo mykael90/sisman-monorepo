@@ -57,3 +57,12 @@ export class FindAllMaterialQueryDto {
   @IsNumber()
   warehouseId: number;
 }
+export class FindAllMaterialByWarehouseIdQueryDto {
+  /**
+   * Define se é para mostrar apenas os materiais que já tenham sido movimentados pelo depósito.
+   * @example true
+   */
+  @IsOptional()
+  @IsBoolean()
+  onlyWarehouse: boolean;
+}

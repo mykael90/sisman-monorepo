@@ -7,10 +7,12 @@ import {
 import { handlePrismaError } from '../../shared/utils/prisma-error-handler';
 import {
   CreateMaterialDto,
+  FindAllMaterialByWarehouseIdQueryDto,
   FindAllMaterialQueryDto,
   UpdateMaterialDto
 } from './dto/material.dto';
 import { MaterialsMapper } from './mappers/materials.mapper';
+import { find } from 'lodash';
 
 @Injectable()
 export class MaterialsService {
@@ -66,20 +68,50 @@ export class MaterialsService {
       throw error;
     }
   }
-  async findAllByWarehouseId(warehouseId: number) {
+  async findAllByWarehouseId(
+    warehouseId: number,
+    queryParams?: FindAllMaterialByWarehouseIdQueryDto
+  ) {
     try {
-      return await this.prisma.materialGlobalCatalog.findMany({
-        orderBy: {
-          name: 'asc'
-        },
-        include: {
+      if (!queryParams) {
+        return await this.prisma.materialGlobalCatalog.findMany({
+          orderBy: {
+            name: 'asc'
+          },
+          include: {
+            warehouseStandardStocks: {
+              where: {
+                warehouseId: warehouseId
+              }
+            }
+          }
+        });
+      }
+
+      const findManyArgs: Prisma.MaterialGlobalCatalogFindManyArgs = {};
+
+      findManyArgs.orderBy = {
+        name: 'asc'
+      };
+
+      findManyArgs.include = {
+        warehouseStandardStocks: {
+          where: {
+            warehouseId: warehouseId
+          }
+        }
+      };
+
+      if (queryParams.onlyWarehouse) {
+        findManyArgs.where = {
           warehouseStandardStocks: {
-            where: {
+            some: {
               warehouseId: warehouseId
             }
           }
-        }
-      });
+        };
+      }
+      return await this.prisma.materialGlobalCatalog.findMany(findManyArgs);
     } catch (error) {
       handlePrismaError(error, this.logger, 'MaterialsService', {
         operation: 'findAllByWarehouseId',

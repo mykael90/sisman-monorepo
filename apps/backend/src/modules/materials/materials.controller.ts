@@ -14,6 +14,7 @@ import { MaterialsService } from './materials.service';
 import { ApiTags } from '@nestjs/swagger';
 import {
   CreateMaterialDto,
+  FindAllMaterialByWarehouseIdQueryDto,
   FindAllMaterialQueryDto,
   UpdateMaterialDto
 } from './dto/material.dto';
@@ -37,9 +38,10 @@ export class MaterialsController {
 
   @Get('warehouse/:warehouseId')
   findAllByWarehouseId(
-    @Param('warehouseId', ParseIntPipe) warehouseId: number
+    @Param('warehouseId', ParseIntPipe) warehouseId: number,
+    @Query() queryParams: FindAllMaterialByWarehouseIdQueryDto
   ) {
-    return this.materialsService.findAllByWarehouseId(warehouseId);
+    return this.materialsService.findAllByWarehouseId(warehouseId, queryParams);
   }
 
   @Get(':id')

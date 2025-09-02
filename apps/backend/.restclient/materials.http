@@ -29,6 +29,14 @@ GET {{urlLocal}}/warehouse/1
 # &limit=30
 Authorization: Bearer {{token}}
 
+### GET all
+GET {{urlLocal}}/warehouse/1
+?onlyWarehouse= "true"
+# &dateStart=2023-01-01
+# &dateEnd=2023-12-31
+# &limit=30
+Authorization: Bearer {{token}}
+
 ### GET one
 # @name material
 GET {{urlLocal}}/302400026280
