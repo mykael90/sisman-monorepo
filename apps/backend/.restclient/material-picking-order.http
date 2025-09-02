@@ -65,19 +65,24 @@ Authorization: Bearer {{token}}
 
 {
     "pickingOrderNumber": "PICK-{{$timestamp}}",
+    "proccessedByUser": {"id": 3},
+    "warehouse": {
+        "id": 1
+    },
+    
     "warehouse": {
         "id": 1
     },
     "requestedByUser": {"id": 1},
     "requestedAt": "2024-07-25T11:00:00Z",
     "materialRequest": {
-        "id": 337
+        "id": 216
     },
     "items": [
         {
-            "materialRequestItemId": 496,
-            "globalMaterialId": "302400002280",
-            "quantityToPick": 1
+            "materialRequestItemId": 222,
+            "globalMaterialId": "3024000000161",
+            "quantityToPick": 7
         } 
             ],
     "desiredPickupDate": "2024-07-26T09:00:00Z",
@@ -183,6 +188,17 @@ Authorization: Bearer {{token}}
 {
     "userId": 2,
     "status": "READY_FOR_PICKUP"
+}
+
+### PUT - Update status to FULLY_WITHDRAWN
+# @prompt id
+PUT {{urlLocal}}/operation-by-status/{{id}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "userId": 2,
+    "status": "FULLY_WITHDRAWN"
 }
 
 ### PUT - Update status to CANCELLED

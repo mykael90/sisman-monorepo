@@ -30,8 +30,13 @@ Authorization: Bearer {{token}}
     "items": [
         {
             "globalMaterialId": "3024000000161",
-            "quantityRestricted":10,
+            "quantityRestricted":14,
             "targetMaterialRequestItemId": 222
+        },
+        {
+            "globalMaterialId": "302400030099",
+            "quantityRestricted":10,
+            "targetMaterialRequestItemId": 223
         }
     ]
 }

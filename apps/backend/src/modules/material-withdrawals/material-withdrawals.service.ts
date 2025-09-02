@@ -64,12 +64,13 @@ export class MaterialWithdrawalsService {
   };
 
   /**
-   * Método público para criar uma ordem de separação.
+   * Método público para criar uma ordem de retirada.
    * Gerencia a transação: inicia uma nova ou utiliza uma existente.
    */
   async create(
     data: CreateMaterialWithdrawalWithRelationsDto,
-    tx?: Prisma.TransactionClient
+    tx?: Prisma.TransactionClient,
+    fromPickingOrder?: boolean
   ): Promise<MaterialWithdrawalWithRelationsResponseDto> {
     try {
       if (tx) {
@@ -85,7 +86,8 @@ export class MaterialWithdrawalsService {
       return await this.prisma.$transaction(async (prismaTransactionClient) => {
         return await this._createWithdrawalLogic(
           data,
-          prismaTransactionClient as any
+          prismaTransactionClient as any,
+          fromPickingOrder
         );
       });
     } catch (error) {
@@ -99,7 +101,8 @@ export class MaterialWithdrawalsService {
 
   private async _createWithdrawalLogic(
     data: CreateMaterialWithdrawalWithRelationsDto,
-    prisma: PrismaClient
+    prisma: PrismaClient,
+    fromPickingOrder?: boolean
   ): Promise<MaterialWithdrawalWithRelationsResponseDto> {
     const {
       warehouse,
@@ -156,67 +159,70 @@ export class MaterialWithdrawalsService {
     };
 
     this.logger.log(`Iniciando criação da retirada/saída de material...`);
-    //Etapa 0 verificar para os itens que tem saldo inicial definido se a saída/retirada é possível
-    await this._canWithdrawWarehouseStock(
-      prisma as any,
-      warehouse.id,
-      items.map((item) => ({
-        globalMaterialId: item.globalMaterialId,
-        quantityWithdrawn: item.quantityWithdrawn
-      }))
-    );
+    //Se vier de uma reserva não faz a verificação, ja foi feita durante a reserva.
+    if (!fromPickingOrder) {
+      //Etapa 0 verificar para os itens que tem saldo inicial definido se a saída/retirada é possível
+      await this._canWithdrawWarehouseStock(
+        prisma as any,
+        warehouse.id,
+        items.map((item) => ({
+          globalMaterialId: item.globalMaterialId,
+          quantityWithdrawn: item.quantityWithdrawn
+        }))
+      );
 
-    // Etapa 01 se a retirada estiver relacionada a uma requisição de material, verificar o saldo efetivo livre dos itens
-    // Nessa verificação retorna um update do restrictionOrderItem da requisicao de material caso precise liberar itens restritos para retirada
-    if (materialRequest?.id) {
-      const updateItemsForRestrictionOrder =
-        await this._canWithdrawWithMaterialRequestAndNeedRelease(
-          materialRequest.id,
-          items.map((item) => ({
-            materialRequestItemId: item.materialRequestItemId,
-            quantityWithdrawn: item.quantityWithdrawn
-          }))
-        );
+      // Etapa 01 se a retirada estiver relacionada a uma requisição de material, verificar o saldo efetivo livre dos itens
+      // Nessa verificação retorna um update do restrictionOrderItem da requisicao de material caso precise liberar itens restritos para retirada
+      if (materialRequest?.id) {
+        const updateItemsForRestrictionOrder =
+          await this._canWithdrawWithMaterialRequestAndNeedRelease(
+            materialRequest.id,
+            items.map((item) => ({
+              materialRequestItemId: item.materialRequestItemId,
+              quantityWithdrawn: item.quantityWithdrawn
+            }))
+          );
 
-      //se tiver retorno, precisa liberar um ou mais itens das restrições
-      if (updateItemsForRestrictionOrder) {
-        const restrictionOrder =
-          await this.prisma.materialRestrictionOrder.findUnique({
-            where: {
-              targetMaterialRequestId: materialRequest.id
-            },
-            include: {
-              items: true
-            }
+        //se tiver retorno, precisa liberar um ou mais itens das restrições
+        if (updateItemsForRestrictionOrder) {
+          const restrictionOrder =
+            await this.prisma.materialRestrictionOrder.findUnique({
+              where: {
+                targetMaterialRequestId: materialRequest.id
+              },
+              include: {
+                items: true
+              }
+            });
+
+          const updatesMap = new Map(
+            updateItemsForRestrictionOrder.map((item) => [
+              item.targetMaterialRequestItemId,
+              item
+            ])
+          );
+
+          //logica para sobrescrever os items que precisam ser mudados
+          const mergedItems = restrictionOrder.items.map((item) => {
+            const update = updatesMap.get(item.targetMaterialRequestItemId);
+            return update ? { ...item, ...update } : item;
           });
 
-        const updatesMap = new Map(
-          updateItemsForRestrictionOrder.map((item) => [
-            item.targetMaterialRequestItemId,
-            item
-          ])
-        );
+          const updateRestrictionOrder: UpdateMaterialRestrictionOrderWithRelationsDto =
+            {
+              id: restrictionOrder.id,
+              processedByUser: { id: processedByUser.id } as any,
+              processedAt: new Date(),
+              items: mergedItems
+            };
 
-        //logica para sobrescrever os items que precisam ser mudados
-        const mergedItems = restrictionOrder.items.map((item) => {
-          const update = updatesMap.get(item.targetMaterialRequestItemId);
-          return update ? { ...item, ...update } : item;
-        });
-
-        const updateRestrictionOrder: UpdateMaterialRestrictionOrderWithRelationsDto =
-          {
-            id: restrictionOrder.id,
-            processedByUser: { id: processedByUser.id } as any,
-            processedAt: new Date(),
-            items: mergedItems
-          };
-
-        // atualizar a ordem de restricao para liberar os items necessarios para retirada
-        await this.materialRestrictionOrdersService.update(
-          restrictionOrder.id,
-          updateRestrictionOrder,
-          prisma as any
-        );
+          // atualizar a ordem de restricao para liberar os items necessarios para retirada
+          await this.materialRestrictionOrdersService.update(
+            restrictionOrder.id,
+            updateRestrictionOrder,
+            prisma as any
+          );
+        }
       }
     }
 

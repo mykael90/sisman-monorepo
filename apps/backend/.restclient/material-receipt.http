@@ -36,6 +36,14 @@ Authorization: Bearer {{token}}
             "quantityRejected": 0,
             "unitPrice": 0.05,
             "materialRequestItemId": 222
+        },
+        {
+            "materialId": "302400030099",
+            "quantityExpected": 50,
+            "quantityReceived": 50,
+            "quantityRejected": 0,
+            "unitPrice": 0.26,
+            "materialRequestItemId": 223
         }
     ],
     "materialRequest": {
