@@ -80,7 +80,7 @@ export function CardMaterialRequestLinkDetails({
                 key: item.key,
                 globalMaterialId: item.globalMaterialId,
                 materialInstanceId: undefined, // Assuming global material for now
-                quantityWithdrawn: Number(item.quantityFreeBalancePotential),
+                quantityWithdrawn: Number(item.quantityBalancePotential),
                 materialRequestItemId: item.materialRequestItemId,
                 unitPrice: item.unitPrice
               })
