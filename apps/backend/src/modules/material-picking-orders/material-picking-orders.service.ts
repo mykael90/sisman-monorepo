@@ -37,6 +37,11 @@ import {
   MaterialWithdrawalWithRelationsResponseDto
 } from '../material-withdrawals/dto/material-withdrawal.dto';
 import { MaterialWithdrawalsService } from '../material-withdrawals/material-withdrawals.service';
+import {
+  UpdateMaterialRestrictionOrderItemDto,
+  UpdateMaterialRestrictionOrderWithRelationsDto
+} from '../material-restriction-orders/dto/material-restriction-order.dto';
+import { MaterialRestrictionOrdersService } from '../material-restriction-orders/material-restriction-orders.service';
 
 type PrismaTransactionClient = Omit<
   PrismaService,
@@ -51,7 +56,8 @@ export class MaterialPickingOrdersService {
     private readonly materialStockMovementsService: MaterialStockMovementsService,
     private readonly materialRequestsService: MaterialRequestsService,
     private readonly warehousesService: WarehousesService,
-    private readonly materialWithdrawalsService: MaterialWithdrawalsService
+    private readonly materialWithdrawalsService: MaterialWithdrawalsService,
+    private readonly materialRestrictionOrdersService: MaterialRestrictionOrdersService
   ) {}
 
   private readonly includeRelations: Prisma.MaterialPickingOrderInclude = {
@@ -308,15 +314,16 @@ export class MaterialPickingOrdersService {
   /**
    * Valida se uma nova ordem de separação (reserva) pode ser criada ou atualizada.
    * Verifica contra o saldo potencial livre.
+   * Retorna um objeto com items a serem liberados da ordem de restrição se houver necessidade
    */
-  private async _canOrderPickingMaterialRequest(
+  private async _canOrderPickingMaterialRequestAndNeedRelease(
     materialRequestId: number,
     itemsPickingOrder: Array<{
       quantityToPick: Prisma.Decimal;
       materialRequestItemId: number;
     }>,
     pickingOrderIdToExclude?: number
-  ): Promise<void> {
+  ): Promise<void | UpdateMaterialRestrictionOrderItemDto[]> {
     await this.materialRequestsService.validateOperationAgainstBalanceAndCheckItemsForRelease(
       materialRequestId,
       // Mapeia do formato específico para o genérico
@@ -440,7 +447,54 @@ export class MaterialPickingOrdersService {
         include: { items: true }
       });
 
-      await this._canOrderPickingMaterialRequest(materialRequest.id, items);
+      //  se a reserva estiver relacionada a uma requisição de material, verificar o saldo efetivo livre dos itens
+      // Nessa verificação retorna um update do restrictionOrderItem da requisicao de material caso precise liberar itens restritos para retirada
+      const updateItemsForRestrictionOrder =
+        await this._canOrderPickingMaterialRequestAndNeedRelease(
+          materialRequest.id,
+          items
+        );
+
+      //se tiver retorno, precisa liberar um ou mais itens das restrições
+      if (updateItemsForRestrictionOrder) {
+        const restrictionOrder =
+          await this.prisma.materialRestrictionOrder.findUnique({
+            where: {
+              targetMaterialRequestId: materialRequest.id
+            },
+            include: {
+              items: true
+            }
+          });
+
+        const updatesMap = new Map(
+          updateItemsForRestrictionOrder.map((item) => [
+            item.targetMaterialRequestItemId,
+            item
+          ])
+        );
+
+        //logica para sobrescrever os items que precisam ser mudados
+        const mergedItems = restrictionOrder.items.map((item) => {
+          const update = updatesMap.get(item.targetMaterialRequestItemId);
+          return update ? { ...item, ...update } : item;
+        });
+
+        const updateRestrictionOrder: UpdateMaterialRestrictionOrderWithRelationsDto =
+          {
+            id: restrictionOrder.id,
+            processedByUser: { id: proccessedByUser.id } as any,
+            processedAt: new Date(),
+            items: mergedItems
+          };
+
+        // atualizar a ordem de restricao para liberar os items necessarios para retirada
+        await this.materialRestrictionOrdersService.update(
+          restrictionOrder.id,
+          updateRestrictionOrder,
+          prisma as any
+        );
+      }
 
       if (maintenanceRequest) {
         if (!maintenanceRequest.id) {
@@ -660,12 +714,55 @@ export class MaterialPickingOrdersService {
 
     // --- 3. VALIDAÇÃO DE QUANTIDADE (se aplicável) ---
     // Garante que a soma das reservas não exceda o solicitado na requisição de material.
+    // Nessa verificação retorna um update do restrictionOrderItem da requisicao de material caso precise liberar itens restritos para retirada
     if (itemsToUpdate && existingOrder.materialRequest) {
-      await this._canOrderPickingMaterialRequest(
-        existingOrder.materialRequest.id,
-        itemsToUpdate,
-        id // Passa o ID da ordem atual para ser ignorado na validação
-      );
+      const updateItemsForRestrictionOrder =
+        await this._canOrderPickingMaterialRequestAndNeedRelease(
+          existingOrder.materialRequest.id,
+          itemsToUpdate,
+          id // Passa o ID da ordem atual para ser ignorado na validação
+        );
+
+      //se tiver retorno, precisa liberar um ou mais itens das restrições
+      if (updateItemsForRestrictionOrder) {
+        const restrictionOrder =
+          await this.prisma.materialRestrictionOrder.findUnique({
+            where: {
+              targetMaterialRequestId: existingOrder.materialRequest.id
+            },
+            include: {
+              items: true
+            }
+          });
+
+        const updatesMap = new Map(
+          updateItemsForRestrictionOrder.map((item) => [
+            item.targetMaterialRequestItemId,
+            item
+          ])
+        );
+
+        //logica para sobrescrever os items que precisam ser mudados
+        const mergedItems = restrictionOrder.items.map((item) => {
+          const update = updatesMap.get(item.targetMaterialRequestItemId);
+          return update ? { ...item, ...update } : item;
+        });
+
+        const updateRestrictionOrder: UpdateMaterialRestrictionOrderWithRelationsDto =
+          {
+            id: restrictionOrder.id,
+            processedByUser: { id: data.proccessedByUser.id } as any,
+            processedAt: new Date(),
+            items: mergedItems
+          };
+
+        // atualizar a ordem de restricao para liberar os items necessarios para retirada
+        await this.materialRestrictionOrdersService.update(
+          restrictionOrder.id,
+          updateRestrictionOrder,
+          prisma as any
+        );
+      }
     }
 
     // verificar de forma geral no deposito se tem saldo para os items que vão estão sendo solicitados para reserva na atualização.

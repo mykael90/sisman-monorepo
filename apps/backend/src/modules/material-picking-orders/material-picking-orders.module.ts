@@ -5,13 +5,15 @@ import { MaterialStockMovementsModule } from '../material-stock-movements/materi
 import { MaterialRequestsModule } from '../material-requests/material-requests.module';
 import { WarehousesModule } from '../warehouses/warehouses.module';
 import { MaterialWithdrawalsModule } from '../material-withdrawals/material-withdrawals.module';
+import { MaterialRestrictionOrdersModule } from '../material-restriction-orders/material-restriction-orders.module';
 
 @Module({
   imports: [
     MaterialStockMovementsModule,
     MaterialRequestsModule,
     WarehousesModule,
-    MaterialWithdrawalsModule // Adicionado para ter acesso ao MaterialWithdrawalsService
+    MaterialWithdrawalsModule, // Adicionado para ter acesso ao MaterialWithdrawalsService
+    MaterialRestrictionOrdersModule
   ],
   controllers: [MaterialPickingOrdersController],
   providers: [MaterialPickingOrdersService],
