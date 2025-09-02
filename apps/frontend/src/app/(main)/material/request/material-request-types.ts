@@ -36,13 +36,14 @@ export interface IItemMaterialRequestBalance {
   name: string;
   description: string;
   unitOfMeasure: string;
-  quantityRequested: number;
-  quantityApproved: number;
-  quantityReceivedSum: number;
-  quantityWithdrawnSum: number;
-  quantityReserved: number;
-  quantityRestricted: number;
-  quantityFreeBalanceEffective: number;
-  quantityFreeBalancePotential: number;
-  unitPrice: number;
+  quantityRequested: string;
+  quantityApproved: string;
+  quantityReceivedSum: string;
+  quantityWithdrawnSum: string;
+  quantityReserved: string;
+  quantityRestricted: string;
+  quantityFreeBalanceEffective: string;
+  quantityFreeBalancePotential: string;
+  quantityBalancePotential: string;
+  unitPrice: string;
 }

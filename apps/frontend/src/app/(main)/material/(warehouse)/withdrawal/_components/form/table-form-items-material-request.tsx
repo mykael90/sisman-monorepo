@@ -4,13 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Trash2, Minus, Plus, Info } from 'lucide-react';
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger
-} from '@/components/ui/hover-card';
+import { InfoHoverCard } from '@/components/info-hover-card';
 import { IMaterialWithdrawalItemAddForm } from '../../withdrawal-types';
-import { IItemMaterialRequestBalance } from '../../../../request/material-request-types';
 import { useMemo } from 'react';
 import { IItemWithdrawalMaterialRequestForm } from '../card-material-link-details';
 import { useMediaQuery } from '@/hooks/use-media-query';
@@ -62,12 +57,12 @@ export function TableFormItemsMaterialRequest({
     material: IItemWithdrawalMaterialRequestForm,
     newQuantity: number
   ): number => {
-    const freeBalancePotential = Number(material.quantityFreeBalancePotential);
-    const isFreeBalanceDefined = !isNaN(freeBalancePotential);
+    const balancePotential = Number(material.quantityBalancePotential);
+    const isFreeBalanceDefined = !isNaN(balancePotential);
     let quantity = Math.max(0, newQuantity);
 
     if (isFreeBalanceDefined) {
-      quantity = Math.min(freeBalancePotential, quantity);
+      quantity = Math.min(balancePotential, quantity);
     }
     return quantity;
   };
@@ -147,55 +142,43 @@ export function TableFormItemsMaterialRequest({
                 R$ Unitário
               </th>
               <th className='px-4 py-3 text-center text-sm font-medium text-gray-900'>
-                Solicitado
+                Solicitado na RM
               </th>
               <th className='px-4 py-3 text-center text-sm font-medium text-gray-900'>
                 <div className='flex items-center justify-center gap-2'>
                   <div className='w-min'>Saldo Efetivo</div>
-                  <HoverCard>
-                    <HoverCardTrigger asChild>
-                      {/* AJUSTE: Adicionado flex-shrink-0 para manter o tamanho do ícone */}
-                      <Info className='h-4 w-4 flex-shrink-0 cursor-pointer text-gray-500' />
-                    </HoverCardTrigger>
-                    <HoverCardContent className='w-80 text-sm'>
-                      <div className='space-y-1'>
-                        <p className='font-bold'>Cálculo do Saldo Efetivo</p>
-                        <p className='italic'>
-                          Representa o saldo físico disponível (livre) agora.
-                        </p>
-                        <hr className='my-2' />
+                  <InfoHoverCard
+                    title='Cálculo do Saldo Efetivo Livre'
+                    subtitle='Representa o saldo físico disponível (livre) agora.'
+                    content={
+                      <>
                         <p className='pl-2 text-green-700'>+ Qtd. Recebida</p>
                         <p className='pl-2 text-red-700'>- Qtd. Retirada</p>
                         <p className='pl-2 text-red-700'>- Qtd. Reservada</p>
                         <p className='pl-2 text-red-700'>- Qtd. Restrita</p>
-                      </div>
-                    </HoverCardContent>
-                  </HoverCard>
+                      </>
+                    }
+                  />
                 </div>
               </th>
               <th className='px-4 py-3 text-center text-sm font-medium text-gray-900'>
                 <div className='flex items-center justify-center gap-2'>
                   <div className='w-min'>Saldo Potencial</div>
-                  <HoverCard>
-                    <HoverCardTrigger asChild>
-                      {/* AJUSTE: Adicionado flex-shrink-0 para manter o tamanho do ícone */}
-                      <Info className='h-4 w-4 flex-shrink-0 cursor-pointer text-gray-500' />
-                    </HoverCardTrigger>
-                    <HoverCardContent className='w-80 text-sm'>
-                      <div className='space-y-1'>
-                        <p className='font-bold'>Cálculo do Saldo Potencial</p>
-                        <p className='italic'>
-                          É o saldo que estará disponível para retirada nesta
-                          solicitação. Considera a quantidade solicitada.
-                        </p>
-                        <hr className='my-2' />
+                  <InfoHoverCard
+                    title='Cálculo do Saldo Potencial'
+                    subtitle='É o saldo que estará disponível para retirada nesta
+                          solicitação. Considera a quantidade solicitada e
+                          ignora a quantidade restrita (caso necessário a
+                          quantidade restrita é desbloqueada automaticamente
+                          durante a retirada).'
+                    content={
+                      <>
                         <p className='pl-2 text-green-700'>+ Qtd. Solicitada</p>
                         <p className='pl-2 text-red-700'>- Qtd. Retirada</p>
                         <p className='pl-2 text-red-700'>- Qtd. Reservada</p>
-                        <p className='pl-2 text-red-700'>- Qtd. Restrita</p>
-                      </div>
-                    </HoverCardContent>
-                  </HoverCard>
+                      </>
+                    }
+                  />
                 </div>
               </th>
               <th className='px-4 py-3 text-center text-sm font-medium text-gray-900'>
@@ -223,10 +206,8 @@ export function TableFormItemsMaterialRequest({
               const isFreeBalanceEffectiveDefined =
                 !isNaN(freeBalanceEffective);
 
-              const freeBalancePotential = Number(
-                info?.quantityFreeBalancePotential
-              );
-              const isFreeBalanceDefined = !isNaN(freeBalancePotential);
+              const balancePotential = Number(info?.quantityBalancePotential);
+              const isFreeBalanceDefined = !isNaN(balancePotential);
 
               return (
                 <tr key={material.key} className='hover:bg-gray-50'>
@@ -234,7 +215,14 @@ export function TableFormItemsMaterialRequest({
                     {material.globalMaterialId}
                   </td>
                   <td className='px-4 py-3 text-sm text-gray-900'>
-                    {info?.name}
+                    <div className='flex items-center justify-start gap-2'>
+                      {info?.name}
+                      <InfoHoverCard
+                        title='Descrição do Material'
+                        content={info?.description}
+                        className='w-200'
+                      />
+                    </div>
                   </td>
                   <td className='px-4 py-3 text-sm text-gray-900'>
                     {info?.unitOfMeasure}
@@ -245,10 +233,12 @@ export function TableFormItemsMaterialRequest({
                       //   style: 'currency',
                       //   currency: 'BRL'
                       // })
-                      Number(material.unitPrice).toLocaleString('pt-BR', {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2
-                      })
+                      <Badge variant={'secondary'}>
+                        {Number(material.unitPrice).toLocaleString('pt-BR', {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2
+                        })}
+                      </Badge>
                     ) : (
                       <Badge variant='outline'>Indefinido</Badge>
                     )}
@@ -259,14 +249,11 @@ export function TableFormItemsMaterialRequest({
                       <Badge variant='outline'>
                         {Number(info?.quantityRequested)}
                       </Badge>
-                      <HoverCard>
-                        <HoverCardTrigger asChild>
-                          <Info className='h-4 w-4 flex-shrink-0 cursor-pointer text-gray-500' />
-                        </HoverCardTrigger>
-                        <HoverCardContent className='w-64 text-sm'>
-                          <div className='space-y-1 font-medium'>
-                            <p className='font-bold'>Detalhes da Requisição</p>
-                            <hr className='my-2' />
+                      <InfoHoverCard
+                        title='Detalhes das Movimentações'
+                        subtitle='Movimentações referentes a requisição de material.'
+                        content={
+                          <>
                             <div className='flex justify-between'>
                               <span>Recebido:</span>
                               <span>{Number(info?.quantityReceivedSum)}</span>
@@ -283,20 +270,21 @@ export function TableFormItemsMaterialRequest({
                               <span>Restrito:</span>
                               <span>{Number(info?.quantityRestricted)}</span>
                             </div>
-                          </div>
-                        </HoverCardContent>
-                      </HoverCard>
+                          </>
+                        }
+                      />
                     </div>
                   </td>
                   <td className='px-4 py-3 text-center text-sm'>
                     {isFreeBalanceEffectiveDefined ? (
                       <Badge
                         variant={
-                          freeBalanceEffective > 50
-                            ? 'default'
-                            : freeBalanceEffective > 10
-                              ? 'secondary'
-                              : 'destructive'
+                          // freeBalanceEffective > 50
+                          //   ? 'default'
+                          //   : freeBalanceEffective > 10
+                          //     ? 'secondary'
+                          //     : 'destructive'
+                          'outline'
                         }
                       >
                         {freeBalanceEffective}
@@ -309,14 +297,15 @@ export function TableFormItemsMaterialRequest({
                     {isFreeBalanceDefined ? (
                       <Badge
                         variant={
-                          freeBalancePotential > 50
-                            ? 'default'
-                            : freeBalancePotential > 10
-                              ? 'secondary'
-                              : 'destructive'
+                          // balancePotential > 50
+                          //   ? 'default'
+                          //   : balancePotential > 10
+                          //     ? 'secondary'
+                          //     : 'destructive'
+                          'default'
                         }
                       >
-                        {freeBalancePotential}
+                        {balancePotential}
                       </Badge>
                     ) : (
                       <Badge variant='outline'>Indefinido</Badge>
@@ -359,7 +348,7 @@ export function TableFormItemsMaterialRequest({
                           disabled={
                             isFreeBalanceDefined &&
                             Number(material.quantityWithdrawn) >=
-                              freeBalancePotential
+                              balancePotential
                           }
                         >
                           <Plus className='h-3 w-3' />
@@ -373,7 +362,7 @@ export function TableFormItemsMaterialRequest({
                         variant='outline'
                         size='sm'
                         onClick={() => onRemove(material.key)}
-                        className='text-red-600 hover:text-red-700'
+                        className='hover:bg-destructive text-destructive hover:text-white'
                       >
                         <Trash2 className='h-4 w-4' />
                       </Button>

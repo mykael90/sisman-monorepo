@@ -11,6 +11,7 @@ import {
   HoverCardTrigger
 } from '@/components/ui/hover-card';
 import React from 'react';
+import { InfoHoverCard } from '@/components/info-hover-card';
 
 const columnHelper = createColumnHelper<IWarehouseStockWithRelations>();
 
@@ -255,35 +256,3 @@ export const columns = (
     )
   })
 ];
-
-type InfoHoverCardProps = {
-  title?: string;
-  subtitle?: string;
-  content?: React.ReactNode;
-};
-
-const InfoHoverCard: React.FC<InfoHoverCardProps> = ({
-  title,
-  subtitle,
-  content
-}) => {
-  return (
-    <HoverCard>
-      <HoverCardTrigger asChild>
-        <Info className='h-4 w-4 flex-shrink-0 cursor-pointer text-gray-500' />
-      </HoverCardTrigger>
-      <HoverCardContent className='w-80 rounded-sm border bg-white text-sm'>
-        <div className='space-y-1'>
-          {title && <p className='font-bold'>{title}</p>}
-          {subtitle && <p className='italic'>{subtitle}</p>}
-          {content && (
-            <>
-              <hr className='my-2' />
-              {content}
-            </>
-          )}
-        </div>
-      </HoverCardContent>
-    </HoverCard>
-  );
-};
