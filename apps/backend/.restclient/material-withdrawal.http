@@ -50,9 +50,9 @@ Content-Type: {{contentType}}
 Authorization: Bearer {{token}}
 
 {
-    "withdrawalNumber": "RET-007",
+    "withdrawalNumber": "RET-102",
     "withdrawalDate": "2024-07-25T10:00:00Z",
-    "maintenanceRequest": {"id": 79},
+    "maintenanceRequest": {"id": 43},
     "warehouse": {
         "id": 1
     },
@@ -67,13 +67,14 @@ Authorization: Bearer {{token}}
     },
     "items": [
         {
-            "globalMaterialId": "302400029547",
+            "globalMaterialId": "3024000000161",
             "quantityWithdrawn": 1,
-            "materialRequestItemId": 292
+            "materialRequestItemId": 222,
+            "unitPrice": 0.05
         }
     ],
     "materialRequest": {
-        "id": 246
+        "id": 216
     }
 }
 ### POST

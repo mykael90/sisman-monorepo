@@ -20,7 +20,7 @@ import {
   Prisma,
   RestrictionOrderStatus
 } from '@sisman/prisma';
-import { includes } from 'lodash';
+import { UpdateMaterialRestrictionOrderItemDto } from '../material-restriction-orders/dto/material-restriction-order.dto';
 
 // Definir uma interface para as opções de exclusão para clareza
 export interface ShowBalanceOptions {
@@ -34,7 +34,7 @@ type OperationType = 'RESERVATION' | 'WITHDRAWAL' | 'RESTRICTION';
 
 type OperationConfig = {
   type: OperationType;
-  balanceToCheck: 'potential' | 'effective';
+  balanceToCheck: 'potential' | 'effective' | 'freePotential';
   idToExclude?: ShowBalanceOptions; // Reutilizando a interface
 };
 
@@ -371,6 +371,9 @@ export class MaterialRequestsService {
               .minus(quantityRestricted)
           : quantityFreeBalanceEffective;
 
+        const quantityBalancePotential =
+          quantityFreeBalancePotential.plus(quantityRestricted);
+
         // Montar o objeto de retorno, convertendo para número no final
         return {
           globalMaterialId,
@@ -378,15 +381,16 @@ export class MaterialRequestsService {
           name: item.requestedGlobalMaterial?.name,
           description: item.requestedGlobalMaterial?.description,
           unitOfMeasure: item.requestedGlobalMaterial?.unitOfMeasure,
-          quantityRequested: quantityRequested.toNumber(),
-          quantityApproved: quantityApproved.toNumber(),
-          quantityReceivedSum: quantityReceivedSum.toNumber(),
-          quantityWithdrawnSum: quantityWithdrawnSum.toNumber(),
-          quantityReserved: quantityReserved.toNumber(),
-          quantityRestricted: quantityRestricted.toNumber(),
-          quantityFreeBalanceEffective: quantityFreeBalanceEffective.toNumber(),
-          quantityFreeBalancePotential: quantityFreeBalancePotential.toNumber(),
-          unitPrice: item.unitPrice.toNumber()
+          quantityRequested: quantityRequested,
+          quantityApproved: quantityApproved,
+          quantityReceivedSum: quantityReceivedSum,
+          quantityWithdrawnSum: quantityWithdrawnSum,
+          quantityReserved: quantityReserved,
+          quantityRestricted: quantityRestricted,
+          quantityFreeBalanceEffective: quantityFreeBalanceEffective,
+          quantityFreeBalancePotential: quantityFreeBalancePotential,
+          quantityBalancePotential: quantityBalancePotential,
+          unitPrice: item.unitPrice
         };
       });
 
@@ -689,14 +693,14 @@ export class MaterialRequestsService {
   // 2. O NOVO MÉTODO GENÉRICO
   //faz a validação antes de permitir uma operação de saída, reserva ou restrição
   // associada a uma requisição de material
-  async validateOperationAgainstBalance(
+  async validateOperationAgainstBalanceAndCheckItemsForRelease(
     materialRequestId: number,
     itemsToVerify: Array<{
       materialRequestItemId: number;
       quantity: Prisma.Decimal;
     }>,
     config: OperationConfig
-  ): Promise<void> {
+  ): Promise<void | UpdateMaterialRestrictionOrderItemDto[]> {
     if (!itemsToVerify || itemsToVerify.length === 0) {
       return;
     }
@@ -724,6 +728,9 @@ export class MaterialRequestsService {
       RESTRICTION: { verb: 'restringir', noun: 'restrição' }
     }[config.type];
 
+    const updateItemsForRestrictionOrder: UpdateMaterialRestrictionOrderItemDto[] =
+      [];
+
     for (const item of itemsToVerify) {
       const balanceItem = balanceMap.get(item.materialRequestItemId);
       if (!balanceItem) {
@@ -735,8 +742,12 @@ export class MaterialRequestsService {
       // Escolhe qual balanço usar para a validação
       const availableBalance =
         config.balanceToCheck === 'potential'
-          ? new Prisma.Decimal(balanceItem.quantityFreeBalancePotential)
+          ? new Prisma.Decimal(balanceItem.quantityBalancePotential)
           : new Prisma.Decimal(balanceItem.quantityFreeBalanceEffective);
+
+      const availableBalanceFreePotential = new Prisma.Decimal(
+        balanceItem.quantityFreeBalancePotential
+      );
 
       const quantityToVerify = new Prisma.Decimal(item.quantity);
 
@@ -753,6 +764,26 @@ export class MaterialRequestsService {
             `A quantidade para esta ${opTexts.noun} excede o saldo disponível de ${availableBalance.toString()}.`
         );
       }
+
+      // Se a validação é do tipo potencial verifique se é necessário liberar algumas restrições e retorne um objeto com os ids e a quantidade a ser liberada
+      //Validação secundária para saber se é necessário destravar algums items para atender a retirada ou reserva
+      if (
+        config.balanceToCheck === 'potential' &&
+        config.type !== 'RESTRICTION' &&
+        quantityToVerify.greaterThan(availableBalanceFreePotential)
+      ) {
+        updateItemsForRestrictionOrder.push({
+          globalMaterialId: balanceItem.globalMaterialId,
+          targetMaterialRequestItemId: balanceItem.materialRequestItemId,
+          quantityRestricted: balanceItem.quantityRestricted.minus(
+            quantityToVerify.minus(availableBalanceFreePotential)
+          )
+        });
+      }
+    }
+
+    if (updateItemsForRestrictionOrder.length > 0) {
+      return updateItemsForRestrictionOrder;
     }
   }
 }

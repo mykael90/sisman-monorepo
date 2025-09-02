@@ -17,6 +17,37 @@ Content-Type: {{contentType}}
 Authorization: Bearer {{token}}
 
 {
+    "receiptNumber": "REC-{{$timestamp}}",
+    "receiptDate": "2024-07-25T10:00:00Z",
+    "movementType": {
+        "code": "IN_CENTRAL"
+    },
+    "destinationWarehouse": {
+        "id": 1
+    },
+    "processedByUser": {
+        "id": 1
+    },
+    "items": [
+        {
+            "materialId": "3024000000161",
+            "quantityExpected": 50,
+            "quantityReceived": 50,
+            "quantityRejected": 0,
+            "unitPrice": 0.05,
+            "materialRequestItemId": 222
+        }
+    ],
+    "materialRequest": {
+        "id": 216
+    }
+}
+### POST
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
     "receiptNumber": "REC-015",
     "receiptDate": "2024-07-25T10:00:00Z",
     "movementType": {

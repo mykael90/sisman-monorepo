@@ -317,7 +317,7 @@ export class MaterialPickingOrdersService {
     }>,
     pickingOrderIdToExclude?: number
   ): Promise<void> {
-    await this.materialRequestsService.validateOperationAgainstBalance(
+    await this.materialRequestsService.validateOperationAgainstBalanceAndCheckItemsForRelease(
       materialRequestId,
       // Mapeia do formato específico para o genérico
       itemsPickingOrder.map((item) => ({

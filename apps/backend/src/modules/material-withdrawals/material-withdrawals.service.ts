@@ -25,6 +25,8 @@ import { CreateMaterialStockMovementWithRelationsDto } from '../material-stock-m
 import { MaterialRequestsService } from '../material-requests/material-requests.service';
 import { WarehousesService } from '../warehouses/warehouses.service';
 import { Decimal } from '@sisman/prisma/generated/client/runtime/library';
+import { UpdateMaterialRestrictionOrderItemDto } from '../material-restriction-orders/dto/material-restriction-order.dto';
+import { MaterialRestrictionOrdersService } from '../material-restriction-orders/material-restriction-orders.service';
 
 type PrismaTransactionClient = Omit<
   PrismaService,
@@ -38,7 +40,8 @@ export class MaterialWithdrawalsService {
     @Inject(PrismaService) private readonly prisma: ExtendedPrismaClient,
     private readonly materialStockMovementsService: MaterialStockMovementsService,
     private readonly materialRequestsService: MaterialRequestsService,
-    private readonly warehousesService: WarehousesService
+    private readonly warehousesService: WarehousesService,
+    private readonly materialRestrictionOrdersService: MaterialRestrictionOrdersService
   ) {}
 
   private readonly includeRelations: Prisma.MaterialWithdrawalInclude = {
@@ -161,14 +164,54 @@ export class MaterialWithdrawalsService {
     );
 
     // Etapa 01 se a retirada estiver relacionada a uma requisição de material, verificar o saldo efetivo livre dos itens
+    // Nessa verificação retorna um update do restrictionOrderItem da requisicao de material caso precise liberar itens restritos para retirada
     if (materialRequest?.id) {
-      await this._canWithdrawWithMaterialRequest(
-        materialRequest.id,
-        items.map((item) => ({
-          materialRequestItemId: item.materialRequestItemId,
-          quantityWithdrawn: item.quantityWithdrawn
-        }))
-      );
+      const updateItemsForRestrictionOrder =
+        await this._canWithdrawWithMaterialRequestAndNeedRelease(
+          materialRequest.id,
+          items.map((item) => ({
+            materialRequestItemId: item.materialRequestItemId,
+            quantityWithdrawn: item.quantityWithdrawn
+          }))
+        );
+
+      //se tiver retorno, precisa liberar um ou mais itens das restrições
+      if (updateItemsForRestrictionOrder) {
+        const restrictionOrder =
+          await this.prisma.materialRestrictionOrder.findUnique({
+            where: {
+              targetMaterialRequestId: materialRequest.id
+            },
+            include: {
+              items: true
+            }
+          });
+
+        const updatesMap = new Map(
+          updateItemsForRestrictionOrder.map((item) => [
+            item.targetMaterialRequestItemId,
+            item
+          ])
+        );
+
+        //logica para sobrescrever os items que precisam ser mudados
+        const mergedItems = restrictionOrder.items.map((item) => {
+          const update = updatesMap.get(item.targetMaterialRequestItemId);
+          return update ? { ...item, ...update } : item;
+        });
+
+        const updateRestrictionOrder = {
+          id: restrictionOrder.id,
+          items: mergedItems
+        };
+
+        // atualizar a ordem de restricao para liberar os items necessarios para retirada
+        await this.materialRestrictionOrdersService.update(
+          restrictionOrder.id,
+          updateRestrictionOrder,
+          prisma as any
+        );
+      }
     }
 
     //realizar um reduce para calcular o valor da retirada baseado na quantidade e valor unitario dos items
@@ -457,15 +500,15 @@ export class MaterialWithdrawalsService {
    * Valida se uma nova retirada pode ser criada ou atualizada.
    * Verifica contra o saldo efetivo potencial (pode ainda nao estar efetivamente, mas ta garantido de chegar).
    */
-  private async _canWithdrawWithMaterialRequest(
+  private async _canWithdrawWithMaterialRequestAndNeedRelease(
     materialRequestId: number,
     itemsToWithdraw: Array<{
       quantityWithdrawn: Prisma.Decimal;
       materialRequestItemId: number;
     }>,
     withdrawalIdToExclude?: number
-  ): Promise<void> {
-    await this.materialRequestsService.validateOperationAgainstBalance(
+  ): Promise<void | UpdateMaterialRestrictionOrderItemDto[]> {
+    return await this.materialRequestsService.validateOperationAgainstBalanceAndCheckItemsForRelease(
       materialRequestId,
       itemsToWithdraw.map((item) => ({
         materialRequestItemId: item.materialRequestItemId,

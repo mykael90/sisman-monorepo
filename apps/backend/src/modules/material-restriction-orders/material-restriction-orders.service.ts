@@ -822,7 +822,7 @@ export class MaterialRestrictionOrdersService {
     }>,
     restrictionIdToExclude?: number
   ): Promise<void> {
-    await this.materialRequestService.validateOperationAgainstBalance(
+    await this.materialRequestService.validateOperationAgainstBalanceAndCheckItemsForRelease(
       materialRequestId,
       itemsToRestrict.map((item) => ({
         materialRequestItemId: item.targetMaterialRequestItemId,
