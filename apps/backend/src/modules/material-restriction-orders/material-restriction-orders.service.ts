@@ -426,7 +426,13 @@ export class MaterialRestrictionOrdersService {
     prisma?: PrismaClient
   ): Promise<MaterialRestrictionOrderWithRelationsResponseDto> {
     this.logger.log(`Iniciando atualização da ordem de restrição ID ${id}.`);
-    const { status, items: itemsToUpdate, ...restOfData } = data;
+    const {
+      id: _id,
+      status,
+      items: itemsToUpdate,
+      processedByUser,
+      ...restOfData
+    } = data;
 
     try {
       this.logger.log(`Buscando ordem de restrição atual (ID: ${id}).`);
@@ -455,7 +461,7 @@ export class MaterialRestrictionOrdersService {
       const orderInfoForMovement = {
         warehouseId: data.warehouse?.id ?? currentOrder.warehouseId,
         processedByUserId:
-          data.processedByUser?.id ?? currentOrder.processedByUserId,
+          processedByUser?.id ?? currentOrder.processedByUserId,
         maintenanceRequestId:
           currentOrder.targetMaterialRequest?.maintenanceRequestId
       };

@@ -25,7 +25,10 @@ import { CreateMaterialStockMovementWithRelationsDto } from '../material-stock-m
 import { MaterialRequestsService } from '../material-requests/material-requests.service';
 import { WarehousesService } from '../warehouses/warehouses.service';
 import { Decimal } from '@sisman/prisma/generated/client/runtime/library';
-import { UpdateMaterialRestrictionOrderItemDto } from '../material-restriction-orders/dto/material-restriction-order.dto';
+import {
+  UpdateMaterialRestrictionOrderItemDto,
+  UpdateMaterialRestrictionOrderWithRelationsDto
+} from '../material-restriction-orders/dto/material-restriction-order.dto';
 import { MaterialRestrictionOrdersService } from '../material-restriction-orders/material-restriction-orders.service';
 
 type PrismaTransactionClient = Omit<
@@ -200,10 +203,13 @@ export class MaterialWithdrawalsService {
           return update ? { ...item, ...update } : item;
         });
 
-        const updateRestrictionOrder = {
-          id: restrictionOrder.id,
-          items: mergedItems
-        };
+        const updateRestrictionOrder: UpdateMaterialRestrictionOrderWithRelationsDto =
+          {
+            id: restrictionOrder.id,
+            processedByUser: { id: processedByUser.id } as any,
+            processedAt: new Date(),
+            items: mergedItems
+          };
 
         // atualizar a ordem de restricao para liberar os items necessarios para retirada
         await this.materialRestrictionOrdersService.update(
@@ -274,7 +280,8 @@ export class MaterialWithdrawalsService {
           materialWithdrawalItem: { id: createdItem.id } as any,
           maintenanceRequest: maintenanceRequest?.id
             ? ({ id: maintenanceRequest.id } as any)
-            : undefined
+            : undefined,
+          unitPrice: createdItem.unitPrice
         };
 
       // Chama o serviço de movimentação, passando o cliente da transação (tx)

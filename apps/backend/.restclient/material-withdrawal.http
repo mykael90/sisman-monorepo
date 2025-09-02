@@ -50,14 +50,14 @@ Content-Type: {{contentType}}
 Authorization: Bearer {{token}}
 
 {
-    "withdrawalNumber": "RET-102",
+    "withdrawalNumber": "RET-105",
     "withdrawalDate": "2024-07-25T10:00:00Z",
     "maintenanceRequest": {"id": 43},
     "warehouse": {
         "id": 1
     },
     "processedByUser": {
-        "id": 1
+        "id": 3
     },
     "collectedByWorker": {
     "id": 1
