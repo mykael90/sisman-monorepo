@@ -244,7 +244,7 @@ export function TableFormItemsMaterialRequest({
                     )}
                   </td>
                   {/* AJUSTE: Adicionado HoverCard com detalhes na coluna Solicitado */}
-                  <td className='px-4 py-3 text-center text-sm'>
+                  <td className='px-4 py-3 text-right text-sm'>
                     <div className='flex items-center justify-center gap-2'>
                       <Badge variant='outline'>
                         {Number(info?.quantityRequested)}
@@ -275,7 +275,7 @@ export function TableFormItemsMaterialRequest({
                       />
                     </div>
                   </td>
-                  <td className='px-4 py-3 text-center text-sm'>
+                  <td className='px-4 py-3 text-right text-sm'>
                     {isFreeBalanceEffectiveDefined ? (
                       <Badge
                         variant={
@@ -293,7 +293,7 @@ export function TableFormItemsMaterialRequest({
                       <Badge variant='outline'>Indefinido</Badge>
                     )}
                   </td>
-                  <td className='px-4 py-3 text-center text-sm'>
+                  <td className='px-4 py-3 text-right text-sm'>
                     {isFreeBalanceDefined ? (
                       <Badge
                         variant={

@@ -12,6 +12,7 @@ import {
   IWarehouseStockIncludedComputed
 } from '../../../warehouse-stock/warehouse-stock-types';
 import { formatToBRL } from '../../../../../../../lib/utils';
+import { InfoHoverCard } from '../../../../../../../components/info-hover-card';
 
 export type IMaterialWithdrawalItemAddFormInfo = Pick<
   IMaterialWithdrawalItemAddForm,
@@ -133,22 +134,51 @@ export function TableFormItemsGlobal({
           <thead className='bg-gray-50'>
             <tr>
               <th className='px-4 py-3 text-left text-sm font-medium text-gray-900'>
-                Código
+                ID Material Global
               </th>
               <th className='px-4 py-3 text-left text-sm font-medium text-gray-900'>
-                Nome
+                Nome do Material
               </th>
               <th className='px-4 py-3 text-left text-sm font-medium text-gray-900'>
-                Unidade
+                Unidade de Medida
               </th>
               <th className='px-4 py-3 text-left text-sm font-medium text-gray-900'>
                 R$ Unitário
               </th>
               <th className='px-4 py-3 text-center text-sm font-medium text-gray-900'>
-                Estoque
+                <div className='flex items-center justify-center gap-2'>
+                  <div className='w-min'>Saldo</div>
+                  <InfoHoverCard
+                    title='Cálculo do Saldo'
+                    subtitle='Representa a quantidade de material que se encontra no depósito'
+                    content={
+                      <>
+                        <p className='pl-2 text-green-700'>+ Inicial</p>
+                        <p className='pl-2 text-green-700'>+ Balanço</p>
+                      </>
+                    }
+                  />
+                </div>
               </th>
               <th className='px-4 py-3 text-center text-sm font-medium text-gray-900'>
-                Saldo livre
+                <div className='flex items-center justify-center gap-2'>
+                  <div className='w-min'>Saldo Livre</div>
+                  <InfoHoverCard
+                    title='Saldo Livre'
+                    subtitle='Representa a quantidade de material disponível para retirada ou reserva genérica (sem está atrelada a uma requisição de material)'
+                    content={
+                      <>
+                        <p className='pl-2 text-green-700'>+ Saldo</p>
+                        <p className='pl-2 text-red-700'>
+                          - Quantidade Restrita
+                        </p>
+                        <p className='pl-2 text-red-700'>
+                          - Quantidade Reservada
+                        </p>
+                      </>
+                    }
+                  />
+                </div>
               </th>
               <th className='px-4 py-3 text-center text-sm font-medium text-gray-900'>
                 Retirar
@@ -184,34 +214,44 @@ export function TableFormItemsGlobal({
 
               return (
                 <tr key={material.key} className='hover:bg-gray-50'>
-                  <td className='px-4 py-3 text-sm font-medium text-gray-900'>
+                  <td className='w-min px-4 py-3 text-sm font-medium text-gray-900'>
                     {material.globalMaterialId}
                   </td>
                   <td className='px-4 py-3 text-sm text-gray-900'>
-                    {info?.name}
+                    <div className='flex items-center justify-start gap-2'>
+                      {info?.name}
+                      <InfoHoverCard
+                        title='Descrição do Material'
+                        content={info?.description}
+                        className='w-200'
+                      />
+                    </div>
                   </td>
                   <td className='px-4 py-3 text-sm text-gray-900'>
                     {info?.unitOfMeasure}
                   </td>
                   <td className='px-4 py-3 text-right text-sm text-gray-900'>
                     {material.unitPrice?.toString ? (
-                      Number(material.unitPrice).toLocaleString('pt-BR', {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2
-                      })
+                      <Badge variant={'secondary'}>
+                        {Number(material.unitPrice).toLocaleString('pt-BR', {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2
+                        })}
+                      </Badge>
                     ) : (
                       <Badge variant='outline'>Indefinido</Badge>
                     )}
                   </td>
-                  <td className='px-4 py-3 text-sm'>
+                  <td className='px-4 py-3 text-right text-sm'>
                     {isphysicalOnHandQuantityDefined ? (
                       <Badge
                         variant={
-                          Number(info?.freeBalanceQuantity) > 50
-                            ? 'default'
-                            : Number(info?.freeBalanceQuantity) > 10
-                              ? 'secondary'
-                              : 'destructive'
+                          // Number(info?.freeBalanceQuantity) > 50
+                          //   ? 'default'
+                          //   : Number(info?.freeBalanceQuantity) > 10
+                          //     ? 'secondary'
+                          //     : 'destructive'
+                          'outline'
                         }
                       >
                         {Number(info?.physicalOnHandQuantity)}
@@ -220,15 +260,16 @@ export function TableFormItemsGlobal({
                       <Badge variant='outline'>Indefinido</Badge>
                     )}
                   </td>
-                  <td className='px-4 py-3 text-sm'>
+                  <td className='px-4 py-3 text-right text-sm'>
                     {isFreeBalanceDefined ? (
                       <Badge
                         variant={
-                          Number(info?.freeBalanceQuantity) > 50
-                            ? 'default'
-                            : Number(info?.freeBalanceQuantity) > 10
-                              ? 'secondary'
-                              : 'destructive'
+                          // Number(info?.freeBalanceQuantity) > 50
+                          //   ? 'default'
+                          //   : Number(info?.freeBalanceQuantity) > 10
+                          //     ? 'secondary'
+                          //     : 'destructive'
+                          'default'
                         }
                       >
                         {Number(info?.freeBalanceQuantity)}
