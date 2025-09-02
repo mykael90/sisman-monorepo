@@ -77,7 +77,11 @@ export class MaterialWithdrawalsService {
         this.logger.log(
           `Executando a criação dentro de uma transação existente.`
         );
-        return await this._createWithdrawalLogic(data, tx as any);
+        return await this._createWithdrawalLogic(
+          data,
+          tx as any,
+          fromPickingOrder
+        );
       }
 
       this.logger.log(
@@ -86,8 +90,7 @@ export class MaterialWithdrawalsService {
       return await this.prisma.$transaction(async (prismaTransactionClient) => {
         return await this._createWithdrawalLogic(
           data,
-          prismaTransactionClient as any,
-          fromPickingOrder
+          prismaTransactionClient as any
         );
       });
     } catch (error) {
