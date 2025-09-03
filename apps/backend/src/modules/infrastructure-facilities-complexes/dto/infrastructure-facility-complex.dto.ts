@@ -23,7 +23,7 @@ import { isString } from 'lodash';
  * Classe base.
  * @hidden
  */
-class InfrastructureFacilityComplexBaseDto
+export class InfrastructureFacilityComplexBaseDto
   implements InfrastructureFacilityComplex
 {
   /**
@@ -144,6 +144,13 @@ export class InfrastructureFacilityComplexWithRelationsResponseDto
 export class CreateInfrastructureFacilityComplexDto extends OmitType(
   InfrastructureFacilityComplexBaseDto,
   ['type'] as const
+) {}
+
+// =================================================================
+// 3.1. DTO ESPECÍFICO PARA SEED (INPUT) - Inclui 'type'
+// =================================================================
+export class SeedInfrastructureFacilityComplexDto extends PartialType(
+  InfrastructureFacilityComplexBaseDto
 ) {}
 
 // =================================================================

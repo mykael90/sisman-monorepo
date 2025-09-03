@@ -8,11 +8,12 @@ Um monorepo para o projeto Sisman, utilizando PNPM Workspaces para gerenciar mú
 ## 🚀 Sobre o Projeto
 
 Este repositório contém o código-fonte para:
-*   **`apps/frontend`**: A aplicação web construída com Next.js.
-*   **`apps/backend`**: A API REST construída com NestJS, Prisma e MariaDB.
-*   **`apps/scraping-api`**: A API REST construída com NestJS para transformar dados não estruturados de páginas HTML em dados estruturados JSON.
-*   **`packages/prisma`**: Abriga o schema do Prisma e o cliente gerado. Atua como a **fonte única de verdade** para os tipos de dados do banco, sendo compartilhado massivamente entre o backend e o frontend para garantir consistência.
-*   **`packages/types`**: Reservado para uso futuro, com o objetivo de desacoplar tipos de dados específicos da aplicação do schema do banco de dados.
+
+* **`apps/frontend`**: A aplicação web construída com Next.js.
+* **`apps/backend`**: A API REST construída com NestJS, Prisma e MariaDB.
+* **`apps/scraping-api`**: A API REST construída com NestJS para transformar dados não estruturados de páginas HTML em dados estruturados JSON.
+* **`packages/prisma`**: Abriga o schema do Prisma e o cliente gerado. Atua como a **fonte única de verdade** para os tipos de dados do banco, sendo compartilhado massivamente entre o backend e o frontend para garantir consistência.
+* **`packages/types`**: Reservado para uso futuro, com o objetivo de desacoplar tipos de dados específicos da aplicação do schema do banco de dados.
 
 Todo o ambiente, tanto de desenvolvimento quanto de produção, é containerizado com Docker, garantindo consistência e eliminando a necessidade de instalar dependências localmente.
 
@@ -24,21 +25,21 @@ Esta foi uma **decisão intencional para otimizar o uso de recursos** em ambient
 
 ## ✨ Tecnologias
 
-- **Gerenciador de Pacotes:** [PNPM Workspaces](https://pnpm.io/)
-- **Frontend:** [Next.js](https://nextjs.org/)
-- **Backend:** [NestJS](https://nestjs.com/)
-- **ORM:** [Prisma](https://www.prisma.io/)
-- **Banco de Dados:** [MariaDB](https://mariadb.org/)
-- **Containerização:** [Docker](https://www.docker.com/) & [Docker Compose](https://docs.docker.com/compose/)
-- **Gerenciador de Processos (Produção):** [PM2](https://pm2.keymetrics.io/)
+* **Gerenciador de Pacotes:** [PNPM Workspaces](https://pnpm.io/)
+* **Frontend:** [Next.js](https://nextjs.org/)
+* **Backend:** [NestJS](https://nestjs.com/)
+* **ORM:** [Prisma](https://www.prisma.io/)
+* **Banco de Dados:** [MariaDB](https://mariadb.org/)
+* **Containerização:** [Docker](https://www.docker.com/) & [Docker Compose](https://docs.docker.com/compose/)
+* **Gerenciador de Processos (Produção):** [PM2](https://pm2.keymetrics.io/)
 
 ## 📋 Pré-requisitos
 
 Para executar este projeto, você precisará apenas de:
 
-1.  **[Docker](https://www.docker.com/get-started/)** e **[Docker Compose](https://docs.docker.com/compose/install/)**
-2.  **[Visual Studio Code](https://code.visualstudio.com/)**
-3.  A extensão **[Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)** para VS Code.
+1. **[Docker](https://www.docker.com/get-started/)** e **[Docker Compose](https://docs.docker.com/compose/install/)**
+2. **[Visual Studio Code](https://code.visualstudio.com/)**
+3. A extensão **[Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)** para VS Code.
 
 > **Nota:** Não é necessário instalar Node.js, pnpm ou qualquer outra dependência de desenvolvimento na sua máquina local.
 
@@ -66,13 +67,14 @@ As variáveis de ambiente são gerenciadas pelo `docker-compose.override.yaml` e
 # Exemplo:
 cp .env.example .env
 ```
+
 > **Atenção:** Verifique o `docker-compose.override.yaml` para confirmar o nome e a localização exata do arquivo de ambiente esperado.
 
 ### Passo 3: Abrir no Dev Container
 
-1.  Abra a pasta do projeto `sisman-monorepo` no **Visual Studio Code**.
-2.  O VS Code detectará a configuração do Dev Container e exibirá uma notificação no canto inferior direito. Clique em **"Reopen in Container"**.
-3.  Aguarde o VS Code construir a imagem de desenvolvimento (`Dockerfile.dev`), iniciar os containers (incluindo o banco de dados) e configurar o ambiente.
+1. Abra a pasta do projeto `sisman-monorepo` no **Visual Studio Code**.
+2. O VS Code detectará a configuração do Dev Container e exibirá uma notificação no canto inferior direito. Clique em **"Reopen in Container"**.
+3. Aguarde o VS Code construir a imagem de desenvolvimento (`Dockerfile.dev`), iniciar os containers (incluindo o banco de dados) e configurar o ambiente.
 
 ### Passo 4: Instalar Dependências e Preparar o Banco
 
@@ -117,25 +119,39 @@ Pronto! O frontend estará acessível em `http://localhost:3000`, backend em `ht
 
 ---
 
-## 🏭 Ambiente de Produção
+## 🏭 Ambiente de Produção - Construção e Utilização
 
 O processo de produção consiste em gerar uma única imagem Docker otimizada que contém as builds de todas as aplicações.
 
-### Passo 1: Configurar Variáveis de Ambiente
+### Passo 1: Construir a Imagem Docker
+
+Este comando utiliza o `Dockerfile` da raiz para criar uma imagem de produção multi-stage, resultando em uma imagem final leve e otimizada. É importante destacar que é realizado o build dentro da construção da imagem, dessa forma não precisa realizar o build de cada pacote previamente.
+
+```bash
+docker build -t mykael90/sisman_monorepo:1.0.0 .
+```
+
+**Enviar imagem para o Docker Hub (opcional)**
+
+```bash
+docker push mykael90/sisman_monorepo:1.0.0
+```
+
+Pré-requisitos:
+Antes de executar esse comando, certifique-se de que:
+
+* Você está logado no Docker Hub:
+`docker login`
+* Ele vai pedir seu username e senha/token ou fazer uma autenticação via browser.
+* O nome da imagem (mykael90/sisman_monorepo) corresponde ao seu nome de usuário no Docker Hub. Se o repositório ainda não existir, o Docker Hub vai criar automaticamente no primeiro push.
+
+### Passo 2: Configurar Variáveis de Ambiente
 
 Garanta que as variáveis de ambiente para produção estejam corretamente configuradas. O `docker-compose.yaml` principal pode ser usado para orquestrar o container da aplicação e do banco de dados. Crie um arquivo `.env` com as credenciais de produção.
 
 ```bash
 # Exemplo de arquivo .env para produção:
 cp .env.example .env
-```
-
-### Passo 2: Construir a Imagem Docker
-
-Este comando utiliza o `Dockerfile` da raiz para criar uma imagem de produção multi-stage, resultando em uma imagem final leve e otimizada.
-
-```bash
-docker build -t mykael90/sisman_monorepo:1.0.0 .
 ```
 
 ### Passo 3: Executar com Docker Compose
@@ -149,6 +165,8 @@ docker-compose up -d
 
 O `docker-compose` irá subir o container da aplicação a partir da imagem que você acabou de construir (se referenciada no `docker-compose.yaml`) e o container do MariaDB, conectando-os na mesma rede.
 
+Deve ser referenciada na linha do `docker-compose.yaml` referente a imagem: ```image: mykael90/sisman_monorepo:1.0.0```
+
 ### Passo 4: Executar com Docker Run (Alternativa)
 
 Se preferir executar o container da aplicação manualmente (assumindo que o banco de dados já está rodando e acessível):
@@ -160,7 +178,74 @@ docker run -d \
   --env-file ./.env \
   mykael90/sisman_monorepo:1.0.0
 ```
+
 > O arquivo `ecosystem.config.js` indica que o PM2 é usado como gerenciador de processos dentro do container, o que é uma excelente prática para gerenciar aplicações Node.js em produção.
+
+## 🏭 Ambiente de Produção - Utilização Prática (imagem do dockerHub)
+
+Esse processo consiste em já utilizar a imagem pronta do dockerHub e simplesmente iniciar os containers.
+
+### Passo 1: Configurar Variáveis de Ambiente
+
+Garanta que as variáveis de ambiente para produção estejam corretamente configuradas. O `docker-compose.yaml` principal pode ser usado para orquestrar o container da aplicação e do banco de dados. Crie um arquivo `.env` com as credenciais de produção.
+
+```bash
+# Exemplo de arquivo .env para produção:
+cp .env.example .env
+```
+
+### Passo 2: Criar docker-compose.yaml
+
+```yaml
+services:
+  sisman-monorepo-prod:
+    image: mykael90/sisman_monorepo:1.0.0 # <-- Imagem já no dockerHub (confirmar)
+    container_name: sisman-monorepo-prod
+    ports:
+      - 3000:3000
+    environment:
+      ENV: ${ENV}
+      TZ: America/Sao_Paulo
+    env_file:
+      .env
+    restart: unless-stopped
+    depends_on:
+      - db-sisman-prod
+    networks: # <-- Conectar à rede compartilhada
+      - sisman_net
+
+  db-sisman-prod:
+    image: mariadb:11.5.2-noble
+    container_name: ${DB_HOST}
+    environment:
+      MARIADB_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_SCHEMA}${ENV}
+    ports:
+      - 3306:3306
+    env_file:
+      .env
+      # - ${ENV_FILE_RMQ}
+      # - ${ENV_FILE_KC}
+    volumes:
+    - ./_data/mariadb-data/${ENV}:/var/lib/mysql
+    restart: unless-stopped
+    networks: # <-- Conectar à rede compartilhada
+      - sisman_net
+
+      # Define a rede compartilhada
+networks:
+  sisman_net:
+    driver: bridge # Rede padrão do tipo bridge
+```
+
+### Passo 3: Executar com Docker Compose
+
+A maneira mais fácil de executar o ambiente de produção (aplicação + banco de dados) é usando o `docker-compose.yaml`.
+
+```bash
+# Inicia os containers em modo detached (segundo plano)
+docker-compose up -d
+```
 
 ## ⚙️ Comandos Úteis (Dentro do Dev Container)
 

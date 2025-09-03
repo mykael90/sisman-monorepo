@@ -9,6 +9,7 @@ import { main as seedUsersRoles } from './seeds/_role-to-user.seed';
 import { main as seedSipacImoveis } from './seeds/sipac-imoveis.seed';
 import { main as seedSipacPredios } from './seeds/sipac-predios.seed';
 import { main as seedWorkersSpecialties } from './seeds/workers-specialties.seed';
+import { main as seedInfrastructureFacilityComplex } from './seeds/infrasctructure-facility-complex.seed';
 import { main as seedInfrastructureSpaceTypes } from './seeds/infrastructure-space-types.seed';
 import { main as seedInfrastructureBuildings } from './seeds/infrastructure-buildings.seed';
 import { main as seedMaterialStockMovementTypes } from './seeds/material-stock-movement-types.seed';
@@ -31,6 +32,7 @@ const seedFunctions: {
   seedSipacImoveis,
   seedSipacPredios,
   seedWorkersSpecialties,
+  seedInfrastructureFacilityComplex,
   seedInfrastructureSpaceTypes,
   seedInfrastructureBuildings,
   seedMaterialStockMovementTypes
@@ -62,6 +64,7 @@ async function mainSeed() {
       await seedSipacImoveis(prisma);
       await seedSipacPredios(prisma);
       await seedWorkersSpecialties(prisma);
+      await seedInfrastructureFacilityComplex(prisma);
       await seedInfrastructureSpaceTypes(prisma);
       await seedInfrastructureBuildings(prisma);
       await seedMaterialStockMovementTypes(prisma);
