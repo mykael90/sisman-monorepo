@@ -40,7 +40,7 @@ export function WithdrawalDetailUsageService({
         <CardTitle className='text-lg'>Formulário de Retirada</CardTitle>
       </CardHeader>
       <CardContent className='space-y-4'>
-        <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+        <div className='grid grid-cols-1 items-start gap-4 md:grid-cols-2'>
           <div className='hidden'>
             <formWithdrawal.Field
               name='withdrawalNumber'
@@ -130,7 +130,8 @@ export function WithdrawalDetailUsageService({
               )}
             />
           </div>
-          <div className='flex flex-col gap-4 md:flex-row md:items-center'>
+          {/* items-start, alinhar por cima devido aos informativos de erro que podem aparecer em função do valor inserido no campo */}
+          <div className='flex flex-col gap-4 md:flex-row md:items-start'>
             <formWithdrawal.Field
               name='collectorType'
               children={(field) => (
