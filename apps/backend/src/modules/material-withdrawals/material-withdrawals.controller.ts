@@ -5,6 +5,7 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Logger,
   Param,
   ParseIntPipe,
   Post,
@@ -20,11 +21,14 @@ import {
 import { AuthGuard } from '../../shared/auth/guards/auth.guard';
 import { ApiTags } from '@nestjs/swagger';
 import { ApiEndpointSwagger } from '../../shared/decorators/swagger/api-endpoint.decorator';
+import { Roles } from 'src/shared/decorators/roles.decorator';
+import { Role } from 'src/shared/enums/role.enum';
 
 @ApiTags('Material Withdrawals') // Agrupa os endpoints na UI do Swagger
 @UseGuards(AuthGuard)
 @Controller('material-withdrawal')
 export class MaterialWithdrawalsController {
+  private readonly logger = new Logger(MaterialWithdrawalsController.name);
   constructor(
     private readonly materialWithdrawalsService: MaterialWithdrawalsService
   ) {}
@@ -177,5 +181,52 @@ export class MaterialWithdrawalsController {
   })
   async delete(@Param('id', ParseIntPipe) id: number): Promise<void> {
     await this.materialWithdrawalsService.delete(id);
+  }
+
+  @Post('/adm/verify-withdrawals-integrity')
+  @UseGuards(AuthGuard)
+  @Roles(Role.Adm)
+  @ApiEndpointSwagger({
+    summary:
+      'Verifica e corrige a integridade dos movimentos de estoque de retiradas.',
+    description:
+      'Endpoint para administradores e desenvolvedores para forçar a verificação e correção da integridade dos dados de retiradas de materiais, garantindo que os movimentos de estoque reflitam com precisão as retiradas registradas.',
+    response: {
+      status: HttpStatus.OK,
+      description: 'Relatório da verificação de integridade.'
+      // O tipo de retorno é um objeto com `message` e `details`,
+      // que pode ser melhor documentado com um DTO específico se necessário.
+    },
+    errors: [
+      { status: HttpStatus.UNAUTHORIZED, description: 'Não autorizado.' },
+      {
+        status: HttpStatus.FORBIDDEN,
+        description: 'Proibido (permissão insuficiente).'
+      },
+      {
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+        description: 'Erro interno do servidor durante a verificação.'
+      }
+    ]
+  })
+  async verifyWithdrawalsIntegrity() {
+    this.logger.log(
+      'Requisição recebida para verificar integridade das retiradas.'
+    );
+    try {
+      const result =
+        await this.materialWithdrawalsService.verifyIntregrityOfWithdrawals();
+      return {
+        message: 'Verificação de integridade das retiradas concluída.',
+        details: result
+      };
+    } catch (error) {
+      this.logger.error(
+        'Erro ao verificar integridade das retiradas:',
+        error.stack
+      );
+      // Lança o erro para ser tratado pelo Exception Filter global do NestJS
+      throw error;
+    }
   }
 }

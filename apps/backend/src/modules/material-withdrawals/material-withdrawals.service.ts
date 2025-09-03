@@ -453,6 +453,166 @@ export class MaterialWithdrawalsService {
     }
   }
 
+  /**
+   * Verifica a integridade das retiradas de materiais, garantindo que cada item de retirada
+   * tenha um movimento de estoque correspondente. Cria movimentos de estoque para
+   * itens que não os possuem.
+   *
+   * @returns Um objeto contendo o número de movimentos de estoque criados.
+   */
+  async verifyIntregrityOfWithdrawals(): Promise<{
+    createdMovementsCount: number;
+  }> {
+    try {
+      this.logger.log(
+        'Iniciando verificação de integridade das retiradas de materiais.',
+        {
+          operation: 'verifyIntregrityOfWithdrawals'
+        }
+      );
+
+      // 1. Encontrar todos os MaterialWithdrawalItem que NÃO possuem um MaterialStockMovement associado.
+      // Incluímos todos os dados necessários (do cabeçalho da retirada e dos materiais)
+      // para construir o CreateMaterialStockMovementWithRelationsDto.
+      // Serve também para migração do SISMAN antigo para o novo SISMAN. Migra apenas as saídas e deixa o sistema fazer o ajuste dos movimentos e saldos
+      const itemsWithoutMovement =
+        await this.prisma.materialWithdrawalItem.findMany({
+          where: {
+            stockMovement: null // Filtra itens que não têm um movimento de estoque linkado
+          },
+          include: {
+            materialWithdrawal: {
+              include: {
+                warehouse: { select: { id: true } }, // Para warehouse.id
+                movementType: { select: { code: true } }, // Para movementType.code
+                processedByUser: { select: { id: true } }, // Para processedByUser.id
+                collectedByUser: { select: { id: true } }, // Para collectedByUser?.id
+                collectedByWorker: { select: { id: true } }, // Para collectedByWorker?.id
+                maintenanceRequest: { select: { id: true } } // Para maintenanceRequest?.id
+                // Note: materialRequest pode não ser necessário se o link já está no item de retirada.
+                // materialRequest: { select: { id: true } },
+              }
+            },
+            globalMaterial: { select: { id: true } }, // Para globalMaterial?.id
+            materialInstance: { select: { id: true } }, // Para materialInstance?.id
+            materialRequestItem: { select: { id: true } } // Para materialRequestItem?.id (já é uma relação direta do MaterialWithdrawalItem)
+            // Não precisamos de 'stockMovement' aqui, pois estamos filtrando por 'null'
+          }
+        });
+
+      this.logger.log(
+        `Encontrados ${itemsWithoutMovement.length} itens de retirada sem movimento de estoque.`,
+        {
+          operation: 'verifyIntregrityOfWithdrawals'
+        }
+      );
+
+      if (itemsWithoutMovement.length === 0) {
+        return { createdMovementsCount: 0 };
+      }
+
+      // 2. Mapear os itens encontrados para a estrutura do DTO de movimentação de estoque.
+      const movementsToCreateDTOs: CreateMaterialStockMovementWithRelationsDto[] =
+        itemsWithoutMovement
+          .map((item) => {
+            // Validação adicional para garantir que os dados relacionados existam.
+            // O `include` acima já deveria garantir isso para a maioria, mas é bom para opcionalidade e robustez.
+            if (
+              !item.materialWithdrawal ||
+              !item.materialWithdrawal.warehouse ||
+              !item.materialWithdrawal.movementType ||
+              !item.materialWithdrawal.processedByUser
+            ) {
+              this.logger.warn(
+                `Item de retirada ${item.id} tem dados relacionados incompletos para criar o movimento. Pulando.`,
+                {
+                  operation: 'verifyIntregrityOfWithdrawals',
+                  itemId: item.id
+                }
+              );
+              return null;
+            }
+
+            return {
+              quantity: item.quantityWithdrawn,
+              warehouse: { id: item.materialWithdrawal.warehouse.id },
+              movementType: { code: item.materialWithdrawal.movementType.code },
+              processedByUser: {
+                id: item.materialWithdrawal.processedByUser.id
+              },
+              collectedByUser: item.materialWithdrawal.collectedByUser?.id
+                ? { id: item.materialWithdrawal.collectedByUser.id }
+                : undefined,
+              collectedByWorker: item.materialWithdrawal.collectedByWorker?.id
+                ? { id: item.materialWithdrawal.collectedByWorker.id }
+                : undefined,
+              globalMaterial: item.globalMaterialId
+                ? { id: item.globalMaterialId }
+                : undefined,
+              materialInstance: item.materialInstanceId
+                ? { id: item.materialInstanceId }
+                : undefined,
+              materialRequestItem: item.materialRequestItem?.id
+                ? { id: item.materialRequestItem.id }
+                : undefined,
+              materialWithdrawalItem: { id: item.id }, // ID do item de retirada para vinculação
+              maintenanceRequest: item.materialWithdrawal.maintenanceRequest?.id
+                ? { id: item.materialWithdrawal.maintenanceRequest.id }
+                : undefined,
+              unitPrice: item.unitPrice
+            };
+          })
+          .filter(Boolean) as CreateMaterialStockMovementWithRelationsDto[]; // Filtra quaisquer itens nulos
+
+      if (movementsToCreateDTOs.length === 0) {
+        this.logger.log(
+          'Nenhum DTO de movimento de estoque válido para criar.',
+          {
+            operation: 'verifyIntregrityOfWithdrawals'
+          }
+        );
+        return { createdMovementsCount: 0 };
+      }
+
+      this.logger.log(
+        `Preparados ${movementsToCreateDTOs.length} DTOs para criação de movimentos de estoque.`,
+        {
+          operation: 'verifyIntregrityOfWithdrawals'
+        }
+      );
+
+      // 3. Criar os movimentos de estoque em uma única transação para garantir atomicidade.
+      // Passamos o cliente de transação (tx) para o serviço 'create'.
+      const createdMovements = await this.prisma.$transaction(async (tx) => {
+        const results = [];
+        for (const dto of movementsToCreateDTOs) {
+          // Chama o serviço de movimentação, passando o cliente da transação (tx)
+          const created = await this.materialStockMovementsService.create(
+            dto,
+            tx as any
+          );
+          results.push(created);
+        }
+        return results;
+      });
+
+      this.logger.log(
+        `Criados ${createdMovements.length} movimentos de estoque em falta para retiradas.`,
+        {
+          operation: 'verifyIntregrityOfWithdrawals',
+          count: createdMovements.length
+        }
+      );
+
+      return { createdMovementsCount: createdMovements.length };
+    } catch (error) {
+      handlePrismaError(error, this.logger, 'MaterialWithdrawalsService', {
+        operation: 'verifyIntregrityOfWithdrawals'
+      });
+      throw error;
+    }
+  }
+
   async show(id: number): Promise<MaterialWithdrawalWithRelationsResponseDto> {
     try {
       const materialWithdrawal =

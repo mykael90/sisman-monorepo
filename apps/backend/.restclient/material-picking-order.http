@@ -82,7 +82,7 @@ Authorization: Bearer {{token}}
         {
             "materialRequestItemId": 222,
             "globalMaterialId": "3024000000161",
-            "quantityToPick": 7
+            "quantityToPick": 3
         } 
             ],
     "desiredPickupDate": "2024-07-26T09:00:00Z",

@@ -127,3 +127,8 @@ Authorization: Bearer {{token}}
 DELETE {{urlLocal}}/{{id}}
 Content-Type: {{contentType}}
 Authorization: Bearer {{token}}
+
+### POST verify-integrity
+POST {{urlLocal}}/adm/verify-withdrawals-integrity
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
