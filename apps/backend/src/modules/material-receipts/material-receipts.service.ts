@@ -3,7 +3,8 @@ import {
   Logger,
   NotFoundException,
   BadRequestException,
-  Inject
+  Inject,
+  ConflictException
 } from '@nestjs/common';
 import {
   PrismaService,
@@ -15,20 +16,27 @@ import {
   MaterialReceiptWithRelationsResponseDto
 } from './dto/material-receipt.dto';
 import { handlePrismaError } from '../../shared/utils/prisma-error-handler';
-import { Prisma, MaterialReceiptStatus } from '@sisman/prisma';
+import {
+  Prisma,
+  MaterialReceiptStatus,
+  MaterialStockOperationSubType
+} from '@sisman/prisma';
 import { MaterialStockMovementsService } from '../material-stock-movements/material-stock-movements.service';
 import {
   CreateMaterialStockMovementDto,
   CreateMaterialStockMovementWithRelationsDto
 } from '../material-stock-movements/dto/material-stock-movements.dto';
 import { Decimal } from '@sisman/prisma/generated/client/runtime/library';
+import { CreateMaterialRestrictionOrderWithRelationsDto } from '../material-restriction-orders/dto/material-restriction-order.dto';
+import { MaterialRestrictionOrdersService } from '../material-restriction-orders/material-restriction-orders.service';
 
 @Injectable()
 export class MaterialReceiptsService {
   private readonly logger = new Logger(MaterialReceiptsService.name);
   constructor(
     @Inject(PrismaService) private readonly prisma: ExtendedPrismaClient,
-    private readonly materialStockMovementsService: MaterialStockMovementsService
+    private readonly materialStockMovementsService: MaterialStockMovementsService,
+    private readonly materialRestrictionOrdersService: MaterialRestrictionOrdersService
   ) {}
 
   private readonly includeRelations: Prisma.MaterialReceiptInclude = {
@@ -36,7 +44,11 @@ export class MaterialReceiptsService {
     destinationWarehouse: true,
     processedByUser: true,
     items: true,
-    materialRequest: true
+    materialRequest: {
+      include: {
+        items: true
+      }
+    }
   };
 
   async create(
@@ -50,6 +62,21 @@ export class MaterialReceiptsService {
       items,
       ...restOfData
     } = data;
+
+    //Verificar se a entrada é "IN_CENTRAL", em caso positivo, verificar se ja existe um recebimento referente a essa requisicao de material, caso ja exista lance um erro de conflito
+    if (movementType?.code === MaterialStockOperationSubType.IN_CENTRAL) {
+      const existingReceipt = await this.prisma.materialReceipt.findFirst({
+        where: {
+          materialRequestId: materialRequest?.id,
+          destinationWarehouseId: destinationWarehouse?.id
+        }
+      });
+      if (existingReceipt) {
+        throw new ConflictException(
+          `Já existe um recebimento para essa requisição de material.`
+        );
+      }
+    }
 
     const receiptCreateInput: Prisma.MaterialReceiptCreateInput = {
       ...restOfData,
@@ -165,7 +192,61 @@ export class MaterialReceiptsService {
 
         this.logger.log(`Todas as movimentações de estoque foram criadas.`);
 
-        // ETAPA 3: Retornar o recibo completo com todas as relações definidas em `includeRelations`.
+        //ETAPA 3: Restringir os items para saida generica se for uma entrada do tipo "IN_CENTRAL", tiver uma requisição de manutenção associada, e essa requisicao de manutencao já ter alguma reserva ou retirada. Ou seja, a requisicao de manutencao ja foi maculada com uma sáida ou intenção de saída.
+        //Verificar se a entrada é "IN_CENTRAL", em caso positivo, verificar se ja existe um recebimento referente a essa requisicao de material, caso ja exista lance um erro de conflito
+        if (
+          movementType?.code === MaterialStockOperationSubType.IN_CENTRAL &&
+          materialRequest?.maintenanceRequestId
+        ) {
+          const MaintenanceRequest =
+            await this.prisma.maintenanceRequest.findFirst({
+              where: {
+                id: materialRequest.maintenanceRequestId
+              },
+              include: {
+                materialPickingOrders: true,
+                materialWithdrawals: true
+              }
+            });
+
+          const isDirtyMaintenanceRequest =
+            MaintenanceRequest.materialPickingOrders.length > 0 ||
+            MaintenanceRequest.materialWithdrawals.length > 0;
+
+          if (!isDirtyMaintenanceRequest) {
+            // lógica para restringir todos os items. criar um método para isso. criar um dto para restringir e chamar o serviço.
+
+            const payloadCreateMaterialRestrictionOrder: CreateMaterialRestrictionOrderWithRelationsDto =
+              {
+                warehouse: {
+                  id: destinationWarehouse.id
+                } as any,
+                processedByUser: {
+                  id: processedByUser.id
+                } as any,
+                targetMaterialRequest: {
+                  id: materialRequest.id
+                } as any,
+                notes: `Restrição realizada de forma automática durante a entrada do material`,
+                processedAt: new Date(),
+                items: createdReceipt.items.map((item) => {
+                  return {
+                    globalMaterialId: item.materialId,
+                    quantityRestricted: item.quantityReceived,
+                    materialRequestItemId: item.materialRequestItemId
+                  } as any;
+                })
+              };
+
+            //chamando o métdo para restrição dos items
+            await this.materialRestrictionOrdersService.create(
+              payloadCreateMaterialRestrictionOrder,
+              tx as any
+            );
+          }
+        }
+
+        // ETAPA 4: Retornar o recebimento completo com todas as relações definidas em `includeRelations`.
         // É uma boa prática buscar novamente para garantir que todos os dados aninhados estejam consistentes.
         return tx.materialReceipt.findUniqueOrThrow({
           where: { id: newReceipt.id },
