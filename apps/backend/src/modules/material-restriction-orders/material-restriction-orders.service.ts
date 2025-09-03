@@ -184,7 +184,8 @@ export class MaterialRestrictionOrdersService {
   async create(
     data: CreateMaterialRestrictionOrderWithRelationsDto,
     // O tx opcional já estava correto na sua assinatura
-    tx?: Prisma.TransactionClient
+    tx?: Prisma.TransactionClient,
+    fromReceipt?: boolean
   ): Promise<MaterialRestrictionOrderWithRelationsResponseDto> {
     try {
       // Se um 'tx' (cliente de transação) for fornecido, use-o diretamente.
@@ -193,7 +194,11 @@ export class MaterialRestrictionOrdersService {
           `Executando a criação dentro de uma transação existente.`
         );
         // Passamos o 'tx' para o método que contém a lógica de negócio.
-        return await this._createRestrictionOrderLogic(data, tx as any);
+        return await this._createRestrictionOrderLogic(
+          data,
+          tx as any,
+          fromReceipt
+        );
       }
 
       // Se nenhum 'tx' for fornecido, crie uma nova transação.
@@ -223,7 +228,8 @@ export class MaterialRestrictionOrdersService {
 
   private async _createRestrictionOrderLogic(
     data: CreateMaterialRestrictionOrderWithRelationsDto,
-    prisma: PrismaClient // Usamos o tipo genérico aqui
+    prisma: PrismaClient, // Usamos o tipo genérico aqui
+    fromReceipt?: boolean
   ): Promise<MaterialRestrictionOrderWithRelationsResponseDto> {
     this.logger.log(`Iniciando processo de criação de ordem de restrição...`);
     const {
@@ -299,7 +305,9 @@ export class MaterialRestrictionOrdersService {
         }
 
         // verificar o saldo efetivo livre dos itens da requisicao de material
-        await this._canRestrict(targetMaterialRequest.id, items);
+        // se a restrição for chamada diretamente após a entradad do material, não precisa fazer essa verificação
+        !fromReceipt &&
+          (await this._canRestrict(targetMaterialRequest.id, items));
 
         const createInput: Prisma.MaterialRestrictionOrderCreateInput = {
           ...restOfData,

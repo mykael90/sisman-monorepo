@@ -196,12 +196,12 @@ export class MaterialReceiptsService {
         //Verificar se a entrada é "IN_CENTRAL", em caso positivo, verificar se ja existe um recebimento referente a essa requisicao de material, caso ja exista lance um erro de conflito
         if (
           movementType?.code === MaterialStockOperationSubType.IN_CENTRAL &&
-          materialRequest?.maintenanceRequestId
+          newReceipt.materialRequest?.maintenanceRequestId
         ) {
           const MaintenanceRequest =
             await this.prisma.maintenanceRequest.findFirst({
               where: {
-                id: materialRequest.maintenanceRequestId
+                id: newReceipt.materialRequest?.maintenanceRequestId
               },
               include: {
                 materialPickingOrders: true,
@@ -229,11 +229,11 @@ export class MaterialReceiptsService {
                 } as any,
                 notes: `Restrição realizada de forma automática durante a entrada do material`,
                 processedAt: new Date(),
-                items: createdReceipt.items.map((item) => {
+                items: items.map((item) => {
                   return {
                     globalMaterialId: item.materialId,
                     quantityRestricted: item.quantityReceived,
-                    materialRequestItemId: item.materialRequestItemId
+                    targetMaterialRequestItemId: item.materialRequestItemId
                   } as any;
                 })
               };
@@ -241,7 +241,8 @@ export class MaterialReceiptsService {
             //chamando o métdo para restrição dos items
             await this.materialRestrictionOrdersService.create(
               payloadCreateMaterialRestrictionOrder,
-              tx as any
+              tx as any,
+              true
             );
           }
         }
