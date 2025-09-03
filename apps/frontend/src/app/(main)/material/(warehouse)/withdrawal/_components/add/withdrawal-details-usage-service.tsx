@@ -22,6 +22,7 @@ import { IWithdrawalFormApi } from '@/hooks/use-withdrawal-form';
 import { fieldsLabelsWithdrawalForm } from '../../withdrawal-types';
 import { IUser } from '@/app/(main)/user/user-types';
 import { IWorker } from '@/app/(main)/worker/worker-types';
+import { materialOperationOutDisplayMap } from '@/mappers/material-operations-mappers';
 
 export type WithdrawalDetailUsageServiceProps = {
   formWithdrawal: IWithdrawalFormApi;
@@ -40,7 +41,7 @@ export function WithdrawalDetailUsageService({
         <CardTitle className='text-lg'>Formulário de Retirada</CardTitle>
       </CardHeader>
       <CardContent className='space-y-4'>
-        <div className='grid grid-cols-1 items-start gap-4 md:grid-cols-2'>
+        <div className='grid grid-cols-1 items-start gap-4 md:grid-cols-1'>
           <div className='hidden'>
             <formWithdrawal.Field
               name='withdrawalNumber'
@@ -90,7 +91,7 @@ export function WithdrawalDetailUsageService({
               )}
             />
           </div>
-          <div className='space-y-2'>
+          {/* <div className='space-y-2'>
             <formWithdrawal.Field
               name='withdrawalDate'
               children={(field) => (
@@ -129,7 +130,7 @@ export function WithdrawalDetailUsageService({
                 </>
               )}
             />
-          </div>
+          </div> */}
           {/* items-start, alinhar por cima devido aos informativos de erro que podem aparecer em função do valor inserido no campo */}
           <div className='flex flex-col gap-4 md:flex-row md:items-start'>
             <formWithdrawal.Field
@@ -165,7 +166,7 @@ export function WithdrawalDetailUsageService({
                           key={field.name} // The key is still good practice
                           field={field}
                           label={`Nome do colaborador`}
-                          placeholder='Selecione um trabalhador'
+                          placeholder='Selecione um colaborador'
                           options={listWorkers.map((worker) => ({
                             value: worker.id,
                             label: worker.name
@@ -213,6 +214,25 @@ export function WithdrawalDetailUsageService({
           </div>
         </div>
         {/* TODO: Caso não tenha pego a edificação automaticamente, tornar o obrigatório o campo abaixo do Local!! */}
+        <formWithdrawal.Subscribe
+          selector={(state) => state.values.movementTypeCode}
+          children={(movementTypeCode) =>
+            movementTypeCode ===
+              materialOperationOutDisplayMap.OUT_EMERGENCY_USAGE && (
+              <formWithdrawal.Field
+                name='legacy_place'
+                children={(field) => (
+                  <FormInputField
+                    // className={`${collectorType === 'other' ? 'block' : 'hidden'}`}
+                    field={field}
+                    label={fieldsLabelsWithdrawalForm.legacy_place}
+                    placeholder='Digite o local de destino'
+                  />
+                )}
+              />
+            )
+          }
+        />
         <formWithdrawal.Field
           name='notes'
           children={(field) => (
