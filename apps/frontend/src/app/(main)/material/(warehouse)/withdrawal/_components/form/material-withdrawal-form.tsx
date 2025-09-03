@@ -264,7 +264,9 @@ export function MaterialWithdrawalForm({
                 setLinkMaterialRequest={setLinkMaterialRequest}
                 formWithdrawal={formWithdrawal}
                 materialRequestDataLinked={
-                  maintenanceRequestData?.materialRequests
+                  materialRequestData
+                    ? [{ ...materialRequestData }]
+                    : maintenanceRequestData?.materialRequests
                 }
                 setFieldValue={formWithdrawal.setFieldValue}
               />
