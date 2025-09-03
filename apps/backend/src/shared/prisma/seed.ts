@@ -3,7 +3,6 @@ import { PrismaClient } from '@sisman/prisma'; // Correct path for generated cli
 
 // Import the exported 'main' functions from the specific seed files
 import { main as seedUsers } from './seeds/users.seed';
-import { main as seedMaterials } from './seeds/materials.seed';
 import { main as seedRoles } from './seeds/roles.seed';
 import { main as seedUsersRoles } from './seeds/_role-to-user.seed';
 import { main as seedSipacImoveis } from './seeds/sipac-imoveis.seed';
@@ -26,7 +25,6 @@ const seedFunctions: {
   [key: string]: (prisma: PrismaClient) => Promise<void>;
 } = {
   seedUsers,
-  seedMaterials,
   seedRoles,
   seedUsersRoles,
   seedSipacImoveis,
@@ -58,7 +56,6 @@ async function mainSeed() {
       logger.log('Running all seed functions...');
       // Call the seed functions for each entity, passing the prisma instance
       await seedUsers(prisma);
-      await seedMaterials(prisma);
       await seedRoles(prisma);
       await seedUsersRoles(prisma);
       await seedSipacImoveis(prisma);
