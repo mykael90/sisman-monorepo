@@ -457,7 +457,8 @@ export class MaterialWithdrawalsService {
    * Verifica a integridade das retiradas de materiais, garantindo que cada item de retirada
    * tenha um movimento de estoque correspondente. Cria movimentos de estoque para
    * itens que não os possuem.
-   *
+   * Serve também para migração do SISMAN antigo para o novo SISMAN.
+   * Migra apenas as saídas e deixa o sistema fazer o ajuste dos movimentos e saldos
    * @returns Um objeto contendo o número de movimentos de estoque criados.
    */
   async verifyIntregrityOfWithdrawals(): Promise<{
@@ -474,7 +475,6 @@ export class MaterialWithdrawalsService {
       // 1. Encontrar todos os MaterialWithdrawalItem que NÃO possuem um MaterialStockMovement associado.
       // Incluímos todos os dados necessários (do cabeçalho da retirada e dos materiais)
       // para construir o CreateMaterialStockMovementWithRelationsDto.
-      // Serve também para migração do SISMAN antigo para o novo SISMAN. Migra apenas as saídas e deixa o sistema fazer o ajuste dos movimentos e saldos
       const itemsWithoutMovement =
         await this.prisma.materialWithdrawalItem.findMany({
           where: {

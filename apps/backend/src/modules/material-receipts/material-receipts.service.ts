@@ -281,4 +281,151 @@ export class MaterialReceiptsService {
       throw error;
     }
   }
+
+  /**
+   * Verifica a integridade dos recebimentos de materiais, garantindo que cada item de recebimento
+   * tenha um movimento de estoque correspondente. Cria movimentos de estoque para
+   * itens que não os possuem, utilizando o DTO e o serviço de movimentos existente.
+   * Serve também para migração do SISMAN antigo para o novo SISMAN.
+   * Migra apenas as entradas e deixa o sistema fazer o ajuste dos movimentos e saldos
+   * @returns Um objeto contendo o número de movimentos de estoque criados.
+   */
+  async verifyIntregrityOfReceipts(): Promise<{
+    createdMovementsCount: number;
+  }> {
+    try {
+      this.logger.log(
+        'Iniciando verificação de integridade dos recebimentos de materiais.',
+        {
+          operation: 'verifyIntregrityOfReceipts'
+        }
+      );
+
+      // 1. Encontrar todos os MaterialReceiptItem que NÃO possuem um MaterialStockMovement associado.
+      // Incluímos todos os dados necessários (do cabeçalho do recebimento e dos materiais)
+      // para construir o CreateMaterialStockMovementWithRelationsDto.
+      const itemsWithoutMovement =
+        await this.prisma.materialReceiptItem.findMany({
+          where: {
+            materialStockMovement: null // Filtra itens que não têm um movimento de estoque linkado
+          },
+          include: {
+            materialReceipt: {
+              // Inclui o cabeçalho do recebimento para obter dados como warehouseId, movementTypeId, etc.
+              include: {
+                destinationWarehouse: { select: { id: true } }, // Para warehouse.id
+                movementType: { select: { code: true } }, // Para movementType.code (assumindo que o DTO espera o código)
+                processedByUser: { select: { id: true } } // Para processedByUser.id
+                // No MaterialReceipt, não há campos para collectedByUser/Worker, pois é um recebimento.
+                // Portanto, esses campos serão 'undefined' no DTO de movimento, o que é apropriado.
+              }
+            },
+            // materialId já é um campo escalar em MaterialReceiptItem, então podemos usá-lo diretamente
+            // material: { select: { id: true } }, // Não é estritamente necessário se apenas materialId for usado
+            materialRequestItem: { select: { id: true } } // Para materialRequestItem?.id
+          }
+        });
+
+      this.logger.log(
+        `Encontrados ${itemsWithoutMovement.length} itens de recebimento sem movimento de estoque.`,
+        {
+          operation: 'verifyIntregrityOfReceipts'
+        }
+      );
+
+      if (itemsWithoutMovement.length === 0) {
+        return { createdMovementsCount: 0 };
+      }
+
+      // 2. Mapear os itens encontrados para a estrutura do DTO de movimentação de estoque.
+      const movementsToCreateDTOs: CreateMaterialStockMovementWithRelationsDto[] =
+        itemsWithoutMovement
+          .map((item) => {
+            // Validação adicional para garantir que os dados relacionados existam.
+            if (
+              !item.materialReceipt ||
+              !item.materialReceipt.destinationWarehouse ||
+              !item.materialReceipt.movementType ||
+              !item.materialReceipt.processedByUser
+            ) {
+              this.logger.warn(
+                `Item de recebimento ${item.id} tem dados relacionados incompletos para criar o movimento. Pulando.`,
+                {
+                  operation: 'verifyIntregrityOfReceipts',
+                  itemId: item.id
+                }
+              );
+              return null;
+            }
+
+            return {
+              quantity: item.quantityReceived, // Para recebimentos, usamos quantityReceived
+              warehouse: { id: item.materialReceipt.destinationWarehouse.id },
+              movementType: { code: item.materialReceipt.movementType.code }, // Usa o código do tipo de movimento do recebimento
+              processedByUser: { id: item.materialReceipt.processedByUser.id },
+              collectedByUser: undefined, // Não aplicável diretamente para recebimentos neste contexto
+              collectedByWorker: undefined, // Não aplicável diretamente para recebimentos neste contexto
+              globalMaterial: { id: item.materialId }, // Usa o materialId escalar do item
+              materialInstance: undefined, // MaterialReceiptItem não tem materialInstance
+              materialRequestItem: item.materialRequestItem?.id
+                ? { id: item.materialRequestItem.id }
+                : undefined,
+              materialReceiptItem: { id: item.id }, // ID do item de recebimento para vinculação
+              maintenanceRequest: undefined, // Não diretamente vinculado a MaintenanceRequest a partir de um recebimento
+              unitPrice: item.unitPrice
+              // O DTO ou o serviço de movimentos pode inferir movementDate como a data do recebimento
+              // ou usar um default, conforme a implementação do seu `materialStockMovementsService.create`.
+              // Se o DTO esperar 'movementDate', adicione: `movementDate: item.materialReceipt.receiptDate,`
+            };
+          })
+          .filter(Boolean) as CreateMaterialStockMovementWithRelationsDto[]; // Filtra quaisquer itens nulos
+
+      if (movementsToCreateDTOs.length === 0) {
+        this.logger.log(
+          'Nenhum DTO de movimento de estoque válido para criar.',
+          {
+            operation: 'verifyIntregrityOfReceipts'
+          }
+        );
+        return { createdMovementsCount: 0 };
+      }
+
+      this.logger.log(
+        `Preparados ${movementsToCreateDTOs.length} DTOs para criação de movimentos de estoque.`,
+        {
+          operation: 'verifyIntregrityOfReceipts'
+        }
+      );
+
+      // 3. Criar os movimentos de estoque em uma única transação para garantir atomicidade.
+      // Passamos o cliente de transação (tx) para o serviço 'create'.
+      const createdMovements = await this.prisma.$transaction(async (tx) => {
+        const results = [];
+        for (const dto of movementsToCreateDTOs) {
+          // Chama o serviço de movimentação, passando o cliente da transação (tx)
+          const created = await this.materialStockMovementsService.create(
+            dto,
+            tx as any
+          );
+          results.push(created);
+        }
+        return results;
+      });
+
+      this.logger.log(
+        `Criados ${createdMovements.length} movimentos de estoque em falta para recebimentos.`,
+        {
+          operation: 'verifyIntregrityOfReceipts',
+          count: createdMovements.length
+        }
+      );
+
+      return { createdMovementsCount: createdMovements.length };
+    } catch (error) {
+      handlePrismaError(error, this.logger, 'MaterialReceiptsService', {
+        operation: 'verifyIntregrityOfReceipts'
+      });
+      throw error;
+    }
+  }
 }

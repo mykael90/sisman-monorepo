@@ -174,9 +174,13 @@ Authorization: Bearer {{token}}
     "receiptNumber": "REC-001-UPDATED"
 }
 
-
 ### DELETE one
 # @prompt id
 DELETE {{urlLocal}}/{{id}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+### POST verify-integrity
+POST {{urlLocal}}/adm/verify-receipts-integrity
 Content-Type: {{contentType}}
 Authorization: Bearer {{token}}
