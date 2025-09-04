@@ -121,7 +121,7 @@ Pronto! O frontend estará acessível em `http://localhost:3000`, backend em `ht
 
 ## 🏭 Ambiente de Produção - Construção e Utilização
 
-O processo de produção consiste em gerar uma única imagem Docker otimizada que contém as builds de todas as aplicações.
+O processo de construção para produção consiste em gerar uma única imagem Docker otimizada que contém as builds de todas as aplicações.
 
 ### Passo 1: Construir a Imagem Docker
 
@@ -246,6 +246,27 @@ A maneira mais fácil de executar o ambiente de produção (aplicação + banco 
 # Inicia os containers em modo detached (segundo plano)
 docker-compose up -d
 ```
+
+## 🏭 Ambiente de Produção - Atualização
+
+O processo de atualização da produção consiste em reiniciar os containers com a imagem dos serviços atualizadas e realizar os migrations do banco de dados manualmente, fazendo o acesso do container através de `exec` do docker.
+
+### Passo 1: Executar com Docker Compose com imagem atualizada
+
+A maneira mais fácil de executar o ambiente de produção (aplicação + banco de dados) é usando o `docker-compose.yaml`.
+
+Deve ser referenciada na linha do `docker-compose.yaml` referente a imagem atualizada: ```image: mykael90/sisman_monorepo:[tag_atualizada]```
+
+```bash
+# Inicia os containers em modo detached (segundo plano)
+docker-compose up -d --build --force-recreate
+```
+
+### Passo 2: Executar migrations do banco de dados
+
+A estrutura do banco de dados já existe, ela é criada durante o primeiro uso do serviço. Agora que é apenas uma atualização, não é disparado `pnpm db:push` nem `pnpm seed:prod`. Dessa forma, é necesário fazer as migrações manualmente a partir do container.
+
+`docker compose exec sisman-monorepo bh`
 
 ## ⚙️ Comandos Úteis (Dentro do Dev Container)
 
