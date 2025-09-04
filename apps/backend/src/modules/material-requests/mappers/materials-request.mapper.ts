@@ -24,7 +24,9 @@ type SipacStatus =
   | 'FINALIZADA'
   | 'ALTERADA'
   | 'ITEM ESTORNADO'
-  | 'RETORNADA';
+  | 'RETORNADA'
+  | 'NEGADA'
+  | 'PENDENTE AUTORIZAÇÃO CHEFIA';
 
 type SismanStatus =
   (typeof MaterialRequestStatusOptions)[keyof typeof MaterialRequestStatusOptions];
@@ -40,7 +42,9 @@ const StatusSipacToSisman: Record<SipacStatus, SismanStatus> = {
   FINALIZADA: MaterialRequestStatusOptions.FULLY_ATTENDED,
   ALTERADA: MaterialRequestStatusOptions.CHANGED,
   'ITEM ESTORNADO': MaterialRequestStatusOptions.ITEM_RETURNED,
-  RETORNADA: MaterialRequestStatusOptions.RETURNED
+  RETORNADA: MaterialRequestStatusOptions.RETURNED,
+  NEGADA: MaterialRequestStatusOptions.REJECTED,
+  'PENDENTE AUTORIZAÇÃO CHEFIA': MaterialRequestStatusOptions.PENDING_CHIEF
 };
 
 export class MaterialRequestMapper {

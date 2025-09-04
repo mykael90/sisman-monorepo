@@ -55,7 +55,15 @@ POST {{urlLocal}}/fetch-one-complete-and-persist
 Content-Type: {{contentType}}
 
 {
-    "numeroAno": "23749/2025"
+    "numeroAno": "11495/2020"
+}
+
+### POST
+POST {{urlLocal}}/fetch-one-complete-and-persist
+Content-Type: {{contentType}}
+
+{
+    "numeroAno": "7293/2020"
 }
 
 ### POST

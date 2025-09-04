@@ -45,6 +45,37 @@ export class MateriaisService {
   //   );
   // }
 
+  // New method to sync with Materials (Catalog global)
+  private async syncMaterialRequest(
+    sipacMaterial: Prisma.SipacMaterialGetPayload<{}>
+  ): Promise<void> {
+    const materialDto = MaterialsMapper.toCreateDto(sipacMaterial);
+    try {
+      const existingMaterial =
+        await this.prisma.materialGlobalCatalog.findUnique({
+          where: { id: materialDto.id }
+        });
+
+      if (existingMaterial) {
+        this.logger.log(`Não faz nada`);
+        return;
+      } else {
+        this.logger.log(`Creating Material: ${sipacMaterial.codigo}`);
+        await this.prisma.materialGlobalCatalog.create({
+          data: materialDto
+        });
+      }
+      return;
+    } catch (error) {
+      this.logger.error(
+        `Failed to sync Material: ${sipacMaterial.codigo}`,
+        error.stack
+      );
+      // Relança o erro
+      throw error;
+    }
+  }
+
   private async persistManyMateriais(
     data: CreateManySipacMaterialDto
   ): Promise<SyncResult> {
@@ -188,8 +219,8 @@ export class MateriaisService {
         this.URL_PATH,
         {
           offset,
-          limit: this.ITEMS_PER_PAGE,
-          ativo: true
+          limit: this.ITEMS_PER_PAGE
+          // ativo: true
         },
         {
           paginado: 'true'
@@ -236,8 +267,8 @@ export class MateriaisService {
           this.URL_PATH,
           {
             offset,
-            limit: this.ITEMS_PER_PAGE,
-            ativo: true
+            limit: this.ITEMS_PER_PAGE
+            // ativo: true
           },
           {
             paginado: 'true'
@@ -334,7 +365,7 @@ export class MateriaisService {
         {
           offset: 0, // Always 0 for a single code search
           limit: 1, // Only expect one item
-          ativo: true,
+          // ativo: true, --> estava dando erro para pedidos mais antigos onde o item ja esta desativado
           codigo: codigo
         },
         {
@@ -396,8 +427,8 @@ export class MateriaisService {
         this.URL_PATH,
         {
           offset,
-          limit,
-          ativo: true
+          limit
+          // ativo: true
           // codigo: 3024000000359,
           // precisa ser o código completo, não pega só uma parte
         },

@@ -94,7 +94,7 @@ X-API-Key: {{sipac_x_api_key}}
 GET {{urlBase}}/material/v1/materiais
 ?limit=100
 # &denominacao-material=bomba
-&codigo=3028000000217
+&codigo=302400009098
 # &id-grupo=3024
 # Content-Type: {{contentType}}
 Authorization: Bearer {{authToken}}

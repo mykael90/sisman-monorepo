@@ -201,6 +201,7 @@ enum MaterialRequestStatusOptions {
     SIPAC_HANDLING     @map("GERENCIADA PELO SIPAC") // Status gerenciado pelo sipac
     REGISTERED         @map("CADASTRADA")
     PENDING            @map("PENDENTE DE AUTORIZACAO") // Request is pending approval.
+    PENDING_CHIEF      @map("PENDENTE DE AUTORIZACAO DA CHEFIA") // Request is pending approval.
     CHANGE_SPONSOR     @map("ALTERADA UNIDADE DE CUSTO")
     APPROVED           @map("AUTORIZADA") // Request has been approved.
     FORWARDED          @map("ENCAMINHADA")
@@ -643,7 +644,7 @@ model MaterialWithdrawal {
     movementTypeId Int
     movementType   MaterialStockMovementType @relation(fields: [movementTypeId], references: [id])
 
-    valueWithdrawal         Decimal?  @db.Decimal(12, 4) // custo total da retirada, considerando todos os materiais
+    valueWithdrawal Decimal? @db.Decimal(12, 4) // custo total da retirada, considerando todos os materiais
 
     notes String? @db.Text
 
@@ -683,7 +684,7 @@ model MaterialWithdrawalItem {
     quantityWithdrawn Decimal @db.Decimal(12, 3)
     // unitOfMeasure     String
 
-    unitPrice         Decimal?  @db.Decimal(12, 4) // cost of material
+    unitPrice Decimal? @db.Decimal(12, 4) // cost of material
 
     // Se este item está atendendo um MaterialRequestItem específico
     // Este link é crucial para atualizar o status da demanda original.
@@ -822,7 +823,7 @@ model MaterialReceipt {
 
     status MaterialReceiptStatus @default(FULLY_ACCEPTED)
 
-    valueReceipt        Decimal?  @db.Decimal(12, 4) // custo total da entrada, considerando todos os materiais
+    valueReceipt Decimal? @db.Decimal(12, 4) // custo total da entrada, considerando todos os materiais
 
     notes String? @db.Text
 

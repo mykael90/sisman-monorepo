@@ -171,6 +171,25 @@ export class RequisicoesMateriaisService {
     const materialRequestDto = MaterialRequestMapper.toCreateDto(
       sipacRequisicaoMaterial
     );
+
+    // Checa inconsistências no status da materialRequestDto.statusHistory,
+    // Itens com o mesmo "status" e "changeDate" são considerados duplicados e um deles é excluído.
+    if (materialRequestDto.statusHistory) {
+      const seen = new Set();
+      materialRequestDto.statusHistory =
+        materialRequestDto.statusHistory.filter((item) => {
+          const duplicateIdentifier = `${
+            item.status
+          }_${item.changeDate.getTime()}`;
+          if (seen.has(duplicateIdentifier)) {
+            return false;
+          } else {
+            seen.add(duplicateIdentifier);
+            return true;
+          }
+        });
+    }
+
     try {
       // Assuming protocolNumber in MaterialRequest stores the SIPAC request ID
       const existingMaterialRequest =

@@ -837,6 +837,7 @@ enum MaterialRequestStatusOptions {
   SIPAC_HANDLING     @map("GERENCIADA PELO SIPAC") // Status gerenciado pelo sipac
   REGISTERED         @map("CADASTRADA")
   PENDING            @map("PENDENTE DE AUTORIZACAO") // Request is pending approval.
+  PENDING_CHIEF      @map("PENDENTE DE AUTORIZACAO DA CHEFIA") // Request is pending approval.
   CHANGE_SPONSOR     @map("ALTERADA UNIDADE DE CUSTO")
   APPROVED           @map("AUTORIZADA") // Request has been approved.
   FORWARDED          @map("ENCAMINHADA")
