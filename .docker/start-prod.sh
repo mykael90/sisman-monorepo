@@ -40,42 +40,28 @@ echo "Banco de dados está pronto."
 #  Preparação do Banco de Dados (Migração e Seeding)
 # =========================================================================
 
-# Exporte a senha para o comando mysql para maior segurança (não aparece em ps -ef)
-export MYSQL_PWD=$DB_PASSWORD
+echo "Verificando se o banco de dados '$ACTUAL_DB_NAME' já está estruturado e povoado com 'users' via Prisma..."
 
-# Verificamos a existência de uma tabela chave (ex: 'users') no banco de dados.
-# Se ela existir, presumimos que o banco de dados já foi inicializado e populado.
-echo "Verificando se o banco de dados '$ACTUAL_DB_NAME' já está estruturado e possui dados..."
-
-# O comando 'mysql -N -s -e "..."' executa uma query:
-# -N: Não mostra nomes de colunas.
-# -s: Modo silencioso (sem bordas ou cabeçalhos extras).
-# A query tenta selecionar '1' (apenas um valor qualquer) da tabela 'users'.
-# Se a tabela 'users' existe e tem pelo menos um registro, a query será bem-sucedida e retornará '1'.
-# Se a tabela não existe, o comando mysql irá falhar silenciosamente (2>/dev/null) ou retornar um erro.
-# Usamos `SELECT 1 FROM \`users\` LIMIT 1` para verificar a existência da tabela.
-# É importante usar `\`users\`` para escapar o nome da tabela caso seja uma palavra reservada ou contenha caracteres especiais.
-
-if mysql -h"$DB_HOST" -P"$DB_PORT" -u"$DB_USER" -D"$ACTUAL_DB_NAME" -N -s -e "SELECT 1 FROM \`users\` LIMIT 1" 2>/dev/null; then
-  echo "Tabela 'users' encontrada no banco de dados '$ACTUAL_DB_NAME'. Pulando migração e seeding."
+# Executa o script TypeScript (transpilado para JS) para verificar o estado do banco de dados.
+# O script 'check-db-seeded' sairá com 0 se a tabela 'User' existir e tiver registros.
+# O script sairá com 1 se a tabela 'User' não existir ou estiver vazia.
+if (cd apps/backend && pnpm check-db-seeded); then
+  echo "Banco de dados já estruturado e possui dados (tabela 'User' não vazia). Pulando db:push e seeding."
 else
-  echo "Tabela 'users' NÃO encontrada no banco de dados '$ACTUAL_DB_NAME' ou banco de dados vazio/novo."
-  echo "Executando estruturação do banco de dados e povoamento inicial..."
+  echo "Banco de dados precisa de estruturação e/ou povoamento."
 
-  echo "--> Passo 1: Estruturando o banco de dados com 'pnpm db:push'..."
-  # Executa o comando dentro de um subshell para não alterar o diretório atual do script.
-  (cd packages/prisma && pnpm db:push)
+  echo "--> Passo 1: Estruturando o banco de dados com 'pnpm db:push --accept-data-loss'..."
+  # Adicione --accept-data-loss para forçar a aplicação das mudanças,
+  # pois em um banco de dados novo/vazio, não há dados para perder.
+  # Em produção com dados EXISTENTES e migrações, o RECOMENDADO é usar `prisma migrate deploy`.
+  (cd packages/prisma && pnpm db:push --accept-data-loss)
   echo "Estrutura do banco de dados aplicada com sucesso."
 
-  echo "--> Passo 2: Povoando o banco de dados com 'pnpm seed'..."
-  # Da mesma forma, executa o seeder a partir do diretório do backend.
+  echo "--> Passo 2: Povoando o banco de dados com 'pnpm seed:prod'..."
+  # Executa o seeder a partir do diretório do backend.
   (cd apps/backend && pnpm seed:prod)
   echo "Banco de dados povoado com sucesso."
 fi
-
-# Desexporta a senha para maior segurança
-unset MYSQL_PWD
-
 
 # =========================================================================
 #  Iniciando as Aplicações
