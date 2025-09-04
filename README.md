@@ -266,7 +266,11 @@ docker-compose up -d --build --force-recreate
 
 A estrutura do banco de dados já existe, ela é criada durante o primeiro uso do serviço. Agora que é apenas uma atualização, não é disparado `pnpm db:push` nem `pnpm seed:prod`. Dessa forma, é necesário fazer as migrações manualmente a partir do container.
 
-`docker compose exec workspace sh`
+`docker compose exec -it sisman-monorepo-prod sh`
+
+`pnpm prisma:db:migrate:dev` **cuidado!**
+
+`pnpm prisma:db:push` **cuidado!**
 
 ## ⚙️ Comandos Úteis (Dentro do Dev Container)
 
