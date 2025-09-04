@@ -21,7 +21,7 @@ DB_PASSWORD=${DB_PASSWORD:-}    # ALERTA: Defina esta variável de ambiente em p
 
 # As variáveis DB_SCHEMA e ENV são usadas para construir o nome completo do banco de dados
 DB_SCHEMA=${DB_SCHEMA:-sisman_db} # Nome base do schema/banco de dados (ex: 'sisman_db')
-ENV=${ENV:-prod}                 # Suffix do ambiente (ex: 'prod', 'dev', ou vazio para o padrão)
+ENV=${ENV:-production}                 # Suffix do ambiente (ex: 'prod', 'dev', ou vazio para o padrão)
 
 # Constrói o nome completo do banco de dados para a conexão MySQL
 ACTUAL_DB_NAME="${DB_SCHEMA}${ENV}"
