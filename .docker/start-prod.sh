@@ -24,7 +24,7 @@ DB_SCHEMA=${DB_SCHEMA:-sisman_db} # Nome base do schema/banco de dados (ex: 'sis
 ENV=${ENV:-prod}                 # Suffix do ambiente (ex: 'prod', 'dev', ou vazio para o padrão)
 
 # Constrói o nome completo do banco de dados para a conexão MySQL
-ACTUAL_DB_NAME="${DB_SCHEMA}-${ENV}"
+ACTUAL_DB_NAME="${DB_SCHEMA}${ENV}"
 
 echo "Aguardando o banco de dados ($DB_HOST:$DB_PORT) ficar disponível..."
 

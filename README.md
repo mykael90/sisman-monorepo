@@ -266,7 +266,7 @@ docker-compose up -d --build --force-recreate
 
 A estrutura do banco de dados já existe, ela é criada durante o primeiro uso do serviço. Agora que é apenas uma atualização, não é disparado `pnpm db:push` nem `pnpm seed:prod`. Dessa forma, é necesário fazer as migrações manualmente a partir do container.
 
-`docker compose exec sisman-monorepo bh`
+`docker compose exec workspace sh`
 
 ## ⚙️ Comandos Úteis (Dentro do Dev Container)
 
@@ -281,3 +281,16 @@ A estrutura do banco de dados já existe, ela é criada durante o primeiro uso d
 | `pm2 list`                                           | Lista os processos gerenciados pelo PM2.                                       |
 | `pm2 stop <id\|name>`                                 | Para um processo específico.                                                   |
 | `pm2 restart <id\|name>`                              | Reinicia um processo específico.                                               |
+
+## Disparar apenas o banco de dados (porta 3307), caso exista essa necessidade
+
+```bash
+docker run -d \
+  --name "db-sisman-prod-only" \
+  -p 3307:"3306" \
+  -e MARIADB_ROOT_PASSWORD="[DB_PASSWORD]" \
+  -e MYSQL_DATABASE="sismanprod" \
+  -v "$(pwd)/_data/mariadb-data/prod:/var/lib/mysql" \
+  --restart unless-stopped \
+  mariadb:11.5.2-noble
+```
