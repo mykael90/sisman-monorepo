@@ -191,6 +191,25 @@ export class RequisicoesMateriaisService {
     }
 
     try {
+      //verificar se tem requisicao de manutencao vinculada para vincular em materialRequest também
+      if (
+        sipacRequisicaoMaterial.sipacRequisicaoManutencaoId &&
+        sipacRequisicaoMaterial.numeroDaRequisicaoRelacionada
+      ) {
+        const maintenanceRequest =
+          await this.prisma.maintenanceRequest.findUnique({
+            select: { id: true },
+            where: {
+              protocolNumber:
+                sipacRequisicaoMaterial.numeroDaRequisicaoRelacionada
+            }
+          });
+
+        if (maintenanceRequest.id) {
+          materialRequestDto.maintenanceRequestId = maintenanceRequest.id;
+        }
+      }
+
       // Assuming protocolNumber in MaterialRequest stores the SIPAC request ID
       const existingMaterialRequest =
         await this.materialRequestsService.findByProtocolNumber(

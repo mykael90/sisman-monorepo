@@ -52,6 +52,7 @@ export class MaterialRequestsService {
       statusHistory,
       sipacUnitRequesting,
       sipacUnitCost,
+      maintenanceRequestId,
       ...restOfData
     } = data;
 
@@ -80,6 +81,11 @@ export class MaterialRequestsService {
 
     const createInput: Prisma.MaterialRequestCreateInput = {
       ...restOfData,
+      maintenanceRequest: maintenanceRequestId
+        ? {
+            connect: { id: maintenanceRequestId }
+          }
+        : undefined,
       storage: storage?.id // If storage object and its id are provided, connect using it.
         ? {
             connect: { id: storage.id }
@@ -503,7 +509,7 @@ export class MaterialRequestsService {
       statusHistory,
       sipacUnitRequesting,
       sipacUnitCost,
-      maintenanceRequestId: _, //removendo do payload maintenanceRequestId, estava dando erro.
+      maintenanceRequestId,
       ...restOfData
     } = data;
 
@@ -531,6 +537,13 @@ export class MaterialRequestsService {
     const updateInput: Prisma.MaterialRequestUpdateInput = {
       ...restOfData // Contains scalar fields
     };
+
+    //Handle maintenanceRequestId if provided
+    if (maintenanceRequestId) {
+      updateInput.maintenanceRequest = {
+        connect: { id: maintenanceRequestId }
+      };
+    }
 
     // Handle storage connection
     if (storage !== undefined) {

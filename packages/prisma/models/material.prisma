@@ -53,16 +53,17 @@ model Warehouse {
 // A global, system-wide catalog of all possible materials.
 // Only system administrators can modify this table.
 model MaterialGlobalCatalog {
-    id            String  @id // Unique identifier for the material.
+    id            String   @id // Unique identifier for the material.
     // code          String? @unique // A unique global code for the material. @map("sipacCode")
     codeSidec     String?
-    name          String  @db.VarChar(255) // The name of the material.
-    description   String? @db.Text // Detailed description of the material.
+    name          String   @db.VarChar(255) // The name of the material.
+    description   String?  @db.Text // Detailed description of the material.
     unitOfMeasure String // The standard unit of measure for this material (e.g., "UNIT", "KG").
     groupId       Int? // The category id of the material (e.g., "Electrical", "Hydraulic"). @map("categoryId")
     subGroupId    Int?
     photoUrl      String? // URL to an image representing the material.
-    isActive      Boolean @default(true) // Indicates if the material is active in the global catalog.
+    isActive      Boolean  @default(true) // Indicates if the material is active in the global catalog.
+    unitPrice     Decimal? @db.Decimal(12, 2) // Valor unitário do item.
 
     createdAt DateTime @default(now()) @db.Timestamp(0) // Timestamp for when the record was created.
     updatedAt DateTime @updatedAt @db.Timestamp(0) // Timestamp for the last update of the record.
@@ -77,9 +78,26 @@ model MaterialGlobalCatalog {
     materialReceiptItems            MaterialReceiptItem[]
     materialRestrictionOrderItems   MaterialRestrictionOrderItem[]
     materialPickingOrderItems       MaterialPickingOrderItem[]
+    materialGlobalCatalogHistory    MaterialGLobalCatalogHistory[]
 
     // @@index([code]) // Index for faster lookups by global code.
     @@map("material_global_catalog") // Maps this model to the 'materials_global_catalog' table.
+}
+
+// Histórico com valores antigos referente a nome, descrição, unidade de medida ou preço.
+model MaterialGLobalCatalogHistory {
+    id            Int      @id @default(autoincrement())
+    name          String   @db.VarChar(255) // The name of the material.
+    description   String?  @db.Text // Detailed description of the material.
+    unitOfMeasure String // The standard unit of measure for this material (e.g., "UNIT", "KG").s
+    unitPrice     Decimal? @db.Decimal(12, 2) // Valor unitário do item.
+
+    deprecatedAt DateTime @default(now()) @db.Timestamp(0) // Timestamp for when the record was created.
+
+    materialGlobalCatalogId String
+    materialGlobalCatalog   MaterialGlobalCatalog @relation(fields: [materialGlobalCatalogId], references: [id])
+
+    @@map("material_global_catalog_history") // Maps this model to the 'materials_global_catalog' table.
 }
 
 // Represents the stock level of a "new" (standard) material in a specific warehouse.

@@ -429,8 +429,19 @@ exports.Prisma.MaterialGlobalCatalogScalarFieldEnum = {
   subGroupId: 'subGroupId',
   photoUrl: 'photoUrl',
   isActive: 'isActive',
+  unitPrice: 'unitPrice',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.MaterialGLobalCatalogHistoryScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  unitOfMeasure: 'unitOfMeasure',
+  unitPrice: 'unitPrice',
+  deprecatedAt: 'deprecatedAt',
+  materialGlobalCatalogId: 'materialGlobalCatalogId'
 };
 
 exports.Prisma.MaterialWarehouseStockScalarFieldEnum = {
@@ -1188,6 +1199,13 @@ exports.Prisma.MaterialGlobalCatalogOrderByRelevanceFieldEnum = {
   photoUrl: 'photoUrl'
 };
 
+exports.Prisma.MaterialGLobalCatalogHistoryOrderByRelevanceFieldEnum = {
+  name: 'name',
+  description: 'description',
+  unitOfMeasure: 'unitOfMeasure',
+  materialGlobalCatalogId: 'materialGlobalCatalogId'
+};
+
 exports.Prisma.MaterialWarehouseStockOrderByRelevanceFieldEnum = {
   materialId: 'materialId',
   locationInWarehouse: 'locationInWarehouse'
@@ -1711,6 +1729,7 @@ exports.Prisma.ModelName = {
   Storage: 'Storage',
   Warehouse: 'Warehouse',
   MaterialGlobalCatalog: 'MaterialGlobalCatalog',
+  MaterialGLobalCatalogHistory: 'MaterialGLobalCatalogHistory',
   MaterialWarehouseStock: 'MaterialWarehouseStock',
   MaterialRequest: 'MaterialRequest',
   MaterialRequestStatus: 'MaterialRequestStatus',
