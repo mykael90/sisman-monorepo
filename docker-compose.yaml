@@ -4,11 +4,12 @@ services:
   workspace:
     build:
       context: .
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
     container_name: sisman-monorepo
     ports:
-      - 3080:3080
-      - 3000:3000
+      - 3000:${PORT_FRONTEND}
+      - 3080:${PORT_BACKEND}
+      # - 3010:${PORT_SCRAPING}
     environment:
       ENV: ${ENV}
       TZ: America/Sao_Paulo
@@ -27,7 +28,7 @@ services:
       MARIADB_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ${DB_SCHEMA}${ENV}
     ports:
-      - 3306:3306
+      - 3306:${DB_PORT}
     env_file:
     volumes:
     - ./_data/mariadb-data/${ENV}:/var/lib/mysql
