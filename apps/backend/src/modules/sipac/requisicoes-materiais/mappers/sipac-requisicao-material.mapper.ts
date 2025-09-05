@@ -190,7 +190,8 @@ export class SipacRequisicaoMaterialMapper {
             quantidadeEmCompra: parseFloat(subItem.quantidadeemcompra),
             valorAtendimento: this.parseDecimal(subItem.valoratendimento),
             totalAtendimento: this.parseDecimal(subItem.totalatendimento),
-            status: subItem.status
+            status: subItem.status,
+            denominacao: subItem.denominacao
           }) as CreateSipacItemRequisicaoMaterialDto // Type assertion due to missing requisicaoId
       ),
 

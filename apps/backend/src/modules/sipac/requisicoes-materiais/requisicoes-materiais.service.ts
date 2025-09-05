@@ -38,6 +38,8 @@ import { ListaRequisicoesMateriaisService } from './lista-requisicoes-materiais.
 import { MateriaisService } from '../materiais/materiais.service';
 import { MaterialRequestsService } from 'src/modules/material-requests/material-requests.service';
 import { UnidadesService } from '../unidades/unidades.service';
+import { Decimal } from '@sisman/prisma/generated/client/runtime/library';
+import { normalizeString } from '../../../shared/utils/string-utils';
 
 @Injectable()
 export class RequisicoesMateriaisService {
@@ -291,10 +293,19 @@ export class RequisicoesMateriaisService {
     // Antes de processar as criações, garantir que os materiais dos itens existem
     if (data.itensDaRequisicao && data.itensDaRequisicao.length > 0) {
       const itensParaVerificar = data.itensDaRequisicao.map((item) => ({
-        codigo: item.codigo // Supondo que o DTO de update tenha `codigo` nos itens
+        codigo: item.codigo, // Supondo que o DTO de update tenha `codigo` nos itens
+        valor: item.valor,
+        denominacao: item.denominacao
       }));
-      await this.ensureMateriaisExistentes(itensParaVerificar as any); // `as any` para simplificar, idealmente tipar corretamente
+      await this.ensureMateriaisExistentesAtualizados(
+        itensParaVerificar as any
+      ); // `as any` para simplificar, idealmente tipar corretamente
     }
+
+    // remover a chave 'denominacao' dos items da requisicao, nao pode ir para o banco de dados, é só para verificar consistencia
+    data.itensDaRequisicao.forEach((item) => {
+      delete item.denominacao;
+    });
 
     // Get or Create Unidade Requisitante and Unidade Custo
     const unidadeRequisitanteInfo =
@@ -386,10 +397,19 @@ export class RequisicoesMateriaisService {
     // Antes de processar as atualizações, garantir que os materiais dos itens existem
     if (data.itensDaRequisicao && data.itensDaRequisicao.length > 0) {
       const itensParaVerificar = data.itensDaRequisicao.map((item) => ({
-        codigo: item.codigo // Supondo que o DTO de update tenha `codigo` nos itens
+        codigo: item.codigo, // Supondo que o DTO de update tenha `codigo` nos itens
+        valor: item.valor,
+        denominacao: item.denominacao
       }));
-      await this.ensureMateriaisExistentes(itensParaVerificar as any); // `as any` para simplificar, idealmente tipar corretamente
+      await this.ensureMateriaisExistentesAtualizados(
+        itensParaVerificar as any
+      ); // `as any` para simplificar, idealmente tipar corretamente
     }
+
+    // remover a chave 'denominacao' dos items da requisicao, nao pode ir para o banco de dados, é só para verificar consistencia
+    data.itensDaRequisicao.forEach((item) => {
+      delete item.denominacao;
+    });
 
     this.logger.debug(data);
 
@@ -510,90 +530,99 @@ export class RequisicoesMateriaisService {
   }
 
   //verifica se todos os materiais relacionados na requisição existem, se não existir, cria
-  private async ensureMateriaisExistentes(
-    itensRequisicao: Array<{ codigo: string; [key: string]: any }>
-  ): Promise<
-    | {
-        summary: { totalProcessed: number; successful: number; failed: number };
-        details: ProcessCodigoResult[];
+  //os que já existem, atualize com as informações mais recentes
+  private async ensureMateriaisExistentesAtualizados(
+    itensRequisicao: Array<{
+      codigo: string;
+      denominacao: string;
+      valor: Decimal;
+      [key: string]: any;
+    }>
+  ) {
+    try {
+      if (!itensRequisicao || itensRequisicao.length === 0) {
+        return undefined;
       }
-    | undefined
-  > {
-    if (!itensRequisicao || itensRequisicao.length === 0) {
-      return undefined;
-    }
 
-    this.logger.log(`Ensuring materials exist for provided codes.`);
-
-    const uniqueCodigos = [
-      ...new Set(itensRequisicao.map((item) => item.codigo))
-    ];
-    const details: ProcessCodigoResult[] = [];
-    let successfulCount = 0;
-    let failedCount = 0;
-
-    const registeredItems = await this.prisma.sipacMaterial.findMany({
-      where: { codigo: { in: uniqueCodigos } },
-      select: { codigo: true }
-    });
-
-    const codigosEncontrados = registeredItems.map(
-      (register) => register.codigo
-    );
-
-    for (const codigo of uniqueCodigos) {
-      if (codigosEncontrados.includes(codigo)) {
-        details.push({ codigo, status: 'success', message: 'Already existed' });
-        successfulCount++;
-      }
-    }
-
-    const codigosNaoEncontrados = uniqueCodigos.filter(
-      (codigo) => !codigosEncontrados.includes(codigo)
-    );
-
-    if (codigosNaoEncontrados.length > 0) {
-      this.logger.warn(
-        `Codes not found locally: ${codigosNaoEncontrados.join(', ')}. Attempting to fetch and persist...`
+      this.logger.log(
+        `Certificando que materials existem e estão atualizados para os codigos fornecidos.`
       );
 
-      for (const codigo of codigosNaoEncontrados) {
-        try {
-          const singleCreationResult =
-            await this.materiaisService.fetchByCodeAndPersistMaterial(codigo);
-          if (singleCreationResult.successful === 1) {
-            details.push({ codigo, status: 'success', message: 'Created' });
-            successfulCount++;
-          } else {
-            details.push({
-              codigo,
-              status: 'failed',
-              message: 'Failed to create or find via service'
-            });
-            failedCount++;
-          }
-        } catch (error) {
-          const errorMessage =
-            error instanceof Error
-              ? error.message
-              : 'Unknown error during material fetch/persist';
-          this.logger.error(
-            `Error processing material code ${codigo} in ensureMateriaisExistentes: ${errorMessage}`
+      const uniqueCodigos = [
+        ...new Set(itensRequisicao.map((item) => item.codigo))
+      ];
+
+      const registeredItems = await this.prisma.sipacMaterial.findMany({
+        where: { codigo: { in: uniqueCodigos } },
+        select: { codigo: true, precoCompra: true, denominacaoMaterial: true }
+      });
+      const codigosEncontrados = registeredItems.map(
+        (register) => register.codigo
+      );
+
+      const codigosNaoEncontrados = uniqueCodigos.filter(
+        (codigo) => !codigosEncontrados.includes(codigo)
+      );
+
+      if (codigosNaoEncontrados.length > 0) {
+        this.logger.warn(
+          `Codes not found locally: ${codigosNaoEncontrados.join(', ')}. Attempting to fetch and persist...`
+        );
+
+        await this.materiaisService.fetchManyByCodesAndPersistMaterials(
+          codigosNaoEncontrados
+        );
+      }
+
+      if (codigosEncontrados.length > 0) {
+        this.logger.log(
+          `Códigos encontrados localmente: ${codigosEncontrados.join(', ')}`
+        );
+
+        // antes de chamar o metodo para atualizar, verificar se há necessidade de atualização.
+        const registeredItemsMap = new Map(
+          registeredItems.map((item) => [item.codigo, item])
+        );
+
+        const codigosParaAtualizar = itensRequisicao
+          .filter((item) => codigosEncontrados.includes(item.codigo))
+          .filter((item) => {
+            const itemRegistrado = registeredItemsMap.get(item.codigo);
+            if (!itemRegistrado) return false;
+
+            // const precoCompraDB = new Decimal(itemRegistrado.precoCompra);
+
+            return (
+              normalizeString(item.denominacao) !==
+              normalizeString(itemRegistrado.denominacaoMaterial)
+              // || !new Decimal(item.valor).equals(precoCompraDB)
+            );
+          })
+          .map((item) => item.codigo);
+
+        if (codigosParaAtualizar.length > 0) {
+          this.logger.log(
+            `Materiais que precisam de atualização: ${codigosParaAtualizar.join(
+              ', '
+            )}`
           );
-          details.push({ codigo, status: 'failed', message: errorMessage });
-          failedCount++;
+          return await this.materiaisService.fetchManyByCodesAndPersistMaterials(
+            codigosParaAtualizar
+          );
+        } else {
+          this.logger.log(
+            'Nenhum dos materiais encontrados localmente precisa de atualização.'
+          );
         }
       }
-    }
 
-    return {
-      summary: {
-        totalProcessed: uniqueCodigos.length,
-        successful: successfulCount,
-        failed: failedCount
-      },
-      details
-    };
+      this.logger.log(`Verificação dos materiais concluída.`);
+    } catch (error) {
+      this.logger.error(
+        `Error processing materials in ensureMateriaisExistentesAtualizados: ${error.message}`
+      );
+      throw error;
+    }
   }
 
   /**

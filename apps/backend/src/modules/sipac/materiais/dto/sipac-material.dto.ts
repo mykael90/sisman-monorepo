@@ -13,6 +13,7 @@ import {
   ValidateNested
 } from 'class-validator';
 import { Type } from 'class-transformer';
+import { Decimal } from '@sisman/prisma/generated/client/runtime/library';
 
 // Omitimos createdAt e updatedAt do DTO de criação, pois são geralmente gerenciados pelo Prisma.
 // Se Prisma.SipacMaterialCreateInput os tiver como obrigatórios (mesmo que opcionais),
@@ -64,7 +65,7 @@ export class CreateSipacMaterialDto
   })
   @IsOptional()
   @IsNumber()
-  consumoEnergia?: number;
+  consumoEnergia?: Decimal;
 
   // @ApiProperty({
   //   description:
@@ -174,7 +175,7 @@ export class CreateSipacMaterialDto
   })
   @IsOptional()
   @IsNumber()
-  precoCompra?: number;
+  precoCompra?: Decimal;
 
   @ApiProperty({
     description:
@@ -184,7 +185,7 @@ export class CreateSipacMaterialDto
   })
   @IsOptional()
   @IsNumber()
-  valorEstimado?: number;
+  valorEstimado?: Decimal;
 }
 
 export class UpdateSipacMaterialDto extends PartialType(

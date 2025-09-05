@@ -110,6 +110,13 @@ export class CreateSipacItemRequisicaoMaterialDto
   @IsNotEmpty()
   @IsString()
   status: string;
+
+  /**
+   * Nome do item (apenas para verificar consistencia de nome, se não mudou no banco de dados do sipac)
+   */
+  @IsOptional()
+  @IsString()
+  denominacao?: string;
 }
 
 export class UpdateSipacItemRequisicaoMaterialDto extends PartialType(

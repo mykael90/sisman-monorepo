@@ -1,6 +1,7 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { ApiProperty } from '@nestjs/swagger';
 import { Prisma } from '@sisman/prisma';
+import { Decimal } from '@sisman/prisma/generated/client/runtime/library';
 import {
   IsBoolean,
   IsNotEmpty,
@@ -44,6 +45,10 @@ export class CreateMaterialDto
   @IsNumber()
   @IsOptional()
   groupId?: number;
+
+  @IsNumber()
+  @IsOptional()
+  unitPrice?: Decimal;
 }
 
 export class UpdateMaterialDto extends PartialType(CreateMaterialDto) {}

@@ -46,24 +46,35 @@ export class MateriaisService {
   // }
 
   // New method to sync with Materials (Catalog global)
+  //Se não existir cria, se existir tenta atualizar (a logica da atualizacao é no serviço chamado)
   private async syncMaterialRequest(
-    sipacMaterial: Prisma.SipacMaterialGetPayload<{}>
+    sipacMaterial: CreateSipacMaterialDto,
+    tx: Prisma.TransactionClient
   ): Promise<void> {
-    const materialDto = MaterialsMapper.toCreateDto(sipacMaterial);
+    const materialGlobalCatalogDto = MaterialsMapper.toCreateDto(sipacMaterial);
     try {
-      const existingMaterial =
+      const existingMaterialGlobalCatalog =
         await this.prisma.materialGlobalCatalog.findUnique({
-          where: { id: materialDto.id }
+          where: { id: materialGlobalCatalogDto.id }
         });
 
-      if (existingMaterial) {
-        this.logger.log(`Não faz nada`);
-        return;
+      if (existingMaterialGlobalCatalog) {
+        // Update existing materialGlobalCatalog
+        await this.materialsService.update(
+          existingMaterialGlobalCatalog.id,
+          materialGlobalCatalogDto,
+          tx as any
+        );
+        this.logger.debug(
+          `MaterialGlobalCatalog sent to update for SIPAC code: ${sipacMaterial.codigo}`
+        );
+        //se vai ser atualizado, isso é implementado no serviço materialsService.update
       } else {
-        this.logger.log(`Creating Material: ${sipacMaterial.codigo}`);
-        await this.prisma.materialGlobalCatalog.create({
-          data: materialDto
-        });
+        // Create new materialGlobalCatalog
+        await this.materialsService.create(materialGlobalCatalogDto, tx as any);
+        this.logger.debug(
+          `MaterialGlobalCatalog created for SIPAC code: ${sipacMaterial.codigo}`
+        );
       }
       return;
     } catch (error) {
@@ -88,105 +99,26 @@ export class MateriaisService {
     for (const item of data.items) {
       try {
         await this.prisma.$transaction(async (prisma) => {
-          // Persist in sipacMaterial (create or skip)
-          await prisma.sipacMaterial.create({
-            data: item
-            // Using create and handling potential unique constraint error for "skipDuplicates" behavior
+          // Persist in sipacMaterial (create or update)
+          await prisma.sipacMaterial.upsert({
+            where: { idMaterial: item.idMaterial },
+            update: item,
+            create: item
           });
 
-          // Map to materialGlobalCatalog DTO
-          const materialGlobalCatalogDto = MaterialsMapper.toCreateDto(
-            item as any
-          ); // Cast needed due to Prisma type
-
-          // Check if material exists in materialGlobalCatalog
-          const existingMaterialGlobalCatalog =
-            await prisma.materialGlobalCatalog.findUnique({
-              where: { id: materialGlobalCatalogDto.id }
-            });
-
-          if (existingMaterialGlobalCatalog) {
-            // Update existing materialGlobalCatalog
-            await prisma.materialGlobalCatalog.update({
-              where: { id: existingMaterialGlobalCatalog.id },
-              data: materialGlobalCatalogDto
-            });
-            this.logger.debug(
-              `MaterialGlobalCatalog updated for SIPAC code: ${item.codigo}`
-            );
-          } else {
-            // Create new materialGlobalCatalog
-            await prisma.materialGlobalCatalog.create({
-              data: materialGlobalCatalogDto
-            });
-            this.logger.debug(
-              `MaterialGlobalCatalog created for SIPAC code: ${item.codigo}`
-            );
-          }
+          await this.syncMaterialRequest(item, prisma as any);
         });
         successful++;
         this.logger.debug(
           `Transaction successful for SIPAC code: ${item.codigo}`
         );
       } catch (error) {
-        failed++;
-        const errorMessage =
-          error instanceof Error ? error.message : 'Unknown error';
-        // Check if the error is a unique constraint violation for sipacMaterial (skipDuplicates behavior)
-        if (
-          error instanceof Prisma.PrismaClientKnownRequestError &&
-          error.code === 'P2002'
-        ) {
-          this.logger.debug(
-            `SIPAC material with code ${item.codigo} already exists. Skipping sipacMaterial creation but attempting MaterialGlobalCatalog sync.`
-          );
-          // Even if sipacMaterial creation is skipped, we still want to try syncing MaterialGlobalCatalog
-          try {
-            await this.prisma.$transaction(async (prisma) => {
-              const materialGlobalCatalogDto = MaterialsMapper.toCreateDto(
-                item as any
-              );
-              const existingMaterialGlobalCatalog =
-                await prisma.materialGlobalCatalog.findUnique({
-                  where: { id: materialGlobalCatalogDto.id }
-                });
-
-              if (existingMaterialGlobalCatalog) {
-                await prisma.materialGlobalCatalog.update({
-                  where: { id: existingMaterialGlobalCatalog.id },
-                  data: materialGlobalCatalogDto
-                });
-                this.logger.debug(
-                  `MaterialGlobalCatalog updated for existing SIPAC code: ${item.codigo}`
-                );
-              } else {
-                // This case should ideally not happen if sipacMaterial exists, but as a fallback
-                await prisma.materialGlobalCatalog.create({
-                  data: materialGlobalCatalogDto
-                });
-                this.logger.debug(
-                  `MaterialGlobalCatalog created for existing SIPAC code: ${item.codigo}`
-                );
-              }
-            });
-            successful++; // Count as successful if MaterialGlobalCatalog sync worked
-          } catch (innerError) {
-            failed++; // Count as failed if MaterialGlobalCatalog sync also failed
-            const innerErrorMessage =
-              innerError instanceof Error
-                ? innerError.message
-                : 'Unknown inner error';
-            this.logger.error(
-              `Failed to sync MaterialGlobalCatalog for existing SIPAC code ${item.codigo}: ${innerErrorMessage}`,
-              innerError.stack
-            );
-          }
-        } else {
-          this.logger.error(
-            `Transaction failed for SIPAC code ${item.codigo}: ${errorMessage}`,
-            error.stack
-          );
-        }
+        failed++; // Count as failed if MaterialGlobalCatalog sync also failed
+        const errorMessage = error.message ?? 'Unknown inner error';
+        this.logger.error(
+          `Failed to sync MaterialGlobalCatalog for existing SIPAC code ${item.codigo}: ${errorMessage}`,
+          error.stack
+        );
       }
     }
 

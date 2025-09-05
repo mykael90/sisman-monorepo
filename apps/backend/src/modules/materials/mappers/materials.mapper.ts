@@ -1,8 +1,9 @@
-import { SipacMaterial } from '@sisman/prisma';
 import { CreateMaterialDto } from '../dto/material.dto';
+import { CreateSipacMaterialDto } from '../../sipac/materiais/dto/sipac-material.dto';
+import { Decimal } from '@sisman/prisma/generated/client/runtime/library';
 
 export class MaterialsMapper {
-  static toCreateDto(item: SipacMaterial): CreateMaterialDto {
+  static toCreateDto(item: CreateSipacMaterialDto): CreateMaterialDto {
     return {
       id: String(item.codigo),
       codeSidec: item.codigoSidec,
@@ -10,7 +11,8 @@ export class MaterialsMapper {
       description: item.especificacao.toUpperCase(),
       isActive: true,
       unitOfMeasure: item.denominacaoUnidade.toUpperCase(),
-      groupId: item.idGrupo
+      groupId: item.idGrupo,
+      unitPrice: new Decimal(item.precoCompra)
     };
   }
 }
