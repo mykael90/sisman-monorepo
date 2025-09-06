@@ -47,7 +47,7 @@ POST {{urlLocal}}/fetch-one-complete
 Content-Type: {{contentType}}
 
 {
-    "numeroAno": "26430/2025"
+    "numeroAno": "26122/2022"
 }
 
 ### POST
@@ -55,7 +55,7 @@ POST {{urlLocal}}/fetch-one-complete-and-persist
 Content-Type: {{contentType}}
 
 {
-    "numeroAno": "26430/2025"
+    "numeroAno": "26122/2022"
 }
 
 ### POST

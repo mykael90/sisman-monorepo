@@ -64,4 +64,9 @@ export class UnidadesController {
       codigosUnidade
     );
   }
+
+  @Post('normalize-all-sipac-unidades-names') // POST /sipac/unidades/sync-many
+  async normalizeAllSipacUnidadesNames() {
+    return await this.unidadesService.normalizeAllSipacUnidadeNames();
+  }
 }

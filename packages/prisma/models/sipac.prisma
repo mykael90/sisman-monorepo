@@ -167,7 +167,7 @@ model SipacHistoricoRequisicaoMaterial {
 model SipacTotalizacaoElementoDespesaMaterial {
     id              Int     @id @default(autoincrement()) // Identificador único.
     grupoDeMaterial String // Descrição do grupo de material e elemento de despesa.
-    total           Decimal @db.Decimal(12, 2) // Valor total para o grupo.
+    total           Decimal? @db.Decimal(12, 2) // Valor total para o grupo.
 
     requisicaoId Int? // Chave estrangeira para SipacRequisicaoMaterial.
     requisicao   SipacRequisicaoMaterial? @relation(fields: [requisicaoId], references: [id], onDelete: Cascade)

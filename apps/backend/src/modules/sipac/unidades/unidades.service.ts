@@ -20,7 +20,8 @@ import {
 } from '../sipac-api.interfaces';
 import {
   CreateManySipacUnidadeDto,
-  CreateSipacUnidadeDto
+  CreateSipacUnidadeDto,
+  UpdateSipacUnidadeDto
 } from './dto/sipac-unidade.dto';
 import { SipacUnidadeMapper } from './mappers/sipac-unidade.mapper';
 import { normalizeString } from '../../../shared/utils/string-utils';
@@ -528,6 +529,66 @@ export class UnidadesService {
         error.stack
       );
       throw error;
+    }
+  }
+
+  /**
+   * Busca todos os registros de sipac_unidades, normaliza o campo 'nomeUnidade'
+   * e atualiza aqueles que tiveram o nome modificado, tudo dentro de uma transação.
+   */
+  async normalizeAllSipacUnidadeNames() {
+    // Não recebe mais `data` como parâmetro
+    try {
+      // 1. Buscar todos os registros existentes no banco de dados
+      // Selecionamos apenas 'id' e 'nomeUnidade' para otimizar,
+      // pois são os únicos campos que precisamos para esta operação.
+      const allUnits = await this.prisma.sipacUnidade.findMany({
+        select: {
+          id: true,
+          nomeUnidade: true
+          // Se você precisar de outros campos para decidir se atualiza, inclua-os aqui.
+          // Por exemplo, para manter 'codigoUnidade' e 'sigla' intactos se não forem normalizados:
+          // codigoUnidade: true,
+          // sigla: true,
+        }
+      });
+
+      // 2. Preparar as operações de atualização
+      const updateOperations = allUnits
+        .map((unit) => {
+          const originalNome = unit.nomeUnidade;
+          const normalizedNome = normalizeString(originalNome);
+
+          // 3. Criar uma operação de atualização APENAS se o nome mudou
+          if (normalizedNome !== originalNome) {
+            return this.prisma.sipacUnidade.update({
+              where: { id: unit.id },
+              data: { nomeUnidade: normalizedNome }
+            });
+          }
+          return null; // Não há necessidade de atualização para este registro
+        })
+        .filter((op) => op !== null); // Remover todas as entradas `null`
+
+      // 4. Executar as operações de atualização dentro de uma transação
+      if (updateOperations.length > 0) {
+        const result = await this.prisma.$transaction(updateOperations);
+        this.logger.log(
+          `Transação concluída. ${result.length} registros de sipac_unidade atualizados.`
+        );
+        return result;
+      } else {
+        this.logger.log(
+          'Nenhum registro de sipac_unidade precisou de normalização.'
+        );
+        return []; // Retorna um array vazio se nenhuma atualização for necessária
+      }
+    } catch (error) {
+      this.logger.error(
+        'Falha na transação de normalização em lote de sipac_unidade.',
+        error
+      );
+      throw new Error(`Falha ao normalizar unidades: ${error.message}`);
     }
   }
 }

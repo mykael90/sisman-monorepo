@@ -174,6 +174,10 @@ export class CreateSipacHistoricoRequisicaoMaterialDto
 export class CreateSipacTotalizacaoElementoDespesaMaterialDto
   implements Prisma.SipacTotalizacaoElementoDespesaMaterialCreateManyInput
 {
+  id?: number;
+  requisicaoId?: number;
+  createdAt?: string | Date;
+  updatedAt?: string | Date;
   /**
    * Descrição do grupo de material e elemento de despesa.
    * @example 'MATERIAL DE CONSUMO - 339030.01'
@@ -187,9 +191,9 @@ export class CreateSipacTotalizacaoElementoDespesaMaterialDto
    * @example 500.75
    */
   // type: 'number', format: 'double' são inferidos
-  @IsNotEmpty()
+  @IsOptional()
   @IsDecimal({ decimal_digits: '2' })
-  total: DecimalJsLike;
+  total?: DecimalJsLike;
 }
 
 /**

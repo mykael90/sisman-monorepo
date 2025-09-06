@@ -19,3 +19,7 @@ Content-Type: {{contentType}}
 
 ### GET and SYNC all unidades to server database
 GET {{urlLocal}}/sync-all
+
+### POST
+POST {{urlLocal}}/normalize-all-sipac-unidades-names
+Content-Type: {{contentType}}

@@ -12,7 +12,7 @@ export class MaterialsMapper {
       isActive: true,
       unitOfMeasure: item.denominacaoUnidade.toUpperCase(),
       groupId: item.idGrupo,
-      unitPrice: new Decimal(item.precoCompra)
+      unitPrice: item.precoCompra ? new Decimal(item.precoCompra) : undefined
     };
   }
 }
