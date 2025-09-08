@@ -98,50 +98,54 @@ const MediaCarouselViewer: React.FC<MediaCarouselViewerProps> = ({
       const altText = file.description || file.fileName || `Media ${index + 1}`;
 
       return (
-        // Este div agora é responsável pelo preenchimento simétrico ao redor da mídia.
-        // Ele vai centralizar o conteúdo (Image/video) e aplicar px-4.
-        // O `justify-center` centraliza a imagem horizontalmente dentro do espaço disponível.
-        <div className='relative flex h-full min-h-[300px] w-full items-center justify-center overflow-hidden bg-gray-900 px-4'>
-          {isImage && (
-            <Image
-              key={publicUrl}
-              src={publicUrl}
-              alt={altText}
-              fill
-              sizes='(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 60vw'
-              style={{ objectFit: 'contain' }}
-              className='object-contain'
-              priority={isCurrentSlide}
-              loading={isCurrentSlide ? 'eager' : 'lazy'}
-              onError={(e) => {
-                console.error(
-                  `[MediaCarouselViewer] Erro ao carregar imagem principal: ${publicUrl}. `,
-                  e.currentTarget.src,
-                  e
-                );
-              }}
-            />
-          )}
-          {isVideo && (
-            <video
-              src={publicUrl}
-              controls
-              preload={isCurrentSlide ? 'auto' : 'metadata'}
-              className='h-full w-full object-contain'
-              poster={file.thumbnailUrl || undefined}
-              onError={(e) => {
-                console.error(
-                  `[MediaCarouselViewer] Erro ao carregar vídeo principal: ${publicUrl}.`,
-                  e.currentTarget.src,
-                  e
-                );
-              }}
-            >
-              Your browser does not support the video tag.
-            </video>
-          )}
+        <div className='relative flex h-full min-h-[300px] w-full items-center justify-center overflow-hidden bg-gray-900'>
+          <div className='relative flex h-full w-full items-center justify-center px-4'>
+            {isImage && (
+              <Image
+                key={publicUrl}
+                src={publicUrl}
+                alt={altText}
+                fill
+                sizes='(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 60vw'
+                style={{ objectFit: 'contain', objectPosition: 'center' }}
+                priority={isCurrentSlide}
+                loading={isCurrentSlide ? 'eager' : 'lazy'}
+                onError={(e) => {
+                  console.error(
+                    `[MediaCarouselViewer] Erro ao carregar imagem principal: ${publicUrl}. `,
+                    e.currentTarget.src,
+                    e
+                  );
+                }}
+                onLoadingComplete={(img) => {
+                  console.log(
+                    `[MediaCarouselViewer] Imagem ${publicUrl} carregada completamente (dimensões: ${img.naturalWidth}x${img.naturalHeight}).`
+                  );
+                }}
+              />
+            )}
+            {isVideo && (
+              <video
+                src={publicUrl}
+                controls
+                preload={isCurrentSlide ? 'auto' : 'metadata'}
+                className='h-full w-full object-contain'
+                poster={file.thumbnailUrl || undefined}
+                onError={(e) => {
+                  console.error(
+                    `[MediaCarouselViewer] Erro ao carregar vídeo principal: ${publicUrl}.`,
+                    e.currentTarget.src,
+                    e
+                  );
+                }}
+              >
+                Your browser does not support the video tag.
+              </video>
+            )}
+          </div>
 
-          <div className='absolute right-0 bottom-0 left-0 bg-gradient-to-t from-black/80 to-transparent p-4 text-white'>
+          {/* Hierarquia de estilos para Nome do Arquivo e Descrição - MOVIDO PARA O TOPO */}
+          <div className='absolute top-0 right-0 left-0 bg-gradient-to-b from-black/80 to-transparent p-4 text-white'>
             {file.fileName && (
               <p className='mb-1 truncate text-xl font-semibold text-white'>
                 {file.fileName}
@@ -251,15 +255,10 @@ const MediaCarouselViewer: React.FC<MediaCarouselViewerProps> = ({
       )}
 
       <Carousel setApi={setCarouselApi} className='mb-4 w-full'>
-        <CarouselContent
-          // Sobrescreve o `-ml-4` padrão do Shadcn para evitar o deslocamento à esquerda
-          className='relative ml-0 flex h-[calc(70vh-8rem)] min-h-[300px] w-full rounded-md bg-gray-900'
-        >
+        <CarouselContent className='relative ml-0 flex h-[calc(70vh-8rem)] min-h-[300px] w-full rounded-md bg-gray-900'>
           {playableMediaFiles.map((file, index) => (
             <CarouselItem
               key={`main-${file.url}-${index}`}
-              // Sobrescreve o `pl-4` padrão do Shadcn para remover o padding esquerdo do item.
-              // O padding simétrico é aplicado no div interno de `renderMainMedia`.
               className='flex h-full basis-full items-stretch pl-0'
             >
               {renderMainMedia(file, index)}
