@@ -283,8 +283,7 @@ export function ManutencaoDadosSipacDisplay({
       <MediaGallery
         files={mediaFiles}
         getPublicFileUrl={getPublicFotoSigaa}
-        imageGalleryTitle='Fotos' // Título opcional para a seção de fotos
-        videoGalleryTitle='Vídeos' // Título opcional para a seção de vídeos
+        galleryTitle='Mídias Relacionadas'
         onThumbnailClick={handleThumbnailClick} // Passe o handler de clique para o modal
       />
 
