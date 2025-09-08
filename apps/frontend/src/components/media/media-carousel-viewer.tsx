@@ -81,15 +81,14 @@ const MediaCarouselViewer: React.FC<MediaCarouselViewerProps> = ({
       const publicUrl = getPublicFileUrl(file.url);
       const isCurrentSlide = index === currentSlideIndex;
 
-      // Debugging: Log URLs to ensure they are valid for all slides
-      // console.log(`[Viewer] Slide ${index}: Public URL = ${publicUrl}, Active = ${isCurrentSlide}`);
-
       if (!publicUrl) {
-        // console.error(`[Viewer Error] No public URL for file: ${file.fileName || file.url}`);
+        console.error(
+          `[MediaCarouselViewer] Erro: URL pública vazia para o arquivo: ${file.fileName || file.url}`
+        );
         return (
           <div className='relative flex h-full min-h-[300px] w-full items-center justify-center overflow-hidden bg-gray-800 text-red-400'>
-            Failed to load media: {file.fileName || file.url} - URL invalid or
-            empty.
+            Falha ao carregar mídia: {file.fileName || file.url} - URL inválida
+            ou vazia.
           </div>
         );
       }
@@ -99,11 +98,12 @@ const MediaCarouselViewer: React.FC<MediaCarouselViewerProps> = ({
       const altText = file.description || file.fileName || `Media ${index + 1}`;
 
       return (
-        <div className='relative flex h-full min-h-[300px] w-full items-center justify-center overflow-hidden bg-gray-900'>
+        // Este div agora é responsável pelo preenchimento simétrico ao redor da mídia.
+        // Ele vai centralizar o conteúdo (Image/video) e aplicar px-4.
+        // O `justify-center` centraliza a imagem horizontalmente dentro do espaço disponível.
+        <div className='relative flex h-full min-h-[300px] w-full items-center justify-center overflow-hidden bg-gray-900 px-4'>
           {isImage && (
             <Image
-              // CRUCIAL: Add a unique key to force remount/re-evaluation of the Image component
-              // when the publicUrl (and thus the image content) changes.
               key={publicUrl}
               src={publicUrl}
               alt={altText}
@@ -111,20 +111,31 @@ const MediaCarouselViewer: React.FC<MediaCarouselViewerProps> = ({
               sizes='(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 60vw'
               style={{ objectFit: 'contain' }}
               className='object-contain'
-              // Apply priority/eager loading only for the current active slide
               priority={isCurrentSlide}
               loading={isCurrentSlide ? 'eager' : 'lazy'}
+              onError={(e) => {
+                console.error(
+                  `[MediaCarouselViewer] Erro ao carregar imagem principal: ${publicUrl}. `,
+                  e.currentTarget.src,
+                  e
+                );
+              }}
             />
           )}
           {isVideo && (
             <video
-              // It's generally not recommended to add a key to <video> unless its src is changing frequently,
-              // as browser can handle src changes on video elements better.
               src={publicUrl}
               controls
               preload={isCurrentSlide ? 'auto' : 'metadata'}
               className='h-full w-full object-contain'
               poster={file.thumbnailUrl || undefined}
+              onError={(e) => {
+                console.error(
+                  `[MediaCarouselViewer] Erro ao carregar vídeo principal: ${publicUrl}.`,
+                  e.currentTarget.src,
+                  e
+                );
+              }}
             >
               Your browser does not support the video tag.
             </video>
@@ -145,7 +156,6 @@ const MediaCarouselViewer: React.FC<MediaCarouselViewerProps> = ({
         </div>
       );
     },
-    // Keep currentSlideIndex in dependencies to ensure renderMainMedia re-runs
     [getPublicFileUrl, imageExtensions, videoExtensions, currentSlideIndex]
   );
 
@@ -161,7 +171,7 @@ const MediaCarouselViewer: React.FC<MediaCarouselViewerProps> = ({
 
       return (
         <div
-          key={file.url + index} // Key for thumbnail item itself
+          key={file.url + index}
           className={`relative h-20 w-20 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 transition-all duration-200 ${
             isActive
               ? 'scale-105 border-blue-500'
@@ -171,21 +181,21 @@ const MediaCarouselViewer: React.FC<MediaCarouselViewerProps> = ({
         >
           {isImage && (
             <Image
-              key={publicUrl + '-thumb'} // Unique key for thumbnail Image
+              key={publicUrl + '-thumb'}
               src={publicUrl}
               alt={file.fileName || `Thumbnail ${index + 1}`}
               fill
               sizes='80px'
               style={{ objectFit: 'cover' }}
               className='transition-transform duration-200 group-hover:scale-105'
-              loading='lazy' // Thumbnails can always be lazy loaded
+              loading='lazy'
             />
           )}
           {isVideo && (
             <>
               {file.thumbnailUrl ? (
                 <Image
-                  key={file.thumbnailUrl || publicUrl + '-video-thumb'} // Unique key for video thumbnail Image
+                  key={file.thumbnailUrl || publicUrl + '-video-thumb'}
                   src={file.thumbnailUrl}
                   alt={file.fileName || `Video Thumbnail ${index + 1}`}
                   fill
@@ -241,11 +251,16 @@ const MediaCarouselViewer: React.FC<MediaCarouselViewerProps> = ({
       )}
 
       <Carousel setApi={setCarouselApi} className='mb-4 w-full'>
-        <CarouselContent className='relative flex h-[calc(70vh-8rem)] min-h-[300px] w-full rounded-md bg-gray-900'>
+        <CarouselContent
+          // Sobrescreve o `-ml-4` padrão do Shadcn para evitar o deslocamento à esquerda
+          className='relative ml-0 flex h-[calc(70vh-8rem)] min-h-[300px] w-full rounded-md bg-gray-900'
+        >
           {playableMediaFiles.map((file, index) => (
             <CarouselItem
-              key={`main-${file.url}-${index}`} // Key for the carousel item itself
-              className='flex h-full basis-full items-stretch'
+              key={`main-${file.url}-${index}`}
+              // Sobrescreve o `pl-4` padrão do Shadcn para remover o padding esquerdo do item.
+              // O padding simétrico é aplicado no div interno de `renderMainMedia`.
+              className='flex h-full basis-full items-stretch pl-0'
             >
               {renderMainMedia(file, index)}
             </CarouselItem>
