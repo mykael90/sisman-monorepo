@@ -907,6 +907,7 @@ export class RequisicoesManutencoesService {
   async fetchCompleteAndPersistCreateOrUpdateRequisicaoMaterialComManutencaoVinculada(
     numeroAno: string
   ) {
+    // a requisicao de material é criada ou atualizada
     const reqMaterial =
       await this.requisicoesMateriaisService.fetchCompleteAndPersistCreateOrUpdateRequisicaoMaterial(
         numeroAno
@@ -916,16 +917,50 @@ export class RequisicoesManutencoesService {
       reqMaterial.numeroDaRequisicaoRelacionada &&
       !reqMaterial.sipacRequisicaoManutencaoId
     ) {
-      const reqManutencao =
-        await this.fetchCompleteAndPersistCreateOrUpdateRequisicaoManutencao(
-          reqMaterial.numeroDaRequisicaoRelacionada
-        );
+      const existsRequisicaoManutencao =
+        await this.prisma.sipacRequisicaoManutencao.findFirst({
+          where: {
+            numeroRequisicao: reqMaterial.numeroDaRequisicaoRelacionada
+          },
+          include: {
+            predios: true,
+            requisicoesMateriais: true,
+            unidadeCusto: true,
+            unidadeRequisitante: true,
+            historico: true,
+            arquivos: true
+          }
+        });
 
-      return {
-        ...reqMaterial,
-        sipacRequisicaoManutencaoId: reqManutencao.id,
-        sipacRequisicaoManutencao: reqManutencao
-      };
+      if (existsRequisicaoManutencao) {
+        reqMaterial.sipacRequisicaoManutencaoId = existsRequisicaoManutencao.id;
+
+        //atualizar requisicao de manutencao com o id da manutencao, para a devida vinculação
+        await this.prisma.sipacRequisicaoMaterial.update({
+          where: { id: reqMaterial.id },
+          data: {
+            sipacRequisicaoManutencaoId: existsRequisicaoManutencao.id
+          }
+        });
+
+        return {
+          ...reqMaterial,
+          sipacRequisicaoManutencaoId: existsRequisicaoManutencao.id,
+          sipacRequisicaoManutencao: existsRequisicaoManutencao
+        };
+      } else {
+        //Só fazer essa busca se a requisição de manutenção não for localizada localmente, essa consulta pode ser demorada
+        const reqManutencao =
+          await this.fetchCompleteAndPersistCreateOrUpdateRequisicaoManutencao(
+            reqMaterial.numeroDaRequisicaoRelacionada
+          );
+
+        return {
+          ...reqMaterial,
+          sipacRequisicaoManutencaoId: reqManutencao.id,
+          sipacRequisicaoManutencao: reqManutencao
+        };
+      }
     }
     return reqMaterial;
   }
