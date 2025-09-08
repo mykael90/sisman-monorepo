@@ -242,20 +242,18 @@ const MediaCarouselViewer: React.FC<MediaCarouselViewerProps> = ({
 
       {/* Carrossel Principal */}
       <Carousel setApi={setCarouselApi} className='mb-4 w-full'>
-        <div className='relative h-[calc(70vh-8rem)] min-h-[300px] w-full overflow-hidden rounded-md bg-gray-900'>
-          <CarouselContent className='h-full'>
-            {playableMediaFiles.map((file, index) => (
-              <CarouselItem
-                key={`main-${file.url}-${index}`}
-                className='h-full'
-              >
-                {renderMainMedia(file, index)}
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious className='absolute top-1/2 left-2 z-10 -translate-y-1/2' />
-          <CarouselNext className='absolute top-1/2 right-2 z-10 -translate-y-1/2' />
-        </div>
+        <CarouselContent className='relative h-[calc(70vh-8rem)] min-h-[300px] w-full overflow-hidden rounded-md bg-gray-900'>
+          {playableMediaFiles.map((file, index) => (
+            <CarouselItem
+              key={`main-${file.url}-${index}`}
+              className='flex h-full basis-full items-stretch'
+            >
+              {renderMainMedia(file, index)}
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselPrevious className='absolute top-1/2 left-2 z-10 -translate-y-1/2' />
+        <CarouselNext className='absolute top-1/2 right-2 z-10 -translate-y-1/2' />
         <div className='mt-2 text-center text-sm text-gray-500'>
           {currentSlideIndex + 1} of {totalSlides}
         </div>
