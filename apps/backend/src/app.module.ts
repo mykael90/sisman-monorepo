@@ -50,6 +50,8 @@ import { MaterialPickingOrdersModule } from './modules/material-picking-orders/m
 import { WorkersModule } from './modules/workers/workers.module';
 import { ContractsModule } from './modules/contracts/contracts.module';
 import { ContractProvidersModule } from './modules/contract-providers/contract-providers.module';
+import sismanLegacyApiConfig from './config/sisman-legacy-api.config';
+import { SismanLegacyModule } from './modules/sisman-legacy/sisman-legacy.module';
 
 @Module({
   imports: [
@@ -61,7 +63,8 @@ import { ContractProvidersModule } from './modules/contract-providers/contract-p
         mailerConfig,
         databaseConfig,
         sipacApiConfig,
-        sipacScrapingConfig
+        sipacScrapingConfig,
+        sismanLegacyApiConfig
       ],
       expandVariables: true,
       validationSchema,
@@ -83,6 +86,7 @@ import { ContractProvidersModule } from './modules/contract-providers/contract-p
     LogErrorModule,
     LogLoginModule,
     ObservabilityModule,
+    SismanLegacyModule,
     UsersModule,
     RolesModule,
     AuthModule,

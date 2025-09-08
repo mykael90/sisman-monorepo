@@ -1,42 +1,15 @@
 ### Variables
-@urlSismanLegacy=https://sisman.infra.ufrn.br:3002
-@contentType=application/json
+@urlLocal = {{apiUrl}}/sisman-legacy
+@contentType = application/json
 
-
-### POST authentication
-# @name login
-# @prompt username
-# @prompt password
-POST {{urlSismanLegacy}}/tokens
+### POST test-fetch users
+POST {{urlLocal}}/test-fetch
 Content-Type: {{contentType}}
 
-{
-  "username": "{{username}}",
-  "password": "{{password}}"
-}
+{"relativePath":"users"}
 
-### GET example
-@authToken = {{login.response.body.token}}
-GET {{urlSismanLegacy}}/materials/in/?startDate=2025-08-24&endDate=2025-09-03
-Authorization: Bearer {{authToken}}
+### GET test-fetch
+POST {{urlLocal}}/test-fetch
+Content-Type: {{contentType}}
 
-### GET example
-@authToken = {{login.response.body.token}}
-GET {{urlSismanLegacy}}/materials/out/?startDate=2025-08-24&endDate=2025-09-03
-Authorization: Bearer {{authToken}}
-
-### GET example
-@authToken = {{login.response.body.token}}
-GET {{urlSismanLegacy}}/users
-Authorization: Bearer {{authToken}}
-
-### GET example
-@authToken = {{login.response.body.token}}
-GET {{urlSismanLegacy}}/properties
-Authorization: Bearer {{authToken}}
-
-### GET example
-@authToken = {{login.response.body.token}}
-GET {{urlSismanLegacy}}/workers
-Authorization: Bearer {{authToken}}
-
+{"relativePath":"materials/in/?startDate=2025-08-24&endDate=2025-09-03"}

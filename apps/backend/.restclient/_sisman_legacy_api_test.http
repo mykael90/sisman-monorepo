@@ -1,0 +1,42 @@
+### Variables
+@urlSismanLegacy=https://sisman.infra.ufrn.br:3002
+@contentType=application/json
+
+
+### POST authentication
+# @name login
+# @prompt username
+# @prompt password
+POST {{urlSismanLegacy}}/tokens
+Content-Type: {{contentType}}
+
+{
+  "username": "{{username}}",
+  "password": "{{password}}"
+}
+
+### GET example
+@authToken = {{login.response.body.token}}
+GET {{urlSismanLegacy}}/materials/in/?startDate=2025-08-24&endDate=2025-09-03
+Authorization: Bearer {{authToken}}
+
+### GET example
+@authToken = {{login.response.body.token}}
+GET {{urlSismanLegacy}}/materials/out/?startDate=2025-08-24&endDate=2025-09-03
+Authorization: Bearer {{authToken}}
+
+### GET example
+@authToken = {{login.response.body.token}}
+GET {{urlSismanLegacy}}/users
+Authorization: Bearer {{authToken}}
+
+### GET example
+@authToken = {{login.response.body.token}}
+GET {{urlSismanLegacy}}/properties
+Authorization: Bearer {{authToken}}
+
+### GET example
+@authToken = {{login.response.body.token}}
+GET {{urlSismanLegacy}}/workers
+Authorization: Bearer {{authToken}}
+
