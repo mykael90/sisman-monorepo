@@ -1,43 +1,25 @@
 // src/components/MediaCarouselViewer.tsx
-'use client'; // Necessário se você estiver usando Next.js App Router e hooks
+'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import Image from 'next/image'; // Para otimização de imagens no Next.js
-import { PlayCircle, X } from 'lucide-react'; // Ícones para indicar vídeo e fechar
+import Image from 'next/image';
+import { PlayCircle, X } from 'lucide-react';
 
-// Importar componentes Shadcn UI
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-  type CarouselApi // Importe o tipo CarouselApi
+  type CarouselApi
 } from '@/components/ui/carousel';
-// O Card não é estritamente necessário para este viewer, mas pode ser usado para envolver
-// import { Card, CardContent } from '@/components/ui/card';
 
-// Importar a interface IMediaFile
-import { IMediaFile } from '@/types/media'; // Ajuste o caminho conforme onde você salvou a interface
+import { IMediaFile } from '@/types/media';
 
 interface MediaCarouselViewerProps {
-  /**
-   * An array of media files to display.
-   */
   files: IMediaFile[];
-  /**
-   * A function that takes a relative file URL (from `MediaFile.url`)
-   * and returns its public accessible URL.
-   */
   getPublicFileUrl: (relativePath: string) => string | undefined;
-  /**
-   * Optional: The index of the file to start the carousel at.
-   * @default 0
-   */
   initialIndex?: number;
-  /**
-   * Optional: Callback function to close the viewer. Useful when used within a modal.
-   */
   onClose?: () => void;
 }
 
@@ -48,13 +30,11 @@ const MediaCarouselViewer: React.FC<MediaCarouselViewerProps> = ({
   onClose
 }) => {
   const [carouselApi, setCarouselApi] = useState<CarouselApi>();
-  const [currentSlideIndex, setCurrentSlideIndex] = useState(0); // 0-indexed for internal logic
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
 
-  // Define extensões comuns para imagens e vídeos que este viewer deve exibir
   const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'avif'];
   const videoExtensions = ['mp4', 'webm', 'ogg', 'mov', 'avi', 'mkv'];
 
-  // Filtra apenas os arquivos que são imagens ou vídeos e são "playáveis" neste viewer
   const playableMediaFiles = files.filter(
     (file) =>
       file.extension &&
@@ -65,22 +45,28 @@ const MediaCarouselViewer: React.FC<MediaCarouselViewerProps> = ({
   const totalSlides = playableMediaFiles.length;
 
   useEffect(() => {
-    if (!carouselApi) {
+    if (!carouselApi || totalSlides === 0) {
       return;
     }
 
-    // Initialize the carousel to the initialIndex
-    if (initialIndex >= 0 && initialIndex < totalSlides) {
-      carouselApi.scrollTo(initialIndex, true); // `true` for instant scroll
-    }
+    const safeInitialIndex = Math.min(
+      Math.max(0, initialIndex),
+      totalSlides - 1
+    );
 
-    // Update currentSlideIndex when carousel selection changes
-    carouselApi.on('select', () => {
+    carouselApi.scrollTo(safeInitialIndex, true);
+    setCurrentSlideIndex(safeInitialIndex);
+
+    const handleSelect = () => {
       setCurrentSlideIndex(carouselApi.selectedScrollSnap());
-    });
+    };
+    carouselApi.on('select', handleSelect);
+
+    return () => {
+      carouselApi.off('select', handleSelect);
+    };
   }, [carouselApi, initialIndex, totalSlides]);
 
-  // Handler para quando uma miniatura é clicada
   const handleThumbnailClick = useCallback(
     (index: number) => {
       if (carouselApi) {
@@ -90,14 +76,20 @@ const MediaCarouselViewer: React.FC<MediaCarouselViewerProps> = ({
     [carouselApi]
   );
 
-  // Função para renderizar a mídia principal (imagem ou vídeo grande)
   const renderMainMedia = useCallback(
     (file: IMediaFile, index: number) => {
       const publicUrl = getPublicFileUrl(file.url);
+      const isCurrentSlide = index === currentSlideIndex;
+
+      // Debugging: Log URLs to ensure they are valid for all slides
+      // console.log(`[Viewer] Slide ${index}: Public URL = ${publicUrl}, Active = ${isCurrentSlide}`);
+
       if (!publicUrl) {
+        // console.error(`[Viewer Error] No public URL for file: ${file.fileName || file.url}`);
         return (
-          <div className='flex h-full w-full items-center justify-center bg-gray-800 text-red-400'>
-            Failed to load media: {file.fileName || file.url}
+          <div className='relative flex h-full min-h-[300px] w-full items-center justify-center overflow-hidden bg-gray-800 text-red-400'>
+            Failed to load media: {file.fileName || file.url} - URL invalid or
+            empty.
           </div>
         );
       }
@@ -107,31 +99,37 @@ const MediaCarouselViewer: React.FC<MediaCarouselViewerProps> = ({
       const altText = file.description || file.fileName || `Media ${index + 1}`;
 
       return (
-        <div className='relative flex h-full w-full items-center justify-center overflow-hidden bg-gray-900'>
+        <div className='relative flex h-full min-h-[300px] w-full items-center justify-center overflow-hidden bg-gray-900'>
           {isImage && (
             <Image
+              // CRUCIAL: Add a unique key to force remount/re-evaluation of the Image component
+              // when the publicUrl (and thus the image content) changes.
+              key={publicUrl}
               src={publicUrl}
               alt={altText}
               fill
               sizes='(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 60vw'
-              style={{ objectFit: 'contain' }} // Para que a imagem caiba inteira
+              style={{ objectFit: 'contain' }}
               className='object-contain'
-              priority={index === initialIndex} // Otimiza a carga da imagem inicial
+              // Apply priority/eager loading only for the current active slide
+              priority={isCurrentSlide}
+              loading={isCurrentSlide ? 'eager' : 'lazy'}
             />
           )}
           {isVideo && (
             <video
+              // It's generally not recommended to add a key to <video> unless its src is changing frequently,
+              // as browser can handle src changes on video elements better.
               src={publicUrl}
-              controls // Mostra os controles de reprodução
-              preload='auto' // Sugere ao navegador para carregar o vídeo para uma reprodução mais rápida
+              controls
+              preload={isCurrentSlide ? 'auto' : 'metadata'}
               className='h-full w-full object-contain'
-              poster={file.thumbnailUrl || undefined} // Usa a thumbnail como poster se disponível
+              poster={file.thumbnailUrl || undefined}
             >
               Your browser does not support the video tag.
             </video>
           )}
 
-          {/* Hierarquia de estilos para Nome do Arquivo e Descrição */}
           <div className='absolute right-0 bottom-0 left-0 bg-gradient-to-t from-black/80 to-transparent p-4 text-white'>
             {file.fileName && (
               <p className='mb-1 truncate text-xl font-semibold text-white'>
@@ -147,10 +145,10 @@ const MediaCarouselViewer: React.FC<MediaCarouselViewerProps> = ({
         </div>
       );
     },
-    [getPublicFileUrl, imageExtensions, videoExtensions, initialIndex]
+    // Keep currentSlideIndex in dependencies to ensure renderMainMedia re-runs
+    [getPublicFileUrl, imageExtensions, videoExtensions, currentSlideIndex]
   );
 
-  // Função para renderizar uma miniatura individual
   const renderThumbnail = useCallback(
     (file: IMediaFile, index: number) => {
       const publicUrl = getPublicFileUrl(file.url);
@@ -159,11 +157,11 @@ const MediaCarouselViewer: React.FC<MediaCarouselViewerProps> = ({
       const isImage = imageExtensions.includes(file.extension.toLowerCase());
       const isVideo = videoExtensions.includes(file.extension.toLowerCase());
 
-      const isActive = currentSlideIndex === index; // Verifica se esta miniatura é a ativa
+      const isActive = currentSlideIndex === index;
 
       return (
         <div
-          key={file.url + index}
+          key={file.url + index} // Key for thumbnail item itself
           className={`relative h-20 w-20 flex-shrink-0 cursor-pointer overflow-hidden rounded-md border-2 transition-all duration-200 ${
             isActive
               ? 'scale-105 border-blue-500'
@@ -173,35 +171,38 @@ const MediaCarouselViewer: React.FC<MediaCarouselViewerProps> = ({
         >
           {isImage && (
             <Image
+              key={publicUrl + '-thumb'} // Unique key for thumbnail Image
               src={publicUrl}
               alt={file.fileName || `Thumbnail ${index + 1}`}
               fill
               sizes='80px'
               style={{ objectFit: 'cover' }}
               className='transition-transform duration-200 group-hover:scale-105'
+              loading='lazy' // Thumbnails can always be lazy loaded
             />
           )}
           {isVideo && (
             <>
               {file.thumbnailUrl ? (
                 <Image
+                  key={file.thumbnailUrl || publicUrl + '-video-thumb'} // Unique key for video thumbnail Image
                   src={file.thumbnailUrl}
                   alt={file.fileName || `Video Thumbnail ${index + 1}`}
                   fill
                   sizes='80px'
                   style={{ objectFit: 'cover' }}
                   className='transition-transform duration-200 group-hover:scale-105'
+                  loading='lazy'
                 />
               ) : (
                 <video
                   src={publicUrl}
-                  preload='metadata' // Carrega apenas metadados para obter o primeiro frame
+                  preload='metadata'
                   className='h-full w-full object-cover'
                 >
                   Your browser does not support the video tag.
                 </video>
               )}
-              {/* Overlay com ícone de reprodução para vídeos */}
               <div className='bg-opacity-50 absolute inset-0 flex items-center justify-center bg-black text-white opacity-90'>
                 <PlayCircle size={24} />
               </div>
@@ -229,7 +230,6 @@ const MediaCarouselViewer: React.FC<MediaCarouselViewerProps> = ({
 
   return (
     <div className='relative mx-auto h-full w-full max-w-5xl rounded-lg bg-white p-4 shadow-xl sm:p-6'>
-      {/* Botão de Fechar (útil para uso em modal) */}
       {onClose && (
         <button
           onClick={onClose}
@@ -240,12 +240,11 @@ const MediaCarouselViewer: React.FC<MediaCarouselViewerProps> = ({
         </button>
       )}
 
-      {/* Carrossel Principal */}
       <Carousel setApi={setCarouselApi} className='mb-4 w-full'>
-        <CarouselContent className='relative h-[calc(70vh-8rem)] min-h-[300px] w-full overflow-hidden rounded-md bg-gray-900'>
+        <CarouselContent className='relative flex h-[calc(70vh-8rem)] min-h-[300px] w-full rounded-md bg-gray-900'>
           {playableMediaFiles.map((file, index) => (
             <CarouselItem
-              key={`main-${file.url}-${index}`}
+              key={`main-${file.url}-${index}`} // Key for the carousel item itself
               className='flex h-full basis-full items-stretch'
             >
               {renderMainMedia(file, index)}
@@ -259,7 +258,6 @@ const MediaCarouselViewer: React.FC<MediaCarouselViewerProps> = ({
         </div>
       </Carousel>
 
-      {/* Miniaturas de Navegação */}
       <div className='custom-scrollbar mt-4 flex max-h-[120px] flex-wrap justify-center gap-2 overflow-y-auto'>
         {playableMediaFiles.map((file, index) => renderThumbnail(file, index))}
       </div>
