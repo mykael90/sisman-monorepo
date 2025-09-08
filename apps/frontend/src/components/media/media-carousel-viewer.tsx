@@ -272,7 +272,7 @@ const MediaCarouselViewer: React.FC<MediaCarouselViewerProps> = ({
         </div>
       </Carousel>
 
-      <div className='custom-scrollbar flex h-21 max-h-[120px] flex-wrap justify-center gap-2 overflow-y-auto'>
+      <div className='custom-scrollbar flex max-h-[120px] min-h-[82px] flex-wrap justify-center gap-2 overflow-y-auto'>
         {playableMediaFiles.map((file, index) => renderThumbnail(file, index))}
       </div>
     </div>

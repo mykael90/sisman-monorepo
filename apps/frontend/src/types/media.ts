@@ -18,6 +18,11 @@ export interface IMediaFile {
    */
   fileName?: string;
   /**
+   * Optional: A user-friendly name for the title.
+   * Useful for accessibility or display.
+   */
+  title?: string;
+  /**
    * Optional: A description of the file.
    * Useful for `alt` attributes on images or captions.
    */
