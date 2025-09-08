@@ -1,9 +1,11 @@
-import Image from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ISipacRequisicaoManutencaoWithRelations } from '../../requisicoes-manutencoes-types';
 import { getPublicFotoSigaa } from '../../../../../../lib/fetch/get-public-foto-sigaa';
 import MediaGallery from '@/components/media/card-media-gallery';
+import MediaCarouselViewer from '@/components/media/media-carousel-viewer';
 import { IMediaFile } from '@/types/media';
+import { Dialog, DialogContent } from '@/components/ui/dialog'; // Shadcn UI Dialog para o modal
+import { useState } from 'react';
 
 interface ManutencaoDadosSipacDisplayProps {
   data: ISipacRequisicaoManutencaoWithRelations | null;
@@ -15,6 +17,10 @@ export function ManutencaoDadosSipacDisplay({
   if (!data) {
     return null;
   }
+
+  const [isViewerOpen, setIsViewerOpen] = useState(false);
+  const [initialViewerIndex, setInitialViewerIndex] = useState(0);
+  const [viewerFiles, setViewerFiles] = useState<IMediaFile[]>([]);
 
   // Cast data to any to bypass TypeScript errors due to incomplete type definitions for nested objects
   const displayData: any = data;
@@ -39,17 +45,43 @@ export function ManutencaoDadosSipacDisplay({
   // Mapeia os dados originais para a interface MediaFile
   const mediaFiles: IMediaFile[] = (data.arquivos || []).map((file) => ({
     url: file.urlRelativo,
-    extension: file.extensao,
+    extension: file.extensao as string,
     fileName: file.nomeArquivo,
     description: file.descricao
   }));
 
+  console.log(mediaFiles);
+
+  // Handler que é chamado quando uma miniatura na MediaGallery é clicada
   const handleThumbnailClick = (file: IMediaFile, type: 'image' | 'video') => {
-    console.log(`Thumbnail clicked:`, file, `Type: ${type}`);
-    // AQUI é onde você implementaria a lógica para abrir seu modal
-    // Por exemplo:
-    // setSelectedMedia(file);
-    // setIsModalOpen(true);
+    // Para o viewer, queremos exibir todos os arquivos de mídia (imagens e vídeos)
+    // na ordem original, mas iniciar no arquivo clicado.
+    const playableFiles = mediaFiles.filter((f) =>
+      [
+        'jpg',
+        'jpeg',
+        'png',
+        'gif',
+        'webp',
+        'avif',
+        'mp4',
+        'webm',
+        'ogg',
+        'mov',
+        'avi',
+        'mkv'
+      ].includes(f.extension.toLowerCase())
+    );
+
+    const clickedIndex = playableFiles.findIndex(
+      (f) => f.url === file.url && f.extension === file.extension
+    );
+
+    if (clickedIndex !== -1) {
+      setViewerFiles(playableFiles); // Define os arquivos que o viewer vai exibir
+      setInitialViewerIndex(clickedIndex); // Define qual arquivo deve ser o primeiro
+      setIsViewerOpen(true); // Abre o modal
+    }
   };
 
   return (
@@ -255,6 +287,18 @@ export function ManutencaoDadosSipacDisplay({
         videoGalleryTitle='Vídeos' // Título opcional para a seção de vídeos
         onThumbnailClick={handleThumbnailClick} // Passe o handler de clique para o modal
       />
+
+      {/* Componente Modal Shadcn UI para o MediaCarouselViewer */}
+      <Dialog open={isViewerOpen} onOpenChange={setIsViewerOpen}>
+        <DialogContent className='max-w-screen-lg border-none bg-transparent p-0'>
+          <MediaCarouselViewer
+            files={viewerFiles} // Passa os arquivos filtrados e ordenados para o viewer
+            getPublicFileUrl={getPublicFotoSigaa}
+            initialIndex={initialViewerIndex}
+            onClose={() => setIsViewerOpen(false)}
+          />
+        </DialogContent>
+      </Dialog>
 
       {displayData.requisicoesMateriais &&
         displayData.requisicoesMateriais.length > 0 && (
