@@ -5,12 +5,14 @@ export function getPublicFotoSigaa(protectedUrl: string) {
 
   try {
     // Assumindo que session.user.image é uma URL completa
-    const url = new URL(protectedUrl);
-    const idProducao = url.searchParams.get('idProducao');
+    const url = new URL(protectedUrl, publicUrlBaseFiles);
+    const idArquivo =
+      url.searchParams.get('idProducao') || url.searchParams.get('idArquivo');
     const key = url.searchParams.get('key');
 
-    if (idProducao && key) {
-      const publicFotoSigaa = `${publicUrlBaseFiles}?idArquivo=${idProducao}&key=${key}`;
+    if (idArquivo && key) {
+      const publicFotoSigaa = `${publicUrlBaseFiles}?idArquivo=${idArquivo}&key=${key}`;
+      // console.log(`publicFotoSigaa ${publicFotoSigaa}`);
       return publicFotoSigaa as string;
     }
 

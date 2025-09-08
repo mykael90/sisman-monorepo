@@ -1,5 +1,9 @@
+import Image from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ISipacRequisicaoManutencaoWithRelations } from '../../requisicoes-manutencoes-types';
+import { getPublicFotoSigaa } from '../../../../../../lib/fetch/get-public-foto-sigaa';
+import MediaGallery from '@/components/media/card-media-gallery';
+import { IMediaFile } from '@/types/media';
 
 interface ManutencaoDadosSipacDisplayProps {
   data: ISipacRequisicaoManutencaoWithRelations | null;
@@ -30,6 +34,22 @@ export function ManutencaoDadosSipacDisplay({
     } catch (error) {
       return String(dateInput);
     }
+  };
+
+  // Mapeia os dados originais para a interface MediaFile
+  const mediaFiles: IMediaFile[] = (data.arquivos || []).map((file) => ({
+    url: file.urlRelativo,
+    extension: file.extensao,
+    fileName: file.nomeArquivo,
+    description: file.descricao
+  }));
+
+  const handleThumbnailClick = (file: IMediaFile, type: 'image' | 'video') => {
+    console.log(`Thumbnail clicked:`, file, `Type: ${type}`);
+    // AQUI é onde você implementaria a lógica para abrir seu modal
+    // Por exemplo:
+    // setSelectedMedia(file);
+    // setIsModalOpen(true);
   };
 
   return (
@@ -175,6 +195,67 @@ export function ManutencaoDadosSipacDisplay({
         )}
       </div>
 
+      {/* {displayData.arquivos &&
+        displayData.arquivos.filter(
+          (file: any) =>
+            file.extensao &&
+            ['jpg', 'jpeg', 'png', 'gif'].includes(file.extensao.toLowerCase())
+        ).length > 0 && (
+          <Card>
+            <CardHeader>
+              <CardTitle className='text-lg'>Galeria de Fotos</CardTitle>
+            </CardHeader>
+            <CardContent className='flex flex-wrap gap-4'>
+              {displayData.arquivos
+                .filter(
+                  (file: any) =>
+                    file.extensao &&
+                    ['jpg', 'jpeg', 'png', 'gif'].includes(
+                      file.extensao.toLowerCase()
+                    )
+                )
+                .map((file: any, index: number) => {
+                  //utilizando api_scraping
+                  // const parametrosFoto = extrairParametros(file.urlRelativo);
+                  // const urlFoto = `/api/sipac/foto?idProducao=${parametrosFoto.idArquivo}&key=${parametrosFoto.key}`;
+
+                  //utilizando url publica disponivel pela ufrn para arquivos
+                  const urlFoto = getPublicFotoSigaa(file.urlRelativo);
+
+                  console.log(urlFoto);
+
+                  if (!urlFoto) return null;
+
+                  return (
+                    <div
+                      key={index}
+                      className='relative h-24 w-24 overflow-hidden rounded-md'
+                    >
+                      <Image
+                        src={urlFoto}
+                        alt={`Foto ${index + 1}`}
+                        fill
+                        sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+                        style={{
+                          objectFit: 'cover'
+                        }}
+                        className='cursor-pointer'
+                      />
+                    </div>
+                  );
+                })}
+            </CardContent>
+          </Card>
+        )} */}
+
+      <MediaGallery
+        files={mediaFiles}
+        getPublicFileUrl={getPublicFotoSigaa}
+        imageGalleryTitle='Fotos' // Título opcional para a seção de fotos
+        videoGalleryTitle='Vídeos' // Título opcional para a seção de vídeos
+        onThumbnailClick={handleThumbnailClick} // Passe o handler de clique para o modal
+      />
+
       {displayData.requisicoesMateriais &&
         displayData.requisicoesMateriais.length > 0 && (
           // Card Principal que agrupa todas as Requisições de Materiais
@@ -283,9 +364,6 @@ export function ManutencaoDadosSipacDisplay({
                           </p>
                         </div>
                         <div className='text-center'>
-                          <p className='text-xs font-medium text-gray-500'>
-                            Total Valor
-                          </p>
                           <p className='text-sm font-semibold text-gray-900'>
                             {req.totalGrupoValorTotal}
                           </p>

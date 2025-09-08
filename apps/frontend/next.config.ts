@@ -12,6 +12,12 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'sigaa.ufrn.br',
+        port: '',
+        pathname: '/shared/**'
+      },
+      {
+        protocol: 'https',
         hostname: 'api.sisman.com', // Substitua pelo domínio real da sua API Sisman
         port: '',
         pathname: '/images/**' // Ou o caminho que sua API usa para imagens

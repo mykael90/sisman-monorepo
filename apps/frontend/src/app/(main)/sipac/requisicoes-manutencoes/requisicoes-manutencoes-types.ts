@@ -13,6 +13,7 @@ export interface ISipacRequisicaoManutencaoRelationsOnly
       historico: true;
       unidadeRequisitante: true;
       unidadeCusto: true;
+      arquivos: true;
     };
   }> {}
 
