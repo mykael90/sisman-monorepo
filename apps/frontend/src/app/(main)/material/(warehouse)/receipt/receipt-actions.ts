@@ -5,8 +5,15 @@ import { revalidatePath } from 'next/cache';
 import { getSismanAccessToken } from '@/lib/auth/get-access-token';
 import { fetchApiSisman } from '@/lib/fetch/api-sisman';
 import { IActionResultForm } from '@/types/types-server-actions';
-import { IReceiptAddForm, IReceiptEdit } from './receipt-types';
+import {
+  IMaterialReceiptAddForm,
+  IMaterialReceiptAddPayload,
+  IMaterialReceiptEdit,
+  IMaterialReceiptWithRelations
+} from './receipt-types';
 import { handleApiAction } from '@/lib/fetch/handle-form-action-sisman';
+import { receiptServiceUsageMapping } from './_components/add/mapper-to-payload';
+import { createPayload } from '../../../../../lib/payload-creator';
 
 const PAGE_PATH = '/material/receipt';
 const API_RELATIVE_PATH = '/material-receipt';
@@ -89,14 +96,23 @@ export async function getRefreshedReceipts() {
 
 export async function addReceipt(
   prevState: unknown,
-  data: IReceiptAddForm
-): Promise<IActionResultForm<IReceiptAddForm, any>> {
+  data: IMaterialReceiptAddForm
+): Promise<
+  IActionResultForm<IMaterialReceiptAddForm, IMaterialReceiptWithRelations>
+> {
   logger.info(`(Server Action) addReceipt: Attempt to add receipt`, data);
+
+  //Precisa construir o payload, formulario complexo
+  const payload = createPayload(data, receiptServiceUsageMapping);
 
   try {
     const accessToken = await getSismanAccessToken();
-    return await handleApiAction<IReceiptAddForm, any, IReceiptAddForm>(
-      data,
+    return await handleApiAction<
+      IMaterialReceiptAddPayload,
+      IMaterialReceiptWithRelations,
+      IMaterialReceiptAddForm
+    >(
+      payload,
       data,
       {
         endpoint: API_RELATIVE_PATH,
@@ -106,7 +122,7 @@ export async function addReceipt(
       {
         mainPath: PAGE_PATH
       },
-      'Receipt added successfully!'
+      'Recebimento realizado com sucesso!'
     );
   } catch (error) {
     logger.error(`(Server Action) addReceipt: Unexpected error`, error);
@@ -121,8 +137,8 @@ export async function addReceipt(
 
 export async function updateReceipt(
   prevState: unknown,
-  data: IReceiptEdit
-): Promise<IActionResultForm<IReceiptEdit, any>> {
+  data: IMaterialReceiptEdit
+): Promise<IActionResultForm<IMaterialReceiptEdit, any>> {
   logger.info(
     `(Server Action) updateReceipt: Attempt to update receipt ${data.id}`,
     data
@@ -130,7 +146,11 @@ export async function updateReceipt(
 
   try {
     const accessToken = await getSismanAccessToken();
-    return await handleApiAction<IReceiptEdit, any, IReceiptEdit>(
+    return await handleApiAction<
+      IMaterialReceiptEdit,
+      any,
+      IMaterialReceiptEdit
+    >(
       data,
       data,
       {
