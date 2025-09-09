@@ -14,6 +14,7 @@ import { showMaterialRequestByProtocol } from '../../../../request/material-requ
 import { IMaterialRequestWithRelations } from '../../../../request/material-request-types';
 import { schemaZodRequisicoesSipac } from '@/lib/schema-zod-requisicoes-sipac';
 import { handleFetchOneAndPersistRequisicaoMaterialComRequisicaoManutencaoVinculada } from '../../../../../sipac/requisicoes-materiais/requisicoes-materiais-actions';
+import { ISipacRequisicaoMaterialWithRelations } from '../../../../../sipac/requisicoes-materiais/requisicoes-materiais-types';
 
 export function RequestMaterialForm({
   setMaterialRequestsData,
@@ -27,61 +28,85 @@ export function RequestMaterialForm({
   const [isPendingTransition, startTransition] = useTransition();
 
   const scrapeOrUpdateRequisicaoMaterialSipac = async (
-    formattedProtocolNumber: string
+    protocols: string | string[]
   ) => {
-    const scrapingRequisicaoMaterialSipac =
-      await handleFetchOneAndPersistRequisicaoMaterialComRequisicaoManutencaoVinculada(
-        formattedProtocolNumber
-      );
-    if (scrapingRequisicaoMaterialSipac) {
-      // When you use await inside a startTransition function, the state updates that happen after the await are not marked as Transitions. You must wrap state updates after each await in a startTransition call:
+    const protocolArray = Array.isArray(protocols) ? protocols : [protocols];
+    if (protocolArray.length === 0) return;
 
-      // setMaterialRequestData(scrapingRequisicaoMaterialSipac);
-      console.log(
-        'Requisição de material importada do SIPAC:',
-        scrapingRequisicaoMaterialSipac
-      );
-      startTransition(() => {
-        //Uso de recursividade, como foi bem sucedido, vai localizar corretamente e vai exibir em tela na próxima chamada
-        toast.success(
-          `Requisição de material nº ${formattedProtocolNumber} importada do SIPAC com sucesso!`
-        );
-        findOrImportMaterialRequest(formattedProtocolNumber);
-      });
-    } else {
-      toast.error(
-        `Falha ao importar requisição de material nº ${formattedProtocolNumber} do SIPAC. Verifique os dados e tente novamente.`
-      );
-    }
-  };
-
-  const findOrImportMaterialRequest = async (
-    formattedProtocolNumber: string
-  ) => {
-    const materialRequestResponse = await showMaterialRequestByProtocol(
-      formattedProtocolNumber
+    const results = await Promise.allSettled(
+      protocolArray.map((protocol) =>
+        handleFetchOneAndPersistRequisicaoMaterialComRequisicaoManutencaoVinculada(
+          protocol
+        )
+      )
     );
-    if (materialRequestResponse) {
-      // When you use await inside a startTransition function, the state updates that happen after the await are not marked as Transitions. You must wrap state updates after each await in a startTransition call:
+
+    const successfulScrapes: ISipacRequisicaoMaterialWithRelations[] = [];
+    const failedProtocols: string[] = [];
+
+    results.forEach((result, index) => {
+      if (result.status === 'fulfilled' && result.value) {
+        successfulScrapes.push(result.value);
+      } else {
+        failedProtocols.push(protocolArray[index]);
+      }
+    });
+
+    if (successfulScrapes.length > 0) {
       startTransition(() => {
-        setMaterialRequestsData(materialRequestResponse);
-        toast.success('Requisição de material encontrada.');
+        toast.success(
+          `${successfulScrapes.length} requisição(ões) de material importada(s) do SIPAC com sucesso.`
+        );
+        findOrImportMaterialRequest(
+          successfulScrapes.map((req) => req.numeroDaRequisicao)
+        );
       });
-    } else {
-      toast.warning(
-        `Requisição de número ${formattedProtocolNumber} não encontrada no SISMAN. Será realizada uma tentativa de consulta no SIPAC.`
+    }
+
+    if (failedProtocols.length > 0) {
+      toast.error(
+        `Falha ao importar requisição(ões) ${failedProtocols.join(
+          ', '
+        )} do SIPAC. Verifique os dados e tente novamente.`
       );
-      await scrapeOrUpdateRequisicaoMaterialSipac(formattedProtocolNumber);
     }
   };
 
-  const handleSubmit = (protocolNumber: string) => {
-    const formattedProtocolNumber = formatRequestNumber(protocolNumber);
+  const findOrImportMaterialRequest = async (protocols: string | string[]) => {
+    const protocolArray = Array.isArray(protocols) ? protocols : [protocols];
+    if (protocolArray.length === 0) return;
+
+    const foundRequests: IMaterialRequestWithRelations[] = [];
+    const notFoundProtocols: string[] = [];
+
+    const results = await Promise.all(
+      protocolArray.map((p) => showMaterialRequestByProtocol(p))
+    );
+
+    results.forEach((result, index) => {
+      if (result) {
+        foundRequests.push(result);
+      } else {
+        notFoundProtocols.push(protocolArray[index]);
+      }
+    });
+
+    if (foundRequests.length > 0) {
+      startTransition(() => {
+        setMaterialRequestsData(results);
+        toast.success(
+          `${foundRequests.length} requisição(ões) de material encontrada(s).`
+        );
+      });
+    }
+  };
+
+  const handleSubmit = (protocols: string[]) => {
     // ---- Fluxo de Requisição de Material ----
     startTransition(async () => {
       setMaterialRequestsData(null);
       try {
-        scrapeOrUpdateRequisicaoMaterialSipac(formattedProtocolNumber);
+        scrapeOrUpdateRequisicaoMaterialSipac(protocols);
       } catch (error) {
         toast.error('Falha ao buscar requisição de material.');
       }
@@ -91,7 +116,7 @@ export function RequestMaterialForm({
   const formRequest = useForm({
     defaultValues: { protocolNumber: '', protocols: [] },
     onSubmit: async ({ value }) => {
-      handleSubmit(value.protocolNumber);
+      handleSubmit(value.protocols.map((p) => p.protocolNumber));
     }
   });
 
