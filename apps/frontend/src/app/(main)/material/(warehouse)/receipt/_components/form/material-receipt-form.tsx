@@ -18,13 +18,11 @@ import {
 import { materialReceiptFormSchemaAdd } from './material-receipt-form-validation';
 import { ErrorClientValidationFormCard } from '@/components/form-tanstack/error-client-validation-form-card';
 import { FormSuccessDisplayCard } from '@/components/form-tanstack/form-success-display-card';
-import { ReceiptDetailUsageService } from '../add/receipt-details-usage-service';
+import { ReceiptDetails } from '../add/receipt-details';
 import {
   materialOperationInDisplayMap,
   MaterialOperationInKey
 } from '@/mappers/material-operations-mappers';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Label } from '@/components/ui/label';
 
 export function MaterialReceiptForm({
   defaultData,
@@ -72,8 +70,6 @@ export function MaterialReceiptForm({
     formSchema: materialReceiptFormSchemaAdd,
     formActionReceipt: async (value) => await formActionReceipt(value)
   });
-
-  const { listUsers, listWorkers } = relatedData;
 
   const handleReset = () => {
     formReceipt.reset();
@@ -137,22 +133,24 @@ export function MaterialReceiptForm({
         }}
       >
         <div className='space-y-6'>
-          <ReceiptDetailUsageService
-            formReceipt={formReceipt}
-            listUsers={listUsers}
-            listWorkers={listWorkers}
-          />
+          {movementTypeCode !== materialOperationInDisplayMap.IN_CENTRAL && (
+            <ReceiptDetails formReceipt={formReceipt} />
+          )}
 
-          <Card>
-            <CardHeader>
-              <CardTitle className='text-lg'>Materiais para Entrada</CardTitle>
-            </CardHeader>
-            <CardContent className='space-y-4'>
-              <formReceipt.Field name='items' mode='array'>
-                {(field) => <ItemsFieldArray field={field} />}
-              </formReceipt.Field>
-            </CardContent>
-          </Card>
+          {movementTypeCode !== materialOperationInDisplayMap.IN_CENTRAL && (
+            <Card>
+              <CardHeader>
+                <CardTitle className='text-lg'>
+                  Materiais para Entrada
+                </CardTitle>
+              </CardHeader>
+              <CardContent className='space-y-4'>
+                <formReceipt.Field name='items' mode='array'>
+                  {(field) => <ItemsFieldArray field={field} />}
+                </formReceipt.Field>
+              </CardContent>
+            </Card>
+          )}
         </div>
         <div className='mt-8 flex flex-wrap justify-end gap-3'>
           <div className='flex gap-3'>

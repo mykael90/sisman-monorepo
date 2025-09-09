@@ -14,6 +14,8 @@ import { addReceipt } from '../../receipt-actions';
 import { MaterialReceiptForm } from '../form/material-receipt-form';
 import { useRouter } from 'next/navigation';
 import { FilePlus } from 'lucide-react';
+import { IMaterialRequestWithRelations } from '../../../../request/material-request-types';
+import { RequestMaterialForm } from '../form/request-material-form';
 
 export function MaterialReceiptAdd({
   relatedData
@@ -26,6 +28,10 @@ export function MaterialReceiptAdd({
 
   const [movementTypeCode, setMovementTypeCode] =
     useState<MaterialOperationInKey>(materialOperationInDisplayMap.IN_CENTRAL);
+
+  const [materialRequestsData, setMaterialRequestsData] = useState<
+    IMaterialRequestWithRelations[] | null
+  >(null);
 
   const router = useRouter();
 
@@ -60,6 +66,15 @@ export function MaterialReceiptAdd({
         setMovementTypeCode={setMovementTypeCode}
         handleReset={triggerReset}
       />
+
+      {movementTypeCode === materialOperationInDisplayMap.IN_CENTRAL && (
+        <RequestMaterialForm
+          // key={formKey}
+          setMaterialRequestsData={setMaterialRequestsData}
+          materialRequestsData={materialRequestsData}
+        />
+      )}
+
       <MaterialReceiptForm
         key={formKey}
         onClean={triggerReset}

@@ -2,12 +2,8 @@
 
 import { Button } from '@/components/ui/button';
 import Logger from '@/lib/logger';
-import { ArrowLeft, PackageMinus, Warehouse } from 'lucide-react';
-import { useSession } from 'next-auth/react';
+import { ArrowLeft, PackageMinus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { TabSelector } from '../_components/add/tab-selector';
-
-const logger = new Logger(`src/app/(main)/material/receipt/layout.tsx`);
 
 export default function MaterialReceiptLayout({
   children

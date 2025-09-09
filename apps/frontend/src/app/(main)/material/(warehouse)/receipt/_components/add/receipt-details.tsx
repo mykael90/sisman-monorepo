@@ -20,21 +20,13 @@ import { CalendarIcon } from 'lucide-react';
 import { Calendar } from '@/components/ui/calendar';
 import { IReceiptFormApi } from '@/hooks/use-receipt-form'; // Precisa criar este hook
 import { fieldsLabelReceiptForm } from '../../receipt-types';
-import { IUser } from '@/app/(main)/user/user-types';
-import { IWorker } from '@/app/(main)/worker/worker-types';
 import { materialOperationInDisplayMap } from '@/mappers/material-operations-mappers';
 
-export type ReceiptDetailUsageServiceProps = {
+export type ReceiptDetailsProps = {
   formReceipt: IReceiptFormApi;
-  listUsers?: IUser[];
-  listWorkers?: IWorker[];
 };
 
-export function ReceiptDetailUsageService({
-  formReceipt,
-  listUsers = [],
-  listWorkers = []
-}: ReceiptDetailUsageServiceProps) {
+export function ReceiptDetails({ formReceipt }: ReceiptDetailsProps) {
   return (
     <Card>
       <CardHeader>
