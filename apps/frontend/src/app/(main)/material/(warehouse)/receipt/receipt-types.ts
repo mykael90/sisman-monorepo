@@ -40,9 +40,13 @@ export interface IMaterialReceiptAddPayload
   materialRequest?: { id: number };
 }
 
+import { IUser } from '@/app/(main)/user/user-types';
+import { IWorker } from '@/app/(main)/worker/worker-types';
+
 export type IMaterialReceiptRelatedData = {
-  // Will be added later
   session?: Session;
+  listUsers?: IUser[];
+  listWorkers?: IWorker[];
 };
 export interface IMaterialReceiptAddForm
   extends Omit<Prisma.MaterialReceiptCreateManyInput, 'movementTypeId'> {
