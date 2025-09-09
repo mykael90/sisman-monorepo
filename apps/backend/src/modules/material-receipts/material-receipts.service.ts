@@ -342,6 +342,23 @@ export class MaterialReceiptsService {
     }
   }
 
+  async listByWarehouse(warehouseId: number) {
+    try {
+      return this.prisma.materialReceipt.findMany({
+        where: { destinationWarehouseId: warehouseId },
+        include: this.includeRelations,
+        orderBy: {
+          receiptDate: 'desc'
+        }
+      });
+    } catch (error) {
+      handlePrismaError(error, this.logger, 'MaterialReceiptsService', {
+        operation: 'listByWarehouse'
+      });
+      throw error;
+    }
+  }
+
   async show(id: number): Promise<MaterialReceiptWithRelationsResponseDto> {
     try {
       const materialReceipt = await this.prisma.materialReceipt.findUnique({

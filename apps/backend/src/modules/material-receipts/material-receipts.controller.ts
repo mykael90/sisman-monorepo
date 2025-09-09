@@ -62,6 +62,27 @@ export class MaterialReceiptsController {
   }
 
   /**
+   * Lista todas as entradas de material por depósito.
+   */
+  @Get('warehouse/:warehouseId')
+  @ApiEndpointSwagger({
+    summary: 'Listar entradas de material por depósito',
+    description: 'Retorna uma lista de todas as entradas de material.',
+    response: {
+      status: HttpStatus.OK,
+      description: 'Lista de entradas de material.',
+      type: MaterialReceiptWithRelationsResponseDto, // Usa a DTO de resposta
+      isArray: true // Indica que a resposta é um array
+    }
+  })
+  async listByWarehouse(
+    @Param('warehouseId', ParseIntPipe) warehouseId: number
+  ) {
+    console.log(warehouseId);
+    return this.materialReceiptsService.listByWarehouse(warehouseId);
+  }
+
+  /**
    * Busca um recebimento de material específico pelo seu ID.
    */
   @Get(':id')

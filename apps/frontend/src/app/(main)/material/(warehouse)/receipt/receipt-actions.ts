@@ -9,7 +9,7 @@ import { IReceiptAddForm, IReceiptEdit } from './receipt-types';
 import { handleApiAction } from '@/lib/fetch/handle-form-action-sisman';
 
 const PAGE_PATH = '/material/receipt';
-const API_RELATIVE_PATH = '/material/receipt';
+const API_RELATIVE_PATH = '/material-receipt';
 
 const logger = new Logger(`${PAGE_PATH}/receipt-actions`);
 
@@ -19,6 +19,27 @@ export async function getReceipts(accessTokenSisman: string) {
     const data = await fetchApiSisman(API_RELATIVE_PATH, accessTokenSisman, {
       cache: 'force-cache'
     });
+    logger.info(
+      `(Server Action) getReceipts: ${data.length} receipts returned`
+    );
+    return data;
+  } catch (error) {
+    logger.error(`(Server Action) getReceipts: Error fetching receipts`, error);
+    throw error;
+  }
+}
+
+export async function getReceiptsByWarehouse(warehouseId: number) {
+  const accessTokenSisman = await getSismanAccessToken();
+  logger.info(`(Server Action) getReceipts: Fetching receipts`);
+  try {
+    const data = await fetchApiSisman(
+      `${API_RELATIVE_PATH}/warehouse/${warehouseId}`,
+      accessTokenSisman,
+      {
+        // cache: 'force-cache'
+      }
+    );
     logger.info(
       `(Server Action) getReceipts: ${data.length} receipts returned`
     );
