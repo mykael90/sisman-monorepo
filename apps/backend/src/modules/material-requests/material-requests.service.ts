@@ -96,16 +96,8 @@ export class MaterialRequestsService {
           ? {
               create: items.map((item) => ({
                 ...item,
-                quantityRequested: item.quantityRequested as Prisma.Decimal,
-                ...(item.quantityApproved && {
-                  quantityApproved: item.quantityApproved as Prisma.Decimal
-                }),
-                ...(item.quantityDelivered && {
-                  quantityDelivered: item.quantityDelivered as Prisma.Decimal
-                }),
-                ...(item.quantityReturned && {
-                  quantityReturned: item.quantityReturned as Prisma.Decimal
-                })
+                quantityDelivered: null,
+                quantityReturned: null
               }))
             }
           : undefined,
@@ -505,7 +497,36 @@ export class MaterialRequestsService {
     }
   }
 
-  async update(id: number, data: UpdateMaterialRequestWithRelationsDto) {
+  async update(
+    id: number,
+    data: UpdateMaterialRequestWithRelationsDto,
+    tx?: Prisma.TransactionClient
+  ) {
+    try {
+      if (tx) {
+        this.logger.log(
+          `Executando a atualização dentro de uma transação existente.`
+        );
+        return await this._update(id, data, tx as any);
+      }
+      this.logger.log(`Iniciando uma nova transação para atualização.`);
+      return await this.prisma.$transaction(async (prismaTransactionClient) => {
+        return await this._update(id, data, prismaTransactionClient as any);
+      });
+    } catch (error) {
+      handlePrismaError(error, this.logger, 'MaterialRequestsService', {
+        operation: 'update',
+        data
+      });
+      throw error;
+    }
+  }
+
+  private async _update(
+    id: number,
+    data: UpdateMaterialRequestWithRelationsDto,
+    prisma: Prisma.TransactionClient
+  ) {
     const {
       storage,
       items,
@@ -664,7 +685,7 @@ export class MaterialRequestsService {
     }
 
     try {
-      const updated = await this.prisma.materialRequest.update({
+      const updated = await prisma.materialRequest.update({
         where: {
           id
         },

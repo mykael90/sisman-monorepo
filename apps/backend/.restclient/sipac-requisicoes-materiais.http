@@ -55,7 +55,7 @@ POST {{urlLocal}}/fetch-one-complete-and-persist
 Content-Type: {{contentType}}
 
 {
-    "numeroAno": "26557/2025"
+    "numeroAno": "16437/2025"
 }
 
 ### POST
@@ -66,6 +66,24 @@ Content-Type: {{contentType}}
     "numeroAno": "7293/2020"
 }
 
+### POST
+POST {{urlLocal}}/fetch-many-complete-and-persist
+Content-Type: {{contentType}}
+
+{
+    "numeroAnoArray": [
+    "16347/2025",
+    "16321/2025",
+    "16343/2025",
+    "16455/2025",
+    "16435/2025",
+    "16466/2025",
+    "16422/2025",
+    "16421/2025",
+    "16470/2025",
+    "16155/2025"
+]
+}
 ### POST
 POST {{urlLocal}}/fetch-many-complete-and-persist
 Content-Type: {{contentType}}

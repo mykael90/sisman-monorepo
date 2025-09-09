@@ -437,6 +437,7 @@ model MaintenanceRequest {
   sipacUserLoginRequest String? // usuario que realizou a requisicao
   origin                MaintenanceRequestOrigin @default(OCCURRENCE) // Origem da requisicao
 
+  @@index([protocolNumber])
   @@map("maintenance_requests")
 }
 
@@ -829,6 +830,7 @@ model MaterialRequest {
   materialReceipts MaterialReceipt[] @relation("ReceiptsForMaterialRequest")
 
   @@index([maintenanceRequestId]) // Index for faster lookups by maintenance request.
+  @@index([protocolNumber])
   @@index([requestedById]) // Index for faster lookups by requesting user.
   @@index([requestType]) // Index for faster lookups by request type.
   @@map("material_requests") // Maps this model to the 'material_requests' table.

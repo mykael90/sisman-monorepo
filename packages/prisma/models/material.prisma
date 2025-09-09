@@ -282,7 +282,7 @@ model MaterialRequestItem {
     quantityRequested Decimal  @db.Decimal(10, 3) // The quantity of material requested.
     quantityApproved  Decimal? @db.Decimal(10, 3) // The quantity approved by the manager.
     quantityDelivered Decimal? @db.Decimal(10, 3) // The quantity effectively delivered.
-    quantityReturned Decimal? @db.Decimal(10, 3) // The quantity returned by any reason.
+    quantityReturned  Decimal? @db.Decimal(10, 3) // The quantity returned by any reason.
     // unitOfMeasure     String // The unit of measure for the requested quantity.
 
     unitPrice Decimal? @db.Decimal(12, 2) // Valor unitário do item.
