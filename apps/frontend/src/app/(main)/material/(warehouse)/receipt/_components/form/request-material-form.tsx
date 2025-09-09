@@ -9,10 +9,18 @@ import { formatRequestNumber } from '@/lib/form-utils';
 import { Plus, RefreshCcw, Search } from 'lucide-react';
 import { toast } from 'sonner';
 
+interface RequestFormValues {
+  protocolNumber: string;
+  protocols: { protocolNumber: string }[];
+}
+
 // Importa as funções originais das Server Actions
 import { showMaterialRequestByProtocol } from '../../../../request/material-request-actions';
 import { IMaterialRequestWithRelations } from '../../../../request/material-request-types';
-import { schemaZodRequisicoesSipac } from '@/lib/schema-zod-requisicoes-sipac';
+import {
+  schemaZodRequisicoesSipac,
+  schemaZodRequisicoesSipacNotRequired
+} from '@/lib/schema-zod-requisicoes-sipac';
 import { handleFetchOneAndPersistRequisicaoMaterialComRequisicaoManutencaoVinculada } from '../../../../../sipac/requisicoes-materiais/requisicoes-materiais-actions';
 import { ISipacRequisicaoMaterialWithRelations } from '../../../../../sipac/requisicoes-materiais/requisicoes-materiais-types';
 
@@ -113,7 +121,18 @@ export function RequestMaterialForm({
     });
   };
 
-  const formRequest = useForm({
+  const formRequest = useForm<
+    RequestFormValues,
+    any,
+    any,
+    any,
+    any,
+    any,
+    any,
+    any,
+    any,
+    any
+  >({
     defaultValues: { protocolNumber: '', protocols: [] },
     onSubmit: async ({ value }) => {
       handleSubmit(value.protocols.map((p) => p.protocolNumber));
@@ -140,50 +159,57 @@ export function RequestMaterialForm({
           </CardHeader>
           <CardContent>
             <div className='items-top flex justify-between'>
+              <div className='flex items-baseline gap-4'>
+                <formRequest.Field
+                  name='protocolNumber'
+                  validators={
+                    {
+                      // NOTE: Double check this validator. `schemaZodRequisicoesSipac.shape.newReq`
+                      // seems unusual for a protocol number string. It might be `schemaZodRequisicoesSipac.shape.numeroAno`
+                      // or a direct `z.string().min(1, 'Número obrigatório')`.
+                      // Assumindo que schemaZodRequisicoesSipac.shape.newReq é o correto para validação
+                      // onBlur: schemaZodRequisicoesSipacNotRequired.shape.newReq
+                    }
+                  }
+                >
+                  {(field) => (
+                    <FormInputField
+                      field={field}
+                      label='Número da Requisição de Material'
+                      type='tel'
+                      placeholder='Digite o número...'
+                      showLabel={true}
+                      className='w-full'
+                      onValueBlurParser={(value) => formatRequestNumber(value)}
+                    />
+                  )}
+                </formRequest.Field>
+                <formRequest.Subscribe
+                  selector={(state) => state.values.protocolNumber}
+                >
+                  {(protocolNumber) => (
+                    <Button
+                      className='mt-6 self-start'
+                      type='button'
+                      variant='outline'
+                      size='sm'
+                      onClick={() => {
+                        formRequest.pushFieldValue('protocols', {
+                          protocolNumber: formatRequestNumber(protocolNumber)
+                        });
+                        formRequest.setFieldValue('protocolNumber', ''); // Limpa o campo após adicionar
+                      }}
+                      disabled={!protocolNumber} // Desabilita o botão se o campo estiver vazio
+                    >
+                      <Plus className='h-4 w-4' />
+                    </Button>
+                  )}
+                </formRequest.Subscribe>
+              </div>
+
               <formRequest.Field name='protocols' mode='array'>
                 {(fieldArray) => (
                   <div>
-                    <div className='flex items-baseline gap-4'>
-                      <formRequest.Field
-                        name='protocolNumber'
-                        validators={{
-                          // NOTE: Double check this validator. `schemaZodRequisicoesSipac.shape.newReq`
-                          // seems unusual for a protocol number string. It might be `schemaZodRequisicoesSipac.shape.numeroAno`
-                          // or a direct `z.string().min(1, 'Número obrigatório')`.
-                          // Assumindo que schemaZodRequisicoesSipac.shape.newReq é o correto para validação
-                          onBlur: schemaZodRequisicoesSipac.shape.newReq
-                        }}
-                      >
-                        {(field) => (
-                          <FormInputField
-                            field={field}
-                            label='Número da Requisição de Material'
-                            type='tel'
-                            placeholder='Digite o número...'
-                            showLabel={true}
-                            className='w-full'
-                            onValueBlurParser={(value) =>
-                              formatRequestNumber(value)
-                            }
-                          />
-                        )}
-                      </formRequest.Field>
-                      <Button
-                        className='mt-6 self-start'
-                        type='button'
-                        variant='outline'
-                        size='sm'
-                        onClick={() =>
-                          fieldArray.pushValue({
-                            protocolNumber: formatRequestNumber(
-                              formRequest.getFieldValue('protocolNumber')
-                            )
-                          })
-                        }
-                      >
-                        <Plus className='h-4 w-4' />
-                      </Button>
-                    </div>
                     {JSON.stringify(fieldArray.state.value)}
                     {fieldArray.state.value.map((_, i) => {
                       return (
