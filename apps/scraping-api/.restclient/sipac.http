@@ -15,8 +15,8 @@ Content-Type: {{contentType}}
 
 ### GET requisição de material
 GET {{urlLocal}}/requisicao/material
-?id=2033086
-&requisicao=2033086
+?id=2180079
+&requisicao=2180079
 &acao=200
 Content-Type: {{contentType}}
 

@@ -112,6 +112,16 @@ class MaterialRequestItemBaseDto implements MaterialRequestItem {
   quantityDelivered: Prisma.Decimal | null;
 
   /**
+   * Quantidade retornada do material.
+   * @example 2
+   */
+  @IsOptional()
+  @IsNumber()
+  @IsPositive()
+  @Type(() => Number)
+  quantityReturned: Prisma.Decimal | null;
+
+  /**
    * Preço unitário do do material.
    * @example 8
    */
@@ -439,36 +449,13 @@ export class MaterialRequestWithRelationsResponseDto
 /**
  * DTO para criar um novo item de requisição.
  */
-export class CreateMaterialRequestItemDto extends OmitType(
-  MaterialRequestItemBaseDto,
-  [
-    'id',
-    'materialRequestId',
-    'createdAt',
-    'updatedAt',
-    'fulfilledByInstanceId',
-    'requestedGlobalMaterialId',
-    'notes'
-  ] as const
-) {
-  /**
-   *    * ID global do material solicitado (se aplicável).
-   * @example 'MAT-001'
-.
-   */
-  @IsOptional()
-  @IsString()
-  requestedGlobalMaterialId?: string;
-
-  /**
-   *    * ID de material derivado (se aplicável).
-   * @example '1'
-.
-   */
-  @IsOptional()
-  @IsNumber()
-  fulfilledByInstanceId?: number;
-}
+export class CreateMaterialRequestItemDto extends IntersectionType(
+  PartialType(MaterialRequestItemBaseDto),
+  PickType(MaterialRequestItemBaseDto, [
+    'quantityRequested',
+    'itemRequestType'
+  ] as const)
+) {}
 
 /**
  * DTO para criar um novo registro de status.

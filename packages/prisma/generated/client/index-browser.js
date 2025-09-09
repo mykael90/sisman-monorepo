@@ -501,6 +501,7 @@ exports.Prisma.MaterialRequestItemScalarFieldEnum = {
   quantityRequested: 'quantityRequested',
   quantityApproved: 'quantityApproved',
   quantityDelivered: 'quantityDelivered',
+  quantityReturned: 'quantityReturned',
   unitPrice: 'unitPrice',
   notes: 'notes',
   createdAt: 'createdAt',

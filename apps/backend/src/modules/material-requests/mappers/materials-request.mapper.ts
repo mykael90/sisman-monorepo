@@ -86,7 +86,8 @@ export class MaterialRequestMapper {
           requestedGlobalMaterialId: material.codigo,
           quantityRequested: material.quantidade,
           quantityApproved: material.quantidadeAtendida,
-          quantityDelivered: material.quantidadeAtendida,
+          // quantityDelivered: null,
+          // quantityReturned: null,
           unitPrice: material.valor
         })
       ),
