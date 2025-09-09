@@ -5,7 +5,7 @@ import { revalidatePath } from 'next/cache';
 import { getSismanAccessToken } from '@/lib/auth/get-access-token';
 import { fetchApiSisman } from '@/lib/fetch/api-sisman';
 import { IActionResultForm } from '@/types/types-server-actions';
-import { IReceiptAdd, IReceiptEdit } from './receipt-types';
+import { IReceiptAddForm, IReceiptEdit } from './receipt-types';
 import { handleApiAction } from '@/lib/fetch/handle-form-action-sisman';
 
 const PAGE_PATH = '/material/receipt';
@@ -68,13 +68,13 @@ export async function getRefreshedReceipts() {
 
 export async function addReceipt(
   prevState: unknown,
-  data: IReceiptAdd
-): Promise<IActionResultForm<IReceiptAdd, any>> {
+  data: IReceiptAddForm
+): Promise<IActionResultForm<IReceiptAddForm, any>> {
   logger.info(`(Server Action) addReceipt: Attempt to add receipt`, data);
 
   try {
     const accessToken = await getSismanAccessToken();
-    return await handleApiAction<IReceiptAdd, any, IReceiptAdd>(
+    return await handleApiAction<IReceiptAddForm, any, IReceiptAddForm>(
       data,
       data,
       {

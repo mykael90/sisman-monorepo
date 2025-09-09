@@ -1,25 +1,70 @@
-import { MaterialReceipt, Prisma } from '@sisman/prisma';
+import { MaterialReceipt, MaterialReceiptItem, Prisma } from '@sisman/prisma';
+import { IMaterialGlobalCatalogEdit } from '../../global-catalog/material-global-catalog-types';
+import { Session } from 'next-auth';
+import { MaterialOperationOutKey } from '../../../../../mappers/material-operations-mappers';
 
-export type IReceiptWithRelations = Prisma.MaterialReceiptGetPayload<{
-  include: {}
+export type IMaterialReceipt = MaterialReceipt;
+
+export type IMaterialReceiptWithRelations = Prisma.MaterialReceiptGetPayload<{
+  include: {
+    items: {
+      include: {
+        material: true;
+      };
+    };
+    destinationWarehouse: true;
+    materialRequest: true;
+    movementType: true;
+  };
 }>;
 
-export interface IReceiptAdd extends Omit<Prisma.MaterialReceiptCreateInput, 
-  
-> {}
+export type IMaterialReceiptItem = MaterialReceiptItem;
 
-export interface IReceiptEdit extends IReceiptAdd {
-  id: number;
+export interface IMaterialReceiptAddPayload
+  extends Omit<
+    Prisma.MaterialReceiptCreateManyInput,
+    | 'destinationWarehouseId'
+    | 'movementTypeId'
+    | 'processedByUserId'
+    | 'materialRequestId'
+  > {
+  items: Prisma.MaterialReceiptItemCreateManyMaterialReceiptInput[];
+  destinationWarehouse: { id: number };
+  movementType: { code: MaterialOperationOutKey };
+  processedByUser: { id: number };
+  materialRequest?: { id: number };
 }
 
-export type IReceipt = MaterialReceipt;
-
-export type IReceiptRemove = {
-  id: number;
-};
-
-export type IReceiptSelect = Prisma.MaterialReceiptSelect;
-
-export type IReceiptRelatedData = {
+export type IMaterialReceiptRelatedData = {
   // Will be added later
+  session?: Session;
+};
+export interface IMaterialReceiptAddForm
+  extends Omit<Prisma.MaterialReceiptCreateManyInput, 'movementTypeId'> {
+  movementTypeCode: string;
+  items: IMaterialReceiptItemAddForm[];
+}
+
+export interface IMaterialReceiptEdit
+  extends Partial<IMaterialReceiptAddForm> {}
+
+export type IMaterialReceiptItemAddForm =
+  Prisma.MaterialReceiptItemCreateManyMaterialReceiptInput &
+    Partial<
+      Pick<IMaterialGlobalCatalogEdit, 'name' | 'description' | 'unitOfMeasure'>
+    > & { key: number };
+
+export const fieldsLabelReceiptForm: Partial<
+  Record<keyof IMaterialReceiptAddForm, string>
+> = {
+  receiptNumber: 'Número da entrada',
+  receiptDate: 'Data da entrada',
+  destinationWarehouseId: 'Depósito de destino',
+  processedByUserId: 'Processado por',
+  movementTypeCode: 'Código do Movimento',
+  materialRequestId: 'Requisição de Material',
+  notes: 'Observações',
+  items: 'Itens para entrada',
+  externalReference: 'Documento de entrada (ex: NF-e)',
+  sourceName: 'Fornecedor (ou doador)'
 };

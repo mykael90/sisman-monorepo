@@ -33,7 +33,6 @@ export type IMaterialWithdrawalWithRelations =
 
 export type IMaterialWithdrawalItem = MaterialWithdrawalItem;
 
-// TODO:
 export interface IMaterialWithdrawalAddPayload
   extends Omit<
     Prisma.MaterialWithdrawalCreateManyInput,
