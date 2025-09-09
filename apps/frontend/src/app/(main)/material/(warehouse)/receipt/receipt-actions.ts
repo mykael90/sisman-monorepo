@@ -24,7 +24,7 @@ export async function getReceipts(accessTokenSisman: string) {
   logger.info(`(Server Action) getReceipts: Fetching receipts`);
   try {
     const data = await fetchApiSisman(API_RELATIVE_PATH, accessTokenSisman, {
-      cache: 'force-cache'
+      // cache: 'force-cache'
     });
     logger.info(
       `(Server Action) getReceipts: ${data.length} receipts returned`
@@ -62,8 +62,8 @@ export async function showReceipt(accessTokenSisman: string, id: number) {
   try {
     const data = await fetchApiSisman(
       `${API_RELATIVE_PATH}/${id}`,
-      accessTokenSisman,
-      { cache: 'force-cache' }
+      accessTokenSisman
+      // { cache: 'force-cache' }
     );
     logger.info(`(Server Action) showReceipt: receipt ${id} returned`);
     return data;
