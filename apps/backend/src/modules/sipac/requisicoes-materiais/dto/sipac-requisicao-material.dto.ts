@@ -44,8 +44,8 @@ export class CreateSipacItemRequisicaoMaterialDto
    * @example 6
    */
   @IsNotEmpty()
-  @IsNumber()
-  quantidade: number;
+  @IsDecimal({ decimal_digits: '2' })
+  quantidade: DecimalJsLike;
 
   /**
    * Valor unitário do item (ex: 1.50)
@@ -68,24 +68,24 @@ export class CreateSipacItemRequisicaoMaterialDto
    * @example 6
    */
   @IsNotEmpty()
-  @IsNumber()
-  quantidadeAtendida: number;
+  @IsDecimal({ decimal_digits: '2' })
+  quantidadeAtendida: DecimalJsLike;
 
   /**
    * Quantidade devolvida do item (ex: 0)
    * @example 0
    */
   @IsNotEmpty()
-  @IsNumber()
-  quantidadeDevolvida: number;
+  @IsDecimal({ decimal_digits: '2' })
+  quantidadeDevolvida: DecimalJsLike;
 
   /**
    * Quantidade em processo de compra (ex: 0)
    * @example 0
    */
   @IsNotEmpty()
-  @IsNumber()
-  quantidadeEmCompra: number;
+  @IsDecimal({ decimal_digits: '2' })
+  quantidadeEmCompra: DecimalJsLike;
 
   /**
    * Valor unitário do atendimento (ex: 1.00)

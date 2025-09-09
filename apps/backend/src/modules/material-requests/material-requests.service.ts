@@ -102,6 +102,9 @@ export class MaterialRequestsService {
                 }),
                 ...(item.quantityDelivered && {
                   quantityDelivered: item.quantityDelivered as Prisma.Decimal
+                }),
+                ...(item.quantityReturned && {
+                  quantityReturned: item.quantityReturned as Prisma.Decimal
                 })
               }))
             }
@@ -600,6 +603,9 @@ export class MaterialRequestsService {
             }),
             ...(itemData.quantityDelivered && {
               quantityDelivered: itemData.quantityDelivered
+            }),
+            ...(itemData.quantityReturned && {
+              quantityReturned: itemData.quantityReturned
             })
           };
 

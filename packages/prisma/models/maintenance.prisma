@@ -57,6 +57,7 @@ model MaintenanceRequest {
     sipacUserLoginRequest String? // usuario que realizou a requisicao
     origin                MaintenanceRequestOrigin @default(OCCURRENCE) // Origem da requisicao
 
+    @@index([protocolNumber])
     @@map("maintenance_requests")
 }
 

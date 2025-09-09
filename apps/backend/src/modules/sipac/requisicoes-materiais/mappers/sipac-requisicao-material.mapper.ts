@@ -182,12 +182,12 @@ export class SipacRequisicaoMaterialMapper {
             // requisicaoId: undefined, // Parent SIPAC ID not available from item
             numeroItem: parseInt(subItem.numeroitem, 10),
             codigo: subItem.codigo,
-            quantidade: parseFloat(subItem.qt),
+            quantidade: this.parseDecimal(subItem.qt),
             valor: this.parseDecimal(subItem.valor) as Prisma.Decimal, // Cast, assuming valid if present
             total: this.parseDecimal(subItem.total) as Prisma.Decimal, // Cast, assuming valid if present
-            quantidadeAtendida: parseFloat(subItem.quantidadeatendida),
-            quantidadeDevolvida: parseFloat(subItem.quantidadedevolvida),
-            quantidadeEmCompra: parseFloat(subItem.quantidadeemcompra),
+            quantidadeAtendida: this.parseDecimal(subItem.quantidadeatendida),
+            quantidadeDevolvida: this.parseDecimal(subItem.quantidadedevolvida),
+            quantidadeEmCompra: this.parseDecimal(subItem.quantidadeemcompra),
             valorAtendimento: this.parseDecimal(subItem.valoratendimento),
             totalAtendimento: this.parseDecimal(subItem.totalatendimento),
             status: subItem.status,
