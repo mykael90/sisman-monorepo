@@ -15,10 +15,15 @@ export type IMaterialReceiptWithRelations = Prisma.MaterialReceiptGetPayload<{
     destinationWarehouse: true;
     materialRequest: true;
     movementType: true;
+    processedByUser: true; // Adicionado para incluir o usuário que processou
   };
 }>;
 
-export type IMaterialReceiptItem = MaterialReceiptItem;
+export type IMaterialReceiptItem = Prisma.MaterialReceiptItemGetPayload<{
+  include: {
+    material: true;
+  };
+}>;
 
 export interface IMaterialReceiptAddPayload
   extends Omit<

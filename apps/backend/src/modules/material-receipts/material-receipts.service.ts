@@ -43,7 +43,11 @@ export class MaterialReceiptsService {
     movementType: true,
     destinationWarehouse: true,
     processedByUser: true,
-    items: true,
+    items: {
+      include: {
+        material: true
+      }
+    },
     materialRequest: {
       include: {
         items: true
