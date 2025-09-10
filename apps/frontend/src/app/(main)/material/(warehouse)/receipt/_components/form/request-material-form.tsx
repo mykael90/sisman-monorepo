@@ -81,16 +81,16 @@ export function RequestMaterialForm({
         // }
       } else {
         failedProtocols.push(protocolNumber);
-        // if (formProtocolIndex !== -1) {
-        // form.setFieldValue(
-        //     `protocols[${formProtocolIndex}].status`,
-        //     'failed'
-        //   );
-        //   form.setFieldValue(
-        //     `protocols[${formProtocolIndex}].message`,
-        //     'Falha na importação'
-        //   );
-        // }
+        if (formProtocolIndex !== -1) {
+          form.setFieldValue(
+            `protocols[${formProtocolIndex}].status`,
+            'failed'
+          );
+          form.setFieldValue(
+            `protocols[${formProtocolIndex}].message`,
+            'Falha na importação'
+          );
+        }
       }
     });
 
@@ -154,7 +154,7 @@ export function RequestMaterialForm({
           );
           form.setFieldValue(
             `protocols[${formProtocolIndex}].message`,
-            'Não encontrada no sistema'
+            'Não encontrada no SISMAN'
           );
         }
       }
@@ -173,6 +173,7 @@ export function RequestMaterialForm({
   const handleRequestProtocols = (protocols: string[]) => {
     startTransition(async () => {
       setMaterialRequestsData(null);
+      // formRequest.setFieldValue('protocols', []);
       // Resetar o status de todos os protocolos para 'pending' antes de iniciar
       formRequest.setFieldValue(
         'protocols',
@@ -227,12 +228,12 @@ export function RequestMaterialForm({
       }}
     >
       <div className='space-y-6'>
-        {JSON.stringify(materialRequestsData)}
+        {/* {JSON.stringify(materialRequestsData)} */}
         {/* Request number */}
         <Card>
           <CardHeader>
             <CardTitle className='text-lg'>
-              Consulta à Requisição de Material
+              Consulta à Requisições de Materiais
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -279,47 +280,43 @@ export function RequestMaterialForm({
                 </formRequest.Subscribe>
               </div>
 
-              <formRequest.Subscribe
-                selector={(state) => [state.canSubmit, state.isSubmitting]}
+              <Button
+                className='mt-6 self-start'
+                type='button'
+                variant='outline'
+                onClick={() =>
+                  handleRequestProtocols(
+                    formRequest
+                      .getFieldValue('protocols')
+                      .filter((p) => p.status === 'pending')
+                      .map((p) => p.protocolNumber)
+                  )
+                }
+                size='sm'
+                disabled={
+                  formRequest
+                    .getFieldValue('protocols')
+                    .filter((p) => p.status === 'pending').length === 0
+                }
               >
-                {([canSubmit, isSubmitting]) => (
-                  <Button
-                    className='mt-6 self-start'
-                    type='button'
-                    variant='outline'
-                    onClick={() =>
-                      handleRequestProtocols(
-                        formRequest
-                          .getFieldValue('protocols')
-                          .filter((p) => p.status === 'pending')
-                          .map((p) => p.protocolNumber)
-                      )
-                    }
-                    size='sm'
-                    disabled={
-                      !canSubmit ||
-                      isSubmitting || // isSubmitting do tanstack form (se o handler estiver rodando)
-                      isPendingTransition // Nosso estado global de transição
-                    }
-                  >
-                    {isSubmitting || isPendingTransition ? (
-                      'Verificando...'
-                    ) : (
-                      <div className='flex items-center gap-2'>
-                        <span className='text-sm text-gray-900'>Importar</span>{' '}
-                        <Search className='h-4 w-4' />
-                      </div>
-                    )}
-                  </Button>
+                {isPendingTransition ? (
+                  'Verificando...'
+                ) : (
+                  <div className='flex items-center gap-2'>
+                    Importar
+                    <Search className='h-4 w-4' />
+                  </div>
                 )}
-              </formRequest.Subscribe>
+              </Button>
             </div>
             <div>
               <hr className='my-4' />
               <formRequest.Field name='protocols' mode='array'>
                 {(fieldArray) => (
                   <div className='flex flex-wrap gap-2'>
-                    <span className='text-sm text-gray-800'>Importações:</span>
+                    <span className='text-sm font-semibold text-gray-700'>
+                      Importações:
+                    </span>
                     {fieldArray.state.value.map((protocolEntry, i) => {
                       const { protocolNumber, status, message } = protocolEntry;
                       let variant:

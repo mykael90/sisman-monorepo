@@ -20,7 +20,9 @@
 			"**/.pnpm-store": true,
 			"**/dist": true,
 			"**/coverage": true,
-			"_data": true
+			"_data": true,
+			"**/package-lock.json": true,
+    		"**/yarn.lock": true
 		},
 		// Esta configuração impede que o VS Code pesquise nestas pastas.
 		"search.exclude": {
@@ -30,7 +32,9 @@
 			"**/pnpm-lock.yaml": true,
 			"**/.next": true,
 			"**/dist": true,
-			"**/coverage": true
+			"**/coverage": true,
+			"**/package-lock.json": true,
+    		"**/yarn.lock": true
 		}
 	}
 }
