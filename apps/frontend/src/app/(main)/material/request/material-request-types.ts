@@ -2,7 +2,10 @@ import { MaterialRequest, Prisma } from '@sisman/prisma';
 import { IMaterialGlobalCatalog } from '../global-catalog/material-global-catalog-types';
 
 export type IMaterialRequestWithRelations = Prisma.MaterialRequestGetPayload<{
-  include: { maintenanceRequest: true; items: true };
+  include: {
+    maintenanceRequest: true;
+    items: { include: { requestedGlobalMaterial: true } };
+  };
 }>;
 
 export interface IMaterialRequestAdd
@@ -13,6 +16,13 @@ export interface IRequestEdit extends IMaterialRequestAdd {
 }
 
 export type IMaterialRequest = MaterialRequest;
+
+export type IMaterialRequestItemWithRelations =
+  Prisma.MaterialRequestItemGetPayload<{
+    include: {
+      requestedGlobalMaterial: true;
+    };
+  }>;
 
 export type IMaterialRequestRemove = {
   id: number;

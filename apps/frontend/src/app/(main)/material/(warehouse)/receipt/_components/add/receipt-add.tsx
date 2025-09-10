@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import {
   IMaterialReceiptAddForm,
+  IMaterialReceiptItemAddForm,
   IMaterialReceiptRelatedData
 } from '../../receipt-types';
 import { useWarehouseContext } from '../../../../choose-warehouse/context/warehouse-provider';
@@ -17,6 +18,8 @@ import { FilePlus } from 'lucide-react';
 import { IMaterialRequestWithRelations } from '../../../../request/material-request-types';
 import { RequestMaterialForm } from '../form/request-material-form';
 import { materialReceiptFormSchemaAdd } from '../form/material-receipt-form-validation';
+import { Item } from '@radix-ui/react-select';
+import { IMaterialReceiptItemAddFormInfo } from '../form/table-form-items-material-request';
 
 export function MaterialReceiptAdd({
   relatedData
@@ -76,38 +79,73 @@ export function MaterialReceiptAdd({
         />
 
         {materialRequestsData &&
-          materialRequestsData.map((materialRequest) => (
-            <div className='space-y-4 rounded-md border py-4'>
-              {JSON.stringify(materialRequest, null, 2)}
-              <div className='ps-4 text-lg font-bold'>
-                Requisição: {materialRequest.protocolNumber}
+          materialRequestsData.map((materialRequest) => {
+            let materialState: IMaterialReceiptItemAddForm[] = [];
+
+            let materialInfo: IMaterialReceiptItemAddFormInfo[] = [];
+
+            materialRequest.items.forEach((item) => {
+              const key = Date.now() + Math.random();
+
+              const quantityExpected =
+                Number(item.quantityApproved ?? 0) -
+                Number(item.quantityDelivered ?? 0) +
+                Number(item.quantityReturned ?? 0);
+
+              materialState.push({
+                key: key,
+                materialId: String(item.requestedGlobalMaterialId),
+                quantityExpected: quantityExpected,
+                quantityRejected: 0,
+                quantityReceived: quantityExpected,
+                materialRequestItemId: item.id,
+                unitPrice: item.unitPrice ? Number(item.unitPrice) : undefined
+              });
+
+              materialInfo.push({
+                key: key,
+                materialId: String(item.requestedGlobalMaterialId),
+                name: item.requestedGlobalMaterial?.name || 'sem nome',
+                description:
+                  item.requestedGlobalMaterial?.description || 'sem descrição',
+                unitOfMeasure:
+                  item.requestedGlobalMaterial?.unitOfMeasure ||
+                  'sem unidade de medida',
+                quantityRequested: item.quantityRequested,
+                quantityApproved: item.quantityApproved,
+                quantityDelivered: item.quantityDelivered,
+                quantityReturned: item.quantityReturned
+              });
+            });
+
+            // const materialState
+
+            return (
+              <div className='space-y-4 rounded-md border py-4'>
+                {JSON.stringify(materialRequest, null, 2)}
+                <div className='ps-4 text-lg font-bold'>
+                  Requisição: {materialRequest.protocolNumber}
+                </div>
+                <MaterialReceiptForm
+                  key={formKey + materialRequest.id}
+                  onClean={triggerReset}
+                  onCancel={redirectList}
+                  relatedData={{ ...relatedData, materialRequest }}
+                  SubmitButtonIcon={FilePlus}
+                  submitButtonText='Realizar Entrada'
+                  defaultData={{
+                    ...defaultData,
+                    materialRequestId: materialRequest.id,
+                    items: materialState
+                  }}
+                  formActionProp={addReceipt}
+                  movementTypeCode={movementTypeCode}
+                  // formSchema={materialReceiptFormSchemaAdd}
+                  materialInfo={materialInfo}
+                />
               </div>
-              <MaterialReceiptForm
-                key={formKey + materialRequest.id}
-                onClean={triggerReset}
-                onCancel={redirectList}
-                relatedData={relatedData}
-                SubmitButtonIcon={FilePlus}
-                submitButtonText='Realizar Entrada'
-                defaultData={{
-                  ...defaultData,
-                  materialRequestId: materialRequest.id,
-                  items: materialRequest.items.map((item) => ({
-                    materialId: item.requestedGlobalMaterialId,
-                    quantityExpected: item.quantityApproved,
-                    quantityRejected: 0,
-                    quantityReceived: item.quantityApproved,
-                    materialRequestItemId: item.id,
-                    unitPrice: item.unitPrice
-                      ? Number(item.unitPrice)
-                      : undefined
-                  }))
-                }}
-                formActionProp={addReceipt}
-                movementTypeCode={movementTypeCode}
-              />
-            </div>
-          ))}
+            );
+          })}
       </div>
     );
   }

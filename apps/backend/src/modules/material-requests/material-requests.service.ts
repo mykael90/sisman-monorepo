@@ -475,7 +475,7 @@ export class MaterialRequestsService {
         },
         include: {
           // Optional: include relations if needed
-          items: true,
+          items: { include: { requestedGlobalMaterial: true } },
           statusHistory: true,
           maintenanceRequest: true
         }

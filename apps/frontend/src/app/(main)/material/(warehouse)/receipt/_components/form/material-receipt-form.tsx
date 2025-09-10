@@ -22,6 +22,8 @@ import {
   materialOperationInDisplayMap,
   MaterialOperationInKey
 } from '@/mappers/material-operations-mappers';
+import { ItemsFieldArrayMaterialRequest } from './field-form-items-array-material-request';
+import { IMaterialReceiptItemAddFormInfo } from './table-form-items-material-request';
 
 export function MaterialReceiptForm({
   defaultData,
@@ -36,7 +38,8 @@ export function MaterialReceiptForm({
   onCancel,
   onClean,
   movementTypeCode,
-  formSchema
+  formSchema,
+  materialInfo
 }: {
   defaultData: Partial<Record<keyof IMaterialReceiptAddForm, any>>;
   formActionProp: (
@@ -59,9 +62,12 @@ export function MaterialReceiptForm({
   onClean?: () => void;
   movementTypeCode: MaterialOperationInKey;
   formSchema?: any;
+  materialInfo?: IMaterialReceiptItemAddFormInfo[];
 }) {
   const [serverStateReceipt, formActionReceipt, isPendingReceipt] =
     useActionState(formActionProp, initialServerStateReceipt);
+
+  const { materialRequest } = relatedData;
 
   const formReceipt: IReceiptFormApi = useReceiptForm({
     defaultDataReceiptForm: {
@@ -138,18 +144,41 @@ export function MaterialReceiptForm({
             <ReceiptDetails formReceipt={formReceipt} />
           )}
 
-          {/* {movementTypeCode !== materialOperationInDisplayMap.IN_CENTRAL && ( */}
-          <Card>
-            <CardHeader>
-              <CardTitle className='text-lg'>Materiais para Entrada</CardTitle>
-            </CardHeader>
-            <CardContent className='space-y-4'>
-              <formReceipt.Field name='items' mode='array'>
-                {(field) => <ItemsFieldArray field={field} />}
-              </formReceipt.Field>
-            </CardContent>
-          </Card>
-          {/* )} */}
+          {movementTypeCode === materialOperationInDisplayMap.IN_CENTRAL &&
+            materialInfo && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className='text-lg'>
+                    Materiais para Entrada Por Requisição
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className='space-y-4'>
+                  <formReceipt.Field name='items' mode='array'>
+                    {(field) => (
+                      <ItemsFieldArrayMaterialRequest
+                        field={field}
+                        materialInfo={materialInfo}
+                      />
+                    )}
+                  </formReceipt.Field>
+                </CardContent>
+              </Card>
+            )}
+
+          {movementTypeCode !== materialOperationInDisplayMap.IN_CENTRAL && (
+            <Card>
+              <CardHeader>
+                <CardTitle className='text-lg'>
+                  Materiais para Entrada
+                </CardTitle>
+              </CardHeader>
+              <CardContent className='space-y-4'>
+                <formReceipt.Field name='items' mode='array'>
+                  {(field) => <ItemsFieldArray field={field} />}
+                </formReceipt.Field>
+              </CardContent>
+            </Card>
+          )}
         </div>
         <div className='mt-8 flex flex-wrap justify-end gap-3'>
           <div className='flex gap-3'>
