@@ -53,27 +53,18 @@ export const ItemsFieldArrayMaterialRequest: FC<
     }
   };
 
-  const handleUpdateQuantity = (key: number, quantity: number) => {
+  const handleUpdateItemQuantity = (
+    key: number,
+    quantity: number,
+    type: 'quantityReceived' | 'quantityRejected'
+  ) => {
     const index = field.state.value.findIndex(
       (m: IMaterialReceiptItemAddForm) => m.key === key
     );
     if (index !== -1) {
       const updatedMaterial = {
         ...field.state.value[index],
-        quantityReceived: quantity // Atualizado para quantityReceived
-      };
-      field.replaceValue(index, updatedMaterial);
-    }
-  };
-
-  const handleUpdateRejectedQuantity = (key: number, quantity: number) => {
-    const index = field.state.value.findIndex(
-      (m: IMaterialReceiptItemAddForm) => m.key === key
-    );
-    if (index !== -1) {
-      const updatedMaterial = {
-        ...field.state.value[index],
-        quantityRejected: quantity // Atualizado para quantityRejected
+        [type]: quantity
       };
       field.replaceValue(index, updatedMaterial);
     }
@@ -86,8 +77,7 @@ export const ItemsFieldArrayMaterialRequest: FC<
         materialsInfo={materialInfo}
         materials={field.state.value}
         onRemove={handleRemoveMaterial}
-        onUpdateQuantity={handleUpdateQuantity}
-        onUpdateRejectedQuantity={handleUpdateRejectedQuantity}
+        onUpdateItemQuantity={handleUpdateItemQuantity}
       />
     </>
   );
