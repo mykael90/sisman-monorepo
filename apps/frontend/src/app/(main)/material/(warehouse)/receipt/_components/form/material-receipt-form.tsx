@@ -15,7 +15,6 @@ import {
   useReceiptForm,
   type IReceiptFormApi
 } from '@/src/hooks/use-receipt-form';
-import { materialReceiptFormSchemaAdd } from './material-receipt-form-validation';
 import { ErrorClientValidationFormCard } from '@/components/form-tanstack/error-client-validation-form-card';
 import { FormSuccessDisplayCard } from '@/components/form-tanstack/form-success-display-card';
 import { ReceiptDetails } from '../add/receipt-details';
@@ -36,7 +35,8 @@ export function MaterialReceiptForm({
   },
   onCancel,
   onClean,
-  movementTypeCode
+  movementTypeCode,
+  formSchema
 }: {
   defaultData: Partial<Record<keyof IMaterialReceiptAddForm, any>>;
   formActionProp: (
@@ -58,6 +58,7 @@ export function MaterialReceiptForm({
   onCancel?: () => void;
   onClean?: () => void;
   movementTypeCode: MaterialOperationInKey;
+  formSchema?: any;
 }) {
   const [serverStateReceipt, formActionReceipt, isPendingReceipt] =
     useActionState(formActionProp, initialServerStateReceipt);
@@ -67,7 +68,7 @@ export function MaterialReceiptForm({
       ...defaultData
     },
     serverStateReceipt: serverStateReceipt,
-    // formSchema: materialReceiptFormSchemaAdd,
+    formSchema: formSchema,
     formActionReceipt: async (value) => await formActionReceipt(value)
   });
 

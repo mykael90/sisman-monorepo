@@ -16,6 +16,7 @@ import { useRouter } from 'next/navigation';
 import { FilePlus } from 'lucide-react';
 import { IMaterialRequestWithRelations } from '../../../../request/material-request-types';
 import { RequestMaterialForm } from '../form/request-material-form';
+import { materialReceiptFormSchemaAdd } from '../form/material-receipt-form-validation';
 
 export function MaterialReceiptAdd({
   relatedData
@@ -129,6 +130,7 @@ export function MaterialReceiptAdd({
         defaultData={defaultData}
         formActionProp={addReceipt}
         movementTypeCode={movementTypeCode}
+        formSchema={materialReceiptFormSchemaAdd}
       />
     </div>
   );
