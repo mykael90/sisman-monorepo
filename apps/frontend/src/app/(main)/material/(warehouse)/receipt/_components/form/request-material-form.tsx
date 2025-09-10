@@ -6,23 +6,28 @@ import { Button } from '@/components/ui/button';
 import { FormInputField } from '@/components/form-tanstack/form-input-fields';
 import { useForm } from '@tanstack/react-form';
 import { formatRequestNumber } from '@/lib/form-utils';
-import { Plus, RefreshCcw, Search } from 'lucide-react';
+import { CheckCircle2, Plus, RefreshCcw, Search, XCircle } from 'lucide-react';
 import { toast } from 'sonner';
-
-interface RequestFormValues {
-  protocolNumber: string;
-  protocols: { protocolNumber: string }[];
-}
+import { Badge } from '@/components/ui/badge';
 
 // Importa as funções originais das Server Actions
 import { showMaterialRequestByProtocol } from '../../../../request/material-request-actions';
 import { IMaterialRequestWithRelations } from '../../../../request/material-request-types';
-import {
-  schemaZodRequisicoesSipac,
-  schemaZodRequisicoesSipacNotRequired
-} from '@/lib/schema-zod-requisicoes-sipac';
+import { schemaZodRequisicoesSipac } from '@/lib/schema-zod-requisicoes-sipac';
 import { handleFetchOneAndPersistRequisicaoMaterialComRequisicaoManutencaoVinculada } from '../../../../../sipac/requisicoes-materiais/requisicoes-materiais-actions';
 import { ISipacRequisicaoMaterialWithRelations } from '../../../../../sipac/requisicoes-materiais/requisicoes-materiais-types';
+
+interface RequestFormValues {
+  protocolNumber: string;
+  protocols: {
+    protocolNumber: string;
+    status: 'pending' | 'success' | 'failed';
+    message?: string;
+    data?:
+      | IMaterialRequestWithRelations
+      | ISipacRequisicaoMaterialWithRelations;
+  }[];
+}
 
 export function RequestMaterialForm({
   setMaterialRequestsData,
@@ -36,13 +41,13 @@ export function RequestMaterialForm({
   const [isPendingTransition, startTransition] = useTransition();
 
   const scrapeOrUpdateRequisicaoMaterialSipac = async (
-    protocols: string | string[]
+    protocolsToScrape: string[],
+    form: typeof formRequest
   ) => {
-    const protocolArray = Array.isArray(protocols) ? protocols : [protocols];
-    if (protocolArray.length === 0) return;
+    if (protocolsToScrape.length === 0) return;
 
     const results = await Promise.allSettled(
-      protocolArray.map((protocol) =>
+      protocolsToScrape.map((protocol) =>
         handleFetchOneAndPersistRequisicaoMaterialComRequisicaoManutencaoVinculada(
           protocol
         )
@@ -53,10 +58,39 @@ export function RequestMaterialForm({
     const failedProtocols: string[] = [];
 
     results.forEach((result, index) => {
+      const protocolNumber = protocolsToScrape[index];
+      const formProtocolIndex = form
+        .getFieldValue('protocols')
+        .findIndex((p) => p.protocolNumber === protocolNumber);
+
       if (result.status === 'fulfilled' && result.value) {
         successfulScrapes.push(result.value);
+        // if (formProtocolIndex !== -1) {
+        //   form.setFieldValue(
+        //     `protocols[${formProtocolIndex}].status`,
+        //     'success'
+        //   );
+        //   form.setFieldValue(
+        //     `protocols[${formProtocolIndex}].data`,
+        //     result.value
+        //   );
+        //   form.setFieldValue(
+        //     `protocols[${formProtocolIndex}].message`,
+        //     'Importada com sucesso'
+        //   );
+        // }
       } else {
-        failedProtocols.push(protocolArray[index]);
+        failedProtocols.push(protocolNumber);
+        // if (formProtocolIndex !== -1) {
+        // form.setFieldValue(
+        //     `protocols[${formProtocolIndex}].status`,
+        //     'failed'
+        //   );
+        //   form.setFieldValue(
+        //     `protocols[${formProtocolIndex}].message`,
+        //     'Falha na importação'
+        //   );
+        // }
       }
     });
 
@@ -66,7 +100,8 @@ export function RequestMaterialForm({
           `${successfulScrapes.length} requisição(ões) de material importada(s) do SIPAC com sucesso.`
         );
         findOrImportMaterialRequest(
-          successfulScrapes.map((req) => req.numeroDaRequisicao)
+          successfulScrapes.map((req) => req.numeroDaRequisicao),
+          form
         );
       });
     }
@@ -80,28 +115,54 @@ export function RequestMaterialForm({
     }
   };
 
-  const findOrImportMaterialRequest = async (protocols: string | string[]) => {
-    const protocolArray = Array.isArray(protocols) ? protocols : [protocols];
-    if (protocolArray.length === 0) return;
+  const findOrImportMaterialRequest = async (
+    protocolsToFind: string[],
+    form: typeof formRequest
+  ) => {
+    if (protocolsToFind.length === 0) return;
 
     const foundRequests: IMaterialRequestWithRelations[] = [];
-    const notFoundProtocols: string[] = [];
 
     const results = await Promise.all(
-      protocolArray.map((p) => showMaterialRequestByProtocol(p))
+      protocolsToFind.map((p) => showMaterialRequestByProtocol(p))
     );
 
     results.forEach((result, index) => {
+      const protocolNumber = protocolsToFind[index];
+      const formProtocolIndex = form
+        .getFieldValue('protocols')
+        .findIndex((p) => p.protocolNumber === protocolNumber);
+
       if (result) {
         foundRequests.push(result);
+        if (formProtocolIndex !== -1) {
+          form.setFieldValue(
+            `protocols[${formProtocolIndex}].status`,
+            'success'
+          );
+          form.setFieldValue(`protocols[${formProtocolIndex}].data`, result);
+          form.setFieldValue(
+            `protocols[${formProtocolIndex}].message`,
+            'Encontrada com sucesso'
+          );
+        }
       } else {
-        notFoundProtocols.push(protocolArray[index]);
+        if (formProtocolIndex !== -1) {
+          form.setFieldValue(
+            `protocols[${formProtocolIndex}].status`,
+            'failed'
+          );
+          form.setFieldValue(
+            `protocols[${formProtocolIndex}].message`,
+            'Não encontrada no sistema'
+          );
+        }
       }
     });
 
     if (foundRequests.length > 0) {
       startTransition(() => {
-        setMaterialRequestsData(results);
+        setMaterialRequestsData(foundRequests);
         toast.success(
           `${foundRequests.length} requisição(ões) de material encontrada(s).`
         );
@@ -109,16 +170,33 @@ export function RequestMaterialForm({
     }
   };
 
-  const handleSubmit = (protocols: string[]) => {
-    // ---- Fluxo de Requisição de Material ----
+  const handleRequestProtocols = (protocols: string[]) => {
     startTransition(async () => {
       setMaterialRequestsData(null);
+      // Resetar o status de todos os protocolos para 'pending' antes de iniciar
+      formRequest.setFieldValue(
+        'protocols',
+        formRequest.getFieldValue('protocols').map((p) => ({
+          ...p,
+          status: 'pending',
+          message: undefined,
+          data: undefined
+        }))
+      );
       try {
-        scrapeOrUpdateRequisicaoMaterialSipac(protocols);
+        scrapeOrUpdateRequisicaoMaterialSipac(protocols, formRequest);
       } catch (error) {
         toast.error('Falha ao buscar requisição de material.');
       }
     });
+  };
+
+  const handleSubmit = (protocolNumber: string) => {
+    formRequest.pushFieldValue('protocols', {
+      protocolNumber: formatRequestNumber(protocolNumber),
+      status: 'pending' // Define o status inicial como 'pending'
+    });
+    formRequest.setFieldValue('protocolNumber', ''); // Limpa o campo após adicionar
   };
 
   const formRequest = useForm<
@@ -135,7 +213,7 @@ export function RequestMaterialForm({
   >({
     defaultValues: { protocolNumber: '', protocols: [] },
     onSubmit: async ({ value }) => {
-      handleSubmit(value.protocols.map((p) => p.protocolNumber));
+      handleSubmit(value.protocolNumber);
     }
   });
 
@@ -190,15 +268,9 @@ export function RequestMaterialForm({
                   {(protocolNumber) => (
                     <Button
                       className='mt-6 self-start'
-                      type='button'
+                      type='submit'
                       variant='outline'
                       size='sm'
-                      onClick={() => {
-                        formRequest.pushFieldValue('protocols', {
-                          protocolNumber: formatRequestNumber(protocolNumber)
-                        });
-                        formRequest.setFieldValue('protocolNumber', ''); // Limpa o campo após adicionar
-                      }}
                       disabled={!protocolNumber} // Desabilita o botão se o campo estiver vazio
                     >
                       <Plus className='h-4 w-4' />
@@ -207,35 +279,22 @@ export function RequestMaterialForm({
                 </formRequest.Subscribe>
               </div>
 
-              <formRequest.Field name='protocols' mode='array'>
-                {(fieldArray) => (
-                  <div>
-                    {JSON.stringify(fieldArray.state.value)}
-                    {fieldArray.state.value.map((_, i) => {
-                      return (
-                        <formRequest.Field
-                          key={i}
-                          name={`protocols[${i}].protocolNumber`}
-                        >
-                          {(subField) => {
-                            return (
-                              <div>{JSON.stringify(subField.state.value)}</div>
-                            );
-                          }}
-                        </formRequest.Field>
-                      );
-                    })}
-                  </div>
-                )}
-              </formRequest.Field>
               <formRequest.Subscribe
                 selector={(state) => [state.canSubmit, state.isSubmitting]}
               >
                 {([canSubmit, isSubmitting]) => (
                   <Button
                     className='mt-6 self-start'
-                    type='submit'
+                    type='button'
                     variant='outline'
+                    onClick={() =>
+                      handleRequestProtocols(
+                        formRequest
+                          .getFieldValue('protocols')
+                          .filter((p) => p.status === 'pending')
+                          .map((p) => p.protocolNumber)
+                      )
+                    }
                     size='sm'
                     disabled={
                       !canSubmit ||
@@ -254,6 +313,52 @@ export function RequestMaterialForm({
                   </Button>
                 )}
               </formRequest.Subscribe>
+            </div>
+            <div>
+              <hr className='my-4' />
+              <formRequest.Field name='protocols' mode='array'>
+                {(fieldArray) => (
+                  <div className='flex flex-wrap gap-2'>
+                    <span className='text-sm text-gray-800'>Importações:</span>
+                    {fieldArray.state.value.map((protocolEntry, i) => {
+                      const { protocolNumber, status, message } = protocolEntry;
+                      let variant:
+                        | 'default'
+                        | 'secondary'
+                        | 'destructive'
+                        | 'outline' = 'default';
+                      let Icon = null;
+                      switch (status) {
+                        case 'success':
+                          variant = 'success';
+                          Icon = CheckCircle2;
+                          break;
+                        case 'failed':
+                          variant = 'destructive';
+                          Icon = XCircle;
+                          break;
+                        case 'pending':
+                        default:
+                          variant = 'outline';
+                          break;
+                      }
+                      return (
+                        <Badge
+                          key={i}
+                          variant={variant}
+                          className='flex items-center gap-1'
+                        >
+                          {Icon && <Icon className='h-3 w-3' />}
+                          {protocolNumber}
+                          {message && (
+                            <span className='ml-1 text-xs'>{`(${message})`}</span>
+                          )}
+                        </Badge>
+                      );
+                    })}
+                  </div>
+                )}
+              </formRequest.Field>
             </div>
           </CardContent>
         </Card>
