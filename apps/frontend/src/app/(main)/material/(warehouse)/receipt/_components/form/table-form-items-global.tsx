@@ -20,7 +20,11 @@ interface TableFormItemsGlobalProps {
   materialsInfo: IMaterialReceiptItemAddFormInfo[];
   materials: IMaterialReceiptItemAddForm[];
   onRemove: (key: number) => void;
-  onUpdateQuantity: (key: number, quantity: number) => void;
+  onUpdateQuantity: (
+    key: number,
+    quantity: number,
+    type: 'quantityReceived' | 'quantityRejected'
+  ) => void;
   hideMaterialRequestItemId?: boolean;
   readOnly?: boolean;
 }
@@ -54,36 +58,32 @@ export function TableFormItemsGlobal({
     return map;
   }, [materials]);
 
-  const getClampedQuantity = (
-    material: IMaterialReceiptItemAddForm,
-    newQuantity: number
-  ): number => {
-    let quantity = Math.max(0, newQuantity);
-    return quantity;
-  };
+  const handleQuantityChange =
+    (type: 'quantityReceived' | 'quantityRejected') =>
+    (key: number, change: number) => {
+      const material = materialsMap.get(key);
+      if (material) {
+        const newQuantity = Number(material[type]) + change;
+        onUpdateQuantity(key, newQuantity, type);
+      }
+    };
 
-  const handleQuantityChange = (key: number, change: number) => {
-    const material = materialsMap.get(key);
-    if (material) {
-      const newQuantity = Number(material.quantityReceived) + change;
-      onUpdateQuantity(key, getClampedQuantity(material, newQuantity));
-    }
-  };
+  const handleManualQuantityChange =
+    (type: 'quantityReceived' | 'quantityRejected') =>
+    (key: number, value: string) => {
+      const material = materialsMap.get(key);
+      if (!material) return;
 
-  const handleManualQuantityChange = (key: number, value: string) => {
-    const material = materialsMap.get(key);
-    if (!material) return;
+      if (value === '') {
+        onUpdateQuantity(key, 0, type);
+        return;
+      }
 
-    if (value === '') {
-      onUpdateQuantity(key, 0);
-      return;
-    }
-
-    const newQuantity = parseFloat(value.replace(',', '.'));
-    if (!isNaN(newQuantity)) {
-      onUpdateQuantity(key, getClampedQuantity(material, newQuantity));
-    }
-  };
+      const newQuantity = parseFloat(value.replace(',', '.'));
+      if (!isNaN(newQuantity)) {
+        onUpdateQuantity(key, newQuantity, type);
+      }
+    };
 
   if (materials.length === 0) {
     return (
@@ -171,7 +171,12 @@ export function TableFormItemsGlobal({
                           type='button'
                           variant='outline'
                           size='sm'
-                          onClick={() => handleQuantityChange(material.key, -1)}
+                          onClick={() =>
+                            handleQuantityChange('quantityRejected')(
+                              material.key,
+                              -1
+                            )
+                          }
                           disabled={Number(material.quantityRejected) <= 0}
                         >
                           <Minus className='h-3 w-3' />
@@ -181,7 +186,7 @@ export function TableFormItemsGlobal({
                           step='any'
                           value={String(material.quantityRejected)}
                           onChange={(e) =>
-                            handleManualQuantityChange(
+                            handleManualQuantityChange('quantityRejected')(
                               material.key,
                               e.target.value
                             )
@@ -193,7 +198,12 @@ export function TableFormItemsGlobal({
                           type='button'
                           variant='outline'
                           size='sm'
-                          onClick={() => handleQuantityChange(material.key, 1)}
+                          onClick={() =>
+                            handleQuantityChange('quantityRejected')(
+                              material.key,
+                              1
+                            )
+                          }
                         >
                           <Plus className='h-3 w-3' />
                         </Button>
@@ -211,7 +221,12 @@ export function TableFormItemsGlobal({
                           type='button'
                           variant='outline'
                           size='sm'
-                          onClick={() => handleQuantityChange(material.key, -1)}
+                          onClick={() =>
+                            handleQuantityChange('quantityReceived')(
+                              material.key,
+                              -1
+                            )
+                          }
                           disabled={Number(material.quantityReceived) <= 0}
                         >
                           <Minus className='h-3 w-3' />
@@ -221,7 +236,7 @@ export function TableFormItemsGlobal({
                           step='any'
                           value={String(material.quantityReceived)}
                           onChange={(e) =>
-                            handleManualQuantityChange(
+                            handleManualQuantityChange('quantityReceived')(
                               material.key,
                               e.target.value
                             )
@@ -233,7 +248,12 @@ export function TableFormItemsGlobal({
                           type='button'
                           variant='outline'
                           size='sm'
-                          onClick={() => handleQuantityChange(material.key, 1)}
+                          onClick={() =>
+                            handleQuantityChange('quantityReceived')(
+                              material.key,
+                              1
+                            )
+                          }
                         >
                           <Plus className='h-3 w-3' />
                         </Button>

@@ -99,14 +99,18 @@ export const ItemsFieldArray: FC<MaterialItemsFieldProps> = ({ field }) => {
     }
   };
 
-  const handleUpdateQuantity = (key: number, quantity: number) => {
+  const handleUpdateQuantity = (
+    key: number,
+    quantity: number,
+    type: 'quantityReceived' | 'quantityRejected'
+  ) => {
     const index = field.state.value.findIndex(
       (m: IMaterialReceiptItemAddForm) => m.key === key
     );
     if (index !== -1) {
       const updatedMaterial = {
         ...field.state.value[index],
-        quantityReceived: quantity // Atualizado para quantityReceived
+        [type]: quantity
       };
       field.replaceValue(index, updatedMaterial);
     }
