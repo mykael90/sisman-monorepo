@@ -7,10 +7,6 @@ import { Trash2, Minus, Plus } from 'lucide-react';
 import { IMaterialReceiptItemAddForm } from '../../receipt-types';
 import { useMemo } from 'react';
 import { IMaterialGlobalCatalog } from '../../../../global-catalog/material-global-catalog-types';
-import {
-  IWarehouseStock,
-  IWarehouseStockIncludedComputed
-} from '../../../warehouse-stock/warehouse-stock-types';
 import { formatToBRL } from '../../../../../../../lib/utils';
 import { InfoHoverCard } from '../../../../../../../components/info-hover-card';
 
@@ -18,13 +14,7 @@ export type IMaterialReceiptItemAddFormInfo = Pick<
   IMaterialReceiptItemAddForm,
   'key' | 'materialId'
 > &
-  Pick<IMaterialGlobalCatalog, 'description' | 'name' | 'unitOfMeasure'> &
-  Partial<
-    Pick<
-      IWarehouseStockIncludedComputed,
-      'freeBalanceQuantity' | 'physicalOnHandQuantity'
-    >
-  >;
+  Pick<IMaterialGlobalCatalog, 'description' | 'name' | 'unitOfMeasure'>;
 
 interface TableFormItemsGlobalProps {
   materialsInfo: IMaterialReceiptItemAddFormInfo[];
@@ -124,6 +114,9 @@ export function TableFormItemsGlobal({
                 R$ Unitário
               </th>
               <th className='w-40 px-4 py-3 text-center text-sm font-medium text-gray-900'>
+                Rejeitar
+              </th>
+              <th className='w-40 px-4 py-3 text-center text-sm font-medium text-gray-900'>
                 Receber
               </th>
               {!readOnly && (
@@ -165,6 +158,46 @@ export function TableFormItemsGlobal({
                       </Badge>
                     ) : (
                       <Badge variant='outline'>Indefinido</Badge>
+                    )}
+                  </td>
+                  <td className='px-4 py-3'>
+                    {readOnly ? (
+                      <p className='text-gray-900'>
+                        {Number(material.quantityRejected)}
+                      </p>
+                    ) : (
+                      <div className='flex items-center justify-center gap-2'>
+                        <Button
+                          type='button'
+                          variant='outline'
+                          size='sm'
+                          onClick={() => handleQuantityChange(material.key, -1)}
+                          disabled={Number(material.quantityRejected) <= 0}
+                        >
+                          <Minus className='h-3 w-3' />
+                        </Button>
+                        <Input
+                          type='number'
+                          step='any'
+                          value={String(material.quantityRejected)}
+                          onChange={(e) =>
+                            handleManualQuantityChange(
+                              material.key,
+                              e.target.value
+                            )
+                          }
+                          className='w-18 text-center'
+                          min='0'
+                        />
+                        <Button
+                          type='button'
+                          variant='outline'
+                          size='sm'
+                          onClick={() => handleQuantityChange(material.key, 1)}
+                        >
+                          <Plus className='h-3 w-3' />
+                        </Button>
+                      </div>
                     )}
                   </td>
                   <td className='px-4 py-3'>

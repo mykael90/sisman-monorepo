@@ -2,7 +2,7 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { FilePlus } from 'lucide-react';
-import { FC, useActionState, useState } from 'react';
+import { FC, useActionState } from 'react';
 import { IActionResultForm } from '@/types/types-server-actions';
 import {
   IMaterialReceiptAddForm,
@@ -67,7 +67,7 @@ export function MaterialReceiptForm({
       ...defaultData
     },
     serverStateReceipt: serverStateReceipt,
-    formSchema: materialReceiptFormSchemaAdd,
+    // formSchema: materialReceiptFormSchemaAdd,
     formActionReceipt: async (value) => await formActionReceipt(value)
   });
 
@@ -137,20 +137,18 @@ export function MaterialReceiptForm({
             <ReceiptDetails formReceipt={formReceipt} />
           )}
 
-          {movementTypeCode !== materialOperationInDisplayMap.IN_CENTRAL && (
-            <Card>
-              <CardHeader>
-                <CardTitle className='text-lg'>
-                  Materiais para Entrada
-                </CardTitle>
-              </CardHeader>
-              <CardContent className='space-y-4'>
-                <formReceipt.Field name='items' mode='array'>
-                  {(field) => <ItemsFieldArray field={field} />}
-                </formReceipt.Field>
-              </CardContent>
-            </Card>
-          )}
+          {/* {movementTypeCode !== materialOperationInDisplayMap.IN_CENTRAL && ( */}
+          <Card>
+            <CardHeader>
+              <CardTitle className='text-lg'>Materiais para Entrada</CardTitle>
+            </CardHeader>
+            <CardContent className='space-y-4'>
+              <formReceipt.Field name='items' mode='array'>
+                {(field) => <ItemsFieldArray field={field} />}
+              </formReceipt.Field>
+            </CardContent>
+          </Card>
+          {/* )} */}
         </div>
         <div className='mt-8 flex flex-wrap justify-end gap-3'>
           <div className='flex gap-3'>

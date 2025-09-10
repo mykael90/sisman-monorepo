@@ -59,6 +59,58 @@ export function MaterialReceiptAdd({
     externalReference: undefined
   };
 
+  if (movementTypeCode === materialOperationInDisplayMap.IN_CENTRAL) {
+    return (
+      <div className='space-y-6'>
+        <TabSelector
+          movementTypeCode={movementTypeCode}
+          setMovementTypeCode={setMovementTypeCode}
+          handleReset={triggerReset}
+        />
+
+        <RequestMaterialForm
+          // key={formKey}
+          setMaterialRequestsData={setMaterialRequestsData}
+          materialRequestsData={materialRequestsData}
+        />
+
+        {materialRequestsData &&
+          materialRequestsData.map((materialRequest) => (
+            <div className='space-y-4 rounded-md border py-4'>
+              {JSON.stringify(materialRequest, null, 2)}
+              <div className='ps-4 text-lg font-bold'>
+                Requisição: {materialRequest.protocolNumber}
+              </div>
+              <MaterialReceiptForm
+                key={formKey + materialRequest.id}
+                onClean={triggerReset}
+                onCancel={redirectList}
+                relatedData={relatedData}
+                SubmitButtonIcon={FilePlus}
+                submitButtonText='Realizar Entrada'
+                defaultData={{
+                  ...defaultData,
+                  materialRequestId: materialRequest.id,
+                  items: materialRequest.items.map((item) => ({
+                    materialId: item.requestedGlobalMaterialId,
+                    quantityExpected: item.quantityApproved,
+                    quantityRejected: 0,
+                    quantityReceived: item.quantityApproved,
+                    materialRequestItemId: item.id,
+                    unitPrice: item.unitPrice
+                      ? Number(item.unitPrice)
+                      : undefined
+                  }))
+                }}
+                formActionProp={addReceipt}
+                movementTypeCode={movementTypeCode}
+              />
+            </div>
+          ))}
+      </div>
+    );
+  }
+
   return (
     <div className='space-y-6'>
       <TabSelector
@@ -66,14 +118,6 @@ export function MaterialReceiptAdd({
         setMovementTypeCode={setMovementTypeCode}
         handleReset={triggerReset}
       />
-
-      {movementTypeCode === materialOperationInDisplayMap.IN_CENTRAL && (
-        <RequestMaterialForm
-          // key={formKey}
-          setMaterialRequestsData={setMaterialRequestsData}
-          materialRequestsData={materialRequestsData}
-        />
-      )}
 
       <MaterialReceiptForm
         key={formKey}

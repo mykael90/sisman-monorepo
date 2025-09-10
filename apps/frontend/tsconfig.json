@@ -30,5 +30,14 @@
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules", // Essencial para o TSLS ignorar
+    "dist",
+    "build",
+    ".next", // Para projetos Next.js
+    // Adicione quaisquer outros diretórios gerados ou de cache
+    "**/.pnpm-store", // Se o pnpm tiver um store na raiz do projeto
+    "**/*.spec.ts", // Exclua arquivos de teste se não forem relevantes para o TSLS em tempo real
+    "**/*.test.ts"
+  ]
 }

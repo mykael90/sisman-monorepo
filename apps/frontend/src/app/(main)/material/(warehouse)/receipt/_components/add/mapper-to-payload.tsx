@@ -22,10 +22,15 @@ export const receiptServiceUsageMapping: MappingConfig<
   processedByUser: (data) =>
     data.processedByUserId && { id: Number(data.processedByUserId) },
 
+  materialRequest: (data) =>
+    data.materialRequestId && { id: Number(data.materialRequestId) },
+
   items: (data) =>
     data.items.map((item) => ({
       materialId: item.materialId,
       quantityReceived: item.quantityReceived,
+      quantityExpected: item.quantityExpected,
+      quantityRejected: item.quantityRejected,
       materialRequestItemId: item.materialRequestItemId,
       unitPrice: item.unitPrice ? Number(item.unitPrice) : undefined
     }))

@@ -14,6 +14,7 @@ import {
   IMaterialReceiptItemAddForm
 } from '../../receipt-types';
 import { SearchMaterialByWarehouse } from '../../../components/search-material-global-by-warehouse';
+import { SearchMaterialGlobal } from '../../../../_components/search-material-global';
 
 const logger = new Logger(`material-items-field`);
 
@@ -53,46 +54,34 @@ export const ItemsFieldArray: FC<MaterialItemsFieldProps> = ({ field }) => {
 
     if (materialToAdd) {
       console.log(
-        `materialToAdd.warehouseStandardStocks ${JSON.stringify(materialToAdd.warehouseStandardStocks, null, 2)}`
+        `materialToAdd.warehouseStandardStocks ${JSON.stringify(materialToAdd, null, 2)}`
       );
 
       const {
         name,
         description,
         unitOfMeasure,
+        unitPrice,
         id: materialId // Renomeado de globalMaterialId para materialId
       } = materialToAdd;
       const key = Date.now() + Math.random();
       const quantityReceived = 1; // Quantidade padrão para recebimento
-
-      const stockData = materialToAdd.warehouseStandardStocks?.[0];
-
-      let freeBalanceQuantity = null;
-      let physicalOnHandQuantity = null;
-
-      if (stockData) {
-        if (stockData.freeBalanceQuantity != null)
-          freeBalanceQuantity = Number(stockData.freeBalanceQuantity);
-        if (stockData.physicalOnHandQuantity != null)
-          physicalOnHandQuantity = Number(stockData.physicalOnHandQuantity);
-      }
-
-      const unitPrice = stockData?.updatedCost;
+      const quantityRejected = 0; // Quantidade padrão para rejeição
 
       const materialStateField = {
         key,
         materialId, // Usando materialId
         quantityReceived,
+        quantityRejected,
         unitPrice
       };
 
       const materialInfo = {
         key,
+        materialId,
         name,
         description,
-        unitOfMeasure,
-        freeBalanceQuantity,
-        physicalOnHandQuantity
+        unitOfMeasure
       };
 
       field.pushValue(materialStateField);
@@ -127,7 +116,7 @@ export const ItemsFieldArray: FC<MaterialItemsFieldProps> = ({ field }) => {
     <>
       <div className='flex gap-4'>
         <div className='flex-1'>
-          <SearchMaterialByWarehouse
+          <SearchMaterialGlobal
             handleAddMaterial={handleAddMaterial}
             excludedFromList={field.state.value}
             handleBlurredField={() => field.handleBlur()}

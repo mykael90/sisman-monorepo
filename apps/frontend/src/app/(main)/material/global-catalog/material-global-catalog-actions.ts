@@ -18,9 +18,9 @@ const API_RELATIVE_PATH = '/materials';
 const logger = new Logger(`${PAGE_PATH}/material-global-catalog-actions`);
 
 export async function getMaterialGlobalCatalogs(
-  accessTokenSisman: string,
   queryParams?: TQueryParams
 ): Promise<IMaterialGlobalCatalogWithRelations[]> {
+  const accessTokenSisman = await getSismanAccessToken();
   logger.info(
     `(Server Action) getMaterialGlobalCatalogs: Fetching material-global-catalogs`
   );

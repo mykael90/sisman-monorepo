@@ -2,7 +2,7 @@ import { MaterialRequest, Prisma } from '@sisman/prisma';
 import { IMaterialGlobalCatalog } from '../global-catalog/material-global-catalog-types';
 
 export type IMaterialRequestWithRelations = Prisma.MaterialRequestGetPayload<{
-  include: { maintenanceRequest: true };
+  include: { maintenanceRequest: true; items: true };
 }>;
 
 export interface IMaterialRequestAdd
