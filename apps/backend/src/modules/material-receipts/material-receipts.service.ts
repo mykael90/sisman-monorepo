@@ -56,7 +56,33 @@ export class MaterialReceiptsService {
   };
 
   async create(
-    data: CreateMaterialReceiptWithRelationsDto
+    data: CreateMaterialReceiptWithRelationsDto,
+    tx?: Prisma.TransactionClient
+  ) {
+    try {
+      if (tx) {
+        this.logger.log(
+          `Executando a criação dentro de uma transação existente.`
+        );
+        return await this._create(data, tx as any);
+      }
+      this.logger.log(`Iniciando uma nova transação para criação.`);
+      return await this.prisma.$transaction(async (prismaTransactionClient) => {
+        return await this._create(data, prismaTransactionClient as any);
+      });
+    } catch (error) {
+      handlePrismaError(error, this.logger, 'MaterialReceiptsService', {
+        operation: 'create',
+        data
+      });
+      throw error;
+    }
+  }
+
+  //essa criação tem que ser envolvida em uma transição, porque se for uma entrada relacionada a uma requisição de material, é necessário atualizar os dados dos items da requisição de material e possivelmente o status
+  private async _create(
+    data: CreateMaterialReceiptWithRelationsDto,
+    prisma: Prisma.TransactionClient
   ): Promise<MaterialReceiptWithRelationsResponseDto> {
     const {
       movementType,
@@ -68,14 +94,17 @@ export class MaterialReceiptsService {
     } = data;
 
     //Verificar se a entrada é "IN_CENTRAL", em caso positivo, verificar se ja existe um recebimento referente a essa requisicao de material, caso ja exista lance um erro de conflito
+    // vamos atualizar a lógica, caso já exista verificar se ainda existem materiais pendentes de recebimentos (sejam porque foram rejeitados no pedido anterior, seja pq foram devolvidos por qualquer razao)
+    // todas as informações necessárias ficam armazenadas na requisicao de manutencao, não precisa fazer nenhuma operação de agregação para calculo
     if (movementType?.code === MaterialStockOperationSubType.IN_CENTRAL) {
-      const existingReceipt = await this.prisma.materialReceipt.findFirst({
+      const existingReceipt = await prisma.materialReceipt.findFirst({
         where: {
           materialRequestId: materialRequest?.id,
           destinationWarehouseId: destinationWarehouse?.id
         }
       });
       if (existingReceipt) {
+        // aqui vamos inserir a lógica para verificar se é possível op recebimento
         throw new ConflictException(
           `Já existe um recebimento para essa requisição de material.`
         );
@@ -116,151 +145,144 @@ export class MaterialReceiptsService {
       }
     };
     try {
-      this.logger.log(`Iniciando transação para recebimento de material...`);
-      const createdReceipt = await this.prisma.$transaction(async (tx) => {
-        // ETAPA 1: Criar o Recebimento de Entrada Material e seus Itens.
+      this.logger.log(`Iniciando recebimento de material...`);
+      // ETAPA 1: Criar o Recebimento de Entrada Material e seus Itens.
 
-        //realizar um reduce para calcular o valor da entrada baseado na quantidade e valor unitario dos items
-        const valueReceipt = items.reduce<Decimal | undefined>(
-          (total, item) => {
-            if (!item.unitPrice) return undefined;
+      //realizar um reduce para calcular o valor da entrada baseado na quantidade e valor unitario dos items
+      const valueReceipt = items.reduce<Decimal | undefined>((total, item) => {
+        if (!item.unitPrice) return undefined;
 
-            const quantity = new Decimal(item.quantityReceived);
-            const unitPrice = new Decimal(item.unitPrice);
+        const quantity = new Decimal(item.quantityReceived);
+        const unitPrice = new Decimal(item.unitPrice);
 
-            if (total === undefined) return quantity.times(unitPrice);
+        if (total === undefined) return quantity.times(unitPrice);
 
-            return total.plus(quantity.times(unitPrice));
-          },
-          new Decimal(0)
-        );
+        return total.plus(quantity.times(unitPrice));
+      }, new Decimal(0));
 
-        receiptCreateInput.valueReceipt = valueReceipt;
+      receiptCreateInput.valueReceipt = valueReceipt;
 
-        // O 'include' garante que 'newReceipt.items' conterá os itens com seus IDs.
-        const newReceipt = await tx.materialReceipt.create({
-          data: receiptCreateInput,
-          include: {
-            items: true, // Crucial para obter os IDs dos itens
-            materialRequest: true
-          }
-        });
-
-        this.logger.log(
-          `Recebimento de material nº ${newReceipt.id} e seus ${newReceipt.items.length} itens criados.`
-        );
-
-        this.logger.log(`Iniciando criação das movimentações de estoque...`);
-
-        // ETAPA 2: Iterar sobre CADA item criado para gerar a movimentação de estoque.
-        for (const createdItem of newReceipt.items) {
-          // Ignorar itens que não foram aceitos
-          if (createdItem.quantityReceived.isZero()) {
-            this.logger.log(
-              `Item ${createdItem.id} com quantidade aceita 0, pulando movimentação.`
-            );
-            continue;
-          }
-
-          const materialStockMovement: CreateMaterialStockMovementWithRelationsDto =
-            {
-              quantity: createdItem.quantityReceived,
-              unitPrice: createdItem.unitPrice,
-              globalMaterial: { id: createdItem.materialId } as any,
-              warehouse: { id: destinationWarehouse.id } as any,
-              movementType: { code: movementType.code } as any,
-              processedByUser: { id: processedByUser.id } as any,
-              // AQUI ESTÁ A MÁGICA: Usamos o ID do item que acabamos de criar.
-              materialReceiptItem: { id: createdItem.id } as any,
-              // Conectar à requisição de manutenção, se existir
-              materialRequestItem: {
-                id: createdItem.materialRequestItemId
-              } as any,
-              maintenanceRequest: newReceipt.materialRequest
-                ?.maintenanceRequestId
-                ? ({
-                    id: newReceipt.materialRequest.maintenanceRequestId
-                  } as any)
-                : undefined
-            };
-
-          // Chama o serviço de movimentação, passando o cliente da transação (tx)
-          await this.materialStockMovementsService.create(
-            materialStockMovement,
-            tx as any
-          );
-          this.logger.log(
-            `Movimentação para o item ${createdItem.id} criada com sucesso.`
-          );
+      // O 'include' garante que 'newReceipt.items' conterá os itens com seus IDs.
+      const newReceipt = await prisma.materialReceipt.create({
+        data: receiptCreateInput,
+        include: {
+          items: true, // Crucial para obter os IDs dos itens
+          materialRequest: true
         }
-
-        this.logger.log(`Todas as movimentações de estoque foram criadas.`);
-
-        //ETAPA 3: Restringir os items para saida generica se for uma entrada do tipo "IN_CENTRAL", tiver uma requisição de manutenção associada, e essa requisicao de manutencao já ter alguma reserva ou retirada. Ou seja, a requisicao de manutencao ja foi maculada com uma sáida ou intenção de saída.
-        //Verificar se a entrada é "IN_CENTRAL", em caso positivo, verificar se ja existe um recebimento referente a essa requisicao de material, caso ja exista lance um erro de conflito
-        if (
-          movementType?.code === MaterialStockOperationSubType.IN_CENTRAL &&
-          newReceipt.materialRequest?.maintenanceRequestId
-        ) {
-          const MaintenanceRequest =
-            await this.prisma.maintenanceRequest.findFirst({
-              where: {
-                id: newReceipt.materialRequest?.maintenanceRequestId
-              },
-              include: {
-                materialPickingOrders: true,
-                materialWithdrawals: true
-              }
-            });
-
-          const isDirtyMaintenanceRequest =
-            MaintenanceRequest.materialPickingOrders.length > 0 ||
-            MaintenanceRequest.materialWithdrawals.length > 0;
-
-          if (!isDirtyMaintenanceRequest) {
-            // lógica para restringir todos os items. criar um método para isso. criar um dto para restringir e chamar o serviço.
-
-            const payloadCreateMaterialRestrictionOrder: CreateMaterialRestrictionOrderWithRelationsDto =
-              {
-                warehouse: {
-                  id: destinationWarehouse.id
-                } as any,
-                processedByUser: {
-                  id: processedByUser.id
-                } as any,
-                targetMaterialRequest: {
-                  id: materialRequest.id
-                } as any,
-                notes: `Restrição realizada de forma automática durante a entrada do material`,
-                processedAt: new Date(),
-                items: items.map((item) => {
-                  return {
-                    globalMaterialId: item.materialId,
-                    quantityRestricted: item.quantityReceived,
-                    targetMaterialRequestItemId: item.materialRequestItemId
-                  } as any;
-                })
-              };
-
-            //chamando o métdo para restrição dos items
-            await this.materialRestrictionOrdersService.create(
-              payloadCreateMaterialRestrictionOrder,
-              tx as any,
-              true
-            );
-          }
-        }
-
-        // ETAPA 4: Retornar o recebimento completo com todas as relações definidas em `includeRelations`.
-        // É uma boa prática buscar novamente para garantir que todos os dados aninhados estejam consistentes.
-        return tx.materialReceipt.findUniqueOrThrow({
-          where: { id: newReceipt.id },
-          include: this.includeRelations
-        });
       });
 
-      this.logger.log(`Transação concluída com sucesso!`);
-      return createdReceipt;
+      this.logger.log(
+        `Recebimento de material nº ${newReceipt.id} e seus ${newReceipt.items.length} itens criados.`
+      );
+
+      this.logger.log(`Iniciando criação das movimentações de estoque...`);
+
+      // ETAPA 2: Iterar sobre CADA item criado para gerar a movimentação de estoque.
+      for (const createdItem of newReceipt.items) {
+        // Ignorar itens que não foram aceitos
+        if (createdItem.quantityReceived.isZero()) {
+          this.logger.log(
+            `Item ${createdItem.id} com quantidade aceita 0, pulando movimentação.`
+          );
+          continue;
+        }
+
+        const materialStockMovement: CreateMaterialStockMovementWithRelationsDto =
+          {
+            quantity: createdItem.quantityReceived,
+            unitPrice: createdItem.unitPrice,
+            globalMaterial: { id: createdItem.materialId } as any,
+            warehouse: { id: destinationWarehouse.id } as any,
+            movementType: { code: movementType.code } as any,
+            processedByUser: { id: processedByUser.id } as any,
+            // AQUI ESTÁ A MÁGICA: Usamos o ID do item que acabamos de criar.
+            materialReceiptItem: { id: createdItem.id } as any,
+            // Conectar à requisição de manutenção, se existir
+            materialRequestItem: {
+              id: createdItem.materialRequestItemId
+            } as any,
+            maintenanceRequest: newReceipt.materialRequest?.maintenanceRequestId
+              ? ({
+                  id: newReceipt.materialRequest.maintenanceRequestId
+                } as any)
+              : undefined
+          };
+
+        // Chama o serviço de movimentação, passando o cliente da transação (prisma)
+        await this.materialStockMovementsService.create(
+          materialStockMovement,
+          prisma as any
+        );
+        this.logger.log(
+          `Movimentação para o item ${createdItem.id} criada com sucesso.`
+        );
+      }
+
+      this.logger.log(`Todas as movimentações de estoque foram criadas.`);
+
+      //ETAPA 3: Restringir os items para saida generica se for uma entrada do tipo "IN_CENTRAL", tiver uma requisição de manutenção associada, e essa requisicao de manutencao já ter alguma reserva ou retirada. Ou seja, a requisicao de manutencao ja foi maculada com uma sáida ou intenção de saída.
+      //Verificar se a entrada é "IN_CENTRAL", em caso positivo, verificar se ja existe um recebimento referente a essa requisicao de material, caso ja exista lance um erro de conflito
+      if (
+        movementType?.code === MaterialStockOperationSubType.IN_CENTRAL &&
+        newReceipt.materialRequest?.maintenanceRequestId
+      ) {
+        const MaintenanceRequest =
+          await this.prisma.maintenanceRequest.findFirst({
+            where: {
+              id: newReceipt.materialRequest?.maintenanceRequestId
+            },
+            include: {
+              materialPickingOrders: true,
+              materialWithdrawals: true
+            }
+          });
+
+        const isDirtyMaintenanceRequest =
+          MaintenanceRequest.materialPickingOrders.length > 0 ||
+          MaintenanceRequest.materialWithdrawals.length > 0;
+
+        if (!isDirtyMaintenanceRequest) {
+          // lógica para restringir todos os items. criar um método para isso. criar um dto para restringir e chamar o serviço.
+
+          const payloadCreateMaterialRestrictionOrder: CreateMaterialRestrictionOrderWithRelationsDto =
+            {
+              warehouse: {
+                id: destinationWarehouse.id
+              } as any,
+              processedByUser: {
+                id: processedByUser.id
+              } as any,
+              targetMaterialRequest: {
+                id: materialRequest.id
+              } as any,
+              notes: `Restrição realizada de forma automática durante a entrada do material`,
+              processedAt: new Date(),
+              items: items.map((item) => {
+                return {
+                  globalMaterialId: item.materialId,
+                  quantityRestricted: item.quantityReceived,
+                  targetMaterialRequestItemId: item.materialRequestItemId
+                } as any;
+              })
+            };
+
+          //chamando o métdo para restrição dos items
+          await this.materialRestrictionOrdersService.create(
+            payloadCreateMaterialRestrictionOrder,
+            prisma as any,
+            true
+          );
+        }
+      }
+
+      this.logger.log(`Transação concluída com sucesso.`);
+
+      // ETAPA 4: Retornar o recebimento completo com todas as relações definidas em `includeRelations`.
+      // É uma boa prática buscar novamente para garantir que todos os dados aninhados estejam consistentes.
+      return prisma.materialReceipt.findUniqueOrThrow({
+        where: { id: newReceipt.id },
+        include: this.includeRelations
+      });
     } catch (error) {
       handlePrismaError(error, this.logger, 'MaterialReceiptsService', {
         operation: 'create',
