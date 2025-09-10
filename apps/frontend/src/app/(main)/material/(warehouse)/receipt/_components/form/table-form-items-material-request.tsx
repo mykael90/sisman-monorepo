@@ -109,6 +109,7 @@ export function TableFormItemsMaterialRequest({
       onUpdateQuantity(key, getClampedQuantity(material, newQuantity));
     }
   };
+
   const handleManualRejectedQuantityChange = (key: number, value: string) => {
     const material = materialsMap.get(key);
     if (!material) return;
@@ -120,7 +121,7 @@ export function TableFormItemsMaterialRequest({
 
     const newQuantity = parseFloat(value.replace(',', '.'));
     if (!isNaN(newQuantity)) {
-      onUpdateQuantity(key, getClampedQuantity(material, newQuantity));
+      onUpdateRejectedQuantity(key, getClampedQuantity(material, newQuantity));
     }
   };
 
