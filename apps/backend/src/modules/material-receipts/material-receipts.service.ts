@@ -29,6 +29,7 @@ import {
 import { Decimal } from '@sisman/prisma/generated/client/runtime/library';
 import { CreateMaterialRestrictionOrderWithRelationsDto } from '../material-restriction-orders/dto/material-restriction-order.dto';
 import { MaterialRestrictionOrdersService } from '../material-restriction-orders/material-restriction-orders.service';
+import { MaterialRequestsService } from '../material-requests/material-requests.service';
 
 @Injectable()
 export class MaterialReceiptsService {
@@ -36,7 +37,8 @@ export class MaterialReceiptsService {
   constructor(
     @Inject(PrismaService) private readonly prisma: ExtendedPrismaClient,
     private readonly materialStockMovementsService: MaterialStockMovementsService,
-    private readonly materialRestrictionOrdersService: MaterialRestrictionOrdersService
+    private readonly materialRestrictionOrdersService: MaterialRestrictionOrdersService,
+    private readonly materialRequestsService: MaterialRequestsService
   ) {}
 
   private readonly includeRelations: Prisma.MaterialReceiptInclude = {
@@ -95,19 +97,110 @@ export class MaterialReceiptsService {
 
     //Verificar se a entrada é "IN_CENTRAL", em caso positivo, verificar se ja existe um recebimento referente a essa requisicao de material, caso ja exista lance um erro de conflito
     // vamos atualizar a lógica, caso já exista verificar se ainda existem materiais pendentes de recebimentos (sejam porque foram rejeitados no pedido anterior, seja pq foram devolvidos por qualquer razao)
-    // todas as informações necessárias ficam armazenadas na requisicao de manutencao, não precisa fazer nenhuma operação de agregação para calculo
+    // todas as informações necessárias ficam armazenadas na requisicao de material, não precisa fazer nenhuma operação de agregação para calculo
     if (movementType?.code === MaterialStockOperationSubType.IN_CENTRAL) {
       const existingReceipt = await prisma.materialReceipt.findFirst({
+        include: {
+          materialRequest: {
+            include: {
+              items: true // Certifique-se de que os itens da requisição de material são incluídos!
+            }
+          }
+        },
         where: {
           materialRequestId: materialRequest?.id,
           destinationWarehouseId: destinationWarehouse?.id
         }
       });
+
       if (existingReceipt) {
-        // aqui vamos inserir a lógica para verificar se é possível op recebimento
-        throw new ConflictException(
-          `Já existe um recebimento para essa requisição de material.`
+        // --- INÍCIO DA MELHORIA DE PERFORMANCE COM MAP ---
+        // Criamos um Map a partir dos itens da requisição de material existente.
+        // A chave será o 'id' do item e o valor será o próprio objeto do item.
+        // Isso nos permite buscar itens por ID em tempo O(1) médio, em vez de O(N) para cada item
+        // que está sendo recebido.
+        const existingMaterialRequestItemsMap = new Map(
+          existingReceipt.materialRequest.items.map((item) => [
+            item.requestedGlobalMaterialId,
+            item
+          ])
         );
+        // --- FIM DA MELHORIA DE PERFORMANCE COM MAP ---
+
+        // vetor que sera utilizadno para atualização dos items da requisicao de material
+        let itemsInMaterialRequestToUpdate: {
+          id: number;
+          quantityRequested: Decimal;
+          quantityDelivered: Decimal;
+          materialRequestId: number;
+          requestedGlobalMaterialId: string;
+          requestedGlobalMaterial: { id: string };
+        }[] = [];
+        // Usamos um loop 'for...of' para permitir o lançamento de exceções e interrupção do loop.
+        for (const item of items) {
+          // Buscar o item correspondente no Map, que é mais rápido.
+          const existingItem = existingMaterialRequestItemsMap.get(
+            item.materialId
+          );
+
+          if (!existingItem) {
+            throw new BadRequestException(
+              `Item com id ${item.materialId} não existe na requisição de material original associada ao recebimento ${existingReceipt.id}.`
+            );
+          }
+
+          // Calcula a quantidade limite que ainda pode ser recebida para este item.
+          // A lógica é: (quantidade solicitada + quantidade devolvida) - quantidade já entregue.
+          // Se um item foi devolvido, ele pode ser recebido novamente, por isso adicionamos quantityReturned.
+          // Assumindo que 'plus', 'minus', 'gte' são métodos de uma biblioteca Decimal/BigNumber.
+          const quantityLimit = existingItem.quantityRequested
+            .plus(existingItem.quantityReturned) // Adiciona o que foi devolvido de volta ao limite
+            .minus(existingItem.quantityDelivered); // Subtrai o que já foi entregue
+
+          //TODO: criar lógica para verificar se ficou algo pendente ou fou um recebimento total para atualizar o status
+
+          if (quantityLimit.gte(item.quantityReceived)) {
+            // Atualiza a quantidade entregue para o item existente na memória.
+            // Este objeto 'existingReceipt' (e seus 'materialRequest.items' aninhados)
+            // precisaria ser usado em uma operação de atualização subsequente para persistir as mudanças no banco de dados.
+            existingItem.quantityDelivered =
+              existingItem.quantityDelivered.plus(item.quantityReceived);
+
+            itemsInMaterialRequestToUpdate.push({
+              id: existingItem.id,
+              quantityRequested: existingItem.quantityRequested,
+              quantityDelivered: item.quantityReceived,
+              materialRequestId: existingReceipt.materialRequestId,
+              requestedGlobalMaterialId: existingItem.requestedGlobalMaterialId,
+              requestedGlobalMaterial: {
+                id: existingItem.requestedGlobalMaterialId
+              }
+            });
+          } else {
+            throw new BadRequestException(
+              `A quantidade recebida (${item.quantityReceived}) para o item "${item.id}" (material: ${existingItem.requestedGlobalMaterialId}) é superior à quantidade limite esperada (${quantityLimit}).`
+            );
+          }
+        }
+
+        // Se o loop for concluído sem exceções, significa que todas as validações de quantidade
+        // foram bem-sucedidas. Os objetos 'existingItem' dentro de 'existingReceipt.materialRequest.items'
+        // foram atualizados na memória.
+        //
+        // Agora precisa persistir essas mudanças no banco de dados. Por exemplo:
+        //
+
+        // TODO: Incluir logica do status
+        await this.materialRequestsService.update(
+          existingReceipt.materialRequestId,
+          {
+            items: itemsInMaterialRequestToUpdate
+          },
+          prisma as any
+        );
+        //
+        // Ou, se você tem um mecanismo de atualização em lote no seu ORM que pode pegar
+        // os objetos modificados e persistir.
       }
     }
 
