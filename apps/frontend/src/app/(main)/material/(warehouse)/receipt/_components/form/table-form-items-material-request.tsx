@@ -66,7 +66,14 @@ export function TableFormItemsMaterialRequest({
     material: IMaterialReceiptItemAddForm,
     newQuantity: number
   ): number => {
+    const quantityExpected = Number(material.quantityExpected);
+    const isQuantityExpectedDefined = !isNaN(quantityExpected);
     let quantity = Math.max(0, newQuantity);
+
+    if (isQuantityExpectedDefined) {
+      quantity = Math.min(quantityExpected, quantity);
+    }
+
     return quantity;
   };
 
