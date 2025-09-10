@@ -29,6 +29,7 @@ interface TableFormItemsMaterialRequestProps {
   materials: IMaterialReceiptItemAddForm[];
   onRemove: (key: number) => void;
   onUpdateQuantity: (key: number, quantity: number) => void;
+  onUpdateRejectedQuantity: (key: number, quantity: number) => void;
   hideMaterialRequestItemId?: boolean;
   readOnly?: boolean;
 }
@@ -38,6 +39,7 @@ export function TableFormItemsMaterialRequest({
   materials,
   onRemove,
   onUpdateQuantity,
+  onUpdateRejectedQuantity,
   hideMaterialRequestItemId,
   readOnly = false
 }: TableFormItemsMaterialRequestProps) {
@@ -85,12 +87,34 @@ export function TableFormItemsMaterialRequest({
     }
   };
 
+  const handleRejectedQuantityChange = (key: number, change: number) => {
+    const material = materialsMap.get(key);
+    if (material) {
+      const newQuantity = Number(material.quantityRejected) + change;
+      onUpdateRejectedQuantity(key, getClampedQuantity(material, newQuantity));
+    }
+  };
+
   const handleManualQuantityChange = (key: number, value: string) => {
     const material = materialsMap.get(key);
     if (!material) return;
 
     if (value === '') {
       onUpdateQuantity(key, 0);
+      return;
+    }
+
+    const newQuantity = parseFloat(value.replace(',', '.'));
+    if (!isNaN(newQuantity)) {
+      onUpdateQuantity(key, getClampedQuantity(material, newQuantity));
+    }
+  };
+  const handleManualRejectedQuantityChange = (key: number, value: string) => {
+    const material = materialsMap.get(key);
+    if (!material) return;
+
+    if (value === '') {
+      onUpdateRejectedQuantity(key, 0);
       return;
     }
 
@@ -216,7 +240,9 @@ export function TableFormItemsMaterialRequest({
                           type='button'
                           variant='outline'
                           size='sm'
-                          onClick={() => handleQuantityChange(material.key, -1)}
+                          onClick={() =>
+                            handleRejectedQuantityChange(material.key, -1)
+                          }
                           disabled={Number(material.quantityRejected) <= 0}
                         >
                           <Minus className='h-3 w-3' />
@@ -226,7 +252,7 @@ export function TableFormItemsMaterialRequest({
                           step='any'
                           value={String(material.quantityRejected)}
                           onChange={(e) =>
-                            handleManualQuantityChange(
+                            handleManualRejectedQuantityChange(
                               material.key,
                               e.target.value
                             )
@@ -238,7 +264,9 @@ export function TableFormItemsMaterialRequest({
                           type='button'
                           variant='outline'
                           size='sm'
-                          onClick={() => handleQuantityChange(material.key, 1)}
+                          onClick={() =>
+                            handleRejectedQuantityChange(material.key, 1)
+                          }
                         >
                           <Plus className='h-3 w-3' />
                         </Button>

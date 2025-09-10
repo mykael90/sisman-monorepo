@@ -66,6 +66,19 @@ export const ItemsFieldArrayMaterialRequest: FC<
     }
   };
 
+  const handleUpdateRejectedQuantity = (key: number, quantity: number) => {
+    const index = field.state.value.findIndex(
+      (m: IMaterialReceiptItemAddForm) => m.key === key
+    );
+    if (index !== -1) {
+      const updatedMaterial = {
+        ...field.state.value[index],
+        quantityRejected: quantity // Atualizado para quantityRejected
+      };
+      field.replaceValue(index, updatedMaterial);
+    }
+  };
+
   return (
     <>
       <div className='flex gap-4'></div>
@@ -74,6 +87,7 @@ export const ItemsFieldArrayMaterialRequest: FC<
         materials={field.state.value}
         onRemove={handleRemoveMaterial}
         onUpdateQuantity={handleUpdateQuantity}
+        onUpdateRejectedQuantity={handleUpdateRejectedQuantity}
       />
     </>
   );
