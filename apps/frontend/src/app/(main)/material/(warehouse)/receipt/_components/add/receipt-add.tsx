@@ -46,6 +46,7 @@ export function MaterialReceiptAdd({
   const [formKey, setFormKey] = useState(() => Date.now().toString());
   const triggerReset = () => {
     setFormKey(Date.now().toString());
+    setMaterialRequestsData(null);
   };
 
   if (!warehouse?.id) {
@@ -78,6 +79,7 @@ export function MaterialReceiptAdd({
           materialRequestsData={materialRequestsData}
         />
 
+        {/* Renderizar multiplos formularios para recebimento em lote */}
         {materialRequestsData &&
           materialRequestsData.map((materialRequest) => {
             let materialState: IMaterialReceiptItemAddForm[] = [];
@@ -122,7 +124,6 @@ export function MaterialReceiptAdd({
 
             return (
               <div className='space-y-4 rounded-md border py-4'>
-                {JSON.stringify(materialRequest, null, 2)}
                 <div className='ps-4 text-lg font-bold'>
                   Requisição: {materialRequest.protocolNumber}
                 </div>

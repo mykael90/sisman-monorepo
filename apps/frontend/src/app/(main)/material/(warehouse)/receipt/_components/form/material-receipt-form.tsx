@@ -24,6 +24,7 @@ import {
 } from '@/mappers/material-operations-mappers';
 import { ItemsFieldArrayMaterialRequest } from './field-form-items-array-material-request';
 import { IMaterialReceiptItemAddFormInfo } from './table-form-items-material-request';
+import { set } from 'date-fns';
 
 export function MaterialReceiptForm({
   defaultData,
@@ -152,7 +153,7 @@ export function MaterialReceiptForm({
                     Materiais para Entrada Por Requisição
                   </CardTitle>
                 </CardHeader>
-                <CardContent className='space-y-4'>
+                <CardContent>
                   <formReceipt.Field name='items' mode='array'>
                     {(field) => (
                       <ItemsFieldArrayMaterialRequest
@@ -201,7 +202,8 @@ export function MaterialReceiptForm({
                 <Button
                   type='submit'
                   disabled={
-                    !canSubmit || isPendingReceipt || isValidating || !isTouched
+                    !canSubmit || isPendingReceipt || isValidating
+                    // || !isTouched
                   }
                 >
                   {isPendingReceipt || isValidating
