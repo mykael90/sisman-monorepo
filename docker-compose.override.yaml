@@ -9,8 +9,8 @@ services:
       dockerfile: Dockerfile.dev
     container_name: sisman-monorepo
     ports:
-      - 3000:${PORT_FRONTEND}
-      - 3080:${PORT_BACKEND}
+      - ${PORT_FRONTEND_EXPOSE}:${PORT_FRONTEND}
+      - ${PORT_BACKEND_EXPOSE}:${PORT_BACKEND}
       # - 3010:${PORT_SCRAPING}
     environment:
       ENV: dev
