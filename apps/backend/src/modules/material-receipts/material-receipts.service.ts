@@ -139,6 +139,19 @@ export class MaterialReceiptsService {
         }
       });
 
+      // lógica que verifica se a soma da quantidade recebida mais rejeitada é inferior a esperada
+      items.forEach((item) => {
+        const quantityExpected = new Decimal(item.quantityExpected);
+        const quantityReceived = new Decimal(item.quantityReceived);
+        const quantityRejected = new Decimal(item.quantityRejected);
+
+        if (quantityExpected.lt(quantityReceived.plus(quantityRejected))) {
+          throw new BadRequestException(
+            `A quantidade recebida (${item.quantityReceived}) somada a quantidade rejeitada (${quantityRejected}) para o item (material: ${item.materialId}) é superior à quantidade esperada (${quantityExpected}).`
+          );
+        }
+      });
+
       if (existingReceipt) {
         existingReceiptGlobal = true;
         // --- INÍCIO DA MELHORIA DE PERFORMANCE COM MAP ---
@@ -391,6 +404,7 @@ export class MaterialReceiptsService {
           MaintenanceRequest.materialWithdrawals.length > 0;
 
         //só restringir se não tiver reserva nem saída e também for a primeira entrada da RM
+        //Se quiser depois pode fazer uma logica para atualizar as restrições. Mas é tão pouco esse evento que não compensa esse trabalho.
         if (!isDirtyMaintenanceRequest && existingReceiptGlobal === false) {
           // lógica para restringir todos os items. criar um método para isso. criar um dto para restringir e chamar o serviço.
 
