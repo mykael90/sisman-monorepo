@@ -17,7 +17,10 @@ import { useRouter } from 'next/navigation';
 import { FilePlus } from 'lucide-react';
 import { IMaterialRequestWithRelations } from '../../../../request/material-request-types';
 import { RequestMaterialForm } from '../form/request-material-form';
-import { materialReceiptFormSchemaAdd } from '../form/material-receipt-form-validation';
+import {
+  materialReceiptFormSchemaAdd,
+  materialReceiptFormSchemaAddMaterialRequest
+} from '../form/material-receipt-form-validation';
 import { Item } from '@radix-ui/react-select';
 import { IMaterialReceiptItemAddFormInfo } from '../form/table-form-items-material-request';
 
@@ -141,7 +144,7 @@ export function MaterialReceiptAdd({
                   }}
                   formActionProp={addReceipt}
                   movementTypeCode={movementTypeCode}
-                  // formSchema={materialReceiptFormSchemaAdd}
+                  formSchema={materialReceiptFormSchemaAddMaterialRequest}
                   materialInfo={materialInfo}
                 />
               </div>

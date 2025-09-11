@@ -19,7 +19,8 @@ import { handlePrismaError } from '../../shared/utils/prisma-error-handler';
 import {
   Prisma,
   MaterialReceiptStatus,
-  MaterialStockOperationSubType
+  MaterialStockOperationSubType,
+  MaterialRequestItemType
 } from '@sisman/prisma';
 import { MaterialStockMovementsService } from '../material-stock-movements/material-stock-movements.service';
 import {
@@ -31,6 +32,15 @@ import { CreateMaterialRestrictionOrderWithRelationsDto } from '../material-rest
 import { MaterialRestrictionOrdersService } from '../material-restriction-orders/material-restriction-orders.service';
 import { MaterialRequestsService } from '../material-requests/material-requests.service';
 
+type IItemsInMaterialRequestToUpdate = {
+  // id: number;
+  requestedGlobalMaterialId: string;
+  itemRequestType: MaterialRequestItemType;
+  quantityRequested: Decimal;
+  quantityDelivered: Decimal;
+  materialRequestId: number;
+  // requestedGlobalMaterial: { id: string };
+}[];
 @Injectable()
 export class MaterialReceiptsService {
   private readonly logger = new Logger(MaterialReceiptsService.name);
@@ -98,7 +108,14 @@ export class MaterialReceiptsService {
     //Verificar se a entrada é "IN_CENTRAL", em caso positivo, verificar se ja existe um recebimento referente a essa requisicao de material, caso ja exista lance um erro de conflito
     // vamos atualizar a lógica, caso já exista verificar se ainda existem materiais pendentes de recebimentos (sejam porque foram rejeitados no pedido anterior, seja pq foram devolvidos por qualquer razao)
     // todas as informações necessárias ficam armazenadas na requisicao de material, não precisa fazer nenhuma operação de agregação para calculo
-    if (movementType?.code === MaterialStockOperationSubType.IN_CENTRAL) {
+
+    //variável para receber verdadeiro se um registro anterior de entrada da RM for encontrado
+    let existingReceiptGlobal: boolean = false;
+
+    if (
+      movementType?.code === MaterialStockOperationSubType.IN_CENTRAL &&
+      materialRequest?.id
+    ) {
       const existingReceipt = await prisma.materialReceipt.findFirst({
         include: {
           materialRequest: {
@@ -113,14 +130,24 @@ export class MaterialReceiptsService {
         }
       });
 
+      const materialRequestDB = await prisma.materialRequest.findFirst({
+        include: {
+          items: true
+        },
+        where: {
+          id: materialRequest?.id
+        }
+      });
+
       if (existingReceipt) {
+        existingReceiptGlobal = true;
         // --- INÍCIO DA MELHORIA DE PERFORMANCE COM MAP ---
         // Criamos um Map a partir dos itens da requisição de material existente.
         // A chave será o 'id' do item e o valor será o próprio objeto do item.
         // Isso nos permite buscar itens por ID em tempo O(1) médio, em vez de O(N) para cada item
         // que está sendo recebido.
         const existingMaterialRequestItemsMap = new Map(
-          existingReceipt.materialRequest.items.map((item) => [
+          materialRequestDB.items.map((item) => [
             item.requestedGlobalMaterialId,
             item
           ])
@@ -128,14 +155,8 @@ export class MaterialReceiptsService {
         // --- FIM DA MELHORIA DE PERFORMANCE COM MAP ---
 
         // vetor que sera utilizadno para atualização dos items da requisicao de material
-        let itemsInMaterialRequestToUpdate: {
-          id: number;
-          quantityRequested: Decimal;
-          quantityDelivered: Decimal;
-          materialRequestId: number;
-          requestedGlobalMaterialId: string;
-          requestedGlobalMaterial: { id: string };
-        }[] = [];
+        let itemsInMaterialRequestToUpdate: IItemsInMaterialRequestToUpdate =
+          [];
         // Usamos um loop 'for...of' para permitir o lançamento de exceções e interrupção do loop.
         for (const item of items) {
           // Buscar o item correspondente no Map, que é mais rápido.
@@ -163,18 +184,21 @@ export class MaterialReceiptsService {
             // Atualiza a quantidade entregue para o item existente na memória.
             // Este objeto 'existingReceipt' (e seus 'materialRequest.items' aninhados)
             // precisaria ser usado em uma operação de atualização subsequente para persistir as mudanças no banco de dados.
-            existingItem.quantityDelivered =
-              existingItem.quantityDelivered.plus(item.quantityReceived);
+            // existingItem.quantityDelivered =
+            //   existingItem.quantityDelivered.plus(item.quantityReceived);
 
             itemsInMaterialRequestToUpdate.push({
-              id: existingItem.id,
-              quantityRequested: existingItem.quantityRequested,
-              quantityDelivered: item.quantityReceived,
-              materialRequestId: existingReceipt.materialRequestId,
+              // id: existingItem.id,
+              itemRequestType: MaterialRequestItemType.GLOBAL_CATALOG,
               requestedGlobalMaterialId: existingItem.requestedGlobalMaterialId,
-              requestedGlobalMaterial: {
-                id: existingItem.requestedGlobalMaterialId
-              }
+              quantityRequested: existingItem.quantityRequested,
+              quantityDelivered: existingItem.quantityDelivered.plus(
+                item.quantityReceived
+              ),
+              materialRequestId: existingReceipt.materialRequestId
+              // requestedGlobalMaterial: {
+              //   id: existingItem.requestedGlobalMaterialId
+              // }
             });
           } else {
             throw new BadRequestException(
@@ -201,6 +225,38 @@ export class MaterialReceiptsService {
         //
         // Ou, se você tem um mecanismo de atualização em lote no seu ORM que pode pegar
         // os objetos modificados e persistir.
+      }
+      //caso em que não houve nenhuum recebimento dessa requisica de manutencao
+      else {
+        // apenas atualiza em materialRequest
+        const materialRequestItemsMap = new Map(
+          materialRequestDB.items.map((item) => [
+            item.requestedGlobalMaterialId,
+            item
+          ])
+        );
+
+        const itemsInMaterialRequestToUpdate: IItemsInMaterialRequestToUpdate =
+          items.map((item) => {
+            const requestItem = materialRequestItemsMap.get(item.materialId);
+
+            return {
+              itemRequestType: MaterialRequestItemType.GLOBAL_CATALOG,
+              requestedGlobalMaterialId: item.materialId,
+              quantityRequested: requestItem.quantityRequested,
+              quantityDelivered: new Decimal(item.quantityReceived),
+              quantityReturned: new Decimal(0),
+              materialRequestId: materialRequest.id
+            };
+          });
+        // TODO: Incluir logica do status
+        await this.materialRequestsService.update(
+          materialRequest.id,
+          {
+            items: itemsInMaterialRequestToUpdate
+          },
+          prisma as any
+        );
       }
     }
 
@@ -334,7 +390,8 @@ export class MaterialReceiptsService {
           MaintenanceRequest.materialPickingOrders.length > 0 ||
           MaintenanceRequest.materialWithdrawals.length > 0;
 
-        if (!isDirtyMaintenanceRequest) {
+        //só restringir se não tiver reserva nem saída e também for a primeira entrada da RM
+        if (!isDirtyMaintenanceRequest && existingReceiptGlobal === false) {
           // lógica para restringir todos os items. criar um método para isso. criar um dto para restringir e chamar o serviço.
 
           const payloadCreateMaterialRestrictionOrder: CreateMaterialRestrictionOrderWithRelationsDto =

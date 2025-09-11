@@ -21,6 +21,7 @@ import {
   RestrictionOrderStatus
 } from '@sisman/prisma';
 import { UpdateMaterialRestrictionOrderItemDto } from '../material-restriction-orders/dto/material-restriction-order.dto';
+import _ from 'lodash';
 
 // Definir uma interface para as opções de exclusão para clareza
 export interface ShowBalanceOptions {
@@ -610,30 +611,42 @@ export class MaterialRequestsService {
           // É mais claro usar o nome original do campo aqui.
           // O ID primário do item (se houver) não é necessário para a lógica do upsert
           // pois estamos usando a chave única composta para encontrar o registro.
-          const { requestedGlobalMaterialId, ...itemData } = item;
+          // const { requestedGlobalMaterialId, ...itemData } = item;
 
           // Dados para CREATE e UPDATE
           const prismaItemData = {
             // Precisamos garantir que o requestedGlobalMaterialId esteja nos dados
             // para a operação de criação (CREATE).
-            requestedGlobalMaterialId: requestedGlobalMaterialId,
-            ...itemData,
-            quantityRequested: itemData.quantityRequested,
-            ...(itemData.quantityApproved && {
-              quantityApproved: itemData.quantityApproved
-            }),
-            ...(itemData.quantityDelivered && {
-              quantityDelivered: itemData.quantityDelivered
-            }),
-            ...(itemData.quantityReturned && {
-              quantityReturned: itemData.quantityReturned
-            })
+            // requestedGlobalMaterialId: requestedGlobalMaterialId,
+            // ...itemData,
+            // quantityRequested: itemData.quantityRequested,
+            // ...(itemData.quantityApproved && {
+            //   quantityApproved: itemData.quantityApproved
+            // }),
+            // ...(itemData.quantityDelivered && {
+            //   quantityDelivered: itemData.quantityDelivered
+            // }),
+            // ...(itemData.quantityReturned && {
+            //   quantityReturned: itemData.quantityReturned
+            // })
+            ...item,
+            quantityRequested: item.quantityRequested
+            // quantityApproved: item.quantityApproved ?? null,
+            // quantityDelivered: item.quantityDelivered ?? null,
           };
 
           // Para a operação UPDATE, geralmente não se atualiza os campos da chave única.
           // Embora o Prisma seja inteligente, é uma boa prática remover a chave do payload de atualização.
-          const { requestedGlobalMaterialId: _, ...updatePayload } =
-            prismaItemData;
+          const {
+            requestedGlobalMaterialId,
+            materialRequestId,
+            ...updatePayload
+          } = prismaItemData;
+
+          const { id: _, ...createPayload } = updatePayload;
+
+          this.logger.log(`update payload: ${JSON.stringify(updatePayload)}`);
+          this.logger.log(`create payload: ${JSON.stringify(createPayload)}`);
 
           return {
             // ✅ ESTA É A PARTE CORRIGIDA
@@ -645,7 +658,7 @@ export class MaterialRequestsService {
               }
             },
             // Dados a serem usados se o item for CRIADO
-            create: prismaItemData,
+            create: createPayload,
             // Dados a serem usados se o item for ATUALIZADO
             update: updatePayload
           };
