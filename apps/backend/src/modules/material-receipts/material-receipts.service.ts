@@ -31,6 +31,7 @@ import { Decimal } from '@sisman/prisma/generated/client/runtime/library';
 import { CreateMaterialRestrictionOrderWithRelationsDto } from '../material-restriction-orders/dto/material-restriction-order.dto';
 import { MaterialRestrictionOrdersService } from '../material-restriction-orders/material-restriction-orders.service';
 import { MaterialRequestsService } from '../material-requests/material-requests.service';
+import e from 'express';
 
 type IItemsInMaterialRequestToUpdate = {
   // id: number;
@@ -187,9 +188,15 @@ export class MaterialReceiptsService {
           // A lógica é: (quantidade solicitada + quantidade devolvida) - quantidade já entregue.
           // Se um item foi devolvido, ele pode ser recebido novamente, por isso adicionamos quantityReturned.
           // Assumindo que 'plus', 'minus', 'gte' são métodos de uma biblioteca Decimal/BigNumber.
+          const quantityReturned =
+            existingItem.quantityReturned ?? new Decimal(0);
+
+          const quantityDelivered =
+            existingItem.quantityDelivered ?? new Decimal(0);
+
           const quantityLimit = existingItem.quantityRequested
-            .plus(existingItem.quantityReturned) // Adiciona o que foi devolvido de volta ao limite
-            .minus(existingItem.quantityDelivered); // Subtrai o que já foi entregue
+            .plus(quantityReturned) // Adiciona o que foi devolvido de volta ao limite
+            .minus(quantityDelivered); // Subtrai o que já foi entregue
 
           //TODO: criar lógica para verificar se ficou algo pendente ou fou um recebimento total para atualizar o status
 
@@ -200,12 +207,15 @@ export class MaterialReceiptsService {
             // existingItem.quantityDelivered =
             //   existingItem.quantityDelivered.plus(item.quantityReceived);
 
+            const quantityDeliveredOld =
+              existingItem.quantityDelivered ?? new Decimal(0);
+
             itemsInMaterialRequestToUpdate.push({
               // id: existingItem.id,
               itemRequestType: MaterialRequestItemType.GLOBAL_CATALOG,
               requestedGlobalMaterialId: existingItem.requestedGlobalMaterialId,
               quantityRequested: existingItem.quantityRequested,
-              quantityDelivered: existingItem.quantityDelivered.plus(
+              quantityDelivered: quantityDeliveredOld.plus(
                 item.quantityReceived
               ),
               materialRequestId: existingReceipt.materialRequestId

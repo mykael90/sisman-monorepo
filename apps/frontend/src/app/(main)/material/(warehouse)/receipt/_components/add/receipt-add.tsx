@@ -90,7 +90,9 @@ export function MaterialReceiptAdd({
             let materialInfo: IMaterialReceiptItemAddFormInfo[] = [];
 
             materialRequest.items.forEach((item) => {
-              const key = Date.now() + Math.random();
+              const key =
+                (item.requestedGlobalMaterialId as string) ||
+                (item.fulfilledByInstanceId as number);
 
               const quantityExpected =
                 Number(item.quantityApproved ?? 0) -
@@ -126,7 +128,10 @@ export function MaterialReceiptAdd({
             // const materialState
 
             return (
-              <div className='space-y-4 rounded-md border py-4'>
+              <div
+                className='space-y-4 rounded-md border py-4'
+                key={formKey + materialRequest.id}
+              >
                 <div className='ps-4 text-lg font-bold'>
                   Requisição: {materialRequest.protocolNumber}
                 </div>

@@ -10,7 +10,7 @@ const materialReceiptItemSchema = z.object({
   quantityReceived: z.coerce
     .number()
     .min(0.0001, 'Quantidade recebida deve ser maior que 0.'),
-  key: z.number()
+  key: z.union([z.string(), z.number()])
 });
 
 const materialReceiptFormBase = z.object({

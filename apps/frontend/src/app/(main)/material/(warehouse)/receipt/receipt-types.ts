@@ -59,7 +59,7 @@ export type IMaterialReceiptItemAddForm =
   Prisma.MaterialReceiptItemCreateManyMaterialReceiptInput &
     Partial<
       Pick<IMaterialGlobalCatalogEdit, 'name' | 'description' | 'unitOfMeasure'>
-    > & { key: number };
+    > & { key: number | string };
 
 export const fieldsLabelReceiptForm: Partial<
   Record<keyof IMaterialReceiptAddForm, string>
