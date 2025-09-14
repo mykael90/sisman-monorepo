@@ -99,6 +99,14 @@ export function MaterialReceiptAdd({
                 Number(item.quantityDelivered ?? 0) +
                 Number(item.quantityReturned ?? 0);
 
+              console.log(
+                `quantiades: esperada ${quantityExpected} - aprovada ${item.quantityApproved} - entregue ${item.quantityDelivered} - retornada ${item.quantityReturned}`
+              );
+
+              console.log(
+                `typeof quantityExpected: ${typeof quantityExpected} - quantidade esperada ${quantityExpected}`
+              );
+
               materialState.push({
                 key: key,
                 materialId: String(item.requestedGlobalMaterialId),

@@ -68,6 +68,90 @@ export class MaterialReceiptsService {
     }
   };
 
+  /**
+   * Determina o status de um recebimento de material com base nos itens.
+   * A lógica segue as regras fornecidas:
+   * - PARTIALLY_ACCEPTED se houver rejeição ou quantidade recebida menor que a esperada.
+   * - REJECTED_TOTAL se nada foi recebido e algo foi rejeitado.
+   * - FULLY_ACCEPTED se tudo foi recebido conforme esperado (ou sem expectativa) e nada foi rejeitado.
+   * @param items Os itens do recebimento.
+   * @returns O status determinado do MaterialReceiptStatus.
+   * @throws BadRequestException se não for possível determinar o status (ex: recibo vazio ou com todas as quantidades zero).
+   */
+  private _updateStatusReceipt(
+    items: CreateMaterialReceiptWithRelationsDto['items']
+  ): MaterialReceiptStatus {
+    if (!items || items.length === 0) {
+      throw new BadRequestException(
+        'Não é possível determinar o status do recebimento: Nenhum item fornecido.'
+      );
+    }
+
+    let anyItemRejected: boolean = false;
+    let anyItemReceivedLessExpected: boolean = false;
+    let anyItemReceived: boolean = false;
+    let allItemsReceivedZero: boolean = true; // Assume true até que um item seja recebido.
+
+    for (const item of items) {
+      const qExpected = new Decimal(item.quantityExpected ?? 0); // Default 0 se não fornecido
+      const qReceived = new Decimal(item.quantityReceived ?? 0);
+      const qRejected = new Decimal(item.quantityRejected ?? 0);
+
+      // Regra: se tiver alguma quantidade no recebimento em quantityRejected diferente de zero, considere PARTIALLY_ACCEPTED
+      if (qRejected.greaterThan(0)) {
+        anyItemRejected = true;
+      }
+
+      // Regra: se for informado quantityExpected e no comparativo com quantityReceived,
+      // tiver alguma quantidade de quantityReceived menor que quantityExpected,
+      // considere PARTIALLY_ACCEPTED
+      if (qExpected.greaterThan(0) && qReceived.lessThan(qExpected)) {
+        anyItemReceivedLessExpected = true;
+      }
+
+      // Rastreia se algum item foi realmente recebido
+      if (qReceived.greaterThan(0)) {
+        anyItemReceived = true;
+        allItemsReceivedZero = false; // Se pelo menos um item foi recebido > 0, então nem todos os itens receberam zero.
+      }
+    }
+
+    // 1. Condição para REJECTED_TOTAL:
+    // Todos os itens tiveram quantityReceived = 0 E pelo menos um item foi rejeitado (quantityRejected > 0).
+    // Se todos qReceived são 0 e todos qRejected também são 0, isso seria um recibo "vazio" sem ação.
+    if (allItemsReceivedZero && anyItemRejected) {
+      return MaterialReceiptStatus.REJECTED_TOTAL;
+    }
+
+    // 2. Condição para PARTIALLY_ACCEPTED:
+    // - Qualquer item foi rejeitado (anyItemRejected é true).
+    // - OU qualquer item tinha uma expectativa mas foi recebido menos (anyItemReceivedLessExpected é true).
+    if (anyItemRejected || anyItemReceivedLessExpected) {
+      return MaterialReceiptStatus.PARTIALLY_ACCEPTED;
+    }
+
+    // 3. Condição para FULLY_ACCEPTED:
+    // Se chegamos aqui, significa:
+    // - Nenhum item foi rejeitado (`anyItemRejected` é false).
+    // - Nenhum item foi recebido em quantidade menor que a esperada (`anyItemReceivedLessExpected` é false).
+    // - Pelo menos um item foi recebido (anyItemReceived é true).
+    // Isso implica que todos os itens foram recebidos integralmente (correspondendo ao esperado ou sem expectativa).
+    if (anyItemReceived) {
+      return MaterialReceiptStatus.FULLY_ACCEPTED;
+    }
+
+    // Caso de fallback: Se nenhum dos status acima foi determinado.
+    // Isso ocorreria se:
+    // - `allItemsReceivedZero` é true (todos qReceived = 0).
+    // - `anyItemRejected` é false (todos qRejected = 0).
+    // Ou seja, todos os itens têm quantityReceived = 0 E quantityRejected = 0.
+    // Este é um estado ambíguo ou um recibo sem ação, o que geralmente é inválido
+    // em um sistema de gestão de estoque. Lançamos uma exceção para evitar um status incorreto.
+    throw new BadRequestException(
+      'Não é possível determinar o status do recebimento para itens com todas as quantidades recebidas e rejeitadas iguais a zero.'
+    );
+  }
+
   async create(
     data: CreateMaterialReceiptWithRelationsDto,
     tx?: Prisma.TransactionClient
@@ -140,18 +224,28 @@ export class MaterialReceiptsService {
         }
       });
 
-      // lógica que verifica se a soma da quantidade recebida mais rejeitada é inferior a esperada
-      items.forEach((item) => {
-        const quantityExpected = new Decimal(item.quantityExpected);
-        const quantityReceived = new Decimal(item.quantityReceived);
-        const quantityRejected = new Decimal(item.quantityRejected);
+      if (!materialRequestDB) {
+        throw new NotFoundException(
+          `Requisição de material com ID ${materialRequest.id} não encontrada.`
+        );
+      }
 
-        if (quantityExpected.lt(quantityReceived.plus(quantityRejected))) {
+      // Lógica que verifica se a soma da quantidade recebida mais rejeitada é superior à esperada.
+      // Esta validação deve ser feita antes de calcular o status do recibo.
+      for (const item of items) {
+        const quantityExpected = new Decimal(item.quantityExpected ?? 0);
+        const quantityReceived = new Decimal(item.quantityReceived ?? 0);
+        const quantityRejected = new Decimal(item.quantityRejected ?? 0);
+
+        if (
+          quantityExpected.greaterThan(0) &&
+          quantityReceived.plus(quantityRejected).greaterThan(quantityExpected)
+        ) {
           throw new BadRequestException(
-            `A quantidade recebida (${item.quantityReceived}) somada a quantidade rejeitada (${quantityRejected}) para o item (material: ${item.materialId}) é superior à quantidade esperada (${quantityExpected}).`
+            `A quantidade recebida (${item.quantityReceived}) somada à quantidade rejeitada (${quantityRejected}) para o item (material: ${item.materialId}) é superior à quantidade esperada (${quantityExpected}).`
           );
         }
-      });
+      }
 
       if (existingReceipt) {
         existingReceiptGlobal = true;
@@ -200,7 +294,7 @@ export class MaterialReceiptsService {
 
           //TODO: criar lógica para verificar se ficou algo pendente ou fou um recebimento total para atualizar o status
 
-          if (quantityLimit.gte(item.quantityReceived)) {
+          if (quantityLimit.gte(new Decimal(item.quantityReceived ?? 0))) {
             // Atualiza a quantidade entregue para o item existente na memória.
             // Este objeto 'existingReceipt' (e seus 'materialRequest.items' aninhados)
             // precisaria ser usado em uma operação de atualização subsequente para persistir as mudanças no banco de dados.
@@ -216,7 +310,7 @@ export class MaterialReceiptsService {
               requestedGlobalMaterialId: existingItem.requestedGlobalMaterialId,
               quantityRequested: existingItem.quantityRequested,
               quantityDelivered: quantityDeliveredOld.plus(
-                item.quantityReceived
+                new Decimal(item.quantityReceived ?? 0)
               ),
               materialRequestId: existingReceipt.materialRequestId
               // requestedGlobalMaterial: {
@@ -237,7 +331,7 @@ export class MaterialReceiptsService {
         // Agora precisa persistir essas mudanças no banco de dados. Por exemplo:
         //
 
-        // TODO: Incluir logica do status
+        // TODO: A logica de atualizacao do status de materialrequest deve ficar dentro do servico de atualizacao de materialrequest
         await this.materialRequestsService.update(
           existingReceipt.materialRequestId,
           {
@@ -283,8 +377,15 @@ export class MaterialReceiptsService {
       }
     }
 
+    // CHAMADA DO MÉTODO PARA DETERMINAR O STATUS DO RECEBIMENTO ***
+    const receiptStatus = this._updateStatusReceipt(items);
+    this.logger.log(
+      `Status do recebimento de material determinado como: ${receiptStatus}`
+    );
+
     const receiptCreateInput: Prisma.MaterialReceiptCreateInput = {
       ...restOfData,
+      status: receiptStatus,
       movementType: movementType?.code
         ? { connect: { code: movementType.code } }
         : undefined,
@@ -322,7 +423,16 @@ export class MaterialReceiptsService {
 
       //realizar um reduce para calcular o valor da entrada baseado na quantidade e valor unitario dos items
       const valueReceipt = items.reduce<Decimal | undefined>((total, item) => {
-        if (!item.unitPrice) return undefined;
+        // Se unitPrice ou quantityReceived for nulo/indefinido, não contribui para o total.
+        // Ou você pode optar por lançar um erro se unitPrice for obrigatório.
+        if (
+          item.unitPrice === null ||
+          item.unitPrice === undefined ||
+          item.quantityReceived === null ||
+          item.quantityReceived === undefined
+        ) {
+          return total;
+        }
 
         const quantity = new Decimal(item.quantityReceived);
         const unitPrice = new Decimal(item.unitPrice);
@@ -330,7 +440,7 @@ export class MaterialReceiptsService {
         if (total === undefined) return quantity.times(unitPrice);
 
         return total.plus(quantity.times(unitPrice));
-      }, new Decimal(0));
+      }, new Decimal(0)); // Inicializa com Decimal(0)
 
       receiptCreateInput.valueReceipt = valueReceipt;
 
@@ -398,16 +508,15 @@ export class MaterialReceiptsService {
         movementType?.code === MaterialStockOperationSubType.IN_CENTRAL &&
         newReceipt.materialRequest?.maintenanceRequestId
       ) {
-        const MaintenanceRequest =
-          await this.prisma.maintenanceRequest.findFirst({
-            where: {
-              id: newReceipt.materialRequest?.maintenanceRequestId
-            },
-            include: {
-              materialPickingOrders: true,
-              materialWithdrawals: true
-            }
-          });
+        const MaintenanceRequest = await prisma.maintenanceRequest.findFirst({
+          where: {
+            id: newReceipt.materialRequest?.maintenanceRequestId
+          },
+          include: {
+            materialPickingOrders: true,
+            materialWithdrawals: true
+          }
+        });
 
         const isDirtyMaintenanceRequest =
           MaintenanceRequest.materialPickingOrders.length > 0 ||

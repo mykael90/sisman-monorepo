@@ -197,7 +197,13 @@ export function TableFormItemsMaterialRequest({
                   <td className='px-4 py-3 text-right text-sm'>
                     <div className='flex items-center justify-center gap-2'>
                       <Badge variant='outline'>
-                        {Number(info?.quantityApproved)}
+                        {Number(material.quantityExpected).toLocaleString(
+                          'pt-BR',
+                          {
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 2
+                          }
+                        )}
                       </Badge>
                       <InfoHoverCard
                         title='Cálculo da Quantidade Esperada'

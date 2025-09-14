@@ -32,6 +32,7 @@ model Warehouse {
     //Indica se o depósito é o padrão do sistema ou não
     isSystemDefault Boolean @default(false) // Indica se o depósito é o padrão do sistema ou não.
 
+    // indica se é o padrão para a instância
     defaultForInstance Boolean?
 
     // Relations
