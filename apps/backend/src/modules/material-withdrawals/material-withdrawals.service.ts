@@ -18,7 +18,8 @@ import { handlePrismaError } from '../../shared/utils/prisma-error-handler';
 import {
   Prisma,
   MaterialStockOperationSubType,
-  PrismaClient
+  PrismaClient,
+  MaterialRequestItemType
 } from '@sisman/prisma';
 import { MaterialStockMovementsService } from '../material-stock-movements/material-stock-movements.service';
 import { CreateMaterialStockMovementWithRelationsDto } from '../material-stock-movements/dto/material-stock-movements.dto';
@@ -35,6 +36,17 @@ type PrismaTransactionClient = Omit<
   PrismaService,
   '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'
 >;
+
+type IItemsInMaterialRequestToUpdate = {
+  // id: number;
+  requestedGlobalMaterialId: string;
+  itemRequestType: MaterialRequestItemType;
+  // quantityRequested: Decimal;
+  // quantityDelivered: Decimal;
+  quantityReturned: Decimal;
+  materialRequestId: number;
+  // requestedGlobalMaterial: { id: string };
+}[];
 
 @Injectable()
 export class MaterialWithdrawalsService {
@@ -186,7 +198,7 @@ export class MaterialWithdrawalsService {
             }))
           );
 
-        //se tiver retorno, precisa liberar um ou mais itens das restrições
+        //se updateItemsForRestrictionOrder tiver resposta, precisa liberar um ou mais itens das restrições
         if (updateItemsForRestrictionOrder) {
           const restrictionOrder =
             await this.prisma.materialRestrictionOrder.findUnique({
@@ -225,6 +237,83 @@ export class MaterialWithdrawalsService {
             updateRestrictionOrder,
             prisma as any
           );
+        }
+
+        // se a saída for do tipo OUT_CENTRAL, precisa registrar na requisicão de material esse retorno
+        if (movementType.code === MaterialStockOperationSubType.OUT_CENTRAL) {
+          const materialRequestDB = await prisma.materialRequest.findFirst({
+            include: {
+              items: true
+            },
+            where: {
+              id: materialRequest?.id
+            }
+          });
+
+          if (!materialRequestDB) {
+            throw new NotFoundException(
+              `Requisição de material com ID ${materialRequest.id} não encontrada.`
+            );
+          }
+
+          const existingMaterialRequestItemsMap = new Map(
+            materialRequestDB.items.map((item) => [
+              item.requestedGlobalMaterialId,
+              item
+            ])
+          );
+
+          // vetor que sera utilizadno para atualização dos items da requisicao de material
+          let itemsInMaterialRequestToUpdate: IItemsInMaterialRequestToUpdate =
+            [];
+          // Usamos um loop 'for...of' para permitir o lançamento de exceções e interrupção do loop.
+          for (const item of items) {
+            // Buscar o item correspondente no Map, que é mais rápido.
+            const existingItem = existingMaterialRequestItemsMap.get(
+              item.globalMaterialId
+            );
+
+            if (!existingItem) {
+              throw new BadRequestException(
+                `Item com id ${item.globalMaterialId} não existe na requisição de material original associada a essa retirada.`
+              );
+            }
+
+            const quantityReturnedOld = new Decimal(
+              existingItem.quantityReturned ?? 0
+            );
+
+            const quantityReturnedNow = new Decimal(item.quantityWithdrawn);
+
+            itemsInMaterialRequestToUpdate.push({
+              // id: existingItem.id,
+              itemRequestType: MaterialRequestItemType.GLOBAL_CATALOG,
+              requestedGlobalMaterialId: existingItem.requestedGlobalMaterialId,
+              // quantityRequested: existingItem.quantityRequested,
+              // quantityDelivered: existingItem.quantityDelivered,
+              quantityReturned: quantityReturnedOld.plus(quantityReturnedNow),
+              materialRequestId: materialRequestDB.id
+              // requestedGlobalMaterial: {
+              //   id: existingItem.requestedGlobalMaterialId
+              // }
+            });
+
+            // Se o loop for concluído sem exceções, significa que todas as validações de quantidade
+            // foram bem-sucedidas. Os objetos 'existingItem' dentro de 'existingReceipt.materialRequest.items'
+            // foram atualizados na memória.
+            //
+            // Agora precisa persistir essas mudanças no banco de dados. Por exemplo:
+            //
+
+            // TODO: A logica de atualizacao do status de materialrequest deve ficar dentro do servico de atualizacao de materialrequest
+            await this.materialRequestsService.update(
+              materialRequestDB.id,
+              {
+                items: itemsInMaterialRequestToUpdate
+              },
+              prisma as any
+            );
+          }
         }
       }
     }
