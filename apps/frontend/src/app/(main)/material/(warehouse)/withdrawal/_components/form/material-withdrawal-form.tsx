@@ -11,7 +11,7 @@ import {
 } from '../../withdrawal-types';
 import { ItemsFieldArray } from './field-form-items-array';
 import { ErrorServerForm } from '@/components/form-tanstack/error-server-form';
-import { IMaintenanceRequestWithRelations } from '../../../../../maintenance/request/request-types';
+import { IMaintenanceRequestBalanceWithRelations } from '../../../../../maintenance/request/request-types';
 import {
   useWithdrawalForm,
   type IWithdrawalFormApi
@@ -75,7 +75,7 @@ export function MaterialWithdrawalForm({
   >('maintenance');
 
   const [maintenanceRequestData, setMaintenanceRequestData] =
-    useState<IMaintenanceRequestWithRelations | null>(null);
+    useState<IMaintenanceRequestBalanceWithRelations | null>(null);
 
   const [materialRequestData, setMaterialRequestData] =
     useState<IMaterialRequestWithRelations | null>(null);

@@ -8,6 +8,7 @@ import { IActionResultForm } from '@/types/types-server-actions';
 import {
   IMaintenanceRequest,
   IMaintenanceRequestAdd,
+  IMaintenanceRequestBalanceWithRelations,
   IMaintenanceRequestEdit,
   IMaintenanceRequestWithRelations
 } from './request-types';
@@ -200,7 +201,7 @@ export async function showMaintenanceRequestByProtocol(
 }
 export async function showMaintenanceRequestBalanceByProtocol(
   protocolNumber: string
-): Promise<IMaintenanceRequestWithRelations | null> {
+): Promise<IMaintenanceRequestBalanceWithRelations | null> {
   logger.info(
     `(Server Action) showMaintenanceRequest: Buscando requisição com ID ${protocolNumber}.`
   );

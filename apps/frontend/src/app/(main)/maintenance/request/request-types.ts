@@ -14,6 +14,7 @@ export type IMaintenanceRequestWithRelations =
       serviceType: true;
       currentMaintenanceInstance: true;
       materialRequests: true;
+      sipacUnitRequesting: true;
     };
   }>;
 

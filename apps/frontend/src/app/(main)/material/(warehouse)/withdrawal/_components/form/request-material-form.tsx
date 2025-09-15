@@ -15,7 +15,7 @@ import { IMaterialRequestWithRelations } from '../../../../../material/request/m
 import { schemaZodRequisicoesSipac } from '@/lib/schema-zod-requisicoes-sipac';
 import { handleFetchOneAndPersistRequisicaoMaterialComRequisicaoManutencaoVinculada } from '../../../../../sipac/requisicoes-materiais/requisicoes-materiais-actions';
 import { format } from 'date-fns';
-import { IMaintenanceRequestWithRelations } from '../../../../../maintenance/request/request-types';
+import { IMaintenanceRequestBalanceWithRelations } from '../../../../../maintenance/request/request-types';
 import { showMaintenanceRequestByProtocol } from '../../../../../maintenance/request/maintenance-request-actions';
 import { fetchOneAndPersistSipacRequisicoesManutencao } from '../../../../../sipac/requisicoes-manutencoes/requisicoes-manutencoes-actions';
 
@@ -30,9 +30,9 @@ export function RequestMaterialForm({
   >;
   materialRequestData?: IMaterialRequestWithRelations | null;
   setMaintenanceRequestData: React.Dispatch<
-    React.SetStateAction<IMaintenanceRequestWithRelations | null>
+    React.SetStateAction<IMaintenanceRequestBalanceWithRelations | null>
   >;
-  maintenanceRequestData?: IMaintenanceRequestWithRelations | null;
+  maintenanceRequestData?: IMaintenanceRequestBalanceWithRelations | null;
 }) {
   const [isPendingTransition, startTransition] = useTransition();
 

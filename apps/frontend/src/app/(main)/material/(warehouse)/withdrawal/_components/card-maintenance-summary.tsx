@@ -7,7 +7,7 @@ import { Building, MapPin, RefreshCcw, User } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
 import { Button } from '../../../../../../components/ui/button';
-import { IMaintenanceRequestWithRelations } from '../../../../maintenance/request/request-types';
+import { IMaintenanceRequestBalanceWithRelations } from '../../../../maintenance/request/request-types';
 import { IWithdrawalFormApi } from '../../../../../../hooks/use-withdrawal-form';
 import { useEffect } from 'react';
 
@@ -15,7 +15,7 @@ export function CardMaintenanceSummary({
   maintenanceRequestData,
   setFieldValue
 }: {
-  maintenanceRequestData: IMaintenanceRequestWithRelations;
+  maintenanceRequestData: IMaintenanceRequestBalanceWithRelations;
   setFieldValue: IWithdrawalFormApi['setFieldValue'];
 }) {
   useEffect(() => {

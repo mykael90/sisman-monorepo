@@ -10,8 +10,8 @@ import { RefreshCcw, Search } from 'lucide-react';
 import { toast } from 'sonner';
 
 // Importa as funções originais das Server Actions
-import { showMaintenanceRequestByProtocol } from '../../../../../maintenance/request/maintenance-request-actions';
-import { IMaintenanceRequestWithRelations } from '../../../../../maintenance/request/request-types';
+import { showMaintenanceRequestBalanceByProtocol } from '../../../../../maintenance/request/maintenance-request-actions';
+import { IMaintenanceRequestBalanceWithRelations } from '../../../../../maintenance/request/request-types';
 import { schemaZodRequisicoesSipac } from '@/lib/schema-zod-requisicoes-sipac';
 import { fetchOneAndPersistSipacRequisicoesManutencao } from '../../../../../sipac/requisicoes-manutencoes/requisicoes-manutencoes-actions';
 import { format } from 'date-fns';
@@ -21,9 +21,9 @@ export function RequestMaintenanceForm({
   maintenanceRequestData
 }: {
   setMaintenanceRequestData: React.Dispatch<
-    React.SetStateAction<IMaintenanceRequestWithRelations | null>
+    React.SetStateAction<IMaintenanceRequestBalanceWithRelations | null>
   >;
-  maintenanceRequestData?: IMaintenanceRequestWithRelations | null;
+  maintenanceRequestData?: IMaintenanceRequestBalanceWithRelations | null;
 }) {
   const [isPendingTransition, startTransition] = useTransition();
 
@@ -59,9 +59,8 @@ export function RequestMaintenanceForm({
   const findOrImportMaintenanceRequest = async (
     formattedProtocolNumber: string
   ) => {
-    const maintenanceRequestResponse = await showMaintenanceRequestByProtocol(
-      formattedProtocolNumber
-    );
+    const maintenanceRequestResponse =
+      await showMaintenanceRequestBalanceByProtocol(formattedProtocolNumber);
     if (maintenanceRequestResponse) {
       // When you use await inside a startTransition function, the state updates that happen after the await are not marked as Transitions. You must wrap state updates after each await in a startTransition call:
       startTransition(() => {
