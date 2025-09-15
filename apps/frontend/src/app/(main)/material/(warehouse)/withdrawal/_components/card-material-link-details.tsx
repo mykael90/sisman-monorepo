@@ -120,7 +120,7 @@ export function CardMaterialRequestLinkDetails({
         <CardContent className='space-y-4'>
           <div className='flex flex-col gap-4 md:flex-row'>
             {/* {JSON.stringify(materialRequestBalance)} */}
-            <div className='w-full md:w-1/4'>
+            <div className={`w-full md:w-1/4`}>
               <formWithdrawal.Field
                 name='materialRequestId'
                 children={(field) => (

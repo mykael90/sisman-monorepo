@@ -148,6 +148,8 @@ export function RequestMaterialForm({
 
         setMaterialRequestBalance(materialInfoBalance);
 
+        setFieldValue('materialRequestId', materialRequestResponse.id);
+
         setFieldValue(
           'items',
           materialInfoBalance.itemsBalance?.map(
