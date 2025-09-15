@@ -18,12 +18,16 @@ import { format } from 'date-fns';
 import { IMaintenanceRequestBalanceWithRelations } from '../../../../../maintenance/request/request-types';
 import { showMaintenanceRequestBalanceByProtocol } from '../../../../../maintenance/request/maintenance-request-actions';
 import { fetchOneAndPersistSipacRequisicoesManutencao } from '../../../../../sipac/requisicoes-manutencoes/requisicoes-manutencoes-actions';
+import { IMaterialRequestBalanceWithRelationsForm } from '../card-material-link-details';
+import { IWithdrawalFormApi } from '@/hooks/use-withdrawal-form';
 
 export function RequestMaterialForm({
   setMaterialRequestData,
   materialRequestData,
   setMaintenanceRequestData,
-  maintenanceRequestData
+  maintenanceRequestData,
+  setMaterialRequestBalance,
+  setFieldValue
 }: {
   setMaterialRequestData: React.Dispatch<
     React.SetStateAction<IMaterialRequestBalanceWithRelations | null>
@@ -33,6 +37,10 @@ export function RequestMaterialForm({
     React.SetStateAction<IMaintenanceRequestBalanceWithRelations | null>
   >;
   maintenanceRequestData?: IMaintenanceRequestBalanceWithRelations | null;
+  setMaterialRequestBalance: React.Dispatch<
+    React.SetStateAction<IMaterialRequestBalanceWithRelationsForm | null>
+  >;
+  setFieldValue: IWithdrawalFormApi['setFieldValue'];
 }) {
   const [isPendingTransition, startTransition] = useTransition();
 
@@ -56,7 +64,7 @@ export function RequestMaterialForm({
         toast.success(
           `Requisição de material nº ${formattedProtocolNumber} importada do SIPAC com sucesso!`
         );
-        findOrImportMaterialRequest(formattedProtocolNumber);
+        findOrImportMaterialRequestBalance(formattedProtocolNumber);
       });
     } else {
       toast.error(
@@ -110,7 +118,7 @@ export function RequestMaterialForm({
     }
   };
 
-  const findOrImportMaterialRequest = async (
+  const findOrImportMaterialRequestBalance = async (
     formattedProtocolNumber: string
   ) => {
     const materialRequestResponse = await showMaterialRequestBalanceByProtocol(
@@ -142,7 +150,7 @@ export function RequestMaterialForm({
     startTransition(async () => {
       setMaterialRequestData(null);
       try {
-        findOrImportMaterialRequest(formattedProtocolNumber);
+        findOrImportMaterialRequestBalance(formattedProtocolNumber);
       } catch (error) {
         toast.error('Falha ao buscar requisição de material.');
       }

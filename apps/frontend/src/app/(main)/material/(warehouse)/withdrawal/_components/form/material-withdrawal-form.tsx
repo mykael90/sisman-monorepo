@@ -30,7 +30,7 @@ import {
   MaterialOperationOutKey
 } from '@/mappers/material-operations-mappers';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { IMaterialRequestWithRelations } from '../../../../request/material-request-types';
+import { IMaterialRequestBalanceWithRelations } from '../../../../request/material-request-types';
 import { Label } from '@/components/ui/label';
 import { RequestMaintenanceForm } from './request-maintenance-form';
 import { RequestMaterialForm } from './request-material-form';
@@ -81,7 +81,7 @@ export function MaterialWithdrawalForm({
     useState<IMaintenanceRequestBalanceWithRelations | null>(null);
 
   const [materialRequestData, setMaterialRequestData] =
-    useState<IMaterialRequestWithRelations | null>(null);
+    useState<IMaterialRequestBalanceWithRelations | null>(null);
 
   const [materialRequestBalance, setMaterialRequestBalance] =
     useState<IMaterialRequestBalanceWithRelationsForm | null>(null);
@@ -225,6 +225,8 @@ export function MaterialWithdrawalForm({
             maintenanceRequestData={maintenanceRequestData}
             setMaterialRequestData={setMaterialRequestData}
             materialRequestData={materialRequestData}
+            setFieldValue={formWithdrawal.setFieldValue}
+            setMaterialRequestBalance={setMaterialRequestBalance}
           />
         )}
 
@@ -236,6 +238,8 @@ export function MaterialWithdrawalForm({
           maintenanceRequestData={maintenanceRequestData}
           setMaterialRequestData={setMaterialRequestData}
           materialRequestData={materialRequestData}
+          setFieldValue={formWithdrawal.setFieldValue}
+          setMaterialRequestBalance={setMaterialRequestBalance}
         />
       )}
 
