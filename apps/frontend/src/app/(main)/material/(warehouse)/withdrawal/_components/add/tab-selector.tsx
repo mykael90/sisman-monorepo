@@ -34,10 +34,13 @@ export function TabSelector({
 
   const tabs = [
     { value: op.OUT_SERVICE_USAGE, label: 'Uso Serviço' },
+    { value: op.OUT_PROCESSING, label: 'Beneficiamento' },
+    { value: op.OUT_LOAN, label: 'Empréstimo' },
+    { value: op.OUT_TRANSFER, label: 'Transferência' },
+    { value: op.OUT_CENTRAL, label: 'Devolução Central' },
     { value: op.OUT_DISPOSAL_DAMAGE, label: 'Descarte' },
     { value: op.OUT_DONATION, label: 'Doação' },
-    { value: op.OUT_EXPIRATION, label: 'Vencimento' },
-    { value: op.OUT_TRANSFER, label: 'Transferência' }
+    { value: op.OUT_LOSS, label: 'Extravio' }
   ];
 
   const handleValueChange = (value: string) => {
@@ -56,7 +59,7 @@ export function TabSelector({
           }
           className='w-full'
         >
-          <TabsList className='grid w-full grid-cols-5'>
+          <TabsList className='grid w-full grid-cols-8'>
             {tabs.map((tab) => (
               <TabsTrigger key={tab.value} value={tab.value}>
                 {tab.label}
