@@ -429,9 +429,9 @@ export class MaintenanceRequestsService {
 
       const warehouseId =
         maintenanceRequest.materialRequests[0]?.materialReceipts[0]
-          .destinationWarehouseId ||
+          ?.destinationWarehouseId ||
         maintenanceRequest.materialRequests[0]?.materialWithdrawals[0]
-          .warehouseId;
+          ?.warehouseId;
 
       const items = await this.prisma.materialWarehouseStock.findMany({
         where: warehouseId

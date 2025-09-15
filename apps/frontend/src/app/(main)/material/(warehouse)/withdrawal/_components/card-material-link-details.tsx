@@ -43,17 +43,20 @@ export function CardMaterialRequestLinkDetails({
   setLinkMaterialRequest,
   formWithdrawal,
   materialRequestDataLinked,
-  setFieldValue
+  setFieldValue,
+  setMaterialRequestBalance,
+  materialRequestBalance
 }: {
   linkMaterialRequest: boolean;
   setLinkMaterialRequest: (value: boolean) => void;
   formWithdrawal: IWithdrawalFormApi;
   materialRequestDataLinked: any;
   setFieldValue: IWithdrawalFormApi['setFieldValue'];
+  setMaterialRequestBalance: React.Dispatch<
+    React.SetStateAction<IMaterialRequestBalanceWithRelationsForm | null>
+  >;
+  materialRequestBalance: IMaterialRequestBalanceWithRelationsForm | null;
 }) {
-  const [materialRequestBalance, setMaterialRequestBalance] =
-    useState<IMaterialRequestBalanceWithRelationsForm | null>(null);
-
   const handleAddMaterialsFromRequest = (materialRequestId: string) => {
     if (materialRequestId) {
       startTransition(async () => {

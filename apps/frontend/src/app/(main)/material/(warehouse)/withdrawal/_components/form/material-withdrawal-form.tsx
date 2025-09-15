@@ -20,7 +20,10 @@ import { materialWithdrawalFormSchemaAdd } from './material-withdrawal-form-vali
 import { ErrorClientValidationFormCard } from '@/components/form-tanstack/error-client-validation-form-card';
 import { FormSuccessDisplayCard } from '@/components/form-tanstack/form-success-display-card';
 import { CardMaintenanceSummary } from '../card-maintenance-summary';
-import { CardMaterialRequestLinkDetails } from '../card-material-link-details';
+import {
+  CardMaterialRequestLinkDetails,
+  IMaterialRequestBalanceWithRelationsForm
+} from '../card-material-link-details';
 import { WithdrawalDetailUsageService } from '../add/withdrawal-details-usage-service';
 import {
   materialOperationOutDisplayMap,
@@ -79,6 +82,9 @@ export function MaterialWithdrawalForm({
 
   const [materialRequestData, setMaterialRequestData] =
     useState<IMaterialRequestWithRelations | null>(null);
+
+  const [materialRequestBalance, setMaterialRequestBalance] =
+    useState<IMaterialRequestBalanceWithRelationsForm | null>(null);
 
   const [linkMaterialRequest, setLinkMaterialRequest] =
     useState<boolean>(false);
@@ -282,6 +288,8 @@ export function MaterialWithdrawalForm({
                     : maintenanceRequestData?.materialRequests
                 }
                 setFieldValue={formWithdrawal.setFieldValue}
+                materialRequestBalance={materialRequestBalance}
+                setMaterialRequestBalance={setMaterialRequestBalance}
               />
             )}
 
