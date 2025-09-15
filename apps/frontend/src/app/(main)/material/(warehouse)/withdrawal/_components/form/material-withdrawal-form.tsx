@@ -227,6 +227,7 @@ export function MaterialWithdrawalForm({
             materialRequestData={materialRequestData}
             setFieldValue={formWithdrawal.setFieldValue}
             setMaterialRequestBalance={setMaterialRequestBalance}
+            setLinkMaterialRequest={setLinkMaterialRequest}
           />
         )}
 
@@ -240,6 +241,7 @@ export function MaterialWithdrawalForm({
           materialRequestData={materialRequestData}
           setFieldValue={formWithdrawal.setFieldValue}
           setMaterialRequestBalance={setMaterialRequestBalance}
+          setLinkMaterialRequest={setLinkMaterialRequest}
         />
       )}
 

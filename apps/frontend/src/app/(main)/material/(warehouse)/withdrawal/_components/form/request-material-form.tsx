@@ -1,6 +1,6 @@
 'use client';
 
-import { useTransition } from 'react';
+import React, { useTransition } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { FormInputField } from '@/components/form-tanstack/form-input-fields';
@@ -18,8 +18,12 @@ import { format } from 'date-fns';
 import { IMaintenanceRequestBalanceWithRelations } from '../../../../../maintenance/request/request-types';
 import { showMaintenanceRequestBalanceByProtocol } from '../../../../../maintenance/request/maintenance-request-actions';
 import { fetchOneAndPersistSipacRequisicoesManutencao } from '../../../../../sipac/requisicoes-manutencoes/requisicoes-manutencoes-actions';
-import { IMaterialRequestBalanceWithRelationsForm } from '../card-material-link-details';
+import {
+  IItemWithdrawalMaterialRequestForm,
+  IMaterialRequestBalanceWithRelationsForm
+} from '../card-material-link-details';
 import { IWithdrawalFormApi } from '@/hooks/use-withdrawal-form';
+import { IMaterialWithdrawalItemAddForm } from '../../withdrawal-types';
 
 export function RequestMaterialForm({
   setMaterialRequestData,
@@ -27,7 +31,8 @@ export function RequestMaterialForm({
   setMaintenanceRequestData,
   maintenanceRequestData,
   setMaterialRequestBalance,
-  setFieldValue
+  setFieldValue,
+  setLinkMaterialRequest
 }: {
   setMaterialRequestData: React.Dispatch<
     React.SetStateAction<IMaterialRequestBalanceWithRelations | null>
@@ -41,6 +46,7 @@ export function RequestMaterialForm({
     React.SetStateAction<IMaterialRequestBalanceWithRelationsForm | null>
   >;
   setFieldValue: IWithdrawalFormApi['setFieldValue'];
+  setLinkMaterialRequest: React.Dispatch<boolean>;
 }) {
   const [isPendingTransition, startTransition] = useTransition();
 
@@ -128,6 +134,36 @@ export function RequestMaterialForm({
       // When you use await inside a startTransition function, the state updates that happen after the await are not marked as Transitions. You must wrap state updates after each await in a startTransition call:
       startTransition(() => {
         setMaterialRequestData(materialRequestResponse);
+
+        setLinkMaterialRequest(true);
+
+        // para o card-material-link-details
+        const materialInfoBalance = {
+          ...materialRequestResponse,
+          itemsBalance: materialRequestResponse.itemsBalance?.map((item) => ({
+            ...item,
+            key: Date.now() + Math.random() //é necessário inserir uma chave para realizar operacoes na tabela (localizar o item)
+          }))
+        };
+
+        setMaterialRequestBalance(materialInfoBalance);
+
+        setFieldValue(
+          'items',
+          materialInfoBalance.itemsBalance?.map(
+            (
+              item: IItemWithdrawalMaterialRequestForm
+            ): IMaterialWithdrawalItemAddForm => ({
+              key: item.key,
+              globalMaterialId: item.globalMaterialId,
+              materialInstanceId: undefined, // Assuming global material for now
+              quantityWithdrawn: Number(item.quantityBalancePotential),
+              materialRequestItemId: item.materialRequestItemId,
+              unitPrice: item.unitPrice
+            })
+          )
+        );
+
         toast.success('Requisição de material encontrada.');
 
         if (materialRequestResponse.maintenanceRequest?.protocolNumber) {
