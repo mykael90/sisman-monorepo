@@ -36,7 +36,6 @@ export type IMaterialRequestRelatedData = {
 
 export interface IMaterialRequestBalanceWithRelations
   extends IMaterialRequestWithRelations {
-  items?: IMaterialGlobalCatalog[];
   itemsBalance: IItemMaterialRequestBalance[];
 }
 

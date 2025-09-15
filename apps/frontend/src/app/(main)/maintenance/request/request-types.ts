@@ -51,3 +51,20 @@ export type IMaintenanceRequestRelatedData = {
   listUsers: any[];
   listMaintenanceInstances: any[];
 };
+
+export interface IMaintenanceRequestBalanceWithRelations
+  extends IMaintenanceRequestWithRelations {
+  itemsBalance: IItemMaintenanceRequestBalance[];
+}
+
+export interface IItemMaintenanceRequestBalance {
+  globalMaterialId: string;
+  name: string;
+  description: string;
+  unitOfMeasure: string;
+  quantityReceivedSum: string;
+  quantityWithdrawnSum: string;
+  effectiveBalance: string;
+  potentialBalance: string;
+  unitPrice: string;
+}

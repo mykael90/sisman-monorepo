@@ -198,6 +198,46 @@ export async function showMaintenanceRequestByProtocol(
     throw error;
   }
 }
+export async function showMaintenanceRequestBalanceByProtocol(
+  protocolNumber: string
+): Promise<IMaintenanceRequestWithRelations | null> {
+  logger.info(
+    `(Server Action) showMaintenanceRequest: Buscando requisição com ID ${protocolNumber}.`
+  );
+  try {
+    const accessTokenSisman = await getSismanAccessToken();
+    const data = await fetchApiSisman(
+      `${API_RELATIVE_PATH}/balance/protocol`,
+      accessTokenSisman,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+        // cache: 'force-cache'
+      },
+      { value: protocolNumber }
+    );
+    logger.info(
+      `(Server Action) showMaintenanceRequest: Requisição com ID ${protocolNumber} retornada.`
+    );
+    return data;
+  } catch (error: any) {
+    logger.error(
+      `(Server Action) showMaintenanceRequest: Erro ao buscar requisição com ID ${protocolNumber}.`,
+      error
+    );
+
+    if (error instanceof SismanApiError) {
+      if (error.statusCode === 404) {
+        return null;
+      } else {
+        throw error;
+      }
+    }
+    throw error;
+  }
+}
 
 export async function getRefreshedMaintenanceRequests() {
   logger.info(
