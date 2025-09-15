@@ -44,12 +44,12 @@ export function WarehouseStockListPage() {
     pageSize: 10
   });
 
-  const [sorting, setSorting] = useState<SortingState>([
-    {
-      id: 'id',
-      desc: false
-    }
-  ]);
+  // const [sorting, setSorting] = useState<SortingState>([
+  //   {
+  //     id: 'id',
+  //     desc: false
+  //   }
+  // ]);
 
   const {
     data: warehouseStocks,
@@ -113,8 +113,8 @@ export function WarehouseStockListPage() {
           columnFilters={columnFilters}
           pagination={pagination}
           setPagination={setPagination}
-          setSorting={setSorting}
-          sorting={sorting}
+          // setSorting={setSorting}
+          // sorting={sorting}
         />
       ) : (
         <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3'>

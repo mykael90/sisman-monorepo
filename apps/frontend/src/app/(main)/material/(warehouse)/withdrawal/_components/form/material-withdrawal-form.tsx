@@ -201,7 +201,7 @@ export function MaterialWithdrawalForm({
         </RadioGroup>
       )}
 
-      {/* Formulário para fazer consulta de requisição de manutenção */}
+      {/* Formulário para fazer consulta de requisição de manutenção para saída de uso */}
       {movementTypeCode === materialOperationOutDisplayMap.OUT_SERVICE_USAGE &&
         requestSearchType === 'maintenance' && (
           <RequestMaintenanceForm
@@ -210,7 +210,7 @@ export function MaterialWithdrawalForm({
             maintenanceRequestData={maintenanceRequestData}
           />
         )}
-      {/* Formulário para fazer consulta de requisição de material */}
+      {/* Formulário para fazer consulta de requisição de material para saída de uso */}
       {movementTypeCode === materialOperationOutDisplayMap.OUT_SERVICE_USAGE &&
         requestSearchType === 'material' && (
           <RequestMaterialForm
@@ -221,6 +221,17 @@ export function MaterialWithdrawalForm({
             materialRequestData={materialRequestData}
           />
         )}
+
+      {/* Formulário para fazer consulta de requisição de material para devolução a central */}
+      {movementTypeCode === materialOperationOutDisplayMap.OUT_CENTRAL && (
+        <RequestMaterialForm
+          // key={formKey}
+          setMaintenanceRequestData={setMaintenanceRequestData}
+          maintenanceRequestData={maintenanceRequestData}
+          setMaterialRequestData={setMaterialRequestData}
+          materialRequestData={materialRequestData}
+        />
+      )}
 
       <form
         id='form-withdrawal'
@@ -256,8 +267,9 @@ export function MaterialWithdrawalForm({
           )}
 
           {/* Material Requisition Link */}
-          {movementTypeCode ===
-            materialOperationOutDisplayMap.OUT_SERVICE_USAGE &&
+          {(movementTypeCode ===
+            materialOperationOutDisplayMap.OUT_SERVICE_USAGE ||
+            movementTypeCode === materialOperationOutDisplayMap.OUT_CENTRAL) &&
             (materialRequestData ||
               maintenanceRequestData?.materialRequests) && (
               <CardMaterialRequestLinkDetails
@@ -272,22 +284,63 @@ export function MaterialWithdrawalForm({
                 setFieldValue={formWithdrawal.setFieldValue}
               />
             )}
-          {/* Items for Withdrawal */}
-          {!linkMaterialRequest && !materialRequestData && (
-            <Card>
-              <CardHeader>
-                <CardTitle className='text-lg'>
-                  Materiais para Retirada
-                </CardTitle>
-              </CardHeader>
-              <CardContent className='space-y-4'>
-                <formWithdrawal.Field name='items' mode='array'>
-                  {(field) => <ItemsFieldArray field={field} />}
-                </formWithdrawal.Field>
-              </CardContent>
-            </Card>
-          )}
+
+          {/* Global Free Items for Withdrawal */}
+          <formWithdrawal.Subscribe
+            selector={(state) => [
+              state.values.movementTypeCode,
+              state.values.materialRequestId,
+              state.values.maintenanceRequestId
+            ]}
+            children={([
+              movementTypeCode,
+              materialRequestId,
+              maintenanceRequestId
+            ]) => {
+              if (
+                movementTypeCode === materialOperationOutDisplayMap.OUT_CENTRAL
+              ) {
+                return null;
+              } else if (
+                movementTypeCode ===
+                  materialOperationOutDisplayMap.OUT_SERVICE_USAGE &&
+                requestSearchType === 'material'
+              ) {
+                return null;
+              } else if (
+                movementTypeCode ===
+                  materialOperationOutDisplayMap.OUT_SERVICE_USAGE &&
+                requestSearchType === 'maintenance' &&
+                !maintenanceRequestId
+              ) {
+                return null;
+              } else if (
+                movementTypeCode ===
+                  materialOperationOutDisplayMap.OUT_SERVICE_USAGE &&
+                requestSearchType === 'maintenance' &&
+                linkMaterialRequest
+              ) {
+                return null;
+              } else {
+                return (
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className='text-lg'>
+                        Materiais para Retirada
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className='space-y-4'>
+                      <formWithdrawal.Field name='items' mode='array'>
+                        {(field) => <ItemsFieldArray field={field} />}
+                      </formWithdrawal.Field>
+                    </CardContent>
+                  </Card>
+                );
+              }
+            }}
+          />
         </div>
+
         {/* Botões reset, cancel e submit */}
         <div className='mt-8 flex flex-wrap justify-end gap-3'>
           <div className='flex gap-3'>

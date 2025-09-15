@@ -43,20 +43,29 @@ export const createActions = (
 export const columns = (
   configuredActions: ActionHandlers<IWarehouseStockWithRelations>
 ): ColumnDef<IWarehouseStockWithRelations, any>[] => [
-  columnHelper.accessor('id', {
-    header: 'ID',
-    size: 50,
-    cell: (props) => props.getValue()
-  }),
+  // columnHelper.accessor('id', {
+  //   header: 'ID',
+  //   size: 50,
+  //   cell: (props) => props.getValue()
+  // }),
 
   columnHelper.accessor('materialId', {
-    header: 'ID Global',
+    header: 'ID Material',
     cell: (props) => props.getValue()
   }),
   columnHelper.accessor((row) => row.material?.name, {
     id: 'materialName',
     header: 'Material',
-    cell: (props) => props.getValue() || 'N/A'
+    cell: (props) => (
+      <div className='flex items-center justify-start gap-2'>
+        {props.getValue() || 'N/A'}{' '}
+        <InfoHoverCard
+          title='Descrição do Material'
+          content={props.row.original.material?.description}
+          className='w-200'
+        />
+      </div>
+    )
   }),
   columnHelper.accessor((row) => row.lastStockCountDate, {
     id: 'lastStockCountDate',

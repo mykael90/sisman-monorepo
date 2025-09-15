@@ -37,8 +37,8 @@ export function useWithdrawalForm({
     ),
     validators: formSchema
       ? {
-          onChange: formSchema
-          // onSubmit: formSchema
+          // onChange: formSchema,
+          onSubmit: formSchema
         }
       : undefined,
     onSubmit: async ({ value }) => {

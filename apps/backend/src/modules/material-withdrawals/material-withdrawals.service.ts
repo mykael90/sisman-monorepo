@@ -41,8 +41,8 @@ type IItemsInMaterialRequestToUpdate = {
   // id: number;
   requestedGlobalMaterialId: string;
   itemRequestType: MaterialRequestItemType;
-  // quantityRequested: Decimal;
-  // quantityDelivered: Decimal;
+  quantityRequested: Decimal;
+  quantityDelivered: Decimal;
   quantityReturned: Decimal;
   materialRequestId: number;
   // requestedGlobalMaterial: { id: string };
@@ -289,8 +289,8 @@ export class MaterialWithdrawalsService {
               // id: existingItem.id,
               itemRequestType: MaterialRequestItemType.GLOBAL_CATALOG,
               requestedGlobalMaterialId: existingItem.requestedGlobalMaterialId,
-              // quantityRequested: existingItem.quantityRequested,
-              // quantityDelivered: existingItem.quantityDelivered,
+              quantityRequested: existingItem.quantityRequested,
+              quantityDelivered: existingItem.quantityDelivered,
               quantityReturned: quantityReturnedOld.plus(quantityReturnedNow),
               materialRequestId: materialRequestDB.id
               // requestedGlobalMaterial: {

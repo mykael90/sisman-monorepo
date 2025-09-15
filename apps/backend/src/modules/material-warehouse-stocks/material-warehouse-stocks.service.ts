@@ -60,6 +60,11 @@ export class MaterialWarehouseStocksService {
           include: {
             material: true,
             warehouse: true
+          },
+          orderBy: {
+            material: {
+              name: 'asc'
+            }
           }
         });
       return materialWarehouseStocks;

@@ -32,7 +32,8 @@ export function useReceiptForm({
     ),
     validators: formSchema
       ? {
-          onChange: formSchema
+          // onChange: formSchema,
+          onSubmit: formSchema
         }
       : undefined,
     onSubmit: async ({ value }) => {
