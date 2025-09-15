@@ -16,7 +16,7 @@ import { schemaZodRequisicoesSipac } from '@/lib/schema-zod-requisicoes-sipac';
 import { handleFetchOneAndPersistRequisicaoMaterialComRequisicaoManutencaoVinculada } from '../../../../../sipac/requisicoes-materiais/requisicoes-materiais-actions';
 import { format } from 'date-fns';
 import { IMaintenanceRequestBalanceWithRelations } from '../../../../../maintenance/request/request-types';
-import { showMaintenanceRequestByProtocol } from '../../../../../maintenance/request/maintenance-request-actions';
+import { showMaintenanceRequestBalanceByProtocol } from '../../../../../maintenance/request/maintenance-request-actions';
 import { fetchOneAndPersistSipacRequisicoesManutencao } from '../../../../../sipac/requisicoes-manutencoes/requisicoes-manutencoes-actions';
 
 export function RequestMaterialForm({
@@ -95,9 +95,8 @@ export function RequestMaterialForm({
   };
 
   const findMaintenanceRequest = async (formattedProtocolNumber: string) => {
-    const maintenanceRequestResponse = await showMaintenanceRequestByProtocol(
-      formattedProtocolNumber
-    );
+    const maintenanceRequestResponse =
+      await showMaintenanceRequestBalanceByProtocol(formattedProtocolNumber);
     if (maintenanceRequestResponse) {
       // When you use await inside a startTransition function, the state updates that happen after the await are not marked as Transitions. You must wrap state updates after each await in a startTransition call:
       startTransition(() => {
