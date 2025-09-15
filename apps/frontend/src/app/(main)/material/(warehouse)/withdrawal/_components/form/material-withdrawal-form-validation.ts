@@ -49,7 +49,10 @@ const materialWithdrawalFormSchemaAdd = materialWithdrawalFormBase
     (data) =>
       data.movementTypeCode !==
         materialOperationOutDisplayMap.OUT_SERVICE_USAGE ||
-      !!data.maintenanceRequestId,
+      !!data.maintenanceRequestId ||
+      !!data.materialRequestId,
+    //só vai ser necessário associar a requisição de manutenção se não tiver uma requisição de material definida.
+    // pode ter requisicao de material sem ta associada a requisicao de manutencao (como por exemplo butijoes de agua)
     {
       message: 'É necessário associar uma requisição de manutenção',
       path: ['maintenanceRequestId']

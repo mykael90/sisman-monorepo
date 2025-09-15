@@ -258,7 +258,8 @@ export function MaterialWithdrawalForm({
           {/* Material Requisition Link */}
           {movementTypeCode ===
             materialOperationOutDisplayMap.OUT_SERVICE_USAGE &&
-            maintenanceRequestData?.materialRequests && (
+            (materialRequestData ||
+              maintenanceRequestData?.materialRequests) && (
               <CardMaterialRequestLinkDetails
                 linkMaterialRequest={linkMaterialRequest}
                 setLinkMaterialRequest={setLinkMaterialRequest}
@@ -272,7 +273,7 @@ export function MaterialWithdrawalForm({
               />
             )}
           {/* Items for Withdrawal */}
-          {!linkMaterialRequest && (
+          {!linkMaterialRequest && !materialRequestData && (
             <Card>
               <CardHeader>
                 <CardTitle className='text-lg'>
