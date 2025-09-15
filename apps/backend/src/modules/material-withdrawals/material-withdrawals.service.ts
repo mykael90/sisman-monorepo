@@ -529,7 +529,19 @@ export class MaterialWithdrawalsService {
     try {
       return this.prisma.materialWithdrawal.findMany({
         where: { warehouseId: warehouseId },
-        include: this.includeRelations,
+        include: {
+          collectedByUser: { select: { id: true, name: true, login: true } },
+          collectedByWorker: { select: { id: true, name: true } },
+          items: { include: { globalMaterial: true } },
+          materialRequest: { select: { id: true, protocolNumber: true } },
+          materialPickingOrder: true,
+          movementType: true,
+          processedByUser: true,
+          warehouse: true,
+          maintenanceRequest: {
+            include: { building: true, facilityComplex: true }
+          }
+        },
         orderBy: {
           withdrawalDate: 'desc'
         }

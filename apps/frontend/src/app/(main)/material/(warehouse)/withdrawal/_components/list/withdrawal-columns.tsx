@@ -86,11 +86,11 @@ export const columns = (
       </Button>
     )
   }),
-  columnHelper.accessor('id', {
-    header: 'ID',
-    size: 30,
-    cell: (props) => props.getValue()
-  }),
+  // columnHelper.accessor('id', {
+  //   header: 'ID',
+  //   size: 30,
+  //   cell: (props) => props.getValue()
+  // }),
   columnHelper.accessor((row) => row.movementType?.code, {
     id: 'movementTypeCode',
     header: 'Tipo de Saída',
@@ -104,18 +104,58 @@ export const columns = (
       </>
     )
   }),
-  columnHelper.accessor((row) => row.warehouse?.name, {
-    id: 'warehouseName',
-    header: 'Armazém',
+  columnHelper.accessor((row) => row.maintenanceRequest?.protocolNumber, {
+    id: 'protocolNumberRMan',
+    header: 'RMan',
     cell: (props) => props.getValue()
   }),
-  columnHelper.accessor((row) => row.processedByUser?.name, {
-    id: 'processedByUserName',
-    header: 'Processado Por',
+  columnHelper.accessor((row) => row.materialRequest?.protocolNumber, {
+    id: 'protocolNumberRM',
+    header: 'RM',
     cell: (props) => props.getValue()
   }),
+  columnHelper.accessor((row) => row.withdrawalDate, {
+    id: 'withdrawalDate',
+    header: () => <div className='text-center'> Recebimento</div>,
+    cell: (props) => {
+      const date = new Date(props.getValue());
+      return (
+        <div className='text-center'>
+          {date.toLocaleDateString()}
+          <br />
+          {date.toLocaleTimeString()}
+        </div>
+      );
+    }
+  }),
+  // columnHelper.accessor((row) => row.warehouse?.name, {
+  //   id: 'warehouseName',
+  //   header: 'Armazém',
+  //   cell: (props) => props.getValue()
+  // }),
+  columnHelper.accessor((row) => row.processedByUser?.login, {
+    id: 'processedByUserLogin',
+    header: 'Expedição',
+    cell: (props) => props.getValue()
+  }),
+  // columnHelper.accessor((row) => row.materialRequest?.sipacUserLoginRequest, {
+  //   id: 'sipacUserLoginRequest',
+  //   header: 'Usuário RM',
+  //   cell: (props) => props.getValue()
+  // }),
+  // columnHelper.accessor((row) => row.materialRequest?.requestDate, {
+  //   id: 'requestDate',
+  //   header: 'Data RM',
+  //   cell: (props) => {
+  //     const date = new Date(props.getValue());
+  //     return <div className='text-center'>{date.toLocaleDateString()}</div>;
+  //   }
+  // }),
   columnHelper.accessor(
-    (row) => row.collectedByUser?.name || row.collectedByWorker?.name,
+    (row) =>
+      row.collectedByUser?.name ||
+      row.collectedByWorker?.name ||
+      row.collectedByOther,
     {
       id: 'collectedBy',
       header: 'Coletado Por',
@@ -125,17 +165,49 @@ export const columns = (
           return 'Não informado';
         }
         const isUser = !!props.row.original.collectedByUser;
+        const isWorker = !!props.row.original.collectedByWorker;
+        const isOther = !!props.row.original.collectedByOther;
+
         return (
-          <div className='flex items-center gap-2'>
+          <div className='flex-col items-center space-y-1'>
+            <div>{name}</div>
             <Badge variant={'outline'}>
-              {isUser ? 'Usuário' : 'Profissional'}
+              {isUser ? 'Usuário' : isWorker ? 'Profisisonal' : 'Outro'}
             </Badge>
-            <span>{name}</span>
           </div>
         );
       }
     }
   ),
+  columnHelper.accessor(
+    (row) => row.maintenanceRequest?.facilityComplex?.name,
+    {
+      id: 'facilityComplex',
+      header: 'Complexo',
+      cell: (props) => props.getValue()
+    }
+  ),
+  columnHelper.accessor((row) => row.maintenanceRequest?.building?.name, {
+    id: 'building',
+    header: 'Ativo',
+    enableResizing: false,
+    size: 200,
+    cell: (props) => props.getValue()
+  }),
+  columnHelper.accessor((row) => Number(row.valueWithdrawal), {
+    id: 'valueWithdrawal',
+    header: () => <div className='text-center'>Valor</div>,
+    size: 60,
+    enableResizing: false,
+    cell: (props) => (
+      <div className='text-right'>
+        {props.getValue().toLocaleString('pt-BR', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        })}
+      </div>
+    )
+  }),
   // columnHelper.accessor((row) => row.materialRequest?.id, {
   //   id: 'materialRequestId',
   //   header: 'Requisição de Material',

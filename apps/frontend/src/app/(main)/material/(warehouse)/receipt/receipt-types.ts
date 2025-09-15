@@ -7,15 +7,25 @@ export type IMaterialReceipt = MaterialReceipt;
 
 export type IMaterialReceiptWithRelations = Prisma.MaterialReceiptGetPayload<{
   include: {
+    movementType: { select: { code: true; id: true; name: true } };
+    destinationWarehouse: true;
+    processedByUser: true;
     items: {
       include: {
         material: true;
       };
     };
-    destinationWarehouse: true;
-    materialRequest: true;
-    movementType: true;
-    processedByUser: true; // Adicionado para incluir o usuário que processou
+    materialRequest: {
+      include: {
+        items: true;
+        maintenanceRequest: {
+          select: { id: true; protocolNumber: true };
+        };
+        sipacUnitCost: {
+          select: { codigoUnidade: true; sigla: true; nomeUnidade: true };
+        };
+      };
+    };
   };
 }>;
 

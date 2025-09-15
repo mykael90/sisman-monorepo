@@ -27,6 +27,7 @@ import {
 } from '../../../../../../../mappers/material-operations-mappers-translate';
 import { Badge } from '@/components/ui/badge';
 import { useMemo } from 'react';
+import { Prosto_One } from 'next/font/google';
 
 const columnHelper = createColumnHelper<IMaterialReceiptWithRelations>();
 
@@ -87,11 +88,24 @@ export const columns = (
       </Button>
     )
   }),
-  columnHelper.accessor('id', {
-    header: 'ID',
-    size: 30,
+  columnHelper.accessor(
+    (row) => row.materialRequest?.maintenanceRequest?.protocolNumber,
+    {
+      id: 'protocolNumberRMan',
+      header: 'RMan',
+      cell: (props) => props.getValue()
+    }
+  ),
+  columnHelper.accessor((row) => row.materialRequest?.protocolNumber, {
+    id: 'protocolNumberRM',
+    header: 'RM',
     cell: (props) => props.getValue()
   }),
+  // columnHelper.accessor('id', {
+  //   header: 'ID',
+  //   size: 30,
+  //   cell: (props) => props.getValue()
+  // }),
   columnHelper.accessor((row) => row.movementType?.code, {
     id: 'movementTypeCode',
     header: 'Tipo de Entrada',
@@ -105,26 +119,65 @@ export const columns = (
       </>
     )
   }),
-  columnHelper.accessor((row) => row.destinationWarehouse?.name, {
-    id: 'destinationWarehouseName',
-    header: 'Depósito de Destino',
+  columnHelper.accessor((row) => row.processedByUser?.login, {
+    id: 'processedByUserLogin',
+    header: 'Processamento',
     cell: (props) => props.getValue()
   }),
-  columnHelper.accessor((row) => row.processedByUser?.name, {
-    id: 'processedByUserName',
-    header: 'Processado Por',
+  columnHelper.accessor((row) => row.materialRequest?.sipacUserLoginRequest, {
+    id: 'sipacUserLoginRequest',
+    header: 'Usuário RM',
     cell: (props) => props.getValue()
   }),
-  columnHelper.accessor((row) => row.sourceName, {
-    id: 'sourceName',
-    header: 'Fornecedor (ou doador)',
-    cell: (props) => props.getValue()
+  columnHelper.accessor((row) => row.materialRequest?.requestDate, {
+    id: 'requestDate',
+    header: () => <div className='text-center'>Data RM</div>,
+    cell: (props) => {
+      const date = new Date(props.getValue());
+      return <div className='text-center'>{date.toLocaleDateString()}</div>;
+    }
   }),
-  columnHelper.accessor((row) => row.externalReference, {
-    id: 'externalReference',
-    header: 'Documento de Entrada',
-    cell: (props) => props.getValue()
+  // columnHelper.accessor((row) => row.destinationWarehouse?.name, {
+  //   id: 'destinationWarehouseName',
+  //   header: 'Depósito de Destino',
+  //   cell: (props) => props.getValue()
+  // }),
+  // columnHelper.accessor((row) => row.sourceName, {
+  //   id: 'sourceName',
+  //   header: 'Fornecedor (ou doador)',
+  //   cell: (props) => props.getValue()
+  // }),
+  // columnHelper.accessor((row) => row.externalReference, {
+  //   id: 'externalReference',
+  //   header: 'Documento de Entrada',
+  //   cell: (props) => props.getValue()
+  // }),
+
+  columnHelper.accessor(
+    (row) =>
+      `${row.materialRequest?.sipacUnitCost?.codigoUnidade.replace(/(\d{2})(?=\d)/g, '$1.')} ${row.materialRequest?.sipacUnitCost?.sigla}`,
+    {
+      id: 'unitCostSipac',
+      header: 'Unidade Custo',
+      cell: (props) => props.getValue()
+    }
+  ),
+
+  columnHelper.accessor((row) => Number(row.valueReceipt), {
+    id: 'valueReceipt',
+    header: () => <div className='text-center'>Valor</div>,
+    size: 60,
+    enableResizing: false,
+    cell: (props) => (
+      <div className='text-right'>
+        {props.getValue().toLocaleString('pt-BR', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        })}
+      </div>
+    )
   }),
+
   columnHelper.display({
     id: 'actions',
     header: 'Ações',

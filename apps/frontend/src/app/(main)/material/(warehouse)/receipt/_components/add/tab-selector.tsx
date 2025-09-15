@@ -12,6 +12,7 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select';
+import { InfoHoverCard } from '../../../../../../../components/info-hover-card';
 
 interface TabSelectorProps {
   movementTypeCode: MaterialOperationInKey;
@@ -28,11 +29,11 @@ export function TabSelector({
 }: TabSelectorProps) {
   const tabs = [
     { value: op.IN_CENTRAL, label: 'Entrada Central' },
+    { value: op.IN_SERVICE_SURPLUS, label: 'Sobra de Serviço' },
     { value: op.IN_PURCHASE, label: 'Compra' },
     { value: op.IN_DONATION, label: 'Doação' },
     { value: op.IN_TRANSFER, label: 'Transferência' },
-    { value: op.IN_SERVICE_SURPLUS, label: 'Sobra de Serviço' },
-    { value: op.IN_RETURN_FROM_ISSUE, label: 'Devolução' },
+    { value: op.IN_RETURN_FROM_ISSUE, label: 'Retorno de Saída' },
     { value: op.INITIAL_STOCK_LOAD, label: 'Carga Inicial' },
     { value: op.IN_LOAN_RETURN, label: 'Devolução Empréstimo' }
   ];
@@ -57,7 +58,7 @@ export function TabSelector({
             {' '}
             {/* Ajustado para 8 colunas */}
             {tabs.map((tab) => (
-              <TabsTrigger key={tab.value} value={tab.value}>
+              <TabsTrigger key={tab.value} value={tab.value} about='teste'>
                 {tab.label}
               </TabsTrigger>
             ))}

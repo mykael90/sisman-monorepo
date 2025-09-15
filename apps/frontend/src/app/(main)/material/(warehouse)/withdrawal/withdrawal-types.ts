@@ -20,7 +20,9 @@ export type IMaterialWithdrawalWithRelations =
           globalMaterial: true;
         };
       };
-      maintenanceRequest: true;
+      maintenanceRequest: {
+        include: { building: true; facilityComplex: true };
+      };
       collectedByUser: true;
       collectedByWorker: true;
       materialPickingOrder: true;

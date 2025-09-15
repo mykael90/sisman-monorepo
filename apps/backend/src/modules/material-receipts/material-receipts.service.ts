@@ -655,7 +655,27 @@ export class MaterialReceiptsService {
     try {
       return this.prisma.materialReceipt.findMany({
         where: { destinationWarehouseId: warehouseId },
-        include: this.includeRelations,
+        include: {
+          movementType: { select: { code: true, id: true, name: true } },
+          destinationWarehouse: true,
+          processedByUser: true,
+          items: {
+            include: {
+              material: true
+            }
+          },
+          materialRequest: {
+            include: {
+              items: true,
+              maintenanceRequest: {
+                select: { id: true, protocolNumber: true }
+              },
+              sipacUnitCost: {
+                select: { codigoUnidade: true, sigla: true, nomeUnidade: true }
+              }
+            }
+          }
+        },
         orderBy: {
           receiptDate: 'desc'
         }
