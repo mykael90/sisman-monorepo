@@ -63,6 +63,7 @@ export interface IItemMaintenanceRequestBalance {
   name: string;
   description: string;
   unitOfMeasure: string;
+  quantityRequestedSum: string;
   quantityReceivedSum: string;
   quantityWithdrawnSum: string;
   effectiveBalance: string;

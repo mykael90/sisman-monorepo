@@ -502,10 +502,11 @@ export class MaintenanceRequestsService {
           name: item.material.name,
           description: item.material.description,
           unitOfMeasure: item.material.unitOfMeasure,
-          quantityReceivedSum: quantityReceivedSum.toNumber(),
-          quantityWithdrawnSum: quantityWithdrawnSum.toNumber(),
-          effectiveBalance: effectiveBalance.toNumber(),
-          potentialBalance: potentialBalance.toNumber(),
+          quantityRequestedSum: quantityRequestedSum,
+          quantityReceivedSum: quantityReceivedSum,
+          quantityWithdrawnSum: quantityWithdrawnSum,
+          effectiveBalance: effectiveBalance,
+          potentialBalance: potentialBalance,
           unitPrice: item.updatedCost
         };
       });

@@ -10,6 +10,7 @@ import { Button } from '../../../../../../components/ui/button';
 import { IMaintenanceRequestBalanceWithRelations } from '../../../../maintenance/request/request-types';
 import { IWithdrawalFormApi } from '../../../../../../hooks/use-withdrawal-form';
 import { useEffect } from 'react';
+import { MaterialBalanceSummaryTable } from './material-balance-summary-table';
 
 export function CardMaintenanceSummary({
   maintenanceRequestData,
@@ -158,15 +159,12 @@ export function CardMaintenanceSummary({
         </div>
 
         <h3 className='text-md font-semibold'>
-          Resumo da Movimentação de Materiais
+          Resumo das Movimentações de Materiais Relativas à Requisição de
+          Manutenção
         </h3>
-        {/* A tabela de materiais permanece, aguardando os dados corretos */}
-        {/* <MaterialTable
-        materials={maintenanceRequestMaterialsSummary}
-        onRemove={() => {}} 
-        onUpdateQuantity={() => {}}
-        readOnly={true}
-      /> */}
+        <MaterialBalanceSummaryTable
+          itemsBalance={maintenanceRequestData.itemsBalance}
+        />
       </CardContent>
     </Card>
   );
