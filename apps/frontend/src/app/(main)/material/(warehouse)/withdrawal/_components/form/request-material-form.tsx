@@ -10,8 +10,8 @@ import { RefreshCcw, Search } from 'lucide-react';
 import { toast } from 'sonner';
 
 // Importa as funções originais das Server Actions
-import { showMaterialRequestByProtocol } from '../../../../../material/request/material-request-actions';
-import { IMaterialRequestWithRelations } from '../../../../../material/request/material-request-types';
+import { showMaterialRequestBalanceByProtocol } from '../../../../../material/request/material-request-actions';
+import { IMaterialRequestBalanceWithRelations } from '../../../../../material/request/material-request-types';
 import { schemaZodRequisicoesSipac } from '@/lib/schema-zod-requisicoes-sipac';
 import { handleFetchOneAndPersistRequisicaoMaterialComRequisicaoManutencaoVinculada } from '../../../../../sipac/requisicoes-materiais/requisicoes-materiais-actions';
 import { format } from 'date-fns';
@@ -26,9 +26,9 @@ export function RequestMaterialForm({
   maintenanceRequestData
 }: {
   setMaterialRequestData: React.Dispatch<
-    React.SetStateAction<IMaterialRequestWithRelations | null>
+    React.SetStateAction<IMaterialRequestBalanceWithRelations | null>
   >;
-  materialRequestData?: IMaterialRequestWithRelations | null;
+  materialRequestData?: IMaterialRequestBalanceWithRelations | null;
   setMaintenanceRequestData: React.Dispatch<
     React.SetStateAction<IMaintenanceRequestBalanceWithRelations | null>
   >;
@@ -113,7 +113,7 @@ export function RequestMaterialForm({
   const findOrImportMaterialRequest = async (
     formattedProtocolNumber: string
   ) => {
-    const materialRequestResponse = await showMaterialRequestByProtocol(
+    const materialRequestResponse = await showMaterialRequestBalanceByProtocol(
       formattedProtocolNumber
     );
     if (materialRequestResponse) {

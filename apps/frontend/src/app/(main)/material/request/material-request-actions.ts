@@ -94,6 +94,45 @@ export async function showMaterialRequestByProtocol(protocolNumber: string) {
     throw error;
   }
 }
+export async function showMaterialRequestBalanceByProtocol(
+  protocolNumber: string
+): Promise<IMaterialRequestBalanceWithRelations | null> {
+  logger.info(
+    `(Server Action) showRequest: Fetching request ${protocolNumber}`
+  );
+  try {
+    const accessTokenSisman = await getSismanAccessToken();
+    const data = await fetchApiSisman(
+      `${API_RELATIVE_PATH}/balance/protocol`,
+      accessTokenSisman,
+      {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+        body: undefined
+        // cache: 'force-cache'
+      },
+      { value: protocolNumber }
+    );
+    logger.info(
+      `(Server Action) showRequest: request ${protocolNumber} returned`
+    );
+    return data;
+  } catch (error: any) {
+    logger.error(
+      `(Server Action) showRequest: Error fetching request ${protocolNumber}`,
+      error
+    );
+
+    if (error instanceof SismanApiError) {
+      if (error.statusCode === 404) {
+        return null;
+      } else {
+        throw error;
+      }
+    }
+    throw error;
+  }
+}
 interface IRequestDataSearch {
   requestType: string;
   requestProtocolNumber: string;
