@@ -184,20 +184,24 @@ export const columns = (
     {
       id: 'facilityComplex',
       header: 'Complexo',
-      cell: (props) => props.getValue()
+      enableResizing: false,
+      size: 300,
+      cell: (props) => (
+        <div className='whitespace-normal'>{props.getValue()}</div>
+      )
     }
   ),
   columnHelper.accessor((row) => row.maintenanceRequest?.building?.name, {
     id: 'building',
     header: 'Ativo',
     enableResizing: false,
-    size: 200,
-    cell: (props) => props.getValue()
+    size: 400,
+    cell: (props) => <div className='whitespace-normal'>{props.getValue()}</div>
   }),
   columnHelper.accessor((row) => Number(row.valueWithdrawal), {
     id: 'valueWithdrawal',
     header: () => <div className='text-center'>Valor</div>,
-    size: 60,
+    size: 50,
     enableResizing: false,
     cell: (props) => (
       <div className='text-right'>
