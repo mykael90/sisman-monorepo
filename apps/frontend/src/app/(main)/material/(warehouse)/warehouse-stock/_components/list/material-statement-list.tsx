@@ -260,7 +260,7 @@ export function MaterialStatementList({
         }
       ),
       columnHelper.accessor('movementDate', {
-        header: 'Data',
+        header: 'Data/Hora',
         enableColumnFilter: false,
         cell: (props) =>
           format(new Date(props.getValue()), 'dd/MM/yyyy HH:mm:ss')
