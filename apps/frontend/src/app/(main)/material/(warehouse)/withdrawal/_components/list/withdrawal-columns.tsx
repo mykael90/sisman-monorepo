@@ -91,31 +91,41 @@ export const columns = (
   //   size: 30,
   //   cell: (props) => props.getValue()
   // }),
-  columnHelper.accessor((row) => row.movementType?.code, {
-    id: 'movementTypeCode',
-    header: 'Tipo de Saída',
-    cell: (props) => (
-      <>
-        {
-          materialOperationOutDisplayMapPorguguese[
-            `${props.getValue()}` as TMaterialOperationOutKey
-          ].split(' ')[1]
-        }
-      </>
-    )
-  }),
+  columnHelper.accessor(
+    (row) => {
+      const code = row.movementType?.code;
+      if (!code) {
+        return 'N/A';
+      }
+      return (
+        materialOperationOutDisplayMapPorguguese[
+          code as TMaterialOperationOutKey
+        ] || code
+      );
+    },
+    {
+      id: 'movementSubtype',
+      header: 'Tipo de Saída',
+      cell: (props) => <span className='capitalize'>{props.getValue()}</span>,
+      enableColumnFilter: true,
+      filterFn: 'arrIncludesSome'
+    }
+  ),
   columnHelper.accessor((row) => row.maintenanceRequest?.protocolNumber, {
     id: 'protocolNumberRMan',
     header: 'RMan',
+    enableColumnFilter: false,
     cell: (props) => props.getValue()
   }),
   columnHelper.accessor((row) => row.materialRequest?.protocolNumber, {
     id: 'protocolNumberRM',
     header: 'RM',
+    enableColumnFilter: false,
     cell: (props) => props.getValue()
   }),
   columnHelper.accessor((row) => row.withdrawalDate, {
     id: 'withdrawalDate',
+    enableColumnFilter: false,
     header: () => <div className='text-center'> Retirada</div>,
     cell: (props) => {
       const date = new Date(props.getValue());
@@ -205,6 +215,7 @@ export const columns = (
     header: () => <div className='text-center'>Valor</div>,
     size: 50,
     enableResizing: false,
+    enableColumnFilter: false,
     cell: (props) => (
       <div className='text-right'>
         {props.getValue().toLocaleString('pt-BR', {

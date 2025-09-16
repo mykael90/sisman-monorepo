@@ -2,7 +2,6 @@
 
 import {
   useState,
-  useMemo,
   useRef,
   Dispatch,
   SetStateAction,
@@ -14,6 +13,8 @@ import { WithdrawalFilters } from './withdrawal-filters';
 import {
   ColumnDef,
   ColumnFiltersState,
+  getFacetedRowModel,
+  getFacetedUniqueValues,
   PaginationState,
   SortingState
 } from '@tanstack/react-table';
@@ -21,7 +22,6 @@ import { InputDebounceRef } from '@/components/ui/input';
 import { IMaterialWithdrawalWithRelations } from '../../withdrawal-types';
 import { useRouter } from 'next/navigation';
 import { columns, createActions, SubRowComponent } from './withdrawal-columns';
-import { TableTanstack } from '@/components/table-tanstack/table-tanstack';
 import { FilterX, Package, PackagePlus } from 'lucide-react';
 import { SectionListHeaderSmall } from '../../../../../../../components/section-list-header-small';
 import { useWarehouseContext } from '../../../../choose-warehouse/context/warehouse-provider';
@@ -34,6 +34,7 @@ import { DateRange } from 'react-day-picker';
 import { subDays } from 'date-fns';
 import { DateRangeFilter } from '@/components/filters/date-range-filter';
 import { Button } from '@/components/ui/button';
+import { TableTanstackFaceted } from '../../../../../../../components/table-tanstack/table-tanstack-faceted';
 
 export function WithdrawalListPage() {
   // 1. Consuma o contexto
@@ -46,7 +47,7 @@ export function WithdrawalListPage() {
     to: new Date()
   });
 
-  const [withdrawalValue, setWithdrawalValue] = useState('');
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const inputDebounceRef = useRef<InputDebounceRef>(null);
 
   const [pagination, setPagination] = useState<PaginationState>({
@@ -70,16 +71,22 @@ export function WithdrawalListPage() {
     enabled: !!warehouse && !!date?.from && !!date?.to
   });
 
-  const columnFilters = useMemo<ColumnFiltersState>(() => {
-    const filters: ColumnFiltersState = [];
-    if (withdrawalValue) {
-      filters.push({ id: 'id', value: withdrawalValue });
-    }
-    return filters;
-  }, [withdrawalValue]);
+  const withdrawalValue =
+    (columnFilters.find((f) => f.id === 'id')?.value as string) ?? '';
+
+  const setWithdrawalValue = (value: string) => {
+    setColumnFilters((prev) => {
+      const idFilter = prev.find((f) => f.id === 'id');
+      const otherFilters = prev.filter((f) => f.id !== 'id');
+      if (value) {
+        return [...otherFilters, { id: 'id', value }];
+      }
+      return otherFilters;
+    });
+  };
 
   const handleClearFrontendFilters = () => {
-    setWithdrawalValue('');
+    setColumnFilters((prev) => prev.filter((f) => f.id !== 'id'));
     inputDebounceRef.current?.clearInput();
   };
 
@@ -137,15 +144,18 @@ export function WithdrawalListPage() {
       {isLoading ? (
         <Loading />
       ) : isDesktop ? (
-        <TableTanstack
+        <TableTanstackFaceted
           data={withdrawals}
           columns={columns(columnActions)}
           columnFilters={columnFilters}
+          setColumnFilters={setColumnFilters}
           pagination={pagination}
           setPagination={setPagination}
           // setSorting={setSorting}
           // sorting={sorting}
           renderSubComponent={SubRowComponent}
+          getFacetedRowModel={getFacetedRowModel()}
+          getFacetedUniqueValues={getFacetedUniqueValues()}
         />
       ) : (
         <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3'>
