@@ -113,14 +113,14 @@ export function WithdrawalListPage() {
       <div className='mt-4 mb-4 h-auto rounded-xl border-0 bg-white px-4 py-3.5'>
         <div className='flex flex-col gap-4 md:flex-row'>
           <DateRangeFilter date={date} setDate={setDate} />
-          <Button
+          {/* <Button
             variant='outline'
             onClick={handleClearDateFilter}
             className='flex items-center'
           >
             <FilterX className='mr-2 h-4 w-4' />
             Limpar Filtro de Data
-          </Button>
+          </Button> */}
         </div>
       </div>
 
