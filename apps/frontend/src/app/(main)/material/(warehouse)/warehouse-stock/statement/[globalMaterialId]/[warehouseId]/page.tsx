@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { MaterialStatementList } from '../../../_components/list/material-statement-list';
 
 interface MaterialStatementPageProps {

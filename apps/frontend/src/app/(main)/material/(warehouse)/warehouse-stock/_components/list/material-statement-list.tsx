@@ -3,13 +3,18 @@
 import { useQuery } from '@tanstack/react-query';
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import { format } from 'date-fns';
-import { TableTanstack } from '@/components/table-tanstack/table-tanstack';
 import Loading from '@/components/loading';
 import { SectionListHeaderSmall } from '@/components/section-list-header-small';
 import { Package } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { useState } from 'react';
-import { PaginationState, Row } from '@tanstack/react-table';
+import { useState, useMemo } from 'react';
+import {
+  PaginationState,
+  Row,
+  ColumnFiltersState,
+  getFacetedRowModel,
+  getFacetedUniqueValues
+} from '@tanstack/react-table';
 import { cn } from '@/lib/utils';
 import { getStockMovementsByWarehouseAndMaterial } from '../../../stock-movement/stock-movement-actions';
 import {
@@ -26,6 +31,7 @@ import {
   materialOperationTypeDisplayMapPortuguese,
   TMaterialOperationTypeKey
 } from '@/mappers/material-operations-mappers-translate';
+import { TableTanstackFaceted } from '../../../../../../../components/table-tanstack/table-tanstack-faceted';
 
 // Definindo as interfaces para os dados do extrato
 interface IMovementType {
@@ -140,6 +146,7 @@ export function MaterialStatementList({
   const [pagination, setPagination] = useState<PaginationState>(
     DEFAULT_PAGINATION_STATE
   );
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
   const getRowClassName = (row: Row<IMaterialStatement>) => {
     const operation = row.original.movementType.operation;
@@ -159,136 +166,148 @@ export function MaterialStatementList({
     }
   };
 
-  const columns: ColumnDef<IMaterialStatement, any>[] = [
-    columnHelper.accessor((row) => row.movementType.operation, {
-      id: 'operationType',
-      header: 'Tipo Operação',
-      cell: (props) => {
-        const operation = props.getValue() as TMaterialOperationTypeKey;
-        let colorClass = '';
-        switch (operation) {
-          case 'IN':
-            colorClass = 'bg-green-100 text-green-800';
-            break;
-          case 'OUT':
-            colorClass = 'bg-red-100 text-red-800';
-            break;
-          case 'ADJUSTMENT':
-            colorClass = 'bg-yellow-100 text-yellow-800';
-            break;
-          case 'RESERVATION':
-            colorClass = 'bg-blue-100 text-blue-800';
-            break;
-          case 'RESTRICTION':
-            colorClass = 'bg-purple-100 text-purple-800';
-            break;
-          default:
-            colorClass = 'bg-gray-100 text-gray-800';
-        }
-        return (
-          <Badge className={cn('capitalize', colorClass)}>
-            {materialOperationTypeDisplayMapPortuguese[operation] ||
-              operation.replace('_', ' ')}
-          </Badge>
-        );
-      }
-    }),
-    columnHelper.accessor((row) => row.movementType.code, {
-      id: 'operationSubType',
-      header: 'Subtipo Operação',
-      cell: (props) => {
-        const operationCode = props.getValue();
-        const operationType = props.row.original.movementType.operation;
-        let translatedText = operationCode;
+  const columns: ColumnDef<IMaterialStatement, any>[] = useMemo(
+    () => [
+      columnHelper.accessor((row) => row.movementType.operation, {
+        id: 'operationType',
+        header: 'Tipo Operação',
+        cell: (props) => {
+          const operation = props.getValue() as TMaterialOperationTypeKey;
+          let colorClass = '';
+          switch (operation) {
+            case 'IN':
+              colorClass = 'bg-green-100 text-green-800';
+              break;
+            case 'OUT':
+              colorClass = 'bg-red-100 text-red-800';
+              break;
+            case 'ADJUSTMENT':
+              colorClass = 'bg-yellow-100 text-yellow-800';
+              break;
+            case 'RESERVATION':
+              colorClass = 'bg-blue-100 text-blue-800';
+              break;
+            case 'RESTRICTION':
+              colorClass = 'bg-purple-100 text-purple-800';
+              break;
+            default:
+              colorClass = 'bg-gray-100 text-gray-800';
+          }
+          return (
+            <Badge className={cn('capitalize', colorClass)}>
+              {materialOperationTypeDisplayMapPortuguese[operation] ||
+                operation.replace('_', ' ')}
+            </Badge>
+          );
+        },
+        enableColumnFilter: true,
+        filterFn: 'arrIncludesSome'
+      }),
+      columnHelper.accessor((row) => row.movementType.code, {
+        id: 'operationSubType',
+        header: 'Subtipo Operação',
+        cell: (props) => {
+          const operationCode = props.getValue();
+          const operationType = props.row.original.movementType.operation;
+          let translatedText = operationCode;
 
-        switch (operationType) {
-          case 'IN':
-            translatedText =
-              materialOperationInDisplayMapPorguguese[
-                operationCode as TMaterialOperationInKey
-              ] || operationCode;
-            break;
-          case 'OUT':
-            translatedText =
-              materialOperationOutDisplayMapPorguguese[
-                operationCode as TMaterialOperationOutKey
-              ] || operationCode;
-            break;
-          case 'ADJUSTMENT':
-            translatedText =
-              materialOperationAdjustmentDisplayMapPorguguese[
-                operationCode as TMaterialOperationAdjustmentKey
-              ] || operationCode;
-            break;
-          case 'RESERVATION':
-            translatedText =
-              materialOperationReservationDisplayMapPorguguese[
-                operationCode as TMaterialOperationReservationKey
-              ] || operationCode;
-            break;
-          case 'RESTRICTION':
-            translatedText =
-              materialOperationRestrictionDisplayMapPorguguese[
-                operationCode as TMaterialOperationRestrictionKey
-              ] || operationCode;
-            break;
-          default:
-            translatedText = operationCode.replace(/_/g, ' ').toLowerCase();
-        }
+          switch (operationType) {
+            case 'IN':
+              translatedText =
+                materialOperationInDisplayMapPorguguese[
+                  operationCode as TMaterialOperationInKey
+                ] || operationCode;
+              break;
+            case 'OUT':
+              translatedText =
+                materialOperationOutDisplayMapPorguguese[
+                  operationCode as TMaterialOperationOutKey
+                ] || operationCode;
+              break;
+            case 'ADJUSTMENT':
+              translatedText =
+                materialOperationAdjustmentDisplayMapPorguguese[
+                  operationCode as TMaterialOperationAdjustmentKey
+                ] || operationCode;
+              break;
+            case 'RESERVATION':
+              translatedText =
+                materialOperationReservationDisplayMapPorguguese[
+                  operationCode as TMaterialOperationReservationKey
+                ] || operationCode;
+              break;
+            case 'RESTRICTION':
+              translatedText =
+                materialOperationRestrictionDisplayMapPorguguese[
+                  operationCode as TMaterialOperationRestrictionKey
+                ] || operationCode;
+              break;
+            default:
+              translatedText = operationCode.replace(/_/g, ' ').toLowerCase();
+          }
 
-        return <span className='capitalize'>{translatedText}</span>;
-      }
-    }),
-    columnHelper.accessor('movementDate', {
-      header: 'Data',
-      cell: (props) => format(new Date(props.getValue()), 'dd/MM/yyyy HH:mm:ss')
-    }),
-    columnHelper.accessor((row) => row.processedByUser?.name, {
-      id: 'processedBy',
-      size: 200,
-      enableResizing: false,
-      header: 'Processado Por',
-      cell: (props) => (
-        <div className='whitespace-normal'>{props.getValue() || 'N/A'}</div>
-      )
-    }),
-    columnHelper.accessor((row) => row.collectedByWorker?.name, {
-      id: 'collectedBy',
-      header: 'Retirado Por',
-      size: 200,
-      enableResizing: false,
-      cell: (props) => (
-        <div className='whitespace-normal'>{props.getValue() || 'N/A'}</div>
-      )
-    }),
-    columnHelper.accessor((row) => row.maintenanceRequest?.protocolNumber, {
-      id: 'protocolNumberRMan',
-      header: 'RMan',
-      cell: (props) => props.getValue() || 'N/A'
-    }),
-    columnHelper.accessor(
-      (row) => row.materialRequestItem?.materialRequest?.protocolNumber,
-      {
-        id: 'protocolNumberRM',
-        header: 'RM',
+          return <span className='capitalize'>{translatedText}</span>;
+        },
+        enableColumnFilter: true,
+        filterFn: 'arrIncludesSome'
+      }),
+      columnHelper.accessor('movementDate', {
+        header: 'Data',
+        enableColumnFilter: false,
+        cell: (props) =>
+          format(new Date(props.getValue()), 'dd/MM/yyyy HH:mm:ss')
+      }),
+      columnHelper.accessor((row) => row.processedByUser?.name, {
+        id: 'processedBy',
+        size: 200,
+        enableResizing: false,
+        header: 'Processado Por',
+        cell: (props) => (
+          <div className='whitespace-normal'>{props.getValue() || 'N/A'}</div>
+        )
+      }),
+      columnHelper.accessor((row) => row.collectedByWorker?.name, {
+        id: 'collectedBy',
+        header: 'Retirado Por',
+        size: 200,
+        enableResizing: false,
+        cell: (props) => (
+          <div className='whitespace-normal'>{props.getValue() || 'N/A'}</div>
+        )
+      }),
+      columnHelper.accessor((row) => row.maintenanceRequest?.protocolNumber, {
+        id: 'protocolNumberRMan',
+        header: 'RMan',
+        enableColumnFilter: false,
         cell: (props) => props.getValue() || 'N/A'
-      }
-    ),
+      }),
+      columnHelper.accessor(
+        (row) => row.materialRequestItem?.materialRequest?.protocolNumber,
+        {
+          id: 'protocolNumberRM',
+          header: 'RM',
+          enableColumnFilter: false,
+          cell: (props) => props.getValue() || 'N/A'
+        }
+      ),
 
-    columnHelper.accessor('quantity', {
-      header: 'Qtd',
-      size: 50,
-      enableResizing: false,
-      cell: (props) => (
-        <div className='text-right'>
-          {Number(props.getValue()).toLocaleString('pt-BR', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-          })}
-        </div>
-      )
-    })
-  ];
+      columnHelper.accessor('quantity', {
+        header: 'Qtd',
+        size: 50,
+        enableResizing: false,
+        enableColumnFilter: false,
+        cell: (props) => (
+          <div className='text-right'>
+            {Number(props.getValue()).toLocaleString('pt-BR', {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2
+            })}
+          </div>
+        )
+      })
+    ],
+    []
+  );
 
   if (isLoading) {
     return <Loading />;
@@ -311,12 +330,16 @@ export function MaterialStatementList({
       />
 
       <div className='mt-4'>
-        <TableTanstack
+        <TableTanstackFaceted
           data={statementData || []}
           columns={columns}
           pagination={pagination}
           setPagination={setPagination}
           getRowClassName={getRowClassName} // Passa a função para estilizar as linhas
+          columnFilters={columnFilters}
+          setColumnFilters={setColumnFilters}
+          getFacetedRowModel={getFacetedRowModel()}
+          getFacetedUniqueValues={getFacetedUniqueValues()}
         />
       </div>
     </div>

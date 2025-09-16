@@ -696,15 +696,15 @@ export class RequisicoesManutencoesService {
         // },
         // imoveisPrediosInseridos: true,
         // historico: true,
-        historico: true,
-        informacoesServico: true,
-        requisicoesMateriais: true,
-        predios: true,
-        requisicaoManutencaoMae: true,
-        requisicoesManutencaoFilhas: true,
-        unidadeCusto: true,
-        unidadeRequisitante: true,
-        arquivos: true
+        // historico: true,
+        informacoesServico: true
+        // requisicoesMateriais: true,
+        // predios: true,
+        // requisicaoManutencaoMae: true,
+        // requisicoesManutencaoFilhas: true,
+        // unidadeCusto: true,
+        // unidadeRequisitante: true,
+        // arquivos: true
       }
     });
   }
