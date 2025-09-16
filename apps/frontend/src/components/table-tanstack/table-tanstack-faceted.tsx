@@ -136,7 +136,15 @@ export function TableTanstackFaceted<TData>({
                           header.column.getFacetedUniqueValues()?.size > 0 && (
                             <Popover>
                               <PopoverTrigger asChild>
-                                <Filter className='text-muted-foreground h-4 w-4' />
+                                <Filter
+                                  className={cn(
+                                    'text-muted-foreground h-4 w-4',
+                                    {
+                                      'text-accent':
+                                        header.column.getIsFiltered()
+                                    }
+                                  )}
+                                />
                               </PopoverTrigger>
                               <PopoverContent
                                 className='w-[200px] p-0'
