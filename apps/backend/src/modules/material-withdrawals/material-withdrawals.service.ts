@@ -525,10 +525,42 @@ export class MaterialWithdrawalsService {
     }
   }
 
-  async listByWarehouse(warehouseId: number) {
+  async listByWarehouse(
+    warehouseId: number,
+    queryParams?: { [key: string]: string }
+  ) {
     try {
+      if (Object.keys(queryParams).length === 0) {
+        return this.prisma.materialWithdrawal.findMany({
+          where: { warehouseId: warehouseId },
+          include: {
+            collectedByUser: { select: { id: true, name: true, login: true } },
+            collectedByWorker: { select: { id: true, name: true } },
+            items: { include: { globalMaterial: true } },
+            materialRequest: { select: { id: true, protocolNumber: true } },
+            materialPickingOrder: true,
+            movementType: true,
+            processedByUser: true,
+            warehouse: true,
+            maintenanceRequest: {
+              include: { building: true, facilityComplex: true }
+            }
+          },
+          orderBy: {
+            withdrawalDate: 'desc'
+          }
+        });
+      }
+
+      const { startDate, endDate } = queryParams;
       return this.prisma.materialWithdrawal.findMany({
-        where: { warehouseId: warehouseId },
+        where: {
+          warehouseId: warehouseId,
+          withdrawalDate: {
+            gte: new Date(startDate),
+            lte: new Date(endDate)
+          }
+        },
         include: {
           collectedByUser: { select: { id: true, name: true, login: true } },
           collectedByWorker: { select: { id: true, name: true } },

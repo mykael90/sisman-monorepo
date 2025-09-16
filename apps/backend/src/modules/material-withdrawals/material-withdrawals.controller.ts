@@ -10,6 +10,7 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  Query,
   UseGuards
 } from '@nestjs/common';
 import { MaterialWithdrawalsService } from './material-withdrawals.service';
@@ -76,10 +77,14 @@ export class MaterialWithdrawalsController {
     }
   })
   async listByWarehouse(
+    @Query() queryParams: { [key: string]: string },
     @Param('warehouseId', ParseIntPipe) warehouseId: number
   ) {
     console.log(warehouseId);
-    return this.materialWithdrawalsService.listByWarehouse(warehouseId);
+    return this.materialWithdrawalsService.listByWarehouse(
+      warehouseId,
+      queryParams
+    );
   }
 
   /**

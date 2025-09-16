@@ -38,15 +38,38 @@ export async function getWithdrawals(accessTokenSisman: string) {
     throw error;
   }
 }
-export async function getWithdrawalsByWarehouse(warehouseId: number) {
+export async function getWithdrawalsByWarehouse(
+  warehouseId: number,
+  params?: { from?: Date; to?: Date }
+) {
   const accessTokenSisman = await getSismanAccessToken();
   logger.info(`(Server Action) getWithdrawals: Fetching withdrawals`);
+
+  const urlParams = new URLSearchParams();
+  if (params?.from) {
+    urlParams.append('startDate', params.from.toISOString());
+  }
+  //antes de enviar a data limite é bom adiantar um dia para incluir o próprio dia
+  // if (params?.to) {
+  //   params.to.setDate(params.to.getDate() + 1);
+  // }
+
+  if (params?.to) {
+    urlParams.append('endDate', params.to.toISOString());
+  }
+
+  console.log(urlParams.toString());
+
   try {
     const data = await fetchApiSisman(
       `${API_RELATIVE_PATH}/warehouse/${warehouseId}`,
       accessTokenSisman,
       {
         // cache: 'force-cache'
+      },
+      {
+        startDate: urlParams.get('startDate'),
+        endDate: urlParams.get('endDate')
       }
     );
     logger.info(
