@@ -71,3 +71,16 @@ export type TMaterialOperationRestrictionKey =
   keyof typeof materialOperationRestrictionDisplayMapPorguguese;
 export type TMaterialOperationRestrictionDisplay =
   (typeof materialOperationRestrictionDisplayMapPorguguese)[TMaterialOperationRestrictionKey];
+
+export const materialOperationTypeDisplayMapPortuguese = {
+  IN: 'Entrada',
+  OUT: 'Saída',
+  ADJUSTMENT: 'Ajuste',
+  RESERVATION: 'Reserva',
+  RESTRICTION: 'Restrição'
+} as const;
+
+export type TMaterialOperationTypeKey =
+  keyof typeof materialOperationTypeDisplayMapPortuguese;
+export type TMaterialOperationTypeDisplay =
+  (typeof materialOperationTypeDisplayMapPortuguese)[TMaterialOperationTypeKey];

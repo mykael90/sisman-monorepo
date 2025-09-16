@@ -12,6 +12,20 @@ import { useState } from 'react';
 import { PaginationState, Row } from '@tanstack/react-table';
 import { cn } from '@/lib/utils';
 import { getStockMovementsByWarehouseAndMaterial } from '../../../stock-movement/stock-movement-actions';
+import {
+  materialOperationInDisplayMapPorguguese,
+  materialOperationOutDisplayMapPorguguese,
+  materialOperationAdjustmentDisplayMapPorguguese,
+  materialOperationReservationDisplayMapPorguguese,
+  materialOperationRestrictionDisplayMapPorguguese,
+  TMaterialOperationInKey,
+  TMaterialOperationOutKey,
+  TMaterialOperationAdjustmentKey,
+  TMaterialOperationReservationKey,
+  TMaterialOperationRestrictionKey,
+  materialOperationTypeDisplayMapPortuguese,
+  TMaterialOperationTypeKey
+} from '@/mappers/material-operations-mappers-translate';
 
 // Definindo as interfaces para os dados do extrato
 interface IMovementType {
@@ -150,7 +164,7 @@ export function MaterialStatementList({
       id: 'operationType',
       header: 'Tipo Operação',
       cell: (props) => {
-        const operation = props.getValue();
+        const operation = props.getValue() as TMaterialOperationTypeKey;
         let colorClass = '';
         switch (operation) {
           case 'IN':
@@ -173,7 +187,8 @@ export function MaterialStatementList({
         }
         return (
           <Badge className={cn('capitalize', colorClass)}>
-            {operation.replace('_', ' ')}
+            {materialOperationTypeDisplayMapPortuguese[operation] ||
+              operation.replace('_', ' ')}
           </Badge>
         );
       }
@@ -181,11 +196,48 @@ export function MaterialStatementList({
     columnHelper.accessor((row) => row.movementType.code, {
       id: 'operationSubType',
       header: 'Subtipo Operação',
-      cell: (props) => (
-        <span className='capitalize'>
-          {props.getValue().replace(/_/g, ' ').toLowerCase()}
-        </span>
-      )
+      cell: (props) => {
+        const operationCode = props.getValue();
+        const operationType = props.row.original.movementType.operation;
+        let translatedText = operationCode;
+
+        switch (operationType) {
+          case 'IN':
+            translatedText =
+              materialOperationInDisplayMapPorguguese[
+                operationCode as TMaterialOperationInKey
+              ] || operationCode;
+            break;
+          case 'OUT':
+            translatedText =
+              materialOperationOutDisplayMapPorguguese[
+                operationCode as TMaterialOperationOutKey
+              ] || operationCode;
+            break;
+          case 'ADJUSTMENT':
+            translatedText =
+              materialOperationAdjustmentDisplayMapPorguguese[
+                operationCode as TMaterialOperationAdjustmentKey
+              ] || operationCode;
+            break;
+          case 'RESERVATION':
+            translatedText =
+              materialOperationReservationDisplayMapPorguguese[
+                operationCode as TMaterialOperationReservationKey
+              ] || operationCode;
+            break;
+          case 'RESTRICTION':
+            translatedText =
+              materialOperationRestrictionDisplayMapPorguguese[
+                operationCode as TMaterialOperationRestrictionKey
+              ] || operationCode;
+            break;
+          default:
+            translatedText = operationCode.replace(/_/g, ' ').toLowerCase();
+        }
+
+        return <span className='capitalize'>{translatedText}</span>;
+      }
     }),
     columnHelper.accessor('movementDate', {
       header: 'Data',
