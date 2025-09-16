@@ -9,7 +9,7 @@ import { IStockMovementAdd, IStockMovementEdit } from './stock-movement-types';
 import { handleApiAction } from '@/lib/fetch/handle-form-action-sisman';
 
 const PAGE_PATH = '/material/stock-movement';
-const API_RELATIVE_PATH = '/material/stock-movement';
+const API_RELATIVE_PATH = '/material-stock-movement';
 
 const logger = new Logger(`${PAGE_PATH}/stock-movement-actions`);
 
@@ -19,6 +19,35 @@ export async function getStockMovements(accessTokenSisman: string) {
     const data = await fetchApiSisman(API_RELATIVE_PATH, accessTokenSisman, {
       cache: 'force-cache'
     });
+    logger.info(
+      `(Server Action) getStockMovements: ${data.length} stock-movements returned`
+    );
+    return data;
+  } catch (error) {
+    logger.error(
+      `(Server Action) getStockMovements: Error fetching stock-movements`,
+      error
+    );
+    throw error;
+  }
+}
+export async function getStockMovementsByWarehouseAndMaterial(
+  warehouseId: number,
+  globalMaterialId: string
+) {
+  logger.info(`(Server Action) getStockMovements: Fetching stock-movements`);
+  try {
+    const accessTokenSisman = await getSismanAccessToken();
+    const data = await fetchApiSisman(
+      `${API_RELATIVE_PATH}/warehouse/${warehouseId}`,
+      accessTokenSisman,
+      {
+        // cache: 'force-cache'
+      },
+      {
+        globalMaterialId: globalMaterialId
+      }
+    );
     logger.info(
       `(Server Action) getStockMovements: ${data.length} stock-movements returned`
     );

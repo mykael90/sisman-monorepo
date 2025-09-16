@@ -1,7 +1,7 @@
 import { ColumnDef, createColumnHelper, Row } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { Button } from '@/components/ui/button';
-import { Edit, Info, Trash2 } from 'lucide-react';
+import { Edit, Info, Trash2, FileText } from 'lucide-react';
 import { IWarehouseStockWithRelations } from '../../warehouse-stock-types';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { Badge } from '@/components/ui/badge';
@@ -37,6 +37,21 @@ export const createActions = (
   },
   onDelete: (row: Row<IWarehouseStockWithRelations>) => {
     console.log('Delete warehouse stock', row.original);
+  },
+  onViewStatement: (row: Row<IWarehouseStockWithRelations>) => {
+    console.log('View material statement', row.original);
+    if (row.original.materialId && row.original.warehouseId) {
+      router.push(
+        `warehouse-stock/statement/${row.original.materialId}/${row.original.warehouseId}`
+      );
+    } else {
+      console.error(
+        'Material ID or Warehouse ID is missing, cannot navigate to statement page.'
+      );
+      throw new Error(
+        'Material ID or Warehouse ID is missing, cannot navigate to statement page.'
+      );
+    }
   }
 });
 
@@ -262,6 +277,13 @@ export const columns = (
           onClick={() => configuredActions.onDelete(row)}
         >
           <Trash2 className='h-4 w-4 text-red-500' />
+        </Button>
+        <Button
+          variant='ghost'
+          size='icon'
+          onClick={() => configuredActions.onViewStatement(row)}
+        >
+          <FileText className='h-4 w-4' />
         </Button>
       </div>
     )
