@@ -612,7 +612,13 @@ export class MaterialStockMovementsService {
           },
           warehouse: true,
           // warehouseMaterialStock: true,
-          maintenanceRequest: { select: { id: true, protocolNumber: true } },
+          maintenanceRequest: {
+            select: {
+              id: true,
+              protocolNumber: true,
+              building: { select: { name: true } }
+            }
+          },
           // materialReceiptItem: true,
           // materialRestrictionItem: true,
           // materialWithdrawalItem: true,

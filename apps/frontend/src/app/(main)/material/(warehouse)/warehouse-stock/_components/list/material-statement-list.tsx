@@ -81,6 +81,7 @@ interface ICollectedByWorker {
 interface IMaintenanceRequest {
   id: number;
   protocolNumber: string;
+  building: { name: string };
 }
 
 export interface IMaterialStatement {
@@ -266,7 +267,7 @@ export function MaterialStatementList({
       }),
       columnHelper.accessor((row) => row.processedByUser?.name, {
         id: 'processedBy',
-        size: 200,
+        size: 150,
         enableResizing: false,
         header: 'Processado Por',
         cell: (props) => (
@@ -276,7 +277,7 @@ export function MaterialStatementList({
       columnHelper.accessor((row) => row.collectedByWorker?.name, {
         id: 'collectedBy',
         header: 'Retirado Por',
-        size: 200,
+        size: 150,
         enableResizing: false,
         cell: (props) => (
           <div className='whitespace-normal'>{props.getValue() || 'N/A'}</div>
@@ -297,6 +298,15 @@ export function MaterialStatementList({
           cell: (props) => props.getValue() || 'N/A'
         }
       ),
+      columnHelper.accessor((row) => row.maintenanceRequest?.building?.name, {
+        id: 'buildingName',
+        header: 'Ativo Infraestrutura',
+        size: 200,
+        enableResizing: false,
+        cell: (props) => (
+          <div className='whitespace-normal'>{props.getValue() || 'N/A'}</div>
+        )
+      }),
 
       columnHelper.accessor('quantity', {
         header: 'Qtd',
