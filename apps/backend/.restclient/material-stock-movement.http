@@ -6,6 +6,11 @@
 GET {{urlLocal}}
 Authorization: Bearer {{token}}
 
+### GET all
+GET {{urlLocal}}/warehouse/1
+?globalMaterialId=302400005246
+Authorization: Bearer {{token}}
+
 ### GET one
 # @prompt id
 GET {{urlLocal}}/{{id}}

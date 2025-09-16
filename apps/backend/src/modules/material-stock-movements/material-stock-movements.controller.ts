@@ -9,6 +9,7 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  Query,
   UseGuards
 } from '@nestjs/common';
 import { MaterialStockMovementsService } from './material-stock-movements.service';
@@ -77,6 +78,32 @@ export class MaterialStockMovementsController {
   })
   async show(@Param('id', ParseIntPipe) id: number) {
     return this.materialStockMovementsService.show(id);
+  }
+
+  /**
+   * Lista todas as movimentações de estoque de material por deposito.
+   */
+  @Get('warehouse/:warehouseId')
+  @ApiEndpointSwagger({
+    summary: 'Listar movimentações de estoque de material por depósito',
+    description:
+      'Retorna uma lista de todas as movimentações de estoque de material por depósito.',
+    response: {
+      status: HttpStatus.OK,
+      description: 'Lista de movimentações de estoque de material.',
+      type: MaterialStockMovementWithRelationsResponseDto, // Usa a DTO de resposta
+      isArray: true // Indica que a resposta é um array
+    }
+  })
+  async listByWarehouse(
+    @Query('globalMaterialId') globalMaterialId: string,
+    @Param('warehouseId', ParseIntPipe) warehouseId: number
+  ) {
+    console.log(warehouseId);
+    return this.materialStockMovementsService.listByWarehouseAndMaterial(
+      warehouseId,
+      globalMaterialId
+    );
   }
 
   /**

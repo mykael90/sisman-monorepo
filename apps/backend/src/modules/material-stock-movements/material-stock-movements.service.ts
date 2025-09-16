@@ -498,14 +498,135 @@ export class MaterialStockMovementsService {
     }
   }
 
-  async list(): Promise<MaterialStockMovementWithRelationsResponseDto[]> {
+  async list(): Promise<any[]> {
     try {
       return this.prisma.materialStockMovement.findMany({
-        include: this.includeRelations
+        include: {
+          collectedByUser: { select: { id: true, name: true } },
+          collectedByWorker: { select: { id: true, name: true } },
+          movementType: { select: { operation: true, code: true } },
+          // materialInstance: true,
+          materialRequestItem: {
+            select: {
+              materialRequest: { select: { id: true, protocolNumber: true } }
+            }
+          },
+          globalMaterial: {
+            select: {
+              id: true,
+              name: true,
+              description: true,
+              unitOfMeasure: true
+            }
+          },
+          warehouse: true,
+          // warehouseMaterialStock: true,
+          maintenanceRequest: { select: { id: true, protocolNumber: true } },
+          // materialReceiptItem: true,
+          // materialRestrictionItem: true,
+          // materialWithdrawalItem: true,
+          // stockTransferOrderItem: true,
+          // materialPickingOrderItem: true,
+          processedByUser: { select: { id: true, name: true } }
+        },
+        orderBy: {
+          movementDate: 'desc'
+        }
       });
     } catch (error) {
       handlePrismaError(error, this.logger, 'MaterialStockMovementsService', {
         operation: 'list'
+      });
+      throw error;
+    }
+  }
+
+  async listByWarehouse(warehouseId: number) {
+    try {
+      return this.prisma.materialStockMovement.findMany({
+        where: { warehouseId: warehouseId },
+        include: {
+          collectedByUser: { select: { id: true, name: true } },
+          collectedByWorker: { select: { id: true, name: true } },
+          movementType: { select: { operation: true, code: true } },
+          // materialInstance: true,
+          materialRequestItem: {
+            select: {
+              materialRequest: { select: { id: true, protocolNumber: true } }
+            }
+          },
+          globalMaterial: {
+            select: {
+              id: true,
+              name: true,
+              description: true,
+              unitOfMeasure: true
+            }
+          },
+          warehouse: true,
+          // warehouseMaterialStock: true,
+          maintenanceRequest: { select: { id: true, protocolNumber: true } },
+          // materialReceiptItem: true,
+          // materialRestrictionItem: true,
+          // materialWithdrawalItem: true,
+          // stockTransferOrderItem: true,
+          // materialPickingOrderItem: true,
+          processedByUser: { select: { id: true, name: true } }
+        },
+        orderBy: {
+          movementDate: 'desc'
+        }
+      });
+    } catch (error) {
+      handlePrismaError(error, this.logger, 'MaterialStockMovementsService', {
+        operation: 'listByWarehouse'
+      });
+      throw error;
+    }
+  }
+
+  async listByWarehouseAndMaterial(
+    warehouseId: number,
+    globalMaterialId: string
+  ) {
+    try {
+      return this.prisma.materialStockMovement.findMany({
+        where: { warehouseId: warehouseId, globalMaterialId: globalMaterialId },
+        include: {
+          collectedByUser: { select: { id: true, name: true } },
+          collectedByWorker: { select: { id: true, name: true } },
+          movementType: { select: { operation: true, code: true } },
+          // materialInstance: true,
+          materialRequestItem: {
+            select: {
+              materialRequest: { select: { id: true, protocolNumber: true } }
+            }
+          },
+          globalMaterial: {
+            select: {
+              id: true,
+              name: true,
+              description: true,
+              unitOfMeasure: true
+            }
+          },
+          warehouse: true,
+          // warehouseMaterialStock: true,
+          maintenanceRequest: { select: { id: true, protocolNumber: true } },
+          // materialReceiptItem: true,
+          // materialRestrictionItem: true,
+          // materialWithdrawalItem: true,
+          // stockTransferOrderItem: true,
+          // materialPickingOrderItem: true,
+          processedByUser: { select: { id: true, name: true } }
+        },
+        orderBy: {
+          movementDate: 'desc'
+        }
+      });
+    } catch (error) {
+      handlePrismaError(error, this.logger, 'MaterialStockMovementsService', {
+        operation: 'listByWarehouse'
       });
       throw error;
     }
