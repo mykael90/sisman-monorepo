@@ -162,7 +162,7 @@ export function MaterialStatementList({
       case 'RESTRICTION':
         return 'bg-purple-50 hover:bg-purple-100';
       default:
-        return 'hover:bg-accent/10 odd:bg-white even:bg-gray-50';
+        return 'hover:bg-accent/10';
     }
   };
 

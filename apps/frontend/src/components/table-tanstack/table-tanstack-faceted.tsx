@@ -247,8 +247,9 @@ export function TableTanstackFaceted<TData>({
               <React.Fragment key={row.id}>
                 <TableRow
                   className={cn(
-                    'hover:bg-accent/10 odd:bg-white even:bg-gray-50',
-                    getRowClassName && getRowClassName(row)
+                    getRowClassName
+                      ? getRowClassName(row)
+                      : 'hover:bg-accent/10 odd:bg-white even:bg-gray-50'
                   )}
                 >
                   {row.getVisibleCells().map((cell) => (
