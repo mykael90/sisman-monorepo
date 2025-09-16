@@ -88,24 +88,6 @@ export const columns = (
       </Button>
     )
   }),
-  columnHelper.accessor(
-    (row) => row.materialRequest?.maintenanceRequest?.protocolNumber,
-    {
-      id: 'protocolNumberRMan',
-      header: 'RMan',
-      cell: (props) => props.getValue()
-    }
-  ),
-  columnHelper.accessor((row) => row.materialRequest?.protocolNumber, {
-    id: 'protocolNumberRM',
-    header: 'RM',
-    cell: (props) => props.getValue()
-  }),
-  // columnHelper.accessor('id', {
-  //   header: 'ID',
-  //   size: 30,
-  //   cell: (props) => props.getValue()
-  // }),
   columnHelper.accessor((row) => row.movementType?.code, {
     id: 'movementTypeCode',
     header: 'Tipo de Entrada',
@@ -119,6 +101,38 @@ export const columns = (
       </>
     )
   }),
+  columnHelper.accessor(
+    (row) => row.materialRequest?.maintenanceRequest?.protocolNumber,
+    {
+      id: 'protocolNumberRMan',
+      header: 'RMan',
+      cell: (props) => props.getValue()
+    }
+  ),
+  columnHelper.accessor((row) => row.materialRequest?.protocolNumber, {
+    id: 'protocolNumberRM',
+    header: 'RM',
+    cell: (props) => props.getValue()
+  }),
+  columnHelper.accessor((row) => row.receiptDate, {
+    id: 'receiptDate',
+    header: () => <div className='text-center'> Entrada</div>,
+    cell: (props) => {
+      const date = new Date(props.getValue());
+      return (
+        <div className='text-center'>
+          {date.toLocaleDateString()}
+          <br />
+          {date.toLocaleTimeString()}
+        </div>
+      );
+    }
+  }),
+  // columnHelper.accessor('id', {
+  //   header: 'ID',
+  //   size: 30,
+  //   cell: (props) => props.getValue()
+  // }),
   columnHelper.accessor((row) => row.processedByUser?.login, {
     id: 'processedByUserLogin',
     header: 'Processamento',
@@ -215,10 +229,11 @@ export const SubRowComponent = ({
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>ID Material Global</TableHead>
-            <TableHead>Nome do Material</TableHead>
-            <TableHead>Unidade de Medida</TableHead>
-            <TableHead>Quantidade Recebida</TableHead>
+            <TableHead>ID Material</TableHead>
+            <TableHead>Denominação</TableHead>
+            <TableHead>Unidade</TableHead>
+            <TableHead>Qtd</TableHead>
+            <TableHead>Valor</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -229,6 +244,14 @@ export const SubRowComponent = ({
                 <TableCell>{item.material?.name}</TableCell>
                 <TableCell>{item.material?.unitOfMeasure}</TableCell>
                 <TableCell>{item.quantityReceived.toString()}</TableCell>
+                <TableCell>
+                  {item.unitPrice
+                    ? Number(item.unitPrice).toLocaleString('pt-BR', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                      })
+                    : 'Indefinido'}
+                </TableCell>
               </TableRow>
             ))
           ) : (

@@ -116,7 +116,7 @@ export const columns = (
   }),
   columnHelper.accessor((row) => row.withdrawalDate, {
     id: 'withdrawalDate',
-    header: () => <div className='text-center'> Recebimento</div>,
+    header: () => <div className='text-center'> Retirada</div>,
     cell: (props) => {
       const date = new Date(props.getValue());
       return (
@@ -162,7 +162,7 @@ export const columns = (
       cell: (props) => {
         const name = props.getValue();
         if (!name) {
-          return 'Não informado';
+          return 'N/A';
         }
         const isUser = !!props.row.original.collectedByUser;
         const isWorker = !!props.row.original.collectedByWorker;
@@ -275,10 +275,11 @@ export const SubRowComponent = ({
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>ID Material Global</TableHead>
-            <TableHead>Nome do Material</TableHead>
-            <TableHead>Unidade de Medida</TableHead>
-            <TableHead>Quantidade Retirada</TableHead>
+            <TableHead>ID Material</TableHead>
+            <TableHead>Denominação</TableHead>
+            <TableHead>Unidade</TableHead>
+            <TableHead>Qtd</TableHead>
+            <TableHead>Valor</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -289,6 +290,14 @@ export const SubRowComponent = ({
                 <TableCell>{item.globalMaterial?.name}</TableCell>
                 <TableCell>{item.globalMaterial?.unitOfMeasure}</TableCell>
                 <TableCell>{item.quantityWithdrawn.toString()}</TableCell>
+                <TableCell>
+                  {item.unitPrice
+                    ? Number(item.unitPrice).toLocaleString('pt-BR', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                      })
+                    : 'Indefinido'}
+                </TableCell>
               </TableRow>
             ))
           ) : (
