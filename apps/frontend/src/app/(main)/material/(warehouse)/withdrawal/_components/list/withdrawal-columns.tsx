@@ -159,6 +159,8 @@ export const columns = (
     {
       id: 'collectedBy',
       header: 'Coletado Por',
+      size: 300,
+      enableResizing: false,
       cell: (props) => {
         const name = props.getValue();
         if (!name) {
@@ -169,7 +171,7 @@ export const columns = (
         const isOther = !!props.row.original.collectedByOther;
 
         return (
-          <div className='flex-col items-center space-y-1'>
+          <div className='flex-col items-center space-y-1 whitespace-normal'>
             <div>{name}</div>
             <Badge variant={'outline'}>
               {isUser ? 'Usuário' : isWorker ? 'Profisisonal' : 'Outro'}

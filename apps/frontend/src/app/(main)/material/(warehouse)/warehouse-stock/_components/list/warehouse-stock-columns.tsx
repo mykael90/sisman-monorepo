@@ -56,8 +56,10 @@ export const columns = (
   columnHelper.accessor((row) => row.material?.name, {
     id: 'materialName',
     header: 'Material',
+    enableResizing: false,
+    size: 400,
     cell: (props) => (
-      <div className='flex items-center justify-start gap-2'>
+      <div className='flex items-center justify-between gap-2 whitespace-normal'>
         {props.getValue() || 'N/A'}{' '}
         <InfoHoverCard
           title='Descrição do Material'
