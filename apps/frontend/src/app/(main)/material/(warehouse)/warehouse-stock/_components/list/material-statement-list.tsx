@@ -168,89 +168,96 @@ export function MaterialStatementList({
 
   const columns: ColumnDef<IMaterialStatement, any>[] = useMemo(
     () => [
-      columnHelper.accessor((row) => row.movementType.operation, {
-        id: 'operationType',
-        header: 'Tipo Operação',
-        cell: (props) => {
-          const operation = props.getValue() as TMaterialOperationTypeKey;
-          let colorClass = '';
-          switch (operation) {
-            case 'IN':
-              colorClass = 'bg-green-100 text-green-800';
-              break;
-            case 'OUT':
-              colorClass = 'bg-red-100 text-red-800';
-              break;
-            case 'ADJUSTMENT':
-              colorClass = 'bg-yellow-100 text-yellow-800';
-              break;
-            case 'RESERVATION':
-              colorClass = 'bg-blue-100 text-blue-800';
-              break;
-            case 'RESTRICTION':
-              colorClass = 'bg-purple-100 text-purple-800';
-              break;
-            default:
-              colorClass = 'bg-gray-100 text-gray-800';
-          }
-          return (
-            <Badge className={cn('capitalize', colorClass)}>
-              {materialOperationTypeDisplayMapPortuguese[operation] ||
-                operation.replace('_', ' ')}
-            </Badge>
-          );
-        },
-        enableColumnFilter: true,
-        filterFn: 'arrIncludesSome'
-      }),
-      columnHelper.accessor((row) => row.movementType.code, {
-        id: 'operationSubType',
-        header: 'Subtipo Operação',
-        cell: (props) => {
-          const operationCode = props.getValue();
-          const operationType = props.row.original.movementType.operation;
-          let translatedText = operationCode;
+      columnHelper.accessor(
+        (row) =>
+          materialOperationTypeDisplayMapPortuguese[
+            row.movementType.operation as TMaterialOperationTypeKey
+          ] || row.movementType.operation.replace('_', ' '),
+        {
+          id: 'operationType',
+          header: 'Tipo Operação',
+          cell: (props) => {
+            const operation = props.row.original.movementType.operation;
+            let colorClass = '';
+            switch (operation) {
+              case 'IN':
+                colorClass = 'bg-green-100 text-green-800';
+                break;
+              case 'OUT':
+                colorClass = 'bg-red-100 text-red-800';
+                break;
+              case 'ADJUSTMENT':
+                colorClass = 'bg-yellow-100 text-yellow-800';
+                break;
+              case 'RESERVATION':
+                colorClass = 'bg-blue-100 text-blue-800';
+                break;
+              case 'RESTRICTION':
+                colorClass = 'bg-purple-100 text-purple-800';
+                break;
+              default:
+                colorClass = 'bg-gray-100 text-gray-800';
+            }
+            return (
+              <Badge className={cn('capitalize', colorClass)}>
+                {props.getValue()}
+              </Badge>
+            );
+          },
+          enableColumnFilter: true,
+          filterFn: 'arrIncludesSome'
+        }
+      ),
+      columnHelper.accessor(
+        (row) => {
+          const { code: operationCode, operation: operationType } =
+            row.movementType;
 
           switch (operationType) {
             case 'IN':
-              translatedText =
+              return (
                 materialOperationInDisplayMapPorguguese[
                   operationCode as TMaterialOperationInKey
-                ] || operationCode;
-              break;
+                ] || operationCode
+              );
             case 'OUT':
-              translatedText =
+              return (
                 materialOperationOutDisplayMapPorguguese[
                   operationCode as TMaterialOperationOutKey
-                ] || operationCode;
-              break;
+                ] || operationCode
+              );
             case 'ADJUSTMENT':
-              translatedText =
+              return (
                 materialOperationAdjustmentDisplayMapPorguguese[
                   operationCode as TMaterialOperationAdjustmentKey
-                ] || operationCode;
-              break;
+                ] || operationCode
+              );
             case 'RESERVATION':
-              translatedText =
+              return (
                 materialOperationReservationDisplayMapPorguguese[
                   operationCode as TMaterialOperationReservationKey
-                ] || operationCode;
-              break;
+                ] || operationCode
+              );
             case 'RESTRICTION':
-              translatedText =
+              return (
                 materialOperationRestrictionDisplayMapPorguguese[
                   operationCode as TMaterialOperationRestrictionKey
-                ] || operationCode;
-              break;
+                ] || operationCode
+              );
             default:
-              translatedText = operationCode.replace(/_/g, ' ').toLowerCase();
+              return operationCode.replace(/_/g, ' ').toLowerCase();
           }
-
-          return <span className='capitalize'>{translatedText}</span>;
         },
-        enableColumnFilter: true,
-        filterFn: 'arrIncludesSome'
-      }),
+        {
+          id: 'operationSubType',
+          header: 'Subtipo Operação',
+          cell: (props) => (
+            <span className='capitalize'>{props.getValue()}</span>
+          ),
+          enableColumnFilter: true,
+          filterFn: 'arrIncludesSome'
+        }
+      ),
       columnHelper.accessor('movementDate', {
         header: 'Data',
         enableColumnFilter: false,
