@@ -1,11 +1,15 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
+import {
+  ColumnDef,
+  createColumnHelper,
+  SortingState
+} from '@tanstack/react-table';
 import { format } from 'date-fns';
 import Loading from '@/components/loading';
 import { SectionListHeaderSmall } from '@/components/section-list-header-small';
-import { Package } from 'lucide-react';
+import { ArrowUpDown, Package } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { useState, useMemo } from 'react';
 import {
@@ -148,6 +152,7 @@ export function MaterialStatementList({
     DEFAULT_PAGINATION_STATE
   );
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [sorting, setSorting] = useState<SortingState>([]);
 
   const getRowClassName = (row: Row<IMaterialStatement>) => {
     const operation = row.original.movementType.operation;
@@ -260,7 +265,17 @@ export function MaterialStatementList({
         }
       ),
       columnHelper.accessor('movementDate', {
-        header: 'Data/Hora',
+        header: ({ column }) => {
+          return (
+            <div
+              className='flex cursor-pointer items-center'
+              onClick={() => column.toggleSorting()}
+            >
+              Data/Hora
+              <ArrowUpDown className='text-muted-foreground ml-2 h-4 w-4' />
+            </div>
+          );
+        },
         enableColumnFilter: false,
         cell: (props) =>
           format(new Date(props.getValue()), 'dd/MM/yyyy HH:mm:ss')
@@ -355,6 +370,8 @@ export function MaterialStatementList({
           getRowClassName={getRowClassName} // Passa a função para estilizar as linhas
           columnFilters={columnFilters}
           setColumnFilters={setColumnFilters}
+          sorting={sorting}
+          setSorting={setSorting}
           getFacetedRowModel={getFacetedRowModel()}
           getFacetedUniqueValues={getFacetedUniqueValues()}
         />

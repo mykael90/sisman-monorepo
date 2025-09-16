@@ -144,6 +144,9 @@ export function TableTanstackFaceted<TData>({
                                         header.column.getIsFiltered()
                                     }
                                   )}
+                                  strokeWidth={
+                                    header.column.getIsFiltered() ? 3 : 1
+                                  }
                                 />
                               </PopoverTrigger>
                               <PopoverContent
@@ -167,6 +170,7 @@ export function TableTanstackFaceted<TData>({
                                           ).includes(value);
                                           return (
                                             <CommandItem
+                                              className=''
                                               key={value}
                                               onSelect={() => {
                                                 const filterValue =
@@ -188,7 +192,7 @@ export function TableTanstackFaceted<TData>({
                                             >
                                               <div
                                                 className={cn(
-                                                  'border-primary mr-2 flex h-4 w-4 items-center justify-center rounded-sm border',
+                                                  'border-primary mr-2 flex h-4 w-4 items-center justify-center rounded-sm border bg-white',
                                                   isSelected
                                                     ? 'bg-primary text-primary-foreground'
                                                     : 'opacity-50 [&_svg]:invisible'
