@@ -128,41 +128,6 @@ export function MaterialStatementList({
   );
 
   const columns: ColumnDef<IMaterialStatement, any>[] = [
-    columnHelper.accessor('movementDate', {
-      header: 'Data',
-      cell: (props) => format(new Date(props.getValue()), 'dd/MM/yyyy HH:mm:ss')
-    }),
-    columnHelper.accessor((row) => row.processedByUser?.name, {
-      id: 'processedBy',
-      size: 200,
-      enableResizing: false,
-      header: 'Processado Por',
-      cell: (props) => (
-        <div className='whitespace-normal'>{props.getValue() || 'N/A'}</div>
-      )
-    }),
-    columnHelper.accessor((row) => row.collectedByWorker?.name, {
-      id: 'collectedBy',
-      header: 'Retirado Por',
-      size: 200,
-      enableResizing: false,
-      cell: (props) => (
-        <div className='whitespace-normal'>{props.getValue() || 'N/A'}</div>
-      )
-    }),
-    columnHelper.accessor((row) => row.maintenanceRequest?.protocolNumber, {
-      id: 'protocolNumberRMan',
-      header: 'RMan',
-      cell: (props) => props.getValue() || 'N/A'
-    }),
-    columnHelper.accessor(
-      (row) => row.materialRequestItem?.materialRequest?.protocolNumber,
-      {
-        id: 'protocolNumberRM',
-        header: 'RM',
-        cell: (props) => props.getValue() || 'N/A'
-      }
-    ),
     columnHelper.accessor((row) => row.movementType.operation, {
       id: 'operationType',
       header: 'Tipo Operação',
@@ -204,6 +169,42 @@ export function MaterialStatementList({
         </span>
       )
     }),
+    columnHelper.accessor('movementDate', {
+      header: 'Data',
+      cell: (props) => format(new Date(props.getValue()), 'dd/MM/yyyy HH:mm:ss')
+    }),
+    columnHelper.accessor((row) => row.processedByUser?.name, {
+      id: 'processedBy',
+      size: 200,
+      enableResizing: false,
+      header: 'Processado Por',
+      cell: (props) => (
+        <div className='whitespace-normal'>{props.getValue() || 'N/A'}</div>
+      )
+    }),
+    columnHelper.accessor((row) => row.collectedByWorker?.name, {
+      id: 'collectedBy',
+      header: 'Retirado Por',
+      size: 200,
+      enableResizing: false,
+      cell: (props) => (
+        <div className='whitespace-normal'>{props.getValue() || 'N/A'}</div>
+      )
+    }),
+    columnHelper.accessor((row) => row.maintenanceRequest?.protocolNumber, {
+      id: 'protocolNumberRMan',
+      header: 'RMan',
+      cell: (props) => props.getValue() || 'N/A'
+    }),
+    columnHelper.accessor(
+      (row) => row.materialRequestItem?.materialRequest?.protocolNumber,
+      {
+        id: 'protocolNumberRM',
+        header: 'RM',
+        cell: (props) => props.getValue() || 'N/A'
+      }
+    ),
+
     columnHelper.accessor('quantity', {
       header: 'Qtd',
       size: 50,
