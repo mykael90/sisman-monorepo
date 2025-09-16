@@ -39,6 +39,7 @@ interface TableProps<TData> {
   globalFilter?: any;
   setGlobalFilter?: React.Dispatch<React.SetStateAction<string>>;
   renderSubComponent?: (props: { row: Row<TData> }) => React.ReactElement;
+  getRowClassName?: (row: Row<TData>) => string; // Nova prop para estilização de linha
 }
 
 export function TableTanstack<TData>({
@@ -53,7 +54,8 @@ export function TableTanstack<TData>({
   globalFilterFn,
   globalFilter,
   setGlobalFilter,
-  renderSubComponent
+  renderSubComponent,
+  getRowClassName
 }: TableProps<TData>) {
   const [expanded, setExpanded] = useState({});
 
@@ -126,8 +128,11 @@ export function TableTanstack<TData>({
             {table.getRowModel().rows.map((row) => (
               <React.Fragment key={row.id}>
                 <TableRow
-                  // className='odd:bg-white even:bg-gray-50'
-                  className='hover:bg-accent/10 odd:bg-white even:bg-gray-50'
+                  className={
+                    getRowClassName
+                      ? getRowClassName(row)
+                      : 'hover:bg-accent/10 odd:bg-white even:bg-gray-50'
+                  }
                 >
                   {row.getVisibleCells().map((cell) => (
                     // Aplica a classe específica apenas na célula 'name' para manter o layout do Avatar

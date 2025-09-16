@@ -9,7 +9,7 @@ import { SectionListHeaderSmall } from '@/components/section-list-header-small';
 import { Package } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { useState } from 'react';
-import { PaginationState } from '@tanstack/react-table';
+import { PaginationState, Row } from '@tanstack/react-table';
 import { cn } from '@/lib/utils';
 import { getStockMovementsByWarehouseAndMaterial } from '../../../stock-movement/stock-movement-actions';
 
@@ -126,6 +126,24 @@ export function MaterialStatementList({
   const [pagination, setPagination] = useState<PaginationState>(
     DEFAULT_PAGINATION_STATE
   );
+
+  const getRowClassName = (row: Row<IMaterialStatement>) => {
+    const operation = row.original.movementType.operation;
+    switch (operation) {
+      case 'IN':
+        return 'bg-green-50 hover:bg-green-100';
+      case 'OUT':
+        return 'bg-red-50 hover:bg-red-100';
+      case 'ADJUSTMENT':
+        return 'bg-yellow-50 hover:bg-yellow-100';
+      case 'RESERVATION':
+        return 'bg-blue-50 hover:bg-blue-100';
+      case 'RESTRICTION':
+        return 'bg-purple-50 hover:bg-purple-100';
+      default:
+        return 'hover:bg-accent/10 odd:bg-white even:bg-gray-50';
+    }
+  };
 
   const columns: ColumnDef<IMaterialStatement, any>[] = [
     columnHelper.accessor((row) => row.movementType.operation, {
@@ -246,6 +264,7 @@ export function MaterialStatementList({
           columns={columns}
           pagination={pagination}
           setPagination={setPagination}
+          getRowClassName={getRowClassName} // Passa a função para estilizar as linhas
         />
       </div>
     </div>
