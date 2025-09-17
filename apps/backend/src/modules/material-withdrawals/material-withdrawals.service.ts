@@ -530,22 +530,24 @@ export class MaterialWithdrawalsService {
     queryParams?: { [key: string]: string }
   ) {
     try {
+      const includeArgs: Prisma.MaterialWithdrawalInclude = {
+        collectedByUser: { select: { id: true, name: true, login: true } },
+        collectedByWorker: { select: { id: true, name: true } },
+        items: { include: { globalMaterial: true } },
+        materialRequest: { select: { id: true, protocolNumber: true } },
+        materialPickingOrder: true,
+        movementType: true,
+        processedByUser: true,
+        warehouse: true,
+        maintenanceRequest: {
+          include: { building: true, facilityComplex: true }
+        }
+      };
+
       if (Object.keys(queryParams).length === 0) {
         return this.prisma.materialWithdrawal.findMany({
           where: { warehouseId: warehouseId },
-          include: {
-            collectedByUser: { select: { id: true, name: true, login: true } },
-            collectedByWorker: { select: { id: true, name: true } },
-            items: { include: { globalMaterial: true } },
-            materialRequest: { select: { id: true, protocolNumber: true } },
-            materialPickingOrder: true,
-            movementType: true,
-            processedByUser: true,
-            warehouse: true,
-            maintenanceRequest: {
-              include: { building: true, facilityComplex: true }
-            }
-          },
+          include: includeArgs,
           orderBy: {
             withdrawalDate: 'desc'
           }
@@ -553,6 +555,11 @@ export class MaterialWithdrawalsService {
       }
 
       const { startDate, endDate } = queryParams;
+      if (!startDate || !endDate) {
+        throw new BadRequestException(
+          `Os valores das datas são obrigatórios para validação da query`
+        );
+      }
       return this.prisma.materialWithdrawal.findMany({
         where: {
           warehouseId: warehouseId,
@@ -561,19 +568,7 @@ export class MaterialWithdrawalsService {
             lte: new Date(endDate)
           }
         },
-        include: {
-          collectedByUser: { select: { id: true, name: true, login: true } },
-          collectedByWorker: { select: { id: true, name: true } },
-          items: { include: { globalMaterial: true } },
-          materialRequest: { select: { id: true, protocolNumber: true } },
-          materialPickingOrder: true,
-          movementType: true,
-          processedByUser: true,
-          warehouse: true,
-          maintenanceRequest: {
-            include: { building: true, facilityComplex: true }
-          }
-        },
+        include: includeArgs,
         orderBy: {
           withdrawalDate: 'desc'
         }

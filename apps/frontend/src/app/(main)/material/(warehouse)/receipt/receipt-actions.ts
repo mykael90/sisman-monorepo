@@ -36,15 +36,32 @@ export async function getReceipts(accessTokenSisman: string) {
   }
 }
 
-export async function getReceiptsByWarehouse(warehouseId: number) {
+export async function getReceiptsByWarehouse(
+  warehouseId: number,
+  params?: { from?: Date; to?: Date }
+) {
   const accessTokenSisman = await getSismanAccessToken();
   logger.info(`(Server Action) getReceipts: Fetching receipts`);
+
+  const urlParams = new URLSearchParams();
+  if (params?.from) {
+    urlParams.append('startDate', params.from.toISOString());
+  }
+
+  if (params?.to) {
+    urlParams.append('endDate', params.to.toISOString());
+  }
+
   try {
     const data = await fetchApiSisman(
       `${API_RELATIVE_PATH}/warehouse/${warehouseId}`,
       accessTokenSisman,
       {
         // cache: 'force-cache'
+      },
+      {
+        startDate: urlParams.get('startDate'),
+        endDate: urlParams.get('endDate')
       }
     );
     logger.info(

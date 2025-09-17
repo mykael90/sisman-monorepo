@@ -34,11 +34,19 @@ import { useMediaQuery } from '@/hooks/use-media-query';
 import { ReceiptCard } from './receipt-card';
 import { TableTanstackFaceted } from '../../../../../../../components/table-tanstack/table-tanstack-faceted';
 import { DefaultGlobalFilter } from '../../../../../../../components/table-tanstack/default-global-filter';
+import { subDays } from 'date-fns';
+import { DateRange } from 'react-day-picker';
+import { DateRangeFilter } from '../../../../../../../components/filters/date-range-filter';
 
 export function ReceiptListPage() {
   const { warehouse } = useWarehouseContext();
   const router = useRouter();
   const isDesktop = useMediaQuery('(min-width: 768px)');
+
+  const [date, setDate] = useState<DateRange | undefined>({
+    from: subDays(new Date(), 10),
+    to: new Date()
+  });
 
   const [sorting, setSorting] = useState<SortingState>([]);
 
@@ -59,9 +67,13 @@ export function ReceiptListPage() {
     isError,
     error
   } = useQuery({
-    queryKey: ['receipts', warehouse?.id],
-    queryFn: () => getReceiptsByWarehouse(warehouse?.id as number),
-    enabled: !!warehouse
+    queryKey: ['receipts', warehouse?.id, date],
+    queryFn: () =>
+      getReceiptsByWarehouse(warehouse?.id as number, {
+        from: date?.from,
+        to: date?.to
+      }),
+    enabled: !!warehouse && !!date?.from && !!date?.to
   });
 
   // Função para limpar filtros (agora pertence ao pai)
@@ -90,6 +102,20 @@ export function ReceiptListPage() {
           Icon: PackagePlus
         }}
       />
+
+      <div className='mt-4 mb-4 h-auto rounded-xl border-0 bg-white px-4 py-3.5'>
+        <div className='flex flex-col gap-4 md:flex-row'>
+          <DateRangeFilter date={date} setDate={setDate} />
+          {/* <Button
+                  variant='outline'
+                  onClick={handleClearDateFilter}
+                  className='flex items-center'
+                >
+                  <FilterX className='mr-2 h-4 w-4' />
+                  Limpar Filtro de Data
+                </Button> */}
+        </div>
+      </div>
 
       <div className='mt-4 mb-4 h-auto rounded-xl border-0 bg-white px-4 py-3.5'>
         {' '}

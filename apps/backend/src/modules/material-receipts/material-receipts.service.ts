@@ -655,31 +655,59 @@ export class MaterialReceiptsService {
     }
   }
 
-  async listByWarehouse(warehouseId: number) {
+  async listByWarehouse(
+    warehouseId: number,
+    queryParams?: { [key: string]: string }
+  ) {
     try {
-      return this.prisma.materialReceipt.findMany({
-        where: { destinationWarehouseId: warehouseId },
-        include: {
-          movementType: { select: { code: true, id: true, name: true } },
-          destinationWarehouse: true,
-          processedByUser: true,
-          items: {
-            include: {
-              material: true
-            }
-          },
-          materialRequest: {
-            include: {
-              items: true,
-              maintenanceRequest: {
-                select: { id: true, protocolNumber: true }
-              },
-              sipacUnitCost: {
-                select: { codigoUnidade: true, sigla: true, nomeUnidade: true }
-              }
-            }
+      const includeArgs: Prisma.MaterialReceiptInclude = {
+        movementType: { select: { code: true, id: true, name: true } },
+        destinationWarehouse: true,
+        processedByUser: true,
+        items: {
+          include: {
+            material: true
           }
         },
+        materialRequest: {
+          include: {
+            items: true,
+            maintenanceRequest: {
+              select: { id: true, protocolNumber: true }
+            },
+            sipacUnitCost: {
+              select: { codigoUnidade: true, sigla: true, nomeUnidade: true }
+            }
+          }
+        }
+      };
+
+      if (Object.keys(queryParams).length === 0) {
+        return this.prisma.materialReceipt.findMany({
+          where: { destinationWarehouseId: warehouseId },
+          include: includeArgs,
+          orderBy: {
+            receiptDate: 'desc'
+          }
+        });
+      }
+
+      const { startDate, endDate } = queryParams;
+      if (!startDate || !endDate) {
+        throw new BadRequestException(
+          `Os valores das datas são obrigatórios para validação da query`
+        );
+      }
+
+      return this.prisma.materialReceipt.findMany({
+        where: {
+          destinationWarehouseId: warehouseId,
+          receiptDate: {
+            gte: new Date(startDate),
+            lte: new Date(endDate)
+          }
+        },
+        include: includeArgs,
         orderBy: {
           receiptDate: 'desc'
         }
