@@ -30,14 +30,20 @@ import Loading from '@/components/loading';
 import { getWarehouseStocks } from '../../warehouse-stock-actions';
 import { useMediaQuery } from '@/hooks/use-media-query';
 import { WarehouseStockCard } from './warehouse-stock-card';
+import { DefaultGlobalFilter } from '../../../../../../../components/table-tanstack/default-global-filter';
 
 export function WarehouseStockListPage() {
   const { warehouse } = useWarehouseContext();
   const router = useRouter();
   const isDesktop = useMediaQuery('(min-width: 768px)');
 
-  const [warehouseStockValue, setWarehouseStockValue] = useState('');
-  const inputDebounceRef = useRef<InputDebounceRef>(null);
+  const [sorting, setSorting] = useState<SortingState>([]);
+
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+
+  // --- Estado dos Filtros Movido para Cá ---
+  const [globalFilterValue, setGlobalFilterValue] = useState('');
+  const inputDebounceRef = useRef<InputDebounceRef>(null); // Cria a Ref
 
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -62,16 +68,10 @@ export function WarehouseStockListPage() {
     enabled: !!warehouse
   });
 
-  const columnFilters = useMemo<ColumnFiltersState>(() => {
-    const filters: ColumnFiltersState = [];
-    if (warehouseStockValue) {
-      filters.push({ id: 'id', value: warehouseStockValue });
-    }
-    return filters;
-  }, [warehouseStockValue]);
-
+  // Função para limpar filtros (agora pertence ao pai)
   const handleClearFilters = () => {
-    setWarehouseStockValue('');
+    setGlobalFilterValue('');
+    // Chama o método clearInput exposto pelo filho via ref
     inputDebounceRef.current?.clearInput();
   };
 
@@ -96,11 +96,15 @@ export function WarehouseStockListPage() {
       />
 
       <div className='mt-4 mb-4 h-auto rounded-xl border-0 bg-white px-4 py-3.5'>
-        <WarehouseStockFilters
-          warehouseStockValue={warehouseStockValue}
-          setWarehouseStockValue={setWarehouseStockValue}
-          onClearFilters={handleClearFilters}
-          inputDebounceRef={inputDebounceRef}
+        {' '}
+        {/* Ajuste altura se necessário */}
+        <DefaultGlobalFilter
+          // Passa os valores e setters para o componente
+          globalFilterValue={globalFilterValue}
+          setGlobalFilterValue={setGlobalFilterValue}
+          onClearFilter={handleClearFilters} // Passa a função de limpar
+          inputDebounceRef={inputDebounceRef} // Passa a ref
+          label={'Material'}
         />
       </div>
 
@@ -113,8 +117,12 @@ export function WarehouseStockListPage() {
           columnFilters={columnFilters}
           pagination={pagination}
           setPagination={setPagination}
-          // setSorting={setSorting}
-          // sorting={sorting}
+          setSorting={setSorting}
+          sorting={sorting}
+          // TODO: funcao para filtro
+          globalFilterFn='includesString'
+          globalFilter={globalFilterValue}
+          setGlobalFilter={setGlobalFilterValue}
         />
       ) : (
         <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3'>
