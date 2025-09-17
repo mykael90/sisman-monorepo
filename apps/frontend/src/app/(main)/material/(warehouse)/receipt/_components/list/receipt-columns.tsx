@@ -7,7 +7,13 @@ import {
   useReactTable
 } from '@tanstack/react-table';
 import { Button } from '@/components/ui/button';
-import { Edit, Trash2, ChevronRight, ChevronDown } from 'lucide-react';
+import {
+  Edit,
+  Trash2,
+  ChevronRight,
+  ChevronDown,
+  ArrowUpDown
+} from 'lucide-react';
 import {
   Table,
   TableBody,
@@ -190,7 +196,17 @@ export const columns = (
 
   columnHelper.accessor((row) => Number(row.valueReceipt), {
     id: 'valueReceipt',
-    header: () => <div className='text-center'>Valor</div>,
+    header: ({ column }) => {
+      return (
+        <div
+          className='flex cursor-pointer items-center'
+          onClick={() => column.toggleSorting()}
+        >
+          Valor
+          <ArrowUpDown className='text-muted-foreground ml-2 h-4 w-4' />
+        </div>
+      );
+    },
     size: 60,
     enableResizing: false,
     enableColumnFilter: false,
