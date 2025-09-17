@@ -35,6 +35,7 @@ import { subDays } from 'date-fns';
 import { DateRangeFilter } from '@/components/filters/date-range-filter';
 import { Button } from '@/components/ui/button';
 import { TableTanstackFaceted } from '../../../../../../../components/table-tanstack/table-tanstack-faceted';
+import { DefaultGlobalFilter } from '../../../../../../../components/table-tanstack/default-global-filter';
 
 export function WithdrawalListPage() {
   // 1. Consuma o contexto
@@ -47,8 +48,20 @@ export function WithdrawalListPage() {
     to: new Date()
   });
 
+  const [sorting, setSorting] = useState<SortingState>([]);
+
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const inputDebounceRef = useRef<InputDebounceRef>(null);
+
+  // --- Estado dos Filtros Movido para Cá ---
+  const [globalFilterValue, setGlobalFilterValue] = useState('');
+  const inputDebounceRef = useRef<InputDebounceRef>(null); // Cria a Ref
+
+  // Função para limpar filtros (agora pertence ao pai)
+  const handleClearFilters = () => {
+    setGlobalFilterValue('');
+    // Chama o método clearInput exposto pelo filho via ref
+    inputDebounceRef.current?.clearInput();
+  };
 
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -131,12 +144,25 @@ export function WithdrawalListPage() {
         </div>
       </div>
 
-      <div className='mt-4 mb-4 h-auto rounded-xl border-0 bg-white px-4 py-3.5'>
+      {/* <div className='mt-4 mb-4 h-auto rounded-xl border-0 bg-white px-4 py-3.5'>
         <WithdrawalFilters
           withdrawalValue={withdrawalValue}
           setWithdrawalValue={setWithdrawalValue}
           onClearFilters={handleClearFrontendFilters}
           inputDebounceRef={inputDebounceRef}
+        />
+      </div> */}
+
+      <div className='mt-4 mb-4 h-auto rounded-xl border-0 bg-white px-4 py-3.5'>
+        {' '}
+        {/* Ajuste altura se necessário */}
+        <DefaultGlobalFilter
+          // Passa os valores e setters para o componente
+          globalFilterValue={globalFilterValue}
+          setGlobalFilterValue={setGlobalFilterValue}
+          onClearFilter={handleClearFilters} // Passa a função de limpar
+          inputDebounceRef={inputDebounceRef} // Passa a ref
+          label={''}
         />
       </div>
 
@@ -151,11 +177,14 @@ export function WithdrawalListPage() {
           setColumnFilters={setColumnFilters}
           pagination={pagination}
           setPagination={setPagination}
-          // setSorting={setSorting}
-          // sorting={sorting}
+          setSorting={setSorting}
+          sorting={sorting}
           renderSubComponent={SubRowComponent}
           getFacetedRowModel={getFacetedRowModel()}
           getFacetedUniqueValues={getFacetedUniqueValues()}
+          globalFilterFn='includesString'
+          globalFilter={globalFilterValue}
+          setGlobalFilter={setGlobalFilterValue}
         />
       ) : (
         <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3'>

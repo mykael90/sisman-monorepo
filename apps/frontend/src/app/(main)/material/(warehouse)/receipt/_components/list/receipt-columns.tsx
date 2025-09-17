@@ -88,34 +88,44 @@ export const columns = (
       </Button>
     )
   }),
-  columnHelper.accessor((row) => row.movementType?.code, {
-    id: 'movementTypeCode',
-    header: 'Tipo de Entrada',
-    cell: (props) => (
-      <>
-        {
-          materialOperationInDisplayMapPorguguese[
-            `${props.getValue()}` as TMaterialOperationInKey
-          ].split(' ')[1]
-        }
-      </>
-    )
-  }),
+  columnHelper.accessor(
+    (row) => {
+      const code = row.movementType?.code;
+      if (!code) {
+        return 'N/A';
+      }
+      return (
+        materialOperationInDisplayMapPorguguese[
+          code as TMaterialOperationInKey
+        ] || code
+      );
+    },
+    {
+      id: 'movementSubtype',
+      header: 'Tipo de Entrada',
+      cell: (props) => <span className='capitalize'>{props.getValue()}</span>,
+      enableColumnFilter: true,
+      filterFn: 'arrIncludesSome'
+    }
+  ),
   columnHelper.accessor(
     (row) => row.materialRequest?.maintenanceRequest?.protocolNumber,
     {
       id: 'protocolNumberRMan',
       header: 'RMan',
+      enableColumnFilter: false,
       cell: (props) => props.getValue()
     }
   ),
   columnHelper.accessor((row) => row.materialRequest?.protocolNumber, {
     id: 'protocolNumberRM',
     header: 'RM',
+    enableColumnFilter: false,
     cell: (props) => props.getValue()
   }),
   columnHelper.accessor((row) => row.receiptDate, {
     id: 'receiptDate',
+    enableColumnFilter: false,
     header: () => <div className='text-center'> Entrada</div>,
     cell: (props) => {
       const date = new Date(props.getValue());
@@ -146,6 +156,7 @@ export const columns = (
   columnHelper.accessor((row) => row.materialRequest?.requestDate, {
     id: 'requestDate',
     header: () => <div className='text-center'>Data RM</div>,
+    enableColumnFilter: false,
     cell: (props) => {
       const date = new Date(props.getValue());
       return <div className='text-center'>{date.toLocaleDateString()}</div>;
@@ -182,6 +193,7 @@ export const columns = (
     header: () => <div className='text-center'>Valor</div>,
     size: 60,
     enableResizing: false,
+    enableColumnFilter: false,
     cell: (props) => (
       <div className='text-right'>
         {props.getValue().toLocaleString('pt-BR', {

@@ -14,6 +14,8 @@ import { ReceiptFilters } from './receipt-filters';
 import {
   ColumnDef,
   ColumnFiltersState,
+  getFacetedRowModel,
+  getFacetedUniqueValues,
   PaginationState,
   SortingState
 } from '@tanstack/react-table';
@@ -30,14 +32,21 @@ import Loading from '@/components/loading';
 import { getReceiptsByWarehouse } from '../../receipt-actions';
 import { useMediaQuery } from '@/hooks/use-media-query';
 import { ReceiptCard } from './receipt-card';
+import { TableTanstackFaceted } from '../../../../../../../components/table-tanstack/table-tanstack-faceted';
+import { DefaultGlobalFilter } from '../../../../../../../components/table-tanstack/default-global-filter';
 
 export function ReceiptListPage() {
   const { warehouse } = useWarehouseContext();
   const router = useRouter();
   const isDesktop = useMediaQuery('(min-width: 768px)');
 
-  const [receiptValue, setReceiptValue] = useState('');
-  const inputDebounceRef = useRef<InputDebounceRef>(null);
+  const [sorting, setSorting] = useState<SortingState>([]);
+
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+
+  // --- Estado dos Filtros Movido para Cá ---
+  const [globalFilterValue, setGlobalFilterValue] = useState('');
+  const inputDebounceRef = useRef<InputDebounceRef>(null); // Cria a Ref
 
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -55,16 +64,10 @@ export function ReceiptListPage() {
     enabled: !!warehouse
   });
 
-  const columnFilters = useMemo<ColumnFiltersState>(() => {
-    const filters: ColumnFiltersState = [];
-    if (receiptValue) {
-      filters.push({ id: 'id', value: receiptValue });
-    }
-    return filters;
-  }, [receiptValue]);
-
+  // Função para limpar filtros (agora pertence ao pai)
   const handleClearFilters = () => {
-    setReceiptValue('');
+    setGlobalFilterValue('');
+    // Chama o método clearInput exposto pelo filho via ref
     inputDebounceRef.current?.clearInput();
   };
 
@@ -89,24 +92,36 @@ export function ReceiptListPage() {
       />
 
       <div className='mt-4 mb-4 h-auto rounded-xl border-0 bg-white px-4 py-3.5'>
-        <ReceiptFilters
-          receiptValue={receiptValue}
-          setReceiptValue={setReceiptValue}
-          onClearFilters={handleClearFilters}
-          inputDebounceRef={inputDebounceRef}
+        {' '}
+        {/* Ajuste altura se necessário */}
+        <DefaultGlobalFilter
+          // Passa os valores e setters para o componente
+          globalFilterValue={globalFilterValue}
+          setGlobalFilterValue={setGlobalFilterValue}
+          onClearFilter={handleClearFilters} // Passa a função de limpar
+          inputDebounceRef={inputDebounceRef} // Passa a ref
+          label={''}
         />
       </div>
 
       {isLoading ? (
         <Loading />
       ) : isDesktop ? (
-        <TableTanstack
+        <TableTanstackFaceted
           data={receipts}
           columns={columns(columnActions)}
           columnFilters={columnFilters}
+          setColumnFilters={setColumnFilters}
           pagination={pagination}
           setPagination={setPagination}
+          setSorting={setSorting}
+          sorting={sorting}
           renderSubComponent={SubRowComponent}
+          getFacetedRowModel={getFacetedRowModel()}
+          getFacetedUniqueValues={getFacetedUniqueValues()}
+          globalFilterFn='includesString'
+          globalFilter={globalFilterValue}
+          setGlobalFilter={setGlobalFilterValue}
         />
       ) : (
         <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3'>
