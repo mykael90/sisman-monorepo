@@ -522,9 +522,13 @@ export class MaterialReceiptsService {
           MaintenanceRequest.materialPickingOrders.length > 0 ||
           MaintenanceRequest.materialWithdrawals.length > 0;
 
-        //só restringir se não tiver reserva nem saída e também for a primeira entrada da RM
+        //só restringir se não tiver reserva nem saída, tiver requisicao de manutencao associada e também for a primeira entrada da RM
         //Se quiser depois pode fazer uma logica para atualizar as restrições. Mas é tão pouco esse evento que não compensa esse trabalho.
-        if (!isDirtyMaintenanceRequest && existingReceiptGlobal === false) {
+        if (
+          !isDirtyMaintenanceRequest &&
+          existingReceiptGlobal === false &&
+          newReceipt.materialRequest?.maintenanceRequestId
+        ) {
           // lógica para restringir todos os items. criar um método para isso. criar um dto para restringir e chamar o serviço.
 
           const payloadCreateMaterialRestrictionOrder: CreateMaterialRestrictionOrderWithRelationsDto =
