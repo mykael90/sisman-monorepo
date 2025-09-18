@@ -23,6 +23,7 @@ import {
 } from '../form/material-receipt-form-validation';
 import { Item } from '@radix-ui/react-select';
 import { IMaterialReceiptItemAddFormInfo } from '../form/table-form-items-material-request';
+import { MaterialRequestDetails } from './material-request-details';
 
 export function MaterialReceiptAdd({
   relatedData
@@ -140,9 +141,7 @@ export function MaterialReceiptAdd({
                 className='space-y-4 rounded-md border py-4'
                 key={formKey + materialRequest.id}
               >
-                <div className='ps-4 text-lg font-bold'>
-                  Requisição: {materialRequest.protocolNumber}
-                </div>
+                <MaterialRequestDetails materialRequest={materialRequest} />
                 <MaterialReceiptForm
                   key={formKey + materialRequest.id}
                   onClean={triggerReset}
