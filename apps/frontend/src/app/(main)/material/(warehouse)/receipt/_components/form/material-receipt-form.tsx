@@ -24,7 +24,7 @@ import {
 } from '@/mappers/material-operations-mappers';
 import { ItemsFieldArrayMaterialRequest } from './field-form-items-array-material-request';
 import { IMaterialReceiptItemAddFormInfo } from './table-form-items-material-request';
-import { set } from 'date-fns';
+import { toast } from 'sonner';
 
 export function MaterialReceiptForm({
   defaultData,
@@ -92,20 +92,29 @@ export function MaterialReceiptForm({
     serverStateReceipt?.isSubmitSuccessful &&
     serverStateReceipt.responseData
   ) {
-    return (
-      <FormSuccessDisplayCard
-        serverState={serverStateReceipt}
-        handleActions={{
-          handleResetForm: handleReset,
-          handleCancelForm: handleCancel
-        }}
-        messageActions={{
-          handleResetForm: 'Realizar nova entrada',
-          handleCancel: 'Voltar para a lista'
-        }}
-        isInDialog={false}
-      />
-    );
+    if (movementTypeCode === materialOperationInDisplayMap.IN_CENTRAL) {
+      return (
+        <FormSuccessDisplayCard
+          serverState={serverStateReceipt}
+          isInDialog={false}
+        />
+      );
+    } else {
+      return (
+        <FormSuccessDisplayCard
+          serverState={serverStateReceipt}
+          handleActions={{
+            handleResetForm: handleReset,
+            handleCancelForm: handleCancel
+          }}
+          messageActions={{
+            handleResetForm: 'Realizar nova entrada',
+            handleCancel: 'Voltar para a lista'
+          }}
+          isInDialog={false}
+        />
+      );
+    }
   }
 
   const currentSubmitButtonText = submitButtonText || 'Realizar entrada';

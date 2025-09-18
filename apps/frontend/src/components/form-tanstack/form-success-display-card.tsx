@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface FormSuccessDisplayCardProps<TSubmittedData, TApiResponse> {
   serverState: IActionResultForm<TSubmittedData, TApiResponse>;
-  handleActions: {
+  handleActions?: {
     handleResetForm?: () => void;
     [key: string]: (() => void) | undefined;
   };
@@ -56,7 +56,7 @@ export function FormSuccessDisplayCard<TSubmittedData, TApiResponse>({
           )}
 
         <div className='mt-4 flex justify-center gap-4'>
-          {handleActions.handleResetForm && (
+          {handleActions && handleActions.handleResetForm && (
             <Button
               onClick={() => {
                 console.log('aqui 1');
@@ -74,6 +74,7 @@ export function FormSuccessDisplayCard<TSubmittedData, TApiResponse>({
               <Button className='flex'>Voltar para lista</Button>
             </DialogClose>
           ) : (
+            handleActions &&
             handleActions.handleCancelForm && (
               <Button onClick={handleActions.handleCancelForm} className='flex'>
                 Voltar para lista
