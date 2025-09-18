@@ -15,6 +15,8 @@ import {
 import { IWithdrawalFormApi } from '../../../../../../hooks/use-withdrawal-form';
 import { IMaterialWithdrawalItemAddForm } from '../withdrawal-types';
 import { MaterialItemsMaterialRequestField } from './form/field-form-items-material-request-array';
+import { statusMaterialRequestDisplayMap } from '@/mappers/material-request-mappers-translate';
+import { ptBR } from 'date-fns/locale';
 
 const initialServerStateRequestMaterialBalance: IActionResultForm<
   string,
@@ -159,26 +161,39 @@ export function CardMaterialRequestLinkDetails({
                   <div className='space-y-2'>
                     <Label>Valor da Requisição</Label>
                     <p className='text-muted-foreground'>
-                      R${' '}
-                      {Number(materialRequestBalance.requestValue).toFixed(2)}
+                      {Number(
+                        materialRequestBalance.requestValue
+                      ).toLocaleString('pt-BR', {
+                        style: 'currency',
+                        currency: 'BRL'
+                      })}
                     </p>
                   </div>
                   <div className='space-y-2'>
                     <Label>Valor Atendido</Label>
                     <p className='text-muted-foreground'>
-                      R$ {Number(materialRequestBalance.servedValue).toFixed(2)}
+                      {Number(
+                        materialRequestBalance.servedValue
+                      ).toLocaleString('pt-BR', {
+                        style: 'currency',
+                        currency: 'BRL'
+                      })}
                     </p>
                   </div>
                   <div className='space-y-2'>
                     <Label>Status Atual</Label>
                     <p className='text-muted-foreground'>
-                      {materialRequestBalance.currentStatus}
+                      {
+                        statusMaterialRequestDisplayMap[
+                          materialRequestBalance.currentStatus
+                        ]
+                      }
                     </p>
                   </div>
                   <div className='space-y-2'>
                     <Label>Data da Requisição</Label>
                     <p className='text-muted-foreground'>
-                      {format(new Date(), 'PPP')}
+                      {format(new Date(), 'dd/MM/yyyy', { locale: ptBR })}
                     </p>
                   </div>
                 </div>

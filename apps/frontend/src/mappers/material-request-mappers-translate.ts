@@ -16,7 +16,11 @@ export const statusMaterialRequestDisplayMap = {
   CANCELLED: 'Cancelada',
   REVERSED: 'Estornada',
   MATERIAL_SENT: 'Materiais Despachados',
-  MATERIAL_RECEIVED: 'Materiais Recebidos'
+  MATERIAL_RECEIVED: 'Materiais Recebidos',
+  PENDING_CHIEF: 'Pendente de Autorização da Chefia',
+  CHANGED: 'Alterada',
+  ITEM_RETURNED: 'Item Retornado',
+  RETURNED: 'Retornada'
 } as const; // <-- A mágica acontece aqui!
 
 // Passo 2 (Opcional, mas recomendado): Verificação de consistência.
