@@ -10,6 +10,13 @@ Authorization: Bearer {{token}}
 GET {{urlLocal}}/warehouse/1
 Authorization: Bearer {{token}}
 
+### GET all by warehouse with rangeDate
+GET {{urlLocal}}/warehouse/1
+?startDate=2025-01-01T00:00:00Z
+&endDate=2025-12-31T23:59:59Z
+&movementSubTypeCode=OUT_CENTRAL
+Authorization: Bearer {{token}}
+
 ### GET one
 # @prompt id
 GET {{urlLocal}}/{{id}}

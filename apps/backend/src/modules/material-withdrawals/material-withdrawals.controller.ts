@@ -24,6 +24,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { ApiEndpointSwagger } from '../../shared/decorators/swagger/api-endpoint.decorator';
 import { Roles } from 'src/shared/decorators/roles.decorator';
 import { Role } from 'src/shared/enums/role.enum';
+import { MaterialStockOperationSubType } from '@sisman/prisma';
 
 @ApiTags('Material Withdrawals') // Agrupa os endpoints na UI do Swagger
 @UseGuards(AuthGuard)
@@ -77,7 +78,11 @@ export class MaterialWithdrawalsController {
     }
   })
   async listByWarehouse(
-    @Query() queryParams: { [key: string]: string },
+    @Query()
+    queryParams: {
+      [key: string]: string;
+      movementSubTypeCode?: MaterialStockOperationSubType;
+    },
     @Param('warehouseId', ParseIntPipe) warehouseId: number
   ) {
     console.log(warehouseId);

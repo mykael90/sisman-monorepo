@@ -527,7 +527,10 @@ export class MaterialWithdrawalsService {
 
   async listByWarehouse(
     warehouseId: number,
-    queryParams?: { [key: string]: string }
+    queryParams?: {
+      [key: string]: string;
+      movementSubTypeCode?: MaterialStockOperationSubType;
+    }
   ) {
     try {
       const includeArgs: Prisma.MaterialWithdrawalInclude = {
@@ -544,35 +547,31 @@ export class MaterialWithdrawalsService {
         }
       };
 
-      if (Object.keys(queryParams).length === 0) {
-        return this.prisma.materialWithdrawal.findMany({
-          where: { warehouseId: warehouseId },
-          include: includeArgs,
-          orderBy: {
-            withdrawalDate: 'desc'
-          }
-        });
-      }
+      const whereArgs: Prisma.MaterialWithdrawalWhereInput = {
+        warehouseId
+      };
 
-      const { startDate, endDate } = queryParams;
-      if (!startDate || !endDate) {
-        throw new BadRequestException(
-          `Os valores das datas são obrigatórios para validação da query`
-        );
-      }
-      return this.prisma.materialWithdrawal.findMany({
-        where: {
-          warehouseId: warehouseId,
-          withdrawalDate: {
+      if (!!Object.keys(queryParams).length) {
+        const { startDate, endDate, movementSubTypeCode } = queryParams;
+        if (startDate && endDate) {
+          whereArgs.withdrawalDate = {
             gte: new Date(startDate),
             lte: new Date(endDate)
-          }
-        },
+          };
+        }
+        if (movementSubTypeCode)
+          whereArgs.movementType = { code: movementSubTypeCode };
+      }
+
+      const findManyArgs: Prisma.MaterialWithdrawalFindManyArgs = {
+        where: whereArgs,
         include: includeArgs,
         orderBy: {
           withdrawalDate: 'desc'
         }
-      });
+      };
+
+      return this.prisma.materialWithdrawal.findMany(findManyArgs);
     } catch (error) {
       handlePrismaError(error, this.logger, 'MaterialWithdrawalsService', {
         operation: 'listByWarehouse'
