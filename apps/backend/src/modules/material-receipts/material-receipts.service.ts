@@ -186,6 +186,7 @@ export class MaterialReceiptsService {
       destinationWarehouse,
       processedByUser,
       materialRequest,
+      materialWithdrawal,
       items,
       ...restOfData
     } = data;
@@ -398,6 +399,9 @@ export class MaterialReceiptsService {
       materialRequest: materialRequest?.id
         ? { connect: { id: materialRequest.id } }
         : undefined,
+      materialWithdrawal: materialWithdrawal?.id
+        ? { connect: { id: materialWithdrawal.id } }
+        : undefined,
       items: {
         create: items.map((item) => ({
           // Mapeie os campos do DTO para o modelo do Prisma
@@ -588,6 +592,7 @@ export class MaterialReceiptsService {
       destinationWarehouse,
       processedByUser,
       materialRequest,
+      materialWithdrawal,
       items,
       ...restOfData
     } = data;
@@ -606,6 +611,10 @@ export class MaterialReceiptsService {
       updateInput.processedByUser = { connect: { id: processedByUser.id } };
     if (materialRequest?.id)
       updateInput.materialRequest = { connect: { id: materialRequest.id } };
+    if (materialWithdrawal?.id)
+      updateInput.materialWithdrawal = {
+        connect: { id: materialWithdrawal.id }
+      };
 
     // TODO: Implement logic to update nested items if needed.
     // This would involve checking for existing items, creating new ones, or deleting old ones.

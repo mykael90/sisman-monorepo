@@ -657,6 +657,7 @@ model MaterialWithdrawal {
     materialRequestId Int? // A MaterialRequest GERAL que está sendo atendida
     materialRequest   MaterialRequest? @relation(fields: [materialRequestId], references: [id], onDelete: SetNull)
 
+
     // Se esta retirada foi originada por uma Ordem de Separação/Reserva específica
     materialPickingOrderId Int?
     materialPickingOrder   MaterialPickingOrder? @relation(fields: [materialPickingOrderId], references: [id], onDelete: SetNull)
@@ -664,6 +665,8 @@ model MaterialWithdrawal {
     // Tipo geral da movimentação para este "pacote" (ex: SAIDA_USO_OS, SAIDA_EMERGENCIA)
     movementTypeId Int
     movementType   MaterialStockMovementType @relation(fields: [movementTypeId], references: [id])
+
+    materialReceipts MaterialReceipt[] @relation("ReceiptsForMaterialWithdrawal")
 
     valueWithdrawal Decimal? @db.Decimal(12, 4) // custo total da retirada, considerando todos os materiais
 
@@ -715,6 +718,8 @@ model MaterialWithdrawalItem {
     // O MaterialStockMovement é gerado por este MaterialWithdrawalItem.
     // Cada MaterialWithdrawalItem RESULTA em UM MaterialStockMovement de SAÍDA.
     stockMovement MaterialStockMovement?
+
+    materialReceiptItems MaterialReceiptItem[]
 
     createdAt DateTime @default(now()) @db.Timestamp(0)
     updatedAt DateTime @updatedAt @db.Timestamp(0)
@@ -842,6 +847,10 @@ model MaterialReceipt {
     materialRequestId Int?
     materialRequest   MaterialRequest? @relation("ReceiptsForMaterialRequest", fields: [materialRequestId], references: [id])
 
+    materialWithdrawalId Int?
+    materialWithdrawal   MaterialWithdrawal? @relation("ReceiptsForMaterialWithdrawal", fields: [materialWithdrawalId], references: [id])
+
+
     status MaterialReceiptStatus @default(FULLY_ACCEPTED)
 
     valueReceipt Decimal? @db.Decimal(12, 4) // custo total da entrada, considerando todos os materiais
@@ -896,6 +905,9 @@ model MaterialReceiptItem {
 
     materialRequestItem   MaterialRequestItem? @relation(fields: [materialRequestItemId], references: [id]) // Relation to MaterialRequestItem.
     materialRequestItemId Int? //um para muitos pois podem ter entradas diferentes, como vindo do almoxarifado central ou uma sobra referente a mesma requisicao de material
+    
+    materialWithdrawalItem   MaterialWithdrawalItem? @relation(fields: [materialWithdrawalItemId], references: [id]) // Relation to MaterialWithdrawalItem.
+    materialWithdrawalItemId Int?
 
     createdAt DateTime @default(now()) @db.Timestamp(0)
     updatedAt DateTime @updatedAt @db.Timestamp(0)

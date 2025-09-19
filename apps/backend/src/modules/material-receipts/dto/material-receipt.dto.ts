@@ -27,6 +27,14 @@ import { UpdateWarehouseDto } from '../../warehouses/dto/warehouse.dto';
  */
 class MaterialReceiptBaseDto implements MaterialReceipt {
   /**
+   * ID da retirada de material associada, se houver.
+   * @example 123
+   */
+  @IsOptional()
+  @IsNumber()
+  materialWithdrawalId: number;
+
+  /**
    * ID da requisição de material associada, se houver.
    * @example 123
    */
@@ -149,7 +157,8 @@ const MaterialReceiptRelationOnlyArgs =
       destinationWarehouse: true,
       processedByUser: true,
       items: true,
-      materialRequest: true
+      materialRequest: true,
+      materialWithdrawal: true
     }
   });
 
@@ -196,6 +205,9 @@ export class MaterialReceiptWithRelationsResponseDto
 
   @IsOptional()
   materialRequest?: MaterialReceiptRelationOnly['materialRequest'];
+
+  @IsOptional()
+  materialWithdrawal?: MaterialReceiptRelationOnly['materialWithdrawal'];
 }
 
 // =================================================================
@@ -243,6 +255,9 @@ export class CreateMaterialReceiptWithRelationsDto extends IntersectionType(
 
   @IsOptional()
   materialRequest: MaterialReceiptRelationOnly['materialRequest'];
+
+  @IsOptional()
+  materialWithdrawal: MaterialReceiptRelationOnly['materialWithdrawal'];
 }
 
 // =================================================================
