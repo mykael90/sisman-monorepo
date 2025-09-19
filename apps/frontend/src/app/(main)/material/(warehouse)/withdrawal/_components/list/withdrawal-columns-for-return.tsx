@@ -30,6 +30,7 @@ import {
 } from '../../../../../../../mappers/material-operations-mappers-translate';
 import { Badge } from '@/components/ui/badge';
 import { useMemo } from 'react';
+import { Checkbox } from '@/components/ui/checkbox'; // Importar Checkbox
 
 const columnHelper = createColumnHelper<IMaterialWithdrawalWithRelations>();
 
@@ -59,6 +60,28 @@ export const createActions = (
 export const columnsForReturn = (
   configuredActions: ActionHandlers<IMaterialWithdrawalWithRelations>
 ): ColumnDef<IMaterialWithdrawalWithRelations, any>[] => [
+  // {
+  //   id: 'select',
+  //   header: ({ table }) => (
+  //     <Checkbox
+  //       checked={
+  //         table.getIsAllPageRowsSelected() ||
+  //         (table.getIsSomePageRowsSelected() && 'indeterminate')
+  //       }
+  //       onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+  //       aria-label='Select all'
+  //     />
+  //   ),
+  //   cell: ({ row }) => (
+  //     <Checkbox
+  //       checked={row.getIsSelected()}
+  //       onCheckedChange={(value) => row.toggleSelected(!!value)}
+  //       aria-label='Select row'
+  //     />
+  //   ),
+  //   enableSorting: false,
+  //   enableHiding: false
+  // },
   columnHelper.display({
     id: 'expander',
     size: 30,

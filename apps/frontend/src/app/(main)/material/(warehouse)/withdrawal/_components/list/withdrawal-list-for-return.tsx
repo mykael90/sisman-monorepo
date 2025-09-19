@@ -40,6 +40,7 @@ import {
   createActions,
   SubRowComponent
 } from './withdrawal-columns-for-return';
+import { TableTanstackFacetedOneSelection } from '../../../../../../../components/table-tanstack/table-tanstack-faceted-one-selection';
 
 export function WithdrawalListPageForReturn() {
   // 1. Consuma o contexto
@@ -55,6 +56,7 @@ export function WithdrawalListPageForReturn() {
   const [sorting, setSorting] = useState<SortingState>([]);
 
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [rowSelection, setRowSelection] = useState({});
 
   // --- Estado dos Filtros Movido para Cá ---
   const [globalFilterValue, setGlobalFilterValue] = useState('');
@@ -162,7 +164,7 @@ export function WithdrawalListPageForReturn() {
       {isLoading ? (
         <Loading />
       ) : isDesktop ? (
-        <TableTanstackFaceted
+        <TableTanstackFacetedOneSelection
           data={withdrawals}
           columns={columnsForReturn(columnActions)}
           columnFilters={columnFilters}
@@ -177,6 +179,8 @@ export function WithdrawalListPageForReturn() {
           globalFilterFn='includesString'
           globalFilter={globalFilterValue}
           setGlobalFilter={setGlobalFilterValue}
+          enableRowSelection={true}
+          onRowSelectionChange={setRowSelection}
         />
       ) : (
         <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3'>
