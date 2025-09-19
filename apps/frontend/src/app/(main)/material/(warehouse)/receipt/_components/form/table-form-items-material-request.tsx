@@ -25,8 +25,7 @@ export type IMaterialReceiptItemAddFormInfo = Pick<
       | 'quantityDelivered'
       | 'quantityReturned'
     >
-  > &
-  Partial<Pick<IMaterialWithdrawalItem, 'quantityWithdrawn' | 'unitPrice'>>;
+  >;
 
 interface TableFormItemsMaterialRequestProps {
   materialsInfo: IMaterialReceiptItemAddFormInfo[];

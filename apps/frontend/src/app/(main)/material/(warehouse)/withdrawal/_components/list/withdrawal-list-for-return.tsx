@@ -21,7 +21,6 @@ import {
 import { InputDebounceRef } from '@/components/ui/input';
 import { IMaterialWithdrawalWithRelations } from '../../withdrawal-types';
 import { useRouter } from 'next/navigation';
-import { columns, createActions, SubRowComponent } from './withdrawal-columns';
 import { FilterX, Package, PackagePlus } from 'lucide-react';
 import { SectionListHeaderSmall } from '../../../../../../../components/section-list-header-small';
 import { useWarehouseContext } from '../../../../choose-warehouse/context/warehouse-provider';
@@ -36,6 +35,11 @@ import { DateRangeFilter } from '@/components/filters/date-range-filter';
 import { Button } from '@/components/ui/button';
 import { TableTanstackFaceted } from '../../../../../../../components/table-tanstack/table-tanstack-faceted';
 import { DefaultGlobalFilter } from '../../../../../../../components/table-tanstack/default-global-filter';
+import {
+  columnsForReturn,
+  createActions,
+  SubRowComponent
+} from './withdrawal-columns-for-return';
 
 export function WithdrawalListPageForReturn() {
   // 1. Consuma o contexto
@@ -160,7 +164,7 @@ export function WithdrawalListPageForReturn() {
       ) : isDesktop ? (
         <TableTanstackFaceted
           data={withdrawals}
-          columns={columns(columnActions)}
+          columns={columnsForReturn(columnActions)}
           columnFilters={columnFilters}
           setColumnFilters={setColumnFilters}
           pagination={pagination}
