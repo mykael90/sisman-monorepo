@@ -9,7 +9,7 @@ import { IPickingOrderAdd, IPickingOrderEdit } from './picking-order-types';
 import { handleApiAction } from '@/lib/fetch/handle-form-action-sisman';
 
 const PAGE_PATH = '/material/picking-order';
-const API_RELATIVE_PATH = '/material/picking-order';
+const API_RELATIVE_PATH = '/material-picking-order';
 
 const logger = new Logger(`${PAGE_PATH}/picking-order-actions`);
 
@@ -26,6 +26,51 @@ export async function getPickingOrders(accessTokenSisman: string) {
   } catch (error) {
     logger.error(
       `(Server Action) getPickingOrders: Error fetching picking-orders`,
+      error
+    );
+    throw error;
+  }
+}
+
+export async function getPickingOrdersByWarehouse(
+  warehouseId: number,
+  params?: { from?: Date; to?: Date }
+) {
+  logger.info(
+    `(Server Action) getPickingOrdersByWarehouse: Fetching picking-orders for warehouse ${warehouseId} with date range`,
+    params
+  );
+
+  const urlParams = new URLSearchParams();
+  if (params?.from) {
+    urlParams.append('startDate', params.from.toISOString());
+  }
+
+  if (params?.to) {
+    urlParams.append('endDate', params.to.toISOString());
+  }
+
+  console.log(urlParams.toString());
+
+  try {
+    const accessToken = await getSismanAccessToken();
+
+    const data = await fetchApiSisman(
+      `${API_RELATIVE_PATH}/warehouse/${warehouseId}`,
+      accessToken,
+      { cache: 'no-store' },
+      {
+        startDate: urlParams.get('startDate'),
+        endDate: urlParams.get('endDate')
+      }
+    );
+    logger.info(
+      `(Server Action) getPickingOrdersByWarehouse: ${data.length} picking-orders returned for warehouse ${warehouseId}`
+    );
+    return data;
+  } catch (error) {
+    logger.error(
+      `(Server Action) getPickingOrdersByWarehouse: Error fetching picking-orders for warehouse ${warehouseId}`,
       error
     );
     throw error;

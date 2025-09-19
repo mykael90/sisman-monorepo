@@ -9,6 +9,7 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  Query,
   UseGuards
 } from '@nestjs/common';
 import { MaterialPickingOrdersService } from './material-picking-orders.service';
@@ -98,6 +99,34 @@ export class MaterialPickingOrdersController {
   })
   async list() {
     return this.materialPickingOrdersService.list();
+  }
+
+  /**
+   * Lista todas as ordens de separação de material por depósito.
+   */
+  @Get('warehouse/:warehouseId')
+  @ApiEndpointSwagger({
+    summary: 'Listar ordens de separação de material por depósito',
+    description:
+      'Retorna uma lista de todas as ordens de separação de material.',
+    response: {
+      status: HttpStatus.OK,
+      description: 'Lista de ordens de separação de material.',
+      type: MaterialPickingOrderWithRelationsResponseDto, // Usa a DTO de resposta
+      isArray: true // Indica que a resposta é um array
+    }
+  })
+  async listByWarehouse(
+    @Query()
+    queryParams: {
+      [key: string]: string;
+    },
+    @Param('warehouseId', ParseIntPipe) warehouseId: number
+  ) {
+    return this.materialPickingOrdersService.listByWarehouse(
+      warehouseId,
+      queryParams
+    );
   }
 
   /**

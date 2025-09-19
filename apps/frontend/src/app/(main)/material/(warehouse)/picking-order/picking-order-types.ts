@@ -1,12 +1,11 @@
 import { MaterialPickingOrder, Prisma } from '@sisman/prisma';
 
 export type IPickingOrderWithRelations = Prisma.MaterialPickingOrderGetPayload<{
-  include: {maintenanceRequest:true}
+  include: { maintenanceRequest: true; warehouse: true };
 }>;
 
-export interface IPickingOrderAdd extends Omit<Prisma.MaterialPickingOrderCreateInput, 
-  'maintenanceRequest'
-> {}
+export interface IPickingOrderAdd
+  extends Omit<Prisma.MaterialPickingOrderCreateInput, 'maintenanceRequest'> {}
 
 export interface IPickingOrderEdit extends IPickingOrderAdd {
   id: number;
