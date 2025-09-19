@@ -24,6 +24,8 @@ import {
 import { Item } from '@radix-ui/react-select';
 import { IMaterialReceiptItemAddFormInfo } from '../form/table-form-items-material-request';
 import { MaterialRequestDetails } from './material-request-details';
+import { WithdrawalListPageForReturn } from '../../../withdrawal/_components/list/withdrawal-list-for-return';
+import { IMaterialWithdrawalWithRelations } from '../../../withdrawal/withdrawal-types';
 
 export function MaterialReceiptAdd({
   relatedData
@@ -40,6 +42,9 @@ export function MaterialReceiptAdd({
   const [materialRequestsData, setMaterialRequestsData] = useState<
     IMaterialRequestWithRelations[] | null
   >(null);
+
+  const [materialWithdrawalData, setMaterialWithdrawalData] =
+    useState<IMaterialWithdrawalWithRelations | null>(null);
 
   const router = useRouter();
 
@@ -146,7 +151,7 @@ export function MaterialReceiptAdd({
                   key={formKey + materialRequest.id}
                   onClean={triggerReset}
                   onCancel={redirectList}
-                  relatedData={{ ...relatedData, materialRequest }}
+                  relatedData={{ ...relatedData }}
                   SubmitButtonIcon={FilePlus}
                   submitButtonText='Realizar Entrada'
                   defaultData={{
@@ -162,6 +167,69 @@ export function MaterialReceiptAdd({
               </div>
             );
           })}
+      </div>
+    );
+  }
+
+  if (movementTypeCode === materialOperationInDisplayMap.IN_SERVICE_SURPLUS) {
+    let materialState: IMaterialReceiptItemAddForm[] = [];
+
+    let materialInfo: IMaterialReceiptItemAddFormInfo[] = [];
+
+    materialWithdrawalData?.items.forEach((item) => {
+      const key =
+        (item.globalMaterialId as string) ||
+        (item.materialInstanceId as number);
+
+      const quantityExpected = undefined;
+
+      materialState.push({
+        key: key,
+        materialId: String(item.globalMaterialId),
+        quantityExpected: quantityExpected,
+        quantityRejected: 0,
+        quantityReceived: 0,
+        materialRequestItemId: item.id,
+        unitPrice: item.unitPrice ? Number(item.unitPrice) : undefined
+      });
+
+      materialInfo.push({
+        key: key,
+        materialId: String(item.globalMaterialId),
+        name: item.globalMaterial?.name || 'sem nome',
+        description: item.globalMaterial?.description || 'sem descrição',
+        unitOfMeasure:
+          item.globalMaterial?.unitOfMeasure || 'sem unidade de medida',
+        quantityWithdrawn: item.quantityWithdrawn
+      });
+    });
+
+    return (
+      <div className='space-y-6'>
+        <TabSelector
+          movementTypeCode={movementTypeCode}
+          setMovementTypeCode={setMovementTypeCode}
+          handleReset={triggerReset}
+        />
+
+        <WithdrawalListPageForReturn />
+
+        <MaterialReceiptForm
+          key={formKey}
+          onClean={triggerReset}
+          onCancel={redirectList}
+          relatedData={relatedData}
+          SubmitButtonIcon={FilePlus}
+          submitButtonText='Realizar Entrada'
+          defaultData={{
+            ...defaultData,
+            materialRequestId: materialWithdrawalData?.id,
+            items: materialState
+          }}
+          formActionProp={addReceipt}
+          movementTypeCode={movementTypeCode}
+          formSchema={materialReceiptFormSchemaAdd}
+        />
       </div>
     );
   }

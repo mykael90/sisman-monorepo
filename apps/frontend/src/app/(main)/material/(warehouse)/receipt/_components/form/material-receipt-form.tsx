@@ -150,9 +150,11 @@ export function MaterialReceiptForm({
         }}
       >
         <div className='space-y-6'>
-          {movementTypeCode !== materialOperationInDisplayMap.IN_CENTRAL && (
-            <ReceiptDetails formReceipt={formReceipt} />
-          )}
+          {movementTypeCode !== materialOperationInDisplayMap.IN_CENTRAL &&
+            movementTypeCode !==
+              materialOperationInDisplayMap.IN_SERVICE_SURPLUS && (
+              <ReceiptDetails formReceipt={formReceipt} />
+            )}
 
           {movementTypeCode === materialOperationInDisplayMap.IN_CENTRAL &&
             materialInfo && (
@@ -184,7 +186,12 @@ export function MaterialReceiptForm({
               </CardHeader>
               <CardContent className='space-y-4'>
                 <formReceipt.Field name='items' mode='array'>
-                  {(field) => <ItemsFieldArray field={field} />}
+                  {(field) => (
+                    <ItemsFieldArray
+                      field={field}
+                      movementTypeCode={movementTypeCode}
+                    />
+                  )}
                 </formReceipt.Field>
               </CardContent>
             </Card>

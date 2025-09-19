@@ -9,26 +9,10 @@ import { useMemo } from 'react';
 import { IMaterialGlobalCatalog } from '../../../../global-catalog/material-global-catalog-types';
 import { formatToBRL } from '../../../../../../../lib/utils';
 import { InfoHoverCard } from '../../../../../../../components/info-hover-card';
-import { IMaterialRequestItemWithRelations } from '../../../../request/material-request-types';
 import { IMaterialWithdrawalItem } from '../../../withdrawal/withdrawal-types';
+import { IMaterialReceiptItemAddFormInfo } from './table-form-items-material-request';
 
-export type IMaterialReceiptItemAddFormInfo = Pick<
-  IMaterialReceiptItemAddForm,
-  'key' | 'materialId'
-> &
-  Pick<IMaterialGlobalCatalog, 'description' | 'name' | 'unitOfMeasure'> &
-  Partial<
-    Pick<
-      IMaterialRequestItemWithRelations,
-      | 'quantityApproved'
-      | 'quantityRequested'
-      | 'quantityDelivered'
-      | 'quantityReturned'
-    >
-  > &
-  Partial<Pick<IMaterialWithdrawalItem, 'quantityWithdrawn' | 'unitPrice'>>;
-
-interface TableFormItemsMaterialRequestProps {
+interface TableFormItemsMaterialWithdrawalProps {
   materialsInfo: IMaterialReceiptItemAddFormInfo[];
   materials: IMaterialReceiptItemAddForm[];
   onRemove: (key: number) => void;
@@ -37,18 +21,18 @@ interface TableFormItemsMaterialRequestProps {
     quantity: number,
     type: 'quantityReceived' | 'quantityRejected'
   ) => void;
-  hideMaterialRequestItemId?: boolean;
+  hideMaterialWithdrawalItemId?: boolean;
   readOnly?: boolean;
 }
 
-export function TableFormItemsMaterialRequest({
+export function TableFormItemsMaterialWithdrawal({
   materialsInfo,
   materials,
   onRemove,
   onUpdateItemQuantity,
-  hideMaterialRequestItemId,
+  hideMaterialWithdrawalItemId,
   readOnly = false
-}: TableFormItemsMaterialRequestProps) {
+}: TableFormItemsMaterialWithdrawalProps) {
   const infoMap = useMemo(() => {
     const map = new Map<number, IMaterialReceiptItemAddFormInfo>();
 

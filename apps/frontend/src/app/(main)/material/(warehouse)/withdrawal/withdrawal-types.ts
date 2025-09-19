@@ -35,6 +35,13 @@ export type IMaterialWithdrawalWithRelations =
 
 export type IMaterialWithdrawalItem = MaterialWithdrawalItem;
 
+export type IMaterialWithdrawalItemWithRelations =
+  Prisma.MaterialWithdrawalItemGetPayload<{
+    include: {
+      globalMaterial: true;
+    };
+  }>;
+
 export interface IMaterialWithdrawalAddPayload
   extends Omit<
     Prisma.MaterialWithdrawalCreateManyInput,

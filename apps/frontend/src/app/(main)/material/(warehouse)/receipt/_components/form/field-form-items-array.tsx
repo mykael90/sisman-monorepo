@@ -15,6 +15,10 @@ import {
 } from '../../receipt-types';
 import { SearchMaterialByWarehouse } from '../../../components/search-material-global-by-warehouse';
 import { SearchMaterialGlobal } from '../../../../_components/search-material-global';
+import {
+  materialOperationInDisplayMap,
+  MaterialOperationInKey
+} from '../../../../../../../mappers/material-operations-mappers';
 
 const logger = new Logger(`material-items-field`);
 
@@ -40,9 +44,13 @@ interface MaterialItemsFieldProps {
     any,
     any
   >;
+  movementTypeCode?: MaterialOperationInKey;
 }
 
-export const ItemsFieldArray: FC<MaterialItemsFieldProps> = ({ field }) => {
+export const ItemsFieldArray: FC<MaterialItemsFieldProps> = ({
+  field,
+  movementTypeCode
+}) => {
   const [insertedMaterials, setInsertedMaterials] = React.useState<
     IMaterialReceiptItemAddFormInfo[] | []
   >([]);
@@ -118,15 +126,18 @@ export const ItemsFieldArray: FC<MaterialItemsFieldProps> = ({ field }) => {
 
   return (
     <>
-      <div className='flex gap-4'>
-        <div className='flex-1'>
-          <SearchMaterialGlobal
-            handleAddMaterial={handleAddMaterial}
-            excludedFromList={field.state.value}
-            handleBlurredField={() => field.handleBlur()}
-          />
+      {movementTypeCode !==
+        materialOperationInDisplayMap.IN_SERVICE_SURPLUS && (
+        <div className='flex gap-4'>
+          <div className='flex-1'>
+            <SearchMaterialGlobal
+              handleAddMaterial={handleAddMaterial}
+              excludedFromList={field.state.value}
+              handleBlurredField={() => field.handleBlur()}
+            />
+          </div>
         </div>
-      </div>
+      )}
       {!field.state.meta.isValid && field.state.meta.isBlurred ? (
         <em className='mt-1 block text-xs text-red-500'>
           {field.state.meta.errors

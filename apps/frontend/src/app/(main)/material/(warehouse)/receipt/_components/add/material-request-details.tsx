@@ -5,12 +5,12 @@ import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
 export function MaterialRequestDetails({
-  materialRequest,
+  materialRequest
 }: {
   materialRequest: IMaterialRequestWithRelations;
 }) {
   return (
-    <div className='grid grid-cols-1 gap-4 px-4 md:grid-cols-3'>
+    <div className='grid grid-cols-1 gap-4 px-4 md:grid-cols-4'>
       <div className='space-y-2'>
         <Label>Número do Protocolo</Label>
         <p className='text-muted-foreground'>
@@ -28,7 +28,7 @@ export function MaterialRequestDetails({
         <p className='text-muted-foreground'>
           {Number(materialRequest.requestValue).toLocaleString('pt-BR', {
             style: 'currency',
-            currency: 'BRL',
+            currency: 'BRL'
           })}
         </p>
       </div>
@@ -37,7 +37,7 @@ export function MaterialRequestDetails({
         <p className='text-muted-foreground'>
           {Number(materialRequest.servedValue).toLocaleString('pt-BR', {
             style: 'currency',
-            currency: 'BRL',
+            currency: 'BRL'
           })}
         </p>
       </div>
@@ -51,7 +51,7 @@ export function MaterialRequestDetails({
         <Label>Data da Requisição</Label>
         <p className='text-muted-foreground'>
           {format(new Date(materialRequest.createdAt), 'dd/MM/yyyy', {
-            locale: ptBR,
+            locale: ptBR
           })}
         </p>
       </div>
