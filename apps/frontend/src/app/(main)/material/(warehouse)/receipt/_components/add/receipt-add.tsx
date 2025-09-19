@@ -174,7 +174,10 @@ export function MaterialReceiptAdd({
     );
   }
 
-  if (movementTypeCode === materialOperationInDisplayMap.IN_SERVICE_SURPLUS) {
+  if (
+    movementTypeCode === materialOperationInDisplayMap.IN_SERVICE_SURPLUS ||
+    movementTypeCode === materialOperationInDisplayMap.IN_RETURN_FROM_ISSUE
+  ) {
     let materialState: IMaterialReceiptItemAddForm[] = [];
 
     let materialInfo: IMaterialReceiptItemAddFormInfoWithdrawal[] = [];

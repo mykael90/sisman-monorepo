@@ -5,6 +5,7 @@ import {
   MaterialOperationInKey,
   materialOperationInDisplayMap as op
 } from '@/mappers/material-operations-mappers';
+import { materialOperationInDisplayMapPorguguese as opPt } from '@/mappers/material-operations-mappers-translate';
 import {
   Select,
   SelectContent,
@@ -28,14 +29,14 @@ export function TabSelector({
   handleReset
 }: TabSelectorProps) {
   const tabs = [
-    { value: op.IN_CENTRAL, label: 'Entrada Central' },
-    { value: op.IN_SERVICE_SURPLUS, label: 'Sobra de Serviço' },
-    { value: op.IN_PURCHASE, label: 'Compra' },
-    { value: op.IN_DONATION, label: 'Doação' },
-    { value: op.IN_TRANSFER, label: 'Transferência' },
-    { value: op.IN_RETURN_FROM_ISSUE, label: 'Retorno de Saída' },
-    { value: op.INITIAL_STOCK_LOAD, label: 'Carga Inicial' },
-    { value: op.IN_LOAN_RETURN, label: 'Devolução Empréstimo' }
+    { value: op.IN_CENTRAL, label: opPt[op.IN_CENTRAL] },
+    { value: op.IN_SERVICE_SURPLUS, label: opPt[op.IN_SERVICE_SURPLUS] },
+    { value: op.IN_PURCHASE, label: opPt[op.IN_PURCHASE] },
+    { value: op.IN_DONATION, label: opPt[op.IN_DONATION] },
+    { value: op.IN_TRANSFER, label: opPt[op.IN_TRANSFER] },
+    { value: op.IN_RETURN_FROM_ISSUE, label: opPt[op.IN_RETURN_FROM_ISSUE] },
+    // { value: op.INITIAL_STOCK_LOAD, label: 'Carga Inicial' },
+    { value: op.IN_LOAN_RETURN, label: opPt[op.IN_LOAN_RETURN] }
   ];
 
   const handleValueChange = (value: string) => {
@@ -54,7 +55,7 @@ export function TabSelector({
           }
           className='w-full'
         >
-          <TabsList className='grid w-full grid-cols-8'>
+          <TabsList className='grid w-full grid-cols-7'>
             {' '}
             {/* Ajustado para 8 colunas */}
             {tabs.map((tab) => (

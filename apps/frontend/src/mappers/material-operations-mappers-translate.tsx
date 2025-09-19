@@ -5,7 +5,7 @@ export const materialOperationInDisplayMapPorguguese = {
   IN_DONATION: 'Entrada Doação', // Entrada por Doação (Recebida)
   IN_TRANSFER: 'Entrada Transferência', // Entrada por Transferência (Recebida)
   IN_SERVICE_SURPLUS: 'Sobra de Serviço', // Entrada por Sobra de Serviço
-  IN_RETURN_FROM_ISSUE: 'Entrada Devolução', // Entrada por Devolução (Saída Revertida)
+  IN_RETURN_FROM_ISSUE: 'Retorno Saída Incorreta', // Entrada por Devolução (Saída Revertida)
   INITIAL_STOCK_LOAD: 'Carga Inicial', // Carga Inicial de Estoque
   IN_LOAN_RETURN: 'Entrada Devolução Empréstimo' // Entrada por Devolução de Empréstimo
 } as const;

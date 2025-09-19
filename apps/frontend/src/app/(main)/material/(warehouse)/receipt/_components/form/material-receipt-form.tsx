@@ -27,6 +27,10 @@ import { IMaterialReceiptItemAddFormInfo } from './table-form-items-material-req
 import { IMaterialReceiptItemAddFormInfoWithdrawal } from './table-form-items-material-withdrawal';
 import { ItemsFieldArrayMaterialWithdrawal } from './field-form-items-array-material-withdrawal';
 import { toast } from 'sonner';
+import {
+  materialOperationInDisplayMapPorguguese,
+  materialOperationOutDisplayMapPorguguese
+} from '../../../../../../../mappers/material-operations-mappers-translate';
 
 export function MaterialReceiptForm({
   defaultData,
@@ -156,7 +160,9 @@ export function MaterialReceiptForm({
         <div className='space-y-6'>
           {movementTypeCode !== materialOperationInDisplayMap.IN_CENTRAL &&
             movementTypeCode !==
-              materialOperationInDisplayMap.IN_SERVICE_SURPLUS && (
+              materialOperationInDisplayMap.IN_SERVICE_SURPLUS &&
+            movementTypeCode !==
+              materialOperationInDisplayMap.IN_RETURN_FROM_ISSUE && (
               <ReceiptDetails formReceipt={formReceipt} />
             )}
 
@@ -183,13 +189,15 @@ export function MaterialReceiptForm({
               </Card>
             )}
 
-          {movementTypeCode ===
-            materialOperationInDisplayMap.IN_SERVICE_SURPLUS &&
+          {(movementTypeCode ===
+            materialOperationInDisplayMap.IN_SERVICE_SURPLUS ||
+            movementTypeCode ===
+              materialOperationInDisplayMap.IN_RETURN_FROM_ISSUE) &&
             materialInfo && (
               <Card>
                 <CardHeader>
                   <CardTitle className='text-lg'>
-                    Materiais para Entrada Por Retirada
+                    {`Materiais para Entrada (${materialOperationInDisplayMapPorguguese[movementTypeCode]})`}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
