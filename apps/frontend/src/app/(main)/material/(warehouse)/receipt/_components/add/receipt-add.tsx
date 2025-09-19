@@ -199,8 +199,8 @@ export function MaterialReceiptAdd({
         name: item.globalMaterial?.name || 'sem nome',
         description: item.globalMaterial?.description || 'sem descrição',
         unitOfMeasure:
-          item.globalMaterial?.unitOfMeasure || 'sem unidade de medida',
-        quantityWithdrawn: item.quantityWithdrawn
+          item.globalMaterial?.unitOfMeasure || 'sem unidade de medida'
+        // quantityWithdrawn: item.quantityWithdrawn
       });
     });
 
@@ -212,7 +212,9 @@ export function MaterialReceiptAdd({
           handleReset={triggerReset}
         />
 
-        <WithdrawalListPageForReturn />
+        <WithdrawalListPageForReturn
+          setMaterialWithdrawalData={setMaterialWithdrawalData}
+        />
 
         <MaterialReceiptForm
           key={formKey}

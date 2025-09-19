@@ -16,7 +16,8 @@ import {
   getFacetedRowModel,
   getFacetedUniqueValues,
   PaginationState,
-  SortingState
+  SortingState,
+  RowSelectionState // Importar RowSelectionState
 } from '@tanstack/react-table';
 import { InputDebounceRef } from '@/components/ui/input';
 import { IMaterialWithdrawalWithRelations } from '../../withdrawal-types';
@@ -42,7 +43,13 @@ import {
 } from './withdrawal-columns-for-return';
 import { TableTanstackFacetedOneSelection } from '../../../../../../../components/table-tanstack/table-tanstack-faceted-one-selection';
 
-export function WithdrawalListPageForReturn() {
+export function WithdrawalListPageForReturn({
+  setMaterialWithdrawalData
+}: {
+  setMaterialWithdrawalData: React.Dispatch<
+    React.SetStateAction<IMaterialWithdrawalWithRelations | null>
+  >;
+}) {
   // 1. Consuma o contexto
   const { warehouse } = useWarehouseContext();
   const router = useRouter();
@@ -56,11 +63,19 @@ export function WithdrawalListPageForReturn() {
   const [sorting, setSorting] = useState<SortingState>([]);
 
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [rowSelection, setRowSelection] = useState({});
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({}); // Tipar rowSelection
 
   // --- Estado dos Filtros Movido para Cá ---
   const [globalFilterValue, setGlobalFilterValue] = useState('');
   const inputDebounceRef = useRef<InputDebounceRef>(null); // Cria a Ref
+
+  const handleChangeRowSelection = (
+    selectedWithdrawal: IMaterialWithdrawalWithRelations | null
+  ) => {
+    setMaterialWithdrawalData(selectedWithdrawal);
+    // O setRowSelection será atualizado internamente pelo TableTanstackFacetedOneSelection
+    // e não precisamos mais da lógica de encontrar a linha aqui.
+  };
 
   // Função para limpar filtros (agora pertence ao pai)
   const handleClearFilters = () => {
@@ -165,7 +180,7 @@ export function WithdrawalListPageForReturn() {
         <Loading />
       ) : isDesktop ? (
         <TableTanstackFacetedOneSelection
-          data={withdrawals}
+          data={withdrawals || []}
           columns={columnsForReturn(columnActions)}
           columnFilters={columnFilters}
           setColumnFilters={setColumnFilters}
@@ -180,11 +195,13 @@ export function WithdrawalListPageForReturn() {
           globalFilter={globalFilterValue}
           setGlobalFilter={setGlobalFilterValue}
           enableRowSelection={true}
-          onRowSelectionChange={setRowSelection}
+          onRowSelectionChange={handleChangeRowSelection}
+          // Não precisamos mais passar rowSelection aqui, pois o componente interno gerencia
+          // e a função handleChangeRowSelection agora recebe o objeto completo.
         />
       ) : (
         <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3'>
-          {withdrawals.map((withdrawal: IMaterialWithdrawalWithRelations) => (
+          {withdrawals?.map((withdrawal: IMaterialWithdrawalWithRelations) => (
             <WithdrawalCard key={withdrawal.id} withdrawal={withdrawal} />
           ))}
         </div>

@@ -63,7 +63,7 @@ interface TableProps<TData> {
     columnId: string
   ) => () => Map<unknown, number>;
   enableRowSelection?: boolean | ((row: Row<TData>) => boolean);
-  onRowSelectionChange?: (selectedRows: RowSelectionState) => void;
+  onRowSelectionChange?: (selectedItem: TData | null) => void; // Alterado para TData | null
 }
 
 export function TableTanstackFacetedOneSelection<TData>({
@@ -111,7 +111,16 @@ export function TableTanstackFacetedOneSelection<TData>({
       const newSelection =
         typeof updater === 'function' ? updater(rowSelection) : updater;
       setRowSelection(newSelection);
-      onRowSelectionChange?.(newSelection);
+
+      if (onRowSelectionChange) {
+        const selectedRowId = Object.keys(newSelection)[0];
+        if (selectedRowId) {
+          const selectedRow = table.getRowModel().rowsById[selectedRowId];
+          onRowSelectionChange(selectedRow?.original || null);
+        } else {
+          onRowSelectionChange(null);
+        }
+      }
     },
     state: {
       globalFilter,
