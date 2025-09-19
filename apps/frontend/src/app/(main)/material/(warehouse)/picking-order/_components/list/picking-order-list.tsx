@@ -117,11 +117,11 @@ export function PickingOrderListPage() {
   return (
     <div className='container mx-auto'>
       <SectionListHeaderSmall
-        title='Gerenciamento de Ordens de Picking'
-        subtitle='Sistema de gerenciamento de ordens de picking'
+        title='Gerenciamento de Ordens de Reserva'
+        subtitle='Sistema de gerenciamento de ordens de Reserva'
         TitleIcon={Package}
         actionButton={{
-          text: 'Cadastrar Ordem de Picking',
+          text: 'Cadastrar Ordem de Reserva',
           onClick: handleAddPickingOrder,
           variant: 'default',
           Icon: PackagePlus

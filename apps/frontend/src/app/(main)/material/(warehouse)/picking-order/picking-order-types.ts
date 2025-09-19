@@ -1,7 +1,19 @@
 import { MaterialPickingOrder, Prisma } from '@sisman/prisma';
 
 export type IPickingOrderWithRelations = Prisma.MaterialPickingOrderGetPayload<{
-  include: { maintenanceRequest: true; warehouse: true };
+  include: {
+    maintenanceRequest: {
+      include: {
+        facilityComplex: true;
+        building: true;
+      };
+    };
+    warehouse: true;
+    materialRequest: true;
+    items: true;
+    beCollectedByUser: true;
+    beCollectedByWorker: true;
+  };
 }>;
 
 export interface IPickingOrderAdd
