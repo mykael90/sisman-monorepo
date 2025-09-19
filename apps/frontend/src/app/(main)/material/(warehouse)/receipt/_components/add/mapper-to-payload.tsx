@@ -25,6 +25,9 @@ export const receiptServiceUsageMapping: MappingConfig<
   materialRequest: (data) =>
     data.materialRequestId && { id: Number(data.materialRequestId) },
 
+  materialWithdrawal: (data) =>
+    data.materialWithdrawalId && { id: Number(data.materialWithdrawalId) },
+
   items: (data) =>
     data.items.map((item) => ({
       materialId: item.materialId,
@@ -32,6 +35,7 @@ export const receiptServiceUsageMapping: MappingConfig<
       quantityExpected: item.quantityExpected,
       quantityRejected: item.quantityRejected,
       materialRequestItemId: item.materialRequestItemId,
-      unitPrice: item.unitPrice ? Number(item.unitPrice) : undefined
+      unitPrice: item.unitPrice ? Number(item.unitPrice) : undefined,
+      materialWithdrawalItemId: item.materialWithdrawalItemId
     }))
 };

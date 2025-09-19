@@ -1,10 +1,10 @@
 // --- 1. Operação: IN (ENTRADA) ---
 export const materialOperationInDisplayMapPorguguese = {
-  IN_CENTRAL: 'Entrada Central', // Entrada por Transferência da Central
-  IN_PURCHASE: 'Entrada Compra', // Entrada por Compra
+  IN_CENTRAL: 'Almoxarifado Central', // Entrada por Transferência da Central
+  IN_PURCHASE: 'Compra', // Entrada por Compra
   IN_DONATION: 'Entrada Doação', // Entrada por Doação (Recebida)
   IN_TRANSFER: 'Entrada Transferência', // Entrada por Transferência (Recebida)
-  IN_SERVICE_SURPLUS: 'Entrada Sobra de Serviço', // Entrada por Sobra de Serviço
+  IN_SERVICE_SURPLUS: 'Sobra de Serviço', // Entrada por Sobra de Serviço
   IN_RETURN_FROM_ISSUE: 'Entrada Devolução', // Entrada por Devolução (Saída Revertida)
   INITIAL_STOCK_LOAD: 'Carga Inicial', // Carga Inicial de Estoque
   IN_LOAN_RETURN: 'Entrada Devolução Empréstimo' // Entrada por Devolução de Empréstimo

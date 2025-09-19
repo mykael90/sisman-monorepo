@@ -159,15 +159,23 @@ export const columns = (
     header: 'Usuário RM',
     cell: (props) => props.getValue()
   }),
-  columnHelper.accessor((row) => row.materialRequest?.requestDate, {
-    id: 'requestDate',
-    header: () => <div className='text-center'>Data RM</div>,
-    enableColumnFilter: false,
-    cell: (props) => {
-      const date = new Date(props.getValue());
-      return <div className='text-center'>{date.toLocaleDateString()}</div>;
+  columnHelper.accessor(
+    (row) =>
+      row.materialRequest?.requestDate
+        ? row.materialRequest?.requestDate
+        : 'N/A',
+    {
+      id: 'requestDate',
+      header: () => <span className='center-text'>Data RM</span>,
+      enableColumnFilter: false,
+      cell: (props) => {
+        if (props.getValue() === 'N/A')
+          return <div className='text-center'>N/A</div>;
+        const date = new Date(props.getValue());
+        return <div className='text-center'>{date.toLocaleDateString()}</div>;
+      }
     }
-  }),
+  ),
   // columnHelper.accessor((row) => row.destinationWarehouse?.name, {
   //   id: 'destinationWarehouseName',
   //   header: 'Depósito de Destino',
@@ -186,7 +194,9 @@ export const columns = (
 
   columnHelper.accessor(
     (row) =>
-      `${row.materialRequest?.sipacUnitCost?.codigoUnidade.replace(/(\d{2})(?=\d)/g, '$1.')} ${row.materialRequest?.sipacUnitCost?.sigla}`,
+      row.materialRequest?.sipacUnitCostId
+        ? `${row.materialRequest?.sipacUnitCost?.codigoUnidade.replace(/(\d{2})(?=\d)/g, '$1.')} ${row.materialRequest?.sipacUnitCost?.sigla}`
+        : 'N/A',
     {
       id: 'unitCostSipac',
       header: 'Unidade Custo',

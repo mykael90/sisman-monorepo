@@ -415,7 +415,8 @@ export class MaterialReceiptsService {
           materialRequestItemId: item.materialRequestItemId,
           batchNumber: item.batchNumber,
           expirationDate: item.expirationDate,
-          rejectionReason: item.rejectionReason
+          rejectionReason: item.rejectionReason,
+          materialWithdrawalItemId: item.materialWithdrawalItemId
           //TODO: Adicionar campos restantes
           // Adicione outros campos de MaterialReceiptItem aqui, se houver
         }))

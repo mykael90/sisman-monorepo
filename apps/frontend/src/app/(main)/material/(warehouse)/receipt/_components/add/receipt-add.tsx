@@ -19,10 +19,11 @@ import { IMaterialRequestWithRelations } from '../../../../request/material-requ
 import { RequestMaterialForm } from '../form/request-material-form';
 import {
   materialReceiptFormSchemaAdd,
-  materialReceiptFormSchemaAddMaterialRequest
+  materialReceiptFormSchemaAddMaterialRequest,
+  materialReceiptFormSchemaAddMaterialWithdrawal
 } from '../form/material-receipt-form-validation';
-import { Item } from '@radix-ui/react-select';
 import { IMaterialReceiptItemAddFormInfo } from '../form/table-form-items-material-request';
+import { IMaterialReceiptItemAddFormInfoWithdrawal } from '../form/table-form-items-material-withdrawal';
 import { MaterialRequestDetails } from './material-request-details';
 import { WithdrawalListPageForReturn } from '../../../withdrawal/_components/list/withdrawal-list-for-return';
 import { IMaterialWithdrawalWithRelations } from '../../../withdrawal/withdrawal-types';
@@ -70,7 +71,9 @@ export function MaterialReceiptAdd({
     items: [],
     notes: undefined,
     sourceName: undefined,
-    externalReference: undefined
+    externalReference: undefined,
+    materialRequestId: undefined,
+    materialWithdrawalId: undefined
   };
 
   if (movementTypeCode === materialOperationInDisplayMap.IN_CENTRAL) {
@@ -174,7 +177,7 @@ export function MaterialReceiptAdd({
   if (movementTypeCode === materialOperationInDisplayMap.IN_SERVICE_SURPLUS) {
     let materialState: IMaterialReceiptItemAddForm[] = [];
 
-    let materialInfo: IMaterialReceiptItemAddFormInfo[] = [];
+    let materialInfo: IMaterialReceiptItemAddFormInfoWithdrawal[] = [];
 
     materialWithdrawalData?.items.forEach((item) => {
       const key =
@@ -189,7 +192,8 @@ export function MaterialReceiptAdd({
         quantityExpected: quantityExpected,
         quantityRejected: 0,
         quantityReceived: 0,
-        materialRequestItemId: item.id,
+        materialWithdrawalItemId: item.id,
+        materialRequestItemId: item.materialRequestItemId,
         unitPrice: item.unitPrice ? Number(item.unitPrice) : undefined
       });
 
@@ -199,8 +203,8 @@ export function MaterialReceiptAdd({
         name: item.globalMaterial?.name || 'sem nome',
         description: item.globalMaterial?.description || 'sem descrição',
         unitOfMeasure:
-          item.globalMaterial?.unitOfMeasure || 'sem unidade de medida'
-        // quantityWithdrawn: item.quantityWithdrawn
+          item.globalMaterial?.unitOfMeasure || 'sem unidade de medida',
+        quantityWithdrawn: item.quantityWithdrawn
       });
     });
 
@@ -225,12 +229,14 @@ export function MaterialReceiptAdd({
           submitButtonText='Realizar Entrada'
           defaultData={{
             ...defaultData,
-            materialRequestId: materialWithdrawalData?.id,
+            materialWithdrawalId: materialWithdrawalData?.id,
+            materialRequestId: materialWithdrawalData?.materialRequestId,
             items: materialState
           }}
           formActionProp={addReceipt}
           movementTypeCode={movementTypeCode}
-          formSchema={materialReceiptFormSchemaAdd}
+          formSchema={materialReceiptFormSchemaAddMaterialWithdrawal}
+          materialInfo={materialInfo}
         />
       </div>
     );

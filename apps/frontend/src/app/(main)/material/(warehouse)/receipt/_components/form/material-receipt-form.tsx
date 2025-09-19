@@ -24,6 +24,8 @@ import {
 } from '@/mappers/material-operations-mappers';
 import { ItemsFieldArrayMaterialRequest } from './field-form-items-array-material-request';
 import { IMaterialReceiptItemAddFormInfo } from './table-form-items-material-request';
+import { IMaterialReceiptItemAddFormInfoWithdrawal } from './table-form-items-material-withdrawal';
+import { ItemsFieldArrayMaterialWithdrawal } from './field-form-items-array-material-withdrawal';
 import { toast } from 'sonner';
 
 export function MaterialReceiptForm({
@@ -63,7 +65,9 @@ export function MaterialReceiptForm({
   onClean?: () => void;
   movementTypeCode: MaterialOperationInKey;
   formSchema?: any;
-  materialInfo?: IMaterialReceiptItemAddFormInfo[];
+  materialInfo?:
+    | IMaterialReceiptItemAddFormInfo[]
+    | IMaterialReceiptItemAddFormInfoWithdrawal[];
 }) {
   const [serverStateReceipt, formActionReceipt, isPendingReceipt] =
     useActionState(formActionProp, initialServerStateReceipt);
@@ -169,7 +173,9 @@ export function MaterialReceiptForm({
                     {(field) => (
                       <ItemsFieldArrayMaterialRequest
                         field={field}
-                        materialInfo={materialInfo}
+                        materialInfo={
+                          materialInfo as IMaterialReceiptItemAddFormInfo[]
+                        }
                       />
                     )}
                   </formReceipt.Field>
@@ -177,25 +183,51 @@ export function MaterialReceiptForm({
               </Card>
             )}
 
-          {movementTypeCode !== materialOperationInDisplayMap.IN_CENTRAL && (
-            <Card>
-              <CardHeader>
-                <CardTitle className='text-lg'>
-                  Materiais para Entrada
-                </CardTitle>
-              </CardHeader>
-              <CardContent className='space-y-4'>
-                <formReceipt.Field name='items' mode='array'>
-                  {(field) => (
-                    <ItemsFieldArray
-                      field={field}
-                      movementTypeCode={movementTypeCode}
-                    />
-                  )}
-                </formReceipt.Field>
-              </CardContent>
-            </Card>
-          )}
+          {movementTypeCode ===
+            materialOperationInDisplayMap.IN_SERVICE_SURPLUS &&
+            materialInfo && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className='text-lg'>
+                    Materiais para Entrada Por Retirada
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <formReceipt.Field name='items' mode='array'>
+                    {(field) => (
+                      <ItemsFieldArrayMaterialWithdrawal
+                        field={field}
+                        materialInfo={
+                          materialInfo as IMaterialReceiptItemAddFormInfoWithdrawal[]
+                        }
+                      />
+                    )}
+                  </formReceipt.Field>
+                </CardContent>
+              </Card>
+            )}
+
+          {movementTypeCode !== materialOperationInDisplayMap.IN_CENTRAL &&
+            movementTypeCode !==
+              materialOperationInDisplayMap.IN_SERVICE_SURPLUS && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className='text-lg'>
+                    Materiais para Entrada
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className='space-y-4'>
+                  <formReceipt.Field name='items' mode='array'>
+                    {(field) => (
+                      <ItemsFieldArray
+                        field={field}
+                        movementTypeCode={movementTypeCode}
+                      />
+                    )}
+                  </formReceipt.Field>
+                </CardContent>
+              </Card>
+            )}
         </div>
         <div className='mt-8 flex flex-wrap justify-end gap-3'>
           <div className='flex gap-3'>

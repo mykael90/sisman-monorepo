@@ -2,6 +2,8 @@ import { MaterialReceipt, MaterialReceiptItem, Prisma } from '@sisman/prisma';
 import { IMaterialGlobalCatalogEdit } from '../../global-catalog/material-global-catalog-types';
 import { Session } from 'next-auth';
 import { MaterialOperationOutKey } from '../../../../../mappers/material-operations-mappers';
+import { IMaterialRequestWithRelations } from '../../request/material-request-types';
+import { IMaterialWithdrawalWithRelations } from '../withdrawal/withdrawal-types';
 
 export type IMaterialReceipt = MaterialReceipt;
 
@@ -48,18 +50,19 @@ export interface IMaterialReceiptAddPayload
   movementType: { code: MaterialOperationOutKey };
   processedByUser: { id: number };
   materialRequest?: { id: number };
+  materialWithdrawal?: { id: number };
 }
-
-import { IMaterialRequestWithRelations } from '../../request/material-request-types';
 
 export type IMaterialReceiptRelatedData = {
   session?: Session;
   materialRequest?: IMaterialRequestWithRelations;
+  materialWithdrawal?: IMaterialWithdrawalWithRelations;
 };
 export interface IMaterialReceiptAddForm
   extends Omit<Prisma.MaterialReceiptCreateManyInput, 'movementTypeId'> {
   movementTypeCode: string;
   items: IMaterialReceiptItemAddForm[];
+  materialWithdrawalId?: number;
 }
 
 export interface IMaterialReceiptEdit
@@ -69,7 +72,7 @@ export type IMaterialReceiptItemAddForm =
   Prisma.MaterialReceiptItemCreateManyMaterialReceiptInput &
     Partial<
       Pick<IMaterialGlobalCatalogEdit, 'name' | 'description' | 'unitOfMeasure'>
-    > & { key: number | string };
+    > & { key: number | string; materialWithdrawalItemId?: number };
 
 export const fieldsLabelReceiptForm: Partial<
   Record<keyof IMaterialReceiptAddForm, string>
@@ -80,6 +83,7 @@ export const fieldsLabelReceiptForm: Partial<
   processedByUserId: 'Processado por',
   movementTypeCode: 'Código do Movimento',
   materialRequestId: 'Requisição de Material',
+  materialWithdrawalId: 'Retirada de Material',
   notes: 'Observações',
   items: 'Itens para entrada',
   externalReference: 'Documento de entrada (ex: NF-e)',
