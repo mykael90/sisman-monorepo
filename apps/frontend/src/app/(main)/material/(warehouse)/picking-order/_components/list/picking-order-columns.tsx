@@ -100,10 +100,8 @@ export const columns = (
     (row) => row.beCollectedByUser?.name || row.beCollectedByWorker?.name,
     {
       id: 'beCollectedBy',
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title='Reserva para' />
-      ),
-      size: 250,
+      header: 'Reserva para',
+      size: 150,
       enableResizing: false,
       cell: (props) => {
         const name = props.getValue();
@@ -128,9 +126,9 @@ export const columns = (
     (row) => row.maintenanceRequest?.facilityComplex?.name,
     {
       id: 'facilityComplex',
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title='Complexo' />
-      ),
+      size: 500,
+      enableResizing: false,
+      header: 'Complexo',
       cell: (props) => (
         <div className='whitespace-normal'>{props.getValue()}</div>
       )
@@ -138,9 +136,9 @@ export const columns = (
   ),
   columnHelper.accessor((row) => row.maintenanceRequest?.building?.name, {
     id: 'building',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Ativo' />
-    ),
+    size: 1000,
+    enableResizing: false,
+    header: 'Ativo',
     cell: (props) => <div className='whitespace-normal'>{props.getValue()}</div>
   }),
   columnHelper.accessor((row) => Number(row.valuePickingOrder), {
