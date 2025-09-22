@@ -6,9 +6,15 @@ import {
   materialPickingOrderStatusDisplayMapPortuguese,
   TMaterialPickingOrderStatusKey
 } from '../../../../../../../mappers/material-picking-order-mappers-translate';
+import {
+  statusMaterialRequestDisplayMap,
+  StatusMaterialRequestKey
+} from '../../../../../../../mappers/material-request-mappers-translate';
 import { Badge } from '@/components/ui/badge';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
-import { ArrowUpDown } from 'lucide-react';
+import { ArrowUpDown, RefreshCcw } from 'lucide-react';
+import { Button } from '../../../../../../../components/ui/button';
+import { InfoHoverCard } from '../../../../../../../components/info-hover-card';
 
 const columnHelper = createColumnHelper<IMaterialPickingOrderWithRelations>();
 
@@ -27,19 +33,21 @@ export const columns = (
   //   enableSorting: false,
   //   enableHiding: false
   // }),
-  columnHelper.accessor('status', {
-    header: 'Reserva',
-    size: 150,
-    enableResizing: false,
-    cell: ({ row }) => {
-      const status = row.getValue('status') as TMaterialPickingOrderStatusKey;
-      return (
-        <div className='whitespace-normal'>
-          {materialPickingOrderStatusDisplayMapPortuguese[status] || status}
-        </div>
-      );
+  columnHelper.accessor(
+    (row) => {
+      const status = row.status as TMaterialPickingOrderStatusKey;
+      return materialPickingOrderStatusDisplayMapPortuguese[status] || status;
+    },
+    {
+      id: 'status',
+      header: 'Reserva',
+      size: 150,
+      enableResizing: false,
+      cell: (props) => (
+        <div className='whitespace-normal'>{props.getValue()}</div>
+      )
     }
-  }),
+  ),
   columnHelper.accessor('desiredPickupDate', {
     header: ({ column }) => {
       return (
@@ -63,25 +71,118 @@ export const columns = (
   }),
   columnHelper.accessor((row) => row.maintenanceRequest?.protocolNumber, {
     id: 'protocolNumberRMan',
-    header: 'RMan',
+    header: () => (
+      <div className='flex items-center justify-center gap-2'>
+        <div>{'RMan'}</div>
+        <InfoHoverCard
+          title='Requisição de Manutenção'
+          content={
+            <>
+              <p className='pl-2'>
+                Número da requisição de manutenção, acompanhado da data da
+                última sincronização do registro.
+              </p>
+            </>
+          }
+        />
+      </div>
+    ),
     size: 100,
     enableResizing: false,
     enableColumnFilter: false,
-    cell: (props) => props.getValue()
+    cell: (props) => {
+      if (!props.row.original.maintenanceRequest) {
+        return 'N/A';
+      }
+
+      const updateDate = new Date(
+        props.row.original.maintenanceRequest.updatedAt
+      );
+
+      return (
+        <div className='space-y-.5 flex-col items-center whitespace-normal'>
+          <div>{props.getValue()}</div>
+          <div className='flex items-center justify-center gap-1'>
+            <div className='text-muted-foreground text-xs'>
+              {updateDate.toLocaleDateString()}{' '}
+            </div>
+            {/* <Button
+              variant='ghost'
+              onClick={() => {
+                configuredActions.onView(props.row);
+              }}
+              className='h-3 w-3 cursor-pointer'
+            >
+              <RefreshCcw className='h-3 w-3' />
+            </Button> */}
+          </div>
+        </div>
+      );
+    }
   }),
   columnHelper.accessor((row) => row.materialRequest?.protocolNumber, {
     id: 'protocolNumberRM',
-    header: 'RM',
+    header: () => (
+      <div className='flex items-center justify-center gap-2'>
+        <div>{'RM'}</div>
+        <InfoHoverCard
+          title='Requisição de Material'
+          content={
+            <>
+              <p className='pl-2'>
+                Número da requisição de material, acompanhado da data da última
+                sincronização do registro.
+              </p>
+            </>
+          }
+        />
+      </div>
+    ),
     size: 100,
     enableResizing: false,
     enableColumnFilter: false,
-    cell: (props) => props.getValue()
+    cell: (props) => {
+      if (!props.row.original.materialRequest) {
+        return 'N/A';
+      }
+
+      const updateDate = new Date(props.row.original.materialRequest.updatedAt);
+
+      return (
+        <div className='space-y-.5 flex-col items-center whitespace-normal'>
+          <div>{props.getValue()}</div>
+          <div className='flex items-center justify-center gap-1'>
+            <div className='text-muted-foreground text-xs'>
+              {updateDate.toLocaleDateString()}{' '}
+            </div>
+            {/* <Button
+              variant='ghost'
+              onClick={() => {
+                configuredActions.onView(props.row);
+              }}
+              className='m-0 h-2 w-2 cursor-pointer'
+            >
+              <RefreshCcw className='h-2 w-2' />
+            </Button> */}
+          </div>
+        </div>
+      );
+    }
   }),
-  columnHelper.accessor((row) => row.materialRequest?.currentStatus, {
-    id: 'statusRM',
-    header: 'Status RM',
-    cell: (props) => props.getValue()
-  }),
+  columnHelper.accessor(
+    (row) => {
+      const status = row.materialRequest
+        ?.currentStatus as StatusMaterialRequestKey;
+      return status ? statusMaterialRequestDisplayMap[status] || status : '';
+    },
+    {
+      id: 'statusRM',
+      header: 'Status RM',
+      cell: (props) => (
+        <div className='whitespace-normal'>{props.getValue()}</div>
+      )
+    }
+  ),
   columnHelper.accessor((row) => row.requestedByUser.login, {
     header: 'Solicitado por',
     id: 'requestedByUser',
