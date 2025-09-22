@@ -24,7 +24,23 @@ import {
   ChevronRight,
   ChevronDown,
   Eye,
-  EllipsisVertical
+  EllipsisVertical,
+  Clock,
+  Package,
+  CheckCircle,
+  MinusCircle,
+  CheckSquare,
+  XCircle,
+  CalendarOff,
+  Settings,
+  FileText,
+  Send,
+  Undo,
+  Truck,
+  Inbox,
+  UserCheck,
+  Edit,
+  CornerUpLeft
 } from 'lucide-react';
 import { Button } from '../../../../../../../components/ui/button';
 import { InfoHoverCard } from '../../../../../../../components/info-hover-card';
@@ -43,6 +59,158 @@ import {
 } from '../../../../../../../components/ui/popover';
 
 const columnHelper = createColumnHelper<IMaterialPickingOrderWithRelations>();
+
+const pickingOrderStatusConfig: Record<
+  TMaterialPickingOrderStatusKey,
+  {
+    label: string;
+    icon: React.ElementType;
+    variant:
+      | 'default'
+      | 'secondary'
+      | 'destructive'
+      | 'outline'
+      | 'success'
+      | 'warning';
+  }
+> = {
+  PENDING_PREPARATION: {
+    label: materialPickingOrderStatusDisplayMapPortuguese.PENDING_PREPARATION,
+    icon: Clock,
+    variant: 'warning'
+  },
+  IN_PREPARATION: {
+    label: materialPickingOrderStatusDisplayMapPortuguese.IN_PREPARATION,
+    icon: Package,
+    variant: 'secondary'
+  },
+  READY_FOR_PICKUP: {
+    label: materialPickingOrderStatusDisplayMapPortuguese.READY_FOR_PICKUP,
+    icon: CheckCircle,
+    variant: 'default'
+  },
+  PARTIALLY_WITHDRAWN: {
+    label: materialPickingOrderStatusDisplayMapPortuguese.PARTIALLY_WITHDRAWN,
+    icon: MinusCircle,
+    variant: 'warning'
+  },
+  FULLY_WITHDRAWN: {
+    label: materialPickingOrderStatusDisplayMapPortuguese.FULLY_WITHDRAWN,
+    icon: CheckSquare,
+    variant: 'success'
+  },
+  CANCELLED: {
+    label: materialPickingOrderStatusDisplayMapPortuguese.CANCELLED,
+    icon: XCircle,
+    variant: 'destructive'
+  },
+  EXPIRED: {
+    label: materialPickingOrderStatusDisplayMapPortuguese.EXPIRED,
+    icon: CalendarOff,
+    variant: 'destructive'
+  }
+};
+
+const materialRequestStatusConfig: Record<
+  StatusMaterialRequestKey,
+  {
+    label: string;
+    icon: React.ElementType;
+    variant:
+      | 'default'
+      | 'secondary'
+      | 'destructive'
+      | 'outline'
+      | 'success'
+      | 'warning';
+  }
+> = {
+  SIPAC_HANDLING: {
+    label: statusMaterialRequestDisplayMap.SIPAC_HANDLING,
+    icon: Settings,
+    variant: 'secondary'
+  },
+  REGISTERED: {
+    label: statusMaterialRequestDisplayMap.REGISTERED,
+    icon: FileText,
+    variant: 'default'
+  },
+  PENDING: {
+    label: statusMaterialRequestDisplayMap.PENDING,
+    icon: Clock,
+    variant: 'default'
+  },
+  CHANGE_SPONSOR: {
+    label: statusMaterialRequestDisplayMap.CHANGE_SPONSOR,
+    icon: RefreshCcw,
+    variant: 'secondary'
+  },
+  APPROVED: {
+    label: statusMaterialRequestDisplayMap.APPROVED,
+    icon: CheckCircle,
+    variant: 'success'
+  },
+  FORWARDED: {
+    label: statusMaterialRequestDisplayMap.FORWARDED,
+    icon: Send,
+    variant: 'default'
+  },
+  PARTIALLY_ATTENDED: {
+    label: statusMaterialRequestDisplayMap.PARTIALLY_ATTENDED,
+    icon: MinusCircle,
+    variant: 'warning'
+  },
+  FULLY_ATTENDED: {
+    label: statusMaterialRequestDisplayMap.FULLY_ATTENDED,
+    icon: CheckSquare,
+    variant: 'success'
+  },
+  REJECTED: {
+    label: statusMaterialRequestDisplayMap.REJECTED,
+    icon: XCircle,
+    variant: 'destructive'
+  },
+  CANCELLED: {
+    label: statusMaterialRequestDisplayMap.CANCELLED,
+    icon: XCircle,
+    variant: 'destructive'
+  },
+  REVERSED: {
+    label: statusMaterialRequestDisplayMap.REVERSED,
+    icon: Undo,
+    variant: 'secondary'
+  },
+  MATERIAL_SENT: {
+    label: statusMaterialRequestDisplayMap.MATERIAL_SENT,
+    icon: Truck,
+    variant: 'default'
+  },
+  MATERIAL_RECEIVED: {
+    label: statusMaterialRequestDisplayMap.MATERIAL_RECEIVED,
+    icon: Inbox,
+    variant: 'success'
+  },
+  PENDING_CHIEF: {
+    label: statusMaterialRequestDisplayMap.PENDING_CHIEF,
+    icon: UserCheck,
+    variant: 'default'
+  },
+  CHANGED: {
+    label: statusMaterialRequestDisplayMap.CHANGED,
+    icon: Edit,
+    variant: 'secondary'
+  },
+  ITEM_RETURNED: {
+    label: statusMaterialRequestDisplayMap.ITEM_RETURNED,
+    icon: CornerUpLeft,
+    variant: 'secondary'
+  },
+  RETURNED: {
+    label: statusMaterialRequestDisplayMap.RETURNED,
+    icon: CornerUpLeft,
+    variant: 'secondary'
+  }
+};
 
 type ActionHandlers<TData> = {
   [key: string]: (row: Row<TData>) => void;
@@ -102,9 +270,25 @@ export const columns = (
       header: 'Reserva',
       size: 150,
       enableResizing: false,
-      cell: (props) => (
-        <div className='whitespace-normal'>{props.getValue()}</div>
-      )
+      cell: ({ row }) => {
+        const statusKey = row.original.status as TMaterialPickingOrderStatusKey;
+        const config = pickingOrderStatusConfig[statusKey];
+        if (!config) {
+          return (
+            <div className='whitespace-normal'>
+              {materialPickingOrderStatusDisplayMapPortuguese[statusKey] ||
+                statusKey}
+            </div>
+          );
+        }
+        const Icon = config.icon;
+        return (
+          <Badge variant={config.variant}>
+            <Icon className='h-3 w-3' />
+            {config.label}
+          </Badge>
+        );
+      }
     }
   ),
   columnHelper.accessor('desiredPickupDate', {
@@ -237,9 +421,28 @@ export const columns = (
     {
       id: 'statusRM',
       header: 'Status RM',
-      cell: (props) => (
-        <div className='whitespace-normal'>{props.getValue()}</div>
-      )
+      cell: ({ row }) => {
+        const statusKey = row.original.materialRequest
+          ?.currentStatus as StatusMaterialRequestKey;
+        if (!statusKey) {
+          return <div className='whitespace-normal'>N/A</div>;
+        }
+        const config = materialRequestStatusConfig[statusKey];
+        if (!config) {
+          return (
+            <div className='whitespace-normal'>
+              {statusMaterialRequestDisplayMap[statusKey] || statusKey}
+            </div>
+          );
+        }
+        const Icon = config.icon;
+        return (
+          <Badge variant={config.variant}>
+            <Icon className='h-3 w-3' />
+            {config.label}
+          </Badge>
+        );
+      }
     }
   ),
   columnHelper.accessor((row) => row.requestedByUser.login, {
