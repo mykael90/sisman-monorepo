@@ -608,8 +608,7 @@ export const columns = (
 ];
 
 export const createActions = (
-  router: AppRouterInstance,
-  refetchPickingOrders: () => void
+  router: AppRouterInstance
 ): ActionHandlers<IMaterialPickingOrderWithRelations> => {
   const [isPending, startTransition] = useTransition();
   const { data: session } = useSession();
@@ -638,7 +637,6 @@ export const createActions = (
       if (result.isSubmitSuccessful) {
         toast.success(result.message);
         queryClient.invalidateQueries({ queryKey: ['pickingOrders'] }); // Invalida o cache do react-query
-        refetchPickingOrders(); // Chama a função refetch passada como prop
       } else {
         toast.error(result.message || 'Erro ao atualizar o status da reserva.');
       }

@@ -113,7 +113,7 @@ export function PickingOrderListPage() {
     router.push('picking-order/add');
   };
 
-  const columnActions = createActions(router, refetch);
+  const columnActions = createActions(router);
 
   return (
     <div className='container mx-auto'>
