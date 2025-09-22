@@ -33,7 +33,6 @@ import {
   FormInputTextArea
 } from '../../../../../../../components/form-tanstack/form-input-fields';
 import { RequestMaintenanceForm } from '../../../withdrawal/_components/form/request-maintenance-form';
-import { RequestMaterialForm } from '../../../withdrawal/_components/form/request-material-form';
 import { CardMaintenanceSummary } from '../../../withdrawal/_components/card-maintenance-summary';
 import {
   Popover,
@@ -44,6 +43,7 @@ import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { cn } from '../../../../../../../lib/utils';
 import { Calendar } from '../../../../../../../components/ui/calendar';
+import { RequestMaterialForm } from './request-material-form';
 
 export function MaterialPickingOrderForm({
   defaultData,

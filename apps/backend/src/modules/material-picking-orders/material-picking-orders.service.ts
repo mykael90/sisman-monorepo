@@ -990,7 +990,8 @@ export class MaterialPickingOrdersService {
               : undefined,
             materialRequestItem: itemFromRequest.materialRequestItemId
               ? { connect: { id: itemFromRequest.materialRequestItemId } }
-              : undefined
+              : undefined,
+            unitPrice: itemFromRequest.unitPrice
           });
           this.logger.debug(
             `Um novo item para o material ${itemFromRequest.globalMaterialId} será CRIADO.`
@@ -1274,7 +1275,28 @@ export class MaterialPickingOrdersService {
 
       const findManyArgs: Prisma.MaterialPickingOrderFindManyArgs = {
         where: whereArgs,
-        include: this.includeRelations,
+        include: {
+          warehouse: true,
+          materialRequest: true,
+          maintenanceRequest: {
+            include: {
+              facilityComplex: {
+                select: {
+                  name: true
+                }
+              },
+              building: {
+                select: {
+                  name: true
+                }
+              }
+            }
+          },
+          requestedByUser: true,
+          beCollectedByUser: true,
+          beCollectedByWorker: true,
+          items: true
+        },
         orderBy: {
           createdAt: 'desc'
         }

@@ -57,7 +57,7 @@ export function MaterialItemsMaterialRequestField({
     if (index !== -1) {
       const updatedMaterial = {
         ...field.state.value[index],
-        quantityWithdrawn: quantity
+        quantityToPick: quantity
       };
       field.replaceValue(index, updatedMaterial);
     }

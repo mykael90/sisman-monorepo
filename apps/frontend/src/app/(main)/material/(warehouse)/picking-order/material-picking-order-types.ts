@@ -9,18 +9,26 @@ import { IWarehouseStockIncludedComputed } from '../warehouse-stock/warehouse-st
 export type IMaterialPickingOrderWithRelations =
   Prisma.MaterialPickingOrderGetPayload<{
     include: {
-      maintenanceRequest: {
-        include: {
-          facilityComplex: true;
-          building: true;
-        };
-      };
       warehouse: true;
       materialRequest: true;
-      items: true;
+      maintenanceRequest: {
+        include: {
+          facilityComplex: {
+            select: {
+              name: true;
+            };
+          };
+          building: {
+            select: {
+              name: true;
+            };
+          };
+        };
+      };
+      requestedByUser: true;
       beCollectedByUser: true;
       beCollectedByWorker: true;
-      requestedByUser: true;
+      items: true;
     };
   }>;
 

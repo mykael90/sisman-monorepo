@@ -28,30 +28,41 @@ export const columns = (
   //   enableHiding: false
   // }),
   columnHelper.accessor('status', {
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Reserva' />
-    ),
+    header: 'Reserva',
+    size: 150,
+    enableResizing: false,
     cell: ({ row }) => {
       const status = row.getValue('status') as TMaterialPickingOrderStatusKey;
       return (
-        <div>
+        <div className='whitespace-normal'>
           {materialPickingOrderStatusDisplayMapPortuguese[status] || status}
         </div>
       );
     }
   }),
+  columnHelper.accessor('desiredPickupDate', {
+    header: 'Previsão',
+    enableColumnFilter: false,
+    cell: ({ row }) => (
+      <div className='text-center'>
+        {new Date(row.getValue('createdAt')).toLocaleDateString()}
+      </div>
+    )
+  }),
   columnHelper.accessor((row) => row.maintenanceRequest?.protocolNumber, {
     id: 'protocolNumberRMan',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='RMan' />
-    ),
+    header: 'RMan',
+    size: 100,
+    enableResizing: false,
+    enableColumnFilter: false,
     cell: (props) => props.getValue()
   }),
   columnHelper.accessor((row) => row.materialRequest?.protocolNumber, {
     id: 'protocolNumberRM',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='RM' />
-    ),
+    header: 'RM',
+    size: 100,
+    enableResizing: false,
+    enableColumnFilter: false,
     cell: (props) => props.getValue()
   }),
   columnHelper.accessor((row) => row.materialRequest?.currentStatus, {
@@ -59,43 +70,12 @@ export const columns = (
     header: 'Status RM',
     cell: (props) => props.getValue()
   }),
-  columnHelper.accessor('createdAt', {
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Gerada' />
-    ),
-    enableColumnFilter: false,
-    cell: ({ row }) => {
-      const date = new Date(row.getValue('createdAt'));
-      return (
-        <div className='text-center'>
-          <div>{date.toLocaleDateString('pt-BR')}</div>
-          <div>
-            {date.toLocaleTimeString('pt-BR', {
-              hour: '2-digit',
-              minute: '2-digit'
-            })}
-          </div>
-        </div>
-      );
-    }
-  }),
   columnHelper.accessor((row) => row.requestedByUser.login, {
     header: 'Solicitado por',
     id: 'requestedByUser',
     size: 150,
     enableResizing: false,
     cell: (props) => <div className='whitespace-normal'>{props.getValue()}</div>
-  }),
-  columnHelper.accessor('desiredPickupDate', {
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Previsão' />
-    ),
-    enableColumnFilter: false,
-    cell: ({ row }) => (
-      <div className='text-center'>
-        {new Date(row.getValue('createdAt')).toLocaleDateString()}
-      </div>
-    )
   }),
   // columnHelper.accessor((row) => row.warehouse?.name, {
   //   id: 'warehouseName',
@@ -175,6 +155,24 @@ export const columns = (
         })}
       </div>
     )
+  }),
+  columnHelper.accessor('createdAt', {
+    header: 'Gerada em',
+    enableColumnFilter: false,
+    cell: ({ row }) => {
+      const date = new Date(row.getValue('createdAt'));
+      return (
+        <div className='text-center'>
+          <div>{date.toLocaleDateString('pt-BR')}</div>
+          <div>
+            {date.toLocaleTimeString('pt-BR', {
+              hour: '2-digit',
+              minute: '2-digit'
+            })}
+          </div>
+        </div>
+      );
+    }
   }),
   columnHelper.display({
     id: 'actions',
