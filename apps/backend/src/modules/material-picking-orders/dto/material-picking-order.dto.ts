@@ -33,6 +33,14 @@ import { UpdateUserDto } from '../../users/dto/user.dto'; // Assuming UpdateUser
  */
 class MaterialPickingOrderBaseDto implements MaterialPickingOrder {
   /**
+   * Nome de entidade (empresa ou pessoa) que retirou o material.
+   * @example Empresa Example Ltda
+   */
+  @IsOptional()
+  @IsString()
+  collectedByOther: string;
+
+  /**
    * ID único da ordem de separação de material.
    * @example 1
    */
@@ -151,9 +159,22 @@ class MaterialPickingOrderBaseDto implements MaterialPickingOrder {
   @IsDate()
   @IsNotEmpty()
   updatedAt: Date;
+
+  @IsOptional()
+  @IsString()
+  legacy_place: string;
+
+  /**
+   * Valor total da reserva.
+   * @example 234.65
+   */
+  @IsOptional()
+  @IsNumber()
+  valuePickingOrder: Prisma.Decimal;
 }
 
 class MaterialPickingOrderItemBaseDto implements MaterialPickingOrderItem {
+  unitPrice: Prisma.Decimal;
   globalMaterialId: string;
   materialInstanceId: number;
   notes: string;
@@ -164,7 +185,6 @@ class MaterialPickingOrderItemBaseDto implements MaterialPickingOrderItem {
   materialRequestItemId: number;
   quantityToPick: Prisma.Decimal;
   quantityPicked: Prisma.Decimal;
-  quantityWithdrawn: Prisma.Decimal;
 }
 
 // =================================================================

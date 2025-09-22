@@ -1,11 +1,11 @@
-import { IPickingOrderWithRelations } from '../../picking-order-types';
+import { IMaterialPickingOrderWithRelations } from '../../material-picking-order-types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Package } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 
 interface PickingOrderCardProps {
-  pickingOrder: IPickingOrderWithRelations;
+  pickingOrder: IMaterialPickingOrderWithRelations;
 }
 
 export function PickingOrderCard({ pickingOrder }: PickingOrderCardProps) {

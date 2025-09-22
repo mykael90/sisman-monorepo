@@ -18,7 +18,7 @@ import {
   SortingState
 } from '@tanstack/react-table';
 import { InputDebounceRef } from '@/components/ui/input';
-import { IPickingOrderWithRelations } from '../../picking-order-types';
+import { IMaterialPickingOrderWithRelations } from '../../material-picking-order-types';
 import { useRouter } from 'next/navigation';
 import {
   columns,
@@ -30,7 +30,7 @@ import { SectionListHeaderSmall } from '../../../../../../../components/section-
 import { useWarehouseContext } from '../../../../choose-warehouse/context/warehouse-provider';
 import { useQuery } from '@tanstack/react-query';
 import Loading from '@/components/loading';
-import { getPickingOrdersByWarehouse } from '../../picking-order-actions';
+import { getMaterialPickingOrdersByWarehouse } from '../../material-picking-order-actions';
 import { useMediaQuery } from '@/hooks/use-media-query';
 import { PickingOrderCard } from './picking-order-card';
 import { DateRange } from 'react-day-picker';
@@ -75,7 +75,7 @@ export function PickingOrderListPage() {
   } = useQuery({
     queryKey: ['pickingOrders', warehouse?.id, date],
     queryFn: () =>
-      getPickingOrdersByWarehouse(warehouse?.id as number, {
+      getMaterialPickingOrdersByWarehouse(warehouse?.id as number, {
         from: date?.from,
         to: date?.to
       }),
@@ -165,12 +165,14 @@ export function PickingOrderListPage() {
         />
       ) : (
         <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3'>
-          {pickingOrders.map((pickingOrder: IPickingOrderWithRelations) => (
-            <PickingOrderCard
-              key={pickingOrder.id}
-              pickingOrder={pickingOrder}
-            />
-          ))}
+          {pickingOrders.map(
+            (pickingOrder: IMaterialPickingOrderWithRelations) => (
+              <PickingOrderCard
+                key={pickingOrder.id}
+                pickingOrder={pickingOrder}
+              />
+            )
+          )}
         </div>
       )}
     </div>

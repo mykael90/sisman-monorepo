@@ -550,6 +550,9 @@ model MaterialPickingOrder {
     beCollectedByWorkerId Int?
     beCollectedByWorker   Worker? @relation("PickingOrdersBeCollectedByWorker", fields: [beCollectedByWorkerId], references: [id])
 
+    // Coleta realizada por entidade que nao seja user nem worker
+    collectedByOther String?
+
     // Data desejada para retirada (opcional)
     desiredPickupDate DateTime?
 
@@ -562,6 +565,11 @@ model MaterialPickingOrder {
 
     // Relação com as retiradas efetivas que atenderam esta ordem de separação
     materialWithdrawals MaterialWithdrawal[]
+
+    //campo para compatibilidade com base de dados antiga e pedidos de urgencia, sem req manutencao vinculada
+    legacy_place String?
+
+    valuePickingOrder Decimal? @db.Decimal(12, 4) // custo total da reserva, considerando todos os materiais
 
     createdAt DateTime @default(now()) @db.Timestamp(0)
     updatedAt DateTime @updatedAt @db.Timestamp(0)
@@ -612,6 +620,8 @@ model MaterialPickingOrderItem {
 
     quantityWithdrawn Decimal? @db.Decimal(10, 3) // Quantidade retirada diretamente deste item
 
+    unitPrice Decimal? @db.Decimal(12, 4) // cost of material
+
     notes String? // Notas específicas do almoxarife sobre este item do picking
 
     stockMovement MaterialStockMovement[]
@@ -657,7 +667,6 @@ model MaterialWithdrawal {
     materialRequestId Int? // A MaterialRequest GERAL que está sendo atendida
     materialRequest   MaterialRequest? @relation(fields: [materialRequestId], references: [id], onDelete: SetNull)
 
-
     // Se esta retirada foi originada por uma Ordem de Separação/Reserva específica
     materialPickingOrderId Int?
     materialPickingOrder   MaterialPickingOrder? @relation(fields: [materialPickingOrderId], references: [id], onDelete: SetNull)
@@ -672,7 +681,7 @@ model MaterialWithdrawal {
 
     notes String? @db.Text
 
-    //campo para compatibilidade com base de dados antiga
+    //campo para compatibilidade com base de dados antiga e pedidos de urgencia, sem req manutencao vinculada
     legacy_place String?
 
     items MaterialWithdrawalItem[] // Os materiais que compõem esta retirada
@@ -850,7 +859,6 @@ model MaterialReceipt {
     materialWithdrawalId Int?
     materialWithdrawal   MaterialWithdrawal? @relation("ReceiptsForMaterialWithdrawal", fields: [materialWithdrawalId], references: [id])
 
-
     status MaterialReceiptStatus @default(FULLY_ACCEPTED)
 
     valueReceipt Decimal? @db.Decimal(12, 4) // custo total da entrada, considerando todos os materiais
@@ -905,7 +913,7 @@ model MaterialReceiptItem {
 
     materialRequestItem   MaterialRequestItem? @relation(fields: [materialRequestItemId], references: [id]) // Relation to MaterialRequestItem.
     materialRequestItemId Int? //um para muitos pois podem ter entradas diferentes, como vindo do almoxarifado central ou uma sobra referente a mesma requisicao de material
-    
+
     materialWithdrawalItem   MaterialWithdrawalItem? @relation(fields: [materialWithdrawalItemId], references: [id]) // Relation to MaterialWithdrawalItem.
     materialWithdrawalItemId Int?
 

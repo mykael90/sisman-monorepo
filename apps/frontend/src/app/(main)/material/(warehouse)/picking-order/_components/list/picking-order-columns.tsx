@@ -1,5 +1,5 @@
 import { ColumnDef, createColumnHelper, Row } from '@tanstack/react-table';
-import { IPickingOrderWithRelations } from '../../picking-order-types';
+import { IMaterialPickingOrderWithRelations } from '../../material-picking-order-types';
 import { DefaultRowAction } from '../../../../../../../components/table-tanstack/default-row-action';
 import { DataTableColumnHeader } from '../../../../../../../components/table-tanstack/data-table-column-header';
 import {
@@ -8,27 +8,28 @@ import {
 } from '../../../../../../../mappers/material-picking-order-mappers-translate';
 import { Badge } from '@/components/ui/badge';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
+import { ArrowUpDown } from 'lucide-react';
 
-const columnHelper = createColumnHelper<IPickingOrderWithRelations>();
+const columnHelper = createColumnHelper<IMaterialPickingOrderWithRelations>();
 
 type ActionHandlers<TData> = {
   [key: string]: (row: Row<TData>) => void;
 };
 
 export const columns = (
-  configuredActions: ActionHandlers<IPickingOrderWithRelations>
-): ColumnDef<IPickingOrderWithRelations, any>[] => [
-  columnHelper.accessor('id', {
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='ID' />
-    ),
-    cell: ({ row }) => <div className='w-[80px]'>{row.getValue('id')}</div>,
-    enableSorting: false,
-    enableHiding: false
-  }),
+  configuredActions: ActionHandlers<IMaterialPickingOrderWithRelations>
+): ColumnDef<IMaterialPickingOrderWithRelations, any>[] => [
+  // columnHelper.accessor('id', {
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title='ID' />
+  //   ),
+  //   cell: ({ row }) => <div className='w-[80px]'>{row.getValue('id')}</div>,
+  //   enableSorting: false,
+  //   enableHiding: false
+  // }),
   columnHelper.accessor('status', {
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Status' />
+      <DataTableColumnHeader column={column} title='Reserva' />
     ),
     cell: ({ row }) => {
       const status = row.getValue('status') as TMaterialPickingOrderStatusKey;
@@ -38,14 +39,6 @@ export const columns = (
         </div>
       );
     }
-  }),
-  columnHelper.accessor('createdAt', {
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Data de Criação' />
-    ),
-    cell: ({ row }) => (
-      <div>{new Date(row.getValue('createdAt')).toLocaleDateString()}</div>
-    )
   }),
   columnHelper.accessor((row) => row.maintenanceRequest?.protocolNumber, {
     id: 'protocolNumberRMan',
@@ -61,20 +54,65 @@ export const columns = (
     ),
     cell: (props) => props.getValue()
   }),
-  columnHelper.accessor((row) => row.warehouse?.name, {
-    id: 'warehouseName',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Armazém' />
-    ),
+  columnHelper.accessor((row) => row.materialRequest?.currentStatus, {
+    id: 'statusRM',
+    header: 'Status RM',
     cell: (props) => props.getValue()
   }),
+  columnHelper.accessor('createdAt', {
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Gerada' />
+    ),
+    enableColumnFilter: false,
+    cell: ({ row }) => {
+      const date = new Date(row.getValue('createdAt'));
+      return (
+        <div className='text-center'>
+          <div>{date.toLocaleDateString('pt-BR')}</div>
+          <div>
+            {date.toLocaleTimeString('pt-BR', {
+              hour: '2-digit',
+              minute: '2-digit'
+            })}
+          </div>
+        </div>
+      );
+    }
+  }),
+  columnHelper.accessor((row) => row.requestedByUser.login, {
+    header: 'Solicitado por',
+    id: 'requestedByUser',
+    size: 150,
+    enableResizing: false,
+    cell: (props) => <div className='whitespace-normal'>{props.getValue()}</div>
+  }),
+  columnHelper.accessor('desiredPickupDate', {
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Previsão' />
+    ),
+    enableColumnFilter: false,
+    cell: ({ row }) => (
+      <div className='text-center'>
+        {new Date(row.getValue('createdAt')).toLocaleDateString()}
+      </div>
+    )
+  }),
+  // columnHelper.accessor((row) => row.warehouse?.name, {
+  //   id: 'warehouseName',
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title='Armazém' />
+  //   ),
+  //   cell: (props) => props.getValue()
+  // }),
   columnHelper.accessor(
     (row) => row.beCollectedByUser?.name || row.beCollectedByWorker?.name,
     {
-      id: 'collectedBy',
+      id: 'beCollectedBy',
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title='Coletado Por' />
+        <DataTableColumnHeader column={column} title='Reserva para' />
       ),
+      size: 250,
+      enableResizing: false,
       cell: (props) => {
         const name = props.getValue();
         if (!name) {
@@ -113,6 +151,31 @@ export const columns = (
     ),
     cell: (props) => <div className='whitespace-normal'>{props.getValue()}</div>
   }),
+  columnHelper.accessor((row) => Number(row.valuePickingOrder), {
+    id: 'valuePickingOrder',
+    header: ({ column }) => {
+      return (
+        <div
+          className='flex cursor-pointer items-center'
+          onClick={() => column.toggleSorting()}
+        >
+          Valor
+          <ArrowUpDown className='text-muted-foreground ml-2 h-4 w-4' />
+        </div>
+      );
+    },
+    size: 50,
+    enableResizing: false,
+    enableColumnFilter: false,
+    cell: (props) => (
+      <div className='text-right'>
+        {props.getValue().toLocaleString('pt-BR', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        })}
+      </div>
+    )
+  }),
   columnHelper.display({
     id: 'actions',
     cell: ({ row }) => (
@@ -123,11 +186,11 @@ export const columns = (
 
 export const createActions = (
   router: AppRouterInstance
-): ActionHandlers<IPickingOrderWithRelations> => ({
-  onEdit: (row: Row<IPickingOrderWithRelations>) => {
+): ActionHandlers<IMaterialPickingOrderWithRelations> => ({
+  onEdit: (row: Row<IMaterialPickingOrderWithRelations>) => {
     router.push(`picking-order/edit/${row.original.id}`);
   },
-  onView: (row: Row<IPickingOrderWithRelations>) => {
+  onView: (row: Row<IMaterialPickingOrderWithRelations>) => {
     router.push(`picking-order/${row.original.id}`);
   }
 });
@@ -135,7 +198,7 @@ export const createActions = (
 export function SubRowComponent({
   row
 }: {
-  row: Row<IPickingOrderWithRelations>;
+  row: Row<IMaterialPickingOrderWithRelations>;
 }) {
   return (
     <div className='p-4'>

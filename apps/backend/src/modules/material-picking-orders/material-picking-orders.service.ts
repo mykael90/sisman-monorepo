@@ -218,13 +218,11 @@ export class MaterialPickingOrdersService {
       } as any,
       notes: `Retirada automática referente à Ordem de Separação nº ${data.pickingOrderNumber}`,
       items: data.items
-        .filter((item) =>
-          new Decimal(item.quantityWithdrawn || 0).greaterThan(0)
-        )
+        .filter((item) => new Decimal(item.quantityToPick || 0).greaterThan(0))
         .map((item) => ({
           globalMaterialId: item.globalMaterialId,
           materialInstanceId: item.materialInstanceId,
-          quantityWithdrawn: item.quantityWithdrawn,
+          quantityWithdrawn: item.quantityToPick,
           materialRequestItemId: item.materialRequestItemId
         }))
     };
@@ -611,10 +609,28 @@ export class MaterialPickingOrdersService {
           materialRequestItem: item.materialRequestItemId
             ? { connect: { id: item.materialRequestItemId } }
             : undefined,
+          unitPrice: item.unitPrice,
           notes: item.notes
         }))
       }
     };
+
+    //realizar um reduce para calcular o valor da retirada baseado na quantidade e valor unitario dos items
+    const valuePickingOrder = items.reduce<Decimal | undefined>(
+      (total, item) => {
+        if (!item.unitPrice) return undefined;
+
+        const quantity = new Decimal(item.quantityToPick);
+        const unitPrice = new Decimal(item.unitPrice);
+
+        if (total === undefined) return quantity.times(unitPrice);
+
+        return total.plus(quantity.times(unitPrice));
+      },
+      new Decimal(0)
+    );
+
+    createInput.valuePickingOrder = valuePickingOrder;
 
     this.logger.log(`Criando o registro da ordem de separação no banco.`);
     const newOrder = await prisma.materialPickingOrder.create({
@@ -846,8 +862,8 @@ export class MaterialPickingOrdersService {
           ).sub(existingItem.quantityPicked || 0);
 
           const quantityDeltaWithdrawn = new Decimal(
-            updatedItem.quantityWithdrawn || 0
-          ).sub(existingItem.quantityWithdrawn || 0);
+            updatedItem.quantityToPick || 0
+          ).sub(existingItem.quantityToPick || 0);
 
           if (!quantityDeltaPicked.isZero()) {
             await this._createStockMovement(prisma as any, {
@@ -951,7 +967,7 @@ export class MaterialPickingOrdersService {
               // Apenas os campos que podem ser atualizados
               quantityToPick: itemFromRequest.quantityToPick,
               quantityPicked: itemFromRequest.quantityPicked,
-              quantityWithdrawn: itemFromRequest.quantityWithdrawn,
+              quantityWithdrawn: itemFromRequest.quantityToPick,
               notes: itemFromRequest.notes
               // Não atualizamos chaves estrangeiras como globalMaterialId aqui
               // para manter a simplicidade. Se precisar, adicione-as.
@@ -964,7 +980,7 @@ export class MaterialPickingOrdersService {
           itemsToActuallyCreate.push({
             quantityToPick: itemFromRequest.quantityToPick,
             quantityPicked: itemFromRequest.quantityPicked,
-            quantityWithdrawn: itemFromRequest.quantityWithdrawn,
+            quantityWithdrawn: itemFromRequest.quantityToPick,
             notes: itemFromRequest.notes,
             globalMaterial: {
               connect: { id: itemFromRequest.globalMaterialId }

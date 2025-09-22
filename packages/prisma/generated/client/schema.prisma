@@ -1187,6 +1187,9 @@ model MaterialPickingOrder {
   beCollectedByWorkerId Int?
   beCollectedByWorker   Worker? @relation("PickingOrdersBeCollectedByWorker", fields: [beCollectedByWorkerId], references: [id])
 
+  // Coleta realizada por entidade que nao seja user nem worker
+  collectedByOther String?
+
   // Data desejada para retirada (opcional)
   desiredPickupDate DateTime?
 
@@ -1199,6 +1202,11 @@ model MaterialPickingOrder {
 
   // Relação com as retiradas efetivas que atenderam esta ordem de separação
   materialWithdrawals MaterialWithdrawal[]
+
+  //campo para compatibilidade com base de dados antiga e pedidos de urgencia, sem req manutencao vinculada
+  legacy_place String?
+
+  valuePickingOrder Decimal? @db.Decimal(12, 4) // custo total da reserva, considerando todos os materiais
 
   createdAt DateTime @default(now()) @db.Timestamp(0)
   updatedAt DateTime @updatedAt @db.Timestamp(0)
@@ -1248,6 +1256,8 @@ model MaterialPickingOrderItem {
   // pickedFromInstance   MaterialInstance? @relation(fields: [pickedFromInstanceId], references: [id])
 
   quantityWithdrawn Decimal? @db.Decimal(10, 3) // Quantidade retirada diretamente deste item
+
+  unitPrice Decimal? @db.Decimal(12, 4) // cost of material
 
   notes String? // Notas específicas do almoxarife sobre este item do picking
 
@@ -1308,7 +1318,7 @@ model MaterialWithdrawal {
 
   notes String? @db.Text
 
-  //campo para compatibilidade com base de dados antiga
+  //campo para compatibilidade com base de dados antiga e pedidos de urgencia, sem req manutencao vinculada
   legacy_place String?
 
   items MaterialWithdrawalItem[] // Os materiais que compõem esta retirada

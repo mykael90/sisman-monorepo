@@ -582,9 +582,12 @@ exports.Prisma.MaterialPickingOrderScalarFieldEnum = {
   proccessedByUserId: 'proccessedByUserId',
   beCollectedByUserId: 'beCollectedByUserId',
   beCollectedByWorkerId: 'beCollectedByWorkerId',
+  collectedByOther: 'collectedByOther',
   desiredPickupDate: 'desiredPickupDate',
   status: 'status',
   notes: 'notes',
+  legacy_place: 'legacy_place',
+  valuePickingOrder: 'valuePickingOrder',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -598,6 +601,7 @@ exports.Prisma.MaterialPickingOrderItemScalarFieldEnum = {
   quantityToPick: 'quantityToPick',
   quantityPicked: 'quantityPicked',
   quantityWithdrawn: 'quantityWithdrawn',
+  unitPrice: 'unitPrice',
   notes: 'notes',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -1257,7 +1261,9 @@ exports.Prisma.MaterialDerivedOrderByRelevanceFieldEnum = {
 
 exports.Prisma.MaterialPickingOrderOrderByRelevanceFieldEnum = {
   pickingOrderNumber: 'pickingOrderNumber',
-  notes: 'notes'
+  collectedByOther: 'collectedByOther',
+  notes: 'notes',
+  legacy_place: 'legacy_place'
 };
 
 exports.Prisma.MaterialPickingOrderItemOrderByRelevanceFieldEnum = {
