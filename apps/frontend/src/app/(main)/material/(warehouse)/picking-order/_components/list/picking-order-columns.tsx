@@ -41,11 +41,23 @@ export const columns = (
     }
   }),
   columnHelper.accessor('desiredPickupDate', {
-    header: 'Previsão',
+    header: ({ column }) => {
+      return (
+        <div
+          className='flex cursor-pointer items-center'
+          onClick={() => column.toggleSorting()}
+        >
+          Previsão
+          <ArrowUpDown className='text-muted-foreground ml-2 h-4 w-4' />
+        </div>
+      );
+    },
+    size: 150,
+    enableResizing: false,
     enableColumnFilter: false,
     cell: ({ row }) => (
       <div className='text-center'>
-        {new Date(row.getValue('createdAt')).toLocaleDateString()}
+        {new Date(row.getValue('desiredPickupDate')).toLocaleDateString()}
       </div>
     )
   }),
