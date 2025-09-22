@@ -23,7 +23,9 @@ import {
   ArrowUpDown,
   RefreshCcw,
   ChevronRight,
-  ChevronDown
+  ChevronDown,
+  Eye,
+  EllipsisVertical
 } from 'lucide-react';
 import { Button } from '../../../../../../../components/ui/button';
 import { InfoHoverCard } from '../../../../../../../components/info-hover-card';
@@ -255,7 +257,7 @@ export const columns = (
     {
       id: 'beCollectedBy',
       header: 'Reserva para',
-      size: 150,
+      size: 400,
       enableResizing: false,
       cell: (props) => {
         const name = props.getValue();
@@ -276,21 +278,21 @@ export const columns = (
       }
     }
   ),
-  columnHelper.accessor(
-    (row) => row.maintenanceRequest?.facilityComplex?.name,
-    {
-      id: 'facilityComplex',
-      size: 500,
-      enableResizing: false,
-      header: 'Complexo',
-      cell: (props) => (
-        <div className='whitespace-normal'>{props.getValue()}</div>
-      )
-    }
-  ),
+  // columnHelper.accessor(
+  //   (row) => row.maintenanceRequest?.facilityComplex?.name,
+  //   {
+  //     id: 'facilityComplex',
+  //     size: 500,
+  //     enableResizing: false,
+  //     header: 'Complexo',
+  //     cell: (props) => (
+  //       <div className='whitespace-normal'>{props.getValue()}</div>
+  //     )
+  //   }
+  // ),
   columnHelper.accessor((row) => row.maintenanceRequest?.building?.name, {
     id: 'building',
-    size: 1000,
+    size: 600,
     enableResizing: false,
     header: 'Ativo',
     cell: (props) => <div className='whitespace-normal'>{props.getValue()}</div>
@@ -340,8 +342,26 @@ export const columns = (
   }),
   columnHelper.display({
     id: 'actions',
+    // cell: ({ row }) => (
+    //   <DefaultRowAction row={row} configuredActions={configuredActions} />
+    // )
     cell: ({ row }) => (
-      <DefaultRowAction row={row} configuredActions={configuredActions} />
+      <div className='flex gap-2'>
+        <Button
+          variant='ghost'
+          size='icon'
+          onClick={() => configuredActions.onView!(row)}
+        >
+          <Eye className='h-4 w-4' />
+        </Button>
+        <Button
+          variant='ghost'
+          size='icon'
+          onClick={() => configuredActions.onView!(row)}
+        >
+          <EllipsisVertical className='h-4 w-4' />
+        </Button>
+      </div>
     )
   })
 ];
