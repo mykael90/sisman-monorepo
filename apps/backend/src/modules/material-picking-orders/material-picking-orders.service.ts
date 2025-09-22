@@ -226,9 +226,7 @@ export class MaterialPickingOrdersService {
           materialInstanceId: item.materialInstanceId,
           quantityWithdrawn: item.quantityToPick,
           materialRequestItemId: item.materialRequestItemId,
-          unitPrice: item.unitPrice,
-          notes: item.notes,
-          materialPickingOrderItem: { id: item.id } as any
+          unitPrice: item.unitPrice
         })),
       valueWithdrawal: data.valuePickingOrder,
       legacy_place: data.legacy_place
