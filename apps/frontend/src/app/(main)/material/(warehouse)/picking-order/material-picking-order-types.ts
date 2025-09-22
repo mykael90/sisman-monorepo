@@ -28,7 +28,11 @@ export type IMaterialPickingOrderWithRelations =
       requestedByUser: true;
       beCollectedByUser: true;
       beCollectedByWorker: true;
-      items: true;
+      items: {
+        include: {
+          globalMaterial: true;
+        };
+      };
     };
   }>;
 

@@ -1,4 +1,11 @@
-import { ColumnDef, createColumnHelper, Row } from '@tanstack/react-table';
+import {
+  ColumnDef,
+  createColumnHelper,
+  Row,
+  flexRender,
+  getCoreRowModel,
+  useReactTable
+} from '@tanstack/react-table';
 import { IMaterialPickingOrderWithRelations } from '../../material-picking-order-types';
 import { DefaultRowAction } from '../../../../../../../components/table-tanstack/default-row-action';
 import { DataTableColumnHeader } from '../../../../../../../components/table-tanstack/data-table-column-header';
@@ -12,9 +19,22 @@ import {
 } from '../../../../../../../mappers/material-request-mappers-translate';
 import { Badge } from '@/components/ui/badge';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
-import { ArrowUpDown, RefreshCcw } from 'lucide-react';
+import {
+  ArrowUpDown,
+  RefreshCcw,
+  ChevronRight,
+  ChevronDown
+} from 'lucide-react';
 import { Button } from '../../../../../../../components/ui/button';
 import { InfoHoverCard } from '../../../../../../../components/info-hover-card';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
+} from '@/components/ui/table';
 
 const columnHelper = createColumnHelper<IMaterialPickingOrderWithRelations>();
 
@@ -33,6 +53,39 @@ export const columns = (
   //   enableSorting: false,
   //   enableHiding: false
   // }),
+  columnHelper.display({
+    id: 'expander',
+    size: 30,
+    header: ({ table }) => (
+      <Button
+        variant='ghost'
+        size='icon'
+        onClick={table.getToggleAllRowsExpandedHandler()}
+      >
+        {table.getIsAllRowsExpanded() ? (
+          <ChevronDown className='h-4 w-4' />
+        ) : (
+          <ChevronRight className='h-4 w-4' />
+        )}
+      </Button>
+    ),
+    cell: ({ row }) => (
+      <Button
+        variant='ghost'
+        size='icon'
+        onClick={(e) => {
+          e.stopPropagation();
+          row.toggleExpanded();
+        }}
+      >
+        {row.getIsExpanded() ? (
+          <ChevronDown className='h-4 w-4' />
+        ) : (
+          <ChevronRight className='h-4 w-4' />
+        )}
+      </Button>
+    )
+  }),
   columnHelper.accessor(
     (row) => {
       const status = row.status as TMaterialPickingOrderStatusKey;
@@ -304,15 +357,59 @@ export const createActions = (
   }
 });
 
-export function SubRowComponent({
+export const SubRowComponent = ({
   row
 }: {
   row: Row<IMaterialPickingOrderWithRelations>;
-}) {
+}) => {
+  const items = row.original.items || [];
+
   return (
-    <div className='p-4'>
-      <p>Detalhes da Ordem de Reserva: {row.original.id}</p>
-      {/* Adicione mais detalhes aqui conforme necessário */}
+    <div className='p-2 pl-8'>
+      <h4 className='mb-2 text-sm font-semibold'>
+        Itens da Ordem de Separação:
+      </h4>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>ID Material</TableHead>
+            <TableHead>Denominação</TableHead>
+            <TableHead>Unidade</TableHead>
+            <TableHead>Qtd Solicitada</TableHead>
+            <TableHead>Qtd Separada</TableHead>
+            <TableHead>Valor Unitário</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {items.length > 0 ? (
+            items.map((item, index) => (
+              <TableRow key={index}>
+                <TableCell>{item.globalMaterialId}</TableCell>
+                <TableCell>{item.globalMaterial?.name || 'N/A'}</TableCell>
+                <TableCell>
+                  {item.globalMaterial?.unitOfMeasure || 'N/A'}
+                </TableCell>
+                <TableCell>{item.quantityToPick.toString()}</TableCell>
+                <TableCell>{(item.quantityPicked || 0).toString()}</TableCell>
+                <TableCell>
+                  {item.unitPrice
+                    ? Number(item.unitPrice).toLocaleString('pt-BR', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                      })
+                    : 'Indefinido'}
+                </TableCell>
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={6} className='h-24 text-center'>
+                Nenhum item encontrado.
+              </TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
     </div>
   );
-}
+};

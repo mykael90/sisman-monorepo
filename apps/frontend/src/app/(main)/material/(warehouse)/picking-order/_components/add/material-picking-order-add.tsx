@@ -8,7 +8,7 @@ import { useWarehouseContext } from '../../../../choose-warehouse/context/wareho
 import { addMaterialPickingOrder } from '../../material-picking-order-actions';
 import { MaterialPickingOrderForm } from '../form/material-picking-order-form';
 import { useRouter } from 'next/navigation';
-import { FilePlus } from 'lucide-react';
+import { ArrowLeft, FilePlus, ListPlus } from 'lucide-react';
 import { SectionListHeaderSmall } from '../../../../../../../components/section-list-header-small';
 
 export function MaterialPickingOrderAdd({
@@ -65,13 +65,13 @@ export function MaterialPickingOrderAdd({
       <SectionListHeaderSmall
         title='Reserva de Materiais'
         subtitle='Sistema de reserva de materiais'
-        // TitleIcon={Package}
+        TitleIcon={ListPlus}
         actionButton={{
           text: 'Voltar para listagem',
           // onClick: handleAddWithdrawal,
           onClick: () => console.log(),
-          variant: 'outline'
-          // Icon: PackagePlus
+          variant: 'outline',
+          Icon: ArrowLeft
         }}
       />
 

@@ -214,7 +214,9 @@ export class MaterialPickingOrdersService {
       // O tipo de movimento para uma retirada de uma ordem de separação.
       // Pode ser ajustado conforme a regra de negócio.
       movementType: {
-        code: MaterialStockOperationSubType.OUT_SERVICE_USAGE
+        code: data.maintenanceRequestId
+          ? MaterialStockOperationSubType.OUT_SERVICE_USAGE
+          : MaterialStockOperationSubType.OUT_EMERGENCY_USAGE
       } as any,
       notes: `Retirada automática referente à Ordem de Separação nº ${data.pickingOrderNumber}`,
       items: data.items
@@ -223,8 +225,13 @@ export class MaterialPickingOrdersService {
           globalMaterialId: item.globalMaterialId,
           materialInstanceId: item.materialInstanceId,
           quantityWithdrawn: item.quantityToPick,
-          materialRequestItemId: item.materialRequestItemId
-        }))
+          materialRequestItemId: item.materialRequestItemId,
+          unitPrice: item.unitPrice,
+          notes: item.notes,
+          materialPickingOrderItem: { id: item.id } as any
+        })),
+      valueWithdrawal: data.valuePickingOrder,
+      legacy_place: data.legacy_place
     };
 
     if (createWithdrawalDto.items.length === 0) {
@@ -1295,7 +1302,7 @@ export class MaterialPickingOrdersService {
           requestedByUser: true,
           beCollectedByUser: true,
           beCollectedByWorker: true,
-          items: true
+          items: { include: { globalMaterial: true } }
         },
         orderBy: {
           createdAt: 'desc'
