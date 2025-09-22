@@ -7,7 +7,6 @@ import {
   useReactTable
 } from '@tanstack/react-table';
 import { IMaterialPickingOrderWithRelations } from '../../material-picking-order-types';
-import { DefaultRowAction } from '../../../../../../../components/table-tanstack/default-row-action';
 import { DataTableColumnHeader } from '../../../../../../../components/table-tanstack/data-table-column-header';
 import {
   materialPickingOrderStatusDisplayMapPortuguese,
@@ -37,6 +36,11 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger
+} from '../../../../../../../components/ui/popover';
 
 const columnHelper = createColumnHelper<IMaterialPickingOrderWithRelations>();
 
@@ -354,13 +358,40 @@ export const columns = (
         >
           <Eye className='h-4 w-4' />
         </Button>
-        <Button
-          variant='ghost'
-          size='icon'
-          onClick={() => configuredActions.onView!(row)}
-        >
-          <EllipsisVertical className='h-4 w-4' />
-        </Button>
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button variant='ghost' size='icon'>
+              <EllipsisVertical className='h-4 w-4' />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className='w-40 p-0'>
+            <div className='flex flex-col gap-2 p-0'>
+              <Button
+                variant='ghost'
+                size={'sm'}
+                onClick={() => configuredActions.onView!(row)}
+                className='m-0'
+              >
+                Reserva Separada
+              </Button>
+              <Button
+                variant='ghost'
+                size={'sm'}
+                onClick={() => configuredActions.onEdit!(row)}
+              >
+                Reserva Retirada
+              </Button>
+              <Button
+                variant='ghost'
+                size={'sm'}
+                onClick={() => configuredActions.onEdit!(row)}
+              >
+                Cancelar Reserva
+              </Button>
+              {/* Adicione mais opções aqui conforme necessário */}
+            </div>
+          </PopoverContent>
+        </Popover>
       </div>
     )
   })
@@ -397,6 +428,7 @@ export const SubRowComponent = ({
             <TableHead>Unidade</TableHead>
             <TableHead>Qtd Solicitada</TableHead>
             <TableHead>Qtd Separada</TableHead>
+            <TableHead>Qtd Retirada</TableHead>
             <TableHead>Valor Unitário</TableHead>
           </TableRow>
         </TableHeader>
@@ -411,6 +443,9 @@ export const SubRowComponent = ({
                 </TableCell>
                 <TableCell>{item.quantityToPick.toString()}</TableCell>
                 <TableCell>{(item.quantityPicked || 0).toString()}</TableCell>
+                <TableCell>
+                  {(item.quantityWithdrawn || 0).toString()}
+                </TableCell>
                 <TableCell>
                   {item.unitPrice
                     ? Number(item.unitPrice).toLocaleString('pt-BR', {

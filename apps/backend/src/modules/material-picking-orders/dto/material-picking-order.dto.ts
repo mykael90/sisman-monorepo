@@ -174,6 +174,7 @@ class MaterialPickingOrderBaseDto implements MaterialPickingOrder {
 }
 
 class MaterialPickingOrderItemBaseDto implements MaterialPickingOrderItem {
+  quantityWithdrawn: Prisma.Decimal;
   unitPrice: Prisma.Decimal;
   globalMaterialId: string;
   materialInstanceId: number;
