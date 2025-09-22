@@ -61,6 +61,7 @@ interface TableProps<TData> {
     table: TTable<TData>,
     columnId: string
   ) => () => Map<unknown, number>;
+  autoResetPageIndex?: boolean;
 }
 
 export function TableTanstackFaceted<TData>({
@@ -78,7 +79,8 @@ export function TableTanstackFaceted<TData>({
   renderSubComponent,
   getRowClassName,
   getFacetedRowModel,
-  getFacetedUniqueValues
+  getFacetedUniqueValues,
+  autoResetPageIndex = false
 }: TableProps<TData>) {
   const [expanded, setExpanded] = useState({});
 
@@ -90,6 +92,7 @@ export function TableTanstackFaceted<TData>({
     onColumnFiltersChange: setColumnFilters,
     getPaginationRowModel: getPaginationRowModel(),
     onPaginationChange: setPagination,
+    autoResetPageIndex: autoResetPageIndex,
     getSortedRowModel: getSortedRowModel(),
     onSortingChange: setSorting,
     onGlobalFilterChange: setGlobalFilter,
