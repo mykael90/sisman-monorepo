@@ -71,7 +71,8 @@ export function PickingOrderListPage() {
     data: pickingOrders,
     isLoading,
     isError,
-    error
+    error,
+    refetch
   } = useQuery({
     queryKey: ['pickingOrders', warehouse?.id, date],
     queryFn: () =>
@@ -112,7 +113,7 @@ export function PickingOrderListPage() {
     router.push('picking-order/add');
   };
 
-  const columnActions = createActions(router);
+  const columnActions = createActions(router, refetch);
 
   return (
     <div className='container mx-auto'>

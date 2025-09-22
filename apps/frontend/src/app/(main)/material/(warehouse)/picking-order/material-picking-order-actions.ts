@@ -173,6 +173,50 @@ export async function addMaterialPickingOrder(
   }
 }
 
+export async function updateMaterialPickingOrderStatusByOperation(
+  id: number,
+  status: 'READY_FOR_PICKUP' | 'FULLY_WITHDRAWN' | 'CANCELLED',
+  userId: number
+): Promise<IActionResultForm<any, any>> {
+  logger.info(
+    `(Server Action) updateMaterialPickingOrderStatus: Attempt to update picking-order ${id} status to ${status} by user ${userId}`
+  );
+
+  const payload = {
+    userId,
+    status
+  };
+
+  try {
+    const accessToken = await getSismanAccessToken();
+    return await handleApiAction<any, any, any>(
+      payload,
+      payload,
+      {
+        endpoint: `${API_RELATIVE_PATH}/operation-by-status/${id}`,
+        method: 'PUT',
+        accessToken: accessToken
+      },
+      {
+        mainPath: PAGE_PATH,
+        detailPath: `${PAGE_PATH}/edit/${id}`
+      },
+      `Status da reserva ${id} atualizado para ${status} com sucesso!`
+    );
+  } catch (error) {
+    logger.error(
+      `(Server Action) updateMaterialPickingOrderStatus: Error updating picking-order ${id} status`,
+      error
+    );
+    return {
+      isSubmitSuccessful: false,
+      errorsServer: ['An unexpected error occurred'],
+      submittedData: payload,
+      message: 'Unexpected error'
+    };
+  }
+}
+
 export async function updateMaterialPickingOrder(
   prevState: unknown,
   data: IMaterialPickingOrderEdit
