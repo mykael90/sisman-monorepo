@@ -14,6 +14,8 @@ import {
 import { handleApiAction } from '@/lib/fetch/handle-form-action-sisman';
 import { pickingorderServiceUsageMapping } from './add/mapper-to-payload';
 import { createPayload } from '../../../../../lib/payload-creator';
+import { TMaterialPickingOrderStatusDisplay } from '../../../../../mappers/material-picking-order-mappers';
+import { materialPickingOrderStatusDisplayMapPortuguese } from '../../../../../mappers/material-picking-order-mappers-translate';
 
 const PAGE_PATH = '/material/picking-order';
 const API_RELATIVE_PATH = '/material-picking-order';
@@ -175,7 +177,7 @@ export async function addMaterialPickingOrder(
 
 export async function updateMaterialPickingOrderStatusByOperation(
   id: number,
-  status: 'READY_FOR_PICKUP' | 'FULLY_WITHDRAWN' | 'CANCELLED',
+  status: TMaterialPickingOrderStatusDisplay,
   userId: number
 ): Promise<IActionResultForm<any, any>> {
   logger.info(
@@ -201,7 +203,7 @@ export async function updateMaterialPickingOrderStatusByOperation(
         mainPath: PAGE_PATH,
         detailPath: `${PAGE_PATH}/edit/${id}`
       },
-      `Status da reserva ${id} atualizado para ${status} com sucesso!`
+      `Status da reserva id: ${id} atualizado para ${materialPickingOrderStatusDisplayMapPortuguese[status]} com sucesso!`
     );
   } catch (error) {
     logger.error(

@@ -11,6 +11,10 @@ import {
 import { IMaterialPickingOrderWithRelations } from '../../material-picking-order-types';
 import { DataTableColumnHeader } from '../../../../../../../components/table-tanstack/data-table-column-header';
 import {
+  materialPickingOrderStatusDisplayMap,
+  TMaterialPickingOrderStatusDisplay
+} from '../../../../../../../mappers/material-picking-order-mappers';
+import {
   materialPickingOrderStatusDisplayMapPortuguese,
   TMaterialPickingOrderStatusKey
 } from '../../../../../../../mappers/material-picking-order-mappers-translate';
@@ -266,7 +270,7 @@ export const createActions = (
 
   const handleStatusUpdate = async (
     id: number,
-    status: 'READY_FOR_PICKUP' | 'FULLY_WITHDRAWN' | 'CANCELLED'
+    status: TMaterialPickingOrderStatusDisplay
   ) => {
     if (!userId) {
       toast.error(
@@ -304,13 +308,28 @@ export const createActions = (
       handleSyncRMSipac(row.original.materialRequest?.protocolNumber);
     },
     onReadyForPickup: (row: Row<IMaterialPickingOrderWithRelations>) => {
-      handleStatusUpdate(row.original.id, 'READY_FOR_PICKUP');
+      handleStatusUpdate(
+        row.original.id,
+        materialPickingOrderStatusDisplayMap.READY_FOR_PICKUP
+      );
     },
     onFullyWithdrawn: (row: Row<IMaterialPickingOrderWithRelations>) => {
-      handleStatusUpdate(row.original.id, 'FULLY_WITHDRAWN');
+      handleStatusUpdate(
+        row.original.id,
+        materialPickingOrderStatusDisplayMap.FULLY_WITHDRAWN
+      );
     },
     onCancelled: (row: Row<IMaterialPickingOrderWithRelations>) => {
-      handleStatusUpdate(row.original.id, 'CANCELLED');
+      handleStatusUpdate(
+        row.original.id,
+        materialPickingOrderStatusDisplayMap.CANCELLED
+      );
+    },
+    onReactived: (row: Row<IMaterialPickingOrderWithRelations>) => {
+      handleStatusUpdate(
+        row.original.id,
+        materialPickingOrderStatusDisplayMap.PENDING_PREPARATION
+      );
     }
   };
 };
@@ -729,7 +748,7 @@ export const columns = (
               <Button
                 variant='ghost'
                 size={'sm'}
-                onClick={() => configuredActions.onCancelled!(row)}
+                onClick={() => configuredActions.onReactived!(row)}
               >
                 Reativar Reserva
               </Button>

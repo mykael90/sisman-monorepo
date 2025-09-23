@@ -750,8 +750,8 @@ export class MaterialPickingOrdersService {
     // Impede a edição de ordens em estados finais.
     const uneditableStatuses: MaterialPickingOrderStatus[] = [
       MaterialPickingOrderStatus.CANCELLED,
-      MaterialPickingOrderStatus.FULLY_WITHDRAWN,
-      MaterialPickingOrderStatus.EXPIRED
+      MaterialPickingOrderStatus.FULLY_WITHDRAWN
+      // MaterialPickingOrderStatus.EXPIRED //vamos inserir uma logica para reativar
       // Adicione outros status conforme necessário, ex: FULLY_WITHDRAWN
     ];
     if (uneditableStatuses.includes(existingOrder.status)) {
@@ -1196,7 +1196,8 @@ export class MaterialPickingOrdersService {
       MaterialPickingOrderStatus.CANCELLED,
       MaterialPickingOrderStatus.EXPIRED,
       MaterialPickingOrderStatus.FULLY_WITHDRAWN,
-      MaterialPickingOrderStatus.READY_FOR_PICKUP
+      MaterialPickingOrderStatus.READY_FOR_PICKUP,
+      MaterialPickingOrderStatus.PENDING_PREPARATION
     ];
 
     if (!allowedOperations.includes(operation)) {
@@ -1239,6 +1240,16 @@ export class MaterialPickingOrdersService {
           ...item, // Mantém IDs e outras informações
           //Não zere as quantidades solicitadas. Ela serve como lembrança do que foi pedido. É a logica implementada
           quantityPicked: item.quantityToPick // Define a quantidade separada para reserva como o total a ser separado
+        }));
+        break;
+
+      case MaterialPickingOrderStatus.PENDING_PREPARATION:
+        this.logger.debug(`Reativando uma reserva que estava expirada.`);
+        updateDto.desiredPickupDate = new Date();
+        updateDto.items = existingOrder.items.map((item) => ({
+          ...item // Mantém IDs e outras informações
+          //Não zere as quantidades solicitadas. Ela serve como lembrança do que foi pedido. É a logica implementada
+          // quantityPicked: item.quantityToPick // Define a quantidade separada para reserva como o total a ser separado
         }));
         break;
 

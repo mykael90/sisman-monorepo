@@ -219,6 +219,28 @@ Authorization: Bearer {{token}}
     "status": "CANCELLED"
 }
 
+### PUT - Update status to EXPIRED
+# @prompt id
+PUT {{urlLocal}}/operation-by-status/{{id}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "userId": 2,
+    "status": "EXPIRED"
+}
+
+### PUT - Update status to PENDING_PREPARATION (caso de reativação de reserva expirada)
+# @prompt id
+PUT {{urlLocal}}/operation-by-status/{{id}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "userId": 2,
+    "status": "PENDING_PREPARATION"
+}
+
 ### PUT - Update 
 # @prompt id
 PUT {{urlLocal}}/{{id}}
