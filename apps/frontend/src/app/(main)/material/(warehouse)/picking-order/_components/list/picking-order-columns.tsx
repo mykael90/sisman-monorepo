@@ -64,6 +64,8 @@ import { toast } from 'sonner';
 import { useTransition } from 'react';
 import { useSession } from 'next-auth/react';
 import { QueryClient } from '@tanstack/react-query';
+import { handleFetchOneAndPersistRequisicaoMaterialComRequisicaoManutencaoVinculada } from '../../../../../sipac/requisicoes-materiais/requisicoes-materiais-actions';
+import { is } from 'date-fns/locale';
 
 const columnHelper = createColumnHelper<IMaterialPickingOrderWithRelations>();
 
@@ -233,6 +235,35 @@ export const createActions = (
     ? Number(session.user.idSisman)
     : undefined;
 
+  const handleSyncRMSipac = async (protocolNumber?: string) => {
+    if (!protocolNumber)
+      return toast.error(
+        `Requisição de material não localizada para essa reserva.`
+      );
+
+    startTransition(async () => {
+      const updateRequisicaoMaterialSipac =
+        await handleFetchOneAndPersistRequisicaoMaterialComRequisicaoManutencaoVinculada(
+          protocolNumber
+        );
+      if (updateRequisicaoMaterialSipac) {
+        // When you use await inside a startTransition function, the state updates that happen after the await are not marked as Transitions. You must wrap state updates after each await in a startTransition call:
+
+        startTransition(() => {
+          //Uso de recursividade, como foi bem sucedido, vai localizar corretamente e vai exibir em tela na próxima chamada
+          toast.success(
+            `Requisição de material nº ${protocolNumber} sincronizada do SIPAC com sucesso!`
+          );
+          queryClient.invalidateQueries({ queryKey: ['pickingOrders'] }); // Invalida o cache do react-query
+        });
+      } else {
+        toast.error(
+          `Falha ao sincronizar requisição de material nº ${protocolNumber} do SIPAC. Verifique os dados e tente novamente.`
+        );
+      }
+    });
+  };
+
   const handleStatusUpdate = async (
     id: number,
     status: 'READY_FOR_PICKUP' | 'FULLY_WITHDRAWN' | 'CANCELLED'
@@ -244,14 +275,18 @@ export const createActions = (
       return;
     }
     startTransition(async () => {
+      // When you use await inside a startTransition function, the state updates that happen after the await are not marked as Transitions. You must wrap state updates after each await in a startTransition call:
+
       const result = await updateMaterialPickingOrderStatusByOperation(
         id,
         status,
         userId
       );
       if (result.isSubmitSuccessful) {
-        toast.success(result.message);
-        queryClient.invalidateQueries({ queryKey: ['pickingOrders'] }); // Invalida o cache do react-query
+        startTransition(() => {
+          toast.success(result.message);
+          queryClient.invalidateQueries({ queryKey: ['pickingOrders'] }); // Invalida o cache do react-query
+        });
       } else {
         toast.error(result.message || 'Erro ao atualizar o status da reserva.');
       }
@@ -264,6 +299,9 @@ export const createActions = (
     },
     onView: (row: Row<IMaterialPickingOrderWithRelations>) => {
       router.push(`picking-order/${row.original.id}`);
+    },
+    onSyncRM: (row: Row<IMaterialPickingOrderWithRelations>) => {
+      handleSyncRMSipac(row.original.materialRequest?.protocolNumber);
     },
     onReadyForPickup: (row: Row<IMaterialPickingOrderWithRelations>) => {
       handleStatusUpdate(row.original.id, 'READY_FOR_PICKUP');
@@ -650,6 +688,14 @@ export const columns = (
         >
           <Eye className='h-4 w-4' />
         </Button>
+        <Button
+          title='Sincronizar RM com SIPAC'
+          variant='ghost'
+          size='icon'
+          onClick={() => configuredActions.onSyncRM!(row)}
+        >
+          <RefreshCcw className='h-4 w-4' />
+        </Button>
         <Popover>
           <PopoverTrigger asChild>
             <Button variant='ghost' size='icon' title='Operação'>
@@ -679,6 +725,13 @@ export const columns = (
                 onClick={() => configuredActions.onCancelled!(row)}
               >
                 Cancelar Reserva
+              </Button>
+              <Button
+                variant='ghost'
+                size={'sm'}
+                onClick={() => configuredActions.onCancelled!(row)}
+              >
+                Reativar Reserva
               </Button>
               {/* Adicione mais opções aqui conforme necessário */}
             </div>
