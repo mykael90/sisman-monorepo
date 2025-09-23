@@ -63,7 +63,7 @@ import { updateMaterialPickingOrderStatusByOperation } from '../../material-pick
 import { toast } from 'sonner';
 import { useTransition } from 'react';
 import { useSession } from 'next-auth/react';
-import { useQueryClient } from '@tanstack/react-query';
+import { QueryClient } from '@tanstack/react-query';
 
 const columnHelper = createColumnHelper<IMaterialPickingOrderWithRelations>();
 
@@ -221,6 +221,60 @@ const materialRequestStatusConfig: Record<
 
 type ActionHandlers<TData> = {
   [key: string]: (row: Row<TData>) => void;
+};
+
+export const createActions = (
+  router: AppRouterInstance,
+  queryClient: QueryClient
+): ActionHandlers<IMaterialPickingOrderWithRelations> => {
+  const [isPending, startTransition] = useTransition();
+  const { data: session } = useSession();
+  const userId = session?.user.idSisman
+    ? Number(session.user.idSisman)
+    : undefined;
+
+  const handleStatusUpdate = async (
+    id: number,
+    status: 'READY_FOR_PICKUP' | 'FULLY_WITHDRAWN' | 'CANCELLED'
+  ) => {
+    if (!userId) {
+      toast.error(
+        'ID do usuário não disponível. Não foi possível atualizar o status.'
+      );
+      return;
+    }
+    startTransition(async () => {
+      const result = await updateMaterialPickingOrderStatusByOperation(
+        id,
+        status,
+        userId
+      );
+      if (result.isSubmitSuccessful) {
+        toast.success(result.message);
+        queryClient.invalidateQueries({ queryKey: ['pickingOrders'] }); // Invalida o cache do react-query
+      } else {
+        toast.error(result.message || 'Erro ao atualizar o status da reserva.');
+      }
+    });
+  };
+
+  return {
+    onEdit: (row: Row<IMaterialPickingOrderWithRelations>) => {
+      router.push(`picking-order/edit/${row.original.id}`);
+    },
+    onView: (row: Row<IMaterialPickingOrderWithRelations>) => {
+      router.push(`picking-order/${row.original.id}`);
+    },
+    onReadyForPickup: (row: Row<IMaterialPickingOrderWithRelations>) => {
+      handleStatusUpdate(row.original.id, 'READY_FOR_PICKUP');
+    },
+    onFullyWithdrawn: (row: Row<IMaterialPickingOrderWithRelations>) => {
+      handleStatusUpdate(row.original.id, 'FULLY_WITHDRAWN');
+    },
+    onCancelled: (row: Row<IMaterialPickingOrderWithRelations>) => {
+      handleStatusUpdate(row.original.id, 'CANCELLED');
+    }
+  };
 };
 
 export const defaultColumn: Partial<
@@ -624,61 +678,6 @@ export const columns = (
     )
   })
 ];
-
-export const createActions = (
-  router: AppRouterInstance
-): ActionHandlers<IMaterialPickingOrderWithRelations> => {
-  const [isPending, startTransition] = useTransition();
-  const { data: session } = useSession();
-  const userId = session?.user.idSisman
-    ? Number(session.user.idSisman)
-    : undefined;
-
-  const queryClient = useQueryClient();
-
-  const handleStatusUpdate = async (
-    id: number,
-    status: 'READY_FOR_PICKUP' | 'FULLY_WITHDRAWN' | 'CANCELLED'
-  ) => {
-    if (!userId) {
-      toast.error(
-        'ID do usuário não disponível. Não foi possível atualizar o status.'
-      );
-      return;
-    }
-    startTransition(async () => {
-      const result = await updateMaterialPickingOrderStatusByOperation(
-        id,
-        status,
-        userId
-      );
-      if (result.isSubmitSuccessful) {
-        toast.success(result.message);
-        queryClient.invalidateQueries({ queryKey: ['pickingOrders'] }); // Invalida o cache do react-query
-      } else {
-        toast.error(result.message || 'Erro ao atualizar o status da reserva.');
-      }
-    });
-  };
-
-  return {
-    onEdit: (row: Row<IMaterialPickingOrderWithRelations>) => {
-      router.push(`picking-order/edit/${row.original.id}`);
-    },
-    onView: (row: Row<IMaterialPickingOrderWithRelations>) => {
-      router.push(`picking-order/${row.original.id}`);
-    },
-    onReadyForPickup: (row: Row<IMaterialPickingOrderWithRelations>) => {
-      handleStatusUpdate(row.original.id, 'READY_FOR_PICKUP');
-    },
-    onFullyWithdrawn: (row: Row<IMaterialPickingOrderWithRelations>) => {
-      handleStatusUpdate(row.original.id, 'FULLY_WITHDRAWN');
-    },
-    onCancelled: (row: Row<IMaterialPickingOrderWithRelations>) => {
-      handleStatusUpdate(row.original.id, 'CANCELLED');
-    }
-  };
-};
 
 export const SubRowComponent = ({
   row

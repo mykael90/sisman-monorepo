@@ -6,7 +6,8 @@ import {
   Dispatch,
   SetStateAction,
   useEffect,
-  use
+  use,
+  useCallback
 } from 'react';
 import { SectionListHeader } from '@/components/section-list-header';
 import {
@@ -29,7 +30,7 @@ import {
 import { FilterX, Package, PackagePlus } from 'lucide-react';
 import { SectionListHeaderSmall } from '../../../../../../../components/section-list-header-small';
 import { useWarehouseContext } from '../../../../choose-warehouse/context/warehouse-provider';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import Loading from '@/components/loading';
 import { getMaterialPickingOrdersByWarehouse } from '../../material-picking-order-actions';
 import { useMediaQuery } from '@/hooks/use-media-query';
@@ -45,28 +46,58 @@ export function PickingOrderListPage() {
   const { warehouse } = useWarehouseContext();
   const router = useRouter();
   const isDesktop = useMediaQuery('(min-width: 768px)');
+  const queryClient = useQueryClient();
 
-  const [date, setDate] = useState<DateRange | undefined>({
+  const [date, setDateState] = useState<DateRange | undefined>({
     from: subDays(new Date(), 10),
     to: new Date()
   });
 
   const [sorting, setSorting] = useState<SortingState>([]);
 
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnFilters, setColumnFiltersState] = useState<ColumnFiltersState>(
+    []
+  );
 
-  const [globalFilterValue, setGlobalFilterValue] = useState('');
+  const [globalFilterValue, setGlobalFilterValueState] = useState('');
   const inputDebounceRef = useRef<InputDebounceRef>(null);
-
-  const handleClearFilters = () => {
-    setGlobalFilterValue('');
-    inputDebounceRef.current?.clearInput();
-  };
 
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10
   });
+
+  // --- Wrappers para os setters dos filtros ---
+  // Esses wrappers garantem que, ao aplicar um filtro, a paginação seja resetada para a primeira página
+  // (porque autoResetPageIndex é false agora).
+
+  const setDate = useCallback((range: DateRange | undefined) => {
+    setDateState(range);
+    setPagination((prev) => ({ ...prev, pageIndex: 0 })); // Reseta para a primeira página ao aplicar filtro de data
+  }, []);
+
+  const setGlobalFilterValue = useCallback((value: string) => {
+    setGlobalFilterValueState(value);
+    setPagination((prev) => ({ ...prev, pageIndex: 0 })); // Reseta para a primeira página ao aplicar filtro global
+  }, []);
+
+  const setColumnFilters = useCallback(
+    (
+      updater:
+        | ColumnFiltersState
+        | ((old: ColumnFiltersState) => ColumnFiltersState)
+    ) => {
+      setColumnFiltersState(updater);
+      setPagination((prev) => ({ ...prev, pageIndex: 0 })); // Reseta para a primeira página ao aplicar filtro de coluna
+    },
+    []
+  );
+  // --- Fim dos Wrappers dos filtros ---
+
+  const handleClearFilters = () => {
+    setGlobalFilterValue(''); // Usa o setter modificado
+    inputDebounceRef.current?.clearInput();
+  };
 
   const {
     data: pickingOrders,
@@ -114,7 +145,7 @@ export function PickingOrderListPage() {
     router.push('picking-order/add');
   };
 
-  const columnActions = createActions(router);
+  const columnActions = createActions(router, queryClient);
 
   return (
     <div className='container mx-auto'>
