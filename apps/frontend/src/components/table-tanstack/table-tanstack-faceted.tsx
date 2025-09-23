@@ -44,6 +44,7 @@ interface TableProps<TData> {
   columns: ColumnDef<TData, any>[];
   columnFilters?: ColumnFiltersState;
   setColumnFilters?: React.Dispatch<React.SetStateAction<ColumnFiltersState>>;
+  defaultColumn?: Partial<ColumnDef<TData>>;
   pagination?: PaginationState;
   setPagination?: React.Dispatch<React.SetStateAction<any>>;
   setSorting?: React.Dispatch<React.SetStateAction<SortingState>>;
@@ -69,6 +70,7 @@ export function TableTanstackFaceted<TData>({
   columns,
   columnFilters,
   setColumnFilters,
+  defaultColumn,
   pagination,
   setPagination,
   setSorting,
@@ -87,6 +89,7 @@ export function TableTanstackFaceted<TData>({
   const table = useReactTable({
     data: data,
     columns: columns,
+    defaultColumn: defaultColumn,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     onColumnFiltersChange: setColumnFilters,

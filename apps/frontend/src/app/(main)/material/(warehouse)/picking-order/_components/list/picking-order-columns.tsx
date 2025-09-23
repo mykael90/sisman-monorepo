@@ -223,6 +223,25 @@ type ActionHandlers<TData> = {
   [key: string]: (row: Row<TData>) => void;
 };
 
+export const defaultColumn: Partial<
+  ColumnDef<IMaterialPickingOrderWithRelations>
+> = {
+  // Largura padrão
+  size: 150,
+  enableResizing: false,
+  // Filtro desligado por padrão
+  enableColumnFilter: false,
+  filterFn: 'arrIncludesSome',
+  // Renderizador padrão da célula (texto simples)
+  cell: ({ getValue }) => {
+    const value = getValue();
+    if (value === null || value === undefined || value === '') {
+      return <span className='text-muted-foreground'>N/A</span>;
+    }
+    return <div className='whitespace-normal'>{String(value)}</div>;
+  }
+};
+
 export const columns = (
   configuredActions: ActionHandlers<IMaterialPickingOrderWithRelations>
 ): ColumnDef<IMaterialPickingOrderWithRelations, any>[] => [
@@ -275,8 +294,8 @@ export const columns = (
     {
       id: 'status',
       header: 'Reserva',
-      size: 150,
-      enableResizing: false,
+      enableColumnFilter: true,
+      filterFn: 'arrIncludesSome',
       cell: ({ row }) => {
         const statusKey = row.original.status as TMaterialPickingOrderStatusKey;
         const config = pickingOrderStatusConfig[statusKey];
@@ -455,8 +474,7 @@ export const columns = (
   columnHelper.accessor((row) => row.requestedByUser.login, {
     header: 'Solicitado por',
     id: 'requestedByUser',
-    size: 150,
-    enableResizing: false,
+    enableColumnFilter: true,
     cell: (props) => <div className='whitespace-normal'>{props.getValue()}</div>
   }),
   // columnHelper.accessor((row) => row.warehouse?.name, {
@@ -472,7 +490,7 @@ export const columns = (
       id: 'beCollectedBy',
       header: 'Reserva para',
       size: 400,
-      enableResizing: false,
+      enableColumnFilter: true,
       cell: (props) => {
         const name = props.getValue();
         if (!name) {
@@ -507,7 +525,7 @@ export const columns = (
   columnHelper.accessor((row) => row.maintenanceRequest?.building?.name, {
     id: 'building',
     size: 600,
-    enableResizing: false,
+    enableColumnFilter: true,
     header: 'Ativo',
     cell: (props) => <div className='whitespace-normal'>{props.getValue()}</div>
   }),

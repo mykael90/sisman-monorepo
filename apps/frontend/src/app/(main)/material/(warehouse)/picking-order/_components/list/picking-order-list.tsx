@@ -23,6 +23,7 @@ import { useRouter } from 'next/navigation';
 import {
   columns,
   createActions,
+  defaultColumn,
   SubRowComponent
 } from './picking-order-columns';
 import { FilterX, Package, PackagePlus } from 'lucide-react';
@@ -153,6 +154,7 @@ export function PickingOrderListPage() {
           columns={columns(columnActions)}
           columnFilters={columnFilters}
           setColumnFilters={setColumnFilters}
+          defaultColumn={defaultColumn}
           pagination={pagination}
           setPagination={setPagination}
           setSorting={setSorting}
