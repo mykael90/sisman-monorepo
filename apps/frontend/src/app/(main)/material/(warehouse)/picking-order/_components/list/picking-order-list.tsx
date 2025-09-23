@@ -46,7 +46,7 @@ import { materialPickingOrderStatusDisplayMapPortuguese } from '../../../../../.
 export function PickingOrderListPage() {
   const { warehouse } = useWarehouseContext();
   const router = useRouter();
-  const isDesktop = useMediaQuery('(min-width: 768px)');
+  // const isDesktop = useMediaQuery('(min-width: 768px)');
   const queryClient = useQueryClient();
 
   const [date, setDateState] = useState<DateRange | undefined>({
@@ -190,7 +190,7 @@ export function PickingOrderListPage() {
 
       {isLoading ? (
         <Loading />
-      ) : isDesktop ? (
+      ) : (
         <TableTanstackFaceted
           data={pickingOrders}
           columns={columns(columnActions)}
@@ -208,17 +208,6 @@ export function PickingOrderListPage() {
           globalFilter={globalFilterValue}
           setGlobalFilter={setGlobalFilterValue}
         />
-      ) : (
-        <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3'>
-          {pickingOrders.map(
-            (pickingOrder: IMaterialPickingOrderWithRelations) => (
-              <PickingOrderCard
-                key={pickingOrder.id}
-                pickingOrder={pickingOrder}
-              />
-            )
-          )}
-        </div>
       )}
     </div>
   );
