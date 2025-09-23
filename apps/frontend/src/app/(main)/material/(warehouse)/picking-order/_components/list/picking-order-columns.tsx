@@ -707,55 +707,72 @@ export const columns = (
         >
           <Eye className='h-4 w-4' />
         </Button>
-        <Button
-          title='Sincronizar RM com SIPAC'
-          variant='ghost'
-          size='icon'
-          onClick={() => configuredActions.onSyncRM!(row)}
-        >
-          <RefreshCcw className='h-4 w-4' />
-        </Button>
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button variant='ghost' size='icon' title='Operação'>
-              <EllipsisVertical className='h-4 w-4' />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className='w-40 p-0'>
-            <div className='flex flex-col gap-2 p-0'>
-              <Button
-                variant='ghost'
-                size={'sm'}
-                onClick={() => configuredActions.onReadyForPickup!(row)}
-                className='m-0'
-              >
-                Reserva Separada
+        {row.original.materialRequestId && (
+          <Button
+            title='Sincronizar RM com SIPAC'
+            variant='ghost'
+            size='icon'
+            onClick={() => configuredActions.onSyncRM!(row)}
+          >
+            <RefreshCcw className='h-4 w-4' />
+          </Button>
+        )}
+        {row.original.status !==
+          materialPickingOrderStatusDisplayMap.CANCELLED && (
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button variant='ghost' size='icon' title='Operação'>
+                <EllipsisVertical className='h-4 w-4' />
               </Button>
-              <Button
-                variant='ghost'
-                size={'sm'}
-                onClick={() => configuredActions.onFullyWithdrawn!(row)}
-              >
-                Reserva Retirada
-              </Button>
-              <Button
-                variant='ghost'
-                size={'sm'}
-                onClick={() => configuredActions.onCancelled!(row)}
-              >
-                Cancelar Reserva
-              </Button>
-              <Button
-                variant='ghost'
-                size={'sm'}
-                onClick={() => configuredActions.onReactived!(row)}
-              >
-                Reativar Reserva
-              </Button>
-              {/* Adicione mais opções aqui conforme necessário */}
-            </div>
-          </PopoverContent>
-        </Popover>
+            </PopoverTrigger>
+            <PopoverContent className='w-40 p-0'>
+              <div className='flex flex-col gap-2 p-0'>
+                {row.original.status ===
+                  materialPickingOrderStatusDisplayMap.PENDING_PREPARATION && (
+                  <Button
+                    variant='ghost'
+                    size={'sm'}
+                    onClick={() => configuredActions.onReadyForPickup!(row)}
+                    className='m-0'
+                  >
+                    Reserva Separada
+                  </Button>
+                )}
+                {row.original.status ===
+                  materialPickingOrderStatusDisplayMap.READY_FOR_PICKUP && (
+                  <Button
+                    variant='ghost'
+                    size={'sm'}
+                    onClick={() => configuredActions.onFullyWithdrawn!(row)}
+                  >
+                    Reserva Retirada
+                  </Button>
+                )}
+                {row.original.status !==
+                  materialPickingOrderStatusDisplayMap.FULLY_WITHDRAWN && (
+                  <Button
+                    variant='ghost'
+                    size={'sm'}
+                    onClick={() => configuredActions.onCancelled!(row)}
+                  >
+                    Cancelar Reserva
+                  </Button>
+                )}
+                {row.original.status ===
+                  materialPickingOrderStatusDisplayMap.EXPIRED && (
+                  <Button
+                    variant='ghost'
+                    size={'sm'}
+                    onClick={() => configuredActions.onReactived!(row)}
+                  >
+                    Reativar Reserva
+                  </Button>
+                )}
+                {/* Adicione mais opções aqui conforme necessário */}
+              </div>
+            </PopoverContent>
+          </Popover>
+        )}
       </div>
     )
   })
