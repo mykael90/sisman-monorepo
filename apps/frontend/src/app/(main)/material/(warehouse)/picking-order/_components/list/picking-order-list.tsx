@@ -41,6 +41,7 @@ import { DateRangeFilter } from '@/components/filters/date-range-filter';
 import { Button } from '@/components/ui/button';
 import { TableTanstackFaceted } from '../../../../../../../components/table-tanstack/table-tanstack-faceted';
 import { DefaultGlobalFilter } from '../../../../../../../components/table-tanstack/default-global-filter';
+import { materialPickingOrderStatusDisplayMapPortuguese } from '../../../../../../../mappers/material-picking-order-mappers-translate';
 
 export function PickingOrderListPage() {
   const { warehouse } = useWarehouseContext();
@@ -55,9 +56,19 @@ export function PickingOrderListPage() {
 
   const [sorting, setSorting] = useState<SortingState>([]);
 
-  const [columnFilters, setColumnFiltersState] = useState<ColumnFiltersState>(
-    []
-  );
+  //vamos definir um estado inicial de filtragem englobando "pendente de preparação" e "pronto para retirada"
+  const initialColumnFilter: ColumnFiltersState = [
+    {
+      id: 'status',
+      value: [
+        materialPickingOrderStatusDisplayMapPortuguese.PENDING_PREPARATION,
+        materialPickingOrderStatusDisplayMapPortuguese.READY_FOR_PICKUP
+      ]
+    }
+  ];
+
+  const [columnFilters, setColumnFiltersState] =
+    useState<ColumnFiltersState>(initialColumnFilter);
 
   const [globalFilterValue, setGlobalFilterValueState] = useState('');
   const inputDebounceRef = useRef<InputDebounceRef>(null);

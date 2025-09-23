@@ -496,11 +496,13 @@ export const columns = (
     (row) => {
       const status = row.materialRequest
         ?.currentStatus as StatusMaterialRequestKey;
-      return status ? statusMaterialRequestDisplayMap[status] || status : '';
+      return status ? statusMaterialRequestDisplayMap[status] || status : 'N/A';
     },
     {
       id: 'statusRM',
       header: 'Status RM',
+      enableColumnFilter: true,
+      filterFn: 'arrIncludesSome',
       cell: ({ row }) => {
         const statusKey = row.original.materialRequest
           ?.currentStatus as StatusMaterialRequestKey;
@@ -539,7 +541,8 @@ export const columns = (
   //   cell: (props) => props.getValue()
   // }),
   columnHelper.accessor(
-    (row) => row.beCollectedByUser?.name || row.beCollectedByWorker?.name,
+    (row) =>
+      row.beCollectedByUser?.name || row.beCollectedByWorker?.name || 'N/A',
     {
       id: 'beCollectedBy',
       header: 'Reserva para',
@@ -547,8 +550,8 @@ export const columns = (
       enableColumnFilter: true,
       cell: (props) => {
         const name = props.getValue();
-        if (!name) {
-          return 'N/A';
+        if (name === 'N/A') {
+          return name;
         }
         const isUser = !!props.row.original.beCollectedByUser;
         const isWorker = !!props.row.original.beCollectedByWorker;
@@ -576,13 +579,18 @@ export const columns = (
   //     )
   //   }
   // ),
-  columnHelper.accessor((row) => row.maintenanceRequest?.building?.name, {
-    id: 'building',
-    size: 600,
-    enableColumnFilter: true,
-    header: 'Ativo',
-    cell: (props) => <div className='whitespace-normal'>{props.getValue()}</div>
-  }),
+  columnHelper.accessor(
+    (row) => row.maintenanceRequest?.building?.name ?? 'N/A',
+    {
+      id: 'building',
+      size: 600,
+      enableColumnFilter: true,
+      header: 'Ativo',
+      cell: (props) => (
+        <div className='whitespace-normal'>{props.getValue() ?? 'N/A'}</div>
+      )
+    }
+  ),
   columnHelper.accessor((row) => Number(row.valuePickingOrder), {
     id: 'valuePickingOrder',
     header: ({ column }) => {
@@ -630,10 +638,12 @@ export const columns = (
     id: 'actions',
     // cell: ({ row }) => (
     //   <DefaultRowAction row={row} configuredActions={configuredActions} />
-    // )
+    // )'
+    header: 'Açoes',
     cell: ({ row }) => (
       <div className='flex gap-2'>
         <Button
+          title='Detalhes da reserva'
           variant='ghost'
           size='icon'
           onClick={() => configuredActions.onView!(row)}
@@ -642,7 +652,7 @@ export const columns = (
         </Button>
         <Popover>
           <PopoverTrigger asChild>
-            <Button variant='ghost' size='icon'>
+            <Button variant='ghost' size='icon' title='Operação'>
               <EllipsisVertical className='h-4 w-4' />
             </Button>
           </PopoverTrigger>

@@ -51,7 +51,9 @@ interface TableProps<TData> {
   sorting?: SortingState;
   globalFilterFn?: FilterFnOption<TData>;
   globalFilter?: any;
-  setGlobalFilter?: React.Dispatch<React.SetStateAction<string>>;
+  setGlobalFilter?:
+    | React.Dispatch<React.SetStateAction<string>>
+    | ((value: string) => void);
   renderSubComponent?: (props: { row: Row<TData> }) => React.ReactElement;
   getRowClassName?: (row: Row<TData>) => string;
   getFacetedRowModel?: (
