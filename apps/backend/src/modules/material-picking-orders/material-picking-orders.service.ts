@@ -862,6 +862,7 @@ export class MaterialPickingOrdersService {
             updatedItem.quantityToPick || 0
           ).sub(existingItem.quantityToPick || 0);
 
+          //só utiliza esse valor, pois é o único que afeta a movimentação, visto que não é possível editar items de reservas já retiradas.
           const quantityDeltaPicked = new Decimal(
             updatedItem.quantityPicked || 0
           ).sub(existingItem.quantityPicked || 0);
@@ -972,7 +973,7 @@ export class MaterialPickingOrdersService {
               // Apenas os campos que podem ser atualizados
               quantityToPick: itemFromRequest.quantityToPick,
               quantityPicked: itemFromRequest.quantityPicked,
-              quantityWithdrawn: itemFromRequest.quantityToPick,
+              quantityWithdrawn: itemFromRequest.quantityWithdrawn,
               notes: itemFromRequest.notes
               // Não atualizamos chaves estrangeiras como globalMaterialId aqui
               // para manter a simplicidade. Se precisar, adicione-as.
@@ -985,7 +986,7 @@ export class MaterialPickingOrdersService {
           itemsToActuallyCreate.push({
             quantityToPick: itemFromRequest.quantityToPick,
             quantityPicked: itemFromRequest.quantityPicked,
-            quantityWithdrawn: itemFromRequest.quantityToPick,
+            quantityWithdrawn: itemFromRequest.quantityWithdrawn,
             notes: itemFromRequest.notes,
             globalMaterial: {
               connect: { id: itemFromRequest.globalMaterialId }

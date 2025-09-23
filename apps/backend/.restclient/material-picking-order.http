@@ -193,7 +193,7 @@ Content-Type: {{contentType}}
 Authorization: Bearer {{token}}
 
 {
-    "userId": 2,
+    "userId": 17,
     "status": "READY_FOR_PICKUP"
 }
 
