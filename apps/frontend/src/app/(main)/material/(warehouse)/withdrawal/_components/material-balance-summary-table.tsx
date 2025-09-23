@@ -49,7 +49,7 @@ export function MaterialBalanceSummaryTable({
               </th>
               <th className='w-32 px-4 py-3 text-center text-sm font-medium text-gray-900'>
                 <div className='flex items-center justify-center gap-2'>
-                  <div className='w-min'>Recebido</div>
+                  <div className='w-min'>Entradas</div>
                   <InfoHoverCard
                     title='Quantidade Recebida'
                     subtitle='Soma das quantidades recebidas para este material.'
@@ -58,7 +58,7 @@ export function MaterialBalanceSummaryTable({
               </th>
               <th className='w-32 px-4 py-3 text-center text-sm font-medium text-gray-900'>
                 <div className='flex items-center justify-center gap-2'>
-                  <div className='w-min'>Retirado</div>
+                  <div className='w-min'>Saídas</div>
                   <InfoHoverCard
                     title='Quantidade Retirada'
                     subtitle='Soma das quantidades retiradas para este material.'

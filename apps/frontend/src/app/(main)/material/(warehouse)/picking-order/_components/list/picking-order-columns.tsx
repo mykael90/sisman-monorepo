@@ -699,14 +699,14 @@ export const columns = (
     header: 'Açoes',
     cell: ({ row }) => (
       <div className='flex gap-2'>
-        <Button
+        {/* <Button
           title='Detalhes da reserva'
           variant='ghost'
           size='icon'
           onClick={() => configuredActions.onView!(row)}
         >
           <Eye className='h-4 w-4' />
-        </Button>
+        </Button> */}
         {row.original.materialRequestId && (
           <Button
             title='Sincronizar RM com SIPAC'

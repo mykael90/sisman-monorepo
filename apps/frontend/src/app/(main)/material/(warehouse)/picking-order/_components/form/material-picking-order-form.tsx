@@ -17,7 +17,7 @@ import {
   usePickingOrderForm,
   type IPickingOrderFormApi
 } from '@/src/hooks/use-picking-order-form';
-// import { materialPickingOrderFormSchemaAdd } from './material-pickingorder-form-validation';
+import { materialPickingOrderFormSchemaAdd } from './material-picking-order-form-validation';
 import { ErrorClientValidationFormCard } from '@/components/form-tanstack/error-client-validation-form-card';
 import { FormSuccessDisplayCard } from '@/components/form-tanstack/form-success-display-card';
 import {
@@ -109,7 +109,7 @@ export function MaterialPickingOrderForm({
       ...defaultData
     },
     serverStatePickingOrder: serverStatePickingOrder,
-    // formSchema: materialPickingOrderFormSchemaAdd,
+    formSchema: materialPickingOrderFormSchemaAdd,
     formActionPickingOrder: async (value) => await formActionPickingOrder(value)
   });
 
@@ -479,7 +479,10 @@ export function MaterialPickingOrderForm({
           )}
 
           {/* Global Free Items for PickingOrder */}
-          {requestSearchType === 'none' && (
+          {(requestSearchType === 'none' ||
+            (requestSearchType === 'maintenance' &&
+              !linkMaterialRequest &&
+              maintenanceRequestData)) && (
             <Card>
               <CardHeader>
                 <CardTitle className='text-lg'>
