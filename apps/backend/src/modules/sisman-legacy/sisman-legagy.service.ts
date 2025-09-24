@@ -7,9 +7,13 @@ import {
 } from 'src/shared/prisma/prisma.module';
 import { Prisma } from '@sisman/prisma';
 import { SismanLegacyApiService } from './sisman-legacy-api.service';
-import { SismanLegacyMaterialOutResponseItem } from './sisman-legacy-api.interfaces';
+import {
+  SismanLegacyMaterialOutItem,
+  SismanLegacyMaterialOutResponseItem
+} from './sisman-legacy-api.interfaces';
 import { MaterialWithdrawalMapper } from './mappers/materials-withdrawal.mapper';
 import { MaterialWithdrawalsService } from '../material-withdrawals/material-withdrawals.service';
+import { MaterialWithdrawalItemMapper } from './mappers/materials-withdrawal-items.mapper';
 
 export interface FailedImport {
   id: number | string;
@@ -100,6 +104,60 @@ export class SismanLegacyService {
         failedItems.length > 0
           ? failedItems
           : sismanLegacyMaterialOut.length - successful
+    };
+
+    this.logger.log(
+      `Importação de retiradas concluída. Processados: ${result.totalProcessed}, Sucesso: ${result.successful}, Falhas: ${result.failed}.`
+    );
+
+    return result;
+  }
+
+  //esse método é para os items da retirada
+  async importAndPersistManyMaterialsItemsOut(
+    relativePath: string
+  ): Promise<SyncResult> {
+    this.logger.log(
+      `Iniciando importação de retiradas de material de: ${relativePath}`
+    );
+    const sismanLegacyMaterialItemOut: SismanLegacyMaterialOutItem[] =
+      await this.testFetchSismanLegacy(relativePath);
+
+    let successful = 0;
+    const failedItems: FailedImport[] = [];
+
+    if (sismanLegacyMaterialItemOut.length === 0) {
+      this.logger.log('Nenhum item de retirada de material para importar.');
+      return { totalProcessed: 0, successful: 0, failed: [] };
+    }
+
+    const createDtos = sismanLegacyMaterialItemOut.map((item) =>
+      MaterialWithdrawalItemMapper.toCreateDto(item)
+    );
+
+    for (const dto of createDtos) {
+      try {
+        // Supondo que 'id' exista ou seja gerado após a criação
+        await this.prisma.materialWithdrawalItem.create({ data: dto });
+        successful++;
+      } catch (error: any) {
+        failedItems.push({
+          // Você precisará de um identificador único no DTO para isso
+          id: (dto as any).id || 'unknown_id', // Ajuste conforme a estrutura do seu DTO
+          error: error.message
+        });
+      }
+    }
+
+    const result: SyncResult = {
+      totalProcessed: sismanLegacyMaterialItemOut.length,
+      successful,
+      // Se `failedItems` tem algo, significa que o lote inteiro falhou.
+      // Caso contrário, calculamos as falhas (que deve ser 0 se o lote teve sucesso).
+      failed:
+        failedItems.length > 0
+          ? failedItems
+          : sismanLegacyMaterialItemOut.length - successful
     };
 
     this.logger.log(

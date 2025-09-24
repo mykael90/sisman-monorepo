@@ -109,7 +109,8 @@ export class MaterialWithdrawalMapper {
       collectedByWorkerId: collectedByWorkerId,
       withdrawalDate: new Date(item.created_at),
       maintenanceRequestId: maintenanceRequestId,
-      materialRequestId: materialRequestId,
+      //vou desativar essa vinculação para não gerar inconsistencias, uma vez que não tenho como atribuir e garantir o materialRequestItemId nos items da saida
+      // materialRequestId: materialRequestId,
       // materialPickingOrderId: item.materialReserveId, // materialReserveId pode ser mapeado aqui
       movementTypeId: movementType?.id,
       notes: `IMPORTADO DO SISMAN LEGACY EM ${getNowFormatted()} \n ${item.obs || ''}`,

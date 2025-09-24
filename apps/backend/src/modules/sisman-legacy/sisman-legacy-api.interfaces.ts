@@ -38,12 +38,10 @@ export interface SismanLegacyMaterialInResponseItem {
 }
 
 export interface SismanLegacyMaterialOutItem {
-  materialId: number;
-  name: string;
-  specification: string;
-  unit: string;
   value: string;
   quantity: number;
+  MaterialId: number;
+  MaterialOutId: number;
 }
 
 export interface SismanLegacyWorkerJobtype {

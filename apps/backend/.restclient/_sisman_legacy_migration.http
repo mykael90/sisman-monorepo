@@ -14,11 +14,23 @@ Content-Type: {{contentType}}
 
 {"relativePath":"materials/out/?startDate=2025-05-20&endDate=2025-05-20"}
 
+### GET materials-items out
+POST {{urlLocal}}/test-fetch
+Content-Type: {{contentType}}
+
+{"relativePath":"materials/out/items"}
+
 ### Importação de materials out
 POST {{urlLocal}}/import-materials-out
 Content-Type: {{contentType}}
 
-{"relativePath":"materials/out/?startDate=2025-05-20&endDate=2025-05-20"}
+{"relativePath":"materials/out"}
+
+### Importação de materials-items out
+POST {{urlLocal}}/import-materials-items-out
+Content-Type: {{contentType}}
+
+{"relativePath":"materials/out/items"}
 
 ### GET materials in
 POST {{urlLocal}}/test-fetch
