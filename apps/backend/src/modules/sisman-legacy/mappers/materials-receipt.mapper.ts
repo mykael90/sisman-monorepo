@@ -5,6 +5,11 @@ import {
   MaterialStockOperationType, // Adicionar este import
   MaterialReceiptItem
 } from '@sisman/prisma';
+import { Inject, Injectable, Logger } from '@nestjs/common';
+import {
+  PrismaService,
+  ExtendedPrismaClient
+} from '../../../shared/prisma/prisma.module';
 import { CreateMaterialReceiptWithRelationsDto } from '../../material-receipts/dto/material-receipt.dto';
 import { SismanLegacyMaterialInResponseItem } from '../sisman-legacy-api.interfaces';
 import { getNowFormatted } from '../../../shared/utils/date-utils';
@@ -22,20 +27,32 @@ const MaterialIntypeIdToMovementTypeCode: Record<
   7: MaterialStockOperationSubType.ADJUSTMENT_RECLASSIFY_IN // TRANSFORME
 };
 
+@Injectable()
 export class MaterialReceiptMapper {
-  static toCreateDto(
+  private readonly logger = new Logger(MaterialReceiptMapper.name);
+
+  constructor(
+    @Inject(PrismaService) private readonly prisma: ExtendedPrismaClient
+  ) {}
+
+  async toCreateDto(
     item: SismanLegacyMaterialInResponseItem
-  ): CreateMaterialReceiptWithRelationsDto {
+  ): Promise<CreateMaterialReceiptWithRelationsDto> {
     const movementTypeCode =
       MaterialIntypeIdToMovementTypeCode[item.materialIntypeId];
 
     const now = new Date();
 
+    const materialRequest = await this.prisma.materialRequest.findFirst({
+      select: { id: true },
+      where: {
+        protocolNumber: item.req
+      }
+    });
+
     return {
       id: item.id,
-      externalReference: item.invoice || undefined,
-      // FAZER CONSULTA PARA DEFINIR ID de item.req
-      // FAZER CONSULTA PARA DEFINIDIR ID de item.req_maintenance
+      externalReference: item.invoice,
       receiptDate: new Date(item.createdAt),
       movementType: {
         code: movementTypeCode
@@ -59,9 +76,7 @@ export class MaterialReceiptMapper {
         quantityRejected: new Prisma.Decimal(0),
         unitPrice: new Prisma.Decimal(materialItem.value)
       })) as any, // Adicionar cast para o tipo correto
-      // TODO
-      materialRequest: undefined, // Não há materialRequest no legado para mapear diretamente
-      // TODO
+      materialRequest: { id: materialRequest.id } as any, // Não há materialRequest no legado para mapear diretamente
       materialWithdrawal: { id: item.returnId } as any // Não há materialWithdrawal no legado para mapear diretamente
     };
   }
