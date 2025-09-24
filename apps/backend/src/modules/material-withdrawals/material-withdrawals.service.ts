@@ -668,6 +668,7 @@ export class MaterialWithdrawalsService {
             }
 
             return {
+              movementDate: item.materialWithdrawal.withdrawalDate,
               quantity: item.quantityWithdrawn,
               warehouse: { id: item.materialWithdrawal.warehouse.id },
               movementType: { code: item.materialWithdrawal.movementType.code },
@@ -717,18 +718,24 @@ export class MaterialWithdrawalsService {
 
       // 3. Criar os movimentos de estoque em uma única transação para garantir atomicidade.
       // Passamos o cliente de transação (tx) para o serviço 'create'.
-      const createdMovements = await this.prisma.$transaction(async (tx) => {
-        const results = [];
-        for (const dto of movementsToCreateDTOs) {
-          // Chama o serviço de movimentação, passando o cliente da transação (tx)
-          const created = await this.materialStockMovementsService.create(
-            dto,
-            tx as any
-          );
-          results.push(created);
+      const createdMovements = await this.prisma.$transaction(
+        async (tx) => {
+          const results = [];
+          for (const dto of movementsToCreateDTOs) {
+            // Chama o serviço de movimentação, passando o cliente da transação (tx)
+            const created = await this.materialStockMovementsService.create(
+              dto,
+              tx as any
+            );
+            results.push(created);
+          }
+          return results;
+        },
+        {
+          timeout: 40 * movementsToCreateDTOs.length, // 40 ms por verificação
+          maxWait: 10000 // tempo máximo para adquirir o pool
         }
-        return results;
-      });
+      );
 
       this.logger.log(
         `Criados ${createdMovements.length} movimentos de estoque em falta para retiradas.`,
