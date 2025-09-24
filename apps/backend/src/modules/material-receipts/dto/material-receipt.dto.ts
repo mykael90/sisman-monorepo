@@ -219,6 +219,75 @@ export class CreateMaterialReceiptDto extends IntersectionType(
   PickType(MaterialReceiptBaseDto, ['receiptDate'] as const)
 ) {}
 
+/**
+ * DTO para criação de itens de recebimento de material.
+ */
+export class CreateMaterialReceiptItemDto {
+  /**
+   * ID do material.
+   * @example "MAT-001"
+   */
+  @IsString()
+  @IsNotEmpty()
+  materialId: string;
+
+  /**
+   * Quantidade esperada do material.
+   * @example 10
+   */
+  @IsNumber()
+  @IsDefined()
+  quantityExpected: Prisma.Decimal;
+
+  /**
+   * Quantidade recebida do material.
+   * @example 10
+   */
+  @IsNumber()
+  @IsDefined()
+  quantityReceived: Prisma.Decimal;
+
+  /**
+   * Quantidade rejeitada do material.
+   * @example 0
+   */
+  @IsNumber()
+  @IsDefined()
+  quantityRejected: Prisma.Decimal;
+
+  /**
+   * Preço unitário do material.
+   * @example 15.50
+   */
+  @IsNumber()
+  @IsDefined()
+  unitPrice: Prisma.Decimal;
+
+  /**
+   * Valor total do item.
+   * @example 155.00
+   */
+  @IsNumber()
+  @IsDefined()
+  value: Prisma.Decimal;
+
+  /**
+   * Observações adicionais sobre o item.
+   * @example "Embalagem danificada."
+   */
+  @IsOptional()
+  @IsString()
+  notes?: string;
+
+  @IsOptional()
+  @IsNumber()
+  materialRequestItemId?: number;
+
+  @IsOptional()
+  @IsNumber()
+  materialWithdrawalItemId?: number;
+}
+
 export class CreateMaterialReceiptWithRelationsDto extends IntersectionType(
   PartialType(MaterialReceiptBaseDto),
   PickType(MaterialReceiptBaseDto, ['receiptDate'] as const)
@@ -251,7 +320,10 @@ export class CreateMaterialReceiptWithRelationsDto extends IntersectionType(
   processedByUser: MaterialReceiptRelationOnly['processedByUser'];
 
   @IsDefined()
-  items: MaterialReceiptRelationOnly['items'];
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreateMaterialReceiptItemDto) // Será necessário criar este DTO
+  items: Prisma.MaterialReceiptItemCreateWithoutMaterialReceiptInput[];
 
   @IsOptional()
   materialRequest: MaterialReceiptRelationOnly['materialRequest'];
