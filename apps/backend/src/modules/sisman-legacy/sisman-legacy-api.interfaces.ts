@@ -36,3 +36,86 @@ export interface SismanLegacyMaterialInResponseItem {
   invoice: string;
   returnId: number;
 }
+
+export interface SismanLegacyMaterialOutItem {
+  materialId: number;
+  name: string;
+  specification: string;
+  unit: string;
+  value: string;
+  quantity: number;
+}
+
+export interface SismanLegacyWorkerJobtype {
+  id: number;
+  job: string;
+}
+
+export interface SismanLegacyWorkerContract {
+  start: string;
+  end: string | null;
+  located: string | null;
+  unidadeId: number;
+  obs: string | null;
+  acting: string | null;
+  workerId: number;
+  ContractId: number;
+  WorkerJobtypeId: number;
+  WorkerContractDangerId: number | null;
+  WorkerContractRegimeId: number;
+  WorkerContractUnhealthyId: number | null;
+  WorkerId: number;
+  WorkerJobtype: SismanLegacyWorkerJobtype;
+}
+
+export interface SismanLegacyWorker {
+  id?: number;
+  name?: string;
+  email?: string | null;
+  birthdate?: string;
+  filenamePhoto?: string | null;
+  urlPhoto?: string;
+  rg?: string | null;
+  cpf?: string | null;
+  phone?: string | null;
+  created_at?: string;
+  updated_at?: string;
+  WorkerContracts?: SismanLegacyWorkerContract[];
+}
+
+export interface SismanLegacyMaterialOuttype {
+  id?: number;
+  type?: string;
+}
+
+export interface SismanLegacyMaterialOutResponseItem {
+  id: number;
+  materialOuttypeId: number;
+  reqMaintenance: string;
+  reqMaterial: string | null;
+  userId: number;
+  authorizedBy: number;
+  workerId: number;
+  campusId: number | null;
+  propertyId: number | null;
+  buildingId: number | null;
+  place: string;
+  obs: string | null;
+  value: number;
+  materialReserveId: number;
+  userReplacementId: number | null;
+  created_at: string;
+  updated_at: string;
+  type: string;
+  userUsername: string;
+  authorizerUsername: string;
+  removedBy: string;
+  valueBr: string;
+  createdAtBr: string;
+  updatedAtBr: string;
+  MaterialOutFiles: any[];
+  MaterialOutItems: SismanLegacyMaterialOutItem[];
+  MaterialReturned: any[];
+  Worker: SismanLegacyWorker;
+  MaterialOuttype: SismanLegacyMaterialOuttype;
+}

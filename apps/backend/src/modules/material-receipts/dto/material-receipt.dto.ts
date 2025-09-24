@@ -237,7 +237,7 @@ export class CreateMaterialReceiptItemDto {
    */
   @IsNumber()
   @IsDefined()
-  quantityExpected: Prisma.Decimal;
+  quantityExpected: Prisma.Decimal | number;
 
   /**
    * Quantidade recebida do material.
@@ -245,7 +245,7 @@ export class CreateMaterialReceiptItemDto {
    */
   @IsNumber()
   @IsDefined()
-  quantityReceived: Prisma.Decimal;
+  quantityReceived: Prisma.Decimal | number;
 
   /**
    * Quantidade rejeitada do material.
@@ -253,7 +253,7 @@ export class CreateMaterialReceiptItemDto {
    */
   @IsNumber()
   @IsDefined()
-  quantityRejected: Prisma.Decimal;
+  quantityRejected: Prisma.Decimal | number;
 
   /**
    * Preço unitário do material.
@@ -261,7 +261,7 @@ export class CreateMaterialReceiptItemDto {
    */
   @IsNumber()
   @IsDefined()
-  unitPrice: Prisma.Decimal;
+  unitPrice: Prisma.Decimal | number | string;
 
   /**
    * Valor total do item.
@@ -269,7 +269,7 @@ export class CreateMaterialReceiptItemDto {
    */
   @IsNumber()
   @IsDefined()
-  value: Prisma.Decimal;
+  value: Prisma.Decimal | number | string;
 
   /**
    * Observações adicionais sobre o item.
@@ -323,7 +323,7 @@ export class CreateMaterialReceiptWithRelationsDto extends IntersectionType(
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => CreateMaterialReceiptItemDto) // Será necessário criar este DTO
-  items: Prisma.MaterialReceiptItemCreateWithoutMaterialReceiptInput[];
+  items: MaterialReceiptRelationOnly['items'];
 
   @IsOptional()
   materialRequest: MaterialReceiptRelationOnly['materialRequest'];

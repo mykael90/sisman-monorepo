@@ -22,4 +22,21 @@ export class SismanLegacyController {
       throw error;
     }
   }
+  @Post('import-materials-out')
+  async importMaterialsOut(@Body('relativePath') relativePath: string) {
+    this.logger.log(
+      `Importar retiradas de material do Sisman Legacy para o caminho: ${relativePath}`
+    );
+    try {
+      const result =
+        await this.sismanLegacyService.importAndPersistManyMaterialsOut(
+          relativePath
+        );
+      this.logger.log('Teste de busca no Sisman Legacy concluído com sucesso.');
+      return result;
+    } catch (error) {
+      this.logger.error('Erro ao testar busca no Sisman Legacy.', error.stack);
+      throw error;
+    }
+  }
 }

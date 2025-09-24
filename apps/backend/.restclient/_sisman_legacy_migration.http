@@ -8,8 +8,20 @@ Content-Type: {{contentType}}
 
 {"relativePath":"users"}
 
-### GET test-fetch
+### GET materials out
 POST {{urlLocal}}/test-fetch
 Content-Type: {{contentType}}
 
-{"relativePath":"materials/in/?startDate=2025-08-24&endDate=2025-09-03"}
+{"relativePath":"materials/out/?startDate=2025-05-20&endDate=2025-05-20"}
+
+### Importação de materials out
+POST {{urlLocal}}/import-materials-out
+Content-Type: {{contentType}}
+
+{"relativePath":"materials/out/?startDate=2025-05-20&endDate=2025-05-20"}
+
+### GET materials in
+POST {{urlLocal}}/test-fetch
+Content-Type: {{contentType}}
+
+{"relativePath":"materials/in/?startDate=2025-05-24&endDate=2025-09-03"}

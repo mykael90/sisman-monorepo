@@ -132,7 +132,9 @@ export class MaterialWithdrawalsService {
       ...restOfData
     } = data;
 
-    const withdrawalCreateInput: Prisma.MaterialWithdrawalCreateInput = {
+    const withdrawalCreateInput: Prisma.MaterialWithdrawalCreateInput & {
+      id?: number;
+    } = {
       ...restOfData,
       warehouse: warehouse?.id ? { connect: { id: warehouse.id } } : undefined,
       processedByUser: processedByUser?.id

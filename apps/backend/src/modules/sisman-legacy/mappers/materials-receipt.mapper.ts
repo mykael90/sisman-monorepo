@@ -43,12 +43,17 @@ export class MaterialReceiptMapper {
 
     const now = new Date();
 
-    const materialRequest = await this.prisma.materialRequest.findFirst({
-      select: { id: true },
-      where: {
-        protocolNumber: item.req
-      }
-    });
+    let materialRequestId: number | undefined;
+    if (item.req) {
+      // Exemplo: buscar materialRequest pelo número de protocolo
+      const materialRequest = await this.prisma.materialRequest.findFirst({
+        select: { id: true },
+        where: {
+          protocolNumber: item.req // Assumindo que req é o protocolo
+        }
+      });
+      materialRequestId = materialRequest?.id;
+    }
 
     return {
       id: item.id,
@@ -76,7 +81,7 @@ export class MaterialReceiptMapper {
         quantityRejected: new Prisma.Decimal(0),
         unitPrice: new Prisma.Decimal(materialItem.value)
       })) as any, // Adicionar cast para o tipo correto
-      materialRequest: { id: materialRequest.id } as any, // Não há materialRequest no legado para mapear diretamente
+      materialRequest: { id: materialRequestId } as any, // Não há materialRequest no legado para mapear diretamente
       materialWithdrawal: { id: item.returnId } as any // Não há materialWithdrawal no legado para mapear diretamente
     };
   }

@@ -4,10 +4,16 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { SismanLegacyApiService } from './sisman-legacy-api.service';
 import { SismanLegacyService } from './sisman-legagy.service';
 import { SismanLegacyController } from './sisman-legacy.controller';
+import { MaterialWithdrawalMapper } from './mappers/materials-withdrawal.mapper';
+import { MaterialWithdrawalsModule } from '../material-withdrawals/material-withdrawals.module';
+import { MaterialReceiptsModule } from '../material-receipts/material-receipts.module';
+import { MaterialReceiptMapper } from './mappers/materials-receipt.mapper';
 // import { UnidadesModule } from './unidades/unidades.module'; // Exemplo
 
 @Module({
   imports: [
+    MaterialWithdrawalsModule,
+    MaterialReceiptsModule,
     HttpModule.registerAsync({
       // Configuração assíncrona do HttpModule
       imports: [ConfigModule], // Importa ConfigModule para usar ConfigService
@@ -22,7 +28,12 @@ import { SismanLegacyController } from './sisman-legacy.controller';
     })
   ],
   controllers: [SismanLegacyController],
-  providers: [SismanLegacyApiService, SismanLegacyService], // Logger pode ser útil aqui também
+  providers: [
+    SismanLegacyApiService,
+    SismanLegacyService,
+    MaterialWithdrawalMapper,
+    MaterialReceiptMapper
+  ], // Logger pode ser útil aqui também
   exports: [SismanLegacyApiService, SismanLegacyService] // Exporta para uso nos submódulos
 })
 export class SismanLegacyModule {}
