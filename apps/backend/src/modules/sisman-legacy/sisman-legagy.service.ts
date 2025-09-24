@@ -11,10 +11,15 @@ import { SismanLegacyMaterialOutResponseItem } from './sisman-legacy-api.interfa
 import { MaterialWithdrawalMapper } from './mappers/materials-withdrawal.mapper';
 import { MaterialWithdrawalsService } from '../material-withdrawals/material-withdrawals.service';
 
+export interface FailedImport {
+  id: number | string;
+  error: string;
+}
+
 export interface SyncResult {
   totalProcessed: number;
   successful: number;
-  failed: number;
+  failed: number | FailedImport[];
 }
 
 @Injectable()
@@ -24,7 +29,8 @@ export class SismanLegacyService {
   constructor(
     private readonly sismanLegacyHttp: SismanLegacyApiService,
     private readonly materialWithdrawalMapper: MaterialWithdrawalMapper,
-    private readonly materialWithdrawalsService: MaterialWithdrawalsService
+    private readonly materialWithdrawalsService: MaterialWithdrawalsService,
+    @Inject(PrismaService) private readonly prisma: ExtendedPrismaClient
   ) {}
 
   async testFetchSismanLegacy(relativePath: string) {
@@ -58,30 +64,42 @@ export class SismanLegacyService {
       await this.testFetchSismanLegacy(relativePath);
 
     let successful = 0;
-    let failed = 0;
+    const failedItems: FailedImport[] = [];
 
-    for (const item of sismanLegacyMaterialOut) {
+    if (sismanLegacyMaterialOut.length === 0) {
+      this.logger.log('Nenhum item de retirada de material para importar.');
+      return { totalProcessed: 0, successful: 0, failed: [] };
+    }
+
+    const createDtos = await Promise.all(
+      sismanLegacyMaterialOut.map(
+        async (item) => await this.materialWithdrawalMapper.toCreateDto(item)
+      )
+    );
+
+    for (const dto of createDtos) {
       try {
-        this.logger.debug(`Mapeando item de retirada legado ID: ${item.id}`);
-        const createDto = await this.materialWithdrawalMapper.toCreateDto(item);
-
-        this.logger.debug(`Persistindo item de retirada legado ID: ${item.id}`);
-        await this.materialWithdrawalsService.create(createDto);
-
+        // Supondo que 'id' exista ou seja gerado após a criação
+        await this.prisma.materialWithdrawal.create({ data: dto });
         successful++;
-      } catch (error) {
-        failed++;
-        this.logger.error(
-          `Falha ao importar item de retirada legado ID: ${item.id}. Erro: ${error.message}`,
-          error.stack
-        );
+      } catch (error: any) {
+        failedItems.push({
+          // Você precisará de um identificador único no DTO para isso
+          id: (dto as any).id || 'unknown_id', // Ajuste conforme a estrutura do seu DTO
+          error: error.message
+        });
       }
     }
 
     const result: SyncResult = {
       totalProcessed: sismanLegacyMaterialOut.length,
       successful,
-      failed
+      // Se `failedItems` tem algo, significa que o lote inteiro falhou.
+      // Caso contrário, calculamos as falhas (que deve ser 0 se o lote teve sucesso).
+      failed:
+        failedItems.length > 0
+          ? failedItems
+          : sismanLegacyMaterialOut.length - successful
     };
 
     this.logger.log(

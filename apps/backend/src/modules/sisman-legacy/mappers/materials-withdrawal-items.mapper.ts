@@ -54,7 +54,7 @@ export class MaterialWithdrawalMapper {
 
   async toCreateDto(
     item: SismanLegacyMaterialOutResponseItem
-  ): Promise<Prisma.MaterialWithdrawalUncheckedCreateInput> {
+  ): Promise<Prisma.MaterialWithdrawalCreateManyInput> {
     const movementTypeCode =
       MaterialOuttypeIdToMovementTypeCode[item.materialOuttypeId];
 

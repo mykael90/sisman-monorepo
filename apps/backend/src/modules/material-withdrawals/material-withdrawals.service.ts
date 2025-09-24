@@ -132,9 +132,7 @@ export class MaterialWithdrawalsService {
       ...restOfData
     } = data;
 
-    const withdrawalCreateInput: Prisma.MaterialWithdrawalCreateInput & {
-      id?: number;
-    } = {
+    const withdrawalCreateInput: Prisma.MaterialWithdrawalCreateInput = {
       ...restOfData,
       warehouse: warehouse?.id ? { connect: { id: warehouse.id } } : undefined,
       processedByUser: processedByUser?.id
@@ -580,6 +578,13 @@ export class MaterialWithdrawalsService {
       });
       throw error;
     }
+  }
+
+  async createMany(createDtos: Prisma.MaterialWithdrawalCreateManyInput[]) {
+    return this.prisma.materialWithdrawal.createMany({
+      data: createDtos,
+      skipDuplicates: true // Útil para evitar erros se você re-executar a importação
+    });
   }
 
   /**
