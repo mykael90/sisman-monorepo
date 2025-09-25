@@ -270,7 +270,7 @@ export const columns = (
             minimumFractionDigits: 2,
             maximumFractionDigits: 2
           })
-        : 'indefinidoz'
+        : 'indefinido'
   }),
   columnHelper.display({
     id: 'actions',
