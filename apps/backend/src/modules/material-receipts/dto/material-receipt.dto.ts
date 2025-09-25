@@ -259,17 +259,17 @@ export class CreateMaterialReceiptItemDto {
    * Preço unitário do material.
    * @example 15.50
    */
+  @IsOptional()
   @IsNumber()
-  @IsDefined()
-  unitPrice: Prisma.Decimal | number | string;
+  unitPrice?: Prisma.Decimal | number | string;
 
   /**
    * Valor total do item.
    * @example 155.00
    */
+  @IsOptional()
   @IsNumber()
-  @IsDefined()
-  value: Prisma.Decimal | number | string;
+  value?: Prisma.Decimal | number | string;
 
   /**
    * Observações adicionais sobre o item.

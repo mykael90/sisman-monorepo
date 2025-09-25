@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/hover-card';
 import React from 'react';
 import { InfoHoverCard } from '@/components/info-hover-card';
+import { get } from 'http';
 
 const columnHelper = createColumnHelper<IWarehouseStockWithRelations>();
 
@@ -258,6 +259,18 @@ export const columns = (
         )
       })
     ]
+  }),
+  columnHelper.accessor((row) => row.updatedCost, {
+    id: 'updatedCost',
+    size: 100,
+    header: 'Unitário R$',
+    cell: (props) =>
+      props.getValue()
+        ? Number(props.getValue()).toLocaleString('pt-BR', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+          })
+        : 'indefinido'
   }),
   columnHelper.display({
     id: 'actions',

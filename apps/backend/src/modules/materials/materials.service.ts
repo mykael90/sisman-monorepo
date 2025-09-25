@@ -13,6 +13,7 @@ import {
 } from './dto/material.dto';
 import { MaterialsMapper } from './mappers/materials.mapper';
 import { find } from 'lodash';
+import { number } from 'joi';
 
 @Injectable()
 export class MaterialsService {
@@ -358,16 +359,36 @@ export class MaterialsService {
         return []; // Nenhum material para sincronizar, retorna array vazio.
       }
 
-      const createMaterialDtos = sipacMateriais.map((item) =>
-        MaterialsMapper.toCreateDto(item)
+      // const createMaterialDtos = sipacMateriais
+      //   .map((item) => MaterialsMapper.toCreateDto(item));
+
+      const updateMaterialDtos = sipacMateriais.map((item) =>
+        MaterialsMapper.toUpdateDto(item)
       );
 
-      const result = await this.prisma.materialGlobalCatalog.createMany({
-        data: createMaterialDtos,
-        skipDuplicates: true // Ignora registros duplicados (baseado na chave primária 'id').
-      });
+      // const result = await this.prisma.materialGlobalCatalog.createMany({
+      //   data: createMaterialDtos,
+      //   skipDuplicates: true // Ignora registros duplicados (baseado na chave primária 'id').
+      // });
 
-      return result; // Retorna a lista original de materiais do Sipac.
+      // return result; // Retorna a lista de materiais criados.
+
+      // #### atualizacão
+      let resultUpdate = {
+        success: 0,
+        failed: 0
+      };
+
+      for (const dto of updateMaterialDtos) {
+        try {
+          await this.update(dto.id, dto);
+          resultUpdate.success++;
+        } catch (e) {
+          resultUpdate.failed++;
+        }
+      }
+
+      return resultUpdate; // Retorna a lista de materiais atualizados.
     } catch (error) {
       handlePrismaError(error, this.logger, 'MaterialsService', {
         operation: 'syncFromSipacMateriais'

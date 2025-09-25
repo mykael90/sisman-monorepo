@@ -78,7 +78,7 @@ export const ItemsFieldArray: FC<MaterialItemsFieldProps> = ({ field }) => {
           physicalOnHandQuantity = Number(stockData.physicalOnHandQuantity);
       }
 
-      const unitPrice = stockData?.updatedCost;
+      const unitPrice = stockData?.updatedCost ?? materialToAdd.unitPrice;
 
       const materialStateField = {
         key,
@@ -91,6 +91,7 @@ export const ItemsFieldArray: FC<MaterialItemsFieldProps> = ({ field }) => {
         key,
         name,
         description,
+        unitPrice,
         unitOfMeasure,
         freeBalanceQuantity,
         physicalOnHandQuantity
