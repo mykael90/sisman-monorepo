@@ -762,6 +762,7 @@ export class MaterialReceiptsService {
    */
   async verifyIntregrityOfReceipts(): Promise<{
     createdMovementsCount: number;
+    updatedRequestItemDelivered?: number;
   }> {
     try {
       this.logger.log(
@@ -891,7 +892,29 @@ export class MaterialReceiptsService {
         }
       );
 
-      return { createdMovementsCount: createdMovements.length };
+      //4. Atualizar as quantidades recebidas em materialRequestItem
+      const updatedRequestItemDelivered = await this.prisma.$transaction(
+        async (tx) => {
+          const results = [];
+          for (const item of itemsWithoutMovement) {
+            const updated = await tx.materialRequestItem.update({
+              where: { id: item.materialRequestItem.id },
+              data: {
+                quantityDelivered: {
+                  increment: item.quantityReceived
+                }
+              }
+            });
+            results.push(updated);
+          }
+          return results;
+        }
+      );
+
+      return {
+        createdMovementsCount: createdMovements.length,
+        updatedRequestItemDelivered: updatedRequestItemDelivered.length
+      };
     } catch (error) {
       handlePrismaError(error, this.logger, 'MaterialReceiptsService', {
         operation: 'verifyIntregrityOfReceipts'
