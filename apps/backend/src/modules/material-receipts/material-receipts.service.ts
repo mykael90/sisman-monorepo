@@ -900,9 +900,7 @@ export class MaterialReceiptsService {
             const updated = await tx.materialRequestItem.update({
               where: { id: item.materialRequestItem.id },
               data: {
-                quantityDelivered: {
-                  increment: item.quantityReceived
-                }
+                quantityDelivered: item.quantityReceived
               }
             });
             results.push(updated);
