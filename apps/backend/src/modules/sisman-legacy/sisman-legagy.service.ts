@@ -8,12 +8,13 @@ import {
 import { Prisma } from '@sisman/prisma';
 import { SismanLegacyApiService } from './sisman-legacy-api.service';
 import {
+  SismanLegacyMaterialInResponseItem,
   SismanLegacyMaterialOutItem,
   SismanLegacyMaterialOutResponseItem
 } from './sisman-legacy-api.interfaces';
 import { MaterialWithdrawalMapper } from './mappers/materials-withdrawal.mapper';
-import { MaterialWithdrawalsService } from '../material-withdrawals/material-withdrawals.service';
 import { MaterialWithdrawalItemMapper } from './mappers/materials-withdrawal-items.mapper';
+import { MaterialReceiptMapper } from './mappers/materials-receipt.mapper';
 
 export interface FailedImport {
   id: number | string;
@@ -33,7 +34,7 @@ export class SismanLegacyService {
   constructor(
     private readonly sismanLegacyHttp: SismanLegacyApiService,
     private readonly materialWithdrawalMapper: MaterialWithdrawalMapper,
-    private readonly materialWithdrawalsService: MaterialWithdrawalsService,
+    private readonly materialReceiptMapper: MaterialReceiptMapper,
     @Inject(PrismaService) private readonly prisma: ExtendedPrismaClient
   ) {}
 
@@ -162,6 +163,59 @@ export class SismanLegacyService {
 
     this.logger.log(
       `Importação de retiradas concluída. Processados: ${result.totalProcessed}, Sucesso: ${result.successful}, Falhas: ${result.failed}.`
+    );
+
+    return result;
+  }
+
+  async importAndPersistManyMaterialsIn(
+    relativePath: string
+  ): Promise<SyncResult> {
+    this.logger.log(
+      `Iniciando importação de entradas de material de: ${relativePath}`
+    );
+    const sismanLegacyMaterialIn: SismanLegacyMaterialInResponseItem[] =
+      await this.testFetchSismanLegacy(relativePath);
+
+    let successful = 0;
+    const failedItems: FailedImport[] = [];
+
+    if (sismanLegacyMaterialIn.length === 0) {
+      this.logger.log('Nenhum item de entrada de material para importar.');
+      return { totalProcessed: 0, successful: 0, failed: [] };
+    }
+
+    const createDtos = await Promise.all(
+      sismanLegacyMaterialIn.map(
+        async (item) => await this.materialReceiptMapper.toCreateDto(item)
+      )
+    );
+
+    for (const dto of createDtos) {
+      try {
+        // Supondo que 'id' exista ou seja gerado após a criação
+        await this.prisma.materialReceipt.create({ data: dto });
+        successful++;
+      } catch (error: any) {
+        failedItems.push({
+          // Você precisará de um identificador único no DTO para isso
+          id: (dto as any).id || 'unknown_id', // Ajuste conforme a estrutura do seu DTO
+          error: error.message
+        });
+      }
+    }
+
+    const result: SyncResult = {
+      totalProcessed: sismanLegacyMaterialIn.length,
+      successful,
+      failed:
+        failedItems.length > 0
+          ? failedItems
+          : sismanLegacyMaterialIn.length - successful
+    };
+
+    this.logger.log(
+      `Importação de entradas concluída. Processados: ${result.totalProcessed}, Sucesso: ${result.successful}, Falhas: ${result.failed}.`
     );
 
     return result;

@@ -22,6 +22,7 @@ export class SismanLegacyController {
       throw error;
     }
   }
+
   @Post('import-materials-out')
   async importMaterialsOut(@Body('relativePath') relativePath: string) {
     this.logger.log(
@@ -39,6 +40,7 @@ export class SismanLegacyController {
       throw error;
     }
   }
+
   @Post('import-materials-items-out')
   async importMaterialsItemsOut(@Body('relativePath') relativePath: string) {
     this.logger.log(
@@ -47,6 +49,24 @@ export class SismanLegacyController {
     try {
       const result =
         await this.sismanLegacyService.importAndPersistManyMaterialsItemsOut(
+          relativePath
+        );
+      this.logger.log('Teste de busca no Sisman Legacy concluído com sucesso.');
+      return result;
+    } catch (error) {
+      this.logger.error('Erro ao testar busca no Sisman Legacy.', error.stack);
+      throw error;
+    }
+  }
+
+  @Post('import-materials-in')
+  async importMaterialsIn(@Body('relativePath') relativePath: string) {
+    this.logger.log(
+      `Importar entradas de material do Sisman Legacy para o caminho: ${relativePath}`
+    );
+    try {
+      const result =
+        await this.sismanLegacyService.importAndPersistManyMaterialsIn(
           relativePath
         );
       this.logger.log('Teste de busca no Sisman Legacy concluído com sucesso.');

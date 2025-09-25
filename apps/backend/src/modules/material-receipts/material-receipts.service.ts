@@ -829,6 +829,7 @@ export class MaterialReceiptsService {
             }
 
             return {
+              movementDate: item.materialReceipt.receiptDate,
               quantity: item.quantityReceived, // Para recebimentos, usamos quantityReceived
               warehouse: { id: item.materialReceipt.destinationWarehouse.id },
               movementType: { code: item.materialReceipt.movementType.code }, // Usa o código do tipo de movimento do recebimento

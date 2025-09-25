@@ -1,5 +1,5 @@
 export interface SismanLegacyMaterialInItem {
-  materialId: number;
+  MaterialId: number;
   name: string;
   specification: string | null;
   unit: string;
@@ -27,8 +27,8 @@ export interface SismanLegacyMaterialInResponseItem {
   costUnitSigla: string;
   costUnitNome: string;
   registerDate: string;
-  createdAt: string;
-  updatedAt: string;
+  created_at: string;
+  updated_at: string;
   obs: string | null;
   MaterialInItems: SismanLegacyMaterialInItem[];
   MaterialIntype: SismanLegacyMaterialIntype;

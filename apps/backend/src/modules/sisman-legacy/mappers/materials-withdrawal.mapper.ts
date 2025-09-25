@@ -19,7 +19,7 @@ const MaterialOuttypeIdToMovementTypeCode: Record<
   6: MaterialStockOperationSubType.OUT_TRANSFER, // INFRA
   7: MaterialStockOperationSubType.OUT_DONATION, // DOACAO
   8: MaterialStockOperationSubType.OUT_LOSS, // EXTRAVIO
-  9: MaterialStockOperationSubType.ADJUSTMENT_RECLASSIFY_OUT // TRANSFORME
+  9: MaterialStockOperationSubType.OUT_DISPOSAL_OBSOLETE // TRANSFORME
 };
 
 @Injectable()
@@ -55,13 +55,10 @@ export class MaterialWithdrawalMapper {
   async toCreateDto(
     item: SismanLegacyMaterialOutResponseItem
   ): Promise<Prisma.MaterialWithdrawalUncheckedCreateInput> {
-    const movementTypeCode =
+    let movementTypeCode =
       MaterialOuttypeIdToMovementTypeCode[item.materialOuttypeId];
 
     const now = new Date();
-
-    // TODO: Mapear maintenanceRequestId, materialRequestId, materialPickingOrderId
-    // Estes campos podem precisar de consultas adicionais ao Prisma, similar ao materialRequest no MaterialReceiptMapper.
 
     let maintenanceRequestId: number | undefined;
     if (item.reqMaintenance) {
@@ -75,18 +72,30 @@ export class MaterialWithdrawalMapper {
         }
       );
       maintenanceRequestId = maintenanceRequest?.id;
+
+      //se não tiver requisicao de manutencao, foi uma saide de emergencia, ajustar o tipo de movimento
+      movementTypeCode = maintenanceRequestId
+        ? movementTypeCode
+        : MaterialStockOperationSubType.OUT_EMERGENCY_USAGE;
     }
 
+    // Mapear materialRequestId, materialRequest.items.id
     let materialRequestId: number | undefined;
+    const mapRequest = new Map<string, number>();
     if (item.reqMaterial) {
       // Exemplo: buscar materialRequest pelo número de protocolo
       const materialRequest = await this.prisma.materialRequest.findFirst({
-        select: { id: true },
+        select: { id: true, items: true },
         where: {
-          protocolNumber: item.reqMaterial // Assumindo que reqMaterial é o protocolo
+          protocolNumber: item.reqMaterial // Assumindo que req é o protocolo
         }
       });
       materialRequestId = materialRequest?.id;
+
+      //mapeando o id de cada item do materialRequest
+      for (const item of materialRequest.items) {
+        mapRequest.set(item.requestedGlobalMaterialId, item.id);
+      }
     }
 
     const movementType = await this.prisma.materialStockMovementType.findFirst({
@@ -109,20 +118,26 @@ export class MaterialWithdrawalMapper {
       collectedByWorkerId: collectedByWorkerId,
       withdrawalDate: new Date(item.created_at),
       maintenanceRequestId: maintenanceRequestId,
-      //vou desativar essa vinculação para não gerar inconsistencias, uma vez que não tenho como atribuir e garantir o materialRequestItemId nos items da saida
-      // materialRequestId: materialRequestId,
+      materialRequestId: materialRequestId,
       // materialPickingOrderId: item.materialReserveId, // materialReserveId pode ser mapeado aqui
       movementTypeId: movementType?.id,
       notes: `IMPORTADO DO SISMAN LEGACY EM ${getNowFormatted()} \n ${item.obs || ''}`,
       valueWithdrawal: new Prisma.Decimal(item.value),
       createdAt: new Date(item.created_at),
       updatedAt: new Date(item.updated_at),
-      legacy_place: item.place
-      // items: item.MaterialOutItems.map((materialItem) => ({
-      //   globalMaterialId: String(materialItem.materialId), // Convertido para string
-      //   quantityWithdrawn: new Prisma.Decimal(materialItem.quantity),
-      //   unitPrice: this.parseDecimal(materialItem.value)
-      // })) as any
+      legacy_place: item.place,
+      items: {
+        createMany: {
+          data: item.MaterialOutItems.map((materialItem) => ({
+            globalMaterialId: String(materialItem.MaterialId), // Convertido para string
+            quantityWithdrawn: new Prisma.Decimal(materialItem.quantity),
+            unitPrice: materialItem.value,
+            materialRequestItemId: mapRequest.get(
+              String(materialItem.MaterialId)
+            )
+          }))
+        }
+      }
     };
   }
 }
