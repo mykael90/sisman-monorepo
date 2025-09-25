@@ -322,6 +322,7 @@ exports.Prisma.MaintenanceRequestScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   notes: 'notes',
+  useResidueMaterial: 'useResidueMaterial',
   sipacUnitRequestingId: 'sipacUnitRequestingId',
   sipacUnitCostId: 'sipacUnitCostId',
   sipacUserLoginRequest: 'sipacUserLoginRequest',

@@ -41,6 +41,7 @@ model MaintenanceRequest {
     materialStockMovements       MaterialStockMovement[]
     materialWithdrawals          MaterialWithdrawal[]
     notes                        String?                            @db.Text
+    useResidueMaterial           Boolean                            @default(false) //usar sobras, dessa forma não precisa compensar as saidas de materiais dessa requisicao
 
     materialPickingOrders MaterialPickingOrder[]
 

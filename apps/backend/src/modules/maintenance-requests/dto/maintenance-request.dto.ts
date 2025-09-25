@@ -9,7 +9,8 @@ import {
   IsNumber,
   IsOptional,
   IsString,
-  ValidateNested
+  ValidateNested,
+  IsBoolean
 } from 'class-validator';
 import { UpdateMaintenanceInstance } from '../../maintenance-instances/dto/maintenance-instance.dto';
 import { UpdateUserDto } from '../../users/dto/user.dto';
@@ -217,6 +218,14 @@ class MaintenanceRequestBaseDto implements MaintenanceRequest {
    */
   @IsString()
   sipacUserLoginRequest: string;
+
+  /**
+   * Usar sobras para requisicao de material (não emite alerta mesmo com defict)
+   * @example 1
+   */
+  @IsOptional()
+  @IsBoolean()
+  useResidueMaterial: boolean;
 }
 
 // =================================================================
