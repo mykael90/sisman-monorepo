@@ -42,4 +42,4 @@ Content-Type: {{contentType}}
 POST {{urlLocal}}/import-materials-in
 Content-Type: {{contentType}}
 
-{"relativePath":"materials/in/?startDate=2025-05-24&endDate=2025-05-26"}
+{"relativePath":"materials/in/?startDate=2025-05-20&endDate=2025-05-20"}

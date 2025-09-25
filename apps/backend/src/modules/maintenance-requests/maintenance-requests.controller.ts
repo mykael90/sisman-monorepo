@@ -38,6 +38,17 @@ export class MaintenanceRequestsController {
     return this.maintenanceRequestsService.showByProtocolNumber(value);
   }
 
+  @Get('/deficit-status')
+  async getDeficitStatus(
+    @Query('page') page: string = '1',
+    @Query('limit') limit: string = '10'
+  ) {
+    return this.maintenanceRequestsService.getPaginatedMaintenanceRequestsDeficit(
+      parseInt(page, 10),
+      parseInt(limit, 10)
+    );
+  }
+
   @Get(':id')
   async show(@Param('id') id: number) {
     return this.maintenanceRequestsService.show(id);

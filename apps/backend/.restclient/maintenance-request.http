@@ -26,6 +26,12 @@ GET {{urlLocal}}/balance/protocol
 ?value=4506/2025
 Authorization: Bearer {{token}}
 
+### GET deficit-status
+GET {{urlLocal}}/deficit-status
+?page=1
+&limit=100
+Authorization: Bearer {{token}}
+
 ### POST
 POST {{urlLocal}}
 Content-Type: {{contentType}}

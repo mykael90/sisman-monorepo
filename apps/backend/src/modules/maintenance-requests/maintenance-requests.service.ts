@@ -11,6 +11,30 @@ import { handlePrismaError } from '../../shared/utils/prisma-error-handler';
 import { FacilityComplexType, Prisma } from '@sisman/prisma';
 import { InfrastructureBuildingsService } from '../infrastructure-buildings/infrastructure-buildings.service';
 
+// Interface para o resultado de cada requisição no retorno
+export interface MaintenanceRequestDeficitStatus {
+  id: number;
+  description: string;
+  hasEffectiveDeficit: boolean;
+  hasPotentialDeficit: boolean;
+  deficitDetails?: Array<{
+    globalMaterialId: string;
+    name: string;
+    effectiveBalance: Prisma.Decimal;
+    potentialBalance: Prisma.Decimal;
+  }>;
+}
+
+// Interface para o retorno paginado
+export interface PaginatedMaintenanceRequestDeficit {
+  data: MaintenanceRequestDeficitStatus[];
+  meta: {
+    total: number;
+    page: number;
+    limit: number;
+    lastPage: number;
+  };
+}
 @Injectable()
 export class MaintenanceRequestsService {
   private readonly logger = new Logger(MaintenanceRequestsService.name);
@@ -906,6 +930,256 @@ export class MaintenanceRequestsService {
         `Error including other fields for building ID ${building.id}: ${error.message}`
       );
       throw error;
+    }
+  }
+
+  /**
+   * Retorna uma lista paginada de Requisições de Manutenção,
+   * indicando se cada uma possui déficit efetivo ou potencial de materiais.
+   *
+   * @param page O número da página (padrão: 1).
+   * @param limit O número de itens por página (padrão: 10).
+   * @returns Uma lista paginada de MaintenanceRequestDeficitStatus.
+   */
+  async getPaginatedMaintenanceRequestsDeficit(
+    page = 1,
+    limit = 10
+  ): Promise<PaginatedMaintenanceRequestDeficit> {
+    try {
+      const skip = (page - 1) * limit;
+
+      // PASSO 1: Obter o total de requisições e os dados básicos para a página atual
+      const [totalMaintenanceRequests, maintenanceRequestsOnPage] =
+        await this.prisma.$transaction([
+          this.prisma.maintenanceRequest.count(),
+          this.prisma.maintenanceRequest.findMany({
+            select: { id: true, description: true }, // Selecionar apenas campos leves
+            skip,
+            take: limit,
+            orderBy: { id: 'desc' } // Ordenação mais comum
+          })
+        ]);
+
+      if (maintenanceRequestsOnPage.length === 0) {
+        return {
+          data: [],
+          meta: {
+            total: totalMaintenanceRequests,
+            page,
+            limit,
+            lastPage: Math.ceil(totalMaintenanceRequests / limit)
+          }
+        };
+      }
+
+      const maintenanceRequestIds = maintenanceRequestsOnPage.map(
+        (mr) => mr.id
+      );
+
+      // PASSO 2: Buscar todos os itens relacionados ao lote de requisições
+      const [receiptItems, withdrawalItems, requestItems] =
+        await this.prisma.$transaction([
+          // Itens Recebidos
+          this.prisma.materialReceiptItem.findMany({
+            where: {
+              materialReceipt: {
+                materialRequest: {
+                  maintenanceRequestId: { in: maintenanceRequestIds }
+                }
+              }
+            },
+            select: {
+              materialId: true,
+              quantityReceived: true,
+              materialReceipt: {
+                select: {
+                  materialRequest: { select: { maintenanceRequestId: true } }
+                }
+              }
+            }
+          }),
+          // Itens Retirados
+          this.prisma.materialWithdrawalItem.findMany({
+            where: {
+              materialWithdrawal: {
+                maintenanceRequestId: { in: maintenanceRequestIds }
+              }
+            },
+            select: {
+              globalMaterialId: true,
+              quantityWithdrawn: true,
+              materialWithdrawal: { select: { maintenanceRequestId: true } }
+            }
+          }),
+          // Itens Solicitados
+          this.prisma.materialRequestItem.findMany({
+            where: {
+              materialRequest: {
+                maintenanceRequestId: { in: maintenanceRequestIds }
+              }
+            },
+            select: {
+              requestedGlobalMaterialId: true,
+              quantityRequested: true,
+              materialRequest: { select: { maintenanceRequestId: true } }
+            }
+          })
+        ]);
+
+      // PASSO 3: Coletar todos os IDs de materiais únicos para buscar seus nomes
+      const allMaterialIds = new Set<string>();
+      receiptItems.forEach((item) => allMaterialIds.add(item.materialId));
+      withdrawalItems.forEach((item) =>
+        allMaterialIds.add(item.globalMaterialId)
+      );
+      requestItems.forEach((item) =>
+        allMaterialIds.add(item.requestedGlobalMaterialId)
+      );
+
+      const materialInfo = await this.prisma.materialGlobalCatalog.findMany({
+        where: { id: { in: Array.from(allMaterialIds) } },
+        select: { id: true, name: true }
+      });
+
+      const materialNameMap = new Map<string, string>();
+      materialInfo.forEach((mat) => materialNameMap.set(mat.id, mat.name));
+
+      // PASSO 4: Estruturar os dados e calcular os balanços em memória
+      const balanceByMaintenanceRequest = new Map<
+        number,
+        Map<
+          string,
+          {
+            received: Prisma.Decimal;
+            withdrawn: Prisma.Decimal;
+            requested: Prisma.Decimal;
+          }
+        >
+      >();
+
+      // Agrupar recebidos
+      for (const item of receiptItems) {
+        const mrId = item.materialReceipt.materialRequest.maintenanceRequestId;
+        if (!balanceByMaintenanceRequest.has(mrId)) {
+          balanceByMaintenanceRequest.set(mrId, new Map());
+        }
+        const materialBalances = balanceByMaintenanceRequest.get(mrId);
+        if (!materialBalances.has(item.materialId)) {
+          materialBalances.set(item.materialId, {
+            received: new Prisma.Decimal(0),
+            withdrawn: new Prisma.Decimal(0),
+            requested: new Prisma.Decimal(0)
+          });
+        }
+        const current = materialBalances.get(item.materialId);
+        current.received = current.received.plus(item.quantityReceived ?? 0);
+      }
+
+      // Agrupar retirados
+      for (const item of withdrawalItems) {
+        const mrId = item.materialWithdrawal.maintenanceRequestId;
+        if (!balanceByMaintenanceRequest.has(mrId)) {
+          balanceByMaintenanceRequest.set(mrId, new Map());
+        }
+        const materialBalances = balanceByMaintenanceRequest.get(mrId);
+        if (!materialBalances.has(item.globalMaterialId)) {
+          materialBalances.set(item.globalMaterialId, {
+            received: new Prisma.Decimal(0),
+            withdrawn: new Prisma.Decimal(0),
+            requested: new Prisma.Decimal(0)
+          });
+        }
+        const current = materialBalances.get(item.globalMaterialId);
+        current.withdrawn = current.withdrawn.plus(item.quantityWithdrawn ?? 0);
+      }
+
+      // Agrupar solicitados
+      for (const item of requestItems) {
+        const mrId = item.materialRequest.maintenanceRequestId;
+        if (!balanceByMaintenanceRequest.has(mrId)) {
+          balanceByMaintenanceRequest.set(mrId, new Map());
+        }
+        const materialBalances = balanceByMaintenanceRequest.get(mrId);
+        if (!materialBalances.has(item.requestedGlobalMaterialId)) {
+          materialBalances.set(item.requestedGlobalMaterialId, {
+            received: new Prisma.Decimal(0),
+            withdrawn: new Prisma.Decimal(0),
+            requested: new Prisma.Decimal(0)
+          });
+        }
+        const current = materialBalances.get(item.requestedGlobalMaterialId);
+        current.requested = current.requested.plus(item.quantityRequested ?? 0);
+      }
+
+      // PASSO 5: Montar a resposta final
+      const resultData: MaintenanceRequestDeficitStatus[] =
+        maintenanceRequestsOnPage.map((mr) => {
+          let hasEffectiveDeficit = false;
+          let hasPotentialDeficit = false;
+          const deficitDetails: MaintenanceRequestDeficitStatus['deficitDetails'] =
+            [];
+
+          const materialBalances = balanceByMaintenanceRequest.get(mr.id);
+          if (materialBalances) {
+            for (const [
+              globalMaterialId,
+              balances
+            ] of materialBalances.entries()) {
+              const effectiveBalance = balances.received.minus(
+                balances.withdrawn
+              );
+              const potentialBalance = balances.requested.minus(
+                balances.withdrawn
+              );
+
+              if (effectiveBalance.isNegative()) {
+                hasEffectiveDeficit = true;
+              }
+              if (potentialBalance.isNegative()) {
+                hasPotentialDeficit = true;
+              }
+
+              if (
+                effectiveBalance.isNegative() ||
+                potentialBalance.isNegative()
+              ) {
+                deficitDetails.push({
+                  globalMaterialId,
+                  name:
+                    materialNameMap.get(globalMaterialId) ||
+                    'Material Desconhecido',
+                  effectiveBalance,
+                  potentialBalance
+                });
+              }
+            }
+          }
+
+          return {
+            id: mr.id,
+            description: mr.description,
+            hasEffectiveDeficit,
+            hasPotentialDeficit,
+            deficitDetails:
+              deficitDetails.length > 0 ? deficitDetails : undefined
+          };
+        });
+
+      return {
+        data: resultData,
+        meta: {
+          total: totalMaintenanceRequests,
+          page,
+          limit,
+          lastPage: Math.ceil(totalMaintenanceRequests / limit)
+        }
+      };
+    } catch (error) {
+      handlePrismaError(error, this.logger, 'MaintenanceRequestsService', {
+        operation: 'getPaginatedMaintenanceRequestsDeficit',
+        params: { page, limit } // Passando parâmetros de forma explícita
+      });
+      throw error; // Re-lança o erro para ser tratado pelo error handler global do NestJS
     }
   }
 }
