@@ -25,6 +25,8 @@ export const withdrawalServiceUsageMapping: MappingConfig<
     data.movementTypeCode && { code: data.movementTypeCode },
   processedByUser: (data) =>
     data.processedByUserId && { id: Number(data.processedByUserId) },
+  authorizedByUser: (data) =>
+    data.authorizedByUserId && { id: Number(data.authorizedByUserId) },
   collectedByUser: (data) =>
     data.collectedByUserId && { id: Number(data.collectedByUserId) },
   collectedByWorker: (data) =>

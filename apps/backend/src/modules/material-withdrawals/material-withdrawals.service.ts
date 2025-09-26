@@ -122,6 +122,7 @@ export class MaterialWithdrawalsService {
     const {
       warehouse,
       processedByUser,
+      authorizedByUser,
       collectedByUser,
       collectedByWorker,
       maintenanceRequest,
@@ -132,12 +133,16 @@ export class MaterialWithdrawalsService {
       ...restOfData
     } = data;
 
+    //caso não seja adicionado explicitamente, considere o aturoizador como quem processou
+    const authorizedByUserId = authorizedByUser?.id ?? processedByUser.id;
+
     const withdrawalCreateInput: Prisma.MaterialWithdrawalCreateInput = {
       ...restOfData,
       warehouse: warehouse?.id ? { connect: { id: warehouse.id } } : undefined,
       processedByUser: processedByUser?.id
         ? { connect: { id: processedByUser.id } }
         : undefined,
+      authorizedByUser: { connect: { id: authorizedByUserId } },
       collectedByUser: collectedByUser?.id
         ? { connect: { id: collectedByUser.id } }
         : undefined,

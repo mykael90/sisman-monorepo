@@ -53,6 +53,7 @@ export function MaterialWithdrawalAdd({
     materialRequestId: undefined,
     materialPickingOrderId: undefined,
     processedByUserId: session?.user?.idSisman,
+    authorizedByUserId: undefined,
     collectedByWorkerId: '',
     collectedByUserId: '',
     collectedByOther: null,

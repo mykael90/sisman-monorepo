@@ -115,6 +115,7 @@ export class MaterialWithdrawalMapper {
       warehouseId: 1,
       processedByUserId: item.userId,
       collectedByUserId: collectedByUserId,
+      authorizedByUserId: item.authorizedBy,
       collectedByWorkerId: collectedByWorkerId,
       withdrawalDate: new Date(item.created_at),
       maintenanceRequestId: maintenanceRequestId,

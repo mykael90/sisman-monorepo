@@ -613,6 +613,7 @@ exports.Prisma.MaterialWithdrawalScalarFieldEnum = {
   withdrawalNumber: 'withdrawalNumber',
   warehouseId: 'warehouseId',
   processedByUserId: 'processedByUserId',
+  authorizedByUserId: 'authorizedByUserId',
   collectedByUserId: 'collectedByUserId',
   collectedByWorkerId: 'collectedByWorkerId',
   collectedByOther: 'collectedByOther',

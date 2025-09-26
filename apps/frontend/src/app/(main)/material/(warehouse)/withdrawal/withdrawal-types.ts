@@ -51,6 +51,7 @@ export interface IMaterialWithdrawalAddPayload
   warehouse: { id: number };
   movementType: { code: MaterialOperationOutKey };
   processedByUser: { id: number };
+  authorizedByUser: { id: number };
   collectedByUser?: { id: number };
   collectedByWorker?: { id: number };
   materialRequest?: { id: number };
@@ -99,6 +100,7 @@ export const fieldsLabelsWithdrawalForm: Partial<
   maintenanceRequestId: 'Requisição de Manutenção',
   warehouseId: 'Depósito',
   processedByUserId: 'Processado por',
+  authorizedByUserId: 'Autorizado por',
   movementTypeCode: 'Código do Movimento',
   materialRequestId: 'Requisição de Material',
   notes: 'Observações',

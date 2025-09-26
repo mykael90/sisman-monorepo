@@ -81,6 +81,14 @@ class MaterialWithdrawalBaseDto implements MaterialWithdrawal {
   processedByUserId: number;
 
   /**
+   * ID do usuário que autorizou a retirada no sistema.
+   * @example 10
+   */
+  @IsNumber()
+  @IsOptional()
+  authorizedByUserId: number;
+
+  /**
    * ID do usuário que efetivamente retirou o material.
    * @example 11
    */
@@ -256,6 +264,7 @@ const MaterialWithdrawalRelationOnlyArgs =
     include: {
       warehouse: true,
       processedByUser: true,
+      authorizedByUser: true,
       collectedByUser: true,
       collectedByWorker: true,
       maintenanceRequest: true,
@@ -289,6 +298,12 @@ export class MaterialWithdrawalWithRelationsResponseDto
    */
   @ValidateNested()
   processedByUser: MaterialWithdrawalRelationOnly['processedByUser'];
+
+  /**
+   * Dados do usuário que autorizou a retirada.
+   */
+  @ValidateNested()
+  authorizedByUser: MaterialWithdrawalRelationOnly['authorizedByUser'];
 
   /**
    * Dados do usuário que coletou o material.
@@ -444,6 +459,13 @@ export class CreateMaterialWithdrawalWithRelationsDto extends IntersectionType(
   @IsDefined()
   // @ValidateNested()
   processedByUser: MaterialWithdrawalRelationOnly['processedByUser'];
+
+  /**
+   * Dados do usuário que autorizou a retirada.
+   */
+  @IsOptional()
+  // @ValidateNested()
+  authorizedByUser?: MaterialWithdrawalRelationOnly['authorizedByUser'];
 
   /**
    * Dados do usuário que coletou o material.

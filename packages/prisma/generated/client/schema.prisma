@@ -1285,6 +1285,9 @@ model MaterialWithdrawal {
   processedByUserId Int
   processedByUser   User @relation("WithdrawalsProcessedBy", fields: [processedByUserId], references: [id])
 
+  authorizedByUserId Int?
+  authorizedByUser   User? @relation("WithdrawalsAuthorizedBy", fields: [authorizedByUserId], references: [id])
+
   // Usuário que EFETIVAMENTE RETIROU o conjunto de materiais
   collectedByUserId Int?
   collectedByUser   User? @relation("WithdrawalsCollectedByUser", fields: [collectedByUserId], references: [id])
@@ -2093,8 +2096,9 @@ model User {
   materialRequestStatusUpdates MaterialRequestStatus[] @relation("MaterialRequestStatusChangedBy")
 
   // Relations: material.prisma (for MaterialWithdrawal)
-  withdrawalsProcessed MaterialWithdrawal[] @relation("WithdrawalsProcessedBy") // Withdrawals processed by this user.
-  withdrawalsCollected MaterialWithdrawal[] @relation("WithdrawalsCollectedByUser") // Withdrawals collected by this user.
+  withdrawalsProcessed  MaterialWithdrawal[] @relation("WithdrawalsProcessedBy") // Withdrawals processed by this user.
+  withdrawalsAuthorized MaterialWithdrawal[] @relation("WithdrawalsAuthorizedBy") // Withdrawals processed by this user.
+  withdrawalsCollected  MaterialWithdrawal[] @relation("WithdrawalsCollectedByUser") // Withdrawals collected by this user.
 
   // Relations: material.prisma (for MaterialReceipt)
   receiptsProcessed MaterialReceipt[] @relation("ReceiptsProcessedBy") // Material receipts processed by this user.

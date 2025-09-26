@@ -647,6 +647,10 @@ model MaterialWithdrawal {
     processedByUserId Int
     processedByUser   User @relation("WithdrawalsProcessedBy", fields: [processedByUserId], references: [id])
 
+    authorizedByUserId Int?
+    authorizedByUser   User? @relation("WithdrawalsAuthorizedBy", fields: [authorizedByUserId], references: [id])
+
+
     // Usuário que EFETIVAMENTE RETIROU o conjunto de materiais
     collectedByUserId Int?
     collectedByUser   User? @relation("WithdrawalsCollectedByUser", fields: [collectedByUserId], references: [id])

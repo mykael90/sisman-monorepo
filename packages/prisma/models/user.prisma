@@ -27,6 +27,7 @@ model User {
 
   // Relations: material.prisma (for MaterialWithdrawal)
   withdrawalsProcessed MaterialWithdrawal[] @relation("WithdrawalsProcessedBy") // Withdrawals processed by this user.
+  withdrawalsAuthorized MaterialWithdrawal[] @relation("WithdrawalsAuthorizedBy") // Withdrawals processed by this user.
   withdrawalsCollected MaterialWithdrawal[] @relation("WithdrawalsCollectedByUser") // Withdrawals collected by this user.
 
   // Relations: material.prisma (for MaterialReceipt)
