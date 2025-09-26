@@ -12,17 +12,40 @@ import {
   IRequestEdit
 } from './material-request-types';
 import { handleApiAction } from '@/lib/fetch/handle-form-action-sisman';
+import { DateRange } from 'react-day-picker'; // Adicionado
 
 const PAGE_PATH = '/material/request';
 const API_RELATIVE_PATH = '/material-request';
 
 const logger = new Logger(`${PAGE_PATH}/request-actions`);
 
-export async function getRequests(accessTokenSisman: string) {
-  logger.info(`(Server Action) getRequests: Fetching requests`);
+interface GetRequestsFilters {
+  from?: Date;
+  to?: Date;
+}
+
+export async function getRequests(filters?: GetRequestsFilters) {
+  logger.info(
+    `(Server Action) getRequests: Fetching requests with filters`,
+    filters
+  );
   try {
-    const data = await fetchApiSisman(API_RELATIVE_PATH, accessTokenSisman, {
-      cache: 'force-cache'
+    const accessTokenSisman = await getSismanAccessToken(); // Obter token internamente
+    const queryParams = new URLSearchParams();
+    if (filters?.from) {
+      queryParams.append('from', filters.from.toISOString());
+    }
+    if (filters?.to) {
+      queryParams.append('to', filters.to.toISOString());
+    }
+
+    const queryString = queryParams.toString();
+    const url = queryString
+      ? `${API_RELATIVE_PATH}?${queryString}`
+      : API_RELATIVE_PATH;
+
+    const data = await fetchApiSisman(url, accessTokenSisman, {
+      cache: 'no-store' // Alterado para não usar cache, pois os filtros podem mudar
     });
     logger.info(
       `(Server Action) getRequests: ${data.length} requests returned`
@@ -34,9 +57,11 @@ export async function getRequests(accessTokenSisman: string) {
   }
 }
 
-export async function showRequest(accessTokenSisman: string, id: number) {
+export async function showRequest(id: number) {
+  // Removido accessTokenSisman do argumento
   logger.info(`(Server Action) showRequest: Fetching request ${id}`);
   try {
+    const accessTokenSisman = await getSismanAccessToken(); // Obter token internamente
     const data = await fetchApiSisman(
       `${API_RELATIVE_PATH}/${id}`,
       accessTokenSisman,

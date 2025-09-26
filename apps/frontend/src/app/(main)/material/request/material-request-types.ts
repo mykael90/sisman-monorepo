@@ -5,6 +5,7 @@ export type IMaterialRequestWithRelations = Prisma.MaterialRequestGetPayload<{
   include: {
     maintenanceRequest: true;
     items: { include: { requestedGlobalMaterial: true } };
+    requestedByUser: true; // Adicionado para incluir a relação com o usuário solicitante
   };
 }>;
 
