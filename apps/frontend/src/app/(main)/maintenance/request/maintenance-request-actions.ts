@@ -272,6 +272,48 @@ export async function listMaintenanceRequestDeficitPaginated({
   }
 }
 
+export async function listMaintenanceRequestDeficitByMaintenanceInstance(
+  maintenanceInstanceId: number,
+  params?: { from?: Date; to?: Date }
+) {
+  const accessTokenSisman = await getSismanAccessToken();
+  logger.info(
+    `(Server Action) getMaitenanceRequestsDeficit: Fetching maintenanceRequests`
+  );
+
+  const urlParams = new URLSearchParams();
+  if (params?.from) {
+    urlParams.append('startDate', params.from.toISOString());
+  }
+
+  if (params?.to) {
+    urlParams.append('endDate', params.to.toISOString());
+  }
+
+  console.log(urlParams.toString());
+
+  try {
+    const data = await fetchApiSisman(
+      `${API_RELATIVE_PATH}/warehouse/deficit-status/${maintenanceInstanceId}`,
+      accessTokenSisman,
+      {
+        // cache: 'force-cache'
+      },
+      {
+        startDate: urlParams.get('startDate'),
+        endDate: urlParams.get('endDate')
+      }
+    );
+    return data;
+  } catch (error) {
+    logger.error(
+      `(Server Action) getMaitenanceRequestsDeficit: Error fetching maintenanceRequests`,
+      error
+    );
+    throw error;
+  }
+}
+
 export async function getRefreshedMaintenanceRequests() {
   logger.info(
     `(Server Action) getRefreshedMaintenanceRequests: Iniciando revalidação de dados para ${PAGE_PATH}.`
