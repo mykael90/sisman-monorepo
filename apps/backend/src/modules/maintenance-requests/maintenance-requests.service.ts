@@ -1200,4 +1200,257 @@ export class MaintenanceRequestsService {
       throw error; // Re-lança o erro para ser tratado pelo error handler global do NestJS
     }
   }
+
+  /**
+   * Retorna uma lista completa de Requisições de Manutenção,
+   * indicando se cada uma possui déficit efetivo ou potencial de materiais.
+   * Esta operação pode ser demorada, pois retorna todos os valores.
+   *
+   * @returns Uma lista de MaintenanceRequestDeficitStatus.
+   */
+  async getMaintenanceRequestsDeficitByMaintenanceInstance(
+    maintenanceInstanceId: number,
+    queryParams?: {
+      [key: string]: string;
+    }
+  ): Promise<MaintenanceRequestDeficitStatus[]> {
+    try {
+      const whereArgs: Prisma.MaintenanceRequestWhereInput = {
+        currentMaintenanceInstanceId: maintenanceInstanceId
+      };
+
+      if (queryParams && !!Object.keys(queryParams).length) {
+        const { startDate, endDate } = queryParams;
+        if (startDate && endDate) {
+          whereArgs.requestedAt = {
+            gte: new Date(startDate),
+            lte: new Date(endDate)
+          };
+        }
+      }
+
+      // PASSO 1: Obter todos os dados básicos das requisições
+      const maintenanceRequests = await this.prisma.maintenanceRequest.findMany(
+        {
+          select: { id: true, description: true }, // Selecionar apenas campos leves
+          where: whereArgs,
+          orderBy: { id: 'desc' } // Ordenação mais comum
+        }
+      );
+
+      if (maintenanceRequests.length === 0) {
+        return [];
+      }
+
+      const maintenanceRequestIds = maintenanceRequests.map((mr) => mr.id);
+
+      // PASSO 2: Buscar todos os itens relacionados ao lote de requisições
+      const [receiptItems, withdrawalItems, requestItems] =
+        await this.prisma.$transaction([
+          // Itens Recebidos
+          this.prisma.materialReceiptItem.findMany({
+            where: {
+              materialReceipt: {
+                materialRequest: {
+                  maintenanceRequestId: { in: maintenanceRequestIds }
+                }
+              }
+            },
+            select: {
+              materialId: true,
+              quantityReceived: true,
+              materialReceipt: {
+                select: {
+                  materialRequest: {
+                    select: {
+                      maintenanceRequestId: true
+                    }
+                  }
+                }
+              }
+            }
+          }),
+          // Itens Retirados
+          this.prisma.materialWithdrawalItem.findMany({
+            where: {
+              materialWithdrawal: {
+                maintenanceRequestId: { in: maintenanceRequestIds }
+              }
+            },
+            select: {
+              globalMaterialId: true,
+              quantityWithdrawn: true,
+              materialWithdrawal: { select: { maintenanceRequestId: true } }
+            }
+          }),
+          // Itens Solicitados
+          this.prisma.materialRequestItem.findMany({
+            where: {
+              materialRequest: {
+                maintenanceRequestId: { in: maintenanceRequestIds }
+              }
+            },
+            select: {
+              requestedGlobalMaterialId: true,
+              quantityRequested: true,
+              materialRequest: { select: { maintenanceRequestId: true } }
+            }
+          })
+        ]);
+
+      // PASSO 3: Coletar todos os IDs de materiais únicos para buscar seus nomes
+      const allMaterialIds = new Set<string>();
+      receiptItems.forEach((item) => allMaterialIds.add(item.materialId));
+      withdrawalItems.forEach((item) =>
+        allMaterialIds.add(item.globalMaterialId)
+      );
+      requestItems.forEach((item) =>
+        allMaterialIds.add(item.requestedGlobalMaterialId)
+      );
+
+      const materialInfo = await this.prisma.materialGlobalCatalog.findMany({
+        where: { id: { in: Array.from(allMaterialIds) } },
+        select: { id: true, name: true, unitOfMeasure: true, unitPrice: true }
+      });
+
+      const materialInfoMap = new Map<string, (typeof materialInfo)[0]>();
+      materialInfo.forEach((mat) => materialInfoMap.set(mat.id, mat));
+
+      // PASSO 4: Estruturar os dados e calcular os balanços em memória
+      const balanceByMaintenanceRequest = new Map<
+        number,
+        Map<
+          string,
+          {
+            received: Prisma.Decimal;
+            withdrawn: Prisma.Decimal;
+            requested: Prisma.Decimal;
+          }
+        >
+      >();
+
+      // Agrupar recebidos
+      for (const item of receiptItems) {
+        const mrId = item.materialReceipt.materialRequest.maintenanceRequestId;
+        if (!balanceByMaintenanceRequest.has(mrId)) {
+          balanceByMaintenanceRequest.set(mrId, new Map());
+        }
+        const materialBalances = balanceByMaintenanceRequest.get(mrId);
+        if (!materialBalances.has(item.materialId)) {
+          materialBalances.set(item.materialId, {
+            received: new Prisma.Decimal(0),
+            withdrawn: new Prisma.Decimal(0),
+            requested: new Prisma.Decimal(0)
+          });
+        }
+        const current = materialBalances.get(item.materialId);
+        current.received = current.received.plus(item.quantityReceived ?? 0);
+      }
+
+      // Agrupar retirados
+      for (const item of withdrawalItems) {
+        const mrId = item.materialWithdrawal.maintenanceRequestId;
+        if (!balanceByMaintenanceRequest.has(mrId)) {
+          balanceByMaintenanceRequest.set(mrId, new Map());
+        }
+        const materialBalances = balanceByMaintenanceRequest.get(mrId);
+        if (!materialBalances.has(item.globalMaterialId)) {
+          materialBalances.set(item.globalMaterialId, {
+            received: new Prisma.Decimal(0),
+            withdrawn: new Prisma.Decimal(0),
+            requested: new Prisma.Decimal(0)
+          });
+        }
+        const current = materialBalances.get(item.globalMaterialId);
+        current.withdrawn = current.withdrawn.plus(item.quantityWithdrawn ?? 0);
+      }
+
+      // Agrupar solicitados
+      for (const item of requestItems) {
+        const mrId = item.materialRequest.maintenanceRequestId;
+        if (!balanceByMaintenanceRequest.has(mrId)) {
+          balanceByMaintenanceRequest.set(mrId, new Map());
+        }
+        const materialBalances = balanceByMaintenanceRequest.get(mrId);
+        if (!materialBalances.has(item.requestedGlobalMaterialId)) {
+          materialBalances.set(item.requestedGlobalMaterialId, {
+            received: new Prisma.Decimal(0),
+            withdrawn: new Prisma.Decimal(0),
+            requested: new Prisma.Decimal(0)
+          });
+        }
+        const current = materialBalances.get(item.requestedGlobalMaterialId);
+        current.requested = current.requested.plus(item.quantityRequested ?? 0);
+      }
+
+      // PASSO 5: Montar a resposta final
+      const resultData: MaintenanceRequestDeficitStatus[] =
+        maintenanceRequests.map((mr) => {
+          let hasEffectiveDeficit = false;
+          let hasPotentialDeficit = false;
+
+          const deficitDetails: MaintenanceRequestDeficitStatus['deficitDetails'] =
+            [];
+
+          const materialBalances = balanceByMaintenanceRequest.get(mr.id);
+          if (materialBalances) {
+            for (const [
+              globalMaterialId,
+              balances
+            ] of materialBalances.entries()) {
+              const effectiveBalance = balances.received.minus(
+                balances.withdrawn
+              );
+              const potentialBalance = balances.requested.minus(
+                balances.withdrawn
+              );
+
+              if (effectiveBalance.isNegative()) {
+                hasEffectiveDeficit = true;
+              }
+              if (potentialBalance.isNegative()) {
+                hasPotentialDeficit = true;
+              }
+
+              if (
+                effectiveBalance.isNegative() ||
+                potentialBalance.isNegative()
+              ) {
+                deficitDetails.push({
+                  globalMaterialId,
+                  name:
+                    materialInfoMap.get(globalMaterialId)?.name ||
+                    'Material Desconhecido',
+                  unitOfMeasure:
+                    materialInfoMap.get(globalMaterialId)?.unitOfMeasure ||
+                    'Unidade Desconhecida',
+                  quantityRequestedSum: balances.requested,
+                  quantityReceivedSum: balances.received,
+                  quantityWithdrawnSum: balances.withdrawn,
+                  effectiveBalance,
+                  potentialBalance,
+                  unitPrice: materialInfoMap.get(globalMaterialId)?.unitPrice
+                });
+              }
+            }
+          }
+
+          return {
+            id: mr.id,
+            description: mr.description,
+            hasEffectiveDeficit,
+            hasPotentialDeficit,
+            deficitDetails:
+              deficitDetails.length > 0 ? deficitDetails : undefined
+          };
+        });
+
+      return resultData;
+    } catch (error) {
+      handlePrismaError(error, this.logger, 'MaintenanceRequestsService', {
+        operation: 'getAllMaintenanceRequestsDeficit'
+      });
+      throw error; // Re-lança o erro para ser tratado pelo error handler global do NestJS
+    }
+  }
 }

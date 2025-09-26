@@ -1280,7 +1280,7 @@ export class MaterialPickingOrdersService {
         warehouseId
       };
 
-      if (!!Object.keys(queryParams).length) {
+      if (queryParams && !!Object.keys(queryParams).length) {
         const { startDate, endDate } = queryParams;
         if (startDate && endDate) {
           whereArgs.createdAt = {

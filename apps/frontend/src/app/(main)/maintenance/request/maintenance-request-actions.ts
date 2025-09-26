@@ -254,7 +254,7 @@ export async function listMaintenanceRequestDeficitPaginated({
   try {
     const accessTokenSisman = await getSismanAccessToken();
     const data = await fetchApiSisman(
-      `${API_RELATIVE_PATH}/deficit-status`,
+      `${API_RELATIVE_PATH}/deficit-status-paginated`,
       accessTokenSisman,
       {
         method: 'GET',

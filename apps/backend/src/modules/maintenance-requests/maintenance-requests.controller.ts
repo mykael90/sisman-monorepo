@@ -38,14 +38,28 @@ export class MaintenanceRequestsController {
     return this.maintenanceRequestsService.showByProtocolNumber(value);
   }
 
-  @Get('/deficit-status')
-  async getDeficitStatus(
+  @Get('/deficit-status-paginated')
+  async getDeficitStatusPaginated(
     @Query('pageIndex') pageIndex: string = '0',
     @Query('pageSize') pageSize: string = '10'
   ) {
     return this.maintenanceRequestsService.getPaginatedMaintenanceRequestsDeficit(
       parseInt(pageIndex, 10),
       parseInt(pageSize, 10)
+    );
+  }
+
+  @Get('/deficit-status/maintenance-instance/:id')
+  async getDeficitStatusByMaintenanceInstance(
+    @Param('id') maitenanceInstanceId: number,
+    @Query() queryParams: { [key: string]: string }
+  ) {
+    // @Query('pageSize') pageSize: string = '10' // @Query('pageIndex') pageIndex: string = '0',
+    return this.maintenanceRequestsService.getMaintenanceRequestsDeficitByMaintenanceInstance(
+      // parseInt(pageIndex, 10),
+      // parseInt(pageSize, 10)
+      maitenanceInstanceId,
+      queryParams
     );
   }
 

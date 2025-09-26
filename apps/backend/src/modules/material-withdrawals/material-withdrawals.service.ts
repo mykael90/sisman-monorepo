@@ -551,7 +551,7 @@ export class MaterialWithdrawalsService {
         warehouseId
       };
 
-      if (!!Object.keys(queryParams).length) {
+      if (queryParams && !!Object.keys(queryParams).length) {
         const { startDate, endDate, movementSubTypeCode } = queryParams;
         if (startDate && endDate) {
           whereArgs.withdrawalDate = {
