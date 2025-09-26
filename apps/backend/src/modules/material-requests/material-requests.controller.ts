@@ -76,8 +76,13 @@ export class MaterialRequestsController {
       isArray: true // Indica que a resposta é um array
     }
   })
-  async list(): Promise<MaterialRequestWithRelationsResponseDto[]> {
-    return this.materialRequestsService.list();
+  async list(
+    @Query()
+    queryParams: {
+      [key: string]: string;
+    }
+  ): Promise<MaterialRequestWithRelationsResponseDto[]> {
+    return this.materialRequestsService.list(queryParams);
   }
 
   @Get('/protocol')

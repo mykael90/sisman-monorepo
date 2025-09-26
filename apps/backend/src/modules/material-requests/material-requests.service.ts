@@ -139,15 +139,28 @@ export class MaterialRequestsService {
     }
   }
 
-  async list() {
+  async list(queryParams?: { [key: string]: string }) {
     try {
+      const whereArgs: Prisma.MaterialRequestWhereInput = {};
+
+      if (queryParams && !!Object.keys(queryParams).length) {
+        const { startDate, endDate } = queryParams;
+        if (startDate && endDate) {
+          whereArgs.requestDate = {
+            gte: new Date(startDate),
+            lte: new Date(endDate)
+          };
+        }
+      }
+
       const materialRequests = await this.prisma.materialRequest.findMany({
         include: {
           items: true,
           statusHistory: true,
           sipacUnitRequesting: true,
           sipacUnitCost: true
-        }
+        },
+        where: whereArgs
       });
 
       return materialRequests;

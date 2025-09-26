@@ -33,20 +33,23 @@ export async function getRequests(filters?: GetRequestsFilters) {
     const accessTokenSisman = await getSismanAccessToken(); // Obter token internamente
     const queryParams = new URLSearchParams();
     if (filters?.from) {
-      queryParams.append('from', filters.from.toISOString());
+      queryParams.append('startDate', filters.from.toISOString());
     }
     if (filters?.to) {
-      queryParams.append('to', filters.to.toISOString());
+      queryParams.append('endDate', filters.to.toISOString());
     }
 
-    const queryString = queryParams.toString();
-    const url = queryString
-      ? `${API_RELATIVE_PATH}?${queryString}`
-      : API_RELATIVE_PATH;
-
-    const data = await fetchApiSisman(url, accessTokenSisman, {
-      cache: 'no-store' // Alterado para não usar cache, pois os filtros podem mudar
-    });
+    const data = await fetchApiSisman(
+      API_RELATIVE_PATH,
+      accessTokenSisman,
+      {
+        cache: 'no-store' // Alterado para não usar cache, pois os filtros podem mudar
+      },
+      {
+        startDate: queryParams.get('startDate'),
+        endDate: queryParams.get('endDate')
+      }
+    );
     logger.info(
       `(Server Action) getRequests: ${data.length} requests returned`
     );

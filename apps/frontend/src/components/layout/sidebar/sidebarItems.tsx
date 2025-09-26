@@ -53,7 +53,7 @@ export const sidebarItems: SidebarItem[] = [
       { label: 'Instâncias', href: '/maintenance/instance' },
       {
         label: 'Déficits Material',
-        href: '/maintenance/reports/material-deficit'
+        href: '/maintenance/reports/mat-deficit'
       }
       // { label: 'Categorias', href: '/maintenance/category' }
     ]

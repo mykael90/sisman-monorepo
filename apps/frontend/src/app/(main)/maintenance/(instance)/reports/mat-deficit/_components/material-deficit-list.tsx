@@ -15,7 +15,8 @@ import { useQuery } from '@tanstack/react-query';
 import {
   createActions,
   defaultColumn,
-  materialdeficitColumns
+  materialdeficitColumns,
+  SubRowComponent
 } from './material-deficit-columns';
 import { SectionListHeaderSmall } from '../../../../../../../components/section-list-header-small';
 import { TableTanstackFaceted } from '../../../../../../../components/table-tanstack/table-tanstack-faceted';
@@ -81,7 +82,7 @@ export function MateriallDeficitList() {
     queryKey: ['deficits', maintenanceInstanceId, date],
     queryFn: () =>
       listMaintenanceRequestDeficitByMaintenanceInstance(
-        maintenanceInstanceId,
+        maintenanceInstanceId as number,
         {
           from: date?.from,
           to: date?.to
@@ -154,6 +155,7 @@ export function MateriallDeficitList() {
           globalFilter={globalFilterValue}
           setGlobalFilter={setGlobalFilterValue}
           defaultColumn={defaultColumn}
+          renderSubComponent={SubRowComponent}
         />
       )}
     </div>

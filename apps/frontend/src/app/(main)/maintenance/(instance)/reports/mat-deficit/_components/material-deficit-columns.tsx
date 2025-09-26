@@ -2,8 +2,16 @@ import { ColumnDef, createColumnHelper, Row } from '@tanstack/react-table';
 import { IMaintenanceRequestDeficitStatus } from '@/app/(main)/maintenance/request/maintenance-request-types';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { Button } from '../../../../../../../components/ui/button';
-import { Eye } from 'lucide-react';
+import { Eye, ChevronRight, ChevronDown } from 'lucide-react';
 import { get } from 'http';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
+} from '@/components/ui/table';
 
 const columnHelper = createColumnHelper<IMaintenanceRequestDeficitStatus>();
 
@@ -92,6 +100,39 @@ export const materialdeficitColumns = (
   //   enableSorting: true,
   //   enableHiding: false
   // }),
+  columnHelper.display({
+    id: 'expander',
+    size: 30,
+    header: ({ table }) => (
+      <Button
+        variant='ghost'
+        size='icon'
+        onClick={table.getToggleAllRowsExpandedHandler()}
+      >
+        {table.getIsAllRowsExpanded() ? (
+          <ChevronDown className='h-4 w-4' />
+        ) : (
+          <ChevronRight className='h-4 w-4' />
+        )}
+      </Button>
+    ),
+    cell: ({ row }) => (
+      <Button
+        variant='ghost'
+        size='icon'
+        onClick={(e) => {
+          e.stopPropagation();
+          row.toggleExpanded();
+        }}
+      >
+        {row.getIsExpanded() ? (
+          <ChevronDown className='h-4 w-4' />
+        ) : (
+          <ChevronRight className='h-4 w-4' />
+        )}
+      </Button>
+    )
+  }),
   columnHelper.accessor('protocolNumber', {
     header: 'RMan',
     size: 40,
@@ -111,7 +152,7 @@ export const materialdeficitColumns = (
   }),
 
   columnHelper.accessor('sipacUserLoginRequest', {
-    header: 'Usuário',
+    header: 'Requisitante',
     size: 40,
     enableResizing: false,
     enableColumnFilter: true,
@@ -190,3 +231,62 @@ export const materialdeficitColumns = (
 
 // O componente StatusBadge foi movido para um arquivo separado em '@/components/ui/status-badge'
 // para ser reutilizável. Se não existir, precisará ser criado.
+
+export const SubRowComponent = ({
+  row
+}: {
+  row: Row<IMaintenanceRequestDeficitStatus>;
+}) => {
+  const deficitDetails = row.original.deficitDetails || [];
+
+  return (
+    <div className='p-2 pl-8'>
+      <h4 className='mb-2 text-sm font-semibold'>Detalhes do Déficit:</h4>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>ID Material</TableHead>
+            <TableHead>Denominação</TableHead>
+            <TableHead>Unidade</TableHead>
+            <TableHead>Qtd Solicitada</TableHead>
+            <TableHead>Qtd Recebida</TableHead>
+            <TableHead>Qtd Retirada</TableHead>
+            <TableHead>Saldo Efetivo</TableHead>
+            <TableHead>Saldo Potencial</TableHead>
+            <TableHead>Valor Unitário</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {deficitDetails.length > 0 ? (
+            deficitDetails.map((item, index) => (
+              <TableRow key={index}>
+                <TableCell>{item.globalMaterialId}</TableCell>
+                <TableCell>{item.name || 'N/A'}</TableCell>
+                <TableCell>{item.unitOfMeasure || 'N/A'}</TableCell>
+                <TableCell>{item.quantityRequestedSum.toString()}</TableCell>
+                <TableCell>{item.quantityReceivedSum.toString()}</TableCell>
+                <TableCell>{item.quantityWithdrawnSum.toString()}</TableCell>
+                <TableCell>{item.effectiveBalance.toString()}</TableCell>
+                <TableCell>{item.potentialBalance.toString()}</TableCell>
+                <TableCell>
+                  {item.unitPrice
+                    ? Number(item.unitPrice).toLocaleString('pt-BR', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                      })
+                    : 'Indefinido'}
+                </TableCell>
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={9} className='h-24 text-center'>
+                Nenhum detalhe de déficit encontrado.
+              </TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+    </div>
+  );
+};
