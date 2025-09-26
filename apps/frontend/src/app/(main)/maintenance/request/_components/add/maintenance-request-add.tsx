@@ -3,7 +3,7 @@
 import { MaintenanceRequestForm } from '../form/maintenance-request-form';
 import { addMaintenanceRequest } from '../../maintenance-request-actions';
 import { useRouter } from 'next/navigation';
-import { IMaintenanceRequestRelatedData } from '../../request-types';
+import { IMaintenanceRequestRelatedData } from '../../maintenance-request-types';
 
 interface MaintenanceRequestAddProps {
   relatedData: IMaintenanceRequestRelatedData;

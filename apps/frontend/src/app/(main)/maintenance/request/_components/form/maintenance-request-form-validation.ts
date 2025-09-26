@@ -2,7 +2,7 @@ import { z } from 'zod';
 import {
   IMaintenanceRequestAdd,
   IMaintenanceRequestEdit
-} from '../../request-types';
+} from '../../maintenance-request-types';
 
 export const maintenanceRequestFormSchemaAdd = z.object({
   title: z.string().min(3, 'Título deve ter pelo menos 3 caracteres'),

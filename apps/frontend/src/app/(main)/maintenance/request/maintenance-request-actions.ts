@@ -10,8 +10,9 @@ import {
   IMaintenanceRequestAdd,
   IMaintenanceRequestBalanceWithRelations,
   IMaintenanceRequestEdit,
-  IMaintenanceRequestWithRelations
-} from './request-types';
+  IMaintenanceRequestWithRelations,
+  IPaginatedMaintenanceRequestDeficit
+} from './maintenance-request-types';
 import { handleApiAction } from '@/lib/fetch/handle-form-action-sisman';
 
 const PAGE_PATH = '/maintenance-request';
@@ -174,8 +175,8 @@ export async function showMaintenanceRequestByProtocol(
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
-        }
-        // cache: 'force-cache'
+        },
+        cache: 'no-store' // Garante que a requisição não seja cacheada
       },
       { value: protocolNumber }
     );
@@ -236,6 +237,37 @@ export async function showMaintenanceRequestBalanceByProtocol(
         throw error;
       }
     }
+    throw error;
+  }
+}
+
+export async function listMaintenanceRequestDeficitPaginated({
+  pageIndex,
+  pageSize
+}: {
+  pageIndex: number;
+  pageSize: number;
+}): Promise<IPaginatedMaintenanceRequestDeficit | null> {
+  logger.info(
+    `(Server Action) listMaintenanceRequestDeficitPaginated: listando requisições de manutenção e status deficit.`
+  );
+  try {
+    const accessTokenSisman = await getSismanAccessToken();
+    const data = await fetchApiSisman(
+      `${API_RELATIVE_PATH}/deficit-status`,
+      accessTokenSisman,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+        // cache: 'force-cache'
+      },
+      { pageIndex, pageSize }
+    );
+    return data;
+  } catch (error: any) {
+    logger.error(error);
     throw error;
   }
 }

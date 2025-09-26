@@ -15,7 +15,7 @@ import { IMaterialRequestBalanceWithRelations } from '../../../../../material/re
 import { schemaZodRequisicoesSipac } from '@/lib/schema-zod-requisicoes-sipac';
 import { handleFetchOneAndPersistRequisicaoMaterialComRequisicaoManutencaoVinculada } from '../../../../../sipac/requisicoes-materiais/requisicoes-materiais-actions';
 import { format } from 'date-fns';
-import { IMaintenanceRequestBalanceWithRelations } from '../../../../../maintenance/request/request-types';
+import { IMaintenanceRequestBalanceWithRelations } from '../../../../../maintenance/request/maintenance-request-types';
 import { showMaintenanceRequestBalanceByProtocol } from '../../../../../maintenance/request/maintenance-request-actions';
 import { fetchOneAndPersistSipacRequisicoesManutencao } from '../../../../../sipac/requisicoes-manutencoes/requisicoes-manutencoes-actions';
 import {

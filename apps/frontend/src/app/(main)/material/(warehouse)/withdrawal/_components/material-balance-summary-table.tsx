@@ -3,7 +3,7 @@
 import { Badge } from '@/components/ui/badge';
 import { InfoHoverCard } from '../../../../../../components/info-hover-card';
 import { formatToBRL } from '../../../../../../lib/utils';
-import { IItemMaintenanceRequestBalance } from '../../../../maintenance/request/request-types';
+import { IItemMaintenanceRequestBalance } from '../../../../maintenance/request/maintenance-request-types';
 
 interface MaterialBalanceSummaryTableProps {
   itemsBalance: IItemMaintenanceRequestBalance[];

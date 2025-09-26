@@ -70,3 +70,33 @@ export interface IItemMaintenanceRequestBalance {
   potentialBalance: string;
   unitPrice: string;
 }
+
+// Interface para o resultado de cada requisição no retorno
+export interface IMaintenanceRequestDeficitStatus {
+  id: number;
+  description: string;
+  hasEffectiveDeficit: boolean;
+  hasPotentialDeficit: boolean;
+  deficitDetails?: Array<{
+    globalMaterialId: string;
+    name: string;
+    unitOfMeasure: string;
+    quantityRequestedSum: string;
+    quantityReceivedSum: string;
+    quantityWithdrawnSum: string;
+    effectiveBalance: string;
+    potentialBalance: string;
+    unitPrice: string;
+  }>;
+}
+
+// Interface para o retorno paginado
+export interface IPaginatedMaintenanceRequestDeficit {
+  data: IMaintenanceRequestDeficitStatus[];
+  meta: {
+    total: number;
+    page: number;
+    limit: number;
+    lastPage: number;
+  };
+}

@@ -11,7 +11,7 @@ import { toast } from 'sonner';
 
 // Importa as funções originais das Server Actions
 import { showMaintenanceRequestBalanceByProtocol } from '../../../../../maintenance/request/maintenance-request-actions';
-import { IMaintenanceRequestBalanceWithRelations } from '../../../../../maintenance/request/request-types';
+import { IMaintenanceRequestBalanceWithRelations } from '../../../../../maintenance/request/maintenance-request-types';
 import { schemaZodRequisicoesSipac } from '@/lib/schema-zod-requisicoes-sipac';
 import { fetchOneAndPersistSipacRequisicoesManutencao } from '../../../../../sipac/requisicoes-manutencoes/requisicoes-manutencoes-actions';
 import { format } from 'date-fns';

@@ -15,7 +15,7 @@ import { RefreshCcw, Search } from 'lucide-react';
 import { toast } from 'sonner';
 import { useRef } from 'react';
 import { handleMaintenanceRequestSearch } from '../../../../../maintenance/request/maintenance-request-actions';
-import { IMaintenanceRequestWithRelations } from '../../../../../maintenance/request/request-types';
+import { IMaintenanceRequestWithRelations } from '../../../../../maintenance/request/maintenance-request-types';
 import { schemaZodRequisicoesSipac } from '@/lib/schema-zod-requisicoes-sipac';
 import { fetchOneAndPersistSipacRequisicoesManutencao } from '../../../../../sipac/requisicoes-manutencoes/requisicoes-manutencoes-actions';
 import { ISipacRequisicaoManutencaoWithRelations } from '../../../../../sipac/requisicoes-manutencoes/requisicoes-manutencoes-types';

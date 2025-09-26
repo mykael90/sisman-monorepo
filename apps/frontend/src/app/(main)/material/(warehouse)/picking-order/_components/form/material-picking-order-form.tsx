@@ -12,7 +12,7 @@ import {
 } from '../../material-picking-order-types';
 import { ItemsFieldArray } from './field-form-items-array';
 import { ErrorServerForm } from '@/components/form-tanstack/error-server-form';
-import { IMaintenanceRequestBalanceWithRelations } from '../../../../../maintenance/request/request-types';
+import { IMaintenanceRequestBalanceWithRelations } from '../../../../../maintenance/request/maintenance-request-types';
 import {
   usePickingOrderForm,
   type IPickingOrderFormApi

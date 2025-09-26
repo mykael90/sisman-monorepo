@@ -7,7 +7,7 @@ import { Building, MapPin, RefreshCcw, User } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
 import { Button } from '../../../../../../components/ui/button';
-import { IMaintenanceRequestBalanceWithRelations } from '../../../../maintenance/request/request-types';
+import { IMaintenanceRequestBalanceWithRelations } from '../../../../maintenance/request/maintenance-request-types';
 import { IWithdrawalFormApi } from '../../../../../../hooks/use-withdrawal-form';
 import { useEffect } from 'react';
 import { MaterialBalanceSummaryTable } from './material-balance-summary-table';

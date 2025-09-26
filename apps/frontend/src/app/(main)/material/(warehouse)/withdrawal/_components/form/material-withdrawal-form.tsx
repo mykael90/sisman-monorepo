@@ -11,7 +11,7 @@ import {
 } from '../../withdrawal-types';
 import { ItemsFieldArray } from './field-form-items-array';
 import { ErrorServerForm } from '@/components/form-tanstack/error-server-form';
-import { IMaintenanceRequestBalanceWithRelations } from '../../../../../maintenance/request/request-types';
+import { IMaintenanceRequestBalanceWithRelations } from '../../../../../maintenance/request/maintenance-request-types';
 import {
   useWithdrawalForm,
   type IWithdrawalFormApi

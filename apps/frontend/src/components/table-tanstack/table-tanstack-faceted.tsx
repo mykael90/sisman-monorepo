@@ -47,6 +47,8 @@ interface TableProps<TData> {
   defaultColumn?: Partial<ColumnDef<TData>>;
   pagination?: PaginationState;
   setPagination?: React.Dispatch<React.SetStateAction<any>>;
+  manualPagination?: boolean;
+  rowCount?: number;
   setSorting?: React.Dispatch<React.SetStateAction<SortingState>>;
   sorting?: SortingState;
   globalFilterFn?: FilterFnOption<TData>;
@@ -65,7 +67,7 @@ interface TableProps<TData> {
     columnId: string
   ) => () => Map<unknown, number>;
   autoResetPageIndex?: boolean;
-  manualPagination?: boolean;
+  debugTable?: boolean;
 }
 
 export function TableTanstackFaceted<TData>({
@@ -86,7 +88,9 @@ export function TableTanstackFaceted<TData>({
   getFacetedRowModel,
   getFacetedUniqueValues,
   autoResetPageIndex = true,
-  manualPagination = false
+  manualPagination = false,
+  rowCount,
+  debugTable = false
 }: TableProps<TData>) {
   const [expanded, setExpanded] = useState({});
 
@@ -100,6 +104,7 @@ export function TableTanstackFaceted<TData>({
     getPaginationRowModel: getPaginationRowModel(),
     onPaginationChange: setPagination,
     manualPagination: manualPagination,
+    rowCount: rowCount,
     autoResetPageIndex: autoResetPageIndex,
     getSortedRowModel: getSortedRowModel(),
     onSortingChange: setSorting,
@@ -117,8 +122,8 @@ export function TableTanstackFaceted<TData>({
       pagination,
       expanded
     },
-    debugTable: true,
-    debugHeaders: true,
+    debugTable: debugTable,
+    debugHeaders: false,
     debugColumns: false
   });
 

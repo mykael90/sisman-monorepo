@@ -9,7 +9,7 @@ import {
 import {
   IMaintenanceRequestAdd,
   IMaintenanceRequestEdit
-} from '../../request-types';
+} from '../../maintenance-request-types';
 import { Button } from '@/components/ui/button';
 
 interface MaintenanceRequestFormProps {
