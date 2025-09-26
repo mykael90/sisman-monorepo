@@ -16,6 +16,11 @@ import { Decimal } from '@sisman/prisma/generated/client/runtime/library';
 export interface MaintenanceRequestDeficitStatus {
   id: number;
   description: string;
+  protocolNumber: string;
+  sipacUserLoginRequest: string;
+  loginsResponsibles?: string[];
+  completedAt: Date;
+  requestedAt: Date;
   hasEffectiveDeficit: boolean;
   hasPotentialDeficit: boolean;
   deficitDetails?: Array<{
@@ -959,7 +964,14 @@ export class MaintenanceRequestsService {
         await this.prisma.$transaction([
           this.prisma.maintenanceRequest.count(),
           this.prisma.maintenanceRequest.findMany({
-            select: { id: true, description: true }, // Selecionar apenas campos leves
+            select: {
+              id: true,
+              description: true,
+              protocolNumber: true,
+              sipacUserLoginRequest: true,
+              completedAt: true,
+              requestedAt: true
+            }, // Selecionar apenas campos leves
             skip,
             take: pageSize,
             orderBy: { id: 'desc' } // Ordenação mais comum
@@ -1176,6 +1188,10 @@ export class MaintenanceRequestsService {
           return {
             id: mr.id,
             description: mr.description,
+            requestedAt: mr.requestedAt,
+            protocolNumber: mr.protocolNumber,
+            completedAt: mr.completedAt,
+            sipacUserLoginRequest: mr.sipacUserLoginRequest,
             hasEffectiveDeficit,
             hasPotentialDeficit,
             deficitDetails:
@@ -1232,7 +1248,20 @@ export class MaintenanceRequestsService {
       // PASSO 1: Obter todos os dados básicos das requisições
       const maintenanceRequests = await this.prisma.maintenanceRequest.findMany(
         {
-          select: { id: true, description: true }, // Selecionar apenas campos leves
+          select: {
+            id: true,
+            description: true,
+            protocolNumber: true,
+            sipacUserLoginRequest: true,
+            completedAt: true,
+            requestedAt: true,
+            materialWithdrawals: {
+              select: { processedByUser: { select: { login: true } } }
+            },
+            materialPickingOrders: {
+              select: { requestedByUser: { select: { login: true } } }
+            }
+          }, // Selecionar apenas campos leves
           where: whereArgs,
           orderBy: { id: 'desc' } // Ordenação mais comum
         }
@@ -1435,9 +1464,26 @@ export class MaintenanceRequestsService {
             }
           }
 
+          //responsaveis são os que fizeram reservas
+          let loginsResponsibles = mr.materialPickingOrders.map(
+            (order) => order.requestedByUser.login
+          );
+
+          //caso não tenha reservas, responsáveis é quem efetivamente processou a retirada
+          if (loginsResponsibles.length === 0) {
+            loginsResponsibles = mr.materialWithdrawals.map(
+              (withdrawal) => withdrawal.processedByUser.login
+            );
+          }
+
           return {
             id: mr.id,
             description: mr.description,
+            protocolNumber: mr.protocolNumber,
+            sipacUserLoginRequest: mr.sipacUserLoginRequest,
+            loginsResponsibles: loginsResponsibles,
+            completedAt: mr.completedAt,
+            requestedAt: mr.requestedAt,
             hasEffectiveDeficit,
             hasPotentialDeficit,
             deficitDetails:
@@ -1445,7 +1491,12 @@ export class MaintenanceRequestsService {
           };
         });
 
-      return resultData;
+      // return resultData;
+      // PASSO 6: Filtrar apenas requisicoes com deficit
+
+      return resultData.filter(
+        (mr) => mr.hasEffectiveDeficit || mr.hasPotentialDeficit
+      );
     } catch (error) {
       handlePrismaError(error, this.logger, 'MaintenanceRequestsService', {
         operation: 'getAllMaintenanceRequestsDeficit'

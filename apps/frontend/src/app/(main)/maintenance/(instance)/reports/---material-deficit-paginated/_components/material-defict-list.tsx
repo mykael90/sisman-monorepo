@@ -19,6 +19,7 @@ import {
 import { SectionListHeaderSmall } from '../../../../../../../components/section-list-header-small';
 import { TableTanstackFaceted } from '../../../../../../../components/table-tanstack/table-tanstack-faceted';
 import { listMaintenanceRequestDeficitPaginated } from '../../../../request/maintenance-request-actions';
+import Loading from '../../../../../users-data-client/loading';
 
 const queryClient = new QueryClient();
 
@@ -78,22 +79,26 @@ export function MaterialDeficitList() {
         //   Icon: FilePlus
         // }}
       />
-
-      <TableTanstackFaceted
-        data={listMaintenanceRequestDeficit?.data || defaultData}
-        columns={materialdeficitColumns(columnActions)}
-        pagination={pagination}
-        setPagination={setPagination}
-        rowCount={listMaintenanceRequestDeficit?.meta.total}
-        setSorting={setSorting}
-        sorting={sorting}
-        globalFilterFn='includesString'
-        globalFilter={globalFilterValue}
-        setGlobalFilter={setGlobalFilterValue}
-        manualPagination={true}
-        autoResetPageIndex={false}
-        debugTable={true}
-      />
+      {/* AQUI ESTÁ A MUDANÇA */}
+      {isLoading ? (
+        <Loading /> // Ou qualquer outro indicador de carregamento
+      ) : (
+        <TableTanstackFaceted
+          data={listMaintenanceRequestDeficit?.data || defaultData}
+          columns={materialdeficitColumns(columnActions)}
+          pagination={pagination}
+          setPagination={setPagination}
+          rowCount={listMaintenanceRequestDeficit?.meta.total}
+          setSorting={setSorting}
+          sorting={sorting}
+          globalFilterFn='includesString'
+          globalFilter={globalFilterValue}
+          setGlobalFilter={setGlobalFilterValue}
+          manualPagination={true}
+          autoResetPageIndex={false}
+          debugTable={true}
+        />
+      )}
     </div>
   );
 }

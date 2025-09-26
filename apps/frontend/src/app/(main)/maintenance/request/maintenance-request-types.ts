@@ -75,18 +75,23 @@ export interface IItemMaintenanceRequestBalance {
 export interface IMaintenanceRequestDeficitStatus {
   id: number;
   description: string;
+  protocolNumber: string;
+  sipacUserLoginRequest: string;
+  loginsResponsibles?: string[];
+  completedAt: Date;
+  requestedAt: Date;
   hasEffectiveDeficit: boolean;
   hasPotentialDeficit: boolean;
   deficitDetails?: Array<{
     globalMaterialId: string;
     name: string;
     unitOfMeasure: string;
-    quantityRequestedSum: string;
-    quantityReceivedSum: string;
-    quantityWithdrawnSum: string;
-    effectiveBalance: string;
-    potentialBalance: string;
-    unitPrice: string;
+    quantityRequestedSum: Prisma.Decimal;
+    quantityReceivedSum: Prisma.Decimal;
+    quantityWithdrawnSum: Prisma.Decimal;
+    effectiveBalance: Prisma.Decimal;
+    potentialBalance: Prisma.Decimal;
+    unitPrice: Prisma.Decimal;
   }>;
 }
 

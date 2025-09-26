@@ -1,11 +1,30 @@
 import { ColumnDef, createColumnHelper, Row } from '@tanstack/react-table';
 import { IMaintenanceRequestDeficitStatus } from '@/app/(main)/maintenance/request/maintenance-request-types';
-import { StatusBadge } from '@/components/ui/status-badge'; // Assumindo que este componente existe ou será criado
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { Button } from '../../../../../../../components/ui/button';
 import { Eye } from 'lucide-react';
+import { get } from 'http';
 
 const columnHelper = createColumnHelper<IMaintenanceRequestDeficitStatus>();
+
+export const defaultColumn: Partial<
+  ColumnDef<IMaintenanceRequestDeficitStatus>
+> = {
+  // Largura padrão
+  // size: 150,
+  enableResizing: true,
+  // Filtro desligado por padrão
+  enableColumnFilter: false,
+  filterFn: 'arrIncludesSome',
+  // Renderizador padrão da célula (texto simples)
+  cell: ({ getValue }) => {
+    const value = getValue();
+    if (value === null || value === undefined || value === '') {
+      return <span className='text-muted-foreground'>N/A</span>;
+    }
+    return <div className='whitespace-normal'>{String(value)}</div>;
+  }
+};
 
 // Define the actions type more specifically if possible, or keep as is
 // Using Row<UserWithRoles1> is often better than RowData
@@ -35,15 +54,51 @@ export const createActions = (
   }
 });
 
+interface StatusBadgeProps {
+  status: string;
+}
+
+function StatusBadge({ status }: StatusBadgeProps) {
+  const getStatusClasses = (status: string) => {
+    switch (status) {
+      case 'Ativo':
+      case 'Sim':
+        return 'bg-red-100 text-red-800';
+      case 'Inativo':
+      case 'Não':
+        return 'bg-green-100 text-green-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  return (
+    <span
+      className={`rounded-full px-2 py-1 text-xs font-medium ${getStatusClasses(
+        status
+      )}`}
+    >
+      {status}
+    </span>
+  );
+}
+
 export const materialdeficitColumns = (
   configuredActions: ActionHandlers<IMaintenanceRequestDeficitStatus>
 ): ColumnDef<IMaintenanceRequestDeficitStatus, any>[] => [
-  columnHelper.accessor('id', {
-    header: 'ID Requisição',
-    cell: (props) => props.getValue(),
-    enableSorting: true,
-    enableHiding: false
+  // columnHelper.accessor('id', {
+  //   header: 'ID Requisição',
+  //   cell: (props) => props.getValue(),
+  //   enableSorting: true,
+  //   enableHiding: false
+  // }),
+  columnHelper.accessor('protocolNumber', {
+    header: 'RMan',
+    size: 40,
+    enableResizing: false,
+    cell: (props) => props.getValue()
   }),
+
   columnHelper.accessor('description', {
     header: 'Descrição',
     size: 400,
@@ -54,20 +109,41 @@ export const materialdeficitColumns = (
     enableSorting: true,
     enableHiding: false
   }),
-  columnHelper.accessor('hasEffectiveDeficit', {
+
+  columnHelper.accessor('sipacUserLoginRequest', {
+    header: 'Usuário',
+    size: 40,
+    enableResizing: false,
+    enableColumnFilter: true,
+    cell: (props) => props.getValue()
+  }),
+  columnHelper.accessor(
+    (row) =>
+      row.loginsResponsibles?.length ? row.loginsResponsibles[0] : 'N/A',
+    {
+      header: 'Responsável',
+      size: 40,
+      enableResizing: false,
+      enableColumnFilter: true,
+      cell: (props) => props.getValue()
+    }
+  ),
+  columnHelper.accessor((row) => (row.hasEffectiveDeficit ? 'Sim' : 'Não'), {
     header: 'Déficit Efetivo',
-    cell: (props) => (
-      <StatusBadge status={`${props.getValue() ? 'Sim' : 'Não'}`} />
-    ),
+    size: 70,
+    enableResizing: false,
+    enableColumnFilter: true,
+    cell: (props) => <StatusBadge status={props.getValue()}></StatusBadge>,
     meta: {
       filterVariant: 'select'
     }
   }),
-  columnHelper.accessor('hasPotentialDeficit', {
+  columnHelper.accessor((row) => (row.hasPotentialDeficit ? 'Sim' : 'Não'), {
     header: 'Déficit Potencial',
-    cell: (props) => (
-      <StatusBadge status={`${props.getValue() ? 'Sim' : 'Não'}`} />
-    ),
+    size: 70,
+    enableResizing: false,
+    enableColumnFilter: true,
+    cell: (props) => <StatusBadge status={props.getValue()}></StatusBadge>,
     meta: {
       filterVariant: 'select'
     }
@@ -75,23 +151,23 @@ export const materialdeficitColumns = (
   // Coluna para exibir detalhes do déficit, se houver.
   // Esta coluna pode ser expandida para mostrar os 'deficitDetails'.
   // A implementação de um componente de expansão seria feita em outro local.
-  columnHelper.display({
-    id: 'deficitDetails',
-    header: 'Detalhes do Déficit',
-    cell: ({ row }) => {
-      if (
-        row.original.deficitDetails &&
-        row.original.deficitDetails.length > 0
-      ) {
-        return (
-          <span className='cursor-pointer text-blue-600'>
-            Ver Detalhes ({row.original.deficitDetails.length})
-          </span>
-        );
-      }
-      return 'Nenhum déficit';
-    }
-  }),
+  // columnHelper.display({
+  //   id: 'deficitDetails',
+  //   header: 'Detalhes do Déficit',
+  //   cell: ({ row }) => {
+  //     if (
+  //       row.original.deficitDetails &&
+  //       row.original.deficitDetails.length > 0
+  //     ) {
+  //       return (
+  //         <span className='cursor-pointer text-blue-600'>
+  //           Ver Detalhes ({row.original.deficitDetails.length})
+  //         </span>
+  //       );
+  //     }
+  //     return 'Nenhum déficit';
+  //   }
+  // }),
   columnHelper.display({
     id: 'actions',
     header: 'Ações',

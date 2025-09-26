@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import {
   Popover,
   PopoverContent,
-  PopoverTrigger,
+  PopoverTrigger
 } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
 import { Label } from '@/components/ui/label';
@@ -24,7 +24,7 @@ interface DateRangeFilterProps extends React.HTMLAttributes<HTMLDivElement> {
 export function DateRangeFilter({
   className,
   date,
-  setDate,
+  setDate
 }: DateRangeFilterProps) {
   const [startDateInput, setStartDateInput] = React.useState<string>('');
   const [endDateInput, setEndDateInput] = React.useState<string>('');
@@ -66,10 +66,7 @@ export function DateRangeFilter({
     setDate(finalDate);
   };
 
-  const parseAndSetDate = (
-    dateString: string,
-    field: 'from' | 'to'
-  ) => {
+  const parseAndSetDate = (dateString: string, field: 'from' | 'to') => {
     try {
       const parsedDate = parse(dateString, 'dd/MM/yyyy', new Date());
       if (!isNaN(parsedDate.getTime())) {
@@ -84,14 +81,14 @@ export function DateRangeFilter({
 
   return (
     <div className={cn('grid grid-cols-1 gap-4 md:grid-cols-2', className)}>
-      <div className="grid gap-2">
-        <Label htmlFor="startDate">Data inicial da consulta</Label>
+      <div className='grid gap-2'>
+        <Label htmlFor='startDate'>Data inicial da consulta</Label>
         <Popover open={isStartOpen} onOpenChange={setIsStartOpen}>
           <PopoverTrigger asChild>
-            <div className="relative">
+            <div className='relative'>
               <Input
-                id="startDate"
-                placeholder="Data de início"
+                id='startDate'
+                placeholder='Data de início'
                 value={startDateInput}
                 onChange={(e) => setStartDateInput(e.target.value)}
                 onBlur={(e) => parseAndSetDate(e.target.value, 'from')}
@@ -100,12 +97,12 @@ export function DateRangeFilter({
                   !date?.from && 'text-muted-foreground'
                 )}
               />
-              <CalendarIcon className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <CalendarIcon className='text-muted-foreground absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2' />
             </div>
           </PopoverTrigger>
-          <PopoverContent className="w-auto p-0" align="start">
+          <PopoverContent className='w-auto p-0' align='start'>
             <Calendar
-              mode="single"
+              mode='single'
               selected={date?.from}
               onSelect={(d) => {
                 handleDateChange({ from: d });
@@ -118,14 +115,14 @@ export function DateRangeFilter({
           </PopoverContent>
         </Popover>
       </div>
-      <div className="grid gap-2">
-        <Label htmlFor="endDate">Data final da consulta</Label>
+      <div className='grid gap-2'>
+        <Label htmlFor='endDate'>Data final da consulta</Label>
         <Popover open={isEndOpen} onOpenChange={setIsEndOpen}>
           <PopoverTrigger asChild>
-            <div className="relative">
+            <div className='relative'>
               <Input
-                id="endDate"
-                placeholder="Data de fim"
+                id='endDate'
+                placeholder='Data de fim'
                 value={endDateInput}
                 onChange={(e) => setEndDateInput(e.target.value)}
                 onBlur={(e) => parseAndSetDate(e.target.value, 'to')}
@@ -134,12 +131,12 @@ export function DateRangeFilter({
                   !date?.to && 'text-muted-foreground'
                 )}
               />
-              <CalendarIcon className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <CalendarIcon className='text-muted-foreground absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2' />
             </div>
           </PopoverTrigger>
-          <PopoverContent className="w-auto p-0" align="start">
+          <PopoverContent className='w-auto p-0' align='start'>
             <Calendar
-              mode="single"
+              mode='single'
               selected={date?.to}
               onSelect={(d) => {
                 handleDateChange({ to: d });
