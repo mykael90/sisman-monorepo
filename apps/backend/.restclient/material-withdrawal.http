@@ -36,6 +36,9 @@ Authorization: Bearer {{token}}
     "processedByUser": {
         "id": 1
     },
+    "authorizedByUser": {
+        "id": 1
+    },
     "collectedByWorker": {
     "id": 1
     },

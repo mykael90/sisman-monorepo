@@ -26,7 +26,7 @@ import { ApiEndpointSwagger } from '../../shared/decorators/swagger/api-endpoint
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Material Request') // Agrupa os endpoints na UI do Swagger
-@Roles(Role.Adm) // Assumindo que apenas Adm pode gerenciar, ajuste conforme necessário
+// @Roles(Role.Adm) // Assumindo que apenas Adm pode gerenciar, ajuste conforme necessário
 @UseGuards(AuthGuard, RoleGuard)
 @Controller('material-request')
 export class MaterialRequestsController {

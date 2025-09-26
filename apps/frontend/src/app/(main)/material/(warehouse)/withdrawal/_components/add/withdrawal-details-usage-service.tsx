@@ -132,6 +132,24 @@ export function WithdrawalDetailUsageService({
             />
           </div> */}
           {/* items-start, alinhar por cima devido aos informativos de erro que podem aparecer em função do valor inserido no campo */}
+          <formWithdrawal.Field
+            name='authorizedByUserId'
+            children={(field) => (
+              <FormDropdown
+                className=''
+                key={field.name} // The key is still good practice
+                field={field}
+                label={`Autorizado por`}
+                placeholder='Selecione um servidor'
+                options={listUsers.map((user) => ({
+                  value: user.id,
+                  label: user.name
+                }))}
+                onValueChange={(value) => field.handleChange(Number(value))}
+              />
+            )}
+          />
+
           <div className='flex flex-col gap-4 md:flex-row md:items-start'>
             <formWithdrawal.Field
               name='collectorType'

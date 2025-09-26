@@ -413,6 +413,7 @@ export class MaterialWithdrawalsService {
     const {
       warehouse,
       processedByUser,
+      authorizedByUser,
       collectedByUser,
       collectedByWorker,
       maintenanceRequest,
@@ -431,6 +432,8 @@ export class MaterialWithdrawalsService {
       updateInput.warehouse = { connect: { id: warehouse.id } };
     if (processedByUser?.id)
       updateInput.processedByUser = { connect: { id: processedByUser.id } };
+    if (authorizedByUser?.id)
+      updateInput.authorizedByUser = { connect: { id: authorizedByUser.id } };
     if (collectedByUser?.id)
       updateInput.collectedByUser = { connect: { id: collectedByUser.id } };
     if (collectedByWorker?.id)

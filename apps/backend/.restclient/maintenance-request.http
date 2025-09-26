@@ -29,13 +29,19 @@ Authorization: Bearer {{token}}
 ### GET deficit-status-paginated
 GET {{urlLocal}}/deficit-status-paginated
 ?pageIndex=1
-&pageSize=10
+&pageSize=100
 Authorization: Bearer {{token}}
 
 ### GET deficit-status
 GET {{urlLocal}}/deficit-status/maintenance-instance/1
 ?startDate=2025-01-01T00:00:00Z
 &endDate=2025-01-31T23:59:59Z
+Authorization: Bearer {{token}}
+
+### GET deficit-status
+GET {{urlLocal}}/deficit-status/maintenance-instance/1
+# ?startDate=2025-01-01T00:00:00Z
+# &endDate=2025-01-31T23:59:59Z
 Authorization: Bearer {{token}}
 
 ### POST

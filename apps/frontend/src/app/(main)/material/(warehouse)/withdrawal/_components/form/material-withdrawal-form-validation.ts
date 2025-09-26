@@ -31,6 +31,7 @@ const materialWithdrawalFormBase = z.object({
   collectorType: z.string({
     required_error: 'Coletado por é obrigatório.'
   }),
+  authorizedByUserId: z.coerce.number().optional().nullable(),
   collectedByUserId: z.coerce.number().optional().nullable(),
   collectedByWorkerId: z.coerce.number().optional().nullable(),
   collectedByOther: z.string().optional().nullable(),
@@ -56,6 +57,18 @@ const materialWithdrawalFormSchemaAdd = materialWithdrawalFormBase
     {
       message: 'É necessário associar uma requisição de manutenção',
       path: ['maintenanceRequestId']
+    }
+  )
+  .refine(
+    (data) =>
+      (data.movementTypeCode !==
+        materialOperationOutDisplayMap.OUT_SERVICE_USAGE &&
+        data.movementTypeCode !==
+          materialOperationOutDisplayMap.OUT_EMERGENCY_USAGE) ||
+      !!data.authorizedByUserId,
+    {
+      message: 'É necessário informar quem autorizou a retirada',
+      path: ['authorizedByUserId']
     }
   )
   .refine(

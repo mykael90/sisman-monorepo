@@ -20,7 +20,7 @@ import { Role } from '../../shared/enums/role.enum';
 import { AuthGuard } from '../../shared/auth/guards/auth.guard';
 import { RoleGuard } from '../../shared/auth/guards/role.guard';
 
-@Roles(Role.Adm) // Assumindo que apenas Adm pode gerenciar, ajuste conforme necessário
+// @Roles(Role.Adm) // Assumindo que apenas Adm pode gerenciar, ajuste conforme necessário
 @UseGuards(AuthGuard, RoleGuard)
 @Controller('maintenance-request')
 export class MaintenanceRequestsController {

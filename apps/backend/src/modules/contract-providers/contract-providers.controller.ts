@@ -27,7 +27,7 @@ import {
 } from './dto/contract-provider.dto';
 import { ContractProvider } from '@sisman/prisma';
 
-@Roles(Role.Adm)
+// @Roles(Role.Adm)
 @UseGuards(AuthGuard, RoleGuard)
 @Controller('contract-providers')
 @ApiTags('contract-providers')

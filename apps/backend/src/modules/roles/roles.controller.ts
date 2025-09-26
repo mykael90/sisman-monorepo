@@ -20,7 +20,7 @@ import { RoleGuard } from '../../shared/auth/guards/role.guard';
 import { ApiTags } from '@nestjs/swagger';
 import { ApiEndpointSwagger } from '../../shared/decorators/swagger/api-endpoint.decorator';
 @ApiTags('Roles') // Agrupa os endpoints na UI do Swagger
-@Roles(Role.Adm)
+// @Roles(Role.Adm)
 @UseGuards(AuthGuard, RoleGuard)
 @Controller('role')
 export class RolesController {

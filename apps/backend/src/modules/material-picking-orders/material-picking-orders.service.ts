@@ -204,10 +204,10 @@ export class MaterialPickingOrdersService {
 
     const createWithdrawalDto: CreateMaterialWithdrawalWithRelationsDto = {
       warehouse: data.warehouse,
-      processedByUser: data.proccessedByUser, // Assumindo que o solicitante da separação é quem processa a retirada
-      authorizedByUser: data.requestedByUser,
-      collectedByUser: data.beCollectedByUser,
-      collectedByWorker: data.beCollectedByWorker,
+      processedByUser: { id: data.proccessedByUserId } as any, // Assumindo que o solicitante da separação é quem processa a retirada
+      authorizedByUser: { id: data.requestedByUserId } as any,
+      collectedByUser: { id: data.beCollectedByUserId } as any,
+      collectedByWorker: { id: data.beCollectedByWorkerId } as any,
       withdrawalDate: new Date(),
       maintenanceRequest: data.maintenanceRequest,
       materialRequest: data.materialRequest,

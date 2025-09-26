@@ -20,7 +20,7 @@ import {
 } from './dto/warehouse.dto';
 import { WarehousesService } from './warehouses.service';
 
-@Roles(Role.Adm) // Assumindo que apenas Adm pode gerenciar, ajuste conforme necessário
+// // @Roles(Role.Adm) // Assumindo que apenas Adm pode gerenciar, ajuste conforme necessário
 @UseGuards(AuthGuard, RoleGuard)
 @Controller('warehouse')
 export class WarehousesController {

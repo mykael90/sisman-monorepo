@@ -195,7 +195,7 @@ export class MaterialWithdrawalsController {
 
   @Post('/adm/verify-withdrawals-integrity')
   @UseGuards(AuthGuard)
-  @Roles(Role.Adm)
+  // @Roles(Role.Adm)
   @ApiEndpointSwagger({
     summary:
       'Verifica e corrige a integridade dos movimentos de estoque de retiradas.',

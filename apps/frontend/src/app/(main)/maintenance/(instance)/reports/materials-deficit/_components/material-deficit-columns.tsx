@@ -129,6 +129,7 @@ export const materialdeficitColumns = (
     }
   ),
   columnHelper.accessor((row) => (row.hasEffectiveDeficit ? 'Sim' : 'Não'), {
+    id: 'hasEffectiveDeficit',
     header: 'Déficit Efetivo',
     size: 70,
     enableResizing: false,
@@ -139,6 +140,7 @@ export const materialdeficitColumns = (
     }
   }),
   columnHelper.accessor((row) => (row.hasPotentialDeficit ? 'Sim' : 'Não'), {
+    id: 'hasPotentialDeficit',
     header: 'Déficit Potencial',
     size: 70,
     enableResizing: false,

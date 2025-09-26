@@ -51,7 +51,7 @@ export class AuthController {
     return this.authService.loginAuthorizationToken(body, request);
   }
 
-  @Roles(Role.Adm)
+  // @Roles(Role.Adm)
   @UseGuards(AuthGuard, RoleGuard)
   @Post('register')
   @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))

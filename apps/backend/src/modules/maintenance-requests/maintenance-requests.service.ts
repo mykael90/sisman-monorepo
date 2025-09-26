@@ -1235,6 +1235,9 @@ export class MaintenanceRequestsService {
         currentMaintenanceInstanceId: maintenanceInstanceId
       };
 
+      //se a requisicao de manutencao esta com a flag usar sobras, não precisa exibir. não é considerado defict.
+      whereArgs.useResidueMaterial = false;
+
       if (queryParams && !!Object.keys(queryParams).length) {
         const { startDate, endDate } = queryParams;
         if (startDate && endDate) {
@@ -1256,10 +1259,7 @@ export class MaintenanceRequestsService {
             completedAt: true,
             requestedAt: true,
             materialWithdrawals: {
-              select: { processedByUser: { select: { login: true } } }
-            },
-            materialPickingOrders: {
-              select: { requestedByUser: { select: { login: true } } }
+              select: { authorizedByUser: { select: { login: true } } }
             }
           }, // Selecionar apenas campos leves
           where: whereArgs,
@@ -1464,17 +1464,10 @@ export class MaintenanceRequestsService {
             }
           }
 
-          //responsaveis são os que fizeram reservas
-          let loginsResponsibles = mr.materialPickingOrders.map(
-            (order) => order.requestedByUser.login
+          //responsaveis são os que fizeram autorizaram a retirada
+          let loginsResponsibles = mr.materialWithdrawals.map(
+            (order) => order.authorizedByUser.login
           );
-
-          //caso não tenha reservas, responsáveis é quem efetivamente processou a retirada
-          if (loginsResponsibles.length === 0) {
-            loginsResponsibles = mr.materialWithdrawals.map(
-              (withdrawal) => withdrawal.processedByUser.login
-            );
-          }
 
           return {
             id: mr.id,
@@ -1491,12 +1484,14 @@ export class MaintenanceRequestsService {
           };
         });
 
-      // return resultData;
+      return resultData;
+
+      // Não é necessário. Todo o trabalho pesado ja foi feito no volume total de dados, deixe pra filtar no lado do cliente.
       // PASSO 6: Filtrar apenas requisicoes com deficit
 
-      return resultData.filter(
-        (mr) => mr.hasEffectiveDeficit || mr.hasPotentialDeficit
-      );
+      // return resultData.filter(
+      //   (mr) => mr.hasEffectiveDeficit || mr.hasPotentialDeficit
+      // );
     } catch (error) {
       handlePrismaError(error, this.logger, 'MaintenanceRequestsService', {
         operation: 'getAllMaintenanceRequestsDeficit'

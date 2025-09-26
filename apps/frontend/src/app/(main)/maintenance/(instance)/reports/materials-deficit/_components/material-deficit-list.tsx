@@ -26,17 +26,19 @@ import { subDays } from 'date-fns';
 import { DateRangeFilter } from '@/components/filters/date-range-filter';
 import { useSession } from 'next-auth/react';
 import Loading from '../../../../../users-data-client/loading';
+import { toast } from 'sonner';
 
-export function MaterialDeficitList() {
+export function MateriallDeficitList() {
   const { data: session, status, update } = useSession();
   //TODO: pegar do contexto auth a instancia de manutencao
   const router = useRouter();
 
   const maintenanceInstanceId = session?.user.maintenanceInstanceId;
 
-  if (!maintenanceInstanceId) {
+  if (status !== 'loading' && !maintenanceInstanceId) {
+    toast.error('Precisa está vinculado a uma instância de manutenção');
     console.log(`Precisa está vinculado a uma instância de manutenção`);
-    router.push('/auth/login');
+    router.push('/');
     return null;
   }
 
@@ -47,7 +49,12 @@ export function MaterialDeficitList() {
 
   const [sorting, setSorting] = useState<SortingState>([]);
 
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([
+    {
+      id: 'hasEffectiveDeficit',
+      value: ['Sim']
+    }
+  ]);
 
   // --- Estado dos Filtros Movido para Cá ---
   const [globalFilterValue, setGlobalFilterValue] = useState('');

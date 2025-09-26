@@ -15,7 +15,7 @@ import { RoleGuard } from '../../shared/auth/guards/role.guard';
 import { CreateStorageDto, UpdateStorageDto } from './dto/storage.dto';
 import { StoragesService } from './storages.service';
 
-@Roles(Role.Adm) // Assumindo que apenas Adm pode gerenciar, ajuste conforme necessário
+// @Roles(Role.Adm) // Assumindo que apenas Adm pode gerenciar, ajuste conforme necessário
 @UseGuards(AuthGuard, RoleGuard)
 @Controller('storage')
 export class StoragesController {

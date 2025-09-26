@@ -25,7 +25,7 @@ import {
   WorkerWithRelationsResponseDto
 } from './dto/worker.dto';
 
-@Roles(Role.Adm)
+// @Roles(Role.Adm)
 @UseGuards(AuthGuard, RoleGuard)
 @Controller('worker')
 @ApiTags('worker')

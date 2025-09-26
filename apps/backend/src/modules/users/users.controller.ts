@@ -25,7 +25,7 @@ import {
   UserWithRelationsResponseDto
 } from './dto/user.dto';
 
-@Roles(Role.Adm)
+// // @Roles(Role.Adm)
 @UseGuards(AuthGuard, RoleGuard)
 // o prefixo /users é gerenciado pelo RouterModule
 @Controller('user')
