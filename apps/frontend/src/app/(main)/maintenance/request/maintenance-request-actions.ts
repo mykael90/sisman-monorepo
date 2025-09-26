@@ -294,7 +294,7 @@ export async function listMaintenanceRequestDeficitByMaintenanceInstance(
 
   try {
     const data = await fetchApiSisman(
-      `${API_RELATIVE_PATH}/warehouse/deficit-status/${maintenanceInstanceId}`,
+      `${API_RELATIVE_PATH}/deficit-status/maintenance-instance/${maintenanceInstanceId}`,
       accessTokenSisman,
       {
         // cache: 'force-cache'
