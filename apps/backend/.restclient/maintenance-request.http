@@ -28,8 +28,8 @@ Authorization: Bearer {{token}}
 
 ### GET deficit-status
 GET {{urlLocal}}/deficit-status
-?page=15
-&limit=100
+?pageIndex=15
+&pageSize=100
 Authorization: Bearer {{token}}
 
 ### POST

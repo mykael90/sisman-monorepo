@@ -40,8 +40,8 @@ export class MaintenanceRequestsController {
 
   @Get('/deficit-status')
   async getDeficitStatus(
-    @Query('page') pageIndex: string = '0',
-    @Query('limit') pageSize: string = '10'
+    @Query('pageIndex') pageIndex: string = '0',
+    @Query('pageSize') pageSize: string = '10'
   ) {
     return this.maintenanceRequestsService.getPaginatedMaintenanceRequestsDeficit(
       parseInt(pageIndex, 10),
