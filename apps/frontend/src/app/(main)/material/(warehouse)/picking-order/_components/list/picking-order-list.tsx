@@ -207,6 +207,7 @@ export function PickingOrderListPage() {
           globalFilterFn='includesString'
           globalFilter={globalFilterValue}
           setGlobalFilter={setGlobalFilterValue}
+          autoResetPageIndex={false}
         />
       )}
     </div>

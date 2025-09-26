@@ -10,6 +10,7 @@ import {
 import { handlePrismaError } from '../../shared/utils/prisma-error-handler';
 import { FacilityComplexType, Prisma } from '@sisman/prisma';
 import { InfrastructureBuildingsService } from '../infrastructure-buildings/infrastructure-buildings.service';
+import { Decimal } from '@sisman/prisma/generated/client/runtime/library';
 
 // Interface para o resultado de cada requisição no retorno
 export interface MaintenanceRequestDeficitStatus {
@@ -20,8 +21,13 @@ export interface MaintenanceRequestDeficitStatus {
   deficitDetails?: Array<{
     globalMaterialId: string;
     name: string;
+    unitOfMeasure: string;
+    quantityRequestedSum: Prisma.Decimal;
+    quantityReceivedSum: Prisma.Decimal;
+    quantityWithdrawnSum: Prisma.Decimal;
     effectiveBalance: Prisma.Decimal;
     potentialBalance: Prisma.Decimal;
+    unitPrice: Prisma.Decimal;
   }>;
 }
 
@@ -531,7 +537,7 @@ export class MaintenanceRequestsService {
           quantityWithdrawnSum: quantityWithdrawnSum,
           effectiveBalance: effectiveBalance,
           potentialBalance: potentialBalance,
-          unitPrice: item.updatedCost
+          unitPrice: item.updatedCost ?? item.material.unitPrice
         };
       });
 
@@ -937,16 +943,16 @@ export class MaintenanceRequestsService {
    * Retorna uma lista paginada de Requisições de Manutenção,
    * indicando se cada uma possui déficit efetivo ou potencial de materiais.
    *
-   * @param page O número da página (padrão: 1).
-   * @param limit O número de itens por página (padrão: 10).
+   * @param pageIndex O número da página (padrão: 0).
+   * @param pageSize O número de itens por página (padrão: 10).
    * @returns Uma lista paginada de MaintenanceRequestDeficitStatus.
    */
   async getPaginatedMaintenanceRequestsDeficit(
-    page = 1,
-    limit = 10
+    pageIndex = 0,
+    pageSize = 10
   ): Promise<PaginatedMaintenanceRequestDeficit> {
     try {
-      const skip = (page - 1) * limit;
+      const skip = pageIndex * pageSize;
 
       // PASSO 1: Obter o total de requisições e os dados básicos para a página atual
       const [totalMaintenanceRequests, maintenanceRequestsOnPage] =
@@ -955,7 +961,7 @@ export class MaintenanceRequestsService {
           this.prisma.maintenanceRequest.findMany({
             select: { id: true, description: true }, // Selecionar apenas campos leves
             skip,
-            take: limit,
+            take: pageSize,
             orderBy: { id: 'desc' } // Ordenação mais comum
           })
         ]);
@@ -965,9 +971,9 @@ export class MaintenanceRequestsService {
           data: [],
           meta: {
             total: totalMaintenanceRequests,
-            page,
-            limit,
-            lastPage: Math.ceil(totalMaintenanceRequests / limit)
+            page: pageIndex,
+            limit: pageSize,
+            lastPage: Math.ceil(totalMaintenanceRequests / pageSize) - 1
           }
         };
       }
@@ -993,7 +999,11 @@ export class MaintenanceRequestsService {
               quantityReceived: true,
               materialReceipt: {
                 select: {
-                  materialRequest: { select: { maintenanceRequestId: true } }
+                  materialRequest: {
+                    select: {
+                      maintenanceRequestId: true
+                    }
+                  }
                 }
               }
             }
@@ -1038,11 +1048,11 @@ export class MaintenanceRequestsService {
 
       const materialInfo = await this.prisma.materialGlobalCatalog.findMany({
         where: { id: { in: Array.from(allMaterialIds) } },
-        select: { id: true, name: true }
+        select: { id: true, name: true, unitOfMeasure: true, unitPrice: true }
       });
 
-      const materialNameMap = new Map<string, string>();
-      materialInfo.forEach((mat) => materialNameMap.set(mat.id, mat.name));
+      const materialInfoMap = new Map<string, (typeof materialInfo)[0]>();
+      materialInfo.forEach((mat) => materialInfoMap.set(mat.id, mat));
 
       // PASSO 4: Estruturar os dados e calcular os balanços em memória
       const balanceByMaintenanceRequest = new Map<
@@ -1116,6 +1126,7 @@ export class MaintenanceRequestsService {
         maintenanceRequestsOnPage.map((mr) => {
           let hasEffectiveDeficit = false;
           let hasPotentialDeficit = false;
+
           const deficitDetails: MaintenanceRequestDeficitStatus['deficitDetails'] =
             [];
 
@@ -1146,10 +1157,17 @@ export class MaintenanceRequestsService {
                 deficitDetails.push({
                   globalMaterialId,
                   name:
-                    materialNameMap.get(globalMaterialId) ||
+                    materialInfoMap.get(globalMaterialId).name ||
                     'Material Desconhecido',
+                  unitOfMeasure:
+                    materialInfoMap.get(globalMaterialId).unitOfMeasure ||
+                    'Unidade Desconhecida',
+                  quantityRequestedSum: balances.requested,
+                  quantityReceivedSum: balances.received,
+                  quantityWithdrawnSum: balances.withdrawn,
                   effectiveBalance,
-                  potentialBalance
+                  potentialBalance,
+                  unitPrice: materialInfoMap.get(globalMaterialId).unitPrice
                 });
               }
             }
@@ -1169,15 +1187,15 @@ export class MaintenanceRequestsService {
         data: resultData,
         meta: {
           total: totalMaintenanceRequests,
-          page,
-          limit,
-          lastPage: Math.ceil(totalMaintenanceRequests / limit)
+          page: pageIndex,
+          limit: pageSize,
+          lastPage: Math.ceil(totalMaintenanceRequests / pageSize) - 1
         }
       };
     } catch (error) {
       handlePrismaError(error, this.logger, 'MaintenanceRequestsService', {
         operation: 'getPaginatedMaintenanceRequestsDeficit',
-        params: { page, limit } // Passando parâmetros de forma explícita
+        params: { page: pageIndex, limit: pageSize } // Passando parâmetros de forma explícita
       });
       throw error; // Re-lança o erro para ser tratado pelo error handler global do NestJS
     }

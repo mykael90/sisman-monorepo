@@ -28,7 +28,7 @@ Authorization: Bearer {{token}}
 
 ### GET deficit-status
 GET {{urlLocal}}/deficit-status
-?page=1
+?page=15
 &limit=100
 Authorization: Bearer {{token}}
 
