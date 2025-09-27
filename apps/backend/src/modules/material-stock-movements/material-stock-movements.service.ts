@@ -60,6 +60,7 @@ export class MaterialStockMovementsService {
   private async ensureStockRecordExists(
     warehouseId: number,
     materialId: string,
+    updatedCost: Decimal | null = null,
     prisma: TransactionClient // Usamos o tipo genérico aqui
   ): Promise<MaterialWarehouseStock> {
     this.logger.log(
@@ -76,6 +77,7 @@ export class MaterialStockMovementsService {
       create: {
         warehouseId,
         materialId,
+        updatedCost,
         balanceInMinusOut: 0
       }
     });
@@ -288,6 +290,7 @@ export class MaterialStockMovementsService {
     const stockRecord = await this.ensureStockRecordExists(
       warehouse.id,
       globalMaterial.id,
+      restOfData.unitPrice,
       prisma // Usar o cliente Prisma recebido
     );
 
@@ -607,7 +610,8 @@ export class MaterialStockMovementsService {
               id: true,
               name: true,
               description: true,
-              unitOfMeasure: true
+              unitOfMeasure: true,
+              unitPrice: true
             }
           },
           warehouse: true,
@@ -673,6 +677,7 @@ export class MaterialStockMovementsService {
     const globalMaterialInWarehouse = await this.ensureStockRecordExists(
       data.warehouse.id,
       data.globalMaterial.id,
+      data.globalMaterial.unitPrice,
       this.prisma
     );
 
