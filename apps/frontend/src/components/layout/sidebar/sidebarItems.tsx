@@ -62,9 +62,9 @@ export const sidebarItems: SidebarItem[] = [
     label: 'Colaboradores',
     icon: <Users className='h-6 w-6' />,
     children: [
-      { label: 'Todos os Colaboradores', href: '/collaborators/all' },
-      { label: 'Adicionar Colaborador', href: '/collaborators/add' },
-      { label: 'Cargos', href: '/collaborators/roles' }
+      { label: 'Todos os Colaboradores', href: '/worker' },
+      { label: 'Adicionar Colaborador', href: '/worker/add' },
+      { label: 'Cargos', href: '/worker/role' }
     ]
   },
   {
