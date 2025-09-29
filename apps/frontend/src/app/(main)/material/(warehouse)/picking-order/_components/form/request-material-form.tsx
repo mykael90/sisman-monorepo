@@ -24,6 +24,7 @@ import {
 } from '../card-material-link-details';
 import { IPickingOrderFormApi } from '@/hooks/use-picking-order-form';
 import { IMaterialPickingOrderItemAddForm } from '../../material-picking-order-types';
+import Loading from '../../../../../../../components/loading';
 
 export function RequestMaterialForm({
   setMaterialRequestData,
@@ -201,6 +202,8 @@ export function RequestMaterialForm({
       handleSubmit(value.protocolNumber);
     }
   });
+
+  if (isPendingTransition) return <Loading />;
 
   return (
     <form

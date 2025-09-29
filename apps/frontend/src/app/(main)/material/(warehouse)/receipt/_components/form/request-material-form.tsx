@@ -16,7 +16,7 @@ import { IMaterialRequestWithRelations } from '../../../../request/material-requ
 import { schemaZodRequisicoesSipac } from '@/lib/schema-zod-requisicoes-sipac';
 import { handleFetchOneAndPersistRequisicaoMaterialComRequisicaoManutencaoVinculada } from '../../../../../sipac/requisicoes-materiais/requisicoes-materiais-actions';
 import { ISipacRequisicaoMaterialWithRelations } from '../../../../../sipac/requisicoes-materiais/requisicoes-materiais-types';
-
+import Loading from '@/components/loading';
 interface RequestFormValues {
   protocolNumber: string;
   protocols: {
@@ -217,6 +217,8 @@ export function RequestMaterialForm({
       handleSubmit(value.protocolNumber);
     }
   });
+
+  if (isPendingTransition) return <Loading />;
 
   return (
     <form

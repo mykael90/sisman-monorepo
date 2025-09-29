@@ -15,6 +15,7 @@ import { IMaintenanceRequestBalanceWithRelations } from '../../../../../maintena
 import { schemaZodRequisicoesSipac } from '@/lib/schema-zod-requisicoes-sipac';
 import { fetchOneAndPersistSipacRequisicoesManutencao } from '../../../../../sipac/requisicoes-manutencoes/requisicoes-manutencoes-actions';
 import { format } from 'date-fns';
+import Loading from '../../../../../../../components/loading';
 
 export function RequestMaintenanceForm({
   setMaintenanceRequestData,
@@ -94,6 +95,8 @@ export function RequestMaintenanceForm({
       handleSubmit(value.protocolNumber);
     }
   });
+
+  if (isPendingTransition) return <Loading />;
 
   return (
     <form
