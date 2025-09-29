@@ -3,11 +3,10 @@ import { signOut } from 'next-auth/react';
 // ---> Defina a URL de logout do provedor (UFRN) <---
 // É uma boa prática usar uma variável de ambiente pública para isso
 const UFRN_LOGOUT_URL =
-  process.env.NODE_ENV === 'development'
-    ? 'https://autenticacao.info.ufrn.br/authz-server/j_spring_cas_security_logout'
-    : 'https://autenticacao.ufrn.br/authz-server/j_spring_cas_security_logout';
-
-const x = process.env.UFRN_AUTH_BASE_URL;
+  process.env.NEXT_PUBLIC_UFRN_LOGOUT_URL ||
+  (process.env.NODE_ENV === 'production'
+    ? 'https://autenticacao.ufrn.br/authz-server/j_spring_cas_security_logout'
+    : 'https://autenticacao.info.ufrn.br/authz-server/j_spring_cas_security_logout');
 
 // ---> Função para lidar com o logout manual <---
 const handleManualSignOut = async () => {
@@ -30,7 +29,6 @@ const handleManualSignOut = async () => {
   // ------------------------------------------------------------------------------
 
   try {
-    console.log(x, process.env.NODE_ENV, process.env);
     // 1. Faça o logout da sessão NextAuth localmente
     await signOut({ redirect: false });
 
