@@ -166,7 +166,7 @@ export function MaterialPickingOrderForm({
   )) || <FilePlus className='mr-2 h-5 w-5' />;
 
   return (
-    <div className='space-y-6'>
+    <div className='space-y-6 pb-6'>
       {/* Erros do lado do servidor */}
       <ErrorServerForm serverState={serverStatePickingOrder} />
 
