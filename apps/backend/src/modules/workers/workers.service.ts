@@ -118,9 +118,16 @@ export class WorkersService {
         maintenanceInstance: true,
         workerContracts: {
           include: {
-            contract: true,
+            contract: {
+              include: {
+                providers: true
+              }
+            },
             workerSpecialty: true,
             sipacUnitLocation: true
+          },
+          orderBy: {
+            startDate: 'desc'
           }
         }
       }

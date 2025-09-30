@@ -20,7 +20,11 @@ export type IWorkerWithRelations = Prisma.WorkerGetPayload<{
   include: {
     workerContracts: {
       include: {
-        contract: true;
+        contract: {
+          include: {
+            providers: true;
+          };
+        };
         workerSpecialty: true;
         sipacUnitLocation: true;
       };

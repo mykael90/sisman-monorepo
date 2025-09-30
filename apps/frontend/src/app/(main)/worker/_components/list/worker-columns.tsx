@@ -278,6 +278,7 @@ export const SubRowComponent = ({
         <TableHeader>
           <TableRow>
             <TableHead>ID Contrato</TableHead>
+            <TableHead>Empresa</TableHead>
             <TableHead>Especialidade</TableHead>
             <TableHead>Unidade SIPAC</TableHead>
             <TableHead>Data Início</TableHead>
@@ -291,6 +292,9 @@ export const SubRowComponent = ({
             contracts.map((contract, index) => (
               <TableRow key={index}>
                 <TableCell>{contract.id}</TableCell>
+                <TableCell>
+                  {contract.contract?.providers?.nomeFantasia ?? 'N/A'}
+                </TableCell>
                 <TableCell>{contract.workerSpecialty?.name || 'N/A'}</TableCell>
                 <TableCell>
                   {contract.sipacUnitLocation?.nomeUnidade || 'N/A'}
