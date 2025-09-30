@@ -1,7 +1,10 @@
 'use client';
 
 import WorkerForm from '../form/worker-form'; // Changed to default import
-import { WorkerAddForm } from '../form/worker-form-validation';
+import {
+  workerFormSchemaAdd,
+  WorkerFormSchemaAdd
+} from '../form/worker-form-validation';
 import { addWorker } from '../../worker-actions';
 import { useRouter } from 'next/navigation';
 import { IWorker, IWorkerAdd, IWorkerRelatedData } from '../../worker-types';
@@ -19,7 +22,7 @@ export default function WorkerAdd({
 }) {
   const router = useRouter();
 
-  const defaultData: WorkerAddForm = {
+  const defaultData: WorkerFormSchemaAdd = {
     name: '',
     cpf: '',
     email: '',
@@ -64,7 +67,7 @@ export default function WorkerAdd({
         defaultData={defaultData}
         initialServerState={initialServerState}
         formActionProp={addWorker}
-        // formSchema={workerFormSchemaAdd}
+        formSchema={workerFormSchemaAdd}
         SubmitButtonIcon={UserPlus}
         submitButtonText='Criar Colaborador'
         fieldLabels={fieldLabels}

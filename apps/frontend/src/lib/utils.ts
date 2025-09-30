@@ -1,6 +1,7 @@
 import { type ClassValue, clsx } from 'clsx';
 import { differenceInYears, parseISO, parse, isValid, format } from 'date-fns';
 import { twMerge } from 'tailwind-merge';
+import { formatInTimeZone } from 'date-fns-tz';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -100,3 +101,40 @@ export const maskDateInput = (value: string): string => {
 
   return maskedValue;
 };
+
+/**
+ * Converte uma string de data ISO 8601 com fuso horário (ex: "2000-01-09T22:00:00.000-02:00")
+ * para o formato de data brasileiro (dd/MM/yyyy) em UTC.
+ *
+ * @param isoDateString A string de data no formato ISO 8601 da API, que pode ser null ou undefined.
+ * @returns A data formatada como "dd/MM/yyyy" ou a string "indefinido" se o valor for nulo/vazio.
+ */
+export function formatOnlyDateToUTC(
+  isoDateString: string | null | undefined
+): string {
+  // 1. Tratamento de Nulos/Vazios:
+  if (!isoDateString) {
+    return 'indefinido';
+  }
+
+  // 2. parseISO: Converte a string (incluindo o fuso horário) para um objeto Date.
+  const dateMoment = parseISO(isoDateString);
+
+  // *Verificação Adicional (Opcional):*
+  // Para capturar strings inválidas que não são nulas (e parseISO retornaria 'Invalid Date').
+  if (isNaN(dateMoment.getTime())) {
+    console.error(
+      `formatOnlyDateToUTC: String de data inválida fornecida: ${isoDateString}`
+    );
+    return 'indefinido';
+  }
+
+  // 3. formatInTimeZone: Garante que a data seja formatada no fuso horário 'UTC'.
+  const formattedDate = formatInTimeZone(
+    dateMoment,
+    'UTC', // Fuso horário de destino
+    'dd/MM/yyyy' // Formato de saída desejado
+  );
+
+  return formattedDate;
+}

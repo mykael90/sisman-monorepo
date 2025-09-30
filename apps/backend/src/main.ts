@@ -8,6 +8,7 @@ import './shared/utils/bigint-tojson';
 import './shared/utils/date-tojson';
 import { ConfigService } from '@nestjs/config';
 import { PrismaLifecycleManager } from './shared/prisma/prisma.module';
+import { EmptyStringInterceptor } from './shared/interceptors/clean-empty-keys.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -41,6 +42,7 @@ async function bootstrap() {
   app.enableShutdownHooks();
 
   // app.useGlobalInterceptors(new LogInterceptor());
+  app.useGlobalInterceptors(new EmptyStringInterceptor());
 
   // --- Configuração de Módulos Específicos (Swagger) --
   const config = new DocumentBuilder()

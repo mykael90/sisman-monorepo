@@ -23,10 +23,8 @@ import {
   IWorker,
   IWorkerAdd,
   IWorkerEdit,
-  IWorkerRelatedData,
-  WorkerStatus
+  IWorkerRelatedData
 } from '../../worker-types';
-import { WorkerAddSchema, WorkerEditSchema } from './worker-form-validation';
 import { maskDateInput, normalizeDate } from '../../../../../lib/utils';
 
 // Helper type for form data based on mode
@@ -44,6 +42,7 @@ export default function WorkerForm<TMode extends 'add' | 'edit'>({
     message: ''
   },
   fieldLabels,
+  formSchema,
   onCancel,
   onClean,
   submitButtonText,
@@ -61,6 +60,7 @@ export default function WorkerForm<TMode extends 'add' | 'edit'>({
   fieldLabels: {
     [k: string]: string;
   };
+  formSchema?: any;
   onCancel?: () => void;
   onClean?: () => void;
   submitButtonText?: string;
@@ -86,7 +86,7 @@ export default function WorkerForm<TMode extends 'add' | 'edit'>({
       (baseForm) => mergeForm(baseForm, serverState ?? {}),
       [serverState]
     ),
-    // validators: undefined, // Remove global validator
+    validators: formSchema ? { onChange: formSchema } : undefined,
     onSubmit: async ({ value }: { value: WorkerFormData<TMode> }) => {
       console.log('Form submitted with values:', value);
       await dispatchFormAction(value);

@@ -5,7 +5,11 @@ import { Edit, Trash2 } from 'lucide-react';
 import { IWorkerWithRelations } from '../../worker-types'; // Alterado para IWorkerWithRelations
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { StatusBadge } from '@/components/ui/status-badge'; // Importar StatusBadge
-import { calculateAge, formatAndMaskCPF } from '../../../../../lib/utils';
+import {
+  calculateAge,
+  formatAndMaskCPF,
+  formatOnlyDateToUTC
+} from '../../../../../lib/utils';
 
 // 1. Definir as colunas com createColumnHelper
 const columnHelper = createColumnHelper<IWorkerWithRelations>(); // Alterado para IWorkerWithRelations
@@ -92,8 +96,7 @@ export const columns = (
     // Assumindo que Worker tem uma propriedade 'login'
     header: 'Data Nasc.',
     cell: (props) => {
-      const date = new Date(props.getValue());
-      return date.toLocaleDateString('pt-BR');
+      return formatOnlyDateToUTC(props.getValue());
     }
   }),
   columnHelper.accessor('email', {
