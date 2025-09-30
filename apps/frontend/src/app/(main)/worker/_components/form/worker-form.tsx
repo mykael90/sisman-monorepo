@@ -88,8 +88,12 @@ export default function WorkerForm<TMode extends 'add' | 'edit'>({
     ),
     validators: formSchema ? { onChange: formSchema } : undefined,
     onSubmit: async ({ value }: { value: WorkerFormData<TMode> }) => {
-      console.log('Form submitted with values:', value);
-      await dispatchFormAction(value);
+      console.log(
+        'Form submitted with values:',
+        formSchema.parse(value),
+        value
+      );
+      await dispatchFormAction(formSchema.parse(value));
     }
   });
 
@@ -171,6 +175,7 @@ export default function WorkerForm<TMode extends 'add' | 'edit'>({
             label={fieldLabels.name}
             placeholder='Digite o nome completo'
             className='mb-4'
+            // onValueBlurParser={(val: string) => val.toUpperCase()}
           />
         )}
       </form.Field>
