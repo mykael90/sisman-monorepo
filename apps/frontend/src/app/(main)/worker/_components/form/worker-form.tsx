@@ -25,7 +25,12 @@ import {
   IWorkerEdit,
   IWorkerRelatedData
 } from '../../worker-types';
-import { maskDateInput, normalizeDate } from '../../../../../lib/utils';
+import {
+  maskDateInput,
+  normalizeDate,
+  maskPhoneInput,
+  maskCpfInput
+} from '../../../../../lib/utils';
 
 // Helper type for form data based on mode
 type WorkerFormData<TMode extends 'add' | 'edit'> = TMode extends 'add'
@@ -175,7 +180,7 @@ export default function WorkerForm<TMode extends 'add' | 'edit'>({
             label={fieldLabels.name}
             placeholder='Digite o nome completo'
             className='mb-4'
-            // onValueBlurParser={(val: string) => val.toUpperCase()}
+            onValueBlurParser={(val: string) => val.toUpperCase()}
           />
         )}
       </form.Field>
@@ -189,6 +194,7 @@ export default function WorkerForm<TMode extends 'add' | 'edit'>({
                 label={fieldLabels.cpf}
                 placeholder='Digite o CPF'
                 className='mb-4'
+                onValueBlurParser={maskCpfInput}
               />
             )}
           </form.Field>
@@ -263,8 +269,9 @@ export default function WorkerForm<TMode extends 'add' | 'edit'>({
           <FormInputField
             field={field}
             label={fieldLabels.phone}
-            placeholder='Digite o telefone'
+            placeholder='(xx) x xxxx-xxxx'
             className='mb-4'
+            onValueBlurParser={maskPhoneInput}
           />
         )}
       </form.Field>

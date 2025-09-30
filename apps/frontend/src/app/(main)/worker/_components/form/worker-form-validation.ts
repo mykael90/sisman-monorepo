@@ -40,7 +40,13 @@ export const workerFormSchemaAdd = z
           .nullable() // Permite 'null'
           .optional() // Permite 'undefined'
       ),
-    phone: z.string().min(1, 'Telefone é obrigatório'),
+    phone: z
+      .string()
+      .min(1, 'Telefone é obrigatório')
+      .transform((val) => val.replace(/[^\d]/g, ''))
+      .refine((val) => val.length >= 10 && val.length <= 11, {
+        message: 'Telefone deve ter 10 ou 11 dígitos'
+      }),
     birthdate: z
       .string()
       .regex(
@@ -69,7 +75,13 @@ export const workerFormSchemaEdit = z.object({
       message: 'CPF inválido'
     }),
   email: z.string().email('Email inválido'),
-  phone: z.string().min(1, 'Telefone é obrigatório'),
+  phone: z
+    .string()
+    .min(1, 'Telefone é obrigatório')
+    .transform((val) => val.replace(/[^\d]/g, ''))
+    .refine((val) => val.length >= 10 && val.length <= 11, {
+      message: 'Telefone deve ter 10 ou 11 dígitos'
+    }),
   birthdate: z
     .string()
     .regex(

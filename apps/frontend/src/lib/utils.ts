@@ -138,3 +138,57 @@ export function formatOnlyDateToUTC(
 
   return formattedDate;
 }
+
+/**
+ * Aplica máscara ao valor de entrada para o formato de CPF xxx.xxx.xxx-xx.
+ * Remove caracteres não numéricos e limita a 11 dígitos.
+ *
+ * @param value - string digitada pelo usuário
+ * @returns string mascarada no formato xxx.xxx.xxx-xx
+ */
+export const maskCpfInput = (value: string): string => {
+  const digitsOnly = value.replace(/\D/g, '').slice(0, 11);
+  let maskedValue = '';
+
+  if (digitsOnly.length > 0) {
+    maskedValue += digitsOnly.slice(0, 3);
+  }
+  if (digitsOnly.length > 3) {
+    maskedValue += `.${digitsOnly.slice(3, 6)}`;
+  }
+  if (digitsOnly.length > 6) {
+    maskedValue += `.${digitsOnly.slice(6, 9)}`;
+  }
+  if (digitsOnly.length > 9) {
+    maskedValue += `-${digitsOnly.slice(9, 11)}`;
+  }
+
+  return maskedValue;
+};
+
+/**
+ * Aplica máscara ao valor de entrada para o formato de telefone (xx) x xxxx-xxxx.
+ * Remove caracteres não numéricos e limita a 11 dígitos.
+ *
+ * @param value - string digitada pelo usuário
+ * @returns string mascarada no formato (xx) x xxxx-xxxx
+ */
+export const maskPhoneInput = (value: string): string => {
+  const digitsOnly = value.replace(/\D/g, '');
+  let maskedValue = '';
+
+  if (digitsOnly.length > 0) {
+    maskedValue += `(${digitsOnly.slice(0, 2)}`;
+  }
+  if (digitsOnly.length > 2) {
+    maskedValue += `) ${digitsOnly.slice(2, 3)}`;
+  }
+  if (digitsOnly.length > 3) {
+    maskedValue += ` ${digitsOnly.slice(3, 7)}`;
+  }
+  if (digitsOnly.length > 7) {
+    maskedValue += `-${digitsOnly.slice(7, 11)}`;
+  }
+
+  return maskedValue;
+};
