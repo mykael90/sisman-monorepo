@@ -23,14 +23,16 @@ export default function WorkerAdd({
     name: '',
     cpf: '',
     email: '',
-    phone: ''
+    phone: '',
+    birthdate: ''
   };
 
   const fieldLabels = {
     name: 'Nome',
     cpf: 'CPF',
     email: 'Email',
-    phone: 'Telefone'
+    phone: 'Telefone',
+    birthdate: 'Data de Nascimento'
   };
 
   const initialServerState: IActionResultForm<IWorkerAdd, IWorker> = {

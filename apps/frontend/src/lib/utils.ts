@@ -1,5 +1,5 @@
 import { type ClassValue, clsx } from 'clsx';
-import { differenceInYears, parseISO } from 'date-fns';
+import { differenceInYears, parseISO, parse, isValid, format } from 'date-fns';
 import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
@@ -51,17 +51,52 @@ export function formatAndMaskCPF(cpf: string | null | undefined): string {
 }
 
 export function calculateAge(
-  birthDate: string | null | undefined
+  birthdate: string | null | undefined
 ): number | string {
-  if (!birthDate) {
+  if (!birthdate) {
     return 'indefinido';
   }
 
   try {
-    const parsedDate = parseISO(birthDate);
+    const parsedDate = parseISO(birthdate);
     const age = differenceInYears(new Date(), parsedDate);
     return age;
   } catch {
     return 'invalid date';
   }
 }
+
+/**
+ * Converte uma data no formato dd/MM/yyyy para yyyy-MM-dd.
+ * Retorna string vazia se a data for inválida ou não for string.
+ *
+ * @param value - Valor desconhecido vindo do Zod
+ * @returns Data normalizada no formato yyyy-MM-dd ou string vazia
+ */
+export const normalizeDate = (value: unknown): string => {
+  if (typeof value !== 'string') return '';
+
+  const parsedDate = parse(value, 'dd/MM/yyyy', new Date());
+  return isValid(parsedDate) ? format(parsedDate, 'yyyy-MM-dd') : '';
+};
+
+/**
+ * Aplica máscara ao valor de entrada para o formato dd/MM/yyyy.
+ * Remove caracteres não numéricos e limita a 8 dígitos.
+ *
+ * @param value - string digitada pelo usuário
+ * @returns string mascarada no formato dd/MM/yyyy
+ */
+export const maskDateInput = (value: string): string => {
+  const digitsOnly = value.replace(/\D/g, '').slice(0, 8);
+
+  const day = digitsOnly.slice(0, 2);
+  const month = digitsOnly.slice(2, 4);
+  const year = digitsOnly.slice(4, 8);
+
+  let maskedValue = day;
+  if (month) maskedValue += `/${month}`;
+  if (year) maskedValue += `/${year}`;
+
+  return maskedValue;
+};

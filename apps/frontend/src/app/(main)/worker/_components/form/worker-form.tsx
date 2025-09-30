@@ -27,7 +27,7 @@ import {
   WorkerStatus
 } from '../../worker-types';
 import { WorkerAddSchema, WorkerEditSchema } from './worker-form-validation';
-import { z } from 'zod';
+import { maskDateInput, normalizeDate } from '../../../../../lib/utils';
 
 // Helper type for form data based on mode
 type WorkerFormData<TMode extends 'add' | 'edit'> = TMode extends 'add'
@@ -186,6 +186,32 @@ export default function WorkerForm<TMode extends 'add' | 'edit'>({
                 className='mb-4'
               />
             )}
+          </form.Field>
+        </div>
+        <div className='flex-1'>
+          <form.Field name='birthdate'>
+            {(field) => {
+              const handleDateInput = (rawValue: string) => {
+                const masked = maskDateInput(rawValue); // Aplica a máscara visual
+                const normalized = normalizeDate(masked); // Converte para ISO (yyyy-MM-dd)
+
+                // Aqui você pode decidir o que salvar no estado:
+                // - masked: para exibir no input
+                // - normalized: para enviar ao backend
+                // Neste exemplo, vamos retornar o masked para manter a experiência visual
+                return masked;
+              };
+
+              return (
+                <FormInputField
+                  field={field}
+                  label={fieldLabels.birthdate}
+                  placeholder='dd/MM/yyyy'
+                  className='mb-4'
+                  onValueChangeParser={handleDateInput}
+                />
+              );
+            }}
           </form.Field>
         </div>
         {mode === 'edit' && 'status' in defaultData && (
