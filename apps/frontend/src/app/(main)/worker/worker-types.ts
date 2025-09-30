@@ -6,8 +6,15 @@ import {
   Prisma
 } from '@sisman/prisma';
 import { IMaintenanceInstance } from '../maintenance/instance/instance-types';
-import { IContract } from '../contract/contract-types';
-import { ISipacUnidade } from '../sipac/unidade/unidade-types';
+import { IContractWithRelations } from '../contract/contract-types'; // Alterado para IContractWithRelations
+import { ISipacUnidadeWithRelations } from '../sipac/unidade/unidade-types'; // Alterado para ISipacUnidadeWithRelations
+
+export enum WorkerStatus {
+  ACTIVE = 'ACTIVE',
+  INACTIVE = 'INACTIVE',
+  VACATION = 'VACATION',
+  LEAVE = 'LEAVE'
+}
 
 export type IWorkerWithRelations = Prisma.WorkerGetPayload<{
   include: {
@@ -41,9 +48,9 @@ export type IWorkerSelect = Prisma.WorkerSelect;
 
 export type IWorkerRelatedData = {
   listMaintenanceInstances: IMaintenanceInstance[];
-  listContracts: IContract[];
+  listContracts: IContractWithRelations[]; // Alterado para IContractWithRelations
   listWorkerSpecialties: IWorkerSpecialty[];
-  listSipacUnidades: ISipacUnidade[];
+  listSipacUnidades: ISipacUnidadeWithRelations[]; // Alterado para ISipacUnidadeWithRelations
 };
 
 export type IWorkerTeamWithRelations = Prisma.WorkerTeamGetPayload<{

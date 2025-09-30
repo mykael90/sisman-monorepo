@@ -1,4 +1,9 @@
-import { OmitType, PartialType } from '@nestjs/swagger';
+import {
+  IntersectionType,
+  OmitType,
+  PartialType,
+  PickType
+} from '@nestjs/swagger';
 import { Prisma, WorkerSpecialty } from '@sisman/prisma';
 import {
   IsArray,
@@ -95,19 +100,10 @@ export class WorkerSpecialtyWithRelationsResponseDto
 // 3. DTOs DE CRIAÇÃO (INPUT) - Derivadas com OmitType
 // =================================================================
 
-export class WorkerSpecialtyCreateDto extends OmitType(WorkerSpecialtyBaseDto, [
-  'id',
-  'createdAt',
-  'updatedAt'
-] as const) {
-  /**
-   * ID único da especialidade.
-   * @example 1
-   */
-  @IsOptional()
-  @IsNumber()
-  id?: number;
-}
+export class WorkerSpecialtyCreateDto extends IntersectionType(
+  PartialType(WorkerSpecialtyBaseDto),
+  PickType(WorkerSpecialtyBaseDto, ['name'] as const)
+) {}
 
 // =================================================================
 // 4. DTOs DE ATUALIZAÇÃO (INPUT) - Derivadas com PartialType

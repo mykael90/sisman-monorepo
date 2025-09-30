@@ -9,6 +9,7 @@ import {
   IWorker,
   IWorkerAdd,
   IWorkerEdit,
+  IWorkerSpecialtyWithRelations,
   IWorkerWithRelations
 } from './worker-types';
 // import {
@@ -31,8 +32,32 @@ export async function getWorkers(
   logger.info(`(Server Action) getWorkers: Buscando lista de trabalhadores.`);
   try {
     const data = await fetchApiSisman(API_RELATIVE_PATH, accessTokenSisman, {
-      cache: 'force-cache'
+      // cache: 'force-cache'
     });
+    logger.info(
+      `(Server Action) getWorkers: ${data.length} trabalhadores retornados.`
+    );
+    return data;
+  } catch (error) {
+    logger.error(
+      `(Server Action) getWorkers: Erro ao buscar trabalhadores.`,
+      error
+    );
+    throw error;
+  }
+}
+export async function getWorkersSpecialties(
+  accessTokenSisman: string
+): Promise<IWorkerSpecialtyWithRelations[]> {
+  logger.info(`(Server Action) getWorkers: Buscando lista de trabalhadores.`);
+  try {
+    const data = await fetchApiSisman(
+      `${API_RELATIVE_PATH}-specialty`,
+      accessTokenSisman,
+      {
+        // cache: 'force-cache'
+      }
+    );
     logger.info(
       `(Server Action) getWorkers: ${data.length} trabalhadores retornados.`
     );
@@ -56,7 +81,7 @@ export async function showWorker(
       `${API_RELATIVE_PATH}/${id}`,
       accessTokenSisman,
       {
-        cache: 'force-cache'
+        // cache: 'force-cache'
       }
     );
     logger.info(

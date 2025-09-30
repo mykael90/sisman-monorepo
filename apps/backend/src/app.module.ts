@@ -52,6 +52,7 @@ import { ContractsModule } from './modules/contracts/contracts.module';
 import { ContractProvidersModule } from './modules/contract-providers/contract-providers.module';
 import sismanLegacyApiConfig from './config/sisman-legacy-api.config';
 import { SismanLegacyModule } from './modules/sisman-legacy/sisman-legacy.module';
+import { WorkersSpecialtiesModule } from './modules/workers-specialties/workers-specialties.module';
 
 @Module({
   imports: [
@@ -118,7 +119,8 @@ import { SismanLegacyModule } from './modules/sisman-legacy/sisman-legacy.module
     MaterialPickingOrdersModule,
     WorkersModule,
     ContractsModule,
-    ContractProvidersModule
+    ContractProvidersModule,
+    WorkersSpecialtiesModule
   ],
   controllers: [AppController],
   providers: [

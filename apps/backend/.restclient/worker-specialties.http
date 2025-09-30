@@ -1,0 +1,39 @@
+### Variables
+@urlLocal = {{apiUrl}}/worker-specialty
+@contentType = application/json
+
+### GET all worker specialties
+GET {{urlLocal}}
+Authorization: Bearer {{token}}
+
+### GET one worker specialty
+# @prompt specialtyId
+GET {{urlLocal}}/{{specialtyId}}
+Authorization: Bearer {{token}}
+
+### POST create worker specialty
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "name": "Eletricista",
+    "description": "Especialista em instalações elétricas"
+}
+
+### PUT update worker specialty
+# @prompt specialtyId
+PUT {{urlLocal}}/{{specialtyId}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "name": "Eletricista Industrial",
+    "description": "Especialista em instalações elétricas industriais"
+}
+
+### DELETE worker specialty
+# @prompt specialtyId
+DELETE {{urlLocal}}/{{specialtyId}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
