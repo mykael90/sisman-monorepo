@@ -1,28 +1,26 @@
-import React from 'react';
-import { WorkerSpecialtyForm } from '../../_components/form/worker-specialty-form';
+import WorkerSpecialtyEdit from '../../_components/edit/worker-specialty-edit';
 import { getSismanAccessToken } from '@/lib/auth/get-access-token';
 import { showWorkerSpecialty } from '../../worker-specialty-actions';
 
-interface EditWorkerSpecialtyPageProps {
-  params: {
-    id: string;
-  };
-}
-
-export default async function EditWorkerSpecialtyPage({
-  params
-}: EditWorkerSpecialtyPageProps) {
+export default async function Page({
+  params,
+  isInDialog = false
+}: {
+  params: Promise<{ id: number }>;
+  isInDialog?: boolean;
+}) {
+  const { id } = await params;
   const accessTokenSisman = await getSismanAccessToken();
-  const workerSpecialty = await showWorkerSpecialty(
-    Number(params.id),
+
+  const initialWorkerSpecialty = await showWorkerSpecialty(
+    id,
     accessTokenSisman
   );
 
   return (
-    <div className='flex-col'>
-      <div className='flex-1 space-y-4 p-8 pt-6'>
-        <WorkerSpecialtyForm initialData={workerSpecialty} />
-      </div>
-    </div>
+    <WorkerSpecialtyEdit
+      initialWorkerSpecialty={initialWorkerSpecialty}
+      isInDialog={isInDialog}
+    />
   );
 }

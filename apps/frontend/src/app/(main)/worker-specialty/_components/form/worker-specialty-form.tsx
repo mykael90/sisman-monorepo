@@ -159,6 +159,7 @@ export default function WorkerSpecialtyForm<TMode extends 'add' | 'edit'>({
             label={fieldLabels.name}
             placeholder='Ex: Eletricista'
             className='mb-4'
+            onValueBlurParser={(value) => value.toUpperCase()}
           />
         )}
       </form.Field>

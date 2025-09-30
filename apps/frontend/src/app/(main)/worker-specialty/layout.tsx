@@ -1,16 +1,16 @@
 import React from 'react';
 
 export default function WorkerSpecialtyLayout({
-  children
-  // modal
+  children,
+  modal
 }: {
   children: React.ReactNode;
-  // modal: React.ReactNode;
+  modal: React.ReactNode;
 }) {
   return (
     <>
       {children}
-      {/* {modal} */}
+      {modal}
     </>
   );
 }

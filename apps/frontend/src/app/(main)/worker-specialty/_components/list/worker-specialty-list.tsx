@@ -55,7 +55,7 @@ export function WorkerSpecialtyListPage({
 
   // General Actions
   const handleAddWorkerSpecialty = () => {
-    router.push('workerspecialties/add');
+    router.push('worker-specialty/add');
   };
 
   // Note: Delete action needs implementation (e.g., modal)
