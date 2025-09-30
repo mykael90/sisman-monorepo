@@ -31,13 +31,10 @@ export class WorkersService {
 
   async create(data: CreateWorkerWithRelationsDto): Promise<Worker> {
     this.logger.log(`Criando worker com dados: ${JSON.stringify(data)}`);
-    const { maintenanceInstance, workerContracts, ...restOfData } = data;
+    const { workerContracts, ...restOfData } = data;
 
     const prismaCreateInput: Prisma.WorkerCreateInput = {
       ...restOfData,
-      maintenanceInstance: maintenanceInstance
-        ? { connect: { id: maintenanceInstance.id } }
-        : undefined,
       workerContracts: workerContracts
         ? {
             create: workerContracts.map((contract) => ({
@@ -73,17 +70,11 @@ export class WorkersService {
     workerId: number,
     data: UpdateWorkerWithRelationsDto
   ): Promise<Worker> {
-    const { maintenanceInstance, workerContracts, ...restOfData } = data;
+    const { workerContracts, ...restOfData } = data;
 
     const prismaUpdateInput: Prisma.WorkerUpdateInput = {
       ...restOfData
     };
-
-    if (maintenanceInstance) {
-      prismaUpdateInput.maintenanceInstance = maintenanceInstance.id
-        ? { connect: { id: maintenanceInstance.id } }
-        : { disconnect: true };
-    }
 
     if (workerContracts) {
       // Primeiro removemos todos os contratos existentes

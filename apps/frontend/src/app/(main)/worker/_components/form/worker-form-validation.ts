@@ -34,7 +34,10 @@ export const workerFormSchemaAdd = z.object({
 
 export const workerFormSchemaEdit = z.object({
   id: z.number(),
-  name: z.string().min(1, 'Nome é obrigatório'),
+  name: z
+    .string()
+    .min(1, 'Nome é obrigatório')
+    .transform((val) => val.toUpperCase()),
   cpf: z.string().min(1, 'CPF é obrigatório'),
   email: z.string().email('Email inválido'),
   phone: z.string().min(1, 'Telefone é obrigatório'),

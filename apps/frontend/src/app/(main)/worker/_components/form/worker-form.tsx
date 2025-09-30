@@ -264,6 +264,23 @@ export default function WorkerForm<TMode extends 'add' | 'edit'>({
         )}
       </form.Field>
 
+      <form.Field
+        name='maintenanceInstanceId'
+        children={(field: any) => (
+          <FormDropdownModal
+            field={field}
+            label={fieldLabels.maintenanceInstanceId}
+            placeholder={fieldLabels.maintenanceInstanceId}
+            className='mb-4'
+            options={listMaintenanceInstances.map((instance) => ({
+              value: String(instance.id),
+              label: `${instance.name} (${instance.sipacId})`
+            }))}
+            onValueChange={(value) => field.handleChange(Number(value))}
+          />
+        )}
+      />
+
       <div className='mt-8 flex justify-end gap-3'>
         {mode === 'add' && (
           <Button type='button' variant='outline' onClick={handleReset}>

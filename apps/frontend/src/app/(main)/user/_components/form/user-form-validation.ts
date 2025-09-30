@@ -3,14 +3,14 @@ import { IActionResultForm } from '@/types/types-server-actions';
 
 // Schema Zod (adapte conforme sua necessidade)
 const userFormSchemaAdd = z.object({
-  name: z.string().min(3, 'Name must be at least 3 characters'),
+  name: z.string().min(5, 'Nome deve ter ao menos 5 caracteres'),
   // a string de login deve ter obrigatoriamente um ponto dividindo 2 nomes
 
   // eu quero inserir essas 2 restriçÕes para login
   login: z
     .string()
-    .regex(/\./, 'Login must contain a dot (.)')
-    .min(3, 'Login must be at least 3 characters'),
+    .regex(/\./, 'Login deve conter um ponto (.)')
+    .min(5, 'Login deve ter ao menos 5 caracteres'),
   email: z.string().email('Invalid email address'),
   roles: z
     .array(

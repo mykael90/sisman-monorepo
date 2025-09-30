@@ -12,6 +12,7 @@ import { IActionResultForm } from '@/types/types-server-actions';
 import FormAddHeader from '../../../../../components/form-tanstack/form-add-header';
 import { useState } from 'react';
 import { UserPlus } from 'lucide-react';
+import { useSession } from 'next-auth/react';
 
 export default function WorkerAdd({
   relatedData, // Added relatedData prop
@@ -22,12 +23,15 @@ export default function WorkerAdd({
 }) {
   const router = useRouter();
 
-  const defaultData: WorkerFormSchemaAdd = {
+  const { data: session, status, update } = useSession();
+
+  const defaultData: IWorkerAdd = {
     name: '',
     cpf: '',
     email: '',
     phone: '',
-    birthdate: ''
+    birthdate: '',
+    maintenanceInstanceId: session?.user.maintenanceInstanceId
   };
 
   const fieldLabels = {
@@ -35,7 +39,8 @@ export default function WorkerAdd({
     cpf: 'CPF',
     email: 'Email',
     phone: 'Telefone',
-    birthdate: 'Data de Nascimento'
+    birthdate: 'Data de Nascimento',
+    maintenanceInstanceId: 'Instância de Manutenção'
   };
 
   const initialServerState: IActionResultForm<IWorkerAdd, IWorker> = {

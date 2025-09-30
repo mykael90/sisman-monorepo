@@ -174,13 +174,6 @@ export class CreateWorkerDto extends IntersectionType(
 
 export class CreateWorkerWithRelationsDto extends CreateWorkerDto {
   /**
-   * Instância de manutenção vinculada.
-   */
-  @IsOptional()
-  @Type(() => UpdateMaintenanceInstance)
-  maintenanceInstance?: WorkerRelationsOnly['maintenanceInstance'];
-
-  /**
    * Contratos do trabalhador.
    */
   @IsOptional()
