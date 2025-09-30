@@ -18,7 +18,13 @@ export enum WorkerStatus {
 
 export type IWorkerWithRelations = Prisma.WorkerGetPayload<{
   include: {
-    workerContracts: true;
+    workerContracts: {
+      include: {
+        contract: true;
+        workerSpecialty: true;
+        sipacUnitLocation: true;
+      };
+    };
     maintenanceInstance: true;
     ledTeam: true;
     teams: true;

@@ -13,15 +13,24 @@ import { WorkerFilters } from './worker-filters'; // Alterado para WorkerFilters
 import {
   ColumnDef,
   ColumnFiltersState,
+  getFacetedRowModel,
+  getFacetedUniqueValues,
   PaginationState,
   SortingState
 } from '@tanstack/react-table';
 import { InputDebounceRef } from '@/components/ui/input'; // Importe o tipo da Ref
 import { IWorkerWithRelations } from '../../worker-types'; // Alterado para IWorkerWithRelations
 import { useRouter } from 'next/navigation';
-import { columns, createActions } from './worker-columns'; // Alterado para worker-columns
+import {
+  columns,
+  createActions,
+  defaultColumn,
+  SubRowComponent
+} from './worker-columns'; // Alterado para worker-columns
 import { Wrench, UserPlus } from 'lucide-react'; // Alterado para Wrench (ícone de worker)
 import { TableTanstack } from '../../../../../components/table-tanstack/table-tanstack';
+import { TableTanstackFaceted } from '../../../../../components/table-tanstack/table-tanstack-faceted';
+import { DefaultGlobalFilter } from '../../../../../components/table-tanstack/default-global-filter';
 
 export function WorkerListPage({
   // Alterado para WorkerListPage
@@ -35,10 +44,18 @@ export function WorkerListPage({
 
   const [workers, setWorkers] = useState(initialWorkers); // Estado dos dados da tabela // Alterado para workers
 
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+
   // --- Estado dos Filtros Movido para Cá ---
-  const [workerValue, setWorkerValue] = useState(''); // Alterado para workerValue
-  const [statusFilter, setStatusFilter] = useState(''); // Valor inicial ('', 'true', 'false')
+  const [globalFilterValue, setGlobalFilterValue] = useState('');
   const inputDebounceRef = useRef<InputDebounceRef>(null); // Cria a Ref
+
+  // Função para limpar filtros (agora pertence ao pai)
+  const handleClearFilters = () => {
+    setGlobalFilterValue('');
+    // Chama o método clearInput exposto pelo filho via ref
+    inputDebounceRef.current?.clearInput();
+  };
 
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0, //initial page index
@@ -51,30 +68,6 @@ export function WorkerListPage({
       desc: false
     }
   ]); // can set initial sorting state here
-
-  // --- Calcular columnFilters diretamente com base no estado local ---
-  const columnFilters = useMemo<ColumnFiltersState>(() => {
-    const filters: ColumnFiltersState = [];
-    if (workerValue) {
-      // Alterado para workerValue
-      filters.push({ id: 'name', value: workerValue }); // Alterado para workerValue
-    }
-    if (statusFilter) {
-      // Só adiciona se statusFilter não for vazio
-      // Ajuste o valor conforme esperado pela tabela ('true'/'false' string ou boolean)
-      filters.push({ id: 'isActive', value: statusFilter === 'true' });
-      // Ou: filters.push({ id: 'isActive', value: statusFilter });
-    }
-    return filters;
-  }, [workerValue, statusFilter]); // Recalcula apenas quando workerValue ou statusFilter mudam // Alterado para workerValue
-
-  // Função para limpar filtros (agora pertence ao pai)
-  const handleClearFilters = () => {
-    setWorkerValue(''); // Alterado para setWorkerValue
-    setStatusFilter('');
-    // Chama o método clearInput exposto pelo filho via ref
-    inputDebounceRef.current?.clearInput();
-  };
 
   // Ações gerais (manter como antes)
   const handleAddWorker = () => {
@@ -110,25 +103,32 @@ export function WorkerListPage({
       <div className='mt-4 mb-4 h-auto rounded-xl border-0 bg-white px-4 py-3.5'>
         {' '}
         {/* Ajuste altura se necessário */}
-        <WorkerFilters // Alterado para WorkerFilters
-          // Passa os valores e setters para o componente filho
-          workerValue={workerValue} // Alterado para workerValue
-          setWorkerValue={setWorkerValue} // Alterado para setWorkerValue
-          statusFilter={statusFilter}
-          setStatusFilter={setStatusFilter}
-          onClearFilters={handleClearFilters} // Passa a função de limpar
+        <DefaultGlobalFilter
+          // Passa os valores e setters para o componente
+          globalFilterValue={globalFilterValue}
+          setGlobalFilterValue={setGlobalFilterValue}
+          onClearFilter={handleClearFilters} // Passa a função de limpar
           inputDebounceRef={inputDebounceRef} // Passa a ref
+          label={''}
         />
       </div>
 
-      <TableTanstack
+      <TableTanstackFaceted
         data={workers} // Alterado para workers
         columns={columns(columnActions)}
         columnFilters={columnFilters}
+        setColumnFilters={setColumnFilters}
         pagination={pagination}
         setPagination={setPagination}
         setSorting={setSorting}
         sorting={sorting}
+        renderSubComponent={SubRowComponent}
+        getFacetedRowModel={getFacetedRowModel()}
+        getFacetedUniqueValues={getFacetedUniqueValues()}
+        globalFilterFn='includesString'
+        globalFilter={globalFilterValue}
+        setGlobalFilter={setGlobalFilterValue}
+        defaultColumn={defaultColumn}
       />
     </div>
   );

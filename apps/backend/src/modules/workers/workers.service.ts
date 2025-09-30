@@ -114,7 +114,16 @@ export class WorkersService {
 
   async list() {
     return await this.prisma.worker.findMany({
-      include: this.includeRelations
+      include: {
+        maintenanceInstance: true,
+        workerContracts: {
+          include: {
+            contract: true,
+            workerSpecialty: true,
+            sipacUnitLocation: true
+          }
+        }
+      }
     });
   }
 

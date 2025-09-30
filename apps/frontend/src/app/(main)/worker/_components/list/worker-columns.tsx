@@ -1,7 +1,14 @@
-import { ColumnDef, createColumnHelper, Row } from '@tanstack/react-table';
+import {
+  ColumnDef,
+  createColumnHelper,
+  Row,
+  flexRender,
+  getCoreRowModel,
+  useReactTable
+} from '@tanstack/react-table';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { Edit, Trash2 } from 'lucide-react';
+import { Edit, Trash2, ChevronRight, ChevronDown } from 'lucide-react';
 import { IWorkerWithRelations } from '../../worker-types'; // Alterado para IWorkerWithRelations
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { StatusBadge } from '@/components/ui/status-badge'; // Importar StatusBadge
@@ -10,9 +17,35 @@ import {
   formatAndMaskCPF,
   formatOnlyDateToUTC
 } from '../../../../../lib/utils';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
+} from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
 
 // 1. Definir as colunas com createColumnHelper
 const columnHelper = createColumnHelper<IWorkerWithRelations>(); // Alterado para IWorkerWithRelations
+
+export const defaultColumn: Partial<ColumnDef<IWorkerWithRelations>> = {
+  // Largura padrão
+  size: 100,
+  enableResizing: false,
+  // Filtro desligado por padrão
+  enableColumnFilter: false,
+  filterFn: 'arrIncludesSome',
+  // Renderizador padrão da célula (texto simples)
+  cell: ({ getValue }) => {
+    const value = getValue();
+    if (value === null || value === undefined || value === '') {
+      return <span className='text-muted-foreground'>N/A</span>;
+    }
+    return <div className='whitespace-normal'>{String(value)}</div>;
+  }
+};
 
 // Define the actions type more specifically if possible, or keep as is
 // Using Row<WorkerWithRoles1> is often better than RowData
@@ -51,27 +84,61 @@ export const createActions = (
 export const columns = (
   configuredActions: ActionHandlers<IWorkerWithRelations> // Alterado para IWorkerWithRelations
 ): ColumnDef<IWorkerWithRelations, any>[] => [
-  // Alterado para IWorkerWithRelations
+  columnHelper.display({
+    id: 'expander',
+    size: 20,
+    header: ({ table }) => (
+      <Button
+        variant='ghost'
+        size='icon'
+        onClick={table.getToggleAllRowsExpandedHandler()}
+      >
+        {table.getIsAllRowsExpanded() ? (
+          <ChevronDown className='h-4 w-4' />
+        ) : (
+          <ChevronRight className='h-4 w-4' />
+        )}
+      </Button>
+    ),
+    cell: ({ row }) => (
+      <Button
+        variant='ghost'
+        size='icon'
+        onClick={(e) => {
+          e.stopPropagation();
+          row.toggleExpanded();
+        }}
+      >
+        {row.getIsExpanded() ? (
+          <ChevronDown className='h-4 w-4' />
+        ) : (
+          <ChevronRight className='h-4 w-4' />
+        )}
+      </Button>
+    )
+  }),
   columnHelper.accessor('name', {
     // Assumindo que Worker tem uma propriedade 'name'
     header: 'Nome',
+    size: 320,
+    enableResizing: false,
     cell: (props) => {
       const worker = props.row.original; // Acesso ao objeto de dados completo da linha
       const nameValue = props.getValue(); // Valor da célula atual (worker.name)
-      const loginValue = worker.login; // Assumindo que Worker tem uma propriedade 'login'
+      // const loginValue = worker.login; // Assumindo que Worker tem uma propriedade 'login'
 
       return (
         <div className='flex items-center gap-2 py-0.5'>
           <Avatar className='h-10 w-10'>
             <AvatarImage
               src={worker.image} // Assumindo que Worker tem uma propriedade 'image'
-              alt={loginValue ? `${nameValue} (${loginValue})` : nameValue} // Ex: "Nome (Login)"
+              alt={nameValue} // Ex: "Nome (Login)"
             />
             <AvatarFallback>
-              {getAvatarInitials(loginValue, nameValue)}
+              {getAvatarInitials(undefined, nameValue)}
             </AvatarFallback>
           </Avatar>
-          <span>{nameValue}</span>
+          <span className='whitespace-normal'>{nameValue}</span>
         </div>
       );
     }
@@ -86,6 +153,8 @@ export const columns = (
   columnHelper.accessor('cpf', {
     // Assumindo que Worker tem uma propriedade 'login'
     header: 'CPF',
+    size: 100,
+    enableResizing: false,
     cell: (props) => {
       const formattedCpf = formatAndMaskCPF(props.getValue());
 
@@ -95,6 +164,8 @@ export const columns = (
   columnHelper.accessor('birthdate', {
     // Assumindo que Worker tem uma propriedade 'login'
     header: 'Data Nasc.',
+    size: 100,
+    enableResizing: false,
     cell: (props) => {
       return formatOnlyDateToUTC(props.getValue());
     }
@@ -102,17 +173,38 @@ export const columns = (
   columnHelper.accessor('email', {
     // Assumindo que Worker tem uma propriedade 'email'
     header: 'Email',
+    size: 200,
+    enableResizing: false,
+    cell: (props) => props.getValue()
+  }),
+  columnHelper.accessor('phone', {
+    // Assumindo que Worker tem uma propriedade 'email'
+    header: 'Telefone',
+    size: 100,
+    enableResizing: false,
     cell: (props) => props.getValue()
   }),
   columnHelper.accessor((row) => (row.isActive ? 'Ativo' : 'Inativo'), {
     header: 'Status',
+    size: 100,
+    enableResizing: false,
+    enableColumnFilter: true,
     cell: (props) => <StatusBadge status={`${props.getValue()}`} />, // Usa o componente StatusBadge
     meta: {
       filterVariant: 'select'
     }
   }),
+  columnHelper.accessor((row) => row.maintenanceInstance?.name, {
+    header: 'Instância',
+    size: 100,
+    enableColumnFilter: true,
+    enableResizing: false,
+    cell: (props) => <Badge variant='outline'>{props.getValue()}</Badge> // Usa o componente StatusBadge
+  }),
   columnHelper.display({
     id: 'actions',
+    size: 100,
+    enableResizing: false,
     header: 'Ações',
     cell: ({ row }) => (
       // Mantém a estrutura original da célula Actions com botões
@@ -171,3 +263,74 @@ function getAvatarInitials(
     );
   } else return 'W'; // Alterado para 'W' de Worker
 }
+
+export const SubRowComponent = ({
+  row
+}: {
+  row: Row<IWorkerWithRelations>;
+}) => {
+  const contracts = row.original.workerContracts || [];
+
+  return (
+    <div className='p-2 pl-8'>
+      <h4 className='mb-2 text-sm font-semibold'>Contratos do Trabalhador:</h4>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>ID Contrato</TableHead>
+            <TableHead>Especialidade</TableHead>
+            <TableHead>Unidade SIPAC</TableHead>
+            <TableHead>Data Início</TableHead>
+            <TableHead>Data Fim</TableHead>
+            <TableHead>Notas</TableHead>
+            <TableHead>Status</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {contracts.length > 0 ? (
+            contracts.map((contract, index) => (
+              <TableRow key={index}>
+                <TableCell>{contract.id}</TableCell>
+                <TableCell>{contract.workerSpecialty?.name || 'N/A'}</TableCell>
+                <TableCell>
+                  {contract.sipacUnitLocation?.nomeUnidade || 'N/A'}
+                </TableCell>
+                <TableCell>
+                  {contract.startDate
+                    ? formatOnlyDateToUTC(contract.startDate as any)
+                    : 'N/A'}
+                </TableCell>
+                <TableCell>
+                  {contract.endDate
+                    ? formatOnlyDateToUTC(contract.endDate as any)
+                    : 'N/A'}
+                </TableCell>
+                <TableCell>{contract.notes || 'N/A'}</TableCell>
+                <TableCell>
+                  <Badge
+                    variant={
+                      contract.endDate &&
+                      new Date(contract.endDate) < new Date()
+                        ? 'destructive'
+                        : 'default'
+                    }
+                  >
+                    {contract.endDate && new Date(contract.endDate) < new Date()
+                      ? 'Inativo'
+                      : 'Ativo'}
+                  </Badge>
+                </TableCell>
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={7} className='h-24 text-center'>
+                Nenhum contrato encontrado.
+              </TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+    </div>
+  );
+};
