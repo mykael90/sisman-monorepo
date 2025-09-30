@@ -96,8 +96,8 @@ export function WorkerListPage({
   return (
     <div className='container mx-auto p-4'>
       <SectionListHeader
-        title='Gerenciamento de Trabalhadores' // Alterado para Trabalhadores
-        subtitle='Sistema de gerenciamento de trabalhadores e suas permissões' // Alterado para trabalhadores
+        title='Gerenciamento de Colaboradores' // Alterado para Trabalhadores
+        subtitle='Sistema de gerenciamento de colaboradores e suas funções' // Alterado para trabalhadores
         TitleIcon={Wrench} // Alterado para Wrench
         actionButton={{
           text: 'Cadastrar trabalhador', // Alterado para trabalhador

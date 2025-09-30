@@ -125,7 +125,7 @@ export default function WorkerForm<TMode extends 'add' | 'edit'>({
         }}
         dataAddLabel={fieldLabels}
         messageActions={{
-          handleResetForm: 'Cadastrar novo worker',
+          handleResetForm: 'Cadastrar novo colaborador',
           handleCancel: 'Voltar para a lista'
         }}
         isInDialog={isInDialog}
