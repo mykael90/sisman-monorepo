@@ -1,7 +1,10 @@
 import { z } from 'zod';
 
 export const workerFormSchemaAdd = z.object({
-  name: z.string().min(1, 'Nome é obrigatório'),
+  name: z
+    .string()
+    .min(1, 'Nome é obrigatório')
+    .transform((val) => val.toUpperCase()),
   cpf: z.string().min(1, 'CPF é obrigatório'),
   email: z
     // 1. Usar .preprocess para tratar a string vazia

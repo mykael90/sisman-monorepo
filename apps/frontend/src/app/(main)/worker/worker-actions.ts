@@ -182,7 +182,7 @@ export async function updateWorker(
     data
   );
 
-  // 1. Validação específica para WorkerEdit (comentado)
+  // 1. Validação específica para WorkerEdit (comentado) a validação já ocorre no frontend
   // const validationProcessResult = validateFormData(data, workerFormSchemaEdit);
   // if (!validationProcessResult.success) {
   //   logger.warn(
