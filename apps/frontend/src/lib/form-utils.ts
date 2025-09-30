@@ -68,3 +68,35 @@ export function formatRequestNumber(req: string): string {
   }
   return '';
 }
+
+export function zodVerifyCPF(cpf: string): boolean {
+  // Remove caracteres não numéricos
+  const val = cpf.replace(/\D/g, '');
+
+  // Verifica se todos os dígitos são iguais
+  if (/^(\d)\1+$/.test(val)) return false;
+
+  let sum = 0;
+  let remainder;
+
+  // Primeiro dígito verificador
+  for (let i = 1; i <= 9; i++) {
+    sum += parseInt(val.substring(i - 1, i)) * (11 - i);
+  }
+
+  remainder = (sum * 10) % 11;
+  if (remainder === 10 || remainder === 11) remainder = 0;
+  if (remainder !== parseInt(val.substring(9, 10))) return false;
+
+  // Segundo dígito verificador
+  sum = 0;
+  for (let i = 1; i <= 10; i++) {
+    sum += parseInt(val.substring(i - 1, i)) * (12 - i);
+  }
+
+  remainder = (sum * 10) % 11;
+  if (remainder === 10 || remainder === 11) remainder = 0;
+  if (remainder !== parseInt(val.substring(10, 11))) return false;
+
+  return true;
+}

@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { zodVerifyCPF } from '../../../../../lib/form-utils';
 
 // Esquema com .passthrough() (vai manter chaves extras)
 
@@ -10,7 +11,16 @@ export const workerFormSchemaAdd = z
       .transform((val) => {
         return val.toUpperCase();
       }),
-    cpf: z.string().min(1, 'CPF é obrigatório'),
+    cpf: z
+      .string()
+      .min(1, 'CPF é obrigatório')
+      .transform((val) => val.replace(/[^\d]/g, ''))
+      .refine((val) => val.length === 11, {
+        message: 'CPF deve ter 11 dígitos'
+      })
+      .refine((val) => zodVerifyCPF(val), {
+        message: 'CPF inválido'
+      }),
     email: z
       // 1. Usar .preprocess para tratar a string vazia
       .preprocess(
@@ -48,7 +58,16 @@ export const workerFormSchemaEdit = z.object({
     .string()
     .min(1, 'Nome é obrigatório')
     .transform((val) => val.toUpperCase()),
-  cpf: z.string().min(1, 'CPF é obrigatório'),
+  cpf: z
+    .string()
+    .min(1, 'CPF é obrigatório')
+    .transform((val) => val.replace(/[^\d]/g, ''))
+    .refine((val) => val.length === 11, {
+      message: 'CPF deve ter 11 dígitos'
+    })
+    .refine((val) => zodVerifyCPF(val), {
+      message: 'CPF inválido'
+    }),
   email: z.string().email('Email inválido'),
   phone: z.string().min(1, 'Telefone é obrigatório'),
   birthdate: z
