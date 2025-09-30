@@ -1,12 +1,9 @@
-import React from 'react';
-import { WorkerSpecialtyForm } from '../_components/form/worker-specialty-form';
+import WorkerSpecialtyAdd from '../_components/add/worker-specialty-add';
 
-export default function AddWorkerSpecialtyPage() {
-  return (
-    <div className='flex-col'>
-      <div className='flex-1 space-y-4 p-8 pt-6'>
-        <WorkerSpecialtyForm initialData={null} />
-      </div>
-    </div>
-  );
+export default async function Page({
+  isInDialog = false
+}: {
+  isInDialog?: boolean;
+}) {
+  return <WorkerSpecialtyAdd isInDialog={isInDialog} />;
 }
