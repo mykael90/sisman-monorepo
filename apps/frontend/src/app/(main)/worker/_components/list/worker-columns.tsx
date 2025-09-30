@@ -118,19 +118,20 @@ export const columns = (
       // Mantém a estrutura original da célula Actions com botões
       <div className='flex gap-2'>
         <Button
+          title='Editar Colaborador'
           variant='ghost'
           size='icon'
           onClick={() => configuredActions.onEdit(row)}
         >
           <Edit className='h-4 w-4' />
         </Button>
-        <Button
+        {/* <Button
           variant='ghost'
           size='icon'
           onClick={() => configuredActions.onDelete(row)}
         >
           <Trash2 className='h-4 w-4 text-red-500' />
-        </Button>
+        </Button> */}
       </div>
     )
   })

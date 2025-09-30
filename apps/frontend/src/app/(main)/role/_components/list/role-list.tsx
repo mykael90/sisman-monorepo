@@ -3,7 +3,6 @@
 import { useState, useMemo, useRef, Dispatch, SetStateAction } from 'react';
 import { SectionListHeader } from '../../../../../components/section-list-header';
 import { RoleFilters } from './role-filters';
-import { RoleTable } from './role-table';
 import {
   ColumnDef,
   ColumnFiltersState,
