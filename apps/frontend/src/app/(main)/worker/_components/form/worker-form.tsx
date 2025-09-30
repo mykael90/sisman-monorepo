@@ -173,17 +173,46 @@ export default function WorkerForm<TMode extends 'add' | 'edit'>({
         />
       )}
 
-      <form.Field name='name'>
-        {(field) => (
-          <FormInputField
-            field={field}
-            label={fieldLabels.name}
-            placeholder='Digite o nome completo'
-            className='mb-4'
-            onValueBlurParser={(val: string) => val.toUpperCase()}
-          />
+      <div className='flex items-center justify-baseline gap-4'>
+        <div className='flex-1'>
+          <form.Field name='name'>
+            {(field) => (
+              <FormInputField
+                field={field}
+                label={fieldLabels.name}
+                placeholder='Digite o nome completo'
+                className='mb-4'
+                onValueBlurParser={(val: string) => val.toUpperCase()}
+              />
+            )}
+          </form.Field>
+        </div>
+        {mode === 'edit' && 'isActive' in defaultData && (
+          <div className='flex'>
+            <form.Field name='isActive'>
+              {(field) => (
+                <div className='flex items-center space-x-2'>
+                  <Switch
+                    id='isActive'
+                    checked={field.state.value === true}
+                    onCheckedChange={(checked) =>
+                      field.handleChange(
+                        (checked ? true : false) as DeepValue<
+                          WorkerFormData<TMode>,
+                          'isActive'
+                        >
+                      )
+                    }
+                  />
+                  <Label htmlFor='isActive'>
+                    {field.state.value === true ? 'Ativo' : 'Inativo'}
+                  </Label>
+                </div>
+              )}
+            </form.Field>
+          </div>
         )}
-      </form.Field>
+      </div>
 
       <div className='flex items-center justify-baseline gap-4'>
         <div className='flex-1'>
@@ -219,37 +248,12 @@ export default function WorkerForm<TMode extends 'add' | 'edit'>({
                   label={fieldLabels.birthdate}
                   placeholder='dd/MM/yyyy'
                   className='mb-4'
-                  onValueChangeParser={handleDateInput}
+                  onValueBlurParser={handleDateInput}
                 />
               );
             }}
           </form.Field>
         </div>
-        {mode === 'edit' && 'status' in defaultData && (
-          <div className='flex'>
-            <form.Field name='status'>
-              {(field) => (
-                <div className='flex items-center space-x-2'>
-                  <Switch
-                    id='status'
-                    checked={field.state.value === true}
-                    onCheckedChange={(checked) =>
-                      field.handleChange(
-                        (checked ? true : false) as DeepValue<
-                          WorkerFormData<TMode>,
-                          'status'
-                        >
-                      )
-                    }
-                  />
-                  <Label htmlFor='status'>
-                    {field.state.value === true ? 'Ativo' : 'Inativo'}
-                  </Label>
-                </div>
-              )}
-            </form.Field>
-          </div>
-        )}
       </div>
 
       <form.Field name='email'>
@@ -294,6 +298,10 @@ export default function WorkerForm<TMode extends 'add' | 'edit'>({
       />
 
       <div className='mt-8 flex justify-end gap-3'>
+        {/* <Button type='button' variant='outline' onClick={handleCancel}>
+          Cancelar
+        </Button> */}
+
         {mode === 'add' && (
           <Button type='button' variant='outline' onClick={handleReset}>
             Limpar

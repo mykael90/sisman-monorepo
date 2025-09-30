@@ -72,9 +72,9 @@ export async function getWorkersSpecialties(
 }
 
 export async function showWorker(
-  accessTokenSisman: string,
-  id: number
-): Promise<IWorkerEdit> {
+  id: number,
+  accessTokenSisman: string
+): Promise<IWorker> {
   logger.info(`(Server Action) showWorker: Buscando trabalhador com ID ${id}.`);
   try {
     const data = await fetchApiSisman(
