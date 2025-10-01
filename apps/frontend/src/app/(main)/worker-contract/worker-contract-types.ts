@@ -11,6 +11,7 @@ export type IWorkerContractWithRelations = Prisma.WorkerContractGetPayload<{
       };
     };
     worker: true;
+    sipacUnitLocation: true;
   };
 }>;
 

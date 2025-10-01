@@ -216,51 +216,102 @@ export default function WorkerContractForm<TMode extends 'add' | 'edit'>({
         )}
       </form.Field>
 
-      <form.Field
-        name='startDate'
-        children={(field) => (
-          <div className='mb-4'>
-            <Label
-              htmlFor='startDate'
-              className='block pb-1 text-sm font-medium text-gray-700'
-            >
-              Início
-            </Label>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant='outline'
-                  className={cn(
-                    'w-full justify-start text-left font-normal',
-                    !field.state.value && 'text-muted-foreground'
-                  )}
+      <div className='mb-4 flex justify-start gap-4'>
+        <div>
+          <form.Field
+            name='startDate'
+            children={(field) => (
+              <>
+                <Label
+                  htmlFor='startDate'
+                  className='block pb-1 text-sm font-medium text-gray-700'
                 >
-                  <CalendarIcon className='mr-2 h-4 w-4' />
-                  {field.state.value ? (
-                    format(field.state.value as any, 'PPP', {
-                      locale: ptBR
-                    })
-                  ) : (
-                    <span>Selecione uma data</span>
-                  )}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className='w-auto p-0'>
-                <Calendar
-                  mode='single'
-                  selected={
-                    field.state.value
-                      ? new Date(field.state.value as any)
-                      : undefined
-                  }
-                  onSelect={(date) => date && field.setValue(date as any)}
-                  locale={ptBR}
-                />
-              </PopoverContent>
-            </Popover>
-          </div>
-        )}
-      />
+                  Início
+                </Label>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant='outline'
+                      className={cn(
+                        'w-full justify-start text-left font-normal',
+                        !field.state.value && 'text-muted-foreground'
+                      )}
+                    >
+                      <CalendarIcon className='mr-2 h-4 w-4' />
+                      {field.state.value ? (
+                        format(field.state.value as any, 'PPP', {
+                          locale: ptBR
+                        })
+                      ) : (
+                        <span>Selecione uma data</span>
+                      )}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className='w-auto p-0'>
+                    <Calendar
+                      mode='single'
+                      selected={
+                        field.state.value
+                          ? new Date(field.state.value as any)
+                          : undefined
+                      }
+                      onSelect={(date) => date && field.setValue(date as any)}
+                      locale={ptBR}
+                    />
+                  </PopoverContent>
+                </Popover>
+              </>
+            )}
+          />
+        </div>
+        <div>
+          <form.Field
+            name='endDate'
+            children={(field) => (
+              <>
+                <Label
+                  htmlFor='endDate'
+                  className='block pb-1 text-sm font-medium text-gray-700'
+                >
+                  Início
+                </Label>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant='outline'
+                      className={cn(
+                        'w-full justify-start text-left font-normal',
+                        !field.state.value && 'text-muted-foreground'
+                      )}
+                    >
+                      <CalendarIcon className='mr-2 h-4 w-4' />
+                      {field.state.value ? (
+                        format(field.state.value as any, 'PPP', {
+                          locale: ptBR
+                        })
+                      ) : (
+                        <span>Selecione uma data</span>
+                      )}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className='w-auto p-0'>
+                    <Calendar
+                      mode='single'
+                      selected={
+                        field.state.value
+                          ? new Date(field.state.value as any)
+                          : undefined
+                      }
+                      onSelect={(date) => date && field.setValue(date as any)}
+                      locale={ptBR}
+                    />
+                  </PopoverContent>
+                </Popover>
+              </>
+            )}
+          />
+        </div>
+      </div>
 
       <form.Field name='notes'>
         {(field) => (

@@ -83,7 +83,7 @@ export const createActionsSubrows = (
     // Certifique-se que contract.id existe e é o identificador correto.
     if (contract.id) {
       // Navega para a rota de edição, passando o ID do contrato
-      // router.push(`worker-contract/edit/${contract.id}`);
+      router.push(`worker-contract/${contract.workerId}/edit/${contract.id}`);
     } else {
       console.error('Contract ID is missing, cannot navigate to edit page.');
       throw new Error('Contract ID is missing, cannot navigate to edit page.');
@@ -132,7 +132,7 @@ export const createActions = (
         'Attempting to show toast error: "É necessário encerrar todos os contratos ativos para cadastrar um novo contrato."'
       );
       toast.error(
-        'É necessário encerrar todos os contratos ativos para cadastrar um novo contrato.'
+        `É necessário encerrar todos os contratos ativos de ${row.original.name} para cadastrar um novo contrato.`
       );
 
       return;

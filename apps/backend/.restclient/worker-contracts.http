@@ -59,7 +59,23 @@ Content-Type: {{contentType}}
 Authorization: Bearer {{token}}
 
 {
-    "endDate": "2024-12-31T23:59:59.999Z",
+    "endDate": "2025-12-31T23:59:59.999Z",
+    "notes": "Contrato encerrado"
+}
+
+### PUT update worker contract
+# @prompt contractId
+PUT {{urlLocal}}/{{contractId}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "id": 370,
+    "workerId": 299,
+    "contractId": 1,
+    "workerSpecialtyId": 1,
+    "sipacUnitLocationCode": 110805,
+    "endDate": "2025-12-31T23:59:59.999Z",
     "notes": "Contrato encerrado"
 }
 

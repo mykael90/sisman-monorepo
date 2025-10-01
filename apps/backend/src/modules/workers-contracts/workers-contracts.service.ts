@@ -147,10 +147,36 @@ export class WorkersContractsService {
     data: WorkerContractUpdateDto,
     prisma: Prisma.TransactionClient
   ): Promise<WorkerContract> {
+    let { sipacUnitLocationId } = data;
+
+    //se sipacUnitLocationId não for enviado diretamente, procurar o id pelo sipacUnitLocationCode
+    if (!sipacUnitLocationId) {
+      const sipacUnitLocation = await prisma.sipacUnidade.findFirst({
+        select: { id: true },
+        where: {
+          codigoUnidade: data.sipacUnitLocationCode
+        }
+      });
+
+      if (!sipacUnitLocation) {
+        throw new BadRequestException(
+          `Não foi possível encontrar a unidade de lotação com o código ${data.sipacUnitLocationCode}`
+        );
+      }
+
+      sipacUnitLocationId = sipacUnitLocation.id;
+    }
+    //deletando o campo que não faz parte do input
+    delete data.sipacUnitLocationCode;
+
     try {
+      const updateInput: Prisma.WorkerContractUncheckedUpdateInput = {
+        ...data
+      };
+
       const result = await prisma.workerContract.update({
         where: { id },
-        data
+        data: updateInput
       });
 
       //atualizar o status do worker se para qualquer caso se tiver encerramento ou não
