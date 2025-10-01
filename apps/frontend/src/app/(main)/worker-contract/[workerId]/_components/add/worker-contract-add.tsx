@@ -6,15 +6,15 @@ import {
   IWorkerContract,
   IWorkerContractAdd,
   IWorkerContractRelatedData
-} from '../../worker-contract-types';
+} from '../../../worker-contract-types';
 import { IActionResultForm } from '@/types/types-server-actions';
 import { CirclePlus } from 'lucide-react';
-import { addWorkerContract } from '../../worker-contract-actions';
+import { addWorkerContract } from '../../../worker-contract-actions';
 import { workerContractFormSchemaAdd } from '../form/worker-contract-form-validation';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { CardWorkerSummary } from '../card-worker-summary';
-import { IWorker } from '../../../worker/worker-types';
+import { IWorker } from '../../../../worker/worker-types';
 
 export default function WorkerContractAdd({
   isInDialog = false,
@@ -66,7 +66,7 @@ export default function WorkerContractAdd({
     <div className='mx-auto w-full rounded-lg bg-white shadow-lg'>
       <FormAddHeader
         Icon={CirclePlus}
-        title='Nova Contrato de Colaborador'
+        title='Novo Contrato de Colaborador'
         subtitle='Adicionar um nova contrato para o colaborador'
       />
 

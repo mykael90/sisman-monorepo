@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { User, Briefcase, Mail, Phone } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { IWorker } from '../../worker/worker-types';
+import { IWorker } from '../../../worker/worker-types';
 
 export function CardWorkerSummary({ worker }: { worker: IWorker }) {
   return (

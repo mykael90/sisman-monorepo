@@ -15,17 +15,17 @@ import {
   IWorkerContractAdd,
   IWorkerContractEdit,
   IWorkerContractRelatedData
-} from '../../worker-contract-types';
+} from '../../../worker-contract-types';
 import { Textarea } from '@/components/ui/textarea';
-import { Label } from '../../../../../components/ui/label';
+import { Label } from '../../../../../../components/ui/label';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger
-} from '../../../../../components/ui/popover';
+} from '../../../../../../components/ui/popover';
 import { format } from 'date-fns';
-import { cn } from '../../../../../lib/utils';
-import { Calendar } from '../../../../../components/ui/calendar';
+import { cn } from '../../../../../../lib/utils';
+import { Calendar } from '../../../../../../components/ui/calendar';
 import { ptBR } from 'date-fns/locale';
 
 type WorkerContractFormData<TMode extends 'add' | 'edit'> = TMode extends 'add'
@@ -219,8 +219,13 @@ export default function WorkerContractForm<TMode extends 'add' | 'edit'>({
       <form.Field
         name='startDate'
         children={(field) => (
-          <>
-            <Label htmlFor='startDate'>Previsão de Retirada</Label>
+          <div className='mb-4'>
+            <Label
+              htmlFor='startDate'
+              className='block pb-1 text-sm font-medium text-gray-700'
+            >
+              Início
+            </Label>
             <Popover>
               <PopoverTrigger asChild>
                 <Button
@@ -253,7 +258,7 @@ export default function WorkerContractForm<TMode extends 'add' | 'edit'>({
                 />
               </PopoverContent>
             </Popover>
-          </>
+          </div>
         )}
       />
 

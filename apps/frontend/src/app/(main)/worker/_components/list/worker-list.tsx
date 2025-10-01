@@ -24,6 +24,7 @@ import { useRouter } from 'next/navigation';
 import {
   columns,
   createActions,
+  createActionsSubrows, // Importar createActionsSubrows
   defaultColumn,
   SubRowComponent
 } from './worker-columns'; // Alterado para worker-columns
@@ -85,6 +86,7 @@ export function WorkerListPage({
 
   //Configurando açoes de colunas. Ações de colunas definidas no arquivo de colunas
   const columnActions = createActions(router); // Crie o objeto de ações, passando a função de navegação
+  const columnActionsSubrows = createActionsSubrows(router); // Crie o objeto de ações para subrows
 
   return (
     <div className='container mx-auto p-4'>
@@ -122,7 +124,12 @@ export function WorkerListPage({
         setPagination={setPagination}
         setSorting={setSorting}
         sorting={sorting}
-        renderSubComponent={SubRowComponent}
+        renderSubComponent={({ row }) => (
+          <SubRowComponent
+            row={row}
+            configuredActionsSubrows={columnActionsSubrows}
+          />
+        )}
         getFacetedRowModel={getFacetedRowModel()}
         getFacetedUniqueValues={getFacetedUniqueValues()}
         globalFilterFn='includesString'

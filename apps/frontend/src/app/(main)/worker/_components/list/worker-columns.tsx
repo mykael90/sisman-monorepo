@@ -8,7 +8,13 @@ import {
 } from '@tanstack/react-table';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { Edit, Trash2, ChevronRight, ChevronDown } from 'lucide-react';
+import {
+  Edit,
+  Trash2,
+  ChevronRight,
+  ChevronDown,
+  EllipsisVertical
+} from 'lucide-react';
 import { IWorkerWithRelations } from '../../worker-types'; // Alterado para IWorkerWithRelations
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { StatusBadge } from '@/components/ui/status-badge'; // Importar StatusBadge
@@ -26,6 +32,12 @@ import {
   TableRow
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger
+} from '../../../../../components/ui/popover';
+import { toast } from 'sonner';
 
 // 1. Definir as colunas com createColumnHelper
 const columnHelper = createColumnHelper<IWorkerWithRelations>(); // Alterado para IWorkerWithRelations
@@ -53,23 +65,28 @@ type ActionHandlers<TData> = {
   [key: string]: (row: Row<TData>) => void;
 };
 
+type ActionHandlersSubrows = {
+  [key: string]: (
+    contract: IWorkerWithRelations['workerContracts'][number]
+  ) => void;
+};
+
 // createActions será uma função que CRIA o objeto de ações para subrows,
 // recebendo a função de navegação.
 export const createActionsSubrows = (
   router: AppRouterInstance // Recebe a função de navegação
-): any => ({
-  onEditContract: (contract: IWorkerWithRelations['workerContracts']) => {
+): ActionHandlersSubrows => ({
+  onEditContract: (
+    contract: IWorkerWithRelations['workerContracts'][number]
+  ) => {
     console.log('Edit contract for worker-contract', contract);
-    // Certifique-se que row.original.id existe e é o identificador correto.
-    // Se seu ID estiver em outra propriedade (ex: _id, workerId), ajuste abaixo.
-    if (contract) {
-      // Navega para a rota de edição, passando o ID do trabalhador
-      // Ajuste o caminho '/admin/workers/edit/' conforme sua estrutura de rotas
-      // router.push(`worker-contract/edit/${row.original.id}`); // Alterado para 'worker/edit'
+    // Certifique-se que contract.id existe e é o identificador correto.
+    if (contract.id) {
+      // Navega para a rota de edição, passando o ID do contrato
+      // router.push(`worker-contract/edit/${contract.id}`);
     } else {
-      console.error('Worker ID is missing, cannot navigate to edit page.');
-      // Poderia também navegar para uma página de erro ou mostrar um alerta
-      throw new Error('Worker ID is missing, cannot navigate to edit page.');
+      console.error('Contract ID is missing, cannot navigate to edit page.');
+      throw new Error('Contract ID is missing, cannot navigate to edit page.');
     }
   }
 });
@@ -99,18 +116,33 @@ export const createActions = (
     console.log('Delete worker', row.original);
     // Implemente sua lógica de deleção aqui (ex: modal de confirmação, chamada de API)
   },
-  onEditContract: (row: Row<IWorkerWithRelations>) => {
-    console.log('Edit contract for worker', row.original);
-    // Certifique-se que row.original.id existe e é o identificador correto.
-    // Se seu ID estiver em outra propriedade (ex: _id, workerId), ajuste abaixo.
+  onAddContract: (row: Row<IWorkerWithRelations>) => {
+    // Alterado para IWorkerWithRelations
+    console.log('Add contract for worker', row.original);
+
+    //verificar se tem algum contrato aberto antes de iniciar um novo contrato
+    const workerContracts = row.original.workerContracts || [];
+
+    const openedContracts = workerContracts.filter(
+      (contract) => !contract.endDate
+    );
+
+    if (openedContracts.length > 0) {
+      toast.error(
+        'É necessário encerrar todos os contratos ativos para cadastrar um novo contrato.'
+      );
+
+      return;
+    }
+
     if (row.original.id) {
       // Navega para a rota de edição, passando o ID do trabalhador
       // Ajuste o caminho '/admin/workers/edit/' conforme sua estrutura de rotas
-      // router.push(`worker-contract/edit/${row.original.id}`); // Alterado para 'worker/edit'
+      router.push(`worker-contract/${row.original.id}/add`); // Alterado para 'worker/edit'
     } else {
-      console.error('Worker ID is missing, cannot navigate to edit page.');
+      console.error('Worker ID is missing, cannot navigate to add page.');
       // Poderia também navegar para uma página de erro ou mostrar um alerta
-      throw new Error('Worker ID is missing, cannot navigate to edit page.');
+      throw new Error('Worker ID is missing, cannot navigate to add page.');
     }
   }
 });
@@ -164,10 +196,6 @@ export const columns = (
       return (
         <div className='flex items-center gap-2 py-0.5'>
           <Avatar className='h-10 w-10'>
-            <AvatarImage
-              src={worker.image} // Assumindo que Worker tem uma propriedade 'image'
-              alt={nameValue} // Ex: "Nome (Login)"
-            />
             <AvatarFallback>
               {getAvatarInitials(undefined, nameValue)}
             </AvatarFallback>
@@ -251,13 +279,26 @@ export const columns = (
         >
           <Edit className='h-4 w-4' />
         </Button>
-        {/* <Button
-          variant='ghost'
-          size='icon'
-          onClick={() => configuredActions.onDelete(row)}
-        >
-          <Trash2 className='h-4 w-4 text-red-500' />
-        </Button> */}
+
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button variant='ghost' size='icon' title='Operação'>
+              <EllipsisVertical className='h-4 w-4' />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className='w-40 p-0'>
+            <div className='flex flex-col gap-2 p-0'>
+              <Button
+                variant='ghost'
+                size={'sm'}
+                onClick={() => configuredActions.onAddContract!(row)}
+              >
+                Novo Contrato
+              </Button>
+              {/* Adicione mais opções aqui conforme necessário */}
+            </div>
+          </PopoverContent>
+        </Popover>
       </div>
     )
   })
@@ -299,9 +340,11 @@ function getAvatarInitials(
 }
 
 export const SubRowComponent = ({
-  row
+  row,
+  configuredActionsSubrows
 }: {
   row: Row<IWorkerWithRelations>;
+  configuredActionsSubrows: ActionHandlersSubrows;
 }) => {
   const contracts = row.original.workerContracts || [];
 
@@ -368,10 +411,12 @@ export const SubRowComponent = ({
                   {' '}
                   <div className='flex gap-2'>
                     <Button
-                      title='Editar Colaborador'
+                      title='Editar Contrato'
                       variant='ghost'
                       size='icon'
-                      onClick={() => console.log(contract)}
+                      onClick={() =>
+                        configuredActionsSubrows.onEditContract(contract)
+                      }
                     >
                       <Edit className='h-4 w-4' />
                     </Button>
