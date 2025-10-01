@@ -1,8 +1,8 @@
-import { getSismanAccessToken } from '../../../../../lib/auth/get-access-token';
-import { getContracts } from '../../../contract/contract-actions';
-import { getWorkerSpecialties } from '../../../worker-specialty/worker-specialty-actions';
+import { getSismanAccessToken } from '../../../../../../lib/auth/get-access-token';
+import { getContracts } from '../../../../contract/contract-actions';
+import { getWorkerSpecialties } from '../../../../worker-specialty/worker-specialty-actions';
 import WorkerContractAdd from '../_components/add/worker-contract-add';
-import { showWorker } from '../../../worker/worker-actions';
+import { showWorker } from '../../../worker-actions';
 
 export default async function Page({
   params,

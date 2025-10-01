@@ -17,15 +17,15 @@ import {
   IWorkerContractRelatedData
 } from '../../../worker-contract-types';
 import { Textarea } from '@/components/ui/textarea';
-import { Label } from '../../../../../../components/ui/label';
+import { Label } from '../../../../../../../components/ui/label';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger
-} from '../../../../../../components/ui/popover';
+} from '../../../../../../../components/ui/popover';
 import { format } from 'date-fns';
-import { cn } from '../../../../../../lib/utils';
-import { Calendar } from '../../../../../../components/ui/calendar';
+import { cn } from '../../../../../../../lib/utils';
+import { Calendar } from '../../../../../../../components/ui/calendar';
 import { ptBR } from 'date-fns/locale';
 
 type WorkerContractFormData<TMode extends 'add' | 'edit'> = TMode extends 'add'

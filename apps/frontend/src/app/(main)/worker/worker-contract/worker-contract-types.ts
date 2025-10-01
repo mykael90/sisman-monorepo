@@ -1,7 +1,7 @@
 import { WorkerContract, Prisma } from '@sisman/prisma';
-import { IWorkerSpecialty } from '../worker/worker-types';
-import { IContractWithRelations } from '../contract/contract-types';
-import { ISipacUnidadeWithRelations } from '../sipac/unidade/unidade-types';
+import { IWorkerSpecialty } from '../worker-types';
+import { IContractWithRelations } from '../../contract/contract-types';
+import { ISipacUnidadeWithRelations } from '../../sipac/unidade/unidade-types';
 
 export type IWorkerContractWithRelations = Prisma.WorkerContractGetPayload<{
   include: {

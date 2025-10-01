@@ -83,7 +83,9 @@ export const createActionsSubrows = (
     // Certifique-se que contract.id existe e é o identificador correto.
     if (contract.id) {
       // Navega para a rota de edição, passando o ID do contrato
-      router.push(`worker-contract/${contract.workerId}/edit/${contract.id}`);
+      router.push(
+        `worker/worker-contract/${contract.workerId}/edit/${contract.id}`
+      );
     } else {
       console.error('Contract ID is missing, cannot navigate to edit page.');
       throw new Error('Contract ID is missing, cannot navigate to edit page.');
@@ -141,7 +143,7 @@ export const createActions = (
     if (row.original.id) {
       // Navega para a rota de edição, passando o ID do trabalhador
       // Ajuste o caminho '/admin/workers/edit/' conforme sua estrutura de rotas
-      router.push(`worker-contract/${row.original.id}/add`); // Alterado para 'worker/edit'
+      router.push(`/worker/worker-contract/${row.original.id}/add`); // Alterado para 'worker/edit'
     } else {
       console.error('Worker ID is missing, cannot navigate to add page.');
       // Poderia também navegar para uma página de erro ou mostrar um alerta

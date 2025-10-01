@@ -1,7 +1,7 @@
-import { getSismanAccessToken } from '../../../../../../lib/auth/get-access-token';
-import { getContracts } from '../../../../contract/contract-actions';
-import { getWorkerSpecialties } from '../../../../worker-specialty/worker-specialty-actions';
-import { showWorker } from '../../../../worker/worker-actions';
+import { getSismanAccessToken } from '../../../../../../../lib/auth/get-access-token';
+import { getContracts } from '../../../../../contract/contract-actions';
+import { getWorkerSpecialties } from '../../../../../worker-specialty/worker-specialty-actions';
+import { showWorker } from '../../../../worker-actions';
 import { showWorkerContract } from '../../../worker-contract-actions';
 import WorkerContractEdit from '../../_components/edit/worker-contract-edit';
 
