@@ -128,6 +128,9 @@ export const createActions = (
     );
 
     if (openedContracts.length > 0) {
+      console.log(
+        'Attempting to show toast error: "É necessário encerrar todos os contratos ativos para cadastrar um novo contrato."'
+      );
       toast.error(
         'É necessário encerrar todos os contratos ativos para cadastrar um novo contrato.'
       );
