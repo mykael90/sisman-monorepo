@@ -53,6 +53,26 @@ type ActionHandlers<TData> = {
   [key: string]: (row: Row<TData>) => void;
 };
 
+// createActions será uma função que CRIA o objeto de ações para subrows,
+// recebendo a função de navegação.
+export const createActionsSubrows = (
+  router: AppRouterInstance // Recebe a função de navegação
+): any => ({
+  onEditContract: (contract: IWorkerWithRelations['workerContracts']) => {
+    console.log('Edit contract for worker-contract', contract);
+    // Certifique-se que row.original.id existe e é o identificador correto.
+    // Se seu ID estiver em outra propriedade (ex: _id, workerId), ajuste abaixo.
+    if (contract) {
+      // Navega para a rota de edição, passando o ID do trabalhador
+      // Ajuste o caminho '/admin/workers/edit/' conforme sua estrutura de rotas
+      // router.push(`worker-contract/edit/${row.original.id}`); // Alterado para 'worker/edit'
+    } else {
+      console.error('Worker ID is missing, cannot navigate to edit page.');
+      // Poderia também navegar para uma página de erro ou mostrar um alerta
+      throw new Error('Worker ID is missing, cannot navigate to edit page.');
+    }
+  }
+});
 // createActions será uma função que CRIA o objeto de ações,
 // recebendo a função de navegação.
 export const createActions = (
@@ -78,6 +98,20 @@ export const createActions = (
     // Alterado para IWorkerWithRelations
     console.log('Delete worker', row.original);
     // Implemente sua lógica de deleção aqui (ex: modal de confirmação, chamada de API)
+  },
+  onEditContract: (row: Row<IWorkerWithRelations>) => {
+    console.log('Edit contract for worker', row.original);
+    // Certifique-se que row.original.id existe e é o identificador correto.
+    // Se seu ID estiver em outra propriedade (ex: _id, workerId), ajuste abaixo.
+    if (row.original.id) {
+      // Navega para a rota de edição, passando o ID do trabalhador
+      // Ajuste o caminho '/admin/workers/edit/' conforme sua estrutura de rotas
+      // router.push(`worker-contract/edit/${row.original.id}`); // Alterado para 'worker/edit'
+    } else {
+      console.error('Worker ID is missing, cannot navigate to edit page.');
+      // Poderia também navegar para uma página de erro ou mostrar um alerta
+      throw new Error('Worker ID is missing, cannot navigate to edit page.');
+    }
   }
 });
 
@@ -330,7 +364,26 @@ export const SubRowComponent = ({
                     status={contract.endDate ? 'Inativo' : 'Ativo'}
                   />
                 </TableCell>
-                <TableCell>{'TODO'}</TableCell>
+                <TableCell>
+                  {' '}
+                  <div className='flex gap-2'>
+                    <Button
+                      title='Editar Colaborador'
+                      variant='ghost'
+                      size='icon'
+                      onClick={() => console.log(contract)}
+                    >
+                      <Edit className='h-4 w-4' />
+                    </Button>
+                    {/* <Button
+          variant='ghost'
+          size='icon'
+          onClick={() => configuredActions.onDelete(row)}
+        >
+          <Trash2 className='h-4 w-4 text-red-500' />
+        </Button> */}
+                  </div>
+                </TableCell>
               </TableRow>
             ))
           ) : (

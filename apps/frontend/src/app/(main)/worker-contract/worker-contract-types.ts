@@ -15,7 +15,9 @@ export type IWorkerContractWithRelations = Prisma.WorkerContractGetPayload<{
 }>;
 
 export interface IWorkerContractAdd
-  extends Prisma.WorkerContractCreateManyInput {}
+  extends Prisma.WorkerContractCreateManyInput {
+  sipacUnitLocationCode: string;
+}
 
 export interface IWorkerContractEdit extends IWorkerContractAdd {
   id: number;

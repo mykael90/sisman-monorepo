@@ -30,9 +30,8 @@ export default function WorkerContractAdd({
     contractId: '',
     workerSpecialtyId: '',
     sipacUnitLocationId: '',
-    startDate: '',
-    endDate: '',
-    notes: ''
+    notes: '',
+    sipacUnitLocationCode: ''
   };
 
   const fieldLabels: Partial<Record<keyof IWorkerContractAdd, string>> = {
@@ -42,7 +41,8 @@ export default function WorkerContractAdd({
     sipacUnitLocationId: 'Unidade SIPAC',
     startDate: 'Início',
     endDate: 'Fim',
-    notes: 'Notas'
+    notes: 'Notas',
+    sipacUnitLocationCode: 'Codigo Unidade SIPAC'
   };
 
   const initialServerState: IActionResultForm<

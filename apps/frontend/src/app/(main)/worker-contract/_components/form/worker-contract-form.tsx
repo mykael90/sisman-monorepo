@@ -6,7 +6,7 @@ import {
   FormInputField
 } from '@/components/form-tanstack/form-input-fields';
 import { Button } from '@/components/ui/button';
-import { CirclePlus, Save } from 'lucide-react';
+import { CalendarIcon, CirclePlus, Save } from 'lucide-react';
 import { IActionResultForm } from '@/types/types-server-actions';
 import { FormSuccessDisplay } from '@/components/form-tanstack/form-success-display';
 import { ErrorServerForm } from '@/components/form-tanstack/error-server-form';
@@ -17,6 +17,16 @@ import {
   IWorkerContractRelatedData
 } from '../../worker-contract-types';
 import { Textarea } from '@/components/ui/textarea';
+import { Label } from '../../../../../components/ui/label';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger
+} from '../../../../../components/ui/popover';
+import { format } from 'date-fns';
+import { cn } from '../../../../../lib/utils';
+import { Calendar } from '../../../../../components/ui/calendar';
+import { ptBR } from 'date-fns/locale';
 
 type WorkerContractFormData<TMode extends 'add' | 'edit'> = TMode extends 'add'
   ? IWorkerContractAdd
@@ -78,7 +88,7 @@ export default function WorkerContractForm<TMode extends 'add' | 'edit'>({
       (baseForm) => mergeForm(baseForm, serverState ?? {}),
       [serverState]
     ),
-    validators: formSchema ? { onChange: formSchema } : undefined,
+    // validators: formSchema ? { onChange: formSchema } : undefined,
     onSubmit: async ({ value }: { value: WorkerContractFormData<TMode> }) => {
       console.log('WorkerContract Form submitted with values:', value);
       await dispatchFormAction(value);
@@ -194,17 +204,58 @@ export default function WorkerContractForm<TMode extends 'add' | 'edit'>({
         )}
       />
 
-      <form.Field name='sipacUnitLocationId'>
+      <form.Field name='sipacUnitLocationCode'>
         {(field) => (
           <FormInputField
             field={field}
-            label={fieldLabels.sipacUnitLocationId}
+            label={fieldLabels.sipacUnitLocationCode}
             type='number'
             placeholder='Digite o o codigo da unidade SIPAC'
             className='mb-4'
           />
         )}
       </form.Field>
+
+      <form.Field
+        name='startDate'
+        children={(field) => (
+          <>
+            <Label htmlFor='startDate'>Previsão de Retirada</Label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant='outline'
+                  className={cn(
+                    'w-full justify-start text-left font-normal',
+                    !field.state.value && 'text-muted-foreground'
+                  )}
+                >
+                  <CalendarIcon className='mr-2 h-4 w-4' />
+                  {field.state.value ? (
+                    format(field.state.value as any, 'PPP', {
+                      locale: ptBR
+                    })
+                  ) : (
+                    <span>Selecione uma data</span>
+                  )}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className='w-auto p-0'>
+                <Calendar
+                  mode='single'
+                  selected={
+                    field.state.value
+                      ? new Date(field.state.value as any)
+                      : undefined
+                  }
+                  onSelect={(date) => date && field.setValue(date as any)}
+                  locale={ptBR}
+                />
+              </PopoverContent>
+            </Popover>
+          </>
+        )}
+      />
 
       <form.Field name='notes'>
         {(field) => (
