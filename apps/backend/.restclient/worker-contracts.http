@@ -34,6 +34,20 @@ Authorization: Bearer {{token}}
     "contractId": 1,
     "workerSpecialtyId": 1,
     "sipacUnitLocationId": 1,
+    "sipacUnitLocationCode": 110805,
+    "startDate": "2023-01-01T00:00:00.000Z",
+    "notes": "Contrato inicial"
+}
+### POST create worker contract with sipac code
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "workerId": 299,
+    "contractId": 1,
+    "workerSpecialtyId": 1,
+    "sipacUnitLocationCode": 110805,
     "startDate": "2023-01-01T00:00:00.000Z",
     "notes": "Contrato inicial"
 }

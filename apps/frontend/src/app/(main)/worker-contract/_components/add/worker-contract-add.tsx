@@ -13,6 +13,7 @@ import { addWorkerContract } from '../../worker-contract-actions';
 import { workerContractFormSchemaAdd } from '../form/worker-contract-form-validation';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { CardWorkerSummary } from '../card-worker-summary';
 import { IWorker } from '../../../worker/worker-types';
 
 export default function WorkerContractAdd({
@@ -25,7 +26,7 @@ export default function WorkerContractAdd({
   relatedData: IWorkerContractRelatedData;
 }) {
   const defaultData: IWorkerContractAdd = {
-    workerId: 0,
+    workerId: worker.id,
     contractId: '',
     workerSpecialtyId: '',
     sipacUnitLocationId: '',
@@ -69,7 +70,9 @@ export default function WorkerContractAdd({
         subtitle='Adicionar um nova contrato para o colaborador'
       />
 
-      {JSON.stringify(worker)}
+      <div className='p-6'>
+        <CardWorkerSummary worker={worker} />
+      </div>
 
       <WorkerContractForm
         key={formKey}

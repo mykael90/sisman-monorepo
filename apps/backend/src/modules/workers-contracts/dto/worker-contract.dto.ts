@@ -145,10 +145,13 @@ export class WorkerContractCreateDto extends IntersectionType(
     'workerId',
     'contractId',
     'workerSpecialtyId',
-    'sipacUnitLocationId',
     'startDate'
   ] as const)
-) {}
+) {
+  @IsOptional()
+  @IsString()
+  sipacUnitLocationCode?: string;
+}
 
 // =================================================================
 // 4. DTOs DE ATUALIZAÇÃO (INPUT) - Derivadas com PartialType

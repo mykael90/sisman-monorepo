@@ -55,6 +55,26 @@ export class WorkersContractsService {
       `Criando vínculo de contrato de worker com dados: ${JSON.stringify(data)}`
     );
 
+    let { sipacUnitLocationId } = data;
+
+    //se sipacUnitLocationId não for enviado diretamente, procurar o id pelo sipacUnitLocationCode
+    if (!sipacUnitLocationId) {
+      const sipacUnitLocation = await prisma.sipacUnidade.findFirst({
+        select: { id: true },
+        where: {
+          codigoUnidade: data.sipacUnitLocationCode
+        }
+      });
+
+      if (!sipacUnitLocation) {
+        throw new BadRequestException(
+          `Não foi possível encontrar a unidade de lotação com o código ${data.sipacUnitLocationCode}`
+        );
+      }
+
+      sipacUnitLocationId = sipacUnitLocation.id;
+    }
+
     //verificar se ainda tem algum contrato em aberto, se tiver lançar erro e impedi a criação de um novo contrato
     const openedContracts = await prisma.workerContract.findMany({
       where: {
@@ -69,10 +89,16 @@ export class WorkersContractsService {
       );
     }
 
+    //deletando o campo que não faz parte do input
+    delete data.sipacUnitLocationCode;
+
+    const createInput: Prisma.WorkerContractUncheckedCreateInput = {
+      ...data,
+      sipacUnitLocationId
+    };
+
     try {
-      const result = await prisma.workerContract.create({
-        data
-      });
+      const result = await prisma.workerContract.create({ data: createInput });
 
       //atualizar o status do worker, deixar ativo (pode ser que ja esteja ativo, mas não tem problema o importante é garantir isso)
       await this.workersService.update(
