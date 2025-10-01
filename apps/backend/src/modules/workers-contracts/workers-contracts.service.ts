@@ -9,30 +9,79 @@ import {
   PrismaService,
   ExtendedPrismaClient
 } from 'src/shared/prisma/prisma.module';
-import { WorkerContract } from '@sisman/prisma';
+import { Prisma, WorkerContract } from '@sisman/prisma';
 import { handlePrismaError } from '../../shared/utils/prisma-error-handler';
 import {
   WorkerContractCreateDto,
   WorkerContractUpdateDto
 } from './dto/worker-contract.dto';
+import { WorkersService } from '../workers/workers.service';
 
 @Injectable()
 export class WorkersContractsService {
   private readonly logger = new Logger(WorkersContractsService.name);
 
   constructor(
+    private readonly workersService: WorkersService,
     @Inject(PrismaService) private readonly prisma: ExtendedPrismaClient
   ) {}
 
-  async create(data: WorkerContractCreateDto): Promise<WorkerContract> {
+  async create(data: WorkerContractCreateDto, tx?: Prisma.TransactionClient) {
+    try {
+      if (tx) {
+        this.logger.log(
+          `Executando a criação dentro de uma transação existente.`
+        );
+        return await this._create(data, tx as any);
+      }
+      this.logger.log(`Iniciando uma nova transação para criação.`);
+      return await this.prisma.$transaction(async (prismaTransactionClient) => {
+        return await this._create(data, prismaTransactionClient as any);
+      });
+    } catch (error) {
+      handlePrismaError(error, this.logger, 'WorkerContract', {
+        operation: 'create',
+        data
+      });
+      throw error;
+    }
+  }
+
+  private async _create(
+    data: WorkerContractCreateDto,
+    prisma: Prisma.TransactionClient
+  ): Promise<WorkerContract> {
     this.logger.log(
       `Criando vínculo de contrato de worker com dados: ${JSON.stringify(data)}`
     );
 
+    //verificar se ainda tem algum contrato em aberto, se tiver lançar erro e impedi a criação de um novo contrato
+    const openedContracts = await prisma.workerContract.findMany({
+      where: {
+        workerId: data.workerId,
+        endDate: null
+      }
+    });
+
+    if (openedContracts.length > 0) {
+      throw new BadRequestException(
+        `Para a criação de um novo contrato, não deve ter nenhum contrato aberto`
+      );
+    }
+
     try {
-      return await this.prisma.workerContract.create({
+      const result = await prisma.workerContract.create({
         data
       });
+
+      //atualizar o status do worker, deixar ativo (pode ser que ja esteja ativo, mas não tem problema o importante é garantir isso)
+      await this.workersService.update(
+        result.workerId,
+        { isActive: result.endDate === null },
+        prisma
+      );
+
+      return result;
     } catch (error) {
       handlePrismaError(error, this.logger, 'WorkerContract', {
         operation: 'create',
@@ -44,13 +93,48 @@ export class WorkersContractsService {
 
   async update(
     id: number,
-    data: WorkerContractUpdateDto
+    data: WorkerContractUpdateDto,
+    tx?: Prisma.TransactionClient
+  ) {
+    try {
+      if (tx) {
+        this.logger.log(
+          `Executando a ataulização dentro de uma transação existente.`
+        );
+        return await this._update(id, data, tx as any);
+      }
+      this.logger.log(`Iniciando uma nova transação para atualização.`);
+      return await this.prisma.$transaction(async (prismaTransactionClient) => {
+        return await this._update(id, data, prismaTransactionClient as any);
+      });
+    } catch (error) {
+      handlePrismaError(error, this.logger, 'WorkerContract', {
+        operation: 'update',
+        data
+      });
+      throw error;
+    }
+  }
+
+  private async _update(
+    id: number,
+    data: WorkerContractUpdateDto,
+    prisma: Prisma.TransactionClient
   ): Promise<WorkerContract> {
     try {
-      return await this.prisma.workerContract.update({
+      const result = await prisma.workerContract.update({
         where: { id },
         data
       });
+
+      //atualizar o status do worker se para qualquer caso se tiver encerramento ou não
+      await this.workersService.update(
+        result.workerId,
+        { isActive: result.endDate === null },
+        prisma
+      );
+
+      return result;
     } catch (error) {
       handlePrismaError(error, this.logger, 'WorkerContract', {
         operation: 'update',

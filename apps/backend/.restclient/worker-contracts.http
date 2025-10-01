@@ -24,6 +24,19 @@ Authorization: Bearer {{token}}
     "startDate": "2023-01-01T00:00:00.000Z",
     "notes": "Contrato inicial"
 }
+### POST create worker contract
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "workerId": 299,
+    "contractId": 1,
+    "workerSpecialtyId": 1,
+    "sipacUnitLocationId": 1,
+    "startDate": "2023-01-01T00:00:00.000Z",
+    "notes": "Contrato inicial"
+}
 
 ### PUT update worker contract
 # @prompt contractId
@@ -33,7 +46,7 @@ Authorization: Bearer {{token}}
 
 {
     "endDate": "2024-12-31T23:59:59.999Z",
-    "notes": "Contrato renovado"
+    "notes": "Contrato encerrado"
 }
 
 ### DELETE worker contract

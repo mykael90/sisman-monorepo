@@ -1,4 +1,9 @@
-import { IntersectionType, PartialType, PickType } from '@nestjs/swagger';
+import {
+  IntersectionType,
+  OmitType,
+  PartialType,
+  PickType
+} from '@nestjs/swagger';
 import { Prisma, Worker } from '@sisman/prisma';
 import {
   IsBoolean,
@@ -12,6 +17,12 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { UpdateMaintenanceInstance } from '../../maintenance-instances/dto/maintenance-instance.dto';
+import {
+  WorkerContractCreateDto,
+  WorkerContractResponseDto,
+  WorkerContractUpdateDto,
+  WorkerContractWithRelationsResponseDto
+} from '../../workers-contracts/dto/worker-contract.dto';
 
 // =================================================================
 // 1. "SUPER CLASSES" DE RESPOSTA (FONTE DA VERDADE)
@@ -159,7 +170,7 @@ export class WorkerWithRelationsResponseDto
    */
   @IsOptional()
   @ValidateNested({ each: true })
-  @Type(() => WorkerContractDto)
+  @Type(() => WorkerContractResponseDto)
   workerContracts?: WorkerRelationsOnly['workerContracts'];
 }
 
@@ -178,8 +189,8 @@ export class CreateWorkerWithRelationsDto extends CreateWorkerDto {
    */
   @IsOptional()
   @ValidateNested({ each: true })
-  @Type(() => CreateWorkerContractDto)
-  workerContracts?: CreateWorkerContractDto[];
+  @Type(() => WorkerContractCreateDto)
+  workerContracts?: WorkerContractCreateDto[];
 }
 
 // =================================================================
@@ -189,52 +200,13 @@ export class CreateWorkerWithRelationsDto extends CreateWorkerDto {
 export class UpdateWorkerDto extends PartialType(CreateWorkerDto) {}
 
 export class UpdateWorkerWithRelationsDto extends PartialType(
-  CreateWorkerWithRelationsDto
-) {}
-
-// =================================================================
-// DTOs AUXILIARES PARA RELAÇÕES
-// =================================================================
-
-/**
- * DTO base para WorkerContract
- */
-class WorkerContractBaseDto {
-  @IsNumber()
-  id: number;
-
-  @IsNumber()
-  workerId: number;
-
-  @IsNumber()
-  contractId: number;
-
-  @IsNumber()
-  workerSpecialtyId: number;
-
-  @IsNumber()
-  sipacUnitLocationId: number;
-
-  @IsDate()
-  start: Date;
-
+  OmitType(CreateWorkerWithRelationsDto, ['workerContracts'] as const)
+) {
+  /**
+   * Contratos do trabalhador.
+   */
   @IsOptional()
-  @IsDate()
-  end?: Date | null;
-
-  @IsOptional()
-  @IsString()
-  located?: string | null;
-
-  @IsOptional()
-  @IsString()
-  notes?: string | null;
+  @ValidateNested({ each: true })
+  @Type(() => WorkerContractUpdateDto)
+  workerContracts?: WorkerContractUpdateDto[];
 }
-
-export class WorkerContractDto extends WorkerContractBaseDto {}
-export class CreateWorkerContractDto extends PartialType(
-  WorkerContractBaseDto
-) {}
-export class UpdateWorkerContractDto extends PartialType(
-  WorkerContractBaseDto
-) {}

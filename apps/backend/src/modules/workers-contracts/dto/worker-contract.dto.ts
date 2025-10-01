@@ -3,7 +3,7 @@ import {
   IsNotEmpty,
   IsNumber,
   IsOptional,
-  IsString,
+  IsString
 } from 'class-validator';
 import { IntersectionType, PartialType, PickType } from '@nestjs/swagger';
 import { Prisma, WorkerContract } from '@sisman/prisma';
@@ -86,14 +86,16 @@ class WorkerContractBaseDto implements WorkerContract {
 // 2. DTOs DE RESPOSTA (Públicas) - Adicionam as relações aninhadas
 // =================================================================
 
+export class WorkerContractResponseDto extends WorkerContractBaseDto {}
+
 const WorkerContractRelationOnlyArgs =
   Prisma.validator<Prisma.WorkerContractDefaultArgs>()({
     include: {
       worker: true,
       contract: true,
       workerSpecialty: true,
-      sipacUnitLocation: true,
-    },
+      sipacUnitLocation: true
+    }
   });
 
 type WorkerContractRelationsOnly = Prisma.WorkerContractGetPayload<
@@ -154,6 +156,9 @@ export class WorkerContractCreateDto extends IntersectionType(
 
 export class WorkerContractUpdateDto extends PartialType(
   WorkerContractCreateDto
-) {}
+) {
+  @IsNumber()
+  id: number;
+}
 
 // ==================================================

@@ -29,7 +29,34 @@ export class WorkersService {
     workerContracts: true
   };
 
-  async create(data: CreateWorkerWithRelationsDto): Promise<Worker> {
+  async create(
+    data: CreateWorkerWithRelationsDto,
+    tx?: Prisma.TransactionClient
+  ) {
+    try {
+      if (tx) {
+        this.logger.log(
+          `Executando a criação dentro de uma transação existente.`
+        );
+        return await this._create(data, tx as any);
+      }
+      this.logger.log(`Iniciando uma nova transação para criação.`);
+      return await this.prisma.$transaction(async (prismaTransactionClient) => {
+        return await this._create(data, prismaTransactionClient as any);
+      });
+    } catch (error) {
+      handlePrismaError(error, this.logger, 'Worker', {
+        operation: 'create',
+        data
+      });
+      throw error;
+    }
+  }
+
+  private async _create(
+    data: CreateWorkerWithRelationsDto,
+    prisma: Prisma.TransactionClient
+  ): Promise<Worker> {
     this.logger.log(`Criando worker com dados: ${JSON.stringify(data)}`);
     const { workerContracts, ...restOfData } = data;
 
@@ -43,9 +70,8 @@ export class WorkersService {
               sipacUnitLocation: {
                 connect: { id: contract.sipacUnitLocationId }
               },
-              start: contract.start,
-              end: contract.end,
-              located: contract.located,
+              start: contract.startDate,
+              end: contract.endDate,
               notes: contract.notes
             }))
           }
@@ -53,7 +79,7 @@ export class WorkersService {
     };
 
     try {
-      return await this.prisma.worker.create({
+      return await prisma.worker.create({
         data: prismaCreateInput,
         include: this.includeRelations
       });
@@ -67,8 +93,34 @@ export class WorkersService {
   }
 
   async update(
+    id: number,
+    data: UpdateWorkerWithRelationsDto,
+    tx?: Prisma.TransactionClient
+  ) {
+    try {
+      if (tx) {
+        this.logger.log(
+          `Executando a ataulização dentro de uma transação existente.`
+        );
+        return await this._update(id, data, tx as any);
+      }
+      this.logger.log(`Iniciando uma nova transação para atualização.`);
+      return await this.prisma.$transaction(async (prismaTransactionClient) => {
+        return await this._update(id, data, prismaTransactionClient as any);
+      });
+    } catch (error) {
+      handlePrismaError(error, this.logger, 'Worker', {
+        operation: 'update',
+        data
+      });
+      throw error;
+    }
+  }
+
+  private async _update(
     workerId: number,
-    data: UpdateWorkerWithRelationsDto
+    data: UpdateWorkerWithRelationsDto,
+    prisma: Prisma.TransactionClient
   ): Promise<Worker> {
     const { workerContracts, ...restOfData } = data;
 
@@ -76,28 +128,34 @@ export class WorkersService {
       ...restOfData
     };
 
-    if (workerContracts) {
-      // Primeiro removemos todos os contratos existentes
-      await this.prisma.workerContract.deleteMany({
-        where: { workerId }
-      });
-
-      // Depois recriamos com os novos dados
+    if (workerContracts && workerContracts.length > 0) {
       prismaUpdateInput.workerContracts = {
-        create: workerContracts.map((contract) => ({
-          contract: { connect: { id: contract.contractId } },
-          workerSpecialty: { connect: { id: contract.workerSpecialtyId } },
-          sipacUnitLocation: { connect: { id: contract.sipacUnitLocationId } },
-          start: contract.start,
-          end: contract.end,
-          located: contract.located,
-          notes: contract.notes
+        upsert: workerContracts.map((contract) => ({
+          where: {
+            id: contract.id
+          },
+          create: {
+            contractId: contract.contractId,
+            workerSpecialtyId: contract.workerSpecialtyId,
+            sipacUnitLocationId: contract.sipacUnitLocationId,
+            startDate: contract.startDate,
+            endDate: contract.endDate,
+            notes: contract.notes
+          },
+          update: {
+            contractId: contract.contractId,
+            workerSpecialtyId: contract.workerSpecialtyId,
+            sipacUnitLocationId: contract.sipacUnitLocationId,
+            startDate: contract.startDate,
+            endDate: contract.endDate,
+            notes: contract.notes
+          }
         }))
       };
     }
 
     try {
-      return await this.prisma.worker.update({
+      return await prisma.worker.update({
         where: { id: workerId },
         data: prismaUpdateInput,
         include: this.includeRelations

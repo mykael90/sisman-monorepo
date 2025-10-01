@@ -2266,7 +2266,6 @@ model WorkerContract {
   //unidades
   sipacUnitLocation SipacUnidade @relation("unidadeLocalizacaoWorkerContract", fields: [sipacUnitLocationId], references: [id])
 
-  @@unique([workerId, contractId, workerSpecialtyId])
   @@index([contractId])
   @@index([workerSpecialtyId])
   @@index([sipacUnitLocationId])
