@@ -18,7 +18,15 @@ export class UnidadesController {
 
   //inserir um GET para retornar os registros, apenas para testes
   @Get() // GET /sipac/unidades
-  async findAll() {
+  async list() {
+    // Implemente a busca no seu banco de dados local
+    // return this.unidadesService.findAllFromDb();
+
+    return this.unidadesService.list();
+  }
+  //inserir um GET para retornar os registros, apenas para testes
+  @Get('test') // GET /sipac/unidades
+  async findAllTest() {
     // Implemente a busca no seu banco de dados local
     // return this.unidadesService.findAllFromDb();
 

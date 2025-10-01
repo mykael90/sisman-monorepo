@@ -281,10 +281,11 @@ export const SubRowComponent = ({
             <TableHead>Empresa</TableHead>
             <TableHead>Especialidade</TableHead>
             <TableHead>Unidade SIPAC</TableHead>
-            <TableHead>Data Início</TableHead>
-            <TableHead>Data Fim</TableHead>
-            <TableHead>Notas</TableHead>
+            <TableHead>Início</TableHead>
+            <TableHead>Fim</TableHead>
+            {/* <TableHead>Notas</TableHead> */}
             <TableHead>Status</TableHead>
+            <TableHead>Ações</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -309,8 +310,8 @@ export const SubRowComponent = ({
                     ? formatOnlyDateToUTC(contract.endDate as any)
                     : 'N/A'}
                 </TableCell>
-                <TableCell>{contract.notes || 'N/A'}</TableCell>
-                <TableCell>
+                {/* <TableCell>{contract.notes || 'N/A'}</TableCell> */}
+                {/* <TableCell>
                   <Badge
                     variant={
                       contract.endDate &&
@@ -323,7 +324,13 @@ export const SubRowComponent = ({
                       ? 'Inativo'
                       : 'Ativo'}
                   </Badge>
+                  </TableCell> */}
+                <TableCell>
+                  <StatusBadge
+                    status={contract.endDate ? 'Inativo' : 'Ativo'}
+                  />
                 </TableCell>
+                <TableCell>{'TODO'}</TableCell>
               </TableRow>
             ))
           ) : (

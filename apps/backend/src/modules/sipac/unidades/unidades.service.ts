@@ -591,4 +591,8 @@ export class UnidadesService {
       throw new Error(`Falha ao normalizar unidades: ${error.message}`);
     }
   }
+
+  async list() {
+    return await this.prisma.sipacUnidade.findMany();
+  }
 }
