@@ -5,7 +5,7 @@ import { showWorker } from '../../../../worker-actions';
 import { showWorkerContract } from '../../../worker-contract-actions';
 import WorkerContractEdit from '../../_components/edit/worker-contract-edit';
 
-export default async function Page({
+export default async function WorkerContractEditPage({
   params,
   isInDialog = false
 }: {

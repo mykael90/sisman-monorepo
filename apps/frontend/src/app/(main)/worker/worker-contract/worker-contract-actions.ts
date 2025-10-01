@@ -13,7 +13,7 @@ import {
 } from './worker-contract-types';
 import { handleApiAction } from '@/lib/fetch/handle-form-action-sisman';
 
-const PAGE_PATH = '/worker-contract';
+const PAGE_PATH = 'worker/worker-contract';
 const API_RELATIVE_PATH = '/worker-contract';
 
 const logger = new Logger(`${PAGE_PATH}/worker-contract-actions`);

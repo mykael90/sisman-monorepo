@@ -17,6 +17,7 @@ import { CardWorkerSummary } from '../card-worker-summary';
 import { IWorker } from '../../../../worker-types';
 import { removeUnreferencedKeys } from '../../../../../../../lib/form-utils';
 import { updateWorkerContract } from '../../../worker-contract-actions';
+import { formatOnlyDateToUTC } from '../../../../../../../lib/utils';
 
 export default function WorkerContractEdit({
   isInDialog = false,

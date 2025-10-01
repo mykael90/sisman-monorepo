@@ -4,7 +4,7 @@ import { getWorkerSpecialties } from '../../../../worker-specialty/worker-specia
 import WorkerContractAdd from '../_components/add/worker-contract-add';
 import { showWorker } from '../../../worker-actions';
 
-export default async function Page({
+export default async function WorkerContractAddPage({
   params,
   isInDialog = false
 }: {
