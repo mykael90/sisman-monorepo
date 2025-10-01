@@ -1,0 +1,43 @@
+### Variables
+@urlLocal = {{apiUrl}}/worker-contract
+@contentType = application/json
+
+### GET all worker contracts
+GET {{urlLocal}}
+Authorization: Bearer {{token}}
+
+### GET one worker contract
+# @prompt contractId
+GET {{urlLocal}}/{{contractId}}
+Authorization: Bearer {{token}}
+
+### POST create worker contract
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "workerId": 1,
+    "contractId": 1,
+    "workerSpecialtyId": 1,
+    "sipacUnitLocationId": 1,
+    "startDate": "2023-01-01T00:00:00.000Z",
+    "notes": "Contrato inicial"
+}
+
+### PUT update worker contract
+# @prompt contractId
+PUT {{urlLocal}}/{{contractId}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "endDate": "2024-12-31T23:59:59.999Z",
+    "notes": "Contrato renovado"
+}
+
+### DELETE worker contract
+# @prompt contractId
+DELETE {{urlLocal}}/{{contractId}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
