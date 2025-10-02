@@ -63,8 +63,10 @@ export class MaterialPickingOrderMapper {
       materialRequestId = materialRequest?.id;
 
       //mapeando o id de cada item do materialRequest
-      for (const item of materialRequest.items) {
-        mapRequest.set(item.requestedGlobalMaterialId, item.id);
+      if (materialRequest?.items.length > 0) {
+        for (const item of materialRequest.items) {
+          mapRequest.set(item.requestedGlobalMaterialId, item.id);
+        }
       }
     }
 
@@ -76,17 +78,20 @@ export class MaterialPickingOrderMapper {
       status,
       maintenanceRequestId,
       materialRequestId,
-      desiredPickupDate: item.intendedUse,
+      desiredPickupDate: new Date(item.intendedUse),
       requestedByUserId: item.userId,
       beCollectedByWorkerId: item.workerId,
-      createdAt: new Date(item.created_at),
       legacy_place: item.place,
+      valuePickingOrder: new Prisma.Decimal(item.value),
       items: {
         createMany: {
-          data: item.MaterialReserveItems.map((materialItem) => ({
-            materialId: String(materialItem.MaterialId),
+          data: item.MaterialReserveItems?.map((materialItem) => ({
+            globalMaterialId: String(materialItem.MaterialId),
             quantityToPick: new Prisma.Decimal(materialItem.quantity),
-            unitPrice: new Prisma.Decimal(materialItem.value)
+            unitPrice: new Prisma.Decimal(materialItem.value),
+            materialRequestItemId: mapRequest.get(
+              String(materialItem.MaterialId)
+            )
           }))
         }
       }

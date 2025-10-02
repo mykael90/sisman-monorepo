@@ -74,8 +74,10 @@ export class MaterialReceiptMapper {
       materialRequestId = materialRequest?.id;
 
       //mapeando o id de cada item do materialRequest
-      for (const item of materialRequest.items) {
-        mapRequest.set(item.requestedGlobalMaterialId, item.id);
+      if (materialRequest?.items.length > 0) {
+        for (const item of materialRequest.items) {
+          mapRequest.set(item.requestedGlobalMaterialId, item.id);
+        }
       }
     }
 

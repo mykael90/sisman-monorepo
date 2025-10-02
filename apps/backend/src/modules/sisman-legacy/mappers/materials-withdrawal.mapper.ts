@@ -93,8 +93,10 @@ export class MaterialWithdrawalMapper {
       materialRequestId = materialRequest?.id;
 
       //mapeando o id de cada item do materialRequest
-      for (const item of materialRequest.items) {
-        mapRequest.set(item.requestedGlobalMaterialId, item.id);
+      if (materialRequest?.items.length > 0) {
+        for (const item of materialRequest.items) {
+          mapRequest.set(item.requestedGlobalMaterialId, item.id);
+        }
       }
     }
 
@@ -129,7 +131,7 @@ export class MaterialWithdrawalMapper {
       legacy_place: item.place,
       items: {
         createMany: {
-          data: item.MaterialOutItems.map((materialItem) => ({
+          data: item.MaterialOutItems?.map((materialItem) => ({
             globalMaterialId: String(materialItem.MaterialId), // Convertido para string
             quantityWithdrawn: new Prisma.Decimal(materialItem.quantity),
             unitPrice: materialItem.value,
