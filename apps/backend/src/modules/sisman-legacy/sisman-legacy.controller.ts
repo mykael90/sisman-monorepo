@@ -76,4 +76,29 @@ export class SismanLegacyController {
       throw error;
     }
   }
+
+  @Post('import-worker-manual-frequencies')
+  async importWorkerManualFrequencies(
+    @Body('relativePath') relativePath: string
+  ) {
+    this.logger.log(
+      `Importar frequências manuais de trabalhadores do Sisman Legacy para o caminho: ${relativePath}`
+    );
+    try {
+      const result =
+        await this.sismanLegacyService.importAndPersistManyWorkerManualFrequency(
+          relativePath
+        );
+      this.logger.log(
+        'Importação de frequências manuais de trabalhadores concluída com sucesso.'
+      );
+      return result;
+    } catch (error) {
+      this.logger.error(
+        'Erro ao importar frequências manuais de trabalhadores do Sisman Legacy.',
+        error.stack
+      );
+      throw error;
+    }
+  }
 }

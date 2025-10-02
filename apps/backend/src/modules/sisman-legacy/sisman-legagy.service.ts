@@ -15,6 +15,8 @@ import {
 import { MaterialWithdrawalMapper } from './mappers/materials-withdrawal.mapper';
 import { MaterialWithdrawalItemMapper } from './mappers/materials-withdrawal-items.mapper';
 import { MaterialReceiptMapper } from './mappers/materials-receipt.mapper';
+import { WorkerManualFrequencyMapper } from './mappers/workers-manual-frequencies.mapper';
+import { SismanLegacyWorkerManualFrequencyResponse } from './sisman-legacy-api.interfaces';
 
 export interface FailedImport {
   id: number | string;
@@ -35,6 +37,7 @@ export class SismanLegacyService {
     private readonly sismanLegacyHttp: SismanLegacyApiService,
     private readonly materialWithdrawalMapper: MaterialWithdrawalMapper,
     private readonly materialReceiptMapper: MaterialReceiptMapper,
+    private readonly workerManualFrequencyMapper: WorkerManualFrequencyMapper,
     @Inject(PrismaService) private readonly prisma: ExtendedPrismaClient
   ) {}
 
@@ -216,6 +219,59 @@ export class SismanLegacyService {
 
     this.logger.log(
       `Importação de entradas concluída. Processados: ${result.totalProcessed}, Sucesso: ${result.successful}, Falhas: ${result.failed}.`
+    );
+
+    return result;
+  }
+
+  async importAndPersistManyWorkerManualFrequency(
+    relativePath: string
+  ): Promise<SyncResult> {
+    this.logger.log(
+      `Iniciando importação de frequências manuais de trabalhadores de: ${relativePath}`
+    );
+    const sismanLegacyWorkerManualFrequencies: SismanLegacyWorkerManualFrequencyResponse[] =
+      await this.testFetchSismanLegacy(relativePath);
+
+    let successful = 0;
+    const failedItems: FailedImport[] = [];
+
+    if (sismanLegacyWorkerManualFrequencies.length === 0) {
+      this.logger.log(
+        'Nenhuma frequência manual de trabalhador para importar.'
+      );
+      return { totalProcessed: 0, successful: 0, failed: [] };
+    }
+
+    const createDtos = await Promise.all(
+      sismanLegacyWorkerManualFrequencies.map(
+        async (item) => await this.workerManualFrequencyMapper.toCreateDto(item)
+      )
+    );
+
+    for (const dto of createDtos) {
+      try {
+        await this.prisma.workerManualFrequency.create({ data: dto });
+        successful++;
+      } catch (error: any) {
+        failedItems.push({
+          id: (dto as any).workerId || 'unknown_id',
+          error: error.message
+        });
+      }
+    }
+
+    const result: SyncResult = {
+      totalProcessed: sismanLegacyWorkerManualFrequencies.length,
+      successful,
+      failed:
+        failedItems.length > 0
+          ? failedItems
+          : sismanLegacyWorkerManualFrequencies.length - successful
+    };
+
+    this.logger.log(
+      `Importação de frequências manuais de trabalhadores concluída. Processados: ${result.totalProcessed}, Sucesso: ${result.successful}, Falhas: ${result.failed}.`
     );
 
     return result;
