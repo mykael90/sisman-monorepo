@@ -1,0 +1,43 @@
+### Variables
+@urlLocal = {{apiUrl}}/worker-manual-frequency
+@contentType = application/json
+
+### GET all worker manual frequencies
+GET {{urlLocal}}
+Authorization: Bearer {{token}}
+
+### GET one worker manual frequency
+# @prompt workerManualFrequencyId
+GET {{urlLocal}}/{{workerManualFrequencyId}}
+Authorization: Bearer {{token}}
+
+### POST create worker manual frequency
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "workerId": 1,
+    "date": "2023-10-27T10:00:00.000Z",
+    "hours": 8,
+    "workerManualFrequencyTypeId": 1,
+    "notes": "Trabalho extra no projeto X.",
+    "userId": 1
+}
+
+### PUT update worker manual frequency
+# @prompt workerManualFrequencyId
+PUT {{urlLocal}}/{{workerManualFrequencyId}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "hours": 9,
+    "notes": "Trabalho extra no projeto Y."
+}
+
+### DELETE worker manual frequency
+# @prompt workerManualFrequencyId
+DELETE {{urlLocal}}/{{workerManualFrequencyId}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}

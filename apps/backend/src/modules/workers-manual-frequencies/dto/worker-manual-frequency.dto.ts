@@ -21,6 +21,7 @@ import {
  */
 
 class WorkerManualFrequencyBaseDto implements WorkerManualFrequency {
+  id: number;
   /**
    * ID do trabalhador associado à frequência manual.
    * @example 1

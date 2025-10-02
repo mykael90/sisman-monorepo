@@ -54,6 +54,7 @@ import sismanLegacyApiConfig from './config/sisman-legacy-api.config';
 import { SismanLegacyModule } from './modules/sisman-legacy/sisman-legacy.module';
 import { WorkersSpecialtiesModule } from './modules/workers-specialties/workers-specialties.module';
 import { WorkersContractsModule } from './modules/workers-contracts/workers-contracts.module';
+import { WorkersManualFrequenciesModule } from './modules/workers-manual-frequencies/workers-manual-frequencies.module';
 
 @Module({
   imports: [
@@ -122,7 +123,8 @@ import { WorkersContractsModule } from './modules/workers-contracts/workers-cont
     ContractsModule,
     ContractProvidersModule,
     WorkersSpecialtiesModule,
-    WorkersContractsModule
+    WorkersContractsModule,
+    WorkersManualFrequenciesModule
   ],
   controllers: [AppController],
   providers: [

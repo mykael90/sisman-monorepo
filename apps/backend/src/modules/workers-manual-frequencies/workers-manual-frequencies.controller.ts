@@ -6,7 +6,6 @@ import {
   HttpCode,
   HttpStatus,
   Param,
-  ParseDatePipe,
   ParseIntPipe,
   Post,
   Put,
@@ -14,6 +13,7 @@ import {
 } from '@nestjs/common';
 
 import { WorkersManualFrequenciesService } from './workers-manual-frequencies.service';
+import { CustomParseDatePipe } from '../../shared/pipes/parse-date.pipe';
 import { Roles } from 'src/shared/decorators/roles.decorator';
 import { Role } from 'src/shared/enums/role.enum';
 import { RoleGuard } from 'src/shared/auth/guards/role.guard';
@@ -96,7 +96,7 @@ export class WorkersManualFrequenciesController {
   })
   async show(
     @Param('workerId', ParseIntPipe) workerId: number,
-    @Param('date', ParseDatePipe) date: Date
+    @Param('date', CustomParseDatePipe) date: Date
   ) {
     return this.workersManualFrequenciesService.show(workerId, date);
   }
@@ -128,7 +128,7 @@ export class WorkersManualFrequenciesController {
   })
   async update(
     @Param('workerId', ParseIntPipe) workerId: number,
-    @Param('date', ParseDatePipe) date: Date,
+    @Param('date', CustomParseDatePipe) date: Date,
     @Body() data: WorkerManualFrequencyUpdateDto
   ) {
     return this.workersManualFrequenciesService.update(workerId, date, data);
@@ -152,7 +152,7 @@ export class WorkersManualFrequenciesController {
   })
   async delete(
     @Param('workerId', ParseIntPipe) workerId: number,
-    @Param('date', ParseDatePipe) date: Date
+    @Param('date', CustomParseDatePipe) date: Date
   ): Promise<void> {
     await this.workersManualFrequenciesService.delete(workerId, date);
   }

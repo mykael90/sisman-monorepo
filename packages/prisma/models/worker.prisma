@@ -117,6 +117,7 @@ model WorkerContract {
 }
 
 model WorkerManualFrequency {
+    id                          Int                       @id @default(autoincrement())
     workerId                    Int
     worker                      Worker                    @relation(fields: [workerId], references: [id])
     date                        DateTime                  @db.Date
@@ -129,13 +130,13 @@ model WorkerManualFrequency {
     createdAt                   DateTime                  @default(now()) @db.Timestamp(0)
     updatedAt                   DateTime                  @updatedAt @db.Timestamp(0)
 
-    @@id([workerId, date])
+    @@unique([workerId, date])
     @@map("workers_manual_frequencies")
 }
 
 model WorkerManualFrequencyType {
     id                    Int                     @id @default(autoincrement())
-    type                  String                  @unique
+    type                  String                  
     workerManualFrequency WorkerManualFrequency[]
 
     @@map("workers_manual_frequency_types")

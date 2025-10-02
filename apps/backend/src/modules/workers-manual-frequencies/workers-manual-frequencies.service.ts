@@ -9,7 +9,7 @@ import {
   PrismaService,
   ExtendedPrismaClient
 } from 'src/shared/prisma/prisma.module';
-import { WorkerManualFrequency } from '@sisman/prisma';
+import { Prisma, WorkerManualFrequency } from '@sisman/prisma';
 import { handlePrismaError } from '../../shared/utils/prisma-error-handler';
 import {
   WorkerManualFrequencyCreateDto,
@@ -31,9 +31,20 @@ export class WorkersManualFrequenciesService {
       `Criando frequência manual com dados: ${JSON.stringify(data)}`
     );
 
+    const createInput: Prisma.WorkerManualFrequencyUncheckedCreateInput = {
+      workerId: data.workerId,
+      date: data.date,
+      hours: data.hours,
+      workerManualFrequencyTypeId: data.workerManualFrequencyTypeId,
+      notes: data.notes,
+      userId: data.userId
+    };
+
+    this.logger.log(`Input para Prisma: ${JSON.stringify(createInput)}`);
+
     try {
       return await this.prisma.workerManualFrequency.create({
-        data
+        data: createInput
       });
     } catch (error) {
       handlePrismaError(error, this.logger, 'WorkerManualFrequency', {
