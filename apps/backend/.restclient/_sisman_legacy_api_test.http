@@ -28,6 +28,11 @@ Authorization: Bearer {{authToken}}
 
 ### GET example
 @authToken = {{login.response.body.token}}
+GET {{urlSismanLegacy}}/materials/reserve/actives
+Authorization: Bearer {{authToken}}
+
+### GET example
+@authToken = {{login.response.body.token}}
 GET {{urlSismanLegacy}}/users
 Authorization: Bearer {{authToken}}
 

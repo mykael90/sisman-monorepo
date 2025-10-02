@@ -8,6 +8,7 @@ import { MaterialWithdrawalMapper } from './mappers/materials-withdrawal.mapper'
 import { MaterialWithdrawalsModule } from '../material-withdrawals/material-withdrawals.module';
 import { MaterialReceiptsModule } from '../material-receipts/material-receipts.module';
 import { MaterialReceiptMapper } from './mappers/materials-receipt.mapper';
+import { WorkerManualFrequencyMapper } from './mappers/workers-manual-frequencies.mapper';
 // import { UnidadesModule } from './unidades/unidades.module'; // Exemplo
 
 @Module({
@@ -32,7 +33,8 @@ import { MaterialReceiptMapper } from './mappers/materials-receipt.mapper';
     SismanLegacyApiService,
     SismanLegacyService,
     MaterialWithdrawalMapper,
-    MaterialReceiptMapper
+    MaterialReceiptMapper,
+    WorkerManualFrequencyMapper
   ], // Logger pode ser útil aqui também
   exports: [SismanLegacyApiService, SismanLegacyService] // Exporta para uso nos submódulos
 })

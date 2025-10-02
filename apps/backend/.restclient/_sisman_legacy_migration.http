@@ -43,3 +43,23 @@ POST {{urlLocal}}/import-materials-in
 Content-Type: {{contentType}}
 
 {"relativePath":"materials/in/?startDate=2025-05-20&endDate=2025-05-20"}
+
+### GET material reserves
+POST {{urlLocal}}/test-fetch
+Content-Type: {{contentType}}
+
+{"relativePath":"materials/internal/listreserves"}
+
+### GET manual frequencies workers
+POST {{urlLocal}}/test-fetch
+Content-Type: {{contentType}}
+
+{"relativePath":"workersmanualfrequencies/items/all"}
+
+### Importação manual frequencies workers
+POST {{urlLocal}}/import-worker-manual-frequencies
+Content-Type: {{contentType}}
+
+{"relativePath":"workersmanualfrequencies/items/all"}
+
+
