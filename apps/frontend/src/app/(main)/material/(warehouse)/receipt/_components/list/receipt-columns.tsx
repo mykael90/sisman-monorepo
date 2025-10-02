@@ -34,6 +34,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { useMemo } from 'react';
 import { Prosto_One } from 'next/font/google';
+import { formatCodigoUnidade } from '../../../../../../../lib/utils';
 
 const columnHelper = createColumnHelper<IMaterialReceiptWithRelations>();
 
@@ -195,7 +196,10 @@ export const columns = (
   columnHelper.accessor(
     (row) =>
       row.materialRequest?.sipacUnitCostId
-        ? `${row.materialRequest?.sipacUnitCost?.codigoUnidade.replace(/(\d{2})(?=\d)/g, '$1.')} ${row.materialRequest?.sipacUnitCost?.sigla}`
+        ? formatCodigoUnidade(
+            row.materialRequest?.sipacUnitCost?.codigoUnidade,
+            row.materialRequest?.sipacUnitCost?.sigla
+          )
         : 'N/A',
     {
       id: 'unitCostSipac',

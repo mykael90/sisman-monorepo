@@ -8,7 +8,7 @@ export default async function Page({
 }) {
   return (
     <Modal>
-      <div className='max-w-3xl'>
+      <div className='sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-3xl'>
         <WorkerContractEditPage params={params} isInDialog={true} />
       </div>
     </Modal>

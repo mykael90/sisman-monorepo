@@ -21,7 +21,9 @@ import { StatusBadge } from '@/components/ui/status-badge'; // Importar StatusBa
 import {
   calculateAge,
   formatAndMaskCPF,
-  getDateUTC
+  formatCodigoUnidade,
+  getDateUTC,
+  maskPhoneInput
 } from '../../../../../lib/utils';
 import {
   Table,
@@ -257,7 +259,8 @@ export const columns = (
     header: 'Telefone',
     size: 100,
     enableResizing: false,
-    cell: (props) => props.getValue()
+    cell: (props) =>
+      props.getValue() ? maskPhoneInput(props.getValue()) : 'indefinido'
   }),
   columnHelper.accessor((row) => (row.isActive ? 'Ativo' : 'Inativo'), {
     header: 'Status',
@@ -388,7 +391,10 @@ export const SubRowComponent = ({
                 </TableCell>
                 <TableCell>{contract.workerSpecialty?.name || 'N/A'}</TableCell>
                 <TableCell>
-                  {contract.sipacUnitLocation?.nomeUnidade || 'N/A'}
+                  {formatCodigoUnidade(
+                    contract.sipacUnitLocation.codigoUnidade,
+                    contract.sipacUnitLocation.sigla
+                  )}
                 </TableCell>
                 <TableCell>
                   {contract.startDate

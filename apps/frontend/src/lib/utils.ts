@@ -211,3 +211,13 @@ export const maskPhoneInput = (value: string): string => {
 
   return maskedValue;
 };
+
+export function formatCodigoUnidade(
+  codigoUnidade?: string,
+  sigla?: string | null
+): string {
+  if (!codigoUnidade && !sigla) return 'indefinido';
+
+  const formattedCodigo = codigoUnidade?.replace(/(\d{2})(?=\d)/g, '$1.');
+  return `${formattedCodigo} ${sigla}`;
+}

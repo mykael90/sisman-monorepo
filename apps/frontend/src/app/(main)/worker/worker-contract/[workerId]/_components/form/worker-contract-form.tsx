@@ -209,7 +209,7 @@ export default function WorkerContractForm<TMode extends 'add' | 'edit'>({
           <FormInputField
             field={field}
             label={fieldLabels.sipacUnitLocationCode}
-            type='number'
+            type='text'
             placeholder='Digite o o codigo da unidade SIPAC'
             className='mb-4'
           />
