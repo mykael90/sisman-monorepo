@@ -48,7 +48,13 @@ Content-Type: {{contentType}}
 POST {{urlLocal}}/test-fetch
 Content-Type: {{contentType}}
 
-{"relativePath":"materials/internal/listreserves"}
+{"relativePath":"materials/reserve/actives"}
+
+### Importação de materials reserve (junto com items aninhados)
+POST {{urlLocal}}/import-materials-reserve
+Content-Type: {{contentType}}
+
+{"relativePath":"materials/reserve/actives"}
 
 ### GET manual frequencies workers
 POST {{urlLocal}}/test-fetch

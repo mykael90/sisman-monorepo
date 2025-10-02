@@ -15,8 +15,12 @@ import {
 import { MaterialWithdrawalMapper } from './mappers/materials-withdrawal.mapper';
 import { MaterialWithdrawalItemMapper } from './mappers/materials-withdrawal-items.mapper';
 import { MaterialReceiptMapper } from './mappers/materials-receipt.mapper';
+import { MaterialPickingOrderMapper } from './mappers/materials-picking-order.mapper';
 import { WorkerManualFrequencyMapper } from './mappers/workers-manual-frequencies.mapper';
-import { SismanLegacyWorkerManualFrequencyResponse } from './sisman-legacy-api.interfaces';
+import {
+  SismanLegacyWorkerManualFrequencyResponse,
+  SismanLegacyMaterialReserve
+} from './sisman-legacy-api.interfaces';
 
 export interface FailedImport {
   id: number | string;
@@ -37,6 +41,7 @@ export class SismanLegacyService {
     private readonly sismanLegacyHttp: SismanLegacyApiService,
     private readonly materialWithdrawalMapper: MaterialWithdrawalMapper,
     private readonly materialReceiptMapper: MaterialReceiptMapper,
+    private readonly materialPickingOrderMapper: MaterialPickingOrderMapper,
     private readonly workerManualFrequencyMapper: WorkerManualFrequencyMapper,
     @Inject(PrismaService) private readonly prisma: ExtendedPrismaClient
   ) {}
@@ -272,6 +277,57 @@ export class SismanLegacyService {
 
     this.logger.log(
       `Importação de frequências manuais de trabalhadores concluída. Processados: ${result.totalProcessed}, Sucesso: ${result.successful}, Falhas: ${result.failed}.`
+    );
+
+    return result;
+  }
+
+  async importAndPersistManyMaterialsReserve(
+    relativePath: string
+  ): Promise<SyncResult> {
+    this.logger.log(
+      `Iniciando importação de reservas de material de: ${relativePath}`
+    );
+    const sismanLegacyMaterialReserve: SismanLegacyMaterialReserve[] =
+      await this.testFetchSismanLegacy(relativePath);
+
+    let successful = 0;
+    const failedItems: FailedImport[] = [];
+
+    if (sismanLegacyMaterialReserve.length === 0) {
+      this.logger.log('Nenhum item de reserva de material para importar.');
+      return { totalProcessed: 0, successful: 0, failed: [] };
+    }
+
+    const createDtos = await Promise.all(
+      sismanLegacyMaterialReserve.map(
+        async (item) => await this.materialPickingOrderMapper.toCreateDto(item)
+      )
+    );
+
+    for (const dto of createDtos) {
+      try {
+        await this.prisma.materialPickingOrder.create({ data: dto });
+        successful++;
+      } catch (error: any) {
+        failedItems.push({
+          id: (dto as any).id || 'unknown_id',
+          error: error.message
+        });
+      }
+    }
+
+    const result: SyncResult = {
+      totalProcessed: sismanLegacyMaterialReserve.length,
+      successful,
+      failed:
+        failedItems.length > 0
+          ? failedItems
+          : sismanLegacyMaterialReserve.length - successful
+    };
+
+    this.logger.log(
+      `Importação de reservas de material concluída. Processados: ${result.totalProcessed}, Sucesso: ${result.successful}, Falhas: ${result.failed}.`
     );
 
     return result;

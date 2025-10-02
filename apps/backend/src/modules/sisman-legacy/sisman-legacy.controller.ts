@@ -101,4 +101,27 @@ export class SismanLegacyController {
       throw error;
     }
   }
+
+  @Post('import-materials-reserve')
+  async importMaterialsReserve(@Body('relativePath') relativePath: string) {
+    this.logger.log(
+      `Importar reservas de material do Sisman Legacy para o caminho: ${relativePath}`
+    );
+    try {
+      const result =
+        await this.sismanLegacyService.importAndPersistManyMaterialsReserve(
+          relativePath
+        );
+      this.logger.log(
+        'Importação de reservas de material concluída com sucesso.'
+      );
+      return result;
+    } catch (error) {
+      this.logger.error(
+        'Erro ao importar reservas de material do Sisman Legacy.',
+        error.stack
+      );
+      throw error;
+    }
+  }
 }
