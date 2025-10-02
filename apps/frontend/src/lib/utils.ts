@@ -1,5 +1,12 @@
 import { type ClassValue, clsx } from 'clsx';
-import { differenceInYears, parseISO, parse, isValid, format } from 'date-fns';
+import {
+  differenceInYears,
+  parseISO,
+  parse,
+  isValid,
+  format,
+  interval
+} from 'date-fns';
 import { twMerge } from 'tailwind-merge';
 import { formatInTimeZone } from 'date-fns-tz';
 
@@ -137,6 +144,18 @@ export function formatOnlyDateToUTC(
   );
 
   return formattedDate;
+}
+
+export function getDateUTC(dateString: string) {
+  const dateObject = new Date(dateString);
+
+  const year = dateObject.getUTCFullYear();
+  const month = dateObject.getUTCMonth();
+  const day = dateObject.getUTCDate();
+
+  const dateWithoutTime = new Date(year, month, day);
+
+  return dateWithoutTime;
 }
 
 /**

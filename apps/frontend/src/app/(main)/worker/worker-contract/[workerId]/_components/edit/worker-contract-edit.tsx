@@ -17,7 +17,7 @@ import { CardWorkerSummary } from '../card-worker-summary';
 import { IWorker } from '../../../../worker-types';
 import { removeUnreferencedKeys } from '../../../../../../../lib/form-utils';
 import { updateWorkerContract } from '../../../worker-contract-actions';
-import { formatOnlyDateToUTC } from '../../../../../../../lib/utils';
+import { getDateUTC } from '../../../../../../../lib/utils';
 
 export default function WorkerContractEdit({
   isInDialog = false,
@@ -46,7 +46,9 @@ export default function WorkerContractEdit({
     ...removeUnreferencedKeys(initialWorkerContract, fieldLabels),
     sipacUnitLocationCode:
       initialWorkerContract.sipacUnitLocation?.codigoUnidade || '',
-    sipacUnitLocationId: ''
+    sipacUnitLocationId: '',
+    startDate: getDateUTC(initialWorkerContract.startDate as any),
+    endDate: getDateUTC(initialWorkerContract.endDate as any)
   };
 
   const initialServerState: IActionResultForm<

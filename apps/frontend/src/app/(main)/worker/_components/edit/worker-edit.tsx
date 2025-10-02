@@ -9,7 +9,8 @@ import { IActionResultForm } from '../../../../../types/types-server-actions';
 import WorkerForm from '../form/worker-form';
 import { Save, UserPlus } from 'lucide-react';
 import FormAddHeader from '../../../../../components/form-tanstack/form-add-header';
-import { formatOnlyDateToUTC } from '../../../../../lib/utils';
+import { getDateUTC } from '../../../../../lib/utils';
+import { format } from 'date-fns';
 
 export default function WorkerEdit({
   initialWorker,
@@ -33,8 +34,9 @@ export default function WorkerEdit({
 
   const defaultData = removeUnreferencedKeys(initialWorker, fieldLabels);
 
-  defaultData.birthdate = formatOnlyDateToUTC(
-    defaultData.birthdate as any
+  defaultData.birthdate = format(
+    getDateUTC(defaultData.birthdate as any),
+    'yyyy-MM-dd'
   ) as any;
 
   const initialServerState: IActionResultForm<IWorkerEdit, IWorker> = {

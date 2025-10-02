@@ -21,7 +21,7 @@ import { StatusBadge } from '@/components/ui/status-badge'; // Importar StatusBa
 import {
   calculateAge,
   formatAndMaskCPF,
-  formatOnlyDateToUTC
+  getDateUTC
 } from '../../../../../lib/utils';
 import {
   Table,
@@ -234,7 +234,15 @@ export const columns = (
     size: 100,
     enableResizing: false,
     cell: (props) => {
-      return formatOnlyDateToUTC(props.getValue());
+      if (!props.getValue()) {
+        return 'indefinido';
+      }
+      const onlyUTCDate = getDateUTC(props.getValue());
+      return onlyUTCDate.toLocaleDateString('pt-BR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+      });
     }
   }),
   columnHelper.accessor('email', {
@@ -384,12 +392,12 @@ export const SubRowComponent = ({
                 </TableCell>
                 <TableCell>
                   {contract.startDate
-                    ? formatOnlyDateToUTC(contract.startDate as any)
+                    ? getDateUTC(contract.startDate as any).toLocaleDateString()
                     : 'N/A'}
                 </TableCell>
                 <TableCell>
                   {contract.endDate
-                    ? formatOnlyDateToUTC(contract.endDate as any)
+                    ? getDateUTC(contract.endDate as any).toLocaleDateString()
                     : 'N/A'}
                 </TableCell>
                 {/* <TableCell>{contract.notes || 'N/A'}</TableCell> */}

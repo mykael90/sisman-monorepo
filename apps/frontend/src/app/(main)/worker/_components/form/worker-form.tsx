@@ -244,11 +244,12 @@ export default function WorkerForm<TMode extends 'add' | 'edit'>({
 
               return (
                 <FormInputField
+                  type='date'
                   field={field}
                   label={fieldLabels.birthdate}
                   placeholder='dd/MM/yyyy'
                   className='mb-4'
-                  onValueBlurParser={handleDateInput}
+                  // onValueBlurParser={handleDateInput}
                 />
               );
             }}

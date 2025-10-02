@@ -47,17 +47,7 @@ export const workerFormSchemaAdd = z
       .refine((val) => val.length >= 10 && val.length <= 11, {
         message: 'Telefone deve ter 10 ou 11 dígitos'
       }),
-    birthdate: z
-      .string()
-      .min(1, 'Data de nascimento é obrigatória')
-      .regex(
-        /^(\d{2})\/(\d{2})\/(\d{4})$/,
-        'Data de nascimento deve estar no formato dd/MM/yyyy'
-      )
-      .transform((val) => {
-        const [day, month, year] = val.split('/');
-        return `${year}-${month}-${day}`;
-      }),
+    birthdate: z.string().min(1, 'Data de nascimento é obrigatória'),
     maintenanceInstanceId: z.number().optional().nullable()
   })
   .passthrough();
@@ -105,17 +95,7 @@ export const workerFormSchemaEdit = z
       .refine((val) => val.length >= 10 && val.length <= 11, {
         message: 'Telefone deve ter 10 ou 11 dígitos'
       }),
-    birthdate: z
-      .string()
-      .min(1, 'Data de nascimento é obrigatória')
-      .regex(
-        /^(\d{2})\/(\d{2})\/(\d{4})$/,
-        'Data de nascimento deve estar no formato dd/MM/yyyy'
-      )
-      .transform((val) => {
-        const [day, month, year] = val.split('/');
-        return `${year}-${month}-${day}`;
-      }),
+    birthdate: z.string().min(1, 'Data de nascimento é obrigatória'),
     maintenanceInstanceId: z.number().optional().nullable(),
     isActive: z.boolean()
   })
