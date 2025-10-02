@@ -9,12 +9,15 @@ import { MaterialWithdrawalsModule } from '../material-withdrawals/material-with
 import { MaterialReceiptsModule } from '../material-receipts/material-receipts.module';
 import { MaterialReceiptMapper } from './mappers/materials-receipt.mapper';
 import { WorkerManualFrequencyMapper } from './mappers/workers-manual-frequencies.mapper';
+import { MaterialPickingOrderMapper } from './mappers/materials-picking-order.mapper';
+import { MaterialPickingOrdersModule } from '../material-picking-orders/material-picking-orders.module';
 // import { UnidadesModule } from './unidades/unidades.module'; // Exemplo
 
 @Module({
   imports: [
     MaterialWithdrawalsModule,
     MaterialReceiptsModule,
+    MaterialPickingOrdersModule,
     HttpModule.registerAsync({
       // Configuração assíncrona do HttpModule
       imports: [ConfigModule], // Importa ConfigModule para usar ConfigService
@@ -34,7 +37,8 @@ import { WorkerManualFrequencyMapper } from './mappers/workers-manual-frequencie
     SismanLegacyService,
     MaterialWithdrawalMapper,
     MaterialReceiptMapper,
-    WorkerManualFrequencyMapper
+    WorkerManualFrequencyMapper,
+    MaterialPickingOrderMapper
   ], // Logger pode ser útil aqui também
   exports: [SismanLegacyApiService, SismanLegacyService] // Exporta para uso nos submódulos
 })

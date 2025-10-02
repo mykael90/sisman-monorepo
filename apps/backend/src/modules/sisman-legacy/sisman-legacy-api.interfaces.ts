@@ -135,3 +135,36 @@ export interface SismanLegacyWorkerManualFrequencyResponse {
   WorkerManualfrequencytypeId: number;
   WorkerManualfrequency: SismanLegacyWorkerManualfrequency;
 }
+
+export interface SismanLegacyMaterialReserveItem {
+  quantity: number;
+  value: number;
+  MaterialId: number;
+  MaterialReserveId: number;
+}
+
+export interface SismanLegacyMaterialReserve {
+  id: number;
+  reqMaintenance: string | null;
+  reqMaterial: string | null;
+  userId: number;
+  authorizedBy: number;
+  workerId: number;
+  campusId: number | null;
+  intendedUse: string;
+  separatedAt: string | null;
+  withdrawnAt: string | null;
+  canceledAt: string | null;
+  value: number;
+  propertyId: number | null;
+  buildingId: number | null;
+  place: string;
+  obs: string | null;
+  created_at: string;
+  UserId: number;
+  WorkerId: number;
+  MaterialReserveItems: SismanLegacyMaterialReserveItem[];
+}
+
+export type SismanLegacyMaterialReserveResponse =
+  SismanLegacyMaterialReserve[];
