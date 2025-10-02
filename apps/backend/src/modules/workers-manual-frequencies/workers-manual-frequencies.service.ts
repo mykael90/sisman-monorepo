@@ -56,19 +56,18 @@ export class WorkersManualFrequenciesService {
   }
 
   async update(
-    workerId: number,
-    date: Date,
+    id: number,
     data: WorkerManualFrequencyUpdateDto
   ): Promise<WorkerManualFrequency> {
     try {
       return await this.prisma.workerManualFrequency.update({
-        where: { workerId_date: { workerId, date } },
+        where: { id },
         data
       });
     } catch (error) {
       handlePrismaError(error, this.logger, 'WorkerManualFrequency', {
         operation: 'update',
-        id: workerId,
+        id,
         data
       });
       throw error;
@@ -79,10 +78,10 @@ export class WorkersManualFrequenciesService {
     return await this.prisma.workerManualFrequency.findMany();
   }
 
-  async show(workerId: number, date: Date): Promise<WorkerManualFrequency> {
-    await this.exists(workerId, date);
+  async show(id: number): Promise<WorkerManualFrequency> {
+    await this.exists(id);
     return await this.prisma.workerManualFrequency.findUnique({
-      where: { workerId_date: { workerId, date } },
+      where: { id },
       include: {
         worker: true,
         workerManualFrequencyType: true,
@@ -91,22 +90,21 @@ export class WorkersManualFrequenciesService {
     });
   }
 
-  async delete(workerId: number, date: Date): Promise<void> {
-    await this.exists(workerId, date);
+  async delete(id: number): Promise<void> {
+    await this.exists(id);
     await this.prisma.workerManualFrequency.delete({
-      where: { workerId_date: { workerId, date } }
+      where: { id }
     });
   }
 
-  async exists(workerId: number, date: Date): Promise<void> {
+  async exists(id: number): Promise<void> {
     if (
       !(await this.prisma.workerManualFrequency.count({
-        where: { workerId: workerId, date: date }
+        where: { id }
       }))
-    ) {
+    )
       throw new NotFoundException(
-        `WorkerManualFrequency ${workerId} and ${date} not found`
+        `WorkerManualFrequency with id ${id} not found`
       );
-    }
   }
 }

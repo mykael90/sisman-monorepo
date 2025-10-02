@@ -78,7 +78,7 @@ export class WorkersManualFrequenciesController {
     return this.workersManualFrequenciesService.list();
   }
 
-  @Get(':workerId/:date')
+  @Get(':id')
   @ApiEndpointSwagger({
     summary: 'Buscar frequência manual por ID',
     description: 'Retorna uma frequência manual específica pelo seu ID.',
@@ -94,14 +94,11 @@ export class WorkersManualFrequenciesController {
       }
     ]
   })
-  async show(
-    @Param('workerId', ParseIntPipe) workerId: number,
-    @Param('date', CustomParseDatePipe) date: Date
-  ) {
-    return this.workersManualFrequenciesService.show(workerId, date);
+  async show(@Param('id', ParseIntPipe) id: number) {
+    return this.workersManualFrequenciesService.show(id);
   }
 
-  @Put(':workerId/:date')
+  @Put(':id')
   @ApiEndpointSwagger({
     summary: 'Atualizar frequência manual',
     description:
@@ -127,14 +124,13 @@ export class WorkersManualFrequenciesController {
     ]
   })
   async update(
-    @Param('workerId', ParseIntPipe) workerId: number,
-    @Param('date', CustomParseDatePipe) date: Date,
+    @Param('id', ParseIntPipe) id: number,
     @Body() data: WorkerManualFrequencyUpdateDto
   ) {
-    return this.workersManualFrequenciesService.update(workerId, date, data);
+    return this.workersManualFrequenciesService.update(id, data);
   }
 
-  @Delete(':workerId/:date')
+  @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiEndpointSwagger({
     summary: 'Deletar frequência manual',
@@ -150,10 +146,7 @@ export class WorkersManualFrequenciesController {
       }
     ]
   })
-  async delete(
-    @Param('workerId', ParseIntPipe) workerId: number,
-    @Param('date', CustomParseDatePipe) date: Date
-  ): Promise<void> {
-    await this.workersManualFrequenciesService.delete(workerId, date);
+  async delete(@Param('id', ParseIntPipe) id: number): Promise<void> {
+    await this.workersManualFrequenciesService.delete(id);
   }
 }
