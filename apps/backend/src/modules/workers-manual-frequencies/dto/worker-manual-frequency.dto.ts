@@ -1,5 +1,13 @@
 import { IntersectionType, PartialType, PickType } from '@nestjs/swagger';
 import { Prisma, WorkerManualFrequency } from '@sisman/prisma';
+import {
+  IsDate,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  Min
+} from 'class-validator';
 
 // =================================================================
 // 1. "SUPER CLASSES" DE RESPOSTA (FONTE DA VERDADE)
@@ -13,13 +21,69 @@ import { Prisma, WorkerManualFrequency } from '@sisman/prisma';
  */
 
 class WorkerManualFrequencyBaseDto implements WorkerManualFrequency {
+  /**
+   * ID do trabalhador associado à frequência manual.
+   * @example 1
+   */
+  @IsNumber()
+  @IsNotEmpty()
   workerId: number;
+
+  /**
+   * Data da frequência manual.
+   * @example '2023-10-27T10:00:00.000Z'
+   */
+  @IsDate()
+  @IsNotEmpty()
   date: Date;
+
+  /**
+   * Número de horas registradas para a frequência manual.
+   * @example 8
+   */
+  @IsNumber()
+  @IsNotEmpty()
+  @Min(0)
   hours: number;
+
+  /**
+   * ID do tipo de frequência manual do trabalhador.
+   * @example 1
+   */
+  @IsNumber()
+  @IsNotEmpty()
   workerManualFrequencyTypeId: number;
+
+  /**
+   * Notas adicionais sobre a frequência manual.
+   * @example 'Trabalho extra no projeto X.'
+   */
+  @IsString()
+  @IsOptional()
   notes: string;
+
+  /**
+   * ID do usuário que registrou a frequência manual.
+   * @example 1
+   */
+  @IsNumber()
+  @IsNotEmpty()
   userId: number;
+
+  /**
+   * Data de criação do registro.
+   * @example '2023-10-27T10:00:00.000Z'
+   */
+  @IsDate()
+  @IsNotEmpty()
   createdAt: Date;
+
+  /**
+   * Data da última atualização do registro.
+   * @example '2023-10-27T12:00:00.000Z'
+   */
+  @IsDate()
+  @IsNotEmpty()
   updatedAt: Date;
 }
 
@@ -51,8 +115,22 @@ export class WorkerManualFrequencyWithRelationsResponseDto
   extends WorkerManualFrequencyBaseDto
   implements Partial<WorkerManualFrequencyRelationsOnly>
 {
+  /**
+   * O trabalhador associado a esta frequência manual.
+   */
+  @IsOptional()
   worker?: WorkerManualFrequencyRelationsOnly['worker'];
+
+  /**
+   * O tipo de frequência manual do trabalhador.
+   */
+  @IsOptional()
   workerManualFrequencyType?: WorkerManualFrequencyRelationsOnly['workerManualFrequencyType'];
+
+  /**
+   * O usuário que registrou a frequência manual.
+   */
+  @IsOptional()
   user?: WorkerManualFrequencyRelationsOnly['user'];
 }
 
@@ -67,7 +145,8 @@ export class WorkerManualFrequencyCreateDto extends IntersectionType(
     'date',
     'hours',
     'workerManualFrequencyTypeId',
-    'userId'
+    'userId',
+    'notes'
   ] as const)
 ) {}
 

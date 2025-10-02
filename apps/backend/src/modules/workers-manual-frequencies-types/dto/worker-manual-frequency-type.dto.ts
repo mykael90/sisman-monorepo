@@ -1,5 +1,6 @@
-import { PartialType } from '@nestjs/swagger';
+import { PartialType, PickType } from '@nestjs/swagger';
 import { WorkerManualFrequencyType } from '@sisman/prisma';
+import { IsNotEmpty, IsNumber, IsString, MinLength } from 'class-validator';
 
 // =================================================================
 // 1. "SUPER CLASSES" DE RESPOSTA (FONTE DA VERDADE)
@@ -13,7 +14,21 @@ import { WorkerManualFrequencyType } from '@sisman/prisma';
  */
 
 class WorkerManualFrequencyTypeBaseDto implements WorkerManualFrequencyType {
+  /**
+   * ID único do tipo de frequência manual.
+   * @example 1
+   */
+  @IsNumber()
+  @IsNotEmpty()
   id: number;
+
+  /**
+   * Nome do tipo de frequência manual.
+   * @example 'Normal'
+   */
+  @IsString()
+  @IsNotEmpty()
+  @MinLength(3)
   type: string;
 }
 
@@ -27,11 +42,10 @@ export class WorkerManualFrequencyTypeRelationsResponseDto extends WorkerManualF
 // 3. DTOs DE CRIAÇÃO (INPUT) - Derivadas com OmitType
 // =================================================================
 
-export class WorkerManualFrequencyTypeCreateDto extends PartialType(
-  WorkerManualFrequencyTypeBaseDto
-) {
-  type: string;
-}
+export class WorkerManualFrequencyTypeCreateDto extends PickType(
+  WorkerManualFrequencyTypeBaseDto,
+  ['type'] as const
+) {}
 
 // =================================================================
 // 4. DTOs DE ATUALIZAÇÃO (INPUT) - Derivadas com PartialType
