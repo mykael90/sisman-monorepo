@@ -27,7 +27,7 @@ import {
 } from './dto/worker-manual-frequency.dto';
 
 // @Roles(Role.Adm)
-// @UseGuards(AuthGuard, RoleGuard)
+@UseGuards(AuthGuard, RoleGuard)
 @Controller('worker-manual-frequency')
 @ApiTags('worker-manual-frequency')
 export class WorkersManualFrequenciesController {
