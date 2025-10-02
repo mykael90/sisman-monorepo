@@ -1,5 +1,6 @@
 ### Variables
-@urlSismanLegacy=https://sisman.infra.ufrn.br:3002
+# @urlSismanLegacy=https://sisman.infra.ufrn.br:3002
+@urlSismanLegacy=http://172.17.0.1:3051
 @contentType=application/json
 
 
@@ -17,7 +18,7 @@ Content-Type: {{contentType}}
 
 ### GET example
 @authToken = {{login.response.body.token}}
-GET {{urlSismanLegacy}}/materials/in/?startDate=2025-08-24&endDate=2025-09-03
+GET {{urlSismanLegacy}}/materials/in/?startDate=2025-05-24&endDate=2025-09-03
 Authorization: Bearer {{authToken}}
 
 ### GET example
@@ -38,5 +39,10 @@ Authorization: Bearer {{authToken}}
 ### GET example
 @authToken = {{login.response.body.token}}
 GET {{urlSismanLegacy}}/workers
+Authorization: Bearer {{authToken}}
+
+### GET example manualfrequencies
+@authToken = {{login.response.body.token}}
+GET {{urlSismanLegacy}}/workersmanualfrequencies/items/all
 Authorization: Bearer {{authToken}}
 

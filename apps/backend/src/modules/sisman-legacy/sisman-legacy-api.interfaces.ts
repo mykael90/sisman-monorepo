@@ -117,3 +117,21 @@ export interface SismanLegacyMaterialOutResponseItem {
   Worker: SismanLegacyWorker;
   MaterialOuttype: SismanLegacyMaterialOuttype;
 }
+
+interface SismanLegacyWorkerManualfrequency {
+  id: number;
+  date: string;
+  obs: string;
+  ContractId: number;
+  UnidadeId: number;
+  UserId: number;
+}
+
+export interface SismanLegacyWorkerManualFrequencyResponse {
+  hours: number;
+  obs: string;
+  WorkerId: number;
+  WorkerManualfrequencyId: number;
+  WorkerManualfrequencytypeId: number;
+  WorkerManualfrequency: SismanLegacyWorkerManualfrequency;
+}
