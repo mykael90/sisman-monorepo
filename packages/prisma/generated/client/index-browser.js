@@ -1026,6 +1026,22 @@ exports.Prisma.WorkerContractScalarFieldEnum = {
   notes: 'notes'
 };
 
+exports.Prisma.WorkerManualFrequencyScalarFieldEnum = {
+  workerId: 'workerId',
+  date: 'date',
+  hours: 'hours',
+  workerManualFrequencyTypeId: 'workerManualFrequencyTypeId',
+  notes: 'notes',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.WorkerManualFrequencyTypeScalarFieldEnum = {
+  id: 'id',
+  type: 'type'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -1492,6 +1508,14 @@ exports.Prisma.WorkerSpecialtyOrderByRelevanceFieldEnum = {
 exports.Prisma.WorkerContractOrderByRelevanceFieldEnum = {
   notes: 'notes'
 };
+
+exports.Prisma.WorkerManualFrequencyOrderByRelevanceFieldEnum = {
+  notes: 'notes'
+};
+
+exports.Prisma.WorkerManualFrequencyTypeOrderByRelevanceFieldEnum = {
+  type: 'type'
+};
 exports.FacilityComplexType = exports.$Enums.FacilityComplexType = {
   BUILDING: 'BUILDING',
   FARM: 'FARM',
@@ -1782,7 +1806,9 @@ exports.Prisma.ModelName = {
   Worker: 'Worker',
   WorkerTeam: 'WorkerTeam',
   WorkerSpecialty: 'WorkerSpecialty',
-  WorkerContract: 'WorkerContract'
+  WorkerContract: 'WorkerContract',
+  WorkerManualFrequency: 'WorkerManualFrequency',
+  WorkerManualFrequencyType: 'WorkerManualFrequencyType'
 };
 
 /**

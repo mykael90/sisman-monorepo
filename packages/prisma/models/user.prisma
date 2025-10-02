@@ -59,6 +59,8 @@ model User {
   maintenanceInstance   MaintenanceInstance? @relation(fields: [maintenanceInstanceId], references: [id])
   maintenanceInstanceId Int?
 
+  workerManualFrequencies WorkerManualFrequency[]
+
   @@map("users") // Maps this model to the 'users' table.
 }
 

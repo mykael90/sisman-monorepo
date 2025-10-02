@@ -2129,6 +2129,8 @@ model User {
   maintenanceInstance   MaintenanceInstance? @relation(fields: [maintenanceInstanceId], references: [id])
   maintenanceInstanceId Int?
 
+  workerManualFrequencies WorkerManualFrequency[]
+
   @@map("users") // Maps this model to the 'users' table.
 }
 
@@ -2190,8 +2192,9 @@ model Worker {
   // ----------------------
   materialStockMovementsCollected MaterialStockMovement[]             @relation("StockMovementsCollectedByWorker")
 
-  createdAt DateTime @default(now()) @db.Timestamp(0)
-  updatedAt DateTime @updatedAt @db.Timestamp(0)
+  createdAt             DateTime                @default(now()) @db.Timestamp(0)
+  updatedAt             DateTime                @updatedAt @db.Timestamp(0)
+  workerManualFrequency WorkerManualFrequency[]
 
   @@map("workers")
 }
@@ -2273,4 +2276,29 @@ model WorkerContract {
   // @@index([worker_contract_regime_id])
   // @@index([worker_contract_unhealthy_id])
   @@map("workers_contracts")
+}
+
+model WorkerManualFrequency {
+  workerId                    Int
+  worker                      Worker                    @relation(fields: [workerId], references: [id])
+  date                        DateTime                  @db.Date
+  hours                       Int
+  workerManualFrequencyTypeId Int
+  workerManualFrequencyType   WorkerManualFrequencyType @relation(fields: [workerManualFrequencyTypeId], references: [id])
+  notes                       String?                   @db.Text
+  userId                      Int // quem processou
+  user                        User                      @relation(fields: [userId], references: [id])
+  createdAt                   DateTime                  @default(now()) @db.Timestamp(0)
+  updatedAt                   DateTime                  @updatedAt @db.Timestamp(0)
+
+  @@id([workerId, date])
+  @@map("workers_manual_frequencies")
+}
+
+model WorkerManualFrequencyType {
+  id                    Int                     @id @default(autoincrement())
+  type                  String                  @unique
+  workerManualFrequency WorkerManualFrequency[]
+
+  @@map("workers_manual_frequency_types")
 }
