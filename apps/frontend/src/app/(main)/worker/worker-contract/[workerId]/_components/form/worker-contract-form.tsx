@@ -155,7 +155,7 @@ export default function WorkerContractForm<TMode extends 'add' | 'edit'>({
         serverState={serverState}
       />
 
-      {mode === 'edit' && (
+      {/* {mode === 'edit' && (
         <form.Field
           name='id'
           children={(field) => (
@@ -168,7 +168,7 @@ export default function WorkerContractForm<TMode extends 'add' | 'edit'>({
             />
           )}
         />
-      )}
+      )} */}
 
       <form.Field
         name='workerSpecialtyId'
@@ -194,7 +194,7 @@ export default function WorkerContractForm<TMode extends 'add' | 'edit'>({
             field={field}
             label={fieldLabels.contractId}
             placeholder='Informar contrato...'
-            className='mb-4'
+            className='mb-4 w-full'
             options={listContracts.map((contract) => ({
               value: String(contract.id),
               label: `${contract.codigoSipac} - ${contract.subject}`

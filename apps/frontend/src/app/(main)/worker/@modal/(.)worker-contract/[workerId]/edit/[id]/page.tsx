@@ -8,7 +8,9 @@ export default async function Page({
 }) {
   return (
     <Modal>
-      <WorkerContractEditPage params={params} isInDialog={true} />
+      <div className='max-w-3xl'>
+        <WorkerContractEditPage params={params} isInDialog={true} />
+      </div>
     </Modal>
   );
 }

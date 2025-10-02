@@ -46,7 +46,7 @@ export async function getWorkerContracts(
 export async function showWorkerContract(
   id: number,
   accessTokenSisman: string
-): Promise<IWorkerContract> {
+): Promise<IWorkerContractWithRelations> {
   logger.info(
     `(Server Action) showWorkerContract: Buscando contrato de trabalhador com ID ${id}.`
   );

@@ -76,7 +76,7 @@ export default function WorkerContractEdit({
         subtitle='Alterar o contrato para o colaborador'
       />
 
-      <div className='p-6'>
+      <div className='p-4'>
         <CardWorkerSummary worker={worker} />
       </div>
 
