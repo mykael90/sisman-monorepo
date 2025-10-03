@@ -55,6 +55,7 @@ import { SismanLegacyModule } from './modules/sisman-legacy/sisman-legacy.module
 import { WorkersSpecialtiesModule } from './modules/workers-specialties/workers-specialties.module';
 import { WorkersContractsModule } from './modules/workers-contracts/workers-contracts.module';
 import { WorkersManualFrequenciesModule } from './modules/workers-manual-frequencies/workers-manual-frequencies.module';
+import { CronModule } from './modules/cron/cron.module';
 
 @Module({
   imports: [
@@ -124,7 +125,8 @@ import { WorkersManualFrequenciesModule } from './modules/workers-manual-frequen
     ContractProvidersModule,
     WorkersSpecialtiesModule,
     WorkersContractsModule,
-    WorkersManualFrequenciesModule
+    WorkersManualFrequenciesModule,
+    CronModule
   ],
   controllers: [AppController],
   providers: [
