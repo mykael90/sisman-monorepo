@@ -37,7 +37,7 @@ export class ExpireMaterialPickingOrdersTask {
         }
       });
 
-    this.logger.log(materialsPickingOrdersWaiting);
+    // this.logger.log(materialsPickingOrdersWaiting);
 
     //marcar como para expirar se data atual - desiredPickupDate > 7 dias
     const materialPickingOrderToExpire = materialsPickingOrdersWaiting.filter(
@@ -53,7 +53,9 @@ export class ExpireMaterialPickingOrdersTask {
       }
     );
 
-    this.logger.log(`Pedidos para expirar: ${materialPickingOrderToExpire}`);
+    this.logger.log(
+      `Total de ${materialPickingOrderToExpire.length} pedidos para expirar`
+    );
 
     //notificar por email proximidadade para pedido expirar
 

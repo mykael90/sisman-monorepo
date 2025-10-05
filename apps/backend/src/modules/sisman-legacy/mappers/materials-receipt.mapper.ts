@@ -111,7 +111,7 @@ export class MaterialReceiptMapper {
 
     return {
       id: item.id,
-      externalReference: item.invoice,
+      externalReference: String(item.invoice),
       receiptDate: new Date(item.created_at),
       movementTypeId: movementType.id,
       sourceName: item.receivedBy, // Assumindo que 'receivedBy' é o nome da origem

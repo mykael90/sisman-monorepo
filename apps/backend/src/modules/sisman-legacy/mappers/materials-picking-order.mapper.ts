@@ -25,9 +25,9 @@ export class MaterialPickingOrderMapper {
       return MaterialPickingOrderStatus.FULLY_WITHDRAWN;
     }
     if (item.separatedAt) {
-      return MaterialPickingOrderStatus.IN_PREPARATION;
+      return MaterialPickingOrderStatus.PENDING_PREPARATION;
     }
-    return MaterialPickingOrderStatus.IN_PREPARATION;
+    return MaterialPickingOrderStatus.PENDING_PREPARATION;
   }
 
   async toCreateDto(
@@ -71,7 +71,7 @@ export class MaterialPickingOrderMapper {
     }
 
     return {
-      id: item.id,
+      // id: item.id,
       warehouseId: 1,
       notes: `IMPORTADO DO SISMAN LEGACY EM ${getNowFormatted()} 
  ${item.obs || ''}`,

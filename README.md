@@ -251,7 +251,19 @@ docker-compose up -d
 
 O processo de atualização da produção consiste em reiniciar os containers com a imagem dos serviços atualizadas e realizar os migrations do banco de dados manualmente, fazendo o acesso do container através de `exec` do docker.
 
-### Passo 1: Executar com Docker Compose com imagem atualizada
+### Passo 1: Baixar imagem com nova tag ou atualizar imagem (se tag não tiver sido alterada)
+
+O comando é o mesmo, tanto para baixar uma nova imagem, como para atualizar uma imagem já existente.
+
+```bash
+# Baixar uma nova imagem ou atualizar imagem existente
+docker pull mykael90/sisman_monorepo:[tag_atualizada]
+```
+
+Exemplo:
+`docker pull mykael90/sisman_monorepo:1.0.1`
+
+### Passo 2: Executar com Docker Compose com imagem atualizada
 
 A maneira mais fácil de executar o ambiente de produção (aplicação + banco de dados) é usando o `docker-compose.yaml`.
 
@@ -259,10 +271,10 @@ Deve ser referenciada na linha do `docker-compose.yaml` referente a imagem atual
 
 ```bash
 # Inicia os containers em modo detached (segundo plano)
-docker-compose up -d --build --force-recreate
+docker compose up -d --build --force-recreate
 ```
 
-### Passo 2: Executar migrations do banco de dados
+### Passo 3: Executar migrations do banco de dados
 
 A estrutura do banco de dados já existe, ela é criada durante o primeiro uso do serviço. Agora que é apenas uma atualização, não é disparado `pnpm db:push` nem `pnpm seed:prod`. Dessa forma, é necesário fazer as migrações manualmente a partir do container.
 

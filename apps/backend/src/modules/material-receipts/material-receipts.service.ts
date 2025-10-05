@@ -871,47 +871,93 @@ export class MaterialReceiptsService {
 
       // 3. Criar os movimentos de estoque em uma única transação para garantir atomicidade.
       // Passamos o cliente de transação (tx) para o serviço 'create'.
-      const createdMovements = await this.prisma.$transaction(async (tx) => {
-        const results = [];
-        for (const dto of movementsToCreateDTOs) {
-          // Chama o serviço de movimentação, passando o cliente da transação (tx)
-          const created = await this.materialStockMovementsService.create(
-            dto,
-            tx as any
-          );
-          results.push(created);
+      const createdMovements = await this.prisma.$transaction(
+        async (tx) => {
+          const resultsCreate = [];
+          const resultsUpdate = [];
+          for (const dto of movementsToCreateDTOs) {
+            // Chama o serviço de movimentação, passando o cliente da transação (tx)
+            const created = await this.materialStockMovementsService.create(
+              dto,
+              tx as any
+            );
+
+            // atualizar as quantidades recebidas em materialRequestItem se entrada referente a central
+            if (created.materialRequestItemId && created.movementTypeId === 1) {
+              // Buscar o item da requisição de material para obter a quantidade entregue atual
+              const existingRequestItem =
+                await tx.materialRequestItem.findUnique({
+                  where: { id: dto.materialRequestItem.id },
+                  select: { quantityDelivered: true }
+                });
+
+              if (existingRequestItem) {
+                const currentQuantityDelivered =
+                  existingRequestItem.quantityDelivered ?? new Decimal(0);
+                const newQuantityDelivered = currentQuantityDelivered.plus(
+                  dto.quantity
+                );
+
+                const updated = await tx.materialRequestItem.update({
+                  where: { id: dto.materialRequestItem.id },
+                  data: {
+                    quantityDelivered: newQuantityDelivered
+                  }
+                });
+                resultsUpdate.push(updated);
+              } else {
+                this.logger.warn(
+                  `MaterialRequestItem com ID ${dto.materialRequestItem.id} não encontrado para atualização de quantityDelivered.`,
+                  {
+                    operation: 'verifyIntregrityOfReceipts',
+                    materialRequestItemId: dto.materialRequestItem.id
+                  }
+                );
+              }
+            }
+
+            resultsCreate.push(created);
+          }
+          return { resultsCreate, resultsUpdate };
+        },
+        {
+          timeout: 500 * movementsToCreateDTOs.length, // Aumentado para 500 ms por verificação
+          maxWait: 5 * 60 * 1000 // tempo máximo para adquirir o pool 5 min
         }
-        return results;
-      });
+      );
 
       this.logger.log(
-        `Criados ${createdMovements.length} movimentos de estoque em falta para recebimentos.`,
+        `Criados ${createdMovements.resultsCreate.length} movimentos de estoque em falta para recebimentos.`,
         {
           operation: 'verifyIntregrityOfReceipts',
-          count: createdMovements.length
+          count: createdMovements.resultsCreate.length
         }
       );
 
       //4. Atualizar as quantidades recebidas em materialRequestItem
-      const updatedRequestItemDelivered = await this.prisma.$transaction(
-        async (tx) => {
-          const results = [];
-          for (const item of itemsWithoutMovement) {
-            const updated = await tx.materialRequestItem.update({
-              where: { id: item.materialRequestItem.id },
-              data: {
-                quantityDelivered: item.quantityReceived
-              }
-            });
-            results.push(updated);
-          }
-          return results;
-        }
-      );
+      // const updatedRequestItemDelivered = await this.prisma.$transaction(
+      //   async (tx) => {
+      //     const results = [];
+      //     for (const item of itemsWithoutMovement) {
+      //       const updated = await tx.materialRequestItem.update({
+      //         where: { id: item.materialRequestItem.id },
+      //         data: {
+      //           quantityDelivered: item.quantityReceived
+      //         }
+      //       });
+      //       results.push(updated);
+      //     }
+      //     return results;
+      //   },
+      //   {
+      //     timeout: 40 * movementsToCreateDTOs.length, // 40 ms por verificação
+      //     maxWait: 10000 // tempo máximo para adquirir o pool
+      //   }
+      // );
 
       return {
-        createdMovementsCount: createdMovements.length,
-        updatedRequestItemDelivered: updatedRequestItemDelivered.length
+        createdMovementsCount: createdMovements.resultsCreate.length,
+        updatedRequestItemDelivered: createdMovements.resultsUpdate.length
       };
     } catch (error) {
       handlePrismaError(error, this.logger, 'MaterialReceiptsService', {
