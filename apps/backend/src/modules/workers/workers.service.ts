@@ -188,6 +188,9 @@ export class WorkersService {
             startDate: 'desc'
           }
         }
+      },
+      orderBy: {
+        name: 'asc'
       }
     });
   }
