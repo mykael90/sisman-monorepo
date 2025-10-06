@@ -5,6 +5,7 @@ import { Label } from '@/components/ui/label';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale/pt-BR';
 import {
+  FormCombobox,
   FormDropdown,
   FormInputField,
   FormInputTextArea
@@ -179,7 +180,7 @@ export function WithdrawalDetailUsageService({
                     <formWithdrawal.Field
                       name='collectedByWorkerId'
                       children={(field) => (
-                        <FormDropdown
+                        <FormCombobox
                           className={`${collectorType === 'worker' ? 'block' : 'hidden'}`}
                           key={field.name} // The key is still good practice
                           field={field}
@@ -198,7 +199,7 @@ export function WithdrawalDetailUsageService({
                     <formWithdrawal.Field
                       name='collectedByUserId'
                       children={(field) => (
-                        <FormDropdown
+                        <FormCombobox
                           className={`${collectorType === 'user' ? 'block' : 'hidden'}`}
                           key={field.name} // The key is still good practice
                           field={field}

@@ -1,0 +1,61 @@
+import {
+  WorkerManualFrequency,
+  WorkerManualFrequencyType,
+  Prisma
+} from '@sisman/prisma';
+import { IWorker } from '../worker/worker-types';
+import { IUser } from '../user/user-types';
+
+export type IWorkerManualFrequencyWithRelations =
+  Prisma.WorkerManualFrequencyGetPayload<{
+    include: {
+      worker: true;
+      workerManualFrequencyType: true;
+      user: true;
+    };
+  }>;
+
+export interface IWorkerManualFrequencyAdd
+  extends Prisma.WorkerManualFrequencyCreateInput {}
+
+export interface IWorkerManualFrequencyEdit extends IWorkerManualFrequencyAdd {
+  id: number;
+}
+
+export type IWorkerManualFrequency = WorkerManualFrequency;
+
+export type IWorkerManualFrequencyRemove = {
+  id: string;
+};
+
+export type IWorkerManualFrequencySelect = Prisma.WorkerManualFrequencySelect;
+
+export type IWorkerManualFrequencyRelatedData = {
+  listWorkers: IWorker[];
+  listWorkerManualFrequencyTypes: IWorkerManualFrequencyType[];
+  listUsers: IUser[]; // Temporariamente removido devido a erro de importação
+};
+
+export type IWorkerManualFrequencyTypeWithRelations =
+  Prisma.WorkerManualFrequencyTypeGetPayload<{
+    include: {
+      workerManualFrequency: true;
+    };
+  }>;
+
+export interface IWorkerManualFrequencyTypeAdd
+  extends Prisma.WorkerManualFrequencyTypeCreateManyInput {}
+
+export interface IWorkerManualFrequencyTypeEdit
+  extends IWorkerManualFrequencyTypeAdd {
+  id: number;
+}
+
+export type IWorkerManualFrequencyType = WorkerManualFrequencyType;
+
+export type IWorkerManualFrequencyTypeRemove = {
+  id: string;
+};
+
+export type IWorkerManualFrequencyTypeSelect =
+  Prisma.WorkerManualFrequencyTypeSelect;
