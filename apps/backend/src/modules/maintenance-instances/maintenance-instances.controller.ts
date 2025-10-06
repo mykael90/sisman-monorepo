@@ -26,6 +26,7 @@ export class MaintenanceInstancesController {
     private readonly maintenanceInstancesService: MaintenanceInstancesService
   ) {}
 
+  @Roles(Role.Adm) // Assumindo que apenas Adm pode criar, ajuste conforme necessário
   @Post()
   async create(@Body() data: CreateMaintenanceInstanceDto) {
     return this.maintenanceInstancesService.create(data);
@@ -41,6 +42,7 @@ export class MaintenanceInstancesController {
     return this.maintenanceInstancesService.list();
   }
 
+  @Roles(Role.Adm)
   @Put(':id')
   async update(
     @Param('id') id: number,
@@ -49,6 +51,7 @@ export class MaintenanceInstancesController {
     return this.maintenanceInstancesService.update(id, data);
   }
 
+  @Roles(Role.Adm)
   @Delete(':id')
   async delete(@Param('id') id: number) {
     return this.maintenanceInstancesService.delete(id);

@@ -90,7 +90,7 @@ export function ReceiptListPage() {
   const columnActions = createActions(router);
 
   return (
-    <div className='container mx-auto'>
+    <div className='container mx-auto pb-6'>
       <SectionListHeaderSmall
         title='Gerenciamento de Entradas de Materiais'
         subtitle='Sistema de gerenciamento de entradas de materiais'

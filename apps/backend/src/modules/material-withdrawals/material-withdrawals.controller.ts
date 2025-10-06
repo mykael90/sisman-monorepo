@@ -25,9 +25,10 @@ import { ApiEndpointSwagger } from '../../shared/decorators/swagger/api-endpoint
 import { Roles } from 'src/shared/decorators/roles.decorator';
 import { Role } from 'src/shared/enums/role.enum';
 import { MaterialStockOperationSubType } from '@sisman/prisma';
+import { RoleGuard } from '../../shared/auth/guards/role.guard';
 
 @ApiTags('Material Withdrawals') // Agrupa os endpoints na UI do Swagger
-@UseGuards(AuthGuard)
+@UseGuards(AuthGuard, RoleGuard)
 @Controller('material-withdrawal')
 export class MaterialWithdrawalsController {
   private readonly logger = new Logger(MaterialWithdrawalsController.name);
@@ -38,6 +39,7 @@ export class MaterialWithdrawalsController {
   /**
    * Cria uma nova retirada de material.
    */
+  @Roles(Role.Adm, Role.AdmMaterials, Role.SuperMaterials)
   @Post()
   @ApiEndpointSwagger({
     summary: 'Criar nova retirada de material',
@@ -136,6 +138,7 @@ export class MaterialWithdrawalsController {
   /**
    * Atualiza uma retirada de material existente.
    */
+  @Roles(Role.Adm, Role.AdmMaterials, Role.SuperMaterials)
   @Put(':id')
   @ApiEndpointSwagger({
     summary: 'Atualizar Retirada de Material',
@@ -172,6 +175,7 @@ export class MaterialWithdrawalsController {
   /**
    * Deleta uma retirada de material.
    */
+  @Roles(Role.Adm, Role.AdmMaterials, Role.SuperMaterials)
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT) // Garante que a resposta seja 204 No Content.
   @ApiEndpointSwagger({

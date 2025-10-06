@@ -36,6 +36,7 @@ export class UsersController {
   /**
    * Cria um novo usuário.
    */
+  @Roles(Role.Adm)
   @Post()
   @ApiEndpointSwagger({
     summary: 'Criar novo usuário',
@@ -96,6 +97,7 @@ export class UsersController {
     return this.userService.show(id);
   }
 
+  @Roles(Role.Adm)
   @Put(':id')
   @ApiEndpointSwagger({
     summary: 'Atualizar usuário',
@@ -127,6 +129,7 @@ export class UsersController {
     return this.userService.update(id, data);
   }
 
+  @Roles(Role.Adm)
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiEndpointSwagger({

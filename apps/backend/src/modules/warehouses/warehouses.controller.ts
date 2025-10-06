@@ -26,6 +26,7 @@ import { WarehousesService } from './warehouses.service';
 export class WarehousesController {
   constructor(private readonly warehousesService: WarehousesService) {}
 
+  @Roles(Role.Adm) // Assumindo que apenas Adm pode criar, ajuste conforme necessário
   @Post()
   async create(@Body() data: CreateWarehouseDto) {
     return this.warehousesService.create(data);
@@ -41,11 +42,13 @@ export class WarehousesController {
     return this.warehousesService.list(params);
   }
 
+  @Roles(Role.Adm)
   @Put(':id')
   async update(@Param('id') id: number, @Body() data: UpdateWarehouseDto) {
     return this.warehousesService.update(id, data);
   }
 
+  @Roles(Role.Adm)
   @Delete(':id')
   async delete(@Param('id') id: number) {
     return this.warehousesService.delete(id);

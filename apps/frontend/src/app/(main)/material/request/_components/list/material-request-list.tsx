@@ -137,7 +137,7 @@ export function MaterialRequestListPage() {
   const columnActions = createActions(router, queryClient);
 
   return (
-    <div className='container mx-auto'>
+    <div className='container mx-auto pb-6'>
       <SectionListHeaderSmall
         title='Gerenciamento de Requisições de Material' // Alterado
         subtitle='Sistema de gerenciamento de Requisições de Material' // Alterado

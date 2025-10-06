@@ -159,7 +159,7 @@ export function PickingOrderListPage() {
   const columnActions = createActions(router, queryClient);
 
   return (
-    <div className='container mx-auto'>
+    <div className='container mx-auto pb-6'>
       <SectionListHeaderSmall
         title='Gerenciamento de Ordens de Reserva'
         subtitle='Sistema de gerenciamento de ordens de Reserva'

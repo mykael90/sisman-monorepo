@@ -82,7 +82,7 @@ export function WarehouseStockListPage() {
   const columnActions = createActions(router);
 
   return (
-    <div className='container mx-auto'>
+    <div className='container mx-auto pb-6'>
       <SectionListHeaderSmall
         title='Gerenciamento de Estoque de Materiais'
         subtitle='Sistema de gerenciamento de estoque de materiais'

@@ -35,6 +35,7 @@ export class WorkersController {
   /**
    * Cria um novo worker.
    */
+  @Roles(Role.Adm, Role.AdmWorkers, Role.SuperWorkers)
   @Post()
   @ApiEndpointSwagger({
     summary: 'Criar novo worker',
@@ -95,6 +96,7 @@ export class WorkersController {
     return this.workersService.show(id);
   }
 
+  @Roles(Role.Adm, Role.AdmWorkers, Role.SuperWorkers)
   @Put(':id')
   @ApiEndpointSwagger({
     summary: 'Atualizar worker',
@@ -126,6 +128,7 @@ export class WorkersController {
     return this.workersService.update(id, data);
   }
 
+  @Roles(Role.Adm, Role.AdmWorkers, Role.SuperWorkers)
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiEndpointSwagger({

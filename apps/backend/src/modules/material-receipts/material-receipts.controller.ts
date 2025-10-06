@@ -24,8 +24,9 @@ import { ApiTags } from '@nestjs/swagger';
 import { ApiEndpointSwagger } from '../../shared/decorators/swagger/api-endpoint.decorator';
 import { Roles } from 'src/shared/decorators/roles.decorator';
 import { Role } from 'src/shared/enums/role.enum';
+import { RoleGuard } from '../../shared/auth/guards/role.guard';
 @ApiTags('Material Receipts') // Agrupa os endpoints na UI do Swagger
-@UseGuards(AuthGuard)
+@UseGuards(AuthGuard, RoleGuard)
 @Controller('material-receipt')
 export class MaterialReceiptsController {
   private readonly logger = new Logger(MaterialReceiptsController.name);
@@ -37,6 +38,7 @@ export class MaterialReceiptsController {
   /**
    * Cria um novo recebimento de material.
    */
+  @Roles(Role.Adm, Role.AdmMaterials, Role.SuperMaterials)
   @Post()
   @ApiEndpointSwagger({
     summary: 'Criar novo recebimento de material',
@@ -131,6 +133,7 @@ export class MaterialReceiptsController {
   /**
    * Atualiza um recebimento de material existente.
    */
+  @Roles(Role.Adm, Role.AdmMaterials, Role.SuperMaterials)
   @Put(':id')
   @ApiEndpointSwagger({
     summary: 'Atualizar Recebimento de Material',
@@ -167,6 +170,7 @@ export class MaterialReceiptsController {
   /**
    * Deleta um recebimento de material.
    */
+  @Roles(Role.Adm, Role.AdmMaterials, Role.SuperMaterials)
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT) // Garante que a resposta seja 204 No Content.
   @ApiEndpointSwagger({

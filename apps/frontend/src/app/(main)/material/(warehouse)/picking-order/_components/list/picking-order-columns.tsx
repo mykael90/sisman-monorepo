@@ -70,6 +70,7 @@ import { useSession } from 'next-auth/react';
 import { QueryClient } from '@tanstack/react-query';
 import { handleFetchOneAndPersistRequisicaoMaterialComRequisicaoManutencaoVinculada } from '../../../../../sipac/requisicoes-materiais/requisicoes-materiais-actions';
 import { is } from 'date-fns/locale';
+import { getDateUTC } from '../../../../../../../lib/utils';
 
 const columnHelper = createColumnHelper<IMaterialPickingOrderWithRelations>();
 
@@ -443,11 +444,17 @@ export const columns = (
     size: 150,
     enableResizing: false,
     enableColumnFilter: false,
-    cell: ({ row }) => (
-      <div className='text-center'>
-        {new Date(row.getValue('desiredPickupDate')).toLocaleDateString()}
-      </div>
-    )
+    cell: (props) => {
+      if (!props.getValue()) {
+        return 'indefinido';
+      }
+      const onlyUTCDate = getDateUTC(props.getValue());
+      return onlyUTCDate.toLocaleDateString('pt-BR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+      });
+    }
   }),
   columnHelper.accessor((row) => row.maintenanceRequest?.protocolNumber, {
     id: 'protocolNumberRMan',
