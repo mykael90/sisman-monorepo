@@ -22,9 +22,12 @@ import { AuthGuard } from '../../shared/auth/guards/auth.guard';
 import { ApiTags } from '@nestjs/swagger';
 import { ApiEndpointSwagger } from '../../shared/decorators/swagger/api-endpoint.decorator';
 import { MaterialPickingOrderStatus } from '@sisman/prisma';
+import { RoleGuard } from '../../shared/auth/guards/role.guard';
+import { Roles } from '../../shared/decorators/roles.decorator';
+import { Role } from '../../shared/enums/role.enum';
 
 @ApiTags('Material Picking Orders') // Agrupa os endpoints na UI do Swagger
-@UseGuards(AuthGuard)
+@UseGuards(AuthGuard, RoleGuard)
 @Controller('material-picking-order')
 export class MaterialPickingOrdersController {
   constructor(
@@ -132,6 +135,7 @@ export class MaterialPickingOrdersController {
   /**
    * Atualiza uma ordem de separação de material existente.
    */
+  @Roles(Role.Adm, Role.AdmMaterials, Role.SuperMaterials)
   @Put('operation-by-status/:id')
   @ApiEndpointSwagger({
     summary:

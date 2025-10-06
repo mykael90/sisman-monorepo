@@ -14,6 +14,7 @@ import ThemeToggle from '../../theme/theme-toogle';
 import ButtonNavBar from '../ui/button-navbar';
 import SiginButton from '../ui/button-signin';
 import { Input } from '../ui/input';
+import { Badge } from '../ui/badge';
 
 const Header: React.FC = () => {
   const pathname = usePathname();
@@ -51,6 +52,11 @@ const Header: React.FC = () => {
               priority // Add priority for LCP optimization
             />
           </Link>
+          {process.env.NODE_ENV === 'development' && (
+            <Badge variant={'warning'} className='ml-2'>
+              Desenvolvimento
+            </Badge>
+          )}
         </div>
         {/* Lado Direito: Busca, Notificações, Tema, Login */}
         <div className='flex flex-grow items-center justify-end gap-2 sm:gap-3'>

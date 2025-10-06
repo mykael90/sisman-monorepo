@@ -70,7 +70,7 @@ cp .env.example .env
 
 > **Atenção:** Verifique o `docker-compose.override.yaml` para confirmar o nome e a localização exata do arquivo de ambiente esperado.
 
-### Passo 3: Abrir no Dev Container
+### Passo 3: Compilar e Abrir no Dev Container
 
 1. Abra a pasta do projeto `sisman-monorepo` no **Visual Studio Code**.
 2. O VS Code detectará a configuração do Dev Container e exibirá uma notificação no canto inferior direito. Clique em **"Reopen in Container"**.
