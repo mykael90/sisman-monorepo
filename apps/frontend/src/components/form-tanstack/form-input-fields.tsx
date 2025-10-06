@@ -1,6 +1,13 @@
 import { AnyFieldApi } from '@tanstack/react-form';
 import { Input } from '../ui/input';
-import { Search } from 'lucide-react';
+import { CalendarIcon, Search } from 'lucide-react';
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
+import { Button } from '../ui/button';
+import { Calendar } from '../ui/calendar';
+import { Label } from '../ui/label';
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
+import { cn } from '../../lib/utils';
 import {
   Select,
   SelectContent,
@@ -379,6 +386,77 @@ export function FormInputFieldSearch({
         // Usar errors.length > 0 é muitas vezes mais direto.
         <em className='mt-1 block text-xs text-red-500'>
           {/* Mapeia os erros para extrair apenas a propriedade 'message' e depois junta com vírgula */}
+          {field.state.meta.errors
+            .map((error: any) => error.message)
+            .join('; ')}
+        </em>
+      ) : null}
+      {field.state.meta.isValidating ? (
+        <em className='mt-1 text-xs text-blue-500'>Validating...</em>
+      ) : null}
+    </div>
+  );
+}
+
+export function FormDatePicker({
+  field,
+  label,
+  showLabel = true,
+  className = '',
+  ...props
+}: {
+  field: AnyFieldApi;
+  label?: string;
+  showLabel?: boolean;
+  className?: string;
+  [key: string]: any;
+}) {
+  const value = field.state.value as Date | string | undefined;
+
+  return (
+    <div className={className}>
+      {showLabel && label && (
+        <Label
+          htmlFor={field.name}
+          className='mb-1 block text-sm font-medium text-gray-700'
+        >
+          {label}
+        </Label>
+      )}
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            variant='outline'
+            className={cn(
+              'w-full justify-start text-left font-normal',
+              !value && 'text-muted-foreground'
+            )}
+          >
+            <CalendarIcon className='mr-2 h-4 w-4' />
+            {value ? (
+              format(new Date(value), 'PPP', {
+                locale: ptBR
+              })
+            ) : (
+              <span>Selecione uma data</span>
+            )}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className='w-auto p-0'>
+          <Calendar
+            mode='single'
+            selected={value ? new Date(value) : undefined}
+            onSelect={(date) => {
+              field.handleChange(date);
+              field.handleBlur();
+            }}
+            locale={ptBR}
+            initialFocus
+          />
+        </PopoverContent>
+      </Popover>
+      {!field.state.meta.isValid && field.state.meta.isBlurred ? (
+        <em className='mt-1 block text-xs text-red-500'>
           {field.state.meta.errors
             .map((error: any) => error.message)
             .join('; ')}

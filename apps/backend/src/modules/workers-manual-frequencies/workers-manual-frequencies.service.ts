@@ -75,7 +75,13 @@ export class WorkersManualFrequenciesService {
   }
 
   async list(): Promise<WorkerManualFrequency[]> {
-    return await this.prisma.workerManualFrequency.findMany();
+    return await this.prisma.workerManualFrequency.findMany({
+      include: {
+        worker: true,
+        workerManualFrequencyType: true,
+        user: true
+      }
+    });
   }
 
   async show(id: number): Promise<WorkerManualFrequency> {

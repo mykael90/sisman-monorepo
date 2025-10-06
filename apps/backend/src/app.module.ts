@@ -56,6 +56,7 @@ import { WorkersSpecialtiesModule } from './modules/workers-specialties/workers-
 import { WorkersContractsModule } from './modules/workers-contracts/workers-contracts.module';
 import { WorkersManualFrequenciesModule } from './modules/workers-manual-frequencies/workers-manual-frequencies.module';
 import { CronModule } from './modules/cron/cron.module';
+import { WorkersManualFrequenciesTypesModule } from './modules/workers-manual-frequencies-types/workers-manual-frequencies-types.module';
 
 @Module({
   imports: [
@@ -126,6 +127,7 @@ import { CronModule } from './modules/cron/cron.module';
     WorkersSpecialtiesModule,
     WorkersContractsModule,
     WorkersManualFrequenciesModule,
+    WorkersManualFrequenciesTypesModule,
     CronModule
   ],
   controllers: [AppController],

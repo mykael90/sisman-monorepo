@@ -1,0 +1,41 @@
+### Variables
+@urlLocal = {{apiUrl}}/worker-manual-frequency-type
+@contentType = application/json
+
+### GET all worker manual frequency types
+GET {{urlLocal}}
+Authorization: Bearer {{token}}
+
+### GET one worker manual frequency type
+# @prompt frequencyTypeId
+GET {{urlLocal}}/{{frequencyTypeId}}
+Authorization: Bearer {{token}}
+
+### POST create worker manual frequency type
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "name": "Diário",
+    "type": "DAILY",
+    "description": "Frequência manual diária para registro de ponto"
+}
+
+### PUT update worker manual frequency type
+# @prompt frequencyTypeId
+PUT {{urlLocal}}/{{frequencyTypeId}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "name": "Semanal",
+    "type": "WEEKLY",
+    "description": "Frequência manual semanal para registro de ponto"
+}
+
+### DELETE worker manual frequency type
+# @prompt frequencyTypeId
+DELETE {{urlLocal}}/{{frequencyTypeId}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
