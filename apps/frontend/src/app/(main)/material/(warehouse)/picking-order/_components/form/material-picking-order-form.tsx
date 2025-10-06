@@ -400,7 +400,7 @@ export function MaterialPickingOrderForm({
                           <formPickingOrder.Field
                             name='beCollectedByUserId'
                             children={(field) => (
-                              <FormDropdown
+                              <FormCombobox
                                 className={`${collectorType === 'user' ? 'block' : 'hidden'}`}
                                 key={field.name} // The key is still good practice
                                 field={field}

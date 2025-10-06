@@ -45,7 +45,10 @@ export function Combobox({
           variant='outline'
           role='combobox'
           aria-expanded={open}
-          className={cn('justify-between', className)}
+          className={cn(
+            `justify-between font-normal ${!value && 'text-muted-foreground'}`,
+            className
+          )}
         >
           {value
             ? options.find((option) => option.value === value)?.label

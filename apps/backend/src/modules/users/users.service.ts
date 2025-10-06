@@ -97,6 +97,9 @@ export class UsersService {
     return await this.prisma.user.findMany({
       include: {
         roles: true
+      },
+      orderBy: {
+        name: 'asc'
       }
     });
   }
