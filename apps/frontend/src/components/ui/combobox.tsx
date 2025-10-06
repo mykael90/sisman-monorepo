@@ -45,7 +45,7 @@ export function Combobox({
           variant='outline'
           role='combobox'
           aria-expanded={open}
-          className={cn('justify-between', className)} // Apply className, remove w-[200px]
+          className={cn('justify-between', className)}
         >
           {value
             ? options.find((option) => option.value === value)?.label
@@ -53,9 +53,11 @@ export function Combobox({
           <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className={cn('p-0', className)}>
-        {' '}
-        {/* Apply className, remove w-[200px] */}
+      <PopoverContent
+        className='p-0'
+        style={{ width: 'var(--radix-popover-trigger-width)' }} //herda a largura do elemento pai
+        align='start'
+      >
         <Command
           filter={(valueFromItem, search) => {
             const option = options.find((opt) => opt.value === valueFromItem);
@@ -74,7 +76,7 @@ export function Combobox({
             return allTermsMatch ? 1 : 0;
           }}
         >
-          <CommandInput placeholder='Search option...' />
+          <CommandInput placeholder='Procurar...' />
           <CommandList>
             <CommandEmpty>{emptyMessage}</CommandEmpty>
             <CommandGroup>
