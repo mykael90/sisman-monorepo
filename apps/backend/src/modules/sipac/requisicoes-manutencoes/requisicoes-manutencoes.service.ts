@@ -936,12 +936,24 @@ export class RequisicoesManutencoesService {
         reqMaterial.sipacRequisicaoManutencaoId = existsRequisicaoManutencao.id;
 
         //atualizar requisicao de manutencao com o id da manutencao, para a devida vinculação
-        await this.prisma.sipacRequisicaoMaterial.update({
-          where: { id: reqMaterial.id },
-          data: {
-            sipacRequisicaoManutencaoId: existsRequisicaoManutencao.id
-          }
-        });
+        const updatedRequisicaoMaterialSIPAC =
+          await this.prisma.sipacRequisicaoMaterial.update({
+            where: { id: reqMaterial.id },
+            data: {
+              sipacRequisicaoManutencaoId: existsRequisicaoManutencao.id
+            },
+            include: {
+              itensDaRequisicao: true,
+              unidadeCusto: true,
+              unidadeRequisitante: true,
+              historicoDaRequisicao: true
+            }
+          });
+
+        //sincronizar com materialRequest a requisicao de Material Atualizada SIPAC
+        await this.requisicoesMateriaisService.syncMaterialRequest(
+          updatedRequisicaoMaterialSIPAC
+        );
 
         return {
           ...reqMaterial,

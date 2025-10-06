@@ -180,6 +180,10 @@ export async function handleFetchOneAndPersistRequisicaoMaterialComRequisicaoMan
   try {
     const accessTokenSisman = await getSismanAccessToken();
 
+    logger.info(
+      `(Server Action) handleFetchOneAndPersistRequisicaoMaterialComRequisicaoManutencaoVinculada: Buscando requisição com protocolo ${numeroAno}.`
+    );
+
     const data = await fetchApiSisman(
       API_RELATIVE_PATH_WITH_MANUTENCAO,
       accessTokenSisman,

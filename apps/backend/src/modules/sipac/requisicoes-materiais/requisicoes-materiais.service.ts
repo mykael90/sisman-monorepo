@@ -160,7 +160,7 @@ export class RequisicoesMateriaisService {
   }
 
   // New method to sync with MaterialRequestsService
-  private async syncMaterialRequest(
+  async syncMaterialRequest(
     sipacRequisicaoMaterial: Prisma.SipacRequisicaoMaterialGetPayload<{
       include: {
         itensDaRequisicao: true;
