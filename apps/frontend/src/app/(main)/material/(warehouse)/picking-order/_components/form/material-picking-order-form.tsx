@@ -28,6 +28,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { IMaterialRequestBalanceWithRelations } from '../../../../request/material-request-types';
 import { Label } from '@/components/ui/label';
 import {
+  FormCombobox,
   FormDropdown,
   FormInputField,
   FormInputTextArea
@@ -378,7 +379,7 @@ export function MaterialPickingOrderForm({
                           <formPickingOrder.Field
                             name='beCollectedByWorkerId'
                             children={(field) => (
-                              <FormDropdown
+                              <FormCombobox
                                 className={`${collectorType === 'worker' ? 'block' : 'hidden'}`}
                                 key={field.name} // The key is still good practice
                                 field={field}

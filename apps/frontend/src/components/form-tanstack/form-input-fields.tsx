@@ -19,6 +19,7 @@ import {
   SelectTriggerModal,
   SelectValueModal
 } from '../ui/selectModal';
+import { Combobox } from '../ui/combobox';
 
 // Componente FormInputField usando AnyFieldApi
 export function FormInputField({
@@ -437,6 +438,73 @@ export function FormInputTextArea({
       {!field.state.meta.isValid && field.state.meta.isBlurred ? (
         <em className='mt-1 block text-xs text-red-500'>
           {/* Mapeia os erros para extrair apenas a propriedade 'message' e depois junta com vírgula */}
+          {field.state.meta.errors
+            .map((error: any) => error.message)
+            .join('; ')}
+        </em>
+      ) : null}
+      {field.state.meta.isValidating ? (
+        <em className='mt-1 text-xs text-blue-500'>Validating...</em>
+      ) : null}
+    </div>
+  );
+}
+
+export function FormCombobox({
+  field,
+  label,
+  placeholder,
+  showLabel = true,
+  className = '',
+  options,
+  onValueChange,
+  onValueBlurParser,
+  emptyMessage,
+  ...props
+}: {
+  field: AnyFieldApi;
+  label?: string;
+  placeholder?: string;
+  showLabel?: boolean;
+  className?: string;
+  options: { value: string | number; label: string }[];
+  onValueChange?: (value: string) => void;
+  onValueBlurParser?: (value: string) => any;
+  emptyMessage?: string;
+  [key: string]: any;
+}) {
+  const value = String(field.state.value);
+
+  return (
+    <div className={className}>
+      {showLabel && label && (
+        <label
+          htmlFor={field.name}
+          className='mb-1 block text-sm font-medium text-gray-700'
+        >
+          {label}
+        </label>
+      )}
+      <Combobox
+        options={options.map((option) => ({
+          value: String(option.value),
+          label: option.label
+        }))}
+        value={value}
+        onValueChange={(val) => {
+          const finalValue = onValueBlurParser ? onValueBlurParser(val) : val;
+          field.handleChange(finalValue);
+          if (onValueChange) {
+            onValueChange(finalValue);
+          }
+        }}
+        placeholder={placeholder}
+        emptyMessage={emptyMessage}
+        className='w-full'
+        {...props}
+      />
+      {!field.state.meta.isValid && field.state.meta.isBlurred ? (
+        <em className='mt-1 block text-xs text-red-500'>
           {field.state.meta.errors
             .map((error: any) => error.message)
             .join('; ')}
