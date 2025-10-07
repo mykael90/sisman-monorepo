@@ -56,6 +56,14 @@ class WorkerManualFrequencyBaseDto implements WorkerManualFrequency {
   workerManualFrequencyTypeId: number;
 
   /**
+   * ID do contrato do trabalhador.
+   * @example 1
+   */
+  @IsNumber()
+  @IsOptional()
+  workerContractId: number;
+
+  /**
    * Notas adicionais sobre a frequência manual.
    * @example 'Trabalho extra no projeto X.'
    */
@@ -99,7 +107,8 @@ const WorkerManualFrequencyRelationOnlyArgs =
     include: {
       worker: true,
       workerManualFrequencyType: true,
-      user: true
+      user: true,
+      workerContract: true
     }
   });
 
@@ -133,6 +142,12 @@ export class WorkerManualFrequencyWithRelationsResponseDto
    */
   @IsOptional()
   user?: WorkerManualFrequencyRelationsOnly['user'];
+
+  /**
+   * O contrato do trabalhador.
+   */
+  @IsOptional()
+  workerContract?: WorkerManualFrequencyRelationsOnly['workerContract'];
 }
 
 // =================================================================

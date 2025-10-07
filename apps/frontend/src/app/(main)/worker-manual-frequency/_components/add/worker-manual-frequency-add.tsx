@@ -31,7 +31,7 @@ export default function WorkerManualFrequencyAdd({
     workerManualFrequencyTypeId: '',
     // userId: session?.user?.id || '',
     userId: 1,
-    hours: 9,
+    hours: '9',
     notes: ''
   };
 

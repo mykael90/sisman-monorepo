@@ -113,4 +113,73 @@ export class WorkersManualFrequenciesService {
         `WorkerManualFrequency with id ${id} not found`
       );
   }
+
+  async getFrequenciesWithContracts() {
+    // 1. Buscar todos os registros de frequência manual.
+    const frequencies = await this.prisma.workerManualFrequency.findMany({
+      include: {
+        worker: true // Inclui o trabalhador para referência
+      }
+    });
+
+    // 2. Extrair os IDs únicos dos trabalhadores para buscar seus contratos de forma eficiente.
+    const workerIds = [...new Set(frequencies.map((f) => f.workerId))];
+
+    // 3. Buscar todos os contratos para os trabalhadores relevantes em uma única consulta.
+    const contracts = await this.prisma.workerContract.findMany({
+      where: {
+        workerId: {
+          in: workerIds
+        }
+      }
+    });
+
+    // 4. Mapear os contratos por workerId para facilitar a busca.
+    const contractsByWorker = contracts.reduce((acc, contract) => {
+      const workerContracts = acc.get(contract.workerId) || [];
+      workerContracts.push(contract);
+      acc.set(contract.workerId, workerContracts);
+      return acc;
+    }, new Map());
+
+    // 5. Combinar os registros de frequência com o contrato ativo na data correspondente.
+    const result = frequencies.map((frequency) => {
+      const workerContracts = contractsByWorker.get(frequency.workerId) || [];
+
+      // Encontra o primeiro contrato que estava ativo na data da frequência.
+      const activeContract = workerContracts.find((contract) => {
+        const isAfterStartDate = frequency.date >= contract.startDate;
+        const isBeforeEndDate =
+          !contract.endDate || frequency.date <= contract.endDate;
+        return isAfterStartDate && isBeforeEndDate;
+      });
+
+      return {
+        ...frequency,
+        workerContract: activeContract || null // Anexa o contrato encontrado ou null.
+      };
+    });
+
+    return result;
+  }
+
+  async insertContractIdInAllFrequencies() {
+    const frequencies = await this.getFrequenciesWithContracts();
+
+    for (const frequency of frequencies) {
+      if (frequency.workerContract) {
+        try {
+          await this.prisma.workerManualFrequency.update({
+            where: { id: frequency.id },
+            data: {
+              workerContractId: frequency.workerContract.id
+            }
+          });
+        } catch (error) {
+          this.logger.log(error);
+          console.log(error);
+        }
+      }
+    }
+  }
 }

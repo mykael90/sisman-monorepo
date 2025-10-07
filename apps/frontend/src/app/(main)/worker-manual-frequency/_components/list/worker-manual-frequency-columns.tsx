@@ -92,6 +92,44 @@ export const columns = (
     header: 'Lançado por',
     size: 200
   }),
+  columnHelper.accessor('hours', {
+    header: 'Horas',
+    size: 100
+  }),
+  columnHelper.accessor('createdAt', {
+    header: 'Criado em',
+    size: 150,
+    cell: (props) => {
+      if (!props.getValue()) {
+        return 'indefinido';
+      }
+      const onlyUTCDate = getDateUTC(props.getValue());
+      return onlyUTCDate.toLocaleDateString('pt-BR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    }
+  }),
+  columnHelper.accessor('updatedAt', {
+    header: 'Atualizado em',
+    size: 150,
+    cell: (props) => {
+      if (!props.getValue()) {
+        return 'indefinido';
+      }
+      const onlyUTCDate = getDateUTC(props.getValue());
+      return onlyUTCDate.toLocaleDateString('pt-BR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    }
+  }),
   columnHelper.display({
     id: 'actions',
     size: 100,

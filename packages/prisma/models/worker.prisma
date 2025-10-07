@@ -105,7 +105,8 @@ model WorkerContract {
     workerSpecialty WorkerSpecialty @relation(fields: [workerSpecialtyId], references: [id])
 
     //unidades
-    sipacUnitLocation SipacUnidade @relation("unidadeLocalizacaoWorkerContract", fields: [sipacUnitLocationId], references: [id])
+    sipacUnitLocation     SipacUnidade            @relation("unidadeLocalizacaoWorkerContract", fields: [sipacUnitLocationId], references: [id])
+    workerManualFrequency WorkerManualFrequency[]
 
     @@index([contractId])
     @@index([workerSpecialtyId])
@@ -129,6 +130,8 @@ model WorkerManualFrequency {
     user                        User                      @relation(fields: [userId], references: [id])
     createdAt                   DateTime                  @default(now()) @db.Timestamp(0)
     updatedAt                   DateTime                  @updatedAt @db.Timestamp(0)
+    workerContractId            Int?
+    workerContract              WorkerContract?           @relation(fields: [workerContractId], references: [id])
 
     @@unique([workerId, date])
     @@map("workers_manual_frequencies")
@@ -136,7 +139,7 @@ model WorkerManualFrequency {
 
 model WorkerManualFrequencyType {
     id                    Int                     @id @default(autoincrement())
-    type                  String                  
+    type                  String
     workerManualFrequency WorkerManualFrequency[]
 
     @@map("workers_manual_frequency_types")

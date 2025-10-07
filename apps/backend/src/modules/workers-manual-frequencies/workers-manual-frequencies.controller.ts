@@ -78,6 +78,27 @@ export class WorkersManualFrequenciesController {
     return this.workersManualFrequenciesService.list();
   }
 
+  @Post('insert-contract-id-in-all-frequencies')
+  async insertContractIdInAllFrequencies() {
+    return this.workersManualFrequenciesService.insertContractIdInAllFrequencies();
+  }
+
+  @Get('with-contracts')
+  @ApiEndpointSwagger({
+    summary: 'Listar frequências manuais de workers com contratos',
+    description:
+      'Retorna uma lista de todas as frequências manuais de workers, incluindo informações de contrato.',
+    response: {
+      status: HttpStatus.OK,
+      description: 'Lista de frequências manuais com contratos encontrada.',
+      type: WorkerManualFrequencyWithRelationsResponseDto, // Assuming this DTO is suitable, or a new one might be needed
+      isArray: true
+    }
+  })
+  async getFrequenciesWithContracts() {
+    return this.workersManualFrequenciesService.getFrequenciesWithContracts();
+  }
+
   @Get(':id')
   @ApiEndpointSwagger({
     summary: 'Buscar frequência manual por ID',

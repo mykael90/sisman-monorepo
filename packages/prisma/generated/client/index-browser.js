@@ -1035,7 +1035,8 @@ exports.Prisma.WorkerManualFrequencyScalarFieldEnum = {
   notes: 'notes',
   userId: 'userId',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  workerContractId: 'workerContractId'
 };
 
 exports.Prisma.WorkerManualFrequencyTypeScalarFieldEnum = {
