@@ -198,6 +198,18 @@ export default function WorkerManualFrequencyForm<
         )}
       />
 
+      <form.Field
+        name='workerContractId'
+        children={(field) => (
+          <FormInputField
+            field={field}
+            label={fieldLabels.workerContractId}
+            placeholder='Selecione o contrato'
+            className='mb-4'
+          />
+        )}
+      />
+
       <div className='flex items-center justify-baseline gap-4'>
         <div className='flex-1'>
           <form.Field name='date'>

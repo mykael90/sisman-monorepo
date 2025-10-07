@@ -32,7 +32,8 @@ export default function WorkerManualFrequencyAdd({
     // userId: session?.user?.id || '',
     userId: 1,
     hours: '9',
-    notes: ''
+    notes: '',
+    workerContractId: ''
   };
 
   const fieldLabels = {
@@ -41,7 +42,8 @@ export default function WorkerManualFrequencyAdd({
     workerManualFrequencyTypeId: 'Tipo de Frequência',
     userId: 'Usuário',
     hours: 'Horas',
-    notes: 'Notas'
+    notes: 'Notas',
+    workerContractId: 'Contrato'
   };
 
   const initialServerState: IActionResultForm<

@@ -30,7 +30,8 @@ export default function WorkerManualFrequencyEdit({
     workerManualFrequencyTypeId: 'Tipo de Frequência',
     userId: 'Usuário',
     hours: 'Horas',
-    notes: 'Notas'
+    notes: 'Notas',
+    workerContractId: 'Contrato'
   };
 
   const defaultData = removeUnreferencedKeys(
