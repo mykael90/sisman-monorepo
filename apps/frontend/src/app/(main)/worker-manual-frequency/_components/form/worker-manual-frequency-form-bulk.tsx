@@ -72,7 +72,7 @@ export default function WorkerManualFrequencyFormBulk({
   const { listWorkers, listWorkerManualFrequencyTypes } = relatedData;
 
   const form = useForm({
-    defaultValues: defaultData, // Usa os valores com chaves
+    defaultValues: defaultData,
     transform: useTransform(
       (baseForm) => mergeForm(baseForm, serverState ?? {}),
       [serverState]
@@ -90,16 +90,17 @@ export default function WorkerManualFrequencyFormBulk({
 
   const handleAddFrequency = () => {
     const { items: _, ...rest } = form.state.values;
+    const newKey = Date.now() + Math.random(); // Revertido para Date.now() + Math.random()
 
     const newFrequencyItem: IWorkerManualFrequencyAdd & { key: number } = {
-      key: 1,
+      key: newKey,
       date: rest.date,
       hours: rest.hours,
       workerManualFrequencyTypeId: rest.workerManualFrequencyTypeId,
       notes: rest.notes,
       workerId: rest.workerId,
-      userId: rest.userId,
-      workerContractId: rest.workerContractId
+      userId: rest.userId
+      // workerContractId: rest.workerContractId,
     };
 
     form.pushFieldValue('items', newFrequencyItem);
