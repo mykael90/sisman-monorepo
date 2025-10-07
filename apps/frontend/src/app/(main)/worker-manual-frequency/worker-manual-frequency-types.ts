@@ -39,6 +39,11 @@ export type IWorkerManualFrequencyWithRelations =
 export interface IWorkerManualFrequencyAdd
   extends Prisma.WorkerManualFrequencyUncheckedCreateInput {}
 
+export interface IWorkerManualFrequencyAddBulkForm
+  extends IWorkerManualFrequencyAdd {
+  items: IWorkerManualFrequencyAdd[];
+}
+
 export interface IWorkerManualFrequencyEdit extends IWorkerManualFrequencyAdd {
   id: number;
 }

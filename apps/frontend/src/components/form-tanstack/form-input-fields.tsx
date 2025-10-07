@@ -545,7 +545,11 @@ export function FormCombobox({
   placeholder?: string;
   showLabel?: boolean;
   className?: string;
-  options: { value: string | number; label: string }[];
+  options: {
+    value: string | number;
+    label: string;
+    secondaryLabel?: string | null;
+  }[];
   onValueChange?: (value: string) => void;
   onValueBlurParser?: (value: string) => any;
   emptyMessage?: string;
@@ -566,7 +570,8 @@ export function FormCombobox({
       <Combobox
         options={options.map((option) => ({
           value: String(option.value),
-          label: option.label
+          label: option.label,
+          secondaryLabel: option.secondaryLabel
         }))}
         value={value}
         onValueChange={(val) => {

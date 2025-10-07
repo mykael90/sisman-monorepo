@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Check, ChevronsUpDown } from 'lucide-react';
+import { Badge, Check, ChevronsUpDown } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -20,7 +20,7 @@ import {
 } from '@/components/ui/popover';
 
 interface ComboboxProps {
-  options: { value: string; label: string }[];
+  options: { value: string; label: string; secondaryLabel?: string | null }[];
   value?: string;
   onValueChange: (value: string) => void;
   placeholder?: string;
@@ -99,6 +99,9 @@ export function Combobox({
                     )}
                   />
                   {option.label}
+                  <span className='text-muted-foreground text-xs'>
+                    {option.secondaryLabel}
+                  </span>
                 </CommandItem>
               ))}
             </CommandGroup>

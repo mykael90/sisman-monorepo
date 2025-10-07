@@ -56,6 +56,41 @@ export class WorkersManualFrequenciesService {
     }
   }
 
+  async createMany(
+    data: WorkerManualFrequencyCreateDto[]
+  ): Promise<Prisma.BatchPayload> {
+    this.logger.log(
+      `Criando múltiplas frequências manuais com dados: ${JSON.stringify(data)}`
+    );
+
+    const createManyInput: Prisma.WorkerManualFrequencyUncheckedCreateInput[] =
+      data.map((item) => ({
+        workerId: item.workerId,
+        date: item.date,
+        hours: item.hours,
+        workerManualFrequencyTypeId: item.workerManualFrequencyTypeId,
+        notes: item.notes,
+        userId: item.userId
+      }));
+
+    this.logger.log(
+      `Input para Prisma (createMany): ${JSON.stringify(createManyInput)}`
+    );
+
+    try {
+      return await this.prisma.workerManualFrequency.createMany({
+        data: createManyInput,
+        skipDuplicates: true // Ou false, dependendo da necessidade de negócio
+      });
+    } catch (error) {
+      handlePrismaError(error, this.logger, 'WorkerManualFrequency', {
+        operation: 'createMany',
+        data
+      });
+      throw error;
+    }
+  }
+
   async update(
     id: number,
     data: WorkerManualFrequencyUpdateDto
