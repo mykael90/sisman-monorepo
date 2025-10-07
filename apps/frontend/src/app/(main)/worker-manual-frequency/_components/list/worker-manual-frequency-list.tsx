@@ -1,13 +1,6 @@
-
 'use client';
 
-import {
-  useState,
-  useMemo,
-  useRef,
-  Dispatch,
-  SetStateAction
-} from 'react';
+import { useState, useMemo, useRef, Dispatch, SetStateAction } from 'react';
 import { SectionListHeader } from '../../../../../components/section-list-header';
 import {
   ColumnDef,
@@ -20,24 +13,24 @@ import {
 import { InputDebounceRef } from '@/components/ui/input';
 import { IWorkerManualFrequencyWithRelations } from '../../worker-manual-frequency-types';
 import { useRouter } from 'next/navigation';
-import {
-  columns,
-  createActions,
-} from './worker-manual-frequency-columns';
+import { columns, createActions } from './worker-manual-frequency-columns';
 import { UserPlus, CalendarPlus } from 'lucide-react';
 import { TableTanstackFaceted } from '../../../../../components/table-tanstack/table-tanstack-faceted';
 import { DefaultGlobalFilter } from '../../../../../components/table-tanstack/default-global-filter';
+import { useQuery } from '@tanstack/react-query';
+import { DateRange } from 'react-day-picker';
+import { endOfMonth, startOfMonth } from 'date-fns';
+import { getWorkerManualFrequenciesWithContracts } from '../../worker-manual-frequency-actions';
+import Loading from '../../../../../components/loading';
+import { DateRangeFilter } from '../../../../../components/filters/date-range-filter';
 
-export function WorkerManualFrequencyListPage({
-  initialWorkerManualFrequencies,
-  refreshAction
-}: {
-  initialWorkerManualFrequencies: IWorkerManualFrequencyWithRelations[];
-  refreshAction: () => void;
-}) {
+export function WorkerManualFrequencyListPage() {
   const router = useRouter();
 
-  const [workerManualFrequencies, setWorkerManualFrequencies] = useState(initialWorkerManualFrequencies);
+  const [date, setDate] = useState<DateRange | undefined>({
+    from: startOfMonth(new Date()),
+    to: endOfMonth(new Date())
+  });
 
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
@@ -61,6 +54,21 @@ export function WorkerManualFrequencyListPage({
     }
   ]);
 
+  const {
+    data: workerManualFrequencies,
+    isLoading,
+    isError,
+    error
+  } = useQuery<IWorkerManualFrequencyWithRelations[], unknown>({
+    queryKey: ['workerManualFrequencies', date],
+    queryFn: () =>
+      getWorkerManualFrequenciesWithContracts({
+        from: date?.from,
+        to: date?.to
+      }),
+    enabled: !!date?.from && !!date?.to
+  });
+
   const handleAddWorkerManualFrequency = () => {
     router.push('worker-manual-frequency/add');
   };
@@ -82,6 +90,20 @@ export function WorkerManualFrequencyListPage({
       />
 
       <div className='mt-4 mb-4 h-auto rounded-xl border-0 bg-white px-4 py-3.5'>
+        <div className='flex flex-col gap-4 md:flex-row'>
+          <DateRangeFilter date={date} setDate={setDate} />
+          {/* <Button
+                  variant='outline'
+                  onClick={handleClearDateFilter}
+                  className='flex items-center'
+                >
+                  <FilterX className='mr-2 h-4 w-4' />
+                  Limpar Filtro de Data
+                </Button> */}
+        </div>
+      </div>
+
+      <div className='mt-4 mb-4 h-auto rounded-xl border-0 bg-white px-4 py-3.5'>
         <DefaultGlobalFilter
           globalFilterValue={globalFilterValue}
           setGlobalFilterValue={setGlobalFilterValue}
@@ -90,22 +112,27 @@ export function WorkerManualFrequencyListPage({
           label={''}
         />
       </div>
-
-      <TableTanstackFaceted
-        data={workerManualFrequencies}
-        columns={columns(columnActions)}
-        columnFilters={columnFilters}
-        setColumnFilters={setColumnFilters}
-        pagination={pagination}
-        setPagination={setPagination}
-        setSorting={setSorting}
-        sorting={sorting}
-        getFacetedRowModel={getFacetedRowModel()}
-        getFacetedUniqueValues={getFacetedUniqueValues()}
-        globalFilterFn='includesString'
-        globalFilter={globalFilterValue}
-        setGlobalFilter={setGlobalFilterValue}
-      />
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <TableTanstackFaceted
+          data={
+            workerManualFrequencies as IWorkerManualFrequencyWithRelations[]
+          }
+          columns={columns(columnActions)}
+          columnFilters={columnFilters}
+          setColumnFilters={setColumnFilters}
+          pagination={pagination}
+          setPagination={setPagination}
+          setSorting={setSorting}
+          sorting={sorting}
+          getFacetedRowModel={getFacetedRowModel()}
+          getFacetedUniqueValues={getFacetedUniqueValues()}
+          globalFilterFn='includesString'
+          globalFilter={globalFilterValue}
+          setGlobalFilter={setGlobalFilterValue}
+        />
+      )}
     </div>
   );
 }

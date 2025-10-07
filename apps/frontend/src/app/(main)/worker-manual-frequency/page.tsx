@@ -9,24 +9,10 @@ import {
 import Logger from '@/lib/logger';
 import Loading from '../../../components/loading';
 
-const logger = new Logger('worker-manual-frequencies-management');
-
 export default async function Page() {
-  const accessTokenSisman = await getSismanAccessToken();
-
-  const [initialWorkerManualFrequencies] = await Promise.all([
-    getWorkerManualFrequenciesWithContracts()
-  ]);
-
-  const listKey = Date.now().toString() + Math.random().toString();
-
   return (
     <Suspense fallback={<Loading />}>
-      <WorkerManualFrequencyListPage
-        initialWorkerManualFrequencies={initialWorkerManualFrequencies}
-        refreshAction={getRefreshedWorkerManualFrequencies}
-        key={listKey}
-      />
+      <WorkerManualFrequencyListPage />
     </Suspense>
   );
 }

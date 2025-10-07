@@ -51,7 +51,8 @@ export const columns = (
 ): ColumnDef<IWorkerManualFrequencyWithRelations, any>[] => [
   columnHelper.accessor('worker.name', {
     header: 'Colaborador',
-    size: 320,
+    size: 500,
+    enableResizing: false,
     cell: (props) => {
       const worker = props.row.original.worker;
       const nameValue = props.getValue();
@@ -68,9 +69,21 @@ export const columns = (
       );
     }
   }),
+  columnHelper.accessor('workerContract.workerSpecialty.name', {
+    header: 'Especialidade',
+    size: 200,
+    enableResizing: false
+  }),
+  columnHelper.accessor('workerManualFrequencyType.type', {
+    header: 'Tipo de Frequência',
+    size: 200,
+    cell: (props) => <Badge variant='outline'>{props.getValue()}</Badge>
+  }),
   columnHelper.accessor('date', {
     header: 'Data',
     size: 100,
+    enableColumnFilter: false,
+    enableResizing: false,
     cell: (props) => {
       if (!props.getValue()) {
         return 'indefinido';
@@ -83,51 +96,52 @@ export const columns = (
       });
     }
   }),
-  columnHelper.accessor('workerManualFrequencyType.type', {
-    header: 'Tipo de Frequência',
-    size: 200,
-    cell: (props) => <Badge variant='outline'>{props.getValue()}</Badge>
+  columnHelper.accessor('hours', {
+    header: 'Horas',
+    size: 50,
+    enableColumnFilter: false,
+    enableResizing: false,
+    cell: (props) => <div className='text-center'>{props.getValue()}</div>
   }),
   columnHelper.accessor('user.login', {
     header: 'Lançado por',
-    size: 200
-  }),
-  columnHelper.accessor('hours', {
-    header: 'Horas',
-    size: 100
+    size: 150,
+    enableResizing: false
   }),
   columnHelper.accessor('createdAt', {
     header: 'Criado em',
     size: 150,
+    enableColumnFilter: false,
     cell: (props) => {
       if (!props.getValue()) {
         return 'indefinido';
       }
-      const onlyUTCDate = getDateUTC(props.getValue());
-      return onlyUTCDate.toLocaleDateString('pt-BR', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-      });
+      const date = new Date(props.getValue());
+      return (
+        <div className='text-center'>
+          {date.toLocaleDateString()}
+          <br />
+          {date.toLocaleTimeString()}
+        </div>
+      );
     }
   }),
   columnHelper.accessor('updatedAt', {
     header: 'Atualizado em',
     size: 150,
+    enableColumnFilter: false,
     cell: (props) => {
       if (!props.getValue()) {
         return 'indefinido';
       }
-      const onlyUTCDate = getDateUTC(props.getValue());
-      return onlyUTCDate.toLocaleDateString('pt-BR', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-      });
+      const date = new Date(props.getValue());
+      return (
+        <div className='text-center'>
+          {date.toLocaleDateString()}
+          <br />
+          {date.toLocaleTimeString()}
+        </div>
+      );
     }
   }),
   columnHelper.accessor('workerContract.contract.codigoSipac', {
