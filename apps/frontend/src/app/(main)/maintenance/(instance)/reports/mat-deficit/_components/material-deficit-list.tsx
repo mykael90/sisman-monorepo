@@ -23,7 +23,7 @@ import { TableTanstackFaceted } from '../../../../../../../components/table-tans
 import { listMaintenanceRequestDeficitByMaintenanceInstance } from '../../../../request/maintenance-request-actions';
 import { DefaultGlobalFilter } from '../../../../../../../components/table-tanstack/default-global-filter';
 import { DateRange } from 'react-day-picker';
-import { subDays } from 'date-fns';
+import { endOfMonth, startOfMonth, subDays } from 'date-fns';
 import { DateRangeFilter } from '@/components/filters/date-range-filter';
 import { useSession } from 'next-auth/react';
 import Loading from '../../../../../users-data-client/loading';
@@ -44,8 +44,8 @@ export function MateriallDeficitList() {
   }
 
   const [date, setDate] = useState<DateRange | undefined>({
-    from: subDays(new Date(), 100),
-    to: new Date()
+    from: startOfMonth(new Date()),
+    to: endOfMonth(new Date())
   });
 
   const [sorting, setSorting] = useState<SortingState>([]);
