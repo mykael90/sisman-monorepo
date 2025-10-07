@@ -15,6 +15,7 @@ import {
   WorkerManualFrequencyCreateDto,
   WorkerManualFrequencyUpdateDto
 } from './dto/worker-manual-frequency.dto';
+import { gteDate, lteDate } from '../../shared/utils/date-utils';
 
 @Injectable()
 export class WorkersManualFrequenciesService {
@@ -114,72 +115,58 @@ export class WorkersManualFrequenciesService {
       );
   }
 
-  async getFrequenciesWithContracts() {
-    // 1. Buscar todos os registros de frequência manual.
-    const frequencies = await this.prisma.workerManualFrequency.findMany({
-      include: {
-        worker: true // Inclui o trabalhador para referência
-      }
-    });
+  async getFrequenciesWithContracts(queryParams?: { [key: string]: string }) {
+    const whereArgs: Prisma.WorkerManualFrequencyWhereInput = {};
 
-    // 2. Extrair os IDs únicos dos trabalhadores para buscar seus contratos de forma eficiente.
-    const workerIds = [...new Set(frequencies.map((f) => f.workerId))];
+    //funcao para pegar apenas a parte da data e depois criar o objeto em typescript
 
-    // 3. Buscar todos os contratos para os trabalhadores relevantes em uma única consulta.
-    const contracts = await this.prisma.workerContract.findMany({
-      where: {
-        workerId: {
-          in: workerIds
-        }
-      }
-    });
+    if (queryParams && !!Object.keys(queryParams).length) {
+      const { startDate, endDate } = queryParams;
 
-    // 4. Mapear os contratos por workerId para facilitar a busca.
-    const contractsByWorker = contracts.reduce((acc, contract) => {
-      const workerContracts = acc.get(contract.workerId) || [];
-      workerContracts.push(contract);
-      acc.set(contract.workerId, workerContracts);
-      return acc;
-    }, new Map());
-
-    // 5. Combinar os registros de frequência com o contrato ativo na data correspondente.
-    const result = frequencies.map((frequency) => {
-      const workerContracts = contractsByWorker.get(frequency.workerId) || [];
-
-      // Encontra o primeiro contrato que estava ativo na data da frequência.
-      const activeContract = workerContracts.find((contract) => {
-        const isAfterStartDate = frequency.date >= contract.startDate;
-        const isBeforeEndDate =
-          !contract.endDate || frequency.date <= contract.endDate;
-        return isAfterStartDate && isBeforeEndDate;
-      });
-
-      return {
-        ...frequency,
-        workerContract: activeContract || null // Anexa o contrato encontrado ou null.
-      };
-    });
-
-    return result;
-  }
-
-  async insertContractIdInAllFrequencies() {
-    const frequencies = await this.getFrequenciesWithContracts();
-
-    for (const frequency of frequencies) {
-      if (frequency.workerContract) {
-        try {
-          await this.prisma.workerManualFrequency.update({
-            where: { id: frequency.id },
-            data: {
-              workerContractId: frequency.workerContract.id
-            }
-          });
-        } catch (error) {
-          this.logger.log(error);
-          console.log(error);
-        }
+      if (startDate && endDate) {
+        whereArgs.date = {
+          gte: gteDate(startDate),
+          lte: lteDate(endDate)
+        };
       }
     }
+
+    // A consulta agora é uma única chamada ao banco de dados.
+    const frequenciesWithContracts =
+      await this.prisma.workerManualFrequency.findMany({
+        include: {
+          // Peça ao Prisma para incluir o WorkerContract relacionado.
+          // Ele usará a relação `workerContract` que você definiu no schema.
+          workerContract: {
+            include: {
+              sipacUnitLocation: {
+                select: { codigoUnidade: true, sigla: true }
+              },
+              contract: { select: { codigoSipac: true, subject: true } },
+              workerSpecialty: {
+                select: {
+                  name: true
+                }
+              }
+            }
+          },
+
+          // Você também pode incluir outros dados relacionados, se precisar.
+          worker: {
+            select: {
+              name: true // Exemplo: selecionando apenas o nome do trabalhador
+            }
+          },
+          workerManualFrequencyType: true,
+          user: true
+        },
+        where: whereArgs,
+        // Opcional: para ordenar os resultados
+        orderBy: {
+          date: 'desc'
+        }
+      });
+
+    return frequenciesWithContracts;
   }
 }

@@ -9,7 +9,28 @@ import { IUser } from '../user/user-types';
 export type IWorkerManualFrequencyWithRelations =
   Prisma.WorkerManualFrequencyGetPayload<{
     include: {
-      worker: true;
+      // Peça ao Prisma para incluir o WorkerContract relacionado.
+      // Ele usará a relação `workerContract` que você definiu no schema.
+      workerContract: {
+        include: {
+          sipacUnitLocation: {
+            select: { codigoUnidade: true; sigla: true };
+          };
+          contract: { select: { codigoSipac: true; subject: true } };
+          workerSpecialty: {
+            select: {
+              name: true;
+            };
+          };
+        };
+      };
+
+      // Você também pode incluir outros dados relacionados, se precisar.
+      worker: {
+        select: {
+          name: true; // Exemplo: selecionando apenas o nome do trabalhador
+        };
+      };
       workerManualFrequencyType: true;
       user: true;
     };

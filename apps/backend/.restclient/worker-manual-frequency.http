@@ -8,6 +8,8 @@ Authorization: Bearer {{token}}
 
 ### GET all worker manual frequencies with contracts
 GET {{urlLocal}}/with-contracts
+?startDate=2025-06-26
+&endDate=2025-06-26
 Authorization: Bearer {{token}}
 
 ### GET one worker manual frequency
@@ -45,3 +47,4 @@ Authorization: Bearer {{token}}
 DELETE {{urlLocal}}/{{workerManualFrequencyId}}
 Content-Type: {{contentType}}
 Authorization: Bearer {{token}}
+

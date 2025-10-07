@@ -9,6 +9,7 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  Query,
   UseGuards
 } from '@nestjs/common';
 
@@ -78,11 +79,6 @@ export class WorkersManualFrequenciesController {
     return this.workersManualFrequenciesService.list();
   }
 
-  @Post('insert-contract-id-in-all-frequencies')
-  async insertContractIdInAllFrequencies() {
-    return this.workersManualFrequenciesService.insertContractIdInAllFrequencies();
-  }
-
   @Get('with-contracts')
   @ApiEndpointSwagger({
     summary: 'Listar frequências manuais de workers com contratos',
@@ -95,8 +91,15 @@ export class WorkersManualFrequenciesController {
       isArray: true
     }
   })
-  async getFrequenciesWithContracts() {
-    return this.workersManualFrequenciesService.getFrequenciesWithContracts();
+  async getFrequenciesWithContracts(
+    @Query()
+    queryParams: {
+      [key: string]: string;
+    }
+  ) {
+    return this.workersManualFrequenciesService.getFrequenciesWithContracts(
+      queryParams
+    );
   }
 
   @Get(':id')

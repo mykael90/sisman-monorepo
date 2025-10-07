@@ -45,6 +45,51 @@ export async function getWorkerManualFrequencies(
   }
 }
 
+export async function getWorkerManualFrequenciesWithContracts(params?: {
+  from?: Date;
+  to?: Date;
+}): Promise<IWorkerManualFrequencyWithRelations[]> {
+  logger.info(
+    `(Server Action) getWorkerManualFrequencies: Buscando lista de frequências manuais de trabalhadores.`
+  );
+  const accessTokenSisman = await getSismanAccessToken();
+
+  const urlParams = new URLSearchParams();
+  if (params?.from) {
+    urlParams.append('startDate', params.from.toISOString());
+  }
+
+  if (params?.to) {
+    urlParams.append('endDate', params.to.toISOString());
+  }
+
+  console.log(urlParams.toString());
+
+  try {
+    const data = await fetchApiSisman(
+      `${API_RELATIVE_PATH}/with-contracts`,
+      accessTokenSisman,
+      {
+        // cache: 'force-cache'
+      },
+      {
+        startDate: urlParams.get('startDate'),
+        endDate: urlParams.get('endDate')
+      }
+    );
+    logger.info(
+      `(Server Action) getWorkerManualFrequencies: ${data.length} frequências manuais de trabalhadores retornadas.`
+    );
+    return data;
+  } catch (error) {
+    logger.error(
+      `(Server Action) getWorkerManualFrequencies: Erro ao buscar frequências manuais de trabalhadores.`,
+      error
+    );
+    throw error;
+  }
+}
+
 export async function showWorkerManualFrequency(
   id: number,
   accessTokenSisman: string

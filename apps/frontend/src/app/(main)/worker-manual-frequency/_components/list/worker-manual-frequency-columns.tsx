@@ -130,6 +130,15 @@ export const columns = (
       });
     }
   }),
+  columnHelper.accessor('workerContract.contract.codigoSipac', {
+    header: 'Contrato',
+    size: 200
+  }),
+  // columnHelper.accessor('notes', {
+  //   header: 'Notas',
+  //   size: 150,
+  //   enableResizing: false
+  // }),
   columnHelper.display({
     id: 'actions',
     size: 100,
