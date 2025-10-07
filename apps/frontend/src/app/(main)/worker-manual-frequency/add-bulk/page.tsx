@@ -2,7 +2,7 @@ import { Suspense } from 'react';
 import Loading from '../../../../components/loading';
 import WorkerManualFrequencyAddBulk from '../_components/add-bulk/worker-manual-frequency-add-bulk';
 import { getSismanAccessToken } from '../../../../lib/auth/get-access-token';
-import { getWorkers } from '../../worker/worker-actions';
+import { getWorkersWithActiveContract } from '../../worker/worker-actions';
 import { getWorkerManualFrequencyTypes } from '../worker-manual-frequency-actions';
 import { getUsers } from '../../user/user-actions';
 
@@ -14,7 +14,7 @@ export default async function Page({
   const accessTokenSisman = await getSismanAccessToken();
   const [listWorkers, listWorkerManualFrequencyTypes, listUsers] =
     await Promise.all([
-      getWorkers(accessTokenSisman),
+      getWorkersWithActiveContract(),
       getWorkerManualFrequencyTypes(accessTokenSisman),
       getUsers(accessTokenSisman)
     ]);

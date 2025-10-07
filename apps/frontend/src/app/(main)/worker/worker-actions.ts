@@ -46,6 +46,34 @@ export async function getWorkers(
     throw error;
   }
 }
+
+export async function getWorkersWithActiveContract(): Promise<
+  IWorkerWithRelations[]
+> {
+  logger.info(`(Server Action) getWorkers: Buscando lista de trabalhadores.`);
+  try {
+    const accessTokenSisman = await getSismanAccessToken();
+
+    const data = await fetchApiSisman(
+      `${API_RELATIVE_PATH}/active-contract`,
+      accessTokenSisman,
+      {
+        // cache: 'force-cache'
+      }
+    );
+    logger.info(
+      `(Server Action) getWorkers with active contract: ${data.length} trabalhadores retornados.`
+    );
+    return data;
+  } catch (error) {
+    logger.error(
+      `(Server Action) getWorkers: Erro ao buscar trabalhadores.`,
+      error
+    );
+    throw error;
+  }
+}
+
 export async function getWorkersSpecialties(
   accessTokenSisman: string
 ): Promise<IWorkerSpecialtyWithRelations[]> {

@@ -85,7 +85,7 @@ export default function WorkerManualFrequencyAddBulk({
         formActionProp={addWorkerManualFrequency}
         formSchema={workerManualFrequencyFormSchemaAdd}
         SubmitButtonIcon={CalendarPlus}
-        submitButtonText='Criar Frequência'
+        submitButtonText='Confirmar Registros'
         fieldLabels={fieldLabels}
         relatedData={relatedData}
         isInDialog={isInDialog}

@@ -6,6 +6,10 @@
 GET {{urlLocal}}
 Authorization: Bearer {{token}}
 
+### GET all workers with actives conctracts
+GET {{urlLocal}}/actives-contracts
+Authorization: Bearer {{token}}
+
 ### GET one worker
 # @prompt workerId
 GET {{urlLocal}}/{{workerId}}

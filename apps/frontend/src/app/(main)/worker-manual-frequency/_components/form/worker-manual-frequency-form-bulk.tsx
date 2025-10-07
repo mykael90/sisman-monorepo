@@ -206,7 +206,7 @@ export default function WorkerManualFrequencyFormBulk({
               field={field}
               label={fieldLabels.date}
               placeholder='dd/MM/yyyy'
-              className='mb-4'
+              className='mb-4 w-55'
             />
           )}
         </form.Field>
@@ -229,7 +229,7 @@ export default function WorkerManualFrequencyFormBulk({
               field={field}
               label={fieldLabels.workerManualFrequencyTypeId}
               placeholder='Selecione o tipo de frequência'
-              className='mb-4'
+              className='mb-4 w-40'
               options={listWorkerManualFrequencyTypes.map((type) => ({
                 value: String(type.id),
                 label: type.type

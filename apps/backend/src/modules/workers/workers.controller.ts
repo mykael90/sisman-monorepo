@@ -75,6 +75,21 @@ export class WorkersController {
     return this.workersService.list();
   }
 
+  @Get('active-contract')
+  @ApiEndpointSwagger({
+    summary: 'Listar workers com contrato ativo',
+    description: 'Retorna uma lista de todos os workers com contrato ativo.',
+    response: {
+      status: HttpStatus.OK,
+      description: 'Lista de workers com contrato ativo encontrada.',
+      type: WorkerWithRelationsResponseDto,
+      isArray: true
+    }
+  })
+  async listWithActiveContract() {
+    return this.workersService.listWithActiveContract();
+  }
+
   @Roles(Role.Adm, Role.User)
   @Get(':id')
   @ApiEndpointSwagger({

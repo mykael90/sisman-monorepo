@@ -195,6 +195,38 @@ export class WorkersService {
     });
   }
 
+  async listWithActiveContract() {
+    return await this.prisma.worker.findMany({
+      include: {
+        maintenanceInstance: true,
+        workerContracts: {
+          include: {
+            contract: {
+              include: {
+                providers: true
+              }
+            },
+            workerSpecialty: true,
+            sipacUnitLocation: true
+          },
+          orderBy: {
+            startDate: 'desc'
+          }
+        }
+      },
+      orderBy: {
+        name: 'asc'
+      },
+      where: {
+        workerContracts: {
+          some: {
+            endDate: null
+          }
+        }
+      }
+    });
+  }
+
   async show(id: number) {
     await this.exists(id);
     return await this.prisma.worker.findUnique({
