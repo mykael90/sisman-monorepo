@@ -14,6 +14,7 @@ import FormAddHeader from '../../../../../components/form-tanstack/form-add-head
 import { useState } from 'react';
 import { CalendarPlus } from 'lucide-react';
 import { useSession } from 'next-auth/react';
+import { toast } from 'sonner';
 
 export default function WorkerManualFrequencyAdd({
   relatedData,
@@ -23,14 +24,19 @@ export default function WorkerManualFrequencyAdd({
   isInDialog?: boolean;
 }) {
   const router = useRouter();
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+
+  if (status !== 'loading' && !session?.user?.idSisman) {
+    toast.warning('É preciso está autenticado para acessar essa página.');
+    router.push('/signin');
+  }
 
   const defaultData: IWorkerManualFrequencyAdd = {
     date: new Date(),
     workerId: '',
     workerManualFrequencyTypeId: '',
     // userId: session?.user?.id || '',
-    userId: 1,
+    userId: session?.user?.idSisman as number,
     hours: '9',
     notes: '',
     workerContractId: ''

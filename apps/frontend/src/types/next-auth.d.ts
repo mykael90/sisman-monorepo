@@ -30,7 +30,7 @@ interface ExtendedJWT extends JWT, DefaultJWT {
   refreshTokenUfrn?: string;
   expiresAtUfrn?: number;
   // SISMAN (via UFRN auth ou Magic Link)
-  idSisman?: string;
+  idSisman?: number;
   accessTokenSisman?: string;
   expiresAtSisman?: number;
   roles?: number[];
@@ -46,7 +46,7 @@ declare module 'next-auth' {
   interface Session {
     user: {
       idUfrn?: string; // ou id do usuário, dependendo do provedor
-      idSisman?: string;
+      idSisman?: number;
       login?: string | null;
       roles?: number[];
       maintenanceInstance: MaintenanceInstance;

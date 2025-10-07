@@ -14,6 +14,8 @@ import WorkerManualFrequencyForm from '../form/worker-manual-frequency-form';
 import { Save, CalendarPlus } from 'lucide-react';
 import FormAddHeader from '../../../../../components/form-tanstack/form-add-header';
 import { getDateUTC } from '../../../../../lib/utils';
+import { useSession } from 'next-auth/react';
+import { toast } from 'sonner';
 
 export default function WorkerManualFrequencyEdit({
   initialWorkerManualFrequency,
@@ -24,6 +26,16 @@ export default function WorkerManualFrequencyEdit({
   relatedData: IWorkerManualFrequencyRelatedData;
   isInDialog?: boolean;
 }) {
+  const router = useRouter();
+  const { data: session, status } = useSession();
+
+  if (status !== 'loading' && !session?.user?.idSisman) {
+    toast.warning('É preciso está autenticado para acessar essa página.');
+    router.push('/signin');
+  }
+
+  const userId = session?.user?.idSisman as number;
+
   const fieldLabels = {
     date: 'Data',
     workerId: 'Colaborador',
@@ -38,7 +50,9 @@ export default function WorkerManualFrequencyEdit({
     initialWorkerManualFrequency,
     fieldLabels
   ) as IWorkerManualFrequencyEdit;
+
   defaultData.date = getDateUTC(defaultData.date as string);
+  defaultData.userId = userId;
 
   const initialServerState: IActionResultForm<
     IWorkerManualFrequencyEdit,
@@ -47,8 +61,6 @@ export default function WorkerManualFrequencyEdit({
     errorsServer: [],
     message: ''
   };
-
-  const router = useRouter();
 
   const redirect = () => {
     router.push('/worker-manual-frequency');
