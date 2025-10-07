@@ -41,7 +41,7 @@ export interface IWorkerManualFrequencyAdd
 
 export interface IWorkerManualFrequencyAddBulkForm
   extends IWorkerManualFrequencyAdd {
-  items: IWorkerManualFrequencyAdd[];
+  items: (IWorkerManualFrequencyAdd & { key: number })[];
 }
 
 export interface IWorkerManualFrequencyEdit extends IWorkerManualFrequencyAdd {

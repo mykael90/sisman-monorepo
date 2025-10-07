@@ -15,11 +15,14 @@ import { CalendarPlus, Save } from 'lucide-react';
 import { IActionResultForm } from '@/types/types-server-actions';
 import { FormSuccessDisplay } from '@/components/form-tanstack/form-success-display';
 import { ErrorServerForm } from '@/components/form-tanstack/error-server-form';
+import * as React from 'react';
 import {
   IWorkerManualFrequency,
   IWorkerManualFrequencyAddBulkForm,
+  IWorkerManualFrequencyAdd,
   IWorkerManualFrequencyRelatedData
 } from '../../worker-manual-frequency-types';
+import { TableFormFrequencyItems } from './table-form-frequency-items';
 // import { maskTimeInput } from '../../../../../lib/utils';
 
 export default function WorkerManualFrequencyFormBulk({
@@ -69,7 +72,7 @@ export default function WorkerManualFrequencyFormBulk({
   const { listWorkers, listWorkerManualFrequencyTypes } = relatedData;
 
   const form = useForm({
-    defaultValues: defaultData,
+    defaultValues: defaultData, // Usa os valores com chaves
     transform: useTransform(
       (baseForm) => mergeForm(baseForm, serverState ?? {}),
       [serverState]
@@ -84,6 +87,49 @@ export default function WorkerManualFrequencyFormBulk({
       console.log(value);
     }
   });
+
+  const handleAddFrequency = () => {
+    const { items: _, ...rest } = form.state.values;
+
+    const newFrequencyItem: IWorkerManualFrequencyAdd & { key: number } = {
+      key: 1,
+      date: rest.date,
+      hours: rest.hours,
+      workerManualFrequencyTypeId: rest.workerManualFrequencyTypeId,
+      notes: rest.notes,
+      workerId: rest.workerId,
+      userId: rest.userId,
+      workerContractId: rest.workerContractId
+    };
+
+    form.pushFieldValue('items', newFrequencyItem);
+  };
+
+  const handleRemoveFrequency = (key: number) => {
+    const index = (
+      form.state.values.items as (IWorkerManualFrequencyAdd & { key: number })[]
+    ).findIndex((item) => item.key === key);
+    if (index !== -1) {
+      form.removeFieldValue('items', index);
+    }
+  };
+
+  const handleUpdateFrequencyField = (
+    key: number,
+    fieldToUpdate: keyof IWorkerManualFrequencyAdd,
+    value: any
+  ) => {
+    const index = form.state.values.items.findIndex(
+      (item: IWorkerManualFrequencyAdd & { key: number }) => item.key === key
+    );
+    if (index !== -1) {
+      const updatedItem = {
+        ...form.state.values.items[index],
+        [fieldToUpdate]: value
+      };
+      form.replaceFieldValue('items', index, updatedItem);
+    }
+  };
 
   const handleReset = onClean
     ? () => {
@@ -234,44 +280,24 @@ export default function WorkerManualFrequencyFormBulk({
         )}
       /> */}
 
-      <Button
-        onClick={() => {
-          //ignore items e pegue o restante dos valores do formulario
-          const { items: _, ...rest } = form.state.values;
-          return form.pushFieldValue('items', rest);
-        }}
-      >
+      <Button type='button' onClick={handleAddFrequency} className='mb-4'>
         Inserir frequência de colaborador
       </Button>
 
       <form.Field name='items' mode='array'>
         {(field) => {
           return (
-            <div>
-              {field.state.value.map((_, i) => {
-                return (
-                  <form.Field key={i} name={`items[${i}].workerId`}>
-                    {(subField) => {
-                      return (
-                        <FormCombobox
-                          field={subField}
-                          label={fieldLabels.workerId}
-                          placeholder='Selecione o colaborador'
-                          className='mb-4'
-                          options={listWorkers.map((worker) => ({
-                            value: String(worker.id),
-                            label: worker.name
-                          }))}
-                          onValueChange={(value) =>
-                            subField.handleChange(Number(value))
-                          }
-                        />
-                      );
-                    }}
-                  </form.Field>
-                );
-              })}
-            </div>
+            <TableFormFrequencyItems
+              items={
+                field.state.value as (IWorkerManualFrequencyAdd & {
+                  key: number;
+                })[]
+              }
+              onRemove={handleRemoveFrequency}
+              onUpdateField={handleUpdateFrequencyField}
+              relatedData={relatedData}
+              fieldLabels={fieldLabels}
+            />
           );
         }}
       </form.Field>
