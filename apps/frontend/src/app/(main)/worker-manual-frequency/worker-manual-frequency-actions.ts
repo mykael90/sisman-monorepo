@@ -284,6 +284,28 @@ export async function updateWorkerManualFrequency(
   }
 }
 
+export async function deleteWorkerManualFrequency(id: number): Promise<string> {
+  logger.info(
+    `(Server Action) deleteWorkerManualFrequency: Tentativa de excluir frequência manual de trabalhador ${id}.`
+  );
+
+  try {
+    const accessToken = await getSismanAccessToken();
+    await fetchApiSisman(`${API_RELATIVE_PATH}/${id}`, accessToken, {
+      method: 'DELETE'
+    });
+    //revalidar rota
+    revalidatePath(PAGE_PATH);
+    return 'Frequência manual de trabalhador excluída com sucesso!';
+  } catch (error) {
+    logger.error(
+      `(Server Action) deleteWorkerManualFrequency: Erro inesperado para a frequência manual de trabalhador ${id}.`,
+      error
+    );
+    throw error;
+  }
+}
+
 export async function addWorkerManualFrequencyMany(
   prevState: unknown,
   data: IWorkerManualFrequencyAdd[]

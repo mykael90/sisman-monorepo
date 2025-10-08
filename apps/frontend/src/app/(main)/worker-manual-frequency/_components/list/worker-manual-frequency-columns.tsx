@@ -8,7 +8,7 @@ import {
 } from '@tanstack/react-table';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { Edit, ChevronRight, ChevronDown } from 'lucide-react';
+import { Edit, ChevronRight, ChevronDown, Trash } from 'lucide-react';
 import { IWorkerManualFrequencyForContractsWithRelations } from '../../worker-manual-frequency-types';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { getDateUTC } from '../../../../../lib/utils';
@@ -25,6 +25,9 @@ import { StatusBadge } from '@/components/ui/status-badge';
 import { formatCodigoUnidade } from '../../../../../lib/utils';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import { toast } from 'sonner';
+import { useTransition } from 'react';
+import { deleteWorkerManualFrequency } from '../../worker-manual-frequency-actions';
 
 const columnHelper =
   createColumnHelper<IWorkerManualFrequencyForContractsWithRelations>();
@@ -57,23 +60,46 @@ type ActionHandlersSubrows = {
 
 export const createActionsSubrows = (
   router: AppRouterInstance
-): ActionHandlersSubrows => ({
-  onEditWorkerManualFrequency: (
-    workerManualFrequency: IWorkerManualFrequencyForContractsWithRelations['workerManualFrequency'][number]
-  ) => {
-    console.log('Edit workerManualFrequency', workerManualFrequency);
-    if (workerManualFrequency.id) {
-      router.push(`worker-manual-frequency/edit/${workerManualFrequency.id}`);
-    } else {
-      console.error(
-        'WorkerManualFrequency ID is missing, cannot navigate to edit page.'
-      );
-      throw new Error(
-        'WorkerManualFrequency ID is missing, cannot navigate to edit page.'
-      );
+): ActionHandlersSubrows => {
+  const [isPending, startTransition] = useTransition();
+
+  const handleDeleteManualFrequency = async (id: number) => {
+    startTransition(async () => {
+      // When you use await inside a startTransition function, the state updates that happen after the await are not marked as Transitions. You must wrap state updates after each await in a startTransition call:
+
+      const result = await deleteWorkerManualFrequency(id);
+      if (result) {
+        toast.success(result);
+      }
+    });
+  };
+
+  return {
+    onEditWorkerManualFrequency: (
+      workerManualFrequency: IWorkerManualFrequencyForContractsWithRelations['workerManualFrequency'][number]
+    ) => {
+      console.log('Edit workerManualFrequency', workerManualFrequency);
+      if (workerManualFrequency.id) {
+        router.push(`worker-manual-frequency/edit/${workerManualFrequency.id}`);
+      } else {
+        console.error(
+          'WorkerManualFrequency ID is missing, cannot navigate to edit page.'
+        );
+        throw new Error(
+          'WorkerManualFrequency ID is missing, cannot navigate to edit page.'
+        );
+      }
+    },
+    onDeleteWorkerManualFrequency: (
+      workerManualFrequency: IWorkerManualFrequencyForContractsWithRelations['workerManualFrequency'][number]
+    ) => {
+      console.log('Delete workerManualFrequency', workerManualFrequency);
+
+      handleDeleteManualFrequency(workerManualFrequency.id);
+      // Implement toast logic here
     }
-  }
-});
+  };
+};
 
 export const createActions = (
   router: AppRouterInstance
@@ -305,6 +331,18 @@ export const SubRowComponent = ({
                       }
                     >
                       <Edit className='h-4 w-4' />
+                    </Button>
+                    <Button
+                      title='Excluir Frequência Manual'
+                      variant='ghost'
+                      size='icon'
+                      onClick={() =>
+                        configuredActionsSubrows.onDeleteWorkerManualFrequency(
+                          frequency
+                        )
+                      }
+                    >
+                      <Trash className='h-4 w-4' />
                     </Button>
                   </div>
                 </TableCell>
