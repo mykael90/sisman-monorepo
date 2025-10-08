@@ -239,6 +239,55 @@ export async function updateWorkerManualFrequency(
   }
 }
 
+export async function addWorkerManualFrequencyMany(
+  prevState: unknown,
+  data: IWorkerManualFrequencyAdd[]
+): Promise<IActionResultForm<IWorkerManualFrequencyAdd[], { count: number }>> {
+  logger.info(
+    `(Server Action) addWorkerManualFrequencyMany: Tentativa de adicionar múltiplas frequências manuais de trabalhadores.`,
+    data
+  );
+
+  const validatedData = data;
+  logger.info(
+    `(Server Action) addWorkerManualFrequencyMany: Dados das frequências manuais de trabalhadores validados com sucesso.`
+  );
+
+  try {
+    const accessToken = await getSismanAccessToken();
+    return await handleApiAction<
+      IWorkerManualFrequencyAdd[],
+      { count: number },
+      IWorkerManualFrequencyAdd[]
+    >(
+      validatedData,
+      data,
+      {
+        endpoint: `${API_RELATIVE_PATH}/many`,
+        method: 'POST',
+        accessToken: accessToken
+      },
+      {
+        mainPath: PAGE_PATH
+      },
+      'Múltiplas frequências manuais de trabalhadores cadastradas com sucesso!'
+    );
+  } catch (error) {
+    logger.error(
+      `(Server Action) addWorkerManualFrequencyMany: Erro inesperado.`,
+      error
+    );
+    return {
+      isSubmitSuccessful: false,
+      errorsServer: [
+        'Ocorreu um erro inesperado ao processar sua solicitação.'
+      ],
+      submittedData: data,
+      message: 'Erro inesperado.'
+    };
+  }
+}
+
 // --- Funções de Leitura de Dados para WorkerManualFrequencyType ---
 
 const API_RELATIVE_PATH_TYPE = '/worker-manual-frequency-type';
