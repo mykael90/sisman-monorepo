@@ -66,6 +66,8 @@ export function TableFormFrequencyItems({
           <TableHeader>
             <TableRow>
               <TableHead>Trabalhador</TableHead>
+              <TableHead>Contrato</TableHead>
+              <TableHead>Lotação</TableHead>
               <TableHead>Função</TableHead>
               <TableHead>Data</TableHead>
               <TableHead>Tipo de Frequência</TableHead>
@@ -81,6 +83,13 @@ export function TableFormFrequencyItems({
               return (
                 <TableRow key={item.key} className='hover:bg-gray-50'>
                   <TableCell>{info?.name ?? 'N/A'}</TableCell>
+                  <TableCell>
+                    {info?.workerContracts[0]?.contract?.codigoSipac ?? 'N/A'}
+                  </TableCell>
+                  <TableCell>
+                    {info?.workerContracts[0]?.sipacUnitLocation?.sigla ??
+                      'N/A'}
+                  </TableCell>
                   <TableCell>
                     {info?.workerContracts[0]?.workerSpecialty?.name ?? 'N/A'}
                   </TableCell>

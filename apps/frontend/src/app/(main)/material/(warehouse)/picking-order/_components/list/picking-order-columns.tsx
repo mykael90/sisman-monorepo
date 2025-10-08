@@ -794,54 +794,62 @@ export const SubRowComponent = ({
 
   return (
     <div className='p-2 pl-8'>
-      <h4 className='mb-2 text-sm font-semibold'>
-        Itens da Ordem de Separação:
-      </h4>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>ID Material</TableHead>
-            <TableHead>Denominação</TableHead>
-            <TableHead>Unidade</TableHead>
-            <TableHead>Qtd Solicitada</TableHead>
-            <TableHead>Qtd Separada</TableHead>
-            <TableHead>Qtd Retirada</TableHead>
-            <TableHead>Valor Unitário</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {items.length > 0 ? (
-            items.map((item, index) => (
-              <TableRow key={index}>
-                <TableCell>{item.globalMaterialId}</TableCell>
-                <TableCell>{item.globalMaterial?.name || 'N/A'}</TableCell>
-                <TableCell>
-                  {item.globalMaterial?.unitOfMeasure || 'N/A'}
-                </TableCell>
-                <TableCell>{item.quantityToPick.toString()}</TableCell>
-                <TableCell>{(item.quantityPicked || 0).toString()}</TableCell>
-                <TableCell>
-                  {(item.quantityWithdrawn || 0).toString()}
-                </TableCell>
-                <TableCell>
-                  {item.unitPrice
-                    ? Number(item.unitPrice).toLocaleString('pt-BR', {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2
-                      })
-                    : 'Indefinido'}
+      <div>
+        <h4 className='mb-2 text-sm font-semibold'>
+          Itens da Ordem de Separação:
+        </h4>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>ID Material</TableHead>
+              <TableHead>Denominação</TableHead>
+              <TableHead>Unidade</TableHead>
+              <TableHead>Qtd Solicitada</TableHead>
+              <TableHead>Qtd Separada</TableHead>
+              <TableHead>Qtd Retirada</TableHead>
+              <TableHead>Valor Unitário</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {items.length > 0 ? (
+              items.map((item, index) => (
+                <TableRow key={index}>
+                  <TableCell>{item.globalMaterialId}</TableCell>
+                  <TableCell>{item.globalMaterial?.name || 'N/A'}</TableCell>
+                  <TableCell>
+                    {item.globalMaterial?.unitOfMeasure || 'N/A'}
+                  </TableCell>
+                  <TableCell>{item.quantityToPick.toString()}</TableCell>
+                  <TableCell>{(item.quantityPicked || 0).toString()}</TableCell>
+                  <TableCell>
+                    {(item.quantityWithdrawn || 0).toString()}
+                  </TableCell>
+                  <TableCell>
+                    {item.unitPrice
+                      ? Number(item.unitPrice).toLocaleString('pt-BR', {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2
+                        })
+                      : 'Indefinido'}
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={6} className='h-24 text-center'>
+                  Nenhum item encontrado.
                 </TableCell>
               </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={6} className='h-24 text-center'>
-                Nenhum item encontrado.
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+            )}
+          </TableBody>
+        </Table>
+      </div>
+      {row.original.notes && (
+        <div className='bg-sisman-green/10 mt-4 p-4'>
+          <h4 className='mb-2 text-sm text-xs font-semibold'>Observações:</h4>
+          <div className='mb-2'>{row.original.notes}</div>
+        </div>
+      )}
     </div>
   );
 };

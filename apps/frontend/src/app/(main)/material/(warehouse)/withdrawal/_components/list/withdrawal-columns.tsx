@@ -310,44 +310,52 @@ export const SubRowComponent = ({
 
   return (
     <div className='p-2 pl-8'>
-      <h4 className='mb-2 text-sm font-semibold'>Itens Retirados:</h4>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>ID Material</TableHead>
-            <TableHead>Denominação</TableHead>
-            <TableHead>Unidade</TableHead>
-            <TableHead>Qtd</TableHead>
-            <TableHead>Valor</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {items.length > 0 ? (
-            items.map((item, index) => (
-              <TableRow key={index}>
-                <TableCell>{item.globalMaterialId}</TableCell>
-                <TableCell>{item.globalMaterial?.name}</TableCell>
-                <TableCell>{item.globalMaterial?.unitOfMeasure}</TableCell>
-                <TableCell>{item.quantityWithdrawn.toString()}</TableCell>
-                <TableCell>
-                  {item.unitPrice
-                    ? Number(item.unitPrice).toLocaleString('pt-BR', {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2
-                      })
-                    : 'Indefinido'}
+      <div>
+        <h4 className='mb-2 text-sm font-semibold'>Itens Retirados:</h4>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>ID Material</TableHead>
+              <TableHead>Denominação</TableHead>
+              <TableHead>Unidade</TableHead>
+              <TableHead>Qtd</TableHead>
+              <TableHead>Valor</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {items.length > 0 ? (
+              items.map((item, index) => (
+                <TableRow key={index}>
+                  <TableCell>{item.globalMaterialId}</TableCell>
+                  <TableCell>{item.globalMaterial?.name}</TableCell>
+                  <TableCell>{item.globalMaterial?.unitOfMeasure}</TableCell>
+                  <TableCell>{item.quantityWithdrawn.toString()}</TableCell>
+                  <TableCell>
+                    {item.unitPrice
+                      ? Number(item.unitPrice).toLocaleString('pt-BR', {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2
+                        })
+                      : 'Indefinido'}
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={4} className='h-24 text-center'>
+                  Nenhum item encontrado.
                 </TableCell>
               </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={4} className='h-24 text-center'>
-                Nenhum item encontrado.
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+            )}
+          </TableBody>
+        </Table>
+      </div>
+      {row.original.notes && (
+        <div className='bg-sisman-green/10 mt-4 p-4'>
+          <h4 className='mb-2 text-sm text-xs font-semibold'>Observações:</h4>
+          <div className='mb-2'>{row.original.notes}</div>
+        </div>
+      )}
     </div>
   );
 };
