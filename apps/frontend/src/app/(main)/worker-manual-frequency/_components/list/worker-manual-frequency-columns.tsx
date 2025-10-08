@@ -28,6 +28,7 @@ import { ptBR } from 'date-fns/locale';
 import { toast } from 'sonner';
 import { useTransition } from 'react';
 import { deleteWorkerManualFrequency } from '../../worker-manual-frequency-actions';
+import { QueryClient } from '@tanstack/react-query';
 
 const columnHelper =
   createColumnHelper<IWorkerManualFrequencyForContractsWithRelations>();
@@ -59,7 +60,8 @@ type ActionHandlersSubrows = {
 };
 
 export const createActionsSubrows = (
-  router: AppRouterInstance
+  router: AppRouterInstance,
+  queryClient: QueryClient
 ): ActionHandlersSubrows => {
   const [isPending, startTransition] = useTransition();
 
@@ -69,7 +71,13 @@ export const createActionsSubrows = (
 
       const result = await deleteWorkerManualFrequency(id);
       if (result) {
-        toast.success(result);
+        startTransition(() => {
+          //Uso de recursividade, como foi bem sucedido, vai localizar corretamente e vai exibir em tela na próxima chamada
+          toast.success(result);
+          queryClient.invalidateQueries({
+            queryKey: ['workerManualFrequencies']
+          }); // Invalida o cache do react-query
+        });
       }
     });
   };

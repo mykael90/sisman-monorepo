@@ -21,7 +21,7 @@ import {
 import { UserPlus, CalendarPlus } from 'lucide-react';
 import { TableTanstackFaceted } from '../../../../../components/table-tanstack/table-tanstack-faceted';
 import { DefaultGlobalFilter } from '../../../../../components/table-tanstack/default-global-filter';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { DateRange } from 'react-day-picker';
 import { endOfMonth, startOfMonth } from 'date-fns';
 import { getWorkerManualFrequenciesForContracts } from '../../worker-manual-frequency-actions';
@@ -30,6 +30,7 @@ import { DateRangeFilter } from '../../../../../components/filters/date-range-fi
 
 export function WorkerManualFrequencyListPage() {
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const [date, setDate] = useState<DateRange | undefined>({
     from: startOfMonth(new Date()),
@@ -78,7 +79,7 @@ export function WorkerManualFrequencyListPage() {
   };
 
   const columnActions = createActions(router);
-  const columnActionsSubrows = createActionsSubrows(router);
+  const columnActionsSubrows = createActionsSubrows(router, queryClient);
 
   return (
     <div className='container mx-auto p-4'>
