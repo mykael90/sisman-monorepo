@@ -3,7 +3,7 @@ import {
   WorkerManualFrequencyType,
   Prisma
 } from '@sisman/prisma';
-import { IWorker } from '../worker/worker-types';
+import { IWorker, IWorkerWithRelations } from '../worker/worker-types';
 import { IUser } from '../user/user-types';
 
 export type IWorkerManualFrequencyWithRelations =
@@ -57,7 +57,7 @@ export type IWorkerManualFrequencyRemove = {
 export type IWorkerManualFrequencySelect = Prisma.WorkerManualFrequencySelect;
 
 export type IWorkerManualFrequencyRelatedData = {
-  listWorkers: IWorker[];
+  listWorkers: IWorkerWithRelations[];
   listWorkerManualFrequencyTypes: IWorkerManualFrequencyType[];
   listUsers: IUser[]; // Temporariamente removido devido a erro de importação
 };

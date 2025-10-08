@@ -1,7 +1,7 @@
 import { MaterialPickingOrder, Prisma } from '@sisman/prisma';
 import { Session } from 'next-auth';
 import { IUser } from '../../../user/user-types';
-import { IWorker } from '../../../worker/worker-types';
+import { IWorker, IWorkerWithRelations } from '../../../worker/worker-types';
 import { MaterialOperationOutKey } from '../../../../../mappers/material-operations-mappers';
 import { IMaterialGlobalCatalogEdit } from '../../global-catalog/material-global-catalog-types';
 import { IWarehouseStockIncludedComputed } from '../warehouse-stock/warehouse-stock-types';
@@ -78,7 +78,7 @@ export type IMaterialPickingOrderSelect = Prisma.MaterialPickingOrderSelect;
 export type IMaterialPickingOrderRelatedData = {
   session?: Session;
   listUsers?: IUser[];
-  listWorkers?: IWorker[];
+  listWorkers?: IWorkerWithRelations[];
   // Will be added later
 };
 

@@ -34,7 +34,7 @@ export default function WorkerManualFrequencyAddBulk({
   const defaultData: IWorkerManualFrequencyAddBulkForm = {
     date: new Date(),
     workerId: '',
-    workerManualFrequencyTypeId: '',
+    workerManualFrequencyTypeId: 1,
     // userId: session?.user?.id || '',
     userId: session?.user?.idSisman as number,
     hours: '9',

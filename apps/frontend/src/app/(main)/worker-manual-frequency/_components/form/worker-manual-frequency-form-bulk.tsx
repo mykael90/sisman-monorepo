@@ -23,6 +23,11 @@ import {
   IWorkerManualFrequencyRelatedData
 } from '../../worker-manual-frequency-types';
 import { TableFormFrequencyItems } from './table-form-frequency-items';
+import { IWorkerWithRelations } from '../../../worker/worker-types';
+import { formatCodigoUnidade } from '../../../../../lib/utils';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { getFirstAndLastName } from '@/lib/getFirstAndLastName';
 // import { maskTimeInput } from '../../../../../lib/utils';
 
 export default function WorkerManualFrequencyFormBulk({
@@ -71,13 +76,25 @@ export default function WorkerManualFrequencyFormBulk({
 
   const { listWorkers, listWorkerManualFrequencyTypes } = relatedData;
 
+  const infoMap = React.useMemo(() => {
+    const map = new Map<number, IWorkerWithRelations>();
+
+    // Adiciona uma verificação para garantir que materialsInfo é um array
+    if (Array.isArray(listWorkers)) {
+      listWorkers.forEach((worker) => {
+        map.set(worker.id, worker);
+      });
+    }
+    return map;
+  }, [listWorkers]);
+
   const form = useForm({
     defaultValues: defaultData,
     transform: useTransform(
       (baseForm) => mergeForm(baseForm, serverState ?? {}),
       [serverState]
     ),
-    validators: formSchema ? { onChange: formSchema } : undefined,
+    // validators: formSchema ? { onChange: formSchema } : undefined,
     onSubmit: async ({
       value
     }: {
@@ -94,15 +111,10 @@ export default function WorkerManualFrequencyFormBulk({
 
     const newFrequencyItem: IWorkerManualFrequencyAdd & { key: number } = {
       key: newKey,
-      date: rest.date,
-      hours: rest.hours,
-      workerManualFrequencyTypeId: rest.workerManualFrequencyTypeId,
-      notes: rest.notes,
-      workerId: rest.workerId,
-      userId: rest.userId
-      // workerContractId: rest.workerContractId,
+      ...rest
     };
 
+    form.resetField('workerId');
     form.pushFieldValue('items', newFrequencyItem);
   };
 
@@ -234,7 +246,9 @@ export default function WorkerManualFrequencyFormBulk({
                 value: String(type.id),
                 label: type.type
               }))}
-              onValueChange={(value) => field.handleChange(Number(value))}
+              onValueChange={(value) => {
+                field.handleChange(Number(value));
+              }}
             />
           )}
         />
@@ -252,21 +266,92 @@ export default function WorkerManualFrequencyFormBulk({
           </form.Field>
         </div>
       </div>
-      <form.Field
-        name='workerId'
-        children={(field: any) => (
-          <FormCombobox
-            field={field}
-            label={fieldLabels.workerId}
-            placeholder='Selecione o colaborador'
-            className='mb-4'
-            options={listWorkers.map((worker) => ({
-              value: String(worker.id),
-              label: worker.name
-            }))}
-            onValueChange={(value) => field.handleChange(Number(value))}
+      <div className='align-center flex items-end justify-center gap-4'>
+        <div className='flex-1'>
+          <form.Field
+            name='workerId'
+            listeners={{
+              onChange: ({ value }) => {
+                console.log(`Country changed to: ${value}, resetting province`);
+                form.setFieldValue(
+                  'workerContractId',
+                  infoMap.get(Number(value))?.workerContracts[0]?.id
+                );
+              }
+            }}
+            children={(field: any) => (
+              <FormCombobox
+                field={field}
+                label={fieldLabels.workerId}
+                placeholder='Selecione o colaborador'
+                className='mb-4'
+                options={listWorkers.map((worker) => ({
+                  value: String(worker.id),
+                  label: worker.name,
+                  secondaryLabel:
+                    worker.workerContracts[0]?.workerSpecialty?.name
+                }))}
+                onValueChange={(value) => {
+                  field.handleChange(Number(value));
+                }}
+              />
+            )}
           />
-        )}
+        </div>
+        <Button type='button' onClick={handleAddFrequency} className='mb-4'>
+          Inserir
+        </Button>
+      </div>
+
+      <form.Subscribe
+        selector={(state) => state.values.workerId}
+        children={(workerId) => {
+          const workerInfo = infoMap.get(Number(workerId));
+
+          return workerId && workerInfo ? (
+            <Card className='mb-4'>
+              <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+                <CardTitle className='text-sm font-medium'>
+                  {workerInfo.name}
+                </CardTitle>
+                {/* <Avatar className='hidden h-8 w-8 sm:flex'>
+                  <AvatarImage src={undefined} alt='Avatar' />
+                  <AvatarFallback>
+                    {workerInfo.name
+                      .split(' ')
+                      .map((n) => n[0])
+                      .join('')}
+                  </AvatarFallback>
+                </Avatar> */}
+              </CardHeader>
+              <CardContent>
+                <div className='text-xl font-bold'>
+                  {workerInfo.workerContracts[0]?.workerSpecialty?.name}
+                </div>
+                <p className='text-muted-foreground text-xs'>
+                  Contrato:{' '}
+                  {workerInfo.workerContracts[0]?.contract?.codigoSipac}
+                </p>
+                <div className='mt-4 text-sm'>
+                  <p>
+                    <span className='font-semibold'>Início do contrato:</span>{' '}
+                    {new Date(
+                      workerInfo.workerContracts[0]?.contract?.startDate as any
+                    ).toLocaleDateString()}
+                  </p>
+                  <p>
+                    <span className='font-semibold'>Lotação:</span>{' '}
+                    {formatCodigoUnidade(
+                      workerInfo.workerContracts[0]?.sipacUnitLocation
+                        ?.codigoUnidade,
+                      workerInfo.workerContracts[0]?.sipacUnitLocation?.sigla
+                    )}
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          ) : null;
+        }}
       />
 
       {/* <form.Field
@@ -280,10 +365,6 @@ export default function WorkerManualFrequencyFormBulk({
           />
         )}
       /> */}
-
-      <Button type='button' onClick={handleAddFrequency} className='mb-4'>
-        Inserir frequência de colaborador
-      </Button>
 
       <form.Field name='items' mode='array'>
         {(field) => {

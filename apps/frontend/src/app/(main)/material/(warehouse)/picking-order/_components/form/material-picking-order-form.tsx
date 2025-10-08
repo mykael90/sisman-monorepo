@@ -388,7 +388,10 @@ export function MaterialPickingOrderForm({
                                 options={
                                   listWorkers?.map((worker) => ({
                                     value: worker.id,
-                                    label: worker.name
+                                    label: worker.name,
+                                    secondaryLabel:
+                                      worker.workerContracts[0]?.workerSpecialty
+                                        ?.name
                                   })) ?? []
                                 }
                                 onValueChange={(value) =>
