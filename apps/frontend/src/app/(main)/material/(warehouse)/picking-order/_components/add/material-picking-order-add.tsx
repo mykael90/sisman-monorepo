@@ -10,6 +10,7 @@ import { MaterialPickingOrderForm } from '../form/material-picking-order-form';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, FilePlus, ListPlus } from 'lucide-react';
 import { SectionListHeaderSmall } from '../../../../../../../components/section-list-header-small';
+import { startOfDay } from 'date-fns';
 
 export function MaterialPickingOrderAdd({
   relatedData
@@ -38,7 +39,7 @@ export function MaterialPickingOrderAdd({
   }
 
   //default dia seguinte
-  const desiredPickupDate = new Date();
+  const desiredPickupDate = startOfDay(new Date());
   desiredPickupDate.setDate(desiredPickupDate.getDate() + 1);
 
   const defaultData: Partial<Record<keyof IMaterialPickingOrderAddForm, any>> =

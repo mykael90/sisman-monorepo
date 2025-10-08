@@ -13,6 +13,7 @@ import { useState } from 'react';
 import { CalendarPlus } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { toast } from 'sonner';
+import { startOfDay } from 'date-fns';
 import WorkerManualFrequencyFormBulk from '../form/worker-manual-frequency-form-bulk';
 
 export default function WorkerManualFrequencyAddBulk({
@@ -31,7 +32,7 @@ export default function WorkerManualFrequencyAddBulk({
   }
 
   const defaultData: IWorkerManualFrequencyAddBulkForm = {
-    date: new Date(),
+    date: startOfDay(new Date()),
     workerId: '',
     workerManualFrequencyTypeId: 1,
     // userId: session?.user?.id || '',
