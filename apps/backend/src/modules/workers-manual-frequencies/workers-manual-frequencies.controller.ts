@@ -133,6 +133,29 @@ export class WorkersManualFrequenciesController {
     );
   }
 
+  @Get('for-contracts')
+  @ApiEndpointSwagger({
+    summary: 'Listar frequências para contratos',
+    description:
+      'Retorna uma lista de contratos com suas frequências manuais de workers.',
+    response: {
+      status: HttpStatus.OK,
+      description: 'Lista de contratos com frequências manuais encontrada.',
+      type: WorkerManualFrequencyWithRelationsResponseDto, // Pode ser necessário um DTO específico para esta resposta
+      isArray: true
+    }
+  })
+  async getFrequenciesForContracts(
+    @Query()
+    queryParams: {
+      [key: string]: string;
+    }
+  ) {
+    return this.workersManualFrequenciesService.getFrequenciesForContracts(
+      queryParams
+    );
+  }
+
   @Get(':id')
   @ApiEndpointSwagger({
     summary: 'Buscar frequência manual por ID',

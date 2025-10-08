@@ -207,4 +207,64 @@ export class WorkersManualFrequenciesService {
 
     return frequenciesWithContracts;
   }
+
+  async getFrequenciesForContracts(queryParams?: { [key: string]: string }) {
+    const whereArgs: Prisma.WorkerManualFrequencyWhereInput = {};
+
+    //funcao para pegar apenas a parte da data e depois criar o objeto em typescript
+
+    if (queryParams && !!Object.keys(queryParams).length) {
+      const { startDate, endDate } = queryParams;
+
+      if (startDate && endDate) {
+        whereArgs.date = {
+          gte: gteDate(startDate),
+          lte: lteDate(endDate)
+        };
+      }
+    }
+
+    // A consulta agora é uma única chamada ao banco de dados.
+    const frequenciesForContracts = await this.prisma.workerContract.findMany({
+      include: {
+        worker: {
+          select: {
+            name: true // Exemplo: selecionando apenas o nome do trabalhador
+          }
+        },
+        workerManualFrequency: {
+          include: {
+            workerManualFrequencyType: true,
+            user: true
+          },
+          where: whereArgs,
+          // Opcional: para ordenar os resultados
+          orderBy: {
+            date: 'desc'
+          }
+        },
+        sipacUnitLocation: {
+          select: { codigoUnidade: true, sigla: true }
+        },
+        contract: { select: { codigoSipac: true, subject: true } },
+        workerSpecialty: {
+          select: {
+            name: true
+          }
+        }
+      },
+      where: {
+        workerManualFrequency: {
+          some: whereArgs
+        }
+      },
+      orderBy: {
+        worker: {
+          name: 'asc'
+        }
+      }
+    });
+
+    return frequenciesForContracts;
+  }
 }

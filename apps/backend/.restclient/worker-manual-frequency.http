@@ -12,6 +12,12 @@ GET {{urlLocal}}/with-contracts
 &endDate=2025-06-26
 Authorization: Bearer {{token}}
 
+### GET all worker manual frequencies with contracts
+GET {{urlLocal}}/for-contracts
+?startDate=2025-06-26
+&endDate=2025-06-26
+Authorization: Bearer {{token}}
+
 ### GET one worker manual frequency
 # @prompt workerManualFrequencyId
 GET {{urlLocal}}/{{workerManualFrequencyId}}
