@@ -23,6 +23,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { ApiEndpointSwagger } from '../../shared/decorators/swagger/api-endpoint.decorator';
 import {
   WorkerManualFrequencyCreateDto,
+  WorkerManualFrequencyCreateManyDto,
   WorkerManualFrequencyUpdateDto,
   WorkerManualFrequencyWithRelationsResponseDto
 } from './dto/worker-manual-frequency.dto';
@@ -89,7 +90,7 @@ export class WorkersManualFrequenciesController {
       }
     ]
   })
-  async createMany(@Body() data: WorkerManualFrequencyCreateDto[]) {
+  async createMany(@Body() data: WorkerManualFrequencyCreateManyDto) {
     return this.workersManualFrequenciesService.createMany(data);
   }
 

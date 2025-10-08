@@ -70,7 +70,7 @@ export function WorkerManualFrequencyListPage() {
   });
 
   const handleAddWorkerManualFrequency = () => {
-    router.push('worker-manual-frequency/add');
+    router.push('worker-manual-frequency/add-bulk');
   };
 
   const columnActions = createActions(router);

@@ -1,12 +1,15 @@
 import { IntersectionType, PartialType, PickType } from '@nestjs/swagger';
 import { Prisma, WorkerManualFrequency } from '@sisman/prisma';
+import { Type } from 'class-transformer';
 import {
+  IsArray,
   IsDate,
   IsNotEmpty,
   IsNumber,
   IsOptional,
   IsString,
-  Min
+  Min,
+  ValidateNested
 } from 'class-validator';
 
 // =================================================================
@@ -43,8 +46,8 @@ class WorkerManualFrequencyBaseDto implements WorkerManualFrequency {
    * @example 8
    */
   @IsNumber()
+  @Type(() => Number)
   @IsNotEmpty()
-  @Min(0)
   hours: number;
 
   /**
@@ -165,6 +168,13 @@ export class WorkerManualFrequencyCreateDto extends IntersectionType(
     'notes'
   ] as const)
 ) {}
+
+export class WorkerManualFrequencyCreateManyDto {
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => WorkerManualFrequencyCreateDto)
+  items: WorkerManualFrequencyCreateDto[];
+}
 
 // =================================================================
 // 4. DTOs DE ATUALIZAÇÃO (INPUT) - Derivadas com PartialType

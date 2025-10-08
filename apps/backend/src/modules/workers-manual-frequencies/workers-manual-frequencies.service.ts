@@ -13,6 +13,7 @@ import { Prisma, WorkerManualFrequency } from '@sisman/prisma';
 import { handlePrismaError } from '../../shared/utils/prisma-error-handler';
 import {
   WorkerManualFrequencyCreateDto,
+  WorkerManualFrequencyCreateManyDto,
   WorkerManualFrequencyUpdateDto
 } from './dto/worker-manual-frequency.dto';
 import { gteDate, lteDate } from '../../shared/utils/date-utils';
@@ -57,14 +58,16 @@ export class WorkersManualFrequenciesService {
   }
 
   async createMany(
-    data: WorkerManualFrequencyCreateDto[]
+    data: WorkerManualFrequencyCreateManyDto
   ): Promise<Prisma.BatchPayload> {
     this.logger.log(
       `Criando múltiplas frequências manuais com dados: ${JSON.stringify(data)}`
     );
 
+    const { items } = data;
+
     const createManyInput: Prisma.WorkerManualFrequencyUncheckedCreateInput[] =
-      data.map((item) => ({
+      items.map((item) => ({
         workerId: item.workerId,
         date: item.date,
         hours: item.hours,

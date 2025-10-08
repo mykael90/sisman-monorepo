@@ -1,10 +1,9 @@
 'use client';
 
 import { workerManualFrequencyFormSchemaAddBulk } from '../form/worker-manual-frequency-form-validation';
-import { addWorkerManualFrequency } from '../../worker-manual-frequency-actions';
+import { addWorkerManualFrequencyMany } from '../../worker-manual-frequency-actions';
 import { useRouter } from 'next/navigation';
 import {
-  IWorkerManualFrequency,
   IWorkerManualFrequencyAddBulkForm,
   IWorkerManualFrequencyRelatedData
 } from '../../worker-manual-frequency-types';
@@ -56,7 +55,7 @@ export default function WorkerManualFrequencyAddBulk({
 
   const initialServerState: IActionResultForm<
     IWorkerManualFrequencyAddBulkForm,
-    IWorkerManualFrequency
+    { count: number }
   > = {
     errorsServer: [],
     message: ''
@@ -82,7 +81,7 @@ export default function WorkerManualFrequencyAddBulk({
         onCancel={redirect}
         defaultData={defaultData}
         initialServerState={initialServerState}
-        formActionProp={addWorkerManualFrequency}
+        formActionProp={addWorkerManualFrequencyMany}
         formSchema={workerManualFrequencyFormSchemaAddBulk}
         SubmitButtonIcon={CalendarPlus}
         submitButtonText='Confirmar Registros'

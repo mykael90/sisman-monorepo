@@ -7,7 +7,7 @@ GET {{urlLocal}}
 Authorization: Bearer {{token}}
 
 ### GET all workers with actives conctracts
-GET {{urlLocal}}/actives-contracts
+GET {{urlLocal}}/active-contract
 Authorization: Bearer {{token}}
 
 ### GET one worker

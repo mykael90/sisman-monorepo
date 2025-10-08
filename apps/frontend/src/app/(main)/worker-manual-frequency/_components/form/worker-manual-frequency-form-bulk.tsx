@@ -17,7 +17,6 @@ import { FormSuccessDisplay } from '@/components/form-tanstack/form-success-disp
 import { ErrorServerForm } from '@/components/form-tanstack/error-server-form';
 import * as React from 'react';
 import {
-  IWorkerManualFrequency,
   IWorkerManualFrequencyAddBulkForm,
   IWorkerManualFrequencyAdd,
   IWorkerManualFrequencyRelatedData
@@ -27,7 +26,6 @@ import { IWorkerWithRelations } from '../../../worker/worker-types';
 import { formatCodigoUnidade } from '../../../../../lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { getFirstAndLastName } from '@/lib/getFirstAndLastName';
 // import { maskTimeInput } from '../../../../../lib/utils';
 
 export default function WorkerManualFrequencyFormBulk({
@@ -49,16 +47,16 @@ export default function WorkerManualFrequencyFormBulk({
   defaultData: IWorkerManualFrequencyAddBulkForm;
   formActionProp: (
     prevState: IActionResultForm<
-      IWorkerManualFrequencyAddBulkForm,
-      IWorkerManualFrequency
+      IWorkerManualFrequencyAdd[],
+      { count: number }
     >,
-    data: IWorkerManualFrequencyAddBulkForm
+    data: IWorkerManualFrequencyAdd[]
   ) => Promise<
-    IActionResultForm<IWorkerManualFrequencyAddBulkForm, IWorkerManualFrequency>
+    IActionResultForm<IWorkerManualFrequencyAdd[], { count: number }>
   >;
   initialServerState?: IActionResultForm<
-    IWorkerManualFrequencyAddBulkForm,
-    IWorkerManualFrequency
+    IWorkerManualFrequencyAdd[],
+    { count: number }
   >;
   fieldLabels: { [k: string]: string };
   formSchema?: any;
@@ -100,8 +98,8 @@ export default function WorkerManualFrequencyFormBulk({
     }: {
       value: IWorkerManualFrequencyAddBulkForm;
     }) => {
-      // await dispatchFormAction(formSchema.parse(value));
       console.log(formSchema.parse(value));
+      await dispatchFormAction(formSchema.parse(value));
     }
   });
 
@@ -159,10 +157,7 @@ export default function WorkerManualFrequencyFormBulk({
 
   if (serverState?.isSubmitSuccessful && serverState.responseData) {
     return (
-      <FormSuccessDisplay<
-        IWorkerManualFrequencyAddBulkForm,
-        IWorkerManualFrequency
-      >
+      <FormSuccessDisplay<IWorkerManualFrequencyAdd[], { count: number }>
         serverState={serverState}
         handleActions={{
           handleResetForm: handleReset,
@@ -196,9 +191,7 @@ export default function WorkerManualFrequencyFormBulk({
       }}
       className='rounded-lg bg-white p-6 shadow-md'
     >
-      <ErrorServerForm<IWorkerManualFrequencyAddBulkForm>
-        serverState={serverState}
-      />
+      <ErrorServerForm<IWorkerManualFrequencyAdd[]> serverState={serverState} />
 
       {/* <form.Field
         name='userId'
@@ -391,7 +384,6 @@ export default function WorkerManualFrequencyFormBulk({
               onUpdateField={handleUpdateFrequencyField}
               infoMap={infoMap}
               listWorkerManualFrequencyTypes={listWorkerManualFrequencyTypes}
-              fieldLabels={fieldLabels}
             />
           );
         }}
