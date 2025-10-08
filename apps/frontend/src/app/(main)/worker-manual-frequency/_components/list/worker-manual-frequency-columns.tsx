@@ -1,11 +1,30 @@
-import { ColumnDef, createColumnHelper, Row } from '@tanstack/react-table';
+import {
+  ColumnDef,
+  createColumnHelper,
+  Row,
+  flexRender,
+  getCoreRowModel,
+  useReactTable
+} from '@tanstack/react-table';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { Edit } from 'lucide-react';
+import { Edit, ChevronRight, ChevronDown } from 'lucide-react';
 import { IWorkerManualFrequencyForContractsWithRelations } from '../../worker-manual-frequency-types';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { getDateUTC } from '../../../../../lib/utils';
 import { Badge } from '@/components/ui/badge';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
+} from '@/components/ui/table';
+import { StatusBadge } from '@/components/ui/status-badge';
+import { formatCodigoUnidade } from '../../../../../lib/utils';
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 
 const columnHelper =
   createColumnHelper<IWorkerManualFrequencyForContractsWithRelations>();
@@ -30,6 +49,32 @@ type ActionHandlers<TData> = {
   [key: string]: (row: Row<TData>) => void;
 };
 
+type ActionHandlersSubrows = {
+  [key: string]: (
+    workerManualFrequency: IWorkerManualFrequencyForContractsWithRelations['workerManualFrequency'][number]
+  ) => void;
+};
+
+export const createActionsSubrows = (
+  router: AppRouterInstance
+): ActionHandlersSubrows => ({
+  onEditWorkerManualFrequency: (
+    workerManualFrequency: IWorkerManualFrequencyForContractsWithRelations['workerManualFrequency'][number]
+  ) => {
+    console.log('Edit workerManualFrequency', workerManualFrequency);
+    if (workerManualFrequency.id) {
+      router.push(`worker-manual-frequency/edit/${workerManualFrequency.id}`);
+    } else {
+      console.error(
+        'WorkerManualFrequency ID is missing, cannot navigate to edit page.'
+      );
+      throw new Error(
+        'WorkerManualFrequency ID is missing, cannot navigate to edit page.'
+      );
+    }
+  }
+});
+
 export const createActions = (
   router: AppRouterInstance
 ): ActionHandlers<IWorkerManualFrequencyForContractsWithRelations> => ({
@@ -50,6 +95,39 @@ export const createActions = (
 export const columns = (
   configuredActions: ActionHandlers<IWorkerManualFrequencyForContractsWithRelations>
 ): ColumnDef<IWorkerManualFrequencyForContractsWithRelations, any>[] => [
+  columnHelper.display({
+    id: 'expander',
+    size: 20,
+    header: ({ table }) => (
+      <Button
+        variant='ghost'
+        size='icon'
+        onClick={table.getToggleAllRowsExpandedHandler()}
+      >
+        {table.getIsAllRowsExpanded() ? (
+          <ChevronDown className='h-4 w-4' />
+        ) : (
+          <ChevronRight className='h-4 w-4' />
+        )}
+      </Button>
+    ),
+    cell: ({ row }) => (
+      <Button
+        variant='ghost'
+        size='icon'
+        onClick={(e) => {
+          e.stopPropagation();
+          row.toggleExpanded();
+        }}
+      >
+        {row.getIsExpanded() ? (
+          <ChevronDown className='h-4 w-4' />
+        ) : (
+          <ChevronRight className='h-4 w-4' />
+        )}
+      </Button>
+    )
+  }),
   columnHelper.accessor('worker.name', {
     header: 'Colaborador',
     size: 500,
@@ -70,110 +148,63 @@ export const columns = (
       );
     }
   }),
-  columnHelper.accessor('worker.name', {
+  columnHelper.accessor('workerSpecialty.name', {
     header: 'Especialidade',
     size: 200,
     enableResizing: false
   }),
-  // columnHelper.accessor(
-  //   'workerManualFrequency.workerManualFrequencyType.type',
-  //   {
-  //     header: 'Tipo de Frequência',
-  //     size: 200,
-  //     cell: (props) => <Badge variant='outline'>{props.getValue()}</Badge>
-  //   }
-  // ),
-  // columnHelper.accessor('workerManualFrequency.date', {
-  //   header: 'Data',
-  //   size: 100,
-  //   enableColumnFilter: false,
-  //   enableResizing: false,
-  //   cell: (props) => {
-  //     if (!props.getValue()) {
-  //       return 'indefinido';
-  //     }
-  //     const onlyUTCDate = getDateUTC(props.getValue());
-  //     return onlyUTCDate.toLocaleDateString('pt-BR', {
-  //       day: '2-digit',
-  //       month: '2-digit',
-  //       year: 'numeric'
-  //     });
-  //   }
-  // }),
-  // columnHelper.accessor('workerManualFrequency.hours', {
-  //   header: 'Horas',
-  //   size: 50,
-  //   enableColumnFilter: false,
-  //   enableResizing: false,
-  //   cell: (props) => <div className='text-center'>{props.getValue()}</div>
-  // }),
-  // columnHelper.accessor('workerManualFrequency.user.login', {
-  //   header: 'Lançado por',
-  //   size: 150,
-  //   enableResizing: false
-  // }),
-  // columnHelper.accessor('createdAt', {
-  //   header: 'Criado em',
-  //   size: 150,
-  //   enableColumnFilter: false,
-  //   cell: (props) => {
-  //     if (!props.getValue()) {
-  //       return 'indefinido';
-  //     }
-  //     const date = new Date(props.getValue());
-  //     return (
-  //       <div className='text-center'>
-  //         {date.toLocaleDateString()}
-  //         <br />
-  //         {date.toLocaleTimeString()}
-  //       </div>
-  //     );
-  //   }
-  // }),
-  // columnHelper.accessor('updatedAt', {
-  //   header: 'Atualizado em',
-  //   size: 150,
-  //   enableColumnFilter: false,
-  //   cell: (props) => {
-  //     if (!props.getValue()) {
-  //       return 'indefinido';
-  //     }
-  //     const date = new Date(props.getValue());
-  //     return (
-  //       <div className='text-center'>
-  //         {date.toLocaleDateString()}
-  //         <br />
-  //         {date.toLocaleTimeString()}
-  //       </div>
-  //     );
-  //   }
-  // }),
   columnHelper.accessor('contract.codigoSipac', {
     header: 'Contrato',
+    size: 100,
+    enableResizing: false
+  }),
+  columnHelper.accessor('contract.providers.nomeFantasia', {
+    header: 'Empresa',
     size: 200
   }),
-  // columnHelper.accessor('notes', {
-  //   header: 'Notas',
-  //   size: 150,
-  //   enableResizing: false
-  // }),
-  columnHelper.display({
-    id: 'actions',
-    size: 100,
-    header: 'Ações',
-    cell: ({ row }) => (
-      <div className='flex gap-2'>
-        <Button
-          title='Editar Frequência'
-          variant='ghost'
-          size='icon'
-          onClick={() => configuredActions.onEdit(row)}
-        >
-          <Edit className='h-4 w-4' />
-        </Button>
-      </div>
-    )
+  columnHelper.accessor('startDate', {
+    header: 'Início Contrato',
+    size: 120,
+    enableResizing: false,
+    enableColumnFilter: false,
+    cell: (props) => {
+      return (
+        <div className='text-center'>
+          {props.getValue()
+            ? format(new Date(props.getValue()), 'P', { locale: ptBR })
+            : 'N/A'}
+        </div>
+      );
+    }
+  }),
+  columnHelper.accessor('sipacUnitLocation.sigla', {
+    //lotacao refere-se ao local de trabalaho
+    header: 'Lotação',
+    size: 200
+  }),
+  columnHelper.accessor('worker.maintenanceInstance.name', {
+    //instancia refere-se a quem gerencia (as vezes o trabalhador é lotado na escola de musica mas quem gerencia as faltas é a diman)
+    header: 'Instância',
+    size: 200
   })
+
+  // columnHelper.display({
+  //   id: 'actions',
+  //   size: 100,
+  //   header: 'Ações',
+  //   cell: ({ row }) => (
+  //     <div className='flex gap-2'>
+  //       <Button
+  //         title='Editar Frequência'
+  //         variant='ghost'
+  //         size='icon'
+  //         onClick={() => configuredActions.onEdit(row)}
+  //       >
+  //         <Edit className='h-4 w-4' />
+  //       </Button>
+  //     </div>
+  //   )
+  // })
 ];
 
 function getAvatarInitials(
@@ -197,3 +228,97 @@ function getAvatarInitials(
     );
   } else return 'W';
 }
+
+export const SubRowComponent = ({
+  row,
+  configuredActionsSubrows
+}: {
+  row: Row<IWorkerManualFrequencyForContractsWithRelations>;
+  configuredActionsSubrows: ActionHandlersSubrows;
+}) => {
+  const workerManualFrequencies = row.original.workerManualFrequency || [];
+
+  return (
+    <div className='p-2 pl-8'>
+      <h4 className='mb-2 text-sm font-semibold'>Frequências Manuais:</h4>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead className='w-40'>Tipo</TableHead>
+            <TableHead className='w-50'>Data</TableHead>
+            <TableHead className='w-30 text-center'>Horas</TableHead>
+            <TableHead className='w-40'>Lançado por</TableHead>
+            <TableHead>Notas</TableHead>
+            <TableHead className='w-30 text-center'>Criado em</TableHead>
+            <TableHead className='w-30 text-center'>Atualizado em</TableHead>
+            <TableHead className='w-25 text-center'>Ações</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {workerManualFrequencies.length > 0 ? (
+            workerManualFrequencies.map((frequency, index) => (
+              <TableRow key={index}>
+                <TableCell>
+                  <Badge variant='outline'>
+                    {frequency.workerManualFrequencyType?.type || 'N/A'}
+                  </Badge>
+                </TableCell>
+                <TableCell>
+                  {frequency.date
+                    ? format(getDateUTC(frequency.date as any), 'PPPP', {
+                        locale: ptBR
+                      })
+                    : 'N/A'}
+                </TableCell>
+                <TableCell className='text-center'>
+                  {frequency.hours || 'N/A'}
+                </TableCell>
+                <TableCell>{frequency.user?.login || 'N/A'}</TableCell>
+
+                <TableCell>{frequency.notes || 'N/A'}</TableCell>
+                <TableCell className='text-center'>
+                  <div>
+                    {new Date(frequency.createdAt).toLocaleDateString()}
+                  </div>
+                  <div>
+                    {new Date(frequency.createdAt).toLocaleTimeString()}
+                  </div>
+                </TableCell>
+                <TableCell className='text-center'>
+                  <div>
+                    {new Date(frequency.updatedAt).toLocaleDateString()}
+                  </div>
+                  <div>
+                    {new Date(frequency.updatedAt).toLocaleTimeString()}
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <div className='flex gap-2'>
+                    <Button
+                      title='Editar Frequência Manual'
+                      variant='ghost'
+                      size='icon'
+                      onClick={() =>
+                        configuredActionsSubrows.onEditWorkerManualFrequency(
+                          frequency
+                        )
+                      }
+                    >
+                      <Edit className='h-4 w-4' />
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={7} className='h-24 text-center'>
+                Nenhuma frequência manual encontrada.
+              </TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+    </div>
+  );
+};

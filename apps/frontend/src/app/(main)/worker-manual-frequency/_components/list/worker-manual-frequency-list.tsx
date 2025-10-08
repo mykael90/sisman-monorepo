@@ -12,7 +12,12 @@ import {
 import { InputDebounceRef } from '@/components/ui/input';
 import { IWorkerManualFrequencyForContractsWithRelations } from '../../worker-manual-frequency-types';
 import { useRouter } from 'next/navigation';
-import { columns, createActions } from './worker-manual-frequency-columns';
+import {
+  columns,
+  createActions,
+  createActionsSubrows,
+  SubRowComponent
+} from './worker-manual-frequency-columns';
 import { UserPlus, CalendarPlus } from 'lucide-react';
 import { TableTanstackFaceted } from '../../../../../components/table-tanstack/table-tanstack-faceted';
 import { DefaultGlobalFilter } from '../../../../../components/table-tanstack/default-global-filter';
@@ -73,6 +78,7 @@ export function WorkerManualFrequencyListPage() {
   };
 
   const columnActions = createActions(router);
+  const columnActionsSubrows = createActionsSubrows(router);
 
   return (
     <div className='container mx-auto p-4'>
@@ -130,6 +136,12 @@ export function WorkerManualFrequencyListPage() {
           globalFilterFn='includesString'
           globalFilter={globalFilterValue}
           setGlobalFilter={setGlobalFilterValue}
+          renderSubComponent={({ row }) => (
+            <SubRowComponent
+              row={row}
+              configuredActionsSubrows={columnActionsSubrows}
+            />
+          )}
         />
       )}
     </div>

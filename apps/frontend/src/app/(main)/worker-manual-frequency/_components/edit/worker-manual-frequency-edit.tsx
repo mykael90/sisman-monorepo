@@ -37,6 +37,7 @@ export default function WorkerManualFrequencyEdit({
   const userId = session?.user?.idSisman as number;
 
   const fieldLabels = {
+    id: 'Id',
     date: 'Data',
     workerId: 'Colaborador',
     workerManualFrequencyTypeId: 'Tipo de Frequência',

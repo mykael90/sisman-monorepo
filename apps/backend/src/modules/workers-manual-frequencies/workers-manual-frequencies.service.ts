@@ -229,7 +229,8 @@ export class WorkersManualFrequenciesService {
       include: {
         worker: {
           select: {
-            name: true // Exemplo: selecionando apenas o nome do trabalhador
+            name: true, // Exemplo: selecionando apenas o nome do trabalhador
+            maintenanceInstance: { select: { name: true } }
           }
         },
         workerManualFrequency: {
@@ -246,7 +247,15 @@ export class WorkersManualFrequenciesService {
         sipacUnitLocation: {
           select: { codigoUnidade: true, sigla: true }
         },
-        contract: { select: { codigoSipac: true, subject: true } },
+        contract: {
+          select: {
+            codigoSipac: true,
+            subject: true,
+            providers: {
+              select: { nome: true, nomeFantasia: true, razaoSocial: true }
+            }
+          }
+        },
         workerSpecialty: {
           select: {
             name: true
