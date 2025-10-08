@@ -34,10 +34,9 @@ export default function WorkerEdit({
 
   const defaultData = removeUnreferencedKeys(initialWorker, fieldLabels);
 
-  defaultData.birthdate = format(
-    getDateUTC(defaultData.birthdate as any),
-    'yyyy-MM-dd'
-  ) as any;
+  defaultData.birthdate = defaultData.birthdate
+    ? (format(getDateUTC(defaultData.birthdate as any), 'yyyy-MM-dd') as any)
+    : null;
 
   const initialServerState: IActionResultForm<IWorkerEdit, IWorker> = {
     errorsServer: [],
