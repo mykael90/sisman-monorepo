@@ -285,12 +285,19 @@ export default function WorkerManualFrequencyFormBulk({
                 label={fieldLabels.workerId}
                 placeholder='Selecione o colaborador'
                 className='mb-4'
-                options={listWorkers.map((worker) => ({
-                  value: String(worker.id),
-                  label: worker.name,
-                  secondaryLabel:
-                    worker.workerContracts[0]?.workerSpecialty?.name
-                }))}
+                options={listWorkers
+                  .filter(
+                    (worker) =>
+                      !form.state.values.items.some(
+                        (item: any) => item.workerId === worker.id
+                      )
+                  )
+                  .map((worker) => ({
+                    value: String(worker.id),
+                    label: worker.name,
+                    secondaryLabel:
+                      worker.workerContracts[0]?.workerSpecialty?.name
+                  }))}
                 onValueChange={(value) => {
                   field.handleChange(Number(value));
                 }}
