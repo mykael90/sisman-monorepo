@@ -2,16 +2,15 @@ import { ColumnDef, createColumnHelper, Row } from '@tanstack/react-table';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Edit } from 'lucide-react';
-import { IWorkerManualFrequencyForContractsWithRelations } from '../../worker-manual-frequency-types';
+import { IWorkerManualFrequencyWithRelations } from '../../worker-manual-frequency-types';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { getDateUTC } from '../../../../../lib/utils';
 import { Badge } from '@/components/ui/badge';
 
-const columnHelper =
-  createColumnHelper<IWorkerManualFrequencyForContractsWithRelations>();
+const columnHelper = createColumnHelper<IWorkerManualFrequencyWithRelations>();
 
 export const defaultColumn: Partial<
-  ColumnDef<IWorkerManualFrequencyForContractsWithRelations>
+  ColumnDef<IWorkerManualFrequencyWithRelations>
 > = {
   size: 100,
   enableResizing: false,
@@ -32,8 +31,8 @@ type ActionHandlers<TData> = {
 
 export const createActions = (
   router: AppRouterInstance
-): ActionHandlers<IWorkerManualFrequencyForContractsWithRelations> => ({
-  onEdit: (row: Row<IWorkerManualFrequencyForContractsWithRelations>) => {
+): ActionHandlers<IWorkerManualFrequencyWithRelations> => ({
+  onEdit: (row: Row<IWorkerManualFrequencyWithRelations>) => {
     if (row.original.id) {
       router.push(`worker-manual-frequency/edit/${row.original.id}`);
     } else {
@@ -48,8 +47,8 @@ export const createActions = (
 });
 
 export const columns = (
-  configuredActions: ActionHandlers<IWorkerManualFrequencyForContractsWithRelations>
-): ColumnDef<IWorkerManualFrequencyForContractsWithRelations, any>[] => [
+  configuredActions: ActionHandlers<IWorkerManualFrequencyWithRelations>
+): ColumnDef<IWorkerManualFrequencyWithRelations, any>[] => [
   columnHelper.accessor('worker.name', {
     header: 'Colaborador',
     size: 500,
@@ -70,85 +69,82 @@ export const columns = (
       );
     }
   }),
-  columnHelper.accessor('worker.name', {
+  columnHelper.accessor('workerContract.workerSpecialty.name', {
     header: 'Especialidade',
     size: 200,
     enableResizing: false
   }),
-  // columnHelper.accessor(
-  //   'workerManualFrequency.workerManualFrequencyType.type',
-  //   {
-  //     header: 'Tipo de Frequência',
-  //     size: 200,
-  //     cell: (props) => <Badge variant='outline'>{props.getValue()}</Badge>
-  //   }
-  // ),
-  // columnHelper.accessor('workerManualFrequency.date', {
-  //   header: 'Data',
-  //   size: 100,
-  //   enableColumnFilter: false,
-  //   enableResizing: false,
-  //   cell: (props) => {
-  //     if (!props.getValue()) {
-  //       return 'indefinido';
-  //     }
-  //     const onlyUTCDate = getDateUTC(props.getValue());
-  //     return onlyUTCDate.toLocaleDateString('pt-BR', {
-  //       day: '2-digit',
-  //       month: '2-digit',
-  //       year: 'numeric'
-  //     });
-  //   }
-  // }),
-  // columnHelper.accessor('workerManualFrequency.hours', {
-  //   header: 'Horas',
-  //   size: 50,
-  //   enableColumnFilter: false,
-  //   enableResizing: false,
-  //   cell: (props) => <div className='text-center'>{props.getValue()}</div>
-  // }),
-  // columnHelper.accessor('workerManualFrequency.user.login', {
-  //   header: 'Lançado por',
-  //   size: 150,
-  //   enableResizing: false
-  // }),
-  // columnHelper.accessor('createdAt', {
-  //   header: 'Criado em',
-  //   size: 150,
-  //   enableColumnFilter: false,
-  //   cell: (props) => {
-  //     if (!props.getValue()) {
-  //       return 'indefinido';
-  //     }
-  //     const date = new Date(props.getValue());
-  //     return (
-  //       <div className='text-center'>
-  //         {date.toLocaleDateString()}
-  //         <br />
-  //         {date.toLocaleTimeString()}
-  //       </div>
-  //     );
-  //   }
-  // }),
-  // columnHelper.accessor('updatedAt', {
-  //   header: 'Atualizado em',
-  //   size: 150,
-  //   enableColumnFilter: false,
-  //   cell: (props) => {
-  //     if (!props.getValue()) {
-  //       return 'indefinido';
-  //     }
-  //     const date = new Date(props.getValue());
-  //     return (
-  //       <div className='text-center'>
-  //         {date.toLocaleDateString()}
-  //         <br />
-  //         {date.toLocaleTimeString()}
-  //       </div>
-  //     );
-  //   }
-  // }),
-  columnHelper.accessor('contract.codigoSipac', {
+  columnHelper.accessor('workerManualFrequencyType.type', {
+    header: 'Tipo de Frequência',
+    size: 200,
+    cell: (props) => <Badge variant='outline'>{props.getValue()}</Badge>
+  }),
+  columnHelper.accessor('date', {
+    header: 'Data',
+    size: 100,
+    enableColumnFilter: false,
+    enableResizing: false,
+    cell: (props) => {
+      if (!props.getValue()) {
+        return 'indefinido';
+      }
+      const onlyUTCDate = getDateUTC(props.getValue());
+      return onlyUTCDate.toLocaleDateString('pt-BR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+      });
+    }
+  }),
+  columnHelper.accessor('hours', {
+    header: 'Horas',
+    size: 50,
+    enableColumnFilter: false,
+    enableResizing: false,
+    cell: (props) => <div className='text-center'>{props.getValue()}</div>
+  }),
+  columnHelper.accessor('user.login', {
+    header: 'Lançado por',
+    size: 150,
+    enableResizing: false
+  }),
+  columnHelper.accessor('createdAt', {
+    header: 'Criado em',
+    size: 150,
+    enableColumnFilter: false,
+    cell: (props) => {
+      if (!props.getValue()) {
+        return 'indefinido';
+      }
+      const date = new Date(props.getValue());
+      return (
+        <div className='text-center'>
+          {date.toLocaleDateString()}
+          <br />
+          {date.toLocaleTimeString()}
+        </div>
+      );
+    }
+  }),
+  columnHelper.accessor('updatedAt', {
+    header: 'Atualizado em',
+    size: 150,
+    enableColumnFilter: false,
+    cell: (props) => {
+      if (!props.getValue()) {
+        return 'indefinido';
+      }
+      const date = new Date(props.getValue());
+      return (
+        <div className='text-center'>
+          {date.toLocaleDateString()}
+          <br />
+          {date.toLocaleTimeString()}
+        </div>
+      );
+    }
+  }),
+  columnHelper.accessor('workerContract.contract.codigoSipac', {
     header: 'Contrato',
     size: 200
   }),

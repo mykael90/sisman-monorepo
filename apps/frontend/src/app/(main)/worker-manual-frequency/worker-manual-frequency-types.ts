@@ -36,6 +36,32 @@ export type IWorkerManualFrequencyWithRelations =
     };
   }>;
 
+export type IWorkerManualFrequencyForContractsWithRelations =
+  Prisma.WorkerContractGetPayload<{
+    include: {
+      worker: {
+        select: {
+          name: true; // Exemplo: selecionando apenas o nome do trabalhador
+        };
+      };
+      workerManualFrequency: {
+        include: {
+          workerManualFrequencyType: true;
+          user: true;
+        };
+      };
+      sipacUnitLocation: {
+        select: { codigoUnidade: true; sigla: true };
+      };
+      contract: { select: { codigoSipac: true; subject: true } };
+      workerSpecialty: {
+        select: {
+          name: true;
+        };
+      };
+    };
+  }>;
+
 export interface IWorkerManualFrequencyAdd
   extends Prisma.WorkerManualFrequencyUncheckedCreateInput {}
 

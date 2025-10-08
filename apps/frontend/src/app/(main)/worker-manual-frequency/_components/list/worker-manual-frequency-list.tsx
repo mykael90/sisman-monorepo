@@ -1,9 +1,8 @@
 'use client';
 
-import { useState, useMemo, useRef, Dispatch, SetStateAction } from 'react';
+import { useState, useRef } from 'react';
 import { SectionListHeader } from '../../../../../components/section-list-header';
 import {
-  ColumnDef,
   ColumnFiltersState,
   getFacetedRowModel,
   getFacetedUniqueValues,
@@ -11,7 +10,7 @@ import {
   SortingState
 } from '@tanstack/react-table';
 import { InputDebounceRef } from '@/components/ui/input';
-import { IWorkerManualFrequencyWithRelations } from '../../worker-manual-frequency-types';
+import { IWorkerManualFrequencyForContractsWithRelations } from '../../worker-manual-frequency-types';
 import { useRouter } from 'next/navigation';
 import { columns, createActions } from './worker-manual-frequency-columns';
 import { UserPlus, CalendarPlus } from 'lucide-react';
@@ -20,7 +19,7 @@ import { DefaultGlobalFilter } from '../../../../../components/table-tanstack/de
 import { useQuery } from '@tanstack/react-query';
 import { DateRange } from 'react-day-picker';
 import { endOfMonth, startOfMonth } from 'date-fns';
-import { getWorkerManualFrequenciesWithContracts } from '../../worker-manual-frequency-actions';
+import { getWorkerManualFrequenciesForContracts } from '../../worker-manual-frequency-actions';
 import Loading from '../../../../../components/loading';
 import { DateRangeFilter } from '../../../../../components/filters/date-range-filter';
 
@@ -59,10 +58,10 @@ export function WorkerManualFrequencyListPage() {
     isLoading,
     isError,
     error
-  } = useQuery<IWorkerManualFrequencyWithRelations[], unknown>({
+  } = useQuery<IWorkerManualFrequencyForContractsWithRelations[], unknown>({
     queryKey: ['workerManualFrequencies', date],
     queryFn: () =>
-      getWorkerManualFrequenciesWithContracts({
+      getWorkerManualFrequenciesForContracts({
         from: date?.from,
         to: date?.to
       }),
@@ -117,7 +116,7 @@ export function WorkerManualFrequencyListPage() {
       ) : (
         <TableTanstackFaceted
           data={
-            workerManualFrequencies as IWorkerManualFrequencyWithRelations[]
+            workerManualFrequencies as IWorkerManualFrequencyForContractsWithRelations[]
           }
           columns={columns(columnActions)}
           columnFilters={columnFilters}
