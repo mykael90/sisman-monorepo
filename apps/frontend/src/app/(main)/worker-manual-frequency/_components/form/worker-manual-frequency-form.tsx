@@ -21,6 +21,7 @@ import {
   IWorkerManualFrequencyEdit,
   IWorkerManualFrequencyRelatedData
 } from '../../worker-manual-frequency-types';
+import { Label } from '../../../../../components/ui/label';
 // import { maskTimeInput } from '../../../../../lib/utils';
 
 type WorkerManualFrequencyFormData<TMode extends 'add' | 'edit'> =
@@ -181,7 +182,7 @@ export default function WorkerManualFrequencyForm<
         )}
       />
 
-      <form.Field
+      {/* <form.Field
         name='workerId'
         children={(field: any) => (
           <FormCombobox
@@ -196,12 +197,19 @@ export default function WorkerManualFrequencyForm<
             onValueChange={(value) => field.handleChange(Number(value))}
           />
         )}
-      />
+      /> */}
+
+      <Label>Colaborador</Label>
+      <p className='text-muted-foreground text-sm'>
+        {listWorkers.find((worker) => worker.id === defaultData.workerId)?.name}
+      </p>
 
       <form.Field
         name='workerContractId'
         children={(field) => (
           <FormInputField
+            type='hidden'
+            showLabel={false}
             field={field}
             label={fieldLabels.workerContractId}
             placeholder='Selecione o contrato'

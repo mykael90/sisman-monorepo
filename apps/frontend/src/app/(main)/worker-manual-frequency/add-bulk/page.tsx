@@ -6,7 +6,7 @@ import { getWorkersWithActiveContract } from '../../worker/worker-actions';
 import { getWorkerManualFrequencyTypes } from '../worker-manual-frequency-actions';
 import { getUsers } from '../../user/user-actions';
 
-export default async function Page({
+export default async function WorkerManualFrequencyAddBulkPage({
   isInDialog = false
 }: {
   isInDialog?: boolean;
@@ -20,14 +20,16 @@ export default async function Page({
     ]);
   return (
     <Suspense fallback={<Loading />}>
-      <WorkerManualFrequencyAddBulk
-        relatedData={{
-          listWorkers,
-          listWorkerManualFrequencyTypes,
-          listUsers
-        }}
-        isInDialog={isInDialog}
-      />
+      <div className='container mx-auto p-4'>
+        <WorkerManualFrequencyAddBulk
+          relatedData={{
+            listWorkers,
+            listWorkerManualFrequencyTypes,
+            listUsers
+          }}
+          isInDialog={isInDialog}
+        />
+      </div>
     </Suspense>
   );
 }

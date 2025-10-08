@@ -65,7 +65,7 @@ export const sidebarItems: SidebarItem[] = [
       { label: 'Gerenciar Colaboradores', href: '/worker' },
       // { label: 'Adicionar Colaborador', href: '/worker/add' },
       { label: 'Gerenciar Especialidades', href: '/worker-specialty' },
-      { label: 'Contratos', href: '/worker/contract' },
+      // { label: 'Contratos', href: '/worker/contract' },
       { label: 'Ausências', href: '/worker-manual-frequency' }
     ]
   },
