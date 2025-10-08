@@ -273,7 +273,7 @@ export default function WorkerContractForm<TMode extends 'add' | 'edit'>({
                   htmlFor='endDate'
                   className='block pb-1 text-sm font-medium text-gray-700'
                 >
-                  Início
+                  Fim
                 </Label>
                 <Popover>
                   <PopoverTrigger asChild>

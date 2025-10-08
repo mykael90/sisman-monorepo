@@ -47,8 +47,12 @@ export default function WorkerContractEdit({
     sipacUnitLocationCode:
       initialWorkerContract.sipacUnitLocation?.codigoUnidade || '',
     sipacUnitLocationId: '',
-    startDate: getDateUTC(initialWorkerContract.startDate as any),
-    endDate: getDateUTC(initialWorkerContract.endDate as any)
+    startDate: initialWorkerContract.startDate
+      ? getDateUTC(initialWorkerContract.startDate as any)
+      : null,
+    endDate: initialWorkerContract.endDate
+      ? getDateUTC(initialWorkerContract.endDate as any)
+      : null
   };
 
   const initialServerState: IActionResultForm<
