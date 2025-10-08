@@ -63,6 +63,36 @@ export class WorkersManualFrequenciesController {
     return this.workersManualFrequenciesService.create(data);
   }
 
+  /**
+   * Cria múltiplas frequências manuais de worker.
+   */
+  @Post('many')
+  @HttpCode(HttpStatus.CREATED)
+  @ApiEndpointSwagger({
+    summary: 'Criar múltiplas frequências manuais de worker',
+    description: 'Cria múltiplas frequências manuais de worker.',
+    response: {
+      status: HttpStatus.CREATED,
+      description: 'Frequências manuais criadas com sucesso.',
+      type: WorkerManualFrequencyWithRelationsResponseDto,
+      isArray: true
+    },
+    errors: [
+      {
+        status: HttpStatus.BAD_REQUEST,
+        description: 'Dados de entrada inválidos ou formato incorreto.'
+      },
+      {
+        status: HttpStatus.CONFLICT,
+        description:
+          'Já existe uma ou mais frequências manuais com os dados fornecidos.'
+      }
+    ]
+  })
+  async createMany(@Body() data: WorkerManualFrequencyCreateDto[]) {
+    return this.workersManualFrequenciesService.createMany(data);
+  }
+
   @Get()
   @ApiEndpointSwagger({
     summary: 'Listar frequências manuais de workers',

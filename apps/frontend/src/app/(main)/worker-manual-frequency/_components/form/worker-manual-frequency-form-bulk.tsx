@@ -94,14 +94,14 @@ export default function WorkerManualFrequencyFormBulk({
       (baseForm) => mergeForm(baseForm, serverState ?? {}),
       [serverState]
     ),
-    // validators: formSchema ? { onChange: formSchema } : undefined,
+    validators: formSchema ? { onChange: formSchema } : undefined,
     onSubmit: async ({
       value
     }: {
       value: IWorkerManualFrequencyAddBulkForm;
     }) => {
       // await dispatchFormAction(formSchema.parse(value));
-      console.log(value);
+      console.log(formSchema.parse(value));
     }
   });
 
@@ -272,7 +272,6 @@ export default function WorkerManualFrequencyFormBulk({
             name='workerId'
             listeners={{
               onChange: ({ value }) => {
-                console.log(`Country changed to: ${value}, resetting province`);
                 form.setFieldValue(
                   'workerContractId',
                   infoMap.get(Number(value))?.workerContracts[0]?.id
@@ -373,6 +372,12 @@ export default function WorkerManualFrequencyFormBulk({
         )}
       /> */}
 
+      <hr className='my-4' />
+
+      <h3 className='mb-4 text-base font-medium'>
+        Frequências a serem confirmadas
+      </h3>
+
       <form.Field name='items' mode='array'>
         {(field) => {
           return (
@@ -384,7 +389,8 @@ export default function WorkerManualFrequencyFormBulk({
               }
               onRemove={handleRemoveFrequency}
               onUpdateField={handleUpdateFrequencyField}
-              relatedData={relatedData}
+              infoMap={infoMap}
+              listWorkerManualFrequencyTypes={listWorkerManualFrequencyTypes}
               fieldLabels={fieldLabels}
             />
           );

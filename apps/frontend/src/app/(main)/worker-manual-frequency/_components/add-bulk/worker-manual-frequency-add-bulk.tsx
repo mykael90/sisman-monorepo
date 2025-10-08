@@ -1,6 +1,6 @@
 'use client';
 
-import { workerManualFrequencyFormSchemaAdd } from '../form/worker-manual-frequency-form-validation';
+import { workerManualFrequencyFormSchemaAddBulk } from '../form/worker-manual-frequency-form-validation';
 import { addWorkerManualFrequency } from '../../worker-manual-frequency-actions';
 import { useRouter } from 'next/navigation';
 import {
@@ -83,7 +83,7 @@ export default function WorkerManualFrequencyAddBulk({
         defaultData={defaultData}
         initialServerState={initialServerState}
         formActionProp={addWorkerManualFrequency}
-        formSchema={workerManualFrequencyFormSchemaAdd}
+        formSchema={workerManualFrequencyFormSchemaAddBulk}
         SubmitButtonIcon={CalendarPlus}
         submitButtonText='Confirmar Registros'
         fieldLabels={fieldLabels}
