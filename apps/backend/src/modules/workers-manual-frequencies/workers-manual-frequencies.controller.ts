@@ -40,7 +40,7 @@ export class WorkersManualFrequenciesController {
   /**
    * Cria uma nova frequência manual de worker.
    */
-  @Roles(Role.AdmWorkers, Role.SuperWorkers)
+  @Roles(Role.Adm, Role.AdmWorkers, Role.SuperWorkers)
   @Post()
   @ApiEndpointSwagger({
     summary: 'Criar nova frequência manual de worker',
@@ -68,7 +68,7 @@ export class WorkersManualFrequenciesController {
   /**
    * Cria múltiplas frequências manuais de worker.
    */
-  @Roles(Role.AdmWorkers, Role.SuperWorkers)
+  @Roles(Role.Adm, Role.AdmWorkers, Role.SuperWorkers)
   @Post('many')
   @HttpCode(HttpStatus.CREATED)
   @ApiEndpointSwagger({
@@ -178,7 +178,7 @@ export class WorkersManualFrequenciesController {
     return this.workersManualFrequenciesService.show(id);
   }
 
-  @Roles(Role.AdmWorkers, Role.SuperWorkers)
+  @Roles(Role.Adm, Role.AdmWorkers, Role.SuperWorkers)
   @Put(':id')
   @ApiEndpointSwagger({
     summary: 'Atualizar frequência manual',
@@ -211,7 +211,7 @@ export class WorkersManualFrequenciesController {
     return this.workersManualFrequenciesService.update(id, data);
   }
 
-  @Roles(Role.AdmWorkers, Role.SuperWorkers)
+  @Roles(Role.Adm, Role.AdmWorkers, Role.SuperWorkers)
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiEndpointSwagger({

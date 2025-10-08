@@ -4,7 +4,7 @@ export const workerManualFrequencyFormSchemaAdd = z
   .object({
     workerId: z.number().min(1, 'Colaborador é obrigatório'),
     date: z.date({ required_error: 'Data é obrigatória' }),
-    hours: z.string().min(1, 'Hora de início é obrigatória'),
+    hours: z.number().min(1, 'Hora de início é obrigatória'),
     workerManualFrequencyTypeId: z
       .number()
       .min(1, 'Tipo de frequência é obrigatório'),
@@ -23,7 +23,7 @@ export const workerManualFrequencyFormSchemaAddBulk = z
         // key: z.number(),
         workerId: z.number().min(1, 'Colaborador é obrigatório'),
         date: z.date({ required_error: 'Data é obrigatória' }),
-        hours: z.string().min(1, 'Hora de início é obrigatória'),
+        hours: z.number().min(1, 'Hora de início é obrigatória'),
         workerManualFrequencyTypeId: z
           .number()
           .min(1, 'Tipo de frequência é obrigatória'),

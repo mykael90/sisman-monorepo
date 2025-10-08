@@ -254,6 +254,7 @@ export default function WorkerManualFrequencyForm<
         {(field) => (
           <FormInputField
             field={field}
+            type='number'
             label={fieldLabels.hours}
             placeholder='Quantidade de horas'
             className='mb-4'

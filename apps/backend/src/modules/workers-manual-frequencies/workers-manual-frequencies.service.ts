@@ -68,12 +68,7 @@ export class WorkersManualFrequenciesService {
 
     const createManyInput: Prisma.WorkerManualFrequencyUncheckedCreateInput[] =
       items.map((item) => ({
-        workerId: item.workerId,
-        date: item.date,
-        hours: item.hours,
-        workerManualFrequencyTypeId: item.workerManualFrequencyTypeId,
-        notes: item.notes,
-        userId: item.userId
+        ...item
       }));
 
     this.logger.log(

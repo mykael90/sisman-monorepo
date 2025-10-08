@@ -37,7 +37,7 @@ export default function WorkerManualFrequencyAddBulk({
     workerManualFrequencyTypeId: 1,
     // userId: session?.user?.id || '',
     userId: session?.user?.idSisman as number,
-    hours: '9',
+    hours: 9,
     notes: '',
     workerContractId: '',
     items: []
