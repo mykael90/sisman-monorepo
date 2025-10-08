@@ -78,7 +78,11 @@ export function FormInputField({
           }
           field.handleBlur();
         }}
-        onChange={(e) => field.handleChange(e.target.value)}
+        onChange={(e) =>
+          type === 'number'
+            ? field.handleChange(Number(e.target.value))
+            : field.handleChange(e.target.value)
+        }
         type={type}
         placeholder={placeholder}
         {...props}

@@ -12,7 +12,7 @@ export const workerManualFrequencyFormSchemaAdd = z
     workerContractId: z
       .number()
       .min(1, 'Contrato do trabalhador é obrigatório'),
-    notes: z.string().optional()
+    notes: z.string().nullable().optional()
   })
   .strip();
 
