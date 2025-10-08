@@ -211,7 +211,8 @@ export default function WorkerManualFrequencyFormBulk({
               field={field}
               label={fieldLabels.date}
               placeholder='dd/MM/yyyy'
-              className='mb-4 w-55'
+              className='mb-4'
+              formatDate='PPPP'
             />
           )}
         </form.Field>
@@ -245,7 +246,6 @@ export default function WorkerManualFrequencyFormBulk({
             />
           )}
         />
-
         <div className='flex-1'>
           <form.Field name='notes'>
             {(field) => (

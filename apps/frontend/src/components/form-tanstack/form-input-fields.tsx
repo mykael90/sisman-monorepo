@@ -403,12 +403,14 @@ export function FormDatePicker({
   label,
   showLabel = true,
   className = '',
+  formatDate = 'PPP',
   ...props
 }: {
   field: AnyFieldApi;
   label?: string;
   showLabel?: boolean;
   className?: string;
+  formatDate?: string;
   [key: string]: any;
 }) {
   const value = field.state.value as Date | string | undefined;
@@ -434,7 +436,7 @@ export function FormDatePicker({
           >
             <CalendarIcon className='mr-2 h-4 w-4' />
             {value ? (
-              format(new Date(value), 'PPP', {
+              format(new Date(value), formatDate, {
                 locale: ptBR
               })
             ) : (
