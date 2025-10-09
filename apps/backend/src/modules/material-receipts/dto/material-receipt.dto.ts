@@ -236,8 +236,8 @@ export class CreateMaterialReceiptItemDto {
    * @example 10
    */
   @IsNumber()
-  @IsDefined()
-  quantityExpected: Prisma.Decimal | number;
+  @IsOptional()
+  quantityExpected?: Prisma.Decimal | number | null;
 
   /**
    * Quantidade recebida do material.
