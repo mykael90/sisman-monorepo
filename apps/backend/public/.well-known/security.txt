@@ -1,0 +1,4 @@
+Contact: mailto:mykael.mello@ufrn.br
+Expires: 2026-01-01T00:00:00Z
+Encryption: https://sisman.infra.ufrn.br/pgp-key.txt
+Policy: https://sisman.infra.ufrn.br/security-policy

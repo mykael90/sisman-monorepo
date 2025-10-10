@@ -9,6 +9,8 @@ import './shared/utils/date-tojson';
 import { ConfigService } from '@nestjs/config';
 import { PrismaLifecycleManager } from './shared/prisma/prisma.module';
 import { EmptyStringInterceptor } from './shared/interceptors/clean-empty-keys.interceptor';
+import * as express from 'express';
+import { join } from 'path';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -19,10 +21,12 @@ async function bootstrap() {
   // --- Bloco de Configurações Globais da Aplicação --
   // Habilita o CORS. É uma boa prática tornar as origens configuráveis.
   // Ex: configService.get('CORS_ORIGIN').split(',')
-  // app.enableCors({
-  //   origin: true, // Ou especifique as origens permitidas
-  //   credentials: true
-  // });
+  app.enableCors({
+    // origin: true // Ou especifique as origens permitidas
+    origin: ['http://localhost:3000', 'https://sisman.infra.ufrn.br'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+    // allowedHeaders: ['Content-Type', 'Authorization']
+  });
 
   // Remove propriedades não listadas no DTO
   // Transforma o payload para o tipo do DTO
@@ -59,6 +63,9 @@ async function bootstrap() {
   // Obtenha a instância do nosso gerenciador de ciclo de vida
   const prismaManager = app.get(PrismaLifecycleManager);
   await prismaManager.enableShutdownHooks(app);
+
+  //permitindo acesso publico a rotas well-known
+  app.use(express.static(join(__dirname, '..', 'public')));
 
   await app.listen(port);
   logger.log(`🚀 Aplicação rodando em: http://localhost:${port}`);
