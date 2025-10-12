@@ -66,6 +66,9 @@ async function bootstrap() {
 
   //permitindo acesso publico a rotas well-known
   app.useStaticAssets(join(__dirname, '..', 'public'));
+  app.useStaticAssets(join(__dirname, '..', 'public', '.well-known'), {
+    prefix: '/.well-known'
+  });
 
   await app.listen(port);
   logger.log(`🚀 Aplicação rodando em: http://localhost:${port}`);

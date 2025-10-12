@@ -15,3 +15,6 @@ GET {{apiUrl}}/error-not-http
 
 ### GET well-known routes - security.txt
 GET {{apiUrl}}/.well-known/security.txt
+
+### GET well-known routes - security.txt
+GET {{apiUrl}}/robots.txt
