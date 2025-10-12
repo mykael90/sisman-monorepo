@@ -9,11 +9,11 @@ import './shared/utils/date-tojson';
 import { ConfigService } from '@nestjs/config';
 import { PrismaLifecycleManager } from './shared/prisma/prisma.module';
 import { EmptyStringInterceptor } from './shared/interceptors/clean-empty-keys.interceptor';
-import * as express from 'express';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const configService = app.get(ConfigService);
   const port = configService.get<number>('PORT_BACKEND', 3080);
   const logger = new Logger('Bootstrap');
@@ -65,7 +65,7 @@ async function bootstrap() {
   await prismaManager.enableShutdownHooks(app);
 
   //permitindo acesso publico a rotas well-known
-  app.use(express.static(join(__dirname, '..', 'public')));
+  app.useStaticAssets(join(__dirname, '..', 'public'));
 
   await app.listen(port);
   logger.log(`🚀 Aplicação rodando em: http://localhost:${port}`);
