@@ -65,8 +65,8 @@ async function bootstrap() {
   await prismaManager.enableShutdownHooks(app);
 
   //permitindo acesso publico a rotas well-known
-  app.useStaticAssets(join(__dirname, '..', 'public'));
-  app.useStaticAssets(join(__dirname, '..', 'public', '.well-known'), {
+  app.useStaticAssets(join(__dirname, 'public'));
+  app.useStaticAssets(join(__dirname, 'public', '.well-known'), {
     prefix: '/.well-known'
   });
 
