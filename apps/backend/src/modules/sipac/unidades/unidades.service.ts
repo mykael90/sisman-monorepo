@@ -349,6 +349,11 @@ export class UnidadesService {
   async findOrCreateUnidadeByNome(
     nomeUnidade: string
   ): Promise<Prisma.SipacUnidadeGetPayload<{}>> {
+    this.logger.log(`Localizando ou criando unidade com nome: ${nomeUnidade}`);
+    this.logger.log(
+      `Localizando ou criando unidade com nome: ${normalizeString(nomeUnidade)}`
+    );
+
     let unidade = await this.prisma.sipacUnidade.findFirst({
       where: { nomeUnidade: normalizeString(nomeUnidade) } // Assumes 'nomeUnidade'
     });

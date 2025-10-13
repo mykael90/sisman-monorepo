@@ -18,3 +18,6 @@ GET {{apiUrl}}/.well-known/security.txt
 
 ### GET well-known routes - security.txt
 GET {{apiUrl}}/robots.txt
+
+### GET favicon
+GET {{apiUrl}}/favicon.ico

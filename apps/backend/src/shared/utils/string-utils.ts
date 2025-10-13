@@ -11,10 +11,10 @@ export function normalizeString(str: string | null | undefined): string {
   let normalizedString = str
     .normalize('NFD') // Normaliza para decompor caracteres acentuados
     .replace(/[\u0300-\u036f]/g, '') // Remove os diacríticos (acentos)
-    .replace(/\s{2,}/g, ' '); // Substitui dois ou mais espaços consecutivos por apenas um
+    .replace(/[^\w\s.-]/gi, '') // Remove caracteres especiais e mantém letras, números, espaços, pontos e hífens.
+    .replace(/[\u00A0\u200B\u200C\u200D\uFEFF]/g, ' ') // Substitui espaços invisíveis por espaço comum
+    .replace(/\s{2,}/g, ' '); // Remove espaços duplicados
+  // Substitui dois ou mais espaços consecutivos por apenas um
 
-  // Remove caracteres especiais comuns, mantendo letras, números e espaços.
-  // Adicione outros caracteres que deseja manter se necessário.
-  normalizedString = normalizedString.replace(/[^\w\s.-]/gi, ''); // Mantém letras, números, espaços, pontos e hífens.
   return normalizedString;
 }
