@@ -243,9 +243,9 @@ export default async function MaintenanceRequestShowPage({
                             {formatDate(req.requestDate)}
                           </p>
                         </div>
-                        <div className='text-sm font-medium'>
+                        {/* <div className='text-sm font-medium'>
                           Status: {req.currentStatus}
-                        </div>
+                        </div> */}
                       </div>
                     </CardHeader>
                     <CardContent className='p-4'>

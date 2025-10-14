@@ -219,7 +219,7 @@ export class MaterialPickingOrdersService {
           ? MaterialStockOperationSubType.OUT_SERVICE_USAGE
           : MaterialStockOperationSubType.OUT_EMERGENCY_USAGE
       } as any,
-      notes: `Retirada automática referente à Ordem de Separação nº ${data.pickingOrderNumber}`,
+      notes: data.notes,
       items: data.items
         .filter((item) => new Decimal(item.quantityToPick || 0).greaterThan(0))
         .map((item) => ({
