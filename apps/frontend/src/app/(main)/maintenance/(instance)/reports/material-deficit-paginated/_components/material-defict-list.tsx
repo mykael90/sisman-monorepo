@@ -19,7 +19,7 @@ import {
 import { SectionListHeaderSmall } from '../../../../../../../components/section-list-header-small';
 import { TableTanstackFaceted } from '../../../../../../../components/table-tanstack/table-tanstack-faceted';
 import { listMaintenanceRequestDeficitPaginated } from '../../../../request/maintenance-request-actions';
-import Loading from '../../../../../users-data-client/loading';
+import Loading from '../../../../../../../components/loading';
 
 const queryClient = new QueryClient();
 

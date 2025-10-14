@@ -26,8 +26,8 @@ import { DateRange } from 'react-day-picker';
 import { endOfMonth, startOfMonth, subDays } from 'date-fns';
 import { DateRangeFilter } from '@/components/filters/date-range-filter';
 import { useSession } from 'next-auth/react';
-import Loading from '../../../../../users-data-client/loading';
 import { toast } from 'sonner';
+import Loading from '../../../../../../../components/loading';
 
 export function MateriallDeficitList() {
   const { data: session, status, update } = useSession();
