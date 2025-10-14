@@ -67,7 +67,7 @@ export default async function MaintenanceRequestShowPage({
   // Adaptação do CardMaintenanceSummary para exibir os dados
   // e removendo a dependência de setFieldValue, já que esta é uma página de exibição
   return (
-    <div className='space-y-6'>
+    <div className='container mx-auto space-y-6 p-6'>
       <Card>
         <CardHeader>
           <CardTitle className='text-lg'>
@@ -220,7 +220,7 @@ export default async function MaintenanceRequestShowPage({
           // Card Principal que agrupa todas as Requisições de Materiais
           <Card>
             <CardHeader>
-              <CardTitle className='text-lg'>
+              <CardTitle className='text-md'>
                 Requisições de Materiais Associadas {/* Título da seção */}
               </CardTitle>
             </CardHeader>
@@ -235,7 +235,7 @@ export default async function MaintenanceRequestShowPage({
                     <CardHeader className='bg-gray-50'>
                       <div className='flex flex-wrap items-center justify-between gap-2'>
                         <div>
-                          <CardTitle className='text-lg'>
+                          <CardTitle className='text-sm'>
                             Requisição: {req.protocolNumber}
                           </CardTitle>
                           <p className='text-sm text-gray-500'>
