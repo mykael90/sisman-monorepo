@@ -86,7 +86,7 @@ export const createActions = (
       if (row.original.id) {
         // Navega para a rota de edição, passando o ID da manutenção
         // Ajuste o caminho conforme sua estrutura de rotas
-        router.push(`maintenance-deficit/details/${row.original.id}`);
+        router.push(`/maintenance/request/show/${row.original.id}`);
       } else {
         console.error(
           'Maintenance ID is missing, cannot navigate to view page.'

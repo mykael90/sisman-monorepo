@@ -68,7 +68,6 @@ export default async function MaintenanceRequestShowPage({
   // e removendo a dependência de setFieldValue, já que esta é uma página de exibição
   return (
     <div className='space-y-6'>
-      {JSON.stringify(maintenanceRequestData, null, 2)}
       <Card>
         <CardHeader>
           <CardTitle className='text-lg'>
@@ -260,10 +259,16 @@ export default async function MaintenanceRequestShowPage({
                                   Material
                                 </th>
                                 <th className='px-4 py-2 text-left font-medium text-gray-700'>
-                                  Quantidade
+                                  Qtd. Requisitada
+                                </th>
+                                <th className='px-4 py-2 text-left font-medium text-gray-700'>
+                                  Qtd. Aprovada
                                 </th>
                                 <th className='px-4 py-2 text-left font-medium text-gray-700'>
                                   Valor Unitário
+                                </th>
+                                <th className='px-4 py-2 text-left font-medium text-gray-700'>
+                                  Total do Item
                                 </th>
                               </tr>
                             </thead>
@@ -272,24 +277,49 @@ export default async function MaintenanceRequestShowPage({
                                 (
                                   item: IMaterialRequestItemWithRelations,
                                   itemIndex: number
-                                ) => (
-                                  <tr
-                                    key={itemIndex}
-                                    className='hover:bg-gray-50'
-                                  >
-                                    <td className='px-4 py-2 text-gray-900'>
-                                      {item.requestedGlobalMaterial?.name}
-                                    </td>
-                                    <td className='px-4 py-2 text-gray-900'>
-                                      {Number(
-                                        item.quantityRequested
-                                      ).toLocaleString()}
-                                    </td>
-                                    <td className='px-4 py-2 text-gray-900'>
-                                      {Number(item.unitPrice).toLocaleString()}
-                                    </td>
-                                  </tr>
-                                )
+                                ) => {
+                                  const itemTotalPrice =
+                                    Number(item.quantityRequested || 0) *
+                                    Number(item.unitPrice || 0);
+                                  return (
+                                    <tr
+                                      key={itemIndex}
+                                      className='hover:bg-gray-50'
+                                    >
+                                      <td className='px-4 py-2 text-gray-900'>
+                                        {item.requestedGlobalMaterial?.name}
+                                      </td>
+                                      <td className='px-4 py-2 text-gray-900'>
+                                        {Number(
+                                          item.quantityRequested
+                                        ).toLocaleString()}
+                                      </td>
+                                      <td className='px-4 py-2 text-gray-900'>
+                                        {Number(
+                                          item.quantityApproved
+                                        ).toLocaleString()}
+                                      </td>
+                                      <td className='px-4 py-2 text-gray-900'>
+                                        {Number(item.unitPrice).toLocaleString(
+                                          'pt-BR',
+                                          {
+                                            style: 'currency',
+                                            currency: 'BRL'
+                                          }
+                                        )}
+                                      </td>
+                                      <td className='px-4 py-2 text-gray-900'>
+                                        {itemTotalPrice.toLocaleString(
+                                          'pt-BR',
+                                          {
+                                            style: 'currency',
+                                            currency: 'BRL'
+                                          }
+                                        )}
+                                      </td>
+                                    </tr>
+                                  );
+                                }
                               )}
                             </tbody>
                           </table>
@@ -307,7 +337,25 @@ export default async function MaintenanceRequestShowPage({
                               : 'Nenhum item'}
                           </p>
                         </div>
-                        {/* Adicionar outros totais se disponíveis no tipo de dados */}
+                        <div className='text-center'>
+                          <p className='text-xs font-medium text-gray-500'>
+                            Valor Total da Requisição
+                          </p>
+                          <p className='text-sm font-semibold text-gray-900'>
+                            {req.items
+                              ?.reduce(
+                                (sum, item) =>
+                                  sum +
+                                  Number(item.quantityRequested || 0) *
+                                    Number(item.unitPrice || 0),
+                                0
+                              )
+                              .toLocaleString('pt-BR', {
+                                style: 'currency',
+                                currency: 'BRL'
+                              })}
+                          </p>
+                        </div>
                       </div>
                     </CardContent>
                   </Card>
