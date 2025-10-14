@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useRef, useState } from 'react';
+import { useRef, useState, useCallback, Dispatch, SetStateAction } from 'react';
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -11,7 +11,7 @@ import {
   SortingState
 } from '@tanstack/react-table';
 import { InputDebounceRef } from '@/components/ui/input';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   createActions,
   defaultColumn,
@@ -34,6 +34,8 @@ export function MateriallDeficitList() {
   //TODO: pegar do contexto auth a instancia de manutencao
   const router = useRouter();
 
+  const queryClient = useQueryClient();
+
   const maintenanceInstanceId = session?.user.maintenanceInstanceId;
 
   if (status !== 'loading' && !maintenanceInstanceId) {
@@ -43,14 +45,14 @@ export function MateriallDeficitList() {
     return null;
   }
 
-  const [date, setDate] = useState<DateRange | undefined>({
+  const [date, setDateState] = useState<DateRange | undefined>({
     from: startOfMonth(new Date()),
     to: endOfMonth(new Date())
   });
 
   const [sorting, setSorting] = useState<SortingState>([]);
 
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([
+  const [columnFilters, setColumnFiltersState] = useState<ColumnFiltersState>([
     {
       id: 'hasEffectiveDeficit',
       value: ['Sim']
@@ -58,7 +60,7 @@ export function MateriallDeficitList() {
   ]);
 
   // --- Estado dos Filtros Movido para Cá ---
-  const [globalFilterValue, setGlobalFilterValue] = useState('');
+  const [globalFilterValue, setGlobalFilterValueState] = useState('');
   const inputDebounceRef = useRef<InputDebounceRef>(null); // Cria a Ref
 
   // Função para limpar filtros (agora pertence ao pai)
@@ -72,6 +74,33 @@ export function MateriallDeficitList() {
     pageIndex: 0, //initial page index
     pageSize: 10 //default page size
   });
+
+  // --- Wrappers para os setters dos filtros ---
+  // Esses wrappers garantem que, ao aplicar um filtro, a paginação seja resetada para a primeira página
+  // (porque autoResetPageIndex é false agora).
+
+  const setDate = useCallback((range: DateRange | undefined) => {
+    setDateState(range);
+    setPagination((prev) => ({ ...prev, pageIndex: 0 })); // Reseta para a primeira página ao aplicar filtro de data
+  }, []);
+
+  const setGlobalFilterValue = useCallback((value: string) => {
+    setGlobalFilterValueState(value);
+    setPagination((prev) => ({ ...prev, pageIndex: 0 })); // Reseta para a primeira página ao aplicar filtro global
+  }, []);
+
+  const setColumnFilters = useCallback(
+    (
+      updater:
+        | ColumnFiltersState
+        | ((old: ColumnFiltersState) => ColumnFiltersState)
+    ) => {
+      setColumnFiltersState(updater);
+      setPagination((prev) => ({ ...prev, pageIndex: 0 })); // Reseta para a primeira página ao aplicar filtro de coluna
+    },
+    []
+  );
+  // --- Fim dos Wrappers dos filtros ---
 
   const {
     data: deficits,
@@ -93,7 +122,7 @@ export function MateriallDeficitList() {
   });
 
   //Configurando açoes de colunas. Ações de colunas definidas no arquivo de colunas
-  const columnActions = createActions(router); // Crie o objeto de ações, passando a função de navegação
+  const columnActions = createActions(router, queryClient); // Crie o objeto de ações, passando a função de navegação
 
   return (
     <div className='container mx-auto p-4'>
@@ -156,6 +185,7 @@ export function MateriallDeficitList() {
           setGlobalFilter={setGlobalFilterValue}
           defaultColumn={defaultColumn}
           renderSubComponent={SubRowComponent}
+          autoResetPageIndex={false}
         />
       )}
     </div>

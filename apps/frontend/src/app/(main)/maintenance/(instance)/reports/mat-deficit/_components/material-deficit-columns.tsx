@@ -2,7 +2,7 @@ import { ColumnDef, createColumnHelper, Row } from '@tanstack/react-table';
 import { IMaintenanceRequestDeficitStatus } from '@/app/(main)/maintenance/request/maintenance-request-types';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { Button } from '../../../../../../../components/ui/button';
-import { Eye, ChevronRight, ChevronDown } from 'lucide-react';
+import { Eye, ChevronRight, ChevronDown, RefreshCcw } from 'lucide-react';
 import { get } from 'http';
 import {
   Table,
@@ -12,6 +12,10 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table';
+import { QueryClient } from '@tanstack/react-query';
+import { useTransition } from 'react';
+import { toast } from 'sonner';
+import { fetchOneAndPersistSipacRequisicoesManutencao } from '../../../../../sipac/requisicoes-manutencoes/requisicoes-manutencoes-actions';
 
 const columnHelper = createColumnHelper<IMaintenanceRequestDeficitStatus>();
 
@@ -43,24 +47,61 @@ type ActionHandlers<TData> = {
 // createActions será uma função que CRIA o objeto de ações,
 // recebendo a função de navegação.
 export const createActions = (
-  router: AppRouterInstance // Recebe a função de navegação
-): ActionHandlers<IMaintenanceRequestDeficitStatus> => ({
-  onViewDetails: (row: Row<IMaintenanceRequestDeficitStatus>) => {
-    console.log('View details for deficit', row.original);
-    // Certifique-se que row.original.id existe e é o identificador correto.
-    if (row.original.id) {
-      // Navega para a rota de edição, passando o ID da manutenção
-      // Ajuste o caminho conforme sua estrutura de rotas
-      router.push(`maintenance-deficit/details/${row.original.id}`);
-    } else {
-      console.error('Maintenance ID is missing, cannot navigate to view page.');
-      // Poderia também navegar para uma página de erro ou mostrar um alerta
-      throw new Error(
-        'Maintenance ID is missing, cannot navigate to view page.'
+  router: AppRouterInstance, // Recebe a função de navegação
+  queryClient: QueryClient
+): ActionHandlers<IMaintenanceRequestDeficitStatus> => {
+  const [isPending, startTransition] = useTransition();
+
+  const handleSyncRManSipac = async (protocolNumber?: string) => {
+    if (!protocolNumber)
+      return toast.error(
+        `Requisição de material não localizada para essa reserva.`
       );
+
+    startTransition(async () => {
+      const updateRequisicaoManutencaoSipac =
+        await fetchOneAndPersistSipacRequisicoesManutencao(protocolNumber);
+      if (updateRequisicaoManutencaoSipac) {
+        // When you use await inside a startTransition function, the state updates that happen after the await are not marked as Transitions. You must wrap state updates after each await in a startTransition call:
+
+        startTransition(() => {
+          //Uso de recursividade, como foi bem sucedido, vai localizar corretamente e vai exibir em tela na próxima chamada
+          toast.success(
+            `Requisição de manutenção nº ${protocolNumber} sincronizada do SIPAC com sucesso!`
+          );
+          queryClient.invalidateQueries({ queryKey: ['deficits'] }); // Invalida o cache do react-query
+        });
+      } else {
+        toast.error(
+          `Falha ao sincronizar requisição de manutenção nº ${protocolNumber} do SIPAC. Verifique os dados e tente novamente.`
+        );
+      }
+    });
+  };
+
+  return {
+    onViewDetails: (row: Row<IMaintenanceRequestDeficitStatus>) => {
+      console.log('View details for deficit', row.original);
+      // Certifique-se que row.original.id existe e é o identificador correto.
+      if (row.original.id) {
+        // Navega para a rota de edição, passando o ID da manutenção
+        // Ajuste o caminho conforme sua estrutura de rotas
+        router.push(`maintenance-deficit/details/${row.original.id}`);
+      } else {
+        console.error(
+          'Maintenance ID is missing, cannot navigate to view page.'
+        );
+        // Poderia também navegar para uma página de erro ou mostrar um alerta
+        throw new Error(
+          'Maintenance ID is missing, cannot navigate to view page.'
+        );
+      }
+    },
+    onSyncRMan: (row: Row<IMaintenanceRequestDeficitStatus>) => {
+      handleSyncRManSipac(row.original.protocolNumber);
     }
-  }
-});
+  };
+};
 
 interface StatusBadgeProps {
   status: string;
@@ -137,7 +178,33 @@ export const materialdeficitColumns = (
     header: 'RMan',
     size: 40,
     enableResizing: false,
-    cell: (props) => props.getValue()
+    cell: (props) => {
+      if (!props.row.original.protocolNumber) {
+        return 'N/A';
+      }
+
+      const updateDate = new Date(props.row.original.updatedAt);
+
+      return (
+        <div className='space-y-.5 flex-col items-center whitespace-normal'>
+          <div>{props.getValue()}</div>
+          <div className='flex items-center justify-center gap-1'>
+            <div className='text-muted-foreground text-xs'>
+              {updateDate.toLocaleDateString()}{' '}
+            </div>
+            {/* <Button
+              variant='ghost'
+              onClick={() => {
+                configuredActions.onView(props.row);
+              }}
+              className='h-3 w-3 cursor-pointer'
+            >
+              <RefreshCcw className='h-3 w-3' />
+            </Button> */}
+          </div>
+        </div>
+      );
+    }
   }),
 
   columnHelper.accessor('description', {
@@ -224,6 +291,14 @@ export const materialdeficitColumns = (
         >
           <Eye className='h-4 w-4' />
         </Button>
+        <Button
+          title='Sincronizar RMan com SIPAC'
+          variant='ghost'
+          size='icon'
+          onClick={() => configuredActions.onSyncRMan(row)}
+        >
+          <RefreshCcw className='h-4 w-4' />
+        </Button>
       </div>
     )
   })
@@ -261,7 +336,9 @@ export const SubRowComponent = ({
             deficitDetails.map((item, index) => (
               <TableRow key={index}>
                 <TableCell>{item.globalMaterialId}</TableCell>
-                <TableCell>{item.name || 'N/A'}</TableCell>
+                <TableCell className='whitespace-normal'>
+                  {item.name || 'N/A'}
+                </TableCell>
                 <TableCell>{item.unitOfMeasure || 'N/A'}</TableCell>
                 <TableCell>{item.quantityRequestedSum.toString()}</TableCell>
                 <TableCell>{item.quantityReceivedSum.toString()}</TableCell>

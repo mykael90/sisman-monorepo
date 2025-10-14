@@ -80,6 +80,7 @@ export interface IMaintenanceRequestDeficitStatus {
   loginsResponsibles?: string[];
   completedAt: Date;
   requestedAt: Date;
+  updatedAt: Date;
   hasEffectiveDeficit: boolean;
   hasPotentialDeficit: boolean;
   deficitDetails?: Array<{

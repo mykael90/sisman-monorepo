@@ -21,6 +21,7 @@ export interface MaintenanceRequestDeficitStatus {
   loginsResponsibles?: string[];
   completedAt: Date;
   requestedAt: Date;
+  updatedAt: Date;
   hasEffectiveDeficit: boolean;
   hasPotentialDeficit: boolean;
   deficitDetails?: Array<{
@@ -968,6 +969,7 @@ export class MaintenanceRequestsService {
               id: true,
               description: true,
               protocolNumber: true,
+              updatedAt: true,
               sipacUserLoginRequest: true,
               completedAt: true,
               requestedAt: true
@@ -1009,6 +1011,7 @@ export class MaintenanceRequestsService {
             select: {
               materialId: true,
               quantityReceived: true,
+              updatedAt: true,
               materialReceipt: {
                 select: {
                   materialRequest: {
@@ -1191,6 +1194,7 @@ export class MaintenanceRequestsService {
             requestedAt: mr.requestedAt,
             protocolNumber: mr.protocolNumber,
             completedAt: mr.completedAt,
+            updatedAt: mr.updatedAt,
             sipacUserLoginRequest: mr.sipacUserLoginRequest,
             hasEffectiveDeficit,
             hasPotentialDeficit,
@@ -1257,6 +1261,7 @@ export class MaintenanceRequestsService {
             protocolNumber: true,
             sipacUserLoginRequest: true,
             completedAt: true,
+            updatedAt: true,
             requestedAt: true,
             materialWithdrawals: {
               select: { authorizedByUser: { select: { login: true } } }
@@ -1477,6 +1482,7 @@ export class MaintenanceRequestsService {
             loginsResponsibles: loginsResponsibles,
             completedAt: mr.completedAt,
             requestedAt: mr.requestedAt,
+            updatedAt: mr.updatedAt,
             hasEffectiveDeficit,
             hasPotentialDeficit,
             deficitDetails:
