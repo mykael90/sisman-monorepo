@@ -23,7 +23,7 @@ export async function handleApiAction<
     queryParams?: Record<string, string>; // Opcional, para passar parâmetros na URL
   },
   revalidationConfig: {
-    mainPath: string;
+    mainPath?: string;
     detailPath?: string; // Opcional, para revalidar uma página de detalhe
   },
   successMessage: string
@@ -51,7 +51,8 @@ export async function handleApiAction<
     );
 
     // Revalidação do Cache
-    revalidatePath(revalidationConfig.mainPath);
+    if (revalidationConfig.mainPath)
+      revalidatePath(revalidationConfig.mainPath);
     if (revalidationConfig.detailPath) {
       revalidatePath(revalidationConfig.detailPath);
     }

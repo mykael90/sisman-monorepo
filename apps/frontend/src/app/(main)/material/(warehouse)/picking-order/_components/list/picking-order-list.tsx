@@ -110,21 +110,72 @@ export function PickingOrderListPage() {
     inputDebounceRef.current?.clearInput();
   };
 
+  const prevPickingOrdersCount = useRef<number | undefined>(0);
+
+  // Crie uma versão memoizada e estável da sua função de busca
+  const fetchData = useCallback(() => {
+    // O enabled garante que isso não rode se warehouse ou date não existirem
+    return getMaterialPickingOrdersByWarehouse(warehouse!.id, {
+      from: date!.from,
+      to: date!.to
+    });
+  }, [warehouse, date]); // <-- Dependências CRUCIAIS
+
   const {
     data: pickingOrders,
     isLoading,
     isError,
     error,
-    refetch
-  } = useQuery({
-    queryKey: ['pickingOrders', warehouse?.id, date],
-    queryFn: () =>
-      getMaterialPickingOrdersByWarehouse(warehouse?.id as number, {
-        from: date?.from,
-        to: date?.to
-      }),
-    enabled: !!warehouse && !!date?.from && !!date?.to
+    refetch,
+    isSuccess
+  } = useQuery<IMaterialPickingOrderWithRelations[]>({
+    // DEPOIS (Estável e Correto)
+    // Usamos os valores primitivos (strings) que não mudam de referência a cada renderização.
+    queryKey: [
+      'pickingOrders',
+      warehouse?.id,
+      date?.from?.toISOString(),
+      date?.to?.toISOString()
+    ],
+    queryFn: fetchData,
+    enabled: !!warehouse && !!date?.from && !!date?.to,
+    refetchInterval: 15000,
+    refetchIntervalInBackground: true, // Garante que o refetch ocorra mesmo em segundo plano
+    refetchOnWindowFocus: true, // Garante que o refetch ocorra ao focar na janela
+
+    // A SOLUÇÃO:
+    // Considera os dados frescos por 10 segundos.
+    // Isso previne o refetch imediato ao focar na janela se a última
+    // busca foi há menos de 10 segundos.
+    staleTime: 10000
   });
+
+  useEffect(() => {
+    if (isSuccess && pickingOrders) {
+      if (
+        prevPickingOrdersCount.current !== undefined &&
+        pickingOrders.length > prevPickingOrdersCount.current
+      ) {
+        const audio = new Audio('/assets/sounds/notification.mp3');
+        audio.play();
+
+        // Reseta os filtros e a paginação para garantir que o novo registro seja visível
+        setColumnFiltersState(initialColumnFilter);
+        setPagination({ pageIndex: 0, pageSize: 10 });
+        setGlobalFilterValueState('');
+        inputDebounceRef.current?.clearInput();
+      }
+      prevPickingOrdersCount.current = pickingOrders.length;
+    }
+  }, [
+    isSuccess,
+    pickingOrders,
+    initialColumnFilter,
+    setColumnFiltersState,
+    setPagination,
+    setGlobalFilterValueState,
+    inputDebounceRef
+  ]);
 
   const pickingOrderValue =
     (columnFilters.find((f) => f.id === 'id')?.value as string) ?? '';
@@ -192,7 +243,7 @@ export function PickingOrderListPage() {
         <Loading />
       ) : (
         <TableTanstackFaceted
-          data={pickingOrders}
+          data={pickingOrders || []}
           columns={columns(columnActions)}
           columnFilters={columnFilters}
           setColumnFilters={setColumnFilters}

@@ -19,8 +19,11 @@ import {
   UpdateMaterialStockMovementWithRelationsDto
 } from './dto/material-stock-movements.dto';
 import { AuthGuard } from '../../shared/auth/guards/auth.guard';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ApiEndpointSwagger } from '../../shared/decorators/swagger/api-endpoint.decorator';
+import { Role } from '../../shared/enums/role.enum';
+import { RoleGuard } from '../../shared/auth/guards/role.guard';
+import { Roles } from '../../shared/decorators/roles.decorator';
 @ApiTags('Material Stock Movements') // Agrupa os endpoints na UI do Swagger
 @UseGuards(AuthGuard)
 @Controller('material-stock-movement')
@@ -212,5 +215,19 @@ export class MaterialStockMovementsController {
     return this.materialStockMovementsService.countGlobalMaterialInWarehouse(
       data
     );
+  }
+
+  @Post('integrity')
+  @HttpCode(HttpStatus.OK)
+  @ApiBearerAuth()
+  @Roles(Role.Adm)
+  @UseGuards(AuthGuard, RoleGuard)
+  @ApiOperation({
+    summary: 'Executar verificação de integridade de movimentação de estoque',
+    description:
+      'Verifica e corrige inconsistências de movimentação de estoque, associando requisições de material a requisições de manutenção quando aplicável.'
+  })
+  async movementIntegrity() {
+    return this.materialStockMovementsService.movementIntegrity();
   }
 }

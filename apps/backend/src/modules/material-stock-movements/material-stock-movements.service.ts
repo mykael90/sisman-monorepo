@@ -814,19 +814,20 @@ export class MaterialStockMovementsService {
       });
 
     for (const movement of movementsWithoutMaintenanceRequestId) {
-      await this.prisma.materialStockMovement.update({
-        where: {
-          id: movement.id
-        },
-        data: {
-          maintenanceRequest: {
-            connect: {
-              id: movement.materialRequestItem.materialRequest
-                .maintenanceRequest.id
+      if (movement.materialRequestItem?.materialRequest?.maintenanceRequest?.id)
+        await this.prisma.materialStockMovement.update({
+          where: {
+            id: movement.id
+          },
+          data: {
+            maintenanceRequest: {
+              connect: {
+                id: movement.materialRequestItem.materialRequest
+                  .maintenanceRequest.id
+              }
             }
           }
-        }
-      });
+        });
     }
   }
 }

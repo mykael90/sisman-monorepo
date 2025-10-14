@@ -75,3 +75,9 @@ Authorization: Bearer {{token}}
 DELETE {{urlLocal}}/{{id}}
 Content-Type: {{contentType}}
 Authorization: Bearer {{token}}
+
+
+### POST integrity
+POST {{urlLocal}}/integrity
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
