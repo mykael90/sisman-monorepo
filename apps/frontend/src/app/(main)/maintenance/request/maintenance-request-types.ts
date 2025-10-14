@@ -13,7 +13,9 @@ export type IMaintenanceRequestWithRelations =
       assignedTo: true;
       serviceType: true;
       currentMaintenanceInstance: true;
-      materialRequests: true;
+      materialRequests: {
+        include: { items: { include: { requestedGlobalMaterial: true } } };
+      };
       sipacUnitRequesting: true;
     };
   }>;

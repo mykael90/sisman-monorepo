@@ -135,13 +135,13 @@ export async function handleMaintenanceRequestSearch(
 }
 
 export async function showMaintenanceRequest(
-  accessTokenSisman: string,
   id: number
 ): Promise<IMaintenanceRequestWithRelations> {
   logger.info(
     `(Server Action) showMaintenanceRequest: Buscando requisição com ID ${id}.`
   );
   try {
+    const accessTokenSisman = await getSismanAccessToken();
     const data = await fetchApiSisman(
       `${API_RELATIVE_PATH}/${id}`,
       accessTokenSisman,
@@ -204,7 +204,7 @@ export async function showMaintenanceRequestBalanceByProtocol(
   protocolNumber: string
 ): Promise<IMaintenanceRequestBalanceWithRelations | null> {
   logger.info(
-    `(Server Action) showMaintenanceRequest: Buscando requisição com ID ${protocolNumber}.`
+    `(Server Action) showMaintenanceRequest: Buscando requisição com protocolNumber ${protocolNumber}.`
   );
   try {
     const accessTokenSisman = await getSismanAccessToken();
@@ -221,12 +221,52 @@ export async function showMaintenanceRequestBalanceByProtocol(
       { value: protocolNumber }
     );
     logger.info(
-      `(Server Action) showMaintenanceRequest: Requisição com ID ${protocolNumber} retornada.`
+      `(Server Action) showMaintenanceRequest: Requisição com protocolNumber ${protocolNumber} retornada.`
     );
     return data;
   } catch (error: any) {
     logger.error(
-      `(Server Action) showMaintenanceRequest: Erro ao buscar requisição com ID ${protocolNumber}.`,
+      `(Server Action) showMaintenanceRequest: Erro ao buscar requisição com protocolNumber ${protocolNumber}.`,
+      error
+    );
+
+    if (error instanceof SismanApiError) {
+      if (error.statusCode === 404) {
+        return null;
+      } else {
+        throw error;
+      }
+    }
+    throw error;
+  }
+}
+
+export async function showMaintenanceRequestBalanceById(
+  id: number
+): Promise<IMaintenanceRequestBalanceWithRelations | null> {
+  logger.info(
+    `(Server Action) showMaintenanceRequest: Buscando requisição com ID ${id}.`
+  );
+  try {
+    const accessTokenSisman = await getSismanAccessToken();
+    const data = await fetchApiSisman(
+      `${API_RELATIVE_PATH}/balance/${id}`,
+      accessTokenSisman,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+        // cache: 'force-cache'
+      }
+    );
+    logger.info(
+      `(Server Action) showMaintenanceRequest: Requisição com ID ${id} retornada.`
+    );
+    return data;
+  } catch (error: any) {
+    logger.error(
+      `(Server Action) showMaintenanceRequest: Erro ao buscar requisição com ID ${id}.`,
       error
     );
 

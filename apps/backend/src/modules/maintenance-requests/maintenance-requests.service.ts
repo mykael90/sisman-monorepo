@@ -310,7 +310,9 @@ export class MaintenanceRequestsService {
             diagnosis: true,
             // originatingOccurrences: true, // Cannot include reverse relation directly
             timelineEvents: true,
-            materialRequests: true,
+            materialRequests: {
+              include: { items: { include: { requestedGlobalMaterial: true } } }
+            },
             sipacUnitRequesting: true,
             sipacUnitCost: true
           }
