@@ -777,4 +777,56 @@ export class MaterialStockMovementsService {
 
     return this.create(dataWithMovementAndQuantityAdjust);
   }
+
+  //metodo para corrigir os movimentos que estão sem maintenanceRequest mas estão com materialRequestId
+  async movementIntegrity() {
+    //find movements with materialRequest not null and maintenceRequest null
+    const movementsWithoutMaintenanceRequestId =
+      await this.prisma.materialStockMovement.findMany({
+        where: {
+          maintenanceRequestId: null,
+          materialRequestItemId: {
+            not: null
+          }
+        },
+        include: {
+          materialRequestItem: {
+            select: {
+              materialRequest: {
+                select: {
+                  maintenanceRequest: {
+                    select: {
+                      id: true
+                    }
+                  }
+                }
+              }
+            },
+            where: {
+              materialRequest: {
+                maintenanceRequestId: {
+                  not: null
+                }
+              }
+            }
+          }
+        }
+      });
+
+    for (const movement of movementsWithoutMaintenanceRequestId) {
+      await this.prisma.materialStockMovement.update({
+        where: {
+          id: movement.id
+        },
+        data: {
+          maintenanceRequest: {
+            connect: {
+              id: movement.materialRequestItem.materialRequest
+                .maintenanceRequest.id
+            }
+          }
+        }
+      });
+    }
+  }
 }
