@@ -37,8 +37,8 @@ export async function showBuilding(accessTokenSisman: string, id: string) {
   try {
     const data = await fetchApiSisman(
       `${API_RELATIVE_PATH}/${id}`,
-      accessTokenSisman,
-      { cache: 'force-cache' }
+      accessTokenSisman
+      // { cache: 'force-cache' }
     );
     logger.info(`(Server Action) showBuilding: Building ${id} returned`);
     return data;

@@ -32,8 +32,8 @@ export async function showSpace(accessTokenSisman: string, id: number) {
   try {
     const data = await fetchApiSisman(
       `${API_RELATIVE_PATH}/${id}`,
-      accessTokenSisman,
-      { cache: 'force-cache' }
+      accessTokenSisman
+      // { cache: 'force-cache' }
     );
     logger.info(`(Server Action) showSpace: space ${id} returned`);
     return data;

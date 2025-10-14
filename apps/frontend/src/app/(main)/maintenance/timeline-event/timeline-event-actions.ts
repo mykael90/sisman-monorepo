@@ -39,8 +39,8 @@ export async function showTimelineEvent(accessTokenSisman: string, id: number) {
   try {
     const data = await fetchApiSisman(
       `${API_RELATIVE_PATH}/${id}`,
-      accessTokenSisman,
-      { cache: 'force-cache' }
+      accessTokenSisman
+      // { cache: 'force-cache' }
     );
     logger.info(
       `(Server Action) showTimelineEvent: timeline-event ${id} returned`

@@ -1313,7 +1313,10 @@ export class MaterialPickingOrdersService {
           requestedByUser: true,
           beCollectedByUser: true,
           beCollectedByWorker: true,
-          items: { include: { globalMaterial: true } }
+          items: {
+            include: { globalMaterial: true },
+            orderBy: { globalMaterial: { name: 'asc' } }
+          }
         },
         orderBy: {
           createdAt: 'desc'

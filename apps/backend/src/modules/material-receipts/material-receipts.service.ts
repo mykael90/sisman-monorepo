@@ -677,7 +677,8 @@ export class MaterialReceiptsService {
         items: {
           include: {
             material: true
-          }
+          },
+          orderBy: { material: { name: 'asc' } }
         },
         materialRequest: {
           include: {

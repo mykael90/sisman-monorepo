@@ -67,8 +67,8 @@ export async function showRequest(id: number) {
     const accessTokenSisman = await getSismanAccessToken(); // Obter token internamente
     const data = await fetchApiSisman(
       `${API_RELATIVE_PATH}/${id}`,
-      accessTokenSisman,
-      { cache: 'force-cache' }
+      accessTokenSisman
+      // { cache: 'force-cache' }
     );
     logger.info(`(Server Action) showRequest: request ${id} returned`);
     return data;

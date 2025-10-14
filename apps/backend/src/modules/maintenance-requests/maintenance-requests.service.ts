@@ -311,7 +311,19 @@ export class MaintenanceRequestsService {
             // originatingOccurrences: true, // Cannot include reverse relation directly
             timelineEvents: true,
             materialRequests: {
-              include: { items: { include: { requestedGlobalMaterial: true } } }
+              include: {
+                items: {
+                  include: { requestedGlobalMaterial: true },
+                  orderBy: {
+                    requestedGlobalMaterial: {
+                      name: 'asc'
+                    }
+                  }
+                }
+              },
+              orderBy: {
+                requestDate: 'desc'
+              }
             },
             sipacUnitRequesting: true,
             sipacUnitCost: true
@@ -1362,7 +1374,8 @@ export class MaintenanceRequestsService {
 
       const materialInfo = await this.prisma.materialGlobalCatalog.findMany({
         where: { id: { in: Array.from(allMaterialIds) } },
-        select: { id: true, name: true, unitOfMeasure: true, unitPrice: true }
+        select: { id: true, name: true, unitOfMeasure: true, unitPrice: true },
+        orderBy: { name: 'asc' }
       });
 
       const materialInfoMap = new Map<string, (typeof materialInfo)[0]>();
@@ -1491,6 +1504,9 @@ export class MaintenanceRequestsService {
           let loginsResponsibles = mr.materialWithdrawals.map(
             (order) => order.authorizedByUser.login
           );
+
+          //ordenar deficit details por nome
+          deficitDetails.sort((a, b) => a.name.localeCompare(b.name));
 
           return {
             id: mr.id,

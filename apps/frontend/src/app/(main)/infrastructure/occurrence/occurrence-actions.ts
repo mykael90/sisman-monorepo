@@ -37,8 +37,8 @@ export async function showOccurrence(accessTokenSisman: string, id: number) {
   try {
     const data = await fetchApiSisman(
       `${API_RELATIVE_PATH}/${id}`,
-      accessTokenSisman,
-      { cache: 'force-cache' }
+      accessTokenSisman
+      // { cache: 'force-cache' }
     );
     logger.info(`(Server Action) showOccurrence: occurrence ${id} returned`);
     return data;
