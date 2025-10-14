@@ -6,6 +6,11 @@
 GET {{urlLocal}}
 Authorization: Bearer {{token}}
 
+### GET all workers with isActive === true
+GET {{urlLocal}}
+?isActive=true
+Authorization: Bearer {{token}}
+
 ### GET all workers with actives conctracts
 GET {{urlLocal}}/active-contract
 Authorization: Bearer {{token}}

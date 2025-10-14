@@ -8,6 +8,8 @@ import { Label } from '../ui/label';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { cn } from '../../lib/utils';
+import React, { useState } from 'react';
+import { DateRange } from 'react-day-picker'; // Importa DateRange
 import {
   Select,
   SelectContent,
@@ -408,6 +410,7 @@ export function FormDatePicker({
   showLabel = true,
   className = '',
   formatDate = 'PPP',
+  mode = 'single',
   ...props
 }: {
   field: AnyFieldApi;
@@ -415,9 +418,17 @@ export function FormDatePicker({
   showLabel?: boolean;
   className?: string;
   formatDate?: string;
+  mode?: 'single' | 'range';
   [key: string]: any;
 }) {
-  const value = field.state.value as Date | string | undefined;
+  // O valor pode ser Date para modo 'single' ou DateRange para modo 'range'
+  const value = field.state.value as Date | DateRange | undefined;
+  const [open, setOpen] = useState(false);
+
+  const selectedValue =
+    mode === 'single'
+      ? (value as Date | undefined)
+      : (value as DateRange | undefined);
 
   return (
     <div className={className}>
@@ -429,7 +440,7 @@ export function FormDatePicker({
           {label}
         </Label>
       )}
-      <Popover>
+      <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
             variant='outline'
@@ -439,26 +450,53 @@ export function FormDatePicker({
             )}
           >
             <CalendarIcon className='mr-2 h-4 w-4' />
-            {value ? (
-              format(new Date(value), formatDate, {
+            {mode === 'single' && value instanceof Date ? (
+              format(value, formatDate, {
                 locale: ptBR
               })
+            ) : mode === 'range' &&
+              (value as DateRange)?.from &&
+              (value as DateRange)?.to ? (
+              `${format((value as DateRange).from!, formatDate, {
+                locale: ptBR
+              })} - ${format((value as DateRange).to!, formatDate, {
+                locale: ptBR
+              })}`
             ) : (
               <span>Selecione uma data</span>
             )}
           </Button>
         </PopoverTrigger>
         <PopoverContent className='w-auto p-0'>
-          <Calendar
-            mode='single'
-            selected={value ? new Date(value) : undefined}
-            onSelect={(date) => {
-              field.handleChange(date);
-              field.handleBlur();
-            }}
-            locale={ptBR}
-            initialFocus
-          />
+          {mode === 'single' ? (
+            <Calendar
+              mode='single'
+              selected={selectedValue as Date | undefined}
+              onSelect={(date: Date | undefined) => {
+                field.handleChange(date);
+                field.handleBlur();
+                setOpen(false); // Sempre fecha no modo single
+              }}
+              locale={ptBR}
+              initialFocus
+            />
+          ) : (
+            <Calendar
+              mode='range'
+              selected={selectedValue as DateRange | undefined}
+              onSelect={(date: DateRange | undefined) => {
+                field.handleChange(date);
+                field.handleBlur();
+                // Fecha o Popover apenas se ambas as datas foram selecionadas no modo range
+                if (date?.from && date?.to) {
+                  setOpen(false);
+                }
+              }}
+              locale={ptBR}
+              initialFocus
+              required={false} // Permite seleção de range parcial
+            />
+          )}
         </PopoverContent>
       </Popover>
       {!field.state.meta.isValid && field.state.meta.isBlurred ? (

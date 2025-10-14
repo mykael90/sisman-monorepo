@@ -29,6 +29,7 @@ import { IMaterialRequestBalanceWithRelations } from '../../../../request/materi
 import { Label } from '@/components/ui/label';
 import {
   FormCombobox,
+  FormDatePicker,
   FormDropdown,
   FormInputField,
   FormInputTextArea
@@ -307,43 +308,14 @@ export function MaterialPickingOrderForm({
                   <formPickingOrder.Field
                     name='desiredPickupDate'
                     children={(field) => (
-                      <>
-                        <Label htmlFor='desiredPickupDate'>
-                          Previsão de Retirada
-                        </Label>
-                        <Popover>
-                          <PopoverTrigger asChild>
-                            <Button
-                              variant='outline'
-                              className={cn(
-                                'w-full justify-start text-left font-normal',
-                                !field.state.value && 'text-muted-foreground'
-                              )}
-                            >
-                              <CalendarIcon className='mr-2 h-4 w-4' />
-                              {field.state.value ? (
-                                format(field.state.value, 'PPP', {
-                                  locale: ptBR
-                                })
-                              ) : (
-                                <span>Selecione uma data</span>
-                              )}
-                            </Button>
-                          </PopoverTrigger>
-                          <PopoverContent className='w-auto p-0'>
-                            <Calendar
-                              mode='single'
-                              selected={
-                                field.state.value
-                                  ? new Date(field.state.value)
-                                  : undefined
-                              }
-                              onSelect={(date) => date && field.setValue(date)}
-                              locale={ptBR}
-                            />
-                          </PopoverContent>
-                        </Popover>
-                      </>
+                      <FormDatePicker
+                        field={field}
+                        label={fieldsLabelsPickingOrderForm.desiredPickupDate}
+                        mode='single'
+                        placeholder='dd/MM/yyyy'
+                        className='mb-4'
+                        formatDate='PPPP'
+                      />
                     )}
                   />
                 </div>

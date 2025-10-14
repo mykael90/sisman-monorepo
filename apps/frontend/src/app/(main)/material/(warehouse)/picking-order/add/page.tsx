@@ -2,7 +2,10 @@ import { getSismanAccessToken } from '@/lib/auth/get-access-token';
 import { getUsers } from '../../../../user/user-actions';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../../../../../api/auth/_options';
-import { getWorkers } from '../../../../worker/worker-actions';
+import {
+  getActivesWorkers,
+  getWorkers
+} from '../../../../worker/worker-actions';
 import { MaterialPickingOrderAdd } from '../_components/add/material-picking-order-add';
 
 export default async function Page() {
@@ -15,7 +18,7 @@ export default async function Page() {
 
   const [listUsers, listWorkers] = await Promise.all([
     getUsers(accessTokenSisman),
-    getWorkers(accessTokenSisman)
+    getActivesWorkers(accessTokenSisman)
   ]);
 
   return (

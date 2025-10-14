@@ -170,8 +170,18 @@ export class WorkersService {
     }
   }
 
-  async list() {
+  async list(queryParams?: { [key: string]: string }) {
+    const whereArgs: Prisma.WorkerWhereInput = {};
+
+    if (queryParams && !!Object.keys(queryParams).length) {
+      const { isActive } = queryParams;
+      if (isActive) {
+        whereArgs.isActive = isActive === 'true';
+      }
+    }
+
     return await this.prisma.worker.findMany({
+      where: whereArgs,
       include: {
         maintenanceInstance: true,
         workerContracts: {

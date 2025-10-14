@@ -482,6 +482,11 @@ export class MaintenanceRequestsService {
             },
         include: {
           material: true
+        },
+        orderBy: {
+          material: {
+            name: 'asc'
+          }
         }
       });
 

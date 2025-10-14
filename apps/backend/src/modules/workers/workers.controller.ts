@@ -9,6 +9,7 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  Query,
   UseGuards
 } from '@nestjs/common';
 
@@ -71,8 +72,8 @@ export class WorkersController {
       isArray: true
     }
   })
-  async list() {
-    return this.workersService.list();
+  async list(@Query() queryParams: { [key: string]: string }) {
+    return this.workersService.list(queryParams);
   }
 
   @Get('active-contract')
