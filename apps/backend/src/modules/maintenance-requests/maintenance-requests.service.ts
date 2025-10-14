@@ -845,6 +845,17 @@ export class MaintenanceRequestsService {
       };
     }
 
+    //Handle materialRequests connection.
+    // Não vai atualizar nenhum campo de materialRequest, vai apenas conectar maintenanceRequest
+
+    if (materialRequests && materialRequests.length > 0) {
+      updateInput.materialRequests = {
+        connect: materialRequests.map((mr) => ({
+          protocolNumber: mr.protocolNumber
+        }))
+      };
+    }
+
     try {
       const updated = await this.prisma.maintenanceRequest.update({
         where: { id },

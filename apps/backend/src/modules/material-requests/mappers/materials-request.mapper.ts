@@ -62,7 +62,6 @@ export class MaterialRequestMapper {
       protocolNumber: String(item.numeroDaRequisicao),
       requestType: MaterialRequestType.NEW_MATERIALS,
       requestDate: item.dataDeCadastro,
-      maintenanceRequestId: item.sipacRequisicaoManutencaoId || undefined,
       requestedById: item.usuarioId || undefined,
       sipacUnitRequesting: item.unidadeRequisitante,
       sipacUnitCost: item.unidadeCusto,

@@ -46,6 +46,8 @@ export class MaintenanceRequestMapper {
         (
           requisicaoMaterial: SipacRequisicaoMaterial
         ): UpdateMaterialRequestWithRelationsDto => ({
+          //envia apenas o protocolNumber para fazer o relacionamento.
+          // a atualização dos campos é feito quando atualiza a requisicao de material. quando atualiza a requisicao de manutencao, garante apenas que o relacionamento seja estabelecido
           protocolNumber: requisicaoMaterial.numeroDaRequisicao
         })
       ),

@@ -776,6 +776,7 @@ export class RequisicoesManutencoesService {
       (numeroAno) => !numerosAnosEncontrados.includes(numeroAno)
     );
 
+    //TODO: Bolar uma forma de criar junto a requisicao de manutencao
     if (numerosAnosNaoEncontrados.length > 0) {
       this.logger.warn(
         `Requisicoes de materiais ausentes: ${numerosAnosNaoEncontrados.join(', ')}. Cadastrando...`

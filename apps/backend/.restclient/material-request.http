@@ -19,12 +19,12 @@ Authorization: Bearer {{token}}
 
 ### GET one by protocol
 GET {{urlLocal}}/protocol
-?value=16136/2025
+?value=29883/2025
 Authorization: Bearer {{token}}
 
 ### GET balance by protocol
 GET {{urlLocal}}/balance/protocol
-?value=16136/2025
+?value=29883/2025
 Authorization: Bearer {{token}}
 
 ### GET one balance
