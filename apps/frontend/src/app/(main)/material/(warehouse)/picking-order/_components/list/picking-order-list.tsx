@@ -158,20 +158,20 @@ export function PickingOrderListPage() {
         prevPickingOrdersCount.current !== undefined &&
         pickingOrders.length > prevPickingOrdersCount.current
       ) {
-        const audio = new Audio('/assets/sounds/notification.mp3');
-        audio.play();
-
-        console.log(
-          `Verificar contagem de ${pickingOrders.length} itens e antes era ${prevPickingOrdersCount.current}`
-        );
-
-        // Reseta os filtros e a paginação para garantir que o novo registro seja visível
-        // setColumnFiltersState(initialColumnFilter);
-        // setPagination({ pageIndex: 0, pageSize: 50 });
-        // setGlobalFilterValueState('');
-        // inputDebounceRef.current?.clearInput();
-
         if (prevPickingOrdersCount.current !== 0) {
+          const audio = new Audio('/assets/sounds/notification.mp3');
+          audio.play();
+
+          console.log(
+            `Verificar contagem de ${pickingOrders.length} itens e antes era ${prevPickingOrdersCount.current}`
+          );
+
+          // Reseta os filtros e a paginação para garantir que o novo registro seja visível
+          // setColumnFiltersState(initialColumnFilter);
+          // setPagination({ pageIndex: 0, pageSize: 50 });
+          // setGlobalFilterValueState('');
+          // inputDebounceRef.current?.clearInput();
+
           toast.info(
             `Quantidade de novas reservas recebidas: ${
               pickingOrders.length - prevPickingOrdersCount.current
