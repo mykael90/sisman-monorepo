@@ -656,7 +656,10 @@ export class MaterialRequestsService {
             ...updatePayload
           } = prismaItemData;
 
-          const { id: _, ...createPayload } = updatePayload;
+          // Para a operação CREATE, não se envia qualquer id
+          const { id: _, ...createPayload } = prismaItemData;
+
+          // const { id: _, ...createPayload } = updatePayload;
 
           this.logger.log(`update payload: ${JSON.stringify(updatePayload)}`);
           this.logger.log(`create payload: ${JSON.stringify(createPayload)}`);
