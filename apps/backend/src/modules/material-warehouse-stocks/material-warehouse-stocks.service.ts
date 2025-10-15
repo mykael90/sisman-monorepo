@@ -82,6 +82,10 @@ export class MaterialWarehouseStocksService {
         this.prisma.materialWarehouseStock.findUnique({
           where: {
             id
+          },
+          include: {
+            material: true,
+            warehouse: true
           }
         });
       return materialWarehouseStock;

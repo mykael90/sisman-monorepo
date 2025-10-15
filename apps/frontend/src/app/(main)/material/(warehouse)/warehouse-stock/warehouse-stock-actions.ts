@@ -7,7 +7,8 @@ import { fetchApiSisman } from '@/lib/fetch/api-sisman';
 import { IActionResultForm } from '@/types/types-server-actions';
 import {
   IWarehouseStockAdd,
-  IWarehouseStockEdit
+  IWarehouseStockEdit,
+  IWarehouseStockWithRelations
 } from './warehouse-stock-types';
 import { handleApiAction } from '@/lib/fetch/handle-form-action-sisman';
 
@@ -67,13 +68,13 @@ export async function getWarehouseStockByWarehouseId(warehouseId: number) {
 }
 
 export async function showWarehouseStock(
-  accessTokenSisman: string,
   id: number
-) {
+): Promise<IWarehouseStockWithRelations> {
   logger.info(
     `(Server Action) showWarehouseStock: Fetching warehouse-stock ${id}`
   );
   try {
+    const accessTokenSisman = await getSismanAccessToken();
     const data = await fetchApiSisman(
       `${API_RELATIVE_PATH}/${id}`,
       accessTokenSisman
