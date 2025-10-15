@@ -36,12 +36,13 @@ import { getMaterialPickingOrdersByWarehouse } from '../../material-picking-orde
 import { useMediaQuery } from '@/hooks/use-media-query';
 import { PickingOrderCard } from './picking-order-card';
 import { DateRange } from 'react-day-picker';
-import { subDays } from 'date-fns';
+import { subDays, endOfDay, startOfDay } from 'date-fns'; // Importar endOfDay
 import { DateRangeFilter } from '@/components/filters/date-range-filter';
 import { Button } from '@/components/ui/button';
 import { TableTanstackFaceted } from '../../../../../../../components/table-tanstack/table-tanstack-faceted';
 import { DefaultGlobalFilter } from '../../../../../../../components/table-tanstack/default-global-filter';
 import { materialPickingOrderStatusDisplayMapPortuguese } from '../../../../../../../mappers/material-picking-order-mappers-translate';
+import { toast } from 'sonner';
 
 export function PickingOrderListPage() {
   const { warehouse } = useWarehouseContext();
@@ -50,8 +51,8 @@ export function PickingOrderListPage() {
   const queryClient = useQueryClient();
 
   const [date, setDateState] = useState<DateRange | undefined>({
-    from: subDays(new Date(), 10),
-    to: new Date()
+    from: subDays(startOfDay(new Date()), 10),
+    to: endOfDay(new Date()) // Usar endOfDay para definir o final do dia
   });
 
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -75,22 +76,28 @@ export function PickingOrderListPage() {
 
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
-    pageSize: 10
+    pageSize: 50
   });
 
   // --- Wrappers para os setters dos filtros ---
   // Esses wrappers garantem que, ao aplicar um filtro, a paginação seja resetada para a primeira página
   // (porque autoResetPageIndex é false agora).
 
-  const setDate = useCallback((range: DateRange | undefined) => {
-    setDateState(range);
-    setPagination((prev) => ({ ...prev, pageIndex: 0 })); // Reseta para a primeira página ao aplicar filtro de data
-  }, []);
+  const setDate = useCallback(
+    (updater: SetStateAction<DateRange | undefined>) => {
+      setDateState(updater);
+      setPagination((prev) => ({ ...prev, pageIndex: 0 })); // Reseta para a primeira página ao aplicar filtro de data
+    },
+    []
+  );
 
-  const setGlobalFilterValue = useCallback((value: string) => {
-    setGlobalFilterValueState(value);
-    setPagination((prev) => ({ ...prev, pageIndex: 0 })); // Reseta para a primeira página ao aplicar filtro global
-  }, []);
+  const setGlobalFilterValue = useCallback(
+    (updater: SetStateAction<string>) => {
+      setGlobalFilterValueState(updater);
+      setPagination((prev) => ({ ...prev, pageIndex: 0 })); // Reseta para a primeira página ao aplicar filtro global
+    },
+    []
+  );
 
   const setColumnFilters = useCallback(
     (
@@ -139,15 +146,10 @@ export function PickingOrderListPage() {
     ],
     queryFn: fetchData,
     enabled: !!warehouse && !!date?.from && !!date?.to,
-    refetchInterval: 15000,
-    refetchIntervalInBackground: true, // Garante que o refetch ocorra mesmo em segundo plano
-    refetchOnWindowFocus: true, // Garante que o refetch ocorra ao focar na janela
-
-    // A SOLUÇÃO:
-    // Considera os dados frescos por 10 segundos.
-    // Isso previne o refetch imediato ao focar na janela se a última
-    // busca foi há menos de 10 segundos.
-    staleTime: 10000
+    refetchInterval: 30 * 1000, // Reativar refetchInterval para 30 segundos
+    refetchIntervalInBackground: true,
+    refetchOnWindowFocus: true,
+    staleTime: 0 // Manter staleTime em 0 para sempre considerar os dados obsoletos
   });
 
   useEffect(() => {
@@ -159,11 +161,23 @@ export function PickingOrderListPage() {
         const audio = new Audio('/assets/sounds/notification.mp3');
         audio.play();
 
+        console.log(
+          `Verificar contagem de ${pickingOrders.length} itens e antes era ${prevPickingOrdersCount.current}`
+        );
+
         // Reseta os filtros e a paginação para garantir que o novo registro seja visível
-        setColumnFiltersState(initialColumnFilter);
-        setPagination({ pageIndex: 0, pageSize: 10 });
-        setGlobalFilterValueState('');
-        inputDebounceRef.current?.clearInput();
+        // setColumnFiltersState(initialColumnFilter);
+        // setPagination({ pageIndex: 0, pageSize: 50 });
+        // setGlobalFilterValueState('');
+        // inputDebounceRef.current?.clearInput();
+
+        if (prevPickingOrdersCount.current !== 0) {
+          toast.info(
+            `Quantidade de novas reservas recebidas: ${
+              pickingOrders.length - prevPickingOrdersCount.current
+            }.`
+          );
+        }
       }
       prevPickingOrdersCount.current = pickingOrders.length;
     }

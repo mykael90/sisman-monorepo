@@ -1323,7 +1323,26 @@ export class MaterialPickingOrdersService {
         }
       };
 
-      return this.prisma.materialPickingOrder.findMany(findManyArgs);
+      // dummy update
+
+      await this.prisma.materialPickingOrder.update({
+        data: {
+          status: MaterialPickingOrderStatus.PENDING_PREPARATION
+        },
+        where: {
+          id: 1
+        }
+      });
+
+      const result =
+        await this.prisma.materialPickingOrder.findMany(findManyArgs);
+
+      // this.logger.log(`Retornando ${result.length} ordens de separação.`);
+      // this.logger.log(
+      //   `StartDate and EndDate: ${queryParams.startDate} - ${queryParams.endDate}`
+      // );
+
+      return result;
     } catch (error) {
       handlePrismaError(error, this.logger, 'MaterialPickingOrdersService', {
         operation: 'listByWarehouse'
