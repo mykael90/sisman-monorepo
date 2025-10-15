@@ -7,7 +7,7 @@ import { ExpireMaterialPickingOrdersTask } from './tasks/expire-material-picking
   imports: [MaterialPickingOrdersModule],
   providers: [
     // ExampleTask,
-    // ExpireMaterialPickingOrdersTask
+    ExpireMaterialPickingOrdersTask
   ]
 })
 export class CronModule {}

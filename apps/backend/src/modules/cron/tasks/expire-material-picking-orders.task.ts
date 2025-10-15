@@ -16,8 +16,7 @@ export class ExpireMaterialPickingOrdersTask {
     private readonly materialPickingOrdersService: MaterialPickingOrdersService
   ) {}
 
-  // @Cron(CronExpression.EVERY_DAY_AT_5AM)
-  @Cron(CronExpression.EVERY_10_SECONDS) // Exemplo: executa a cada 10 segundos
+  @Cron(CronExpression.EVERY_DAY_AT_5AM) // Executa diariamente às 05 da manhã
   async handleCron() {
     this.logger.debug('Verificar a necessidade de expirar pedidos de retirada');
     // Lógica da tarefa aqui
@@ -64,7 +63,7 @@ export class ExpireMaterialPickingOrdersTask {
       await this.materialPickingOrdersService.operationInPickingOrder(
         materialPickingOrder.id,
         materialPickingOrder.requestedByUserId,
-        'EXPIRED'
+        MaterialPickingOrderStatus.EXPIRED
       );
     }
 
