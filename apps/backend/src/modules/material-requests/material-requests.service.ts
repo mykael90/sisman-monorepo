@@ -651,13 +651,20 @@ export class MaterialRequestsService {
           // Para a operação UPDATE, geralmente não se atualiza os campos da chave única.
           // Embora o Prisma seja inteligente, é uma boa prática remover a chave do payload de atualização.
           const {
-            requestedGlobalMaterialId,
+            id: _,
+            requestedGlobalMaterialId, //esse não entra de jeito nenhum pois está intrinsicamente relacionado a entrada do registro (é o serviço pai)
             materialRequestId,
+            fulfilledByInstanceId,
             ...updatePayload
           } = prismaItemData;
 
-          // Para a operação CREATE, não se envia qualquer id
-          const { id: _, ...createPayload } = prismaItemData;
+          // Para a operação CREATE vamos fazer as conexões
+          const createPayload = {
+            ...updatePayload,
+            requestedGlobalMaterial: {
+              connect: { id: requestedGlobalMaterialId }
+            }
+          };
 
           // const { id: _, ...createPayload } = updatePayload;
 
