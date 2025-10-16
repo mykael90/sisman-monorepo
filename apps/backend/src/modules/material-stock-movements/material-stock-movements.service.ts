@@ -23,6 +23,7 @@ import {
 } from '@sisman/prisma';
 import { any } from 'joi';
 import { Decimal } from '@sisman/prisma/generated/client/runtime/library';
+import { glob } from 'fs';
 
 // Definindo o tipo do cliente Prisma para clareza
 type TransactionClient = ExtendedPrismaClient;
@@ -675,11 +676,19 @@ export class MaterialStockMovementsService {
   ) {
     // Primeiro verifique se o material existe no catálogo do referido depósito
     const globalMaterialInWarehouse = await this.ensureStockRecordExists(
-      data.warehouse.id,
-      data.globalMaterial.id,
-      data.globalMaterial.unitPrice,
+      data.warehouseId,
+      data.globalMaterialId,
+      undefined,
       this.prisma
     );
+
+    //ajustando payload para como os metodos já criados querem receber (falha minha que se perpetuou):
+    const dataPayload = {
+      quantity: data.quantity,
+      globalMaterial: { id: data.globalMaterialId },
+      warehouse: { id: data.warehouseId },
+      processedByUser: { id: data.processedByUserId }
+    };
 
     // A quantidade 'contada', ou seja, levantada pelo almoxarifado
     const quantityCount = new Prisma.Decimal(data.quantity);
@@ -723,7 +732,7 @@ export class MaterialStockMovementsService {
         const quantity = initialQuantity.abs();
         //chamar operação 1. a outra operação permanece no mesmo fluxo
         await this.create({
-          ...data,
+          ...(dataPayload as any),
           movementType,
           quantity
         });
@@ -773,7 +782,7 @@ export class MaterialStockMovementsService {
         .minus(quantityCount);
     }
     const dataWithMovementAndQuantityAdjust: CreateMaterialStockMovementWithRelationsDto =
-      { ...data, movementType, quantity };
+      { ...(dataPayload as any), movementType, quantity };
 
     return this.create(dataWithMovementAndQuantityAdjust);
   }

@@ -46,18 +46,6 @@ Authorization: Bearer {{token}}
     "processedByUser": {"id": 1}
 }
 
-### POST
-POST {{urlLocal}}/count
-Content-Type: {{contentType}}
-Authorization: Bearer {{token}}
-
-{
-    "quantity": 50,
-    "globalMaterial": {"id": "3026000001037"},
-    "warehouse": {"id": 1},
-    "processedByUser": {"id": 1}
-}
-
 
 ### PUT
 # @prompt id
@@ -81,3 +69,15 @@ Authorization: Bearer {{token}}
 POST {{urlLocal}}/integrity
 Content-Type: {{contentType}}
 Authorization: Bearer {{token}}
+
+### POST
+POST {{urlLocal}}/count
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "quantity": 51,
+    "globalMaterialId": "3026000001037",
+    "warehouseId": 1,
+    "processedByUserId":  1
+}

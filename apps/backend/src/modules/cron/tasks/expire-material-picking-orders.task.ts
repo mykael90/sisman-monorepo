@@ -6,6 +6,7 @@ import {
   ExtendedPrismaClient
 } from 'src/shared/prisma/prisma.module';
 import { MaterialPickingOrderStatus } from '@sisman/prisma';
+import { differenceInDays } from 'date-fns';
 
 @Injectable()
 export class ExpireMaterialPickingOrdersTask {
@@ -17,6 +18,7 @@ export class ExpireMaterialPickingOrdersTask {
   ) {}
 
   @Cron(CronExpression.EVERY_DAY_AT_5AM) // Executa diariamente às 05 da manhã
+  // @Cron(CronExpression.EVERY_10_SECONDS)
   async handleCron() {
     this.logger.debug('Verificar a necessidade de expirar pedidos de retirada');
     // Lógica da tarefa aqui
@@ -30,6 +32,7 @@ export class ExpireMaterialPickingOrdersTask {
         },
         where: {
           OR: [
+            { status: MaterialPickingOrderStatus.PENDING_PREPARATION },
             { status: MaterialPickingOrderStatus.IN_PREPARATION },
             { status: MaterialPickingOrderStatus.READY_FOR_PICKUP }
           ]
@@ -45,10 +48,7 @@ export class ExpireMaterialPickingOrdersTask {
           materialPickingOrder.desiredPickupDate
         );
         const currentDate = new Date();
-        const timeDifference =
-          desiredPickupDate.getTime() - currentDate.getTime();
-        const daysDifference = timeDifference / (1000 * 3600 * 24);
-        return daysDifference > 7;
+        return differenceInDays(currentDate, desiredPickupDate) > 7;
       }
     );
 

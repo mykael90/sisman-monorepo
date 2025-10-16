@@ -6,7 +6,7 @@ export const materialPickingOrderStatusDisplayMapPortuguese = {
   PARTIALLY_WITHDRAWN: 'Parcialmente Retirado', // Parte dos itens desta ordem já foi retirada
   FULLY_WITHDRAWN: 'Totalmente Retirado', // Todos os itens desta ordem foram retirados
   CANCELLED: 'Cancelado', // Ordem de separação cancelada
-  EXPIRED: 'Vencida' // Ordem de separação vencida
+  EXPIRED: 'Expirada' // Ordem de separação expirada
 } as const;
 
 export type TMaterialPickingOrderStatusKey =
