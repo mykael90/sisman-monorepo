@@ -136,22 +136,24 @@ export default function MaterialCountForm({
     >
       <ErrorServerForm<IStockMovementCountAdd> serverState={serverState} />
 
-      <form.Field name='quantity'>
-        {(field) => (
-          <FormInputField
-            field={field} // Cast if TS complains
-            label={fieldLabels.quantity}
-            type='number'
-            placeholder='Digite a quantidade contada'
-            className='mb-4'
-          />
-        )}
-      </form.Field>
+      <div className='ml-auto w-43'>
+        <form.Field name='quantity'>
+          {(field) => (
+            <FormInputField
+              field={field} // Cast if TS complains
+              label={fieldLabels.quantity}
+              type='number'
+              placeholder='Quantidade contada'
+              className='mb-4'
+            />
+          )}
+        </form.Field>
+      </div>
 
       <div className='mt-8 flex justify-end gap-3'>
-        <Button type='button' variant='outline' onClick={handleReset}>
+        {/* <Button type='button' variant='outline' onClick={handleReset}>
           Limpar
-        </Button>
+        </Button> */}
 
         <form.Subscribe
           selector={(state) => [

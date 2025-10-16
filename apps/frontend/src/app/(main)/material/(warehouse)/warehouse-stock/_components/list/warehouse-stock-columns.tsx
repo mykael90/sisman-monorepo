@@ -1,7 +1,7 @@
 import { ColumnDef, createColumnHelper, Row } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { Button } from '@/components/ui/button';
-import { Edit, Info, Trash2, FileText } from 'lucide-react';
+import { Edit, Info, Trash2, FileText, Calculator } from 'lucide-react';
 import { IWarehouseStockWithRelations } from '../../warehouse-stock-types';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { Badge } from '@/components/ui/badge';
@@ -52,6 +52,15 @@ export const createActions = (
       throw new Error(
         'Material ID or Warehouse ID is missing, cannot navigate to statement page.'
       );
+    }
+  },
+  onCount: (row: Row<IWarehouseStockWithRelations>) => {
+    console.log('Count Material', row.original);
+    if (row.original.id) {
+      router.push(`/material/count/${row.original.id}`);
+    } else {
+      console.error('ID is missing, cannot navigate to count page.');
+      throw new Error('ID is missing, cannot navigate to count page.');
     }
   }
 });
@@ -284,12 +293,20 @@ export const columns = (
         >
           <FileText className='h-4 w-4' />
         </Button>
-        <Button
+        {/* <Button
           variant='ghost'
           size='icon'
           onClick={() => configuredActions.onEdit(row)}
         >
           <Edit className='h-4 w-4' />
+        </Button> */}
+        <Button
+          title='Realizar Contagem'
+          variant='ghost'
+          size='icon'
+          onClick={() => configuredActions.onCount(row)}
+        >
+          <Calculator className='h-4 w-4' />
         </Button>
         {/* <Button
           variant='ghost'

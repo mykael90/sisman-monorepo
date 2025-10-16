@@ -20,6 +20,7 @@ import { addStockMovementCount } from '../../stock-movement/stock-movement-actio
 import { Calculator } from 'lucide-react';
 import FormAddHeader from '../../../../../../components/form-tanstack/form-add-header';
 import { CardMaterialStockSummary } from './_components/card-material-stock-summary';
+import { materialCountFormSchemaAdd } from '../_components/form/material-count-form-validation';
 
 export default function Page({ isInDialog = false }: { isInDialog?: boolean }) {
   const router = useRouter();
@@ -134,7 +135,7 @@ export default function Page({ isInDialog = false }: { isInDialog?: boolean }) {
         initialServerState={initialServerState}
         fieldLabels={fieldLabels}
         formActionProp={addStockMovementCount}
-        // formSchema={userFormSchemaAdd}
+        formSchema={materialCountFormSchemaAdd}
         SubmitButtonIcon={Calculator}
         submitButtonText='Inserir Contagem'
         relatedData={{

@@ -209,7 +209,7 @@ export async function addStockMovementCount(
       {
         mainPath: PAGE_PATH
       },
-      'StockMovement Counting added successfully!'
+      'Contagem de material no estoque realizada com sucesso!'
     );
   } catch (error) {
     logger.error(
