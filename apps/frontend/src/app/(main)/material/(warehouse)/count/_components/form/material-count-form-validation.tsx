@@ -4,7 +4,7 @@ import { IStockMovementCountAdd } from '@/app/(main)/material/(warehouse)/stock-
 export const materialCountFormSchemaAdd = z.object({
   quantity: z.coerce
     .number({ invalid_type_error: 'Quantidade é obrigatória' })
-    .min(1, 'Quantidade não pode ser zero ou negativa'),
+    .min(0, 'Quantidade não pode ser negativa'),
   globalMaterialId: z.string().min(1, 'Material é obrigatório'),
   warehouseId: z.number().min(1, 'Armazém é obrigatório'),
   processedByUserId: z.number().min(1, 'Usuário é obrigatório')

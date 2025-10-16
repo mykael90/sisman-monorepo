@@ -96,14 +96,19 @@ export function TableFormItemsGlobal({
 
   const handleQuantityChange = (key: number, change: number) => {
     const material = materialsMap.get(key);
+    const materialInfo = infoMap.get(key);
     if (material) {
       const newQuantity = Number(material.quantityToPick) + change;
-      onUpdateQuantity(key, getClampedQuantity(material, newQuantity));
+      onUpdateQuantity(
+        key,
+        getClampedQuantity({ ...materialInfo, ...material }, newQuantity)
+      );
     }
   };
 
   const handleManualQuantityChange = (key: number, value: string) => {
     const material = materialsMap.get(key);
+    const materialInfo = infoMap.get(key);
     if (!material) return;
 
     if (value === '') {
@@ -115,7 +120,10 @@ export function TableFormItemsGlobal({
     // Também substituímos a vírgula pelo ponto para garantir a conversão correta.
     const newQuantity = parseFloat(value.replace(',', '.'));
     if (!isNaN(newQuantity)) {
-      onUpdateQuantity(key, getClampedQuantity(material, newQuantity));
+      onUpdateQuantity(
+        key,
+        getClampedQuantity({ ...materialInfo, ...material }, newQuantity)
+      );
     }
   };
 

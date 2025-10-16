@@ -14,6 +14,7 @@ import {
   IMaterialPickingOrderItemAddForm
 } from '../../material-picking-order-types';
 import { SearchMaterialByWarehouse } from '../../../components/search-material-global-by-warehouse';
+import { toast } from 'sonner';
 
 const logger = new Logger(`material-items-field`);
 
@@ -50,6 +51,12 @@ export const ItemsFieldArray: FC<MaterialItemsFieldProps> = ({ field }) => {
     materialToAdd: IMaterialGlobalCatalogWithRelations | null
   ) => {
     if (!materialToAdd) return; // Guarda contra valores vazios
+
+    if (
+      materialToAdd.warehouseStandardStocks?.length &&
+      materialToAdd.warehouseStandardStocks[0].freeBalanceQuantity === '0'
+    )
+      return toast.error(`Material sem saldo disponível para reservas`);
 
     if (materialToAdd) {
       console.log(
