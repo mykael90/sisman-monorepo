@@ -25,7 +25,7 @@ import { Role } from '../../shared/enums/role.enum';
 import { RoleGuard } from '../../shared/auth/guards/role.guard';
 import { Roles } from '../../shared/decorators/roles.decorator';
 @ApiTags('Material Stock Movements') // Agrupa os endpoints na UI do Swagger
-@UseGuards(AuthGuard)
+@UseGuards(AuthGuard, RoleGuard)
 @Controller('material-stock-movement')
 export class MaterialStockMovementsController {
   constructor(
@@ -193,6 +193,7 @@ export class MaterialStockMovementsController {
   /**
    * Cria uma movimentação de estoque a partir de uma contagem de material.
    */
+  @Roles(Role.Adm, Role.AdmMaterials, Role.SuperMaterials)
   @Post('count')
   @ApiEndpointSwagger({
     summary: 'Criar movimentação de estoque a partir da contagem de material',
