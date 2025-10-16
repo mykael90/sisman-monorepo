@@ -22,7 +22,11 @@ import FormAddHeader from '../../../../../../components/form-tanstack/form-add-h
 import { CardMaterialStockSummary } from './_components/card-material-stock-summary';
 import { materialCountFormSchemaAdd } from '../_components/form/material-count-form-validation';
 
-export default function Page({ isInDialog = false }: { isInDialog?: boolean }) {
+export default function MaterialCountPage({
+  isInDialog = false
+}: {
+  isInDialog?: boolean;
+}) {
   const router = useRouter();
   const params = useParams<{ id: string }>();
   const { warehouse } = useWarehouseContext();
