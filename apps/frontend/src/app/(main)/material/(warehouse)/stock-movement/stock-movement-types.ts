@@ -30,3 +30,10 @@ export type IStockMovementSelect = Prisma.MaterialStockMovementSelect;
 export type IStockMovementRelatedData = {
   // Will be added later
 };
+
+export type IStockMovementCountAdd = {
+  quantity: number | string;
+  globalMaterialId: string;
+  warehouseId: number;
+  processedByUserId: number;
+};

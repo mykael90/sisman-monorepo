@@ -5,7 +5,12 @@ import { revalidatePath } from 'next/cache';
 import { getSismanAccessToken } from '@/lib/auth/get-access-token';
 import { fetchApiSisman } from '@/lib/fetch/api-sisman';
 import { IActionResultForm } from '@/types/types-server-actions';
-import { IStockMovementAdd, IStockMovementEdit } from './stock-movement-types';
+import {
+  IStockMovementAdd,
+  IStockMovementCountAdd,
+  IStockMovementEdit,
+  IStockMovementWithRelations
+} from './stock-movement-types';
 import { handleApiAction } from '@/lib/fetch/handle-form-action-sisman';
 
 const PAGE_PATH = '/material/stock-movement';
@@ -165,6 +170,50 @@ export async function updateStockMovement(
   } catch (error) {
     logger.error(
       `(Server Action) updateStockMovement: Error updating stock-movement ${data.id}`,
+      error
+    );
+    return {
+      isSubmitSuccessful: false,
+      errorsServer: ['An unexpected error occurred'],
+      submittedData: data,
+      message: 'Unexpected error'
+    };
+  }
+}
+
+export async function addStockMovementCount(
+  prevState: unknown,
+  data: IStockMovementCountAdd
+): Promise<
+  IActionResultForm<IStockMovementCountAdd, IStockMovementWithRelations>
+> {
+  logger.info(
+    `(Server Action) addStockMovementCount: Attempt to add stock-movement counting`,
+    data
+  );
+
+  try {
+    const accessToken = await getSismanAccessToken();
+    return await handleApiAction<
+      IStockMovementCountAdd,
+      IStockMovementWithRelations,
+      IStockMovementCountAdd
+    >(
+      data,
+      data,
+      {
+        endpoint: `${API_RELATIVE_PATH}/count`,
+        method: 'POST',
+        accessToken: accessToken
+      },
+      {
+        mainPath: PAGE_PATH
+      },
+      'StockMovement Counting added successfully!'
+    );
+  } catch (error) {
+    logger.error(
+      `(Server Action) addStockMovement Counting: Unexpected error`,
       error
     );
     return {
