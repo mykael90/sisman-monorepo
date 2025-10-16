@@ -287,6 +287,7 @@ export const columns = (
     cell: ({ row }) => (
       <div className='flex gap-2'>
         <Button
+          title='Ver movimentações do material'
           variant='ghost'
           size='icon'
           onClick={() => configuredActions.onViewStatement(row)}
