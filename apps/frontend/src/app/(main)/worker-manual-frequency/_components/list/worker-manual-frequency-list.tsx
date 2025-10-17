@@ -10,7 +10,10 @@ import {
   SortingState
 } from '@tanstack/react-table';
 import { InputDebounceRef } from '@/components/ui/input';
-import { IWorkerManualFrequencyForContractsWithRelations } from '../../worker-manual-frequency-types';
+import {
+  IWorkerManualFrequencyForContractsWithRelations,
+  IWorkerManualFrequencyForSpecialtiesWithRelations
+} from '../../worker-manual-frequency-types';
 import { useRouter } from 'next/navigation';
 import {
   columns,
@@ -23,8 +26,11 @@ import { TableTanstackFaceted } from '../../../../../components/table-tanstack/t
 import { DefaultGlobalFilter } from '../../../../../components/table-tanstack/default-global-filter';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { DateRange } from 'react-day-picker';
-import { endOfMonth, startOfMonth } from 'date-fns';
-import { getWorkerManualFrequenciesForContracts } from '../../worker-manual-frequency-actions';
+import { endOfDay, endOfMonth, startOfDay, startOfMonth } from 'date-fns';
+import {
+  getWorkerManualFrequenciesForContracts,
+  getWorkerManualFrequenciesForSpecialties
+} from '../../worker-manual-frequency-actions';
 import Loading from '../../../../../components/loading';
 import { DateRangeFilter } from '../../../../../components/filters/date-range-filter';
 
@@ -33,8 +39,8 @@ export function WorkerManualFrequencyListPage() {
   const queryClient = useQueryClient();
 
   const [date, setDate] = useState<DateRange | undefined>({
-    from: startOfMonth(new Date()),
-    to: endOfMonth(new Date())
+    from: startOfMonth(startOfDay(new Date())),
+    to: endOfMonth(endOfDay(new Date()))
   });
 
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -54,8 +60,8 @@ export function WorkerManualFrequencyListPage() {
 
   const [sorting, setSorting] = useState<SortingState>([
     {
-      id: 'date',
-      desc: true
+      id: 'name',
+      desc: false
     }
   ]);
 
@@ -64,10 +70,10 @@ export function WorkerManualFrequencyListPage() {
     isLoading,
     isError,
     error
-  } = useQuery<IWorkerManualFrequencyForContractsWithRelations[], unknown>({
+  } = useQuery<IWorkerManualFrequencyForSpecialtiesWithRelations[], unknown>({
     queryKey: ['workerManualFrequencies', date],
     queryFn: () =>
-      getWorkerManualFrequenciesForContracts({
+      getWorkerManualFrequenciesForSpecialties({
         from: date?.from,
         to: date?.to
       }),
@@ -123,7 +129,9 @@ export function WorkerManualFrequencyListPage() {
       ) : (
         <TableTanstackFaceted
           data={
-            workerManualFrequencies as IWorkerManualFrequencyForContractsWithRelations[]
+            workerManualFrequencies
+              ?.map((item) => item.workerContracts)
+              .flat() as IWorkerManualFrequencyForContractsWithRelations[]
           }
           columns={columns(columnActions)}
           columnFilters={columnFilters}

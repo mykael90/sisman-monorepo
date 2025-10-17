@@ -170,6 +170,7 @@ export const columns = (
   }),
   columnHelper.accessor('worker.name', {
     header: 'Colaborador',
+    id: 'name',
     size: 500,
     enableResizing: false,
     cell: (props) => {
