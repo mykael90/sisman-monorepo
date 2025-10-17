@@ -454,7 +454,8 @@ export class MaterialReceiptsService {
         data: receiptCreateInput,
         include: {
           items: true, // Crucial para obter os IDs dos itens
-          materialRequest: true
+          materialRequest: true,
+          materialWithdrawal: true
         }
       });
 
@@ -488,11 +489,15 @@ export class MaterialReceiptsService {
             materialRequestItem: {
               id: createdItem.materialRequestItemId
             } as any,
-            maintenanceRequest: newReceipt.materialRequest?.maintenanceRequestId
-              ? ({
-                  id: newReceipt.materialRequest.maintenanceRequestId
-                } as any)
-              : undefined
+            maintenanceRequest:
+              newReceipt.materialRequest?.maintenanceRequestId ||
+              newReceipt.materialWithdrawal?.maintenanceRequestId
+                ? ({
+                    id:
+                      newReceipt.materialRequest?.maintenanceRequestId ??
+                      newReceipt.materialWithdrawal?.maintenanceRequestId
+                  } as any)
+                : undefined
           };
 
         // Chama o serviço de movimentação, passando o cliente da transação (prisma)

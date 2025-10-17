@@ -9,7 +9,7 @@ import {
 import { format } from 'date-fns';
 import Loading from '@/components/loading';
 import { SectionListHeaderSmall } from '@/components/section-list-header-small';
-import { ArrowUpDown, Package } from 'lucide-react';
+import { ArrowLeft, ArrowUpDown, Package } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { useState, useMemo } from 'react';
 import {
@@ -36,6 +36,7 @@ import {
   TMaterialOperationTypeKey
 } from '@/mappers/material-operations-mappers-translate';
 import { TableTanstackFaceted } from '../../../../../../../components/table-tanstack/table-tanstack-faceted';
+import { useRouter } from 'next/navigation';
 
 // Definindo as interfaces para os dados do extrato
 interface IMovementType {
@@ -136,6 +137,8 @@ export function MaterialStatementList({
   globalMaterialId,
   warehouseId
 }: MaterialStatementListProps) {
+  const router = useRouter();
+
   const {
     data: statementData,
     isLoading,
@@ -359,6 +362,13 @@ export function MaterialStatementList({
         title={`Extrato do Material: ${statementData?.[0]?.globalMaterial?.name || globalMaterialId}`}
         subtitle={`Depósito: ${statementData?.[0]?.warehouse?.name || warehouseId}`}
         TitleIcon={Package}
+        actionButton={{
+          text: 'Voltar para listagem',
+          // onClick: handleAddWithdrawal,
+          onClick: () => router.push('/material/warehouse-stock/'),
+          variant: 'outline',
+          Icon: ArrowLeft
+        }}
       />
 
       <div className='mt-4'>

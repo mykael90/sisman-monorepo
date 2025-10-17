@@ -72,7 +72,7 @@ export function MaterialPickingOrderAdd({
         actionButton={{
           text: 'Voltar para listagem',
           // onClick: handleAddWithdrawal,
-          onClick: () => console.log(),
+          onClick: () => router.push('/material/picking-order/'),
           variant: 'outline',
           Icon: ArrowLeft
         }}

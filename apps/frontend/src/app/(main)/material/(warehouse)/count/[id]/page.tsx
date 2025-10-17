@@ -76,7 +76,7 @@ export default function MaterialCountPage({
   };
 
   const fieldLabels: Record<keyof IStockMovementCountAdd, string> = {
-    quantity: 'Contagem',
+    quantity: 'Quantidade do movimento',
     globalMaterialId: 'Material',
     warehouseId: 'Almoxarifado',
     processedByUserId: 'Usuário'

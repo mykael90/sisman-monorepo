@@ -40,7 +40,8 @@ export const materialOperationAdjustmentDisplayMapPorguguese = {
   ADJUSTMENT_INV_IN: 'Ajuste Inventário (Positivo)', // Ajuste de Inventário (Positivo)
   ADJUSTMENT_INV_OUT: 'Ajuste Inventário (Negativo)', // Ajuste de Inventário (Negativo)
   ADJUSTMENT_RECLASSIFY_IN: 'Ajuste Reclassificação (Entrada)', // Ajuste por Reclassificação (Entrada)
-  ADJUSTMENT_RECLASSIFY_OUT: 'Ajuste Reclassificação (Saída)' // Ajuste por Reclassificação (Saída)
+  ADJUSTMENT_RECLASSIFY_OUT: 'Ajuste Reclassificação (Saída)', // Ajuste por Reclassificação (Saída)
+  INITIAL_STOCK_LOAD: 'Estoque Inicial' // Carga Inicial de Estoque
 } as const;
 
 export type TMaterialOperationAdjustmentKey =
