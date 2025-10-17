@@ -158,6 +158,30 @@ export class WorkersManualFrequenciesController {
     );
   }
 
+  @Get('for-specialties')
+  @ApiEndpointSwagger({
+    summary: 'Listar frequências para especialidades',
+    description:
+      'Retorna uma lista de especialidades com suas frequências manuais de workers.',
+    response: {
+      status: HttpStatus.OK,
+      description:
+        'Lista de especialidades com frequências manuais encontrada.',
+      type: WorkerManualFrequencyWithRelationsResponseDto, // Pode ser necessário um DTO específico para esta resposta
+      isArray: true
+    }
+  })
+  async getFrequenciesForSpecialties(
+    @Query()
+    queryParams: {
+      [key: string]: string;
+    }
+  ) {
+    return this.workersManualFrequenciesService.getFrequenciesForSpecialties(
+      queryParams
+    );
+  }
+
   @Get(':id')
   @ApiEndpointSwagger({
     summary: 'Buscar frequência manual por ID',

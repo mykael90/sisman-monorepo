@@ -14,7 +14,8 @@ import {
   IWorkerManualFrequencyTypeAdd,
   IWorkerManualFrequencyTypeEdit,
   IWorkerManualFrequencyTypeWithRelations,
-  IWorkerManualFrequencyForContractsWithRelations
+  IWorkerManualFrequencyForContractsWithRelations,
+  IWorkerManualFrequencyForSpecialtiesWithRelations
 } from './worker-manual-frequency-types';
 import { handleApiAction } from '@/lib/fetch/handle-form-action-sisman';
 
@@ -51,7 +52,7 @@ export async function getWorkerManualFrequenciesWithContracts(params?: {
   to?: Date;
 }): Promise<IWorkerManualFrequencyWithRelations[]> {
   logger.info(
-    `(Server Action) getWorkerManualFrequencies: Buscando lista de frequências manuais de trabalhadores.`
+    `(Server Action) getWorkerManualFrequencies: Buscando lista de frequências manuais de trabalhadores com contratos.`
   );
   const accessTokenSisman = await getSismanAccessToken();
 
@@ -79,12 +80,12 @@ export async function getWorkerManualFrequenciesWithContracts(params?: {
       }
     );
     logger.info(
-      `(Server Action) getWorkerManualFrequencies: ${data.length} frequências manuais de trabalhadores retornadas.`
+      `(Server Action) getWorkerManualFrequencies: ${data.length} frequências manuais de trabalhadores retornadas com contratos.`
     );
     return data;
   } catch (error) {
     logger.error(
-      `(Server Action) getWorkerManualFrequencies: Erro ao buscar frequências manuais de trabalhadores.`,
+      `(Server Action) getWorkerManualFrequencies: Erro ao buscar frequências manuais de trabalhadores com contratos.`,
       error
     );
     throw error;
@@ -95,7 +96,7 @@ export async function getWorkerManualFrequenciesForContracts(params?: {
   to?: Date;
 }): Promise<IWorkerManualFrequencyForContractsWithRelations[]> {
   logger.info(
-    `(Server Action) getWorkerManualFrequencies: Buscando lista de frequências manuais de trabalhadores.`
+    `(Server Action) getWorkerManualFrequencies: Buscando lista de frequências manuais de trabalhadores para contratos.`
   );
   const accessTokenSisman = await getSismanAccessToken();
 
@@ -123,12 +124,57 @@ export async function getWorkerManualFrequenciesForContracts(params?: {
       }
     );
     logger.info(
-      `(Server Action) getWorkerManualFrequencies: ${data.length} frequências manuais de trabalhadores retornadas.`
+      `(Server Action) getWorkerManualFrequencies: ${data.length} frequências manuais de trabalhadores retornadas para contratos.`
     );
     return data;
   } catch (error) {
     logger.error(
-      `(Server Action) getWorkerManualFrequencies: Erro ao buscar frequências manuais de trabalhadores.`,
+      `(Server Action) getWorkerManualFrequencies: Erro ao buscar frequências manuais de trabalhadores para contratos.`,
+      error
+    );
+    throw error;
+  }
+}
+
+export async function getWorkerManualFrequenciesForSpecialties(params?: {
+  from?: Date;
+  to?: Date;
+}): Promise<IWorkerManualFrequencyForSpecialtiesWithRelations[]> {
+  logger.info(
+    `(Server Action) getWorkerManualFrequencies: Buscando lista de frequências manuais de trabalhadores para especialidades.`
+  );
+  const accessTokenSisman = await getSismanAccessToken();
+
+  const urlParams = new URLSearchParams();
+  if (params?.from) {
+    urlParams.append('startDate', params.from.toISOString());
+  }
+
+  if (params?.to) {
+    urlParams.append('endDate', params.to.toISOString());
+  }
+
+  console.log(urlParams.toString());
+
+  try {
+    const data = await fetchApiSisman(
+      `${API_RELATIVE_PATH}/for-specialties`,
+      accessTokenSisman,
+      {
+        // cache: 'force-cache'
+      },
+      {
+        startDate: urlParams.get('startDate'),
+        endDate: urlParams.get('endDate')
+      }
+    );
+    logger.info(
+      `(Server Action) getWorkerManualFrequencies: ${data.length} frequências manuais de trabalhadores retornadas para especialidades.`
+    );
+    return data;
+  } catch (error) {
+    logger.error(
+      `(Server Action) getWorkerManualFrequencies: Erro ao buscar frequências manuais de trabalhadores para especialidades.`,
       error
     );
     throw error;

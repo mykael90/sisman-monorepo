@@ -271,4 +271,90 @@ export class WorkersManualFrequenciesService {
 
     return frequenciesForContracts;
   }
+
+  async getFrequenciesForSpecialties(queryParams?: { [key: string]: string }) {
+    const whereArgs: Prisma.WorkerManualFrequencyWhereInput = {};
+
+    //funcao para pegar apenas a parte da data e depois criar o objeto em typescript
+
+    if (queryParams && !!Object.keys(queryParams).length) {
+      const { startDate, endDate } = queryParams;
+
+      if (startDate && endDate) {
+        whereArgs.date = {
+          gte: gteDate(startDate),
+          lte: lteDate(endDate)
+        };
+      }
+    }
+
+    const frequenciesForSpecialties =
+      await this.prisma.workerSpecialty.findMany({
+        include: {
+          workerContracts: {
+            include: {
+              worker: {
+                select: {
+                  name: true, // Exemplo: selecionando apenas o nome do trabalhador
+                  maintenanceInstance: { select: { name: true } }
+                }
+              },
+              workerManualFrequency: {
+                include: {
+                  workerManualFrequencyType: true,
+                  user: true
+                },
+                where: whereArgs,
+                // Opcional: para ordenar os resultados
+                orderBy: {
+                  date: 'desc'
+                }
+              },
+              sipacUnitLocation: {
+                select: { codigoUnidade: true, sigla: true }
+              },
+              contract: {
+                select: {
+                  codigoSipac: true,
+                  subject: true,
+                  providers: {
+                    select: {
+                      nome: true,
+                      nomeFantasia: true,
+                      razaoSocial: true
+                    }
+                  }
+                }
+              },
+              workerSpecialty: {
+                select: {
+                  name: true
+                }
+              }
+            },
+            where: {
+              workerManualFrequency: {
+                some: whereArgs
+              }
+            },
+            orderBy: {
+              worker: {
+                name: 'asc'
+              }
+            }
+          }
+        },
+        where: {
+          workerContracts: {
+            some: {
+              workerManualFrequency: {
+                some: whereArgs
+              }
+            }
+          }
+        }
+      });
+
+    return frequenciesForSpecialties;
+  }
 }
