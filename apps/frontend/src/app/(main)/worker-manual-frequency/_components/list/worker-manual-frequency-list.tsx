@@ -36,6 +36,32 @@ import Loading from '../../../../../components/loading';
 import { DateRangeFilter } from '../../../../../components/filters/date-range-filter';
 import { TableSummaryFrequenciesSpecialties } from './table-summary-frequencies-specialties';
 
+const CollapsibleTableSummary = ({
+  workerManualFrequencies
+}: {
+  workerManualFrequencies:
+    | IWorkerManualFrequencyForSpecialtiesWithRelations[]
+    | undefined;
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <details
+      onToggle={(e) => setIsOpen(e.currentTarget.open)}
+      className='mb-4 rounded-xl border-0 bg-white px-4 py-3.5'
+    >
+      <summary className='text-muted-foreground cursor-pointer text-sm font-semibold hover:underline'>
+        {isOpen ? 'Ocultar sumário' : 'Mostrar sumário por especialidade'}
+      </summary>
+      <div className='mt-4'>
+        <TableSummaryFrequenciesSpecialties
+          workerManualFrequencies={workerManualFrequencies}
+        />
+      </div>
+    </details>
+  );
+};
+
 export function WorkerManualFrequencyListPage() {
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -117,7 +143,7 @@ export function WorkerManualFrequencyListPage() {
         </div>
       </div>
 
-      <TableSummaryFrequenciesSpecialties
+      <CollapsibleTableSummary
         workerManualFrequencies={workerManualFrequencies}
       />
 

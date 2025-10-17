@@ -104,7 +104,7 @@ export function TableSummaryFrequenciesSpecialties({
           key={`${group.contractId}-${group.providerName}`}
           className='h-auto rounded-xl border-0 bg-white px-4 py-3.5'
         >
-          <h3 className='mb-4 text-lg font-semibold'>
+          <h3 className='text-md mb-4 font-semibold'>
             Resumo de Frequências por Especialidade - Contrato:{' '}
             {group.contractId} - Empresa: {group.providerName}
           </h3>
