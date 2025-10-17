@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useMemo } from 'react';
 import { SectionListHeader } from '../../../../../components/section-list-header';
 import {
   ColumnFiltersState,
@@ -12,8 +12,7 @@ import {
 import { InputDebounceRef } from '@/components/ui/input';
 import {
   IWorkerManualFrequencyForContractsWithRelations,
-  IWorkerManualFrequencyForSpecialtiesWithRelations,
-  IWorkerManualFrequencyWithRelations
+  IWorkerManualFrequencyForSpecialtiesWithRelations
 } from '../../worker-manual-frequency-types';
 import { useRouter } from 'next/navigation';
 import {
@@ -28,39 +27,10 @@ import { DefaultGlobalFilter } from '../../../../../components/table-tanstack/de
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { DateRange } from 'react-day-picker';
 import { endOfDay, endOfMonth, startOfDay, startOfMonth } from 'date-fns';
-import {
-  getWorkerManualFrequenciesForContracts,
-  getWorkerManualFrequenciesForSpecialties
-} from '../../worker-manual-frequency-actions';
+import { getWorkerManualFrequenciesForSpecialties } from '../../worker-manual-frequency-actions';
 import Loading from '../../../../../components/loading';
 import { DateRangeFilter } from '../../../../../components/filters/date-range-filter';
 import { TableSummaryFrequenciesSpecialties } from './table-summary-frequencies-specialties';
-
-const CollapsibleTableSummary = ({
-  workerManualFrequencies
-}: {
-  workerManualFrequencies:
-    | IWorkerManualFrequencyForSpecialtiesWithRelations[]
-    | undefined;
-}) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <details
-      onToggle={(e) => setIsOpen(e.currentTarget.open)}
-      className='mb-4 rounded-xl border-0 bg-white px-4 py-3.5'
-    >
-      <summary className='text-muted-foreground cursor-pointer text-sm font-semibold hover:underline'>
-        {isOpen ? 'Ocultar sumário' : 'Mostrar sumário por especialidade'}
-      </summary>
-      <div className='mt-4'>
-        <TableSummaryFrequenciesSpecialties
-          workerManualFrequencies={workerManualFrequencies}
-        />
-      </div>
-    </details>
-  );
-};
 
 export function WorkerManualFrequencyListPage() {
   const router = useRouter();
@@ -94,12 +64,12 @@ export function WorkerManualFrequencyListPage() {
   ]);
 
   const {
-    data: workerManualFrequencies,
+    data: workerManualFrequenciesForSpecialties,
     isLoading,
     isError,
     error
   } = useQuery<IWorkerManualFrequencyForSpecialtiesWithRelations[], unknown>({
-    queryKey: ['workerManualFrequencies', date],
+    queryKey: ['workerManualFrequenciesForSpecialties', date],
     queryFn: () =>
       getWorkerManualFrequenciesForSpecialties({
         from: date?.from,
@@ -107,6 +77,15 @@ export function WorkerManualFrequencyListPage() {
       }),
     enabled: !!date?.from && !!date?.to
   });
+
+  const data: IWorkerManualFrequencyForContractsWithRelations[] =
+    useMemo(() => {
+      return (
+        workerManualFrequenciesForSpecialties
+          ?.map((item) => item.workerContracts)
+          .flat() || []
+      );
+    }, [workerManualFrequenciesForSpecialties]);
 
   const handleAddWorkerManualFrequency = () => {
     router.push('worker-manual-frequency/add-bulk');
@@ -143,9 +122,17 @@ export function WorkerManualFrequencyListPage() {
         </div>
       </div>
 
-      <CollapsibleTableSummary
-        workerManualFrequencies={workerManualFrequencies}
-      />
+      {/* Usando details e summary para resumo de frequencias por especialidade */}
+      <details className='mt-4 w-full'>
+        <summary className='text-muted-foreground cursor-pointer text-sm'>
+          <span className=''>Resumo de frequências por especialidade </span>
+        </summary>
+        <div className='mt-4'>
+          <TableSummaryFrequenciesSpecialties
+            workerManualFrequencies={workerManualFrequenciesForSpecialties}
+          />
+        </div>
+      </details>
 
       <div className='mt-4 mb-4 h-auto rounded-xl border-0 bg-white px-4 py-3.5'>
         <DefaultGlobalFilter
@@ -160,11 +147,7 @@ export function WorkerManualFrequencyListPage() {
         <Loading />
       ) : (
         <TableTanstackFaceted
-          data={
-            workerManualFrequencies
-              ?.map((item) => item.workerContracts)
-              .flat() as IWorkerManualFrequencyForContractsWithRelations[]
-          }
+          data={data}
           columns={columns(columnActions)}
           columnFilters={columnFilters}
           setColumnFilters={setColumnFilters}
@@ -183,6 +166,7 @@ export function WorkerManualFrequencyListPage() {
               configuredActionsSubrows={columnActionsSubrows}
             />
           )}
+          // debugTable={true}
         />
       )}
     </div>

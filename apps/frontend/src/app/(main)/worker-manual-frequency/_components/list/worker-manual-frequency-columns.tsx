@@ -81,7 +81,7 @@ export const createActionsSubrows = (
           //Uso de recursividade, como foi bem sucedido, vai localizar corretamente e vai exibir em tela na próxima chamada
           toast.success(result);
           queryClient.invalidateQueries({
-            queryKey: ['workerManualFrequencies']
+            queryKey: ['workerManualFrequenciesForSpecialties']
           }); // Invalida o cache do react-query
         });
       }

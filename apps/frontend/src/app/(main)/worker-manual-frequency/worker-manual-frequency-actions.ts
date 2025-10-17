@@ -162,6 +162,7 @@ export async function getWorkerManualFrequenciesForSpecialties(params?: {
       accessTokenSisman,
       {
         // cache: 'force-cache'
+        cache: 'no-store'
       },
       {
         startDate: urlParams.get('startDate'),
