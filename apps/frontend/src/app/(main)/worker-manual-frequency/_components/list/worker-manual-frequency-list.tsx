@@ -12,7 +12,8 @@ import {
 import { InputDebounceRef } from '@/components/ui/input';
 import {
   IWorkerManualFrequencyForContractsWithRelations,
-  IWorkerManualFrequencyForSpecialtiesWithRelations
+  IWorkerManualFrequencyForSpecialtiesWithRelations,
+  IWorkerManualFrequencyWithRelations
 } from '../../worker-manual-frequency-types';
 import { useRouter } from 'next/navigation';
 import {
@@ -33,6 +34,7 @@ import {
 } from '../../worker-manual-frequency-actions';
 import Loading from '../../../../../components/loading';
 import { DateRangeFilter } from '../../../../../components/filters/date-range-filter';
+import { TableSummaryFrequenciesSpecialties } from './table-summary-frequencies-specialties';
 
 export function WorkerManualFrequencyListPage() {
   const router = useRouter();
@@ -114,6 +116,10 @@ export function WorkerManualFrequencyListPage() {
                 </Button> */}
         </div>
       </div>
+
+      <TableSummaryFrequenciesSpecialties
+        workerManualFrequencies={workerManualFrequencies}
+      />
 
       <div className='mt-4 mb-4 h-auto rounded-xl border-0 bg-white px-4 py-3.5'>
         <DefaultGlobalFilter
