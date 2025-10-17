@@ -36,9 +36,10 @@ import { getMaterialPickingOrdersByWarehouse } from '../../material-picking-orde
 import { useMediaQuery } from '@/hooks/use-media-query';
 import { PickingOrderCard } from './picking-order-card';
 import { DateRange } from 'react-day-picker';
-import { subDays, endOfDay, startOfDay } from 'date-fns'; // Importar endOfDay
+import { subDays, endOfDay, startOfDay, addDays } from 'date-fns'; // Importar endOfDay
 import { DateRangeFilter } from '@/components/filters/date-range-filter';
 import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
 import { TableTanstackFaceted } from '../../../../../../../components/table-tanstack/table-tanstack-faceted';
 import { DefaultGlobalFilter } from '../../../../../../../components/table-tanstack/default-global-filter';
 import { materialPickingOrderStatusDisplayMapPortuguese } from '../../../../../../../mappers/material-picking-order-mappers-translate';
@@ -52,7 +53,7 @@ export function PickingOrderListPage() {
 
   const [date, setDateState] = useState<DateRange | undefined>({
     from: subDays(startOfDay(new Date()), 10),
-    to: endOfDay(new Date()) // Usar endOfDay para definir o final do dia
+    to: addDays(endOfDay(new Date()), 10) // Usar endOfDay para definir o final do dia
   });
 
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -238,6 +239,11 @@ export function PickingOrderListPage() {
       />
 
       <div className='mt-4 mb-4 h-auto rounded-xl border-0 bg-white px-4 py-3.5'>
+        <div className='text-md mb-2 font-semibold'>
+          Reservas com retirada prevista no intervalo das datas
+        </div>
+
+        <Separator className='my-2' />
         <div className='flex flex-col gap-4 md:flex-row'>
           <DateRangeFilter date={date} setDate={setDate} />
         </div>

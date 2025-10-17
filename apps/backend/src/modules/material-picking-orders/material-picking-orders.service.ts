@@ -1284,7 +1284,7 @@ export class MaterialPickingOrdersService {
       if (queryParams && !!Object.keys(queryParams).length) {
         const { startDate, endDate } = queryParams;
         if (startDate && endDate) {
-          whereArgs.createdAt = {
+          whereArgs.desiredPickupDate = {
             gte: new Date(startDate),
             lte: new Date(endDate)
           };
