@@ -116,7 +116,9 @@ export const columns = (
     }
   ),
   columnHelper.accessor(
-    (row) => row.materialRequest?.maintenanceRequest?.protocolNumber,
+    (row) =>
+      row.materialRequest?.maintenanceRequest?.protocolNumber ||
+      row.materialWithdrawal?.maintenanceRequest?.protocolNumber,
     {
       id: 'protocolNumberRMan',
       header: 'RMan',

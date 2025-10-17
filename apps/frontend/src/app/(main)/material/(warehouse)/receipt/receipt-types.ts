@@ -28,6 +28,16 @@ export type IMaterialReceiptWithRelations = Prisma.MaterialReceiptGetPayload<{
         };
       };
     };
+    materialWithdrawal: {
+      include: {
+        maintenanceRequest: {
+          select: {
+            id: true;
+            protocolNumber: true;
+          };
+        };
+      };
+    };
   };
 }>;
 

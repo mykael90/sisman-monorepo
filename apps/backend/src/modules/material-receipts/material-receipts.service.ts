@@ -690,6 +690,16 @@ export class MaterialReceiptsService {
               select: { codigoUnidade: true, sigla: true, nomeUnidade: true }
             }
           }
+        },
+        materialWithdrawal: {
+          include: {
+            maintenanceRequest: {
+              select: {
+                id: true,
+                protocolNumber: true
+              }
+            }
+          }
         }
       };
 
