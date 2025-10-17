@@ -8,7 +8,13 @@ import {
 } from '@tanstack/react-table';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { Edit, ChevronRight, ChevronDown, Trash } from 'lucide-react';
+import {
+  Edit,
+  ChevronRight,
+  ChevronDown,
+  Trash,
+  ArrowUpDown
+} from 'lucide-react';
 import { IWorkerManualFrequencyForContractsWithRelations } from '../../worker-manual-frequency-types';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { getDateUTC } from '../../../../../lib/utils';
@@ -220,7 +226,61 @@ export const columns = (
     //instancia refere-se a quem gerencia (as vezes o trabalhador é lotado na escola de musica mas quem gerencia as faltas é a diman)
     header: 'Instância',
     size: 200
-  })
+  }),
+
+  // reduce for total hours abscence
+  columnHelper.accessor(
+    (row) =>
+      row.workerManualFrequency.reduce((acc, curr) => {
+        if (curr.hours && curr.workerManualFrequencyTypeId === 1) {
+          acc += Number(curr.hours);
+        }
+        return acc;
+      }, 0),
+    {
+      id: 'totalHoursAbscence',
+      header: ({ column }) => (
+        <div
+          className='flex cursor-pointer items-center text-center whitespace-normal'
+          onClick={() => column.toggleSorting()}
+        >
+          Horas Ausentes
+          <ArrowUpDown className='text-muted-foreground ml-1 h-4 w-4' />
+        </div>
+      ),
+      size: 150,
+      enableResizing: false,
+      enableColumnFilter: false,
+      cell: (props) => <div className='text-center'>{props.getValue()}</div>
+    }
+  ),
+
+  // reduce for total dias abscence
+  columnHelper.accessor(
+    (row) =>
+      row.workerManualFrequency.reduce((acc, curr) => {
+        if (curr.workerManualFrequencyTypeId === 1) {
+          acc += 1;
+        }
+        return acc;
+      }, 0),
+    {
+      id: 'totalDaysAbscence',
+      header: ({ column }) => (
+        <div
+          className='flex cursor-pointer items-center text-center whitespace-normal'
+          onClick={() => column.toggleSorting()}
+        >
+          Dias Ausentes
+          <ArrowUpDown className='text-muted-foreground ml-1 h-4 w-4' />
+        </div>
+      ),
+      size: 150,
+      enableResizing: false,
+      enableColumnFilter: false,
+      cell: (props) => <div className='text-center'>{props.getValue()}</div>
+    }
+  )
 
   // columnHelper.display({
   //   id: 'actions',

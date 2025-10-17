@@ -49,7 +49,7 @@ export function WorkerManualFrequencyListPage() {
 
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
-    pageSize: 10
+    pageSize: 50
   });
 
   const [sorting, setSorting] = useState<SortingState>([
