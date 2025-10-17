@@ -60,7 +60,11 @@ export class WorkersSpecialtiesService {
   }
 
   async list(): Promise<WorkerSpecialty[]> {
-    return await this.prisma.workerSpecialty.findMany();
+    return await this.prisma.workerSpecialty.findMany({
+      orderBy: {
+        name: 'asc'
+      }
+    });
   }
 
   async show(id: number): Promise<WorkerSpecialty> {
