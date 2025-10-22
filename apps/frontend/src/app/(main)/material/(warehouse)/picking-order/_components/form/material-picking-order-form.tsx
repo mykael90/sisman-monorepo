@@ -85,7 +85,7 @@ export function MaterialPickingOrderForm({
 }) {
   const [requestSearchType, setRequestSearchType] = useState<
     'material' | 'maintenance' | 'none'
-  >('maintenance');
+  >('material');
 
   const [maintenanceRequestData, setMaintenanceRequestData] =
     useState<IMaintenanceRequestBalanceWithRelations | null>(null);
@@ -199,12 +199,12 @@ export function MaterialPickingOrderForm({
         className='flex gap-4'
       >
         <div className='flex items-center gap-2'>
-          <RadioGroupItem value='maintenance' id='maintenance' />
-          <Label htmlFor='maintenance'>Requisição de Manutenção</Label>
-        </div>
-        <div className='flex items-center gap-2'>
           <RadioGroupItem value='material' id='material' />
           <Label htmlFor='material'>Requisição de Material</Label>
+        </div>
+        <div className='flex items-center gap-2'>
+          <RadioGroupItem value='maintenance' id='maintenance' />
+          <Label htmlFor='maintenance'>Requisição de Manutenção</Label>
         </div>
         <div className='flex items-center gap-2'>
           <RadioGroupItem value='none' id='none' />

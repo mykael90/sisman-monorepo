@@ -18,7 +18,7 @@ export class ExpireMaterialPickingOrdersTask {
   ) {}
 
   // @Cron(CronExpression.EVERY_DAY_AT_10AM) // Executa diariamente às 05 da manhã
-  @Cron(CronExpression.EVERY_DAY_AT_5AM) // Executa diariamente às 05 da manhã
+  // @Cron(CronExpression.EVERY_DAY_AT_5AM) // Executa diariamente às 05 da manhã
   @Cron(CronExpression.EVERY_DAY_AT_6PM) // Executa diariamente às 06 da noite
   async handleCron() {
     this.logger.debug('Verificar a necessidade de expirar pedidos de retirada');
