@@ -1,7 +1,9 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
+  ForbiddenException,
   Get,
   HttpCode,
   HttpStatus,
@@ -25,6 +27,7 @@ import { MaterialPickingOrderStatus } from '@sisman/prisma';
 import { RoleGuard } from '../../shared/auth/guards/role.guard';
 import { Roles } from '../../shared/decorators/roles.decorator';
 import { Role } from '../../shared/enums/role.enum';
+import { User } from '../../shared/decorators/user-decorator';
 
 @ApiTags('Material Picking Orders') // Agrupa os endpoints na UI do Swagger
 @UseGuards(AuthGuard, RoleGuard)
@@ -165,8 +168,30 @@ export class MaterialPickingOrdersController {
   })
   async updateOperationStatus(
     @Param('id', ParseIntPipe) id: number,
-    @Body() data: { userId: number; status: MaterialPickingOrderStatus }
+    @Body() data: { userId: number; status: MaterialPickingOrderStatus },
+    //decorator user para extrair informações do token do header
+    @User(['id', 'roles']) user: { id: number; roles: Role[] }
   ) {
+    if (user.id !== data.userId) {
+      throw new BadRequestException(
+        `Tentativa de se passar por outro usuário. Erro grave.`
+      );
+    }
+
+    // impedir que usuarios sem os papeis de Role.Adm, Role.AdmMaterials, Role.SuperMaterials façam operações além de cancelamentos
+    const hasRequiredRole = user.roles.some((role) =>
+      [Role.Adm, Role.AdmMaterials, Role.SuperMaterials].includes(role)
+    );
+
+    if (
+      data.status !== MaterialPickingOrderStatus.CANCELLED &&
+      !hasRequiredRole
+    ) {
+      throw new ForbiddenException(
+        'Você não tem permissão para realizar esta operação.'
+      );
+    }
+
     return this.materialPickingOrdersService.operationInPickingOrder(
       id,
       data.userId,

@@ -40,7 +40,7 @@ export function MaterialPickingOrderAdd({
 
   //default dia seguinte
   const desiredPickupDate = startOfDay(new Date());
-  desiredPickupDate.setDate(desiredPickupDate.getDate() + 1);
+  desiredPickupDate.setDate(desiredPickupDate.getDate() + 0); //estava para o dia seguinte, a diman pediu para definir para o mesmo dia
 
   const defaultData: Partial<Record<keyof IMaterialPickingOrderAddForm, any>> =
     {
