@@ -550,14 +550,16 @@ export class MaterialPickingOrdersService {
     }
 
     // verificar de forma geral no deposito se tem saldo para os items que vão ser reservados.
-    await this._canOrderPickingWarehouseStock(
-      prisma as any,
-      warehouse.id,
-      items.map((item) => ({
-        globalMaterialId: item.globalMaterialId,
-        quantityToPick: item.quantityToPick
-      }))
-    );
+    // só fazer verificação se não tiver atrelada a uma requisição de material. quando na requisicao de material a verificação na propria requisição já é suficiente.
+    if (!materialRequest && !materialRequest.id)
+      await this._canOrderPickingWarehouseStock(
+        prisma as any,
+        warehouse.id,
+        items.map((item) => ({
+          globalMaterialId: item.globalMaterialId,
+          quantityToPick: item.quantityToPick
+        }))
+      );
 
     // If no items are provided, and no materialRequest is linked, it's a bad request.
     // If materialRequest is linked, items can be generated from it. Reserved all
@@ -821,15 +823,17 @@ export class MaterialPickingOrdersService {
     }
 
     // verificar de forma geral no deposito se tem saldo para os items que vão estão sendo solicitados para reserva na atualização.
-    await this._canOrderPickingWarehouseStock(
-      prisma as any,
-      existingOrder.warehouseId,
-      itemsToUpdate.map((item) => ({
-        globalMaterialId: item.globalMaterialId,
-        quantityToPick: item.quantityToPick
-      })),
-      id
-    );
+    // só fazer verificação se não tiver atrelada a uma requisição de material. quando na requisicao de material a verificação na propria requisição já é suficiente.
+    if (!existingOrder.materialRequestId)
+      await this._canOrderPickingWarehouseStock(
+        prisma as any,
+        existingOrder.warehouseId,
+        itemsToUpdate.map((item) => ({
+          globalMaterialId: item.globalMaterialId,
+          quantityToPick: item.quantityToPick
+        })),
+        id
+      );
 
     // --- 4. LÓGICA DE MOVIMENTAÇÃO DE ESTOQUE (PRÉ-UPDATE) ---
     // ESTA PARTE SERÁ REFEITA PARA SER MAIS ROBUSTA
