@@ -135,7 +135,7 @@ export class MaterialPickingOrdersController {
   /**
    * Atualiza uma ordem de separação de material existente.
    */
-  @Roles(Role.Adm, Role.AdmMaterials, Role.SuperMaterials)
+  @Roles(Role.Adm, Role.AdmMaterials, Role.SuperMaterials, Role.UserMaterials)
   @Put('operation-by-status/:id')
   @ApiEndpointSwagger({
     summary:
