@@ -90,6 +90,20 @@ export async function handleApiAction<
           statusCode: error.statusCode
         };
       }
+      // Forbbiden error
+      if (error.statusCode === 403) {
+        return {
+          isSubmitSuccessful: false,
+          errorsServer: [
+            error.apiMessage ||
+              'Você não tem permissão para acessar este recurso ou realizar essa operação.'
+          ],
+          submittedData: originalRawData,
+          message:
+            'Você não tem permissão para acessar este recurso ou realizar essa operação..',
+          statusCode: error.statusCode
+        };
+      }
       // Outros erros da API
       return {
         isSubmitSuccessful: false,
