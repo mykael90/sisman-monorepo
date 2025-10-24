@@ -41,7 +41,7 @@ export async function getWithdrawals(accessTokenSisman: string) {
 export async function getWithdrawalsByWarehouse(
   warehouseId: number,
   params?: { from?: Date; to?: Date }
-) {
+): Promise<IMaterialWithdrawalWithRelations[]> {
   const accessTokenSisman = await getSismanAccessToken();
   logger.info(`(Server Action) getWithdrawals: Fetching withdrawals`);
 

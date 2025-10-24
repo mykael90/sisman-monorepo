@@ -27,11 +27,15 @@ export type IMaterialPickingOrderWithRelations =
       };
       requestedByUser: true;
       beCollectedByUser: true;
-      beCollectedByWorker: true;
-      items: {
+      beCollectedByWorker: {
         include: {
-          globalMaterial: true;
+          workerContracts: {
+            include: { workerSpecialty: true };
+          };
         };
+      };
+      items: {
+        include: { globalMaterial: true };
       };
     };
   }>;

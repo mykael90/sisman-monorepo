@@ -624,7 +624,12 @@ export const columns = (
           <div className='flex-col items-center space-y-1 whitespace-normal'>
             <div>{name}</div>
             <Badge variant={'outline'}>
-              {isUser ? 'Usuário' : isWorker ? 'Profissional' : 'Outro'}
+              {isUser
+                ? 'Usuário'
+                : isWorker
+                  ? props.row.original.beCollectedByWorker?.workerContracts[0]
+                      .workerSpecialty?.name
+                  : 'Outro'}
             </Badge>
           </div>
         );

@@ -543,7 +543,16 @@ export class MaterialWithdrawalsService {
     try {
       const includeArgs: Prisma.MaterialWithdrawalInclude = {
         collectedByUser: { select: { id: true, name: true, login: true } },
-        collectedByWorker: { select: { id: true, name: true } },
+        collectedByWorker: {
+          select: {
+            id: true,
+            name: true,
+            workerContracts: {
+              select: { workerSpecialty: true },
+              orderBy: { startDate: 'desc' }
+            }
+          }
+        },
         items: {
           include: { globalMaterial: true },
           orderBy: { globalMaterial: { name: 'asc' } }

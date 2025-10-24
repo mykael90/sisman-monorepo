@@ -1316,7 +1316,14 @@ export class MaterialPickingOrdersService {
           },
           requestedByUser: true,
           beCollectedByUser: true,
-          beCollectedByWorker: true,
+          beCollectedByWorker: {
+            include: {
+              workerContracts: {
+                include: { workerSpecialty: true },
+                orderBy: { startDate: 'desc' }
+              }
+            }
+          },
           items: {
             include: { globalMaterial: true },
             orderBy: { globalMaterial: { name: 'asc' } }

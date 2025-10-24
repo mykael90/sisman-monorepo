@@ -24,7 +24,15 @@ export type IMaterialWithdrawalWithRelations =
         include: { building: true; facilityComplex: true };
       };
       collectedByUser: true;
-      collectedByWorker: true;
+      collectedByWorker: {
+        select: {
+          id: true;
+          name: true;
+          workerContracts: {
+            select: { workerSpecialty: true };
+          };
+        };
+      };
       materialPickingOrder: true;
       materialRequest: true;
       movementType: true;

@@ -44,7 +44,7 @@ export async function getMaterialPickingOrders(accessTokenSisman: string) {
 export async function getMaterialPickingOrdersByWarehouse(
   warehouseId: number,
   params?: { from?: Date; to?: Date }
-) {
+): Promise<IMaterialPickingOrderWithRelations[]> {
   logger.info(
     `(Server Action) getPickingOrdersByWarehouse: Fetching picking-orders for warehouse ${warehouseId} with date range`,
     params
