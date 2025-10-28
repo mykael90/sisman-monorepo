@@ -3,7 +3,7 @@ import {
   Injectable,
   NestInterceptor,
   ExecutionContext,
-  CallHandler,
+  CallHandler
 } from '@nestjs/common';
 import { Observable, throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
@@ -29,19 +29,26 @@ export class MetricsInterceptor implements NestInterceptor {
         const route = request.route?.path ?? request.url; // Tenta pegar o padrão da rota, senão usa URL
         const statusCode = response.statusCode;
 
+        // Tenta obter o ID do usuário. Assumindo que está em request.user.id
+        // Você pode precisar ajustar isso dependendo de como a autenticação é configurada
+        const userId = (request as any).user?.id;
+        if (userId) {
+          this.metricsService.recordUserActivity(userId);
+        }
+
         this.metricsService.httpRequestCounter.inc({
           method: request.method,
           route: route,
-          status_code: statusCode,
+          status_code: statusCode
         });
 
         this.metricsService.httpRequestDurationHistogram.observe(
           {
             method: request.method,
             route: route,
-            status_code: statusCode,
+            status_code: statusCode
           },
-          duration,
+          duration
         );
       }),
       catchError((err) => {
@@ -53,20 +60,20 @@ export class MetricsInterceptor implements NestInterceptor {
         this.metricsService.httpRequestCounter.inc({
           method: request.method,
           route: route,
-          status_code: statusCode,
+          status_code: statusCode
         });
 
         this.metricsService.httpRequestDurationHistogram.observe(
           {
             method: request.method,
             route: route,
-            status_code: statusCode,
+            status_code: statusCode
           },
-          duration,
+          duration
         );
         // Re-lança o erro para que outros handlers (como seus filtros de exceção) o peguem
         return throwError(() => err);
-      }),
+      })
     );
   }
 }

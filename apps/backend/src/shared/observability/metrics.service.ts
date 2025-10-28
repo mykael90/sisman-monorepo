@@ -5,13 +5,14 @@ import {
   collectDefaultMetrics,
   Counter,
   Histogram,
+  Gauge, // Adicionado Gauge para a nova métrica
   register // Usa o registro global padrão do prom-client
 } from 'prom-client';
 
 @Injectable()
 export class MetricsService {
   private readonly logger = new Logger(MetricsService.name);
-  private readonly serviceName = 'my_nestjs_app'; // Coloque um nome relevante para sua aplicação
+  private readonly serviceName = 'sisman_api'; // Coloque um nome relevante para sua aplicação
 
   // Métricas HTTP
   public readonly httpRequestCounter: Counter<string>;
@@ -21,6 +22,12 @@ export class MetricsService {
   public readonly userLoginCounter: Counter<string>;
   // Métrica de Registro de Usuário
   public readonly userRegisteredCounter: Counter<string>;
+  // Métrica de Usuários Ativos nas Últimas 24 Horas
+  public readonly activeUsersLast24Hours: Gauge<string>;
+
+  // Estrutura para armazenar atividades de usuários: { userId: string, timestamp: number }
+  private userActivity: { userId: string; timestamp: number }[] = [];
+  private readonly TWENTY_FOUR_HOURS_IN_MS = 24 * 60 * 60 * 1000;
 
   constructor() {
     this.logger.log('Initializing Metrics Service...');
@@ -69,7 +76,65 @@ export class MetricsService {
     });
     this.logger.log('User Registered Counter registered.');
 
+    // --- Métrica: Usuários Ativos nas Últimas 24 Horas ---
+    this.activeUsersLast24Hours = new Gauge({
+      name: `${this.serviceName}_active_users_last_24_hours`,
+      help: 'Number of unique active users in the last 24 hours',
+      collect: () => {
+        // Esta função é chamada quando as métricas são coletadas
+        const uniqueUsers = this.getUniqueUsersLast24Hours();
+        this.activeUsersLast24Hours.set(uniqueUsers);
+      },
+      registers: [register]
+    });
+    this.logger.log('Active Users Last 24 Hours Gauge registered.');
+
     this.logger.log('Metrics Service Initialized.');
+  }
+
+  /**
+   * Registra a atividade de um usuário.
+   * @param userId O ID do usuário que realizou a requisição.
+   */
+  recordUserActivity(userId: string): void {
+    const now = Date.now();
+    // Adiciona a atividade. Pode ser otimizado para evitar duplicatas recentes se necessário,
+    // mas para a contagem de 24h, múltiplas entradas do mesmo usuário são filtradas depois.
+    this.userActivity.push({ userId, timestamp: now });
+
+    // Opcional: Limpar atividades muito antigas para evitar que o array cresça indefinidamente.
+    // Isso pode ser feito periodicamente ou antes de cada cálculo.
+    this.cleanOldUserActivity();
+  }
+
+  /**
+   * Calcula o número de usuários únicos nas últimas 24 horas.
+   * @returns O número de usuários únicos.
+   */
+  getUniqueUsersLast24Hours(): number {
+    this.cleanOldUserActivity(); // Garante que apenas atividades recentes sejam consideradas
+
+    const twentyFourHoursAgo = Date.now() - this.TWENTY_FOUR_HOURS_IN_MS;
+    const recentActivities = this.userActivity.filter(
+      (activity) => activity.timestamp >= twentyFourHoursAgo
+    );
+
+    const uniqueUserIds = new Set(
+      recentActivities.map((activity) => activity.userId)
+    );
+
+    return uniqueUserIds.size;
+  }
+
+  /**
+   * Remove atividades de usuário mais antigas que 24 horas.
+   * Chamado antes de calcular a métrica para manter a lista relevante.
+   */
+  private cleanOldUserActivity(): void {
+    const twentyFourHoursAgo = Date.now() - this.TWENTY_FOUR_HOURS_IN_MS;
+    this.userActivity = this.userActivity.filter(
+      (activity) => activity.timestamp >= twentyFourHoursAgo
+    );
   }
 
   get registry(): Registry {
