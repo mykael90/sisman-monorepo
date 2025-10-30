@@ -3,7 +3,8 @@ import {
   Injectable,
   NestInterceptor,
   ExecutionContext,
-  CallHandler
+  CallHandler,
+  Logger
 } from '@nestjs/common';
 import { Observable, throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
@@ -14,6 +15,8 @@ import { HttpException } from '@nestjs/common';
 
 @Injectable()
 export class MetricsInterceptor implements NestInterceptor {
+  private readonly logger = new Logger(MetricsInterceptor.name);
+
   constructor(private readonly metricsService: MetricsService) {}
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
@@ -22,6 +25,8 @@ export class MetricsInterceptor implements NestInterceptor {
     const response: Response = ctx.getResponse<Response>();
     const startTime = Date.now(); // Ou performance.now() para maior precisão
 
+    const { user } = context.switchToHttp().getRequest();
+
     return next.handle().pipe(
       tap(() => {
         // Executa em caso de sucesso
@@ -29,9 +34,14 @@ export class MetricsInterceptor implements NestInterceptor {
         const route = request.route?.path ?? request.url; // Tenta pegar o padrão da rota, senão usa URL
         const statusCode = response.statusCode;
 
-        // Tenta obter o ID do usuário. Assumindo que está em request.user.id
-        // Você pode precisar ajustar isso dependendo de como a autenticação é configurada
-        const userId = (request as any).user?.id;
+        // this.logger.log(`URL: ${request.route?.path ?? request.url}`);
+        // this.logger.log(`METHOD: ${request.method}`);
+
+        //se a rota é /metrics não realizar açÕes no registrador, visto que é uma ação automática
+        if (route === '/metrics') return;
+
+        // Tenta obter o ID do usuário. Assumindo que está em user.id
+        const userId = user?.id;
         if (userId) {
           this.metricsService.recordUserActivity(userId);
         }

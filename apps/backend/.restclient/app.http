@@ -4,7 +4,7 @@ GET {{apiUrl}}
 ### POST index
 POST {{apiUrl}}
 
-### Test shutdown with request delay
+### Test request delay
 GET {{apiUrl}}/delay
 
 ### Test error response
