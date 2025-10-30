@@ -16,8 +16,8 @@ interface ExtendedUser extends NextAuthUser {
   roles?: number[];
   authorizationError?: string;
   error?: string;
-  maintenanceInstanceId?: number;
-  maintenanceInstance?: MaintenanceInstance;
+  maintenanceInstance?: MaintenanceInstance; // Tornar opcional
+  maintenanceInstanceId?: number; // Tornar opcional
 }
 
 // Tipagem para o token JWT
@@ -37,8 +37,8 @@ interface ExtendedJWT extends JWT, DefaultJWT {
   authorizationError?: string;
   // Erro genérico do NextAuth (ex: RefreshAccessTokenError)
   error?: string;
-  maintenanceInstance: MaintenanceInstance;
-  maintenanceInstanceId: number;
+  maintenanceInstance?: MaintenanceInstance; // Tornar opcional
+  maintenanceInstanceId?: number; // Tornar opcional
 }
 
 // Tipagem para a sessão
@@ -49,8 +49,8 @@ declare module 'next-auth' {
       idSisman?: number;
       login?: string | null;
       roles?: number[];
-      maintenanceInstance: MaintenanceInstance;
-      maintenanceInstanceId: number;
+      maintenanceInstance?: MaintenanceInstance; // Tornar opcional
+      maintenanceInstanceId?: number; // Tornar opcional
       // campos padrão do NextAuth (name, email, image) já estão aqui
     } & NextAuthUser; // Inclui name, email, image
     provider?: string;

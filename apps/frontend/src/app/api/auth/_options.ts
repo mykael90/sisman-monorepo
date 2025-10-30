@@ -66,8 +66,21 @@ export const authOptions: AuthOptions = {
     },
     async redirect({ url, baseUrl }) {
       logger.debug('Redirect Callback', { url, baseUrl });
-      if (url.startsWith('/')) return `${baseUrl}${url}`;
-      if (new URL(url).origin === baseUrl) return url;
+      logger.info(`Redirecionando para ${url}`);
+
+      // Decodificar a URL para garantir que ela seja tratada corretamente
+      let decodedUrl = decodeURIComponent(url);
+
+      if (decodedUrl.startsWith('/')) return `${baseUrl}${decodedUrl}`;
+
+      try {
+        // Tentar criar um objeto URL apenas se for uma URL absoluta
+        const targetUrl = new URL(decodedUrl);
+        if (targetUrl.origin === baseUrl) return decodedUrl;
+      } catch (e) {
+        logger.warn(`URL inválida para redirecionamento: ${decodedUrl}`, e);
+      }
+
       return baseUrl;
     },
     async jwt({
@@ -119,9 +132,9 @@ export const authOptions: AuthOptions = {
           if (typedUser.accessTokenSisman) {
             token.accessTokenSisman = typedUser.accessTokenSisman;
             token.expiresAtSisman = Math.floor(
-              Date.now() / 1000 + (typedUser.expiresInSisman || 3600)
+              Date.now() / 1000 + (Number(typedUser.expiresInSisman) || 3600)
             );
-            token.idSisman = typedUser.id; // Assumindo que o ID do usuário do magic link é o idSisman
+            token.idSisman = typedUser.id ? Number(typedUser.id) : undefined; // Garantir que idSisman seja um número
             token.roles = typedUser.roles;
             token.maintenanceInstance = typedUser.maintenanceInstance;
             token.maintenanceInstanceId = typedUser.maintenanceInstanceId;
