@@ -25,8 +25,14 @@ import { UserPlus, CalendarPlus } from 'lucide-react';
 import { TableTanstackFaceted } from '../../../../../components/table-tanstack/table-tanstack-faceted';
 import { DefaultGlobalFilter } from '../../../../../components/table-tanstack/default-global-filter';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { DateRange } from 'react-day-picker';
-import { endOfDay, endOfMonth, startOfDay, startOfMonth } from 'date-fns';
+import { DateInterval, DateRange } from 'react-day-picker';
+import {
+  endOfDay,
+  endOfMonth,
+  format,
+  startOfDay,
+  startOfMonth
+} from 'date-fns';
 import { getWorkerManualFrequenciesForSpecialties } from '../../worker-manual-frequency-actions';
 import Loading from '../../../../../components/loading';
 import { DateRangeFilter } from '../../../../../components/filters/date-range-filter';
@@ -36,7 +42,10 @@ export function WorkerManualFrequencyListPage() {
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  const [date, setDate] = useState<DateRange | undefined>({
+  const [date, setDate] = useState<{
+    from: Date;
+    to: Date;
+  }>({
     from: startOfMonth(startOfDay(new Date())),
     to: endOfMonth(endOfDay(new Date()))
   });
@@ -72,8 +81,8 @@ export function WorkerManualFrequencyListPage() {
     queryKey: ['workerManualFrequenciesForSpecialties', date],
     queryFn: () =>
       getWorkerManualFrequenciesForSpecialties({
-        from: date?.from,
-        to: date?.to
+        from: format(date.from, 'yyyy-MM-dd'),
+        to: format(date.to, 'yyyy-MM-dd')
       }),
     enabled: !!date?.from && !!date?.to
   });

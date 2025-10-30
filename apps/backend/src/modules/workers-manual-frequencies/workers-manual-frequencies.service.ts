@@ -16,7 +16,6 @@ import {
   WorkerManualFrequencyCreateManyDto,
   WorkerManualFrequencyUpdateDto
 } from './dto/worker-manual-frequency.dto';
-import { gteDate, lteDate } from '../../shared/utils/date-utils';
 
 @Injectable()
 export class WorkersManualFrequenciesService {
@@ -155,11 +154,14 @@ export class WorkersManualFrequenciesService {
 
     if (queryParams && !!Object.keys(queryParams).length) {
       const { startDate, endDate } = queryParams;
-
       if (startDate && endDate) {
+        //ajustei para a data ser recebida no formato yyyy-MM-dd, precisa criar o objeto para passar para o banco
+        const objStartDate = new Date(startDate);
+        const objEndDate = new Date(endDate);
+
         whereArgs.date = {
-          gte: gteDate(startDate),
-          lte: lteDate(endDate)
+          gte: objStartDate,
+          lte: objEndDate
         };
       }
     }
@@ -210,11 +212,14 @@ export class WorkersManualFrequenciesService {
 
     if (queryParams && !!Object.keys(queryParams).length) {
       const { startDate, endDate } = queryParams;
-
       if (startDate && endDate) {
+        //ajustei para a data ser recebida no formato yyyy-MM-dd, precisa criar o objeto para passar para o banco
+        const objStartDate = new Date(startDate);
+        const objEndDate = new Date(endDate);
+
         whereArgs.date = {
-          gte: gteDate(startDate),
-          lte: lteDate(endDate)
+          gte: objStartDate,
+          lte: objEndDate
         };
       }
     }
@@ -275,15 +280,16 @@ export class WorkersManualFrequenciesService {
   async getFrequenciesForSpecialties(queryParams?: { [key: string]: string }) {
     const whereArgs: Prisma.WorkerManualFrequencyWhereInput = {};
 
-    //funcao para pegar apenas a parte da data e depois criar o objeto em typescript
-
     if (queryParams && !!Object.keys(queryParams).length) {
       const { startDate, endDate } = queryParams;
-
       if (startDate && endDate) {
+        //ajustei para a data ser recebida no formato yyyy-MM-dd, precisa criar o objeto para passar para o banco
+        const objStartDate = new Date(startDate);
+        const objEndDate = new Date(endDate);
+
         whereArgs.date = {
-          gte: gteDate(startDate),
-          lte: lteDate(endDate)
+          gte: objStartDate,
+          lte: objEndDate
         };
       }
     }
@@ -354,6 +360,10 @@ export class WorkersManualFrequenciesService {
           }
         }
       });
+
+    this.logger.log(
+      `startDate: ${queryParams.startDate}, endDate: ${queryParams.endDate}`
+    );
 
     return frequenciesForSpecialties;
   }

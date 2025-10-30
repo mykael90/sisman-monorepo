@@ -137,21 +137,22 @@ export async function getWorkerManualFrequenciesForContracts(params?: {
 }
 
 export async function getWorkerManualFrequenciesForSpecialties(params?: {
-  from?: Date;
-  to?: Date;
+  from?: string;
+  to?: string;
 }): Promise<IWorkerManualFrequencyForSpecialtiesWithRelations[]> {
   logger.info(
     `(Server Action) getWorkerManualFrequencies: Buscando lista de frequências manuais de trabalhadores para especialidades.`
   );
   const accessTokenSisman = await getSismanAccessToken();
 
+
   const urlParams = new URLSearchParams();
   if (params?.from) {
-    urlParams.append('startDate', params.from.toISOString());
+    urlParams.append('startDate', params.from);
   }
 
   if (params?.to) {
-    urlParams.append('endDate', params.to.toISOString());
+    urlParams.append('endDate', params.to);
   }
 
   console.log(urlParams.toString());
