@@ -202,7 +202,7 @@ export class WorkersManualFrequenciesController {
     return this.workersManualFrequenciesService.show(id);
   }
 
-  @Roles(Role.Adm, Role.AdmWorkers, Role.SuperWorkers)
+  @Roles(Role.Adm, Role.AdmWorkers)
   @Put(':id')
   @ApiEndpointSwagger({
     summary: 'Atualizar frequência manual',
@@ -235,7 +235,7 @@ export class WorkersManualFrequenciesController {
     return this.workersManualFrequenciesService.update(id, data);
   }
 
-  @Roles(Role.Adm, Role.AdmWorkers, Role.SuperWorkers)
+  @Roles(Role.Adm, Role.AdmWorkers)
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiEndpointSwagger({

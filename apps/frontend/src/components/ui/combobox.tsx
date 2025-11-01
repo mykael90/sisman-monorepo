@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { Badge, Check, ChevronsUpDown } from 'lucide-react';
 
-import { cn } from '@/lib/utils';
+import { cn, normalizeString } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import {
   Command,
@@ -68,12 +68,14 @@ export function Combobox({
               return 0; // No match if option not found
             }
 
-            const lowerCaseLabel = option.label.toLowerCase();
+            //Normalizei o string para acentuação não interferir na busca
+            const lowerCaseLabel = normalizeString(option.label.toLowerCase());
             const searchTerms = search.toLowerCase().split(' ').filter(Boolean); // Split by space and remove empty strings
 
             // Check if all search terms are included in the label
+            //Normalizei o string para acentuação não interferir na busca
             const allTermsMatch = searchTerms.every((term) =>
-              lowerCaseLabel.includes(term)
+              lowerCaseLabel.includes(normalizeString(term))
             );
 
             return allTermsMatch ? 1 : 0;

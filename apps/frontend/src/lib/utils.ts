@@ -146,6 +146,33 @@ export function formatOnlyDateToUTC(
   return formattedDate;
 }
 
+export function extractAndNormalizeStrings(obj: any): string[] {
+  const strings: string[] = [];
+
+  function recurse(current: any) {
+    if (current === null || current === undefined) {
+      return;
+    }
+
+    if (typeof current === 'string') {
+      strings.push(normalizeString(current));
+    } else if (typeof current === 'number' || typeof current === 'boolean') {
+      strings.push(normalizeString(String(current)));
+    } else if (Array.isArray(current)) {
+      current.forEach(recurse);
+    } else if (typeof current === 'object') {
+      for (const key in current) {
+        if (Object.prototype.hasOwnProperty.call(current, key)) {
+          recurse(current[key]);
+        }
+      }
+    }
+  }
+
+  recurse(obj);
+  return strings;
+}
+
 export function getDateUTC(dateString: string) {
   const dateObject = new Date(dateString);
 

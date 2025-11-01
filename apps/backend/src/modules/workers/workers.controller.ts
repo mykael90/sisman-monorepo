@@ -91,7 +91,6 @@ export class WorkersController {
     return this.workersService.listWithActiveContract();
   }
 
-  @Roles(Role.Adm, Role.User)
   @Get(':id')
   @ApiEndpointSwagger({
     summary: 'Buscar worker por ID',
@@ -144,7 +143,7 @@ export class WorkersController {
     return this.workersService.update(id, data);
   }
 
-  @Roles(Role.Adm, Role.AdmWorkers, Role.SuperWorkers)
+  @Roles(Role.Adm, Role.AdmWorkers)
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiEndpointSwagger({
