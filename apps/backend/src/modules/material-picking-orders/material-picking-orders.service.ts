@@ -551,7 +551,7 @@ export class MaterialPickingOrdersService {
 
     // verificar de forma geral no deposito se tem saldo para os items que vão ser reservados.
     // só fazer verificação se não tiver atrelada a uma requisição de material. quando na requisicao de material a verificação na propria requisição já é suficiente.
-    if (!materialRequest && !materialRequest.id)
+    if (!materialRequest && !materialRequest?.id)
       await this._canOrderPickingWarehouseStock(
         prisma as any,
         warehouse.id,
