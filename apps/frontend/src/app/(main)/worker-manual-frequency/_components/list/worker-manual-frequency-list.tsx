@@ -37,6 +37,7 @@ import { getWorkerManualFrequenciesForSpecialties } from '../../worker-manual-fr
 import Loading from '../../../../../components/loading';
 import { DateRangeFilter } from '../../../../../components/filters/date-range-filter';
 import { TableSummaryFrequenciesSpecialties } from './table-summary-frequencies-specialties';
+import { customFilterFnGlobal } from '../../../../../components/table-tanstack/custom-filter-function-global';
 
 export function WorkerManualFrequencyListPage() {
   const router = useRouter();
@@ -166,8 +167,8 @@ export function WorkerManualFrequencyListPage() {
           sorting={sorting}
           getFacetedRowModel={getFacetedRowModel()}
           getFacetedUniqueValues={getFacetedUniqueValues()}
-          globalFilterFn='includesString'
-          globalFilter={globalFilterValue}
+          globalFilterFn={customFilterFnGlobal}
+          globalFilter={'*' + globalFilterValue}
           setGlobalFilter={setGlobalFilterValue}
           renderSubComponent={({ row }) => (
             <SubRowComponent

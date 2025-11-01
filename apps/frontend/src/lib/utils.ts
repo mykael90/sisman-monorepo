@@ -146,30 +146,54 @@ export function formatOnlyDateToUTC(
   return formattedDate;
 }
 
-export function extractAndNormalizeStrings(obj: any): string[] {
+export type ExtractMode = 'onlyRows' | 'onlySubrows' | 'all';
+
+export function extractAndNormalizeStrings(
+  obj: any,
+  mode: ExtractMode = 'onlyRows',
+  isSubrow: boolean = false
+): string[] {
   const strings: string[] = [];
 
-  function recurse(current: any) {
+  function recurse(current: any, currentIsSubrow: boolean) {
     if (current === null || current === undefined) {
       return;
     }
 
     if (typeof current === 'string') {
-      strings.push(normalizeString(current));
+      if (
+        (mode === 'onlyRows' && !currentIsSubrow) ||
+        (mode === 'onlySubrows' && currentIsSubrow) ||
+        mode === 'all'
+      ) {
+        strings.push(normalizeString(current));
+      }
     } else if (typeof current === 'number' || typeof current === 'boolean') {
-      strings.push(normalizeString(String(current)));
+      if (
+        (mode === 'onlyRows' && !currentIsSubrow) ||
+        (mode === 'onlySubrows' && currentIsSubrow) ||
+        mode === 'all'
+      ) {
+        strings.push(normalizeString(String(current)));
+      }
     } else if (Array.isArray(current)) {
-      current.forEach(recurse);
+      current.forEach((item) => recurse(item, true)); // Itens em arrays são tratados como subrows
     } else if (typeof current === 'object') {
       for (const key in current) {
         if (Object.prototype.hasOwnProperty.call(current, key)) {
-          recurse(current[key]);
+          // Se o valor é um objeto e não é o nível raiz, é uma subrow
+          const nextIsSubrow =
+            currentIsSubrow ||
+            (typeof current[key] === 'object' &&
+              current[key] !== null &&
+              !Array.isArray(current[key]));
+          recurse(current[key], nextIsSubrow);
         }
       }
     }
   }
 
-  recurse(obj);
+  recurse(obj, isSubrow);
   return strings;
 }
 

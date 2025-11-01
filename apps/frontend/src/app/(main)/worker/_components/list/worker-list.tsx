@@ -1,19 +1,10 @@
 'use client';
 
-import {
-  use,
-  useState,
-  useMemo,
-  useRef,
-  Dispatch,
-  SetStateAction
-} from 'react'; // Importe useMemo
+import { useState, useRef } from 'react'; // Importe useMemo
 import { SectionListHeader } from '../../../../../components/section-list-header';
 import { WorkerFilters } from './worker-filters'; // Alterado para WorkerFilters
 import {
-  ColumnDef,
   ColumnFiltersState,
-  FilterFn,
   getFacetedRowModel,
   getFacetedUniqueValues,
   PaginationState,
@@ -30,10 +21,9 @@ import {
   SubRowComponent
 } from './worker-columns'; // Alterado para worker-columns
 import { Wrench, UserPlus } from 'lucide-react'; // Alterado para Wrench (ícone de worker)
-import { TableTanstack } from '../../../../../components/table-tanstack/table-tanstack';
 import { TableTanstackFaceted } from '../../../../../components/table-tanstack/table-tanstack-faceted';
 import { DefaultGlobalFilter } from '../../../../../components/table-tanstack/default-global-filter';
-import { normalizeString, extractAndNormalizeStrings } from '@/lib/utils'; // Novas importações
+import { customFilterFnGlobal } from '../../../../../components/table-tanstack/custom-filter-function-global';
 
 export function WorkerListPage({
   // Alterado para WorkerListPage
@@ -51,33 +41,6 @@ export function WorkerListPage({
 
   // --- Estado dos Filtros Movido para Cá ---
   const [globalFilterValue, setGlobalFilterValue] = useState('');
-
-  //includesStringNormalized
-  const customFilterFn: FilterFn<IWorkerWithRelations> = (
-    row,
-    columnId,
-    filterValue
-  ) => {
-    const searchTerms = normalizeString(filterValue)
-      .toLowerCase()
-      .split(' ')
-      .filter(Boolean);
-
-    if (searchTerms.length === 0) {
-      return true;
-    }
-
-    // Extrai e normaliza todas as strings da linha (incluindo aninhadas)
-    const allRowStrings = extractAndNormalizeStrings(row.original);
-    const fullRowSearchableText = allRowStrings.join(' ').toLowerCase();
-
-    // Verifica se todos os termos de busca estão incluídos na string da linha
-    const allTermsMatch = searchTerms.every((term) =>
-      fullRowSearchableText.includes(term)
-    );
-
-    return allTermsMatch;
-  };
 
   const inputDebounceRef = useRef<InputDebounceRef>(null); // Cria a Ref
 
@@ -162,7 +125,7 @@ export function WorkerListPage({
         )}
         getFacetedRowModel={getFacetedRowModel()}
         getFacetedUniqueValues={getFacetedUniqueValues()}
-        globalFilterFn={customFilterFn} // Usar a função de filtro customizada
+        globalFilterFn={customFilterFnGlobal}
         globalFilter={globalFilterValue}
         setGlobalFilter={setGlobalFilterValue}
         defaultColumn={defaultColumn}
