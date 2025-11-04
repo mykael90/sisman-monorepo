@@ -1,23 +1,16 @@
 'use client';
 
-import {
-  useState,
-  useMemo,
-  useRef,
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  use
-} from 'react';
+import { useState, useRef } from 'react';
 import { SectionListHeader } from '@/components/section-list-header';
 import { WarehouseStockFilters } from './warehouse-stock-filters';
 import {
-  ColumnDef,
   ColumnFiltersState,
   PaginationState,
   SortingState
 } from '@tanstack/react-table';
 import { InputDebounceRef } from '@/components/ui/input';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
 import { IWarehouseStockWithRelations } from '../../warehouse-stock-types';
 import { useRouter } from 'next/navigation';
 import { columns, createActions } from './warehouse-stock-columns';
@@ -40,6 +33,7 @@ export function WarehouseStockListPage() {
   const [sorting, setSorting] = useState<SortingState>([]);
 
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [showOnlyCounted, setShowOnlyCounted] = useState(false);
 
   // --- Estado dos Filtros Movido para Cá ---
   const [globalFilterValue, setGlobalFilterValue] = useState('');
@@ -47,7 +41,7 @@ export function WarehouseStockListPage() {
 
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
-    pageSize: 10
+    pageSize: 20
   });
 
   // const [sorting, setSorting] = useState<SortingState>([
@@ -71,6 +65,8 @@ export function WarehouseStockListPage() {
   // Função para limpar filtros (agora pertence ao pai)
   const handleClearFilters = () => {
     setGlobalFilterValue('');
+    setColumnFilters([]);
+    setShowOnlyCounted(false); // Limpa o filtro do checkbox também
     // Chama o método clearInput exposto pelo filho via ref
     inputDebounceRef.current?.clearInput();
   };
@@ -106,6 +102,26 @@ export function WarehouseStockListPage() {
           inputDebounceRef={inputDebounceRef} // Passa a ref
           label={'Material'}
         />
+        <div className='mt-2 flex items-center space-x-2'>
+          <Checkbox
+            id='showOnlyCounted'
+            checked={showOnlyCounted}
+            onCheckedChange={(checked) => {
+              setShowOnlyCounted(!!checked);
+              setColumnFilters((prev) => [
+                ...prev.filter((f) => f.id !== 'lastStockCountDate'),
+                {
+                  id: 'lastStockCountDate',
+                  value: !!checked,
+                  filterFn: 'isNotNullFilter'
+                }
+              ]);
+            }}
+          />
+          <Label htmlFor='showOnlyCounted' className='text-muted-foreground'>
+            Mostrar apenas materiais contabilizados
+          </Label>
+        </div>
       </div>
 
       {isLoading ? (
@@ -119,7 +135,6 @@ export function WarehouseStockListPage() {
           setPagination={setPagination}
           setSorting={setSorting}
           sorting={sorting}
-          // TODO: funcao para filtro
           globalFilterFn='includesString'
           globalFilter={globalFilterValue}
           setGlobalFilter={setGlobalFilterValue}

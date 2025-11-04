@@ -20,3 +20,15 @@ export const exactMatchFilter: FilterFn<
 
   return filterValues.some((val) => normalizedCellValue === val);
 };
+
+export const isNotNullFilter: FilterFn<any> = (
+  row,
+  columnId,
+  filterValue: boolean
+) => {
+  const cellValue = row.getValue(columnId);
+  if (filterValue === true) {
+    return !!cellValue; // Retorna true se o valor da célula não for nulo/undefined
+  }
+  return true; // Retorna tudo se o filtro for falso
+};

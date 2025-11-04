@@ -13,6 +13,7 @@ import {
 import React from 'react';
 import { InfoHoverCard } from '@/components/info-hover-card';
 import { get } from 'http';
+import { isNotNullFilter } from '../../../../../worker-manual-frequency/_components/list/custom-filters-functions-columns';
 
 const columnHelper = createColumnHelper<IWarehouseStockWithRelations>();
 
@@ -97,6 +98,7 @@ export const columns = (
   columnHelper.accessor((row) => row.lastStockCountDate, {
     id: 'lastStockCountDate',
     header: 'Última Contagem',
+    filterFn: isNotNullFilter,
     cell: (props) => {
       const dateValue = props.getValue();
       return (
