@@ -1,11 +1,4 @@
-import {
-  ColumnDef,
-  createColumnHelper,
-  Row,
-  flexRender,
-  getCoreRowModel,
-  useReactTable
-} from '@tanstack/react-table';
+import { ColumnDef, createColumnHelper, Row } from '@tanstack/react-table';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -38,6 +31,8 @@ import { QueryClient } from '@tanstack/react-query';
 
 const columnHelper =
   createColumnHelper<IWorkerManualFrequencyForContractsWithRelations>();
+
+import { exactMatchFilter } from './custom-filters-functions-columns';
 
 export const defaultColumn: Partial<
   ColumnDef<IWorkerManualFrequencyForContractsWithRelations>
@@ -192,7 +187,8 @@ export const columns = (
   columnHelper.accessor('workerSpecialty.name', {
     header: 'Especialidade',
     size: 200,
-    enableResizing: false
+    enableResizing: false,
+    filterFn: exactMatchFilter
   }),
   columnHelper.accessor('contract.codigoSipac', {
     header: 'Contrato',
