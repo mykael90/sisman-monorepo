@@ -62,3 +62,17 @@ export class CreateManySipacUnidadeDto {
   @Type(() => CreateSipacUnidadeDto) // Transform plain objects to UpdateRoleDto instances
   items?: CreateSipacUnidadeDto[];
 }
+
+export class UpdateManySipacUnidadeDto {
+  @ApiProperty({
+    description: 'unidades para atualização',
+    required: false,
+    type: [UpdateSipacUnidadeDto]
+  })
+  @IsOptional()
+  @IsArray()
+  @ArrayMinSize(1)
+  @ValidateNested({ each: true })
+  @Type(() => UpdateSipacUnidadeDto)
+  items?: UpdateSipacUnidadeDto[];
+}

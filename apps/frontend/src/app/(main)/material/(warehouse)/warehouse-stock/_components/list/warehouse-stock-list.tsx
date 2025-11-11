@@ -102,7 +102,7 @@ export function WarehouseStockListPage() {
           inputDebounceRef={inputDebounceRef} // Passa a ref
           label={'Material'}
         />
-        <div className='mt-2 flex items-center space-x-2'>
+        <div className='mt-4 flex items-center space-x-2'>
           <Checkbox
             id='showOnlyCounted'
             checked={showOnlyCounted}

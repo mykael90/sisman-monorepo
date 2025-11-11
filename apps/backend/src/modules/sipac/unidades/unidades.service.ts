@@ -21,7 +21,8 @@ import {
 import {
   CreateManySipacUnidadeDto,
   CreateSipacUnidadeDto,
-  UpdateSipacUnidadeDto
+  UpdateSipacUnidadeDto,
+  UpdateManySipacUnidadeDto
 } from './dto/sipac-unidade.dto';
 import { SipacUnidadeMapper } from './mappers/sipac-unidade.mapper';
 import { normalizeString } from '../../../shared/utils/string-utils';
@@ -50,7 +51,7 @@ export class UnidadesService {
   //   );
   // }
 
-  private async persistManyUnidades(
+  private async persistCreateManyUnidades(
     data: CreateManySipacUnidadeDto
   ): Promise<void> {
     try {
@@ -73,6 +74,31 @@ export class UnidadesService {
     } catch (error) {
       this.logger.error(
         `Erro ao persistir lote de unidades: ${error.message}`,
+        error.stack
+      );
+      // Tratar erros de transação, talvez individualmente se necessário.
+    }
+  }
+
+  private async persistUpdateManyUnidades(
+    data: UpdateManySipacUnidadeDto
+  ): Promise<void> {
+    try {
+      const updateOperations = data.items.map((item) =>
+        this.prisma.sipacUnidade.update({
+          where: { id: item.id },
+          data: item
+        })
+      );
+
+      const result = await this.prisma.$transaction(updateOperations);
+      this.logger.log(
+        `Unidades atualizadas com sucesso. Total: ${result.length}`
+      );
+      return;
+    } catch (error) {
+      this.logger.error(
+        `Erro ao persistir lote de atualizações de unidades: ${error.message}`,
         error.stack
       );
       // Tratar erros de transação, talvez individualmente se necessário.
@@ -118,7 +144,7 @@ export class UnidadesService {
           )
         };
         try {
-          await this.persistManyUnidades(createManyDto);
+          await this.persistCreateManyUnidades(createManyDto);
           successfulPersists += unidadesDaPagina.length;
         } catch (persistError) {
           this.logger.error(
@@ -161,7 +187,7 @@ export class UnidadesService {
             )
           };
           try {
-            await this.persistManyUnidades(createManyDto);
+            await this.persistCreateManyUnidades(createManyDto);
             successfulPersists += unidadesSubsequentes.length;
           } catch (persistError) {
             this.logger.error(
@@ -249,39 +275,79 @@ export class UnidadesService {
         }
       );
 
-      const unidade = response.data[0]; // Expecting a single item in the array
+      const unidade = response.data[0]; // Espera um único item no array
       if (unidade) {
         this.logger.log(
-          `Unidade com código ${codigoUnidade} encontrada. Persistindo...`
+          `Unidade com código ${codigoUnidade} encontrada. Verificando existência...`
         );
-        const createManyDto: CreateManySipacUnidadeDto = {
-          items: [SipacUnidadeMapper.toCreateDto(unidade)]
-        };
-        try {
-          await this.persistManyUnidades(createManyDto);
-          successfulPersists++;
+        const unidadeDto = SipacUnidadeMapper.toCreateDto(unidade);
+
+        const unidadeExistente = await this.prisma.sipacUnidade.findUnique({
+          where: { codigoUnidade: unidadeDto.codigoUnidade }
+        });
+
+        if (unidadeExistente) {
           this.logger.log(
-            `Unidade com código ${codigoUnidade} persistida com sucesso.`
+            `Unidade com código ${codigoUnidade} já existe. Atualizando...`
           );
-        } catch (persistError) {
-          this.logger.error(
-            `Erro ao persistir unidade com código ${codigoUnidade}: ${persistError.message}`,
-            persistError.stack
+          const updateManyDto: UpdateManySipacUnidadeDto = {
+            items: [
+              {
+                id: unidadeExistente.id,
+                ...unidadeDto
+              }
+            ]
+          };
+          if (updateManyDto.items.length > 0) {
+            try {
+              await this.persistUpdateManyUnidades(updateManyDto);
+              successfulPersists++;
+              this.logger.log(
+                `Unidade com código ${codigoUnidade} atualizada com sucesso.`
+              );
+            } catch (persistError) {
+              this.logger.error(
+                `Erro ao atualizar unidade com código ${codigoUnidade}: ${persistError.message}`,
+                persistError.stack
+              );
+              failedPersists++;
+            }
+          }
+        } else {
+          this.logger.log(
+            `Unidade com código ${codigoUnidade} não existe. Criando...`
           );
-          failedPersists++;
+          const createManyDto: CreateManySipacUnidadeDto = {
+            items: [unidadeDto]
+          };
+          if (createManyDto.items.length > 0) {
+            try {
+              await this.persistCreateManyUnidades(createManyDto);
+              successfulPersists++;
+              this.logger.log(
+                `Unidade com código ${codigoUnidade} persistida com sucesso.`
+              );
+            } catch (persistError) {
+              this.logger.error(
+                `Erro ao persistir unidade com código ${codigoUnidade}: ${persistError.message}`,
+                persistError.stack
+              );
+              failedPersists++;
+            }
+          }
         }
       } else {
         this.logger.log(
           `Nenhuma unidade encontrada para o código ${codigoUnidade}.`
         );
-        failedPersists++; // Mark as failed if no unidade is found
+        failedPersists++; // Marca como falha se nenhuma unidade for encontrada
       }
     } catch (error) {
       this.logger.error(
         `Erro ao buscar ou persistir unidade com código ${codigoUnidade}: ${error.message}`,
         error.stack
       );
-      failedPersists++; // Mark as failed if the fetch itself fails
+      failedPersists++; // Marca como falha se a busca falhar
     }
     return {
       totalProcessed: successfulPersists + failedPersists,
@@ -404,8 +470,11 @@ export class UnidadesService {
     // Assumes SipacUnidadeMapper.toCreateDto
     const unidadeDto = SipacUnidadeMapper.toCreateDto(apiUnidadeData);
 
-    const novaUnidade = await this.prisma.sipacUnidade.create({
-      data: unidadeDto
+    // as vezes não localizou pois mudou a sigla ou o nome. entao vamos criar ou atualizar.
+    const novaUnidade = await this.prisma.sipacUnidade.upsert({
+      create: unidadeDto,
+      update: unidadeDto,
+      where: { id: unidadeDto.id }
     });
     this.logger.log(
       `Unidade '${nomeUnidade}' (ID: ${novaUnidade.id}) persistida com sucesso.`
@@ -494,8 +563,11 @@ export class UnidadesService {
     // Assumes SipacUnidadeMapper.toCreateDto
     const unidadeDto = SipacUnidadeMapper.toCreateDto(apiUnidadeData);
 
-    const novaUnidade = await this.prisma.sipacUnidade.create({
-      data: unidadeDto
+    // as vezes não localizou pois mudou a sigla ou o nome. entao vamos criar ou atualizar.
+    const novaUnidade = await this.prisma.sipacUnidade.upsert({
+      create: unidadeDto,
+      update: unidadeDto,
+      where: { id: unidadeDto.id }
     });
     this.logger.log(
       `Unidade '${sigla}' (ID: ${novaUnidade.id}) persistida com sucesso.`
@@ -600,4 +672,10 @@ export class UnidadesService {
   async list() {
     return await this.prisma.sipacUnidade.findMany();
   }
+}
+
+export interface ProcessUnidadeCodigoResult {
+  codigo: string;
+  status: 'success' | 'failed';
+  message?: string;
 }

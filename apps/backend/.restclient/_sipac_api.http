@@ -30,6 +30,8 @@ X-API-Key: {{sipac_x_api_key}}
 @authToken = {{login.response.body.access_token}}
 GET {{sipacApiUrl}}/internacionalizacao/v1/unidades
 ?limit=100
+&sigla=Servs-Susten/MeioAmb
+# &nome-unidade=Servs-Susten/MeioAmb
 # Content-Type: {{contentType}}
 Authorization: Bearer {{authToken}}
 X-API-Key: {{sipac_x_api_key}}
