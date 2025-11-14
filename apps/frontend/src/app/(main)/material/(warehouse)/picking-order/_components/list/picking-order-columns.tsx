@@ -627,8 +627,8 @@ export const columns = (
               {isUser
                 ? 'Usuário'
                 : isWorker
-                  ? props.row.original.beCollectedByWorker?.workerContracts[0]
-                      .workerSpecialty?.name
+                  ? (props.row.original.beCollectedByWorker?.workerContracts[0]?
+                      .workerSpecialty?.name ?? 'CONTRATO INDEFINIDO')
                   : 'Outro'}
             </Badge>
           </div>
