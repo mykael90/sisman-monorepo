@@ -1,7 +1,7 @@
 model Contract {
     id               Int              @id @default(autoincrement()) //TODO: tentar depois usar o mesmo id do sipac
     providerId       Int
-    codigoSipac      String?           @db.VarChar(45)
+    codigoSipac      String?          @db.VarChar(45)
     value            Decimal?         @db.Decimal(10, 2)
     subject          String?          @db.Text //objeto
     startDate        DateTime?
@@ -10,6 +10,8 @@ model Contract {
     workersContracts WorkerContract[]
     isActive         Boolean          @default(true) // Indicates if the contract is active.
     // workers_manualfrequencies workers_manualfrequencies[]
+
+    maintenanceContractOrders MaintenanceContractOrder[]
 
     createdAt DateTime @default(now()) @db.Timestamp(0)
     updatedAt DateTime @updatedAt @db.Timestamp(0)

@@ -48,6 +48,8 @@ model MaintenanceRequest {
     // Relação 1-para-N com as Ordens de Serviço geradas
     serviceOrders MaintenanceServiceOrder[]
 
+    maintenanceContractOrders MaintenanceContractOrder[]
+
     //campos compatibilidade sipac
     //unidades
     sipacUnitRequestingId Int?
@@ -55,8 +57,10 @@ model MaintenanceRequest {
     sipacUnitCostId       Int?
     sipacUnitCost         SipacUnidade? @relation("unidadeCustoMaintenanceRequest", fields: [sipacUnitCostId], references: [id])
 
-    sipacUserLoginRequest String? // usuario que realizou a requisicao
-    origin                MaintenanceRequestOrigin @default(OCCURRENCE) // Origem da requisicao
+    sipacUserLoginRequest   String? // usuario que realizou a requisicao
+    origin                  MaintenanceRequestOrigin @default(OCCURRENCE) // Origem da requisicao
+    infrastructureNetwork   InfrastructureNetwork?   @relation(fields: [infrastructureNetworkId], references: [id])
+    infrastructureNetworkId String?
 
     @@index([protocolNumber])
     @@map("maintenance_requests")
@@ -94,6 +98,25 @@ model MaintenanceServiceOrder {
     @@map("maintenance_service_orders")
 }
 
+model MaintenanceContractOrder {
+    id          Int     @id @default(autoincrement())
+    title       String
+    description String? @db.Text
+
+    contractId Int
+    contract   Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
+
+    maintenanceRequestId Int
+    maintenanceRequest   MaintenanceRequest         @relation(fields: [maintenanceRequestId], references: [id], onDelete: Cascade)
+    prerequisites        MaintenanceContractOrder[] @relation("ContractOrderDependencies")
+    subsequentOrders     MaintenanceContractOrder[] @relation("ContractOrderDependencies")
+
+    createdAt DateTime @default(now()) @db.Timestamp(0)
+    updatedAt DateTime @updatedAt @db.Timestamp(0)
+
+    @@map("maintenance_contract_orders")
+}
+
 // =================================================================
 // ==              MODELS DE SUPORTE E CONTEXTO                   ==
 // =================================================================
@@ -122,6 +145,7 @@ model MaintenanceInstance {
     warehouses                    Warehouse[]
     InfrastructureBuilding        InfrastructureBuilding[]
     InfrastructureFacilityComplex InfrastructureFacilityComplex[]
+    InfrastructureNetwork         InfrastructureNetwork[]
     users                         User[]
     workers                       Worker[]
 

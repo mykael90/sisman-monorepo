@@ -19,6 +19,7 @@ model InfrastructureFacilityComplex {
     buildings                InfrastructureBuilding[]
     InfrastructureOccurrence InfrastructureOccurrence[]
     MaintenanceRequest       MaintenanceRequest[]
+    infrastructureNetworks   InfrastructureNetwork[]
 
     @@map("infrastructure_facilities_complexes")
 }
@@ -54,6 +55,24 @@ model InfrastructureBuilding {
     @@index([facilityComplexId])
     @@index([infrastructureBuildingTypeId])
     @@map("infrastructure_buildings")
+}
+
+model InfrastructureNetwork {
+    id                    String                         @id
+    name                  String
+    alias                 String?
+    description           String?
+    createdAt             DateTime                       @default(now())
+    updatedAt             DateTime                       @updatedAt
+    maintenanceRequests   MaintenanceRequest[]
+    infraOccurrences      InfrastructureOccurrence[]
+    facilityComplex       InfrastructureFacilityComplex? @relation(fields: [facilityComplexId], references: [id])
+    facilityComplexId     String?
+    maintenanceInstance   MaintenanceInstance?           @relation(fields: [maintenanceInstanceId], references: [id])
+    maintenanceInstanceId Int?
+
+    @@index([facilityComplexId])
+    @@map("infrastructure_networks")
 }
 
 model InfrastructureBuildingActivity {
@@ -168,28 +187,30 @@ model InfrastructureSystem {
 // =================================================================
 
 model InfrastructureOccurrence {
-    id                  Int                                     @id @default(autoincrement())
-    title               String
-    description         String                                  @db.Text
-    infrastructureType  InfrastructureType?                     @default(ISOLATED)
-    locationDescription String?
-    reportedAt          DateTime                                @default(now())
-    status              InfrastructureOccurrenceStatus          @default(REPORTED)
-    duplicateOfId       Int?
-    duplicateOf         InfrastructureOccurrence?               @relation("DuplicateOccurrences", fields: [duplicateOfId], references: [id], onDelete: NoAction)
-    duplicates          InfrastructureOccurrence[]              @relation("DuplicateOccurrences")
-    reinforcements      InfrastructureOccurrenceReinforcement[]
-    facilityComplex     InfrastructureFacilityComplex?          @relation(fields: [facilityComplexId], references: [id])
-    facilityComplexId   String?
-    buildingId          String?
-    building            InfrastructureBuilding?                 @relation(fields: [buildingId], references: [id], onDelete: SetNull)
-    spaceId             Int?
-    space               InfrastructureSpace?                    @relation(fields: [spaceId], references: [id], onDelete: SetNull)
-    reportedById        Int
-    reportedBy          User                                    @relation("ReportedOccurrences", fields: [reportedById], references: [id])
-    diagnosis           InfrastructureOccurrenceDiagnosis?
-    createdAt           DateTime                                @default(now()) @db.Timestamp(0)
-    updatedAt           DateTime                                @updatedAt @db.Timestamp(0)
+    id                      Int                                     @id @default(autoincrement())
+    title                   String
+    description             String                                  @db.Text
+    infrastructureType      InfrastructureType?                     @default(ISOLATED)
+    locationDescription     String?
+    reportedAt              DateTime                                @default(now())
+    status                  InfrastructureOccurrenceStatus          @default(REPORTED)
+    duplicateOfId           Int?
+    duplicateOf             InfrastructureOccurrence?               @relation("DuplicateOccurrences", fields: [duplicateOfId], references: [id], onDelete: NoAction)
+    duplicates              InfrastructureOccurrence[]              @relation("DuplicateOccurrences")
+    reinforcements          InfrastructureOccurrenceReinforcement[]
+    facilityComplex         InfrastructureFacilityComplex?          @relation(fields: [facilityComplexId], references: [id])
+    facilityComplexId       String?
+    buildingId              String?
+    building                InfrastructureBuilding?                 @relation(fields: [buildingId], references: [id], onDelete: SetNull)
+    spaceId                 Int?
+    space                   InfrastructureSpace?                    @relation(fields: [spaceId], references: [id], onDelete: SetNull)
+    reportedById            Int
+    reportedBy              User                                    @relation("ReportedOccurrences", fields: [reportedById], references: [id])
+    diagnosis               InfrastructureOccurrenceDiagnosis?
+    createdAt               DateTime                                @default(now()) @db.Timestamp(0)
+    updatedAt               DateTime                                @updatedAt @db.Timestamp(0)
+    infrastructureNetwork   InfrastructureNetwork?                  @relation(fields: [infrastructureNetworkId], references: [id])
+    infrastructureNetworkId String?
 
     @@index([reportedById, spaceId, buildingId, status, duplicateOfId])
     @@map("infrastructure_occurrences")
