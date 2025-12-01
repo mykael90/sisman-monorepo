@@ -37,6 +37,7 @@ export class WorkersContractsController {
   /**
    * Cria um novo vínculo de contrato de worker.
    */
+  @Roles(Role.AdmWorkers, Role.SuperWorkers)
   @Post()
   @ApiEndpointSwagger({
     summary: 'Criar novo vínculo de contrato de worker',
@@ -77,7 +78,6 @@ export class WorkersContractsController {
     return this.workersContractsService.list();
   }
 
-  @Roles(Role.Adm, Role.User)
   @Get(':id')
   @ApiEndpointSwagger({
     summary: 'Buscar vínculo de contrato por ID',
@@ -98,6 +98,7 @@ export class WorkersContractsController {
     return this.workersContractsService.show(id);
   }
 
+  @Roles(Role.AdmWorkers, Role.SuperWorkers)
   @Put(':id')
   @ApiEndpointSwagger({
     summary: 'Atualizar vínculo de contrato',
@@ -130,6 +131,7 @@ export class WorkersContractsController {
     return this.workersContractsService.update(id, data);
   }
 
+  @Roles(Role.AdmWorkers)
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiEndpointSwagger({
