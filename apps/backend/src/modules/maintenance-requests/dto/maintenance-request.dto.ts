@@ -226,6 +226,13 @@ class MaintenanceRequestBaseDto implements MaintenanceRequest {
   @IsOptional()
   @IsBoolean()
   useResidueMaterial: boolean;
+
+  /**
+   * ID da rede de infraestrutura.
+   * @example 01
+   */
+  @IsNumber()
+  infrastructureNetworkId: string;
 }
 
 // =================================================================

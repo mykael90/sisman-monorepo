@@ -174,6 +174,17 @@ exports.Prisma.InfrastructureBuildingScalarFieldEnum = {
   maintenanceInstanceId: 'maintenanceInstanceId'
 };
 
+exports.Prisma.InfrastructureNetworkScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  alias: 'alias',
+  description: 'description',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  facilityComplexId: 'facilityComplexId',
+  maintenanceInstanceId: 'maintenanceInstanceId'
+};
+
 exports.Prisma.InfrastructureBuildingActivityScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -242,7 +253,8 @@ exports.Prisma.InfrastructureOccurrenceScalarFieldEnum = {
   spaceId: 'spaceId',
   reportedById: 'reportedById',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  infrastructureNetworkId: 'infrastructureNetworkId'
 };
 
 exports.Prisma.InfrastructureOccurrenceReinforcementScalarFieldEnum = {
@@ -326,7 +338,8 @@ exports.Prisma.MaintenanceRequestScalarFieldEnum = {
   sipacUnitRequestingId: 'sipacUnitRequestingId',
   sipacUnitCostId: 'sipacUnitCostId',
   sipacUserLoginRequest: 'sipacUserLoginRequest',
-  origin: 'origin'
+  origin: 'origin',
+  infrastructureNetworkId: 'infrastructureNetworkId'
 };
 
 exports.Prisma.MaintenanceServiceOrderScalarFieldEnum = {
@@ -339,6 +352,16 @@ exports.Prisma.MaintenanceServiceOrderScalarFieldEnum = {
   actualStart: 'actualStart',
   actualEnd: 'actualEnd',
   assignedTeamId: 'assignedTeamId',
+  maintenanceRequestId: 'maintenanceRequestId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.MaintenanceContractOrderScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  contractId: 'contractId',
   maintenanceRequestId: 'maintenanceRequestId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -1091,6 +1114,14 @@ exports.Prisma.InfrastructureBuildingOrderByRelevanceFieldEnum = {
   facilityComplexId: 'facilityComplexId'
 };
 
+exports.Prisma.InfrastructureNetworkOrderByRelevanceFieldEnum = {
+  id: 'id',
+  name: 'name',
+  alias: 'alias',
+  description: 'description',
+  facilityComplexId: 'facilityComplexId'
+};
+
 exports.Prisma.InfrastructureBuildingActivityOrderByRelevanceFieldEnum = {
   name: 'name',
   description: 'description'
@@ -1125,7 +1156,8 @@ exports.Prisma.InfrastructureOccurrenceOrderByRelevanceFieldEnum = {
   description: 'description',
   locationDescription: 'locationDescription',
   facilityComplexId: 'facilityComplexId',
-  buildingId: 'buildingId'
+  buildingId: 'buildingId',
+  infrastructureNetworkId: 'infrastructureNetworkId'
 };
 
 exports.Prisma.InfrastructureOccurrenceReinforcementOrderByRelevanceFieldEnum = {
@@ -1170,10 +1202,16 @@ exports.Prisma.MaintenanceRequestOrderByRelevanceFieldEnum = {
   buildingId: 'buildingId',
   local: 'local',
   notes: 'notes',
-  sipacUserLoginRequest: 'sipacUserLoginRequest'
+  sipacUserLoginRequest: 'sipacUserLoginRequest',
+  infrastructureNetworkId: 'infrastructureNetworkId'
 };
 
 exports.Prisma.MaintenanceServiceOrderOrderByRelevanceFieldEnum = {
+  title: 'title',
+  description: 'description'
+};
+
+exports.Prisma.MaintenanceContractOrderOrderByRelevanceFieldEnum = {
   title: 'title',
   description: 'description'
 };
@@ -1743,6 +1781,7 @@ exports.Prisma.ModelName = {
   ContractProvider: 'ContractProvider',
   InfrastructureFacilityComplex: 'InfrastructureFacilityComplex',
   InfrastructureBuilding: 'InfrastructureBuilding',
+  InfrastructureNetwork: 'InfrastructureNetwork',
   InfrastructureBuildingActivity: 'InfrastructureBuildingActivity',
   InfrastructureBuildingType: 'InfrastructureBuildingType',
   InfrastructureSpaceType: 'InfrastructureSpaceType',
@@ -1757,6 +1796,7 @@ exports.Prisma.ModelName = {
   LogLogin: 'LogLogin',
   MaintenanceRequest: 'MaintenanceRequest',
   MaintenanceServiceOrder: 'MaintenanceServiceOrder',
+  MaintenanceContractOrder: 'MaintenanceContractOrder',
   MaintenanceServiceType: 'MaintenanceServiceType',
   MaintenanceInstance: 'MaintenanceInstance',
   MaintenanceTimelineEvent: 'MaintenanceTimelineEvent',

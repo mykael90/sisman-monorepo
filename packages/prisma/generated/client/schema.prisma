@@ -11,6 +11,8 @@ model Contract {
   isActive         Boolean          @default(true) // Indicates if the contract is active.
   // workers_manualfrequencies workers_manualfrequencies[]
 
+  maintenanceContractOrders MaintenanceContractOrder[]
+
   createdAt DateTime @default(now()) @db.Timestamp(0)
   updatedAt DateTime @updatedAt @db.Timestamp(0)
 
@@ -57,6 +59,7 @@ model InfrastructureFacilityComplex {
   buildings                InfrastructureBuilding[]
   InfrastructureOccurrence InfrastructureOccurrence[]
   MaintenanceRequest       MaintenanceRequest[]
+  infrastructureNetworks   InfrastructureNetwork[]
 
   @@map("infrastructure_facilities_complexes")
 }
@@ -92,6 +95,24 @@ model InfrastructureBuilding {
   @@index([facilityComplexId])
   @@index([infrastructureBuildingTypeId])
   @@map("infrastructure_buildings")
+}
+
+model InfrastructureNetwork {
+  id                    String                         @id
+  name                  String
+  alias                 String?
+  description           String?
+  createdAt             DateTime                       @default(now())
+  updatedAt             DateTime                       @updatedAt
+  maintenanceRequests   MaintenanceRequest[]
+  infraOccurrences      InfrastructureOccurrence[]
+  facilityComplex       InfrastructureFacilityComplex? @relation(fields: [facilityComplexId], references: [id])
+  facilityComplexId     String?
+  maintenanceInstance   MaintenanceInstance?           @relation(fields: [maintenanceInstanceId], references: [id])
+  maintenanceInstanceId Int?
+
+  @@index([facilityComplexId])
+  @@map("infrastructure_networks")
 }
 
 model InfrastructureBuildingActivity {
@@ -206,28 +227,30 @@ model InfrastructureSystem {
 // =================================================================
 
 model InfrastructureOccurrence {
-  id                  Int                                     @id @default(autoincrement())
-  title               String
-  description         String                                  @db.Text
-  infrastructureType  InfrastructureType?                     @default(ISOLATED)
-  locationDescription String?
-  reportedAt          DateTime                                @default(now())
-  status              InfrastructureOccurrenceStatus          @default(REPORTED)
-  duplicateOfId       Int?
-  duplicateOf         InfrastructureOccurrence?               @relation("DuplicateOccurrences", fields: [duplicateOfId], references: [id], onDelete: NoAction)
-  duplicates          InfrastructureOccurrence[]              @relation("DuplicateOccurrences")
-  reinforcements      InfrastructureOccurrenceReinforcement[]
-  facilityComplex     InfrastructureFacilityComplex?          @relation(fields: [facilityComplexId], references: [id])
-  facilityComplexId   String?
-  buildingId          String?
-  building            InfrastructureBuilding?                 @relation(fields: [buildingId], references: [id], onDelete: SetNull)
-  spaceId             Int?
-  space               InfrastructureSpace?                    @relation(fields: [spaceId], references: [id], onDelete: SetNull)
-  reportedById        Int
-  reportedBy          User                                    @relation("ReportedOccurrences", fields: [reportedById], references: [id])
-  diagnosis           InfrastructureOccurrenceDiagnosis?
-  createdAt           DateTime                                @default(now()) @db.Timestamp(0)
-  updatedAt           DateTime                                @updatedAt @db.Timestamp(0)
+  id                      Int                                     @id @default(autoincrement())
+  title                   String
+  description             String                                  @db.Text
+  infrastructureType      InfrastructureType?                     @default(ISOLATED)
+  locationDescription     String?
+  reportedAt              DateTime                                @default(now())
+  status                  InfrastructureOccurrenceStatus          @default(REPORTED)
+  duplicateOfId           Int?
+  duplicateOf             InfrastructureOccurrence?               @relation("DuplicateOccurrences", fields: [duplicateOfId], references: [id], onDelete: NoAction)
+  duplicates              InfrastructureOccurrence[]              @relation("DuplicateOccurrences")
+  reinforcements          InfrastructureOccurrenceReinforcement[]
+  facilityComplex         InfrastructureFacilityComplex?          @relation(fields: [facilityComplexId], references: [id])
+  facilityComplexId       String?
+  buildingId              String?
+  building                InfrastructureBuilding?                 @relation(fields: [buildingId], references: [id], onDelete: SetNull)
+  spaceId                 Int?
+  space                   InfrastructureSpace?                    @relation(fields: [spaceId], references: [id], onDelete: SetNull)
+  reportedById            Int
+  reportedBy              User                                    @relation("ReportedOccurrences", fields: [reportedById], references: [id])
+  diagnosis               InfrastructureOccurrenceDiagnosis?
+  createdAt               DateTime                                @default(now()) @db.Timestamp(0)
+  updatedAt               DateTime                                @updatedAt @db.Timestamp(0)
+  infrastructureNetwork   InfrastructureNetwork?                  @relation(fields: [infrastructureNetworkId], references: [id])
+  infrastructureNetworkId String?
 
   @@index([reportedById, spaceId, buildingId, status, duplicateOfId])
   @@map("infrastructure_occurrences")
@@ -428,6 +451,8 @@ model MaintenanceRequest {
   // Relação 1-para-N com as Ordens de Serviço geradas
   serviceOrders MaintenanceServiceOrder[]
 
+  maintenanceContractOrders MaintenanceContractOrder[]
+
   //campos compatibilidade sipac
   //unidades
   sipacUnitRequestingId Int?
@@ -435,8 +460,10 @@ model MaintenanceRequest {
   sipacUnitCostId       Int?
   sipacUnitCost         SipacUnidade? @relation("unidadeCustoMaintenanceRequest", fields: [sipacUnitCostId], references: [id])
 
-  sipacUserLoginRequest String? // usuario que realizou a requisicao
-  origin                MaintenanceRequestOrigin @default(OCCURRENCE) // Origem da requisicao
+  sipacUserLoginRequest   String? // usuario que realizou a requisicao
+  origin                  MaintenanceRequestOrigin @default(OCCURRENCE) // Origem da requisicao
+  infrastructureNetwork   InfrastructureNetwork?   @relation(fields: [infrastructureNetworkId], references: [id])
+  infrastructureNetworkId String?
 
   @@index([protocolNumber])
   @@map("maintenance_requests")
@@ -474,6 +501,25 @@ model MaintenanceServiceOrder {
   @@map("maintenance_service_orders")
 }
 
+model MaintenanceContractOrder {
+  id          Int     @id @default(autoincrement())
+  title       String
+  description String? @db.Text
+
+  contractId Int
+  contract   Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
+
+  maintenanceRequestId Int
+  maintenanceRequest   MaintenanceRequest         @relation(fields: [maintenanceRequestId], references: [id], onDelete: Cascade)
+  prerequisites        MaintenanceContractOrder[] @relation("ContractOrderDependencies")
+  subsequentOrders     MaintenanceContractOrder[] @relation("ContractOrderDependencies")
+
+  createdAt DateTime @default(now()) @db.Timestamp(0)
+  updatedAt DateTime @updatedAt @db.Timestamp(0)
+
+  @@map("maintenance_contract_orders")
+}
+
 // =================================================================
 // ==              MODELS DE SUPORTE E CONTEXTO                   ==
 // =================================================================
@@ -502,6 +548,7 @@ model MaintenanceInstance {
   warehouses                    Warehouse[]
   InfrastructureBuilding        InfrastructureBuilding[]
   InfrastructureFacilityComplex InfrastructureFacilityComplex[]
+  InfrastructureNetwork         InfrastructureNetwork[]
   users                         User[]
   workers                       Worker[]
 

@@ -34,6 +34,11 @@ export type InfrastructureFacilityComplex = $Result.DefaultSelection<Prisma.$Inf
  */
 export type InfrastructureBuilding = $Result.DefaultSelection<Prisma.$InfrastructureBuildingPayload>
 /**
+ * Model InfrastructureNetwork
+ * 
+ */
+export type InfrastructureNetwork = $Result.DefaultSelection<Prisma.$InfrastructureNetworkPayload>
+/**
  * Model InfrastructureBuildingActivity
  * 
  */
@@ -103,6 +108,11 @@ export type MaintenanceRequest = $Result.DefaultSelection<Prisma.$MaintenanceReq
  * 
  */
 export type MaintenanceServiceOrder = $Result.DefaultSelection<Prisma.$MaintenanceServiceOrderPayload>
+/**
+ * Model MaintenanceContractOrder
+ * 
+ */
+export type MaintenanceContractOrder = $Result.DefaultSelection<Prisma.$MaintenanceContractOrderPayload>
 /**
  * Model MaintenanceServiceType
  * 
@@ -966,6 +976,16 @@ export class PrismaClient<
   get infrastructureBuilding(): Prisma.InfrastructureBuildingDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.infrastructureNetwork`: Exposes CRUD operations for the **InfrastructureNetwork** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more InfrastructureNetworks
+    * const infrastructureNetworks = await prisma.infrastructureNetwork.findMany()
+    * ```
+    */
+  get infrastructureNetwork(): Prisma.InfrastructureNetworkDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.infrastructureBuildingActivity`: Exposes CRUD operations for the **InfrastructureBuildingActivity** model.
     * Example usage:
     * ```ts
@@ -1104,6 +1124,16 @@ export class PrismaClient<
     * ```
     */
   get maintenanceServiceOrder(): Prisma.MaintenanceServiceOrderDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.maintenanceContractOrder`: Exposes CRUD operations for the **MaintenanceContractOrder** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more MaintenanceContractOrders
+    * const maintenanceContractOrders = await prisma.maintenanceContractOrder.findMany()
+    * ```
+    */
+  get maintenanceContractOrder(): Prisma.MaintenanceContractOrderDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.maintenanceServiceType`: Exposes CRUD operations for the **MaintenanceServiceType** model.
@@ -2088,6 +2118,7 @@ export namespace Prisma {
     ContractProvider: 'ContractProvider',
     InfrastructureFacilityComplex: 'InfrastructureFacilityComplex',
     InfrastructureBuilding: 'InfrastructureBuilding',
+    InfrastructureNetwork: 'InfrastructureNetwork',
     InfrastructureBuildingActivity: 'InfrastructureBuildingActivity',
     InfrastructureBuildingType: 'InfrastructureBuildingType',
     InfrastructureSpaceType: 'InfrastructureSpaceType',
@@ -2102,6 +2133,7 @@ export namespace Prisma {
     LogLogin: 'LogLogin',
     MaintenanceRequest: 'MaintenanceRequest',
     MaintenanceServiceOrder: 'MaintenanceServiceOrder',
+    MaintenanceContractOrder: 'MaintenanceContractOrder',
     MaintenanceServiceType: 'MaintenanceServiceType',
     MaintenanceInstance: 'MaintenanceInstance',
     MaintenanceTimelineEvent: 'MaintenanceTimelineEvent',
@@ -2174,7 +2206,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "contract" | "contractProvider" | "infrastructureFacilityComplex" | "infrastructureBuilding" | "infrastructureBuildingActivity" | "infrastructureBuildingType" | "infrastructureSpaceType" | "infrastructureSpace" | "infrastructureSpaceUser" | "infrastructureSystem" | "infrastructureOccurrence" | "infrastructureOccurrenceReinforcement" | "infrastructureOccurrenceDiagnosis" | "infrastructureOccurrenceDiagnosisRiskType" | "logError" | "logLogin" | "maintenanceRequest" | "maintenanceServiceOrder" | "maintenanceServiceType" | "maintenanceInstance" | "maintenanceTimelineEvent" | "maintenanceRequestStatus" | "maintenanceServiceOrderAllocation" | "maintenanceRequestPriority" | "storage" | "warehouse" | "materialGlobalCatalog" | "materialGLobalCatalogHistory" | "materialWarehouseStock" | "materialRequest" | "materialRequestStatus" | "materialRequestItem" | "materialStockMovementType" | "materialStockMovement" | "materialDerivedCondition" | "materialDerived" | "materialPickingOrder" | "materialPickingOrderItem" | "materialWithdrawal" | "materialWithdrawalItem" | "materialTransferOrder" | "materialTransferOrderItem" | "materialReceipt" | "materialReceiptItem" | "materialRestrictionOrder" | "materialRestrictionOrderItem" | "sipacMaterial" | "sipacGrupoMaterial" | "sipacSubGrupoMaterial" | "sipacRequisicaoMaterial" | "sipacItemRequisicaoMaterial" | "sipacHistoricoRequisicaoMaterial" | "sipacTotalizacaoElementoDespesaMaterial" | "sipacDetalheAquisicaoItemMaterial" | "sipacRequisicaoManutencao" | "sipacInformacaoServicoManutencao" | "sipacHistoricoManutencao" | "sipacArquivoManutencao" | "sipacImovel" | "sipacImovelEndereco" | "sipacCampus" | "sipacPredio" | "sipacUnidade" | "user" | "magicLink" | "role" | "worker" | "workerTeam" | "workerSpecialty" | "workerContract" | "workerManualFrequency" | "workerManualFrequencyType"
+      modelProps: "contract" | "contractProvider" | "infrastructureFacilityComplex" | "infrastructureBuilding" | "infrastructureNetwork" | "infrastructureBuildingActivity" | "infrastructureBuildingType" | "infrastructureSpaceType" | "infrastructureSpace" | "infrastructureSpaceUser" | "infrastructureSystem" | "infrastructureOccurrence" | "infrastructureOccurrenceReinforcement" | "infrastructureOccurrenceDiagnosis" | "infrastructureOccurrenceDiagnosisRiskType" | "logError" | "logLogin" | "maintenanceRequest" | "maintenanceServiceOrder" | "maintenanceContractOrder" | "maintenanceServiceType" | "maintenanceInstance" | "maintenanceTimelineEvent" | "maintenanceRequestStatus" | "maintenanceServiceOrderAllocation" | "maintenanceRequestPriority" | "storage" | "warehouse" | "materialGlobalCatalog" | "materialGLobalCatalogHistory" | "materialWarehouseStock" | "materialRequest" | "materialRequestStatus" | "materialRequestItem" | "materialStockMovementType" | "materialStockMovement" | "materialDerivedCondition" | "materialDerived" | "materialPickingOrder" | "materialPickingOrderItem" | "materialWithdrawal" | "materialWithdrawalItem" | "materialTransferOrder" | "materialTransferOrderItem" | "materialReceipt" | "materialReceiptItem" | "materialRestrictionOrder" | "materialRestrictionOrderItem" | "sipacMaterial" | "sipacGrupoMaterial" | "sipacSubGrupoMaterial" | "sipacRequisicaoMaterial" | "sipacItemRequisicaoMaterial" | "sipacHistoricoRequisicaoMaterial" | "sipacTotalizacaoElementoDespesaMaterial" | "sipacDetalheAquisicaoItemMaterial" | "sipacRequisicaoManutencao" | "sipacInformacaoServicoManutencao" | "sipacHistoricoManutencao" | "sipacArquivoManutencao" | "sipacImovel" | "sipacImovelEndereco" | "sipacCampus" | "sipacPredio" | "sipacUnidade" | "user" | "magicLink" | "role" | "worker" | "workerTeam" | "workerSpecialty" | "workerContract" | "workerManualFrequency" | "workerManualFrequencyType"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2439,6 +2471,72 @@ export namespace Prisma {
           count: {
             args: Prisma.InfrastructureBuildingCountArgs<ExtArgs>
             result: $Utils.Optional<InfrastructureBuildingCountAggregateOutputType> | number
+          }
+        }
+      }
+      InfrastructureNetwork: {
+        payload: Prisma.$InfrastructureNetworkPayload<ExtArgs>
+        fields: Prisma.InfrastructureNetworkFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.InfrastructureNetworkFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InfrastructureNetworkPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.InfrastructureNetworkFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InfrastructureNetworkPayload>
+          }
+          findFirst: {
+            args: Prisma.InfrastructureNetworkFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InfrastructureNetworkPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.InfrastructureNetworkFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InfrastructureNetworkPayload>
+          }
+          findMany: {
+            args: Prisma.InfrastructureNetworkFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InfrastructureNetworkPayload>[]
+          }
+          create: {
+            args: Prisma.InfrastructureNetworkCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InfrastructureNetworkPayload>
+          }
+          createMany: {
+            args: Prisma.InfrastructureNetworkCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.InfrastructureNetworkDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InfrastructureNetworkPayload>
+          }
+          update: {
+            args: Prisma.InfrastructureNetworkUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InfrastructureNetworkPayload>
+          }
+          deleteMany: {
+            args: Prisma.InfrastructureNetworkDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.InfrastructureNetworkUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.InfrastructureNetworkUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InfrastructureNetworkPayload>
+          }
+          aggregate: {
+            args: Prisma.InfrastructureNetworkAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateInfrastructureNetwork>
+          }
+          groupBy: {
+            args: Prisma.InfrastructureNetworkGroupByArgs<ExtArgs>
+            result: $Utils.Optional<InfrastructureNetworkGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.InfrastructureNetworkCountArgs<ExtArgs>
+            result: $Utils.Optional<InfrastructureNetworkCountAggregateOutputType> | number
           }
         }
       }
@@ -3363,6 +3461,72 @@ export namespace Prisma {
           count: {
             args: Prisma.MaintenanceServiceOrderCountArgs<ExtArgs>
             result: $Utils.Optional<MaintenanceServiceOrderCountAggregateOutputType> | number
+          }
+        }
+      }
+      MaintenanceContractOrder: {
+        payload: Prisma.$MaintenanceContractOrderPayload<ExtArgs>
+        fields: Prisma.MaintenanceContractOrderFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.MaintenanceContractOrderFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaintenanceContractOrderPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.MaintenanceContractOrderFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaintenanceContractOrderPayload>
+          }
+          findFirst: {
+            args: Prisma.MaintenanceContractOrderFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaintenanceContractOrderPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.MaintenanceContractOrderFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaintenanceContractOrderPayload>
+          }
+          findMany: {
+            args: Prisma.MaintenanceContractOrderFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaintenanceContractOrderPayload>[]
+          }
+          create: {
+            args: Prisma.MaintenanceContractOrderCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaintenanceContractOrderPayload>
+          }
+          createMany: {
+            args: Prisma.MaintenanceContractOrderCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.MaintenanceContractOrderDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaintenanceContractOrderPayload>
+          }
+          update: {
+            args: Prisma.MaintenanceContractOrderUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaintenanceContractOrderPayload>
+          }
+          deleteMany: {
+            args: Prisma.MaintenanceContractOrderDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.MaintenanceContractOrderUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.MaintenanceContractOrderUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MaintenanceContractOrderPayload>
+          }
+          aggregate: {
+            args: Prisma.MaintenanceContractOrderAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMaintenanceContractOrder>
+          }
+          groupBy: {
+            args: Prisma.MaintenanceContractOrderGroupByArgs<ExtArgs>
+            result: $Utils.Optional<MaintenanceContractOrderGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.MaintenanceContractOrderCountArgs<ExtArgs>
+            result: $Utils.Optional<MaintenanceContractOrderCountAggregateOutputType> | number
           }
         }
       }
@@ -7018,6 +7182,7 @@ export namespace Prisma {
     contractProvider?: ContractProviderOmit
     infrastructureFacilityComplex?: InfrastructureFacilityComplexOmit
     infrastructureBuilding?: InfrastructureBuildingOmit
+    infrastructureNetwork?: InfrastructureNetworkOmit
     infrastructureBuildingActivity?: InfrastructureBuildingActivityOmit
     infrastructureBuildingType?: InfrastructureBuildingTypeOmit
     infrastructureSpaceType?: InfrastructureSpaceTypeOmit
@@ -7032,6 +7197,7 @@ export namespace Prisma {
     logLogin?: LogLoginOmit
     maintenanceRequest?: MaintenanceRequestOmit
     maintenanceServiceOrder?: MaintenanceServiceOrderOmit
+    maintenanceContractOrder?: MaintenanceContractOrderOmit
     maintenanceServiceType?: MaintenanceServiceTypeOmit
     maintenanceInstance?: MaintenanceInstanceOmit
     maintenanceTimelineEvent?: MaintenanceTimelineEventOmit
@@ -7181,10 +7347,12 @@ export namespace Prisma {
 
   export type ContractCountOutputType = {
     workersContracts: number
+    maintenanceContractOrders: number
   }
 
   export type ContractCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     workersContracts?: boolean | ContractCountOutputTypeCountWorkersContractsArgs
+    maintenanceContractOrders?: boolean | ContractCountOutputTypeCountMaintenanceContractOrdersArgs
   }
 
   // Custom InputTypes
@@ -7203,6 +7371,13 @@ export namespace Prisma {
    */
   export type ContractCountOutputTypeCountWorkersContractsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: WorkerContractWhereInput
+  }
+
+  /**
+   * ContractCountOutputType without action
+   */
+  export type ContractCountOutputTypeCountMaintenanceContractOrdersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MaintenanceContractOrderWhereInput
   }
 
 
@@ -7245,12 +7420,14 @@ export namespace Prisma {
     buildings: number
     InfrastructureOccurrence: number
     MaintenanceRequest: number
+    infrastructureNetworks: number
   }
 
   export type InfrastructureFacilityComplexCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     buildings?: boolean | InfrastructureFacilityComplexCountOutputTypeCountBuildingsArgs
     InfrastructureOccurrence?: boolean | InfrastructureFacilityComplexCountOutputTypeCountInfrastructureOccurrenceArgs
     MaintenanceRequest?: boolean | InfrastructureFacilityComplexCountOutputTypeCountMaintenanceRequestArgs
+    infrastructureNetworks?: boolean | InfrastructureFacilityComplexCountOutputTypeCountInfrastructureNetworksArgs
   }
 
   // Custom InputTypes
@@ -7283,6 +7460,13 @@ export namespace Prisma {
    */
   export type InfrastructureFacilityComplexCountOutputTypeCountMaintenanceRequestArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: MaintenanceRequestWhereInput
+  }
+
+  /**
+   * InfrastructureFacilityComplexCountOutputType without action
+   */
+  export type InfrastructureFacilityComplexCountOutputTypeCountInfrastructureNetworksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InfrastructureNetworkWhereInput
   }
 
 
@@ -7368,6 +7552,46 @@ export namespace Prisma {
    */
   export type InfrastructureBuildingCountOutputTypeCountUnidadesSipacVinculadasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: SipacUnidadeWhereInput
+  }
+
+
+  /**
+   * Count Type InfrastructureNetworkCountOutputType
+   */
+
+  export type InfrastructureNetworkCountOutputType = {
+    maintenanceRequests: number
+    infraOccurrences: number
+  }
+
+  export type InfrastructureNetworkCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    maintenanceRequests?: boolean | InfrastructureNetworkCountOutputTypeCountMaintenanceRequestsArgs
+    infraOccurrences?: boolean | InfrastructureNetworkCountOutputTypeCountInfraOccurrencesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * InfrastructureNetworkCountOutputType without action
+   */
+  export type InfrastructureNetworkCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InfrastructureNetworkCountOutputType
+     */
+    select?: InfrastructureNetworkCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * InfrastructureNetworkCountOutputType without action
+   */
+  export type InfrastructureNetworkCountOutputTypeCountMaintenanceRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MaintenanceRequestWhereInput
+  }
+
+  /**
+   * InfrastructureNetworkCountOutputType without action
+   */
+  export type InfrastructureNetworkCountOutputTypeCountInfraOccurrencesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InfrastructureOccurrenceWhereInput
   }
 
 
@@ -7664,6 +7888,7 @@ export namespace Prisma {
     materialWithdrawals: number
     materialPickingOrders: number
     serviceOrders: number
+    maintenanceContractOrders: number
   }
 
   export type MaintenanceRequestCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7675,6 +7900,7 @@ export namespace Prisma {
     materialWithdrawals?: boolean | MaintenanceRequestCountOutputTypeCountMaterialWithdrawalsArgs
     materialPickingOrders?: boolean | MaintenanceRequestCountOutputTypeCountMaterialPickingOrdersArgs
     serviceOrders?: boolean | MaintenanceRequestCountOutputTypeCountServiceOrdersArgs
+    maintenanceContractOrders?: boolean | MaintenanceRequestCountOutputTypeCountMaintenanceContractOrdersArgs
   }
 
   // Custom InputTypes
@@ -7744,6 +7970,13 @@ export namespace Prisma {
     where?: MaintenanceServiceOrderWhereInput
   }
 
+  /**
+   * MaintenanceRequestCountOutputType without action
+   */
+  export type MaintenanceRequestCountOutputTypeCountMaintenanceContractOrdersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MaintenanceContractOrderWhereInput
+  }
+
 
   /**
    * Count Type MaintenanceServiceOrderCountOutputType
@@ -7795,6 +8028,46 @@ export namespace Prisma {
 
 
   /**
+   * Count Type MaintenanceContractOrderCountOutputType
+   */
+
+  export type MaintenanceContractOrderCountOutputType = {
+    prerequisites: number
+    subsequentOrders: number
+  }
+
+  export type MaintenanceContractOrderCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    prerequisites?: boolean | MaintenanceContractOrderCountOutputTypeCountPrerequisitesArgs
+    subsequentOrders?: boolean | MaintenanceContractOrderCountOutputTypeCountSubsequentOrdersArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * MaintenanceContractOrderCountOutputType without action
+   */
+  export type MaintenanceContractOrderCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceContractOrderCountOutputType
+     */
+    select?: MaintenanceContractOrderCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * MaintenanceContractOrderCountOutputType without action
+   */
+  export type MaintenanceContractOrderCountOutputTypeCountPrerequisitesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MaintenanceContractOrderWhereInput
+  }
+
+  /**
+   * MaintenanceContractOrderCountOutputType without action
+   */
+  export type MaintenanceContractOrderCountOutputTypeCountSubsequentOrdersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MaintenanceContractOrderWhereInput
+  }
+
+
+  /**
    * Count Type MaintenanceServiceTypeCountOutputType
    */
 
@@ -7836,6 +8109,7 @@ export namespace Prisma {
     warehouses: number
     InfrastructureBuilding: number
     InfrastructureFacilityComplex: number
+    InfrastructureNetwork: number
     users: number
     workers: number
   }
@@ -7847,6 +8121,7 @@ export namespace Prisma {
     warehouses?: boolean | MaintenanceInstanceCountOutputTypeCountWarehousesArgs
     InfrastructureBuilding?: boolean | MaintenanceInstanceCountOutputTypeCountInfrastructureBuildingArgs
     InfrastructureFacilityComplex?: boolean | MaintenanceInstanceCountOutputTypeCountInfrastructureFacilityComplexArgs
+    InfrastructureNetwork?: boolean | MaintenanceInstanceCountOutputTypeCountInfrastructureNetworkArgs
     users?: boolean | MaintenanceInstanceCountOutputTypeCountUsersArgs
     workers?: boolean | MaintenanceInstanceCountOutputTypeCountWorkersArgs
   }
@@ -7902,6 +8177,13 @@ export namespace Prisma {
    */
   export type MaintenanceInstanceCountOutputTypeCountInfrastructureFacilityComplexArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: InfrastructureFacilityComplexWhereInput
+  }
+
+  /**
+   * MaintenanceInstanceCountOutputType without action
+   */
+  export type MaintenanceInstanceCountOutputTypeCountInfrastructureNetworkArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InfrastructureNetworkWhereInput
   }
 
   /**
@@ -9986,6 +10268,7 @@ export namespace Prisma {
     updatedAt?: boolean
     providers?: boolean | ContractProviderDefaultArgs<ExtArgs>
     workersContracts?: boolean | Contract$workersContractsArgs<ExtArgs>
+    maintenanceContractOrders?: boolean | Contract$maintenanceContractOrdersArgs<ExtArgs>
     _count?: boolean | ContractCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["contract"]>
 
@@ -10008,6 +10291,7 @@ export namespace Prisma {
   export type ContractInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     providers?: boolean | ContractProviderDefaultArgs<ExtArgs>
     workersContracts?: boolean | Contract$workersContractsArgs<ExtArgs>
+    maintenanceContractOrders?: boolean | Contract$maintenanceContractOrdersArgs<ExtArgs>
     _count?: boolean | ContractCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -10016,6 +10300,7 @@ export namespace Prisma {
     objects: {
       providers: Prisma.$ContractProviderPayload<ExtArgs>
       workersContracts: Prisma.$WorkerContractPayload<ExtArgs>[]
+      maintenanceContractOrders: Prisma.$MaintenanceContractOrderPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -10370,6 +10655,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     providers<T extends ContractProviderDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ContractProviderDefaultArgs<ExtArgs>>): Prisma__ContractProviderClient<$Result.GetResult<Prisma.$ContractProviderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     workersContracts<T extends Contract$workersContractsArgs<ExtArgs> = {}>(args?: Subset<T, Contract$workersContractsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WorkerContractPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    maintenanceContractOrders<T extends Contract$maintenanceContractOrdersArgs<ExtArgs> = {}>(args?: Subset<T, Contract$maintenanceContractOrdersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaintenanceContractOrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -10773,6 +11059,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: WorkerContractScalarFieldEnum | WorkerContractScalarFieldEnum[]
+  }
+
+  /**
+   * Contract.maintenanceContractOrders
+   */
+  export type Contract$maintenanceContractOrdersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceContractOrder
+     */
+    select?: MaintenanceContractOrderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceContractOrder
+     */
+    omit?: MaintenanceContractOrderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceContractOrderInclude<ExtArgs> | null
+    where?: MaintenanceContractOrderWhereInput
+    orderBy?: MaintenanceContractOrderOrderByWithRelationInput | MaintenanceContractOrderOrderByWithRelationInput[]
+    cursor?: MaintenanceContractOrderWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MaintenanceContractOrderScalarFieldEnum | MaintenanceContractOrderScalarFieldEnum[]
   }
 
   /**
@@ -12077,6 +12387,7 @@ export namespace Prisma {
     buildings?: boolean | InfrastructureFacilityComplex$buildingsArgs<ExtArgs>
     InfrastructureOccurrence?: boolean | InfrastructureFacilityComplex$InfrastructureOccurrenceArgs<ExtArgs>
     MaintenanceRequest?: boolean | InfrastructureFacilityComplex$MaintenanceRequestArgs<ExtArgs>
+    infrastructureNetworks?: boolean | InfrastructureFacilityComplex$infrastructureNetworksArgs<ExtArgs>
     _count?: boolean | InfrastructureFacilityComplexCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["infrastructureFacilityComplex"]>
 
@@ -12101,6 +12412,7 @@ export namespace Prisma {
     buildings?: boolean | InfrastructureFacilityComplex$buildingsArgs<ExtArgs>
     InfrastructureOccurrence?: boolean | InfrastructureFacilityComplex$InfrastructureOccurrenceArgs<ExtArgs>
     MaintenanceRequest?: boolean | InfrastructureFacilityComplex$MaintenanceRequestArgs<ExtArgs>
+    infrastructureNetworks?: boolean | InfrastructureFacilityComplex$infrastructureNetworksArgs<ExtArgs>
     _count?: boolean | InfrastructureFacilityComplexCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -12111,6 +12423,7 @@ export namespace Prisma {
       buildings: Prisma.$InfrastructureBuildingPayload<ExtArgs>[]
       InfrastructureOccurrence: Prisma.$InfrastructureOccurrencePayload<ExtArgs>[]
       MaintenanceRequest: Prisma.$MaintenanceRequestPayload<ExtArgs>[]
+      infrastructureNetworks: Prisma.$InfrastructureNetworkPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -12467,6 +12780,7 @@ export namespace Prisma {
     buildings<T extends InfrastructureFacilityComplex$buildingsArgs<ExtArgs> = {}>(args?: Subset<T, InfrastructureFacilityComplex$buildingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InfrastructureBuildingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     InfrastructureOccurrence<T extends InfrastructureFacilityComplex$InfrastructureOccurrenceArgs<ExtArgs> = {}>(args?: Subset<T, InfrastructureFacilityComplex$InfrastructureOccurrenceArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InfrastructureOccurrencePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     MaintenanceRequest<T extends InfrastructureFacilityComplex$MaintenanceRequestArgs<ExtArgs> = {}>(args?: Subset<T, InfrastructureFacilityComplex$MaintenanceRequestArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaintenanceRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    infrastructureNetworks<T extends InfrastructureFacilityComplex$infrastructureNetworksArgs<ExtArgs> = {}>(args?: Subset<T, InfrastructureFacilityComplex$infrastructureNetworksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InfrastructureNetworkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -12937,6 +13251,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: MaintenanceRequestScalarFieldEnum | MaintenanceRequestScalarFieldEnum[]
+  }
+
+  /**
+   * InfrastructureFacilityComplex.infrastructureNetworks
+   */
+  export type InfrastructureFacilityComplex$infrastructureNetworksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InfrastructureNetwork
+     */
+    select?: InfrastructureNetworkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InfrastructureNetwork
+     */
+    omit?: InfrastructureNetworkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InfrastructureNetworkInclude<ExtArgs> | null
+    where?: InfrastructureNetworkWhereInput
+    orderBy?: InfrastructureNetworkOrderByWithRelationInput | InfrastructureNetworkOrderByWithRelationInput[]
+    cursor?: InfrastructureNetworkWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: InfrastructureNetworkScalarFieldEnum | InfrastructureNetworkScalarFieldEnum[]
   }
 
   /**
@@ -14281,6 +14619,1102 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: InfrastructureBuildingInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model InfrastructureNetwork
+   */
+
+  export type AggregateInfrastructureNetwork = {
+    _count: InfrastructureNetworkCountAggregateOutputType | null
+    _avg: InfrastructureNetworkAvgAggregateOutputType | null
+    _sum: InfrastructureNetworkSumAggregateOutputType | null
+    _min: InfrastructureNetworkMinAggregateOutputType | null
+    _max: InfrastructureNetworkMaxAggregateOutputType | null
+  }
+
+  export type InfrastructureNetworkAvgAggregateOutputType = {
+    maintenanceInstanceId: number | null
+  }
+
+  export type InfrastructureNetworkSumAggregateOutputType = {
+    maintenanceInstanceId: number | null
+  }
+
+  export type InfrastructureNetworkMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    alias: string | null
+    description: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    facilityComplexId: string | null
+    maintenanceInstanceId: number | null
+  }
+
+  export type InfrastructureNetworkMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    alias: string | null
+    description: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    facilityComplexId: string | null
+    maintenanceInstanceId: number | null
+  }
+
+  export type InfrastructureNetworkCountAggregateOutputType = {
+    id: number
+    name: number
+    alias: number
+    description: number
+    createdAt: number
+    updatedAt: number
+    facilityComplexId: number
+    maintenanceInstanceId: number
+    _all: number
+  }
+
+
+  export type InfrastructureNetworkAvgAggregateInputType = {
+    maintenanceInstanceId?: true
+  }
+
+  export type InfrastructureNetworkSumAggregateInputType = {
+    maintenanceInstanceId?: true
+  }
+
+  export type InfrastructureNetworkMinAggregateInputType = {
+    id?: true
+    name?: true
+    alias?: true
+    description?: true
+    createdAt?: true
+    updatedAt?: true
+    facilityComplexId?: true
+    maintenanceInstanceId?: true
+  }
+
+  export type InfrastructureNetworkMaxAggregateInputType = {
+    id?: true
+    name?: true
+    alias?: true
+    description?: true
+    createdAt?: true
+    updatedAt?: true
+    facilityComplexId?: true
+    maintenanceInstanceId?: true
+  }
+
+  export type InfrastructureNetworkCountAggregateInputType = {
+    id?: true
+    name?: true
+    alias?: true
+    description?: true
+    createdAt?: true
+    updatedAt?: true
+    facilityComplexId?: true
+    maintenanceInstanceId?: true
+    _all?: true
+  }
+
+  export type InfrastructureNetworkAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which InfrastructureNetwork to aggregate.
+     */
+    where?: InfrastructureNetworkWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of InfrastructureNetworks to fetch.
+     */
+    orderBy?: InfrastructureNetworkOrderByWithRelationInput | InfrastructureNetworkOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: InfrastructureNetworkWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` InfrastructureNetworks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` InfrastructureNetworks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned InfrastructureNetworks
+    **/
+    _count?: true | InfrastructureNetworkCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: InfrastructureNetworkAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: InfrastructureNetworkSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: InfrastructureNetworkMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: InfrastructureNetworkMaxAggregateInputType
+  }
+
+  export type GetInfrastructureNetworkAggregateType<T extends InfrastructureNetworkAggregateArgs> = {
+        [P in keyof T & keyof AggregateInfrastructureNetwork]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateInfrastructureNetwork[P]>
+      : GetScalarType<T[P], AggregateInfrastructureNetwork[P]>
+  }
+
+
+
+
+  export type InfrastructureNetworkGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InfrastructureNetworkWhereInput
+    orderBy?: InfrastructureNetworkOrderByWithAggregationInput | InfrastructureNetworkOrderByWithAggregationInput[]
+    by: InfrastructureNetworkScalarFieldEnum[] | InfrastructureNetworkScalarFieldEnum
+    having?: InfrastructureNetworkScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: InfrastructureNetworkCountAggregateInputType | true
+    _avg?: InfrastructureNetworkAvgAggregateInputType
+    _sum?: InfrastructureNetworkSumAggregateInputType
+    _min?: InfrastructureNetworkMinAggregateInputType
+    _max?: InfrastructureNetworkMaxAggregateInputType
+  }
+
+  export type InfrastructureNetworkGroupByOutputType = {
+    id: string
+    name: string
+    alias: string | null
+    description: string | null
+    createdAt: Date
+    updatedAt: Date
+    facilityComplexId: string | null
+    maintenanceInstanceId: number | null
+    _count: InfrastructureNetworkCountAggregateOutputType | null
+    _avg: InfrastructureNetworkAvgAggregateOutputType | null
+    _sum: InfrastructureNetworkSumAggregateOutputType | null
+    _min: InfrastructureNetworkMinAggregateOutputType | null
+    _max: InfrastructureNetworkMaxAggregateOutputType | null
+  }
+
+  type GetInfrastructureNetworkGroupByPayload<T extends InfrastructureNetworkGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<InfrastructureNetworkGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof InfrastructureNetworkGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], InfrastructureNetworkGroupByOutputType[P]>
+            : GetScalarType<T[P], InfrastructureNetworkGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type InfrastructureNetworkSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    alias?: boolean
+    description?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    facilityComplexId?: boolean
+    maintenanceInstanceId?: boolean
+    maintenanceRequests?: boolean | InfrastructureNetwork$maintenanceRequestsArgs<ExtArgs>
+    infraOccurrences?: boolean | InfrastructureNetwork$infraOccurrencesArgs<ExtArgs>
+    facilityComplex?: boolean | InfrastructureNetwork$facilityComplexArgs<ExtArgs>
+    maintenanceInstance?: boolean | InfrastructureNetwork$maintenanceInstanceArgs<ExtArgs>
+    _count?: boolean | InfrastructureNetworkCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["infrastructureNetwork"]>
+
+
+
+  export type InfrastructureNetworkSelectScalar = {
+    id?: boolean
+    name?: boolean
+    alias?: boolean
+    description?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    facilityComplexId?: boolean
+    maintenanceInstanceId?: boolean
+  }
+
+  export type InfrastructureNetworkOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "alias" | "description" | "createdAt" | "updatedAt" | "facilityComplexId" | "maintenanceInstanceId", ExtArgs["result"]["infrastructureNetwork"]>
+  export type InfrastructureNetworkInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    maintenanceRequests?: boolean | InfrastructureNetwork$maintenanceRequestsArgs<ExtArgs>
+    infraOccurrences?: boolean | InfrastructureNetwork$infraOccurrencesArgs<ExtArgs>
+    facilityComplex?: boolean | InfrastructureNetwork$facilityComplexArgs<ExtArgs>
+    maintenanceInstance?: boolean | InfrastructureNetwork$maintenanceInstanceArgs<ExtArgs>
+    _count?: boolean | InfrastructureNetworkCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $InfrastructureNetworkPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "InfrastructureNetwork"
+    objects: {
+      maintenanceRequests: Prisma.$MaintenanceRequestPayload<ExtArgs>[]
+      infraOccurrences: Prisma.$InfrastructureOccurrencePayload<ExtArgs>[]
+      facilityComplex: Prisma.$InfrastructureFacilityComplexPayload<ExtArgs> | null
+      maintenanceInstance: Prisma.$MaintenanceInstancePayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+      alias: string | null
+      description: string | null
+      createdAt: Date
+      updatedAt: Date
+      facilityComplexId: string | null
+      maintenanceInstanceId: number | null
+    }, ExtArgs["result"]["infrastructureNetwork"]>
+    composites: {}
+  }
+
+  type InfrastructureNetworkGetPayload<S extends boolean | null | undefined | InfrastructureNetworkDefaultArgs> = $Result.GetResult<Prisma.$InfrastructureNetworkPayload, S>
+
+  type InfrastructureNetworkCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<InfrastructureNetworkFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: InfrastructureNetworkCountAggregateInputType | true
+    }
+
+  export interface InfrastructureNetworkDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['InfrastructureNetwork'], meta: { name: 'InfrastructureNetwork' } }
+    /**
+     * Find zero or one InfrastructureNetwork that matches the filter.
+     * @param {InfrastructureNetworkFindUniqueArgs} args - Arguments to find a InfrastructureNetwork
+     * @example
+     * // Get one InfrastructureNetwork
+     * const infrastructureNetwork = await prisma.infrastructureNetwork.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends InfrastructureNetworkFindUniqueArgs>(args: SelectSubset<T, InfrastructureNetworkFindUniqueArgs<ExtArgs>>): Prisma__InfrastructureNetworkClient<$Result.GetResult<Prisma.$InfrastructureNetworkPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one InfrastructureNetwork that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {InfrastructureNetworkFindUniqueOrThrowArgs} args - Arguments to find a InfrastructureNetwork
+     * @example
+     * // Get one InfrastructureNetwork
+     * const infrastructureNetwork = await prisma.infrastructureNetwork.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends InfrastructureNetworkFindUniqueOrThrowArgs>(args: SelectSubset<T, InfrastructureNetworkFindUniqueOrThrowArgs<ExtArgs>>): Prisma__InfrastructureNetworkClient<$Result.GetResult<Prisma.$InfrastructureNetworkPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first InfrastructureNetwork that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InfrastructureNetworkFindFirstArgs} args - Arguments to find a InfrastructureNetwork
+     * @example
+     * // Get one InfrastructureNetwork
+     * const infrastructureNetwork = await prisma.infrastructureNetwork.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends InfrastructureNetworkFindFirstArgs>(args?: SelectSubset<T, InfrastructureNetworkFindFirstArgs<ExtArgs>>): Prisma__InfrastructureNetworkClient<$Result.GetResult<Prisma.$InfrastructureNetworkPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first InfrastructureNetwork that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InfrastructureNetworkFindFirstOrThrowArgs} args - Arguments to find a InfrastructureNetwork
+     * @example
+     * // Get one InfrastructureNetwork
+     * const infrastructureNetwork = await prisma.infrastructureNetwork.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends InfrastructureNetworkFindFirstOrThrowArgs>(args?: SelectSubset<T, InfrastructureNetworkFindFirstOrThrowArgs<ExtArgs>>): Prisma__InfrastructureNetworkClient<$Result.GetResult<Prisma.$InfrastructureNetworkPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more InfrastructureNetworks that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InfrastructureNetworkFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all InfrastructureNetworks
+     * const infrastructureNetworks = await prisma.infrastructureNetwork.findMany()
+     * 
+     * // Get first 10 InfrastructureNetworks
+     * const infrastructureNetworks = await prisma.infrastructureNetwork.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const infrastructureNetworkWithIdOnly = await prisma.infrastructureNetwork.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends InfrastructureNetworkFindManyArgs>(args?: SelectSubset<T, InfrastructureNetworkFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InfrastructureNetworkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a InfrastructureNetwork.
+     * @param {InfrastructureNetworkCreateArgs} args - Arguments to create a InfrastructureNetwork.
+     * @example
+     * // Create one InfrastructureNetwork
+     * const InfrastructureNetwork = await prisma.infrastructureNetwork.create({
+     *   data: {
+     *     // ... data to create a InfrastructureNetwork
+     *   }
+     * })
+     * 
+     */
+    create<T extends InfrastructureNetworkCreateArgs>(args: SelectSubset<T, InfrastructureNetworkCreateArgs<ExtArgs>>): Prisma__InfrastructureNetworkClient<$Result.GetResult<Prisma.$InfrastructureNetworkPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many InfrastructureNetworks.
+     * @param {InfrastructureNetworkCreateManyArgs} args - Arguments to create many InfrastructureNetworks.
+     * @example
+     * // Create many InfrastructureNetworks
+     * const infrastructureNetwork = await prisma.infrastructureNetwork.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends InfrastructureNetworkCreateManyArgs>(args?: SelectSubset<T, InfrastructureNetworkCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a InfrastructureNetwork.
+     * @param {InfrastructureNetworkDeleteArgs} args - Arguments to delete one InfrastructureNetwork.
+     * @example
+     * // Delete one InfrastructureNetwork
+     * const InfrastructureNetwork = await prisma.infrastructureNetwork.delete({
+     *   where: {
+     *     // ... filter to delete one InfrastructureNetwork
+     *   }
+     * })
+     * 
+     */
+    delete<T extends InfrastructureNetworkDeleteArgs>(args: SelectSubset<T, InfrastructureNetworkDeleteArgs<ExtArgs>>): Prisma__InfrastructureNetworkClient<$Result.GetResult<Prisma.$InfrastructureNetworkPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one InfrastructureNetwork.
+     * @param {InfrastructureNetworkUpdateArgs} args - Arguments to update one InfrastructureNetwork.
+     * @example
+     * // Update one InfrastructureNetwork
+     * const infrastructureNetwork = await prisma.infrastructureNetwork.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends InfrastructureNetworkUpdateArgs>(args: SelectSubset<T, InfrastructureNetworkUpdateArgs<ExtArgs>>): Prisma__InfrastructureNetworkClient<$Result.GetResult<Prisma.$InfrastructureNetworkPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more InfrastructureNetworks.
+     * @param {InfrastructureNetworkDeleteManyArgs} args - Arguments to filter InfrastructureNetworks to delete.
+     * @example
+     * // Delete a few InfrastructureNetworks
+     * const { count } = await prisma.infrastructureNetwork.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends InfrastructureNetworkDeleteManyArgs>(args?: SelectSubset<T, InfrastructureNetworkDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more InfrastructureNetworks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InfrastructureNetworkUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many InfrastructureNetworks
+     * const infrastructureNetwork = await prisma.infrastructureNetwork.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends InfrastructureNetworkUpdateManyArgs>(args: SelectSubset<T, InfrastructureNetworkUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one InfrastructureNetwork.
+     * @param {InfrastructureNetworkUpsertArgs} args - Arguments to update or create a InfrastructureNetwork.
+     * @example
+     * // Update or create a InfrastructureNetwork
+     * const infrastructureNetwork = await prisma.infrastructureNetwork.upsert({
+     *   create: {
+     *     // ... data to create a InfrastructureNetwork
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the InfrastructureNetwork we want to update
+     *   }
+     * })
+     */
+    upsert<T extends InfrastructureNetworkUpsertArgs>(args: SelectSubset<T, InfrastructureNetworkUpsertArgs<ExtArgs>>): Prisma__InfrastructureNetworkClient<$Result.GetResult<Prisma.$InfrastructureNetworkPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of InfrastructureNetworks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InfrastructureNetworkCountArgs} args - Arguments to filter InfrastructureNetworks to count.
+     * @example
+     * // Count the number of InfrastructureNetworks
+     * const count = await prisma.infrastructureNetwork.count({
+     *   where: {
+     *     // ... the filter for the InfrastructureNetworks we want to count
+     *   }
+     * })
+    **/
+    count<T extends InfrastructureNetworkCountArgs>(
+      args?: Subset<T, InfrastructureNetworkCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], InfrastructureNetworkCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a InfrastructureNetwork.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InfrastructureNetworkAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends InfrastructureNetworkAggregateArgs>(args: Subset<T, InfrastructureNetworkAggregateArgs>): Prisma.PrismaPromise<GetInfrastructureNetworkAggregateType<T>>
+
+    /**
+     * Group by InfrastructureNetwork.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InfrastructureNetworkGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends InfrastructureNetworkGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: InfrastructureNetworkGroupByArgs['orderBy'] }
+        : { orderBy?: InfrastructureNetworkGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, InfrastructureNetworkGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetInfrastructureNetworkGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the InfrastructureNetwork model
+   */
+  readonly fields: InfrastructureNetworkFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for InfrastructureNetwork.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__InfrastructureNetworkClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    maintenanceRequests<T extends InfrastructureNetwork$maintenanceRequestsArgs<ExtArgs> = {}>(args?: Subset<T, InfrastructureNetwork$maintenanceRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaintenanceRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    infraOccurrences<T extends InfrastructureNetwork$infraOccurrencesArgs<ExtArgs> = {}>(args?: Subset<T, InfrastructureNetwork$infraOccurrencesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InfrastructureOccurrencePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    facilityComplex<T extends InfrastructureNetwork$facilityComplexArgs<ExtArgs> = {}>(args?: Subset<T, InfrastructureNetwork$facilityComplexArgs<ExtArgs>>): Prisma__InfrastructureFacilityComplexClient<$Result.GetResult<Prisma.$InfrastructureFacilityComplexPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    maintenanceInstance<T extends InfrastructureNetwork$maintenanceInstanceArgs<ExtArgs> = {}>(args?: Subset<T, InfrastructureNetwork$maintenanceInstanceArgs<ExtArgs>>): Prisma__MaintenanceInstanceClient<$Result.GetResult<Prisma.$MaintenanceInstancePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the InfrastructureNetwork model
+   */
+  interface InfrastructureNetworkFieldRefs {
+    readonly id: FieldRef<"InfrastructureNetwork", 'String'>
+    readonly name: FieldRef<"InfrastructureNetwork", 'String'>
+    readonly alias: FieldRef<"InfrastructureNetwork", 'String'>
+    readonly description: FieldRef<"InfrastructureNetwork", 'String'>
+    readonly createdAt: FieldRef<"InfrastructureNetwork", 'DateTime'>
+    readonly updatedAt: FieldRef<"InfrastructureNetwork", 'DateTime'>
+    readonly facilityComplexId: FieldRef<"InfrastructureNetwork", 'String'>
+    readonly maintenanceInstanceId: FieldRef<"InfrastructureNetwork", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * InfrastructureNetwork findUnique
+   */
+  export type InfrastructureNetworkFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InfrastructureNetwork
+     */
+    select?: InfrastructureNetworkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InfrastructureNetwork
+     */
+    omit?: InfrastructureNetworkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InfrastructureNetworkInclude<ExtArgs> | null
+    /**
+     * Filter, which InfrastructureNetwork to fetch.
+     */
+    where: InfrastructureNetworkWhereUniqueInput
+  }
+
+  /**
+   * InfrastructureNetwork findUniqueOrThrow
+   */
+  export type InfrastructureNetworkFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InfrastructureNetwork
+     */
+    select?: InfrastructureNetworkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InfrastructureNetwork
+     */
+    omit?: InfrastructureNetworkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InfrastructureNetworkInclude<ExtArgs> | null
+    /**
+     * Filter, which InfrastructureNetwork to fetch.
+     */
+    where: InfrastructureNetworkWhereUniqueInput
+  }
+
+  /**
+   * InfrastructureNetwork findFirst
+   */
+  export type InfrastructureNetworkFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InfrastructureNetwork
+     */
+    select?: InfrastructureNetworkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InfrastructureNetwork
+     */
+    omit?: InfrastructureNetworkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InfrastructureNetworkInclude<ExtArgs> | null
+    /**
+     * Filter, which InfrastructureNetwork to fetch.
+     */
+    where?: InfrastructureNetworkWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of InfrastructureNetworks to fetch.
+     */
+    orderBy?: InfrastructureNetworkOrderByWithRelationInput | InfrastructureNetworkOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for InfrastructureNetworks.
+     */
+    cursor?: InfrastructureNetworkWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` InfrastructureNetworks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` InfrastructureNetworks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of InfrastructureNetworks.
+     */
+    distinct?: InfrastructureNetworkScalarFieldEnum | InfrastructureNetworkScalarFieldEnum[]
+  }
+
+  /**
+   * InfrastructureNetwork findFirstOrThrow
+   */
+  export type InfrastructureNetworkFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InfrastructureNetwork
+     */
+    select?: InfrastructureNetworkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InfrastructureNetwork
+     */
+    omit?: InfrastructureNetworkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InfrastructureNetworkInclude<ExtArgs> | null
+    /**
+     * Filter, which InfrastructureNetwork to fetch.
+     */
+    where?: InfrastructureNetworkWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of InfrastructureNetworks to fetch.
+     */
+    orderBy?: InfrastructureNetworkOrderByWithRelationInput | InfrastructureNetworkOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for InfrastructureNetworks.
+     */
+    cursor?: InfrastructureNetworkWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` InfrastructureNetworks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` InfrastructureNetworks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of InfrastructureNetworks.
+     */
+    distinct?: InfrastructureNetworkScalarFieldEnum | InfrastructureNetworkScalarFieldEnum[]
+  }
+
+  /**
+   * InfrastructureNetwork findMany
+   */
+  export type InfrastructureNetworkFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InfrastructureNetwork
+     */
+    select?: InfrastructureNetworkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InfrastructureNetwork
+     */
+    omit?: InfrastructureNetworkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InfrastructureNetworkInclude<ExtArgs> | null
+    /**
+     * Filter, which InfrastructureNetworks to fetch.
+     */
+    where?: InfrastructureNetworkWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of InfrastructureNetworks to fetch.
+     */
+    orderBy?: InfrastructureNetworkOrderByWithRelationInput | InfrastructureNetworkOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing InfrastructureNetworks.
+     */
+    cursor?: InfrastructureNetworkWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` InfrastructureNetworks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` InfrastructureNetworks.
+     */
+    skip?: number
+    distinct?: InfrastructureNetworkScalarFieldEnum | InfrastructureNetworkScalarFieldEnum[]
+  }
+
+  /**
+   * InfrastructureNetwork create
+   */
+  export type InfrastructureNetworkCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InfrastructureNetwork
+     */
+    select?: InfrastructureNetworkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InfrastructureNetwork
+     */
+    omit?: InfrastructureNetworkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InfrastructureNetworkInclude<ExtArgs> | null
+    /**
+     * The data needed to create a InfrastructureNetwork.
+     */
+    data: XOR<InfrastructureNetworkCreateInput, InfrastructureNetworkUncheckedCreateInput>
+  }
+
+  /**
+   * InfrastructureNetwork createMany
+   */
+  export type InfrastructureNetworkCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many InfrastructureNetworks.
+     */
+    data: InfrastructureNetworkCreateManyInput | InfrastructureNetworkCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * InfrastructureNetwork update
+   */
+  export type InfrastructureNetworkUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InfrastructureNetwork
+     */
+    select?: InfrastructureNetworkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InfrastructureNetwork
+     */
+    omit?: InfrastructureNetworkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InfrastructureNetworkInclude<ExtArgs> | null
+    /**
+     * The data needed to update a InfrastructureNetwork.
+     */
+    data: XOR<InfrastructureNetworkUpdateInput, InfrastructureNetworkUncheckedUpdateInput>
+    /**
+     * Choose, which InfrastructureNetwork to update.
+     */
+    where: InfrastructureNetworkWhereUniqueInput
+  }
+
+  /**
+   * InfrastructureNetwork updateMany
+   */
+  export type InfrastructureNetworkUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update InfrastructureNetworks.
+     */
+    data: XOR<InfrastructureNetworkUpdateManyMutationInput, InfrastructureNetworkUncheckedUpdateManyInput>
+    /**
+     * Filter which InfrastructureNetworks to update
+     */
+    where?: InfrastructureNetworkWhereInput
+    /**
+     * Limit how many InfrastructureNetworks to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * InfrastructureNetwork upsert
+   */
+  export type InfrastructureNetworkUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InfrastructureNetwork
+     */
+    select?: InfrastructureNetworkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InfrastructureNetwork
+     */
+    omit?: InfrastructureNetworkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InfrastructureNetworkInclude<ExtArgs> | null
+    /**
+     * The filter to search for the InfrastructureNetwork to update in case it exists.
+     */
+    where: InfrastructureNetworkWhereUniqueInput
+    /**
+     * In case the InfrastructureNetwork found by the `where` argument doesn't exist, create a new InfrastructureNetwork with this data.
+     */
+    create: XOR<InfrastructureNetworkCreateInput, InfrastructureNetworkUncheckedCreateInput>
+    /**
+     * In case the InfrastructureNetwork was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<InfrastructureNetworkUpdateInput, InfrastructureNetworkUncheckedUpdateInput>
+  }
+
+  /**
+   * InfrastructureNetwork delete
+   */
+  export type InfrastructureNetworkDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InfrastructureNetwork
+     */
+    select?: InfrastructureNetworkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InfrastructureNetwork
+     */
+    omit?: InfrastructureNetworkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InfrastructureNetworkInclude<ExtArgs> | null
+    /**
+     * Filter which InfrastructureNetwork to delete.
+     */
+    where: InfrastructureNetworkWhereUniqueInput
+  }
+
+  /**
+   * InfrastructureNetwork deleteMany
+   */
+  export type InfrastructureNetworkDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which InfrastructureNetworks to delete
+     */
+    where?: InfrastructureNetworkWhereInput
+    /**
+     * Limit how many InfrastructureNetworks to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * InfrastructureNetwork.maintenanceRequests
+   */
+  export type InfrastructureNetwork$maintenanceRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceRequest
+     */
+    select?: MaintenanceRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceRequest
+     */
+    omit?: MaintenanceRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceRequestInclude<ExtArgs> | null
+    where?: MaintenanceRequestWhereInput
+    orderBy?: MaintenanceRequestOrderByWithRelationInput | MaintenanceRequestOrderByWithRelationInput[]
+    cursor?: MaintenanceRequestWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MaintenanceRequestScalarFieldEnum | MaintenanceRequestScalarFieldEnum[]
+  }
+
+  /**
+   * InfrastructureNetwork.infraOccurrences
+   */
+  export type InfrastructureNetwork$infraOccurrencesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InfrastructureOccurrence
+     */
+    select?: InfrastructureOccurrenceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InfrastructureOccurrence
+     */
+    omit?: InfrastructureOccurrenceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InfrastructureOccurrenceInclude<ExtArgs> | null
+    where?: InfrastructureOccurrenceWhereInput
+    orderBy?: InfrastructureOccurrenceOrderByWithRelationInput | InfrastructureOccurrenceOrderByWithRelationInput[]
+    cursor?: InfrastructureOccurrenceWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: InfrastructureOccurrenceScalarFieldEnum | InfrastructureOccurrenceScalarFieldEnum[]
+  }
+
+  /**
+   * InfrastructureNetwork.facilityComplex
+   */
+  export type InfrastructureNetwork$facilityComplexArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InfrastructureFacilityComplex
+     */
+    select?: InfrastructureFacilityComplexSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InfrastructureFacilityComplex
+     */
+    omit?: InfrastructureFacilityComplexOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InfrastructureFacilityComplexInclude<ExtArgs> | null
+    where?: InfrastructureFacilityComplexWhereInput
+  }
+
+  /**
+   * InfrastructureNetwork.maintenanceInstance
+   */
+  export type InfrastructureNetwork$maintenanceInstanceArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceInstance
+     */
+    select?: MaintenanceInstanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceInstance
+     */
+    omit?: MaintenanceInstanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceInstanceInclude<ExtArgs> | null
+    where?: MaintenanceInstanceWhereInput
+  }
+
+  /**
+   * InfrastructureNetwork without action
+   */
+  export type InfrastructureNetworkDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InfrastructureNetwork
+     */
+    select?: InfrastructureNetworkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InfrastructureNetwork
+     */
+    omit?: InfrastructureNetworkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InfrastructureNetworkInclude<ExtArgs> | null
   }
 
 
@@ -20500,6 +21934,7 @@ export namespace Prisma {
     reportedById: number | null
     createdAt: Date | null
     updatedAt: Date | null
+    infrastructureNetworkId: string | null
   }
 
   export type InfrastructureOccurrenceMaxAggregateOutputType = {
@@ -20517,6 +21952,7 @@ export namespace Prisma {
     reportedById: number | null
     createdAt: Date | null
     updatedAt: Date | null
+    infrastructureNetworkId: string | null
   }
 
   export type InfrastructureOccurrenceCountAggregateOutputType = {
@@ -20534,6 +21970,7 @@ export namespace Prisma {
     reportedById: number
     createdAt: number
     updatedAt: number
+    infrastructureNetworkId: number
     _all: number
   }
 
@@ -20567,6 +22004,7 @@ export namespace Prisma {
     reportedById?: true
     createdAt?: true
     updatedAt?: true
+    infrastructureNetworkId?: true
   }
 
   export type InfrastructureOccurrenceMaxAggregateInputType = {
@@ -20584,6 +22022,7 @@ export namespace Prisma {
     reportedById?: true
     createdAt?: true
     updatedAt?: true
+    infrastructureNetworkId?: true
   }
 
   export type InfrastructureOccurrenceCountAggregateInputType = {
@@ -20601,6 +22040,7 @@ export namespace Prisma {
     reportedById?: true
     createdAt?: true
     updatedAt?: true
+    infrastructureNetworkId?: true
     _all?: true
   }
 
@@ -20705,6 +22145,7 @@ export namespace Prisma {
     reportedById: number
     createdAt: Date
     updatedAt: Date
+    infrastructureNetworkId: string | null
     _count: InfrastructureOccurrenceCountAggregateOutputType | null
     _avg: InfrastructureOccurrenceAvgAggregateOutputType | null
     _sum: InfrastructureOccurrenceSumAggregateOutputType | null
@@ -20741,6 +22182,7 @@ export namespace Prisma {
     reportedById?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    infrastructureNetworkId?: boolean
     duplicateOf?: boolean | InfrastructureOccurrence$duplicateOfArgs<ExtArgs>
     duplicates?: boolean | InfrastructureOccurrence$duplicatesArgs<ExtArgs>
     reinforcements?: boolean | InfrastructureOccurrence$reinforcementsArgs<ExtArgs>
@@ -20749,6 +22191,7 @@ export namespace Prisma {
     space?: boolean | InfrastructureOccurrence$spaceArgs<ExtArgs>
     reportedBy?: boolean | UserDefaultArgs<ExtArgs>
     diagnosis?: boolean | InfrastructureOccurrence$diagnosisArgs<ExtArgs>
+    infrastructureNetwork?: boolean | InfrastructureOccurrence$infrastructureNetworkArgs<ExtArgs>
     _count?: boolean | InfrastructureOccurrenceCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["infrastructureOccurrence"]>
 
@@ -20769,9 +22212,10 @@ export namespace Prisma {
     reportedById?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    infrastructureNetworkId?: boolean
   }
 
-  export type InfrastructureOccurrenceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "infrastructureType" | "locationDescription" | "reportedAt" | "status" | "duplicateOfId" | "facilityComplexId" | "buildingId" | "spaceId" | "reportedById" | "createdAt" | "updatedAt", ExtArgs["result"]["infrastructureOccurrence"]>
+  export type InfrastructureOccurrenceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "infrastructureType" | "locationDescription" | "reportedAt" | "status" | "duplicateOfId" | "facilityComplexId" | "buildingId" | "spaceId" | "reportedById" | "createdAt" | "updatedAt" | "infrastructureNetworkId", ExtArgs["result"]["infrastructureOccurrence"]>
   export type InfrastructureOccurrenceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     duplicateOf?: boolean | InfrastructureOccurrence$duplicateOfArgs<ExtArgs>
     duplicates?: boolean | InfrastructureOccurrence$duplicatesArgs<ExtArgs>
@@ -20781,6 +22225,7 @@ export namespace Prisma {
     space?: boolean | InfrastructureOccurrence$spaceArgs<ExtArgs>
     reportedBy?: boolean | UserDefaultArgs<ExtArgs>
     diagnosis?: boolean | InfrastructureOccurrence$diagnosisArgs<ExtArgs>
+    infrastructureNetwork?: boolean | InfrastructureOccurrence$infrastructureNetworkArgs<ExtArgs>
     _count?: boolean | InfrastructureOccurrenceCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -20795,6 +22240,7 @@ export namespace Prisma {
       space: Prisma.$InfrastructureSpacePayload<ExtArgs> | null
       reportedBy: Prisma.$UserPayload<ExtArgs>
       diagnosis: Prisma.$InfrastructureOccurrenceDiagnosisPayload<ExtArgs> | null
+      infrastructureNetwork: Prisma.$InfrastructureNetworkPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -20811,6 +22257,7 @@ export namespace Prisma {
       reportedById: number
       createdAt: Date
       updatedAt: Date
+      infrastructureNetworkId: string | null
     }, ExtArgs["result"]["infrastructureOccurrence"]>
     composites: {}
   }
@@ -21159,6 +22606,7 @@ export namespace Prisma {
     space<T extends InfrastructureOccurrence$spaceArgs<ExtArgs> = {}>(args?: Subset<T, InfrastructureOccurrence$spaceArgs<ExtArgs>>): Prisma__InfrastructureSpaceClient<$Result.GetResult<Prisma.$InfrastructureSpacePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     reportedBy<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     diagnosis<T extends InfrastructureOccurrence$diagnosisArgs<ExtArgs> = {}>(args?: Subset<T, InfrastructureOccurrence$diagnosisArgs<ExtArgs>>): Prisma__InfrastructureOccurrenceDiagnosisClient<$Result.GetResult<Prisma.$InfrastructureOccurrenceDiagnosisPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    infrastructureNetwork<T extends InfrastructureOccurrence$infrastructureNetworkArgs<ExtArgs> = {}>(args?: Subset<T, InfrastructureOccurrence$infrastructureNetworkArgs<ExtArgs>>): Prisma__InfrastructureNetworkClient<$Result.GetResult<Prisma.$InfrastructureNetworkPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -21202,6 +22650,7 @@ export namespace Prisma {
     readonly reportedById: FieldRef<"InfrastructureOccurrence", 'Int'>
     readonly createdAt: FieldRef<"InfrastructureOccurrence", 'DateTime'>
     readonly updatedAt: FieldRef<"InfrastructureOccurrence", 'DateTime'>
+    readonly infrastructureNetworkId: FieldRef<"InfrastructureOccurrence", 'String'>
   }
     
 
@@ -21685,6 +23134,25 @@ export namespace Prisma {
      */
     include?: InfrastructureOccurrenceDiagnosisInclude<ExtArgs> | null
     where?: InfrastructureOccurrenceDiagnosisWhereInput
+  }
+
+  /**
+   * InfrastructureOccurrence.infrastructureNetwork
+   */
+  export type InfrastructureOccurrence$infrastructureNetworkArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InfrastructureNetwork
+     */
+    select?: InfrastructureNetworkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InfrastructureNetwork
+     */
+    omit?: InfrastructureNetworkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InfrastructureNetworkInclude<ExtArgs> | null
+    where?: InfrastructureNetworkWhereInput
   }
 
   /**
@@ -26815,6 +28283,7 @@ export namespace Prisma {
     sipacUnitCostId: number | null
     sipacUserLoginRequest: string | null
     origin: $Enums.MaintenanceRequestOrigin | null
+    infrastructureNetworkId: string | null
   }
 
   export type MaintenanceRequestMaxAggregateOutputType = {
@@ -26844,6 +28313,7 @@ export namespace Prisma {
     sipacUnitCostId: number | null
     sipacUserLoginRequest: string | null
     origin: $Enums.MaintenanceRequestOrigin | null
+    infrastructureNetworkId: string | null
   }
 
   export type MaintenanceRequestCountAggregateOutputType = {
@@ -26873,6 +28343,7 @@ export namespace Prisma {
     sipacUnitCostId: number
     sipacUserLoginRequest: number
     origin: number
+    infrastructureNetworkId: number
     _all: number
   }
 
@@ -26930,6 +28401,7 @@ export namespace Prisma {
     sipacUnitCostId?: true
     sipacUserLoginRequest?: true
     origin?: true
+    infrastructureNetworkId?: true
   }
 
   export type MaintenanceRequestMaxAggregateInputType = {
@@ -26959,6 +28431,7 @@ export namespace Prisma {
     sipacUnitCostId?: true
     sipacUserLoginRequest?: true
     origin?: true
+    infrastructureNetworkId?: true
   }
 
   export type MaintenanceRequestCountAggregateInputType = {
@@ -26988,6 +28461,7 @@ export namespace Prisma {
     sipacUnitCostId?: true
     sipacUserLoginRequest?: true
     origin?: true
+    infrastructureNetworkId?: true
     _all?: true
   }
 
@@ -27104,6 +28578,7 @@ export namespace Prisma {
     sipacUnitCostId: number | null
     sipacUserLoginRequest: string | null
     origin: $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId: string | null
     _count: MaintenanceRequestCountAggregateOutputType | null
     _avg: MaintenanceRequestAvgAggregateOutputType | null
     _sum: MaintenanceRequestSumAggregateOutputType | null
@@ -27152,6 +28627,7 @@ export namespace Prisma {
     sipacUnitCostId?: boolean
     sipacUserLoginRequest?: boolean
     origin?: boolean
+    infrastructureNetworkId?: boolean
     priorities?: boolean | MaintenanceRequest$prioritiesArgs<ExtArgs>
     facilityComplex?: boolean | MaintenanceRequest$facilityComplexArgs<ExtArgs>
     building?: boolean | MaintenanceRequest$buildingArgs<ExtArgs>
@@ -27169,8 +28645,10 @@ export namespace Prisma {
     materialWithdrawals?: boolean | MaintenanceRequest$materialWithdrawalsArgs<ExtArgs>
     materialPickingOrders?: boolean | MaintenanceRequest$materialPickingOrdersArgs<ExtArgs>
     serviceOrders?: boolean | MaintenanceRequest$serviceOrdersArgs<ExtArgs>
+    maintenanceContractOrders?: boolean | MaintenanceRequest$maintenanceContractOrdersArgs<ExtArgs>
     sipacUnitRequesting?: boolean | MaintenanceRequest$sipacUnitRequestingArgs<ExtArgs>
     sipacUnitCost?: boolean | MaintenanceRequest$sipacUnitCostArgs<ExtArgs>
+    infrastructureNetwork?: boolean | MaintenanceRequest$infrastructureNetworkArgs<ExtArgs>
     _count?: boolean | MaintenanceRequestCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["maintenanceRequest"]>
 
@@ -27203,9 +28681,10 @@ export namespace Prisma {
     sipacUnitCostId?: boolean
     sipacUserLoginRequest?: boolean
     origin?: boolean
+    infrastructureNetworkId?: boolean
   }
 
-  export type MaintenanceRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "protocolNumber" | "title" | "description" | "requestedAt" | "deadline" | "solutionDetails" | "completedAt" | "facilityComplexId" | "buildingId" | "spaceId" | "local" | "systemId" | "currentMaintenanceInstanceId" | "createdById" | "assignedToId" | "serviceTypeId" | "diagnosisId" | "createdAt" | "updatedAt" | "notes" | "useResidueMaterial" | "sipacUnitRequestingId" | "sipacUnitCostId" | "sipacUserLoginRequest" | "origin", ExtArgs["result"]["maintenanceRequest"]>
+  export type MaintenanceRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "protocolNumber" | "title" | "description" | "requestedAt" | "deadline" | "solutionDetails" | "completedAt" | "facilityComplexId" | "buildingId" | "spaceId" | "local" | "systemId" | "currentMaintenanceInstanceId" | "createdById" | "assignedToId" | "serviceTypeId" | "diagnosisId" | "createdAt" | "updatedAt" | "notes" | "useResidueMaterial" | "sipacUnitRequestingId" | "sipacUnitCostId" | "sipacUserLoginRequest" | "origin" | "infrastructureNetworkId", ExtArgs["result"]["maintenanceRequest"]>
   export type MaintenanceRequestInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     priorities?: boolean | MaintenanceRequest$prioritiesArgs<ExtArgs>
     facilityComplex?: boolean | MaintenanceRequest$facilityComplexArgs<ExtArgs>
@@ -27224,8 +28703,10 @@ export namespace Prisma {
     materialWithdrawals?: boolean | MaintenanceRequest$materialWithdrawalsArgs<ExtArgs>
     materialPickingOrders?: boolean | MaintenanceRequest$materialPickingOrdersArgs<ExtArgs>
     serviceOrders?: boolean | MaintenanceRequest$serviceOrdersArgs<ExtArgs>
+    maintenanceContractOrders?: boolean | MaintenanceRequest$maintenanceContractOrdersArgs<ExtArgs>
     sipacUnitRequesting?: boolean | MaintenanceRequest$sipacUnitRequestingArgs<ExtArgs>
     sipacUnitCost?: boolean | MaintenanceRequest$sipacUnitCostArgs<ExtArgs>
+    infrastructureNetwork?: boolean | MaintenanceRequest$infrastructureNetworkArgs<ExtArgs>
     _count?: boolean | MaintenanceRequestCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -27249,8 +28730,10 @@ export namespace Prisma {
       materialWithdrawals: Prisma.$MaterialWithdrawalPayload<ExtArgs>[]
       materialPickingOrders: Prisma.$MaterialPickingOrderPayload<ExtArgs>[]
       serviceOrders: Prisma.$MaintenanceServiceOrderPayload<ExtArgs>[]
+      maintenanceContractOrders: Prisma.$MaintenanceContractOrderPayload<ExtArgs>[]
       sipacUnitRequesting: Prisma.$SipacUnidadePayload<ExtArgs> | null
       sipacUnitCost: Prisma.$SipacUnidadePayload<ExtArgs> | null
+      infrastructureNetwork: Prisma.$InfrastructureNetworkPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -27279,6 +28762,7 @@ export namespace Prisma {
       sipacUnitCostId: number | null
       sipacUserLoginRequest: string | null
       origin: $Enums.MaintenanceRequestOrigin
+      infrastructureNetworkId: string | null
     }, ExtArgs["result"]["maintenanceRequest"]>
     composites: {}
   }
@@ -27636,8 +29120,10 @@ export namespace Prisma {
     materialWithdrawals<T extends MaintenanceRequest$materialWithdrawalsArgs<ExtArgs> = {}>(args?: Subset<T, MaintenanceRequest$materialWithdrawalsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaterialWithdrawalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     materialPickingOrders<T extends MaintenanceRequest$materialPickingOrdersArgs<ExtArgs> = {}>(args?: Subset<T, MaintenanceRequest$materialPickingOrdersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaterialPickingOrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     serviceOrders<T extends MaintenanceRequest$serviceOrdersArgs<ExtArgs> = {}>(args?: Subset<T, MaintenanceRequest$serviceOrdersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaintenanceServiceOrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    maintenanceContractOrders<T extends MaintenanceRequest$maintenanceContractOrdersArgs<ExtArgs> = {}>(args?: Subset<T, MaintenanceRequest$maintenanceContractOrdersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaintenanceContractOrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     sipacUnitRequesting<T extends MaintenanceRequest$sipacUnitRequestingArgs<ExtArgs> = {}>(args?: Subset<T, MaintenanceRequest$sipacUnitRequestingArgs<ExtArgs>>): Prisma__SipacUnidadeClient<$Result.GetResult<Prisma.$SipacUnidadePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     sipacUnitCost<T extends MaintenanceRequest$sipacUnitCostArgs<ExtArgs> = {}>(args?: Subset<T, MaintenanceRequest$sipacUnitCostArgs<ExtArgs>>): Prisma__SipacUnidadeClient<$Result.GetResult<Prisma.$SipacUnidadePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    infrastructureNetwork<T extends MaintenanceRequest$infrastructureNetworkArgs<ExtArgs> = {}>(args?: Subset<T, MaintenanceRequest$infrastructureNetworkArgs<ExtArgs>>): Prisma__InfrastructureNetworkClient<$Result.GetResult<Prisma.$InfrastructureNetworkPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -27693,6 +29179,7 @@ export namespace Prisma {
     readonly sipacUnitCostId: FieldRef<"MaintenanceRequest", 'Int'>
     readonly sipacUserLoginRequest: FieldRef<"MaintenanceRequest", 'String'>
     readonly origin: FieldRef<"MaintenanceRequest", 'MaintenanceRequestOrigin'>
+    readonly infrastructureNetworkId: FieldRef<"MaintenanceRequest", 'String'>
   }
     
 
@@ -28399,6 +29886,30 @@ export namespace Prisma {
   }
 
   /**
+   * MaintenanceRequest.maintenanceContractOrders
+   */
+  export type MaintenanceRequest$maintenanceContractOrdersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceContractOrder
+     */
+    select?: MaintenanceContractOrderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceContractOrder
+     */
+    omit?: MaintenanceContractOrderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceContractOrderInclude<ExtArgs> | null
+    where?: MaintenanceContractOrderWhereInput
+    orderBy?: MaintenanceContractOrderOrderByWithRelationInput | MaintenanceContractOrderOrderByWithRelationInput[]
+    cursor?: MaintenanceContractOrderWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MaintenanceContractOrderScalarFieldEnum | MaintenanceContractOrderScalarFieldEnum[]
+  }
+
+  /**
    * MaintenanceRequest.sipacUnitRequesting
    */
   export type MaintenanceRequest$sipacUnitRequestingArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -28434,6 +29945,25 @@ export namespace Prisma {
      */
     include?: SipacUnidadeInclude<ExtArgs> | null
     where?: SipacUnidadeWhereInput
+  }
+
+  /**
+   * MaintenanceRequest.infrastructureNetwork
+   */
+  export type MaintenanceRequest$infrastructureNetworkArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InfrastructureNetwork
+     */
+    select?: InfrastructureNetworkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InfrastructureNetwork
+     */
+    omit?: InfrastructureNetworkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InfrastructureNetworkInclude<ExtArgs> | null
+    where?: InfrastructureNetworkWhereInput
   }
 
   /**
@@ -29590,6 +31120,1061 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: MaintenanceServiceOrderInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model MaintenanceContractOrder
+   */
+
+  export type AggregateMaintenanceContractOrder = {
+    _count: MaintenanceContractOrderCountAggregateOutputType | null
+    _avg: MaintenanceContractOrderAvgAggregateOutputType | null
+    _sum: MaintenanceContractOrderSumAggregateOutputType | null
+    _min: MaintenanceContractOrderMinAggregateOutputType | null
+    _max: MaintenanceContractOrderMaxAggregateOutputType | null
+  }
+
+  export type MaintenanceContractOrderAvgAggregateOutputType = {
+    id: number | null
+    contractId: number | null
+    maintenanceRequestId: number | null
+  }
+
+  export type MaintenanceContractOrderSumAggregateOutputType = {
+    id: number | null
+    contractId: number | null
+    maintenanceRequestId: number | null
+  }
+
+  export type MaintenanceContractOrderMinAggregateOutputType = {
+    id: number | null
+    title: string | null
+    description: string | null
+    contractId: number | null
+    maintenanceRequestId: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MaintenanceContractOrderMaxAggregateOutputType = {
+    id: number | null
+    title: string | null
+    description: string | null
+    contractId: number | null
+    maintenanceRequestId: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MaintenanceContractOrderCountAggregateOutputType = {
+    id: number
+    title: number
+    description: number
+    contractId: number
+    maintenanceRequestId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type MaintenanceContractOrderAvgAggregateInputType = {
+    id?: true
+    contractId?: true
+    maintenanceRequestId?: true
+  }
+
+  export type MaintenanceContractOrderSumAggregateInputType = {
+    id?: true
+    contractId?: true
+    maintenanceRequestId?: true
+  }
+
+  export type MaintenanceContractOrderMinAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    contractId?: true
+    maintenanceRequestId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MaintenanceContractOrderMaxAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    contractId?: true
+    maintenanceRequestId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MaintenanceContractOrderCountAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    contractId?: true
+    maintenanceRequestId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type MaintenanceContractOrderAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MaintenanceContractOrder to aggregate.
+     */
+    where?: MaintenanceContractOrderWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MaintenanceContractOrders to fetch.
+     */
+    orderBy?: MaintenanceContractOrderOrderByWithRelationInput | MaintenanceContractOrderOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: MaintenanceContractOrderWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MaintenanceContractOrders from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MaintenanceContractOrders.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned MaintenanceContractOrders
+    **/
+    _count?: true | MaintenanceContractOrderCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: MaintenanceContractOrderAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: MaintenanceContractOrderSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: MaintenanceContractOrderMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: MaintenanceContractOrderMaxAggregateInputType
+  }
+
+  export type GetMaintenanceContractOrderAggregateType<T extends MaintenanceContractOrderAggregateArgs> = {
+        [P in keyof T & keyof AggregateMaintenanceContractOrder]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMaintenanceContractOrder[P]>
+      : GetScalarType<T[P], AggregateMaintenanceContractOrder[P]>
+  }
+
+
+
+
+  export type MaintenanceContractOrderGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MaintenanceContractOrderWhereInput
+    orderBy?: MaintenanceContractOrderOrderByWithAggregationInput | MaintenanceContractOrderOrderByWithAggregationInput[]
+    by: MaintenanceContractOrderScalarFieldEnum[] | MaintenanceContractOrderScalarFieldEnum
+    having?: MaintenanceContractOrderScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: MaintenanceContractOrderCountAggregateInputType | true
+    _avg?: MaintenanceContractOrderAvgAggregateInputType
+    _sum?: MaintenanceContractOrderSumAggregateInputType
+    _min?: MaintenanceContractOrderMinAggregateInputType
+    _max?: MaintenanceContractOrderMaxAggregateInputType
+  }
+
+  export type MaintenanceContractOrderGroupByOutputType = {
+    id: number
+    title: string
+    description: string | null
+    contractId: number
+    maintenanceRequestId: number
+    createdAt: Date
+    updatedAt: Date
+    _count: MaintenanceContractOrderCountAggregateOutputType | null
+    _avg: MaintenanceContractOrderAvgAggregateOutputType | null
+    _sum: MaintenanceContractOrderSumAggregateOutputType | null
+    _min: MaintenanceContractOrderMinAggregateOutputType | null
+    _max: MaintenanceContractOrderMaxAggregateOutputType | null
+  }
+
+  type GetMaintenanceContractOrderGroupByPayload<T extends MaintenanceContractOrderGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<MaintenanceContractOrderGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof MaintenanceContractOrderGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], MaintenanceContractOrderGroupByOutputType[P]>
+            : GetScalarType<T[P], MaintenanceContractOrderGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type MaintenanceContractOrderSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    contractId?: boolean
+    maintenanceRequestId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    contract?: boolean | ContractDefaultArgs<ExtArgs>
+    maintenanceRequest?: boolean | MaintenanceRequestDefaultArgs<ExtArgs>
+    prerequisites?: boolean | MaintenanceContractOrder$prerequisitesArgs<ExtArgs>
+    subsequentOrders?: boolean | MaintenanceContractOrder$subsequentOrdersArgs<ExtArgs>
+    _count?: boolean | MaintenanceContractOrderCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["maintenanceContractOrder"]>
+
+
+
+  export type MaintenanceContractOrderSelectScalar = {
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    contractId?: boolean
+    maintenanceRequestId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type MaintenanceContractOrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "contractId" | "maintenanceRequestId" | "createdAt" | "updatedAt", ExtArgs["result"]["maintenanceContractOrder"]>
+  export type MaintenanceContractOrderInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    contract?: boolean | ContractDefaultArgs<ExtArgs>
+    maintenanceRequest?: boolean | MaintenanceRequestDefaultArgs<ExtArgs>
+    prerequisites?: boolean | MaintenanceContractOrder$prerequisitesArgs<ExtArgs>
+    subsequentOrders?: boolean | MaintenanceContractOrder$subsequentOrdersArgs<ExtArgs>
+    _count?: boolean | MaintenanceContractOrderCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $MaintenanceContractOrderPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "MaintenanceContractOrder"
+    objects: {
+      contract: Prisma.$ContractPayload<ExtArgs>
+      maintenanceRequest: Prisma.$MaintenanceRequestPayload<ExtArgs>
+      prerequisites: Prisma.$MaintenanceContractOrderPayload<ExtArgs>[]
+      subsequentOrders: Prisma.$MaintenanceContractOrderPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      title: string
+      description: string | null
+      contractId: number
+      maintenanceRequestId: number
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["maintenanceContractOrder"]>
+    composites: {}
+  }
+
+  type MaintenanceContractOrderGetPayload<S extends boolean | null | undefined | MaintenanceContractOrderDefaultArgs> = $Result.GetResult<Prisma.$MaintenanceContractOrderPayload, S>
+
+  type MaintenanceContractOrderCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<MaintenanceContractOrderFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: MaintenanceContractOrderCountAggregateInputType | true
+    }
+
+  export interface MaintenanceContractOrderDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['MaintenanceContractOrder'], meta: { name: 'MaintenanceContractOrder' } }
+    /**
+     * Find zero or one MaintenanceContractOrder that matches the filter.
+     * @param {MaintenanceContractOrderFindUniqueArgs} args - Arguments to find a MaintenanceContractOrder
+     * @example
+     * // Get one MaintenanceContractOrder
+     * const maintenanceContractOrder = await prisma.maintenanceContractOrder.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends MaintenanceContractOrderFindUniqueArgs>(args: SelectSubset<T, MaintenanceContractOrderFindUniqueArgs<ExtArgs>>): Prisma__MaintenanceContractOrderClient<$Result.GetResult<Prisma.$MaintenanceContractOrderPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one MaintenanceContractOrder that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {MaintenanceContractOrderFindUniqueOrThrowArgs} args - Arguments to find a MaintenanceContractOrder
+     * @example
+     * // Get one MaintenanceContractOrder
+     * const maintenanceContractOrder = await prisma.maintenanceContractOrder.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends MaintenanceContractOrderFindUniqueOrThrowArgs>(args: SelectSubset<T, MaintenanceContractOrderFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MaintenanceContractOrderClient<$Result.GetResult<Prisma.$MaintenanceContractOrderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MaintenanceContractOrder that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaintenanceContractOrderFindFirstArgs} args - Arguments to find a MaintenanceContractOrder
+     * @example
+     * // Get one MaintenanceContractOrder
+     * const maintenanceContractOrder = await prisma.maintenanceContractOrder.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends MaintenanceContractOrderFindFirstArgs>(args?: SelectSubset<T, MaintenanceContractOrderFindFirstArgs<ExtArgs>>): Prisma__MaintenanceContractOrderClient<$Result.GetResult<Prisma.$MaintenanceContractOrderPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MaintenanceContractOrder that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaintenanceContractOrderFindFirstOrThrowArgs} args - Arguments to find a MaintenanceContractOrder
+     * @example
+     * // Get one MaintenanceContractOrder
+     * const maintenanceContractOrder = await prisma.maintenanceContractOrder.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends MaintenanceContractOrderFindFirstOrThrowArgs>(args?: SelectSubset<T, MaintenanceContractOrderFindFirstOrThrowArgs<ExtArgs>>): Prisma__MaintenanceContractOrderClient<$Result.GetResult<Prisma.$MaintenanceContractOrderPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more MaintenanceContractOrders that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaintenanceContractOrderFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all MaintenanceContractOrders
+     * const maintenanceContractOrders = await prisma.maintenanceContractOrder.findMany()
+     * 
+     * // Get first 10 MaintenanceContractOrders
+     * const maintenanceContractOrders = await prisma.maintenanceContractOrder.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const maintenanceContractOrderWithIdOnly = await prisma.maintenanceContractOrder.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends MaintenanceContractOrderFindManyArgs>(args?: SelectSubset<T, MaintenanceContractOrderFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaintenanceContractOrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a MaintenanceContractOrder.
+     * @param {MaintenanceContractOrderCreateArgs} args - Arguments to create a MaintenanceContractOrder.
+     * @example
+     * // Create one MaintenanceContractOrder
+     * const MaintenanceContractOrder = await prisma.maintenanceContractOrder.create({
+     *   data: {
+     *     // ... data to create a MaintenanceContractOrder
+     *   }
+     * })
+     * 
+     */
+    create<T extends MaintenanceContractOrderCreateArgs>(args: SelectSubset<T, MaintenanceContractOrderCreateArgs<ExtArgs>>): Prisma__MaintenanceContractOrderClient<$Result.GetResult<Prisma.$MaintenanceContractOrderPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many MaintenanceContractOrders.
+     * @param {MaintenanceContractOrderCreateManyArgs} args - Arguments to create many MaintenanceContractOrders.
+     * @example
+     * // Create many MaintenanceContractOrders
+     * const maintenanceContractOrder = await prisma.maintenanceContractOrder.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends MaintenanceContractOrderCreateManyArgs>(args?: SelectSubset<T, MaintenanceContractOrderCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a MaintenanceContractOrder.
+     * @param {MaintenanceContractOrderDeleteArgs} args - Arguments to delete one MaintenanceContractOrder.
+     * @example
+     * // Delete one MaintenanceContractOrder
+     * const MaintenanceContractOrder = await prisma.maintenanceContractOrder.delete({
+     *   where: {
+     *     // ... filter to delete one MaintenanceContractOrder
+     *   }
+     * })
+     * 
+     */
+    delete<T extends MaintenanceContractOrderDeleteArgs>(args: SelectSubset<T, MaintenanceContractOrderDeleteArgs<ExtArgs>>): Prisma__MaintenanceContractOrderClient<$Result.GetResult<Prisma.$MaintenanceContractOrderPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one MaintenanceContractOrder.
+     * @param {MaintenanceContractOrderUpdateArgs} args - Arguments to update one MaintenanceContractOrder.
+     * @example
+     * // Update one MaintenanceContractOrder
+     * const maintenanceContractOrder = await prisma.maintenanceContractOrder.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends MaintenanceContractOrderUpdateArgs>(args: SelectSubset<T, MaintenanceContractOrderUpdateArgs<ExtArgs>>): Prisma__MaintenanceContractOrderClient<$Result.GetResult<Prisma.$MaintenanceContractOrderPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more MaintenanceContractOrders.
+     * @param {MaintenanceContractOrderDeleteManyArgs} args - Arguments to filter MaintenanceContractOrders to delete.
+     * @example
+     * // Delete a few MaintenanceContractOrders
+     * const { count } = await prisma.maintenanceContractOrder.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends MaintenanceContractOrderDeleteManyArgs>(args?: SelectSubset<T, MaintenanceContractOrderDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MaintenanceContractOrders.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaintenanceContractOrderUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many MaintenanceContractOrders
+     * const maintenanceContractOrder = await prisma.maintenanceContractOrder.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends MaintenanceContractOrderUpdateManyArgs>(args: SelectSubset<T, MaintenanceContractOrderUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one MaintenanceContractOrder.
+     * @param {MaintenanceContractOrderUpsertArgs} args - Arguments to update or create a MaintenanceContractOrder.
+     * @example
+     * // Update or create a MaintenanceContractOrder
+     * const maintenanceContractOrder = await prisma.maintenanceContractOrder.upsert({
+     *   create: {
+     *     // ... data to create a MaintenanceContractOrder
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the MaintenanceContractOrder we want to update
+     *   }
+     * })
+     */
+    upsert<T extends MaintenanceContractOrderUpsertArgs>(args: SelectSubset<T, MaintenanceContractOrderUpsertArgs<ExtArgs>>): Prisma__MaintenanceContractOrderClient<$Result.GetResult<Prisma.$MaintenanceContractOrderPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of MaintenanceContractOrders.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaintenanceContractOrderCountArgs} args - Arguments to filter MaintenanceContractOrders to count.
+     * @example
+     * // Count the number of MaintenanceContractOrders
+     * const count = await prisma.maintenanceContractOrder.count({
+     *   where: {
+     *     // ... the filter for the MaintenanceContractOrders we want to count
+     *   }
+     * })
+    **/
+    count<T extends MaintenanceContractOrderCountArgs>(
+      args?: Subset<T, MaintenanceContractOrderCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], MaintenanceContractOrderCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a MaintenanceContractOrder.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaintenanceContractOrderAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MaintenanceContractOrderAggregateArgs>(args: Subset<T, MaintenanceContractOrderAggregateArgs>): Prisma.PrismaPromise<GetMaintenanceContractOrderAggregateType<T>>
+
+    /**
+     * Group by MaintenanceContractOrder.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MaintenanceContractOrderGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends MaintenanceContractOrderGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: MaintenanceContractOrderGroupByArgs['orderBy'] }
+        : { orderBy?: MaintenanceContractOrderGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, MaintenanceContractOrderGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMaintenanceContractOrderGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the MaintenanceContractOrder model
+   */
+  readonly fields: MaintenanceContractOrderFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for MaintenanceContractOrder.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__MaintenanceContractOrderClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    contract<T extends ContractDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ContractDefaultArgs<ExtArgs>>): Prisma__ContractClient<$Result.GetResult<Prisma.$ContractPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    maintenanceRequest<T extends MaintenanceRequestDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MaintenanceRequestDefaultArgs<ExtArgs>>): Prisma__MaintenanceRequestClient<$Result.GetResult<Prisma.$MaintenanceRequestPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    prerequisites<T extends MaintenanceContractOrder$prerequisitesArgs<ExtArgs> = {}>(args?: Subset<T, MaintenanceContractOrder$prerequisitesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaintenanceContractOrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    subsequentOrders<T extends MaintenanceContractOrder$subsequentOrdersArgs<ExtArgs> = {}>(args?: Subset<T, MaintenanceContractOrder$subsequentOrdersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaintenanceContractOrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the MaintenanceContractOrder model
+   */
+  interface MaintenanceContractOrderFieldRefs {
+    readonly id: FieldRef<"MaintenanceContractOrder", 'Int'>
+    readonly title: FieldRef<"MaintenanceContractOrder", 'String'>
+    readonly description: FieldRef<"MaintenanceContractOrder", 'String'>
+    readonly contractId: FieldRef<"MaintenanceContractOrder", 'Int'>
+    readonly maintenanceRequestId: FieldRef<"MaintenanceContractOrder", 'Int'>
+    readonly createdAt: FieldRef<"MaintenanceContractOrder", 'DateTime'>
+    readonly updatedAt: FieldRef<"MaintenanceContractOrder", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * MaintenanceContractOrder findUnique
+   */
+  export type MaintenanceContractOrderFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceContractOrder
+     */
+    select?: MaintenanceContractOrderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceContractOrder
+     */
+    omit?: MaintenanceContractOrderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceContractOrderInclude<ExtArgs> | null
+    /**
+     * Filter, which MaintenanceContractOrder to fetch.
+     */
+    where: MaintenanceContractOrderWhereUniqueInput
+  }
+
+  /**
+   * MaintenanceContractOrder findUniqueOrThrow
+   */
+  export type MaintenanceContractOrderFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceContractOrder
+     */
+    select?: MaintenanceContractOrderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceContractOrder
+     */
+    omit?: MaintenanceContractOrderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceContractOrderInclude<ExtArgs> | null
+    /**
+     * Filter, which MaintenanceContractOrder to fetch.
+     */
+    where: MaintenanceContractOrderWhereUniqueInput
+  }
+
+  /**
+   * MaintenanceContractOrder findFirst
+   */
+  export type MaintenanceContractOrderFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceContractOrder
+     */
+    select?: MaintenanceContractOrderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceContractOrder
+     */
+    omit?: MaintenanceContractOrderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceContractOrderInclude<ExtArgs> | null
+    /**
+     * Filter, which MaintenanceContractOrder to fetch.
+     */
+    where?: MaintenanceContractOrderWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MaintenanceContractOrders to fetch.
+     */
+    orderBy?: MaintenanceContractOrderOrderByWithRelationInput | MaintenanceContractOrderOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MaintenanceContractOrders.
+     */
+    cursor?: MaintenanceContractOrderWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MaintenanceContractOrders from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MaintenanceContractOrders.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MaintenanceContractOrders.
+     */
+    distinct?: MaintenanceContractOrderScalarFieldEnum | MaintenanceContractOrderScalarFieldEnum[]
+  }
+
+  /**
+   * MaintenanceContractOrder findFirstOrThrow
+   */
+  export type MaintenanceContractOrderFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceContractOrder
+     */
+    select?: MaintenanceContractOrderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceContractOrder
+     */
+    omit?: MaintenanceContractOrderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceContractOrderInclude<ExtArgs> | null
+    /**
+     * Filter, which MaintenanceContractOrder to fetch.
+     */
+    where?: MaintenanceContractOrderWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MaintenanceContractOrders to fetch.
+     */
+    orderBy?: MaintenanceContractOrderOrderByWithRelationInput | MaintenanceContractOrderOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MaintenanceContractOrders.
+     */
+    cursor?: MaintenanceContractOrderWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MaintenanceContractOrders from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MaintenanceContractOrders.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MaintenanceContractOrders.
+     */
+    distinct?: MaintenanceContractOrderScalarFieldEnum | MaintenanceContractOrderScalarFieldEnum[]
+  }
+
+  /**
+   * MaintenanceContractOrder findMany
+   */
+  export type MaintenanceContractOrderFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceContractOrder
+     */
+    select?: MaintenanceContractOrderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceContractOrder
+     */
+    omit?: MaintenanceContractOrderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceContractOrderInclude<ExtArgs> | null
+    /**
+     * Filter, which MaintenanceContractOrders to fetch.
+     */
+    where?: MaintenanceContractOrderWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MaintenanceContractOrders to fetch.
+     */
+    orderBy?: MaintenanceContractOrderOrderByWithRelationInput | MaintenanceContractOrderOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing MaintenanceContractOrders.
+     */
+    cursor?: MaintenanceContractOrderWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MaintenanceContractOrders from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MaintenanceContractOrders.
+     */
+    skip?: number
+    distinct?: MaintenanceContractOrderScalarFieldEnum | MaintenanceContractOrderScalarFieldEnum[]
+  }
+
+  /**
+   * MaintenanceContractOrder create
+   */
+  export type MaintenanceContractOrderCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceContractOrder
+     */
+    select?: MaintenanceContractOrderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceContractOrder
+     */
+    omit?: MaintenanceContractOrderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceContractOrderInclude<ExtArgs> | null
+    /**
+     * The data needed to create a MaintenanceContractOrder.
+     */
+    data: XOR<MaintenanceContractOrderCreateInput, MaintenanceContractOrderUncheckedCreateInput>
+  }
+
+  /**
+   * MaintenanceContractOrder createMany
+   */
+  export type MaintenanceContractOrderCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many MaintenanceContractOrders.
+     */
+    data: MaintenanceContractOrderCreateManyInput | MaintenanceContractOrderCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * MaintenanceContractOrder update
+   */
+  export type MaintenanceContractOrderUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceContractOrder
+     */
+    select?: MaintenanceContractOrderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceContractOrder
+     */
+    omit?: MaintenanceContractOrderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceContractOrderInclude<ExtArgs> | null
+    /**
+     * The data needed to update a MaintenanceContractOrder.
+     */
+    data: XOR<MaintenanceContractOrderUpdateInput, MaintenanceContractOrderUncheckedUpdateInput>
+    /**
+     * Choose, which MaintenanceContractOrder to update.
+     */
+    where: MaintenanceContractOrderWhereUniqueInput
+  }
+
+  /**
+   * MaintenanceContractOrder updateMany
+   */
+  export type MaintenanceContractOrderUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update MaintenanceContractOrders.
+     */
+    data: XOR<MaintenanceContractOrderUpdateManyMutationInput, MaintenanceContractOrderUncheckedUpdateManyInput>
+    /**
+     * Filter which MaintenanceContractOrders to update
+     */
+    where?: MaintenanceContractOrderWhereInput
+    /**
+     * Limit how many MaintenanceContractOrders to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * MaintenanceContractOrder upsert
+   */
+  export type MaintenanceContractOrderUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceContractOrder
+     */
+    select?: MaintenanceContractOrderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceContractOrder
+     */
+    omit?: MaintenanceContractOrderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceContractOrderInclude<ExtArgs> | null
+    /**
+     * The filter to search for the MaintenanceContractOrder to update in case it exists.
+     */
+    where: MaintenanceContractOrderWhereUniqueInput
+    /**
+     * In case the MaintenanceContractOrder found by the `where` argument doesn't exist, create a new MaintenanceContractOrder with this data.
+     */
+    create: XOR<MaintenanceContractOrderCreateInput, MaintenanceContractOrderUncheckedCreateInput>
+    /**
+     * In case the MaintenanceContractOrder was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<MaintenanceContractOrderUpdateInput, MaintenanceContractOrderUncheckedUpdateInput>
+  }
+
+  /**
+   * MaintenanceContractOrder delete
+   */
+  export type MaintenanceContractOrderDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceContractOrder
+     */
+    select?: MaintenanceContractOrderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceContractOrder
+     */
+    omit?: MaintenanceContractOrderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceContractOrderInclude<ExtArgs> | null
+    /**
+     * Filter which MaintenanceContractOrder to delete.
+     */
+    where: MaintenanceContractOrderWhereUniqueInput
+  }
+
+  /**
+   * MaintenanceContractOrder deleteMany
+   */
+  export type MaintenanceContractOrderDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MaintenanceContractOrders to delete
+     */
+    where?: MaintenanceContractOrderWhereInput
+    /**
+     * Limit how many MaintenanceContractOrders to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * MaintenanceContractOrder.prerequisites
+   */
+  export type MaintenanceContractOrder$prerequisitesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceContractOrder
+     */
+    select?: MaintenanceContractOrderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceContractOrder
+     */
+    omit?: MaintenanceContractOrderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceContractOrderInclude<ExtArgs> | null
+    where?: MaintenanceContractOrderWhereInput
+    orderBy?: MaintenanceContractOrderOrderByWithRelationInput | MaintenanceContractOrderOrderByWithRelationInput[]
+    cursor?: MaintenanceContractOrderWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MaintenanceContractOrderScalarFieldEnum | MaintenanceContractOrderScalarFieldEnum[]
+  }
+
+  /**
+   * MaintenanceContractOrder.subsequentOrders
+   */
+  export type MaintenanceContractOrder$subsequentOrdersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceContractOrder
+     */
+    select?: MaintenanceContractOrderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceContractOrder
+     */
+    omit?: MaintenanceContractOrderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceContractOrderInclude<ExtArgs> | null
+    where?: MaintenanceContractOrderWhereInput
+    orderBy?: MaintenanceContractOrderOrderByWithRelationInput | MaintenanceContractOrderOrderByWithRelationInput[]
+    cursor?: MaintenanceContractOrderWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MaintenanceContractOrderScalarFieldEnum | MaintenanceContractOrderScalarFieldEnum[]
+  }
+
+  /**
+   * MaintenanceContractOrder without action
+   */
+  export type MaintenanceContractOrderDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MaintenanceContractOrder
+     */
+    select?: MaintenanceContractOrderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MaintenanceContractOrder
+     */
+    omit?: MaintenanceContractOrderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceContractOrderInclude<ExtArgs> | null
   }
 
 
@@ -30805,6 +33390,7 @@ export namespace Prisma {
     warehouses?: boolean | MaintenanceInstance$warehousesArgs<ExtArgs>
     InfrastructureBuilding?: boolean | MaintenanceInstance$InfrastructureBuildingArgs<ExtArgs>
     InfrastructureFacilityComplex?: boolean | MaintenanceInstance$InfrastructureFacilityComplexArgs<ExtArgs>
+    InfrastructureNetwork?: boolean | MaintenanceInstance$InfrastructureNetworkArgs<ExtArgs>
     users?: boolean | MaintenanceInstance$usersArgs<ExtArgs>
     workers?: boolean | MaintenanceInstance$workersArgs<ExtArgs>
     _count?: boolean | MaintenanceInstanceCountOutputTypeDefaultArgs<ExtArgs>
@@ -30829,6 +33415,7 @@ export namespace Prisma {
     warehouses?: boolean | MaintenanceInstance$warehousesArgs<ExtArgs>
     InfrastructureBuilding?: boolean | MaintenanceInstance$InfrastructureBuildingArgs<ExtArgs>
     InfrastructureFacilityComplex?: boolean | MaintenanceInstance$InfrastructureFacilityComplexArgs<ExtArgs>
+    InfrastructureNetwork?: boolean | MaintenanceInstance$InfrastructureNetworkArgs<ExtArgs>
     users?: boolean | MaintenanceInstance$usersArgs<ExtArgs>
     workers?: boolean | MaintenanceInstance$workersArgs<ExtArgs>
     _count?: boolean | MaintenanceInstanceCountOutputTypeDefaultArgs<ExtArgs>
@@ -30843,6 +33430,7 @@ export namespace Prisma {
       warehouses: Prisma.$WarehousePayload<ExtArgs>[]
       InfrastructureBuilding: Prisma.$InfrastructureBuildingPayload<ExtArgs>[]
       InfrastructureFacilityComplex: Prisma.$InfrastructureFacilityComplexPayload<ExtArgs>[]
+      InfrastructureNetwork: Prisma.$InfrastructureNetworkPayload<ExtArgs>[]
       users: Prisma.$UserPayload<ExtArgs>[]
       workers: Prisma.$WorkerPayload<ExtArgs>[]
     }
@@ -31199,6 +33787,7 @@ export namespace Prisma {
     warehouses<T extends MaintenanceInstance$warehousesArgs<ExtArgs> = {}>(args?: Subset<T, MaintenanceInstance$warehousesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WarehousePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     InfrastructureBuilding<T extends MaintenanceInstance$InfrastructureBuildingArgs<ExtArgs> = {}>(args?: Subset<T, MaintenanceInstance$InfrastructureBuildingArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InfrastructureBuildingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     InfrastructureFacilityComplex<T extends MaintenanceInstance$InfrastructureFacilityComplexArgs<ExtArgs> = {}>(args?: Subset<T, MaintenanceInstance$InfrastructureFacilityComplexArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InfrastructureFacilityComplexPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    InfrastructureNetwork<T extends MaintenanceInstance$InfrastructureNetworkArgs<ExtArgs> = {}>(args?: Subset<T, MaintenanceInstance$InfrastructureNetworkArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InfrastructureNetworkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     users<T extends MaintenanceInstance$usersArgs<ExtArgs> = {}>(args?: Subset<T, MaintenanceInstance$usersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     workers<T extends MaintenanceInstance$workersArgs<ExtArgs> = {}>(args?: Subset<T, MaintenanceInstance$workersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WorkerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -31720,6 +34309,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: InfrastructureFacilityComplexScalarFieldEnum | InfrastructureFacilityComplexScalarFieldEnum[]
+  }
+
+  /**
+   * MaintenanceInstance.InfrastructureNetwork
+   */
+  export type MaintenanceInstance$InfrastructureNetworkArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InfrastructureNetwork
+     */
+    select?: InfrastructureNetworkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InfrastructureNetwork
+     */
+    omit?: InfrastructureNetworkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InfrastructureNetworkInclude<ExtArgs> | null
+    where?: InfrastructureNetworkWhereInput
+    orderBy?: InfrastructureNetworkOrderByWithRelationInput | InfrastructureNetworkOrderByWithRelationInput[]
+    cursor?: InfrastructureNetworkWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: InfrastructureNetworkScalarFieldEnum | InfrastructureNetworkScalarFieldEnum[]
   }
 
   /**
@@ -90846,6 +93459,20 @@ export namespace Prisma {
   export type InfrastructureBuildingScalarFieldEnum = (typeof InfrastructureBuildingScalarFieldEnum)[keyof typeof InfrastructureBuildingScalarFieldEnum]
 
 
+  export const InfrastructureNetworkScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    alias: 'alias',
+    description: 'description',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    facilityComplexId: 'facilityComplexId',
+    maintenanceInstanceId: 'maintenanceInstanceId'
+  };
+
+  export type InfrastructureNetworkScalarFieldEnum = (typeof InfrastructureNetworkScalarFieldEnum)[keyof typeof InfrastructureNetworkScalarFieldEnum]
+
+
   export const InfrastructureBuildingActivityScalarFieldEnum: {
     id: 'id',
     name: 'name',
@@ -90932,7 +93559,8 @@ export namespace Prisma {
     spaceId: 'spaceId',
     reportedById: 'reportedById',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    infrastructureNetworkId: 'infrastructureNetworkId'
   };
 
   export type InfrastructureOccurrenceScalarFieldEnum = (typeof InfrastructureOccurrenceScalarFieldEnum)[keyof typeof InfrastructureOccurrenceScalarFieldEnum]
@@ -91034,7 +93662,8 @@ export namespace Prisma {
     sipacUnitRequestingId: 'sipacUnitRequestingId',
     sipacUnitCostId: 'sipacUnitCostId',
     sipacUserLoginRequest: 'sipacUserLoginRequest',
-    origin: 'origin'
+    origin: 'origin',
+    infrastructureNetworkId: 'infrastructureNetworkId'
   };
 
   export type MaintenanceRequestScalarFieldEnum = (typeof MaintenanceRequestScalarFieldEnum)[keyof typeof MaintenanceRequestScalarFieldEnum]
@@ -91056,6 +93685,19 @@ export namespace Prisma {
   };
 
   export type MaintenanceServiceOrderScalarFieldEnum = (typeof MaintenanceServiceOrderScalarFieldEnum)[keyof typeof MaintenanceServiceOrderScalarFieldEnum]
+
+
+  export const MaintenanceContractOrderScalarFieldEnum: {
+    id: 'id',
+    title: 'title',
+    description: 'description',
+    contractId: 'contractId',
+    maintenanceRequestId: 'maintenanceRequestId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type MaintenanceContractOrderScalarFieldEnum = (typeof MaintenanceContractOrderScalarFieldEnum)[keyof typeof MaintenanceContractOrderScalarFieldEnum]
 
 
   export const MaintenanceServiceTypeScalarFieldEnum: {
@@ -91988,6 +94630,17 @@ export namespace Prisma {
   export type InfrastructureBuildingOrderByRelevanceFieldEnum = (typeof InfrastructureBuildingOrderByRelevanceFieldEnum)[keyof typeof InfrastructureBuildingOrderByRelevanceFieldEnum]
 
 
+  export const InfrastructureNetworkOrderByRelevanceFieldEnum: {
+    id: 'id',
+    name: 'name',
+    alias: 'alias',
+    description: 'description',
+    facilityComplexId: 'facilityComplexId'
+  };
+
+  export type InfrastructureNetworkOrderByRelevanceFieldEnum = (typeof InfrastructureNetworkOrderByRelevanceFieldEnum)[keyof typeof InfrastructureNetworkOrderByRelevanceFieldEnum]
+
+
   export const InfrastructureBuildingActivityOrderByRelevanceFieldEnum: {
     name: 'name',
     description: 'description'
@@ -92037,7 +94690,8 @@ export namespace Prisma {
     description: 'description',
     locationDescription: 'locationDescription',
     facilityComplexId: 'facilityComplexId',
-    buildingId: 'buildingId'
+    buildingId: 'buildingId',
+    infrastructureNetworkId: 'infrastructureNetworkId'
   };
 
   export type InfrastructureOccurrenceOrderByRelevanceFieldEnum = (typeof InfrastructureOccurrenceOrderByRelevanceFieldEnum)[keyof typeof InfrastructureOccurrenceOrderByRelevanceFieldEnum]
@@ -92100,7 +94754,8 @@ export namespace Prisma {
     buildingId: 'buildingId',
     local: 'local',
     notes: 'notes',
-    sipacUserLoginRequest: 'sipacUserLoginRequest'
+    sipacUserLoginRequest: 'sipacUserLoginRequest',
+    infrastructureNetworkId: 'infrastructureNetworkId'
   };
 
   export type MaintenanceRequestOrderByRelevanceFieldEnum = (typeof MaintenanceRequestOrderByRelevanceFieldEnum)[keyof typeof MaintenanceRequestOrderByRelevanceFieldEnum]
@@ -92112,6 +94767,14 @@ export namespace Prisma {
   };
 
   export type MaintenanceServiceOrderOrderByRelevanceFieldEnum = (typeof MaintenanceServiceOrderOrderByRelevanceFieldEnum)[keyof typeof MaintenanceServiceOrderOrderByRelevanceFieldEnum]
+
+
+  export const MaintenanceContractOrderOrderByRelevanceFieldEnum: {
+    title: 'title',
+    description: 'description'
+  };
+
+  export type MaintenanceContractOrderOrderByRelevanceFieldEnum = (typeof MaintenanceContractOrderOrderByRelevanceFieldEnum)[keyof typeof MaintenanceContractOrderOrderByRelevanceFieldEnum]
 
 
   export const MaintenanceServiceTypeOrderByRelevanceFieldEnum: {
@@ -92851,6 +95514,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Contract"> | Date | string
     providers?: XOR<ContractProviderScalarRelationFilter, ContractProviderWhereInput>
     workersContracts?: WorkerContractListRelationFilter
+    maintenanceContractOrders?: MaintenanceContractOrderListRelationFilter
   }
 
   export type ContractOrderByWithRelationInput = {
@@ -92866,6 +95530,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     providers?: ContractProviderOrderByWithRelationInput
     workersContracts?: WorkerContractOrderByRelationAggregateInput
+    maintenanceContractOrders?: MaintenanceContractOrderOrderByRelationAggregateInput
     _relevance?: ContractOrderByRelevanceInput
   }
 
@@ -92885,6 +95550,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Contract"> | Date | string
     providers?: XOR<ContractProviderScalarRelationFilter, ContractProviderWhereInput>
     workersContracts?: WorkerContractListRelationFilter
+    maintenanceContractOrders?: MaintenanceContractOrderListRelationFilter
   }, "id">
 
   export type ContractOrderByWithAggregationInput = {
@@ -93017,6 +95683,7 @@ export namespace Prisma {
     buildings?: InfrastructureBuildingListRelationFilter
     InfrastructureOccurrence?: InfrastructureOccurrenceListRelationFilter
     MaintenanceRequest?: MaintenanceRequestListRelationFilter
+    infrastructureNetworks?: InfrastructureNetworkListRelationFilter
   }
 
   export type InfrastructureFacilityComplexOrderByWithRelationInput = {
@@ -93034,6 +95701,7 @@ export namespace Prisma {
     buildings?: InfrastructureBuildingOrderByRelationAggregateInput
     InfrastructureOccurrence?: InfrastructureOccurrenceOrderByRelationAggregateInput
     MaintenanceRequest?: MaintenanceRequestOrderByRelationAggregateInput
+    infrastructureNetworks?: InfrastructureNetworkOrderByRelationAggregateInput
     _relevance?: InfrastructureFacilityComplexOrderByRelevanceInput
   }
 
@@ -93055,6 +95723,7 @@ export namespace Prisma {
     buildings?: InfrastructureBuildingListRelationFilter
     InfrastructureOccurrence?: InfrastructureOccurrenceListRelationFilter
     MaintenanceRequest?: MaintenanceRequestListRelationFilter
+    infrastructureNetworks?: InfrastructureNetworkListRelationFilter
   }, "id">
 
   export type InfrastructureFacilityComplexOrderByWithAggregationInput = {
@@ -93214,6 +95883,88 @@ export namespace Prisma {
     facilityComplexId?: StringNullableWithAggregatesFilter<"InfrastructureBuilding"> | string | null
     infrastructureBuildingTypeId?: IntNullableWithAggregatesFilter<"InfrastructureBuilding"> | number | null
     maintenanceInstanceId?: IntNullableWithAggregatesFilter<"InfrastructureBuilding"> | number | null
+  }
+
+  export type InfrastructureNetworkWhereInput = {
+    AND?: InfrastructureNetworkWhereInput | InfrastructureNetworkWhereInput[]
+    OR?: InfrastructureNetworkWhereInput[]
+    NOT?: InfrastructureNetworkWhereInput | InfrastructureNetworkWhereInput[]
+    id?: StringFilter<"InfrastructureNetwork"> | string
+    name?: StringFilter<"InfrastructureNetwork"> | string
+    alias?: StringNullableFilter<"InfrastructureNetwork"> | string | null
+    description?: StringNullableFilter<"InfrastructureNetwork"> | string | null
+    createdAt?: DateTimeFilter<"InfrastructureNetwork"> | Date | string
+    updatedAt?: DateTimeFilter<"InfrastructureNetwork"> | Date | string
+    facilityComplexId?: StringNullableFilter<"InfrastructureNetwork"> | string | null
+    maintenanceInstanceId?: IntNullableFilter<"InfrastructureNetwork"> | number | null
+    maintenanceRequests?: MaintenanceRequestListRelationFilter
+    infraOccurrences?: InfrastructureOccurrenceListRelationFilter
+    facilityComplex?: XOR<InfrastructureFacilityComplexNullableScalarRelationFilter, InfrastructureFacilityComplexWhereInput> | null
+    maintenanceInstance?: XOR<MaintenanceInstanceNullableScalarRelationFilter, MaintenanceInstanceWhereInput> | null
+  }
+
+  export type InfrastructureNetworkOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    alias?: SortOrderInput | SortOrder
+    description?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    facilityComplexId?: SortOrderInput | SortOrder
+    maintenanceInstanceId?: SortOrderInput | SortOrder
+    maintenanceRequests?: MaintenanceRequestOrderByRelationAggregateInput
+    infraOccurrences?: InfrastructureOccurrenceOrderByRelationAggregateInput
+    facilityComplex?: InfrastructureFacilityComplexOrderByWithRelationInput
+    maintenanceInstance?: MaintenanceInstanceOrderByWithRelationInput
+    _relevance?: InfrastructureNetworkOrderByRelevanceInput
+  }
+
+  export type InfrastructureNetworkWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: InfrastructureNetworkWhereInput | InfrastructureNetworkWhereInput[]
+    OR?: InfrastructureNetworkWhereInput[]
+    NOT?: InfrastructureNetworkWhereInput | InfrastructureNetworkWhereInput[]
+    name?: StringFilter<"InfrastructureNetwork"> | string
+    alias?: StringNullableFilter<"InfrastructureNetwork"> | string | null
+    description?: StringNullableFilter<"InfrastructureNetwork"> | string | null
+    createdAt?: DateTimeFilter<"InfrastructureNetwork"> | Date | string
+    updatedAt?: DateTimeFilter<"InfrastructureNetwork"> | Date | string
+    facilityComplexId?: StringNullableFilter<"InfrastructureNetwork"> | string | null
+    maintenanceInstanceId?: IntNullableFilter<"InfrastructureNetwork"> | number | null
+    maintenanceRequests?: MaintenanceRequestListRelationFilter
+    infraOccurrences?: InfrastructureOccurrenceListRelationFilter
+    facilityComplex?: XOR<InfrastructureFacilityComplexNullableScalarRelationFilter, InfrastructureFacilityComplexWhereInput> | null
+    maintenanceInstance?: XOR<MaintenanceInstanceNullableScalarRelationFilter, MaintenanceInstanceWhereInput> | null
+  }, "id">
+
+  export type InfrastructureNetworkOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    alias?: SortOrderInput | SortOrder
+    description?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    facilityComplexId?: SortOrderInput | SortOrder
+    maintenanceInstanceId?: SortOrderInput | SortOrder
+    _count?: InfrastructureNetworkCountOrderByAggregateInput
+    _avg?: InfrastructureNetworkAvgOrderByAggregateInput
+    _max?: InfrastructureNetworkMaxOrderByAggregateInput
+    _min?: InfrastructureNetworkMinOrderByAggregateInput
+    _sum?: InfrastructureNetworkSumOrderByAggregateInput
+  }
+
+  export type InfrastructureNetworkScalarWhereWithAggregatesInput = {
+    AND?: InfrastructureNetworkScalarWhereWithAggregatesInput | InfrastructureNetworkScalarWhereWithAggregatesInput[]
+    OR?: InfrastructureNetworkScalarWhereWithAggregatesInput[]
+    NOT?: InfrastructureNetworkScalarWhereWithAggregatesInput | InfrastructureNetworkScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"InfrastructureNetwork"> | string
+    name?: StringWithAggregatesFilter<"InfrastructureNetwork"> | string
+    alias?: StringNullableWithAggregatesFilter<"InfrastructureNetwork"> | string | null
+    description?: StringNullableWithAggregatesFilter<"InfrastructureNetwork"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"InfrastructureNetwork"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"InfrastructureNetwork"> | Date | string
+    facilityComplexId?: StringNullableWithAggregatesFilter<"InfrastructureNetwork"> | string | null
+    maintenanceInstanceId?: IntNullableWithAggregatesFilter<"InfrastructureNetwork"> | number | null
   }
 
   export type InfrastructureBuildingActivityWhereInput = {
@@ -93642,6 +96393,7 @@ export namespace Prisma {
     reportedById?: IntFilter<"InfrastructureOccurrence"> | number
     createdAt?: DateTimeFilter<"InfrastructureOccurrence"> | Date | string
     updatedAt?: DateTimeFilter<"InfrastructureOccurrence"> | Date | string
+    infrastructureNetworkId?: StringNullableFilter<"InfrastructureOccurrence"> | string | null
     duplicateOf?: XOR<InfrastructureOccurrenceNullableScalarRelationFilter, InfrastructureOccurrenceWhereInput> | null
     duplicates?: InfrastructureOccurrenceListRelationFilter
     reinforcements?: InfrastructureOccurrenceReinforcementListRelationFilter
@@ -93650,6 +96402,7 @@ export namespace Prisma {
     space?: XOR<InfrastructureSpaceNullableScalarRelationFilter, InfrastructureSpaceWhereInput> | null
     reportedBy?: XOR<UserScalarRelationFilter, UserWhereInput>
     diagnosis?: XOR<InfrastructureOccurrenceDiagnosisNullableScalarRelationFilter, InfrastructureOccurrenceDiagnosisWhereInput> | null
+    infrastructureNetwork?: XOR<InfrastructureNetworkNullableScalarRelationFilter, InfrastructureNetworkWhereInput> | null
   }
 
   export type InfrastructureOccurrenceOrderByWithRelationInput = {
@@ -93667,6 +96420,7 @@ export namespace Prisma {
     reportedById?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    infrastructureNetworkId?: SortOrderInput | SortOrder
     duplicateOf?: InfrastructureOccurrenceOrderByWithRelationInput
     duplicates?: InfrastructureOccurrenceOrderByRelationAggregateInput
     reinforcements?: InfrastructureOccurrenceReinforcementOrderByRelationAggregateInput
@@ -93675,6 +96429,7 @@ export namespace Prisma {
     space?: InfrastructureSpaceOrderByWithRelationInput
     reportedBy?: UserOrderByWithRelationInput
     diagnosis?: InfrastructureOccurrenceDiagnosisOrderByWithRelationInput
+    infrastructureNetwork?: InfrastructureNetworkOrderByWithRelationInput
     _relevance?: InfrastructureOccurrenceOrderByRelevanceInput
   }
 
@@ -93696,6 +96451,7 @@ export namespace Prisma {
     reportedById?: IntFilter<"InfrastructureOccurrence"> | number
     createdAt?: DateTimeFilter<"InfrastructureOccurrence"> | Date | string
     updatedAt?: DateTimeFilter<"InfrastructureOccurrence"> | Date | string
+    infrastructureNetworkId?: StringNullableFilter<"InfrastructureOccurrence"> | string | null
     duplicateOf?: XOR<InfrastructureOccurrenceNullableScalarRelationFilter, InfrastructureOccurrenceWhereInput> | null
     duplicates?: InfrastructureOccurrenceListRelationFilter
     reinforcements?: InfrastructureOccurrenceReinforcementListRelationFilter
@@ -93704,6 +96460,7 @@ export namespace Prisma {
     space?: XOR<InfrastructureSpaceNullableScalarRelationFilter, InfrastructureSpaceWhereInput> | null
     reportedBy?: XOR<UserScalarRelationFilter, UserWhereInput>
     diagnosis?: XOR<InfrastructureOccurrenceDiagnosisNullableScalarRelationFilter, InfrastructureOccurrenceDiagnosisWhereInput> | null
+    infrastructureNetwork?: XOR<InfrastructureNetworkNullableScalarRelationFilter, InfrastructureNetworkWhereInput> | null
   }, "id">
 
   export type InfrastructureOccurrenceOrderByWithAggregationInput = {
@@ -93721,6 +96478,7 @@ export namespace Prisma {
     reportedById?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    infrastructureNetworkId?: SortOrderInput | SortOrder
     _count?: InfrastructureOccurrenceCountOrderByAggregateInput
     _avg?: InfrastructureOccurrenceAvgOrderByAggregateInput
     _max?: InfrastructureOccurrenceMaxOrderByAggregateInput
@@ -93746,6 +96504,7 @@ export namespace Prisma {
     reportedById?: IntWithAggregatesFilter<"InfrastructureOccurrence"> | number
     createdAt?: DateTimeWithAggregatesFilter<"InfrastructureOccurrence"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"InfrastructureOccurrence"> | Date | string
+    infrastructureNetworkId?: StringNullableWithAggregatesFilter<"InfrastructureOccurrence"> | string | null
   }
 
   export type InfrastructureOccurrenceReinforcementWhereInput = {
@@ -94153,6 +96912,7 @@ export namespace Prisma {
     sipacUnitCostId?: IntNullableFilter<"MaintenanceRequest"> | number | null
     sipacUserLoginRequest?: StringNullableFilter<"MaintenanceRequest"> | string | null
     origin?: EnumMaintenanceRequestOriginFilter<"MaintenanceRequest"> | $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: StringNullableFilter<"MaintenanceRequest"> | string | null
     priorities?: MaintenanceRequestPriorityListRelationFilter
     facilityComplex?: XOR<InfrastructureFacilityComplexNullableScalarRelationFilter, InfrastructureFacilityComplexWhereInput> | null
     building?: XOR<InfrastructureBuildingNullableScalarRelationFilter, InfrastructureBuildingWhereInput> | null
@@ -94170,8 +96930,10 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalListRelationFilter
     materialPickingOrders?: MaterialPickingOrderListRelationFilter
     serviceOrders?: MaintenanceServiceOrderListRelationFilter
+    maintenanceContractOrders?: MaintenanceContractOrderListRelationFilter
     sipacUnitRequesting?: XOR<SipacUnidadeNullableScalarRelationFilter, SipacUnidadeWhereInput> | null
     sipacUnitCost?: XOR<SipacUnidadeNullableScalarRelationFilter, SipacUnidadeWhereInput> | null
+    infrastructureNetwork?: XOR<InfrastructureNetworkNullableScalarRelationFilter, InfrastructureNetworkWhereInput> | null
   }
 
   export type MaintenanceRequestOrderByWithRelationInput = {
@@ -94201,6 +96963,7 @@ export namespace Prisma {
     sipacUnitCostId?: SortOrderInput | SortOrder
     sipacUserLoginRequest?: SortOrderInput | SortOrder
     origin?: SortOrder
+    infrastructureNetworkId?: SortOrderInput | SortOrder
     priorities?: MaintenanceRequestPriorityOrderByRelationAggregateInput
     facilityComplex?: InfrastructureFacilityComplexOrderByWithRelationInput
     building?: InfrastructureBuildingOrderByWithRelationInput
@@ -94218,8 +96981,10 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalOrderByRelationAggregateInput
     materialPickingOrders?: MaterialPickingOrderOrderByRelationAggregateInput
     serviceOrders?: MaintenanceServiceOrderOrderByRelationAggregateInput
+    maintenanceContractOrders?: MaintenanceContractOrderOrderByRelationAggregateInput
     sipacUnitRequesting?: SipacUnidadeOrderByWithRelationInput
     sipacUnitCost?: SipacUnidadeOrderByWithRelationInput
+    infrastructureNetwork?: InfrastructureNetworkOrderByWithRelationInput
     _relevance?: MaintenanceRequestOrderByRelevanceInput
   }
 
@@ -94253,6 +97018,7 @@ export namespace Prisma {
     sipacUnitCostId?: IntNullableFilter<"MaintenanceRequest"> | number | null
     sipacUserLoginRequest?: StringNullableFilter<"MaintenanceRequest"> | string | null
     origin?: EnumMaintenanceRequestOriginFilter<"MaintenanceRequest"> | $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: StringNullableFilter<"MaintenanceRequest"> | string | null
     priorities?: MaintenanceRequestPriorityListRelationFilter
     facilityComplex?: XOR<InfrastructureFacilityComplexNullableScalarRelationFilter, InfrastructureFacilityComplexWhereInput> | null
     building?: XOR<InfrastructureBuildingNullableScalarRelationFilter, InfrastructureBuildingWhereInput> | null
@@ -94270,8 +97036,10 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalListRelationFilter
     materialPickingOrders?: MaterialPickingOrderListRelationFilter
     serviceOrders?: MaintenanceServiceOrderListRelationFilter
+    maintenanceContractOrders?: MaintenanceContractOrderListRelationFilter
     sipacUnitRequesting?: XOR<SipacUnidadeNullableScalarRelationFilter, SipacUnidadeWhereInput> | null
     sipacUnitCost?: XOR<SipacUnidadeNullableScalarRelationFilter, SipacUnidadeWhereInput> | null
+    infrastructureNetwork?: XOR<InfrastructureNetworkNullableScalarRelationFilter, InfrastructureNetworkWhereInput> | null
   }, "id" | "protocolNumber" | "diagnosisId">
 
   export type MaintenanceRequestOrderByWithAggregationInput = {
@@ -94301,6 +97069,7 @@ export namespace Prisma {
     sipacUnitCostId?: SortOrderInput | SortOrder
     sipacUserLoginRequest?: SortOrderInput | SortOrder
     origin?: SortOrder
+    infrastructureNetworkId?: SortOrderInput | SortOrder
     _count?: MaintenanceRequestCountOrderByAggregateInput
     _avg?: MaintenanceRequestAvgOrderByAggregateInput
     _max?: MaintenanceRequestMaxOrderByAggregateInput
@@ -94338,6 +97107,7 @@ export namespace Prisma {
     sipacUnitCostId?: IntNullableWithAggregatesFilter<"MaintenanceRequest"> | number | null
     sipacUserLoginRequest?: StringNullableWithAggregatesFilter<"MaintenanceRequest"> | string | null
     origin?: EnumMaintenanceRequestOriginWithAggregatesFilter<"MaintenanceRequest"> | $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: StringNullableWithAggregatesFilter<"MaintenanceRequest"> | string | null
   }
 
   export type MaintenanceServiceOrderWhereInput = {
@@ -94445,6 +97215,83 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"MaintenanceServiceOrder"> | Date | string
   }
 
+  export type MaintenanceContractOrderWhereInput = {
+    AND?: MaintenanceContractOrderWhereInput | MaintenanceContractOrderWhereInput[]
+    OR?: MaintenanceContractOrderWhereInput[]
+    NOT?: MaintenanceContractOrderWhereInput | MaintenanceContractOrderWhereInput[]
+    id?: IntFilter<"MaintenanceContractOrder"> | number
+    title?: StringFilter<"MaintenanceContractOrder"> | string
+    description?: StringNullableFilter<"MaintenanceContractOrder"> | string | null
+    contractId?: IntFilter<"MaintenanceContractOrder"> | number
+    maintenanceRequestId?: IntFilter<"MaintenanceContractOrder"> | number
+    createdAt?: DateTimeFilter<"MaintenanceContractOrder"> | Date | string
+    updatedAt?: DateTimeFilter<"MaintenanceContractOrder"> | Date | string
+    contract?: XOR<ContractScalarRelationFilter, ContractWhereInput>
+    maintenanceRequest?: XOR<MaintenanceRequestScalarRelationFilter, MaintenanceRequestWhereInput>
+    prerequisites?: MaintenanceContractOrderListRelationFilter
+    subsequentOrders?: MaintenanceContractOrderListRelationFilter
+  }
+
+  export type MaintenanceContractOrderOrderByWithRelationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrderInput | SortOrder
+    contractId?: SortOrder
+    maintenanceRequestId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    contract?: ContractOrderByWithRelationInput
+    maintenanceRequest?: MaintenanceRequestOrderByWithRelationInput
+    prerequisites?: MaintenanceContractOrderOrderByRelationAggregateInput
+    subsequentOrders?: MaintenanceContractOrderOrderByRelationAggregateInput
+    _relevance?: MaintenanceContractOrderOrderByRelevanceInput
+  }
+
+  export type MaintenanceContractOrderWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: MaintenanceContractOrderWhereInput | MaintenanceContractOrderWhereInput[]
+    OR?: MaintenanceContractOrderWhereInput[]
+    NOT?: MaintenanceContractOrderWhereInput | MaintenanceContractOrderWhereInput[]
+    title?: StringFilter<"MaintenanceContractOrder"> | string
+    description?: StringNullableFilter<"MaintenanceContractOrder"> | string | null
+    contractId?: IntFilter<"MaintenanceContractOrder"> | number
+    maintenanceRequestId?: IntFilter<"MaintenanceContractOrder"> | number
+    createdAt?: DateTimeFilter<"MaintenanceContractOrder"> | Date | string
+    updatedAt?: DateTimeFilter<"MaintenanceContractOrder"> | Date | string
+    contract?: XOR<ContractScalarRelationFilter, ContractWhereInput>
+    maintenanceRequest?: XOR<MaintenanceRequestScalarRelationFilter, MaintenanceRequestWhereInput>
+    prerequisites?: MaintenanceContractOrderListRelationFilter
+    subsequentOrders?: MaintenanceContractOrderListRelationFilter
+  }, "id">
+
+  export type MaintenanceContractOrderOrderByWithAggregationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrderInput | SortOrder
+    contractId?: SortOrder
+    maintenanceRequestId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: MaintenanceContractOrderCountOrderByAggregateInput
+    _avg?: MaintenanceContractOrderAvgOrderByAggregateInput
+    _max?: MaintenanceContractOrderMaxOrderByAggregateInput
+    _min?: MaintenanceContractOrderMinOrderByAggregateInput
+    _sum?: MaintenanceContractOrderSumOrderByAggregateInput
+  }
+
+  export type MaintenanceContractOrderScalarWhereWithAggregatesInput = {
+    AND?: MaintenanceContractOrderScalarWhereWithAggregatesInput | MaintenanceContractOrderScalarWhereWithAggregatesInput[]
+    OR?: MaintenanceContractOrderScalarWhereWithAggregatesInput[]
+    NOT?: MaintenanceContractOrderScalarWhereWithAggregatesInput | MaintenanceContractOrderScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"MaintenanceContractOrder"> | number
+    title?: StringWithAggregatesFilter<"MaintenanceContractOrder"> | string
+    description?: StringNullableWithAggregatesFilter<"MaintenanceContractOrder"> | string | null
+    contractId?: IntWithAggregatesFilter<"MaintenanceContractOrder"> | number
+    maintenanceRequestId?: IntWithAggregatesFilter<"MaintenanceContractOrder"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"MaintenanceContractOrder"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"MaintenanceContractOrder"> | Date | string
+  }
+
   export type MaintenanceServiceTypeWhereInput = {
     AND?: MaintenanceServiceTypeWhereInput | MaintenanceServiceTypeWhereInput[]
     OR?: MaintenanceServiceTypeWhereInput[]
@@ -94524,6 +97371,7 @@ export namespace Prisma {
     warehouses?: WarehouseListRelationFilter
     InfrastructureBuilding?: InfrastructureBuildingListRelationFilter
     InfrastructureFacilityComplex?: InfrastructureFacilityComplexListRelationFilter
+    InfrastructureNetwork?: InfrastructureNetworkListRelationFilter
     users?: UserListRelationFilter
     workers?: WorkerListRelationFilter
   }
@@ -94541,6 +97389,7 @@ export namespace Prisma {
     warehouses?: WarehouseOrderByRelationAggregateInput
     InfrastructureBuilding?: InfrastructureBuildingOrderByRelationAggregateInput
     InfrastructureFacilityComplex?: InfrastructureFacilityComplexOrderByRelationAggregateInput
+    InfrastructureNetwork?: InfrastructureNetworkOrderByRelationAggregateInput
     users?: UserOrderByRelationAggregateInput
     workers?: WorkerOrderByRelationAggregateInput
     _relevance?: MaintenanceInstanceOrderByRelevanceInput
@@ -94562,6 +97411,7 @@ export namespace Prisma {
     warehouses?: WarehouseListRelationFilter
     InfrastructureBuilding?: InfrastructureBuildingListRelationFilter
     InfrastructureFacilityComplex?: InfrastructureFacilityComplexListRelationFilter
+    InfrastructureNetwork?: InfrastructureNetworkListRelationFilter
     users?: UserListRelationFilter
     workers?: WorkerListRelationFilter
   }, "id" | "sipacId" | "name">
@@ -99554,6 +102404,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     providers: ContractProviderCreateNestedOneWithoutContractsInput
     workersContracts?: WorkerContractCreateNestedManyWithoutContractInput
+    maintenanceContractOrders?: MaintenanceContractOrderCreateNestedManyWithoutContractInput
   }
 
   export type ContractUncheckedCreateInput = {
@@ -99568,6 +102419,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     workersContracts?: WorkerContractUncheckedCreateNestedManyWithoutContractInput
+    maintenanceContractOrders?: MaintenanceContractOrderUncheckedCreateNestedManyWithoutContractInput
   }
 
   export type ContractUpdateInput = {
@@ -99581,6 +102433,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     providers?: ContractProviderUpdateOneRequiredWithoutContractsNestedInput
     workersContracts?: WorkerContractUpdateManyWithoutContractNestedInput
+    maintenanceContractOrders?: MaintenanceContractOrderUpdateManyWithoutContractNestedInput
   }
 
   export type ContractUncheckedUpdateInput = {
@@ -99595,6 +102448,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     workersContracts?: WorkerContractUncheckedUpdateManyWithoutContractNestedInput
+    maintenanceContractOrders?: MaintenanceContractOrderUncheckedUpdateManyWithoutContractNestedInput
   }
 
   export type ContractCreateManyInput = {
@@ -99733,6 +102587,7 @@ export namespace Prisma {
     buildings?: InfrastructureBuildingCreateNestedManyWithoutFacilityComplexInput
     InfrastructureOccurrence?: InfrastructureOccurrenceCreateNestedManyWithoutFacilityComplexInput
     MaintenanceRequest?: MaintenanceRequestCreateNestedManyWithoutFacilityComplexInput
+    infrastructureNetworks?: InfrastructureNetworkCreateNestedManyWithoutFacilityComplexInput
   }
 
   export type InfrastructureFacilityComplexUncheckedCreateInput = {
@@ -99749,6 +102604,7 @@ export namespace Prisma {
     buildings?: InfrastructureBuildingUncheckedCreateNestedManyWithoutFacilityComplexInput
     InfrastructureOccurrence?: InfrastructureOccurrenceUncheckedCreateNestedManyWithoutFacilityComplexInput
     MaintenanceRequest?: MaintenanceRequestUncheckedCreateNestedManyWithoutFacilityComplexInput
+    infrastructureNetworks?: InfrastructureNetworkUncheckedCreateNestedManyWithoutFacilityComplexInput
   }
 
   export type InfrastructureFacilityComplexUpdateInput = {
@@ -99765,6 +102621,7 @@ export namespace Prisma {
     buildings?: InfrastructureBuildingUpdateManyWithoutFacilityComplexNestedInput
     InfrastructureOccurrence?: InfrastructureOccurrenceUpdateManyWithoutFacilityComplexNestedInput
     MaintenanceRequest?: MaintenanceRequestUpdateManyWithoutFacilityComplexNestedInput
+    infrastructureNetworks?: InfrastructureNetworkUpdateManyWithoutFacilityComplexNestedInput
   }
 
   export type InfrastructureFacilityComplexUncheckedUpdateInput = {
@@ -99781,6 +102638,7 @@ export namespace Prisma {
     buildings?: InfrastructureBuildingUncheckedUpdateManyWithoutFacilityComplexNestedInput
     InfrastructureOccurrence?: InfrastructureOccurrenceUncheckedUpdateManyWithoutFacilityComplexNestedInput
     MaintenanceRequest?: MaintenanceRequestUncheckedUpdateManyWithoutFacilityComplexNestedInput
+    infrastructureNetworks?: InfrastructureNetworkUncheckedUpdateManyWithoutFacilityComplexNestedInput
   }
 
   export type InfrastructureFacilityComplexCreateManyInput = {
@@ -99955,6 +102813,89 @@ export namespace Prisma {
     restrictedAccess?: BoolFieldUpdateOperationsInput | boolean
     facilityComplexId?: NullableStringFieldUpdateOperationsInput | string | null
     infrastructureBuildingTypeId?: NullableIntFieldUpdateOperationsInput | number | null
+    maintenanceInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type InfrastructureNetworkCreateInput = {
+    id: string
+    name: string
+    alias?: string | null
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    maintenanceRequests?: MaintenanceRequestCreateNestedManyWithoutInfrastructureNetworkInput
+    infraOccurrences?: InfrastructureOccurrenceCreateNestedManyWithoutInfrastructureNetworkInput
+    facilityComplex?: InfrastructureFacilityComplexCreateNestedOneWithoutInfrastructureNetworksInput
+    maintenanceInstance?: MaintenanceInstanceCreateNestedOneWithoutInfrastructureNetworkInput
+  }
+
+  export type InfrastructureNetworkUncheckedCreateInput = {
+    id: string
+    name: string
+    alias?: string | null
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    facilityComplexId?: string | null
+    maintenanceInstanceId?: number | null
+    maintenanceRequests?: MaintenanceRequestUncheckedCreateNestedManyWithoutInfrastructureNetworkInput
+    infraOccurrences?: InfrastructureOccurrenceUncheckedCreateNestedManyWithoutInfrastructureNetworkInput
+  }
+
+  export type InfrastructureNetworkUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    alias?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maintenanceRequests?: MaintenanceRequestUpdateManyWithoutInfrastructureNetworkNestedInput
+    infraOccurrences?: InfrastructureOccurrenceUpdateManyWithoutInfrastructureNetworkNestedInput
+    facilityComplex?: InfrastructureFacilityComplexUpdateOneWithoutInfrastructureNetworksNestedInput
+    maintenanceInstance?: MaintenanceInstanceUpdateOneWithoutInfrastructureNetworkNestedInput
+  }
+
+  export type InfrastructureNetworkUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    alias?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    facilityComplexId?: NullableStringFieldUpdateOperationsInput | string | null
+    maintenanceInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
+    maintenanceRequests?: MaintenanceRequestUncheckedUpdateManyWithoutInfrastructureNetworkNestedInput
+    infraOccurrences?: InfrastructureOccurrenceUncheckedUpdateManyWithoutInfrastructureNetworkNestedInput
+  }
+
+  export type InfrastructureNetworkCreateManyInput = {
+    id: string
+    name: string
+    alias?: string | null
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    facilityComplexId?: string | null
+    maintenanceInstanceId?: number | null
+  }
+
+  export type InfrastructureNetworkUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    alias?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InfrastructureNetworkUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    alias?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    facilityComplexId?: NullableStringFieldUpdateOperationsInput | string | null
     maintenanceInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
@@ -100369,6 +103310,7 @@ export namespace Prisma {
     space?: InfrastructureSpaceCreateNestedOneWithoutInfraOccurrencesInput
     reportedBy: UserCreateNestedOneWithoutReportedOccurrencesInput
     diagnosis?: InfrastructureOccurrenceDiagnosisCreateNestedOneWithoutOccurrenceInput
+    infrastructureNetwork?: InfrastructureNetworkCreateNestedOneWithoutInfraOccurrencesInput
   }
 
   export type InfrastructureOccurrenceUncheckedCreateInput = {
@@ -100386,6 +103328,7 @@ export namespace Prisma {
     reportedById: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    infrastructureNetworkId?: string | null
     duplicates?: InfrastructureOccurrenceUncheckedCreateNestedManyWithoutDuplicateOfInput
     reinforcements?: InfrastructureOccurrenceReinforcementUncheckedCreateNestedManyWithoutOccurrenceInput
     diagnosis?: InfrastructureOccurrenceDiagnosisUncheckedCreateNestedOneWithoutOccurrenceInput
@@ -100408,6 +103351,7 @@ export namespace Prisma {
     space?: InfrastructureSpaceUpdateOneWithoutInfraOccurrencesNestedInput
     reportedBy?: UserUpdateOneRequiredWithoutReportedOccurrencesNestedInput
     diagnosis?: InfrastructureOccurrenceDiagnosisUpdateOneWithoutOccurrenceNestedInput
+    infrastructureNetwork?: InfrastructureNetworkUpdateOneWithoutInfraOccurrencesNestedInput
   }
 
   export type InfrastructureOccurrenceUncheckedUpdateInput = {
@@ -100425,6 +103369,7 @@ export namespace Prisma {
     reportedById?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    infrastructureNetworkId?: NullableStringFieldUpdateOperationsInput | string | null
     duplicates?: InfrastructureOccurrenceUncheckedUpdateManyWithoutDuplicateOfNestedInput
     reinforcements?: InfrastructureOccurrenceReinforcementUncheckedUpdateManyWithoutOccurrenceNestedInput
     diagnosis?: InfrastructureOccurrenceDiagnosisUncheckedUpdateOneWithoutOccurrenceNestedInput
@@ -100445,6 +103390,7 @@ export namespace Prisma {
     reportedById: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    infrastructureNetworkId?: string | null
   }
 
   export type InfrastructureOccurrenceUpdateManyMutationInput = {
@@ -100473,6 +103419,7 @@ export namespace Prisma {
     reportedById?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    infrastructureNetworkId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type InfrastructureOccurrenceReinforcementCreateInput = {
@@ -100893,8 +103840,10 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalCreateNestedManyWithoutMaintenanceRequestInput
     materialPickingOrders?: MaterialPickingOrderCreateNestedManyWithoutMaintenanceRequestInput
     serviceOrders?: MaintenanceServiceOrderCreateNestedManyWithoutMaintenanceRequestInput
+    maintenanceContractOrders?: MaintenanceContractOrderCreateNestedManyWithoutMaintenanceRequestInput
     sipacUnitRequesting?: SipacUnidadeCreateNestedOneWithoutMaintenanceRequestRequisitanteInput
     sipacUnitCost?: SipacUnidadeCreateNestedOneWithoutMaintenanceRequestCustoInput
+    infrastructureNetwork?: InfrastructureNetworkCreateNestedOneWithoutMaintenanceRequestsInput
   }
 
   export type MaintenanceRequestUncheckedCreateInput = {
@@ -100924,6 +103873,7 @@ export namespace Prisma {
     sipacUnitCostId?: number | null
     sipacUserLoginRequest?: string | null
     origin?: $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: string | null
     priorities?: MaintenanceRequestPriorityUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     statuses?: MaintenanceRequestStatusUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     timelineEvents?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutMaintenanceRequestInput
@@ -100932,6 +103882,7 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     materialPickingOrders?: MaterialPickingOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     serviceOrders?: MaintenanceServiceOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    maintenanceContractOrders?: MaintenanceContractOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
   }
 
   export type MaintenanceRequestUpdateInput = {
@@ -100966,8 +103917,10 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUpdateManyWithoutMaintenanceRequestNestedInput
     materialPickingOrders?: MaterialPickingOrderUpdateManyWithoutMaintenanceRequestNestedInput
     serviceOrders?: MaintenanceServiceOrderUpdateManyWithoutMaintenanceRequestNestedInput
+    maintenanceContractOrders?: MaintenanceContractOrderUpdateManyWithoutMaintenanceRequestNestedInput
     sipacUnitRequesting?: SipacUnidadeUpdateOneWithoutMaintenanceRequestRequisitanteNestedInput
     sipacUnitCost?: SipacUnidadeUpdateOneWithoutMaintenanceRequestCustoNestedInput
+    infrastructureNetwork?: InfrastructureNetworkUpdateOneWithoutMaintenanceRequestsNestedInput
   }
 
   export type MaintenanceRequestUncheckedUpdateInput = {
@@ -100997,6 +103950,7 @@ export namespace Prisma {
     sipacUnitCostId?: NullableIntFieldUpdateOperationsInput | number | null
     sipacUserLoginRequest?: NullableStringFieldUpdateOperationsInput | string | null
     origin?: EnumMaintenanceRequestOriginFieldUpdateOperationsInput | $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: NullableStringFieldUpdateOperationsInput | string | null
     priorities?: MaintenanceRequestPriorityUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     statuses?: MaintenanceRequestStatusUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     timelineEvents?: MaintenanceTimelineEventUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
@@ -101005,6 +103959,7 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     materialPickingOrders?: MaterialPickingOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     serviceOrders?: MaintenanceServiceOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    maintenanceContractOrders?: MaintenanceContractOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
   }
 
   export type MaintenanceRequestCreateManyInput = {
@@ -101034,6 +103989,7 @@ export namespace Prisma {
     sipacUnitCostId?: number | null
     sipacUserLoginRequest?: string | null
     origin?: $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: string | null
   }
 
   export type MaintenanceRequestUpdateManyMutationInput = {
@@ -101080,6 +104036,7 @@ export namespace Prisma {
     sipacUnitCostId?: NullableIntFieldUpdateOperationsInput | number | null
     sipacUserLoginRequest?: NullableStringFieldUpdateOperationsInput | string | null
     origin?: EnumMaintenanceRequestOriginFieldUpdateOperationsInput | $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type MaintenanceServiceOrderCreateInput = {
@@ -101194,6 +104151,79 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type MaintenanceContractOrderCreateInput = {
+    title: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    contract: ContractCreateNestedOneWithoutMaintenanceContractOrdersInput
+    maintenanceRequest: MaintenanceRequestCreateNestedOneWithoutMaintenanceContractOrdersInput
+    prerequisites?: MaintenanceContractOrderCreateNestedManyWithoutSubsequentOrdersInput
+    subsequentOrders?: MaintenanceContractOrderCreateNestedManyWithoutPrerequisitesInput
+  }
+
+  export type MaintenanceContractOrderUncheckedCreateInput = {
+    id?: number
+    title: string
+    description?: string | null
+    contractId: number
+    maintenanceRequestId: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    prerequisites?: MaintenanceContractOrderUncheckedCreateNestedManyWithoutSubsequentOrdersInput
+    subsequentOrders?: MaintenanceContractOrderUncheckedCreateNestedManyWithoutPrerequisitesInput
+  }
+
+  export type MaintenanceContractOrderUpdateInput = {
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    contract?: ContractUpdateOneRequiredWithoutMaintenanceContractOrdersNestedInput
+    maintenanceRequest?: MaintenanceRequestUpdateOneRequiredWithoutMaintenanceContractOrdersNestedInput
+    prerequisites?: MaintenanceContractOrderUpdateManyWithoutSubsequentOrdersNestedInput
+    subsequentOrders?: MaintenanceContractOrderUpdateManyWithoutPrerequisitesNestedInput
+  }
+
+  export type MaintenanceContractOrderUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    contractId?: IntFieldUpdateOperationsInput | number
+    maintenanceRequestId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    prerequisites?: MaintenanceContractOrderUncheckedUpdateManyWithoutSubsequentOrdersNestedInput
+    subsequentOrders?: MaintenanceContractOrderUncheckedUpdateManyWithoutPrerequisitesNestedInput
+  }
+
+  export type MaintenanceContractOrderCreateManyInput = {
+    id?: number
+    title: string
+    description?: string | null
+    contractId: number
+    maintenanceRequestId: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaintenanceContractOrderUpdateManyMutationInput = {
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaintenanceContractOrderUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    contractId?: IntFieldUpdateOperationsInput | number
+    maintenanceRequestId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type MaintenanceServiceTypeCreateInput = {
     name: string
     description?: string | null
@@ -101270,6 +104300,7 @@ export namespace Prisma {
     warehouses?: WarehouseCreateNestedManyWithoutMaintenanceInstanceInput
     InfrastructureBuilding?: InfrastructureBuildingCreateNestedManyWithoutMaintenanceInstanceInput
     InfrastructureFacilityComplex?: InfrastructureFacilityComplexCreateNestedManyWithoutMaintenanceInstanceInput
+    InfrastructureNetwork?: InfrastructureNetworkCreateNestedManyWithoutMaintenanceInstanceInput
     users?: UserCreateNestedManyWithoutMaintenanceInstanceInput
     workers?: WorkerCreateNestedManyWithoutMaintenanceInstanceInput
   }
@@ -101287,6 +104318,7 @@ export namespace Prisma {
     warehouses?: WarehouseUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
     InfrastructureBuilding?: InfrastructureBuildingUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
     InfrastructureFacilityComplex?: InfrastructureFacilityComplexUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
+    InfrastructureNetwork?: InfrastructureNetworkUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
     users?: UserUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
     workers?: WorkerUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
   }
@@ -101303,6 +104335,7 @@ export namespace Prisma {
     warehouses?: WarehouseUpdateManyWithoutMaintenanceInstanceNestedInput
     InfrastructureBuilding?: InfrastructureBuildingUpdateManyWithoutMaintenanceInstanceNestedInput
     InfrastructureFacilityComplex?: InfrastructureFacilityComplexUpdateManyWithoutMaintenanceInstanceNestedInput
+    InfrastructureNetwork?: InfrastructureNetworkUpdateManyWithoutMaintenanceInstanceNestedInput
     users?: UserUpdateManyWithoutMaintenanceInstanceNestedInput
     workers?: WorkerUpdateManyWithoutMaintenanceInstanceNestedInput
   }
@@ -101320,6 +104353,7 @@ export namespace Prisma {
     warehouses?: WarehouseUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
     InfrastructureBuilding?: InfrastructureBuildingUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
     InfrastructureFacilityComplex?: InfrastructureFacilityComplexUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
+    InfrastructureNetwork?: InfrastructureNetworkUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
     users?: UserUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
     workers?: WorkerUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
   }
@@ -106473,12 +109507,22 @@ export namespace Prisma {
     none?: WorkerContractWhereInput
   }
 
+  export type MaintenanceContractOrderListRelationFilter = {
+    every?: MaintenanceContractOrderWhereInput
+    some?: MaintenanceContractOrderWhereInput
+    none?: MaintenanceContractOrderWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
   }
 
   export type WorkerContractOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type MaintenanceContractOrderOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -106741,6 +109785,12 @@ export namespace Prisma {
     none?: MaintenanceRequestWhereInput
   }
 
+  export type InfrastructureNetworkListRelationFilter = {
+    every?: InfrastructureNetworkWhereInput
+    some?: InfrastructureNetworkWhereInput
+    none?: InfrastructureNetworkWhereInput
+  }
+
   export type InfrastructureBuildingOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -106750,6 +109800,10 @@ export namespace Prisma {
   }
 
   export type MaintenanceRequestOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type InfrastructureNetworkOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -106979,6 +110033,53 @@ export namespace Prisma {
     latitude?: SortOrder
     longitude?: SortOrder
     infrastructureBuildingTypeId?: SortOrder
+    maintenanceInstanceId?: SortOrder
+  }
+
+  export type InfrastructureNetworkOrderByRelevanceInput = {
+    fields: InfrastructureNetworkOrderByRelevanceFieldEnum | InfrastructureNetworkOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type InfrastructureNetworkCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    alias?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    facilityComplexId?: SortOrder
+    maintenanceInstanceId?: SortOrder
+  }
+
+  export type InfrastructureNetworkAvgOrderByAggregateInput = {
+    maintenanceInstanceId?: SortOrder
+  }
+
+  export type InfrastructureNetworkMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    alias?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    facilityComplexId?: SortOrder
+    maintenanceInstanceId?: SortOrder
+  }
+
+  export type InfrastructureNetworkMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    alias?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    facilityComplexId?: SortOrder
+    maintenanceInstanceId?: SortOrder
+  }
+
+  export type InfrastructureNetworkSumOrderByAggregateInput = {
     maintenanceInstanceId?: SortOrder
   }
 
@@ -107341,6 +110442,11 @@ export namespace Prisma {
     isNot?: InfrastructureOccurrenceDiagnosisWhereInput | null
   }
 
+  export type InfrastructureNetworkNullableScalarRelationFilter = {
+    is?: InfrastructureNetworkWhereInput | null
+    isNot?: InfrastructureNetworkWhereInput | null
+  }
+
   export type InfrastructureOccurrenceReinforcementOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -107366,6 +110472,7 @@ export namespace Prisma {
     reportedById?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    infrastructureNetworkId?: SortOrder
   }
 
   export type InfrastructureOccurrenceAvgOrderByAggregateInput = {
@@ -107390,6 +110497,7 @@ export namespace Prisma {
     reportedById?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    infrastructureNetworkId?: SortOrder
   }
 
   export type InfrastructureOccurrenceMinOrderByAggregateInput = {
@@ -107407,6 +110515,7 @@ export namespace Prisma {
     reportedById?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    infrastructureNetworkId?: SortOrder
   }
 
   export type InfrastructureOccurrenceSumOrderByAggregateInput = {
@@ -107892,6 +111001,7 @@ export namespace Prisma {
     sipacUnitCostId?: SortOrder
     sipacUserLoginRequest?: SortOrder
     origin?: SortOrder
+    infrastructureNetworkId?: SortOrder
   }
 
   export type MaintenanceRequestAvgOrderByAggregateInput = {
@@ -107934,6 +111044,7 @@ export namespace Prisma {
     sipacUnitCostId?: SortOrder
     sipacUserLoginRequest?: SortOrder
     origin?: SortOrder
+    infrastructureNetworkId?: SortOrder
   }
 
   export type MaintenanceRequestMinOrderByAggregateInput = {
@@ -107963,6 +111074,7 @@ export namespace Prisma {
     sipacUnitCostId?: SortOrder
     sipacUserLoginRequest?: SortOrder
     origin?: SortOrder
+    infrastructureNetworkId?: SortOrder
   }
 
   export type MaintenanceRequestSumOrderByAggregateInput = {
@@ -108086,6 +111198,59 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumServiceOrderStatusFilter<$PrismaModel>
     _max?: NestedEnumServiceOrderStatusFilter<$PrismaModel>
+  }
+
+  export type ContractScalarRelationFilter = {
+    is?: ContractWhereInput
+    isNot?: ContractWhereInput
+  }
+
+  export type MaintenanceContractOrderOrderByRelevanceInput = {
+    fields: MaintenanceContractOrderOrderByRelevanceFieldEnum | MaintenanceContractOrderOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type MaintenanceContractOrderCountOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    contractId?: SortOrder
+    maintenanceRequestId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MaintenanceContractOrderAvgOrderByAggregateInput = {
+    id?: SortOrder
+    contractId?: SortOrder
+    maintenanceRequestId?: SortOrder
+  }
+
+  export type MaintenanceContractOrderMaxOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    contractId?: SortOrder
+    maintenanceRequestId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MaintenanceContractOrderMinOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    contractId?: SortOrder
+    maintenanceRequestId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MaintenanceContractOrderSumOrderByAggregateInput = {
+    id?: SortOrder
+    contractId?: SortOrder
+    maintenanceRequestId?: SortOrder
   }
 
   export type MaintenanceServiceTypeOrderByRelevanceInput = {
@@ -112038,11 +115203,6 @@ export namespace Prisma {
     id?: SortOrder
   }
 
-  export type ContractScalarRelationFilter = {
-    is?: ContractWhereInput
-    isNot?: ContractWhereInput
-  }
-
   export type SipacUnidadeScalarRelationFilter = {
     is?: SipacUnidadeWhereInput
     isNot?: SipacUnidadeWhereInput
@@ -112223,11 +115383,25 @@ export namespace Prisma {
     connect?: WorkerContractWhereUniqueInput | WorkerContractWhereUniqueInput[]
   }
 
+  export type MaintenanceContractOrderCreateNestedManyWithoutContractInput = {
+    create?: XOR<MaintenanceContractOrderCreateWithoutContractInput, MaintenanceContractOrderUncheckedCreateWithoutContractInput> | MaintenanceContractOrderCreateWithoutContractInput[] | MaintenanceContractOrderUncheckedCreateWithoutContractInput[]
+    connectOrCreate?: MaintenanceContractOrderCreateOrConnectWithoutContractInput | MaintenanceContractOrderCreateOrConnectWithoutContractInput[]
+    createMany?: MaintenanceContractOrderCreateManyContractInputEnvelope
+    connect?: MaintenanceContractOrderWhereUniqueInput | MaintenanceContractOrderWhereUniqueInput[]
+  }
+
   export type WorkerContractUncheckedCreateNestedManyWithoutContractInput = {
     create?: XOR<WorkerContractCreateWithoutContractInput, WorkerContractUncheckedCreateWithoutContractInput> | WorkerContractCreateWithoutContractInput[] | WorkerContractUncheckedCreateWithoutContractInput[]
     connectOrCreate?: WorkerContractCreateOrConnectWithoutContractInput | WorkerContractCreateOrConnectWithoutContractInput[]
     createMany?: WorkerContractCreateManyContractInputEnvelope
     connect?: WorkerContractWhereUniqueInput | WorkerContractWhereUniqueInput[]
+  }
+
+  export type MaintenanceContractOrderUncheckedCreateNestedManyWithoutContractInput = {
+    create?: XOR<MaintenanceContractOrderCreateWithoutContractInput, MaintenanceContractOrderUncheckedCreateWithoutContractInput> | MaintenanceContractOrderCreateWithoutContractInput[] | MaintenanceContractOrderUncheckedCreateWithoutContractInput[]
+    connectOrCreate?: MaintenanceContractOrderCreateOrConnectWithoutContractInput | MaintenanceContractOrderCreateOrConnectWithoutContractInput[]
+    createMany?: MaintenanceContractOrderCreateManyContractInputEnvelope
+    connect?: MaintenanceContractOrderWhereUniqueInput | MaintenanceContractOrderWhereUniqueInput[]
   }
 
   export type NullableStringFieldUpdateOperationsInput = {
@@ -112276,6 +115450,20 @@ export namespace Prisma {
     deleteMany?: WorkerContractScalarWhereInput | WorkerContractScalarWhereInput[]
   }
 
+  export type MaintenanceContractOrderUpdateManyWithoutContractNestedInput = {
+    create?: XOR<MaintenanceContractOrderCreateWithoutContractInput, MaintenanceContractOrderUncheckedCreateWithoutContractInput> | MaintenanceContractOrderCreateWithoutContractInput[] | MaintenanceContractOrderUncheckedCreateWithoutContractInput[]
+    connectOrCreate?: MaintenanceContractOrderCreateOrConnectWithoutContractInput | MaintenanceContractOrderCreateOrConnectWithoutContractInput[]
+    upsert?: MaintenanceContractOrderUpsertWithWhereUniqueWithoutContractInput | MaintenanceContractOrderUpsertWithWhereUniqueWithoutContractInput[]
+    createMany?: MaintenanceContractOrderCreateManyContractInputEnvelope
+    set?: MaintenanceContractOrderWhereUniqueInput | MaintenanceContractOrderWhereUniqueInput[]
+    disconnect?: MaintenanceContractOrderWhereUniqueInput | MaintenanceContractOrderWhereUniqueInput[]
+    delete?: MaintenanceContractOrderWhereUniqueInput | MaintenanceContractOrderWhereUniqueInput[]
+    connect?: MaintenanceContractOrderWhereUniqueInput | MaintenanceContractOrderWhereUniqueInput[]
+    update?: MaintenanceContractOrderUpdateWithWhereUniqueWithoutContractInput | MaintenanceContractOrderUpdateWithWhereUniqueWithoutContractInput[]
+    updateMany?: MaintenanceContractOrderUpdateManyWithWhereWithoutContractInput | MaintenanceContractOrderUpdateManyWithWhereWithoutContractInput[]
+    deleteMany?: MaintenanceContractOrderScalarWhereInput | MaintenanceContractOrderScalarWhereInput[]
+  }
+
   export type IntFieldUpdateOperationsInput = {
     set?: number
     increment?: number
@@ -112296,6 +115484,20 @@ export namespace Prisma {
     update?: WorkerContractUpdateWithWhereUniqueWithoutContractInput | WorkerContractUpdateWithWhereUniqueWithoutContractInput[]
     updateMany?: WorkerContractUpdateManyWithWhereWithoutContractInput | WorkerContractUpdateManyWithWhereWithoutContractInput[]
     deleteMany?: WorkerContractScalarWhereInput | WorkerContractScalarWhereInput[]
+  }
+
+  export type MaintenanceContractOrderUncheckedUpdateManyWithoutContractNestedInput = {
+    create?: XOR<MaintenanceContractOrderCreateWithoutContractInput, MaintenanceContractOrderUncheckedCreateWithoutContractInput> | MaintenanceContractOrderCreateWithoutContractInput[] | MaintenanceContractOrderUncheckedCreateWithoutContractInput[]
+    connectOrCreate?: MaintenanceContractOrderCreateOrConnectWithoutContractInput | MaintenanceContractOrderCreateOrConnectWithoutContractInput[]
+    upsert?: MaintenanceContractOrderUpsertWithWhereUniqueWithoutContractInput | MaintenanceContractOrderUpsertWithWhereUniqueWithoutContractInput[]
+    createMany?: MaintenanceContractOrderCreateManyContractInputEnvelope
+    set?: MaintenanceContractOrderWhereUniqueInput | MaintenanceContractOrderWhereUniqueInput[]
+    disconnect?: MaintenanceContractOrderWhereUniqueInput | MaintenanceContractOrderWhereUniqueInput[]
+    delete?: MaintenanceContractOrderWhereUniqueInput | MaintenanceContractOrderWhereUniqueInput[]
+    connect?: MaintenanceContractOrderWhereUniqueInput | MaintenanceContractOrderWhereUniqueInput[]
+    update?: MaintenanceContractOrderUpdateWithWhereUniqueWithoutContractInput | MaintenanceContractOrderUpdateWithWhereUniqueWithoutContractInput[]
+    updateMany?: MaintenanceContractOrderUpdateManyWithWhereWithoutContractInput | MaintenanceContractOrderUpdateManyWithWhereWithoutContractInput[]
+    deleteMany?: MaintenanceContractOrderScalarWhereInput | MaintenanceContractOrderScalarWhereInput[]
   }
 
   export type ContractCreateNestedManyWithoutProvidersInput = {
@@ -112367,6 +115569,13 @@ export namespace Prisma {
     connect?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
   }
 
+  export type InfrastructureNetworkCreateNestedManyWithoutFacilityComplexInput = {
+    create?: XOR<InfrastructureNetworkCreateWithoutFacilityComplexInput, InfrastructureNetworkUncheckedCreateWithoutFacilityComplexInput> | InfrastructureNetworkCreateWithoutFacilityComplexInput[] | InfrastructureNetworkUncheckedCreateWithoutFacilityComplexInput[]
+    connectOrCreate?: InfrastructureNetworkCreateOrConnectWithoutFacilityComplexInput | InfrastructureNetworkCreateOrConnectWithoutFacilityComplexInput[]
+    createMany?: InfrastructureNetworkCreateManyFacilityComplexInputEnvelope
+    connect?: InfrastructureNetworkWhereUniqueInput | InfrastructureNetworkWhereUniqueInput[]
+  }
+
   export type InfrastructureBuildingUncheckedCreateNestedManyWithoutFacilityComplexInput = {
     create?: XOR<InfrastructureBuildingCreateWithoutFacilityComplexInput, InfrastructureBuildingUncheckedCreateWithoutFacilityComplexInput> | InfrastructureBuildingCreateWithoutFacilityComplexInput[] | InfrastructureBuildingUncheckedCreateWithoutFacilityComplexInput[]
     connectOrCreate?: InfrastructureBuildingCreateOrConnectWithoutFacilityComplexInput | InfrastructureBuildingCreateOrConnectWithoutFacilityComplexInput[]
@@ -112386,6 +115595,13 @@ export namespace Prisma {
     connectOrCreate?: MaintenanceRequestCreateOrConnectWithoutFacilityComplexInput | MaintenanceRequestCreateOrConnectWithoutFacilityComplexInput[]
     createMany?: MaintenanceRequestCreateManyFacilityComplexInputEnvelope
     connect?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+  }
+
+  export type InfrastructureNetworkUncheckedCreateNestedManyWithoutFacilityComplexInput = {
+    create?: XOR<InfrastructureNetworkCreateWithoutFacilityComplexInput, InfrastructureNetworkUncheckedCreateWithoutFacilityComplexInput> | InfrastructureNetworkCreateWithoutFacilityComplexInput[] | InfrastructureNetworkUncheckedCreateWithoutFacilityComplexInput[]
+    connectOrCreate?: InfrastructureNetworkCreateOrConnectWithoutFacilityComplexInput | InfrastructureNetworkCreateOrConnectWithoutFacilityComplexInput[]
+    createMany?: InfrastructureNetworkCreateManyFacilityComplexInputEnvelope
+    connect?: InfrastructureNetworkWhereUniqueInput | InfrastructureNetworkWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -112448,6 +115664,20 @@ export namespace Prisma {
     deleteMany?: MaintenanceRequestScalarWhereInput | MaintenanceRequestScalarWhereInput[]
   }
 
+  export type InfrastructureNetworkUpdateManyWithoutFacilityComplexNestedInput = {
+    create?: XOR<InfrastructureNetworkCreateWithoutFacilityComplexInput, InfrastructureNetworkUncheckedCreateWithoutFacilityComplexInput> | InfrastructureNetworkCreateWithoutFacilityComplexInput[] | InfrastructureNetworkUncheckedCreateWithoutFacilityComplexInput[]
+    connectOrCreate?: InfrastructureNetworkCreateOrConnectWithoutFacilityComplexInput | InfrastructureNetworkCreateOrConnectWithoutFacilityComplexInput[]
+    upsert?: InfrastructureNetworkUpsertWithWhereUniqueWithoutFacilityComplexInput | InfrastructureNetworkUpsertWithWhereUniqueWithoutFacilityComplexInput[]
+    createMany?: InfrastructureNetworkCreateManyFacilityComplexInputEnvelope
+    set?: InfrastructureNetworkWhereUniqueInput | InfrastructureNetworkWhereUniqueInput[]
+    disconnect?: InfrastructureNetworkWhereUniqueInput | InfrastructureNetworkWhereUniqueInput[]
+    delete?: InfrastructureNetworkWhereUniqueInput | InfrastructureNetworkWhereUniqueInput[]
+    connect?: InfrastructureNetworkWhereUniqueInput | InfrastructureNetworkWhereUniqueInput[]
+    update?: InfrastructureNetworkUpdateWithWhereUniqueWithoutFacilityComplexInput | InfrastructureNetworkUpdateWithWhereUniqueWithoutFacilityComplexInput[]
+    updateMany?: InfrastructureNetworkUpdateManyWithWhereWithoutFacilityComplexInput | InfrastructureNetworkUpdateManyWithWhereWithoutFacilityComplexInput[]
+    deleteMany?: InfrastructureNetworkScalarWhereInput | InfrastructureNetworkScalarWhereInput[]
+  }
+
   export type NullableIntFieldUpdateOperationsInput = {
     set?: number | null
     increment?: number
@@ -112496,6 +115726,20 @@ export namespace Prisma {
     update?: MaintenanceRequestUpdateWithWhereUniqueWithoutFacilityComplexInput | MaintenanceRequestUpdateWithWhereUniqueWithoutFacilityComplexInput[]
     updateMany?: MaintenanceRequestUpdateManyWithWhereWithoutFacilityComplexInput | MaintenanceRequestUpdateManyWithWhereWithoutFacilityComplexInput[]
     deleteMany?: MaintenanceRequestScalarWhereInput | MaintenanceRequestScalarWhereInput[]
+  }
+
+  export type InfrastructureNetworkUncheckedUpdateManyWithoutFacilityComplexNestedInput = {
+    create?: XOR<InfrastructureNetworkCreateWithoutFacilityComplexInput, InfrastructureNetworkUncheckedCreateWithoutFacilityComplexInput> | InfrastructureNetworkCreateWithoutFacilityComplexInput[] | InfrastructureNetworkUncheckedCreateWithoutFacilityComplexInput[]
+    connectOrCreate?: InfrastructureNetworkCreateOrConnectWithoutFacilityComplexInput | InfrastructureNetworkCreateOrConnectWithoutFacilityComplexInput[]
+    upsert?: InfrastructureNetworkUpsertWithWhereUniqueWithoutFacilityComplexInput | InfrastructureNetworkUpsertWithWhereUniqueWithoutFacilityComplexInput[]
+    createMany?: InfrastructureNetworkCreateManyFacilityComplexInputEnvelope
+    set?: InfrastructureNetworkWhereUniqueInput | InfrastructureNetworkWhereUniqueInput[]
+    disconnect?: InfrastructureNetworkWhereUniqueInput | InfrastructureNetworkWhereUniqueInput[]
+    delete?: InfrastructureNetworkWhereUniqueInput | InfrastructureNetworkWhereUniqueInput[]
+    connect?: InfrastructureNetworkWhereUniqueInput | InfrastructureNetworkWhereUniqueInput[]
+    update?: InfrastructureNetworkUpdateWithWhereUniqueWithoutFacilityComplexInput | InfrastructureNetworkUpdateWithWhereUniqueWithoutFacilityComplexInput[]
+    updateMany?: InfrastructureNetworkUpdateManyWithWhereWithoutFacilityComplexInput | InfrastructureNetworkUpdateManyWithWhereWithoutFacilityComplexInput[]
+    deleteMany?: InfrastructureNetworkScalarWhereInput | InfrastructureNetworkScalarWhereInput[]
   }
 
   export type UserCreateNestedManyWithoutInfrastructureBuildingsInput = {
@@ -112822,6 +116066,122 @@ export namespace Prisma {
     update?: SipacUnidadeUpdateWithWhereUniqueWithoutInfrastructureBuildingInput | SipacUnidadeUpdateWithWhereUniqueWithoutInfrastructureBuildingInput[]
     updateMany?: SipacUnidadeUpdateManyWithWhereWithoutInfrastructureBuildingInput | SipacUnidadeUpdateManyWithWhereWithoutInfrastructureBuildingInput[]
     deleteMany?: SipacUnidadeScalarWhereInput | SipacUnidadeScalarWhereInput[]
+  }
+
+  export type MaintenanceRequestCreateNestedManyWithoutInfrastructureNetworkInput = {
+    create?: XOR<MaintenanceRequestCreateWithoutInfrastructureNetworkInput, MaintenanceRequestUncheckedCreateWithoutInfrastructureNetworkInput> | MaintenanceRequestCreateWithoutInfrastructureNetworkInput[] | MaintenanceRequestUncheckedCreateWithoutInfrastructureNetworkInput[]
+    connectOrCreate?: MaintenanceRequestCreateOrConnectWithoutInfrastructureNetworkInput | MaintenanceRequestCreateOrConnectWithoutInfrastructureNetworkInput[]
+    createMany?: MaintenanceRequestCreateManyInfrastructureNetworkInputEnvelope
+    connect?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+  }
+
+  export type InfrastructureOccurrenceCreateNestedManyWithoutInfrastructureNetworkInput = {
+    create?: XOR<InfrastructureOccurrenceCreateWithoutInfrastructureNetworkInput, InfrastructureOccurrenceUncheckedCreateWithoutInfrastructureNetworkInput> | InfrastructureOccurrenceCreateWithoutInfrastructureNetworkInput[] | InfrastructureOccurrenceUncheckedCreateWithoutInfrastructureNetworkInput[]
+    connectOrCreate?: InfrastructureOccurrenceCreateOrConnectWithoutInfrastructureNetworkInput | InfrastructureOccurrenceCreateOrConnectWithoutInfrastructureNetworkInput[]
+    createMany?: InfrastructureOccurrenceCreateManyInfrastructureNetworkInputEnvelope
+    connect?: InfrastructureOccurrenceWhereUniqueInput | InfrastructureOccurrenceWhereUniqueInput[]
+  }
+
+  export type InfrastructureFacilityComplexCreateNestedOneWithoutInfrastructureNetworksInput = {
+    create?: XOR<InfrastructureFacilityComplexCreateWithoutInfrastructureNetworksInput, InfrastructureFacilityComplexUncheckedCreateWithoutInfrastructureNetworksInput>
+    connectOrCreate?: InfrastructureFacilityComplexCreateOrConnectWithoutInfrastructureNetworksInput
+    connect?: InfrastructureFacilityComplexWhereUniqueInput
+  }
+
+  export type MaintenanceInstanceCreateNestedOneWithoutInfrastructureNetworkInput = {
+    create?: XOR<MaintenanceInstanceCreateWithoutInfrastructureNetworkInput, MaintenanceInstanceUncheckedCreateWithoutInfrastructureNetworkInput>
+    connectOrCreate?: MaintenanceInstanceCreateOrConnectWithoutInfrastructureNetworkInput
+    connect?: MaintenanceInstanceWhereUniqueInput
+  }
+
+  export type MaintenanceRequestUncheckedCreateNestedManyWithoutInfrastructureNetworkInput = {
+    create?: XOR<MaintenanceRequestCreateWithoutInfrastructureNetworkInput, MaintenanceRequestUncheckedCreateWithoutInfrastructureNetworkInput> | MaintenanceRequestCreateWithoutInfrastructureNetworkInput[] | MaintenanceRequestUncheckedCreateWithoutInfrastructureNetworkInput[]
+    connectOrCreate?: MaintenanceRequestCreateOrConnectWithoutInfrastructureNetworkInput | MaintenanceRequestCreateOrConnectWithoutInfrastructureNetworkInput[]
+    createMany?: MaintenanceRequestCreateManyInfrastructureNetworkInputEnvelope
+    connect?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+  }
+
+  export type InfrastructureOccurrenceUncheckedCreateNestedManyWithoutInfrastructureNetworkInput = {
+    create?: XOR<InfrastructureOccurrenceCreateWithoutInfrastructureNetworkInput, InfrastructureOccurrenceUncheckedCreateWithoutInfrastructureNetworkInput> | InfrastructureOccurrenceCreateWithoutInfrastructureNetworkInput[] | InfrastructureOccurrenceUncheckedCreateWithoutInfrastructureNetworkInput[]
+    connectOrCreate?: InfrastructureOccurrenceCreateOrConnectWithoutInfrastructureNetworkInput | InfrastructureOccurrenceCreateOrConnectWithoutInfrastructureNetworkInput[]
+    createMany?: InfrastructureOccurrenceCreateManyInfrastructureNetworkInputEnvelope
+    connect?: InfrastructureOccurrenceWhereUniqueInput | InfrastructureOccurrenceWhereUniqueInput[]
+  }
+
+  export type MaintenanceRequestUpdateManyWithoutInfrastructureNetworkNestedInput = {
+    create?: XOR<MaintenanceRequestCreateWithoutInfrastructureNetworkInput, MaintenanceRequestUncheckedCreateWithoutInfrastructureNetworkInput> | MaintenanceRequestCreateWithoutInfrastructureNetworkInput[] | MaintenanceRequestUncheckedCreateWithoutInfrastructureNetworkInput[]
+    connectOrCreate?: MaintenanceRequestCreateOrConnectWithoutInfrastructureNetworkInput | MaintenanceRequestCreateOrConnectWithoutInfrastructureNetworkInput[]
+    upsert?: MaintenanceRequestUpsertWithWhereUniqueWithoutInfrastructureNetworkInput | MaintenanceRequestUpsertWithWhereUniqueWithoutInfrastructureNetworkInput[]
+    createMany?: MaintenanceRequestCreateManyInfrastructureNetworkInputEnvelope
+    set?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    disconnect?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    delete?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    connect?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    update?: MaintenanceRequestUpdateWithWhereUniqueWithoutInfrastructureNetworkInput | MaintenanceRequestUpdateWithWhereUniqueWithoutInfrastructureNetworkInput[]
+    updateMany?: MaintenanceRequestUpdateManyWithWhereWithoutInfrastructureNetworkInput | MaintenanceRequestUpdateManyWithWhereWithoutInfrastructureNetworkInput[]
+    deleteMany?: MaintenanceRequestScalarWhereInput | MaintenanceRequestScalarWhereInput[]
+  }
+
+  export type InfrastructureOccurrenceUpdateManyWithoutInfrastructureNetworkNestedInput = {
+    create?: XOR<InfrastructureOccurrenceCreateWithoutInfrastructureNetworkInput, InfrastructureOccurrenceUncheckedCreateWithoutInfrastructureNetworkInput> | InfrastructureOccurrenceCreateWithoutInfrastructureNetworkInput[] | InfrastructureOccurrenceUncheckedCreateWithoutInfrastructureNetworkInput[]
+    connectOrCreate?: InfrastructureOccurrenceCreateOrConnectWithoutInfrastructureNetworkInput | InfrastructureOccurrenceCreateOrConnectWithoutInfrastructureNetworkInput[]
+    upsert?: InfrastructureOccurrenceUpsertWithWhereUniqueWithoutInfrastructureNetworkInput | InfrastructureOccurrenceUpsertWithWhereUniqueWithoutInfrastructureNetworkInput[]
+    createMany?: InfrastructureOccurrenceCreateManyInfrastructureNetworkInputEnvelope
+    set?: InfrastructureOccurrenceWhereUniqueInput | InfrastructureOccurrenceWhereUniqueInput[]
+    disconnect?: InfrastructureOccurrenceWhereUniqueInput | InfrastructureOccurrenceWhereUniqueInput[]
+    delete?: InfrastructureOccurrenceWhereUniqueInput | InfrastructureOccurrenceWhereUniqueInput[]
+    connect?: InfrastructureOccurrenceWhereUniqueInput | InfrastructureOccurrenceWhereUniqueInput[]
+    update?: InfrastructureOccurrenceUpdateWithWhereUniqueWithoutInfrastructureNetworkInput | InfrastructureOccurrenceUpdateWithWhereUniqueWithoutInfrastructureNetworkInput[]
+    updateMany?: InfrastructureOccurrenceUpdateManyWithWhereWithoutInfrastructureNetworkInput | InfrastructureOccurrenceUpdateManyWithWhereWithoutInfrastructureNetworkInput[]
+    deleteMany?: InfrastructureOccurrenceScalarWhereInput | InfrastructureOccurrenceScalarWhereInput[]
+  }
+
+  export type InfrastructureFacilityComplexUpdateOneWithoutInfrastructureNetworksNestedInput = {
+    create?: XOR<InfrastructureFacilityComplexCreateWithoutInfrastructureNetworksInput, InfrastructureFacilityComplexUncheckedCreateWithoutInfrastructureNetworksInput>
+    connectOrCreate?: InfrastructureFacilityComplexCreateOrConnectWithoutInfrastructureNetworksInput
+    upsert?: InfrastructureFacilityComplexUpsertWithoutInfrastructureNetworksInput
+    disconnect?: InfrastructureFacilityComplexWhereInput | boolean
+    delete?: InfrastructureFacilityComplexWhereInput | boolean
+    connect?: InfrastructureFacilityComplexWhereUniqueInput
+    update?: XOR<XOR<InfrastructureFacilityComplexUpdateToOneWithWhereWithoutInfrastructureNetworksInput, InfrastructureFacilityComplexUpdateWithoutInfrastructureNetworksInput>, InfrastructureFacilityComplexUncheckedUpdateWithoutInfrastructureNetworksInput>
+  }
+
+  export type MaintenanceInstanceUpdateOneWithoutInfrastructureNetworkNestedInput = {
+    create?: XOR<MaintenanceInstanceCreateWithoutInfrastructureNetworkInput, MaintenanceInstanceUncheckedCreateWithoutInfrastructureNetworkInput>
+    connectOrCreate?: MaintenanceInstanceCreateOrConnectWithoutInfrastructureNetworkInput
+    upsert?: MaintenanceInstanceUpsertWithoutInfrastructureNetworkInput
+    disconnect?: MaintenanceInstanceWhereInput | boolean
+    delete?: MaintenanceInstanceWhereInput | boolean
+    connect?: MaintenanceInstanceWhereUniqueInput
+    update?: XOR<XOR<MaintenanceInstanceUpdateToOneWithWhereWithoutInfrastructureNetworkInput, MaintenanceInstanceUpdateWithoutInfrastructureNetworkInput>, MaintenanceInstanceUncheckedUpdateWithoutInfrastructureNetworkInput>
+  }
+
+  export type MaintenanceRequestUncheckedUpdateManyWithoutInfrastructureNetworkNestedInput = {
+    create?: XOR<MaintenanceRequestCreateWithoutInfrastructureNetworkInput, MaintenanceRequestUncheckedCreateWithoutInfrastructureNetworkInput> | MaintenanceRequestCreateWithoutInfrastructureNetworkInput[] | MaintenanceRequestUncheckedCreateWithoutInfrastructureNetworkInput[]
+    connectOrCreate?: MaintenanceRequestCreateOrConnectWithoutInfrastructureNetworkInput | MaintenanceRequestCreateOrConnectWithoutInfrastructureNetworkInput[]
+    upsert?: MaintenanceRequestUpsertWithWhereUniqueWithoutInfrastructureNetworkInput | MaintenanceRequestUpsertWithWhereUniqueWithoutInfrastructureNetworkInput[]
+    createMany?: MaintenanceRequestCreateManyInfrastructureNetworkInputEnvelope
+    set?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    disconnect?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    delete?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    connect?: MaintenanceRequestWhereUniqueInput | MaintenanceRequestWhereUniqueInput[]
+    update?: MaintenanceRequestUpdateWithWhereUniqueWithoutInfrastructureNetworkInput | MaintenanceRequestUpdateWithWhereUniqueWithoutInfrastructureNetworkInput[]
+    updateMany?: MaintenanceRequestUpdateManyWithWhereWithoutInfrastructureNetworkInput | MaintenanceRequestUpdateManyWithWhereWithoutInfrastructureNetworkInput[]
+    deleteMany?: MaintenanceRequestScalarWhereInput | MaintenanceRequestScalarWhereInput[]
+  }
+
+  export type InfrastructureOccurrenceUncheckedUpdateManyWithoutInfrastructureNetworkNestedInput = {
+    create?: XOR<InfrastructureOccurrenceCreateWithoutInfrastructureNetworkInput, InfrastructureOccurrenceUncheckedCreateWithoutInfrastructureNetworkInput> | InfrastructureOccurrenceCreateWithoutInfrastructureNetworkInput[] | InfrastructureOccurrenceUncheckedCreateWithoutInfrastructureNetworkInput[]
+    connectOrCreate?: InfrastructureOccurrenceCreateOrConnectWithoutInfrastructureNetworkInput | InfrastructureOccurrenceCreateOrConnectWithoutInfrastructureNetworkInput[]
+    upsert?: InfrastructureOccurrenceUpsertWithWhereUniqueWithoutInfrastructureNetworkInput | InfrastructureOccurrenceUpsertWithWhereUniqueWithoutInfrastructureNetworkInput[]
+    createMany?: InfrastructureOccurrenceCreateManyInfrastructureNetworkInputEnvelope
+    set?: InfrastructureOccurrenceWhereUniqueInput | InfrastructureOccurrenceWhereUniqueInput[]
+    disconnect?: InfrastructureOccurrenceWhereUniqueInput | InfrastructureOccurrenceWhereUniqueInput[]
+    delete?: InfrastructureOccurrenceWhereUniqueInput | InfrastructureOccurrenceWhereUniqueInput[]
+    connect?: InfrastructureOccurrenceWhereUniqueInput | InfrastructureOccurrenceWhereUniqueInput[]
+    update?: InfrastructureOccurrenceUpdateWithWhereUniqueWithoutInfrastructureNetworkInput | InfrastructureOccurrenceUpdateWithWhereUniqueWithoutInfrastructureNetworkInput[]
+    updateMany?: InfrastructureOccurrenceUpdateManyWithWhereWithoutInfrastructureNetworkInput | InfrastructureOccurrenceUpdateManyWithWhereWithoutInfrastructureNetworkInput[]
+    deleteMany?: InfrastructureOccurrenceScalarWhereInput | InfrastructureOccurrenceScalarWhereInput[]
   }
 
   export type InfrastructureBuildingCreateNestedManyWithoutSecondariesActivitiesInput = {
@@ -113376,6 +116736,12 @@ export namespace Prisma {
     connect?: InfrastructureOccurrenceDiagnosisWhereUniqueInput
   }
 
+  export type InfrastructureNetworkCreateNestedOneWithoutInfraOccurrencesInput = {
+    create?: XOR<InfrastructureNetworkCreateWithoutInfraOccurrencesInput, InfrastructureNetworkUncheckedCreateWithoutInfraOccurrencesInput>
+    connectOrCreate?: InfrastructureNetworkCreateOrConnectWithoutInfraOccurrencesInput
+    connect?: InfrastructureNetworkWhereUniqueInput
+  }
+
   export type InfrastructureOccurrenceUncheckedCreateNestedManyWithoutDuplicateOfInput = {
     create?: XOR<InfrastructureOccurrenceCreateWithoutDuplicateOfInput, InfrastructureOccurrenceUncheckedCreateWithoutDuplicateOfInput> | InfrastructureOccurrenceCreateWithoutDuplicateOfInput[] | InfrastructureOccurrenceUncheckedCreateWithoutDuplicateOfInput[]
     connectOrCreate?: InfrastructureOccurrenceCreateOrConnectWithoutDuplicateOfInput | InfrastructureOccurrenceCreateOrConnectWithoutDuplicateOfInput[]
@@ -113488,6 +116854,16 @@ export namespace Prisma {
     delete?: InfrastructureOccurrenceDiagnosisWhereInput | boolean
     connect?: InfrastructureOccurrenceDiagnosisWhereUniqueInput
     update?: XOR<XOR<InfrastructureOccurrenceDiagnosisUpdateToOneWithWhereWithoutOccurrenceInput, InfrastructureOccurrenceDiagnosisUpdateWithoutOccurrenceInput>, InfrastructureOccurrenceDiagnosisUncheckedUpdateWithoutOccurrenceInput>
+  }
+
+  export type InfrastructureNetworkUpdateOneWithoutInfraOccurrencesNestedInput = {
+    create?: XOR<InfrastructureNetworkCreateWithoutInfraOccurrencesInput, InfrastructureNetworkUncheckedCreateWithoutInfraOccurrencesInput>
+    connectOrCreate?: InfrastructureNetworkCreateOrConnectWithoutInfraOccurrencesInput
+    upsert?: InfrastructureNetworkUpsertWithoutInfraOccurrencesInput
+    disconnect?: InfrastructureNetworkWhereInput | boolean
+    delete?: InfrastructureNetworkWhereInput | boolean
+    connect?: InfrastructureNetworkWhereUniqueInput
+    update?: XOR<XOR<InfrastructureNetworkUpdateToOneWithWhereWithoutInfraOccurrencesInput, InfrastructureNetworkUpdateWithoutInfraOccurrencesInput>, InfrastructureNetworkUncheckedUpdateWithoutInfraOccurrencesInput>
   }
 
   export type InfrastructureOccurrenceUncheckedUpdateManyWithoutDuplicateOfNestedInput = {
@@ -113824,6 +117200,13 @@ export namespace Prisma {
     connect?: MaintenanceServiceOrderWhereUniqueInput | MaintenanceServiceOrderWhereUniqueInput[]
   }
 
+  export type MaintenanceContractOrderCreateNestedManyWithoutMaintenanceRequestInput = {
+    create?: XOR<MaintenanceContractOrderCreateWithoutMaintenanceRequestInput, MaintenanceContractOrderUncheckedCreateWithoutMaintenanceRequestInput> | MaintenanceContractOrderCreateWithoutMaintenanceRequestInput[] | MaintenanceContractOrderUncheckedCreateWithoutMaintenanceRequestInput[]
+    connectOrCreate?: MaintenanceContractOrderCreateOrConnectWithoutMaintenanceRequestInput | MaintenanceContractOrderCreateOrConnectWithoutMaintenanceRequestInput[]
+    createMany?: MaintenanceContractOrderCreateManyMaintenanceRequestInputEnvelope
+    connect?: MaintenanceContractOrderWhereUniqueInput | MaintenanceContractOrderWhereUniqueInput[]
+  }
+
   export type SipacUnidadeCreateNestedOneWithoutMaintenanceRequestRequisitanteInput = {
     create?: XOR<SipacUnidadeCreateWithoutMaintenanceRequestRequisitanteInput, SipacUnidadeUncheckedCreateWithoutMaintenanceRequestRequisitanteInput>
     connectOrCreate?: SipacUnidadeCreateOrConnectWithoutMaintenanceRequestRequisitanteInput
@@ -113834,6 +117217,12 @@ export namespace Prisma {
     create?: XOR<SipacUnidadeCreateWithoutMaintenanceRequestCustoInput, SipacUnidadeUncheckedCreateWithoutMaintenanceRequestCustoInput>
     connectOrCreate?: SipacUnidadeCreateOrConnectWithoutMaintenanceRequestCustoInput
     connect?: SipacUnidadeWhereUniqueInput
+  }
+
+  export type InfrastructureNetworkCreateNestedOneWithoutMaintenanceRequestsInput = {
+    create?: XOR<InfrastructureNetworkCreateWithoutMaintenanceRequestsInput, InfrastructureNetworkUncheckedCreateWithoutMaintenanceRequestsInput>
+    connectOrCreate?: InfrastructureNetworkCreateOrConnectWithoutMaintenanceRequestsInput
+    connect?: InfrastructureNetworkWhereUniqueInput
   }
 
   export type MaintenanceRequestPriorityUncheckedCreateNestedManyWithoutMaintenanceRequestInput = {
@@ -113890,6 +117279,13 @@ export namespace Prisma {
     connectOrCreate?: MaintenanceServiceOrderCreateOrConnectWithoutMaintenanceRequestInput | MaintenanceServiceOrderCreateOrConnectWithoutMaintenanceRequestInput[]
     createMany?: MaintenanceServiceOrderCreateManyMaintenanceRequestInputEnvelope
     connect?: MaintenanceServiceOrderWhereUniqueInput | MaintenanceServiceOrderWhereUniqueInput[]
+  }
+
+  export type MaintenanceContractOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput = {
+    create?: XOR<MaintenanceContractOrderCreateWithoutMaintenanceRequestInput, MaintenanceContractOrderUncheckedCreateWithoutMaintenanceRequestInput> | MaintenanceContractOrderCreateWithoutMaintenanceRequestInput[] | MaintenanceContractOrderUncheckedCreateWithoutMaintenanceRequestInput[]
+    connectOrCreate?: MaintenanceContractOrderCreateOrConnectWithoutMaintenanceRequestInput | MaintenanceContractOrderCreateOrConnectWithoutMaintenanceRequestInput[]
+    createMany?: MaintenanceContractOrderCreateManyMaintenanceRequestInputEnvelope
+    connect?: MaintenanceContractOrderWhereUniqueInput | MaintenanceContractOrderWhereUniqueInput[]
   }
 
   export type EnumMaintenanceRequestOriginFieldUpdateOperationsInput = {
@@ -114098,6 +117494,20 @@ export namespace Prisma {
     deleteMany?: MaintenanceServiceOrderScalarWhereInput | MaintenanceServiceOrderScalarWhereInput[]
   }
 
+  export type MaintenanceContractOrderUpdateManyWithoutMaintenanceRequestNestedInput = {
+    create?: XOR<MaintenanceContractOrderCreateWithoutMaintenanceRequestInput, MaintenanceContractOrderUncheckedCreateWithoutMaintenanceRequestInput> | MaintenanceContractOrderCreateWithoutMaintenanceRequestInput[] | MaintenanceContractOrderUncheckedCreateWithoutMaintenanceRequestInput[]
+    connectOrCreate?: MaintenanceContractOrderCreateOrConnectWithoutMaintenanceRequestInput | MaintenanceContractOrderCreateOrConnectWithoutMaintenanceRequestInput[]
+    upsert?: MaintenanceContractOrderUpsertWithWhereUniqueWithoutMaintenanceRequestInput | MaintenanceContractOrderUpsertWithWhereUniqueWithoutMaintenanceRequestInput[]
+    createMany?: MaintenanceContractOrderCreateManyMaintenanceRequestInputEnvelope
+    set?: MaintenanceContractOrderWhereUniqueInput | MaintenanceContractOrderWhereUniqueInput[]
+    disconnect?: MaintenanceContractOrderWhereUniqueInput | MaintenanceContractOrderWhereUniqueInput[]
+    delete?: MaintenanceContractOrderWhereUniqueInput | MaintenanceContractOrderWhereUniqueInput[]
+    connect?: MaintenanceContractOrderWhereUniqueInput | MaintenanceContractOrderWhereUniqueInput[]
+    update?: MaintenanceContractOrderUpdateWithWhereUniqueWithoutMaintenanceRequestInput | MaintenanceContractOrderUpdateWithWhereUniqueWithoutMaintenanceRequestInput[]
+    updateMany?: MaintenanceContractOrderUpdateManyWithWhereWithoutMaintenanceRequestInput | MaintenanceContractOrderUpdateManyWithWhereWithoutMaintenanceRequestInput[]
+    deleteMany?: MaintenanceContractOrderScalarWhereInput | MaintenanceContractOrderScalarWhereInput[]
+  }
+
   export type SipacUnidadeUpdateOneWithoutMaintenanceRequestRequisitanteNestedInput = {
     create?: XOR<SipacUnidadeCreateWithoutMaintenanceRequestRequisitanteInput, SipacUnidadeUncheckedCreateWithoutMaintenanceRequestRequisitanteInput>
     connectOrCreate?: SipacUnidadeCreateOrConnectWithoutMaintenanceRequestRequisitanteInput
@@ -114116,6 +117526,16 @@ export namespace Prisma {
     delete?: SipacUnidadeWhereInput | boolean
     connect?: SipacUnidadeWhereUniqueInput
     update?: XOR<XOR<SipacUnidadeUpdateToOneWithWhereWithoutMaintenanceRequestCustoInput, SipacUnidadeUpdateWithoutMaintenanceRequestCustoInput>, SipacUnidadeUncheckedUpdateWithoutMaintenanceRequestCustoInput>
+  }
+
+  export type InfrastructureNetworkUpdateOneWithoutMaintenanceRequestsNestedInput = {
+    create?: XOR<InfrastructureNetworkCreateWithoutMaintenanceRequestsInput, InfrastructureNetworkUncheckedCreateWithoutMaintenanceRequestsInput>
+    connectOrCreate?: InfrastructureNetworkCreateOrConnectWithoutMaintenanceRequestsInput
+    upsert?: InfrastructureNetworkUpsertWithoutMaintenanceRequestsInput
+    disconnect?: InfrastructureNetworkWhereInput | boolean
+    delete?: InfrastructureNetworkWhereInput | boolean
+    connect?: InfrastructureNetworkWhereUniqueInput
+    update?: XOR<XOR<InfrastructureNetworkUpdateToOneWithWhereWithoutMaintenanceRequestsInput, InfrastructureNetworkUpdateWithoutMaintenanceRequestsInput>, InfrastructureNetworkUncheckedUpdateWithoutMaintenanceRequestsInput>
   }
 
   export type MaintenanceRequestPriorityUncheckedUpdateManyWithoutMaintenanceRequestNestedInput = {
@@ -114228,6 +117648,20 @@ export namespace Prisma {
     update?: MaintenanceServiceOrderUpdateWithWhereUniqueWithoutMaintenanceRequestInput | MaintenanceServiceOrderUpdateWithWhereUniqueWithoutMaintenanceRequestInput[]
     updateMany?: MaintenanceServiceOrderUpdateManyWithWhereWithoutMaintenanceRequestInput | MaintenanceServiceOrderUpdateManyWithWhereWithoutMaintenanceRequestInput[]
     deleteMany?: MaintenanceServiceOrderScalarWhereInput | MaintenanceServiceOrderScalarWhereInput[]
+  }
+
+  export type MaintenanceContractOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput = {
+    create?: XOR<MaintenanceContractOrderCreateWithoutMaintenanceRequestInput, MaintenanceContractOrderUncheckedCreateWithoutMaintenanceRequestInput> | MaintenanceContractOrderCreateWithoutMaintenanceRequestInput[] | MaintenanceContractOrderUncheckedCreateWithoutMaintenanceRequestInput[]
+    connectOrCreate?: MaintenanceContractOrderCreateOrConnectWithoutMaintenanceRequestInput | MaintenanceContractOrderCreateOrConnectWithoutMaintenanceRequestInput[]
+    upsert?: MaintenanceContractOrderUpsertWithWhereUniqueWithoutMaintenanceRequestInput | MaintenanceContractOrderUpsertWithWhereUniqueWithoutMaintenanceRequestInput[]
+    createMany?: MaintenanceContractOrderCreateManyMaintenanceRequestInputEnvelope
+    set?: MaintenanceContractOrderWhereUniqueInput | MaintenanceContractOrderWhereUniqueInput[]
+    disconnect?: MaintenanceContractOrderWhereUniqueInput | MaintenanceContractOrderWhereUniqueInput[]
+    delete?: MaintenanceContractOrderWhereUniqueInput | MaintenanceContractOrderWhereUniqueInput[]
+    connect?: MaintenanceContractOrderWhereUniqueInput | MaintenanceContractOrderWhereUniqueInput[]
+    update?: MaintenanceContractOrderUpdateWithWhereUniqueWithoutMaintenanceRequestInput | MaintenanceContractOrderUpdateWithWhereUniqueWithoutMaintenanceRequestInput[]
+    updateMany?: MaintenanceContractOrderUpdateManyWithWhereWithoutMaintenanceRequestInput | MaintenanceContractOrderUpdateManyWithWhereWithoutMaintenanceRequestInput[]
+    deleteMany?: MaintenanceContractOrderScalarWhereInput | MaintenanceContractOrderScalarWhereInput[]
   }
 
   export type WorkerTeamCreateNestedOneWithoutServiceOrdersInput = {
@@ -114380,6 +117814,110 @@ export namespace Prisma {
     deleteMany?: MaintenanceServiceOrderScalarWhereInput | MaintenanceServiceOrderScalarWhereInput[]
   }
 
+  export type ContractCreateNestedOneWithoutMaintenanceContractOrdersInput = {
+    create?: XOR<ContractCreateWithoutMaintenanceContractOrdersInput, ContractUncheckedCreateWithoutMaintenanceContractOrdersInput>
+    connectOrCreate?: ContractCreateOrConnectWithoutMaintenanceContractOrdersInput
+    connect?: ContractWhereUniqueInput
+  }
+
+  export type MaintenanceRequestCreateNestedOneWithoutMaintenanceContractOrdersInput = {
+    create?: XOR<MaintenanceRequestCreateWithoutMaintenanceContractOrdersInput, MaintenanceRequestUncheckedCreateWithoutMaintenanceContractOrdersInput>
+    connectOrCreate?: MaintenanceRequestCreateOrConnectWithoutMaintenanceContractOrdersInput
+    connect?: MaintenanceRequestWhereUniqueInput
+  }
+
+  export type MaintenanceContractOrderCreateNestedManyWithoutSubsequentOrdersInput = {
+    create?: XOR<MaintenanceContractOrderCreateWithoutSubsequentOrdersInput, MaintenanceContractOrderUncheckedCreateWithoutSubsequentOrdersInput> | MaintenanceContractOrderCreateWithoutSubsequentOrdersInput[] | MaintenanceContractOrderUncheckedCreateWithoutSubsequentOrdersInput[]
+    connectOrCreate?: MaintenanceContractOrderCreateOrConnectWithoutSubsequentOrdersInput | MaintenanceContractOrderCreateOrConnectWithoutSubsequentOrdersInput[]
+    connect?: MaintenanceContractOrderWhereUniqueInput | MaintenanceContractOrderWhereUniqueInput[]
+  }
+
+  export type MaintenanceContractOrderCreateNestedManyWithoutPrerequisitesInput = {
+    create?: XOR<MaintenanceContractOrderCreateWithoutPrerequisitesInput, MaintenanceContractOrderUncheckedCreateWithoutPrerequisitesInput> | MaintenanceContractOrderCreateWithoutPrerequisitesInput[] | MaintenanceContractOrderUncheckedCreateWithoutPrerequisitesInput[]
+    connectOrCreate?: MaintenanceContractOrderCreateOrConnectWithoutPrerequisitesInput | MaintenanceContractOrderCreateOrConnectWithoutPrerequisitesInput[]
+    connect?: MaintenanceContractOrderWhereUniqueInput | MaintenanceContractOrderWhereUniqueInput[]
+  }
+
+  export type MaintenanceContractOrderUncheckedCreateNestedManyWithoutSubsequentOrdersInput = {
+    create?: XOR<MaintenanceContractOrderCreateWithoutSubsequentOrdersInput, MaintenanceContractOrderUncheckedCreateWithoutSubsequentOrdersInput> | MaintenanceContractOrderCreateWithoutSubsequentOrdersInput[] | MaintenanceContractOrderUncheckedCreateWithoutSubsequentOrdersInput[]
+    connectOrCreate?: MaintenanceContractOrderCreateOrConnectWithoutSubsequentOrdersInput | MaintenanceContractOrderCreateOrConnectWithoutSubsequentOrdersInput[]
+    connect?: MaintenanceContractOrderWhereUniqueInput | MaintenanceContractOrderWhereUniqueInput[]
+  }
+
+  export type MaintenanceContractOrderUncheckedCreateNestedManyWithoutPrerequisitesInput = {
+    create?: XOR<MaintenanceContractOrderCreateWithoutPrerequisitesInput, MaintenanceContractOrderUncheckedCreateWithoutPrerequisitesInput> | MaintenanceContractOrderCreateWithoutPrerequisitesInput[] | MaintenanceContractOrderUncheckedCreateWithoutPrerequisitesInput[]
+    connectOrCreate?: MaintenanceContractOrderCreateOrConnectWithoutPrerequisitesInput | MaintenanceContractOrderCreateOrConnectWithoutPrerequisitesInput[]
+    connect?: MaintenanceContractOrderWhereUniqueInput | MaintenanceContractOrderWhereUniqueInput[]
+  }
+
+  export type ContractUpdateOneRequiredWithoutMaintenanceContractOrdersNestedInput = {
+    create?: XOR<ContractCreateWithoutMaintenanceContractOrdersInput, ContractUncheckedCreateWithoutMaintenanceContractOrdersInput>
+    connectOrCreate?: ContractCreateOrConnectWithoutMaintenanceContractOrdersInput
+    upsert?: ContractUpsertWithoutMaintenanceContractOrdersInput
+    connect?: ContractWhereUniqueInput
+    update?: XOR<XOR<ContractUpdateToOneWithWhereWithoutMaintenanceContractOrdersInput, ContractUpdateWithoutMaintenanceContractOrdersInput>, ContractUncheckedUpdateWithoutMaintenanceContractOrdersInput>
+  }
+
+  export type MaintenanceRequestUpdateOneRequiredWithoutMaintenanceContractOrdersNestedInput = {
+    create?: XOR<MaintenanceRequestCreateWithoutMaintenanceContractOrdersInput, MaintenanceRequestUncheckedCreateWithoutMaintenanceContractOrdersInput>
+    connectOrCreate?: MaintenanceRequestCreateOrConnectWithoutMaintenanceContractOrdersInput
+    upsert?: MaintenanceRequestUpsertWithoutMaintenanceContractOrdersInput
+    connect?: MaintenanceRequestWhereUniqueInput
+    update?: XOR<XOR<MaintenanceRequestUpdateToOneWithWhereWithoutMaintenanceContractOrdersInput, MaintenanceRequestUpdateWithoutMaintenanceContractOrdersInput>, MaintenanceRequestUncheckedUpdateWithoutMaintenanceContractOrdersInput>
+  }
+
+  export type MaintenanceContractOrderUpdateManyWithoutSubsequentOrdersNestedInput = {
+    create?: XOR<MaintenanceContractOrderCreateWithoutSubsequentOrdersInput, MaintenanceContractOrderUncheckedCreateWithoutSubsequentOrdersInput> | MaintenanceContractOrderCreateWithoutSubsequentOrdersInput[] | MaintenanceContractOrderUncheckedCreateWithoutSubsequentOrdersInput[]
+    connectOrCreate?: MaintenanceContractOrderCreateOrConnectWithoutSubsequentOrdersInput | MaintenanceContractOrderCreateOrConnectWithoutSubsequentOrdersInput[]
+    upsert?: MaintenanceContractOrderUpsertWithWhereUniqueWithoutSubsequentOrdersInput | MaintenanceContractOrderUpsertWithWhereUniqueWithoutSubsequentOrdersInput[]
+    set?: MaintenanceContractOrderWhereUniqueInput | MaintenanceContractOrderWhereUniqueInput[]
+    disconnect?: MaintenanceContractOrderWhereUniqueInput | MaintenanceContractOrderWhereUniqueInput[]
+    delete?: MaintenanceContractOrderWhereUniqueInput | MaintenanceContractOrderWhereUniqueInput[]
+    connect?: MaintenanceContractOrderWhereUniqueInput | MaintenanceContractOrderWhereUniqueInput[]
+    update?: MaintenanceContractOrderUpdateWithWhereUniqueWithoutSubsequentOrdersInput | MaintenanceContractOrderUpdateWithWhereUniqueWithoutSubsequentOrdersInput[]
+    updateMany?: MaintenanceContractOrderUpdateManyWithWhereWithoutSubsequentOrdersInput | MaintenanceContractOrderUpdateManyWithWhereWithoutSubsequentOrdersInput[]
+    deleteMany?: MaintenanceContractOrderScalarWhereInput | MaintenanceContractOrderScalarWhereInput[]
+  }
+
+  export type MaintenanceContractOrderUpdateManyWithoutPrerequisitesNestedInput = {
+    create?: XOR<MaintenanceContractOrderCreateWithoutPrerequisitesInput, MaintenanceContractOrderUncheckedCreateWithoutPrerequisitesInput> | MaintenanceContractOrderCreateWithoutPrerequisitesInput[] | MaintenanceContractOrderUncheckedCreateWithoutPrerequisitesInput[]
+    connectOrCreate?: MaintenanceContractOrderCreateOrConnectWithoutPrerequisitesInput | MaintenanceContractOrderCreateOrConnectWithoutPrerequisitesInput[]
+    upsert?: MaintenanceContractOrderUpsertWithWhereUniqueWithoutPrerequisitesInput | MaintenanceContractOrderUpsertWithWhereUniqueWithoutPrerequisitesInput[]
+    set?: MaintenanceContractOrderWhereUniqueInput | MaintenanceContractOrderWhereUniqueInput[]
+    disconnect?: MaintenanceContractOrderWhereUniqueInput | MaintenanceContractOrderWhereUniqueInput[]
+    delete?: MaintenanceContractOrderWhereUniqueInput | MaintenanceContractOrderWhereUniqueInput[]
+    connect?: MaintenanceContractOrderWhereUniqueInput | MaintenanceContractOrderWhereUniqueInput[]
+    update?: MaintenanceContractOrderUpdateWithWhereUniqueWithoutPrerequisitesInput | MaintenanceContractOrderUpdateWithWhereUniqueWithoutPrerequisitesInput[]
+    updateMany?: MaintenanceContractOrderUpdateManyWithWhereWithoutPrerequisitesInput | MaintenanceContractOrderUpdateManyWithWhereWithoutPrerequisitesInput[]
+    deleteMany?: MaintenanceContractOrderScalarWhereInput | MaintenanceContractOrderScalarWhereInput[]
+  }
+
+  export type MaintenanceContractOrderUncheckedUpdateManyWithoutSubsequentOrdersNestedInput = {
+    create?: XOR<MaintenanceContractOrderCreateWithoutSubsequentOrdersInput, MaintenanceContractOrderUncheckedCreateWithoutSubsequentOrdersInput> | MaintenanceContractOrderCreateWithoutSubsequentOrdersInput[] | MaintenanceContractOrderUncheckedCreateWithoutSubsequentOrdersInput[]
+    connectOrCreate?: MaintenanceContractOrderCreateOrConnectWithoutSubsequentOrdersInput | MaintenanceContractOrderCreateOrConnectWithoutSubsequentOrdersInput[]
+    upsert?: MaintenanceContractOrderUpsertWithWhereUniqueWithoutSubsequentOrdersInput | MaintenanceContractOrderUpsertWithWhereUniqueWithoutSubsequentOrdersInput[]
+    set?: MaintenanceContractOrderWhereUniqueInput | MaintenanceContractOrderWhereUniqueInput[]
+    disconnect?: MaintenanceContractOrderWhereUniqueInput | MaintenanceContractOrderWhereUniqueInput[]
+    delete?: MaintenanceContractOrderWhereUniqueInput | MaintenanceContractOrderWhereUniqueInput[]
+    connect?: MaintenanceContractOrderWhereUniqueInput | MaintenanceContractOrderWhereUniqueInput[]
+    update?: MaintenanceContractOrderUpdateWithWhereUniqueWithoutSubsequentOrdersInput | MaintenanceContractOrderUpdateWithWhereUniqueWithoutSubsequentOrdersInput[]
+    updateMany?: MaintenanceContractOrderUpdateManyWithWhereWithoutSubsequentOrdersInput | MaintenanceContractOrderUpdateManyWithWhereWithoutSubsequentOrdersInput[]
+    deleteMany?: MaintenanceContractOrderScalarWhereInput | MaintenanceContractOrderScalarWhereInput[]
+  }
+
+  export type MaintenanceContractOrderUncheckedUpdateManyWithoutPrerequisitesNestedInput = {
+    create?: XOR<MaintenanceContractOrderCreateWithoutPrerequisitesInput, MaintenanceContractOrderUncheckedCreateWithoutPrerequisitesInput> | MaintenanceContractOrderCreateWithoutPrerequisitesInput[] | MaintenanceContractOrderUncheckedCreateWithoutPrerequisitesInput[]
+    connectOrCreate?: MaintenanceContractOrderCreateOrConnectWithoutPrerequisitesInput | MaintenanceContractOrderCreateOrConnectWithoutPrerequisitesInput[]
+    upsert?: MaintenanceContractOrderUpsertWithWhereUniqueWithoutPrerequisitesInput | MaintenanceContractOrderUpsertWithWhereUniqueWithoutPrerequisitesInput[]
+    set?: MaintenanceContractOrderWhereUniqueInput | MaintenanceContractOrderWhereUniqueInput[]
+    disconnect?: MaintenanceContractOrderWhereUniqueInput | MaintenanceContractOrderWhereUniqueInput[]
+    delete?: MaintenanceContractOrderWhereUniqueInput | MaintenanceContractOrderWhereUniqueInput[]
+    connect?: MaintenanceContractOrderWhereUniqueInput | MaintenanceContractOrderWhereUniqueInput[]
+    update?: MaintenanceContractOrderUpdateWithWhereUniqueWithoutPrerequisitesInput | MaintenanceContractOrderUpdateWithWhereUniqueWithoutPrerequisitesInput[]
+    updateMany?: MaintenanceContractOrderUpdateManyWithWhereWithoutPrerequisitesInput | MaintenanceContractOrderUpdateManyWithWhereWithoutPrerequisitesInput[]
+    deleteMany?: MaintenanceContractOrderScalarWhereInput | MaintenanceContractOrderScalarWhereInput[]
+  }
+
   export type MaintenanceRequestCreateNestedManyWithoutServiceTypeInput = {
     create?: XOR<MaintenanceRequestCreateWithoutServiceTypeInput, MaintenanceRequestUncheckedCreateWithoutServiceTypeInput> | MaintenanceRequestCreateWithoutServiceTypeInput[] | MaintenanceRequestUncheckedCreateWithoutServiceTypeInput[]
     connectOrCreate?: MaintenanceRequestCreateOrConnectWithoutServiceTypeInput | MaintenanceRequestCreateOrConnectWithoutServiceTypeInput[]
@@ -114464,6 +118002,13 @@ export namespace Prisma {
     connect?: InfrastructureFacilityComplexWhereUniqueInput | InfrastructureFacilityComplexWhereUniqueInput[]
   }
 
+  export type InfrastructureNetworkCreateNestedManyWithoutMaintenanceInstanceInput = {
+    create?: XOR<InfrastructureNetworkCreateWithoutMaintenanceInstanceInput, InfrastructureNetworkUncheckedCreateWithoutMaintenanceInstanceInput> | InfrastructureNetworkCreateWithoutMaintenanceInstanceInput[] | InfrastructureNetworkUncheckedCreateWithoutMaintenanceInstanceInput[]
+    connectOrCreate?: InfrastructureNetworkCreateOrConnectWithoutMaintenanceInstanceInput | InfrastructureNetworkCreateOrConnectWithoutMaintenanceInstanceInput[]
+    createMany?: InfrastructureNetworkCreateManyMaintenanceInstanceInputEnvelope
+    connect?: InfrastructureNetworkWhereUniqueInput | InfrastructureNetworkWhereUniqueInput[]
+  }
+
   export type UserCreateNestedManyWithoutMaintenanceInstanceInput = {
     create?: XOR<UserCreateWithoutMaintenanceInstanceInput, UserUncheckedCreateWithoutMaintenanceInstanceInput> | UserCreateWithoutMaintenanceInstanceInput[] | UserUncheckedCreateWithoutMaintenanceInstanceInput[]
     connectOrCreate?: UserCreateOrConnectWithoutMaintenanceInstanceInput | UserCreateOrConnectWithoutMaintenanceInstanceInput[]
@@ -114518,6 +118063,13 @@ export namespace Prisma {
     connectOrCreate?: InfrastructureFacilityComplexCreateOrConnectWithoutMaintenanceInstanceInput | InfrastructureFacilityComplexCreateOrConnectWithoutMaintenanceInstanceInput[]
     createMany?: InfrastructureFacilityComplexCreateManyMaintenanceInstanceInputEnvelope
     connect?: InfrastructureFacilityComplexWhereUniqueInput | InfrastructureFacilityComplexWhereUniqueInput[]
+  }
+
+  export type InfrastructureNetworkUncheckedCreateNestedManyWithoutMaintenanceInstanceInput = {
+    create?: XOR<InfrastructureNetworkCreateWithoutMaintenanceInstanceInput, InfrastructureNetworkUncheckedCreateWithoutMaintenanceInstanceInput> | InfrastructureNetworkCreateWithoutMaintenanceInstanceInput[] | InfrastructureNetworkUncheckedCreateWithoutMaintenanceInstanceInput[]
+    connectOrCreate?: InfrastructureNetworkCreateOrConnectWithoutMaintenanceInstanceInput | InfrastructureNetworkCreateOrConnectWithoutMaintenanceInstanceInput[]
+    createMany?: InfrastructureNetworkCreateManyMaintenanceInstanceInputEnvelope
+    connect?: InfrastructureNetworkWhereUniqueInput | InfrastructureNetworkWhereUniqueInput[]
   }
 
   export type UserUncheckedCreateNestedManyWithoutMaintenanceInstanceInput = {
@@ -114616,6 +118168,20 @@ export namespace Prisma {
     update?: InfrastructureFacilityComplexUpdateWithWhereUniqueWithoutMaintenanceInstanceInput | InfrastructureFacilityComplexUpdateWithWhereUniqueWithoutMaintenanceInstanceInput[]
     updateMany?: InfrastructureFacilityComplexUpdateManyWithWhereWithoutMaintenanceInstanceInput | InfrastructureFacilityComplexUpdateManyWithWhereWithoutMaintenanceInstanceInput[]
     deleteMany?: InfrastructureFacilityComplexScalarWhereInput | InfrastructureFacilityComplexScalarWhereInput[]
+  }
+
+  export type InfrastructureNetworkUpdateManyWithoutMaintenanceInstanceNestedInput = {
+    create?: XOR<InfrastructureNetworkCreateWithoutMaintenanceInstanceInput, InfrastructureNetworkUncheckedCreateWithoutMaintenanceInstanceInput> | InfrastructureNetworkCreateWithoutMaintenanceInstanceInput[] | InfrastructureNetworkUncheckedCreateWithoutMaintenanceInstanceInput[]
+    connectOrCreate?: InfrastructureNetworkCreateOrConnectWithoutMaintenanceInstanceInput | InfrastructureNetworkCreateOrConnectWithoutMaintenanceInstanceInput[]
+    upsert?: InfrastructureNetworkUpsertWithWhereUniqueWithoutMaintenanceInstanceInput | InfrastructureNetworkUpsertWithWhereUniqueWithoutMaintenanceInstanceInput[]
+    createMany?: InfrastructureNetworkCreateManyMaintenanceInstanceInputEnvelope
+    set?: InfrastructureNetworkWhereUniqueInput | InfrastructureNetworkWhereUniqueInput[]
+    disconnect?: InfrastructureNetworkWhereUniqueInput | InfrastructureNetworkWhereUniqueInput[]
+    delete?: InfrastructureNetworkWhereUniqueInput | InfrastructureNetworkWhereUniqueInput[]
+    connect?: InfrastructureNetworkWhereUniqueInput | InfrastructureNetworkWhereUniqueInput[]
+    update?: InfrastructureNetworkUpdateWithWhereUniqueWithoutMaintenanceInstanceInput | InfrastructureNetworkUpdateWithWhereUniqueWithoutMaintenanceInstanceInput[]
+    updateMany?: InfrastructureNetworkUpdateManyWithWhereWithoutMaintenanceInstanceInput | InfrastructureNetworkUpdateManyWithWhereWithoutMaintenanceInstanceInput[]
+    deleteMany?: InfrastructureNetworkScalarWhereInput | InfrastructureNetworkScalarWhereInput[]
   }
 
   export type UserUpdateManyWithoutMaintenanceInstanceNestedInput = {
@@ -114728,6 +118294,20 @@ export namespace Prisma {
     update?: InfrastructureFacilityComplexUpdateWithWhereUniqueWithoutMaintenanceInstanceInput | InfrastructureFacilityComplexUpdateWithWhereUniqueWithoutMaintenanceInstanceInput[]
     updateMany?: InfrastructureFacilityComplexUpdateManyWithWhereWithoutMaintenanceInstanceInput | InfrastructureFacilityComplexUpdateManyWithWhereWithoutMaintenanceInstanceInput[]
     deleteMany?: InfrastructureFacilityComplexScalarWhereInput | InfrastructureFacilityComplexScalarWhereInput[]
+  }
+
+  export type InfrastructureNetworkUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput = {
+    create?: XOR<InfrastructureNetworkCreateWithoutMaintenanceInstanceInput, InfrastructureNetworkUncheckedCreateWithoutMaintenanceInstanceInput> | InfrastructureNetworkCreateWithoutMaintenanceInstanceInput[] | InfrastructureNetworkUncheckedCreateWithoutMaintenanceInstanceInput[]
+    connectOrCreate?: InfrastructureNetworkCreateOrConnectWithoutMaintenanceInstanceInput | InfrastructureNetworkCreateOrConnectWithoutMaintenanceInstanceInput[]
+    upsert?: InfrastructureNetworkUpsertWithWhereUniqueWithoutMaintenanceInstanceInput | InfrastructureNetworkUpsertWithWhereUniqueWithoutMaintenanceInstanceInput[]
+    createMany?: InfrastructureNetworkCreateManyMaintenanceInstanceInputEnvelope
+    set?: InfrastructureNetworkWhereUniqueInput | InfrastructureNetworkWhereUniqueInput[]
+    disconnect?: InfrastructureNetworkWhereUniqueInput | InfrastructureNetworkWhereUniqueInput[]
+    delete?: InfrastructureNetworkWhereUniqueInput | InfrastructureNetworkWhereUniqueInput[]
+    connect?: InfrastructureNetworkWhereUniqueInput | InfrastructureNetworkWhereUniqueInput[]
+    update?: InfrastructureNetworkUpdateWithWhereUniqueWithoutMaintenanceInstanceInput | InfrastructureNetworkUpdateWithWhereUniqueWithoutMaintenanceInstanceInput[]
+    updateMany?: InfrastructureNetworkUpdateManyWithWhereWithoutMaintenanceInstanceInput | InfrastructureNetworkUpdateManyWithWhereWithoutMaintenanceInstanceInput[]
+    deleteMany?: InfrastructureNetworkScalarWhereInput | InfrastructureNetworkScalarWhereInput[]
   }
 
   export type UserUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput = {
@@ -122718,6 +126298,37 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type MaintenanceContractOrderCreateWithoutContractInput = {
+    title: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    maintenanceRequest: MaintenanceRequestCreateNestedOneWithoutMaintenanceContractOrdersInput
+    prerequisites?: MaintenanceContractOrderCreateNestedManyWithoutSubsequentOrdersInput
+    subsequentOrders?: MaintenanceContractOrderCreateNestedManyWithoutPrerequisitesInput
+  }
+
+  export type MaintenanceContractOrderUncheckedCreateWithoutContractInput = {
+    id?: number
+    title: string
+    description?: string | null
+    maintenanceRequestId: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    prerequisites?: MaintenanceContractOrderUncheckedCreateNestedManyWithoutSubsequentOrdersInput
+    subsequentOrders?: MaintenanceContractOrderUncheckedCreateNestedManyWithoutPrerequisitesInput
+  }
+
+  export type MaintenanceContractOrderCreateOrConnectWithoutContractInput = {
+    where: MaintenanceContractOrderWhereUniqueInput
+    create: XOR<MaintenanceContractOrderCreateWithoutContractInput, MaintenanceContractOrderUncheckedCreateWithoutContractInput>
+  }
+
+  export type MaintenanceContractOrderCreateManyContractInputEnvelope = {
+    data: MaintenanceContractOrderCreateManyContractInput | MaintenanceContractOrderCreateManyContractInput[]
+    skipDuplicates?: boolean
+  }
+
   export type ContractProviderUpsertWithoutContractsInput = {
     update: XOR<ContractProviderUpdateWithoutContractsInput, ContractProviderUncheckedUpdateWithoutContractsInput>
     create: XOR<ContractProviderCreateWithoutContractsInput, ContractProviderUncheckedCreateWithoutContractsInput>
@@ -122782,6 +126393,35 @@ export namespace Prisma {
     notes?: StringNullableFilter<"WorkerContract"> | string | null
   }
 
+  export type MaintenanceContractOrderUpsertWithWhereUniqueWithoutContractInput = {
+    where: MaintenanceContractOrderWhereUniqueInput
+    update: XOR<MaintenanceContractOrderUpdateWithoutContractInput, MaintenanceContractOrderUncheckedUpdateWithoutContractInput>
+    create: XOR<MaintenanceContractOrderCreateWithoutContractInput, MaintenanceContractOrderUncheckedCreateWithoutContractInput>
+  }
+
+  export type MaintenanceContractOrderUpdateWithWhereUniqueWithoutContractInput = {
+    where: MaintenanceContractOrderWhereUniqueInput
+    data: XOR<MaintenanceContractOrderUpdateWithoutContractInput, MaintenanceContractOrderUncheckedUpdateWithoutContractInput>
+  }
+
+  export type MaintenanceContractOrderUpdateManyWithWhereWithoutContractInput = {
+    where: MaintenanceContractOrderScalarWhereInput
+    data: XOR<MaintenanceContractOrderUpdateManyMutationInput, MaintenanceContractOrderUncheckedUpdateManyWithoutContractInput>
+  }
+
+  export type MaintenanceContractOrderScalarWhereInput = {
+    AND?: MaintenanceContractOrderScalarWhereInput | MaintenanceContractOrderScalarWhereInput[]
+    OR?: MaintenanceContractOrderScalarWhereInput[]
+    NOT?: MaintenanceContractOrderScalarWhereInput | MaintenanceContractOrderScalarWhereInput[]
+    id?: IntFilter<"MaintenanceContractOrder"> | number
+    title?: StringFilter<"MaintenanceContractOrder"> | string
+    description?: StringNullableFilter<"MaintenanceContractOrder"> | string | null
+    contractId?: IntFilter<"MaintenanceContractOrder"> | number
+    maintenanceRequestId?: IntFilter<"MaintenanceContractOrder"> | number
+    createdAt?: DateTimeFilter<"MaintenanceContractOrder"> | Date | string
+    updatedAt?: DateTimeFilter<"MaintenanceContractOrder"> | Date | string
+  }
+
   export type ContractCreateWithoutProvidersInput = {
     codigoSipac?: string | null
     value?: Decimal | DecimalJsLike | number | string | null
@@ -122792,6 +126432,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     workersContracts?: WorkerContractCreateNestedManyWithoutContractInput
+    maintenanceContractOrders?: MaintenanceContractOrderCreateNestedManyWithoutContractInput
   }
 
   export type ContractUncheckedCreateWithoutProvidersInput = {
@@ -122805,6 +126446,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     workersContracts?: WorkerContractUncheckedCreateNestedManyWithoutContractInput
+    maintenanceContractOrders?: MaintenanceContractOrderUncheckedCreateNestedManyWithoutContractInput
   }
 
   export type ContractCreateOrConnectWithoutProvidersInput = {
@@ -122860,6 +126502,7 @@ export namespace Prisma {
     timelineEventsTransferredTo?: MaintenanceTimelineEventCreateNestedManyWithoutTransferredToInstanceInput
     warehouses?: WarehouseCreateNestedManyWithoutMaintenanceInstanceInput
     InfrastructureBuilding?: InfrastructureBuildingCreateNestedManyWithoutMaintenanceInstanceInput
+    InfrastructureNetwork?: InfrastructureNetworkCreateNestedManyWithoutMaintenanceInstanceInput
     users?: UserCreateNestedManyWithoutMaintenanceInstanceInput
     workers?: WorkerCreateNestedManyWithoutMaintenanceInstanceInput
   }
@@ -122876,6 +126519,7 @@ export namespace Prisma {
     timelineEventsTransferredTo?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutTransferredToInstanceInput
     warehouses?: WarehouseUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
     InfrastructureBuilding?: InfrastructureBuildingUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
+    InfrastructureNetwork?: InfrastructureNetworkUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
     users?: UserUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
     workers?: WorkerUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
   }
@@ -122955,6 +126599,7 @@ export namespace Prisma {
     space?: InfrastructureSpaceCreateNestedOneWithoutInfraOccurrencesInput
     reportedBy: UserCreateNestedOneWithoutReportedOccurrencesInput
     diagnosis?: InfrastructureOccurrenceDiagnosisCreateNestedOneWithoutOccurrenceInput
+    infrastructureNetwork?: InfrastructureNetworkCreateNestedOneWithoutInfraOccurrencesInput
   }
 
   export type InfrastructureOccurrenceUncheckedCreateWithoutFacilityComplexInput = {
@@ -122971,6 +126616,7 @@ export namespace Prisma {
     reportedById: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    infrastructureNetworkId?: string | null
     duplicates?: InfrastructureOccurrenceUncheckedCreateNestedManyWithoutDuplicateOfInput
     reinforcements?: InfrastructureOccurrenceReinforcementUncheckedCreateNestedManyWithoutOccurrenceInput
     diagnosis?: InfrastructureOccurrenceDiagnosisUncheckedCreateNestedOneWithoutOccurrenceInput
@@ -123017,8 +126663,10 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalCreateNestedManyWithoutMaintenanceRequestInput
     materialPickingOrders?: MaterialPickingOrderCreateNestedManyWithoutMaintenanceRequestInput
     serviceOrders?: MaintenanceServiceOrderCreateNestedManyWithoutMaintenanceRequestInput
+    maintenanceContractOrders?: MaintenanceContractOrderCreateNestedManyWithoutMaintenanceRequestInput
     sipacUnitRequesting?: SipacUnidadeCreateNestedOneWithoutMaintenanceRequestRequisitanteInput
     sipacUnitCost?: SipacUnidadeCreateNestedOneWithoutMaintenanceRequestCustoInput
+    infrastructureNetwork?: InfrastructureNetworkCreateNestedOneWithoutMaintenanceRequestsInput
   }
 
   export type MaintenanceRequestUncheckedCreateWithoutFacilityComplexInput = {
@@ -123047,6 +126695,7 @@ export namespace Prisma {
     sipacUnitCostId?: number | null
     sipacUserLoginRequest?: string | null
     origin?: $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: string | null
     priorities?: MaintenanceRequestPriorityUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     statuses?: MaintenanceRequestStatusUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     timelineEvents?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutMaintenanceRequestInput
@@ -123055,6 +126704,7 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     materialPickingOrders?: MaterialPickingOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     serviceOrders?: MaintenanceServiceOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    maintenanceContractOrders?: MaintenanceContractOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
   }
 
   export type MaintenanceRequestCreateOrConnectWithoutFacilityComplexInput = {
@@ -123064,6 +126714,40 @@ export namespace Prisma {
 
   export type MaintenanceRequestCreateManyFacilityComplexInputEnvelope = {
     data: MaintenanceRequestCreateManyFacilityComplexInput | MaintenanceRequestCreateManyFacilityComplexInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type InfrastructureNetworkCreateWithoutFacilityComplexInput = {
+    id: string
+    name: string
+    alias?: string | null
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    maintenanceRequests?: MaintenanceRequestCreateNestedManyWithoutInfrastructureNetworkInput
+    infraOccurrences?: InfrastructureOccurrenceCreateNestedManyWithoutInfrastructureNetworkInput
+    maintenanceInstance?: MaintenanceInstanceCreateNestedOneWithoutInfrastructureNetworkInput
+  }
+
+  export type InfrastructureNetworkUncheckedCreateWithoutFacilityComplexInput = {
+    id: string
+    name: string
+    alias?: string | null
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    maintenanceInstanceId?: number | null
+    maintenanceRequests?: MaintenanceRequestUncheckedCreateNestedManyWithoutInfrastructureNetworkInput
+    infraOccurrences?: InfrastructureOccurrenceUncheckedCreateNestedManyWithoutInfrastructureNetworkInput
+  }
+
+  export type InfrastructureNetworkCreateOrConnectWithoutFacilityComplexInput = {
+    where: InfrastructureNetworkWhereUniqueInput
+    create: XOR<InfrastructureNetworkCreateWithoutFacilityComplexInput, InfrastructureNetworkUncheckedCreateWithoutFacilityComplexInput>
+  }
+
+  export type InfrastructureNetworkCreateManyFacilityComplexInputEnvelope = {
+    data: InfrastructureNetworkCreateManyFacilityComplexInput | InfrastructureNetworkCreateManyFacilityComplexInput[]
     skipDuplicates?: boolean
   }
 
@@ -123089,6 +126773,7 @@ export namespace Prisma {
     timelineEventsTransferredTo?: MaintenanceTimelineEventUpdateManyWithoutTransferredToInstanceNestedInput
     warehouses?: WarehouseUpdateManyWithoutMaintenanceInstanceNestedInput
     InfrastructureBuilding?: InfrastructureBuildingUpdateManyWithoutMaintenanceInstanceNestedInput
+    InfrastructureNetwork?: InfrastructureNetworkUpdateManyWithoutMaintenanceInstanceNestedInput
     users?: UserUpdateManyWithoutMaintenanceInstanceNestedInput
     workers?: WorkerUpdateManyWithoutMaintenanceInstanceNestedInput
   }
@@ -123105,6 +126790,7 @@ export namespace Prisma {
     timelineEventsTransferredTo?: MaintenanceTimelineEventUncheckedUpdateManyWithoutTransferredToInstanceNestedInput
     warehouses?: WarehouseUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
     InfrastructureBuilding?: InfrastructureBuildingUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
+    InfrastructureNetwork?: InfrastructureNetworkUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
     users?: UserUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
     workers?: WorkerUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
   }
@@ -123178,6 +126864,7 @@ export namespace Prisma {
     reportedById?: IntFilter<"InfrastructureOccurrence"> | number
     createdAt?: DateTimeFilter<"InfrastructureOccurrence"> | Date | string
     updatedAt?: DateTimeFilter<"InfrastructureOccurrence"> | Date | string
+    infrastructureNetworkId?: StringNullableFilter<"InfrastructureOccurrence"> | string | null
   }
 
   export type MaintenanceRequestUpsertWithWhereUniqueWithoutFacilityComplexInput = {
@@ -123226,6 +126913,37 @@ export namespace Prisma {
     sipacUnitCostId?: IntNullableFilter<"MaintenanceRequest"> | number | null
     sipacUserLoginRequest?: StringNullableFilter<"MaintenanceRequest"> | string | null
     origin?: EnumMaintenanceRequestOriginFilter<"MaintenanceRequest"> | $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: StringNullableFilter<"MaintenanceRequest"> | string | null
+  }
+
+  export type InfrastructureNetworkUpsertWithWhereUniqueWithoutFacilityComplexInput = {
+    where: InfrastructureNetworkWhereUniqueInput
+    update: XOR<InfrastructureNetworkUpdateWithoutFacilityComplexInput, InfrastructureNetworkUncheckedUpdateWithoutFacilityComplexInput>
+    create: XOR<InfrastructureNetworkCreateWithoutFacilityComplexInput, InfrastructureNetworkUncheckedCreateWithoutFacilityComplexInput>
+  }
+
+  export type InfrastructureNetworkUpdateWithWhereUniqueWithoutFacilityComplexInput = {
+    where: InfrastructureNetworkWhereUniqueInput
+    data: XOR<InfrastructureNetworkUpdateWithoutFacilityComplexInput, InfrastructureNetworkUncheckedUpdateWithoutFacilityComplexInput>
+  }
+
+  export type InfrastructureNetworkUpdateManyWithWhereWithoutFacilityComplexInput = {
+    where: InfrastructureNetworkScalarWhereInput
+    data: XOR<InfrastructureNetworkUpdateManyMutationInput, InfrastructureNetworkUncheckedUpdateManyWithoutFacilityComplexInput>
+  }
+
+  export type InfrastructureNetworkScalarWhereInput = {
+    AND?: InfrastructureNetworkScalarWhereInput | InfrastructureNetworkScalarWhereInput[]
+    OR?: InfrastructureNetworkScalarWhereInput[]
+    NOT?: InfrastructureNetworkScalarWhereInput | InfrastructureNetworkScalarWhereInput[]
+    id?: StringFilter<"InfrastructureNetwork"> | string
+    name?: StringFilter<"InfrastructureNetwork"> | string
+    alias?: StringNullableFilter<"InfrastructureNetwork"> | string | null
+    description?: StringNullableFilter<"InfrastructureNetwork"> | string | null
+    createdAt?: DateTimeFilter<"InfrastructureNetwork"> | Date | string
+    updatedAt?: DateTimeFilter<"InfrastructureNetwork"> | Date | string
+    facilityComplexId?: StringNullableFilter<"InfrastructureNetwork"> | string | null
+    maintenanceInstanceId?: IntNullableFilter<"InfrastructureNetwork"> | number | null
   }
 
   export type UserCreateWithoutInfrastructureBuildingsInput = {
@@ -123408,8 +127126,10 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalCreateNestedManyWithoutMaintenanceRequestInput
     materialPickingOrders?: MaterialPickingOrderCreateNestedManyWithoutMaintenanceRequestInput
     serviceOrders?: MaintenanceServiceOrderCreateNestedManyWithoutMaintenanceRequestInput
+    maintenanceContractOrders?: MaintenanceContractOrderCreateNestedManyWithoutMaintenanceRequestInput
     sipacUnitRequesting?: SipacUnidadeCreateNestedOneWithoutMaintenanceRequestRequisitanteInput
     sipacUnitCost?: SipacUnidadeCreateNestedOneWithoutMaintenanceRequestCustoInput
+    infrastructureNetwork?: InfrastructureNetworkCreateNestedOneWithoutMaintenanceRequestsInput
   }
 
   export type MaintenanceRequestUncheckedCreateWithoutBuildingInput = {
@@ -123438,6 +127158,7 @@ export namespace Prisma {
     sipacUnitCostId?: number | null
     sipacUserLoginRequest?: string | null
     origin?: $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: string | null
     priorities?: MaintenanceRequestPriorityUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     statuses?: MaintenanceRequestStatusUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     timelineEvents?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutMaintenanceRequestInput
@@ -123446,6 +127167,7 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     materialPickingOrders?: MaterialPickingOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     serviceOrders?: MaintenanceServiceOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    maintenanceContractOrders?: MaintenanceContractOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
   }
 
   export type MaintenanceRequestCreateOrConnectWithoutBuildingInput = {
@@ -123474,6 +127196,7 @@ export namespace Prisma {
     space?: InfrastructureSpaceCreateNestedOneWithoutInfraOccurrencesInput
     reportedBy: UserCreateNestedOneWithoutReportedOccurrencesInput
     diagnosis?: InfrastructureOccurrenceDiagnosisCreateNestedOneWithoutOccurrenceInput
+    infrastructureNetwork?: InfrastructureNetworkCreateNestedOneWithoutInfraOccurrencesInput
   }
 
   export type InfrastructureOccurrenceUncheckedCreateWithoutBuildingInput = {
@@ -123490,6 +127213,7 @@ export namespace Prisma {
     reportedById: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    infrastructureNetworkId?: string | null
     duplicates?: InfrastructureOccurrenceUncheckedCreateNestedManyWithoutDuplicateOfInput
     reinforcements?: InfrastructureOccurrenceReinforcementUncheckedCreateNestedManyWithoutOccurrenceInput
     diagnosis?: InfrastructureOccurrenceDiagnosisUncheckedCreateNestedOneWithoutOccurrenceInput
@@ -123518,6 +127242,7 @@ export namespace Prisma {
     maintenanceInstance?: MaintenanceInstanceCreateNestedOneWithoutInfrastructureFacilityComplexInput
     InfrastructureOccurrence?: InfrastructureOccurrenceCreateNestedManyWithoutFacilityComplexInput
     MaintenanceRequest?: MaintenanceRequestCreateNestedManyWithoutFacilityComplexInput
+    infrastructureNetworks?: InfrastructureNetworkCreateNestedManyWithoutFacilityComplexInput
   }
 
   export type InfrastructureFacilityComplexUncheckedCreateWithoutBuildingsInput = {
@@ -123533,6 +127258,7 @@ export namespace Prisma {
     maintenanceInstanceId?: number | null
     InfrastructureOccurrence?: InfrastructureOccurrenceUncheckedCreateNestedManyWithoutFacilityComplexInput
     MaintenanceRequest?: MaintenanceRequestUncheckedCreateNestedManyWithoutFacilityComplexInput
+    infrastructureNetworks?: InfrastructureNetworkUncheckedCreateNestedManyWithoutFacilityComplexInput
   }
 
   export type InfrastructureFacilityComplexCreateOrConnectWithoutBuildingsInput = {
@@ -123591,6 +127317,7 @@ export namespace Prisma {
     timelineEventsTransferredTo?: MaintenanceTimelineEventCreateNestedManyWithoutTransferredToInstanceInput
     warehouses?: WarehouseCreateNestedManyWithoutMaintenanceInstanceInput
     InfrastructureFacilityComplex?: InfrastructureFacilityComplexCreateNestedManyWithoutMaintenanceInstanceInput
+    InfrastructureNetwork?: InfrastructureNetworkCreateNestedManyWithoutMaintenanceInstanceInput
     users?: UserCreateNestedManyWithoutMaintenanceInstanceInput
     workers?: WorkerCreateNestedManyWithoutMaintenanceInstanceInput
   }
@@ -123607,6 +127334,7 @@ export namespace Prisma {
     timelineEventsTransferredTo?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutTransferredToInstanceInput
     warehouses?: WarehouseUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
     InfrastructureFacilityComplex?: InfrastructureFacilityComplexUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
+    InfrastructureNetwork?: InfrastructureNetworkUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
     users?: UserUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
     workers?: WorkerUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
   }
@@ -123800,6 +127528,7 @@ export namespace Prisma {
     maintenanceInstance?: MaintenanceInstanceUpdateOneWithoutInfrastructureFacilityComplexNestedInput
     InfrastructureOccurrence?: InfrastructureOccurrenceUpdateManyWithoutFacilityComplexNestedInput
     MaintenanceRequest?: MaintenanceRequestUpdateManyWithoutFacilityComplexNestedInput
+    infrastructureNetworks?: InfrastructureNetworkUpdateManyWithoutFacilityComplexNestedInput
   }
 
   export type InfrastructureFacilityComplexUncheckedUpdateWithoutBuildingsInput = {
@@ -123815,6 +127544,7 @@ export namespace Prisma {
     maintenanceInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
     InfrastructureOccurrence?: InfrastructureOccurrenceUncheckedUpdateManyWithoutFacilityComplexNestedInput
     MaintenanceRequest?: MaintenanceRequestUncheckedUpdateManyWithoutFacilityComplexNestedInput
+    infrastructureNetworks?: InfrastructureNetworkUncheckedUpdateManyWithoutFacilityComplexNestedInput
   }
 
   export type InfrastructureBuildingActivityUpsertWithoutBuldingsPrimaryInput = {
@@ -123890,6 +127620,7 @@ export namespace Prisma {
     timelineEventsTransferredTo?: MaintenanceTimelineEventUpdateManyWithoutTransferredToInstanceNestedInput
     warehouses?: WarehouseUpdateManyWithoutMaintenanceInstanceNestedInput
     InfrastructureFacilityComplex?: InfrastructureFacilityComplexUpdateManyWithoutMaintenanceInstanceNestedInput
+    InfrastructureNetwork?: InfrastructureNetworkUpdateManyWithoutMaintenanceInstanceNestedInput
     users?: UserUpdateManyWithoutMaintenanceInstanceNestedInput
     workers?: WorkerUpdateManyWithoutMaintenanceInstanceNestedInput
   }
@@ -123906,6 +127637,7 @@ export namespace Prisma {
     timelineEventsTransferredTo?: MaintenanceTimelineEventUncheckedUpdateManyWithoutTransferredToInstanceNestedInput
     warehouses?: WarehouseUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
     InfrastructureFacilityComplex?: InfrastructureFacilityComplexUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
+    InfrastructureNetwork?: InfrastructureNetworkUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
     users?: UserUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
     workers?: WorkerUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
   }
@@ -123934,6 +127666,334 @@ export namespace Prisma {
     codigoUnidade?: StringFilter<"SipacUnidade"> | string
     nomeUnidade?: StringFilter<"SipacUnidade"> | string
     sigla?: StringNullableFilter<"SipacUnidade"> | string | null
+  }
+
+  export type MaintenanceRequestCreateWithoutInfrastructureNetworkInput = {
+    protocolNumber?: string
+    title: string
+    description?: string | null
+    requestedAt?: Date | string
+    deadline?: Date | string | null
+    solutionDetails?: string | null
+    completedAt?: Date | string | null
+    local?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    notes?: string | null
+    useResidueMaterial?: boolean
+    sipacUserLoginRequest?: string | null
+    origin?: $Enums.MaintenanceRequestOrigin
+    priorities?: MaintenanceRequestPriorityCreateNestedManyWithoutMaintenanceRequestInput
+    facilityComplex?: InfrastructureFacilityComplexCreateNestedOneWithoutMaintenanceRequestInput
+    building?: InfrastructureBuildingCreateNestedOneWithoutMaintenanceRequestsInput
+    space?: InfrastructureSpaceCreateNestedOneWithoutMaintenanceRequestsInput
+    system?: InfrastructureSystemCreateNestedOneWithoutMaintenanceRequestsInput
+    currentMaintenanceInstance?: MaintenanceInstanceCreateNestedOneWithoutCurrentMaintenanceRequestsInput
+    createdBy?: UserCreateNestedOneWithoutCreatedMaintenanceRequestsInput
+    assignedTo?: UserCreateNestedOneWithoutAssignedMaintenanceRequestsInput
+    serviceType?: MaintenanceServiceTypeCreateNestedOneWithoutMaintenanceRequestsInput
+    statuses?: MaintenanceRequestStatusCreateNestedManyWithoutMaintenanceRequestInput
+    diagnosis?: InfrastructureOccurrenceDiagnosisCreateNestedOneWithoutMaintenanceRequestInput
+    timelineEvents?: MaintenanceTimelineEventCreateNestedManyWithoutMaintenanceRequestInput
+    materialRequests?: MaterialRequestCreateNestedManyWithoutMaintenanceRequestInput
+    materialStockMovements?: MaterialStockMovementCreateNestedManyWithoutMaintenanceRequestInput
+    materialWithdrawals?: MaterialWithdrawalCreateNestedManyWithoutMaintenanceRequestInput
+    materialPickingOrders?: MaterialPickingOrderCreateNestedManyWithoutMaintenanceRequestInput
+    serviceOrders?: MaintenanceServiceOrderCreateNestedManyWithoutMaintenanceRequestInput
+    maintenanceContractOrders?: MaintenanceContractOrderCreateNestedManyWithoutMaintenanceRequestInput
+    sipacUnitRequesting?: SipacUnidadeCreateNestedOneWithoutMaintenanceRequestRequisitanteInput
+    sipacUnitCost?: SipacUnidadeCreateNestedOneWithoutMaintenanceRequestCustoInput
+  }
+
+  export type MaintenanceRequestUncheckedCreateWithoutInfrastructureNetworkInput = {
+    id?: number
+    protocolNumber?: string
+    title: string
+    description?: string | null
+    requestedAt?: Date | string
+    deadline?: Date | string | null
+    solutionDetails?: string | null
+    completedAt?: Date | string | null
+    facilityComplexId?: string | null
+    buildingId?: string | null
+    spaceId?: number | null
+    local?: string | null
+    systemId?: number | null
+    currentMaintenanceInstanceId?: number | null
+    createdById?: number | null
+    assignedToId?: number | null
+    serviceTypeId?: number | null
+    diagnosisId?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    notes?: string | null
+    useResidueMaterial?: boolean
+    sipacUnitRequestingId?: number | null
+    sipacUnitCostId?: number | null
+    sipacUserLoginRequest?: string | null
+    origin?: $Enums.MaintenanceRequestOrigin
+    priorities?: MaintenanceRequestPriorityUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    statuses?: MaintenanceRequestStatusUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    timelineEvents?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    materialRequests?: MaterialRequestUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    materialStockMovements?: MaterialStockMovementUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    materialWithdrawals?: MaterialWithdrawalUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    materialPickingOrders?: MaterialPickingOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    serviceOrders?: MaintenanceServiceOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    maintenanceContractOrders?: MaintenanceContractOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+  }
+
+  export type MaintenanceRequestCreateOrConnectWithoutInfrastructureNetworkInput = {
+    where: MaintenanceRequestWhereUniqueInput
+    create: XOR<MaintenanceRequestCreateWithoutInfrastructureNetworkInput, MaintenanceRequestUncheckedCreateWithoutInfrastructureNetworkInput>
+  }
+
+  export type MaintenanceRequestCreateManyInfrastructureNetworkInputEnvelope = {
+    data: MaintenanceRequestCreateManyInfrastructureNetworkInput | MaintenanceRequestCreateManyInfrastructureNetworkInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type InfrastructureOccurrenceCreateWithoutInfrastructureNetworkInput = {
+    title: string
+    description: string
+    infrastructureType?: $Enums.InfrastructureType | null
+    locationDescription?: string | null
+    reportedAt?: Date | string
+    status?: $Enums.InfrastructureOccurrenceStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    duplicateOf?: InfrastructureOccurrenceCreateNestedOneWithoutDuplicatesInput
+    duplicates?: InfrastructureOccurrenceCreateNestedManyWithoutDuplicateOfInput
+    reinforcements?: InfrastructureOccurrenceReinforcementCreateNestedManyWithoutOccurrenceInput
+    facilityComplex?: InfrastructureFacilityComplexCreateNestedOneWithoutInfrastructureOccurrenceInput
+    building?: InfrastructureBuildingCreateNestedOneWithoutInfraOccurrencesInput
+    space?: InfrastructureSpaceCreateNestedOneWithoutInfraOccurrencesInput
+    reportedBy: UserCreateNestedOneWithoutReportedOccurrencesInput
+    diagnosis?: InfrastructureOccurrenceDiagnosisCreateNestedOneWithoutOccurrenceInput
+  }
+
+  export type InfrastructureOccurrenceUncheckedCreateWithoutInfrastructureNetworkInput = {
+    id?: number
+    title: string
+    description: string
+    infrastructureType?: $Enums.InfrastructureType | null
+    locationDescription?: string | null
+    reportedAt?: Date | string
+    status?: $Enums.InfrastructureOccurrenceStatus
+    duplicateOfId?: number | null
+    facilityComplexId?: string | null
+    buildingId?: string | null
+    spaceId?: number | null
+    reportedById: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    duplicates?: InfrastructureOccurrenceUncheckedCreateNestedManyWithoutDuplicateOfInput
+    reinforcements?: InfrastructureOccurrenceReinforcementUncheckedCreateNestedManyWithoutOccurrenceInput
+    diagnosis?: InfrastructureOccurrenceDiagnosisUncheckedCreateNestedOneWithoutOccurrenceInput
+  }
+
+  export type InfrastructureOccurrenceCreateOrConnectWithoutInfrastructureNetworkInput = {
+    where: InfrastructureOccurrenceWhereUniqueInput
+    create: XOR<InfrastructureOccurrenceCreateWithoutInfrastructureNetworkInput, InfrastructureOccurrenceUncheckedCreateWithoutInfrastructureNetworkInput>
+  }
+
+  export type InfrastructureOccurrenceCreateManyInfrastructureNetworkInputEnvelope = {
+    data: InfrastructureOccurrenceCreateManyInfrastructureNetworkInput | InfrastructureOccurrenceCreateManyInfrastructureNetworkInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type InfrastructureFacilityComplexCreateWithoutInfrastructureNetworksInput = {
+    id: string
+    name: string
+    address?: string | null
+    complement?: string | null
+    city?: string | null
+    cep?: string | null
+    latitude?: Decimal | DecimalJsLike | number | string | null
+    longitude?: Decimal | DecimalJsLike | number | string | null
+    type?: $Enums.FacilityComplexType | null
+    maintenanceInstance?: MaintenanceInstanceCreateNestedOneWithoutInfrastructureFacilityComplexInput
+    buildings?: InfrastructureBuildingCreateNestedManyWithoutFacilityComplexInput
+    InfrastructureOccurrence?: InfrastructureOccurrenceCreateNestedManyWithoutFacilityComplexInput
+    MaintenanceRequest?: MaintenanceRequestCreateNestedManyWithoutFacilityComplexInput
+  }
+
+  export type InfrastructureFacilityComplexUncheckedCreateWithoutInfrastructureNetworksInput = {
+    id: string
+    name: string
+    address?: string | null
+    complement?: string | null
+    city?: string | null
+    cep?: string | null
+    latitude?: Decimal | DecimalJsLike | number | string | null
+    longitude?: Decimal | DecimalJsLike | number | string | null
+    type?: $Enums.FacilityComplexType | null
+    maintenanceInstanceId?: number | null
+    buildings?: InfrastructureBuildingUncheckedCreateNestedManyWithoutFacilityComplexInput
+    InfrastructureOccurrence?: InfrastructureOccurrenceUncheckedCreateNestedManyWithoutFacilityComplexInput
+    MaintenanceRequest?: MaintenanceRequestUncheckedCreateNestedManyWithoutFacilityComplexInput
+  }
+
+  export type InfrastructureFacilityComplexCreateOrConnectWithoutInfrastructureNetworksInput = {
+    where: InfrastructureFacilityComplexWhereUniqueInput
+    create: XOR<InfrastructureFacilityComplexCreateWithoutInfrastructureNetworksInput, InfrastructureFacilityComplexUncheckedCreateWithoutInfrastructureNetworksInput>
+  }
+
+  export type MaintenanceInstanceCreateWithoutInfrastructureNetworkInput = {
+    sipacId?: string | null
+    name: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    currentMaintenanceRequests?: MaintenanceRequestCreateNestedManyWithoutCurrentMaintenanceInstanceInput
+    timelineEventsTransferredFrom?: MaintenanceTimelineEventCreateNestedManyWithoutTransferredFromInstanceInput
+    timelineEventsTransferredTo?: MaintenanceTimelineEventCreateNestedManyWithoutTransferredToInstanceInput
+    warehouses?: WarehouseCreateNestedManyWithoutMaintenanceInstanceInput
+    InfrastructureBuilding?: InfrastructureBuildingCreateNestedManyWithoutMaintenanceInstanceInput
+    InfrastructureFacilityComplex?: InfrastructureFacilityComplexCreateNestedManyWithoutMaintenanceInstanceInput
+    users?: UserCreateNestedManyWithoutMaintenanceInstanceInput
+    workers?: WorkerCreateNestedManyWithoutMaintenanceInstanceInput
+  }
+
+  export type MaintenanceInstanceUncheckedCreateWithoutInfrastructureNetworkInput = {
+    id?: number
+    sipacId?: string | null
+    name: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    currentMaintenanceRequests?: MaintenanceRequestUncheckedCreateNestedManyWithoutCurrentMaintenanceInstanceInput
+    timelineEventsTransferredFrom?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutTransferredFromInstanceInput
+    timelineEventsTransferredTo?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutTransferredToInstanceInput
+    warehouses?: WarehouseUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
+    InfrastructureBuilding?: InfrastructureBuildingUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
+    InfrastructureFacilityComplex?: InfrastructureFacilityComplexUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
+    users?: UserUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
+    workers?: WorkerUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
+  }
+
+  export type MaintenanceInstanceCreateOrConnectWithoutInfrastructureNetworkInput = {
+    where: MaintenanceInstanceWhereUniqueInput
+    create: XOR<MaintenanceInstanceCreateWithoutInfrastructureNetworkInput, MaintenanceInstanceUncheckedCreateWithoutInfrastructureNetworkInput>
+  }
+
+  export type MaintenanceRequestUpsertWithWhereUniqueWithoutInfrastructureNetworkInput = {
+    where: MaintenanceRequestWhereUniqueInput
+    update: XOR<MaintenanceRequestUpdateWithoutInfrastructureNetworkInput, MaintenanceRequestUncheckedUpdateWithoutInfrastructureNetworkInput>
+    create: XOR<MaintenanceRequestCreateWithoutInfrastructureNetworkInput, MaintenanceRequestUncheckedCreateWithoutInfrastructureNetworkInput>
+  }
+
+  export type MaintenanceRequestUpdateWithWhereUniqueWithoutInfrastructureNetworkInput = {
+    where: MaintenanceRequestWhereUniqueInput
+    data: XOR<MaintenanceRequestUpdateWithoutInfrastructureNetworkInput, MaintenanceRequestUncheckedUpdateWithoutInfrastructureNetworkInput>
+  }
+
+  export type MaintenanceRequestUpdateManyWithWhereWithoutInfrastructureNetworkInput = {
+    where: MaintenanceRequestScalarWhereInput
+    data: XOR<MaintenanceRequestUpdateManyMutationInput, MaintenanceRequestUncheckedUpdateManyWithoutInfrastructureNetworkInput>
+  }
+
+  export type InfrastructureOccurrenceUpsertWithWhereUniqueWithoutInfrastructureNetworkInput = {
+    where: InfrastructureOccurrenceWhereUniqueInput
+    update: XOR<InfrastructureOccurrenceUpdateWithoutInfrastructureNetworkInput, InfrastructureOccurrenceUncheckedUpdateWithoutInfrastructureNetworkInput>
+    create: XOR<InfrastructureOccurrenceCreateWithoutInfrastructureNetworkInput, InfrastructureOccurrenceUncheckedCreateWithoutInfrastructureNetworkInput>
+  }
+
+  export type InfrastructureOccurrenceUpdateWithWhereUniqueWithoutInfrastructureNetworkInput = {
+    where: InfrastructureOccurrenceWhereUniqueInput
+    data: XOR<InfrastructureOccurrenceUpdateWithoutInfrastructureNetworkInput, InfrastructureOccurrenceUncheckedUpdateWithoutInfrastructureNetworkInput>
+  }
+
+  export type InfrastructureOccurrenceUpdateManyWithWhereWithoutInfrastructureNetworkInput = {
+    where: InfrastructureOccurrenceScalarWhereInput
+    data: XOR<InfrastructureOccurrenceUpdateManyMutationInput, InfrastructureOccurrenceUncheckedUpdateManyWithoutInfrastructureNetworkInput>
+  }
+
+  export type InfrastructureFacilityComplexUpsertWithoutInfrastructureNetworksInput = {
+    update: XOR<InfrastructureFacilityComplexUpdateWithoutInfrastructureNetworksInput, InfrastructureFacilityComplexUncheckedUpdateWithoutInfrastructureNetworksInput>
+    create: XOR<InfrastructureFacilityComplexCreateWithoutInfrastructureNetworksInput, InfrastructureFacilityComplexUncheckedCreateWithoutInfrastructureNetworksInput>
+    where?: InfrastructureFacilityComplexWhereInput
+  }
+
+  export type InfrastructureFacilityComplexUpdateToOneWithWhereWithoutInfrastructureNetworksInput = {
+    where?: InfrastructureFacilityComplexWhereInput
+    data: XOR<InfrastructureFacilityComplexUpdateWithoutInfrastructureNetworksInput, InfrastructureFacilityComplexUncheckedUpdateWithoutInfrastructureNetworksInput>
+  }
+
+  export type InfrastructureFacilityComplexUpdateWithoutInfrastructureNetworksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    complement?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    cep?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    longitude?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    type?: NullableEnumFacilityComplexTypeFieldUpdateOperationsInput | $Enums.FacilityComplexType | null
+    maintenanceInstance?: MaintenanceInstanceUpdateOneWithoutInfrastructureFacilityComplexNestedInput
+    buildings?: InfrastructureBuildingUpdateManyWithoutFacilityComplexNestedInput
+    InfrastructureOccurrence?: InfrastructureOccurrenceUpdateManyWithoutFacilityComplexNestedInput
+    MaintenanceRequest?: MaintenanceRequestUpdateManyWithoutFacilityComplexNestedInput
+  }
+
+  export type InfrastructureFacilityComplexUncheckedUpdateWithoutInfrastructureNetworksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    complement?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    cep?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    longitude?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    type?: NullableEnumFacilityComplexTypeFieldUpdateOperationsInput | $Enums.FacilityComplexType | null
+    maintenanceInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
+    buildings?: InfrastructureBuildingUncheckedUpdateManyWithoutFacilityComplexNestedInput
+    InfrastructureOccurrence?: InfrastructureOccurrenceUncheckedUpdateManyWithoutFacilityComplexNestedInput
+    MaintenanceRequest?: MaintenanceRequestUncheckedUpdateManyWithoutFacilityComplexNestedInput
+  }
+
+  export type MaintenanceInstanceUpsertWithoutInfrastructureNetworkInput = {
+    update: XOR<MaintenanceInstanceUpdateWithoutInfrastructureNetworkInput, MaintenanceInstanceUncheckedUpdateWithoutInfrastructureNetworkInput>
+    create: XOR<MaintenanceInstanceCreateWithoutInfrastructureNetworkInput, MaintenanceInstanceUncheckedCreateWithoutInfrastructureNetworkInput>
+    where?: MaintenanceInstanceWhereInput
+  }
+
+  export type MaintenanceInstanceUpdateToOneWithWhereWithoutInfrastructureNetworkInput = {
+    where?: MaintenanceInstanceWhereInput
+    data: XOR<MaintenanceInstanceUpdateWithoutInfrastructureNetworkInput, MaintenanceInstanceUncheckedUpdateWithoutInfrastructureNetworkInput>
+  }
+
+  export type MaintenanceInstanceUpdateWithoutInfrastructureNetworkInput = {
+    sipacId?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    currentMaintenanceRequests?: MaintenanceRequestUpdateManyWithoutCurrentMaintenanceInstanceNestedInput
+    timelineEventsTransferredFrom?: MaintenanceTimelineEventUpdateManyWithoutTransferredFromInstanceNestedInput
+    timelineEventsTransferredTo?: MaintenanceTimelineEventUpdateManyWithoutTransferredToInstanceNestedInput
+    warehouses?: WarehouseUpdateManyWithoutMaintenanceInstanceNestedInput
+    InfrastructureBuilding?: InfrastructureBuildingUpdateManyWithoutMaintenanceInstanceNestedInput
+    InfrastructureFacilityComplex?: InfrastructureFacilityComplexUpdateManyWithoutMaintenanceInstanceNestedInput
+    users?: UserUpdateManyWithoutMaintenanceInstanceNestedInput
+    workers?: WorkerUpdateManyWithoutMaintenanceInstanceNestedInput
+  }
+
+  export type MaintenanceInstanceUncheckedUpdateWithoutInfrastructureNetworkInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    sipacId?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    currentMaintenanceRequests?: MaintenanceRequestUncheckedUpdateManyWithoutCurrentMaintenanceInstanceNestedInput
+    timelineEventsTransferredFrom?: MaintenanceTimelineEventUncheckedUpdateManyWithoutTransferredFromInstanceNestedInput
+    timelineEventsTransferredTo?: MaintenanceTimelineEventUncheckedUpdateManyWithoutTransferredToInstanceNestedInput
+    warehouses?: WarehouseUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
+    InfrastructureBuilding?: InfrastructureBuildingUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
+    InfrastructureFacilityComplex?: InfrastructureFacilityComplexUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
+    users?: UserUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
+    workers?: WorkerUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
   }
 
   export type InfrastructureBuildingCreateWithoutSecondariesActivitiesInput = {
@@ -124402,8 +128462,10 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalCreateNestedManyWithoutMaintenanceRequestInput
     materialPickingOrders?: MaterialPickingOrderCreateNestedManyWithoutMaintenanceRequestInput
     serviceOrders?: MaintenanceServiceOrderCreateNestedManyWithoutMaintenanceRequestInput
+    maintenanceContractOrders?: MaintenanceContractOrderCreateNestedManyWithoutMaintenanceRequestInput
     sipacUnitRequesting?: SipacUnidadeCreateNestedOneWithoutMaintenanceRequestRequisitanteInput
     sipacUnitCost?: SipacUnidadeCreateNestedOneWithoutMaintenanceRequestCustoInput
+    infrastructureNetwork?: InfrastructureNetworkCreateNestedOneWithoutMaintenanceRequestsInput
   }
 
   export type MaintenanceRequestUncheckedCreateWithoutSpaceInput = {
@@ -124432,6 +128494,7 @@ export namespace Prisma {
     sipacUnitCostId?: number | null
     sipacUserLoginRequest?: string | null
     origin?: $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: string | null
     priorities?: MaintenanceRequestPriorityUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     statuses?: MaintenanceRequestStatusUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     timelineEvents?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutMaintenanceRequestInput
@@ -124440,6 +128503,7 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     materialPickingOrders?: MaterialPickingOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     serviceOrders?: MaintenanceServiceOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    maintenanceContractOrders?: MaintenanceContractOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
   }
 
   export type MaintenanceRequestCreateOrConnectWithoutSpaceInput = {
@@ -124468,6 +128532,7 @@ export namespace Prisma {
     building?: InfrastructureBuildingCreateNestedOneWithoutInfraOccurrencesInput
     reportedBy: UserCreateNestedOneWithoutReportedOccurrencesInput
     diagnosis?: InfrastructureOccurrenceDiagnosisCreateNestedOneWithoutOccurrenceInput
+    infrastructureNetwork?: InfrastructureNetworkCreateNestedOneWithoutInfraOccurrencesInput
   }
 
   export type InfrastructureOccurrenceUncheckedCreateWithoutSpaceInput = {
@@ -124484,6 +128549,7 @@ export namespace Prisma {
     reportedById: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    infrastructureNetworkId?: string | null
     duplicates?: InfrastructureOccurrenceUncheckedCreateNestedManyWithoutDuplicateOfInput
     reinforcements?: InfrastructureOccurrenceReinforcementUncheckedCreateNestedManyWithoutOccurrenceInput
     diagnosis?: InfrastructureOccurrenceDiagnosisUncheckedCreateNestedOneWithoutOccurrenceInput
@@ -125059,8 +129125,10 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalCreateNestedManyWithoutMaintenanceRequestInput
     materialPickingOrders?: MaterialPickingOrderCreateNestedManyWithoutMaintenanceRequestInput
     serviceOrders?: MaintenanceServiceOrderCreateNestedManyWithoutMaintenanceRequestInput
+    maintenanceContractOrders?: MaintenanceContractOrderCreateNestedManyWithoutMaintenanceRequestInput
     sipacUnitRequesting?: SipacUnidadeCreateNestedOneWithoutMaintenanceRequestRequisitanteInput
     sipacUnitCost?: SipacUnidadeCreateNestedOneWithoutMaintenanceRequestCustoInput
+    infrastructureNetwork?: InfrastructureNetworkCreateNestedOneWithoutMaintenanceRequestsInput
   }
 
   export type MaintenanceRequestUncheckedCreateWithoutSystemInput = {
@@ -125089,6 +129157,7 @@ export namespace Prisma {
     sipacUnitCostId?: number | null
     sipacUserLoginRequest?: string | null
     origin?: $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: string | null
     priorities?: MaintenanceRequestPriorityUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     statuses?: MaintenanceRequestStatusUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     timelineEvents?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutMaintenanceRequestInput
@@ -125097,6 +129166,7 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     materialPickingOrders?: MaterialPickingOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     serviceOrders?: MaintenanceServiceOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    maintenanceContractOrders?: MaintenanceContractOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
   }
 
   export type MaintenanceRequestCreateOrConnectWithoutSystemInput = {
@@ -125157,6 +129227,7 @@ export namespace Prisma {
     space?: InfrastructureSpaceCreateNestedOneWithoutInfraOccurrencesInput
     reportedBy: UserCreateNestedOneWithoutReportedOccurrencesInput
     diagnosis?: InfrastructureOccurrenceDiagnosisCreateNestedOneWithoutOccurrenceInput
+    infrastructureNetwork?: InfrastructureNetworkCreateNestedOneWithoutInfraOccurrencesInput
   }
 
   export type InfrastructureOccurrenceUncheckedCreateWithoutDuplicatesInput = {
@@ -125174,6 +129245,7 @@ export namespace Prisma {
     reportedById: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    infrastructureNetworkId?: string | null
     reinforcements?: InfrastructureOccurrenceReinforcementUncheckedCreateNestedManyWithoutOccurrenceInput
     diagnosis?: InfrastructureOccurrenceDiagnosisUncheckedCreateNestedOneWithoutOccurrenceInput
   }
@@ -125199,6 +129271,7 @@ export namespace Prisma {
     space?: InfrastructureSpaceCreateNestedOneWithoutInfraOccurrencesInput
     reportedBy: UserCreateNestedOneWithoutReportedOccurrencesInput
     diagnosis?: InfrastructureOccurrenceDiagnosisCreateNestedOneWithoutOccurrenceInput
+    infrastructureNetwork?: InfrastructureNetworkCreateNestedOneWithoutInfraOccurrencesInput
   }
 
   export type InfrastructureOccurrenceUncheckedCreateWithoutDuplicateOfInput = {
@@ -125215,6 +129288,7 @@ export namespace Prisma {
     reportedById: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    infrastructureNetworkId?: string | null
     duplicates?: InfrastructureOccurrenceUncheckedCreateNestedManyWithoutDuplicateOfInput
     reinforcements?: InfrastructureOccurrenceReinforcementUncheckedCreateNestedManyWithoutOccurrenceInput
     diagnosis?: InfrastructureOccurrenceDiagnosisUncheckedCreateNestedOneWithoutOccurrenceInput
@@ -125265,6 +129339,7 @@ export namespace Prisma {
     maintenanceInstance?: MaintenanceInstanceCreateNestedOneWithoutInfrastructureFacilityComplexInput
     buildings?: InfrastructureBuildingCreateNestedManyWithoutFacilityComplexInput
     MaintenanceRequest?: MaintenanceRequestCreateNestedManyWithoutFacilityComplexInput
+    infrastructureNetworks?: InfrastructureNetworkCreateNestedManyWithoutFacilityComplexInput
   }
 
   export type InfrastructureFacilityComplexUncheckedCreateWithoutInfrastructureOccurrenceInput = {
@@ -125280,6 +129355,7 @@ export namespace Prisma {
     maintenanceInstanceId?: number | null
     buildings?: InfrastructureBuildingUncheckedCreateNestedManyWithoutFacilityComplexInput
     MaintenanceRequest?: MaintenanceRequestUncheckedCreateNestedManyWithoutFacilityComplexInput
+    infrastructureNetworks?: InfrastructureNetworkUncheckedCreateNestedManyWithoutFacilityComplexInput
   }
 
   export type InfrastructureFacilityComplexCreateOrConnectWithoutInfrastructureOccurrenceInput = {
@@ -125502,6 +129578,35 @@ export namespace Prisma {
     create: XOR<InfrastructureOccurrenceDiagnosisCreateWithoutOccurrenceInput, InfrastructureOccurrenceDiagnosisUncheckedCreateWithoutOccurrenceInput>
   }
 
+  export type InfrastructureNetworkCreateWithoutInfraOccurrencesInput = {
+    id: string
+    name: string
+    alias?: string | null
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    maintenanceRequests?: MaintenanceRequestCreateNestedManyWithoutInfrastructureNetworkInput
+    facilityComplex?: InfrastructureFacilityComplexCreateNestedOneWithoutInfrastructureNetworksInput
+    maintenanceInstance?: MaintenanceInstanceCreateNestedOneWithoutInfrastructureNetworkInput
+  }
+
+  export type InfrastructureNetworkUncheckedCreateWithoutInfraOccurrencesInput = {
+    id: string
+    name: string
+    alias?: string | null
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    facilityComplexId?: string | null
+    maintenanceInstanceId?: number | null
+    maintenanceRequests?: MaintenanceRequestUncheckedCreateNestedManyWithoutInfrastructureNetworkInput
+  }
+
+  export type InfrastructureNetworkCreateOrConnectWithoutInfraOccurrencesInput = {
+    where: InfrastructureNetworkWhereUniqueInput
+    create: XOR<InfrastructureNetworkCreateWithoutInfraOccurrencesInput, InfrastructureNetworkUncheckedCreateWithoutInfraOccurrencesInput>
+  }
+
   export type InfrastructureOccurrenceUpsertWithoutDuplicatesInput = {
     update: XOR<InfrastructureOccurrenceUpdateWithoutDuplicatesInput, InfrastructureOccurrenceUncheckedUpdateWithoutDuplicatesInput>
     create: XOR<InfrastructureOccurrenceCreateWithoutDuplicatesInput, InfrastructureOccurrenceUncheckedCreateWithoutDuplicatesInput>
@@ -125529,6 +129634,7 @@ export namespace Prisma {
     space?: InfrastructureSpaceUpdateOneWithoutInfraOccurrencesNestedInput
     reportedBy?: UserUpdateOneRequiredWithoutReportedOccurrencesNestedInput
     diagnosis?: InfrastructureOccurrenceDiagnosisUpdateOneWithoutOccurrenceNestedInput
+    infrastructureNetwork?: InfrastructureNetworkUpdateOneWithoutInfraOccurrencesNestedInput
   }
 
   export type InfrastructureOccurrenceUncheckedUpdateWithoutDuplicatesInput = {
@@ -125546,6 +129652,7 @@ export namespace Prisma {
     reportedById?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    infrastructureNetworkId?: NullableStringFieldUpdateOperationsInput | string | null
     reinforcements?: InfrastructureOccurrenceReinforcementUncheckedUpdateManyWithoutOccurrenceNestedInput
     diagnosis?: InfrastructureOccurrenceDiagnosisUncheckedUpdateOneWithoutOccurrenceNestedInput
   }
@@ -125616,6 +129723,7 @@ export namespace Prisma {
     maintenanceInstance?: MaintenanceInstanceUpdateOneWithoutInfrastructureFacilityComplexNestedInput
     buildings?: InfrastructureBuildingUpdateManyWithoutFacilityComplexNestedInput
     MaintenanceRequest?: MaintenanceRequestUpdateManyWithoutFacilityComplexNestedInput
+    infrastructureNetworks?: InfrastructureNetworkUpdateManyWithoutFacilityComplexNestedInput
   }
 
   export type InfrastructureFacilityComplexUncheckedUpdateWithoutInfrastructureOccurrenceInput = {
@@ -125631,6 +129739,7 @@ export namespace Prisma {
     maintenanceInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
     buildings?: InfrastructureBuildingUncheckedUpdateManyWithoutFacilityComplexNestedInput
     MaintenanceRequest?: MaintenanceRequestUncheckedUpdateManyWithoutFacilityComplexNestedInput
+    infrastructureNetworks?: InfrastructureNetworkUncheckedUpdateManyWithoutFacilityComplexNestedInput
   }
 
   export type InfrastructureBuildingUpsertWithoutInfraOccurrencesInput = {
@@ -125872,6 +129981,41 @@ export namespace Prisma {
     associatedRisks?: InfrastructureOccurrenceDiagnosisRiskTypeUncheckedUpdateManyWithoutDiagnosesNestedInput
   }
 
+  export type InfrastructureNetworkUpsertWithoutInfraOccurrencesInput = {
+    update: XOR<InfrastructureNetworkUpdateWithoutInfraOccurrencesInput, InfrastructureNetworkUncheckedUpdateWithoutInfraOccurrencesInput>
+    create: XOR<InfrastructureNetworkCreateWithoutInfraOccurrencesInput, InfrastructureNetworkUncheckedCreateWithoutInfraOccurrencesInput>
+    where?: InfrastructureNetworkWhereInput
+  }
+
+  export type InfrastructureNetworkUpdateToOneWithWhereWithoutInfraOccurrencesInput = {
+    where?: InfrastructureNetworkWhereInput
+    data: XOR<InfrastructureNetworkUpdateWithoutInfraOccurrencesInput, InfrastructureNetworkUncheckedUpdateWithoutInfraOccurrencesInput>
+  }
+
+  export type InfrastructureNetworkUpdateWithoutInfraOccurrencesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    alias?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maintenanceRequests?: MaintenanceRequestUpdateManyWithoutInfrastructureNetworkNestedInput
+    facilityComplex?: InfrastructureFacilityComplexUpdateOneWithoutInfrastructureNetworksNestedInput
+    maintenanceInstance?: MaintenanceInstanceUpdateOneWithoutInfrastructureNetworkNestedInput
+  }
+
+  export type InfrastructureNetworkUncheckedUpdateWithoutInfraOccurrencesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    alias?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    facilityComplexId?: NullableStringFieldUpdateOperationsInput | string | null
+    maintenanceInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
+    maintenanceRequests?: MaintenanceRequestUncheckedUpdateManyWithoutInfrastructureNetworkNestedInput
+  }
+
   export type InfrastructureOccurrenceCreateWithoutReinforcementsInput = {
     title: string
     description: string
@@ -125888,6 +130032,7 @@ export namespace Prisma {
     space?: InfrastructureSpaceCreateNestedOneWithoutInfraOccurrencesInput
     reportedBy: UserCreateNestedOneWithoutReportedOccurrencesInput
     diagnosis?: InfrastructureOccurrenceDiagnosisCreateNestedOneWithoutOccurrenceInput
+    infrastructureNetwork?: InfrastructureNetworkCreateNestedOneWithoutInfraOccurrencesInput
   }
 
   export type InfrastructureOccurrenceUncheckedCreateWithoutReinforcementsInput = {
@@ -125905,6 +130050,7 @@ export namespace Prisma {
     reportedById: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    infrastructureNetworkId?: string | null
     duplicates?: InfrastructureOccurrenceUncheckedCreateNestedManyWithoutDuplicateOfInput
     diagnosis?: InfrastructureOccurrenceDiagnosisUncheckedCreateNestedOneWithoutOccurrenceInput
   }
@@ -126025,6 +130171,7 @@ export namespace Prisma {
     space?: InfrastructureSpaceUpdateOneWithoutInfraOccurrencesNestedInput
     reportedBy?: UserUpdateOneRequiredWithoutReportedOccurrencesNestedInput
     diagnosis?: InfrastructureOccurrenceDiagnosisUpdateOneWithoutOccurrenceNestedInput
+    infrastructureNetwork?: InfrastructureNetworkUpdateOneWithoutInfraOccurrencesNestedInput
   }
 
   export type InfrastructureOccurrenceUncheckedUpdateWithoutReinforcementsInput = {
@@ -126042,6 +130189,7 @@ export namespace Prisma {
     reportedById?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    infrastructureNetworkId?: NullableStringFieldUpdateOperationsInput | string | null
     duplicates?: InfrastructureOccurrenceUncheckedUpdateManyWithoutDuplicateOfNestedInput
     diagnosis?: InfrastructureOccurrenceDiagnosisUncheckedUpdateOneWithoutOccurrenceNestedInput
   }
@@ -126152,6 +130300,7 @@ export namespace Prisma {
     building?: InfrastructureBuildingCreateNestedOneWithoutInfraOccurrencesInput
     space?: InfrastructureSpaceCreateNestedOneWithoutInfraOccurrencesInput
     reportedBy: UserCreateNestedOneWithoutReportedOccurrencesInput
+    infrastructureNetwork?: InfrastructureNetworkCreateNestedOneWithoutInfraOccurrencesInput
   }
 
   export type InfrastructureOccurrenceUncheckedCreateWithoutDiagnosisInput = {
@@ -126169,6 +130318,7 @@ export namespace Prisma {
     reportedById: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    infrastructureNetworkId?: string | null
     duplicates?: InfrastructureOccurrenceUncheckedCreateNestedManyWithoutDuplicateOfInput
     reinforcements?: InfrastructureOccurrenceReinforcementUncheckedCreateNestedManyWithoutOccurrenceInput
   }
@@ -126293,8 +130443,10 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalCreateNestedManyWithoutMaintenanceRequestInput
     materialPickingOrders?: MaterialPickingOrderCreateNestedManyWithoutMaintenanceRequestInput
     serviceOrders?: MaintenanceServiceOrderCreateNestedManyWithoutMaintenanceRequestInput
+    maintenanceContractOrders?: MaintenanceContractOrderCreateNestedManyWithoutMaintenanceRequestInput
     sipacUnitRequesting?: SipacUnidadeCreateNestedOneWithoutMaintenanceRequestRequisitanteInput
     sipacUnitCost?: SipacUnidadeCreateNestedOneWithoutMaintenanceRequestCustoInput
+    infrastructureNetwork?: InfrastructureNetworkCreateNestedOneWithoutMaintenanceRequestsInput
   }
 
   export type MaintenanceRequestUncheckedCreateWithoutDiagnosisInput = {
@@ -126323,6 +130475,7 @@ export namespace Prisma {
     sipacUnitCostId?: number | null
     sipacUserLoginRequest?: string | null
     origin?: $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: string | null
     priorities?: MaintenanceRequestPriorityUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     statuses?: MaintenanceRequestStatusUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     timelineEvents?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutMaintenanceRequestInput
@@ -126331,6 +130484,7 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     materialPickingOrders?: MaterialPickingOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     serviceOrders?: MaintenanceServiceOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    maintenanceContractOrders?: MaintenanceContractOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
   }
 
   export type MaintenanceRequestCreateOrConnectWithoutDiagnosisInput = {
@@ -126381,6 +130535,7 @@ export namespace Prisma {
     building?: InfrastructureBuildingUpdateOneWithoutInfraOccurrencesNestedInput
     space?: InfrastructureSpaceUpdateOneWithoutInfraOccurrencesNestedInput
     reportedBy?: UserUpdateOneRequiredWithoutReportedOccurrencesNestedInput
+    infrastructureNetwork?: InfrastructureNetworkUpdateOneWithoutInfraOccurrencesNestedInput
   }
 
   export type InfrastructureOccurrenceUncheckedUpdateWithoutDiagnosisInput = {
@@ -126398,6 +130553,7 @@ export namespace Prisma {
     reportedById?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    infrastructureNetworkId?: NullableStringFieldUpdateOperationsInput | string | null
     duplicates?: InfrastructureOccurrenceUncheckedUpdateManyWithoutDuplicateOfNestedInput
     reinforcements?: InfrastructureOccurrenceReinforcementUncheckedUpdateManyWithoutOccurrenceNestedInput
   }
@@ -126534,8 +130690,10 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUpdateManyWithoutMaintenanceRequestNestedInput
     materialPickingOrders?: MaterialPickingOrderUpdateManyWithoutMaintenanceRequestNestedInput
     serviceOrders?: MaintenanceServiceOrderUpdateManyWithoutMaintenanceRequestNestedInput
+    maintenanceContractOrders?: MaintenanceContractOrderUpdateManyWithoutMaintenanceRequestNestedInput
     sipacUnitRequesting?: SipacUnidadeUpdateOneWithoutMaintenanceRequestRequisitanteNestedInput
     sipacUnitCost?: SipacUnidadeUpdateOneWithoutMaintenanceRequestCustoNestedInput
+    infrastructureNetwork?: InfrastructureNetworkUpdateOneWithoutMaintenanceRequestsNestedInput
   }
 
   export type MaintenanceRequestUncheckedUpdateWithoutDiagnosisInput = {
@@ -126564,6 +130722,7 @@ export namespace Prisma {
     sipacUnitCostId?: NullableIntFieldUpdateOperationsInput | number | null
     sipacUserLoginRequest?: NullableStringFieldUpdateOperationsInput | string | null
     origin?: EnumMaintenanceRequestOriginFieldUpdateOperationsInput | $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: NullableStringFieldUpdateOperationsInput | string | null
     priorities?: MaintenanceRequestPriorityUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     statuses?: MaintenanceRequestStatusUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     timelineEvents?: MaintenanceTimelineEventUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
@@ -126572,6 +130731,7 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     materialPickingOrders?: MaterialPickingOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     serviceOrders?: MaintenanceServiceOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    maintenanceContractOrders?: MaintenanceContractOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
   }
 
   export type InfrastructureOccurrenceDiagnosisRiskTypeUpsertWithWhereUniqueWithoutDiagnosesInput = {
@@ -126894,6 +131054,7 @@ export namespace Prisma {
     maintenanceInstance?: MaintenanceInstanceCreateNestedOneWithoutInfrastructureFacilityComplexInput
     buildings?: InfrastructureBuildingCreateNestedManyWithoutFacilityComplexInput
     InfrastructureOccurrence?: InfrastructureOccurrenceCreateNestedManyWithoutFacilityComplexInput
+    infrastructureNetworks?: InfrastructureNetworkCreateNestedManyWithoutFacilityComplexInput
   }
 
   export type InfrastructureFacilityComplexUncheckedCreateWithoutMaintenanceRequestInput = {
@@ -126909,6 +131070,7 @@ export namespace Prisma {
     maintenanceInstanceId?: number | null
     buildings?: InfrastructureBuildingUncheckedCreateNestedManyWithoutFacilityComplexInput
     InfrastructureOccurrence?: InfrastructureOccurrenceUncheckedCreateNestedManyWithoutFacilityComplexInput
+    infrastructureNetworks?: InfrastructureNetworkUncheckedCreateNestedManyWithoutFacilityComplexInput
   }
 
   export type InfrastructureFacilityComplexCreateOrConnectWithoutMaintenanceRequestInput = {
@@ -127036,6 +131198,7 @@ export namespace Prisma {
     warehouses?: WarehouseCreateNestedManyWithoutMaintenanceInstanceInput
     InfrastructureBuilding?: InfrastructureBuildingCreateNestedManyWithoutMaintenanceInstanceInput
     InfrastructureFacilityComplex?: InfrastructureFacilityComplexCreateNestedManyWithoutMaintenanceInstanceInput
+    InfrastructureNetwork?: InfrastructureNetworkCreateNestedManyWithoutMaintenanceInstanceInput
     users?: UserCreateNestedManyWithoutMaintenanceInstanceInput
     workers?: WorkerCreateNestedManyWithoutMaintenanceInstanceInput
   }
@@ -127052,6 +131215,7 @@ export namespace Prisma {
     warehouses?: WarehouseUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
     InfrastructureBuilding?: InfrastructureBuildingUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
     InfrastructureFacilityComplex?: InfrastructureFacilityComplexUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
+    InfrastructureNetwork?: InfrastructureNetworkUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
     users?: UserUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
     workers?: WorkerUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
   }
@@ -127627,6 +131791,37 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type MaintenanceContractOrderCreateWithoutMaintenanceRequestInput = {
+    title: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    contract: ContractCreateNestedOneWithoutMaintenanceContractOrdersInput
+    prerequisites?: MaintenanceContractOrderCreateNestedManyWithoutSubsequentOrdersInput
+    subsequentOrders?: MaintenanceContractOrderCreateNestedManyWithoutPrerequisitesInput
+  }
+
+  export type MaintenanceContractOrderUncheckedCreateWithoutMaintenanceRequestInput = {
+    id?: number
+    title: string
+    description?: string | null
+    contractId: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    prerequisites?: MaintenanceContractOrderUncheckedCreateNestedManyWithoutSubsequentOrdersInput
+    subsequentOrders?: MaintenanceContractOrderUncheckedCreateNestedManyWithoutPrerequisitesInput
+  }
+
+  export type MaintenanceContractOrderCreateOrConnectWithoutMaintenanceRequestInput = {
+    where: MaintenanceContractOrderWhereUniqueInput
+    create: XOR<MaintenanceContractOrderCreateWithoutMaintenanceRequestInput, MaintenanceContractOrderUncheckedCreateWithoutMaintenanceRequestInput>
+  }
+
+  export type MaintenanceContractOrderCreateManyMaintenanceRequestInputEnvelope = {
+    data: MaintenanceContractOrderCreateManyMaintenanceRequestInput | MaintenanceContractOrderCreateManyMaintenanceRequestInput[]
+    skipDuplicates?: boolean
+  }
+
   export type SipacUnidadeCreateWithoutMaintenanceRequestRequisitanteInput = {
     id: number
     codigoUnidade: string
@@ -127701,6 +131896,35 @@ export namespace Prisma {
     create: XOR<SipacUnidadeCreateWithoutMaintenanceRequestCustoInput, SipacUnidadeUncheckedCreateWithoutMaintenanceRequestCustoInput>
   }
 
+  export type InfrastructureNetworkCreateWithoutMaintenanceRequestsInput = {
+    id: string
+    name: string
+    alias?: string | null
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    infraOccurrences?: InfrastructureOccurrenceCreateNestedManyWithoutInfrastructureNetworkInput
+    facilityComplex?: InfrastructureFacilityComplexCreateNestedOneWithoutInfrastructureNetworksInput
+    maintenanceInstance?: MaintenanceInstanceCreateNestedOneWithoutInfrastructureNetworkInput
+  }
+
+  export type InfrastructureNetworkUncheckedCreateWithoutMaintenanceRequestsInput = {
+    id: string
+    name: string
+    alias?: string | null
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    facilityComplexId?: string | null
+    maintenanceInstanceId?: number | null
+    infraOccurrences?: InfrastructureOccurrenceUncheckedCreateNestedManyWithoutInfrastructureNetworkInput
+  }
+
+  export type InfrastructureNetworkCreateOrConnectWithoutMaintenanceRequestsInput = {
+    where: InfrastructureNetworkWhereUniqueInput
+    create: XOR<InfrastructureNetworkCreateWithoutMaintenanceRequestsInput, InfrastructureNetworkUncheckedCreateWithoutMaintenanceRequestsInput>
+  }
+
   export type MaintenanceRequestPriorityUpsertWithWhereUniqueWithoutMaintenanceRequestInput = {
     where: MaintenanceRequestPriorityWhereUniqueInput
     update: XOR<MaintenanceRequestPriorityUpdateWithoutMaintenanceRequestInput, MaintenanceRequestPriorityUncheckedUpdateWithoutMaintenanceRequestInput>
@@ -127752,6 +131976,7 @@ export namespace Prisma {
     maintenanceInstance?: MaintenanceInstanceUpdateOneWithoutInfrastructureFacilityComplexNestedInput
     buildings?: InfrastructureBuildingUpdateManyWithoutFacilityComplexNestedInput
     InfrastructureOccurrence?: InfrastructureOccurrenceUpdateManyWithoutFacilityComplexNestedInput
+    infrastructureNetworks?: InfrastructureNetworkUpdateManyWithoutFacilityComplexNestedInput
   }
 
   export type InfrastructureFacilityComplexUncheckedUpdateWithoutMaintenanceRequestInput = {
@@ -127767,6 +131992,7 @@ export namespace Prisma {
     maintenanceInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
     buildings?: InfrastructureBuildingUncheckedUpdateManyWithoutFacilityComplexNestedInput
     InfrastructureOccurrence?: InfrastructureOccurrenceUncheckedUpdateManyWithoutFacilityComplexNestedInput
+    infrastructureNetworks?: InfrastructureNetworkUncheckedUpdateManyWithoutFacilityComplexNestedInput
   }
 
   export type InfrastructureBuildingUpsertWithoutMaintenanceRequestsInput = {
@@ -127918,6 +132144,7 @@ export namespace Prisma {
     warehouses?: WarehouseUpdateManyWithoutMaintenanceInstanceNestedInput
     InfrastructureBuilding?: InfrastructureBuildingUpdateManyWithoutMaintenanceInstanceNestedInput
     InfrastructureFacilityComplex?: InfrastructureFacilityComplexUpdateManyWithoutMaintenanceInstanceNestedInput
+    InfrastructureNetwork?: InfrastructureNetworkUpdateManyWithoutMaintenanceInstanceNestedInput
     users?: UserUpdateManyWithoutMaintenanceInstanceNestedInput
     workers?: WorkerUpdateManyWithoutMaintenanceInstanceNestedInput
   }
@@ -127934,6 +132161,7 @@ export namespace Prisma {
     warehouses?: WarehouseUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
     InfrastructureBuilding?: InfrastructureBuildingUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
     InfrastructureFacilityComplex?: InfrastructureFacilityComplexUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
+    InfrastructureNetwork?: InfrastructureNetworkUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
     users?: UserUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
     workers?: WorkerUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
   }
@@ -128458,6 +132686,22 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"MaintenanceServiceOrder"> | Date | string
   }
 
+  export type MaintenanceContractOrderUpsertWithWhereUniqueWithoutMaintenanceRequestInput = {
+    where: MaintenanceContractOrderWhereUniqueInput
+    update: XOR<MaintenanceContractOrderUpdateWithoutMaintenanceRequestInput, MaintenanceContractOrderUncheckedUpdateWithoutMaintenanceRequestInput>
+    create: XOR<MaintenanceContractOrderCreateWithoutMaintenanceRequestInput, MaintenanceContractOrderUncheckedCreateWithoutMaintenanceRequestInput>
+  }
+
+  export type MaintenanceContractOrderUpdateWithWhereUniqueWithoutMaintenanceRequestInput = {
+    where: MaintenanceContractOrderWhereUniqueInput
+    data: XOR<MaintenanceContractOrderUpdateWithoutMaintenanceRequestInput, MaintenanceContractOrderUncheckedUpdateWithoutMaintenanceRequestInput>
+  }
+
+  export type MaintenanceContractOrderUpdateManyWithWhereWithoutMaintenanceRequestInput = {
+    where: MaintenanceContractOrderScalarWhereInput
+    data: XOR<MaintenanceContractOrderUpdateManyMutationInput, MaintenanceContractOrderUncheckedUpdateManyWithoutMaintenanceRequestInput>
+  }
+
   export type SipacUnidadeUpsertWithoutMaintenanceRequestRequisitanteInput = {
     update: XOR<SipacUnidadeUpdateWithoutMaintenanceRequestRequisitanteInput, SipacUnidadeUncheckedUpdateWithoutMaintenanceRequestRequisitanteInput>
     create: XOR<SipacUnidadeCreateWithoutMaintenanceRequestRequisitanteInput, SipacUnidadeUncheckedCreateWithoutMaintenanceRequestRequisitanteInput>
@@ -128544,6 +132788,41 @@ export namespace Prisma {
     workersContractsLocation?: WorkerContractUncheckedUpdateManyWithoutSipacUnitLocationNestedInput
   }
 
+  export type InfrastructureNetworkUpsertWithoutMaintenanceRequestsInput = {
+    update: XOR<InfrastructureNetworkUpdateWithoutMaintenanceRequestsInput, InfrastructureNetworkUncheckedUpdateWithoutMaintenanceRequestsInput>
+    create: XOR<InfrastructureNetworkCreateWithoutMaintenanceRequestsInput, InfrastructureNetworkUncheckedCreateWithoutMaintenanceRequestsInput>
+    where?: InfrastructureNetworkWhereInput
+  }
+
+  export type InfrastructureNetworkUpdateToOneWithWhereWithoutMaintenanceRequestsInput = {
+    where?: InfrastructureNetworkWhereInput
+    data: XOR<InfrastructureNetworkUpdateWithoutMaintenanceRequestsInput, InfrastructureNetworkUncheckedUpdateWithoutMaintenanceRequestsInput>
+  }
+
+  export type InfrastructureNetworkUpdateWithoutMaintenanceRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    alias?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    infraOccurrences?: InfrastructureOccurrenceUpdateManyWithoutInfrastructureNetworkNestedInput
+    facilityComplex?: InfrastructureFacilityComplexUpdateOneWithoutInfrastructureNetworksNestedInput
+    maintenanceInstance?: MaintenanceInstanceUpdateOneWithoutInfrastructureNetworkNestedInput
+  }
+
+  export type InfrastructureNetworkUncheckedUpdateWithoutMaintenanceRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    alias?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    facilityComplexId?: NullableStringFieldUpdateOperationsInput | string | null
+    maintenanceInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
+    infraOccurrences?: InfrastructureOccurrenceUncheckedUpdateManyWithoutInfrastructureNetworkNestedInput
+  }
+
   export type WorkerTeamCreateWithoutServiceOrdersInput = {
     name: string
     description?: string | null
@@ -128627,8 +132906,10 @@ export namespace Prisma {
     materialStockMovements?: MaterialStockMovementCreateNestedManyWithoutMaintenanceRequestInput
     materialWithdrawals?: MaterialWithdrawalCreateNestedManyWithoutMaintenanceRequestInput
     materialPickingOrders?: MaterialPickingOrderCreateNestedManyWithoutMaintenanceRequestInput
+    maintenanceContractOrders?: MaintenanceContractOrderCreateNestedManyWithoutMaintenanceRequestInput
     sipacUnitRequesting?: SipacUnidadeCreateNestedOneWithoutMaintenanceRequestRequisitanteInput
     sipacUnitCost?: SipacUnidadeCreateNestedOneWithoutMaintenanceRequestCustoInput
+    infrastructureNetwork?: InfrastructureNetworkCreateNestedOneWithoutMaintenanceRequestsInput
   }
 
   export type MaintenanceRequestUncheckedCreateWithoutServiceOrdersInput = {
@@ -128658,6 +132939,7 @@ export namespace Prisma {
     sipacUnitCostId?: number | null
     sipacUserLoginRequest?: string | null
     origin?: $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: string | null
     priorities?: MaintenanceRequestPriorityUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     statuses?: MaintenanceRequestStatusUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     timelineEvents?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutMaintenanceRequestInput
@@ -128665,6 +132947,7 @@ export namespace Prisma {
     materialStockMovements?: MaterialStockMovementUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     materialWithdrawals?: MaterialWithdrawalUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     materialPickingOrders?: MaterialPickingOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    maintenanceContractOrders?: MaintenanceContractOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
   }
 
   export type MaintenanceRequestCreateOrConnectWithoutServiceOrdersInput = {
@@ -128851,8 +133134,10 @@ export namespace Prisma {
     materialStockMovements?: MaterialStockMovementUpdateManyWithoutMaintenanceRequestNestedInput
     materialWithdrawals?: MaterialWithdrawalUpdateManyWithoutMaintenanceRequestNestedInput
     materialPickingOrders?: MaterialPickingOrderUpdateManyWithoutMaintenanceRequestNestedInput
+    maintenanceContractOrders?: MaintenanceContractOrderUpdateManyWithoutMaintenanceRequestNestedInput
     sipacUnitRequesting?: SipacUnidadeUpdateOneWithoutMaintenanceRequestRequisitanteNestedInput
     sipacUnitCost?: SipacUnidadeUpdateOneWithoutMaintenanceRequestCustoNestedInput
+    infrastructureNetwork?: InfrastructureNetworkUpdateOneWithoutMaintenanceRequestsNestedInput
   }
 
   export type MaintenanceRequestUncheckedUpdateWithoutServiceOrdersInput = {
@@ -128882,6 +133167,7 @@ export namespace Prisma {
     sipacUnitCostId?: NullableIntFieldUpdateOperationsInput | number | null
     sipacUserLoginRequest?: NullableStringFieldUpdateOperationsInput | string | null
     origin?: EnumMaintenanceRequestOriginFieldUpdateOperationsInput | $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: NullableStringFieldUpdateOperationsInput | string | null
     priorities?: MaintenanceRequestPriorityUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     statuses?: MaintenanceRequestStatusUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     timelineEvents?: MaintenanceTimelineEventUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
@@ -128889,6 +133175,7 @@ export namespace Prisma {
     materialStockMovements?: MaterialStockMovementUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     materialWithdrawals?: MaterialWithdrawalUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     materialPickingOrders?: MaterialPickingOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    maintenanceContractOrders?: MaintenanceContractOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
   }
 
   export type MaintenanceServiceOrderUpsertWithWhereUniqueWithoutSubsequentOrdersInput = {
@@ -128923,6 +133210,326 @@ export namespace Prisma {
     data: XOR<MaintenanceServiceOrderUpdateManyMutationInput, MaintenanceServiceOrderUncheckedUpdateManyWithoutPrerequisitesInput>
   }
 
+  export type ContractCreateWithoutMaintenanceContractOrdersInput = {
+    codigoSipac?: string | null
+    value?: Decimal | DecimalJsLike | number | string | null
+    subject?: string | null
+    startDate?: Date | string | null
+    maxEndDate?: Date | string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    providers: ContractProviderCreateNestedOneWithoutContractsInput
+    workersContracts?: WorkerContractCreateNestedManyWithoutContractInput
+  }
+
+  export type ContractUncheckedCreateWithoutMaintenanceContractOrdersInput = {
+    id?: number
+    providerId: number
+    codigoSipac?: string | null
+    value?: Decimal | DecimalJsLike | number | string | null
+    subject?: string | null
+    startDate?: Date | string | null
+    maxEndDate?: Date | string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    workersContracts?: WorkerContractUncheckedCreateNestedManyWithoutContractInput
+  }
+
+  export type ContractCreateOrConnectWithoutMaintenanceContractOrdersInput = {
+    where: ContractWhereUniqueInput
+    create: XOR<ContractCreateWithoutMaintenanceContractOrdersInput, ContractUncheckedCreateWithoutMaintenanceContractOrdersInput>
+  }
+
+  export type MaintenanceRequestCreateWithoutMaintenanceContractOrdersInput = {
+    protocolNumber?: string
+    title: string
+    description?: string | null
+    requestedAt?: Date | string
+    deadline?: Date | string | null
+    solutionDetails?: string | null
+    completedAt?: Date | string | null
+    local?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    notes?: string | null
+    useResidueMaterial?: boolean
+    sipacUserLoginRequest?: string | null
+    origin?: $Enums.MaintenanceRequestOrigin
+    priorities?: MaintenanceRequestPriorityCreateNestedManyWithoutMaintenanceRequestInput
+    facilityComplex?: InfrastructureFacilityComplexCreateNestedOneWithoutMaintenanceRequestInput
+    building?: InfrastructureBuildingCreateNestedOneWithoutMaintenanceRequestsInput
+    space?: InfrastructureSpaceCreateNestedOneWithoutMaintenanceRequestsInput
+    system?: InfrastructureSystemCreateNestedOneWithoutMaintenanceRequestsInput
+    currentMaintenanceInstance?: MaintenanceInstanceCreateNestedOneWithoutCurrentMaintenanceRequestsInput
+    createdBy?: UserCreateNestedOneWithoutCreatedMaintenanceRequestsInput
+    assignedTo?: UserCreateNestedOneWithoutAssignedMaintenanceRequestsInput
+    serviceType?: MaintenanceServiceTypeCreateNestedOneWithoutMaintenanceRequestsInput
+    statuses?: MaintenanceRequestStatusCreateNestedManyWithoutMaintenanceRequestInput
+    diagnosis?: InfrastructureOccurrenceDiagnosisCreateNestedOneWithoutMaintenanceRequestInput
+    timelineEvents?: MaintenanceTimelineEventCreateNestedManyWithoutMaintenanceRequestInput
+    materialRequests?: MaterialRequestCreateNestedManyWithoutMaintenanceRequestInput
+    materialStockMovements?: MaterialStockMovementCreateNestedManyWithoutMaintenanceRequestInput
+    materialWithdrawals?: MaterialWithdrawalCreateNestedManyWithoutMaintenanceRequestInput
+    materialPickingOrders?: MaterialPickingOrderCreateNestedManyWithoutMaintenanceRequestInput
+    serviceOrders?: MaintenanceServiceOrderCreateNestedManyWithoutMaintenanceRequestInput
+    sipacUnitRequesting?: SipacUnidadeCreateNestedOneWithoutMaintenanceRequestRequisitanteInput
+    sipacUnitCost?: SipacUnidadeCreateNestedOneWithoutMaintenanceRequestCustoInput
+    infrastructureNetwork?: InfrastructureNetworkCreateNestedOneWithoutMaintenanceRequestsInput
+  }
+
+  export type MaintenanceRequestUncheckedCreateWithoutMaintenanceContractOrdersInput = {
+    id?: number
+    protocolNumber?: string
+    title: string
+    description?: string | null
+    requestedAt?: Date | string
+    deadline?: Date | string | null
+    solutionDetails?: string | null
+    completedAt?: Date | string | null
+    facilityComplexId?: string | null
+    buildingId?: string | null
+    spaceId?: number | null
+    local?: string | null
+    systemId?: number | null
+    currentMaintenanceInstanceId?: number | null
+    createdById?: number | null
+    assignedToId?: number | null
+    serviceTypeId?: number | null
+    diagnosisId?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    notes?: string | null
+    useResidueMaterial?: boolean
+    sipacUnitRequestingId?: number | null
+    sipacUnitCostId?: number | null
+    sipacUserLoginRequest?: string | null
+    origin?: $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: string | null
+    priorities?: MaintenanceRequestPriorityUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    statuses?: MaintenanceRequestStatusUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    timelineEvents?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    materialRequests?: MaterialRequestUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    materialStockMovements?: MaterialStockMovementUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    materialWithdrawals?: MaterialWithdrawalUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    materialPickingOrders?: MaterialPickingOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    serviceOrders?: MaintenanceServiceOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+  }
+
+  export type MaintenanceRequestCreateOrConnectWithoutMaintenanceContractOrdersInput = {
+    where: MaintenanceRequestWhereUniqueInput
+    create: XOR<MaintenanceRequestCreateWithoutMaintenanceContractOrdersInput, MaintenanceRequestUncheckedCreateWithoutMaintenanceContractOrdersInput>
+  }
+
+  export type MaintenanceContractOrderCreateWithoutSubsequentOrdersInput = {
+    title: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    contract: ContractCreateNestedOneWithoutMaintenanceContractOrdersInput
+    maintenanceRequest: MaintenanceRequestCreateNestedOneWithoutMaintenanceContractOrdersInput
+    prerequisites?: MaintenanceContractOrderCreateNestedManyWithoutSubsequentOrdersInput
+  }
+
+  export type MaintenanceContractOrderUncheckedCreateWithoutSubsequentOrdersInput = {
+    id?: number
+    title: string
+    description?: string | null
+    contractId: number
+    maintenanceRequestId: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    prerequisites?: MaintenanceContractOrderUncheckedCreateNestedManyWithoutSubsequentOrdersInput
+  }
+
+  export type MaintenanceContractOrderCreateOrConnectWithoutSubsequentOrdersInput = {
+    where: MaintenanceContractOrderWhereUniqueInput
+    create: XOR<MaintenanceContractOrderCreateWithoutSubsequentOrdersInput, MaintenanceContractOrderUncheckedCreateWithoutSubsequentOrdersInput>
+  }
+
+  export type MaintenanceContractOrderCreateWithoutPrerequisitesInput = {
+    title: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    contract: ContractCreateNestedOneWithoutMaintenanceContractOrdersInput
+    maintenanceRequest: MaintenanceRequestCreateNestedOneWithoutMaintenanceContractOrdersInput
+    subsequentOrders?: MaintenanceContractOrderCreateNestedManyWithoutPrerequisitesInput
+  }
+
+  export type MaintenanceContractOrderUncheckedCreateWithoutPrerequisitesInput = {
+    id?: number
+    title: string
+    description?: string | null
+    contractId: number
+    maintenanceRequestId: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    subsequentOrders?: MaintenanceContractOrderUncheckedCreateNestedManyWithoutPrerequisitesInput
+  }
+
+  export type MaintenanceContractOrderCreateOrConnectWithoutPrerequisitesInput = {
+    where: MaintenanceContractOrderWhereUniqueInput
+    create: XOR<MaintenanceContractOrderCreateWithoutPrerequisitesInput, MaintenanceContractOrderUncheckedCreateWithoutPrerequisitesInput>
+  }
+
+  export type ContractUpsertWithoutMaintenanceContractOrdersInput = {
+    update: XOR<ContractUpdateWithoutMaintenanceContractOrdersInput, ContractUncheckedUpdateWithoutMaintenanceContractOrdersInput>
+    create: XOR<ContractCreateWithoutMaintenanceContractOrdersInput, ContractUncheckedCreateWithoutMaintenanceContractOrdersInput>
+    where?: ContractWhereInput
+  }
+
+  export type ContractUpdateToOneWithWhereWithoutMaintenanceContractOrdersInput = {
+    where?: ContractWhereInput
+    data: XOR<ContractUpdateWithoutMaintenanceContractOrdersInput, ContractUncheckedUpdateWithoutMaintenanceContractOrdersInput>
+  }
+
+  export type ContractUpdateWithoutMaintenanceContractOrdersInput = {
+    codigoSipac?: NullableStringFieldUpdateOperationsInput | string | null
+    value?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    maxEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    providers?: ContractProviderUpdateOneRequiredWithoutContractsNestedInput
+    workersContracts?: WorkerContractUpdateManyWithoutContractNestedInput
+  }
+
+  export type ContractUncheckedUpdateWithoutMaintenanceContractOrdersInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    providerId?: IntFieldUpdateOperationsInput | number
+    codigoSipac?: NullableStringFieldUpdateOperationsInput | string | null
+    value?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    subject?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    maxEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workersContracts?: WorkerContractUncheckedUpdateManyWithoutContractNestedInput
+  }
+
+  export type MaintenanceRequestUpsertWithoutMaintenanceContractOrdersInput = {
+    update: XOR<MaintenanceRequestUpdateWithoutMaintenanceContractOrdersInput, MaintenanceRequestUncheckedUpdateWithoutMaintenanceContractOrdersInput>
+    create: XOR<MaintenanceRequestCreateWithoutMaintenanceContractOrdersInput, MaintenanceRequestUncheckedCreateWithoutMaintenanceContractOrdersInput>
+    where?: MaintenanceRequestWhereInput
+  }
+
+  export type MaintenanceRequestUpdateToOneWithWhereWithoutMaintenanceContractOrdersInput = {
+    where?: MaintenanceRequestWhereInput
+    data: XOR<MaintenanceRequestUpdateWithoutMaintenanceContractOrdersInput, MaintenanceRequestUncheckedUpdateWithoutMaintenanceContractOrdersInput>
+  }
+
+  export type MaintenanceRequestUpdateWithoutMaintenanceContractOrdersInput = {
+    protocolNumber?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    solutionDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    local?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    useResidueMaterial?: BoolFieldUpdateOperationsInput | boolean
+    sipacUserLoginRequest?: NullableStringFieldUpdateOperationsInput | string | null
+    origin?: EnumMaintenanceRequestOriginFieldUpdateOperationsInput | $Enums.MaintenanceRequestOrigin
+    priorities?: MaintenanceRequestPriorityUpdateManyWithoutMaintenanceRequestNestedInput
+    facilityComplex?: InfrastructureFacilityComplexUpdateOneWithoutMaintenanceRequestNestedInput
+    building?: InfrastructureBuildingUpdateOneWithoutMaintenanceRequestsNestedInput
+    space?: InfrastructureSpaceUpdateOneWithoutMaintenanceRequestsNestedInput
+    system?: InfrastructureSystemUpdateOneWithoutMaintenanceRequestsNestedInput
+    currentMaintenanceInstance?: MaintenanceInstanceUpdateOneWithoutCurrentMaintenanceRequestsNestedInput
+    createdBy?: UserUpdateOneWithoutCreatedMaintenanceRequestsNestedInput
+    assignedTo?: UserUpdateOneWithoutAssignedMaintenanceRequestsNestedInput
+    serviceType?: MaintenanceServiceTypeUpdateOneWithoutMaintenanceRequestsNestedInput
+    statuses?: MaintenanceRequestStatusUpdateManyWithoutMaintenanceRequestNestedInput
+    diagnosis?: InfrastructureOccurrenceDiagnosisUpdateOneWithoutMaintenanceRequestNestedInput
+    timelineEvents?: MaintenanceTimelineEventUpdateManyWithoutMaintenanceRequestNestedInput
+    materialRequests?: MaterialRequestUpdateManyWithoutMaintenanceRequestNestedInput
+    materialStockMovements?: MaterialStockMovementUpdateManyWithoutMaintenanceRequestNestedInput
+    materialWithdrawals?: MaterialWithdrawalUpdateManyWithoutMaintenanceRequestNestedInput
+    materialPickingOrders?: MaterialPickingOrderUpdateManyWithoutMaintenanceRequestNestedInput
+    serviceOrders?: MaintenanceServiceOrderUpdateManyWithoutMaintenanceRequestNestedInput
+    sipacUnitRequesting?: SipacUnidadeUpdateOneWithoutMaintenanceRequestRequisitanteNestedInput
+    sipacUnitCost?: SipacUnidadeUpdateOneWithoutMaintenanceRequestCustoNestedInput
+    infrastructureNetwork?: InfrastructureNetworkUpdateOneWithoutMaintenanceRequestsNestedInput
+  }
+
+  export type MaintenanceRequestUncheckedUpdateWithoutMaintenanceContractOrdersInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    protocolNumber?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    solutionDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    facilityComplexId?: NullableStringFieldUpdateOperationsInput | string | null
+    buildingId?: NullableStringFieldUpdateOperationsInput | string | null
+    spaceId?: NullableIntFieldUpdateOperationsInput | number | null
+    local?: NullableStringFieldUpdateOperationsInput | string | null
+    systemId?: NullableIntFieldUpdateOperationsInput | number | null
+    currentMaintenanceInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdById?: NullableIntFieldUpdateOperationsInput | number | null
+    assignedToId?: NullableIntFieldUpdateOperationsInput | number | null
+    serviceTypeId?: NullableIntFieldUpdateOperationsInput | number | null
+    diagnosisId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    useResidueMaterial?: BoolFieldUpdateOperationsInput | boolean
+    sipacUnitRequestingId?: NullableIntFieldUpdateOperationsInput | number | null
+    sipacUnitCostId?: NullableIntFieldUpdateOperationsInput | number | null
+    sipacUserLoginRequest?: NullableStringFieldUpdateOperationsInput | string | null
+    origin?: EnumMaintenanceRequestOriginFieldUpdateOperationsInput | $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: NullableStringFieldUpdateOperationsInput | string | null
+    priorities?: MaintenanceRequestPriorityUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    statuses?: MaintenanceRequestStatusUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    timelineEvents?: MaintenanceTimelineEventUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    materialRequests?: MaterialRequestUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    materialStockMovements?: MaterialStockMovementUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    materialWithdrawals?: MaterialWithdrawalUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    materialPickingOrders?: MaterialPickingOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    serviceOrders?: MaintenanceServiceOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+  }
+
+  export type MaintenanceContractOrderUpsertWithWhereUniqueWithoutSubsequentOrdersInput = {
+    where: MaintenanceContractOrderWhereUniqueInput
+    update: XOR<MaintenanceContractOrderUpdateWithoutSubsequentOrdersInput, MaintenanceContractOrderUncheckedUpdateWithoutSubsequentOrdersInput>
+    create: XOR<MaintenanceContractOrderCreateWithoutSubsequentOrdersInput, MaintenanceContractOrderUncheckedCreateWithoutSubsequentOrdersInput>
+  }
+
+  export type MaintenanceContractOrderUpdateWithWhereUniqueWithoutSubsequentOrdersInput = {
+    where: MaintenanceContractOrderWhereUniqueInput
+    data: XOR<MaintenanceContractOrderUpdateWithoutSubsequentOrdersInput, MaintenanceContractOrderUncheckedUpdateWithoutSubsequentOrdersInput>
+  }
+
+  export type MaintenanceContractOrderUpdateManyWithWhereWithoutSubsequentOrdersInput = {
+    where: MaintenanceContractOrderScalarWhereInput
+    data: XOR<MaintenanceContractOrderUpdateManyMutationInput, MaintenanceContractOrderUncheckedUpdateManyWithoutSubsequentOrdersInput>
+  }
+
+  export type MaintenanceContractOrderUpsertWithWhereUniqueWithoutPrerequisitesInput = {
+    where: MaintenanceContractOrderWhereUniqueInput
+    update: XOR<MaintenanceContractOrderUpdateWithoutPrerequisitesInput, MaintenanceContractOrderUncheckedUpdateWithoutPrerequisitesInput>
+    create: XOR<MaintenanceContractOrderCreateWithoutPrerequisitesInput, MaintenanceContractOrderUncheckedCreateWithoutPrerequisitesInput>
+  }
+
+  export type MaintenanceContractOrderUpdateWithWhereUniqueWithoutPrerequisitesInput = {
+    where: MaintenanceContractOrderWhereUniqueInput
+    data: XOR<MaintenanceContractOrderUpdateWithoutPrerequisitesInput, MaintenanceContractOrderUncheckedUpdateWithoutPrerequisitesInput>
+  }
+
+  export type MaintenanceContractOrderUpdateManyWithWhereWithoutPrerequisitesInput = {
+    where: MaintenanceContractOrderScalarWhereInput
+    data: XOR<MaintenanceContractOrderUpdateManyMutationInput, MaintenanceContractOrderUncheckedUpdateManyWithoutPrerequisitesInput>
+  }
+
   export type MaintenanceRequestCreateWithoutServiceTypeInput = {
     protocolNumber?: string
     title: string
@@ -128954,8 +133561,10 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalCreateNestedManyWithoutMaintenanceRequestInput
     materialPickingOrders?: MaterialPickingOrderCreateNestedManyWithoutMaintenanceRequestInput
     serviceOrders?: MaintenanceServiceOrderCreateNestedManyWithoutMaintenanceRequestInput
+    maintenanceContractOrders?: MaintenanceContractOrderCreateNestedManyWithoutMaintenanceRequestInput
     sipacUnitRequesting?: SipacUnidadeCreateNestedOneWithoutMaintenanceRequestRequisitanteInput
     sipacUnitCost?: SipacUnidadeCreateNestedOneWithoutMaintenanceRequestCustoInput
+    infrastructureNetwork?: InfrastructureNetworkCreateNestedOneWithoutMaintenanceRequestsInput
   }
 
   export type MaintenanceRequestUncheckedCreateWithoutServiceTypeInput = {
@@ -128984,6 +133593,7 @@ export namespace Prisma {
     sipacUnitCostId?: number | null
     sipacUserLoginRequest?: string | null
     origin?: $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: string | null
     priorities?: MaintenanceRequestPriorityUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     statuses?: MaintenanceRequestStatusUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     timelineEvents?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutMaintenanceRequestInput
@@ -128992,6 +133602,7 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     materialPickingOrders?: MaterialPickingOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     serviceOrders?: MaintenanceServiceOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    maintenanceContractOrders?: MaintenanceContractOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
   }
 
   export type MaintenanceRequestCreateOrConnectWithoutServiceTypeInput = {
@@ -129051,8 +133662,10 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalCreateNestedManyWithoutMaintenanceRequestInput
     materialPickingOrders?: MaterialPickingOrderCreateNestedManyWithoutMaintenanceRequestInput
     serviceOrders?: MaintenanceServiceOrderCreateNestedManyWithoutMaintenanceRequestInput
+    maintenanceContractOrders?: MaintenanceContractOrderCreateNestedManyWithoutMaintenanceRequestInput
     sipacUnitRequesting?: SipacUnidadeCreateNestedOneWithoutMaintenanceRequestRequisitanteInput
     sipacUnitCost?: SipacUnidadeCreateNestedOneWithoutMaintenanceRequestCustoInput
+    infrastructureNetwork?: InfrastructureNetworkCreateNestedOneWithoutMaintenanceRequestsInput
   }
 
   export type MaintenanceRequestUncheckedCreateWithoutCurrentMaintenanceInstanceInput = {
@@ -129081,6 +133694,7 @@ export namespace Prisma {
     sipacUnitCostId?: number | null
     sipacUserLoginRequest?: string | null
     origin?: $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: string | null
     priorities?: MaintenanceRequestPriorityUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     statuses?: MaintenanceRequestStatusUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     timelineEvents?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutMaintenanceRequestInput
@@ -129089,6 +133703,7 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     materialPickingOrders?: MaterialPickingOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     serviceOrders?: MaintenanceServiceOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    maintenanceContractOrders?: MaintenanceContractOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
   }
 
   export type MaintenanceRequestCreateOrConnectWithoutCurrentMaintenanceInstanceInput = {
@@ -129289,6 +133904,7 @@ export namespace Prisma {
     buildings?: InfrastructureBuildingCreateNestedManyWithoutFacilityComplexInput
     InfrastructureOccurrence?: InfrastructureOccurrenceCreateNestedManyWithoutFacilityComplexInput
     MaintenanceRequest?: MaintenanceRequestCreateNestedManyWithoutFacilityComplexInput
+    infrastructureNetworks?: InfrastructureNetworkCreateNestedManyWithoutFacilityComplexInput
   }
 
   export type InfrastructureFacilityComplexUncheckedCreateWithoutMaintenanceInstanceInput = {
@@ -129304,6 +133920,7 @@ export namespace Prisma {
     buildings?: InfrastructureBuildingUncheckedCreateNestedManyWithoutFacilityComplexInput
     InfrastructureOccurrence?: InfrastructureOccurrenceUncheckedCreateNestedManyWithoutFacilityComplexInput
     MaintenanceRequest?: MaintenanceRequestUncheckedCreateNestedManyWithoutFacilityComplexInput
+    infrastructureNetworks?: InfrastructureNetworkUncheckedCreateNestedManyWithoutFacilityComplexInput
   }
 
   export type InfrastructureFacilityComplexCreateOrConnectWithoutMaintenanceInstanceInput = {
@@ -129313,6 +133930,40 @@ export namespace Prisma {
 
   export type InfrastructureFacilityComplexCreateManyMaintenanceInstanceInputEnvelope = {
     data: InfrastructureFacilityComplexCreateManyMaintenanceInstanceInput | InfrastructureFacilityComplexCreateManyMaintenanceInstanceInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type InfrastructureNetworkCreateWithoutMaintenanceInstanceInput = {
+    id: string
+    name: string
+    alias?: string | null
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    maintenanceRequests?: MaintenanceRequestCreateNestedManyWithoutInfrastructureNetworkInput
+    infraOccurrences?: InfrastructureOccurrenceCreateNestedManyWithoutInfrastructureNetworkInput
+    facilityComplex?: InfrastructureFacilityComplexCreateNestedOneWithoutInfrastructureNetworksInput
+  }
+
+  export type InfrastructureNetworkUncheckedCreateWithoutMaintenanceInstanceInput = {
+    id: string
+    name: string
+    alias?: string | null
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    facilityComplexId?: string | null
+    maintenanceRequests?: MaintenanceRequestUncheckedCreateNestedManyWithoutInfrastructureNetworkInput
+    infraOccurrences?: InfrastructureOccurrenceUncheckedCreateNestedManyWithoutInfrastructureNetworkInput
+  }
+
+  export type InfrastructureNetworkCreateOrConnectWithoutMaintenanceInstanceInput = {
+    where: InfrastructureNetworkWhereUniqueInput
+    create: XOR<InfrastructureNetworkCreateWithoutMaintenanceInstanceInput, InfrastructureNetworkUncheckedCreateWithoutMaintenanceInstanceInput>
+  }
+
+  export type InfrastructureNetworkCreateManyMaintenanceInstanceInputEnvelope = {
+    data: InfrastructureNetworkCreateManyMaintenanceInstanceInput | InfrastructureNetworkCreateManyMaintenanceInstanceInput[]
     skipDuplicates?: boolean
   }
 
@@ -129588,6 +134239,22 @@ export namespace Prisma {
     maintenanceInstanceId?: IntNullableFilter<"InfrastructureFacilityComplex"> | number | null
   }
 
+  export type InfrastructureNetworkUpsertWithWhereUniqueWithoutMaintenanceInstanceInput = {
+    where: InfrastructureNetworkWhereUniqueInput
+    update: XOR<InfrastructureNetworkUpdateWithoutMaintenanceInstanceInput, InfrastructureNetworkUncheckedUpdateWithoutMaintenanceInstanceInput>
+    create: XOR<InfrastructureNetworkCreateWithoutMaintenanceInstanceInput, InfrastructureNetworkUncheckedCreateWithoutMaintenanceInstanceInput>
+  }
+
+  export type InfrastructureNetworkUpdateWithWhereUniqueWithoutMaintenanceInstanceInput = {
+    where: InfrastructureNetworkWhereUniqueInput
+    data: XOR<InfrastructureNetworkUpdateWithoutMaintenanceInstanceInput, InfrastructureNetworkUncheckedUpdateWithoutMaintenanceInstanceInput>
+  }
+
+  export type InfrastructureNetworkUpdateManyWithWhereWithoutMaintenanceInstanceInput = {
+    where: InfrastructureNetworkScalarWhereInput
+    data: XOR<InfrastructureNetworkUpdateManyMutationInput, InfrastructureNetworkUncheckedUpdateManyWithoutMaintenanceInstanceInput>
+  }
+
   export type UserUpsertWithWhereUniqueWithoutMaintenanceInstanceInput = {
     where: UserWhereUniqueInput
     update: XOR<UserUpdateWithoutMaintenanceInstanceInput, UserUncheckedUpdateWithoutMaintenanceInstanceInput>
@@ -129670,8 +134337,10 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalCreateNestedManyWithoutMaintenanceRequestInput
     materialPickingOrders?: MaterialPickingOrderCreateNestedManyWithoutMaintenanceRequestInput
     serviceOrders?: MaintenanceServiceOrderCreateNestedManyWithoutMaintenanceRequestInput
+    maintenanceContractOrders?: MaintenanceContractOrderCreateNestedManyWithoutMaintenanceRequestInput
     sipacUnitRequesting?: SipacUnidadeCreateNestedOneWithoutMaintenanceRequestRequisitanteInput
     sipacUnitCost?: SipacUnidadeCreateNestedOneWithoutMaintenanceRequestCustoInput
+    infrastructureNetwork?: InfrastructureNetworkCreateNestedOneWithoutMaintenanceRequestsInput
   }
 
   export type MaintenanceRequestUncheckedCreateWithoutTimelineEventsInput = {
@@ -129701,6 +134370,7 @@ export namespace Prisma {
     sipacUnitCostId?: number | null
     sipacUserLoginRequest?: string | null
     origin?: $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: string | null
     priorities?: MaintenanceRequestPriorityUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     statuses?: MaintenanceRequestStatusUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     materialRequests?: MaterialRequestUncheckedCreateNestedManyWithoutMaintenanceRequestInput
@@ -129708,6 +134378,7 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     materialPickingOrders?: MaterialPickingOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     serviceOrders?: MaintenanceServiceOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    maintenanceContractOrders?: MaintenanceContractOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
   }
 
   export type MaintenanceRequestCreateOrConnectWithoutTimelineEventsInput = {
@@ -129810,6 +134481,7 @@ export namespace Prisma {
     warehouses?: WarehouseCreateNestedManyWithoutMaintenanceInstanceInput
     InfrastructureBuilding?: InfrastructureBuildingCreateNestedManyWithoutMaintenanceInstanceInput
     InfrastructureFacilityComplex?: InfrastructureFacilityComplexCreateNestedManyWithoutMaintenanceInstanceInput
+    InfrastructureNetwork?: InfrastructureNetworkCreateNestedManyWithoutMaintenanceInstanceInput
     users?: UserCreateNestedManyWithoutMaintenanceInstanceInput
     workers?: WorkerCreateNestedManyWithoutMaintenanceInstanceInput
   }
@@ -129826,6 +134498,7 @@ export namespace Prisma {
     warehouses?: WarehouseUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
     InfrastructureBuilding?: InfrastructureBuildingUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
     InfrastructureFacilityComplex?: InfrastructureFacilityComplexUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
+    InfrastructureNetwork?: InfrastructureNetworkUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
     users?: UserUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
     workers?: WorkerUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
   }
@@ -129846,6 +134519,7 @@ export namespace Prisma {
     warehouses?: WarehouseCreateNestedManyWithoutMaintenanceInstanceInput
     InfrastructureBuilding?: InfrastructureBuildingCreateNestedManyWithoutMaintenanceInstanceInput
     InfrastructureFacilityComplex?: InfrastructureFacilityComplexCreateNestedManyWithoutMaintenanceInstanceInput
+    InfrastructureNetwork?: InfrastructureNetworkCreateNestedManyWithoutMaintenanceInstanceInput
     users?: UserCreateNestedManyWithoutMaintenanceInstanceInput
     workers?: WorkerCreateNestedManyWithoutMaintenanceInstanceInput
   }
@@ -129862,6 +134536,7 @@ export namespace Prisma {
     warehouses?: WarehouseUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
     InfrastructureBuilding?: InfrastructureBuildingUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
     InfrastructureFacilityComplex?: InfrastructureFacilityComplexUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
+    InfrastructureNetwork?: InfrastructureNetworkUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
     users?: UserUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
     workers?: WorkerUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
   }
@@ -129913,8 +134588,10 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUpdateManyWithoutMaintenanceRequestNestedInput
     materialPickingOrders?: MaterialPickingOrderUpdateManyWithoutMaintenanceRequestNestedInput
     serviceOrders?: MaintenanceServiceOrderUpdateManyWithoutMaintenanceRequestNestedInput
+    maintenanceContractOrders?: MaintenanceContractOrderUpdateManyWithoutMaintenanceRequestNestedInput
     sipacUnitRequesting?: SipacUnidadeUpdateOneWithoutMaintenanceRequestRequisitanteNestedInput
     sipacUnitCost?: SipacUnidadeUpdateOneWithoutMaintenanceRequestCustoNestedInput
+    infrastructureNetwork?: InfrastructureNetworkUpdateOneWithoutMaintenanceRequestsNestedInput
   }
 
   export type MaintenanceRequestUncheckedUpdateWithoutTimelineEventsInput = {
@@ -129944,6 +134621,7 @@ export namespace Prisma {
     sipacUnitCostId?: NullableIntFieldUpdateOperationsInput | number | null
     sipacUserLoginRequest?: NullableStringFieldUpdateOperationsInput | string | null
     origin?: EnumMaintenanceRequestOriginFieldUpdateOperationsInput | $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: NullableStringFieldUpdateOperationsInput | string | null
     priorities?: MaintenanceRequestPriorityUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     statuses?: MaintenanceRequestStatusUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     materialRequests?: MaterialRequestUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
@@ -129951,6 +134629,7 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     materialPickingOrders?: MaterialPickingOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     serviceOrders?: MaintenanceServiceOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    maintenanceContractOrders?: MaintenanceContractOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
   }
 
   export type UserUpsertWithoutTimelineEventsInput = {
@@ -130065,6 +134744,7 @@ export namespace Prisma {
     warehouses?: WarehouseUpdateManyWithoutMaintenanceInstanceNestedInput
     InfrastructureBuilding?: InfrastructureBuildingUpdateManyWithoutMaintenanceInstanceNestedInput
     InfrastructureFacilityComplex?: InfrastructureFacilityComplexUpdateManyWithoutMaintenanceInstanceNestedInput
+    InfrastructureNetwork?: InfrastructureNetworkUpdateManyWithoutMaintenanceInstanceNestedInput
     users?: UserUpdateManyWithoutMaintenanceInstanceNestedInput
     workers?: WorkerUpdateManyWithoutMaintenanceInstanceNestedInput
   }
@@ -130081,6 +134761,7 @@ export namespace Prisma {
     warehouses?: WarehouseUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
     InfrastructureBuilding?: InfrastructureBuildingUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
     InfrastructureFacilityComplex?: InfrastructureFacilityComplexUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
+    InfrastructureNetwork?: InfrastructureNetworkUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
     users?: UserUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
     workers?: WorkerUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
   }
@@ -130107,6 +134788,7 @@ export namespace Prisma {
     warehouses?: WarehouseUpdateManyWithoutMaintenanceInstanceNestedInput
     InfrastructureBuilding?: InfrastructureBuildingUpdateManyWithoutMaintenanceInstanceNestedInput
     InfrastructureFacilityComplex?: InfrastructureFacilityComplexUpdateManyWithoutMaintenanceInstanceNestedInput
+    InfrastructureNetwork?: InfrastructureNetworkUpdateManyWithoutMaintenanceInstanceNestedInput
     users?: UserUpdateManyWithoutMaintenanceInstanceNestedInput
     workers?: WorkerUpdateManyWithoutMaintenanceInstanceNestedInput
   }
@@ -130123,6 +134805,7 @@ export namespace Prisma {
     warehouses?: WarehouseUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
     InfrastructureBuilding?: InfrastructureBuildingUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
     InfrastructureFacilityComplex?: InfrastructureFacilityComplexUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
+    InfrastructureNetwork?: InfrastructureNetworkUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
     users?: UserUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
     workers?: WorkerUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
   }
@@ -130158,8 +134841,10 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalCreateNestedManyWithoutMaintenanceRequestInput
     materialPickingOrders?: MaterialPickingOrderCreateNestedManyWithoutMaintenanceRequestInput
     serviceOrders?: MaintenanceServiceOrderCreateNestedManyWithoutMaintenanceRequestInput
+    maintenanceContractOrders?: MaintenanceContractOrderCreateNestedManyWithoutMaintenanceRequestInput
     sipacUnitRequesting?: SipacUnidadeCreateNestedOneWithoutMaintenanceRequestRequisitanteInput
     sipacUnitCost?: SipacUnidadeCreateNestedOneWithoutMaintenanceRequestCustoInput
+    infrastructureNetwork?: InfrastructureNetworkCreateNestedOneWithoutMaintenanceRequestsInput
   }
 
   export type MaintenanceRequestUncheckedCreateWithoutStatusesInput = {
@@ -130189,6 +134874,7 @@ export namespace Prisma {
     sipacUnitCostId?: number | null
     sipacUserLoginRequest?: string | null
     origin?: $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: string | null
     priorities?: MaintenanceRequestPriorityUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     timelineEvents?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     materialRequests?: MaterialRequestUncheckedCreateNestedManyWithoutMaintenanceRequestInput
@@ -130196,6 +134882,7 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     materialPickingOrders?: MaterialPickingOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     serviceOrders?: MaintenanceServiceOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    maintenanceContractOrders?: MaintenanceContractOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
   }
 
   export type MaintenanceRequestCreateOrConnectWithoutStatusesInput = {
@@ -130245,8 +134932,10 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUpdateManyWithoutMaintenanceRequestNestedInput
     materialPickingOrders?: MaterialPickingOrderUpdateManyWithoutMaintenanceRequestNestedInput
     serviceOrders?: MaintenanceServiceOrderUpdateManyWithoutMaintenanceRequestNestedInput
+    maintenanceContractOrders?: MaintenanceContractOrderUpdateManyWithoutMaintenanceRequestNestedInput
     sipacUnitRequesting?: SipacUnidadeUpdateOneWithoutMaintenanceRequestRequisitanteNestedInput
     sipacUnitCost?: SipacUnidadeUpdateOneWithoutMaintenanceRequestCustoNestedInput
+    infrastructureNetwork?: InfrastructureNetworkUpdateOneWithoutMaintenanceRequestsNestedInput
   }
 
   export type MaintenanceRequestUncheckedUpdateWithoutStatusesInput = {
@@ -130276,6 +134965,7 @@ export namespace Prisma {
     sipacUnitCostId?: NullableIntFieldUpdateOperationsInput | number | null
     sipacUserLoginRequest?: NullableStringFieldUpdateOperationsInput | string | null
     origin?: EnumMaintenanceRequestOriginFieldUpdateOperationsInput | $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: NullableStringFieldUpdateOperationsInput | string | null
     priorities?: MaintenanceRequestPriorityUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     timelineEvents?: MaintenanceTimelineEventUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     materialRequests?: MaterialRequestUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
@@ -130283,6 +134973,7 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     materialPickingOrders?: MaterialPickingOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     serviceOrders?: MaintenanceServiceOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    maintenanceContractOrders?: MaintenanceContractOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
   }
 
   export type MaintenanceServiceOrderCreateWithoutAllocationsInput = {
@@ -130678,8 +135369,10 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalCreateNestedManyWithoutMaintenanceRequestInput
     materialPickingOrders?: MaterialPickingOrderCreateNestedManyWithoutMaintenanceRequestInput
     serviceOrders?: MaintenanceServiceOrderCreateNestedManyWithoutMaintenanceRequestInput
+    maintenanceContractOrders?: MaintenanceContractOrderCreateNestedManyWithoutMaintenanceRequestInput
     sipacUnitRequesting?: SipacUnidadeCreateNestedOneWithoutMaintenanceRequestRequisitanteInput
     sipacUnitCost?: SipacUnidadeCreateNestedOneWithoutMaintenanceRequestCustoInput
+    infrastructureNetwork?: InfrastructureNetworkCreateNestedOneWithoutMaintenanceRequestsInput
   }
 
   export type MaintenanceRequestUncheckedCreateWithoutPrioritiesInput = {
@@ -130709,6 +135402,7 @@ export namespace Prisma {
     sipacUnitCostId?: number | null
     sipacUserLoginRequest?: string | null
     origin?: $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: string | null
     statuses?: MaintenanceRequestStatusUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     timelineEvents?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     materialRequests?: MaterialRequestUncheckedCreateNestedManyWithoutMaintenanceRequestInput
@@ -130716,6 +135410,7 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     materialPickingOrders?: MaterialPickingOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     serviceOrders?: MaintenanceServiceOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    maintenanceContractOrders?: MaintenanceContractOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
   }
 
   export type MaintenanceRequestCreateOrConnectWithoutPrioritiesInput = {
@@ -130765,8 +135460,10 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUpdateManyWithoutMaintenanceRequestNestedInput
     materialPickingOrders?: MaterialPickingOrderUpdateManyWithoutMaintenanceRequestNestedInput
     serviceOrders?: MaintenanceServiceOrderUpdateManyWithoutMaintenanceRequestNestedInput
+    maintenanceContractOrders?: MaintenanceContractOrderUpdateManyWithoutMaintenanceRequestNestedInput
     sipacUnitRequesting?: SipacUnidadeUpdateOneWithoutMaintenanceRequestRequisitanteNestedInput
     sipacUnitCost?: SipacUnidadeUpdateOneWithoutMaintenanceRequestCustoNestedInput
+    infrastructureNetwork?: InfrastructureNetworkUpdateOneWithoutMaintenanceRequestsNestedInput
   }
 
   export type MaintenanceRequestUncheckedUpdateWithoutPrioritiesInput = {
@@ -130796,6 +135493,7 @@ export namespace Prisma {
     sipacUnitCostId?: NullableIntFieldUpdateOperationsInput | number | null
     sipacUserLoginRequest?: NullableStringFieldUpdateOperationsInput | string | null
     origin?: EnumMaintenanceRequestOriginFieldUpdateOperationsInput | $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: NullableStringFieldUpdateOperationsInput | string | null
     statuses?: MaintenanceRequestStatusUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     timelineEvents?: MaintenanceTimelineEventUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     materialRequests?: MaterialRequestUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
@@ -130803,6 +135501,7 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     materialPickingOrders?: MaterialPickingOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     serviceOrders?: MaintenanceServiceOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    maintenanceContractOrders?: MaintenanceContractOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
   }
 
   export type MaterialRequestCreateWithoutStorageInput = {
@@ -130895,6 +135594,7 @@ export namespace Prisma {
     timelineEventsTransferredTo?: MaintenanceTimelineEventCreateNestedManyWithoutTransferredToInstanceInput
     InfrastructureBuilding?: InfrastructureBuildingCreateNestedManyWithoutMaintenanceInstanceInput
     InfrastructureFacilityComplex?: InfrastructureFacilityComplexCreateNestedManyWithoutMaintenanceInstanceInput
+    InfrastructureNetwork?: InfrastructureNetworkCreateNestedManyWithoutMaintenanceInstanceInput
     users?: UserCreateNestedManyWithoutMaintenanceInstanceInput
     workers?: WorkerCreateNestedManyWithoutMaintenanceInstanceInput
   }
@@ -130911,6 +135611,7 @@ export namespace Prisma {
     timelineEventsTransferredTo?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutTransferredToInstanceInput
     InfrastructureBuilding?: InfrastructureBuildingUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
     InfrastructureFacilityComplex?: InfrastructureFacilityComplexUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
+    InfrastructureNetwork?: InfrastructureNetworkUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
     users?: UserUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
     workers?: WorkerUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
   }
@@ -131375,6 +136076,7 @@ export namespace Prisma {
     timelineEventsTransferredTo?: MaintenanceTimelineEventUpdateManyWithoutTransferredToInstanceNestedInput
     InfrastructureBuilding?: InfrastructureBuildingUpdateManyWithoutMaintenanceInstanceNestedInput
     InfrastructureFacilityComplex?: InfrastructureFacilityComplexUpdateManyWithoutMaintenanceInstanceNestedInput
+    InfrastructureNetwork?: InfrastructureNetworkUpdateManyWithoutMaintenanceInstanceNestedInput
     users?: UserUpdateManyWithoutMaintenanceInstanceNestedInput
     workers?: WorkerUpdateManyWithoutMaintenanceInstanceNestedInput
   }
@@ -131391,6 +136093,7 @@ export namespace Prisma {
     timelineEventsTransferredTo?: MaintenanceTimelineEventUncheckedUpdateManyWithoutTransferredToInstanceNestedInput
     InfrastructureBuilding?: InfrastructureBuildingUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
     InfrastructureFacilityComplex?: InfrastructureFacilityComplexUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
+    InfrastructureNetwork?: InfrastructureNetworkUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
     users?: UserUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
     workers?: WorkerUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
   }
@@ -132747,8 +137450,10 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalCreateNestedManyWithoutMaintenanceRequestInput
     materialPickingOrders?: MaterialPickingOrderCreateNestedManyWithoutMaintenanceRequestInput
     serviceOrders?: MaintenanceServiceOrderCreateNestedManyWithoutMaintenanceRequestInput
+    maintenanceContractOrders?: MaintenanceContractOrderCreateNestedManyWithoutMaintenanceRequestInput
     sipacUnitRequesting?: SipacUnidadeCreateNestedOneWithoutMaintenanceRequestRequisitanteInput
     sipacUnitCost?: SipacUnidadeCreateNestedOneWithoutMaintenanceRequestCustoInput
+    infrastructureNetwork?: InfrastructureNetworkCreateNestedOneWithoutMaintenanceRequestsInput
   }
 
   export type MaintenanceRequestUncheckedCreateWithoutMaterialRequestsInput = {
@@ -132778,6 +137483,7 @@ export namespace Prisma {
     sipacUnitCostId?: number | null
     sipacUserLoginRequest?: string | null
     origin?: $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: string | null
     priorities?: MaintenanceRequestPriorityUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     statuses?: MaintenanceRequestStatusUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     timelineEvents?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutMaintenanceRequestInput
@@ -132785,6 +137491,7 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     materialPickingOrders?: MaterialPickingOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     serviceOrders?: MaintenanceServiceOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    maintenanceContractOrders?: MaintenanceContractOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
   }
 
   export type MaintenanceRequestCreateOrConnectWithoutMaterialRequestsInput = {
@@ -133262,8 +137969,10 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUpdateManyWithoutMaintenanceRequestNestedInput
     materialPickingOrders?: MaterialPickingOrderUpdateManyWithoutMaintenanceRequestNestedInput
     serviceOrders?: MaintenanceServiceOrderUpdateManyWithoutMaintenanceRequestNestedInput
+    maintenanceContractOrders?: MaintenanceContractOrderUpdateManyWithoutMaintenanceRequestNestedInput
     sipacUnitRequesting?: SipacUnidadeUpdateOneWithoutMaintenanceRequestRequisitanteNestedInput
     sipacUnitCost?: SipacUnidadeUpdateOneWithoutMaintenanceRequestCustoNestedInput
+    infrastructureNetwork?: InfrastructureNetworkUpdateOneWithoutMaintenanceRequestsNestedInput
   }
 
   export type MaintenanceRequestUncheckedUpdateWithoutMaterialRequestsInput = {
@@ -133293,6 +138002,7 @@ export namespace Prisma {
     sipacUnitCostId?: NullableIntFieldUpdateOperationsInput | number | null
     sipacUserLoginRequest?: NullableStringFieldUpdateOperationsInput | string | null
     origin?: EnumMaintenanceRequestOriginFieldUpdateOperationsInput | $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: NullableStringFieldUpdateOperationsInput | string | null
     priorities?: MaintenanceRequestPriorityUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     statuses?: MaintenanceRequestStatusUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     timelineEvents?: MaintenanceTimelineEventUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
@@ -133300,6 +138010,7 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     materialPickingOrders?: MaterialPickingOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     serviceOrders?: MaintenanceServiceOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    maintenanceContractOrders?: MaintenanceContractOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
   }
 
   export type UserUpsertWithoutMaterialRequestsCreatedInput = {
@@ -135267,8 +139978,10 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalCreateNestedManyWithoutMaintenanceRequestInput
     materialPickingOrders?: MaterialPickingOrderCreateNestedManyWithoutMaintenanceRequestInput
     serviceOrders?: MaintenanceServiceOrderCreateNestedManyWithoutMaintenanceRequestInput
+    maintenanceContractOrders?: MaintenanceContractOrderCreateNestedManyWithoutMaintenanceRequestInput
     sipacUnitRequesting?: SipacUnidadeCreateNestedOneWithoutMaintenanceRequestRequisitanteInput
     sipacUnitCost?: SipacUnidadeCreateNestedOneWithoutMaintenanceRequestCustoInput
+    infrastructureNetwork?: InfrastructureNetworkCreateNestedOneWithoutMaintenanceRequestsInput
   }
 
   export type MaintenanceRequestUncheckedCreateWithoutMaterialStockMovementsInput = {
@@ -135298,6 +140011,7 @@ export namespace Prisma {
     sipacUnitCostId?: number | null
     sipacUserLoginRequest?: string | null
     origin?: $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: string | null
     priorities?: MaintenanceRequestPriorityUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     statuses?: MaintenanceRequestStatusUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     timelineEvents?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutMaintenanceRequestInput
@@ -135305,6 +140019,7 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     materialPickingOrders?: MaterialPickingOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     serviceOrders?: MaintenanceServiceOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    maintenanceContractOrders?: MaintenanceContractOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
   }
 
   export type MaintenanceRequestCreateOrConnectWithoutMaterialStockMovementsInput = {
@@ -136043,8 +140758,10 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUpdateManyWithoutMaintenanceRequestNestedInput
     materialPickingOrders?: MaterialPickingOrderUpdateManyWithoutMaintenanceRequestNestedInput
     serviceOrders?: MaintenanceServiceOrderUpdateManyWithoutMaintenanceRequestNestedInput
+    maintenanceContractOrders?: MaintenanceContractOrderUpdateManyWithoutMaintenanceRequestNestedInput
     sipacUnitRequesting?: SipacUnidadeUpdateOneWithoutMaintenanceRequestRequisitanteNestedInput
     sipacUnitCost?: SipacUnidadeUpdateOneWithoutMaintenanceRequestCustoNestedInput
+    infrastructureNetwork?: InfrastructureNetworkUpdateOneWithoutMaintenanceRequestsNestedInput
   }
 
   export type MaintenanceRequestUncheckedUpdateWithoutMaterialStockMovementsInput = {
@@ -136074,6 +140791,7 @@ export namespace Prisma {
     sipacUnitCostId?: NullableIntFieldUpdateOperationsInput | number | null
     sipacUserLoginRequest?: NullableStringFieldUpdateOperationsInput | string | null
     origin?: EnumMaintenanceRequestOriginFieldUpdateOperationsInput | $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: NullableStringFieldUpdateOperationsInput | string | null
     priorities?: MaintenanceRequestPriorityUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     statuses?: MaintenanceRequestStatusUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     timelineEvents?: MaintenanceTimelineEventUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
@@ -136081,6 +140799,7 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     materialPickingOrders?: MaterialPickingOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     serviceOrders?: MaintenanceServiceOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    maintenanceContractOrders?: MaintenanceContractOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
   }
 
   export type MaterialWithdrawalItemUpsertWithoutStockMovementInput = {
@@ -137031,8 +141750,10 @@ export namespace Prisma {
     materialStockMovements?: MaterialStockMovementCreateNestedManyWithoutMaintenanceRequestInput
     materialWithdrawals?: MaterialWithdrawalCreateNestedManyWithoutMaintenanceRequestInput
     serviceOrders?: MaintenanceServiceOrderCreateNestedManyWithoutMaintenanceRequestInput
+    maintenanceContractOrders?: MaintenanceContractOrderCreateNestedManyWithoutMaintenanceRequestInput
     sipacUnitRequesting?: SipacUnidadeCreateNestedOneWithoutMaintenanceRequestRequisitanteInput
     sipacUnitCost?: SipacUnidadeCreateNestedOneWithoutMaintenanceRequestCustoInput
+    infrastructureNetwork?: InfrastructureNetworkCreateNestedOneWithoutMaintenanceRequestsInput
   }
 
   export type MaintenanceRequestUncheckedCreateWithoutMaterialPickingOrdersInput = {
@@ -137062,6 +141783,7 @@ export namespace Prisma {
     sipacUnitCostId?: number | null
     sipacUserLoginRequest?: string | null
     origin?: $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: string | null
     priorities?: MaintenanceRequestPriorityUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     statuses?: MaintenanceRequestStatusUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     timelineEvents?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutMaintenanceRequestInput
@@ -137069,6 +141791,7 @@ export namespace Prisma {
     materialStockMovements?: MaterialStockMovementUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     materialWithdrawals?: MaterialWithdrawalUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     serviceOrders?: MaintenanceServiceOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    maintenanceContractOrders?: MaintenanceContractOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
   }
 
   export type MaintenanceRequestCreateOrConnectWithoutMaterialPickingOrdersInput = {
@@ -137622,8 +142345,10 @@ export namespace Prisma {
     materialStockMovements?: MaterialStockMovementUpdateManyWithoutMaintenanceRequestNestedInput
     materialWithdrawals?: MaterialWithdrawalUpdateManyWithoutMaintenanceRequestNestedInput
     serviceOrders?: MaintenanceServiceOrderUpdateManyWithoutMaintenanceRequestNestedInput
+    maintenanceContractOrders?: MaintenanceContractOrderUpdateManyWithoutMaintenanceRequestNestedInput
     sipacUnitRequesting?: SipacUnidadeUpdateOneWithoutMaintenanceRequestRequisitanteNestedInput
     sipacUnitCost?: SipacUnidadeUpdateOneWithoutMaintenanceRequestCustoNestedInput
+    infrastructureNetwork?: InfrastructureNetworkUpdateOneWithoutMaintenanceRequestsNestedInput
   }
 
   export type MaintenanceRequestUncheckedUpdateWithoutMaterialPickingOrdersInput = {
@@ -137653,6 +142378,7 @@ export namespace Prisma {
     sipacUnitCostId?: NullableIntFieldUpdateOperationsInput | number | null
     sipacUserLoginRequest?: NullableStringFieldUpdateOperationsInput | string | null
     origin?: EnumMaintenanceRequestOriginFieldUpdateOperationsInput | $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: NullableStringFieldUpdateOperationsInput | string | null
     priorities?: MaintenanceRequestPriorityUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     statuses?: MaintenanceRequestStatusUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     timelineEvents?: MaintenanceTimelineEventUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
@@ -137660,6 +142386,7 @@ export namespace Prisma {
     materialStockMovements?: MaterialStockMovementUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     materialWithdrawals?: MaterialWithdrawalUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     serviceOrders?: MaintenanceServiceOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    maintenanceContractOrders?: MaintenanceContractOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
   }
 
   export type WarehouseUpsertWithoutMaterialPickingOrdersInput = {
@@ -138936,8 +143663,10 @@ export namespace Prisma {
     materialStockMovements?: MaterialStockMovementCreateNestedManyWithoutMaintenanceRequestInput
     materialPickingOrders?: MaterialPickingOrderCreateNestedManyWithoutMaintenanceRequestInput
     serviceOrders?: MaintenanceServiceOrderCreateNestedManyWithoutMaintenanceRequestInput
+    maintenanceContractOrders?: MaintenanceContractOrderCreateNestedManyWithoutMaintenanceRequestInput
     sipacUnitRequesting?: SipacUnidadeCreateNestedOneWithoutMaintenanceRequestRequisitanteInput
     sipacUnitCost?: SipacUnidadeCreateNestedOneWithoutMaintenanceRequestCustoInput
+    infrastructureNetwork?: InfrastructureNetworkCreateNestedOneWithoutMaintenanceRequestsInput
   }
 
   export type MaintenanceRequestUncheckedCreateWithoutMaterialWithdrawalsInput = {
@@ -138967,6 +143696,7 @@ export namespace Prisma {
     sipacUnitCostId?: number | null
     sipacUserLoginRequest?: string | null
     origin?: $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: string | null
     priorities?: MaintenanceRequestPriorityUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     statuses?: MaintenanceRequestStatusUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     timelineEvents?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutMaintenanceRequestInput
@@ -138974,6 +143704,7 @@ export namespace Prisma {
     materialStockMovements?: MaterialStockMovementUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     materialPickingOrders?: MaterialPickingOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     serviceOrders?: MaintenanceServiceOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    maintenanceContractOrders?: MaintenanceContractOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
   }
 
   export type MaintenanceRequestCreateOrConnectWithoutMaterialWithdrawalsInput = {
@@ -139617,8 +144348,10 @@ export namespace Prisma {
     materialStockMovements?: MaterialStockMovementUpdateManyWithoutMaintenanceRequestNestedInput
     materialPickingOrders?: MaterialPickingOrderUpdateManyWithoutMaintenanceRequestNestedInput
     serviceOrders?: MaintenanceServiceOrderUpdateManyWithoutMaintenanceRequestNestedInput
+    maintenanceContractOrders?: MaintenanceContractOrderUpdateManyWithoutMaintenanceRequestNestedInput
     sipacUnitRequesting?: SipacUnidadeUpdateOneWithoutMaintenanceRequestRequisitanteNestedInput
     sipacUnitCost?: SipacUnidadeUpdateOneWithoutMaintenanceRequestCustoNestedInput
+    infrastructureNetwork?: InfrastructureNetworkUpdateOneWithoutMaintenanceRequestsNestedInput
   }
 
   export type MaintenanceRequestUncheckedUpdateWithoutMaterialWithdrawalsInput = {
@@ -139648,6 +144381,7 @@ export namespace Prisma {
     sipacUnitCostId?: NullableIntFieldUpdateOperationsInput | number | null
     sipacUserLoginRequest?: NullableStringFieldUpdateOperationsInput | string | null
     origin?: EnumMaintenanceRequestOriginFieldUpdateOperationsInput | $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: NullableStringFieldUpdateOperationsInput | string | null
     priorities?: MaintenanceRequestPriorityUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     statuses?: MaintenanceRequestStatusUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     timelineEvents?: MaintenanceTimelineEventUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
@@ -139655,6 +144389,7 @@ export namespace Prisma {
     materialStockMovements?: MaterialStockMovementUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     materialPickingOrders?: MaterialPickingOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     serviceOrders?: MaintenanceServiceOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    maintenanceContractOrders?: MaintenanceContractOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
   }
 
   export type MaterialRequestUpsertWithoutMaterialWithdrawalsInput = {
@@ -147628,7 +152363,9 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalCreateNestedManyWithoutMaintenanceRequestInput
     materialPickingOrders?: MaterialPickingOrderCreateNestedManyWithoutMaintenanceRequestInput
     serviceOrders?: MaintenanceServiceOrderCreateNestedManyWithoutMaintenanceRequestInput
+    maintenanceContractOrders?: MaintenanceContractOrderCreateNestedManyWithoutMaintenanceRequestInput
     sipacUnitCost?: SipacUnidadeCreateNestedOneWithoutMaintenanceRequestCustoInput
+    infrastructureNetwork?: InfrastructureNetworkCreateNestedOneWithoutMaintenanceRequestsInput
   }
 
   export type MaintenanceRequestUncheckedCreateWithoutSipacUnitRequestingInput = {
@@ -147657,6 +152394,7 @@ export namespace Prisma {
     sipacUnitCostId?: number | null
     sipacUserLoginRequest?: string | null
     origin?: $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: string | null
     priorities?: MaintenanceRequestPriorityUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     statuses?: MaintenanceRequestStatusUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     timelineEvents?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutMaintenanceRequestInput
@@ -147665,6 +152403,7 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     materialPickingOrders?: MaterialPickingOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     serviceOrders?: MaintenanceServiceOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    maintenanceContractOrders?: MaintenanceContractOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
   }
 
   export type MaintenanceRequestCreateOrConnectWithoutSipacUnitRequestingInput = {
@@ -147709,7 +152448,9 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalCreateNestedManyWithoutMaintenanceRequestInput
     materialPickingOrders?: MaterialPickingOrderCreateNestedManyWithoutMaintenanceRequestInput
     serviceOrders?: MaintenanceServiceOrderCreateNestedManyWithoutMaintenanceRequestInput
+    maintenanceContractOrders?: MaintenanceContractOrderCreateNestedManyWithoutMaintenanceRequestInput
     sipacUnitRequesting?: SipacUnidadeCreateNestedOneWithoutMaintenanceRequestRequisitanteInput
+    infrastructureNetwork?: InfrastructureNetworkCreateNestedOneWithoutMaintenanceRequestsInput
   }
 
   export type MaintenanceRequestUncheckedCreateWithoutSipacUnitCostInput = {
@@ -147738,6 +152479,7 @@ export namespace Prisma {
     sipacUnitRequestingId?: number | null
     sipacUserLoginRequest?: string | null
     origin?: $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: string | null
     priorities?: MaintenanceRequestPriorityUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     statuses?: MaintenanceRequestStatusUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     timelineEvents?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutMaintenanceRequestInput
@@ -147746,6 +152488,7 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     materialPickingOrders?: MaterialPickingOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     serviceOrders?: MaintenanceServiceOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    maintenanceContractOrders?: MaintenanceContractOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
   }
 
   export type MaintenanceRequestCreateOrConnectWithoutSipacUnitCostInput = {
@@ -148213,6 +152956,7 @@ export namespace Prisma {
     building?: InfrastructureBuildingCreateNestedOneWithoutInfraOccurrencesInput
     space?: InfrastructureSpaceCreateNestedOneWithoutInfraOccurrencesInput
     diagnosis?: InfrastructureOccurrenceDiagnosisCreateNestedOneWithoutOccurrenceInput
+    infrastructureNetwork?: InfrastructureNetworkCreateNestedOneWithoutInfraOccurrencesInput
   }
 
   export type InfrastructureOccurrenceUncheckedCreateWithoutReportedByInput = {
@@ -148229,6 +152973,7 @@ export namespace Prisma {
     spaceId?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    infrastructureNetworkId?: string | null
     duplicates?: InfrastructureOccurrenceUncheckedCreateNestedManyWithoutDuplicateOfInput
     reinforcements?: InfrastructureOccurrenceReinforcementUncheckedCreateNestedManyWithoutOccurrenceInput
     diagnosis?: InfrastructureOccurrenceDiagnosisUncheckedCreateNestedOneWithoutOccurrenceInput
@@ -148275,8 +153020,10 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalCreateNestedManyWithoutMaintenanceRequestInput
     materialPickingOrders?: MaterialPickingOrderCreateNestedManyWithoutMaintenanceRequestInput
     serviceOrders?: MaintenanceServiceOrderCreateNestedManyWithoutMaintenanceRequestInput
+    maintenanceContractOrders?: MaintenanceContractOrderCreateNestedManyWithoutMaintenanceRequestInput
     sipacUnitRequesting?: SipacUnidadeCreateNestedOneWithoutMaintenanceRequestRequisitanteInput
     sipacUnitCost?: SipacUnidadeCreateNestedOneWithoutMaintenanceRequestCustoInput
+    infrastructureNetwork?: InfrastructureNetworkCreateNestedOneWithoutMaintenanceRequestsInput
   }
 
   export type MaintenanceRequestUncheckedCreateWithoutCreatedByInput = {
@@ -148305,6 +153052,7 @@ export namespace Prisma {
     sipacUnitCostId?: number | null
     sipacUserLoginRequest?: string | null
     origin?: $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: string | null
     priorities?: MaintenanceRequestPriorityUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     statuses?: MaintenanceRequestStatusUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     timelineEvents?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutMaintenanceRequestInput
@@ -148313,6 +153061,7 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     materialPickingOrders?: MaterialPickingOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     serviceOrders?: MaintenanceServiceOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    maintenanceContractOrders?: MaintenanceContractOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
   }
 
   export type MaintenanceRequestCreateOrConnectWithoutCreatedByInput = {
@@ -148356,8 +153105,10 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalCreateNestedManyWithoutMaintenanceRequestInput
     materialPickingOrders?: MaterialPickingOrderCreateNestedManyWithoutMaintenanceRequestInput
     serviceOrders?: MaintenanceServiceOrderCreateNestedManyWithoutMaintenanceRequestInput
+    maintenanceContractOrders?: MaintenanceContractOrderCreateNestedManyWithoutMaintenanceRequestInput
     sipacUnitRequesting?: SipacUnidadeCreateNestedOneWithoutMaintenanceRequestRequisitanteInput
     sipacUnitCost?: SipacUnidadeCreateNestedOneWithoutMaintenanceRequestCustoInput
+    infrastructureNetwork?: InfrastructureNetworkCreateNestedOneWithoutMaintenanceRequestsInput
   }
 
   export type MaintenanceRequestUncheckedCreateWithoutAssignedToInput = {
@@ -148386,6 +153137,7 @@ export namespace Prisma {
     sipacUnitCostId?: number | null
     sipacUserLoginRequest?: string | null
     origin?: $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: string | null
     priorities?: MaintenanceRequestPriorityUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     statuses?: MaintenanceRequestStatusUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     timelineEvents?: MaintenanceTimelineEventUncheckedCreateNestedManyWithoutMaintenanceRequestInput
@@ -148394,6 +153146,7 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     materialPickingOrders?: MaterialPickingOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
     serviceOrders?: MaintenanceServiceOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
+    maintenanceContractOrders?: MaintenanceContractOrderUncheckedCreateNestedManyWithoutMaintenanceRequestInput
   }
 
   export type MaintenanceRequestCreateOrConnectWithoutAssignedToInput = {
@@ -149409,6 +154162,7 @@ export namespace Prisma {
     warehouses?: WarehouseCreateNestedManyWithoutMaintenanceInstanceInput
     InfrastructureBuilding?: InfrastructureBuildingCreateNestedManyWithoutMaintenanceInstanceInput
     InfrastructureFacilityComplex?: InfrastructureFacilityComplexCreateNestedManyWithoutMaintenanceInstanceInput
+    InfrastructureNetwork?: InfrastructureNetworkCreateNestedManyWithoutMaintenanceInstanceInput
     workers?: WorkerCreateNestedManyWithoutMaintenanceInstanceInput
   }
 
@@ -149425,6 +154179,7 @@ export namespace Prisma {
     warehouses?: WarehouseUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
     InfrastructureBuilding?: InfrastructureBuildingUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
     InfrastructureFacilityComplex?: InfrastructureFacilityComplexUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
+    InfrastructureNetwork?: InfrastructureNetworkUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
     workers?: WorkerUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
   }
 
@@ -149972,6 +154727,7 @@ export namespace Prisma {
     warehouses?: WarehouseUpdateManyWithoutMaintenanceInstanceNestedInput
     InfrastructureBuilding?: InfrastructureBuildingUpdateManyWithoutMaintenanceInstanceNestedInput
     InfrastructureFacilityComplex?: InfrastructureFacilityComplexUpdateManyWithoutMaintenanceInstanceNestedInput
+    InfrastructureNetwork?: InfrastructureNetworkUpdateManyWithoutMaintenanceInstanceNestedInput
     workers?: WorkerUpdateManyWithoutMaintenanceInstanceNestedInput
   }
 
@@ -149988,6 +154744,7 @@ export namespace Prisma {
     warehouses?: WarehouseUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
     InfrastructureBuilding?: InfrastructureBuildingUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
     InfrastructureFacilityComplex?: InfrastructureFacilityComplexUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
+    InfrastructureNetwork?: InfrastructureNetworkUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
     workers?: WorkerUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
   }
 
@@ -150340,6 +155097,7 @@ export namespace Prisma {
     warehouses?: WarehouseCreateNestedManyWithoutMaintenanceInstanceInput
     InfrastructureBuilding?: InfrastructureBuildingCreateNestedManyWithoutMaintenanceInstanceInput
     InfrastructureFacilityComplex?: InfrastructureFacilityComplexCreateNestedManyWithoutMaintenanceInstanceInput
+    InfrastructureNetwork?: InfrastructureNetworkCreateNestedManyWithoutMaintenanceInstanceInput
     users?: UserCreateNestedManyWithoutMaintenanceInstanceInput
   }
 
@@ -150356,6 +155114,7 @@ export namespace Prisma {
     warehouses?: WarehouseUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
     InfrastructureBuilding?: InfrastructureBuildingUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
     InfrastructureFacilityComplex?: InfrastructureFacilityComplexUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
+    InfrastructureNetwork?: InfrastructureNetworkUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
     users?: UserUncheckedCreateNestedManyWithoutMaintenanceInstanceInput
   }
 
@@ -150677,6 +155436,7 @@ export namespace Prisma {
     warehouses?: WarehouseUpdateManyWithoutMaintenanceInstanceNestedInput
     InfrastructureBuilding?: InfrastructureBuildingUpdateManyWithoutMaintenanceInstanceNestedInput
     InfrastructureFacilityComplex?: InfrastructureFacilityComplexUpdateManyWithoutMaintenanceInstanceNestedInput
+    InfrastructureNetwork?: InfrastructureNetworkUpdateManyWithoutMaintenanceInstanceNestedInput
     users?: UserUpdateManyWithoutMaintenanceInstanceNestedInput
   }
 
@@ -150693,6 +155453,7 @@ export namespace Prisma {
     warehouses?: WarehouseUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
     InfrastructureBuilding?: InfrastructureBuildingUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
     InfrastructureFacilityComplex?: InfrastructureFacilityComplexUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
+    InfrastructureNetwork?: InfrastructureNetworkUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
     users?: UserUncheckedUpdateManyWithoutMaintenanceInstanceNestedInput
   }
 
@@ -151277,6 +156038,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     providers: ContractProviderCreateNestedOneWithoutContractsInput
+    maintenanceContractOrders?: MaintenanceContractOrderCreateNestedManyWithoutContractInput
   }
 
   export type ContractUncheckedCreateWithoutWorkersContractsInput = {
@@ -151290,6 +156052,7 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    maintenanceContractOrders?: MaintenanceContractOrderUncheckedCreateNestedManyWithoutContractInput
   }
 
   export type ContractCreateOrConnectWithoutWorkersContractsInput = {
@@ -151466,6 +156229,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     providers?: ContractProviderUpdateOneRequiredWithoutContractsNestedInput
+    maintenanceContractOrders?: MaintenanceContractOrderUpdateManyWithoutContractNestedInput
   }
 
   export type ContractUncheckedUpdateWithoutWorkersContractsInput = {
@@ -151479,6 +156243,7 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maintenanceContractOrders?: MaintenanceContractOrderUncheckedUpdateManyWithoutContractNestedInput
   }
 
   export type WorkerSpecialtyUpsertWithoutWorkerContractsInput = {
@@ -151999,6 +156764,15 @@ export namespace Prisma {
     notes?: string | null
   }
 
+  export type MaintenanceContractOrderCreateManyContractInput = {
+    id?: number
+    title: string
+    description?: string | null
+    maintenanceRequestId: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type WorkerContractUpdateWithoutContractInput = {
     startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -152030,6 +156804,36 @@ export namespace Prisma {
     notes?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type MaintenanceContractOrderUpdateWithoutContractInput = {
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maintenanceRequest?: MaintenanceRequestUpdateOneRequiredWithoutMaintenanceContractOrdersNestedInput
+    prerequisites?: MaintenanceContractOrderUpdateManyWithoutSubsequentOrdersNestedInput
+    subsequentOrders?: MaintenanceContractOrderUpdateManyWithoutPrerequisitesNestedInput
+  }
+
+  export type MaintenanceContractOrderUncheckedUpdateWithoutContractInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    maintenanceRequestId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    prerequisites?: MaintenanceContractOrderUncheckedUpdateManyWithoutSubsequentOrdersNestedInput
+    subsequentOrders?: MaintenanceContractOrderUncheckedUpdateManyWithoutPrerequisitesNestedInput
+  }
+
+  export type MaintenanceContractOrderUncheckedUpdateManyWithoutContractInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    maintenanceRequestId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type ContractCreateManyProvidersInput = {
     id?: number
     codigoSipac?: string | null
@@ -152052,6 +156856,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     workersContracts?: WorkerContractUpdateManyWithoutContractNestedInput
+    maintenanceContractOrders?: MaintenanceContractOrderUpdateManyWithoutContractNestedInput
   }
 
   export type ContractUncheckedUpdateWithoutProvidersInput = {
@@ -152065,6 +156870,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     workersContracts?: WorkerContractUncheckedUpdateManyWithoutContractNestedInput
+    maintenanceContractOrders?: MaintenanceContractOrderUncheckedUpdateManyWithoutContractNestedInput
   }
 
   export type ContractUncheckedUpdateManyWithoutProvidersInput = {
@@ -152108,6 +156914,7 @@ export namespace Prisma {
     reportedById: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    infrastructureNetworkId?: string | null
   }
 
   export type MaintenanceRequestCreateManyFacilityComplexInput = {
@@ -152136,6 +156943,17 @@ export namespace Prisma {
     sipacUnitCostId?: number | null
     sipacUserLoginRequest?: string | null
     origin?: $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: string | null
+  }
+
+  export type InfrastructureNetworkCreateManyFacilityComplexInput = {
+    id: string
+    name: string
+    alias?: string | null
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    maintenanceInstanceId?: number | null
   }
 
   export type InfrastructureBuildingUpdateWithoutFacilityComplexInput = {
@@ -152213,6 +157031,7 @@ export namespace Prisma {
     space?: InfrastructureSpaceUpdateOneWithoutInfraOccurrencesNestedInput
     reportedBy?: UserUpdateOneRequiredWithoutReportedOccurrencesNestedInput
     diagnosis?: InfrastructureOccurrenceDiagnosisUpdateOneWithoutOccurrenceNestedInput
+    infrastructureNetwork?: InfrastructureNetworkUpdateOneWithoutInfraOccurrencesNestedInput
   }
 
   export type InfrastructureOccurrenceUncheckedUpdateWithoutFacilityComplexInput = {
@@ -152229,6 +157048,7 @@ export namespace Prisma {
     reportedById?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    infrastructureNetworkId?: NullableStringFieldUpdateOperationsInput | string | null
     duplicates?: InfrastructureOccurrenceUncheckedUpdateManyWithoutDuplicateOfNestedInput
     reinforcements?: InfrastructureOccurrenceReinforcementUncheckedUpdateManyWithoutOccurrenceNestedInput
     diagnosis?: InfrastructureOccurrenceDiagnosisUncheckedUpdateOneWithoutOccurrenceNestedInput
@@ -152248,6 +157068,7 @@ export namespace Prisma {
     reportedById?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    infrastructureNetworkId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type MaintenanceRequestUpdateWithoutFacilityComplexInput = {
@@ -152281,8 +157102,10 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUpdateManyWithoutMaintenanceRequestNestedInput
     materialPickingOrders?: MaterialPickingOrderUpdateManyWithoutMaintenanceRequestNestedInput
     serviceOrders?: MaintenanceServiceOrderUpdateManyWithoutMaintenanceRequestNestedInput
+    maintenanceContractOrders?: MaintenanceContractOrderUpdateManyWithoutMaintenanceRequestNestedInput
     sipacUnitRequesting?: SipacUnidadeUpdateOneWithoutMaintenanceRequestRequisitanteNestedInput
     sipacUnitCost?: SipacUnidadeUpdateOneWithoutMaintenanceRequestCustoNestedInput
+    infrastructureNetwork?: InfrastructureNetworkUpdateOneWithoutMaintenanceRequestsNestedInput
   }
 
   export type MaintenanceRequestUncheckedUpdateWithoutFacilityComplexInput = {
@@ -152311,6 +157134,7 @@ export namespace Prisma {
     sipacUnitCostId?: NullableIntFieldUpdateOperationsInput | number | null
     sipacUserLoginRequest?: NullableStringFieldUpdateOperationsInput | string | null
     origin?: EnumMaintenanceRequestOriginFieldUpdateOperationsInput | $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: NullableStringFieldUpdateOperationsInput | string | null
     priorities?: MaintenanceRequestPriorityUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     statuses?: MaintenanceRequestStatusUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     timelineEvents?: MaintenanceTimelineEventUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
@@ -152319,6 +157143,7 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     materialPickingOrders?: MaterialPickingOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     serviceOrders?: MaintenanceServiceOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    maintenanceContractOrders?: MaintenanceContractOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
   }
 
   export type MaintenanceRequestUncheckedUpdateManyWithoutFacilityComplexInput = {
@@ -152347,6 +157172,41 @@ export namespace Prisma {
     sipacUnitCostId?: NullableIntFieldUpdateOperationsInput | number | null
     sipacUserLoginRequest?: NullableStringFieldUpdateOperationsInput | string | null
     origin?: EnumMaintenanceRequestOriginFieldUpdateOperationsInput | $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type InfrastructureNetworkUpdateWithoutFacilityComplexInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    alias?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maintenanceRequests?: MaintenanceRequestUpdateManyWithoutInfrastructureNetworkNestedInput
+    infraOccurrences?: InfrastructureOccurrenceUpdateManyWithoutInfrastructureNetworkNestedInput
+    maintenanceInstance?: MaintenanceInstanceUpdateOneWithoutInfrastructureNetworkNestedInput
+  }
+
+  export type InfrastructureNetworkUncheckedUpdateWithoutFacilityComplexInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    alias?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maintenanceInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
+    maintenanceRequests?: MaintenanceRequestUncheckedUpdateManyWithoutInfrastructureNetworkNestedInput
+    infraOccurrences?: InfrastructureOccurrenceUncheckedUpdateManyWithoutInfrastructureNetworkNestedInput
+  }
+
+  export type InfrastructureNetworkUncheckedUpdateManyWithoutFacilityComplexInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    alias?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maintenanceInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type InfrastructureSpaceCreateManyBuildingInput = {
@@ -152387,6 +157247,7 @@ export namespace Prisma {
     sipacUnitCostId?: number | null
     sipacUserLoginRequest?: string | null
     origin?: $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: string | null
   }
 
   export type InfrastructureOccurrenceCreateManyBuildingInput = {
@@ -152403,6 +157264,7 @@ export namespace Prisma {
     reportedById: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    infrastructureNetworkId?: string | null
   }
 
   export type UserUpdateWithoutInfrastructureBuildingsInput = {
@@ -152598,8 +157460,10 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUpdateManyWithoutMaintenanceRequestNestedInput
     materialPickingOrders?: MaterialPickingOrderUpdateManyWithoutMaintenanceRequestNestedInput
     serviceOrders?: MaintenanceServiceOrderUpdateManyWithoutMaintenanceRequestNestedInput
+    maintenanceContractOrders?: MaintenanceContractOrderUpdateManyWithoutMaintenanceRequestNestedInput
     sipacUnitRequesting?: SipacUnidadeUpdateOneWithoutMaintenanceRequestRequisitanteNestedInput
     sipacUnitCost?: SipacUnidadeUpdateOneWithoutMaintenanceRequestCustoNestedInput
+    infrastructureNetwork?: InfrastructureNetworkUpdateOneWithoutMaintenanceRequestsNestedInput
   }
 
   export type MaintenanceRequestUncheckedUpdateWithoutBuildingInput = {
@@ -152628,6 +157492,7 @@ export namespace Prisma {
     sipacUnitCostId?: NullableIntFieldUpdateOperationsInput | number | null
     sipacUserLoginRequest?: NullableStringFieldUpdateOperationsInput | string | null
     origin?: EnumMaintenanceRequestOriginFieldUpdateOperationsInput | $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: NullableStringFieldUpdateOperationsInput | string | null
     priorities?: MaintenanceRequestPriorityUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     statuses?: MaintenanceRequestStatusUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     timelineEvents?: MaintenanceTimelineEventUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
@@ -152636,6 +157501,7 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     materialPickingOrders?: MaterialPickingOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     serviceOrders?: MaintenanceServiceOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    maintenanceContractOrders?: MaintenanceContractOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
   }
 
   export type MaintenanceRequestUncheckedUpdateManyWithoutBuildingInput = {
@@ -152664,6 +157530,7 @@ export namespace Prisma {
     sipacUnitCostId?: NullableIntFieldUpdateOperationsInput | number | null
     sipacUserLoginRequest?: NullableStringFieldUpdateOperationsInput | string | null
     origin?: EnumMaintenanceRequestOriginFieldUpdateOperationsInput | $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type InfrastructureOccurrenceUpdateWithoutBuildingInput = {
@@ -152682,6 +157549,7 @@ export namespace Prisma {
     space?: InfrastructureSpaceUpdateOneWithoutInfraOccurrencesNestedInput
     reportedBy?: UserUpdateOneRequiredWithoutReportedOccurrencesNestedInput
     diagnosis?: InfrastructureOccurrenceDiagnosisUpdateOneWithoutOccurrenceNestedInput
+    infrastructureNetwork?: InfrastructureNetworkUpdateOneWithoutInfraOccurrencesNestedInput
   }
 
   export type InfrastructureOccurrenceUncheckedUpdateWithoutBuildingInput = {
@@ -152698,6 +157566,7 @@ export namespace Prisma {
     reportedById?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    infrastructureNetworkId?: NullableStringFieldUpdateOperationsInput | string | null
     duplicates?: InfrastructureOccurrenceUncheckedUpdateManyWithoutDuplicateOfNestedInput
     reinforcements?: InfrastructureOccurrenceReinforcementUncheckedUpdateManyWithoutOccurrenceNestedInput
     diagnosis?: InfrastructureOccurrenceDiagnosisUncheckedUpdateOneWithoutOccurrenceNestedInput
@@ -152717,6 +157586,7 @@ export namespace Prisma {
     reportedById?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    infrastructureNetworkId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type InfrastructureBuildingActivityUpdateWithoutBuldingsSecondaryInput = {
@@ -152777,6 +157647,212 @@ export namespace Prisma {
     codigoUnidade?: StringFieldUpdateOperationsInput | string
     nomeUnidade?: StringFieldUpdateOperationsInput | string
     sigla?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type MaintenanceRequestCreateManyInfrastructureNetworkInput = {
+    id?: number
+    protocolNumber?: string
+    title: string
+    description?: string | null
+    requestedAt?: Date | string
+    deadline?: Date | string | null
+    solutionDetails?: string | null
+    completedAt?: Date | string | null
+    facilityComplexId?: string | null
+    buildingId?: string | null
+    spaceId?: number | null
+    local?: string | null
+    systemId?: number | null
+    currentMaintenanceInstanceId?: number | null
+    createdById?: number | null
+    assignedToId?: number | null
+    serviceTypeId?: number | null
+    diagnosisId?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    notes?: string | null
+    useResidueMaterial?: boolean
+    sipacUnitRequestingId?: number | null
+    sipacUnitCostId?: number | null
+    sipacUserLoginRequest?: string | null
+    origin?: $Enums.MaintenanceRequestOrigin
+  }
+
+  export type InfrastructureOccurrenceCreateManyInfrastructureNetworkInput = {
+    id?: number
+    title: string
+    description: string
+    infrastructureType?: $Enums.InfrastructureType | null
+    locationDescription?: string | null
+    reportedAt?: Date | string
+    status?: $Enums.InfrastructureOccurrenceStatus
+    duplicateOfId?: number | null
+    facilityComplexId?: string | null
+    buildingId?: string | null
+    spaceId?: number | null
+    reportedById: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaintenanceRequestUpdateWithoutInfrastructureNetworkInput = {
+    protocolNumber?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    solutionDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    local?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    useResidueMaterial?: BoolFieldUpdateOperationsInput | boolean
+    sipacUserLoginRequest?: NullableStringFieldUpdateOperationsInput | string | null
+    origin?: EnumMaintenanceRequestOriginFieldUpdateOperationsInput | $Enums.MaintenanceRequestOrigin
+    priorities?: MaintenanceRequestPriorityUpdateManyWithoutMaintenanceRequestNestedInput
+    facilityComplex?: InfrastructureFacilityComplexUpdateOneWithoutMaintenanceRequestNestedInput
+    building?: InfrastructureBuildingUpdateOneWithoutMaintenanceRequestsNestedInput
+    space?: InfrastructureSpaceUpdateOneWithoutMaintenanceRequestsNestedInput
+    system?: InfrastructureSystemUpdateOneWithoutMaintenanceRequestsNestedInput
+    currentMaintenanceInstance?: MaintenanceInstanceUpdateOneWithoutCurrentMaintenanceRequestsNestedInput
+    createdBy?: UserUpdateOneWithoutCreatedMaintenanceRequestsNestedInput
+    assignedTo?: UserUpdateOneWithoutAssignedMaintenanceRequestsNestedInput
+    serviceType?: MaintenanceServiceTypeUpdateOneWithoutMaintenanceRequestsNestedInput
+    statuses?: MaintenanceRequestStatusUpdateManyWithoutMaintenanceRequestNestedInput
+    diagnosis?: InfrastructureOccurrenceDiagnosisUpdateOneWithoutMaintenanceRequestNestedInput
+    timelineEvents?: MaintenanceTimelineEventUpdateManyWithoutMaintenanceRequestNestedInput
+    materialRequests?: MaterialRequestUpdateManyWithoutMaintenanceRequestNestedInput
+    materialStockMovements?: MaterialStockMovementUpdateManyWithoutMaintenanceRequestNestedInput
+    materialWithdrawals?: MaterialWithdrawalUpdateManyWithoutMaintenanceRequestNestedInput
+    materialPickingOrders?: MaterialPickingOrderUpdateManyWithoutMaintenanceRequestNestedInput
+    serviceOrders?: MaintenanceServiceOrderUpdateManyWithoutMaintenanceRequestNestedInput
+    maintenanceContractOrders?: MaintenanceContractOrderUpdateManyWithoutMaintenanceRequestNestedInput
+    sipacUnitRequesting?: SipacUnidadeUpdateOneWithoutMaintenanceRequestRequisitanteNestedInput
+    sipacUnitCost?: SipacUnidadeUpdateOneWithoutMaintenanceRequestCustoNestedInput
+  }
+
+  export type MaintenanceRequestUncheckedUpdateWithoutInfrastructureNetworkInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    protocolNumber?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    solutionDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    facilityComplexId?: NullableStringFieldUpdateOperationsInput | string | null
+    buildingId?: NullableStringFieldUpdateOperationsInput | string | null
+    spaceId?: NullableIntFieldUpdateOperationsInput | number | null
+    local?: NullableStringFieldUpdateOperationsInput | string | null
+    systemId?: NullableIntFieldUpdateOperationsInput | number | null
+    currentMaintenanceInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdById?: NullableIntFieldUpdateOperationsInput | number | null
+    assignedToId?: NullableIntFieldUpdateOperationsInput | number | null
+    serviceTypeId?: NullableIntFieldUpdateOperationsInput | number | null
+    diagnosisId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    useResidueMaterial?: BoolFieldUpdateOperationsInput | boolean
+    sipacUnitRequestingId?: NullableIntFieldUpdateOperationsInput | number | null
+    sipacUnitCostId?: NullableIntFieldUpdateOperationsInput | number | null
+    sipacUserLoginRequest?: NullableStringFieldUpdateOperationsInput | string | null
+    origin?: EnumMaintenanceRequestOriginFieldUpdateOperationsInput | $Enums.MaintenanceRequestOrigin
+    priorities?: MaintenanceRequestPriorityUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    statuses?: MaintenanceRequestStatusUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    timelineEvents?: MaintenanceTimelineEventUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    materialRequests?: MaterialRequestUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    materialStockMovements?: MaterialStockMovementUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    materialWithdrawals?: MaterialWithdrawalUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    materialPickingOrders?: MaterialPickingOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    serviceOrders?: MaintenanceServiceOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    maintenanceContractOrders?: MaintenanceContractOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+  }
+
+  export type MaintenanceRequestUncheckedUpdateManyWithoutInfrastructureNetworkInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    protocolNumber?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    solutionDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    facilityComplexId?: NullableStringFieldUpdateOperationsInput | string | null
+    buildingId?: NullableStringFieldUpdateOperationsInput | string | null
+    spaceId?: NullableIntFieldUpdateOperationsInput | number | null
+    local?: NullableStringFieldUpdateOperationsInput | string | null
+    systemId?: NullableIntFieldUpdateOperationsInput | number | null
+    currentMaintenanceInstanceId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdById?: NullableIntFieldUpdateOperationsInput | number | null
+    assignedToId?: NullableIntFieldUpdateOperationsInput | number | null
+    serviceTypeId?: NullableIntFieldUpdateOperationsInput | number | null
+    diagnosisId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    useResidueMaterial?: BoolFieldUpdateOperationsInput | boolean
+    sipacUnitRequestingId?: NullableIntFieldUpdateOperationsInput | number | null
+    sipacUnitCostId?: NullableIntFieldUpdateOperationsInput | number | null
+    sipacUserLoginRequest?: NullableStringFieldUpdateOperationsInput | string | null
+    origin?: EnumMaintenanceRequestOriginFieldUpdateOperationsInput | $Enums.MaintenanceRequestOrigin
+  }
+
+  export type InfrastructureOccurrenceUpdateWithoutInfrastructureNetworkInput = {
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    infrastructureType?: NullableEnumInfrastructureTypeFieldUpdateOperationsInput | $Enums.InfrastructureType | null
+    locationDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    reportedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumInfrastructureOccurrenceStatusFieldUpdateOperationsInput | $Enums.InfrastructureOccurrenceStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    duplicateOf?: InfrastructureOccurrenceUpdateOneWithoutDuplicatesNestedInput
+    duplicates?: InfrastructureOccurrenceUpdateManyWithoutDuplicateOfNestedInput
+    reinforcements?: InfrastructureOccurrenceReinforcementUpdateManyWithoutOccurrenceNestedInput
+    facilityComplex?: InfrastructureFacilityComplexUpdateOneWithoutInfrastructureOccurrenceNestedInput
+    building?: InfrastructureBuildingUpdateOneWithoutInfraOccurrencesNestedInput
+    space?: InfrastructureSpaceUpdateOneWithoutInfraOccurrencesNestedInput
+    reportedBy?: UserUpdateOneRequiredWithoutReportedOccurrencesNestedInput
+    diagnosis?: InfrastructureOccurrenceDiagnosisUpdateOneWithoutOccurrenceNestedInput
+  }
+
+  export type InfrastructureOccurrenceUncheckedUpdateWithoutInfrastructureNetworkInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    infrastructureType?: NullableEnumInfrastructureTypeFieldUpdateOperationsInput | $Enums.InfrastructureType | null
+    locationDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    reportedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumInfrastructureOccurrenceStatusFieldUpdateOperationsInput | $Enums.InfrastructureOccurrenceStatus
+    duplicateOfId?: NullableIntFieldUpdateOperationsInput | number | null
+    facilityComplexId?: NullableStringFieldUpdateOperationsInput | string | null
+    buildingId?: NullableStringFieldUpdateOperationsInput | string | null
+    spaceId?: NullableIntFieldUpdateOperationsInput | number | null
+    reportedById?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    duplicates?: InfrastructureOccurrenceUncheckedUpdateManyWithoutDuplicateOfNestedInput
+    reinforcements?: InfrastructureOccurrenceReinforcementUncheckedUpdateManyWithoutOccurrenceNestedInput
+    diagnosis?: InfrastructureOccurrenceDiagnosisUncheckedUpdateOneWithoutOccurrenceNestedInput
+  }
+
+  export type InfrastructureOccurrenceUncheckedUpdateManyWithoutInfrastructureNetworkInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    infrastructureType?: NullableEnumInfrastructureTypeFieldUpdateOperationsInput | $Enums.InfrastructureType | null
+    locationDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    reportedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumInfrastructureOccurrenceStatusFieldUpdateOperationsInput | $Enums.InfrastructureOccurrenceStatus
+    duplicateOfId?: NullableIntFieldUpdateOperationsInput | number | null
+    facilityComplexId?: NullableStringFieldUpdateOperationsInput | string | null
+    buildingId?: NullableStringFieldUpdateOperationsInput | string | null
+    spaceId?: NullableIntFieldUpdateOperationsInput | number | null
+    reportedById?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type InfrastructureBuildingCreateManyPrimaryActivityInput = {
@@ -153029,6 +158105,7 @@ export namespace Prisma {
     sipacUnitCostId?: number | null
     sipacUserLoginRequest?: string | null
     origin?: $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: string | null
   }
 
   export type InfrastructureOccurrenceCreateManySpaceInput = {
@@ -153045,6 +158122,7 @@ export namespace Prisma {
     reportedById: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    infrastructureNetworkId?: string | null
   }
 
   export type InfrastructureSpaceUserCreateManySpaceInput = {
@@ -153129,8 +158207,10 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUpdateManyWithoutMaintenanceRequestNestedInput
     materialPickingOrders?: MaterialPickingOrderUpdateManyWithoutMaintenanceRequestNestedInput
     serviceOrders?: MaintenanceServiceOrderUpdateManyWithoutMaintenanceRequestNestedInput
+    maintenanceContractOrders?: MaintenanceContractOrderUpdateManyWithoutMaintenanceRequestNestedInput
     sipacUnitRequesting?: SipacUnidadeUpdateOneWithoutMaintenanceRequestRequisitanteNestedInput
     sipacUnitCost?: SipacUnidadeUpdateOneWithoutMaintenanceRequestCustoNestedInput
+    infrastructureNetwork?: InfrastructureNetworkUpdateOneWithoutMaintenanceRequestsNestedInput
   }
 
   export type MaintenanceRequestUncheckedUpdateWithoutSpaceInput = {
@@ -153159,6 +158239,7 @@ export namespace Prisma {
     sipacUnitCostId?: NullableIntFieldUpdateOperationsInput | number | null
     sipacUserLoginRequest?: NullableStringFieldUpdateOperationsInput | string | null
     origin?: EnumMaintenanceRequestOriginFieldUpdateOperationsInput | $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: NullableStringFieldUpdateOperationsInput | string | null
     priorities?: MaintenanceRequestPriorityUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     statuses?: MaintenanceRequestStatusUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     timelineEvents?: MaintenanceTimelineEventUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
@@ -153167,6 +158248,7 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     materialPickingOrders?: MaterialPickingOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     serviceOrders?: MaintenanceServiceOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    maintenanceContractOrders?: MaintenanceContractOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
   }
 
   export type MaintenanceRequestUncheckedUpdateManyWithoutSpaceInput = {
@@ -153195,6 +158277,7 @@ export namespace Prisma {
     sipacUnitCostId?: NullableIntFieldUpdateOperationsInput | number | null
     sipacUserLoginRequest?: NullableStringFieldUpdateOperationsInput | string | null
     origin?: EnumMaintenanceRequestOriginFieldUpdateOperationsInput | $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type InfrastructureOccurrenceUpdateWithoutSpaceInput = {
@@ -153213,6 +158296,7 @@ export namespace Prisma {
     building?: InfrastructureBuildingUpdateOneWithoutInfraOccurrencesNestedInput
     reportedBy?: UserUpdateOneRequiredWithoutReportedOccurrencesNestedInput
     diagnosis?: InfrastructureOccurrenceDiagnosisUpdateOneWithoutOccurrenceNestedInput
+    infrastructureNetwork?: InfrastructureNetworkUpdateOneWithoutInfraOccurrencesNestedInput
   }
 
   export type InfrastructureOccurrenceUncheckedUpdateWithoutSpaceInput = {
@@ -153229,6 +158313,7 @@ export namespace Prisma {
     reportedById?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    infrastructureNetworkId?: NullableStringFieldUpdateOperationsInput | string | null
     duplicates?: InfrastructureOccurrenceUncheckedUpdateManyWithoutDuplicateOfNestedInput
     reinforcements?: InfrastructureOccurrenceReinforcementUncheckedUpdateManyWithoutOccurrenceNestedInput
     diagnosis?: InfrastructureOccurrenceDiagnosisUncheckedUpdateOneWithoutOccurrenceNestedInput
@@ -153248,6 +158333,7 @@ export namespace Prisma {
     reportedById?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    infrastructureNetworkId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type InfrastructureSpaceUserUpdateWithoutSpaceInput = {
@@ -153299,6 +158385,7 @@ export namespace Prisma {
     sipacUnitCostId?: number | null
     sipacUserLoginRequest?: string | null
     origin?: $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: string | null
   }
 
   export type InfrastructureBuildingUpdateWithoutSystemsInput = {
@@ -153392,8 +158479,10 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUpdateManyWithoutMaintenanceRequestNestedInput
     materialPickingOrders?: MaterialPickingOrderUpdateManyWithoutMaintenanceRequestNestedInput
     serviceOrders?: MaintenanceServiceOrderUpdateManyWithoutMaintenanceRequestNestedInput
+    maintenanceContractOrders?: MaintenanceContractOrderUpdateManyWithoutMaintenanceRequestNestedInput
     sipacUnitRequesting?: SipacUnidadeUpdateOneWithoutMaintenanceRequestRequisitanteNestedInput
     sipacUnitCost?: SipacUnidadeUpdateOneWithoutMaintenanceRequestCustoNestedInput
+    infrastructureNetwork?: InfrastructureNetworkUpdateOneWithoutMaintenanceRequestsNestedInput
   }
 
   export type MaintenanceRequestUncheckedUpdateWithoutSystemInput = {
@@ -153422,6 +158511,7 @@ export namespace Prisma {
     sipacUnitCostId?: NullableIntFieldUpdateOperationsInput | number | null
     sipacUserLoginRequest?: NullableStringFieldUpdateOperationsInput | string | null
     origin?: EnumMaintenanceRequestOriginFieldUpdateOperationsInput | $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: NullableStringFieldUpdateOperationsInput | string | null
     priorities?: MaintenanceRequestPriorityUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     statuses?: MaintenanceRequestStatusUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     timelineEvents?: MaintenanceTimelineEventUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
@@ -153430,6 +158520,7 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     materialPickingOrders?: MaterialPickingOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     serviceOrders?: MaintenanceServiceOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    maintenanceContractOrders?: MaintenanceContractOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
   }
 
   export type MaintenanceRequestUncheckedUpdateManyWithoutSystemInput = {
@@ -153458,6 +158549,7 @@ export namespace Prisma {
     sipacUnitCostId?: NullableIntFieldUpdateOperationsInput | number | null
     sipacUserLoginRequest?: NullableStringFieldUpdateOperationsInput | string | null
     origin?: EnumMaintenanceRequestOriginFieldUpdateOperationsInput | $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type InfrastructureOccurrenceCreateManyDuplicateOfInput = {
@@ -153474,6 +158566,7 @@ export namespace Prisma {
     reportedById: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    infrastructureNetworkId?: string | null
   }
 
   export type InfrastructureOccurrenceReinforcementCreateManyOccurrenceInput = {
@@ -153498,6 +158591,7 @@ export namespace Prisma {
     space?: InfrastructureSpaceUpdateOneWithoutInfraOccurrencesNestedInput
     reportedBy?: UserUpdateOneRequiredWithoutReportedOccurrencesNestedInput
     diagnosis?: InfrastructureOccurrenceDiagnosisUpdateOneWithoutOccurrenceNestedInput
+    infrastructureNetwork?: InfrastructureNetworkUpdateOneWithoutInfraOccurrencesNestedInput
   }
 
   export type InfrastructureOccurrenceUncheckedUpdateWithoutDuplicateOfInput = {
@@ -153514,6 +158608,7 @@ export namespace Prisma {
     reportedById?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    infrastructureNetworkId?: NullableStringFieldUpdateOperationsInput | string | null
     duplicates?: InfrastructureOccurrenceUncheckedUpdateManyWithoutDuplicateOfNestedInput
     reinforcements?: InfrastructureOccurrenceReinforcementUncheckedUpdateManyWithoutOccurrenceNestedInput
     diagnosis?: InfrastructureOccurrenceDiagnosisUncheckedUpdateOneWithoutOccurrenceNestedInput
@@ -153533,6 +158628,7 @@ export namespace Prisma {
     reportedById?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    infrastructureNetworkId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type InfrastructureOccurrenceReinforcementUpdateWithoutOccurrenceInput = {
@@ -153754,6 +158850,15 @@ export namespace Prisma {
     actualStart?: Date | string | null
     actualEnd?: Date | string | null
     assignedTeamId: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaintenanceContractOrderCreateManyMaintenanceRequestInput = {
+    id?: number
+    title: string
+    description?: string | null
+    contractId: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -154158,6 +159263,36 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type MaintenanceContractOrderUpdateWithoutMaintenanceRequestInput = {
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    contract?: ContractUpdateOneRequiredWithoutMaintenanceContractOrdersNestedInput
+    prerequisites?: MaintenanceContractOrderUpdateManyWithoutSubsequentOrdersNestedInput
+    subsequentOrders?: MaintenanceContractOrderUpdateManyWithoutPrerequisitesNestedInput
+  }
+
+  export type MaintenanceContractOrderUncheckedUpdateWithoutMaintenanceRequestInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    contractId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    prerequisites?: MaintenanceContractOrderUncheckedUpdateManyWithoutSubsequentOrdersNestedInput
+    subsequentOrders?: MaintenanceContractOrderUncheckedUpdateManyWithoutPrerequisitesNestedInput
+  }
+
+  export type MaintenanceContractOrderUncheckedUpdateManyWithoutMaintenanceRequestInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    contractId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type MaintenanceServiceOrderAllocationCreateManyServiceOrderInput = {
     workerId: number
     isLeader?: boolean
@@ -154282,6 +159417,68 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type MaintenanceContractOrderUpdateWithoutSubsequentOrdersInput = {
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    contract?: ContractUpdateOneRequiredWithoutMaintenanceContractOrdersNestedInput
+    maintenanceRequest?: MaintenanceRequestUpdateOneRequiredWithoutMaintenanceContractOrdersNestedInput
+    prerequisites?: MaintenanceContractOrderUpdateManyWithoutSubsequentOrdersNestedInput
+  }
+
+  export type MaintenanceContractOrderUncheckedUpdateWithoutSubsequentOrdersInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    contractId?: IntFieldUpdateOperationsInput | number
+    maintenanceRequestId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    prerequisites?: MaintenanceContractOrderUncheckedUpdateManyWithoutSubsequentOrdersNestedInput
+  }
+
+  export type MaintenanceContractOrderUncheckedUpdateManyWithoutSubsequentOrdersInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    contractId?: IntFieldUpdateOperationsInput | number
+    maintenanceRequestId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaintenanceContractOrderUpdateWithoutPrerequisitesInput = {
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    contract?: ContractUpdateOneRequiredWithoutMaintenanceContractOrdersNestedInput
+    maintenanceRequest?: MaintenanceRequestUpdateOneRequiredWithoutMaintenanceContractOrdersNestedInput
+    subsequentOrders?: MaintenanceContractOrderUpdateManyWithoutPrerequisitesNestedInput
+  }
+
+  export type MaintenanceContractOrderUncheckedUpdateWithoutPrerequisitesInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    contractId?: IntFieldUpdateOperationsInput | number
+    maintenanceRequestId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    subsequentOrders?: MaintenanceContractOrderUncheckedUpdateManyWithoutPrerequisitesNestedInput
+  }
+
+  export type MaintenanceContractOrderUncheckedUpdateManyWithoutPrerequisitesInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    contractId?: IntFieldUpdateOperationsInput | number
+    maintenanceRequestId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type MaintenanceRequestCreateManyServiceTypeInput = {
     id?: number
     protocolNumber?: string
@@ -154308,6 +159505,7 @@ export namespace Prisma {
     sipacUnitCostId?: number | null
     sipacUserLoginRequest?: string | null
     origin?: $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: string | null
   }
 
   export type MaintenanceRequestUpdateWithoutServiceTypeInput = {
@@ -154341,8 +159539,10 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUpdateManyWithoutMaintenanceRequestNestedInput
     materialPickingOrders?: MaterialPickingOrderUpdateManyWithoutMaintenanceRequestNestedInput
     serviceOrders?: MaintenanceServiceOrderUpdateManyWithoutMaintenanceRequestNestedInput
+    maintenanceContractOrders?: MaintenanceContractOrderUpdateManyWithoutMaintenanceRequestNestedInput
     sipacUnitRequesting?: SipacUnidadeUpdateOneWithoutMaintenanceRequestRequisitanteNestedInput
     sipacUnitCost?: SipacUnidadeUpdateOneWithoutMaintenanceRequestCustoNestedInput
+    infrastructureNetwork?: InfrastructureNetworkUpdateOneWithoutMaintenanceRequestsNestedInput
   }
 
   export type MaintenanceRequestUncheckedUpdateWithoutServiceTypeInput = {
@@ -154371,6 +159571,7 @@ export namespace Prisma {
     sipacUnitCostId?: NullableIntFieldUpdateOperationsInput | number | null
     sipacUserLoginRequest?: NullableStringFieldUpdateOperationsInput | string | null
     origin?: EnumMaintenanceRequestOriginFieldUpdateOperationsInput | $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: NullableStringFieldUpdateOperationsInput | string | null
     priorities?: MaintenanceRequestPriorityUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     statuses?: MaintenanceRequestStatusUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     timelineEvents?: MaintenanceTimelineEventUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
@@ -154379,6 +159580,7 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     materialPickingOrders?: MaterialPickingOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     serviceOrders?: MaintenanceServiceOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    maintenanceContractOrders?: MaintenanceContractOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
   }
 
   export type MaintenanceRequestUncheckedUpdateManyWithoutServiceTypeInput = {
@@ -154407,6 +159609,7 @@ export namespace Prisma {
     sipacUnitCostId?: NullableIntFieldUpdateOperationsInput | number | null
     sipacUserLoginRequest?: NullableStringFieldUpdateOperationsInput | string | null
     origin?: EnumMaintenanceRequestOriginFieldUpdateOperationsInput | $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type MaintenanceRequestCreateManyCurrentMaintenanceInstanceInput = {
@@ -154435,6 +159638,7 @@ export namespace Prisma {
     sipacUnitCostId?: number | null
     sipacUserLoginRequest?: string | null
     origin?: $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: string | null
   }
 
   export type MaintenanceTimelineEventCreateManyTransferredFromInstanceInput = {
@@ -154502,6 +159706,16 @@ export namespace Prisma {
     type?: $Enums.FacilityComplexType | null
   }
 
+  export type InfrastructureNetworkCreateManyMaintenanceInstanceInput = {
+    id: string
+    name: string
+    alias?: string | null
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    facilityComplexId?: string | null
+  }
+
   export type UserCreateManyMaintenanceInstanceInput = {
     id?: number
     name: string
@@ -154559,8 +159773,10 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUpdateManyWithoutMaintenanceRequestNestedInput
     materialPickingOrders?: MaterialPickingOrderUpdateManyWithoutMaintenanceRequestNestedInput
     serviceOrders?: MaintenanceServiceOrderUpdateManyWithoutMaintenanceRequestNestedInput
+    maintenanceContractOrders?: MaintenanceContractOrderUpdateManyWithoutMaintenanceRequestNestedInput
     sipacUnitRequesting?: SipacUnidadeUpdateOneWithoutMaintenanceRequestRequisitanteNestedInput
     sipacUnitCost?: SipacUnidadeUpdateOneWithoutMaintenanceRequestCustoNestedInput
+    infrastructureNetwork?: InfrastructureNetworkUpdateOneWithoutMaintenanceRequestsNestedInput
   }
 
   export type MaintenanceRequestUncheckedUpdateWithoutCurrentMaintenanceInstanceInput = {
@@ -154589,6 +159805,7 @@ export namespace Prisma {
     sipacUnitCostId?: NullableIntFieldUpdateOperationsInput | number | null
     sipacUserLoginRequest?: NullableStringFieldUpdateOperationsInput | string | null
     origin?: EnumMaintenanceRequestOriginFieldUpdateOperationsInput | $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: NullableStringFieldUpdateOperationsInput | string | null
     priorities?: MaintenanceRequestPriorityUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     statuses?: MaintenanceRequestStatusUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     timelineEvents?: MaintenanceTimelineEventUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
@@ -154597,6 +159814,7 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     materialPickingOrders?: MaterialPickingOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     serviceOrders?: MaintenanceServiceOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    maintenanceContractOrders?: MaintenanceContractOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
   }
 
   export type MaintenanceRequestUncheckedUpdateManyWithoutCurrentMaintenanceInstanceInput = {
@@ -154625,6 +159843,7 @@ export namespace Prisma {
     sipacUnitCostId?: NullableIntFieldUpdateOperationsInput | number | null
     sipacUserLoginRequest?: NullableStringFieldUpdateOperationsInput | string | null
     origin?: EnumMaintenanceRequestOriginFieldUpdateOperationsInput | $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type MaintenanceTimelineEventUpdateWithoutTransferredFromInstanceInput = {
@@ -154828,6 +160047,7 @@ export namespace Prisma {
     buildings?: InfrastructureBuildingUpdateManyWithoutFacilityComplexNestedInput
     InfrastructureOccurrence?: InfrastructureOccurrenceUpdateManyWithoutFacilityComplexNestedInput
     MaintenanceRequest?: MaintenanceRequestUpdateManyWithoutFacilityComplexNestedInput
+    infrastructureNetworks?: InfrastructureNetworkUpdateManyWithoutFacilityComplexNestedInput
   }
 
   export type InfrastructureFacilityComplexUncheckedUpdateWithoutMaintenanceInstanceInput = {
@@ -154843,6 +160063,7 @@ export namespace Prisma {
     buildings?: InfrastructureBuildingUncheckedUpdateManyWithoutFacilityComplexNestedInput
     InfrastructureOccurrence?: InfrastructureOccurrenceUncheckedUpdateManyWithoutFacilityComplexNestedInput
     MaintenanceRequest?: MaintenanceRequestUncheckedUpdateManyWithoutFacilityComplexNestedInput
+    infrastructureNetworks?: InfrastructureNetworkUncheckedUpdateManyWithoutFacilityComplexNestedInput
   }
 
   export type InfrastructureFacilityComplexUncheckedUpdateManyWithoutMaintenanceInstanceInput = {
@@ -154855,6 +160076,40 @@ export namespace Prisma {
     latitude?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     longitude?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     type?: NullableEnumFacilityComplexTypeFieldUpdateOperationsInput | $Enums.FacilityComplexType | null
+  }
+
+  export type InfrastructureNetworkUpdateWithoutMaintenanceInstanceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    alias?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maintenanceRequests?: MaintenanceRequestUpdateManyWithoutInfrastructureNetworkNestedInput
+    infraOccurrences?: InfrastructureOccurrenceUpdateManyWithoutInfrastructureNetworkNestedInput
+    facilityComplex?: InfrastructureFacilityComplexUpdateOneWithoutInfrastructureNetworksNestedInput
+  }
+
+  export type InfrastructureNetworkUncheckedUpdateWithoutMaintenanceInstanceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    alias?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    facilityComplexId?: NullableStringFieldUpdateOperationsInput | string | null
+    maintenanceRequests?: MaintenanceRequestUncheckedUpdateManyWithoutInfrastructureNetworkNestedInput
+    infraOccurrences?: InfrastructureOccurrenceUncheckedUpdateManyWithoutInfrastructureNetworkNestedInput
+  }
+
+  export type InfrastructureNetworkUncheckedUpdateManyWithoutMaintenanceInstanceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    alias?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    facilityComplexId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserUpdateWithoutMaintenanceInstanceInput = {
@@ -159684,6 +164939,7 @@ export namespace Prisma {
     sipacUnitCostId?: number | null
     sipacUserLoginRequest?: string | null
     origin?: $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: string | null
   }
 
   export type MaintenanceRequestCreateManySipacUnitCostInput = {
@@ -159712,6 +164968,7 @@ export namespace Prisma {
     sipacUnitRequestingId?: number | null
     sipacUserLoginRequest?: string | null
     origin?: $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: string | null
   }
 
   export type MaterialRequestCreateManySipacUnitRequestingInput = {
@@ -160192,7 +165449,9 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUpdateManyWithoutMaintenanceRequestNestedInput
     materialPickingOrders?: MaterialPickingOrderUpdateManyWithoutMaintenanceRequestNestedInput
     serviceOrders?: MaintenanceServiceOrderUpdateManyWithoutMaintenanceRequestNestedInput
+    maintenanceContractOrders?: MaintenanceContractOrderUpdateManyWithoutMaintenanceRequestNestedInput
     sipacUnitCost?: SipacUnidadeUpdateOneWithoutMaintenanceRequestCustoNestedInput
+    infrastructureNetwork?: InfrastructureNetworkUpdateOneWithoutMaintenanceRequestsNestedInput
   }
 
   export type MaintenanceRequestUncheckedUpdateWithoutSipacUnitRequestingInput = {
@@ -160221,6 +165480,7 @@ export namespace Prisma {
     sipacUnitCostId?: NullableIntFieldUpdateOperationsInput | number | null
     sipacUserLoginRequest?: NullableStringFieldUpdateOperationsInput | string | null
     origin?: EnumMaintenanceRequestOriginFieldUpdateOperationsInput | $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: NullableStringFieldUpdateOperationsInput | string | null
     priorities?: MaintenanceRequestPriorityUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     statuses?: MaintenanceRequestStatusUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     timelineEvents?: MaintenanceTimelineEventUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
@@ -160229,6 +165489,7 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     materialPickingOrders?: MaterialPickingOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     serviceOrders?: MaintenanceServiceOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    maintenanceContractOrders?: MaintenanceContractOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
   }
 
   export type MaintenanceRequestUncheckedUpdateManyWithoutSipacUnitRequestingInput = {
@@ -160257,6 +165518,7 @@ export namespace Prisma {
     sipacUnitCostId?: NullableIntFieldUpdateOperationsInput | number | null
     sipacUserLoginRequest?: NullableStringFieldUpdateOperationsInput | string | null
     origin?: EnumMaintenanceRequestOriginFieldUpdateOperationsInput | $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type MaintenanceRequestUpdateWithoutSipacUnitCostInput = {
@@ -160291,7 +165553,9 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUpdateManyWithoutMaintenanceRequestNestedInput
     materialPickingOrders?: MaterialPickingOrderUpdateManyWithoutMaintenanceRequestNestedInput
     serviceOrders?: MaintenanceServiceOrderUpdateManyWithoutMaintenanceRequestNestedInput
+    maintenanceContractOrders?: MaintenanceContractOrderUpdateManyWithoutMaintenanceRequestNestedInput
     sipacUnitRequesting?: SipacUnidadeUpdateOneWithoutMaintenanceRequestRequisitanteNestedInput
+    infrastructureNetwork?: InfrastructureNetworkUpdateOneWithoutMaintenanceRequestsNestedInput
   }
 
   export type MaintenanceRequestUncheckedUpdateWithoutSipacUnitCostInput = {
@@ -160320,6 +165584,7 @@ export namespace Prisma {
     sipacUnitRequestingId?: NullableIntFieldUpdateOperationsInput | number | null
     sipacUserLoginRequest?: NullableStringFieldUpdateOperationsInput | string | null
     origin?: EnumMaintenanceRequestOriginFieldUpdateOperationsInput | $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: NullableStringFieldUpdateOperationsInput | string | null
     priorities?: MaintenanceRequestPriorityUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     statuses?: MaintenanceRequestStatusUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     timelineEvents?: MaintenanceTimelineEventUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
@@ -160328,6 +165593,7 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     materialPickingOrders?: MaterialPickingOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     serviceOrders?: MaintenanceServiceOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    maintenanceContractOrders?: MaintenanceContractOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
   }
 
   export type MaintenanceRequestUncheckedUpdateManyWithoutSipacUnitCostInput = {
@@ -160356,6 +165622,7 @@ export namespace Prisma {
     sipacUnitRequestingId?: NullableIntFieldUpdateOperationsInput | number | null
     sipacUserLoginRequest?: NullableStringFieldUpdateOperationsInput | string | null
     origin?: EnumMaintenanceRequestOriginFieldUpdateOperationsInput | $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type MaterialRequestUpdateWithoutSipacUnitRequestingInput = {
@@ -160627,6 +165894,7 @@ export namespace Prisma {
     spaceId?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    infrastructureNetworkId?: string | null
   }
 
   export type MaintenanceRequestCreateManyCreatedByInput = {
@@ -160655,6 +165923,7 @@ export namespace Prisma {
     sipacUnitCostId?: number | null
     sipacUserLoginRequest?: string | null
     origin?: $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: string | null
   }
 
   export type MaintenanceRequestCreateManyAssignedToInput = {
@@ -160683,6 +165952,7 @@ export namespace Prisma {
     sipacUnitCostId?: number | null
     sipacUserLoginRequest?: string | null
     origin?: $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: string | null
   }
 
   export type MaintenanceTimelineEventCreateManyActionByInput = {
@@ -161134,6 +166404,7 @@ export namespace Prisma {
     building?: InfrastructureBuildingUpdateOneWithoutInfraOccurrencesNestedInput
     space?: InfrastructureSpaceUpdateOneWithoutInfraOccurrencesNestedInput
     diagnosis?: InfrastructureOccurrenceDiagnosisUpdateOneWithoutOccurrenceNestedInput
+    infrastructureNetwork?: InfrastructureNetworkUpdateOneWithoutInfraOccurrencesNestedInput
   }
 
   export type InfrastructureOccurrenceUncheckedUpdateWithoutReportedByInput = {
@@ -161150,6 +166421,7 @@ export namespace Prisma {
     spaceId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    infrastructureNetworkId?: NullableStringFieldUpdateOperationsInput | string | null
     duplicates?: InfrastructureOccurrenceUncheckedUpdateManyWithoutDuplicateOfNestedInput
     reinforcements?: InfrastructureOccurrenceReinforcementUncheckedUpdateManyWithoutOccurrenceNestedInput
     diagnosis?: InfrastructureOccurrenceDiagnosisUncheckedUpdateOneWithoutOccurrenceNestedInput
@@ -161169,6 +166441,7 @@ export namespace Prisma {
     spaceId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    infrastructureNetworkId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type MaintenanceRequestUpdateWithoutCreatedByInput = {
@@ -161202,8 +166475,10 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUpdateManyWithoutMaintenanceRequestNestedInput
     materialPickingOrders?: MaterialPickingOrderUpdateManyWithoutMaintenanceRequestNestedInput
     serviceOrders?: MaintenanceServiceOrderUpdateManyWithoutMaintenanceRequestNestedInput
+    maintenanceContractOrders?: MaintenanceContractOrderUpdateManyWithoutMaintenanceRequestNestedInput
     sipacUnitRequesting?: SipacUnidadeUpdateOneWithoutMaintenanceRequestRequisitanteNestedInput
     sipacUnitCost?: SipacUnidadeUpdateOneWithoutMaintenanceRequestCustoNestedInput
+    infrastructureNetwork?: InfrastructureNetworkUpdateOneWithoutMaintenanceRequestsNestedInput
   }
 
   export type MaintenanceRequestUncheckedUpdateWithoutCreatedByInput = {
@@ -161232,6 +166507,7 @@ export namespace Prisma {
     sipacUnitCostId?: NullableIntFieldUpdateOperationsInput | number | null
     sipacUserLoginRequest?: NullableStringFieldUpdateOperationsInput | string | null
     origin?: EnumMaintenanceRequestOriginFieldUpdateOperationsInput | $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: NullableStringFieldUpdateOperationsInput | string | null
     priorities?: MaintenanceRequestPriorityUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     statuses?: MaintenanceRequestStatusUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     timelineEvents?: MaintenanceTimelineEventUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
@@ -161240,6 +166516,7 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     materialPickingOrders?: MaterialPickingOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     serviceOrders?: MaintenanceServiceOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    maintenanceContractOrders?: MaintenanceContractOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
   }
 
   export type MaintenanceRequestUncheckedUpdateManyWithoutCreatedByInput = {
@@ -161268,6 +166545,7 @@ export namespace Prisma {
     sipacUnitCostId?: NullableIntFieldUpdateOperationsInput | number | null
     sipacUserLoginRequest?: NullableStringFieldUpdateOperationsInput | string | null
     origin?: EnumMaintenanceRequestOriginFieldUpdateOperationsInput | $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type MaintenanceRequestUpdateWithoutAssignedToInput = {
@@ -161301,8 +166579,10 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUpdateManyWithoutMaintenanceRequestNestedInput
     materialPickingOrders?: MaterialPickingOrderUpdateManyWithoutMaintenanceRequestNestedInput
     serviceOrders?: MaintenanceServiceOrderUpdateManyWithoutMaintenanceRequestNestedInput
+    maintenanceContractOrders?: MaintenanceContractOrderUpdateManyWithoutMaintenanceRequestNestedInput
     sipacUnitRequesting?: SipacUnidadeUpdateOneWithoutMaintenanceRequestRequisitanteNestedInput
     sipacUnitCost?: SipacUnidadeUpdateOneWithoutMaintenanceRequestCustoNestedInput
+    infrastructureNetwork?: InfrastructureNetworkUpdateOneWithoutMaintenanceRequestsNestedInput
   }
 
   export type MaintenanceRequestUncheckedUpdateWithoutAssignedToInput = {
@@ -161331,6 +166611,7 @@ export namespace Prisma {
     sipacUnitCostId?: NullableIntFieldUpdateOperationsInput | number | null
     sipacUserLoginRequest?: NullableStringFieldUpdateOperationsInput | string | null
     origin?: EnumMaintenanceRequestOriginFieldUpdateOperationsInput | $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: NullableStringFieldUpdateOperationsInput | string | null
     priorities?: MaintenanceRequestPriorityUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     statuses?: MaintenanceRequestStatusUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     timelineEvents?: MaintenanceTimelineEventUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
@@ -161339,6 +166620,7 @@ export namespace Prisma {
     materialWithdrawals?: MaterialWithdrawalUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     materialPickingOrders?: MaterialPickingOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
     serviceOrders?: MaintenanceServiceOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
+    maintenanceContractOrders?: MaintenanceContractOrderUncheckedUpdateManyWithoutMaintenanceRequestNestedInput
   }
 
   export type MaintenanceRequestUncheckedUpdateManyWithoutAssignedToInput = {
@@ -161367,6 +166649,7 @@ export namespace Prisma {
     sipacUnitCostId?: NullableIntFieldUpdateOperationsInput | number | null
     sipacUserLoginRequest?: NullableStringFieldUpdateOperationsInput | string | null
     origin?: EnumMaintenanceRequestOriginFieldUpdateOperationsInput | $Enums.MaintenanceRequestOrigin
+    infrastructureNetworkId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type MaintenanceTimelineEventUpdateWithoutActionByInput = {
