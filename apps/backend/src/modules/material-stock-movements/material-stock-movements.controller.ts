@@ -110,6 +110,41 @@ export class MaterialStockMovementsController {
   }
 
   /**
+   * Lista métricas de movimentação de estoque de material por depósito.
+   */
+  @Get('metrics/warehouse/:warehouseId')
+  @ApiEndpointSwagger({
+    summary:
+      'Listar métricas de movimentação de estoque de material por depósito',
+    description:
+      'Retorna métricas agregadas por material, tipo de operação e código de operação para um depósito específico.',
+    response: {
+      status: HttpStatus.OK,
+      description: 'Métricas de movimentação de estoque de material.',
+      type: Object, // Como é uma estrutura de agregação complexa, usar Object ou um DTO mais específico se existir
+      isArray: true
+    },
+    errors: [
+      {
+        status: HttpStatus.NOT_FOUND,
+        description: 'Depósito não encontrado ou sem movimentações.'
+      }
+    ]
+  })
+  async listMetricsByWarehouse(
+    @Query()
+    queryParams: {
+      [key: string]: string;
+    },
+    @Param('warehouseId', ParseIntPipe) warehouseId: number
+  ) {
+    return this.materialStockMovementsService.listMetricsByWarehouse(
+      warehouseId,
+      queryParams
+    );
+  }
+
+  /**
    * Lista todas as movimentações de estoque de material.
    */
   @Get()

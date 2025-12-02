@@ -839,4 +839,104 @@ export class MaterialStockMovementsService {
         });
     }
   }
+
+  async listMetricsByWarehouse(
+    warehouseId: number,
+    queryParams?: {
+      [key: string]: string;
+    }
+  ) {
+    try {
+      const whereArgs: Prisma.MaterialStockMovementWhereInput = { warehouseId };
+
+      if (queryParams && !!Object.keys(queryParams).length) {
+        const { startDate, endDate } = queryParams;
+        if (startDate && endDate) {
+          whereArgs.movementDate = {
+            gte: new Date(startDate),
+            lte: new Date(endDate)
+          };
+        }
+      }
+
+      const movements = await this.prisma.materialStockMovement.findMany({
+        where: whereArgs,
+        include: {
+          globalMaterial: {
+            select: {
+              id: true,
+              name: true,
+              description: true,
+              unitOfMeasure: true
+            }
+          },
+          movementType: {
+            select: {
+              operation: true,
+              code: true
+            }
+          }
+        },
+        orderBy: {
+          movementDate: 'desc'
+        }
+      });
+
+      const result = movements.reduce((acc, movement) => {
+        const materialId = movement.globalMaterialId;
+        const materialName =
+          movement.globalMaterial?.name || 'Unknown Material';
+        const operation = movement.movementType.operation;
+        const code = movement.movementType.code;
+        const quantity = movement.quantity; // Decimal
+
+        if (!acc[materialId]) {
+          acc[materialId] = {
+            materialId,
+            materialName,
+            operations: {}
+          };
+        }
+
+        if (!acc[materialId].operations[operation]) {
+          acc[materialId].operations[operation] = {
+            operation,
+            codes: {}
+          };
+        }
+
+        if (!acc[materialId].operations[operation].codes[code]) {
+          acc[materialId].operations[operation].codes[code] = {
+            code,
+            count: 0,
+            totalQuantity: new Decimal(0)
+          };
+        }
+
+        acc[materialId].operations[operation].codes[code].count += 1;
+        acc[materialId].operations[operation].codes[code].totalQuantity =
+          acc[materialId].operations[operation].codes[code].totalQuantity.add(
+            quantity
+          );
+
+        return acc;
+      }, {});
+
+      // Converter o objeto `result` de volta para um array para o formato final desejado
+      return Object.values(result).map((material: any) => ({
+        ...material,
+        operations: Object.values(material.operations).map(
+          (operation: any) => ({
+            ...operation,
+            codes: Object.values(operation.codes)
+          })
+        )
+      }));
+    } catch (error) {
+      handlePrismaError(error, this.logger, 'MaterialStockMovementsService', {
+        operation: 'listMetricsByWarehouse'
+      });
+      throw error;
+    }
+  }
 }
