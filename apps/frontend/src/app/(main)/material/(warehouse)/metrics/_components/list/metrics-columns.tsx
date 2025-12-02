@@ -1,10 +1,43 @@
-import { ColumnDef, createColumnHelper, Row } from '@tanstack/react-table';
+import {
+  ColumnDef,
+  createColumnHelper,
+  Row,
+  flexRender,
+  getCoreRowModel,
+  useReactTable
+} from '@tanstack/react-table';
 import { Button } from '@/components/ui/button';
-import { FileText } from 'lucide-react';
+import { FileText, ChevronRight, ChevronDown } from 'lucide-react';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
-import { IMaterialStockMovementMetricsByWarehouse } from '../../metrics-types'; // Importar os tipos corretos
+import {
+  IMaterialStockMovementMetricsByWarehouse,
+  IOperationMetrics,
+  ICodeMetrics
+} from '../../metrics-types'; // Importar os tipos corretos
 import { InfoHoverCard } from '@/components/info-hover-card';
 import React from 'react';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
+} from '@/components/ui/table';
+import {
+  materialOperationInDisplayMapPorguguese,
+  materialOperationOutDisplayMapPorguguese,
+  materialOperationAdjustmentDisplayMapPorguguese,
+  materialOperationReservationDisplayMapPorguguese,
+  materialOperationRestrictionDisplayMapPorguguese,
+  TMaterialOperationInKey,
+  TMaterialOperationOutKey,
+  TMaterialOperationAdjustmentKey,
+  TMaterialOperationReservationKey,
+  TMaterialOperationRestrictionKey,
+  materialOperationTypeDisplayMapPortuguese,
+  TMaterialOperationTypeKey
+} from '@/mappers/material-operations-mappers-translate';
 
 const columnHelper =
   createColumnHelper<IMaterialStockMovementMetricsByWarehouse>();
@@ -26,6 +59,39 @@ export const createActions = (
 export const columns = (
   configuredActions: ActionHandlers<IMaterialStockMovementMetricsByWarehouse>
 ): ColumnDef<IMaterialStockMovementMetricsByWarehouse, any>[] => [
+  columnHelper.display({
+    id: 'expander',
+    size: 30,
+    header: ({ table }) => (
+      <Button
+        variant='ghost'
+        size='icon'
+        onClick={table.getToggleAllRowsExpandedHandler()}
+      >
+        {table.getIsAllRowsExpanded() ? (
+          <ChevronDown className='h-4 w-4' />
+        ) : (
+          <ChevronRight className='h-4 w-4' />
+        )}
+      </Button>
+    ),
+    cell: ({ row }) => (
+      <Button
+        variant='ghost'
+        size='icon'
+        onClick={(e) => {
+          e.stopPropagation();
+          row.toggleExpanded();
+        }}
+      >
+        {row.getIsExpanded() ? (
+          <ChevronDown className='h-4 w-4' />
+        ) : (
+          <ChevronRight className='h-4 w-4' />
+        )}
+      </Button>
+    )
+  }),
   columnHelper.accessor('materialId', {
     header: 'ID Material',
     size: 150,
@@ -49,15 +115,21 @@ export const columns = (
     )
   }),
   columnHelper.group({
-    id: 'quantities',
-    header: () => (
-      <div className='text-center font-medium'>Quantidades Totais</div>
-    ),
+    id: 'in',
+    header: () => <div className='text-center font-medium'>Entradas</div>,
     columns: [
+      columnHelper.accessor('totalInCount', {
+        id: 'totalInCount',
+        size: 100,
+        header: 'Ocorrências',
+        cell: (props) => (
+          <div className='text-center'>{props.getValue() || '0'}</div>
+        )
+      }),
       columnHelper.accessor('totalInQuantity', {
         id: 'totalInQuantity',
         size: 100,
-        header: 'Entrada',
+        header: 'Quantidade',
         cell: (props) => (
           <div className='text-center'>
             {props.getValue()
@@ -69,55 +141,10 @@ export const columns = (
           </div>
         )
       }),
-      columnHelper.accessor('totalOutQuantity', {
-        id: 'totalOutQuantity',
+      columnHelper.accessor('totalInValue', {
+        id: 'totalInValue',
         size: 100,
-        header: 'Saída',
-        cell: (props) => (
-          <div className='text-center'>
-            {props.getValue()
-              ? Number(props.getValue()).toLocaleString('pt-BR', {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2
-                })
-              : '0,00'}
-          </div>
-        )
-      }),
-      columnHelper.accessor('totalAdjustmentQuantity', {
-        id: 'totalAdjustmentQuantity',
-        size: 100,
-        header: 'Ajuste',
-        cell: (props) => (
-          <div className='text-center'>
-            {props.getValue()
-              ? Number(props.getValue()).toLocaleString('pt-BR', {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2
-                })
-              : '0,00'}
-          </div>
-        )
-      }),
-      columnHelper.accessor('totalReservationQuantity', {
-        id: 'totalReservationQuantity',
-        size: 100,
-        header: 'Reserva',
-        cell: (props) => (
-          <div className='text-center'>
-            {props.getValue()
-              ? Number(props.getValue()).toLocaleString('pt-BR', {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2
-                })
-              : '0,00'}
-          </div>
-        )
-      }),
-      columnHelper.accessor('totalRestrictionQuantity', {
-        id: 'totalRestrictionQuantity',
-        size: 100,
-        header: 'Restrição',
+        header: 'Montante',
         cell: (props) => (
           <div className='text-center'>
             {props.getValue()
@@ -129,18 +156,69 @@ export const columns = (
           </div>
         )
       })
+      // columnHelper.accessor('totalAdjustmentQuantity', {
+      //   id: 'totalAdjustmentQuantity',
+      //   size: 100,
+      //   header: 'Ajuste',
+      //   cell: (props) => (
+      //     <div className='text-center'>
+      //       {props.getValue()
+      //         ? Number(props.getValue()).toLocaleString('pt-BR', {
+      //             minimumFractionDigits: 2,
+      //             maximumFractionDigits: 2
+      //           })
+      //         : '0,00'}
+      //     </div>
+      //   )
+      // }),
+      // columnHelper.accessor('totalReservationQuantity', {
+      //   id: 'totalReservationQuantity',
+      //   size: 100,
+      //   header: 'Reserva',
+      //   cell: (props) => (
+      //     <div className='text-center'>
+      //       {props.getValue()
+      //         ? Number(props.getValue()).toLocaleString('pt-BR', {
+      //             minimumFractionDigits: 2,
+      //             maximumFractionDigits: 2
+      //           })
+      //         : '0,00'}
+      //     </div>
+      //   )
+      // }),
+      // columnHelper.accessor('totalRestrictionQuantity', {
+      //   id: 'totalRestrictionQuantity',
+      //   size: 100,
+      //   header: 'Restrição',
+      //   cell: (props) => (
+      //     <div className='text-center'>
+      //       {props.getValue()
+      //         ? Number(props.getValue()).toLocaleString('pt-BR', {
+      //             minimumFractionDigits: 2,
+      //             maximumFractionDigits: 2
+      //           })
+      //         : '0,00'}
+      //     </div>
+      //   )
+      // })
     ]
   }),
   columnHelper.group({
-    id: 'values',
-    header: () => (
-      <div className='text-center font-medium'>Valores Totais (R$)</div>
-    ),
+    id: 'Saídas',
+    header: () => <div className='text-center font-medium'>Retiradas</div>,
     columns: [
-      columnHelper.accessor('totalInValue', {
-        id: 'totalInValue',
+      columnHelper.accessor('totalOutCount', {
+        id: 'totalOutCount',
         size: 100,
-        header: 'Entrada',
+        header: 'Ocorrências',
+        cell: (props) => (
+          <div className='text-center'>{props.getValue() || '0'}</div>
+        )
+      }),
+      columnHelper.accessor('totalOutQuantity', {
+        id: 'totalOutQuantity',
+        size: 100,
+        header: 'Quantidade',
         cell: (props) => (
           <div className='text-center'>
             {props.getValue()
@@ -155,52 +233,7 @@ export const columns = (
       columnHelper.accessor('totalOutValue', {
         id: 'totalOutValue',
         size: 100,
-        header: 'Saída',
-        cell: (props) => (
-          <div className='text-center'>
-            {props.getValue()
-              ? Number(props.getValue()).toLocaleString('pt-BR', {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2
-                })
-              : '0,00'}
-          </div>
-        )
-      }),
-      columnHelper.accessor('totalAdjustmentValue', {
-        id: 'totalAdjustmentValue',
-        size: 100,
-        header: 'Ajuste',
-        cell: (props) => (
-          <div className='text-center'>
-            {props.getValue()
-              ? Number(props.getValue()).toLocaleString('pt-BR', {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2
-                })
-              : '0,00'}
-          </div>
-        )
-      }),
-      columnHelper.accessor('totalReservationValue', {
-        id: 'totalReservationValue',
-        size: 100,
-        header: 'Reserva',
-        cell: (props) => (
-          <div className='text-center'>
-            {props.getValue()
-              ? Number(props.getValue()).toLocaleString('pt-BR', {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2
-                })
-              : '0,00'}
-          </div>
-        )
-      }),
-      columnHelper.accessor('totalRestrictionValue', {
-        id: 'totalRestrictionValue',
-        size: 100,
-        header: 'Restrição',
+        header: 'Montante',
         cell: (props) => (
           <div className='text-center'>
             {props.getValue()
@@ -212,6 +245,51 @@ export const columns = (
           </div>
         )
       })
+      // columnHelper.accessor('totalAdjustmentValue', {
+      //   id: 'totalAdjustmentValue',
+      //   size: 100,
+      //   header: 'Ajuste',
+      //   cell: (props) => (
+      //     <div className='text-center'>
+      //       {props.getValue()
+      //         ? Number(props.getValue()).toLocaleString('pt-BR', {
+      //             minimumFractionDigits: 2,
+      //             maximumFractionDigits: 2
+      //           })
+      //         : '0,00'}
+      //     </div>
+      //   )
+      // }),
+      // columnHelper.accessor('totalReservationValue', {
+      //   id: 'totalReservationValue',
+      //   size: 100,
+      //   header: 'Reserva',
+      //   cell: (props) => (
+      //     <div className='text-center'>
+      //       {props.getValue()
+      //         ? Number(props.getValue()).toLocaleString('pt-BR', {
+      //             minimumFractionDigits: 2,
+      //             maximumFractionDigits: 2
+      //           })
+      //         : '0,00'}
+      //     </div>
+      //   )
+      // }),
+      // columnHelper.accessor('totalRestrictionValue', {
+      //   id: 'totalRestrictionValue',
+      //   size: 100,
+      //   header: 'Restrição',
+      //   cell: (props) => (
+      //     <div className='text-center'>
+      //       {props.getValue()
+      //         ? Number(props.getValue()).toLocaleString('pt-BR', {
+      //             minimumFractionDigits: 2,
+      //             maximumFractionDigits: 2
+      //           })
+      //         : '0,00'}
+      //     </div>
+      //   )
+      // })
     ]
   }),
   columnHelper.display({
@@ -231,3 +309,136 @@ export const columns = (
     )
   })
 ];
+
+export const SubRowComponent = ({
+  row
+}: {
+  row: Row<IMaterialStockMovementMetricsByWarehouse>;
+}) => {
+  const operations = row.original.operations || [];
+
+  return (
+    <div className='p-2 pl-8'>
+      <div>
+        <h4 className='mb-2 text-sm font-semibold'>
+          Métricas por Tipo de Operação:
+        </h4>
+        {operations.length > 0 ? (
+          operations.map((operation, opIndex) => (
+            <div key={opIndex} className='mb-4 rounded-md border p-4'>
+              <h5 className='mb-2 text-base font-bold capitalize'>
+                Operação:{' '}
+                {
+                  materialOperationTypeDisplayMapPortuguese[
+                    operation.operation as TMaterialOperationTypeKey
+                  ]
+                }
+              </h5>
+              <p>Total Ocorrências: {operation.operationTotalCount}</p>
+              <p>
+                Total Quantidade:{' '}
+                {Number(operation.operationTotalQuantity).toLocaleString(
+                  'pt-BR',
+                  {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                  }
+                )}
+              </p>
+              <p className='mb-2'>
+                Total Montante (R$):{' '}
+                {Number(operation.operationTotalValue).toLocaleString('pt-BR', {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2
+                })}
+              </p>
+
+              {operation.codes.length > 0 && (
+                <>
+                  <h6 className='mb-2 text-sm font-semibold'>
+                    Detalhes por Código:
+                  </h6>
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Código</TableHead>
+                        <TableHead>Ocorrências</TableHead>
+                        <TableHead>Quantidade</TableHead>
+                        <TableHead>Montante (R$)</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {operation.codes.map((codeMetrics, codeIndex) => (
+                        <TableRow key={codeIndex}>
+                          <TableCell>
+                            {(() => {
+                              switch (operation.operation) {
+                                case 'IN':
+                                  return (
+                                    materialOperationInDisplayMapPorguguese[
+                                      codeMetrics.code as TMaterialOperationInKey
+                                    ] || codeMetrics.code
+                                  );
+                                case 'OUT':
+                                  return (
+                                    materialOperationOutDisplayMapPorguguese[
+                                      codeMetrics.code as TMaterialOperationOutKey
+                                    ] || codeMetrics.code
+                                  );
+                                case 'ADJUSTMENT':
+                                  return (
+                                    materialOperationAdjustmentDisplayMapPorguguese[
+                                      codeMetrics.code as TMaterialOperationAdjustmentKey
+                                    ] || codeMetrics.code
+                                  );
+                                case 'RESERVATION':
+                                  return (
+                                    materialOperationReservationDisplayMapPorguguese[
+                                      codeMetrics.code as TMaterialOperationReservationKey
+                                    ] || codeMetrics.code
+                                  );
+                                case 'RESTRICTION':
+                                  return (
+                                    materialOperationRestrictionDisplayMapPorguguese[
+                                      codeMetrics.code as TMaterialOperationRestrictionKey
+                                    ] || codeMetrics.code
+                                  );
+                                default:
+                                  return codeMetrics.code;
+                              }
+                            })()}
+                          </TableCell>
+                          <TableCell>{codeMetrics.count}</TableCell>
+                          <TableCell>
+                            {Number(codeMetrics.totalQuantity).toLocaleString(
+                              'pt-BR',
+                              {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2
+                              }
+                            )}
+                          </TableCell>
+                          <TableCell>
+                            {Number(codeMetrics.totalValue).toLocaleString(
+                              'pt-BR',
+                              {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2
+                              }
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </>
+              )}
+            </div>
+          ))
+        ) : (
+          <p>Nenhuma operação detalhada encontrada.</p>
+        )}
+      </div>
+    </div>
+  );
+};

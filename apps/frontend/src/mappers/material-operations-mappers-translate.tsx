@@ -75,7 +75,7 @@ export type TMaterialOperationRestrictionDisplay =
 
 export const materialOperationTypeDisplayMapPortuguese = {
   IN: 'Entrada',
-  OUT: 'Saída',
+  OUT: 'Retirada',
   ADJUSTMENT: 'Ajuste',
   RESERVATION: 'Reserva',
   RESTRICTION: 'Restrição'

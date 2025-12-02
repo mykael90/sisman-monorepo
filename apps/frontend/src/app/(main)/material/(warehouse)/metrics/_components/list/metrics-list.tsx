@@ -1,13 +1,16 @@
 'use client';
 
+'use client';
+
 import { useState } from 'react';
 import { SectionListHeaderSmall } from '@/components/section-list-header-small';
 import {
   ColumnFiltersState,
   PaginationState,
-  SortingState
+  SortingState,
+  getCoreRowModel // Importar getCoreRowModel
 } from '@tanstack/react-table';
-import { Package, PackagePlus } from 'lucide-react'; // Ajustar ícones se necessário
+import { Package } from 'lucide-react';
 import { useWarehouseContext } from '../../../../choose-warehouse/context/warehouse-provider';
 import { useQuery } from '@tanstack/react-query';
 import Loading from '@/components/loading';
@@ -18,7 +21,7 @@ import { useRouter } from 'next/navigation';
 
 import { IMaterialStockMovementMetricsByWarehouse } from '../../metrics-types';
 import { getMaterialStockMovementMetricsByWarehouseId } from '../../metrics-actions';
-import { columns, createActions } from './metrics-columns';
+import { columns, createActions, SubRowComponent } from './metrics-columns'; // Importar SubRowComponent
 import { MetricsFilters } from './metrics-filters';
 import { MetricsCard } from './metrics-card';
 
@@ -33,7 +36,7 @@ export function MetricsListPage() {
 
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
-    pageSize: 20
+    pageSize: 100
   });
 
   const {
@@ -86,6 +89,7 @@ export function MetricsListPage() {
           setPagination={setPagination}
           setSorting={setSorting}
           sorting={sorting}
+          renderSubComponent={({ row }) => <SubRowComponent row={row} />} // Adicionar SubRowComponent
           // Filtro global não é necessário para métricas com filtro de data
           // globalFilterFn='includesString'
           // globalFilter={globalFilterValue}
