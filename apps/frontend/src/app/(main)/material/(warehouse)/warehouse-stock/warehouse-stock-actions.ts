@@ -49,10 +49,10 @@ export async function getWarehouseStockByWarehouseId(warehouseId: number) {
   try {
     const data = await fetchApiSisman(
       `${API_RELATIVE_PATH}/warehouse/${warehouseId}`,
-      accessTokenSisman,
-      {
-        cache: 'force-cache'
-      }
+      accessTokenSisman
+      // {
+      //   cache: 'force-cache'
+      // }
     );
     logger.info(
       `(Server Action) getWarehouseStocks: ${data.length} warehouse-stocks returned`

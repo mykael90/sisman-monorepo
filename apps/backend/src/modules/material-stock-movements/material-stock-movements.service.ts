@@ -840,6 +840,8 @@ export class MaterialStockMovementsService {
     }
   }
 
+  // Implementação realizada em memória.
+  // Caso futuramente apresente problema de desempenho, realizar a lógica de agregação diretamente pelo banco de dados.
   async listMetricsByWarehouse(
     warehouseId: number,
     queryParams?: {
@@ -867,13 +869,19 @@ export class MaterialStockMovementsService {
               id: true,
               name: true,
               description: true,
-              unitOfMeasure: true
+              unitOfMeasure: true,
+              unitPrice: true // Incluir unitPrice aqui
             }
           },
           movementType: {
             select: {
               operation: true,
               code: true
+            }
+          },
+          warehouseMaterialStock: {
+            select: {
+              updatedCost: true // Incluir updatedCost aqui
             }
           }
         },
@@ -889,19 +897,45 @@ export class MaterialStockMovementsService {
         const operation = movement.movementType.operation;
         const code = movement.movementType.code;
         const quantity = movement.quantity; // Decimal
+        // Obter unitPrice da GlobalMaterial ou MaterialRequestItem
+        const unitPrice =
+          movement.unitPrice ||
+          movement.warehouseMaterialStock?.updatedCost ||
+          movement.globalMaterial?.unitPrice;
+        const movementPrice = unitPrice
+          ? new Decimal(unitPrice).mul(quantity)
+          : new Decimal(0);
 
         if (!acc[materialId]) {
           acc[materialId] = {
             materialId,
             materialName,
-            operations: {}
+            operations: {},
+            totalInCount: 0,
+            totalInQuantity: new Decimal(0),
+            totalInValue: new Decimal(0),
+            totalOutCount: 0,
+            totalOutQuantity: new Decimal(0),
+            totalOutValue: new Decimal(0),
+            totalAdjustmentCount: 0,
+            totalAdjustmentQuantity: new Decimal(0),
+            totalAdjustmentValue: new Decimal(0),
+            totalReservationCount: 0,
+            totalReservationQuantity: new Decimal(0),
+            totalReservationValue: new Decimal(0),
+            totalRestrictionCount: 0,
+            totalRestrictionQuantity: new Decimal(0),
+            totalRestrictionValue: new Decimal(0)
           };
         }
 
         if (!acc[materialId].operations[operation]) {
           acc[materialId].operations[operation] = {
             operation,
-            codes: {}
+            codes: {},
+            operationTotalCount: 0,
+            operationTotalQuantity: new Decimal(0),
+            operationTotalValue: new Decimal(0)
           };
         }
 
@@ -909,29 +943,120 @@ export class MaterialStockMovementsService {
           acc[materialId].operations[operation].codes[code] = {
             code,
             count: 0,
-            totalQuantity: new Decimal(0)
+            totalQuantity: new Decimal(0),
+            totalValue: new Decimal(0)
           };
         }
 
+        // Agregação por código
         acc[materialId].operations[operation].codes[code].count += 1;
         acc[materialId].operations[operation].codes[code].totalQuantity =
           acc[materialId].operations[operation].codes[code].totalQuantity.add(
             quantity
           );
+        acc[materialId].operations[operation].codes[code].totalValue =
+          acc[materialId].operations[operation].codes[code].totalValue.add(
+            movementPrice
+          );
+
+        // Agregação por operação
+        acc[materialId].operations[operation].operationTotalCount += 1;
+        acc[materialId].operations[operation].operationTotalQuantity =
+          acc[materialId].operations[operation].operationTotalQuantity.add(
+            quantity
+          );
+        acc[materialId].operations[operation].operationTotalValue =
+          acc[materialId].operations[operation].operationTotalValue.add(
+            movementPrice
+          );
+
+        // Agregação no nível do material (totais por tipo de operação)
+        switch (operation) {
+          case MaterialStockOperationType.IN:
+            acc[materialId].totalInCount += 1;
+            acc[materialId].totalInQuantity =
+              acc[materialId].totalInQuantity.add(quantity);
+            acc[materialId].totalInValue =
+              acc[materialId].totalInValue.add(movementPrice);
+            break;
+          case MaterialStockOperationType.OUT:
+            acc[materialId].totalOutCount += 1;
+            acc[materialId].totalOutQuantity =
+              acc[materialId].totalOutQuantity.add(quantity);
+            acc[materialId].totalOutValue =
+              acc[materialId].totalOutValue.add(movementPrice);
+            break;
+          case MaterialStockOperationType.ADJUSTMENT:
+            acc[materialId].totalAdjustmentCount += 1;
+            acc[materialId].totalAdjustmentQuantity =
+              acc[materialId].totalAdjustmentQuantity.add(quantity);
+            acc[materialId].totalAdjustmentValue =
+              acc[materialId].totalAdjustmentValue.add(movementPrice);
+            break;
+          case MaterialStockOperationType.RESERVATION:
+            acc[materialId].totalReservationCount += 1;
+            acc[materialId].totalReservationQuantity =
+              acc[materialId].totalReservationQuantity.add(quantity);
+            acc[materialId].totalReservationValue =
+              acc[materialId].totalReservationValue.add(movementPrice);
+            break;
+          case MaterialStockOperationType.RESTRICTION:
+            acc[materialId].totalRestrictionCount += 1;
+            acc[materialId].totalRestrictionQuantity =
+              acc[materialId].totalRestrictionQuantity.add(quantity);
+            acc[materialId].totalRestrictionValue =
+              acc[materialId].totalRestrictionValue.add(movementPrice);
+            break;
+        }
 
         return acc;
       }, {});
 
-      // Converter o objeto `result` de volta para um array para o formato final desejado
-      return Object.values(result).map((material: any) => ({
-        ...material,
-        operations: Object.values(material.operations).map(
-          (operation: any) => ({
-            ...operation,
-            codes: Object.values(operation.codes)
-          })
-        )
-      }));
+      // Converter o objeto `result` de volta para um array e refinar a estrutura
+      return Object.values(result)
+        .map((material: any) => {
+          // Mapear operações para um array e garantir que os totais sejam Decimal
+          const operationsArray = Object.values(material.operations).map(
+            (op: any) => ({
+              ...op,
+              operationTotalQuantity: new Decimal(op.operationTotalQuantity),
+              operationTotalValue: new Decimal(op.operationTotalValue), // Novo campo
+              codes: Object.values(op.codes).map((codeItem: any) => ({
+                ...codeItem,
+                totalQuantity: new Decimal(codeItem.totalQuantity),
+                totalValue: new Decimal(codeItem.totalValue) // Novo campo
+              }))
+            })
+          );
+
+          return {
+            materialId: material.materialId,
+            materialName: material.materialName,
+            totalInCount: material.totalInCount,
+            totalInQuantity: new Decimal(material.totalInQuantity),
+            totalInValue: new Decimal(material.totalInValue), // Novo campo
+            totalOutCount: material.totalOutCount,
+            totalOutQuantity: new Decimal(material.totalOutQuantity),
+            totalOutValue: new Decimal(material.totalOutValue), // Novo campo
+            totalAdjustmentCount: material.totalAdjustmentCount,
+            totalAdjustmentQuantity: new Decimal(
+              material.totalAdjustmentQuantity
+            ),
+            totalAdjustmentValue: new Decimal(material.totalAdjustmentValue), // Novo campo
+            totalReservationCount: material.totalReservationCount,
+            totalReservationQuantity: new Decimal(
+              material.totalReservationQuantity
+            ),
+            totalReservationValue: new Decimal(material.totalReservationValue), // Novo campo
+            totalRestrictionCount: material.totalRestrictionCount,
+            totalRestrictionQuantity: new Decimal(
+              material.totalRestrictionQuantity
+            ),
+            totalRestrictionValue: new Decimal(material.totalRestrictionValue), // Novo campo
+            operations: operationsArray
+          };
+        })
+        .sort((a, b) => a.materialName.localeCompare(b.materialName)); // Ordena pelo materialName
     } catch (error) {
       handlePrismaError(error, this.logger, 'MaterialStockMovementsService', {
         operation: 'listMetricsByWarehouse'

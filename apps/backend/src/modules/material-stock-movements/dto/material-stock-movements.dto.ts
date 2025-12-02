@@ -223,7 +223,6 @@ type MaterialStockMovementRelationOnly = Prisma.MaterialStockMovementGetPayload<
 /**
  * DTO para representar a resposta completa, incluindo suas relações.
  */
-
 export class MaterialStockMovementWithRelationsResponseDto
   extends MaterialStockMovementBaseDto
   implements Partial<MaterialStockMovementRelationOnly>
@@ -343,6 +342,129 @@ export class MaterialStockMovementWithRelationsResponseDto
 
   @IsOptional()
   materialPickingOrderItem?: MaterialStockMovementRelationOnly['materialPickingOrderItem'];
+}
+
+/**
+ * DTO para representar as métricas agregadas por código de operação.
+ */
+class CodeMetricsDto {
+  @IsString()
+  @IsNotEmpty()
+  code: string;
+
+  @IsNumber()
+  @IsPositive()
+  count: number;
+
+  @IsOptional()
+  @Type(() => Number)
+  totalQuantity: Prisma.Decimal;
+
+  @IsOptional()
+  @Type(() => Number)
+  totalValue: Prisma.Decimal;
+}
+
+/**
+ * DTO para representar as métricas agregadas por tipo de operação.
+ */
+class OperationMetricsDto {
+  @IsString()
+  @IsNotEmpty()
+  operation: string;
+
+  @IsNumber()
+  @IsPositive()
+  operationTotalCount: number;
+
+  @IsOptional()
+  @Type(() => Number)
+  operationTotalQuantity: Prisma.Decimal;
+
+  @IsOptional()
+  @Type(() => Number)
+  operationTotalValue: Prisma.Decimal;
+
+  @ValidateNested({ each: true })
+  @Type(() => CodeMetricsDto)
+  codes: CodeMetricsDto[];
+}
+
+/**
+ * DTO para representar a resposta agregada de métricas por almoxarifado e material.
+ */
+export class MaterialStockMovementMetricsByWarehouseDto {
+  @IsString()
+  @IsNotEmpty()
+  materialId: string;
+
+  @IsString()
+  @IsNotEmpty()
+  materialName: string;
+
+  @IsNumber()
+  @IsOptional()
+  totalInCount?: number;
+
+  @IsOptional()
+  @Type(() => Number)
+  totalInQuantity?: Prisma.Decimal;
+
+  @IsOptional()
+  @Type(() => Number)
+  totalInValue?: Prisma.Decimal;
+
+  @IsNumber()
+  @IsOptional()
+  totalOutCount?: number;
+
+  @IsOptional()
+  @Type(() => Number)
+  totalOutQuantity?: Prisma.Decimal;
+
+  @IsOptional()
+  @Type(() => Number)
+  totalOutValue?: Prisma.Decimal;
+
+  @IsNumber()
+  @IsOptional()
+  totalAdjustmentCount?: number;
+
+  @IsOptional()
+  @Type(() => Number)
+  totalAdjustmentQuantity?: Prisma.Decimal;
+
+  @IsOptional()
+  @Type(() => Number)
+  totalAdjustmentValue?: Prisma.Decimal;
+
+  @IsNumber()
+  @IsOptional()
+  totalReservationCount?: number;
+
+  @IsOptional()
+  @Type(() => Number)
+  totalReservationQuantity?: Prisma.Decimal;
+
+  @IsOptional()
+  @Type(() => Number)
+  totalReservationValue?: Prisma.Decimal;
+
+  @IsNumber()
+  @IsOptional()
+  totalRestrictionCount?: number;
+
+  @IsOptional()
+  @Type(() => Number)
+  totalRestrictionQuantity?: Prisma.Decimal;
+
+  @IsOptional()
+  @Type(() => Number)
+  totalRestrictionValue?: Prisma.Decimal;
+
+  @ValidateNested({ each: true })
+  @Type(() => OperationMetricsDto)
+  operations: OperationMetricsDto[];
 }
 
 // =================================================================
