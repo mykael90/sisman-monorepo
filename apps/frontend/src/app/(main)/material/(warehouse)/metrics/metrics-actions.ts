@@ -12,7 +12,7 @@ const logger = new Logger(`${PAGE_PATH}/metrics`);
 export async function getMaterialStockMovementMetricsByWarehouseId(
   warehouseId: number,
   params?: { from?: Date; to?: Date }
-): Promise<IMaterialStockMovementMetricsByWarehouse> {
+): Promise<IMaterialStockMovementMetricsByWarehouse[]> {
   const urlParams = new URLSearchParams();
   if (params?.from) {
     urlParams.append('startDate', params.from.toISOString());
