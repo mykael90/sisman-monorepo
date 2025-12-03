@@ -197,7 +197,9 @@ export const columns = (
   }),
   columnHelper.accessor('contract.providers.nomeFantasia', {
     header: 'Empresa',
-    size: 200
+    size: 300,
+    enableResizing: false,
+    cell: (props) => <div className='whitespace-normal'>{props.getValue()}</div>
   }),
   columnHelper.accessor('startDate', {
     header: 'Início Contrato',
@@ -222,7 +224,7 @@ export const columns = (
   columnHelper.accessor('worker.maintenanceInstance.name', {
     //instancia refere-se a quem gerencia (as vezes o trabalhador é lotado na escola de musica mas quem gerencia as faltas é a diman)
     header: 'Instância',
-    size: 200
+    size: 100
   }),
 
   // reduce for total hours abscence

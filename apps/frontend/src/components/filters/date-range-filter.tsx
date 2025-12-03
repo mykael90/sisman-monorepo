@@ -82,7 +82,7 @@ export function DateRangeFilter({
 
   return (
     <div className={cn('flex flex-col gap-4', className)}>
-      <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+      <div className='grid grid-cols-1 gap-4 md:grid-cols-3'>
         <div className='grid gap-2'>
           <Label htmlFor='startDate'>Data inicial da consulta</Label>
           <Popover open={isStartOpen} onOpenChange={setIsStartOpen}>
@@ -151,8 +151,11 @@ export function DateRangeFilter({
             </PopoverContent>
           </Popover>
         </div>
+        <div className='grid gap-2'>
+          <Label htmlFor='startDate'>Predefinições</Label>
+          <DateRangePresetSelector setDate={setDate} />
+        </div>
       </div>
-      <DateRangePresetSelector setDate={setDate} />
     </div>
   );
 }

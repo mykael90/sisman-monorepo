@@ -10,7 +10,10 @@ import {
   startOfYear,
   endOfYear,
   subDays,
-  setMonth
+  setMonth,
+  setYear,
+  endOfToday,
+  startOfToday
 } from 'date-fns';
 import { DateRange } from 'react-day-picker';
 import { Button } from '@/components/ui/button';
@@ -49,8 +52,8 @@ export function DateRangePresetSelector({
   );
 
   const applyPreset = (days: number) => {
-    const today = new Date();
-    const from = subDays(today, days);
+    const today = endOfToday();
+    const from = subDays(startOfToday(), days);
     setDate({ from, to: today });
   };
 
@@ -77,6 +80,16 @@ export function DateRangePresetSelector({
     }
   };
 
+  const applySpecificYear = (year: number) => {
+    const date = setYear(new Date(), year);
+    const from = startOfYear(date);
+    const to = endOfYear(date);
+    setDate({ from, to });
+  };
+
+  const currentYear = new Date().getFullYear();
+  const years = Array.from({ length: 5 }, (_, i) => currentYear - i);
+
   return (
     <div className={cn('flex flex-wrap items-center gap-2', className)}>
       <DropdownMenu>
@@ -86,7 +99,32 @@ export function DateRangePresetSelector({
         <DropdownMenuContent className='w-56'>
           <DropdownMenuLabel>Intervalos Predefinidos</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => applyPreset(6)}>
+          <DropdownMenuSub>
+            <DropdownMenuSubTrigger>Últimos</DropdownMenuSubTrigger>
+            <DropdownMenuPortal>
+              <DropdownMenuSubContent className='w-auto p-1'>
+                <DropdownMenuItem onClick={() => applyPreset(6)}>
+                  7 dias
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => applyPreset(14)}>
+                  15 dias
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => applyPreset(29)}>
+                  30 dias
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => applyPreset(59)}>
+                  60 dias
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => applyPreset(179)}>
+                  180 dias
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => applyPreset(364)}>
+                  365 dias
+                </DropdownMenuItem>
+              </DropdownMenuSubContent>
+            </DropdownMenuPortal>
+          </DropdownMenuSub>
+          {/* <DropdownMenuItem onClick={() => applyPreset(6)}>
             Últimos 7 dias
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => applyPreset(14)}>
@@ -103,7 +141,7 @@ export function DateRangePresetSelector({
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => applyPreset(364)}>
             Últimos 365 dias
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={applyCurrentMonth}>
             Mês atual
@@ -125,6 +163,21 @@ export function DateRangePresetSelector({
                     onClick={() => applySpecificMonth(setMonth(new Date(), i))}
                   >
                     {format(setMonth(new Date(), i), 'MMMM', { locale: ptBR })}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuSubContent>
+            </DropdownMenuPortal>
+          </DropdownMenuSub>
+          <DropdownMenuSub>
+            <DropdownMenuSubTrigger>Selecionar Ano</DropdownMenuSubTrigger>
+            <DropdownMenuPortal>
+              <DropdownMenuSubContent className='w-auto p-1'>
+                {years.map((year) => (
+                  <DropdownMenuItem
+                    key={year}
+                    onClick={() => applySpecificYear(year)}
+                  >
+                    {year}
                   </DropdownMenuItem>
                 ))}
               </DropdownMenuSubContent>
