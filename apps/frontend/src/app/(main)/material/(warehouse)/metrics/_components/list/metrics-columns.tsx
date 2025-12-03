@@ -477,118 +477,123 @@ export const SubRowComponent = ({
     <div className='p-2 pl-8'>
       <div>
         <h4 className='mb-2 text-sm font-semibold'>
-          Métricas por Tipo de Operação:
+          Métricas por Subtipos da Operação:
         </h4>
         {operations.length > 0 ? (
           operations.map((operation, opIndex) => (
             <div key={opIndex} className='mb-4 rounded-md border p-4'>
-              <h5 className='mb-2 text-base font-bold capitalize'>
-                Operação:{' '}
-                {
-                  materialOperationTypeDisplayMapPortuguese[
-                    operation.operation as TMaterialOperationTypeKey
-                  ]
-                }
-              </h5>
-              <p>Total Ocorrências: {operation.operationTotalCount}</p>
-              <p>
-                Total Quantidade:{' '}
-                {Number(operation.operationTotalQuantity).toLocaleString(
-                  'pt-BR',
-                  {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                  }
-                )}
-              </p>
-              <p className='mb-2'>
-                Total Montante (R$):{' '}
-                {Number(operation.operationTotalValue).toLocaleString('pt-BR', {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2
-                })}
-              </p>
-
-              {operation.codes.length > 0 && (
-                <>
-                  <h6 className='mb-2 text-sm font-semibold'>
-                    Detalhes por Código:
-                  </h6>
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Código</TableHead>
-                        <TableHead>Ocorrências</TableHead>
-                        <TableHead>Quantidade</TableHead>
-                        <TableHead>Montante (R$)</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {operation.codes.map((codeMetrics, codeIndex) => (
-                        <TableRow key={codeIndex}>
-                          <TableCell>
-                            {(() => {
-                              switch (operation.operation) {
-                                case 'IN':
-                                  return (
-                                    materialOperationInDisplayMapPorguguese[
-                                      codeMetrics.code as TMaterialOperationInKey
-                                    ] || codeMetrics.code
-                                  );
-                                case 'OUT':
-                                  return (
-                                    materialOperationOutDisplayMapPorguguese[
-                                      codeMetrics.code as TMaterialOperationOutKey
-                                    ] || codeMetrics.code
-                                  );
-                                case 'ADJUSTMENT':
-                                  return (
-                                    materialOperationAdjustmentDisplayMapPorguguese[
-                                      codeMetrics.code as TMaterialOperationAdjustmentKey
-                                    ] || codeMetrics.code
-                                  );
-                                case 'RESERVATION':
-                                  return (
-                                    materialOperationReservationDisplayMapPorguguese[
-                                      codeMetrics.code as TMaterialOperationReservationKey
-                                    ] || codeMetrics.code
-                                  );
-                                case 'RESTRICTION':
-                                  return (
-                                    materialOperationRestrictionDisplayMapPorguguese[
-                                      codeMetrics.code as TMaterialOperationRestrictionKey
-                                    ] || codeMetrics.code
-                                  );
-                                default:
-                                  return codeMetrics.code;
-                              }
-                            })()}
-                          </TableCell>
-                          <TableCell>{codeMetrics.count}</TableCell>
-                          <TableCell>
-                            {Number(codeMetrics.totalQuantity).toLocaleString(
-                              'pt-BR',
-                              {
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2
-                              }
-                            )}
-                          </TableCell>
-                          <TableCell>
-                            {Number(codeMetrics.totalValue).toLocaleString(
-                              'pt-BR',
-                              {
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2
-                              }
-                            )}
-                          </TableCell>
+              <details>
+                <summary>
+                  <span className='mb-2 text-base font-bold capitalize'>
+                    {
+                      materialOperationTypeDisplayMapPortuguese[
+                        operation.operation as TMaterialOperationTypeKey
+                      ]
+                    }
+                  </span>
+                </summary>
+                <p>Total Ocorrências: {operation.operationTotalCount}</p>
+                <p>
+                  Total Quantidade:{' '}
+                  {Number(operation.operationTotalQuantity).toLocaleString(
+                    'pt-BR',
+                    {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2
+                    }
+                  )}
+                </p>
+                <p className='mb-2'>
+                  Total Montante (R$):{' '}
+                  {Number(operation.operationTotalValue).toLocaleString(
+                    'pt-BR',
+                    {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2
+                    }
+                  )}
+                </p>
+                {operation.codes.length > 0 && (
+                  <>
+                    <h6 className='mb-2 text-sm font-semibold'>
+                      Detalhes por Código:
+                    </h6>
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Código</TableHead>
+                          <TableHead>Ocorrências</TableHead>
+                          <TableHead>Quantidade</TableHead>
+                          <TableHead>Montante (R$)</TableHead>
                         </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </>
-              )}
+                      </TableHeader>
+                      <TableBody>
+                        {operation.codes.map((codeMetrics, codeIndex) => (
+                          <TableRow key={codeIndex}>
+                            <TableCell>
+                              {(() => {
+                                switch (operation.operation) {
+                                  case 'IN':
+                                    return (
+                                      materialOperationInDisplayMapPorguguese[
+                                        codeMetrics.code as TMaterialOperationInKey
+                                      ] || codeMetrics.code
+                                    );
+                                  case 'OUT':
+                                    return (
+                                      materialOperationOutDisplayMapPorguguese[
+                                        codeMetrics.code as TMaterialOperationOutKey
+                                      ] || codeMetrics.code
+                                    );
+                                  case 'ADJUSTMENT':
+                                    return (
+                                      materialOperationAdjustmentDisplayMapPorguguese[
+                                        codeMetrics.code as TMaterialOperationAdjustmentKey
+                                      ] || codeMetrics.code
+                                    );
+                                  case 'RESERVATION':
+                                    return (
+                                      materialOperationReservationDisplayMapPorguguese[
+                                        codeMetrics.code as TMaterialOperationReservationKey
+                                      ] || codeMetrics.code
+                                    );
+                                  case 'RESTRICTION':
+                                    return (
+                                      materialOperationRestrictionDisplayMapPorguguese[
+                                        codeMetrics.code as TMaterialOperationRestrictionKey
+                                      ] || codeMetrics.code
+                                    );
+                                  default:
+                                    return codeMetrics.code;
+                                }
+                              })()}
+                            </TableCell>
+                            <TableCell>{codeMetrics.count}</TableCell>
+                            <TableCell>
+                              {Number(codeMetrics.totalQuantity).toLocaleString(
+                                'pt-BR',
+                                {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2
+                                }
+                              )}
+                            </TableCell>
+                            <TableCell>
+                              {Number(codeMetrics.totalValue).toLocaleString(
+                                'pt-BR',
+                                {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2
+                                }
+                              )}
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </>
+                )}
+              </details>
             </div>
           ))
         ) : (
