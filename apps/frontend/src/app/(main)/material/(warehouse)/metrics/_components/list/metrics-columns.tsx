@@ -155,7 +155,16 @@ export const columns = (
         },
         cell: (props) => (
           <div className='text-center'>{props.getValue() || '0'}</div>
-        )
+        ),
+        footer: ({ table }) => {
+          const total = table
+            .getFilteredRowModel()
+            .rows.reduce(
+              (sum, row) => sum + Number(row.original.totalInCount || 0),
+              0
+            );
+          return <div className='text-center font-bold'>{total || '0'}</div>;
+        }
       }),
       columnHelper.accessor('totalInQuantity', {
         id: 'totalInQuantity',
@@ -180,7 +189,23 @@ export const columns = (
                 })
               : '0,00'}
           </div>
-        )
+        ),
+        footer: ({ table }) => {
+          const total = table
+            .getFilteredRowModel()
+            .rows.reduce(
+              (sum, row) => sum + Number(row.original.totalInQuantity || 0),
+              0
+            );
+          return (
+            <div className='text-center font-bold'>
+              {total.toLocaleString('pt-BR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+              })}
+            </div>
+          );
+        }
       }),
       columnHelper.accessor('totalInValue', {
         id: 'totalInValue',
@@ -205,7 +230,23 @@ export const columns = (
                 })
               : '0,00'}
           </div>
-        )
+        ),
+        footer: ({ table }) => {
+          const total = table
+            .getFilteredRowModel()
+            .rows.reduce(
+              (sum, row) => sum + Number(row.original.totalInValue || 0),
+              0
+            );
+          return (
+            <div className='text-center font-bold'>
+              {total.toLocaleString('pt-BR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+              })}
+            </div>
+          );
+        }
       })
       // columnHelper.accessor('totalAdjustmentQuantity', {
       //   id: 'totalAdjustmentQuantity',
@@ -283,7 +324,16 @@ export const columns = (
         },
         cell: (props) => (
           <div className='text-center'>{props.getValue() || '0'}</div>
-        )
+        ),
+        footer: ({ table }) => {
+          const total = table
+            .getFilteredRowModel()
+            .rows.reduce(
+              (sum, row) => sum + Number(row.original.totalOutCount || 0),
+              0
+            );
+          return <div className='text-center font-bold'>{total || '0'}</div>;
+        }
       }),
       columnHelper.accessor('totalOutQuantity', {
         id: 'totalOutQuantity',
@@ -308,7 +358,23 @@ export const columns = (
                 })
               : '0,00'}
           </div>
-        )
+        ),
+        footer: ({ table }) => {
+          const total = table
+            .getFilteredRowModel()
+            .rows.reduce(
+              (sum, row) => sum + Number(row.original.totalOutQuantity || 0),
+              0
+            );
+          return (
+            <div className='text-center font-bold'>
+              {total.toLocaleString('pt-BR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+              })}
+            </div>
+          );
+        }
       }),
       columnHelper.accessor('totalOutValue', {
         id: 'totalOutValue',
@@ -333,7 +399,23 @@ export const columns = (
                 })
               : '0,00'}
           </div>
-        )
+        ),
+        footer: ({ table }) => {
+          const total = table
+            .getFilteredRowModel()
+            .rows.reduce(
+              (sum, row) => sum + Number(row.original.totalOutValue || 0),
+              0
+            );
+          return (
+            <div className='text-center font-bold'>
+              {total.toLocaleString('pt-BR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+              })}
+            </div>
+          );
+        }
       })
       // columnHelper.accessor('totalAdjustmentValue', {
       //   id: 'totalAdjustmentValue',
@@ -417,7 +499,26 @@ export const columns = (
                 maximumFractionDigits: 2
               })}
             </div>
-          )
+          ),
+          footer: ({ table }) => {
+            const total = table
+              .getFilteredRowModel()
+              .rows.reduce(
+                (sum, row) =>
+                  sum +
+                  (Number(row.original.totalInQuantity || 0) -
+                    Number(row.original.totalOutQuantity || 0)),
+                0
+              );
+            return (
+              <div className='text-center font-bold'>
+                {total.toLocaleString('pt-BR', {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2
+                })}
+              </div>
+            );
+          }
         }
       ),
       columnHelper.accessor(
@@ -443,7 +544,26 @@ export const columns = (
                 maximumFractionDigits: 2
               })}
             </div>
-          )
+          ),
+          footer: ({ table }) => {
+            const total = table
+              .getFilteredRowModel()
+              .rows.reduce(
+                (sum, row) =>
+                  sum +
+                  (Number(row.original.totalInValue || 0) -
+                    Number(row.original.totalOutValue || 0)),
+                0
+              );
+            return (
+              <div className='text-center font-bold'>
+                {total.toLocaleString('pt-BR', {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2
+                })}
+              </div>
+            );
+          }
         }
       )
     ]

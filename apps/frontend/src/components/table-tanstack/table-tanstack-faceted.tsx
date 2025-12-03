@@ -24,7 +24,8 @@ import {
   TableCell,
   TableHead,
   TableHeader,
-  TableRow
+  TableRow,
+  TableFooter
 } from '../ui/table';
 import { Pagination } from './pagination';
 import { Filter } from 'lucide-react';
@@ -291,6 +292,22 @@ export function TableTanstackFaceted<TData>({
               </React.Fragment>
             ))}
           </TableBody>
+          <TableFooter className='bg-gray-100'>
+            {table.getFooterGroups().map((footerGroup) => (
+              <TableRow key={footerGroup.id}>
+                {footerGroup.headers.map((header) => (
+                  <TableCell key={header.id} colSpan={header.colSpan}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.footer,
+                          header.getContext()
+                        )}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableFooter>
         </Table>
       </div>
 
