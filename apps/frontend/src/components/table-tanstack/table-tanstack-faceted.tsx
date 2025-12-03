@@ -141,13 +141,13 @@ export function TableTanstackFaceted<TData>({
                     style={{ width: header.getSize() }}
                   >
                     {header.isPlaceholder ? null : (
-                      <div className='flex items-center space-x-2'>
-                        <span>
+                      <div className='flex items-center gap-2'>
+                        <>
                           {flexRender(
                             header.column.columnDef.header,
                             header.getContext()
                           )}
-                        </span>
+                        </>
                         {header.column.getCanFilter() &&
                           header.column.getFacetedUniqueValues()?.size > 0 && (
                             <Popover>

@@ -135,7 +135,9 @@ export const columns = (
   }),
   columnHelper.group({
     id: 'in',
-    header: () => <div className='text-center font-medium'>Entradas</div>,
+    header: () => (
+      <div className='w-full text-center font-medium'>Entradas</div>
+    ),
     columns: [
       columnHelper.accessor('totalInCount', {
         id: 'totalInCount',
@@ -262,7 +264,7 @@ export const columns = (
   columnHelper.group({
     id: 'Saídas',
     header: () => (
-      <div className='self-center text-center font-medium'>Retiradas</div>
+      <div className='w-full text-center font-medium'>Retiradas</div>
     ),
     columns: [
       columnHelper.accessor('totalOutCount', {
@@ -389,7 +391,7 @@ export const columns = (
   }),
   columnHelper.group({
     id: 'balance',
-    header: () => <div className='text-center font-medium'>Balanço</div>,
+    header: () => <div className='w-full text-center font-medium'>Balanço</div>,
     columns: [
       columnHelper.accessor(
         (row) =>
