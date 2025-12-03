@@ -1064,4 +1064,202 @@ export class MaterialStockMovementsService {
       throw error;
     }
   }
+
+  // Implementação realizada em memória.
+  // Caso futuramente apresente problema de desempenho, realizar a lógica de agregação diretamente pelo banco de dados.
+  async listTimeMetricsByWarehouseAndMaterial(
+    warehouseId: number,
+    materialId: string,
+    queryParams?: {
+      startDate?: string;
+      endDate?: string;
+    }
+  ) {
+    try {
+      const whereArgs: Prisma.MaterialStockMovementWhereInput = {
+        warehouseId: warehouseId,
+        globalMaterialId: materialId
+      };
+
+      if (queryParams && !!Object.keys(queryParams).length) {
+        const { startDate, endDate } = queryParams;
+        if (startDate && endDate) {
+          whereArgs.movementDate = {
+            gte: new Date(startDate),
+            lte: new Date(endDate)
+          };
+        }
+      }
+
+      const movements = await this.prisma.materialStockMovement.findMany({
+        where: whereArgs,
+        include: {
+          globalMaterial: {
+            select: {
+              id: true,
+              name: true,
+              unitPrice: true
+            }
+          },
+          movementType: {
+            select: {
+              operation: true
+            }
+          },
+          warehouseMaterialStock: {
+            select: {
+              updatedCost: true
+            }
+          }
+        },
+        orderBy: {
+          movementDate: 'asc'
+        }
+      });
+
+      const materialMetrics = {
+        materialId: materialId,
+        materialName: movements[0]?.globalMaterial?.name || 'Unknown Material',
+        totalInCount: 0,
+        totalInQuantity: new Decimal(0),
+        totalInValue: new Decimal(0),
+        totalOutCount: 0,
+        totalOutQuantity: new Decimal(0),
+        totalOutValue: new Decimal(0),
+        totalAdjustmentCount: 0,
+        totalAdjustmentQuantity: new Decimal(0),
+        totalAdjustmentValue: new Decimal(0),
+        totalReservationCount: 0,
+        totalReservationQuantity: new Decimal(0),
+        totalReservationValue: new Decimal(0),
+        totalRestrictionCount: 0,
+        totalRestrictionQuantity: new Decimal(0),
+        totalRestrictionValue: new Decimal(0),
+        operationsByMonth: {} // Agregação por operação e depois por mês
+      };
+
+      const operationsByMonthAccumulator: {
+        [operation: string]: {
+          [yearMonthKey: string]: {
+            year: number;
+            month: number;
+            count: number;
+            totalQuantity: Decimal;
+            totalValue: Decimal;
+          };
+        };
+      } = {};
+
+      for (const movement of movements) {
+        const operation = movement.movementType.operation;
+        const quantity = movement.quantity;
+        const unitPrice =
+          movement.unitPrice ||
+          movement.warehouseMaterialStock?.updatedCost ||
+          movement.globalMaterial?.unitPrice;
+        const movementPrice = unitPrice
+          ? new Decimal(unitPrice).mul(quantity)
+          : new Decimal(0);
+
+        const movementDate = new Date(movement.movementDate);
+        const year = movementDate.getFullYear();
+        const month = movementDate.getMonth() + 1; // getMonth() é base 0
+        const yearMonthKey = `${year}-${month.toString().padStart(2, '0')}`; // Chave para agrupamento
+
+        // Agregação no nível do material (totais por tipo de operação)
+        switch (operation) {
+          case MaterialStockOperationType.IN:
+            materialMetrics.totalInCount += 1;
+            materialMetrics.totalInQuantity =
+              materialMetrics.totalInQuantity.add(quantity);
+            materialMetrics.totalInValue =
+              materialMetrics.totalInValue.add(movementPrice);
+            break;
+          case MaterialStockOperationType.OUT:
+            materialMetrics.totalOutCount += 1;
+            materialMetrics.totalOutQuantity =
+              materialMetrics.totalOutQuantity.add(quantity);
+            materialMetrics.totalOutValue =
+              materialMetrics.totalOutValue.add(movementPrice);
+            break;
+          case MaterialStockOperationType.ADJUSTMENT:
+            materialMetrics.totalAdjustmentCount += 1;
+            materialMetrics.totalAdjustmentQuantity =
+              materialMetrics.totalAdjustmentQuantity.add(quantity);
+            materialMetrics.totalAdjustmentValue =
+              materialMetrics.totalAdjustmentValue.add(movementPrice);
+            break;
+          case MaterialStockOperationType.RESERVATION:
+            materialMetrics.totalReservationCount += 1;
+            materialMetrics.totalReservationQuantity =
+              materialMetrics.totalReservationQuantity.add(quantity);
+            materialMetrics.totalReservationValue =
+              materialMetrics.totalReservationValue.add(movementPrice);
+            break;
+          case MaterialStockOperationType.RESTRICTION:
+            materialMetrics.totalRestrictionCount += 1;
+            materialMetrics.totalRestrictionQuantity =
+              materialMetrics.totalRestrictionQuantity.add(quantity);
+            materialMetrics.totalRestrictionValue =
+              materialMetrics.totalRestrictionValue.add(movementPrice);
+            break;
+        }
+
+        // Agregação por operação e mês/ano
+        if (!operationsByMonthAccumulator[operation]) {
+          operationsByMonthAccumulator[operation] = {};
+        }
+        if (!operationsByMonthAccumulator[operation][yearMonthKey]) {
+          operationsByMonthAccumulator[operation][yearMonthKey] = {
+            year: year,
+            month: month,
+            count: 0,
+            totalQuantity: new Decimal(0),
+            totalValue: new Decimal(0)
+          };
+        }
+
+        operationsByMonthAccumulator[operation][yearMonthKey].count += 1;
+        operationsByMonthAccumulator[operation][yearMonthKey].totalQuantity =
+          operationsByMonthAccumulator[operation][
+            yearMonthKey
+          ].totalQuantity.add(quantity);
+        operationsByMonthAccumulator[operation][yearMonthKey].totalValue =
+          operationsByMonthAccumulator[operation][yearMonthKey].totalValue.add(
+            movementPrice
+          );
+      }
+
+      // Formatando operationsByMonthAccumulator para o resultado final
+      materialMetrics.operationsByMonth = Object.keys(
+        operationsByMonthAccumulator
+      )
+        .map((opKey) => {
+          const monthlyData = Object.values(
+            operationsByMonthAccumulator[opKey]
+          ).sort((a, b) => {
+            // Ordena primeiro por ano, depois por mês
+            if (a.year !== b.year) {
+              return a.year - b.year;
+            }
+            return a.month - b.month;
+          });
+
+          return {
+            operation: opKey,
+            months: monthlyData
+          };
+        })
+        .sort((a, b) => a.operation.localeCompare(b.operation)); // Ordena operações alfabeticamente
+
+      return materialMetrics;
+    } catch (error) {
+      handlePrismaError(error, this.logger, 'MaterialStockMovementsService', {
+        operation: 'listTimeMetricsByWarehouseAndMaterial',
+        warehouseId,
+        materialId
+      });
+      throw error;
+    }
+  }
 }

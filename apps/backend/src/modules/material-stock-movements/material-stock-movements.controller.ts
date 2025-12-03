@@ -164,6 +164,44 @@ export class MaterialStockMovementsController {
   }
 
   /**
+   * Lista métricas de movimentação de estoque de material por depósito e material, agregadas por mês.
+   */
+  @Get('metrics/time/warehouse/:warehouseId/material/:materialId')
+  @ApiEndpointSwagger({
+    summary:
+      'Listar métricas de movimentação de estoque por tempo, depósito e material',
+    description:
+      'Retorna métricas agregadas por operação e por mês para um material específico em um depósito, com opção de filtro por período.',
+    response: {
+      status: HttpStatus.OK,
+      description: 'Métricas de movimentação de estoque por tempo.',
+      type: Object // Usar Object ou um DTO mais específico se for criado
+    },
+    errors: [
+      {
+        status: HttpStatus.NOT_FOUND,
+        description:
+          'Material ou depósito não encontrados, ou sem movimentações para o período.'
+      }
+    ]
+  })
+  async listTimeMetricsByWarehouseAndMaterial(
+    @Param('warehouseId', ParseIntPipe) warehouseId: number,
+    @Param('materialId') materialId: string,
+    @Query()
+    queryParams: {
+      startDate?: string;
+      endDate?: string;
+    }
+  ) {
+    return this.materialStockMovementsService.listTimeMetricsByWarehouseAndMaterial(
+      warehouseId,
+      materialId,
+      queryParams
+    );
+  }
+
+  /**
    * Atualiza uma movimentação de estoque de material existente.
    */
   @Put(':id')
