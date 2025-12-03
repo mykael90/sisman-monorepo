@@ -2,7 +2,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { SetStateAction, useCallback, useRef, useState } from 'react';
 import { SectionListHeaderSmall } from '@/components/section-list-header-small';
 import {
   ColumnFiltersState,
@@ -24,20 +24,68 @@ import { getMaterialStockMovementMetricsByWarehouseId } from '../../metrics-acti
 import { columns, createActions, SubRowComponent } from './metrics-columns'; // Importar SubRowComponent
 import { MetricsFilters } from './metrics-filters';
 import { MetricsCard } from './metrics-card';
+import { DefaultGlobalFilter } from '../../../../../../../components/table-tanstack/default-global-filter';
+import { InputDebounceRef } from '../../../../../../../components/ui/input';
+import { Separator } from '../../../../../../../components/ui/separator';
+import { DateRangeFilter } from '../../../../../../../components/filters/date-range-filter';
+import { addDays, endOfDay, startOfDay, subDays } from 'date-fns';
 
 export function MetricsListPage() {
   const { warehouse } = useWarehouseContext();
   const router = useRouter();
   const isDesktop = useMediaQuery('(min-width: 768px)');
 
+  const [date, setDateState] = useState<DateRange | undefined>({
+    from: subDays(startOfDay(new Date()), 100),
+    to: addDays(endOfDay(new Date()), 100) // Usar endOfDay para definir o final do dia
+  });
+
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined);
+  const [columnFilters, setColumnFiltersState] = useState<ColumnFiltersState>(
+    []
+  );
+
+  const [globalFilterValue, setGlobalFilterValueState] = useState('');
+  const inputDebounceRef = useRef<InputDebounceRef>(null); // Cria a Ref
 
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 100
   });
+
+  const setDate = useCallback(
+    (updater: SetStateAction<DateRange | undefined>) => {
+      setDateState(updater);
+      setPagination((prev) => ({ ...prev, pageIndex: 0 })); // Reseta para a primeira página ao aplicar filtro de data
+    },
+    []
+  );
+
+  const setGlobalFilterValue = useCallback(
+    (updater: SetStateAction<string>) => {
+      setGlobalFilterValueState(updater);
+      setPagination((prev) => ({ ...prev, pageIndex: 0 })); // Reseta para a primeira página ao aplicar filtro global
+    },
+    []
+  );
+
+  const setColumnFilters = useCallback(
+    (
+      updater:
+        | ColumnFiltersState
+        | ((old: ColumnFiltersState) => ColumnFiltersState)
+    ) => {
+      setColumnFiltersState(updater);
+      setPagination((prev) => ({ ...prev, pageIndex: 0 })); // Reseta para a primeira página ao aplicar filtro de coluna
+    },
+    []
+  );
+  // --- Fim dos Wrappers dos filtros ---
+
+  const handleClearFilters = () => {
+    setGlobalFilterValue(''); // Usa o setter modificado
+    inputDebounceRef.current?.clearInput();
+  };
 
   const {
     data: metricsData,
@@ -45,19 +93,14 @@ export function MetricsListPage() {
     isError,
     error
   } = useQuery<IMaterialStockMovementMetricsByWarehouse[], Error>({
-    queryKey: ['materialMetrics', warehouse?.id, dateRange],
+    queryKey: ['materialMetrics', warehouse?.id, date],
     queryFn: () =>
       getMaterialStockMovementMetricsByWarehouseId(warehouse?.id as number, {
-        from: dateRange?.from,
-        to: dateRange?.to
+        from: date?.from,
+        to: date?.to
       }),
     enabled: !!warehouse
   });
-
-  const handleClearFilters = () => {
-    setDateRange(undefined);
-    setColumnFilters([]);
-  };
 
   const columnActions = createActions(router);
 
@@ -71,12 +114,24 @@ export function MetricsListPage() {
       />
 
       <div className='mt-4 mb-4 h-auto rounded-xl border-0 bg-white px-4 py-3.5'>
-        <MetricsFilters
-          date={dateRange}
-          setDate={setDateRange}
-          onClearFilters={handleClearFilters}
-        />
+        <div className='text-md mb-2 font-semibold'>
+          Métricas retornadas no intervalo das datas
+        </div>
+
+        <Separator className='my-2' />
+        <div className='flex flex-col gap-4 md:flex-row'>
+          <DateRangeFilter date={date} setDate={setDate} />
+        </div>
       </div>
+
+      <DefaultGlobalFilter
+        // Passa os valores e setters para o componente
+        globalFilterValue={globalFilterValue}
+        setGlobalFilterValue={setGlobalFilterValue}
+        onClearFilter={handleClearFilters} // Passa a função de limpar
+        inputDebounceRef={inputDebounceRef} // Passa a ref
+        label={'Material'}
+      />
 
       {isLoading ? (
         <Loading />
@@ -90,10 +145,9 @@ export function MetricsListPage() {
           setSorting={setSorting}
           sorting={sorting}
           renderSubComponent={({ row }) => <SubRowComponent row={row} />} // Adicionar SubRowComponent
-          // Filtro global não é necessário para métricas com filtro de data
-          // globalFilterFn='includesString'
-          // globalFilter={globalFilterValue}
-          // setGlobalFilter={setGlobalFilterValue}
+          globalFilterFn='includesString'
+          globalFilter={globalFilterValue}
+          setGlobalFilter={setGlobalFilterValue}
         />
       ) : (
         <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3'>

@@ -101,7 +101,7 @@ export const columns = (
     id: 'materialName',
     header: 'Material',
     enableResizing: false,
-    size: 300,
+    size: 500,
     cell: (props) => (
       <div className='flex items-center justify-between gap-2 whitespace-normal'>
         {props.getValue() || 'N/A'}{' '}
@@ -203,6 +203,13 @@ export const columns = (
       // })
     ]
   }),
+  columnHelper.display({
+    id: 'separator-1',
+    header: () => <div className='w-full'></div>,
+    cell: () => <div className='w-full'></div>,
+    size: 5,
+    enableResizing: false
+  }),
   columnHelper.group({
     id: 'Saídas',
     header: () => <div className='text-center font-medium'>Retiradas</div>,
@@ -290,6 +297,52 @@ export const columns = (
       //     </div>
       //   )
       // })
+    ]
+  }),
+  columnHelper.display({
+    id: 'separator-1',
+    header: () => <div className='w-full'></div>,
+    cell: () => <div className='w-full'></div>,
+    size: 5,
+    enableResizing: false
+  }),
+  columnHelper.group({
+    id: 'balance',
+    header: () => <div className='text-center font-medium'>Balanço</div>,
+    columns: [
+      columnHelper.accessor(
+        (row) =>
+          Number(row.totalInQuantity || 0) - Number(row.totalOutQuantity || 0),
+        {
+          id: 'balanceQuantity',
+          size: 100,
+          header: 'Quantidade',
+          cell: (props) => (
+            <div className='text-center'>
+              {props.getValue().toLocaleString('pt-BR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+              })}
+            </div>
+          )
+        }
+      ),
+      columnHelper.accessor(
+        (row) => Number(row.totalInValue || 0) - Number(row.totalOutValue || 0),
+        {
+          id: 'balanceValue',
+          size: 100,
+          header: 'Montante',
+          cell: (props) => (
+            <div className='text-center'>
+              {props.getValue().toLocaleString('pt-BR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+              })}
+            </div>
+          )
+        }
+      )
     ]
   }),
   columnHelper.display({
