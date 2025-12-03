@@ -7,7 +7,7 @@ import {
   useReactTable
 } from '@tanstack/react-table';
 import { Button } from '@/components/ui/button';
-import { FileText, ChevronRight, ChevronDown } from 'lucide-react';
+import { FileText, ChevronRight, ChevronDown, ArrowUpDown } from 'lucide-react';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import {
   IMaterialStockMovementMetricsByWarehouse,
@@ -55,6 +55,25 @@ export const createActions = (
     // router.push(`metrics/details/${row.original.materialId}`);
   }
 });
+
+export const defaultColumn: Partial<
+  ColumnDef<IMaterialStockMovementMetricsByWarehouse>
+> = {
+  // Largura padrão
+  // size: 150,
+  enableResizing: true,
+  // Filtro desligado por padrão
+  enableColumnFilter: false,
+  filterFn: 'arrIncludesSome'
+  // Renderizador padrão da célula (texto simples)
+  // cell: ({ getValue }) => {
+  //   const value = getValue();
+  //   if (value === null || value === undefined || value === '') {
+  //     return <span className='text-muted-foreground'>N/A</span>;
+  //   }
+  //   return <div className='whitespace-normal'>{String(value)}</div>;
+  // }
+};
 
 export const columns = (
   configuredActions: ActionHandlers<IMaterialStockMovementMetricsByWarehouse>
@@ -121,7 +140,17 @@ export const columns = (
       columnHelper.accessor('totalInCount', {
         id: 'totalInCount',
         size: 100,
-        header: 'Ocorrências',
+        header: ({ column }) => {
+          return (
+            <div
+              className='flex cursor-pointer items-center text-center'
+              onClick={() => column.toggleSorting()}
+            >
+              Ocorrências
+              <ArrowUpDown className='text-muted-foreground ml-2 h-4 w-4' />
+            </div>
+          );
+        },
         cell: (props) => (
           <div className='text-center'>{props.getValue() || '0'}</div>
         )
@@ -129,7 +158,17 @@ export const columns = (
       columnHelper.accessor('totalInQuantity', {
         id: 'totalInQuantity',
         size: 100,
-        header: 'Quantidade',
+        header: ({ column }) => {
+          return (
+            <div
+              className='flex cursor-pointer items-center text-center'
+              onClick={() => column.toggleSorting()}
+            >
+              Quantidade
+              <ArrowUpDown className='text-muted-foreground ml-2 h-4 w-4' />
+            </div>
+          );
+        },
         cell: (props) => (
           <div className='text-center'>
             {props.getValue()
@@ -144,7 +183,17 @@ export const columns = (
       columnHelper.accessor('totalInValue', {
         id: 'totalInValue',
         size: 100,
-        header: 'Montante',
+        header: ({ column }) => {
+          return (
+            <div
+              className='flex cursor-pointer items-center text-center'
+              onClick={() => column.toggleSorting()}
+            >
+              Montante (R$)
+              <ArrowUpDown className='text-muted-foreground ml-2 h-4 w-4' />
+            </div>
+          );
+        },
         cell: (props) => (
           <div className='text-center'>
             {props.getValue()
@@ -212,12 +261,24 @@ export const columns = (
   }),
   columnHelper.group({
     id: 'Saídas',
-    header: () => <div className='text-center font-medium'>Retiradas</div>,
+    header: () => (
+      <div className='self-center text-center font-medium'>Retiradas</div>
+    ),
     columns: [
       columnHelper.accessor('totalOutCount', {
         id: 'totalOutCount',
         size: 100,
-        header: 'Ocorrências',
+        header: ({ column }) => {
+          return (
+            <div
+              className='flex cursor-pointer items-center text-center'
+              onClick={() => column.toggleSorting()}
+            >
+              Ocorrências
+              <ArrowUpDown className='text-muted-foreground ml-2 h-4 w-4' />
+            </div>
+          );
+        },
         cell: (props) => (
           <div className='text-center'>{props.getValue() || '0'}</div>
         )
@@ -225,7 +286,17 @@ export const columns = (
       columnHelper.accessor('totalOutQuantity', {
         id: 'totalOutQuantity',
         size: 100,
-        header: 'Quantidade',
+        header: ({ column }) => {
+          return (
+            <div
+              className='flex cursor-pointer items-center text-center'
+              onClick={() => column.toggleSorting()}
+            >
+              Quantidade
+              <ArrowUpDown className='text-muted-foreground ml-2 h-4 w-4' />
+            </div>
+          );
+        },
         cell: (props) => (
           <div className='text-center'>
             {props.getValue()
@@ -240,7 +311,17 @@ export const columns = (
       columnHelper.accessor('totalOutValue', {
         id: 'totalOutValue',
         size: 100,
-        header: 'Montante',
+        header: ({ column }) => {
+          return (
+            <div
+              className='flex cursor-pointer items-center text-center'
+              onClick={() => column.toggleSorting()}
+            >
+              Montante (R$)
+              <ArrowUpDown className='text-muted-foreground ml-2 h-4 w-4' />
+            </div>
+          );
+        },
         cell: (props) => (
           <div className='text-center'>
             {props.getValue()
@@ -300,7 +381,7 @@ export const columns = (
     ]
   }),
   columnHelper.display({
-    id: 'separator-1',
+    id: 'separator-2',
     header: () => <div className='w-full'></div>,
     cell: () => <div className='w-full'></div>,
     size: 5,
@@ -316,7 +397,17 @@ export const columns = (
         {
           id: 'balanceQuantity',
           size: 100,
-          header: 'Quantidade',
+          header: ({ column }) => {
+            return (
+              <div
+                className='flex cursor-pointer items-center text-center'
+                onClick={() => column.toggleSorting()}
+              >
+                Quantidade
+                <ArrowUpDown className='text-muted-foreground ml-2 h-4 w-4' />
+              </div>
+            );
+          },
           cell: (props) => (
             <div className='text-center'>
               {props.getValue().toLocaleString('pt-BR', {
@@ -332,7 +423,17 @@ export const columns = (
         {
           id: 'balanceValue',
           size: 100,
-          header: 'Montante',
+          header: ({ column }) => {
+            return (
+              <div
+                className='flex cursor-pointer items-center text-center'
+                onClick={() => column.toggleSorting()}
+              >
+                Montante (R$)
+                <ArrowUpDown className='text-muted-foreground ml-2 h-4 w-4' />
+              </div>
+            );
+          },
           cell: (props) => (
             <div className='text-center'>
               {props.getValue().toLocaleString('pt-BR', {

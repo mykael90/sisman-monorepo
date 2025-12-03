@@ -8,7 +8,9 @@ import {
   ColumnFiltersState,
   PaginationState,
   SortingState,
-  getCoreRowModel // Importar getCoreRowModel
+  getCoreRowModel, // Importar getCoreRowModel
+  getFacetedRowModel,
+  getFacetedUniqueValues
 } from '@tanstack/react-table';
 import { Package } from 'lucide-react';
 import { useWarehouseContext } from '../../../../choose-warehouse/context/warehouse-provider';
@@ -21,7 +23,12 @@ import { useRouter } from 'next/navigation';
 
 import { IMaterialStockMovementMetricsByWarehouse } from '../../metrics-types';
 import { getMaterialStockMovementMetricsByWarehouseId } from '../../metrics-actions';
-import { columns, createActions, SubRowComponent } from './metrics-columns'; // Importar SubRowComponent
+import {
+  columns,
+  createActions,
+  defaultColumn,
+  SubRowComponent
+} from './metrics-columns'; // Importar SubRowComponent
 import { MetricsFilters } from './metrics-filters';
 import { MetricsCard } from './metrics-card';
 import { DefaultGlobalFilter } from '../../../../../../../components/table-tanstack/default-global-filter';
@@ -29,11 +36,12 @@ import { InputDebounceRef } from '../../../../../../../components/ui/input';
 import { Separator } from '../../../../../../../components/ui/separator';
 import { DateRangeFilter } from '../../../../../../../components/filters/date-range-filter';
 import { addDays, endOfDay, startOfDay, subDays } from 'date-fns';
+import { TableTanstackFaceted } from '../../../../../../../components/table-tanstack/table-tanstack-faceted';
 
 export function MetricsListPage() {
   const { warehouse } = useWarehouseContext();
   const router = useRouter();
-  const isDesktop = useMediaQuery('(min-width: 768px)');
+  // const isDesktop = useMediaQuery('(min-width: 768px)');
 
   const [date, setDateState] = useState<DateRange | undefined>({
     from: subDays(startOfDay(new Date()), 100),
@@ -53,18 +61,18 @@ export function MetricsListPage() {
     pageSize: 100
   });
 
-  const setDate = useCallback(
-    (updater: SetStateAction<DateRange | undefined>) => {
-      setDateState(updater);
-      setPagination((prev) => ({ ...prev, pageIndex: 0 })); // Reseta para a primeira página ao aplicar filtro de data
-    },
-    []
-  );
-
   const setGlobalFilterValue = useCallback(
     (updater: SetStateAction<string>) => {
       setGlobalFilterValueState(updater);
       setPagination((prev) => ({ ...prev, pageIndex: 0 })); // Reseta para a primeira página ao aplicar filtro global
+    },
+    []
+  );
+
+  const setDate = useCallback(
+    (updater: SetStateAction<DateRange | undefined>) => {
+      setDateState(updater);
+      setPagination((prev) => ({ ...prev, pageIndex: 0 })); // Reseta para a primeira página ao aplicar filtro de data
     },
     []
   );
@@ -99,7 +107,7 @@ export function MetricsListPage() {
         from: date?.from,
         to: date?.to
       }),
-    enabled: !!warehouse
+    enabled: !!warehouse && !!date?.from && !!date?.to
   });
 
   const columnActions = createActions(router);
@@ -133,31 +141,39 @@ export function MetricsListPage() {
         label={'Material'}
       />
 
-      {isLoading ? (
-        <Loading />
-      ) : isDesktop ? (
-        <TableTanstack
-          data={metricsData || []}
-          columns={columns(columnActions)}
-          columnFilters={columnFilters}
-          pagination={pagination}
-          setPagination={setPagination}
-          setSorting={setSorting}
-          sorting={sorting}
-          renderSubComponent={({ row }) => <SubRowComponent row={row} />} // Adicionar SubRowComponent
-          globalFilterFn='includesString'
-          globalFilter={globalFilterValue}
-          setGlobalFilter={setGlobalFilterValue}
-        />
-      ) : (
-        <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3'>
-          {metricsData?.map(
-            (metrics: IMaterialStockMovementMetricsByWarehouse) => (
-              <MetricsCard key={metrics.materialId} metrics={metrics} />
-            )
-          )}
-        </div>
-      )}
+      {
+        isLoading ? (
+          <Loading />
+        ) : (
+          // isDesktop ? (
+          <TableTanstackFaceted
+            data={metricsData || []}
+            columns={columns(columnActions)}
+            columnFilters={columnFilters}
+            setColumnFilters={setColumnFilters}
+            defaultColumn={defaultColumn}
+            pagination={pagination}
+            setPagination={setPagination}
+            setSorting={setSorting}
+            sorting={sorting}
+            renderSubComponent={({ row }) => <SubRowComponent row={row} />} // Adicionar SubRowComponent
+            getFacetedRowModel={getFacetedRowModel()}
+            getFacetedUniqueValues={getFacetedUniqueValues()}
+            globalFilterFn='includesString'
+            globalFilter={globalFilterValue}
+            setGlobalFilter={setGlobalFilterValue}
+          />
+        )
+        // ) : (
+        //   <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3'>
+        //     {metricsData?.map(
+        //       (metrics: IMaterialStockMovementMetricsByWarehouse) => (
+        //         <MetricsCard key={metrics.materialId} metrics={metrics} />
+        //       )
+        //     )}
+        //   </div>
+        // )
+      }
     </div>
   );
 }
