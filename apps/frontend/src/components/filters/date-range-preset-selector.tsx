@@ -9,7 +9,8 @@ import {
   endOfMonth,
   startOfYear,
   endOfYear,
-  subDays
+  subDays,
+  setMonth
 } from 'date-fns';
 import { DateRange } from 'react-day-picker';
 import { Button } from '@/components/ui/button';
@@ -18,16 +19,21 @@ import {
   PopoverContent,
   PopoverTrigger
 } from '@/components/ui/popover';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select';
 import { Calendar } from '@/components/ui/calendar';
 import { ptBR } from 'date-fns/locale';
 import { cn } from '@/lib/utils';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuPortal
+} from '@/components/ui/dropdown-menu';
 
 interface DateRangePresetSelectorProps {
   setDate: React.Dispatch<React.SetStateAction<DateRange | undefined>>;
@@ -38,7 +44,6 @@ export function DateRangePresetSelector({
   setDate,
   className
 }: DateRangePresetSelectorProps) {
-  const [monthPickerOpen, setMonthPickerOpen] = React.useState(false);
   const [selectedMonth, setSelectedMonth] = React.useState<Date | undefined>(
     undefined
   );
@@ -74,54 +79,59 @@ export function DateRangePresetSelector({
 
   return (
     <div className={cn('flex flex-wrap items-center gap-2', className)}>
-      <Button variant='outline' onClick={() => applyPreset(6)}>
-        Últimos 7 dias
-      </Button>
-      <Button variant='outline' onClick={() => applyPreset(14)}>
-        Últimos 15 dias
-      </Button>
-      <Button variant='outline' onClick={() => applyPreset(29)}>
-        Últimos 30 dias
-      </Button>
-      <Button variant='outline' onClick={() => applyPreset(59)}>
-        Últimos 60 dias
-      </Button>
-      <Button variant='outline' onClick={() => applyPreset(179)}>
-        Últimos 180 dias
-      </Button>
-      <Button variant='outline' onClick={() => applyPreset(364)}>
-        Últimos 365 dias
-      </Button>
-      <Button variant='outline' onClick={applyCurrentMonth}>
-        Mês atual
-      </Button>
-      <Button variant='outline' onClick={applyCurrentYear}>
-        Ano atual
-      </Button>
-
-      <Popover open={monthPickerOpen} onOpenChange={setMonthPickerOpen}>
-        <PopoverTrigger asChild>
-          <Button variant='outline' className='w-[180px]'>
-            {selectedMonth
-              ? format(selectedMonth, 'MMMM yyyy', { locale: ptBR })
-              : 'Selecionar Mês'}
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className='w-auto p-0'>
-          <Calendar
-            mode='single'
-            captionLayout='dropdown'
-            selected={selectedMonth}
-            onSelect={(date) => {
-              applySpecificMonth(date);
-              setMonthPickerOpen(false);
-            }}
-            fromYear={2000}
-            toYear={new Date().getFullYear()}
-            locale={ptBR}
-          />
-        </PopoverContent>
-      </Popover>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant='outline'>Intervalo de Datas</Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className='w-56'>
+          <DropdownMenuLabel>Intervalos Predefinidos</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={() => applyPreset(6)}>
+            Últimos 7 dias
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => applyPreset(14)}>
+            Últimos 15 dias
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => applyPreset(29)}>
+            Últimos 30 dias
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => applyPreset(59)}>
+            Últimos 60 dias
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => applyPreset(179)}>
+            Últimos 180 dias
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => applyPreset(364)}>
+            Últimos 365 dias
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={applyCurrentMonth}>
+            Mês atual
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={applyCurrentYear}>
+            Ano atual
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuSub>
+            <DropdownMenuSubTrigger>
+              Selecionar Mês (
+              {format(selectedMonth ?? new Date(), 'yyyy', { locale: ptBR })})
+            </DropdownMenuSubTrigger>
+            <DropdownMenuPortal>
+              <DropdownMenuSubContent className='w-auto p-1'>
+                {Array.from({ length: 12 }).map((_, i) => (
+                  <DropdownMenuItem
+                    key={i}
+                    onClick={() => applySpecificMonth(setMonth(new Date(), i))}
+                  >
+                    {format(setMonth(new Date(), i), 'MMMM', { locale: ptBR })}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuSubContent>
+            </DropdownMenuPortal>
+          </DropdownMenuSub>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   );
 }
