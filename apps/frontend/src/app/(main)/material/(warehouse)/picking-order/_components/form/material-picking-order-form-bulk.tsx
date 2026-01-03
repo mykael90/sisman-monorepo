@@ -214,9 +214,16 @@ export function MaterialPickingOrderFormBulk({
             />
           )} */}
 
-          <div className='bg-sisman-blue/50 text-center text-xl text-white'>
-            Formulário de Reserva: Req. Material -{' '}
-            {materialRequestData?.protocolNumber}
+          <div className='bg-sisman-blue/70 relative overflow-hidden p-4 text-white shadow-lg backdrop-blur-sm'>
+            <div className='relative z-10'>
+              <p className='text-sm font-medium tracking-wider text-white/75 uppercase'>
+                Formulário de Reserva
+              </p>
+              <p className='mt-1 font-mono text-2xl font-bold text-white'>
+                {materialRequestData?.protocolNumber}
+              </p>
+              <p className='text-xs text-white/75'>Requisição de Material</p>
+            </div>
           </div>
 
           {/* PickingOrder Details */}

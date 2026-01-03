@@ -243,15 +243,13 @@ export function RequestMaterialForm({
               <div className='flex items-baseline gap-4'>
                 <formRequest.Field
                   name='protocolNumber'
-                  validators={
-                    {
-                      // NOTE: Double check this validator. `schemaZodRequisicoesSipac.shape.newReq`
-                      // seems unusual for a protocol number string. It might be `schemaZodRequisicoesSipac.shape.numeroAno`
-                      // or a direct `z.string().min(1, 'Número obrigatório')`.
-                      // Assumindo que schemaZodRequisicoesSipac.shape.newReq é o correto para validação
-                      // onBlur: schemaZodRequisicoesSipacNotRequired.shape.newReq
-                    }
-                  }
+                  validators={{
+                    // NOTE: Double check this validator. `schemaZodRequisicoesSipac.shape.newReq`
+                    // seems unusual for a protocol number string. It might be `schemaZodRequisicoesSipac.shape.numeroAno`
+                    // or a direct `z.string().min(1, 'Número obrigatório')`.
+                    // Assumindo que schemaZodRequisicoesSipac.shape.newReq é o correto para validação
+                    onChange: schemaZodRequisicoesSipac.shape.newReq
+                  }}
                 >
                   {(field) => (
                     <FormInputField
