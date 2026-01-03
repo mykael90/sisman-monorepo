@@ -240,7 +240,7 @@ export function RequestMaterialFormBulk({
         <Card>
           <CardHeader>
             <CardTitle className='text-lg'>
-              Consulta à Requisição de Material
+              Consulta à Requisição de Material em Lote
             </CardTitle>
           </CardHeader>
           <CardContent>

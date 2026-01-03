@@ -55,8 +55,17 @@ export function MaterialPickingOrderAddBulk({
   >([]);
 
   const [formKey, setFormKey] = useState(() => Date.now().toString());
+
   const triggerReset = () => {
     setFormKey(Date.now().toString());
+  };
+
+  const handleRemoveMaterialPickingOrder = (index: number) => {
+    const newDefaultDataMaterialsPickingOrders = [
+      ...defaultDataMaterialsPickingOrders
+    ];
+    newDefaultDataMaterialsPickingOrders.splice(index, 1);
+    setDefaultDataMaterialsPickingOrders(newDefaultDataMaterialsPickingOrders);
   };
 
   // A verificação `!userId` também protege contra o valor `NaN`.
@@ -101,7 +110,7 @@ export function MaterialPickingOrderAddBulk({
         }}
       />
 
-      <RadioGroup
+      {/* <RadioGroup
         defaultValue={requestSearchType}
         onValueChange={(value) => {
           cleanFormAndStates();
@@ -124,7 +133,7 @@ export function MaterialPickingOrderAddBulk({
           <RadioGroupItem value='maintenance' id='maintenance' />
           <Label htmlFor='maintenance'>Requisição de Manutenção</Label>
         </div>
-      </RadioGroup>
+      </RadioGroup> */}
 
       {/* Formulário para fazer consulta de requisição de manutenção para reserva */}
       {/* {requestSearchType === 'maintenance' && (
@@ -191,7 +200,7 @@ export function MaterialPickingOrderAddBulk({
 
             return (
               <div
-                className='space-y-4 rounded-md border py-4'
+                className='mb-6 space-y-4 rounded-md border py-4'
                 key={
                   formKey +
                   defaultDataMaterialPickingOrder.materialRequestData?.id
@@ -202,7 +211,7 @@ export function MaterialPickingOrderAddBulk({
                     formKey +
                     defaultDataMaterialPickingOrder.materialRequestData?.id
                   }
-                  onClean={triggerReset}
+                  onClean={handleRemoveMaterialPickingOrder.bind(this, index)}
                   onCancel={redirectList}
                   relatedData={relatedData}
                   SubmitButtonIcon={FilePlus}

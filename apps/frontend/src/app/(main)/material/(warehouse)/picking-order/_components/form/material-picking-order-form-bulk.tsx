@@ -175,7 +175,7 @@ export function MaterialPickingOrderFormBulk({
   )) || <FilePlus className='mr-2 h-5 w-5' />;
 
   return (
-    <div className='space-y-6 pb-6'>
+    <div className='space-y-6'>
       {/* Erros do lado do servidor */}
       <ErrorServerForm serverState={serverStatePickingOrder} />
 
@@ -206,19 +206,45 @@ export function MaterialPickingOrderFormBulk({
           {/* Informações extraídas da requisição de manutenção 
           Só renderiza o card se houver dados da requisição
           */}
-          {maintenanceRequestData && (
+          {/* {maintenanceRequestData && (
             <CardMaintenanceSummary
               maintenanceRequestData={maintenanceRequestData}
               setFieldValue={formPickingOrder.setFieldValue}
             />
-          )}
+          )} */}
+
+          <div className='bg-sisman-blue/50 text-center text-xl text-white'>
+            Formulário de Reserva: Req. Material -{' '}
+            {materialRequestData?.protocolNumber}
+          </div>
 
           {/* PickingOrder Details */}
           <Card>
-            <CardHeader>
-              <CardTitle className='text-lg'>Formulário de Reserva</CardTitle>
-            </CardHeader>
+            {/* <CardHeader>
+              <CardTitle className='text-lg'>
+                Formulário de Reserva: Req. Material -{' '}
+                {materialRequestData?.protocolNumber}
+              </CardTitle>
+            </CardHeader> */}
             <CardContent className='space-y-4'>
+              <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+                <div className='space-y-2'>
+                  <Label>Requisição de Manutenção</Label>
+                  <p className='text-muted-foreground'>
+                    {maintenanceRequestData?.protocolNumber}
+                  </p>
+                </div>
+                <div className='space-y-2'>
+                  <Label>Edificação / Local Específico</Label>
+                  <p className='text-muted-foreground'>
+                    {/* Prioriza o espaço, depois a edificação, e por último o campo 'local' */}
+                    {maintenanceRequestData?.space?.name ??
+                      maintenanceRequestData?.building?.name ??
+                      maintenanceRequestData?.local ??
+                      'Não especificado'}
+                  </p>
+                </div>
+              </div>
               <div className='grid grid-cols-1 items-start gap-4 md:grid-cols-1'>
                 <div className='hidden'>
                   <formPickingOrder.Field
