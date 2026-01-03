@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useTransition } from 'react';
+import React, { useEffect, useRef, useState, useTransition } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import {
@@ -51,9 +51,11 @@ export function RequestMaterialFormBulk({
   >;
   relatedData: IMaterialPickingOrderRelatedData;
 }) {
+  const protocolNumberInputRef = useRef<HTMLInputElement>(null);
   const { listUsers, listWorkers } = relatedData;
   const [maintenanceRequestData, setMaintenanceRequestData] =
     useState<IMaintenanceRequestBalanceWithRelations | null>(null);
+
 
   const [materialRequestData, setMaterialRequestData] =
     useState<IMaterialRequestBalanceWithRelations | null>(null);
@@ -86,7 +88,7 @@ export function RequestMaterialFormBulk({
     setMaterialRequestData(null);
     setMaterialRequestBalance(null);
     formRequestBulk.setFieldValue('protocolNumber', '');
-    //I want focus the field protocolNumber
+    protocolNumberInputRef.current?.focus({ preventScroll: true });
 
     // formRequestBulk.reset();
   };
@@ -391,6 +393,7 @@ export function RequestMaterialFormBulk({
                     >
                       {(field) => (
                         <FormInputField
+                          ref={protocolNumberInputRef}
                           field={field}
                           label='Número da Requisição de Material'
                           type='tel'
