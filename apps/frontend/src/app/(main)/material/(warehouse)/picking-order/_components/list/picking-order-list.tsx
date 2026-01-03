@@ -27,7 +27,7 @@ import {
   defaultColumn,
   SubRowComponent
 } from './picking-order-columns';
-import { FilterX, Package, PackagePlus } from 'lucide-react';
+import { FilterX, Package, Package2Icon, PackagePlus } from 'lucide-react';
 import { SectionListHeaderSmall } from '../../../../../../../components/section-list-header-small';
 import { useWarehouseContext } from '../../../../choose-warehouse/context/warehouse-provider';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -44,6 +44,7 @@ import { TableTanstackFaceted } from '../../../../../../../components/table-tans
 import { DefaultGlobalFilter } from '../../../../../../../components/table-tanstack/default-global-filter';
 import { materialPickingOrderStatusDisplayMapPortuguese } from '../../../../../../../mappers/material-picking-order-mappers-translate';
 import { toast } from 'sonner';
+import { SectionListHeaderSmallMultipleButtons } from '../../../../../../../components/section-list-header-small-multiple-buttons';
 
 export function PickingOrderListPage() {
   const { warehouse } = useWarehouseContext();
@@ -222,20 +223,32 @@ export function PickingOrderListPage() {
     router.push('picking-order/add');
   };
 
+  const handleAddPickingOrderBulk = () => {
+    router.push('picking-order/add-bulk');
+  };
+
   const columnActions = createActions(router, queryClient);
 
   return (
     <div className='container mx-auto pb-6'>
-      <SectionListHeaderSmall
+      <SectionListHeaderSmallMultipleButtons
         title='Gerenciamento de Ordens de Reserva'
         subtitle='Sistema de gerenciamento de ordens de Reserva'
         TitleIcon={Package}
-        actionButton={{
-          text: 'Cadastrar Ordem de Reserva',
-          onClick: handleAddPickingOrder,
-          variant: 'default',
-          Icon: PackagePlus
-        }}
+        actionButtons={[
+          {
+            text: 'Cadasto em Lote',
+            onClick: handleAddPickingOrderBulk,
+            variant: 'default',
+            Icon: Package2Icon
+          },
+          {
+            text: 'Cadastrar Ordem de Reserva',
+            onClick: handleAddPickingOrder,
+            variant: 'default',
+            Icon: PackagePlus
+          }
+        ]}
       />
 
       <div className='mt-4 mb-4 h-auto rounded-xl border-0 bg-white px-4 py-3.5'>

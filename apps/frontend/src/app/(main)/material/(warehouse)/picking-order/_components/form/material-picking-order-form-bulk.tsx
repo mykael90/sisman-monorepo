@@ -156,14 +156,14 @@ export function MaterialPickingOrderFormBulk({
     return (
       <FormSuccessDisplayCard
         serverState={serverStatePickingOrder}
-        // handleActions={{
-        //   handleResetForm: handleReset,
-        //   handleCancelForm: handleCancel
-        // }}
-        // messageActions={{
-        //   handleResetForm: 'Realizar nova reserva',
-        //   handleCancel: 'Voltar para a lista'
-        // }}
+        handleActions={{
+          handleResetForm: handleReset
+          // handleCancelForm: handleCancel
+        }}
+        messageActions={{
+          handleResetForm: 'Fechar'
+          // handleCancel: 'Voltar para a lista'
+        }}
         isInDialog={false}
       />
     );

@@ -53,30 +53,29 @@ export function RequestMaterialFormBulk({
 }) {
   const protocolNumberInputRef = useRef<HTMLInputElement>(null);
   const { listUsers, listWorkers } = relatedData;
-  const [maintenanceRequestData, setMaintenanceRequestData] =
-    useState<IMaintenanceRequestBalanceWithRelations | null>(null);
+  const [isPendingTransition, startTransition] = useTransition();
 
+  // Removido os estados locais de data, pois vamos passar direto para a função de adicionar
+  // Se você precisar deles para exibir algo ANTES de adicionar, mantenha-os,
+  // mas aqui o foco é o fluxo de "lote".
 
-  const [materialRequestData, setMaterialRequestData] =
-    useState<IMaterialRequestBalanceWithRelations | null>(null);
-
-  const [materialRequestBalance, setMaterialRequestBalance] =
-    useState<IMaterialRequestBalanceWithRelationsForm | null>(null);
-
-  useEffect(() => {
-    if (materialRequestData) {
-      handleAddMaterialPickingOrder();
-      clearStates();
-    }
-  }, [materialRequestData]);
-
-  const handleAddMaterialPickingOrder = () => {
-    const { protocolNumber, ...details } = formRequestBulk.state.values;
+  const handleAddMaterialPickingOrder = (
+    maintenanceData: IMaintenanceRequestBalanceWithRelations | null,
+    materialData: IMaterialRequestBalanceWithRelations,
+    details: any
+  ) => {
+    const materialInfoBalance = {
+      ...materialData,
+      itemsBalance: materialData.itemsBalance?.map((item) => ({
+        ...item,
+        key: Date.now() + Math.random()
+      }))
+    };
 
     const newItem = {
-      maintenanceRequestData,
-      materialRequestData,
-      materialRequestBalance,
+      maintenanceRequestData: maintenanceData,
+      materialRequestData: materialData,
+      materialRequestBalance: materialInfoBalance,
       details
     };
 
@@ -84,89 +83,11 @@ export function RequestMaterialFormBulk({
   };
 
   const clearStates = () => {
-    setMaintenanceRequestData(null);
-    setMaterialRequestData(null);
-    setMaterialRequestBalance(null);
     formRequestBulk.setFieldValue('protocolNumber', '');
-    protocolNumberInputRef.current?.focus({ preventScroll: true });
-
-    // formRequestBulk.reset();
-  };
-
-  const [isPendingTransition, startTransition] = useTransition();
-
-  const scrapeOrUpdateRequisicaoMaterialSipac = async (
-    formattedProtocolNumber: string
-  ) => {
-    const scrapingRequisicaoMaterialSipac =
-      await handleFetchOneAndPersistRequisicaoMaterialComRequisicaoManutencaoVinculada(
-        formattedProtocolNumber
-      );
-    if (scrapingRequisicaoMaterialSipac) {
-      // When you use await inside a startTransition function, the state updates that happen after the await are not marked as Transitions. You must wrap state updates after each await in a startTransition call:
-
-      // setMaterialRequestData(scrapingRequisicaoMaterialSipac);
-      console.log(
-        'Requisição de material importada do SIPAC:',
-        scrapingRequisicaoMaterialSipac
-      );
-      startTransition(() => {
-        //Uso de recursividade, como foi bem sucedido, vai localizar corretamente e vai exibir em tela na próxima chamada
-        toast.success(
-          `Requisição de material nº ${formattedProtocolNumber} importada do SIPAC com sucesso!`
-        );
-        findOrImportMaterialRequestBalance(formattedProtocolNumber);
-      });
-    } else {
-      toast.error(
-        `Falha ao importar requisição de material nº ${formattedProtocolNumber} do SIPAC. Verifique os dados e tente novamente.`
-      );
-    }
-  };
-
-  // const updateRequisicaoManutencaoSipac = async (
-  //   formattedProtocolNumber: string
-  // ) => {
-  //   const scrapingRequisicaoManutencaoSipac =
-  //     await fetchOneAndPersistSipacRequisicoesManutencao(
-  //       formattedProtocolNumber
-  //     );
-  //   if (scrapingRequisicaoManutencaoSipac) {
-  //     // When you use await inside a startTransition function, the state updates that happen after the await are not marked as Transitions. You must wrap state updates after each await in a startTransition call:
-
-  //     // setMaintenanceRequestData(scrapingRequisicaoManutencaoSipac);
-  //     console.log(
-  //       'Requisição de manutenção importada do SIPAC:',
-  //       scrapingRequisicaoManutencaoSipac
-  //     );
-  //     startTransition(() => {
-  //       //Uso de recursividade, como foi bem sucedido, vai localizar corretamente e vai exibir em tela na próxima chamada
-  //       toast.success(
-  //         `Requisição de manutenção nº ${formattedProtocolNumber} importada do SIPAC com sucesso!`
-  //       );
-  //       findMaintenanceRequest(formattedProtocolNumber);
-  //     });
-  //   } else {
-  //     toast.error(
-  //       `Falha ao importar requisição de manutenção nº ${formattedProtocolNumber} do SIPAC. Verifique os dados e tente novamente.`
-  //     );
-  //   }
-  // };
-
-  const findMaintenanceRequest = async (formattedProtocolNumber: string) => {
-    const maintenanceRequestResponse =
-      await showMaintenanceRequestBalanceByProtocol(formattedProtocolNumber);
-    if (maintenanceRequestResponse) {
-      // When you use await inside a startTransition function, the state updates that happen after the await are not marked as Transitions. You must wrap state updates after each await in a startTransition call:
-      startTransition(() => {
-        setMaintenanceRequestData(maintenanceRequestResponse);
-        toast.success('Requisição de manutenção encontrada.');
-      });
-    } else {
-      toast.warning(
-        `Requisição de número ${formattedProtocolNumber} não encontrada no SISMAN`
-      );
-    }
+    // O timeout garante que o focus ocorra após o TanStack Form processar o reset
+    setTimeout(() => {
+      protocolNumberInputRef.current?.focus({ preventScroll: true });
+    }, 0);
   };
 
   const findOrImportMaterialRequestBalance = async (
@@ -175,66 +96,41 @@ export function RequestMaterialFormBulk({
     const materialRequestResponse = await showMaterialRequestBalanceByProtocol(
       formattedProtocolNumber
     );
+
     if (materialRequestResponse) {
-      // When you use await inside a startTransition function, the state updates that happen after the await are not marked as Transitions. You must wrap state updates after each await in a startTransition call:
+      let maintenanceData = null;
+
+      // Busca manutenção vinculada se existir
+      if (materialRequestResponse.maintenanceRequest?.protocolNumber) {
+        maintenanceData = await showMaintenanceRequestBalanceByProtocol(
+          materialRequestResponse.maintenanceRequest.protocolNumber
+        );
+      }
+
       startTransition(() => {
-        setMaterialRequestData(materialRequestResponse);
-
-        // para o card-material-link-details
-        const materialInfoBalance = {
-          ...materialRequestResponse,
-          itemsBalance: materialRequestResponse.itemsBalance?.map((item) => ({
-            ...item,
-            key: Date.now() + Math.random() //é necessário inserir uma chave para realizar operacoes na tabela (localizar o item)
-          }))
-        };
-
-        setMaterialRequestBalance(materialInfoBalance);
-
-        // setFieldValue('materialRequestId', materialRequestResponse.id);
-
-        // setFieldValue(
-        //   'items',
-        //   materialInfoBalance.itemsBalance?.map(
-        //     (
-        //       item: IItemPickingOrderMaterialRequestForm
-        //     ): IMaterialPickingOrderItemAddForm => ({
-        //       key: item.key,
-        //       globalMaterialId: item.globalMaterialId,
-        //       materialInstanceId: undefined, // Assuming global material for now
-        //       quantityToPick: Number(item.quantityBalancePotential),
-        //       materialRequestItemId: item.materialRequestItemId,
-        //       unitPrice: item.unitPrice
-        //     })
-        //   )
-        // );
-
-        toast.success('Requisição de material encontrada.');
-
-        if (materialRequestResponse.maintenanceRequest?.protocolNumber) {
-          findMaintenanceRequest(
-            materialRequestResponse.maintenanceRequest.protocolNumber
-          );
-        }
+        const currentDetails = formRequestBulk.state.values;
+        handleAddMaterialPickingOrder(
+          maintenanceData,
+          materialRequestResponse,
+          currentDetails
+        );
+        toast.success('Requisição adicionada à lista.');
+        clearStates();
       });
     } else {
-      toast.warning(
-        `Requisição de número ${formattedProtocolNumber} não encontrada no SISMAN. Será realizada uma tentativa de consulta no SIPAC.`
-      );
-      await scrapeOrUpdateRequisicaoMaterialSipac(formattedProtocolNumber);
-    }
-  };
+      toast.warning(`Não encontrado no SISMAN. Tentando SIPAC...`);
+      const scraped =
+        await handleFetchOneAndPersistRequisicaoMaterialComRequisicaoManutencaoVinculada(
+          formattedProtocolNumber
+        );
 
-  const handleSubmit = (protocolNumber: string) => {
-    const formattedProtocolNumber = formatRequestNumber(protocolNumber);
-    // ---- Fluxo de Requisição de Material ----
-    startTransition(async () => {
-      try {
+      if (scraped) {
+        // Recursão controlada: agora que persistiu, busca de novo
         findOrImportMaterialRequestBalance(formattedProtocolNumber);
-      } catch (error) {
-        toast.error('Falha ao buscar requisição de material.');
+      } else {
+        toast.error(`Falha ao importar do SIPAC.`);
       }
-    });
+    }
   };
 
   const formRequestBulk = useForm({
@@ -247,27 +143,34 @@ export function RequestMaterialFormBulk({
       collectedByOther: ''
     },
     onSubmit: async ({ value }) => {
-      handleSubmit(value.protocolNumber);
+      await findOrImportMaterialRequestBalance(
+        formatRequestNumber(value.protocolNumber)
+      );
     }
   });
 
-  if (isPendingTransition) return <Loading />;
+  // REMOVIDO: if (isPendingTransition) return <Loading />;
+  // Em vez disso, controlamos a UI abaixo
 
   return (
     <form
+      style={{ overflowAnchor: 'none' }} // <--- ISSO É VITAL
       id='form-request-bulk'
       onSubmit={(e) => {
         e.preventDefault();
         e.stopPropagation();
         formRequestBulk.handleSubmit();
       }}
+      className={isPendingTransition ? 'pointer-events-none opacity-70' : ''}
     >
       <div className='space-y-6'>
-        {/* Request number */}
         <Card>
           <CardHeader>
-            <CardTitle className='text-lg'>
+            <CardTitle className='flex items-center gap-2 text-lg'>
               Consulta à Requisição de Material em Lote
+              {isPendingTransition && (
+                <RefreshCcw className='h-4 w-4 animate-spin' />
+              )}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -388,7 +291,7 @@ export function RequestMaterialFormBulk({
                         // seems unusual for a protocol number string. It might be `schemaZodRequisicoesSipac.shape.numeroAno`
                         // or a direct `z.string().min(1, 'Número obrigatório')`.
                         // Assumindo que schemaZodRequisicoesSipac.shape.newReq é o correto para validação
-                        onBlur: schemaZodRequisicoesSipac.shape.newReq
+                        onChange: schemaZodRequisicoesSipac.shape.newReq
                       }}
                     >
                       {(field) => (
