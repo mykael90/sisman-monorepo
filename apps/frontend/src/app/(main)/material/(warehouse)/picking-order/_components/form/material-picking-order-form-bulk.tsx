@@ -66,6 +66,7 @@ export function MaterialPickingOrderFormBulk({
     maintenanceRequestData: IMaintenanceRequestBalanceWithRelations | null;
     materialRequestData: IMaterialRequestBalanceWithRelations | null;
     materialRequestBalance: IMaterialRequestBalanceWithRelationsForm | null;
+    details: any;
   };
   formActionProp: (
     prevState: IActionResultForm<
@@ -155,14 +156,14 @@ export function MaterialPickingOrderFormBulk({
     return (
       <FormSuccessDisplayCard
         serverState={serverStatePickingOrder}
-        handleActions={{
-          handleResetForm: handleReset,
-          handleCancelForm: handleCancel
-        }}
-        messageActions={{
-          handleResetForm: 'Realizar nova reserva',
-          handleCancel: 'Voltar para a lista'
-        }}
+        // handleActions={{
+        //   handleResetForm: handleReset,
+        //   handleCancelForm: handleCancel
+        // }}
+        // messageActions={{
+        //   handleResetForm: 'Realizar nova reserva',
+        //   handleCancel: 'Voltar para a lista'
+        // }}
         isInDialog={false}
       />
     );
@@ -464,10 +465,9 @@ export function MaterialPickingOrderFormBulk({
                 <Button
                   type='submit'
                   disabled={
-                    !canSubmit ||
-                    isPendingPickingOrder ||
-                    isValidating ||
-                    !isTouched
+                    !canSubmit || isPendingPickingOrder || isValidating
+                    // ||
+                    // !isTouched
                   }
                 >
                   {isPendingPickingOrder || isValidating

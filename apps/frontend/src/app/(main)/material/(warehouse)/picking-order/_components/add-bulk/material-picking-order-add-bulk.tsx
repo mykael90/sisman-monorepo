@@ -51,6 +51,7 @@ export function MaterialPickingOrderAddBulk({
       maintenanceRequestData: IMaintenanceRequestBalanceWithRelations | null;
       materialRequestData: IMaterialRequestBalanceWithRelations | null;
       materialRequestBalance: IMaterialRequestBalanceWithRelationsForm | null;
+      details: any;
     }>
   >([]);
 
@@ -154,6 +155,7 @@ export function MaterialPickingOrderAddBulk({
           setDefaultDataMaterialsPickingOrders={
             setDefaultDataMaterialsPickingOrders
           }
+          relatedData={relatedData}
         />
       )}
 
@@ -195,7 +197,8 @@ export function MaterialPickingOrderAddBulk({
               collectorType: 'worker',
               legacy_place: undefined,
               requestedByUserId: session?.user.idSisman,
-              linkMaterialRequest: true
+              linkMaterialRequest: true,
+              ...defaultDataMaterialPickingOrder.details
             };
 
             return (
