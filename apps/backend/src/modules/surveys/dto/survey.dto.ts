@@ -1,0 +1,37 @@
+import { Prisma, Survey } from '@sisman/prisma';
+
+// =================================================================
+// 1. "SUPER CLASSES" DE RESPOSTA (FONTE DA VERDADE)
+// Contêm o contrato com o Prisma (`implements`) e os decoradores de validação.
+// São a base para todas as outras DTOs.
+// ===============================================================
+
+/**
+ * Classe base.
+ * @hidden
+ */
+
+class SurveyBaseDto implements Survey {
+  id: string;
+  title: string;
+  description: string;
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// =================================================================
+// 2. DTOs DE RESPOSTA (Públicas) - Adicionam as relações aninhadas
+// =================================================================
+
+/**
+ * DTO para representar a resposta completa, incluindo suas relações.
+ */
+
+// =================================================================
+// 3. DTOs DE CRIAÇÃO (INPUT) - Derivadas com OmitType
+// =================================================================
+
+// =================================================================
+// 4. DTOs DE ATUALIZAÇÃO (INPUT) - Derivadas com PartialType
+// =================================================================

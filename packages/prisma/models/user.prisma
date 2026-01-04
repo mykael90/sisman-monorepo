@@ -26,9 +26,9 @@ model User {
   materialRequestStatusUpdates MaterialRequestStatus[] @relation("MaterialRequestStatusChangedBy")
 
   // Relations: material.prisma (for MaterialWithdrawal)
-  withdrawalsProcessed MaterialWithdrawal[] @relation("WithdrawalsProcessedBy") // Withdrawals processed by this user.
+  withdrawalsProcessed  MaterialWithdrawal[] @relation("WithdrawalsProcessedBy") // Withdrawals processed by this user.
   withdrawalsAuthorized MaterialWithdrawal[] @relation("WithdrawalsAuthorizedBy") // Withdrawals processed by this user.
-  withdrawalsCollected MaterialWithdrawal[] @relation("WithdrawalsCollectedByUser") // Withdrawals collected by this user.
+  withdrawalsCollected  MaterialWithdrawal[] @relation("WithdrawalsCollectedByUser") // Withdrawals collected by this user.
 
   // Relations: material.prisma (for MaterialReceipt)
   receiptsProcessed MaterialReceipt[] @relation("ReceiptsProcessedBy") // Material receipts processed by this user.
@@ -60,6 +60,8 @@ model User {
   maintenanceInstanceId Int?
 
   workerManualFrequencies WorkerManualFrequency[]
+
+  surveyResponses SurveyResponse[]
 
   @@map("users") // Maps this model to the 'users' table.
 }

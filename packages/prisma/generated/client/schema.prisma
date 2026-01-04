@@ -2115,6 +2115,86 @@ enum SipacRequisicaoManutencaoDivisoes {
   VIARIO
 }
 
+// Enum para controlar o tipo de resposta esperada
+enum SurveyQuestionType {
+  RATING // De 1 a 10 (ou 1 a 5)
+  TEXT // Texto livre
+  BOOLEAN // Sim/Não
+  MULTIPLE // Múltipla escolha (opcional, requer mais uma tabela de Options)
+}
+
+// 1. A Definição da Pesquisa (O "Header" conceitual do modelo, mas focado no TEMA)
+model Survey {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now()) @db.Timestamp(0) // Timestamp for when the user record was created.
+  updatedAt   DateTime @updatedAt @db.Timestamp(0) // Timestamp for the last update of the user record.
+
+  // Relacionamentos
+
+  questions SurveyQuestion[]
+  responses SurveyResponse[]
+
+  @@map("surveys")
+}
+
+// 2. As Perguntas (Definição do que será perguntado)
+model SurveyQuestion {
+  id       String             @id @default(uuid())
+  text     String // O enunciado da pergunta
+  order    Int // Para ordenar as perguntas na tela (1, 2, 3...)
+  type     SurveyQuestionType @default(RATING)
+  required Boolean            @default(true)
+
+  surveyId String
+  survey   Survey @relation(fields: [surveyId], references: [id])
+
+  answers SurveyAnswer[] // Relacionamento inverso para análises
+
+  @@map("survey_questions")
+}
+
+// 3. O Cabeçalho da Resposta (Quem respondeu e quando)
+// Isso substitui o seu "Header" original no contexto da resposta
+model SurveyResponse {
+  id          String   @id @default(uuid())
+  completedAt DateTime @default(now()) @db.Timestamp(0) // Timestamp for when the user record was created.
+
+  // Relacionamento com seu usuário existente
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  surveyId String
+  survey   Survey @relation(fields: [surveyId], references: [id])
+
+  answers SurveyAnswer[]
+
+  @@map("survey_responses")
+}
+
+// 4. As Respostas Individuais (Substitui a tabela "Score")
+// Aqui cada linha é UMA resposta para UMA pergunta
+model SurveyAnswer {
+  id String @id @default(uuid())
+
+  // O valor da resposta. Usamos colunas opcionais para flexibilidade
+  intValue    Int? // Para notas de 1 a 10
+  stringValue String? // Para comentários em texto
+  boolValue   Boolean? // Para Sim/Não
+
+  // Relacionamentos
+  questionId String
+  question   SurveyQuestion @relation(fields: [questionId], references: [id])
+
+  responseId String
+  response   SurveyResponse @relation(fields: [responseId], references: [id])
+
+  @@unique([responseId, questionId]) // Garante que o usuário só responde 1x a mesma pergunta na mesma submissão
+  @@map("survey_answers")
+}
+
 // Represents a user of the system.
 model User {
   id         Int         @id @default(autoincrement()) // Unique identifier for the user.
@@ -2177,6 +2257,8 @@ model User {
   maintenanceInstanceId Int?
 
   workerManualFrequencies WorkerManualFrequency[]
+
+  surveyResponses SurveyResponse[]
 
   @@map("users") // Maps this model to the 'users' table.
 }
