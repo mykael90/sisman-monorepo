@@ -146,3 +146,7 @@ export class CreateSurveyWithRelationsDto extends CreateSurveyDto {
 // =================================================================
 
 export class UpdateSurveyDto extends PartialType(CreateSurveyDto) {}
+
+export class UpdateSurveyWithRelationsDto extends PartialType(
+  CreateSurveyWithRelationsDto
+) {}

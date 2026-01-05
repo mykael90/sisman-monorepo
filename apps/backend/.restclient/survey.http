@@ -16,7 +16,7 @@ Authorization: Bearer {{token}}
 GET {{urlLocal}}/{{surveyId}}
 Authorization: Bearer {{token}}
 
-### POST create survey
+### POST create survey (Simples)
 POST {{urlLocal}}
 Content-Type: {{contentType}}
 Authorization: Bearer {{token}}
@@ -26,7 +26,7 @@ Authorization: Bearer {{token}}
     "description": "Uma pesquisa para medir a satisfação geral."
 }
 
-### POST create survey WITH RELATIONS
+### POST create survey WITH RELATIONS (Sem Opções)
 POST {{urlLocal}}
 Content-Type: {{contentType}}
 Authorization: Bearer {{token}}
@@ -50,32 +50,29 @@ Authorization: Bearer {{token}}
     ]
 }
 
-### POST create survey WITH RELATIONS
+### POST create survey WITH RELATIONS (Completa com Opções)
+# Use este endpoint para criar dados de massa para testar o update complexo abaixo
 POST {{urlLocal}}
 Content-Type: {{contentType}}
 Authorization: Bearer {{token}}
 
 {
-    "title": "Pesquisa de Clima Organizacional 2",
-    "description": "Avaliação do clima na organização.",
+    "title": "Pesquisa de Produto 2024",
+    "description": "Pesquisa base para teste de edição complexa.",
     "questions": [
         {
-            "text": "Como você avalia o ambiente de trabalho?",
+            "text": "Qual cor você prefere?",
             "order": 1,
             "type": "MULTIPLE",
             "required": true,
-            "surveyQuestionOptions": [{
-                "label": "Muito satisfeito",
-                "value": "1",
-                "order": 1
-            }, {
-                "label": "Satisfeito",
-                "value": "2",
-                "order": 2
-            }]
+            "surveyQuestionOptions": [
+                { "label": "Azul", "value": "blue", "order": 1 },
+                { "label": "Vermelho", "value": "red", "order": 2 },
+                { "label": "Verde (Para Deletar)", "value": "green", "order": 3 }
+            ]
         },
         {
-            "text": "Qual seu nível de satisfação com a liderança?",
+            "text": "Pergunta para ser deletada no update",
             "order": 2,
             "type": "TEXT",
             "required": false
@@ -83,14 +80,68 @@ Authorization: Bearer {{token}}
     ]
 }
 
-### PUT update survey
+# ==============================================================================
+# CENÁRIOS DE UPDATE (PUT)
+# ==============================================================================
+
+### PUT Update Simples (Apenas escalares)
 # @prompt surveyId
 PUT {{urlLocal}}/{{surveyId}}
 Content-Type: {{contentType}}
 Authorization: Bearer {{token}}
 
 {
-    "description": "Nova descrição para a pesquisa de satisfação."
+    "title": "Título Atualizado via PUT",
+    "description": "Descrição atualizada, sem mexer nas questões."
+}
+
+
+### PUT Update Complexo (Reconciliação / Diff)
+# @prompt surveyId
+# @prompt questionIdToUpdate ID da pergunta 'Qual cor você prefere?' (copie do GET)
+# @prompt optionIdToUpdate ID da opção 'Azul' (copie do GET)
+PUT {{urlLocal}}/{{surveyId}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "title": "Pesquisa Atualizada (FULL DIFF)",
+    "description": "Testando: Update de Pergunta, Delete de Pergunta, Create de Pergunta, Update de Opção, Delete de Opção.",
+    "questions": [
+        {
+            "id": "{{questionIdToUpdate}}", 
+            "text": "Qual cor você prefere? (Texto Editado)",
+            "order": 2, 
+            "type": "MULTIPLE",
+            "required": true,
+            "surveyQuestionOptions": [
+                {
+                    "id": "{{optionIdToUpdate}}",
+                    "label": "Azul (Label Editada)",
+                    "value": "blue-updated",
+                    "order": 1
+                },
+                {
+                    "label": "Amarelo (Nova Opção Criada)",
+                    "value": "yellow",
+                    "order": 2
+                }
+                
+                // NOTA: A opção 'Vermelho' e 'Verde' foram omitidas, 
+                // logo, devem ser DELETADAS do banco automaticamente.
+            ]
+        },
+        {
+            // SEM ID = CRIAÇÃO
+            "text": "Nova Pergunta (Adicionada no Update)",
+            "order": 3,
+            "type": "RATING",
+            "required": false
+        }
+        
+        // NOTA: A pergunta "Pergunta para ser deletada no update" (order 2 original) 
+        // foi omitida da lista, logo, deve ser DELETADA do banco automaticamente.
+    ]
 }
 
 ### DELETE survey
