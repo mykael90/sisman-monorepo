@@ -1,4 +1,9 @@
-import { IntersectionType, PartialType, PickType } from '@nestjs/swagger';
+import {
+  ApiProperty,
+  IntersectionType,
+  PartialType,
+  PickType
+} from '@nestjs/swagger';
 import {
   IsBoolean,
   IsDate,
@@ -10,6 +15,8 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { Prisma, SurveyAnswer } from '@sisman/prisma';
+import { SurveyQuestionWithRelationsResponseDto } from '../../survey-questions/dto/survey-questions.dto';
+import { SurveyResponseWithRelationsResponseDto } from '../../survey-responses/dto/survey-responses.dto';
 
 // =================================================================
 // 1. "SUPER CLASSES" DE RESPOSTA (FONTE DA VERDADE)
@@ -37,7 +44,7 @@ class SurveyAnswerBaseDto implements SurveyAnswer {
    */
   @IsOptional()
   @IsNumber()
-  intValue?: number;
+  intValue: number;
 
   /**
    * Valor textual da resposta, se aplicável.
@@ -45,7 +52,7 @@ class SurveyAnswerBaseDto implements SurveyAnswer {
    */
   @IsOptional()
   @IsString()
-  stringValue?: string;
+  stringValue: string;
 
   /**
    * Valor booleano da resposta, se aplicável.
@@ -53,7 +60,7 @@ class SurveyAnswerBaseDto implements SurveyAnswer {
    */
   @IsOptional()
   @IsBoolean()
-  boolValue?: boolean;
+  boolValue: boolean;
 
   /**
    * ID da pergunta da pesquisa associada a esta resposta.
@@ -113,7 +120,10 @@ export class SurveyAnswerWithRelationsResponseDto
   extends SurveyAnswerBaseDto
   implements Partial<SurveyAnswerRelationsOnly>
 {
+  @ApiProperty({ type: () => SurveyQuestionWithRelationsResponseDto })
   question?: SurveyAnswerRelationsOnly['question'];
+
+  @ApiProperty({ type: () => SurveyResponseWithRelationsResponseDto })
   response?: SurveyAnswerRelationsOnly['response'];
 }
 

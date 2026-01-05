@@ -2117,10 +2117,10 @@ enum SipacRequisicaoManutencaoDivisoes {
 
 // Enum para controlar o tipo de resposta esperada
 enum SurveyQuestionType {
-  RATING // De 1 a 10 (ou 1 a 5)
-  TEXT // Texto livre
-  BOOLEAN // Sim/Não
-  MULTIPLE // Múltipla escolha (opcional, requer mais uma tabela de Options)
+  RATING   @map("NOTA") // De 1 a 10 (ou 1 a 5)
+  TEXT     @map("LIVRE") // Texto livre
+  BOOLEAN  @map("BOLEANO") // Sim/Não
+  MULTIPLE @map("MULTIPLA") // Múltipla escolha (opcional, requer mais uma tabela de Options)
 }
 
 // 1. A Definição da Pesquisa (O "Header" conceitual do modelo, mas focado no TEMA)
@@ -2131,6 +2131,7 @@ model Survey {
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now()) @db.Timestamp(0) // Timestamp for when the user record was created.
   updatedAt   DateTime @updatedAt @db.Timestamp(0) // Timestamp for the last update of the user record.
+  showModal   Boolean  @default(false)
 
   // Relacionamentos
 
@@ -2151,9 +2152,27 @@ model SurveyQuestion {
   surveyId String
   survey   Survey @relation(fields: [surveyId], references: [id])
 
-  answers SurveyAnswer[] // Relacionamento inverso para análises
+  answers               SurveyAnswer[] // Relacionamento inverso para análises
+  surveyQuestionOptions SurveyQuestionOptions[]
 
   @@map("survey_questions")
+}
+
+model SurveyQuestionOptions {
+  id       String  @id @default(uuid())
+  label    String // Texto exibido (ex: "Muito satisfeito")
+  value    String // Valor lógico (ex: "VERY_SATISFIED")
+  order    Int
+  isActive Boolean @default(true)
+
+  // Relacionamento
+  questionId String
+  question   SurveyQuestion @relation(fields: [questionId], references: [id])
+
+  answers SurveyAnswerOption[]
+
+  @@unique([questionId, value])
+  @@map("survey_question_options")
 }
 
 // 3. O Cabeçalho da Resposta (Quem respondeu e quando)
@@ -2191,8 +2210,23 @@ model SurveyAnswer {
   responseId String
   response   SurveyResponse @relation(fields: [responseId], references: [id])
 
+  options SurveyAnswerOption[]
+
   @@unique([responseId, questionId]) // Garante que o usuário só responde 1x a mesma pergunta na mesma submissão
   @@map("survey_answers")
+}
+
+model SurveyAnswerOption {
+  id String @id @default(uuid())
+
+  answerId String
+  answer   SurveyAnswer @relation(fields: [answerId], references: [id])
+
+  optionId String
+  option   SurveyQuestionOptions @relation(fields: [optionId], references: [id])
+
+  @@unique([answerId, optionId])
+  @@map("survey_answer_options")
 }
 
 // Represents a user of the system.

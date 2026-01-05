@@ -1,4 +1,9 @@
-import { IntersectionType, PartialType, PickType } from '@nestjs/swagger';
+import {
+  ApiProperty,
+  IntersectionType,
+  PartialType,
+  PickType
+} from '@nestjs/swagger';
 import {
   IsBoolean,
   IsDate,
@@ -57,6 +62,13 @@ class SurveyBaseDto implements Survey {
   isActive: boolean;
 
   /**
+   * Indica se a pesquisa deve ser exibida como modal na pagina inicial.
+   * @example true
+   */
+  @IsBoolean()
+  showModal: boolean;
+
+  /**
    * Data de criação da pesquisa.
    * @example "2023-10-27T10:00:00.000Z"
    */
@@ -96,7 +108,16 @@ export class SurveyWithRelationsResponseDto
   extends SurveyBaseDto
   implements Partial<SurveyRelationsOnly>
 {
+  /**
+   * Questões vinculadas
+   */
+  @IsOptional()
   questions?: SurveyRelationsOnly['questions'];
+
+  /**
+   * Respostas vinculadas.
+   */
+  @IsOptional()
   responses?: SurveyRelationsOnly['responses'];
 }
 
@@ -113,6 +134,7 @@ export class CreateSurveyWithRelationsDto extends CreateSurveyDto {
   /**
    * Questões do levantamento.
    */
+  @ApiProperty({ type: () => CreateSurveyQuestionDto, isArray: true })
   @IsOptional()
   @ValidateNested({ each: true })
   @Type(() => CreateSurveyQuestionDto)

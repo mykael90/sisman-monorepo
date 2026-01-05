@@ -57,6 +57,7 @@ import { WorkersContractsModule } from './modules/workers-contracts/workers-cont
 import { WorkersManualFrequenciesModule } from './modules/workers-manual-frequencies/workers-manual-frequencies.module';
 import { CronModule } from './modules/cron/cron.module';
 import { WorkersManualFrequenciesTypesModule } from './modules/workers-manual-frequencies-types/workers-manual-frequencies-types.module';
+import { SurveysModule } from './modules/surveys/surveys.module';
 
 @Module({
   imports: [
@@ -128,7 +129,8 @@ import { WorkersManualFrequenciesTypesModule } from './modules/workers-manual-fr
     WorkersContractsModule,
     WorkersManualFrequenciesModule,
     WorkersManualFrequenciesTypesModule,
-    CronModule
+    CronModule,
+    SurveysModule
   ],
   controllers: [AppController],
   providers: [

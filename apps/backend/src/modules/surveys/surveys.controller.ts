@@ -23,7 +23,8 @@ import { ApiEndpointSwagger } from '../../shared/decorators/swagger/api-endpoint
 import {
   CreateSurveyDto,
   UpdateSurveyDto,
-  SurveyWithRelationsResponseDto
+  SurveyWithRelationsResponseDto,
+  CreateSurveyWithRelationsDto
 } from './dto/survey.dto';
 
 // @Roles(Role.Adm)
@@ -58,7 +59,7 @@ export class SurveysController {
       }
     ]
   })
-  async create(@Body() data: CreateSurveyDto) {
+  async create(@Body() data: CreateSurveyWithRelationsDto) {
     return this.surveysService.create(data);
   }
 

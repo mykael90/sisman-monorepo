@@ -1,4 +1,9 @@
-import { IntersectionType, PartialType, PickType } from '@nestjs/swagger';
+import {
+  ApiProperty,
+  IntersectionType,
+  PartialType,
+  PickType
+} from '@nestjs/swagger';
 import {
   IsBoolean,
   IsDate,
@@ -10,16 +15,8 @@ import {
   ValidateNested
 } from 'class-validator';
 import { Type } from 'class-transformer';
-import { Prisma, SurveyQuestion } from '@sisman/prisma';
+import { Prisma, SurveyQuestion, SurveyQuestionType } from '@sisman/prisma';
 import { SurveyAnswerWithRelationsResponseDto } from '../../survey-answers/dto/survey-answers.dto';
-
-// Enum para controlar o tipo de resposta esperada
-export enum SurveyQuestionType {
-  RATING = 'RATING',
-  TEXT = 'TEXT',
-  BOOLEAN = 'BOOLEAN',
-  MULTIPLE = 'MULTIPLE'
-}
 
 // =================================================================
 // 1. "SUPER CLASSES" DE RESPOSTA (FONTE DA VERDADE)
@@ -86,7 +83,6 @@ class SurveyQuestionBaseDto implements SurveyQuestion {
    * @example "2023-10-27T10:00:00.000Z"
    */
   @IsDate()
-  @Type(() => Date)
   createdAt: Date;
 
   /**
@@ -94,7 +90,6 @@ class SurveyQuestionBaseDto implements SurveyQuestion {
    * @example "2023-11-05T15:00:00.000Z"
    */
   @IsDate()
-  @Type(() => Date)
   updatedAt: Date;
 }
 
@@ -105,7 +100,6 @@ class SurveyQuestionBaseDto implements SurveyQuestion {
 const SurveyQuestionRelationOnlyArgs =
   Prisma.validator<Prisma.SurveyQuestionDefaultArgs>()({
     include: {
-      survey: true,
       answers: true
     }
   });
@@ -121,12 +115,13 @@ export class SurveyQuestionWithRelationsResponseDto
   extends SurveyQuestionBaseDto
   implements Partial<SurveyQuestionRelationsOnly>
 {
-  // NOTE: Assuming Survey DTO would be defined elsewhere.
-  survey?: any; // Placeholder for Survey DTO
-
   /**
    * Respostas associadas a esta pergunta.
    */
+  @ApiProperty({
+    type: () => SurveyAnswerWithRelationsResponseDto,
+    isArray: true
+  })
   @ValidateNested({ each: true })
   @Type(() => SurveyAnswerWithRelationsResponseDto)
   answers?: SurveyQuestionRelationsOnly['answers'];

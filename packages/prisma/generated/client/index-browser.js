@@ -981,7 +981,8 @@ exports.Prisma.SurveyScalarFieldEnum = {
   description: 'description',
   isActive: 'isActive',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  showModal: 'showModal'
 };
 
 exports.Prisma.SurveyQuestionScalarFieldEnum = {
@@ -991,6 +992,15 @@ exports.Prisma.SurveyQuestionScalarFieldEnum = {
   type: 'type',
   required: 'required',
   surveyId: 'surveyId'
+};
+
+exports.Prisma.SurveyQuestionOptionsScalarFieldEnum = {
+  id: 'id',
+  label: 'label',
+  value: 'value',
+  order: 'order',
+  isActive: 'isActive',
+  questionId: 'questionId'
 };
 
 exports.Prisma.SurveyResponseScalarFieldEnum = {
@@ -1007,6 +1017,12 @@ exports.Prisma.SurveyAnswerScalarFieldEnum = {
   boolValue: 'boolValue',
   questionId: 'questionId',
   responseId: 'responseId'
+};
+
+exports.Prisma.SurveyAnswerOptionScalarFieldEnum = {
+  id: 'id',
+  answerId: 'answerId',
+  optionId: 'optionId'
 };
 
 exports.Prisma.UserScalarFieldEnum = {
@@ -1555,6 +1571,13 @@ exports.Prisma.SurveyQuestionOrderByRelevanceFieldEnum = {
   surveyId: 'surveyId'
 };
 
+exports.Prisma.SurveyQuestionOptionsOrderByRelevanceFieldEnum = {
+  id: 'id',
+  label: 'label',
+  value: 'value',
+  questionId: 'questionId'
+};
+
 exports.Prisma.SurveyResponseOrderByRelevanceFieldEnum = {
   id: 'id',
   surveyId: 'surveyId'
@@ -1565,6 +1588,12 @@ exports.Prisma.SurveyAnswerOrderByRelevanceFieldEnum = {
   stringValue: 'stringValue',
   questionId: 'questionId',
   responseId: 'responseId'
+};
+
+exports.Prisma.SurveyAnswerOptionOrderByRelevanceFieldEnum = {
+  id: 'id',
+  answerId: 'answerId',
+  optionId: 'optionId'
 };
 
 exports.Prisma.UserOrderByRelevanceFieldEnum = {
@@ -1910,8 +1939,10 @@ exports.Prisma.ModelName = {
   SipacUnidade: 'SipacUnidade',
   Survey: 'Survey',
   SurveyQuestion: 'SurveyQuestion',
+  SurveyQuestionOptions: 'SurveyQuestionOptions',
   SurveyResponse: 'SurveyResponse',
   SurveyAnswer: 'SurveyAnswer',
+  SurveyAnswerOption: 'SurveyAnswerOption',
   User: 'User',
   MagicLink: 'MagicLink',
   Role: 'Role',
