@@ -11,7 +11,10 @@ import {
 } from 'src/shared/prisma/prisma.module';
 import { Prisma, Survey } from '@sisman/prisma';
 import { handlePrismaError } from '../../shared/utils/prisma-error-handler';
-import { CreateSurveyDto, UpdateSurveyDto } from './dto/survey.dto';
+import {
+  CreateSurveyWithRelationsDto,
+  UpdateSurveyDto
+} from './dto/survey.dto';
 
 @Injectable()
 export class SurveysService {
@@ -26,7 +29,10 @@ export class SurveysService {
     responses: true
   };
 
-  async create(data: CreateSurveyDto, tx?: Prisma.TransactionClient) {
+  async create(
+    data: CreateSurveyWithRelationsDto,
+    tx?: Prisma.TransactionClient
+  ) {
     try {
       if (tx) {
         this.logger.log(
@@ -48,13 +54,24 @@ export class SurveysService {
   }
 
   private async _create(
-    data: CreateSurveyDto,
+    data: CreateSurveyWithRelationsDto,
     prisma: Prisma.TransactionClient
   ): Promise<Survey> {
     this.logger.log(`Criando pesquisa com dados: ${JSON.stringify(data)}`);
+    const { questions, ...restOfData } = data;
 
     const prismaCreateInput: Prisma.SurveyCreateInput = {
-      ...data
+      ...restOfData,
+      questions: questions
+        ? {
+            create: questions.map((question) => ({
+              text: question.text,
+              order: question.order,
+              type: question.type,
+              required: question.required
+            }))
+          }
+        : undefined
     };
 
     try {
