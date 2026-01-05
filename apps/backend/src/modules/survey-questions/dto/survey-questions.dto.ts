@@ -10,6 +10,7 @@ import {
   IsEnum,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsString,
   IsUUID,
   ValidateNested
@@ -100,7 +101,8 @@ class SurveyQuestionBaseDto implements SurveyQuestion {
 const SurveyQuestionRelationOnlyArgs =
   Prisma.validator<Prisma.SurveyQuestionDefaultArgs>()({
     include: {
-      answers: true
+      answers: true,
+      surveyQuestionOptions: true
     }
   });
 
@@ -140,7 +142,34 @@ export class CreateSurveyQuestionDto extends IntersectionType(
     'required',
     'surveyId'
   ] as const)
-) {}
+) {
+  /**
+   * Opções de resposta para perguntas do tipo MULTIPLE_CHOICE ou SINGLE_CHOICE.
+   */
+  @ApiProperty({
+    type: () => CreateSurveyQuestionOptionsDto,
+    isArray: true,
+    required: false
+  })
+  @IsOptional()
+  @ValidateNested({ each: true })
+  @Type(() => CreateSurveyQuestionOptionsDto)
+  surveyQuestionOptions?: CreateSurveyQuestionOptionsDto[];
+}
+
+export class CreateSurveyQuestionOptionsDto {
+  @IsString()
+  @IsNotEmpty()
+  label: string;
+
+  @IsString()
+  @IsNotEmpty()
+  value: string;
+
+  @IsNumber()
+  @IsNotEmpty()
+  order: number;
+}
 
 // =================================================================
 // 4. DTOs DE ATUALIZAÇÃO (INPUT) - Derivadas com PartialType

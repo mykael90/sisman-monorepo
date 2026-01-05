@@ -25,7 +25,12 @@ export class SurveysService {
   ) {}
 
   private readonly includeRelations: Prisma.SurveyInclude = {
-    questions: true,
+    questions: {
+      include: {
+        answers: true,
+        surveyQuestionOptions: true
+      }
+    },
     responses: true
   };
 
@@ -68,7 +73,16 @@ export class SurveysService {
               text: question.text,
               order: question.order,
               type: question.type,
-              required: question.required
+              required: question.required,
+              surveyQuestionOptions: question.surveyQuestionOptions
+                ? {
+                    create: question.surveyQuestionOptions.map((option) => ({
+                      label: option.label,
+                      value: option.value,
+                      order: option.order
+                    }))
+                  }
+                : undefined
             }))
           }
         : undefined

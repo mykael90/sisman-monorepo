@@ -1,0 +1,100 @@
+### Variables
+@urlLocal = {{apiUrl}}/survey
+@contentType = application/json
+
+### GET all surveys
+GET {{urlLocal}}
+Authorization: Bearer {{token}}
+
+### GET all surveys with query params
+GET {{urlLocal}}
+?someParam=someValue
+Authorization: Bearer {{token}}
+
+### GET one survey
+# @prompt surveyId
+GET {{urlLocal}}/{{surveyId}}
+Authorization: Bearer {{token}}
+
+### POST create survey
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "title": "Pesquisa de Satisfação",
+    "description": "Uma pesquisa para medir a satisfação geral."
+}
+
+### POST create survey WITH RELATIONS
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "title": "Pesquisa de Clima Organizacional 1",
+    "description": "Avaliação do clima na organização.",
+    "questions": [
+        {
+            "text": "Como você avalia o ambiente de trabalho?",
+            "order": 1,
+            "type": "RATING",
+            "required": true
+        },
+        {
+            "text": "Qual seu nível de satisfação com a liderança?",
+            "order": 2,
+            "type": "TEXT",
+            "required": false
+        }
+    ]
+}
+
+### POST create survey WITH RELATIONS
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "title": "Pesquisa de Clima Organizacional 2",
+    "description": "Avaliação do clima na organização.",
+    "questions": [
+        {
+            "text": "Como você avalia o ambiente de trabalho?",
+            "order": 1,
+            "type": "MULTIPLE",
+            "required": true,
+            "surveyQuestionOptions": [{
+                "label": "Muito satisfeito",
+                "value": "1",
+                "order": 1
+            }, {
+                "label": "Satisfeito",
+                "value": "2",
+                "order": 2
+            }]
+        },
+        {
+            "text": "Qual seu nível de satisfação com a liderança?",
+            "order": 2,
+            "type": "TEXT",
+            "required": false
+        }
+    ]
+}
+
+### PUT update survey
+# @prompt surveyId
+PUT {{urlLocal}}/{{surveyId}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "description": "Nova descrição para a pesquisa de satisfação."
+}
+
+### DELETE survey
+# @prompt surveyId
+DELETE {{urlLocal}}/{{surveyId}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
