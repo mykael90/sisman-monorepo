@@ -140,27 +140,30 @@ export class CreateSurveyAnswerDto extends IntersectionType(
   PartialType(SurveyAnswerBaseDto),
   PickType(SurveyAnswerBaseDto, ['questionId'] as const)
 ) {
-  // @ApiProperty({
-  //   oneOf: [
-  //     { type: 'string' },
-  //     { type: 'number' },
-  //     { type: 'boolean' },
-  //     { type: 'array', items: { type: 'string' } }
-  //   ]
-  // })
-  // @IsOptional()
+  @ApiProperty({
+    oneOf: [
+      { type: 'string' },
+      { type: 'number' },
+      { type: 'boolean' },
+      {
+        type: 'array',
+        items: { type: 'object', properties: { optionId: { type: 'string' } } }
+      }
+    ]
+  })
+  @IsOptional()
   // @IsString({ each: true })
   // @IsNumber({}, { each: true })
   // @IsBoolean({ each: true })
-  // value?: string | number | boolean | string[];
+  value?: string | number | boolean | CreateSurveyAnswerOptionDto[];
 
-  /**
-   * Respostas individuais das perguntas do levantamento.
-   */
-  @ApiProperty({ type: () => CreateSurveyAnswerOptionDto, isArray: true })
-  @ValidateNested({ each: true })
-  @Type(() => CreateSurveyAnswerOptionDto)
-  options?: CreateSurveyAnswerOptionDto[];
+  // /**
+  //  * Respostas individuais das perguntas do levantamento.
+  //  */
+  // @ApiProperty({ type: () => CreateSurveyAnswerOptionDto, isArray: true })
+  // @ValidateNested({ each: true })
+  // @Type(() => CreateSurveyAnswerOptionDto)
+  // options?: CreateSurveyAnswerOptionDto[];
 }
 
 export class CreateSurveyAnswerOptionDto {

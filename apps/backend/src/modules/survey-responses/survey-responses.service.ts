@@ -9,7 +9,7 @@ import {
   PrismaService,
   ExtendedPrismaClient
 } from 'src/shared/prisma/prisma.module';
-import { Prisma, SurveyResponse } from '@sisman/prisma';
+import { Prisma, SurveyQuestionType, SurveyResponse } from '@sisman/prisma';
 import { handlePrismaError } from '../../shared/utils/prisma-error-handler';
 import { CreateSurveyResponseDto } from './dto/survey-responses.dto';
 
@@ -64,24 +64,65 @@ export class SurveyResponsesService {
     );
     const { answers, surveyId, userId } = data;
 
+    const survey = await this.prisma.survey.findUnique({
+      where: { id: surveyId },
+      include: { questions: true }
+    });
+
+    if (!survey) {
+      throw new NotFoundException(`Survey with ID ${surveyId} not found`);
+    }
+
+    const questionTypes = new Map(survey.questions.map((q) => [q.id, q.type]));
+
+    const answersCreateInput = answers.map((answer) => {
+      const questionType = questionTypes.get(answer.questionId);
+      if (!questionType) {
+        throw new BadRequestException(
+          `Question with ID ${answer.questionId} not found in survey ${surveyId}`
+        );
+      }
+
+      const createInput: any = {
+        question: { connect: { id: answer.questionId } }
+      };
+
+      switch (questionType) {
+        case SurveyQuestionType.TEXT:
+          createInput.stringValue = String(answer.value) as string;
+          break;
+        case SurveyQuestionType.RATING:
+          createInput.intValue = Number(answer.value) as number;
+          break;
+        case SurveyQuestionType.BOOLEAN:
+          createInput.boolValue = Boolean(answer.value) as boolean;
+          break;
+        case SurveyQuestionType.MULTIPLE:
+          if (Array.isArray(answer.value)) {
+            createInput.options = {
+              create: (
+                answer.value as {
+                  optionId: string;
+                }[]
+              ).map((opt) => ({
+                optionId: opt.optionId
+              }))
+            };
+          }
+          break;
+        default:
+          throw new BadRequestException(`Unsupported question type`);
+      }
+
+      return createInput;
+    });
+
     const prismaCreateInput: Prisma.SurveyResponseCreateInput = {
       survey: { connect: { id: surveyId } },
       user: { connect: { id: userId } },
-      answers: answers
-        ? {
-            create: answers.map((answer) => ({
-              question: { connect: { id: answer.questionId } },
-              stringValue: answer.stringValue,
-              intValue: answer.intValue,
-              boolValue: answer.boolValue,
-              options: {
-                create: answer.options?.map((option) => ({
-                  optionId: option.optionId
-                }))
-              }
-            }))
-          }
-        : undefined
+      answers: {
+        create: answersCreateInput
+      }
     };
 
     try {

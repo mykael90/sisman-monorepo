@@ -31,11 +31,11 @@ Authorization: Bearer {{token}}
     "answers": [
         {
             "questionId": "{{idQuestion1}}",
-            "intValue": 5
+            "value": 5
         },
         {
             "questionId": "{{idQuestion2}}",
-            "stringValue": "Bom"
+            "value": "Bom"
         }
     ]
 }
@@ -58,13 +58,13 @@ Authorization: Bearer {{token}}
     "answers": [
         {
             "questionId": "{{idQuestion1}}",
-            "options": [{
+            "value": [{
                 "optionId": "{{questionOptionId1}}"
             }]
         },
         {
             "questionId": "{{idQuestion2}}",
-            "intValue": 5
+            "value": 5
         }
     ]
 }
