@@ -16,6 +16,7 @@ import { Save } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Checkbox } from '@/components/ui/checkbox';
+import { createSurveyResponseSchema } from './survey-response-form-validation';
 import { useSession } from 'next-auth/react';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
@@ -137,6 +138,8 @@ export default function SurveyResponseForm({
     }
   );
 
+  const surveyResponseSchema = createSurveyResponseSchema(survey);
+
   const form = useForm({
     defaultValues: {
       userId: session?.user?.idSisman as number,
@@ -145,6 +148,9 @@ export default function SurveyResponseForm({
         questionId: q.id,
         value: q.type === 'MULTIPLE' ? [] : undefined
       }))
+    },
+    validators: {
+      onChange: surveyResponseSchema
     },
     onSubmit: async ({ value }) => {
       console.log(value);
