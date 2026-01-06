@@ -21,11 +21,7 @@ export const createAnswerSchema = (
         invalid_type_error: 'Selecione uma avaliação.'
       });
     case 'SINGLE':
-      return z
-        .string({
-          required_error: 'Este campo é obrigatório.'
-        })
-        .min(1, 'Este campo é obrigatório.');
+      return z.array(z.string()).min(1, 'Este campo é obrigatório.');
     case 'MULTIPLE':
       return z.array(z.string()).min(1, 'Selecione ao menos uma opção.');
     default:

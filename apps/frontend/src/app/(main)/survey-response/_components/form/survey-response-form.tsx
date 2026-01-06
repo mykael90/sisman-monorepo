@@ -72,13 +72,13 @@ const AnswerField = ({
       case 'SINGLE':
         return (
           <RadioGroup
-            onValueChange={field.handleChange}
-            defaultValue={field.state.value}
+            onValueChange={(value) => field.handleChange([value])}
+            defaultValue={field.state.value?.[0]}
             className='flex flex-col space-y-1'
           >
             {question.surveyQuestionOptions.map((opt) => (
               <div className='flex items-center space-x-2' key={opt.id}>
-                <RadioGroupItem value={opt.value} id={opt.id} />
+                <RadioGroupItem value={opt.id} id={opt.id} />
                 <Label htmlFor={opt.id}>{opt.label}</Label>
               </div>
             ))}
