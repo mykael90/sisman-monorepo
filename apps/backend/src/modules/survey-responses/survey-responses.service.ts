@@ -25,7 +25,16 @@ export class SurveyResponsesService {
   private readonly includeRelations: Prisma.SurveyResponseInclude = {
     answers: {
       include: {
-        options: true
+        options: {
+          include: {
+            option: true
+          }
+        },
+        question: {
+          include: {
+            surveyQuestionOptions: true
+          }
+        }
       }
     }
   };
@@ -116,12 +125,8 @@ export class SurveyResponsesService {
         case SurveyQuestionType.MULTIPLE:
           if (Array.isArray(answer.value)) {
             createInput.options = {
-              create: (
-                answer.value as {
-                  optionId: string;
-                }[]
-              ).map((opt) => ({
-                optionId: opt.optionId
+              create: answer.value.map((opt) => ({
+                optionId: opt
               }))
             };
           }

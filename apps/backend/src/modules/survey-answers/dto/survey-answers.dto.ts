@@ -147,7 +147,7 @@ export class CreateSurveyAnswerDto extends IntersectionType(
       { type: 'boolean' },
       {
         type: 'array',
-        items: { type: 'object', properties: { optionId: { type: 'string' } } }
+        items: { type: 'string' }
       }
     ]
   })
@@ -155,7 +155,7 @@ export class CreateSurveyAnswerDto extends IntersectionType(
   // @IsString({ each: true })
   // @IsNumber({}, { each: true })
   // @IsBoolean({ each: true })
-  value?: string | number | boolean | CreateSurveyAnswerOptionDto[];
+  value?: string | number | boolean | string[];
 
   // /**
   //  * Respostas individuais das perguntas do levantamento.
@@ -166,12 +166,12 @@ export class CreateSurveyAnswerDto extends IntersectionType(
   // options?: CreateSurveyAnswerOptionDto[];
 }
 
-export class CreateSurveyAnswerOptionDto {
-  @IsUUID()
-  @IsNotEmpty()
-  @IsString()
-  optionId: string;
-}
+// export class CreateSurveyAnswerOptionDto {
+//   @IsUUID()
+//   @IsNotEmpty()
+//   @IsString()
+//   optionId: string;
+// }
 
 // =================================================================
 // 4. DTOs DE ATUALIZAÇÃO (INPUT) - Derivadas com PartialType
