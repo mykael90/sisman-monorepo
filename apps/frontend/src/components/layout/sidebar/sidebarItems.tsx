@@ -132,7 +132,7 @@ export const sidebarItems: SidebarItem[] = [
     ]
   },
   {
-    label: 'Settings',
+    label: 'Configurações',
     icon: <Settings className='h-6 w-6' />,
     href: '/settings', //Optional, could be omitted if you don't want a direct link to Materiais
 
@@ -140,7 +140,7 @@ export const sidebarItems: SidebarItem[] = [
       { label: 'Usuários', href: '/user' },
       { label: 'Tipos de Permissões', href: '/role' },
       { label: 'Depósitos', href: '/warehouse' },
-      { label: 'Levantamentos', href: '/survey' }
+      { label: 'Enquetes', href: '/survey' }
     ]
   },
   {

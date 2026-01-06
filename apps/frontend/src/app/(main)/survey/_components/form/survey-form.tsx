@@ -46,11 +46,11 @@ function QuestionOptions({
   }
 
   return (
-    <div className='mt-4 pl-6 border-l'>
+    <div className='mt-4 border-l pl-6'>
       <h4 className='text-md font-medium'>Opções da Questão</h4>
       {optionsField.state.value.map((_, i) => (
         <div key={i} className='relative mt-2 rounded-md border p-3'>
-          <div className='grid grid-cols-1 md:grid-cols-3 gap-2'>
+          <div className='grid grid-cols-1 gap-2 md:grid-cols-3'>
             <form.Field
               name={`questions[${questionIndex}].surveyQuestionOptions[${i}].label`}
               children={(field) => (
@@ -199,18 +199,6 @@ export default function SurveyForm({ onCancel }: { onCancel: () => void }) {
         {questionsField.state.value.map((_, i) => (
           <div key={i} className='relative mt-4 rounded-md border p-4'>
             <div className='flex flex-col gap-4'>
-              <div>
-                <form.Field
-                  name={`questions[${i}].text`}
-                  children={(field) => (
-                    <FormInputField
-                      field={field}
-                      label='Texto da Questão'
-                      placeholder='Ex: Qual o seu nível de satisfação?'
-                    />
-                  )}
-                />
-              </div>
               <div className='flex items-center gap-4'>
                 <form.Field
                   name={`questions[${i}].order`}
@@ -240,6 +228,18 @@ export default function SurveyForm({ onCancel }: { onCancel: () => void }) {
                   name={`questions[${i}].required`}
                   children={(field) => (
                     <FormInputCheckbox field={field} label='Obrigatória' />
+                  )}
+                />
+              </div>
+              <div>
+                <form.Field
+                  name={`questions[${i}].text`}
+                  children={(field) => (
+                    <FormInputField
+                      field={field}
+                      label='Texto da Questão'
+                      placeholder='Ex: Qual o seu nível de satisfação?'
+                    />
                   )}
                 />
               </div>

@@ -61,8 +61,8 @@ export function SurveyListPage({ initialSurveys }: Props) {
   return (
     <div className='container mx-auto p-4'>
       <SectionListHeader
-        title='Gerenciamento de Pesquisas'
-        subtitle='Crie, edite e gerencie pesquisas.'
+        title='Gerenciamento de Enquetes'
+        subtitle='Crie, edite e gerencie enquetes.'
         TitleIcon={ListChecks}
         actionButton={{
           text: 'Nova Pesquisa',
