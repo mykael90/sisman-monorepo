@@ -1,6 +1,4 @@
-'use client';
-
-import { useForm, useField } from '@tanstack/react-form';
+import { useForm, useField, FieldApi } from '@tanstack/react-form';
 import { useActionState } from 'react';
 import { Button } from '@/components/ui/button';
 import {
@@ -23,6 +21,98 @@ const questionTypes = [
   { value: 'MULTIPLE', label: 'Múltipla Escolha' }
 ];
 
+function QuestionOptions({
+  form,
+  questionIndex
+}: {
+  form: FieldApi<any, any, any, any>;
+  questionIndex: number;
+}) {
+  const questionField = useField({
+    form,
+    name: `questions[${questionIndex}]`
+  });
+
+  const optionsField = useField({
+    form,
+    name: `questions[${questionIndex}].surveyQuestionOptions`,
+    mode: 'array'
+  });
+
+  const questionType = questionField.state.value.type;
+
+  if (questionType !== 'SINGLE' && questionType !== 'MULTIPLE') {
+    return null;
+  }
+
+  return (
+    <div className='mt-4 pl-6 border-l'>
+      <h4 className='text-md font-medium'>Opções da Questão</h4>
+      {optionsField.state.value.map((_, i) => (
+        <div key={i} className='relative mt-2 rounded-md border p-3'>
+          <div className='grid grid-cols-1 md:grid-cols-3 gap-2'>
+            <form.Field
+              name={`questions[${questionIndex}].surveyQuestionOptions[${i}].label`}
+              children={(field) => (
+                <FormInputField
+                  field={field}
+                  label='Rótulo'
+                  placeholder='Ex: Opção 1'
+                />
+              )}
+            />
+            <form.Field
+              name={`questions[${questionIndex}].surveyQuestionOptions[${i}].value`}
+              children={(field) => (
+                <FormInputField
+                  field={field}
+                  label='Valor'
+                  placeholder='Ex: option1'
+                />
+              )}
+            />
+            <form.Field
+              name={`questions[${questionIndex}].surveyQuestionOptions[${i}].order`}
+              children={(field) => (
+                <FormInputField
+                  field={field}
+                  label='Ordem'
+                  type='number'
+                  placeholder='0'
+                />
+              )}
+            />
+          </div>
+          <Button
+            type='button'
+            variant='ghost'
+            size='icon'
+            className='absolute top-1 right-1'
+            onClick={() => optionsField.removeValue(i)}
+          >
+            <Trash2 className='h-3 w-3 text-red-500' />
+          </Button>
+        </div>
+      ))}
+      <Button
+        type='button'
+        variant='outline'
+        size='sm'
+        className='mt-2'
+        onClick={() =>
+          optionsField.pushValue({
+            label: '',
+            value: '',
+            order: optionsField.state.value.length + 1
+          })
+        }
+      >
+        <Plus className='mr-2 h-4 w-4' /> Adicionar Opção
+      </Button>
+    </div>
+  );
+}
+
 export default function SurveyForm({ onCancel }: { onCancel: () => void }) {
   const [serverState, dispatchFormAction, isPending] = useActionState(
     addSurvey,
@@ -35,7 +125,7 @@ export default function SurveyForm({ onCancel }: { onCancel: () => void }) {
       description: '',
       uniqueAnswerByUser: false,
       questions: []
-    },
+    } as ISurveyAdd,
     onSubmit: async ({ value }) => {
       await dispatchFormAction(value);
     }
@@ -153,6 +243,7 @@ export default function SurveyForm({ onCancel }: { onCancel: () => void }) {
                   )}
                 />
               </div>
+              <QuestionOptions form={form as any} questionIndex={i} />
             </div>
             <Button
               type='button'
