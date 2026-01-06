@@ -40,12 +40,14 @@ Authorization: Bearer {{token}}
     ]
 }
 
-### POST create survey-response WITH RELATIONS (Completa com Opções)
-# Use este endpoint para criar dados de massa para testar o update complexo abaixo
+
+### POST create survey-response WITH RELATIONS (Com Opções)
 # @prompt surveyId
 # @prompt userId ID do usuário
 # @prompt idQuestion1 ID da pergunta 1
+# @prompt questionOptionId1 ID da opção da pergunta 1
 # @prompt idQuestion2 ID da pergunta 2
+
 POST {{urlLocal}}
 Content-Type: {{contentType}}
 Authorization: Bearer {{token}}
@@ -55,27 +57,14 @@ Authorization: Bearer {{token}}
     "userId": "{{userId}}",
     "answers": [
         {
-            "text": "Qual cor você prefere?",
-            "order": 1,
-            "type": "MULTIPLE",
-            "required": true,
-            "surveyQuestionOptions": [
-                { "label": "Azul", "value": "blue", "order": 1 },
-                { "label": "Vermelho", "value": "red", "order": 2 },
-                { "label": "Verde (Para Deletar)", "value": "green", "order": 3 }
-            ]
+            "questionId": "{{idQuestion1}}",
+            "options": [{
+                "optionId": "{{questionOptionId1}}"
+            }]
         },
         {
-            "text": "Pergunta para ser deletada no update",
-            "order": 2,
-            "type": "TEXT",
-            "required": false
+            "questionId": "{{idQuestion2}}",
+            "intValue": 5
         }
     ]
 }
-
-### DELETE survey-response
-# @prompt surveyId
-DELETE {{urlLocal}}/{{surveyId}}
-Content-Type: {{contentType}}
-Authorization: Bearer {{token}}

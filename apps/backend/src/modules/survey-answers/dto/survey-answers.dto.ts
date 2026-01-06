@@ -11,7 +11,8 @@ import {
   IsNumber,
   IsOptional,
   IsString,
-  IsUUID
+  IsUUID,
+  ValidateNested
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { Prisma, SurveyAnswer } from '@sisman/prisma';
@@ -105,7 +106,8 @@ const SurveyAnswerRelationOnlyArgs =
   Prisma.validator<Prisma.SurveyAnswerDefaultArgs>()({
     include: {
       question: true,
-      response: true
+      response: true,
+      options: true
     }
   });
 
@@ -125,6 +127,9 @@ export class SurveyAnswerWithRelationsResponseDto
 
   @ApiProperty({ type: () => SurveyResponseWithRelationsResponseDto })
   response?: SurveyAnswerRelationsOnly['response'];
+
+  @ApiProperty({ type: () => SurveyResponseWithRelationsResponseDto })
+  options?: SurveyAnswerRelationsOnly['options'];
 }
 
 // =================================================================
@@ -134,7 +139,36 @@ export class SurveyAnswerWithRelationsResponseDto
 export class CreateSurveyAnswerDto extends IntersectionType(
   PartialType(SurveyAnswerBaseDto),
   PickType(SurveyAnswerBaseDto, ['questionId'] as const)
-) {}
+) {
+  // @ApiProperty({
+  //   oneOf: [
+  //     { type: 'string' },
+  //     { type: 'number' },
+  //     { type: 'boolean' },
+  //     { type: 'array', items: { type: 'string' } }
+  //   ]
+  // })
+  // @IsOptional()
+  // @IsString({ each: true })
+  // @IsNumber({}, { each: true })
+  // @IsBoolean({ each: true })
+  // value?: string | number | boolean | string[];
+
+  /**
+   * Respostas individuais das perguntas do levantamento.
+   */
+  @ApiProperty({ type: () => CreateSurveyAnswerOptionDto, isArray: true })
+  @ValidateNested({ each: true })
+  @Type(() => CreateSurveyAnswerOptionDto)
+  options?: CreateSurveyAnswerOptionDto[];
+}
+
+export class CreateSurveyAnswerOptionDto {
+  @IsUUID()
+  @IsNotEmpty()
+  @IsString()
+  optionId: string;
+}
 
 // =================================================================
 // 4. DTOs DE ATUALIZAÇÃO (INPUT) - Derivadas com PartialType

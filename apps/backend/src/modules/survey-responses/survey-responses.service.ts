@@ -22,7 +22,11 @@ export class SurveyResponsesService {
   ) {}
 
   private readonly includeRelations: Prisma.SurveyResponseInclude = {
-    answers: true
+    answers: {
+      include: {
+        options: true
+      }
+    }
   };
 
   async create(
@@ -69,7 +73,12 @@ export class SurveyResponsesService {
               question: { connect: { id: answer.questionId } },
               stringValue: answer.stringValue,
               intValue: answer.intValue,
-              boolValue: answer.boolValue
+              boolValue: answer.boolValue,
+              options: {
+                create: answer.options?.map((option) => ({
+                  optionId: option.optionId
+                }))
+              }
             }))
           }
         : undefined
