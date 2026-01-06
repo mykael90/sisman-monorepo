@@ -16,7 +16,7 @@ import { Save } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Checkbox } from '@/components/ui/checkbox';
-import { createSurveyResponseSchema } from './survey-response-form-validation';
+import { createAnswerSchema } from './survey-response-form-validation';
 import { useSession } from 'next-auth/react';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
@@ -32,7 +32,17 @@ const AnswerField = ({
 }) => {
   const field = useField({
     form,
-    name: `answers[${index}].value`
+    name: `answers[${index}].value`,
+    validators: {
+      onChange: ({ value }) => {
+        const schema = createAnswerSchema(question);
+        const result = schema.safeParse(value);
+        if (!result.success) {
+          return result.error.errors.map((e) => e.message).join(', ');
+        }
+        return undefined;
+      }
+    }
   });
 
   const renderInput = () => {
@@ -59,21 +69,21 @@ const AnswerField = ({
             ))}
           </RadioGroup>
         );
-      // case 'SINGLE':
-      //   return (
-      //     <RadioGroup
-      //       onValueChange={field.handleChange}
-      //       defaultValue={field.state.value}
-      //       className='flex flex-col space-y-1'
-      //     >
-      //       {question.surveyQuestionOptions.map((opt) => (
-      //         <div className='flex items-center space-x-2' key={opt.id}>
-      //           <RadioGroupItem value={opt.value} id={opt.id} />
-      //           <Label htmlFor={opt.id}>{opt.label}</Label>
-      //         </div>
-      //       ))}
-      //     </RadioGroup>
-      //   );
+      case 'SINGLE':
+        return (
+          <RadioGroup
+            onValueChange={field.handleChange}
+            defaultValue={field.state.value}
+            className='flex flex-col space-y-1'
+          >
+            {question.surveyQuestionOptions.map((opt) => (
+              <div className='flex items-center space-x-2' key={opt.id}>
+                <RadioGroupItem value={opt.value} id={opt.id} />
+                <Label htmlFor={opt.id}>{opt.label}</Label>
+              </div>
+            ))}
+          </RadioGroup>
+        );
       case 'MULTIPLE':
         return (
           <div className='flex flex-col space-y-1'>
@@ -108,7 +118,9 @@ const AnswerField = ({
       <div className='mt-2'>{renderInput()}</div>
       {field.state.meta.errors && (
         <p className='mt-1 text-sm text-red-500'>
-          {field.state.meta.errors.join(', ')}
+          {typeof field.state.meta.errors === 'string'
+            ? field.state.meta.errors
+            : field.state.meta.errors.join(', ')}
         </p>
       )}
     </div>
@@ -138,19 +150,16 @@ export default function SurveyResponseForm({
     }
   );
 
-  const surveyResponseSchema = createSurveyResponseSchema(survey);
-
   const form = useForm({
     defaultValues: {
       userId: session?.user?.idSisman as number,
       surveyId: survey.id,
-      answers: survey.questions.map((q) => ({
-        questionId: q.id,
-        value: q.type === 'MULTIPLE' ? [] : undefined
-      }))
-    },
-    validators: {
-      onChange: surveyResponseSchema
+      answers: survey.questions
+        .sort((a, b) => a.order - b.order)
+        .map((q) => ({
+          questionId: q.id,
+          value: q.type === 'MULTIPLE' ? [] : undefined
+        }))
     },
     onSubmit: async ({ value }) => {
       console.log(value);
