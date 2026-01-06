@@ -80,15 +80,13 @@ const AnswerField = ({
               <div className='flex items-center space-x-2' key={opt.id}>
                 <Checkbox
                   id={opt.id}
-                  checked={field.state.value?.includes(opt.value)}
+                  checked={field.state.value?.includes(opt.id)}
                   onCheckedChange={(checked) => {
                     const current: string[] = field.state.value || [];
                     if (checked) {
-                      field.handleChange([...current, opt.value]);
+                      field.handleChange([...current, opt.id]);
                     } else {
-                      field.handleChange(
-                        current.filter((v) => v !== opt.value)
-                      );
+                      field.handleChange(current.filter((v) => v !== opt.id));
                     }
                   }}
                 />
