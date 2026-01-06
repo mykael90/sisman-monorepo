@@ -133,7 +133,7 @@ export class SurveyAnswerWithRelationsResponseDto
 
 export class CreateSurveyAnswerDto extends IntersectionType(
   PartialType(SurveyAnswerBaseDto),
-  PickType(SurveyAnswerBaseDto, ['questionId', 'responseId'] as const)
+  PickType(SurveyAnswerBaseDto, ['questionId'] as const)
 ) {}
 
 // =================================================================

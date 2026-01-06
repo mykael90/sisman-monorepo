@@ -1,15 +1,24 @@
-import { IntersectionType, PartialType, PickType } from '@nestjs/swagger';
+import {
+  ApiProperty,
+  IntersectionType,
+  PartialType,
+  PickType
+} from '@nestjs/swagger';
 import {
   IsDate,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsString,
   IsUUID,
   ValidateNested
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { Prisma, SurveyResponse } from '@sisman/prisma';
-import { SurveyAnswerWithRelationsResponseDto } from '../../survey-answers/dto/survey-answers.dto';
+import {
+  CreateSurveyAnswerDto,
+  SurveyAnswerWithRelationsResponseDto
+} from '../../survey-answers/dto/survey-answers.dto';
 
 // =================================================================
 // 1. "SUPER CLASSES" DE RESPOSTA (FONTE DA VERDADE)
@@ -82,12 +91,16 @@ export class SurveyResponseWithRelationsResponseDto
   implements Partial<SurveyResponseRelationsOnly>
 {
   // NOTE: Assuming User and Survey DTOs would be defined elsewhere.
+  @IsOptional()
   user?: any; // Placeholder for User DTO
+
+  @IsOptional()
   survey?: any; // Placeholder for Survey DTO
 
   /**
    * Respostas individuais para as perguntas da pesquisa.
    */
+  @IsOptional()
   @ValidateNested({ each: true })
   @Type(() => SurveyAnswerWithRelationsResponseDto)
   answers?: SurveyResponseRelationsOnly['answers'];
@@ -100,7 +113,15 @@ export class SurveyResponseWithRelationsResponseDto
 export class CreateSurveyResponseDto extends IntersectionType(
   PartialType(SurveyResponseBaseDto),
   PickType(SurveyResponseBaseDto, ['userId', 'surveyId'] as const)
-) {}
+) {
+  /**
+   * Respostas individuais das perguntas do levantamento.
+   */
+  @ApiProperty({ type: () => CreateSurveyAnswerDto, isArray: true })
+  @ValidateNested({ each: true })
+  @Type(() => CreateSurveyAnswerDto)
+  answers: CreateSurveyAnswerDto[];
+}
 
 // =================================================================
 // 4. DTOs DE ATUALIZAÇÃO (INPUT) - Derivadas com PartialType

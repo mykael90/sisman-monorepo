@@ -58,6 +58,7 @@ import { WorkersManualFrequenciesModule } from './modules/workers-manual-frequen
 import { CronModule } from './modules/cron/cron.module';
 import { WorkersManualFrequenciesTypesModule } from './modules/workers-manual-frequencies-types/workers-manual-frequencies-types.module';
 import { SurveysModule } from './modules/surveys/surveys.module';
+import { SurveyResponsesModule } from './modules/survey-responses/survey-responses.module';
 
 @Module({
   imports: [
@@ -130,7 +131,8 @@ import { SurveysModule } from './modules/surveys/surveys.module';
     WorkersManualFrequenciesModule,
     WorkersManualFrequenciesTypesModule,
     CronModule,
-    SurveysModule
+    SurveysModule,
+    SurveyResponsesModule
   ],
   controllers: [AppController],
   providers: [

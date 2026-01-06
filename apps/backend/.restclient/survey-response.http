@@ -1,0 +1,81 @@
+### Variables
+@urlLocal = {{apiUrl}}/survey-response
+@contentType = application/json
+
+### GET all surveys-response
+GET {{urlLocal}}
+Authorization: Bearer {{token}}
+
+### GET all surveys-response with query params
+GET {{urlLocal}}
+?someParam=someValue
+Authorization: Bearer {{token}}
+
+### GET one survey-response
+# @prompt surveyId
+GET {{urlLocal}}/{{surveyId}}
+Authorization: Bearer {{token}}
+
+### POST create survey-response WITH RELATIONS (Sem Opções)
+# @prompt surveyId
+# @prompt userId ID do usuário
+# @prompt idQuestion1 ID da pergunta 1
+# @prompt idQuestion2 ID da pergunta 2
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "surveyId": "{{surveyId}}",
+    "userId": "{{userId}}",
+    "answers": [
+        {
+            "questionId": "{{idQuestion1}}",
+            "intValue": 5
+        },
+        {
+            "questionId": "{{idQuestion2}}",
+            "stringValue": "Bom"
+        }
+    ]
+}
+
+### POST create survey-response WITH RELATIONS (Completa com Opções)
+# Use este endpoint para criar dados de massa para testar o update complexo abaixo
+# @prompt surveyId
+# @prompt userId ID do usuário
+# @prompt idQuestion1 ID da pergunta 1
+# @prompt idQuestion2 ID da pergunta 2
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "surveyId": "{{surveyId}}",
+    "userId": "{{userId}}",
+    "answers": [
+        {
+            "text": "Qual cor você prefere?",
+            "order": 1,
+            "type": "MULTIPLE",
+            "required": true,
+            "surveyQuestionOptions": [
+                { "label": "Azul", "value": "blue", "order": 1 },
+                { "label": "Vermelho", "value": "red", "order": 2 },
+                { "label": "Verde (Para Deletar)", "value": "green", "order": 3 }
+            ]
+        },
+        {
+            "text": "Pergunta para ser deletada no update",
+            "order": 2,
+            "type": "TEXT",
+            "required": false
+        }
+    ]
+}
+
+### DELETE survey-response
+# @prompt surveyId
+DELETE {{urlLocal}}/{{surveyId}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
