@@ -982,7 +982,8 @@ exports.Prisma.SurveyScalarFieldEnum = {
   isActive: 'isActive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  showModal: 'showModal'
+  showModal: 'showModal',
+  uniqueAnswerByUser: 'uniqueAnswerByUser'
 };
 
 exports.Prisma.SurveyQuestionScalarFieldEnum = {

@@ -34,6 +34,7 @@ Authorization: Bearer {{token}}
 {
     "title": "Pesquisa de Clima Organizacional 1",
     "description": "Avaliação do clima na organização.",
+    "uniqueAnswerByUser": true,
     "questions": [
         {
             "text": "Como você avalia o ambiente de trabalho?",

@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ConflictException,
   Inject,
   Injectable,
   Logger,
@@ -71,6 +72,21 @@ export class SurveyResponsesService {
 
     if (!survey) {
       throw new NotFoundException(`Survey with ID ${surveyId} not found`);
+    }
+
+    if (survey.uniqueAnswerByUser) {
+      const existingResponse = await this.prisma.surveyResponse.findFirst({
+        where: {
+          surveyId,
+          userId
+        }
+      });
+
+      if (existingResponse) {
+        throw new ConflictException(
+          `User with ID ${userId} already answered the survey with ID ${surveyId}`
+        );
+      }
     }
 
     const questionTypes = new Map(survey.questions.map((q) => [q.id, q.type]));

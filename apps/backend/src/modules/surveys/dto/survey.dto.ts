@@ -62,6 +62,13 @@ class SurveyBaseDto implements Survey {
   isActive: boolean;
 
   /**
+   * Indica se a pesquisa será respondida uma única vez pelo mesmo usuário.
+   * @example true
+   */
+  @IsBoolean()
+  uniqueAnswerByUser: boolean;
+
+  /**
    * Indica se a pesquisa deve ser exibida como modal na pagina inicial.
    * @example true
    */

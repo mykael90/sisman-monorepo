@@ -2125,13 +2125,14 @@ enum SurveyQuestionType {
 
 // 1. A Definição da Pesquisa (O "Header" conceitual do modelo, mas focado no TEMA)
 model Survey {
-  id          String   @id @default(uuid())
-  title       String
-  description String?
-  isActive    Boolean  @default(true)
-  createdAt   DateTime @default(now()) @db.Timestamp(0) // Timestamp for when the user record was created.
-  updatedAt   DateTime @updatedAt @db.Timestamp(0) // Timestamp for the last update of the user record.
-  showModal   Boolean  @default(false)
+  id                 String   @id @default(uuid())
+  title              String
+  description        String?
+  isActive           Boolean  @default(true)
+  createdAt          DateTime @default(now()) @db.Timestamp(0) // Timestamp for when the user record was created.
+  updatedAt          DateTime @updatedAt @db.Timestamp(0) // Timestamp for the last update of the user record.
+  showModal          Boolean  @default(false)
+  uniqueAnswerByUser Boolean  @default(false)
 
   // Relacionamentos
 

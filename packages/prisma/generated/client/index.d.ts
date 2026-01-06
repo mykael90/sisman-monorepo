@@ -83800,6 +83800,7 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     showModal: boolean | null
+    uniqueAnswerByUser: boolean | null
   }
 
   export type SurveyMaxAggregateOutputType = {
@@ -83810,6 +83811,7 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     showModal: boolean | null
+    uniqueAnswerByUser: boolean | null
   }
 
   export type SurveyCountAggregateOutputType = {
@@ -83820,6 +83822,7 @@ export namespace Prisma {
     createdAt: number
     updatedAt: number
     showModal: number
+    uniqueAnswerByUser: number
     _all: number
   }
 
@@ -83832,6 +83835,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     showModal?: true
+    uniqueAnswerByUser?: true
   }
 
   export type SurveyMaxAggregateInputType = {
@@ -83842,6 +83846,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     showModal?: true
+    uniqueAnswerByUser?: true
   }
 
   export type SurveyCountAggregateInputType = {
@@ -83852,6 +83857,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     showModal?: true
+    uniqueAnswerByUser?: true
     _all?: true
   }
 
@@ -83935,6 +83941,7 @@ export namespace Prisma {
     createdAt: Date
     updatedAt: Date
     showModal: boolean
+    uniqueAnswerByUser: boolean
     _count: SurveyCountAggregateOutputType | null
     _min: SurveyMinAggregateOutputType | null
     _max: SurveyMaxAggregateOutputType | null
@@ -83962,6 +83969,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     showModal?: boolean
+    uniqueAnswerByUser?: boolean
     questions?: boolean | Survey$questionsArgs<ExtArgs>
     responses?: boolean | Survey$responsesArgs<ExtArgs>
     _count?: boolean | SurveyCountOutputTypeDefaultArgs<ExtArgs>
@@ -83977,9 +83985,10 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     showModal?: boolean
+    uniqueAnswerByUser?: boolean
   }
 
-  export type SurveyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "isActive" | "createdAt" | "updatedAt" | "showModal", ExtArgs["result"]["survey"]>
+  export type SurveyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "isActive" | "createdAt" | "updatedAt" | "showModal" | "uniqueAnswerByUser", ExtArgs["result"]["survey"]>
   export type SurveyInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     questions?: boolean | Survey$questionsArgs<ExtArgs>
     responses?: boolean | Survey$responsesArgs<ExtArgs>
@@ -84000,6 +84009,7 @@ export namespace Prisma {
       createdAt: Date
       updatedAt: Date
       showModal: boolean
+      uniqueAnswerByUser: boolean
     }, ExtArgs["result"]["survey"]>
     composites: {}
   }
@@ -84378,6 +84388,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"Survey", 'DateTime'>
     readonly updatedAt: FieldRef<"Survey", 'DateTime'>
     readonly showModal: FieldRef<"Survey", 'Boolean'>
+    readonly uniqueAnswerByUser: FieldRef<"Survey", 'Boolean'>
   }
     
 
@@ -101109,7 +101120,8 @@ export namespace Prisma {
     isActive: 'isActive',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
-    showModal: 'showModal'
+    showModal: 'showModal',
+    uniqueAnswerByUser: 'uniqueAnswerByUser'
   };
 
   export type SurveyScalarFieldEnum = (typeof SurveyScalarFieldEnum)[keyof typeof SurveyScalarFieldEnum]
@@ -108422,6 +108434,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Survey"> | Date | string
     updatedAt?: DateTimeFilter<"Survey"> | Date | string
     showModal?: BoolFilter<"Survey"> | boolean
+    uniqueAnswerByUser?: BoolFilter<"Survey"> | boolean
     questions?: SurveyQuestionListRelationFilter
     responses?: SurveyResponseListRelationFilter
   }
@@ -108434,6 +108447,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     showModal?: SortOrder
+    uniqueAnswerByUser?: SortOrder
     questions?: SurveyQuestionOrderByRelationAggregateInput
     responses?: SurveyResponseOrderByRelationAggregateInput
     _relevance?: SurveyOrderByRelevanceInput
@@ -108450,6 +108464,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Survey"> | Date | string
     updatedAt?: DateTimeFilter<"Survey"> | Date | string
     showModal?: BoolFilter<"Survey"> | boolean
+    uniqueAnswerByUser?: BoolFilter<"Survey"> | boolean
     questions?: SurveyQuestionListRelationFilter
     responses?: SurveyResponseListRelationFilter
   }, "id">
@@ -108462,6 +108477,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     showModal?: SortOrder
+    uniqueAnswerByUser?: SortOrder
     _count?: SurveyCountOrderByAggregateInput
     _max?: SurveyMaxOrderByAggregateInput
     _min?: SurveyMinOrderByAggregateInput
@@ -108478,6 +108494,7 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"Survey"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Survey"> | Date | string
     showModal?: BoolWithAggregatesFilter<"Survey"> | boolean
+    uniqueAnswerByUser?: BoolWithAggregatesFilter<"Survey"> | boolean
   }
 
   export type SurveyQuestionWhereInput = {
@@ -115824,6 +115841,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     showModal?: boolean
+    uniqueAnswerByUser?: boolean
     questions?: SurveyQuestionCreateNestedManyWithoutSurveyInput
     responses?: SurveyResponseCreateNestedManyWithoutSurveyInput
   }
@@ -115836,6 +115854,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     showModal?: boolean
+    uniqueAnswerByUser?: boolean
     questions?: SurveyQuestionUncheckedCreateNestedManyWithoutSurveyInput
     responses?: SurveyResponseUncheckedCreateNestedManyWithoutSurveyInput
   }
@@ -115848,6 +115867,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     showModal?: BoolFieldUpdateOperationsInput | boolean
+    uniqueAnswerByUser?: BoolFieldUpdateOperationsInput | boolean
     questions?: SurveyQuestionUpdateManyWithoutSurveyNestedInput
     responses?: SurveyResponseUpdateManyWithoutSurveyNestedInput
   }
@@ -115860,6 +115880,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     showModal?: BoolFieldUpdateOperationsInput | boolean
+    uniqueAnswerByUser?: BoolFieldUpdateOperationsInput | boolean
     questions?: SurveyQuestionUncheckedUpdateManyWithoutSurveyNestedInput
     responses?: SurveyResponseUncheckedUpdateManyWithoutSurveyNestedInput
   }
@@ -115872,6 +115893,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     showModal?: boolean
+    uniqueAnswerByUser?: boolean
   }
 
   export type SurveyUpdateManyMutationInput = {
@@ -115882,6 +115904,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     showModal?: BoolFieldUpdateOperationsInput | boolean
+    uniqueAnswerByUser?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type SurveyUncheckedUpdateManyInput = {
@@ -115892,6 +115915,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     showModal?: BoolFieldUpdateOperationsInput | boolean
+    uniqueAnswerByUser?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type SurveyQuestionCreateInput = {
@@ -122444,6 +122468,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     showModal?: SortOrder
+    uniqueAnswerByUser?: SortOrder
   }
 
   export type SurveyMaxOrderByAggregateInput = {
@@ -122454,6 +122479,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     showModal?: SortOrder
+    uniqueAnswerByUser?: SortOrder
   }
 
   export type SurveyMinOrderByAggregateInput = {
@@ -122464,6 +122490,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     showModal?: SortOrder
+    uniqueAnswerByUser?: SortOrder
   }
 
   export type EnumSurveyQuestionTypeFilter<$PrismaModel = never> = {
@@ -161432,6 +161459,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     showModal?: boolean
+    uniqueAnswerByUser?: boolean
     responses?: SurveyResponseCreateNestedManyWithoutSurveyInput
   }
 
@@ -161443,6 +161471,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     showModal?: boolean
+    uniqueAnswerByUser?: boolean
     responses?: SurveyResponseUncheckedCreateNestedManyWithoutSurveyInput
   }
 
@@ -161526,6 +161555,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     showModal?: BoolFieldUpdateOperationsInput | boolean
+    uniqueAnswerByUser?: BoolFieldUpdateOperationsInput | boolean
     responses?: SurveyResponseUpdateManyWithoutSurveyNestedInput
   }
 
@@ -161537,6 +161567,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     showModal?: BoolFieldUpdateOperationsInput | boolean
+    uniqueAnswerByUser?: BoolFieldUpdateOperationsInput | boolean
     responses?: SurveyResponseUncheckedUpdateManyWithoutSurveyNestedInput
   }
 
@@ -161791,6 +161822,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     showModal?: boolean
+    uniqueAnswerByUser?: boolean
     questions?: SurveyQuestionCreateNestedManyWithoutSurveyInput
   }
 
@@ -161802,6 +161834,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     showModal?: boolean
+    uniqueAnswerByUser?: boolean
     questions?: SurveyQuestionUncheckedCreateNestedManyWithoutSurveyInput
   }
 
@@ -161949,6 +161982,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     showModal?: BoolFieldUpdateOperationsInput | boolean
+    uniqueAnswerByUser?: BoolFieldUpdateOperationsInput | boolean
     questions?: SurveyQuestionUpdateManyWithoutSurveyNestedInput
   }
 
@@ -161960,6 +161994,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     showModal?: BoolFieldUpdateOperationsInput | boolean
+    uniqueAnswerByUser?: BoolFieldUpdateOperationsInput | boolean
     questions?: SurveyQuestionUncheckedUpdateManyWithoutSurveyNestedInput
   }
 
