@@ -18,6 +18,7 @@ import {
 import { Type } from 'class-transformer';
 import { Prisma, SurveyQuestion, SurveyQuestionType } from '@sisman/prisma';
 import { SurveyAnswerWithRelationsResponseDto } from '../../survey-answers/dto/survey-answers.dto';
+import { id } from 'date-fns/locale';
 
 // =================================================================
 // 1. "SUPER CLASSES" DE RESPOSTA (FONTE DA VERDADE)
@@ -158,6 +159,15 @@ export class CreateSurveyQuestionDto extends IntersectionType(
 }
 
 export class CreateSurveyQuestionOptionsDto {
+  /**
+   * ID único da opção da pergunta da pesquisa.
+   * @example "d404f267-6899-4b78-85fb-bec373c32050"
+   */
+  @IsUUID()
+  @IsOptional()
+  @IsString()
+  id?: string;
+
   @IsString()
   @IsNotEmpty()
   label: string;

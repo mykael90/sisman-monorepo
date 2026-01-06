@@ -24,7 +24,8 @@ import {
   CreateSurveyDto,
   UpdateSurveyDto,
   SurveyWithRelationsResponseDto,
-  CreateSurveyWithRelationsDto
+  CreateSurveyWithRelationsDto,
+  UpdateSurveyWithRelationsDto
 } from './dto/survey.dto';
 
 // @Roles(Role.Adm)
@@ -125,7 +126,7 @@ export class SurveysController {
   })
   async update(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() data: UpdateSurveyDto
+    @Body() data: UpdateSurveyWithRelationsDto
   ) {
     return this.surveysService.update(id, data);
   }
