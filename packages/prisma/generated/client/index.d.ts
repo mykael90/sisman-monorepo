@@ -747,7 +747,8 @@ export const SurveyQuestionType: {
   RATING: 'RATING',
   TEXT: 'TEXT',
   BOOLEAN: 'BOOLEAN',
-  MULTIPLE: 'MULTIPLE'
+  MULTIPLE: 'MULTIPLE',
+  SINGLE: 'SINGLE'
 };
 
 export type SurveyQuestionType = (typeof SurveyQuestionType)[keyof typeof SurveyQuestionType]

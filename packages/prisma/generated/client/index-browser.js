@@ -1869,7 +1869,8 @@ exports.SurveyQuestionType = exports.$Enums.SurveyQuestionType = {
   RATING: 'RATING',
   TEXT: 'TEXT',
   BOOLEAN: 'BOOLEAN',
-  MULTIPLE: 'MULTIPLE'
+  MULTIPLE: 'MULTIPLE',
+  SINGLE: 'SINGLE'
 };
 
 exports.Prisma.ModelName = {

@@ -10,22 +10,24 @@ export const createAnswerSchema = (
 
   switch (question.type) {
     case 'TEXT':
-      return z.string({
-        required_error: 'Este campo é obrigatório.',
-      }).min(1, 'Este campo é obrigatório.');
+      return z
+        .string({
+          required_error: 'Este campo é obrigatório.'
+        })
+        .min(1, 'Este campo é obrigatório.');
     case 'RATING':
       return z.number({
         required_error: 'Este campo é obrigatório.',
-        invalid_type_error: 'Selecione uma avaliação.',
+        invalid_type_error: 'Selecione uma avaliação.'
       });
     case 'SINGLE':
-      return z.string({
-        required_error: 'Este campo é obrigatório.',
-      }).min(1, 'Este campo é obrigatório.');
-    case 'MULTIPLE':
       return z
-        .array(z.string())
-        .min(1, 'Selecione ao menos uma opção.');
+        .string({
+          required_error: 'Este campo é obrigatório.'
+        })
+        .min(1, 'Este campo é obrigatório.');
+    case 'MULTIPLE':
+      return z.array(z.string()).min(1, 'Selecione ao menos uma opção.');
     default:
       return z.any();
   }

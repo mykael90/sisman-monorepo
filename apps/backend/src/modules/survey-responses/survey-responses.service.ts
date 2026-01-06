@@ -122,6 +122,7 @@ export class SurveyResponsesService {
         case SurveyQuestionType.BOOLEAN:
           createInput.boolValue = Boolean(answer.value) as boolean;
           break;
+        case SurveyQuestionType.SINGLE:
         case SurveyQuestionType.MULTIPLE:
           if (Array.isArray(answer.value)) {
             createInput.options = {

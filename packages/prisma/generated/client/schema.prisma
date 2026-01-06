@@ -2121,6 +2121,7 @@ enum SurveyQuestionType {
   TEXT     @map("LIVRE") // Texto livre
   BOOLEAN  @map("BOLEANO") // Sim/Não
   MULTIPLE @map("MULTIPLA") // Múltipla escolha (opcional, requer mais uma tabela de Options)
+  SINGLE   @map("UNICA") // Única escolha (opcional, requer mais uma tabela de Options)   
 }
 
 // 1. A Definição da Pesquisa (O "Header" conceitual do modelo, mas focado no TEMA)
