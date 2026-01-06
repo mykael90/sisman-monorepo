@@ -9,3 +9,13 @@ export type ISurveyResponseWithRelations = Prisma.SurveyResponseGetPayload<{
     };
   };
 }>;
+
+export interface ISurveyResponseAdd
+  extends Prisma.SurveyResponseCreateManyInput {
+  answers: ISurveyAnswerAdd[];
+}
+
+export interface ISurveyAnswerAdd
+  extends Prisma.SurveyAnswerCreateManyResponseInput {
+  value: any;
+}
