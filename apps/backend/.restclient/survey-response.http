@@ -58,9 +58,7 @@ Authorization: Bearer {{token}}
     "answers": [
         {
             "questionId": "{{idQuestion1}}",
-            "value": [{
-                "optionId": "{{questionOptionId1}}"
-            }]
+            "value": ["{{questionOptionId1}}"]
         },
         {
             "questionId": "{{idQuestion2}}",
