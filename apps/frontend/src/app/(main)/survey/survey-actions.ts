@@ -141,3 +141,22 @@ export async function deleteSurvey(id: string) {
     throw error;
   }
 }
+
+export async function getRefreshedSurveys() {
+  logger.info(
+    `(Server Action) getRefreshedSurveys: Revalidating ${PAGE_PATH}`
+  );
+  try {
+    revalidatePath(PAGE_PATH);
+    logger.info(
+      `(Server Action) getRefreshedSurveys: Path ${PAGE_PATH} revalidated`
+    );
+    return true;
+  } catch (error) {
+    logger.error(
+      `(Server Action) getRefreshedSurveys: Error revalidating path`,
+      error
+    );
+    throw error;
+  }
+}
