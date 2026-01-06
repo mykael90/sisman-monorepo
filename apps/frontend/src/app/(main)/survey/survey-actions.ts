@@ -5,7 +5,7 @@ import { revalidatePath } from 'next/cache';
 import { getSismanAccessToken } from '@/lib/auth/get-access-token';
 import { fetchApiSisman } from '@/lib/fetch/api-sisman';
 import { IActionResultForm } from '@/types/types-server-actions';
-import { ISurveyAdd, ISurveyEdit } from './survey-types';
+import { ISurveyAdd, ISurveyEdit, ISurveyWithRelations } from './survey-types';
 import { handleApiAction } from '@/lib/fetch/handle-form-action-sisman';
 
 const PAGE_PATH = '/survey';
@@ -13,7 +13,10 @@ const API_RELATIVE_PATH = '/survey';
 
 const logger = new Logger(`${PAGE_PATH}/survey-actions`);
 
-export async function getSurveys(accessTokenSisman: string, query?: string) {
+export async function getSurveys(
+  accessTokenSisman: string,
+  query?: string
+): Promise<ISurveyWithRelations[]> {
   logger.info(`(Server Action) getSurveys: Fetching surveys`);
   const url = query ? `${API_RELATIVE_PATH}?${query}` : API_RELATIVE_PATH;
   try {
@@ -28,7 +31,10 @@ export async function getSurveys(accessTokenSisman: string, query?: string) {
   }
 }
 
-export async function getSurvey(accessTokenSisman: string, id: string) {
+export async function getSurvey(
+  accessTokenSisman: string,
+  id: string
+): Promise<ISurveyWithRelations> {
   logger.info(`(Server Action) getSurvey: Fetching survey ${id}`);
   try {
     const data = await fetchApiSisman(
@@ -143,9 +149,7 @@ export async function deleteSurvey(id: string) {
 }
 
 export async function getRefreshedSurveys() {
-  logger.info(
-    `(Server Action) getRefreshedSurveys: Revalidating ${PAGE_PATH}`
-  );
+  logger.info(`(Server Action) getRefreshedSurveys: Revalidating ${PAGE_PATH}`);
   try {
     revalidatePath(PAGE_PATH);
     logger.info(

@@ -327,7 +327,8 @@ export class SurveysService {
   async show(id: string) {
     await this.exists(id);
     return await this.prisma.survey.findUnique({
-      where: { id }
+      where: { id },
+      include: this.includeRelations
     });
   }
 
