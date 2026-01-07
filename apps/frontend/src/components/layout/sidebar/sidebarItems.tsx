@@ -139,8 +139,8 @@ export const sidebarItems: SidebarItem[] = [
     children: [
       { label: 'Usuários', href: '/user' },
       { label: 'Tipos de Permissões', href: '/role' },
-      { label: 'Depósitos', href: '/warehouse' },
-      { label: 'Enquetes', href: '/survey' }
+      { label: 'Depósitos', href: '/warehouse' }
+      // { label: 'Enquetes', href: '/survey' }
     ]
   },
   {
