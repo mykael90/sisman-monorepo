@@ -389,7 +389,8 @@ export class MaterialRestrictionOrdersService {
     id: number,
     data: UpdateMaterialRestrictionOrderWithRelationsDto,
     // O tx opcional já estava correto na sua assinatura
-    tx?: Prisma.TransactionClient
+    tx?: Prisma.TransactionClient,
+    fromReceipt?: boolean
   ): Promise<MaterialRestrictionOrderWithRelationsResponseDto> {
     try {
       // Se um 'tx' (cliente de transação) for fornecido, use-o diretamente.
@@ -398,7 +399,12 @@ export class MaterialRestrictionOrdersService {
           `Executando a atualização dentro de uma transação existente.`
         );
         // Passamos o 'tx' para o método que contém a lógica de negócio.
-        return await this._updateRestrictionOrderLogic(id, data, tx as any);
+        return await this._updateRestrictionOrderLogic(
+          id,
+          data,
+          tx as any,
+          fromReceipt
+        );
       }
 
       // Se nenhum 'tx' for fornecido, crie uma nova transação.
@@ -410,7 +416,8 @@ export class MaterialRestrictionOrdersService {
         return await this._updateRestrictionOrderLogic(
           id,
           data,
-          prismaTransactionClient as any
+          prismaTransactionClient as any,
+          fromReceipt
         );
       });
     } catch (error) {
@@ -431,7 +438,8 @@ export class MaterialRestrictionOrdersService {
     id: number,
     data: UpdateMaterialRestrictionOrderWithRelationsDto,
     // O tx opcional já estava correto na sua assinatura
-    prisma?: PrismaClient
+    prisma?: PrismaClient,
+    fromReceipt?: boolean
   ): Promise<MaterialRestrictionOrderWithRelationsResponseDto> {
     this.logger.log(`Iniciando atualização da ordem de restrição ID ${id}.`);
     const {
@@ -663,8 +671,10 @@ export class MaterialRestrictionOrdersService {
           : undefined
       };
 
-      // verificar o saldo efetivo livre dos itens da requisicao de material para atualizacao
-      await this._canRestrict(targetRequestId, itemsToUpdate, id);
+      // verificar o saldo efetivo livre dos itens da requisicao de material
+      // se a restrição for chamada diretamente após a entradad do material, não precisa fazer essa verificação
+      !fromReceipt &&
+        (await this._canRestrict(targetRequestId, itemsToUpdate, id));
 
       this.logger.log(`Aplicando atualizações na ordem de restrição ${id}.`);
       const updatedOrder = await prisma.materialRestrictionOrder.update({

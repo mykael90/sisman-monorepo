@@ -28,7 +28,10 @@ import {
   CreateMaterialStockMovementWithRelationsDto
 } from '../material-stock-movements/dto/material-stock-movements.dto';
 import { Decimal } from '@sisman/prisma/generated/client/runtime/library';
-import { CreateMaterialRestrictionOrderWithRelationsDto } from '../material-restriction-orders/dto/material-restriction-order.dto';
+import {
+  CreateMaterialRestrictionOrderWithRelationsDto,
+  UpdateMaterialRestrictionOrderWithRelationsDto
+} from '../material-restriction-orders/dto/material-restriction-order.dto';
 import { MaterialRestrictionOrdersService } from '../material-restriction-orders/material-restriction-orders.service';
 import { MaterialRequestsService } from '../material-requests/material-requests.service';
 import e from 'express';
@@ -198,6 +201,7 @@ export class MaterialReceiptsService {
     //variável para receber verdadeiro se um registro anterior de entrada da RM for encontrado
     let existingReceiptGlobal: boolean = false;
 
+    // LÓGICA PARA ATUALIZAR MATERIAL REQUEST. SÕ CABE NO RECEBIMENTO IN_CENTRAL
     if (
       movementType?.code === MaterialStockOperationSubType.IN_CENTRAL &&
       materialRequest?.id
@@ -344,7 +348,7 @@ export class MaterialReceiptsService {
         // Ou, se você tem um mecanismo de atualização em lote no seu ORM que pode pegar
         // os objetos modificados e persistir.
       }
-      //caso em que não houve nenhuum recebimento dessa requisica de manutencao
+      //caso em que não houve nenhuum recebimento dessa requisica de material
       else {
         // apenas atualiza em materialRequest
         const materialRequestItemsMap = new Map(
@@ -553,6 +557,90 @@ export class MaterialReceiptsService {
                 id: materialRequest.id
               } as any,
               notes: `Restrição realizada de forma automática durante a entrada do material`,
+              processedAt: new Date(),
+              items: items.map((item) => {
+                return {
+                  globalMaterialId: item.materialId,
+                  quantityRestricted: item.quantityReceived,
+                  targetMaterialRequestItemId: item.materialRequestItemId
+                } as any;
+              })
+            };
+
+          //chamando o métdo para restrição dos items
+          await this.materialRestrictionOrdersService.create(
+            payloadCreateMaterialRestrictionOrder,
+            prisma as any,
+            true
+          );
+        }
+      }
+
+      //ETAPA 4: Restringir os items em caso de IN_SERVICE_SURPLUS (SOBRA DE MATERIAL DE SERVIÇO) quando proveniente de uma retirada com vinculação à Requisição de Material.
+      if (
+        movementType?.code ===
+          MaterialStockOperationSubType.IN_SERVICE_SURPLUS &&
+        newReceipt.materialRequest?.maintenanceRequestId
+      ) {
+        const existingRestrictionOrder =
+          await prisma.materialRestrictionOrder.findFirst({
+            where: {
+              targetMaterialRequestId: materialRequest.id
+            },
+            include: {
+              items: true
+            }
+          });
+
+        if (existingRestrictionOrder) {
+          // Caso 1 (mais complexo): Existe restriction-order para a requisição de material, precisa acrescentar esses items e suas quantidades na restrição (update)
+
+          //items na ordem atual
+          const currentItemsMap = new Map(
+            existingRestrictionOrder.items.map((item) => [
+              item.globalMaterialId,
+              item
+            ])
+          );
+
+          // items para atualizar
+          const itemsToUpdate = [];
+          for (const item of items) {
+            const existingItem = currentItemsMap.get(item.materialId);
+            if (existingItem) {
+              existingItem.quantityRestricted =
+                existingItem.quantityRestricted.plus(item.quantityReceived);
+              itemsToUpdate.push(existingItem);
+            }
+          }
+
+          const payloadUpdateMaterialRestrictionOrder: UpdateMaterialRestrictionOrderWithRelationsDto =
+            {
+              notes: `Restrição realizada de forma automática durante a sobra do material`,
+              items: itemsToUpdate
+            };
+
+          await this.materialRestrictionOrdersService.update(
+            existingRestrictionOrder.id,
+            payloadUpdateMaterialRestrictionOrder,
+            prisma as any,
+            true
+          );
+        } else {
+          // Caso 2 (mais simples): Ainda não existe restriction-order para a requisição de material, apenas cria a restrição com itens e quantidades
+
+          const payloadCreateMaterialRestrictionOrder: CreateMaterialRestrictionOrderWithRelationsDto =
+            {
+              warehouse: {
+                id: destinationWarehouse.id
+              } as any,
+              processedByUser: {
+                id: processedByUser.id
+              } as any,
+              targetMaterialRequest: {
+                id: materialRequest.id
+              } as any,
+              notes: `Restrição realizada de forma automática durante a sobra do material`,
               processedAt: new Date(),
               items: items.map((item) => {
                 return {
