@@ -1,26 +1,27 @@
 import { getSismanAccessToken } from '@/lib/auth/get-access-token';
-import SurveyResponseForm from '../_components/form/survey-response-form';
 import Logger from '@/lib/logger';
-import { useRouter } from 'next/navigation';
 import SurveyResponseWrapper from '../_components/survey-response-wrapper';
 import { getSurvey } from '../../survey/survey-actions';
 
 const PAGE_PATH = '/survey-response';
 const logger = new Logger(`${PAGE_PATH}/page`);
 
-export default async function Page({
-  params
+export default async function SurveyResponsePage({
+  params,
+  isInDialog = false
 }: {
-  params: { surveyId: string };
+  params: Promise<{ surveyId: string }>;
+  isInDialog?: boolean;
 }) {
-  logger.info(`(Server Page) rendering for survey ${params.surveyId}`);
+  const { surveyId } = await params;
+  logger.info(`(Server Page) rendering for survey ${surveyId}`);
   const accessToken = await getSismanAccessToken();
-  const survey = await getSurvey(accessToken, params.surveyId);
+  const survey = await getSurvey(accessToken, surveyId);
   logger.info(`(Server Page) survey ${survey.id} returned`);
 
   return (
-    <div className='container mx-auto p-4'>
-      <SurveyResponseWrapper survey={survey} />
+    <div>
+      <SurveyResponseWrapper survey={survey} isInDialog={isInDialog} />
     </div>
   );
 }

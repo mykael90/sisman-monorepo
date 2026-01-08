@@ -8,8 +8,7 @@ const logger = new Logger(`${PAGE_PATH}/page`);
 
 export default async function Page() {
   logger.info(`(Server Page) rendering`);
-  const accessToken = await getSismanAccessToken();
-  const surveys = await getSurveys(accessToken);
+  const surveys = await getSurveys();
   logger.info(`(Server Page) ${surveys.length} surveys returned`);
 
   return <SurveyListPage initialSurveys={surveys} />;

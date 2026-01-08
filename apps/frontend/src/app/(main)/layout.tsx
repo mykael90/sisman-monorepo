@@ -10,9 +10,11 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
-  children
+  children,
+  modal
 }: Readonly<{
   children: React.ReactNode;
+  modal: React.ReactNode;
 }>) {
   return (
     <div className='flex min-h-screen flex-col'>
@@ -21,7 +23,10 @@ export default function RootLayout({
       <div className='flex flex-1 flex-col'>
         <div className='flex h-full w-full flex-1 flex-row'>
           <Sidebar />
-          <Main>{children}</Main>
+          <Main>
+            {children}
+            {modal}
+          </Main>
         </div>
         <Footer /> {/* Footer will stick to the bottom */}
       </div>

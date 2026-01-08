@@ -309,9 +309,12 @@ export class SurveysService {
     const whereArgs: Prisma.SurveyWhereInput = {};
 
     if (queryParams && !!Object.keys(queryParams).length) {
-      const { isActive } = queryParams;
+      const { isActive, showModal } = queryParams;
       if (isActive) {
         whereArgs.isActive = isActive === 'true';
+      }
+      if (showModal) {
+        whereArgs.showModal = showModal === 'true';
       }
     }
 

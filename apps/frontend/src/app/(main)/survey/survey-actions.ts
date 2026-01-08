@@ -14,12 +14,12 @@ const API_RELATIVE_PATH = '/survey';
 const logger = new Logger(`${PAGE_PATH}/survey-actions`);
 
 export async function getSurveys(
-  accessTokenSisman: string,
   query?: string
 ): Promise<ISurveyWithRelations[]> {
   logger.info(`(Server Action) getSurveys: Fetching surveys`);
   const url = query ? `${API_RELATIVE_PATH}?${query}` : API_RELATIVE_PATH;
   try {
+    const accessTokenSisman = await getSismanAccessToken();
     const data = await fetchApiSisman(url, accessTokenSisman, {
       // cache: 'force-cache'
     });

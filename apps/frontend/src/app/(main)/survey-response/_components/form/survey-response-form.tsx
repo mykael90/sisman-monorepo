@@ -129,10 +129,12 @@ const AnswerField = ({
 
 export default function SurveyResponseForm({
   survey,
-  onCancel
+  onCancel,
+  isInDialog = false
 }: {
   survey: ISurveyWithRelations;
   onCancel: () => void;
+  isInDialog?: boolean;
 }) {
   const router = useRouter();
   const { data: session, status } = useSession();
@@ -173,6 +175,7 @@ export default function SurveyResponseForm({
         serverState={serverState}
         handleActions={{ handleCancelForm: onCancel }}
         messageActions={{ handleCancel: 'Obrigado por responder!' }}
+        isInDialog={isInDialog}
       />
     );
   }
@@ -188,8 +191,8 @@ export default function SurveyResponseForm({
     >
       <ErrorServerForm serverState={serverState} />
 
-      <h2 className='text-2xl font-bold'>{survey.title}</h2>
-      <p className='text-muted-foreground'>{survey.description}</p>
+      {/* <h2 className='text-2xl font-bold'>{survey.title}</h2>
+      <p className='text-muted-foreground'>{survey.description}</p> */}
 
       <div className='mt-6'>
         {survey.questions
