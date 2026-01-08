@@ -2,6 +2,7 @@
 import { NextRequestWithAuth, withAuth } from 'next-auth/middleware';
 import { NextResponse } from 'next/server';
 import Logger from '@/lib/logger';
+import { Role } from './role.enum';
 
 const logger = new Logger('Middleware');
 
@@ -42,6 +43,50 @@ export default withAuth(
     //   );
     //   return response;
     // }
+
+    // Rotas que precisam de uma instância de manutenção associada ao usuário.
+    if (
+      (pathname.startsWith('/worker') ||
+        pathname.startsWith('/material') ||
+        pathname.startsWith('/sipac') ||
+        pathname.startsWith('/maintenance/reports')) &&
+      !req.nextauth.token?.maintenanceInstanceId
+    ) {
+      logger.warn(
+        `Acesso negado à rota ${pathname} para usuário sem instância de manutenção vinculada. Redirecionando para /denied?denyBy=maintenance-instance.`
+      );
+      const deniedUrl = new URL('/denied?denyBy=maintenance-instance', req.url);
+      const response = NextResponse.rewrite(deniedUrl); // Usar rewrite para manter a URL original na barra de endereço
+      const duration = Date.now() - start;
+      logger.info(
+        `Middleware END (Denied Access): ${method} ${pathname} in ${duration}ms`,
+        { req: { method, url }, duration, rewrite: deniedUrl.toString() }
+      );
+      logger.warn(JSON.stringify(req.nextauth, null, 2));
+      return response;
+    }
+
+    // Rotas que precisam de papel de administrador.
+    if (
+      (pathname.startsWith('/user') ||
+        pathname.startsWith('/role') ||
+        pathname.startsWith('/warehouse') ||
+        pathname.startsWith('/maintenance/instance')) &&
+      !req.nextauth.token?.roles?.includes(Role.Adm)
+    ) {
+      logger.warn(
+        `Acesso negado à rota ${pathname} para usuário sem role 'admin'. Redirecionando para /denied?denyBy=role.`
+      );
+      const deniedUrl = new URL('/denied?denyBy=role', req.url);
+      const response = NextResponse.rewrite(deniedUrl); // Usar rewrite para manter a URL original na barra de endereço
+      const duration = Date.now() - start;
+      logger.info(
+        `Middleware END (Denied Access): ${method} ${pathname} in ${duration}ms`,
+        { req: { method, url }, duration, rewrite: deniedUrl.toString() }
+      );
+      logger.warn(JSON.stringify(req.nextauth, null, 2));
+      return response;
+    }
 
     // Se não houve erro de refresh e nenhuma outra condição de redirecionamento/rewrite foi atendida,
     // permite que a requisição continue normalmente.

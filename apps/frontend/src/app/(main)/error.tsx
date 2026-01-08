@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react'; // 1. Importar useEffect
 import { useRouter } from 'next/navigation';
 import { AlertTriangle, Home, MessageSquare, RefreshCw } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -13,6 +14,18 @@ export default function Error({
   reset: () => void;
 }) {
   const router = useRouter();
+
+  // 2. Mover a lógica de navegação para o useEffect
+  useEffect(() => {
+    if (error.message.includes('403 Forbidden')) {
+      router.push('/denied?denyBy=role');
+    }
+  }, [error, router]);
+
+  // 3. Retornar null (ou um loading) enquanto redireciona para evitar flash de conteúdo
+  if (error.message.includes('403 Forbidden')) {
+    return null;
+  }
 
   const errorTitle = 'Ops! Um Erro Ocorreu';
   const userFriendlyMessage =
@@ -28,18 +41,12 @@ export default function Error({
         <AlertTriangle className='h-5 w-5' />
         <AlertTitle className='text-xl font-semibold'>{errorTitle}</AlertTitle>
         <AlertDescription className='mt-2'>
-          {' '}
-          {/* Removido break-words daqui, pois o controle fino será no <pre> */}
           <p>{userFriendlyMessage}</p>
           {(error?.message || error?.digest) && (
             <details className='mt-4 flex w-full max-w-lg flex-col gap-2 text-sm'>
               <summary className='cursor-pointer font-medium hover:underline'>
                 {technicalDetailsLabel}
               </summary>
-              {/* 
-                - whitespace-pre-wrap: Preserva espaços e quebras de linha, mas permite wrapping.
-                - break-all: Força a quebra de strings longas e contínuas para evitar overflow.
-              */}
               <pre className='bg-muted text-muted-foreground mt-2 rounded-md p-3 text-xs break-all whitespace-pre-wrap'>
                 {error.message && `Mensagem: ${error.message}`}
                 {error.digest && `\nDigest: ${error.digest}`}
@@ -63,7 +70,7 @@ export default function Error({
           {tryAgainLabel}
         </Button>
         <Button
-          onClick={() => console.log('Falar com Suporte clicado')} // Lógica a ser implementada
+          onClick={() => console.log('Falar com Suporte clicado')}
           variant='outline'
           className='w-full sm:w-auto'
         >

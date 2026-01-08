@@ -1,11 +1,8 @@
-'use client';
-
-import React from 'react';
 import { Construction, User, Target, CheckCircle } from 'lucide-react';
 
 export default function UnderConstruction() {
   return (
-    <main className='min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-6 dark:from-gray-900 dark:to-gray-800'>
+    <main className='bg-background min-h-screen p-6'>
       <div className='mx-auto max-w-4xl'>
         {/* Header */}
         <header className='mb-10 text-center'>
@@ -13,11 +10,11 @@ export default function UnderConstruction() {
             <Construction className='text-accent h-10 w-10' />
           </div>
 
-          <h1 className='mb-2 text-4xl font-bold text-gray-800 dark:text-gray-100'>
+          <h1 className='text-sisman-blue mb-2 text-4xl font-bold'>
             Desenvolvimento futuro
           </h1>
 
-          <p className='text-lg text-gray-600 dark:text-gray-300'>
+          <p className='text-muted-foreground text-lg'>
             Este módulo será desenvolvido em um momento futuro.
           </p>
         </header>
@@ -25,14 +22,12 @@ export default function UnderConstruction() {
         {/* Content */}
         <section className='grid gap-6 md:grid-cols-2'>
           {/* Card 1 */}
-          <div className='rounded-xl bg-white p-6 shadow-sm transition hover:shadow-md dark:bg-gray-700'>
+          <div className='bg-card rounded-xl p-6 shadow-sm transition hover:shadow-md'>
             <div className='mb-4 flex items-center gap-3'>
-              <User className='h-6 w-6 text-blue-600 dark:text-blue-400' />
-              <h2 className='text-lg font-semibold text-gray-800 dark:text-gray-100'>
-                Módulo
-              </h2>
+              <User className='text-primary h-6 w-6' />
+              <h2 className='text-foreground text-lg font-semibold'>Módulo</h2>
             </div>
-            <p className='text-sm text-gray-600 dark:text-gray-300'>
+            <p className='text-muted-foreground text-sm'>
               Esta página faz parte de um módulo a ser desenvolvido.
             </p>
           </div>
@@ -52,14 +47,12 @@ export default function UnderConstruction() {
           </div> */}
 
           {/* Card 3 */}
-          <div className='rounded-xl bg-white p-6 shadow-sm transition hover:shadow-md dark:bg-gray-700'>
+          <div className='bg-card rounded-xl p-6 shadow-sm transition hover:shadow-md'>
             <div className='mb-4 flex items-center gap-3'>
-              <CheckCircle className='h-6 w-6 text-purple-600 dark:text-purple-400' />
-              <h2 className='text-lg font-semibold text-gray-800 dark:text-gray-100'>
-                Status
-              </h2>
+              <CheckCircle className='text-secondary h-6 w-6' />
+              <h2 className='text-foreground text-lg font-semibold'>Status</h2>
             </div>
-            <p className='text-sm text-gray-600 dark:text-gray-300'>
+            <p className='text-muted-foreground text-sm'>
               Modelagem do esquema definida. Próximas etapas incluem
               implementação de funcionalidades e testes no frontend.
             </p>
@@ -67,7 +60,7 @@ export default function UnderConstruction() {
         </section>
 
         {/* Footer hint */}
-        <footer className='mt-12 text-center text-sm text-gray-500 dark:text-gray-400'>
+        <footer className='text-muted-foreground mt-12 text-center text-sm'>
           © {new Date().getFullYear()} • Conteúdo fora do escopo inicial
         </footer>
       </div>

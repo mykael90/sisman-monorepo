@@ -159,6 +159,8 @@ async function baseFetch(
           ? parsedError.message.join('; ')
           : parsedError.message;
         const userFriendlyErrorMessage = `SISMAN API Erro: ${parsedError.statusCode} ${parsedError.error}. Mensagem: ${apiMessages}`;
+        logger.warn(`parsedError: ${JSON.stringify(parsedError)}`);
+
         throw new SismanApiError(userFriendlyErrorMessage, parsedError);
       } else {
         logger.warn(
@@ -216,17 +218,23 @@ export async function fetchApiSisman<T = any>(
   // Constrói a URL final com os parâmetros antes de chamar o baseFetch
   const finalUrl = appendQueryParams(relativeUrl, queryParams);
 
-  const response = await baseFetch(finalUrl, accessTokenSisman, options);
+  try {
+    const response = await baseFetch(finalUrl, accessTokenSisman, options);
+    if (
+      response.status === 204 ||
+      response.headers.get('content-length') === '0'
+    ) {
+      return null as T;
+    }
 
-  if (
-    response.status === 204 ||
-    response.headers.get('content-length') === '0'
-  ) {
-    return null as T;
+    const data = await response.json();
+    return data as T;
+  } catch (error) {
+    logger.error(
+      `fetchApiSisman: Error parsing JSON response: ${JSON.stringify(error, null, 2)}`
+    );
+    throw error;
   }
-
-  const data = await response.json();
-  return data as T;
 }
 
 // ========================================================================

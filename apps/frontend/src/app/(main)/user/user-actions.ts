@@ -55,8 +55,7 @@ export async function showUser(
     return data;
   } catch (error) {
     logger.error(
-      `(Server Action) showUser: Erro ao buscar usuário com ID ${id}.`,
-      error
+      `(Server Action) showUser: Erro ao buscar usuário com ID ${id}. ${JSON.stringify(error, null, 2)}`
     );
     throw error;
   }
