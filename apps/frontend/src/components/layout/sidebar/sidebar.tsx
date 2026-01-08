@@ -5,7 +5,7 @@ import { useSidebarContext } from '@/src/components/context/sidebar-provider';
 import NavLink from '@/src/components/ui/navlink';
 import Summary from '@/src/components/ui/summary';
 import { DIVIDER_LABEL, SidebarItem, sidebarItems } from './sidebarItems';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, Construction, ConstructionIcon } from 'lucide-react';
 
 interface SidebarItemProps {
   item: SidebarItem;
@@ -63,7 +63,10 @@ const SidebarItemComponent: React.FC<SidebarItemProps> = ({
               isCollapsed ? 'hidden' : 'sm:opacity-100'
             }`}
           >
-            {item.label}
+            {item.label}{' '}
+            {item.inactive && (
+              <Construction className='text-sisman-teal inline-flex h-5 w-5' />
+            )}
           </span>
           {!isCollapsed && (
             <ChevronRight
@@ -115,9 +118,12 @@ const SidebarItemComponent: React.FC<SidebarItemProps> = ({
         <span
           className={`ps-1 transition-opacity duration-300 ${
             isCollapsed ? 'hidden' : 'opacity-100'
-          }`}
+          } ${item.inactive && 'text-muted-foreground'}`}
         >
-          {item.label}
+          {item.label}{' '}
+          {item.inactive && (
+            <ConstructionIcon className='text-sisman-teal inline-flex h-3 w-3' />
+          )}
         </span>
       </NavLink>
     );

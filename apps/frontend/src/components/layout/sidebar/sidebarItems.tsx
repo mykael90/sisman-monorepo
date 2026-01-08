@@ -19,7 +19,10 @@ export interface SidebarItem {
   href?: string;
   icon?: React.ReactNode;
   children?: SidebarItem[];
+  inactive?: boolean;
 }
+
+export const UNDER_CONSTRUCTION_URL = '/under-construction';
 
 export const DIVIDER_LABEL = '---';
 
@@ -33,17 +36,38 @@ export const sidebarItems: SidebarItem[] = [
     label: 'Infraestrutura',
     icon: <Building2 className='h-6 w-6' />,
     children: [
-      { label: 'Todas as Infraestruturas', href: '/infrastructure/all' },
-      { label: 'Adicionar Infraestrutura', href: '/infrastructure/add' },
+      {
+        label: 'Todas as Infraestruturas',
+        // href: '/infrastructure/all',
+        href: UNDER_CONSTRUCTION_URL,
+        inactive: true
+      },
+      {
+        label: 'Adicionar Infraestrutura',
+        // href: '/infrastructure/add',
+        href: UNDER_CONSTRUCTION_URL,
+        inactive: true
+      },
       { label: DIVIDER_LABEL }, // Divider here
       {
         label: 'Tipos',
         children: [
-          { label: 'Todos os Tipos', href: '/infrastructure/types/all' },
-          { label: 'Adicionar Tipo', href: '/infrastructure/types/add' }
+          {
+            label: 'Todos os Tipos',
+            // href: '/infrastructure/types/all',
+            href: UNDER_CONSTRUCTION_URL,
+            inactive: true
+          },
+          {
+            label: 'Adicionar Tipo',
+            // href: '/infrastructure/types/add',
+            href: UNDER_CONSTRUCTION_URL,
+            inactive: true
+          }
         ]
       }
-    ]
+    ],
+    inactive: true
   },
   {
     label: 'Manutenção',
@@ -108,28 +132,76 @@ export const sidebarItems: SidebarItem[] = [
     label: 'Equipamentos',
     icon: <Drill className='h-6 w-6' />,
     children: [
-      { label: 'Todos os Equipamentos', href: '/equipment/all' },
-      { label: 'Adicionar Equipamento', href: '/equipment/add' },
-      { label: 'Tipos', href: '/equipment/types' }
-    ]
+      {
+        label: 'Todos os Equipamentos',
+        // href: '/equipment/all',
+        href: UNDER_CONSTRUCTION_URL,
+        inactive: true
+      },
+      {
+        label: 'Adicionar Equipamento',
+        // href: '/equipment/add',
+        href: UNDER_CONSTRUCTION_URL,
+        inactive: true
+      },
+      {
+        label: 'Tipos',
+        // href: '/equipment/types',
+        href: UNDER_CONSTRUCTION_URL,
+        inactive: true
+      }
+    ],
+    inactive: true
   },
   {
     label: 'Fornecedores',
     icon: <Store className='h-6 w-6' />,
     children: [
-      { label: 'Todos os Fornecedores', href: '/suppliers/all' },
-      { label: 'Adicionar Fornecedor', href: '/suppliers/add' },
-      { label: 'Categorias', href: '/suppliers/category' }
-    ]
+      {
+        label: 'Todos os Fornecedores',
+        // href: '/suppliers/all',
+        href: UNDER_CONSTRUCTION_URL,
+        inactive: true
+      },
+      {
+        label: 'Adicionar Fornecedor',
+        // href: '/suppliers/add',
+        href: UNDER_CONSTRUCTION_URL,
+        inactive: true
+      },
+      {
+        label: 'Categorias',
+        // href: '/suppliers/category',
+        href: UNDER_CONSTRUCTION_URL,
+        inactive: true
+      }
+    ],
+    inactive: true
   },
   {
     label: 'Frota',
     icon: <Truck className='h-6 w-6' />,
     children: [
-      { label: 'Todos os Veículos', href: '/fleet/all' },
-      { label: 'Adicionar Veículo', href: '/fleet/add' },
-      { label: 'Tipos', href: '/fleet/types' }
-    ]
+      {
+        label: 'Todos os Veículos',
+        // href: '/fleet/all',
+        href: UNDER_CONSTRUCTION_URL,
+        inactive: true
+      },
+      {
+        label: 'Adicionar Veículo',
+        // href: '/fleet/add',
+        href: UNDER_CONSTRUCTION_URL,
+        inactive: true
+      },
+      {
+        label: 'Tipos',
+        // href: '/fleet/types',
+        href: UNDER_CONSTRUCTION_URL,
+        inactive: true
+      }
+    ],
+    inactive: true
   },
   {
     label: 'Configurações',

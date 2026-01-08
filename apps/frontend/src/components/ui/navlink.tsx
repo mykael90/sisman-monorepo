@@ -1,6 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { UNDER_CONSTRUCTION_URL } from '../layout/sidebar/sidebarItems';
 
 interface NavLinkProps {
   href: string;
@@ -16,7 +17,7 @@ const NavLink: React.FC<NavLinkProps> = ({
   onClick
 }) => {
   const pathname = usePathname();
-  const isActive = pathname === href;
+  const isActive = pathname === href && href !== UNDER_CONSTRUCTION_URL;
 
   return (
     <Link
