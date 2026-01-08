@@ -21,6 +21,7 @@ import { StatusBadge } from '@/components/ui/status-badge'; // Importar StatusBa
 import {
   calculateAge,
   formatAndMaskCPF,
+  formatAndMaskPhone,
   formatCodigoUnidade,
   getDateUTC,
   maskPhoneInput
@@ -224,11 +225,7 @@ export const columns = (
     header: 'CPF',
     size: 100,
     enableResizing: false,
-    cell: (props) => {
-      const formattedCpf = formatAndMaskCPF(props.getValue());
-
-      return formattedCpf;
-    }
+    cell: (props) => formatAndMaskCPF(props.getValue())
   }),
   columnHelper.accessor('birthdate', {
     // Assumindo que Worker tem uma propriedade 'login'
@@ -259,8 +256,7 @@ export const columns = (
     header: 'Telefone',
     size: 100,
     enableResizing: false,
-    cell: (props) =>
-      props.getValue() ? maskPhoneInput(props.getValue()) : 'indefinido'
+    cell: (props) => formatAndMaskPhone(props.getValue())
   }),
   columnHelper.accessor((row) => (row.isActive ? 'Ativo' : 'Inativo'), {
     header: 'Status',

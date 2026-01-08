@@ -58,6 +58,71 @@ export function formatAndMaskCPF(cpf: string | null | undefined): string {
   return `${block1}.${block2}.${block3}-${block4}`;
 }
 
+export function formatAndMaskPhone(phone: string | null | undefined): string {
+  if (!phone) {
+    return 'indefinido';
+  }
+
+  // Remove qualquer caractere não numérico
+  const cleaned = phone.replace(/\D/g, '');
+
+  // O telefone pode ter 10 ou 11 dígitos (com DDD)
+  if (cleaned.length !== 10 && cleaned.length !== 11) {
+    throw new Error(
+      'Telefone deve conter 10 ou 11 dígitos numéricos (com DDD).'
+    );
+  }
+
+  const ddd = cleaned.slice(0, 2);
+  const numPart = cleaned.slice(2); // 8 ou 9 dígitos
+
+  if (numPart.length === 8) {
+    // 10 dígitos totais: (DD) XXXX-XXXX
+    // Exposto: DDD (2), 2 do início (XX), 2 do final (XX). Mascarar 4 centrais.
+    const firstTwo = numPart.slice(0, 2); // X X
+    const lastTwo = numPart.slice(4, 8); // X X
+    const maskedCenter = '**'; // 4
+
+    return `(${ddd}) ${firstTwo}${maskedCenter}${lastTwo}`; // Ex: (55) 12****78
+  } else {
+    // 11 dígitos totais: (DD) 9XXXX-XXXX
+    // Exposto: DDD (2), 1 do início (9), 2 do final (XX). Mascarar 6 centrais.
+    const firstDigit = numPart.slice(0, 1); // 9
+    const lastTwo = numPart.slice(5, 9); // XX
+    const maskedCenter = '****'; // 6
+
+    return `(${ddd}) ${firstDigit}${maskedCenter}${lastTwo}`; // Ex: (55) 9******78
+  }
+}
+
+export function formatAndMaskBirthDate(
+  date: string | null | undefined
+): string {
+  if (!date) {
+    return 'indefinido';
+  }
+
+  // Remove qualquer caractere não numérico
+  const cleaned = date.replace(/\D/g, '');
+
+  // A data de nascimento (DDMMYYYY) deve ter 8 dígitos.
+  if (cleaned.length !== 8) {
+    throw new Error(
+      'Data de nascimento deve conter exatamente 8 dígitos numéricos (DDMMYYYY).'
+    );
+  }
+
+  // Extrai o dia
+  const day = cleaned.slice(0, 2);
+
+  // Mascara Mês e Ano
+  const monthMask = '**';
+  const yearMask = '****';
+
+  // Monta a data formatada com máscara
+  return `${day}/${monthMask}/${yearMask}`; // Ex: 01/**/****
+}
+
 export function calculateAge(
   birthdate: string | null | undefined
 ): number | string {
