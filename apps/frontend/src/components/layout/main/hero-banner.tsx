@@ -9,11 +9,21 @@ import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { ISurveyWithRelations } from '../../../app/(main)/survey/survey-types';
 import { getSurveys } from '../../../app/(main)/survey/survey-actions';
+import { toast } from 'sonner';
+import { useSession } from 'next-auth/react';
+import { showBuilding } from '../../../app/(main)/infrastructure/building/building-actions';
 
 export default function HeroBanner() {
   const router = useRouter();
 
-  const [searchQuery, setSearchQuery] = useState('');
+  const { data: session, status } = useSession();
+
+  if (status !== 'loading' && !session?.user?.idSisman) {
+    toast.warning('É preciso está autenticado para acessar essa página.');
+    router.push('/signin');
+  }
+
+  const userId = session?.user.idSisman;
 
   // 1. USE O HOOK useQuery PARA BUSCAR E GERENCIAR OS DADOS
   const {
@@ -40,21 +50,30 @@ export default function HeroBanner() {
     retry: false // opcional, evita novas tentativas automáticas
   });
 
+  // Pegar a primeira da lista que tem showModal (fazer logica para ter apenas uma por vez depois)
   const surveyDisplayed = listSurveys?.find(
     (survey) => survey.showModal === true
   );
 
-  // 2. Mover a lógica de navegação para o useEffect
+  const shouldDisplay =
+    surveyDisplayed?.id &&
+    !surveyDisplayed?.responses.find((response) => response.userId === userId);
+
+  console.log(`
+      surveyDisplayed?.responses.find((response) => response.userId === userId) = ${surveyDisplayed?.responses.find((response) => response.userId === userId)}`);
+
+  console.log(`surveyDisplayed = ${JSON.stringify(surveyDisplayed, null, 2)}`);
+
+  console.log(`userId = ${userId}`);
+
+  console.log(`shouldDisplay = ${shouldDisplay}`);
+
+  // Só mostrar se existir surveyDisplayed e o usuario atual ainda não tiver respondido
   useEffect(() => {
-    if (surveyDisplayed?.id) {
+    if (shouldDisplay) {
       router.push(`survey-response/${surveyDisplayed.id}`);
     }
   }, [surveyDisplayed?.id, router]);
-
-  // 3. Retornar null (ou um loading) enquanto redireciona para evitar flash de conteúdo
-  // if (true) {
-  //   return null;
-  // }
 
   return (
     <div
