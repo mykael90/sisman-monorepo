@@ -63,7 +63,9 @@ export function FormSuccessDisplay<TSubmittedData, TApiResponse>({
         )}
         {isInDialog ? (
           <DialogClose asChild>
-            <Button className='flex'>Voltar para lista</Button>
+            <Button className='flex'>
+              {messageActions?.handleCancel || 'Voltar para lista'}
+            </Button>
           </DialogClose>
         ) : (
           handleActions.handleCancelForm && (

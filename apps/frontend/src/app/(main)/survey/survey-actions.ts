@@ -72,7 +72,7 @@ export async function addSurvey(
       {
         mainPath: PAGE_PATH
       },
-      'Survey added successfully!'
+      'Enquete adicionada com sucesso!'
     );
   } catch (error) {
     logger.error(`(Server Action) addSurvey: Unexpected error`, error);

@@ -89,9 +89,10 @@ export async function addSurveyResponse(
         accessToken: accessToken
       },
       {
-        mainPath: PAGE_PATH
+        mainPath: PAGE_PATH,
+        detailPath: '/survey'
       },
-      'Survey response added successfully!'
+      'Resposta de pesquisa enviada com sucesso, obrigado!'
     );
   } catch (error) {
     logger.error(`(Server Action) addSurveyResponse: Unexpected error`, error);
