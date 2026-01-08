@@ -416,9 +416,18 @@ export class MaintenanceRequestsService {
           where: {
             // Filtra apenas os itens cujas retiradas pertencem à nossa MaintenanceRequest
             materialReceipt: {
-              materialRequest: {
-                maintenanceRequestId: id
-              }
+              OR: [
+                {
+                  materialRequest: {
+                    maintenanceRequestId: id
+                  }
+                },
+                {
+                  materialWithdrawal: {
+                    maintenanceRequestId: id
+                  }
+                }
+              ]
             }
           },
           _sum: {

@@ -280,9 +280,9 @@ A estrutura do banco de dados já existe, ela é criada durante o primeiro uso d
 
 `docker compose exec -it sisman-monorepo-prod sh`
 
-`pnpm prisma:db:migrate:dev` **cuidado!**
-
 `pnpm prisma:db:push` **cuidado!**
+
+`pnpm prisma:db:migrate:dev` **cuidado extremo!**
 
 ## ⚙️ Comandos Úteis (Dentro do Dev Container)
 
