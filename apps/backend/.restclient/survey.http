@@ -8,7 +8,7 @@ Authorization: Bearer {{token}}
 
 ### GET all surveys with query params
 GET {{urlLocal}}
-?someParam=someValue
+?showModal=true
 Authorization: Bearer {{token}}
 
 ### GET one survey

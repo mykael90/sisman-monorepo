@@ -121,6 +121,24 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
+exports.Prisma.AttachmentScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  userId: 'userId',
+  fileType: 'fileType',
+  originalFileName: 'originalFileName',
+  storedFileName: 'storedFileName',
+  url: 'url',
+  localPath: 'localPath',
+  sizeInBytes: 'sizeInBytes',
+  fileExtension: 'fileExtension',
+  width: 'width',
+  height: 'height',
+  relatedId: 'relatedId',
+  relatedModel: 'relatedModel'
+};
+
 exports.Prisma.ContractScalarFieldEnum = {
   id: 'id',
   providerId: 'providerId',
@@ -1134,6 +1152,18 @@ exports.Prisma.NullsOrder = {
   last: 'last'
 };
 
+exports.Prisma.AttachmentOrderByRelevanceFieldEnum = {
+  id: 'id',
+  fileType: 'fileType',
+  originalFileName: 'originalFileName',
+  storedFileName: 'storedFileName',
+  url: 'url',
+  localPath: 'localPath',
+  fileExtension: 'fileExtension',
+  relatedId: 'relatedId',
+  relatedModel: 'relatedModel'
+};
+
 exports.Prisma.ContractOrderByRelevanceFieldEnum = {
   codigoSipac: 'codigoSipac',
   subject: 'subject'
@@ -1874,6 +1904,7 @@ exports.SurveyQuestionType = exports.$Enums.SurveyQuestionType = {
 };
 
 exports.Prisma.ModelName = {
+  Attachment: 'Attachment',
   Contract: 'Contract',
   ContractProvider: 'ContractProvider',
   InfrastructureFacilityComplex: 'InfrastructureFacilityComplex',

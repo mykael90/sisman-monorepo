@@ -191,6 +191,12 @@ export class CreateWorkerWithRelationsDto extends CreateWorkerDto {
   @ValidateNested({ each: true })
   @Type(() => WorkerContractCreateDto)
   workerContracts?: WorkerContractCreateDto[];
+
+  /**
+   * Dados do anexo já tratados pelos serviços adequados.
+   */
+  @IsOptional()
+  attachmentData?: any;
 }
 
 // =================================================================

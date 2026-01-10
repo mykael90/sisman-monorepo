@@ -31,6 +31,30 @@ Authorization: Bearer {{token}}
     "phone": "11987654321"
 }
 
+### POST create worker (multipart)
+POST {{urlLocal}}
+Content-Type: multipart/form-data; boundary=WorkerBoundary
+Authorization: Bearer {{token}}
+
+--WorkerBoundary
+Content-Disposition: form-data; name="name"
+
+João Silva
+--WorkerBoundary
+Content-Disposition: form-data; name="email"
+
+joao.silva@empresa.com
+--WorkerBoundary
+Content-Disposition: form-data; name="phone"
+
+11987654321
+--WorkerBoundary
+Content-Disposition: form-data; name="file"; filename="imageNest.png"
+Content-Type: image/png
+
+< ./imageNest.png
+--WorkerBoundary--
+
 ### POST WITH RELATIONS
 POST {{urlLocal}}
 Content-Type: {{contentType}}

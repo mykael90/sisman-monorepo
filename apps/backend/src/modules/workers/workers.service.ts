@@ -15,12 +15,17 @@ import {
   CreateWorkerWithRelationsDto,
   UpdateWorkerWithRelationsDto
 } from './dto/worker.dto';
+import { AttachmentsService } from '../../shared/attachments/attachments.service';
+import { CreateAttachmentDto } from '../../shared/attachments/dto/attachment.dto';
+import { at } from 'lodash';
+import { join } from 'path';
 
 @Injectable()
 export class WorkersService {
   private readonly logger = new Logger(WorkersService.name);
 
   constructor(
+    private readonly attachmentsService: AttachmentsService,
     @Inject(PrismaService) private readonly prisma: ExtendedPrismaClient
   ) {}
 
@@ -58,7 +63,7 @@ export class WorkersService {
     prisma: Prisma.TransactionClient
   ): Promise<Worker> {
     this.logger.log(`Criando worker com dados: ${JSON.stringify(data)}`);
-    const { workerContracts, ...restOfData } = data;
+    const { workerContracts, attachmentData, ...restOfData } = data;
 
     const prismaCreateInput: Prisma.WorkerCreateInput = {
       ...restOfData,
@@ -79,10 +84,34 @@ export class WorkersService {
     };
 
     try {
-      return await prisma.worker.create({
+      const worker = await prisma.worker.create({
         data: prismaCreateInput,
         include: this.includeRelations
       });
+
+      //Anexar arquivo junto com criação
+      //Inseri algumas informações no DTO
+      if (attachmentData?.file) {
+        function getDestinationDirectory() {
+          return join(__dirname, '..', '..', '..', 'storage', 'photos');
+        }
+
+        const fileName = `photo-${worker.id}-${Date.now()}.jpg`;
+
+        ((attachmentData.localPath = join(getDestinationDirectory(), fileName)),
+          (attachmentData.relatedId = String(worker.id)),
+          (attachmentData.relatedModel = 'Worker'),
+          (attachmentData.userId = 1),
+          (attachmentData.storedFileName = fileName),
+          (attachmentData.url =
+            'https://storage.exemplo.com/uploads/a1b2c3d4e5f6.jpg'));
+
+        // Chama o serviço de anexo para criar o anexo dentro da transação
+        await this.attachmentsService.create(attachmentData, prisma);
+      }
+
+      // Finaliza a transação e retorna o trabalhador
+      return worker;
     } catch (error) {
       handlePrismaError(error, this.logger, 'Worker', {
         operation: 'create',

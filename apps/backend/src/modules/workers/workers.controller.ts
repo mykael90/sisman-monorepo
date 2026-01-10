@@ -2,15 +2,20 @@ import {
   Body,
   Controller,
   Delete,
+  FileTypeValidator,
   Get,
   HttpCode,
   HttpStatus,
+  MaxFileSizeValidator,
   Param,
+  ParseFilePipe,
   ParseIntPipe,
   Post,
   Put,
   Query,
-  UseGuards
+  UploadedFile,
+  UseGuards,
+  UseInterceptors
 } from '@nestjs/common';
 
 import { WorkersService } from './workers.service';
@@ -25,6 +30,8 @@ import {
   UpdateWorkerWithRelationsDto,
   WorkerWithRelationsResponseDto
 } from './dto/worker.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { User } from '../../shared/decorators/user-decorator';
 
 // @Roles(Role.Adm)
 @UseGuards(AuthGuard, RoleGuard)
@@ -36,6 +43,7 @@ export class WorkersController {
   /**
    * Cria um novo worker.
    */
+  @UseInterceptors(FileInterceptor('file'))
   @Roles(Role.Adm, Role.AdmWorkers, Role.SuperWorkers)
   @Post()
   @ApiEndpointSwagger({
@@ -57,8 +65,28 @@ export class WorkersController {
       }
     ]
   })
-  async create(@Body() data: CreateWorkerWithRelationsDto) {
-    return this.workersService.create(data);
+  async create(
+    @User(['id', 'name']) user: { id: number; name: string },
+    @UploadedFile(
+      new ParseFilePipe({
+        fileIsRequired: false,
+        validators: [
+          new FileTypeValidator({ fileType: 'image' }),
+          // 2MB
+          new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 2 })
+        ]
+      })
+    )
+    file: Express.Multer.File | undefined,
+    @Body() data: CreateWorkerWithRelationsDto
+  ) {
+    if (file) {
+      data.attachmentData = {
+        file,
+        userId: user.id
+      };
+    }
+    return await this.workersService.create(data);
   }
 
   @Get()
