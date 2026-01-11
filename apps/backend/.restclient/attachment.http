@@ -1,0 +1,53 @@
+### Variables
+@urlLocal = {{apiUrl}}/attachment
+@contentType = application/json
+
+### GET all
+GET {{urlLocal}}
+Authorization: Bearer {{token}}
+
+### POST create (multipart)
+POST {{urlLocal}}
+Content-Type: multipart/form-data; boundary=AttachmentBoundary
+Authorization: Bearer {{token}}
+
+--AttachmentBoundary
+Content-Disposition: form-data; name="relatedId"
+
+25
+--AttachmentBoundary
+Content-Disposition: form-data; name="relatedModel"
+
+ContractProvider
+--AttachmentBoundary
+Content-Disposition: form-data; name="file"; filename="image1.jpg"
+Content-Type: image/jpg
+
+< ./image1.jpg
+--AttachmentBoundary--
+
+### POST batch create (multipart)
+POST {{urlLocal}}/batch
+Content-Type: multipart/form-data; boundary=AttachmentBoundary
+Authorization: Bearer {{token}}
+
+--AttachmentBoundary
+Content-Disposition: form-data; name="relatedId"
+
+25
+--AttachmentBoundary
+Content-Disposition: form-data; name="relatedModel"
+
+ContractProvider
+--AttachmentBoundary
+Content-Disposition: form-data; name="files"; filename="image1.jpg"
+Content-Type: image/jpg
+
+< ./image1.jpg
+
+--AttachmentBoundary
+Content-Disposition: form-data; name="files"; filename="imageNest.png"
+Content-Type: image/png
+
+< ./imageNest.png
+--AttachmentBoundary--

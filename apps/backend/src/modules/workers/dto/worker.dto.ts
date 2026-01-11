@@ -196,7 +196,10 @@ export class CreateWorkerWithRelationsDto extends CreateWorkerDto {
    * Dados do anexo já tratados pelos serviços adequados.
    */
   @IsOptional()
-  attachmentData?: any;
+  attachmentData?: {
+    file: Express.Multer.File;
+    userId: number;
+  };
 }
 
 // =================================================================

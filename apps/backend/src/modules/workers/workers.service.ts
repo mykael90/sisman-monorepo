@@ -89,26 +89,18 @@ export class WorkersService {
         include: this.includeRelations
       });
 
-      //Anexar arquivo junto com criação
-      //Inseri algumas informações no DTO
-      if (attachmentData?.file) {
-        function getDestinationDirectory() {
-          return join(__dirname, '..', '..', '..', 'storage', 'photos');
-        }
-
-        const fileName = `photo-${worker.id}-${Date.now()}.jpg`;
-
-        ((attachmentData.localPath = join(getDestinationDirectory(), fileName)),
-          (attachmentData.relatedId = String(worker.id)),
-          (attachmentData.relatedModel = 'Worker'),
-          (attachmentData.userId = 1),
-          (attachmentData.storedFileName = fileName),
-          (attachmentData.url =
-            'https://storage.exemplo.com/uploads/a1b2c3d4e5f6.jpg'));
-
-        // Chama o serviço de anexo para criar o anexo dentro da transação
-        await this.attachmentsService.create(attachmentData, prisma);
-      }
+      //Se contiver anexo, chamar o serviço
+      // Chama o serviço de anexo para criar o anexo dentro da transação
+      attachmentData?.file &&
+        (await this.attachmentsService.create(
+          {
+            file: attachmentData.file,
+            userId: attachmentData.userId,
+            relatedId: worker.id,
+            relatedModel: Prisma.ModelName.Worker
+          },
+          prisma
+        ));
 
       // Finaliza a transação e retorna o trabalhador
       return worker;
