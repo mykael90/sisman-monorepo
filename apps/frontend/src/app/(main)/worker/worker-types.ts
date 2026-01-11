@@ -41,6 +41,7 @@ export type IWorkerWithRelations = Prisma.WorkerGetPayload<{
 
 export interface IWorkerAdd extends Prisma.WorkerCreateManyInput {
   workerContracts?: Record<'id', number>[];
+  file?: File;
 }
 
 export interface IWorkerEdit extends IWorkerAdd {

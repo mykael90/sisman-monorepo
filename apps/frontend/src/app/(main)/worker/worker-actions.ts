@@ -12,12 +12,7 @@ import {
   IWorkerSpecialtyWithRelations,
   IWorkerWithRelations
 } from './worker-types';
-// import {
-//   workerFormSchemaAdd,
-//   workerFormSchemaEdit
-// } from './_components/form/worker-form-validation'; // Comentado até que os schemas sejam fornecidos
 import { handleApiAction } from '@/lib/fetch/handle-form-action-sisman';
-// import { validateFormData } from '@/lib/validate-form-data'; // Comentado até que os schemas sejam fornecidos
 
 const PAGE_PATH = '/worker';
 const API_RELATIVE_PATH = '/worker';
@@ -175,37 +170,16 @@ export async function getRefreshedWorkers() {
 
 export async function addWorker(
   prevState: unknown,
-  data: IWorkerAdd
+  formData: FormData
 ): Promise<IActionResultForm<IWorkerAdd, IWorker>> {
-  logger.info(
-    `(Server Action) addWorker: Tentativa de adicionar trabalhador.`,
-    data
-  );
-  // logger.info(JSON.stringify(data.workerContracts)); // Se os contratos forem passados corretamente como um array de objetos
+  logger.info(`(Server Action) addWorker: Tentativa de adicionar trabalhador.`);
 
-  // 1. Validação específica para WorkerAdd (comentado)
-  // const validationProcessResult = validateFormData(data, workerFormSchemaAdd);
-  // if (!validationProcessResult.success) {
-  //   logger.warn(
-  //     `(Server Action) addWorker: Falha na validação do formulário.`,
-  //     validationProcessResult.errorResult.errorsFieldsServer
-  //   );
-  //   return {
-  //     ...validationProcessResult.errorResult,
-  //     submittedData: data
-  //   };
-  // }
-  const validatedWorkerData = data; // This is IWorkerAdd
-  logger.info(
-    `(Server Action) addWorker: Dados do trabalhador validados com sucesso.`
-  );
-
-  // 2. Chamar a ação genérica da API
+  // 2. Chamar a ação genérica da API enviando FormData diretamente
   try {
     const accessToken = await getSismanAccessToken();
-    return await handleApiAction<IWorkerAdd, IWorker, IWorkerAdd>(
-      validatedWorkerData,
-      data,
+    return (await handleApiAction<FormData, IWorker, IWorkerAdd>(
+      formData,
+      formData as any,
       {
         endpoint: API_RELATIVE_PATH,
         method: 'POST',
@@ -215,7 +189,7 @@ export async function addWorker(
         mainPath: PAGE_PATH
       },
       'Trabalhador cadastrado com sucesso!'
-    );
+    )) as any;
   } catch (error) {
     logger.error(`(Server Action) addWorker: Erro inesperado.`, error);
     return {
@@ -223,7 +197,7 @@ export async function addWorker(
       errorsServer: [
         'Ocorreu um erro inesperado ao processar sua solicitação.'
       ],
-      submittedData: data,
+      submittedData: formData as any,
       message: 'Erro inesperado.'
     };
   }
@@ -231,50 +205,33 @@ export async function addWorker(
 
 export async function updateWorker(
   prevState: unknown,
-  data: IWorkerEdit
+  formData: FormData
 ): Promise<IActionResultForm<IWorkerEdit, IWorker>> {
+  const id = formData.get('id');
   logger.info(
-    `(Server Action) updateWorker: Tentativa de atualizar trabalhador ${data.id}.`,
-    data
+    `(Server Action) updateWorker: Tentativa de atualizar trabalhador ${id}.`
   );
 
-  // 1. Validação específica para WorkerEdit (comentado) a validação já ocorre no frontend
-  // const validationProcessResult = validateFormData(data, workerFormSchemaEdit);
-  // if (!validationProcessResult.success) {
-  //   logger.warn(
-  //     `(Server Action) updateWorker: Falha na validação do formulário para o trabalhador ${data.id}.`,
-  //     validationProcessResult.errorResult.errorsFieldsServer
-  //   );
-  //   return {
-  //     ...validationProcessResult.errorResult,
-  //     submittedData: data
-  //   };
-  // }
-  const validatedWorkerData = data; // This is IWorkerEdit
-  logger.info(
-    `(Server Action) updateWorker: Dados do trabalhador ${validatedWorkerData.id} validados com sucesso.`
-  );
-
-  // 2. Chamar a ação genérica da API
+  // 2. Chamar a ação genérica da API enviando FormData diretamente
   try {
     const accessToken = await getSismanAccessToken();
-    return await handleApiAction<IWorkerEdit, IWorker, IWorkerEdit>(
-      validatedWorkerData,
-      data,
+    return (await handleApiAction<FormData, IWorker, IWorkerEdit>(
+      formData,
+      formData as any,
       {
-        endpoint: `${API_RELATIVE_PATH}/${validatedWorkerData.id}`,
+        endpoint: `${API_RELATIVE_PATH}/${id}`,
         method: 'PUT',
         accessToken: accessToken
       },
       {
         mainPath: PAGE_PATH,
-        detailPath: `${PAGE_PATH}/edit/${validatedWorkerData.id}`
+        detailPath: `${PAGE_PATH}/edit/${id}`
       },
       'Trabalhador atualizado com sucesso!'
-    );
+    )) as any;
   } catch (error) {
     logger.error(
-      `(Server Action) updateWorker: Erro inesperado para o trabalhador ${data.id}.`,
+      `(Server Action) updateWorker: Erro inesperado para o trabalhador ${id}.`,
       error
     );
     return {
@@ -282,7 +239,7 @@ export async function updateWorker(
       errorsServer: [
         'Ocorreu um erro inesperado ao processar sua solicitação.'
       ],
-      submittedData: data,
+      submittedData: formData as any,
       message: 'Erro inesperado.'
     };
   }

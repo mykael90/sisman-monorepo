@@ -29,7 +29,8 @@ export default function WorkerEdit({
     phone: 'Telefone',
     birthdate: 'Data de Nascimento',
     maintenanceInstanceId: 'Instância de Manutenção',
-    isActive: 'Ativo'
+    isActive: 'Ativo',
+    file: 'Foto'
   };
 
   const defaultData = removeUnreferencedKeys(initialWorker, fieldLabels);
@@ -64,7 +65,7 @@ export default function WorkerEdit({
         defaultData={defaultData}
         initialServerState={initialServerState}
         fieldLabels={fieldLabels}
-        formActionProp={updateWorker}
+        formActionProp={updateWorker as any}
         formSchema={workerFormSchemaEdit}
         SubmitButtonIcon={Save}
         submitButtonText='Salvar'

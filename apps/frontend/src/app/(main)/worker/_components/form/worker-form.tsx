@@ -10,7 +10,8 @@ import { useStore } from '@tanstack/react-store';
 import { FC, useActionState } from 'react';
 import {
   FormDropdownModal,
-  FormInputField
+  FormInputField,
+  FormInputFile
 } from '@/components/form-tanstack/form-input-fields';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
@@ -19,6 +20,11 @@ import { UserPlus, Save } from 'lucide-react'; // TODO: Change to WorkerPlus, Sa
 import { IActionResultForm } from '@/types/types-server-actions';
 import { FormSuccessDisplay } from '@/components/form-tanstack/form-success-display';
 import { ErrorServerForm } from '@/components/form-tanstack/error-server-form';
+import { useState, useCallback, useEffect } from 'react';
+import { IMediaFile } from '@/types/media';
+import MediaGallery from '@/components/media/card-media-gallery';
+import MediaCarouselViewer from '@/components/media/media-carousel-viewer';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
 import {
   IWorker,
   IWorkerAdd,
@@ -59,7 +65,7 @@ export default function WorkerForm<TMode extends 'add' | 'edit'>({
   defaultData: WorkerFormData<TMode>;
   formActionProp: (
     prevState: IActionResultForm<WorkerFormData<TMode>, IWorker>,
-    data: WorkerFormData<TMode>
+    data: FormData
   ) => Promise<IActionResultForm<WorkerFormData<TMode>, IWorker>>;
   initialServerState?: IActionResultForm<WorkerFormData<TMode>, IWorker>;
   fieldLabels: {
@@ -78,6 +84,11 @@ export default function WorkerForm<TMode extends 'add' | 'edit'>({
     initialServerState
   );
 
+  const [isViewerOpen, setIsViewerOpen] = useState(false);
+  const [initialViewerIndex, setInitialViewerIndex] = useState(0);
+  const [viewerFiles, setViewerFiles] = useState<IMediaFile[]>([]);
+  const [previewFiles, setPreviewFiles] = useState<IMediaFile[]>([]);
+
   const {
     listContracts,
     listWorkerSpecialties,
@@ -93,12 +104,21 @@ export default function WorkerForm<TMode extends 'add' | 'edit'>({
     ),
     validators: formSchema ? { onChange: formSchema } : undefined,
     onSubmit: async ({ value }: { value: WorkerFormData<TMode> }) => {
-      console.log(
-        'Form submitted with values:',
-        formSchema.parse(value),
-        value
-      );
-      await dispatchFormAction(formSchema.parse(value));
+      const formData = new FormData();
+      Object.entries(value).forEach(([key, val]) => {
+        if (val !== undefined && val !== null) {
+          if (val instanceof File) {
+            formData.append(key, val);
+          } else if (Array.isArray(val)) {
+            // Para arrays (ex: workerContracts), enviamos como JSON string ou tratamos conforme necessário
+            // Para simplificar e manter a compatibilidade com formDataToObject, vamos enviar como múltiplos campos se forem Files, ou JSON se forem objetos
+            formData.append(key, JSON.stringify(val));
+          } else {
+            formData.append(key, String(val));
+          }
+        }
+      });
+      await dispatchFormAction(formData);
     }
   });
 
@@ -112,6 +132,49 @@ export default function WorkerForm<TMode extends 'add' | 'edit'>({
   const handleCancel = () => {
     onCancel && onCancel();
   };
+
+  const formFile = useStore(form.store, (state) => state.values.file);
+
+  useEffect(() => {
+    if (!formFile || !(formFile instanceof File)) {
+      setPreviewFiles([]);
+      return;
+    }
+
+    const extension = formFile.name.split('.').pop() || '';
+    const newPreviewFile: IMediaFile = {
+      url: URL.createObjectURL(formFile),
+      extension: extension,
+      fileName: formFile.name,
+      description: ''
+    };
+
+    setPreviewFiles([newPreviewFile]);
+
+    // Cleanup Blob URL
+    return () => {
+      URL.revokeObjectURL(newPreviewFile.url);
+    };
+  }, [formFile]);
+
+  const handleThumbnailClick = useCallback(
+    (file: IMediaFile) => {
+      const playableExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'avif'];
+
+      const playableFiles = previewFiles.filter((f) =>
+        playableExtensions.includes(f.extension.toLowerCase())
+      );
+
+      const clickedIndex = playableFiles.findIndex((f) => f.url === file.url);
+
+      if (clickedIndex !== -1) {
+        setViewerFiles(playableFiles);
+        setInitialViewerIndex(clickedIndex);
+        setIsViewerOpen(true);
+      }
+    },
+    [previewFiles]
+  );
 
   useStore(form.store, (formState) => formState.errorsServer);
 
@@ -147,11 +210,7 @@ export default function WorkerForm<TMode extends 'add' | 'edit'>({
 
   return (
     <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        form.handleSubmit();
-      }}
+      action={() => form.handleSubmit()}
       onReset={(e) => {
         e.preventDefault();
         handleReset && handleReset();
@@ -297,6 +356,41 @@ export default function WorkerForm<TMode extends 'add' | 'edit'>({
           />
         )}
       />
+
+      <form.Field
+        name='file'
+        children={(field) => (
+          <FormInputFile
+            field={field}
+            label={fieldLabels.file || 'Foto do Colaborador'}
+            placeholder='Selecionar foto'
+            className='mb-4'
+          />
+        )}
+      />
+
+      {previewFiles.length > 0 && (
+        <div className='mt-4'>
+          <MediaGallery
+            files={previewFiles}
+            getPublicFileUrl={(url) => url}
+            galleryTitle='Pré-visualização da Foto'
+            onThumbnailClick={handleThumbnailClick}
+          />
+        </div>
+      )}
+
+      {/* Componente Modal para o MediaCarouselViewer */}
+      <Dialog open={isViewerOpen} onOpenChange={setIsViewerOpen}>
+        <DialogContent className='max-w-screen-lg border-none bg-transparent p-0'>
+          <MediaCarouselViewer
+            files={viewerFiles}
+            getPublicFileUrl={(url) => url}
+            initialIndex={initialViewerIndex}
+            onClose={() => setIsViewerOpen(false)}
+          />
+        </DialogContent>
+      </Dialog>
 
       <div className='mt-8 flex justify-end gap-3'>
         {/* <Button type='button' variant='outline' onClick={handleCancel}>

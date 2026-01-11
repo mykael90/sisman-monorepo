@@ -21,6 +21,7 @@ export async function handleApiAction<
     method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
     accessToken: string;
     queryParams?: Record<string, string>; // Opcional, para passar parâmetros na URL
+    contentType?: 'application/json' | 'multipart/form-data'; //opcional
   },
   revalidationConfig: {
     mainPath?: string;
@@ -33,14 +34,32 @@ export async function handleApiAction<
   );
 
   try {
+    const isFormData = validatedData instanceof FormData;
+
+    // Se for FormData, não definimos Content-Type manualmente para o fetch adicionar o boundary
+    const headers: Record<string, string> = {};
+    if (!isFormData) {
+      headers['Content-Type'] = apiConfig.contentType || 'application/json';
+    } else if (
+      apiConfig.contentType &&
+      apiConfig.contentType !== 'multipart/form-data'
+    ) {
+      // Se for explicitamente algo diferente de multipart (raro com FormData), mantém
+      headers['Content-Type'] = apiConfig.contentType;
+    }
+
     const responseDataFromApi = (await fetchApiSisman(
       apiConfig.endpoint,
       apiConfig.accessToken,
       {
         method: apiConfig.method,
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body:
-          apiConfig.method === 'GET' ? undefined : JSON.stringify(validatedData)
+          apiConfig.method === 'GET'
+            ? undefined
+            : isFormData
+              ? (validatedData as unknown as FormData)
+              : JSON.stringify(validatedData)
       },
       apiConfig.queryParams
     )) as TApiResponseData;
