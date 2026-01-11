@@ -3,10 +3,14 @@ import {
   Get,
   Param,
   Response,
-  StreamableFile
+  StreamableFile,
+  UseGuards
 } from '@nestjs/common';
 import { FilesService } from './files.service';
+import { AuthGuard } from '../auth/guards/auth.guard';
+import { RoleGuard } from '../auth/guards/role.guard';
 
+@UseGuards(AuthGuard, RoleGuard)
 @Controller('file')
 export class FilesController {
   constructor(private readonly fileService: FilesService) {}

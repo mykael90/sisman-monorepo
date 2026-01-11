@@ -1,0 +1,13 @@
+### Variables
+@urlLocal = {{apiUrl}}/file
+@contentType = application/json
+
+### GET view file
+# @prompt attachmentId
+GET {{urlLocal}}/{{attachmentId}}/view
+Authorization: Bearer {{token}}
+
+### GET download file
+# @prompt attachmentId
+GET {{urlLocal}}/{{attachmentId}}/download
+Authorization: Bearer {{token}}
