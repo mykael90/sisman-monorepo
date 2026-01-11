@@ -13,6 +13,13 @@ export interface IActionResultForm<
   statusCode?: number;
 }
 
+export const initialServerState = {
+  isSubmitSuccessful: false,
+  message: '',
+  submissionAttempts: 0,
+  responseData: null
+};
+
 export interface IActionResultFormData<
   TSubmittedData,
   TApiResponse = Partial<TSubmittedData> // Permite resposta parcial

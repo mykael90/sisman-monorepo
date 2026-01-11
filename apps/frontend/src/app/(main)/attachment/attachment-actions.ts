@@ -34,6 +34,9 @@ export async function getAttachments(query?: string): Promise<IAttachment[]> {
   }
 }
 
+export { createAttachment as attachmentFormAction };
+export { createAttachmentsBatch as attachmentFormActionBatch };
+
 export async function getAttachment(id: string): Promise<IAttachment> {
   logger.info(`(Server Action) getAttachment: Fetching attachment ${id}`);
   try {
