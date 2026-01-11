@@ -16,9 +16,6 @@ import {
   UpdateWorkerWithRelationsDto
 } from './dto/worker.dto';
 import { AttachmentsService } from '../../shared/attachments/attachments.service';
-import { CreateAttachmentDto } from '../../shared/attachments/dto/attachment.dto';
-import { at } from 'lodash';
-import { join } from 'path';
 
 @Injectable()
 export class WorkersService {
@@ -256,6 +253,69 @@ export class WorkersService {
         }
       }
     });
+  }
+
+  async listWithAttachments(queryParams?: { [key: string]: string }) {
+    const whereArgs: Prisma.WorkerWhereInput = {};
+
+    if (queryParams && !!Object.keys(queryParams).length) {
+      const { isActive } = queryParams;
+      if (isActive) {
+        whereArgs.isActive = isActive === 'true';
+      }
+    }
+
+    const workers = await this.prisma.worker.findMany({
+      where: whereArgs,
+      include: {
+        maintenanceInstance: true,
+        workerContracts: {
+          include: {
+            contract: {
+              include: {
+                providers: true
+              }
+            },
+            workerSpecialty: true,
+            sipacUnitLocation: true
+          },
+          orderBy: {
+            startDate: 'desc'
+          }
+        }
+      },
+      orderBy: {
+        name: 'asc'
+      }
+    });
+
+    const workerIds = workers.map((w) => String(w.id));
+
+    const attachments = await this.prisma.attachment.findMany({
+      where: {
+        relatedId: { in: workerIds },
+        relatedModel: Prisma.ModelName.Worker
+      }
+    });
+
+    const attachmentsMap = new Map<string, any[]>();
+    for (const a of attachments) {
+      if (!attachmentsMap.has(a.relatedId)) {
+        attachmentsMap.set(a.relatedId, []);
+      }
+      attachmentsMap.get(a.relatedId)!.push(a);
+    }
+
+    const response = workers.map((worker) => ({
+      ...worker,
+      attachments: attachmentsMap.get(String(worker.id)) ?? []
+    }));
+
+    response.sort((a, b) => a.name.localeCompare(b.name));
+
+    this.logger.log(`Retornando ${response.length} workers`);
+
+    return response;
   }
 
   async show(id: number) {
