@@ -12,6 +12,10 @@ import {
   IWorkerSpecialtyWithRelations,
   IWorkerWithRelations
 } from './worker-types';
+// import {
+//   workerFormSchemaAdd,
+//   workerFormSchemaEdit
+// } from './_components/form/worker-form-validation'; // Comentado até que os schemas sejam fornecidos
 import { handleApiAction } from '@/lib/fetch/handle-form-action-sisman';
 
 const PAGE_PATH = '/worker';
@@ -176,6 +180,24 @@ export async function addWorker(
     `(Server Action) addWorker: Tentativa de adicionar trabalhador.`,
     data
   );
+  // logger.info(JSON.stringify(data.workerContracts)); // Se os contratos forem passados corretamente como um array de objetos
+
+  // 1. Validação específica para WorkerAdd (comentado)
+  // const validationProcessResult = validateFormData(data, workerFormSchemaAdd);
+  // if (!validationProcessResult.success) {
+  //   logger.warn(
+  //     `(Server Action) addWorker: Falha na validação do formulário.`,
+  //     validationProcessResult.errorResult.errorsFieldsServer
+  //   );
+  //   return {
+  //     ...validationProcessResult.errorResult,
+  //     submittedData: data
+  //   };
+  // }
+  // const validatedWorkerData = data; // This is IWorkerAdd
+  // logger.info(
+  //   `(Server Action) addWorker: Dados do trabalhador validados com sucesso.`
+  // );
 
   // 2. Chamar a ação genérica da API
   try {
@@ -244,6 +266,23 @@ export async function updateWorker(
     `(Server Action) updateWorker: Tentativa de atualizar trabalhador ${data.id}.`,
     data
   );
+
+  // 1. Validação específica para WorkerEdit (comentado) a validação já ocorre no frontend
+  // const validationProcessResult = validateFormData(data, workerFormSchemaEdit);
+  // if (!validationProcessResult.success) {
+  //   logger.warn(
+  //     `(Server Action) updateWorker: Falha na validação do formulário para o trabalhador ${data.id}.`,
+  //     validationProcessResult.errorResult.errorsFieldsServer
+  //   );
+  //   return {
+  //     ...validationProcessResult.errorResult,
+  //     submittedData: data
+  //   };
+  // }
+  // const validatedWorkerData = data; // This is IWorkerEdit
+  // logger.info(
+  //   `(Server Action) updateWorker: Dados do trabalhador ${validatedWorkerData.id} validados com sucesso.`
+  // );
 
   // 2. Chamar a ação genérica da API
   try {
