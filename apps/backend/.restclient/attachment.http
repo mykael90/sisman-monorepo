@@ -6,6 +6,16 @@
 GET {{urlLocal}}
 Authorization: Bearer {{token}}
 
+### GET one
+# @prompt attachmentId
+GET {{urlLocal}}/{{attachmentId}}
+Authorization: Bearer {{token}}
+
+### GET view file
+# @prompt attachmentId
+GET {{apiUrl}}/file/{{attachmentId}}/view
+Authorization: Bearer {{token}}
+
 ### POST create (multipart)
 POST {{urlLocal}}
 Content-Type: multipart/form-data; boundary=AttachmentBoundary
