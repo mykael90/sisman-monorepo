@@ -104,7 +104,7 @@ async function multipartFetch(
 export async function createAttachment(
   _prevState: unknown,
   formData: FormData
-): Promise<IActionResultForm<FormData, IAttachment>> {
+): Promise<IActionResultForm<any, IAttachment>> {
   logger.info(
     `(Server Action) createAttachment: Attempt to add attachment`,
     formData.get('relatedId')
@@ -119,7 +119,7 @@ export async function createAttachment(
     return {
       isSubmitSuccessful: true,
       responseData,
-      submittedData: formData,
+      submittedData: {} as any, // Avoiding issues with FormData in response
       message: 'Anexo adicionado com sucesso!'
     };
   } catch (error) {
