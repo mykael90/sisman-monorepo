@@ -28,4 +28,30 @@ export const attachmentFormSchemaAdd = z.object({
     )
 });
 
+export const attachmentFormSchemaAddBatch = z.object({
+  relatedId: z.union([
+    z.number(),
+    z.string().min(1, 'ID relacionado é obrigatório')
+  ]),
+  relatedModel: z.string().min(1, 'Modelo relacionado é obrigatório'),
+  files: z
+    .array(z.any())
+    .min(1, 'Selecione ao menos um arquivo')
+    .refine(
+      (files) => files.every((file) => file instanceof File),
+      'Todos os itens devem ser arquivos'
+    )
+    .refine(
+      (files) => files.every((file) => file.size <= MAX_FILE_SIZE),
+      `Cada arquivo deve ter no máximo 5MB.`
+    )
+    .refine(
+      (files) => files.every((file) => ACCEPTED_FILE_TYPES.includes(file.type)),
+      'Formato de arquivo não suportado detectado.'
+    )
+});
+
 export type AttachmentFormSchemaAdd = z.infer<typeof attachmentFormSchemaAdd>;
+export type AttachmentFormSchemaAddBatch = z.infer<
+  typeof attachmentFormSchemaAddBatch
+>;

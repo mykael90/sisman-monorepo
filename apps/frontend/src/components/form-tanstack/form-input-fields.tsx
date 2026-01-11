@@ -274,6 +274,95 @@ export function FormInputFile({
     </div>
   );
 }
+
+export function FormInputFileBatch({
+  field,
+  label,
+  showLabel = true,
+  className = '',
+  placeholder = 'Selecionar arquivos',
+  ...props
+}: {
+  field: AnyFieldApi;
+  label?: string;
+  showLabel?: boolean;
+  className?: string;
+  placeholder?: string;
+  [key: string]: any;
+}) {
+  const values = (field.state.value as File[]) || [];
+
+  return (
+    <div className={className}>
+      {showLabel && label && (
+        <label
+          htmlFor={field.name}
+          className='mb-1 block text-sm font-medium text-gray-700'
+        >
+          {label}
+        </label>
+      )}
+      <div className='flex flex-col gap-2'>
+        <div className='flex items-center gap-2'>
+          <input
+            type='file'
+            id={field.name}
+            name={field.name}
+            multiple
+            onChange={(e) => {
+              const files = Array.from(e.target.files || []);
+              if (files.length > 0) {
+                field.handleChange(files);
+              }
+            }}
+            onBlur={field.handleBlur}
+            className='hidden'
+            {...props}
+          />
+          <Button
+            type='button'
+            variant='outline'
+            onClick={() => document.getElementById(field.name)?.click()}
+            className='w-full justify-start'
+          >
+            <Paperclip className='mr-2 h-4 w-4' />
+            {values.length > 0
+              ? `${values.length} arquivo(s) selecionado(s)`
+              : placeholder}
+          </Button>
+        </div>
+        {values.length > 0 && (
+          <ul className='mt-2 space-y-1'>
+            {values.map((file, index) => (
+              <li
+                key={index}
+                className='flex items-center text-xs text-gray-600'
+              >
+                <Paperclip className='mr-1 h-3 w-3' />
+                <span className='truncate'>{file.name}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+
+      {!field.state.meta.isValid &&
+      (field.state.meta.isBlurred || field.state.meta.isTouched) ? (
+        <em className='mt-1 block text-xs text-red-500'>
+          {field.state.meta.errors
+            .map((error: any) =>
+              typeof error === 'object' ? error.message : error
+            )
+            .join('; ')}
+        </em>
+      ) : null}
+      {field.state.meta.isValidating ? (
+        <em className='mt-1 text-xs text-blue-500'>Validating...</em>
+      ) : null}
+    </div>
+  );
+}
+
 export function FormDropdownModal({
   field,
   label,
