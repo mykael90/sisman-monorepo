@@ -1,6 +1,6 @@
 import { AnyFieldApi } from '@tanstack/react-form';
 import { Input } from '../ui/input';
-import { CalendarIcon, Search } from 'lucide-react';
+import { CalendarIcon, Search, Paperclip } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { Button } from '../ui/button';
 import { Calendar } from '../ui/calendar';
@@ -195,6 +195,76 @@ export function FormDropdown({
         <em className='mt-1 block text-xs text-red-500'>
           {field.state.meta.errors
             .map((error: any) => error.message)
+            .join('; ')}
+        </em>
+      ) : null}
+      {field.state.meta.isValidating ? (
+        <em className='mt-1 text-xs text-blue-500'>Validating...</em>
+      ) : null}
+    </div>
+  );
+}
+
+export function FormInputFile({
+  field,
+  label,
+  showLabel = true,
+  className = '',
+  placeholder = 'Selecionar arquivo',
+  ...props
+}: {
+  field: AnyFieldApi;
+  label?: string;
+  showLabel?: boolean;
+  className?: string;
+  placeholder?: string;
+  [key: string]: any;
+}) {
+  const value = field.state.value as File | undefined;
+
+  return (
+    <div className={className}>
+      {showLabel && label && (
+        <label
+          htmlFor={field.name}
+          className='mb-1 block text-sm font-medium text-gray-700'
+        >
+          {label}
+        </label>
+      )}
+      <div className='flex items-center gap-2'>
+        <input
+          type='file'
+          id={field.name}
+          name={field.name}
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+            if (file) {
+              field.handleChange(file);
+            }
+          }}
+          onBlur={field.handleBlur}
+          className='hidden'
+          {...props}
+        />
+        <Button
+          type='button'
+          variant='outline'
+          onClick={() => document.getElementById(field.name)?.click()}
+          className='w-full justify-start'
+        >
+          <Paperclip className='mr-2 h-4 w-4' />
+          {value ? value.name : placeholder}
+        </Button>
+      </div>
+
+      {!field.state.meta.isValid &&
+      (field.state.meta.isBlurred || field.state.meta.isTouched) ? (
+        <em className='mt-1 block text-xs text-red-500'>
+          {field.state.meta.errors
+            .map((error: any) =>
+              typeof error === 'object' ? error.message : error
+            )
             .join('; ')}
         </em>
       ) : null}

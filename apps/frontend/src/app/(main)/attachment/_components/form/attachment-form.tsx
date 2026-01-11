@@ -3,9 +3,12 @@
 import { mergeForm, useForm, useTransform } from '@tanstack/react-form';
 import { useStore } from '@tanstack/react-store';
 import { FC, useActionState } from 'react';
-import { FormInputField } from '@/components/form-tanstack/form-input-fields';
+import {
+  FormInputField,
+  FormInputFile
+} from '@/components/form-tanstack/form-input-fields';
 import { Button } from '@/components/ui/button';
-import { Paperclip, Save, Plus } from 'lucide-react';
+import { Save, Plus } from 'lucide-react';
 import { IActionResultForm } from '@/types/types-server-actions';
 import { FormSuccessDisplay } from '@/components/form-tanstack/form-success-display';
 import { ErrorServerForm } from '@/components/form-tanstack/error-server-form';
@@ -147,45 +150,17 @@ export default function AttachmentForm({
         )}
       </form.Field>
 
-      <form.Field name='file'>
-        {(field) => (
-          <div className='mb-4'>
-            <label className='mb-2 block text-sm font-medium text-gray-700'>
-              {fieldLabels.file}
-            </label>
-            <div className='flex items-center gap-2'>
-              <input
-                type='file'
-                id={field.name}
-                name={field.name}
-                onChange={(e) => {
-                  const file = e.target.files?.[0];
-                  if (file) {
-                    field.handleChange(file);
-                  }
-                }}
-                className='hidden'
-              />
-              <Button
-                type='button'
-                variant='outline'
-                onClick={() => document.getElementById(field.name)?.click()}
-                className='w-full justify-start'
-              >
-                <Paperclip className='mr-2 h-4 w-4' />
-                {field.state.value
-                  ? (field.state.value as File).name
-                  : 'Selecionar arquivo'}
-              </Button>
-            </div>
-            {field.state.meta.errors ? (
-              <em className='mt-1 block text-xs text-red-600'>
-                {field.state.meta.errors.join(', ')}
-              </em>
-            ) : null}
-          </div>
+      <form.Field
+        name='file'
+        children={(field) => (
+          <FormInputFile
+            field={field}
+            label={fieldLabels.file}
+            placeholder='Selecionar arquivo'
+            className='mb-4'
+          />
         )}
-      </form.Field>
+      />
 
       <div className='mt-8 flex justify-end gap-3'>
         {mode === 'add' && (
