@@ -13,6 +13,11 @@ import { IActionResultForm } from '@/types/types-server-actions';
 import { FormSuccessDisplay } from '@/components/form-tanstack/form-success-display';
 import { ErrorServerForm } from '@/components/form-tanstack/error-server-form';
 import { IAttachment, IAttachmentAdd } from '../../attachment-types';
+import { useState, useCallback, useEffect } from 'react';
+import { IMediaFile } from '@/types/media';
+import MediaGallery from '@/components/media/card-media-gallery';
+import MediaCarouselViewer from '@/components/media/media-carousel-viewer';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
 
 export default function AttachmentForm({
   mode,
@@ -52,6 +57,11 @@ export default function AttachmentForm({
     initialServerState
   );
 
+  const [isViewerOpen, setIsViewerOpen] = useState(false);
+  const [initialViewerIndex, setInitialViewerIndex] = useState(0);
+  const [viewerFiles, setViewerFiles] = useState<IMediaFile[]>([]);
+  const [previewFiles, setPreviewFiles] = useState<IMediaFile[]>([]);
+
   const form = useForm({
     defaultValues: defaultData,
     transform: useTransform(
@@ -80,6 +90,62 @@ export default function AttachmentForm({
   const handleCancel = () => {
     onCancel && onCancel();
   };
+
+  const formFile = useStore(form.store, (state) => state.values.file);
+
+  useEffect(() => {
+    if (!formFile) {
+      setPreviewFiles([]);
+      return;
+    }
+
+    const extension = formFile.name.split('.').pop() || '';
+    const newPreviewFile: IMediaFile = {
+      url: URL.createObjectURL(formFile),
+      extension: extension,
+      fileName: formFile.name,
+      description: ''
+    };
+
+    setPreviewFiles([newPreviewFile]);
+
+    // Cleanup Blob URL
+    return () => {
+      URL.revokeObjectURL(newPreviewFile.url);
+    };
+  }, [formFile]);
+
+  const handleThumbnailClick = useCallback(
+    (file: IMediaFile) => {
+      const playableExtensions = [
+        'jpg',
+        'jpeg',
+        'png',
+        'gif',
+        'webp',
+        'avif',
+        'mp4',
+        'webm',
+        'ogg',
+        'mov',
+        'avi',
+        'mkv'
+      ];
+
+      const playableFiles = previewFiles.filter((f) =>
+        playableExtensions.includes(f.extension.toLowerCase())
+      );
+
+      const clickedIndex = playableFiles.findIndex((f) => f.url === file.url);
+
+      if (clickedIndex !== -1) {
+        setViewerFiles(playableFiles);
+        setInitialViewerIndex(clickedIndex);
+        setIsViewerOpen(true);
+      }
+    },
+    [previewFiles]
+  );
 
   useStore(form.store, (formState) => formState.errorsServer);
 
@@ -161,6 +227,29 @@ export default function AttachmentForm({
           />
         )}
       />
+
+      {previewFiles.length > 0 && (
+        <div className='mt-4'>
+          <MediaGallery
+            files={previewFiles}
+            getPublicFileUrl={(url) => url}
+            galleryTitle='Pré-visualização do Anexo'
+            onThumbnailClick={handleThumbnailClick}
+          />
+        </div>
+      )}
+
+      {/* Componente Modal para o MediaCarouselViewer */}
+      <Dialog open={isViewerOpen} onOpenChange={setIsViewerOpen}>
+        <DialogContent className='max-w-screen-lg border-none bg-transparent p-0'>
+          <MediaCarouselViewer
+            files={viewerFiles}
+            getPublicFileUrl={(url) => url}
+            initialIndex={initialViewerIndex}
+            onClose={() => setIsViewerOpen(false)}
+          />
+        </DialogContent>
+      </Dialog>
 
       <div className='mt-8 flex justify-end gap-3'>
         {mode === 'add' && (

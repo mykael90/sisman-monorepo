@@ -232,30 +232,57 @@ export function FormInputFile({
           {label}
         </label>
       )}
-      <div className='flex items-center gap-2'>
-        <input
-          type='file'
-          id={field.name}
-          name={field.name}
-          onChange={(e) => {
-            const file = e.target.files?.[0];
-            if (file) {
-              field.handleChange(file);
-            }
-          }}
-          onBlur={field.handleBlur}
-          className='hidden'
-          {...props}
-        />
-        <Button
-          type='button'
-          variant='outline'
-          onClick={() => document.getElementById(field.name)?.click()}
-          className='w-full justify-start'
-        >
-          <Paperclip className='mr-2 h-4 w-4' />
-          {value ? value.name : placeholder}
-        </Button>
+      <div className='flex flex-col gap-2'>
+        <div className='flex items-center gap-2'>
+          <input
+            type='file'
+            id={field.name}
+            name={field.name}
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) {
+                field.handleChange(file);
+              }
+              e.target.value = '';
+            }}
+            onBlur={field.handleBlur}
+            className='hidden'
+            {...props}
+          />
+          <div className='relative flex flex-1 items-center gap-2'>
+            <Button
+              type='button'
+              variant='outline'
+              onClick={() => document.getElementById(field.name)?.click()}
+              className='flex-1 justify-start overflow-hidden'
+            >
+              <Paperclip className='mr-2 h-4 w-4 flex-shrink-0' />
+              <span className='truncate'>
+                {value ? value.name : placeholder}
+              </span>
+            </Button>
+            {value && (
+              <Button
+                type='button'
+                variant='ghost'
+                size='icon'
+                className='h-10 w-10 flex-shrink-0 text-gray-400 hover:text-red-500'
+                onClick={(e) => {
+                  e.stopPropagation();
+                  field.handleChange(undefined);
+                }}
+              >
+                <Trash2 className='h-4 w-4' />
+              </Button>
+            )}
+          </div>
+        </div>
+
+        {value && (
+          <div className='flex items-center text-xs text-gray-500'>
+            <span className='ml-6'>({(value.size / 1024).toFixed(1)} KB)</span>
+          </div>
+        )}
       </div>
 
       {!field.state.meta.isValid &&

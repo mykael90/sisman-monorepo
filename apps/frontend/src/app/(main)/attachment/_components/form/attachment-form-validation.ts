@@ -21,11 +21,23 @@ export const attachmentFormSchemaAdd = z.object({
   file: z
     .any()
     .refine((file) => file instanceof File, 'Arquivo é obrigatório')
-    .refine((file) => file?.size <= MAX_FILE_SIZE, `Tamanho máximo de 5MB.`)
-    .refine(
-      (file) => ACCEPTED_FILE_TYPES.includes(file?.type),
-      'Formato de arquivo não suportado.'
-    )
+    .superRefine((file, ctx) => {
+      if (!(file instanceof File)) return;
+
+      if (file.size > MAX_FILE_SIZE) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: `Tamanho máximo de 5MB excedido em '${file.name}'.`
+        });
+      }
+
+      if (!ACCEPTED_FILE_TYPES.includes(file.type)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: `Formato de arquivo não suportado em '${file.name}'.`
+        });
+      }
+    })
 });
 
 export const attachmentFormSchemaAddBatch = z.object({
