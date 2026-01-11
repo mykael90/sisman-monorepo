@@ -65,7 +65,7 @@ export default function WorkerForm<TMode extends 'add' | 'edit'>({
   defaultData: WorkerFormData<TMode>;
   formActionProp: (
     prevState: IActionResultForm<WorkerFormData<TMode>, IWorker>,
-    data: FormData
+    data: WorkerFormData<TMode>
   ) => Promise<IActionResultForm<WorkerFormData<TMode>, IWorker>>;
   initialServerState?: IActionResultForm<WorkerFormData<TMode>, IWorker>;
   fieldLabels: {
@@ -107,27 +107,13 @@ export default function WorkerForm<TMode extends 'add' | 'edit'>({
       // Aplica o parse do Zod para garantir transformações (limpeza de CPF, telefone, etc.)
       const parsedValue = formSchema ? formSchema.parse(value) : value;
 
-      const formData = new FormData();
-      Object.entries(parsedValue).forEach(([key, val]) => {
-        if (val !== undefined && val !== null) {
-          if (val instanceof File) {
-            formData.append(key, val);
-          } else if (Array.isArray(val)) {
-            formData.append(key, JSON.stringify(val));
-          } else {
-            formData.append(key, String(val));
-          }
-        }
-      });
-
-      // O campo 'file' não costuma estar no retorno do parse se não estiver no schema original,
-      // mas como o schema agora inclui 'file', ele deve ser incluído.
-      // Caso o parse remova campos extras (passthrough não usado), garantimos o arquivo:
-      if (value.file && !formData.has('file')) {
-        formData.append('file', value.file);
+      // Se o parse removeu o campo 'file' (caso o schema não tenha 'file' no objeto de saída),
+      // garantimos que ele seja passado para a Server Action
+      if (value.file && !parsedValue.file) {
+        parsedValue.file = value.file;
       }
 
-      await dispatchFormAction(formData);
+      await dispatchFormAction(parsedValue);
     }
   });
 
@@ -219,7 +205,11 @@ export default function WorkerForm<TMode extends 'add' | 'edit'>({
 
   return (
     <form
-      action={() => form.handleSubmit()}
+      onSubmit={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        form.handleSubmit();
+      }}
       onReset={(e) => {
         e.preventDefault();
         handleReset && handleReset();

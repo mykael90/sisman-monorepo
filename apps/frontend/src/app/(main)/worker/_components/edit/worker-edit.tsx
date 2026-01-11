@@ -65,7 +65,7 @@ export default function WorkerEdit({
         defaultData={defaultData}
         initialServerState={initialServerState}
         fieldLabels={fieldLabels}
-        formActionProp={updateWorker as any}
+        formActionProp={updateWorker}
         formSchema={workerFormSchemaEdit}
         SubmitButtonIcon={Save}
         submitButtonText='Salvar'

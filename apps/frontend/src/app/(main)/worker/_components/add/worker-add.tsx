@@ -71,7 +71,7 @@ export default function WorkerAdd({
         onCancel={redirect}
         defaultData={defaultData}
         initialServerState={initialServerState}
-        formActionProp={addWorker as any}
+        formActionProp={addWorker}
         formSchema={workerFormSchemaAdd}
         SubmitButtonIcon={UserPlus}
         submitButtonText='Criar Colaborador'

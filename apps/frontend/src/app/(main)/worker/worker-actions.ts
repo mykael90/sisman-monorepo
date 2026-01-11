@@ -170,16 +170,49 @@ export async function getRefreshedWorkers() {
 
 export async function addWorker(
   prevState: unknown,
-  formData: FormData
+  data: IWorkerAdd
 ): Promise<IActionResultForm<IWorkerAdd, IWorker>> {
-  logger.info(`(Server Action) addWorker: Tentativa de adicionar trabalhador.`);
+  logger.info(
+    `(Server Action) addWorker: Tentativa de adicionar trabalhador.`,
+    data
+  );
 
-  // 2. Chamar a ação genérica da API enviando FormData diretamente
+  // 2. Chamar a ação genérica da API
   try {
     const accessToken = await getSismanAccessToken();
-    return (await handleApiAction<FormData, IWorker, IWorkerAdd>(
-      formData,
-      formData as any,
+
+    // Se houver arquivo, convertemos para FormData para suportar multipart/form-data
+    if (data.file && data.file instanceof File) {
+      const formData = new FormData();
+      Object.entries(data).forEach(([key, val]) => {
+        if (val !== undefined && val !== null) {
+          if (val instanceof File) {
+            formData.append(key, val);
+          } else {
+            formData.append(key, String(val));
+          }
+        }
+      });
+
+      return (await handleApiAction<FormData, IWorker, IWorkerAdd>(
+        formData,
+        data,
+        {
+          endpoint: API_RELATIVE_PATH,
+          method: 'POST',
+          accessToken: accessToken
+        },
+        {
+          mainPath: PAGE_PATH
+        },
+        'Trabalhador cadastrado com sucesso!'
+      )) as any;
+    }
+
+    // Se não houver arquivo, enviamos como JSON padrão
+    return (await handleApiAction<IWorkerAdd, IWorker, IWorkerAdd>(
+      data,
+      data,
       {
         endpoint: API_RELATIVE_PATH,
         method: 'POST',
@@ -197,7 +230,7 @@ export async function addWorker(
       errorsServer: [
         'Ocorreu um erro inesperado ao processar sua solicitação.'
       ],
-      submittedData: formData as any,
+      submittedData: data,
       message: 'Erro inesperado.'
     };
   }
@@ -205,33 +238,64 @@ export async function addWorker(
 
 export async function updateWorker(
   prevState: unknown,
-  formData: FormData
+  data: IWorkerEdit
 ): Promise<IActionResultForm<IWorkerEdit, IWorker>> {
-  const id = formData.get('id');
   logger.info(
-    `(Server Action) updateWorker: Tentativa de atualizar trabalhador ${id}.`
+    `(Server Action) updateWorker: Tentativa de atualizar trabalhador ${data.id}.`,
+    data
   );
 
-  // 2. Chamar a ação genérica da API enviando FormData diretamente
+  // 2. Chamar a ação genérica da API
   try {
     const accessToken = await getSismanAccessToken();
-    return (await handleApiAction<FormData, IWorker, IWorkerEdit>(
-      formData,
-      formData as any,
+
+    // Se houver arquivo, convertemos para FormData para suportar multipart/form-data
+    if (data.file && data.file instanceof File) {
+      const formData = new FormData();
+      Object.entries(data).forEach(([key, val]) => {
+        if (val !== undefined && val !== null) {
+          if (val instanceof File) {
+            formData.append(key, val);
+          } else {
+            formData.append(key, String(val));
+          }
+        }
+      });
+
+      return (await handleApiAction<FormData, IWorker, IWorkerEdit>(
+        formData,
+        data,
+        {
+          endpoint: `${API_RELATIVE_PATH}/${data.id}`,
+          method: 'PUT',
+          accessToken: accessToken
+        },
+        {
+          mainPath: PAGE_PATH,
+          detailPath: `${PAGE_PATH}/edit/${data.id}`
+        },
+        'Trabalhador atualizado com sucesso!'
+      )) as any;
+    }
+
+    // Se não houver arquivo, enviamos como JSON padrão
+    return (await handleApiAction<IWorkerEdit, IWorker, IWorkerEdit>(
+      data,
+      data,
       {
-        endpoint: `${API_RELATIVE_PATH}/${id}`,
+        endpoint: `${API_RELATIVE_PATH}/${data.id}`,
         method: 'PUT',
         accessToken: accessToken
       },
       {
         mainPath: PAGE_PATH,
-        detailPath: `${PAGE_PATH}/edit/${id}`
+        detailPath: `${PAGE_PATH}/edit/${data.id}`
       },
       'Trabalhador atualizado com sucesso!'
     )) as any;
   } catch (error) {
     logger.error(
-      `(Server Action) updateWorker: Erro inesperado para o trabalhador ${id}.`,
+      `(Server Action) updateWorker: Erro inesperado para o trabalhador ${data.id}.`,
       error
     );
     return {
@@ -239,7 +303,7 @@ export async function updateWorker(
       errorsServer: [
         'Ocorreu um erro inesperado ao processar sua solicitação.'
       ],
-      submittedData: formData as any,
+      submittedData: data,
       message: 'Erro inesperado.'
     };
   }
