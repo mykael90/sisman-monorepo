@@ -1,17 +1,8 @@
 // src/app/(main)/attachment/attachment-types.ts
 
-export interface IAttachment {
-  id: number;
-  relatedId: number;
-  relatedModel: string;
-  originalName: string;
-  fileName: string;
-  mimetype: string;
-  size: number;
-  url: string;
-  created_at: string;
-  updated_at: string;
-}
+import { Attachment } from '@sisman/prisma';
+
+export interface IAttachment extends Attachment {}
 
 export interface IAttachmentAdd {
   relatedId: number | string;
@@ -20,7 +11,7 @@ export interface IAttachmentAdd {
 }
 
 export interface IAttachmentAddBatch {
-    relatedId: number | string;
-    relatedModel: string;
-    files: File[];
+  relatedId: number | string;
+  relatedModel: string;
+  files: File[];
 }

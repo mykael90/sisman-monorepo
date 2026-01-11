@@ -52,7 +52,7 @@ const handleDownload = async (attachment: IAttachment) => {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = attachment.originalName;
+      a.download = attachment.originalFileName;
       document.body.appendChild(a);
       a.click();
       window.URL.revokeObjectURL(url);
@@ -86,7 +86,7 @@ export const columns = (
     header: 'ID'
   },
   {
-    accessorKey: 'originalName',
+    accessorKey: 'originalFileName',
     header: ({ column }) => {
       return (
         <Button
@@ -108,22 +108,22 @@ export const columns = (
     header: 'ID Relacionado'
   },
   {
-    accessorKey: 'mimetype',
+    accessorKey: 'fileType',
     header: 'Tipo'
   },
   {
-    accessorKey: 'size',
+    accessorKey: 'sizeInBytes',
     header: 'Tamanho (bytes)',
     cell: ({ row }) => {
-      const size = parseFloat(row.getValue('size'));
+      const size = parseFloat(row.getValue('sizeInBytes'));
       return new Intl.NumberFormat('pt-BR').format(size);
     }
   },
   {
-    accessorKey: 'created_at',
+    accessorKey: 'createdAt',
     header: 'Criado em',
     cell: ({ row }) => {
-      const date = new Date(row.getValue('created_at'));
+      const date = new Date(row.getValue('createdAt'));
       return date.toLocaleDateString('pt-BR', {
         day: '2-digit',
         month: '2-digit',
