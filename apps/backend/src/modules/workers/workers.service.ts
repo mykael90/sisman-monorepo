@@ -320,10 +320,23 @@ export class WorkersService {
 
   async show(id: number) {
     await this.exists(id);
-    return await this.prisma.worker.findUnique({
+    const worker = await this.prisma.worker.findUnique({
       where: { id },
       include: this.includeRelations
     });
+
+    //consultar foto do worker
+    const attachments = await this.prisma.attachment.findMany({
+      where: {
+        relatedId: String(id),
+        relatedModel: Prisma.ModelName.Worker
+      }
+    });
+
+    return {
+      ...worker,
+      attachments: attachments
+    };
   }
 
   async delete(id: number) {
