@@ -66,7 +66,7 @@ const handleDownload = async (attachment: IAttachment) => {
 };
 
 const handleDelete = async (
-  attachmentId: number,
+  attachmentId: string,
   refreshAttachments: () => void
 ) => {
   const result = await deleteAttachment(attachmentId);

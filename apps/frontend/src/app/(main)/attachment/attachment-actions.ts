@@ -187,7 +187,7 @@ export async function createAttachmentsBatch(
   }
 }
 
-export async function deleteAttachment(id: number) {
+export async function deleteAttachment(id: string) {
   logger.info(`(Server Action) deleteAttachment: Deleting attachment ${id}`);
   try {
     const accessToken = await getSismanAccessToken();
@@ -210,18 +210,20 @@ export async function deleteAttachment(id: number) {
     if (error instanceof SismanApiError) {
       return {
         isSubmitSuccessful: false,
-        message: error.apiMessage,
-      }
+        message: error.apiMessage
+      };
     }
     return {
       isSubmitSuccessful: false,
       message: 'Erro inesperado ao excluir o anexo.'
-    }
+    };
   }
 }
 
 export async function getRefreshedAttachments() {
-  logger.info(`(Server Action) getRefreshedAttachments: Revalidating ${PAGE_PATH}`);
+  logger.info(
+    `(Server Action) getRefreshedAttachments: Revalidating ${PAGE_PATH}`
+  );
   try {
     revalidatePath(PAGE_PATH);
     logger.info(
