@@ -37,18 +37,31 @@ export const attachmentFormSchemaAddBatch = z.object({
   files: z
     .array(z.any())
     .min(1, 'Selecione ao menos um arquivo')
-    .refine(
-      (files) => files.every((file) => file instanceof File),
-      'Todos os itens devem ser arquivos'
-    )
-    .refine(
-      (files) => files.every((file) => file.size <= MAX_FILE_SIZE),
-      `Cada arquivo deve ter no máximo 5MB.`
-    )
-    .refine(
-      (files) => files.every((file) => ACCEPTED_FILE_TYPES.includes(file.type)),
-      'Formato de arquivo não suportado detectado.'
-    )
+    .superRefine((files, ctx) => {
+      files.forEach((file) => {
+        if (!(file instanceof File)) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: `O item selecionado não é um arquivo válido.`
+          });
+          return;
+        }
+
+        if (file.size > MAX_FILE_SIZE) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: `Tamanho máximo de 5MB excedido em '${file.name}'.`
+          });
+        }
+
+        if (!ACCEPTED_FILE_TYPES.includes(file.type)) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: `Formato de arquivo não suportado em '${file.name}'.`
+          });
+        }
+      });
+    })
 });
 
 export type AttachmentFormSchemaAdd = z.infer<typeof attachmentFormSchemaAdd>;

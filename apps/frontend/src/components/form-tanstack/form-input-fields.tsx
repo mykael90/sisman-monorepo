@@ -297,6 +297,16 @@ export function FormInputFileBatch({
     field.handleChange(nextValues);
   };
 
+  // Helper para buscar erros relacionados ao arquivo específico
+  const getFileErrors = (file: File) => {
+    return field.state.meta.errors
+      .map((error: any) => (typeof error === 'object' ? error.message : error))
+      .filter((message: string) => {
+        // Agora o schema de validação inclui o nome do arquivo na mensagem ('... em 'filename'')
+        return message.toLowerCase().includes(file.name.toLowerCase());
+      });
+  };
+
   return (
     <div className={className}>
       {showLabel && label && (
@@ -341,29 +351,44 @@ export function FormInputFileBatch({
         </div>
         {values.length > 0 && (
           <ul className='mt-2 divide-y divide-gray-100 rounded-md border border-gray-200'>
-            {values.map((file, index) => (
-              <li
-                key={`${file.name}-${index}`}
-                className='flex items-center justify-between p-2 text-xs text-gray-600 transition-colors hover:bg-gray-50'
-              >
-                <div className='flex flex-1 items-center overflow-hidden'>
-                  <Paperclip className='mr-2 h-3.5 w-3.5 flex-shrink-0 text-gray-400' />
-                  <span className='truncate font-medium'>{file.name}</span>
-                  <span className='ml-2 flex-shrink-0 text-gray-400'>
-                    ({(file.size / 1024).toFixed(1)} KB)
-                  </span>
-                </div>
-                <Button
-                  type='button'
-                  variant='ghost'
-                  size='icon'
-                  className='h-7 w-7 text-gray-400 hover:text-red-500'
-                  onClick={() => handleRemoveFile(index)}
+            {values.map((file, index) => {
+              const fileErrors = getFileErrors(file);
+
+              return (
+                <li
+                  key={`${file.name}-${index}`}
+                  className='flex flex-col p-2 text-xs text-gray-600 transition-colors hover:bg-gray-50'
                 >
-                  <Trash2 className='h-4 w-4' />
-                </Button>
-              </li>
-            ))}
+                  <div className='flex items-center justify-between'>
+                    <div className='flex flex-1 items-center overflow-hidden'>
+                      <Paperclip className='mr-2 h-3.5 w-3.5 flex-shrink-0 text-gray-400' />
+                      <span className='truncate font-medium'>{file.name}</span>
+                      <span className='ml-2 flex-shrink-0 text-gray-400'>
+                        ({(file.size / 1024).toFixed(1)} KB)
+                      </span>
+                    </div>
+                    <Button
+                      type='button'
+                      variant='ghost'
+                      size='icon'
+                      className='h-7 w-7 text-gray-400 hover:text-red-500'
+                      onClick={() => handleRemoveFile(index)}
+                    >
+                      <Trash2 className='h-4 w-4' />
+                    </Button>
+                  </div>
+                  {fileErrors.length > 0 && (
+                    <div className='mt-1 pl-5.5'>
+                      {fileErrors.map((err, i) => (
+                        <p key={i} className='font-medium text-red-500'>
+                          {err}
+                        </p>
+                      ))}
+                    </div>
+                  )}
+                </li>
+              );
+            })}
           </ul>
         )}
       </div>
@@ -371,11 +396,19 @@ export function FormInputFileBatch({
       {!field.state.meta.isValid &&
       (field.state.meta.isBlurred || field.state.meta.isTouched) ? (
         <div className='mt-2 space-y-1'>
-          {field.state.meta.errors.map((error: any, idx: number) => (
-            <em key={idx} className='block text-xs text-red-500'>
-              {typeof error === 'object' ? error.message : error}
-            </em>
-          ))}
+          {field.state.meta.errors
+            .map((error: any) =>
+              typeof error === 'object' ? error.message : error
+            )
+            .filter((message: string) => {
+              // Só mostra aqui erros que NÃO foram mostrados dentro da lista (erros genéricos)
+              return !values.some((file) => message.includes(file.name));
+            })
+            .map((message, idx) => (
+              <em key={idx} className='block text-xs text-red-500'>
+                {message}
+              </em>
+            ))}
         </div>
       ) : null}
       {field.state.meta.isValidating ? (
