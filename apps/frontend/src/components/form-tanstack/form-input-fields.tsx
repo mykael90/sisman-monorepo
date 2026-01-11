@@ -1,6 +1,6 @@
 import { AnyFieldApi } from '@tanstack/react-form';
 import { Input } from '../ui/input';
-import { CalendarIcon, Search, Paperclip } from 'lucide-react';
+import { CalendarIcon, Search, Paperclip, X, Trash2 } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { Button } from '../ui/button';
 import { Calendar } from '../ui/calendar';
@@ -292,6 +292,11 @@ export function FormInputFileBatch({
 }) {
   const values = (field.state.value as File[]) || [];
 
+  const handleRemoveFile = (indexToRemove: number) => {
+    const nextValues = values.filter((_, index) => index !== indexToRemove);
+    field.handleChange(nextValues);
+  };
+
   return (
     <div className={className}>
       {showLabel && label && (
@@ -310,10 +315,13 @@ export function FormInputFileBatch({
             name={field.name}
             multiple
             onChange={(e) => {
-              const files = Array.from(e.target.files || []);
-              if (files.length > 0) {
-                field.handleChange(files);
+              const newFiles = Array.from(e.target.files || []);
+              if (newFiles.length > 0) {
+                // Adiciona os novos arquivos aos já existentes
+                field.handleChange([...values, ...newFiles]);
               }
+              // Limpa o valor do input para permitir selecionar o mesmo arquivo novamente se for removido
+              e.target.value = '';
             }}
             onBlur={field.handleBlur}
             className='hidden'
@@ -332,14 +340,28 @@ export function FormInputFileBatch({
           </Button>
         </div>
         {values.length > 0 && (
-          <ul className='mt-2 space-y-1'>
+          <ul className='mt-2 divide-y divide-gray-100 rounded-md border border-gray-200'>
             {values.map((file, index) => (
               <li
-                key={index}
-                className='flex items-center text-xs text-gray-600'
+                key={`${file.name}-${index}`}
+                className='flex items-center justify-between p-2 text-xs text-gray-600 transition-colors hover:bg-gray-50'
               >
-                <Paperclip className='mr-1 h-3 w-3' />
-                <span className='truncate'>{file.name}</span>
+                <div className='flex flex-1 items-center overflow-hidden'>
+                  <Paperclip className='mr-2 h-3.5 w-3.5 flex-shrink-0 text-gray-400' />
+                  <span className='truncate font-medium'>{file.name}</span>
+                  <span className='ml-2 flex-shrink-0 text-gray-400'>
+                    ({(file.size / 1024).toFixed(1)} KB)
+                  </span>
+                </div>
+                <Button
+                  type='button'
+                  variant='ghost'
+                  size='icon'
+                  className='h-7 w-7 text-gray-400 hover:text-red-500'
+                  onClick={() => handleRemoveFile(index)}
+                >
+                  <Trash2 className='h-4 w-4' />
+                </Button>
               </li>
             ))}
           </ul>
@@ -348,13 +370,13 @@ export function FormInputFileBatch({
 
       {!field.state.meta.isValid &&
       (field.state.meta.isBlurred || field.state.meta.isTouched) ? (
-        <em className='mt-1 block text-xs text-red-500'>
-          {field.state.meta.errors
-            .map((error: any) =>
-              typeof error === 'object' ? error.message : error
-            )
-            .join('; ')}
-        </em>
+        <div className='mt-2 space-y-1'>
+          {field.state.meta.errors.map((error: any, idx: number) => (
+            <em key={idx} className='block text-xs text-red-500'>
+              {typeof error === 'object' ? error.message : error}
+            </em>
+          ))}
+        </div>
       ) : null}
       {field.state.meta.isValidating ? (
         <em className='mt-1 text-xs text-blue-500'>Validating...</em>
