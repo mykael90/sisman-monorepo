@@ -104,20 +104,29 @@ export default function WorkerForm<TMode extends 'add' | 'edit'>({
     ),
     validators: formSchema ? { onChange: formSchema } : undefined,
     onSubmit: async ({ value }: { value: WorkerFormData<TMode> }) => {
+      // Aplica o parse do Zod para garantir transformações (limpeza de CPF, telefone, etc.)
+      const parsedValue = formSchema ? formSchema.parse(value) : value;
+
       const formData = new FormData();
-      Object.entries(value).forEach(([key, val]) => {
+      Object.entries(parsedValue).forEach(([key, val]) => {
         if (val !== undefined && val !== null) {
           if (val instanceof File) {
             formData.append(key, val);
           } else if (Array.isArray(val)) {
-            // Para arrays (ex: workerContracts), enviamos como JSON string ou tratamos conforme necessário
-            // Para simplificar e manter a compatibilidade com formDataToObject, vamos enviar como múltiplos campos se forem Files, ou JSON se forem objetos
             formData.append(key, JSON.stringify(val));
           } else {
             formData.append(key, String(val));
           }
         }
       });
+
+      // O campo 'file' não costuma estar no retorno do parse se não estiver no schema original,
+      // mas como o schema agora inclui 'file', ele deve ser incluído.
+      // Caso o parse remova campos extras (passthrough não usado), garantimos o arquivo:
+      if (value.file && !formData.has('file')) {
+        formData.append('file', value.file);
+      }
+
       await dispatchFormAction(formData);
     }
   });
