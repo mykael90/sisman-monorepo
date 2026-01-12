@@ -12,7 +12,7 @@ import { ErrorServerForm } from '@/components/form-tanstack/error-server-form';
 import { ISurveyWithRelations } from '../../../survey/survey-types';
 import { ISurveyResponseAdd } from '../../survey-response-types';
 import { addSurveyResponse } from '../../survey-response-actions';
-import { Save } from 'lucide-react';
+import { Save, CheckCircle2, Circle, AlertCircle } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -20,6 +20,15 @@ import { createAnswerSchema } from './survey-response-form-validation';
 import { useSession } from 'next-auth/react';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription
+} from '@/components/ui/card';
+import { cn } from '@/lib/utils';
+import { Separator } from '@/components/ui/separator';
 
 const AnswerField = ({
   form,
@@ -45,26 +54,46 @@ const AnswerField = ({
     }
   });
 
+  const hasError = !!field.state.meta.errors?.length;
+  const value = field.state.value as any;
+  const isAnswered =
+    value !== undefined &&
+    value !== '' &&
+    (Array.isArray(value) ? value.length > 0 : true);
+
   const renderInput = () => {
     switch (question.type) {
       case 'TEXT':
         return (
-          <FormInputTextArea field={field} placeholder='Sua resposta...' />
+          <FormInputTextArea
+            field={field}
+            placeholder='Escreva sua resposta aqui...'
+            className='focus-visible:ring-primary min-h-[120px] resize-none'
+          />
         );
       case 'RATING':
         return (
           <RadioGroup
             onValueChange={(val) => field.handleChange(parseInt(val, 10))}
             defaultValue={field.state.value?.toString()}
-            className='flex'
+            className='flex flex-wrap gap-4'
           >
             {[1, 2, 3, 4, 5].map((v) => (
-              <div className='flex items-center space-x-2' key={v}>
+              <div key={v} className='relative'>
                 <RadioGroupItem
                   value={v.toString()}
                   id={`${question.id}-${v}`}
+                  className='peer sr-only'
                 />
-                <Label htmlFor={`${question.id}-${v}`}>{v}</Label>
+                <Label
+                  htmlFor={`${question.id}-${v}`}
+                  className={cn(
+                    'border-muted bg-popover hover:bg-accent peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/10 peer-data-[state=checked]:text-primary flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border-2 text-lg font-medium transition-all',
+                    hasError && 'border-destructive/50'
+                  )}
+                >
+                  {v}
+                </Label>
               </div>
             ))}
           </RadioGroup>
@@ -74,43 +103,76 @@ const AnswerField = ({
           <RadioGroup
             onValueChange={(val) => field.handleChange(val === 'true')}
             defaultValue={field.state.value?.toString()}
-            className='flex space-x-4'
+            className='flex gap-6'
           >
-            <div className='flex items-center space-x-2'>
-              <RadioGroupItem value='true' id={`${question.id}-true`} />
-              <Label htmlFor={`${question.id}-true`}>Sim</Label>
-            </div>
-            <div className='flex items-center space-x-2'>
-              <RadioGroupItem value='false' id={`${question.id}-false`} />
-              <Label htmlFor={`${question.id}-false`}>Não</Label>
-            </div>
+            {[
+              { label: 'Sim', value: 'true' },
+              { label: 'Não', value: 'false' }
+            ].map((opt) => (
+              <div key={opt.value} className='flex items-center space-x-3'>
+                <RadioGroupItem
+                  value={opt.value}
+                  id={`${question.id}-${opt.value}`}
+                  className='border-primary text-primary ring-offset-background focus-visible:ring-ring h-5 w-5 border-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50'
+                />
+                <Label
+                  htmlFor={`${question.id}-${opt.value}`}
+                  className='cursor-pointer text-base font-medium'
+                >
+                  {opt.label}
+                </Label>
+              </div>
+            ))}
           </RadioGroup>
         );
       case 'SINGLE':
         return (
           <RadioGroup
-            onValueChange={(value) => field.handleChange([value])}
-            defaultValue={field.state.value?.[0]}
-            className='flex flex-col space-y-1'
+            onValueChange={(val) => field.handleChange([val])}
+            defaultValue={value?.[0]}
+            className='flex flex-col space-y-3'
           >
             {question.surveyQuestionOptions.map((opt) => (
-              <div className='flex items-center space-x-2' key={opt.id}>
-                <RadioGroupItem value={opt.id} id={opt.id} />
-                <Label htmlFor={opt.id}>{opt.label}</Label>
+              <div
+                className={cn(
+                  'hover:bg-accent/50 flex items-center space-x-3 rounded-lg border p-3 transition-colors',
+                  value?.[0] === opt.id && 'border-primary bg-primary/5'
+                )}
+                key={opt.id}
+              >
+                <RadioGroupItem
+                  value={opt.id}
+                  id={opt.id}
+                  className='h-5 w-5'
+                />
+                <Label
+                  htmlFor={opt.id}
+                  className='w-full cursor-pointer text-base'
+                >
+                  {opt.label}
+                </Label>
               </div>
             ))}
           </RadioGroup>
         );
       case 'MULTIPLE':
         return (
-          <div className='flex flex-col space-y-1'>
+          <div className='flex flex-col space-y-3'>
             {question.surveyQuestionOptions.map((opt) => (
-              <div className='flex items-center space-x-2' key={opt.id}>
+              <div
+                className={cn(
+                  'hover:bg-accent/50 flex items-center space-x-3 rounded-lg border p-3 transition-colors',
+                  (value as string[])?.includes(opt.id) &&
+                    'border-primary bg-primary/5'
+                )}
+                key={opt.id}
+              >
                 <Checkbox
                   id={opt.id}
-                  checked={field.state.value?.includes(opt.id)}
+                  checked={(value as string[])?.includes(opt.id)}
+                  className='h-5 w-5 rounded-md'
                   onCheckedChange={(checked) => {
-                    const current: string[] = field.state.value || [];
+                    const current: string[] = (value as string[]) || [];
                     if (checked) {
                       field.handleChange([...current, opt.id]);
                     } else {
@@ -118,29 +180,75 @@ const AnswerField = ({
                     }
                   }}
                 />
-                <Label htmlFor={opt.id}>{opt.label}</Label>
+                <Label
+                  htmlFor={opt.id}
+                  className='w-full cursor-pointer text-base'
+                >
+                  {opt.label}
+                </Label>
               </div>
             ))}
           </div>
         );
       default:
-        return <FormInputField field={field} />;
+        return (
+          <FormInputField
+            field={field}
+            className='focus-visible:ring-primary'
+          />
+        );
     }
   };
 
   return (
-    <div className='mt-4 rounded-md border p-4'>
-      <Label className='text-base font-semibold'>{question.text}</Label>
-      {question.required && <span className='text-red-500'> *</span>}
-      <div className='mt-2'>{renderInput()}</div>
-      {field.state.meta.errors && (
-        <p className='mt-1 text-sm text-red-500'>
-          {typeof field.state.meta.errors === 'string'
-            ? field.state.meta.errors
-            : field.state.meta.errors.join(', ')}
-        </p>
+    <Card
+      className={cn(
+        'overflow-hidden transition-all duration-200',
+        hasError
+          ? 'border-destructive ring-destructive/20 ring-1'
+          : 'hover:border-primary/30',
+        isAnswered && !hasError && 'border-primary/20 bg-primary/[0.01]'
       )}
-    </div>
+    >
+      <CardHeader className='pb-3'>
+        <div className='flex items-start justify-between gap-4'>
+          <div className='space-y-1'>
+            <CardTitle className='flex items-center gap-2 text-lg leading-tight font-bold'>
+              <span className='bg-muted text-muted-foreground flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-bold'>
+                {index + 1}
+              </span>
+              {question.text}
+              {question.required && (
+                <span className='text-destructive ml-0.5' title='Obrigatório'>
+                  *
+                </span>
+              )}
+            </CardTitle>
+            {(question as any).description && (
+              <CardDescription className='text-sm'>
+                {(question as any).description}
+              </CardDescription>
+            )}
+          </div>
+          {isAnswered && !hasError && (
+            <CheckCircle2 className='text-primary animate-in fade-in zoom-in h-5 w-5 shrink-0 transition-all' />
+          )}
+        </div>
+      </CardHeader>
+      <CardContent>
+        <div className='pt-2'>{renderInput()}</div>
+        {hasError && (
+          <div className='text-destructive animate-in fade-in slide-in-from-top-1 mt-4 flex items-center gap-2 text-sm font-medium'>
+            <AlertCircle className='h-4 w-4' />
+            <p>
+              {typeof field.state.meta.errors === 'string'
+                ? field.state.meta.errors
+                : field.state.meta.errors.join(', ')}
+            </p>
+          </div>
+        )}
+      </CardContent>
+    </Card>
   );
 };
 
@@ -157,7 +265,7 @@ export default function SurveyResponseForm({
   const { data: session, status } = useSession();
 
   if (status !== 'loading' && !session?.user?.idSisman) {
-    toast.warning('É preciso está autenticado para acessar essa página.');
+    toast.warning('É preciso estar autenticado para acessar essa página.');
     router.push('/signin');
   }
 
@@ -181,7 +289,6 @@ export default function SurveyResponseForm({
         }))
     },
     onSubmit: async ({ value }) => {
-      console.log(value);
       await dispatchFormAction(value);
     }
   });
@@ -198,45 +305,71 @@ export default function SurveyResponseForm({
   }
 
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        form.handleSubmit();
-      }}
-      className='rounded-lg bg-white p-6 shadow-md'
-    >
-      <ErrorServerForm serverState={serverState} />
+    <div className='animate-in fade-in mx-auto max-w-3xl space-y-8 duration-500'>
+      <header className='space-y-2 text-center'>
+        <h1 className='text-3xl font-extrabold tracking-tight sm:text-4xl'>
+          {survey.title}
+        </h1>
+        {survey.description && (
+          <p className='text-muted-foreground text-lg'>{survey.description}</p>
+        )}
+        <div className='pt-4'>
+          <Separator className='bg-primary/20 mx-auto h-1 w-24 rounded-full' />
+        </div>
+      </header>
 
-      {/* <h2 className='text-2xl font-bold'>{survey.title}</h2>
-      <p className='text-muted-foreground'>{survey.description}</p> */}
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          form.handleSubmit();
+        }}
+        className='space-y-6'
+      >
+        <ErrorServerForm serverState={serverState} />
 
-      <div className='mt-6'>
-        {survey.questions
-          .sort((a, b) => a.order - b.order)
-          .map((q, i) => (
-            <AnswerField key={q.id} form={form} question={q} index={i} />
-          ))}
-      </div>
+        <div className='flex flex-col gap-6'>
+          {survey.questions
+            .sort((a, b) => a.order - b.order)
+            .map((q, i) => (
+              <AnswerField key={q.id} form={form} question={q} index={i} />
+            ))}
+        </div>
 
-      <div className='mt-8 flex justify-end gap-3'>
-        <Button type='button' variant='ghost' onClick={onCancel}>
-          Cancelar
-        </Button>
-        <form.Subscribe selector={(state) => [state.canSubmit]}>
-          {([canSubmit]) => (
-            <Button type='submit' disabled={!canSubmit || isPending}>
-              {isPending ? (
-                'Enviando...'
-              ) : (
-                <>
-                  <Save className='mr-2 h-5 w-5' /> Enviar Resposta
-                </>
-              )}
+        <Card className='border-primary/20 bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky bottom-6 z-10 shadow-lg backdrop-blur'>
+          <CardContent className='flex items-center justify-between py-4'>
+            <Button type='button' variant='ghost' onClick={onCancel}>
+              Cancelar
             </Button>
-          )}
-        </form.Subscribe>
-      </div>
-    </form>
+
+            <div className='flex items-center gap-4'>
+              <form.Subscribe
+                selector={(state) => [state.isSubmitting, state.canSubmit]}
+              >
+                {([isSubmitting, canSubmit]) => (
+                  <Button
+                    type='submit'
+                    size='lg'
+                    disabled={!canSubmit || isPending || isSubmitting}
+                    className='px-8 font-bold shadow-md transition-all hover:scale-[1.02] active:scale-[0.98]'
+                  >
+                    {isPending || isSubmitting ? (
+                      <span className='flex items-center gap-2'>
+                        <Circle className='h-4 w-4 animate-pulse fill-current' />
+                        Enviando...
+                      </span>
+                    ) : (
+                      <>
+                        <Save className='mr-2 h-5 w-5' /> Enviar Resposta
+                      </>
+                    )}
+                  </Button>
+                )}
+              </form.Subscribe>
+            </div>
+          </CardContent>
+        </Card>
+      </form>
+    </div>
   );
 }

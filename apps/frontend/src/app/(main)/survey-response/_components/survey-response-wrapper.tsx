@@ -70,11 +70,11 @@ export default function SurveyResponseWrapper({
 
       {userWantResponse && (
         <div>
-          <FormAddHeader
+          {/* <FormAddHeader
             Icon={UserCheck}
             title={survey.title}
             subtitle={survey.description || ''}
-          />
+          /> */}
           <SurveyResponseForm
             survey={survey}
             onCancel={handleCancel}
