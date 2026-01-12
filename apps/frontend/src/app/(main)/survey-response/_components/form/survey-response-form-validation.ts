@@ -20,6 +20,11 @@ export const createAnswerSchema = (
         required_error: 'Este campo é obrigatório.',
         invalid_type_error: 'Selecione uma avaliação.'
       });
+    case 'BOOLEAN':
+      return z.boolean({
+        required_error: 'Este campo é obrigatório.',
+        invalid_type_error: 'Selecione uma opção.'
+      });
     case 'SINGLE':
       return z.array(z.string()).min(1, 'Este campo é obrigatório.');
     case 'MULTIPLE':

@@ -69,6 +69,23 @@ const AnswerField = ({
             ))}
           </RadioGroup>
         );
+      case 'BOOLEAN':
+        return (
+          <RadioGroup
+            onValueChange={(val) => field.handleChange(val === 'true')}
+            defaultValue={field.state.value?.toString()}
+            className='flex space-x-4'
+          >
+            <div className='flex items-center space-x-2'>
+              <RadioGroupItem value='true' id={`${question.id}-true`} />
+              <Label htmlFor={`${question.id}-true`}>Sim</Label>
+            </div>
+            <div className='flex items-center space-x-2'>
+              <RadioGroupItem value='false' id={`${question.id}-false`} />
+              <Label htmlFor={`${question.id}-false`}>Não</Label>
+            </div>
+          </RadioGroup>
+        );
       case 'SINGLE':
         return (
           <RadioGroup

@@ -16,6 +16,7 @@ import { FilePlus, Plus, Save, Trash2 } from 'lucide-react';
 
 const questionTypes = [
   { value: 'TEXT', label: 'Texto' },
+  { value: 'BOOLEAN', label: 'Verdadeiro ou Falso' },
   { value: 'RATING', label: 'Avaliação (1-5)' },
   { value: 'SINGLE', label: 'Escolha Única' },
   { value: 'MULTIPLE', label: 'Múltipla Escolha' }
