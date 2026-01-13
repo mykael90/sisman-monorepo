@@ -209,7 +209,7 @@ export const createActions = (
     },
     onView: (row: Row<IMaterialRequestListWithRelations>) => {
       // Alterado
-      router.push(`request/${row.original.id}`); // Alterado
+      router.push(`request/show/${row.original.id}`); // Alterado
     },
     onApprove: (row: Row<IMaterialRequestListWithRelations>) => {
       // Nova ação

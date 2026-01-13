@@ -100,6 +100,18 @@ export default async function MaterialRequestShowPage({
       return String(dateInput);
     }
   };
+  const formatOnlyDate = (dateInput: string | Date | null | undefined) => {
+    if (!dateInput) {
+      return '-';
+    }
+    try {
+      const date =
+        typeof dateInput === 'string' ? new Date(dateInput) : dateInput;
+      return format(date, 'dd/MM/yyyy', { locale: ptBR });
+    } catch (error) {
+      return String(dateInput);
+    }
+  };
 
   const formatCurrency = (value: string | number | null | undefined | any) => {
     if (!value) return 'R$ 0,00';
@@ -130,6 +142,14 @@ export default async function MaterialRequestShowPage({
         sum + Number(item.quantityRequested) * Number(item.unitPrice || 0),
       0
     ) || 0;
+
+  // Ordenar histórico de status por data (mais recente primeiro)
+  const sortedStatusHistory = materialRequestData.statusHistory
+    ? [...materialRequestData.statusHistory].sort(
+        (a, b) =>
+          new Date(b.changeDate).getTime() - new Date(a.changeDate).getTime()
+      )
+    : [];
 
   return (
     <div className='container mx-auto space-y-6 p-6'>
@@ -171,7 +191,7 @@ export default async function MaterialRequestShowPage({
                 Data da Requisição
               </Label>
               <p className='text-muted-foreground'>
-                {formatDate(materialRequestData.requestDate)}
+                {formatOnlyDate(materialRequestData.requestDate)}
               </p>
             </div>
 
@@ -232,10 +252,10 @@ export default async function MaterialRequestShowPage({
             <div className='space-y-2'>
               <Label className='flex items-center gap-2'>
                 <Warehouse className='h-4 w-4' />
-                Armazém
+                Almoxarifado
               </Label>
               <p className='text-muted-foreground'>
-                Armazém {materialRequestData.storageId || 'Não informado'}
+                {materialRequestData.storage?.name || 'Não informado'}
               </p>
             </div>
           </div>
@@ -297,19 +317,22 @@ export default async function MaterialRequestShowPage({
         <TabsList className='grid w-full grid-cols-4'>
           <TabsTrigger value='materials' className='flex items-center gap-2'>
             <Package className='h-4 w-4' />
-            Materiais ({totalItems})
+            Itens da Requisição ({totalItems})
           </TabsTrigger>
           <TabsTrigger value='receipts' className='flex items-center gap-2'>
             <Truck className='h-4 w-4' />
-            Entradas ({materialRequestData.materialReceipts?.length || 0})
+            Entradas Associadas (
+            {materialRequestData.materialReceipts?.length || 0})
           </TabsTrigger>
           <TabsTrigger value='restrictions' className='flex items-center gap-2'>
             <Warehouse className='h-4 w-4' />
-            Reservas (1)
+            Reservas Associadas (
+            {materialRequestData.materialPickingOrders?.length || 0})
           </TabsTrigger>
           <TabsTrigger value='withdrawals' className='flex items-center gap-2'>
             <Truck className='h-4 w-4 rotate-180' />
-            Saídas ({materialRequestData.materialWithdrawals?.length || 0})
+            Saídas Associadas (
+            {materialRequestData.materialWithdrawals?.length || 0})
           </TabsTrigger>
         </TabsList>
 
@@ -336,10 +359,16 @@ export default async function MaterialRequestShowPage({
                           Unidade
                         </th>
                         <th className='px-4 py-3 text-left font-medium text-gray-700'>
-                          Qtd. Requisitada
+                          Qtd Solicitada
                         </th>
                         <th className='px-4 py-3 text-left font-medium text-gray-700'>
-                          Qtd. Aprovada
+                          Qtd Aprovada
+                        </th>
+                        <th className='px-4 py-3 text-left font-medium text-gray-700'>
+                          Qtd Entregue
+                        </th>
+                        <th className='px-4 py-3 text-left font-medium text-gray-700'>
+                          Qtd Retornada
                         </th>
                         <th className='px-4 py-3 text-left font-medium text-gray-700'>
                           Valor Unitário
@@ -382,6 +411,12 @@ export default async function MaterialRequestShowPage({
                               {Number(item.quantityApproved).toLocaleString()}
                             </td>
                             <td className='px-4 py-3'>
+                              {Number(item.quantityDelivered).toLocaleString()}
+                            </td>
+                            <td className='px-4 py-3'>
+                              {Number(item.quantityReturned).toLocaleString()}
+                            </td>
+                            <td className='px-4 py-3'>
                               {formatCurrency(item.unitPrice)}
                             </td>
                             <td className='px-4 py-3 font-medium'>
@@ -394,7 +429,7 @@ export default async function MaterialRequestShowPage({
                     <tfoot className='bg-gray-50'>
                       <tr>
                         <td
-                          colSpan={6}
+                          colSpan={8}
                           className='px-4 py-3 text-right font-medium'
                         >
                           Total Geral:
@@ -431,7 +466,7 @@ export default async function MaterialRequestShowPage({
                         <div className='flex flex-wrap items-center justify-between gap-2'>
                           <div>
                             <CardTitle className='text-sm'>
-                              Recibo: {receipt.receiptNumber}
+                              Recebimento: {receipt.receiptNumber}
                             </CardTitle>
                             <p className='text-sm text-gray-500'>
                               Data: {formatDate(receipt.receiptDate)}
@@ -451,7 +486,7 @@ export default async function MaterialRequestShowPage({
                         </div>
                       </CardHeader>
                       <CardContent className='p-4'>
-                        <div className='grid grid-cols-2 gap-4 md:grid-cols-3'>
+                        <div className='grid grid-cols-2 gap-4 md:grid-cols-4'>
                           <div>
                             <p className='text-xs font-medium text-gray-500'>
                               Valor Total
@@ -462,10 +497,20 @@ export default async function MaterialRequestShowPage({
                           </div>
                           <div>
                             <p className='text-xs font-medium text-gray-500'>
-                              Armazém Destino
+                              Depósito Destino
                             </p>
                             <p className='font-medium'>
-                              Armazém {receipt.destinationWarehouseId}
+                              {receipt.destinationWarehouse?.name ||
+                                `Depósito ${receipt.destinationWarehouseId}`}
+                            </p>
+                          </div>
+                          <div>
+                            <p className='text-xs font-medium text-gray-500'>
+                              Tipo de Movimento
+                            </p>
+                            <p className='font-medium'>
+                              {receipt.movementType?.name ||
+                                `Tipo ${receipt.movementTypeId}`}
                             </p>
                           </div>
                           <div>
@@ -473,10 +518,87 @@ export default async function MaterialRequestShowPage({
                               Processado por
                             </p>
                             <p className='font-medium'>
-                              Usuário {receipt.processedByUserId}
+                              {receipt.processedByUser?.name ||
+                                receipt.processedByUser?.login ||
+                                `Usuário ${receipt.processedByUserId}`}
                             </p>
                           </div>
                         </div>
+
+                        {/* Itens da Entrada */}
+                        {receipt.items && receipt.items.length > 0 && (
+                          <div className='mt-4 border-t pt-4'>
+                            <p className='mb-2 text-sm font-medium'>
+                              Itens Recebidos ({receipt.items.length})
+                            </p>
+                            <div className='overflow-x-auto rounded-lg border'>
+                              <table className='w-full text-xs'>
+                                <thead className='bg-gray-100'>
+                                  <tr>
+                                    <th className='px-3 py-2 text-left font-medium text-gray-700'>
+                                      Material
+                                    </th>
+                                    <th className='px-3 py-2 text-left font-medium text-gray-700'>
+                                      Qtd Esperada
+                                    </th>
+                                    <th className='px-3 py-2 text-left font-medium text-gray-700'>
+                                      Qtd Recebida
+                                    </th>
+                                    <th className='px-3 py-2 text-left font-medium text-gray-700'>
+                                      Qtd Rejeitada
+                                    </th>
+                                    <th className='px-3 py-2 text-left font-medium text-gray-700'>
+                                      Valor Unitário
+                                    </th>
+                                    <th className='px-3 py-2 text-left font-medium text-gray-700'>
+                                      Total
+                                    </th>
+                                  </tr>
+                                </thead>
+                                <tbody className='divide-y divide-gray-200'>
+                                  {receipt.items.map((item) => {
+                                    const itemTotal =
+                                      Number(item.quantityReceived) *
+                                      Number(item.unitPrice);
+                                    return (
+                                      <tr
+                                        key={item.id}
+                                        className='hover:bg-gray-50'
+                                      >
+                                        <td className='px-3 py-2'>
+                                          {item.material?.name ||
+                                            'Material não identificado'}
+                                        </td>
+                                        <td className='px-3 py-2'>
+                                          {Number(
+                                            item.quantityExpected
+                                          ).toLocaleString()}
+                                        </td>
+                                        <td className='px-3 py-2'>
+                                          {Number(
+                                            item.quantityReceived
+                                          ).toLocaleString()}
+                                        </td>
+                                        <td className='px-3 py-2'>
+                                          {Number(
+                                            item.quantityRejected
+                                          ).toLocaleString()}
+                                        </td>
+                                        <td className='px-3 py-2'>
+                                          {formatCurrency(item.unitPrice)}
+                                        </td>
+                                        <td className='px-3 py-2 font-medium'>
+                                          {formatCurrency(itemTotal)}
+                                        </td>
+                                      </tr>
+                                    );
+                                  })}
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        )}
+
                         {receipt.notes && (
                           <div className='mt-4 border-t pt-4'>
                             <p className='text-xs font-medium text-gray-500'>
@@ -500,14 +622,161 @@ export default async function MaterialRequestShowPage({
           </Card>
         </TabsContent>
 
-        {/* Aba de Reservas (Restrictions) */}
+        {/* Aba de Reservas (Picking Orders) */}
         <TabsContent value='restrictions' className='space-y-4'>
           <Card>
             <CardHeader>
-              <CardTitle>Reservas de Materiais</CardTitle>
+              <CardTitle>Ordens de Coleta/Reserva</CardTitle>
             </CardHeader>
             <CardContent>
-              {materialRequestData.restrictionOrders ? (
+              {materialRequestData.materialPickingOrders &&
+              materialRequestData.materialPickingOrders.length > 0 ? (
+                <div className='space-y-4'>
+                  {materialRequestData.materialPickingOrders.map(
+                    (pickingOrder) => (
+                      <Card key={pickingOrder.id} className='overflow-hidden'>
+                        <CardHeader className='bg-gray-50 py-3'>
+                          <div className='flex flex-wrap items-center justify-between gap-2'>
+                            <div>
+                              <CardTitle className='text-sm'>
+                                Ordem de Coleta:{' '}
+                                {pickingOrder.pickingOrderNumber}
+                              </CardTitle>
+                              <p className='text-sm text-gray-500'>
+                                Solicitada em:{' '}
+                                {formatDate(pickingOrder.requestedAt)}
+                              </p>
+                            </div>
+                            <Badge
+                              variant={
+                                pickingOrder.status === 'FULLY_WITHDRAWN'
+                                  ? 'default'
+                                  : pickingOrder.status ===
+                                      'PENDING_PREPARATION'
+                                    ? 'secondary'
+                                    : 'outline'
+                              }
+                            >
+                              {pickingOrder.status === 'FULLY_WITHDRAWN'
+                                ? 'Totalmente Retirada'
+                                : pickingOrder.status === 'PENDING_PREPARATION'
+                                  ? 'Pendente'
+                                  : pickingOrder.status}
+                            </Badge>
+                          </div>
+                        </CardHeader>
+                        <CardContent className='p-4'>
+                          <div className='grid grid-cols-2 gap-4 md:grid-cols-3'>
+                            <div>
+                              <p className='text-xs font-medium text-gray-500'>
+                                Depósito Transitório
+                              </p>
+                              <p className='font-medium'>
+                                {pickingOrder.warehouse?.name ||
+                                  `Depósito ${pickingOrder.warehouseId}`}
+                              </p>
+                            </div>
+                            <div>
+                              <p className='text-xs font-medium text-gray-500'>
+                                Solicitado por
+                              </p>
+                              <p className='font-medium'>
+                                {pickingOrder.requestedByUser?.name ||
+                                  pickingOrder.requestedByUser?.login ||
+                                  `Usuário ${pickingOrder.requestedByUserId}`}
+                              </p>
+                            </div>
+                            <div>
+                              <p className='text-xs font-medium text-gray-500'>
+                                Valor Total
+                              </p>
+                              <p className='font-medium'>
+                                {formatCurrency(pickingOrder.valuePickingOrder)}
+                              </p>
+                            </div>
+                          </div>
+
+                          {/* Itens da Ordem de Coleta */}
+                          {pickingOrder.items &&
+                            pickingOrder.items.length > 0 && (
+                              <div className='mt-4 border-t pt-4'>
+                                <p className='mb-2 text-sm font-medium'>
+                                  Itens da Ordem de Reserva (
+                                  {pickingOrder.items.length})
+                                </p>
+                                <div className='overflow-x-auto rounded-lg border'>
+                                  <table className='w-full text-xs'>
+                                    <thead className='bg-gray-100'>
+                                      <tr>
+                                        <th className='px-3 py-2 text-left font-medium text-gray-700'>
+                                          Material
+                                        </th>
+                                        <th className='px-3 py-2 text-left font-medium text-gray-700'>
+                                          Qtd Solicitada
+                                        </th>
+                                        <th className='px-3 py-2 text-left font-medium text-gray-700'>
+                                          Qtd Separada
+                                        </th>
+                                        <th className='px-3 py-2 text-left font-medium text-gray-700'>
+                                          Qtd Retirada
+                                        </th>
+                                        <th className='px-3 py-2 text-left font-medium text-gray-700'>
+                                          Valor Unitário
+                                        </th>
+                                      </tr>
+                                    </thead>
+                                    <tbody className='divide-y divide-gray-200'>
+                                      {pickingOrder.items.map((item) => (
+                                        <tr
+                                          key={item.id}
+                                          className='hover:bg-gray-50'
+                                        >
+                                          <td className='px-3 py-2'>
+                                            {item.globalMaterial?.name ||
+                                              'Material não identificado'}
+                                          </td>
+                                          <td className='px-3 py-2'>
+                                            {Number(
+                                              item.quantityToPick
+                                            ).toLocaleString()}
+                                          </td>
+                                          <td className='px-3 py-2'>
+                                            {Number(
+                                              item.quantityPicked
+                                            ).toLocaleString()}
+                                          </td>
+                                          <td className='px-3 py-2'>
+                                            {Number(
+                                              item.quantityWithdrawn
+                                            ).toLocaleString()}
+                                          </td>
+                                          <td className='px-3 py-2'>
+                                            {formatCurrency(item.unitPrice)}
+                                          </td>
+                                        </tr>
+                                      ))}
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                            )}
+
+                          {pickingOrder.notes && (
+                            <div className='mt-4 border-t pt-4'>
+                              <p className='text-xs font-medium text-gray-500'>
+                                Observações
+                              </p>
+                              <p className='text-muted-foreground text-sm'>
+                                {pickingOrder.notes}
+                              </p>
+                            </div>
+                          )}
+                        </CardContent>
+                      </Card>
+                    )
+                  )}
+                </div>
+              ) : materialRequestData.restrictionOrders ? (
                 <Card className='overflow-hidden'>
                   <CardHeader className='bg-gray-50 py-3'>
                     <div className='flex flex-wrap items-center justify-between gap-2'>
@@ -544,10 +813,10 @@ export default async function MaterialRequestShowPage({
                     <div className='grid grid-cols-2 gap-4 md:grid-cols-3'>
                       <div>
                         <p className='text-xs font-medium text-gray-500'>
-                          Armazém
+                          Depósito Transitório
                         </p>
                         <p className='font-medium'>
-                          Armazém{' '}
+                          Depósito Transitório{' '}
                           {materialRequestData.restrictionOrders.warehouseId}
                         </p>
                       </div>
@@ -586,7 +855,8 @@ export default async function MaterialRequestShowPage({
                 </Card>
               ) : (
                 <p className='text-muted-foreground py-8 text-center'>
-                  Nenhuma reserva registrada para esta requisição.
+                  Nenhuma reserva ou ordem de coleta registrada para esta
+                  requisição.
                 </p>
               )}
             </CardContent>
@@ -619,7 +889,7 @@ export default async function MaterialRequestShowPage({
                         </div>
                       </CardHeader>
                       <CardContent className='p-4'>
-                        <div className='grid grid-cols-2 gap-4 md:grid-cols-4'>
+                        <div className='grid grid-cols-2 gap-4 md:grid-cols-3'>
                           <div>
                             <p className='text-xs font-medium text-gray-500'>
                               Valor Total
@@ -630,49 +900,11 @@ export default async function MaterialRequestShowPage({
                           </div>
                           <div>
                             <p className='text-xs font-medium text-gray-500'>
-                              Armazém
+                              Depósito Retirada
                             </p>
                             <p className='font-medium'>
-                              Armazém {withdrawal.warehouseId}
-                            </p>
-                          </div>
-                          <div>
-                            <p className='text-xs font-medium text-gray-500'>
-                              Processado por
-                            </p>
-                            <p className='font-medium'>
-                              Usuário {withdrawal.processedByUserId}
-                            </p>
-                          </div>
-                          <div>
-                            <p className='text-xs font-medium text-gray-500'>
-                              Autorizado por
-                            </p>
-                            <p className='font-medium'>
-                              Usuário {withdrawal.authorizedByUserId}
-                            </p>
-                          </div>
-                        </div>
-                        <div className='mt-4 grid grid-cols-2 gap-4 md:grid-cols-3'>
-                          <div>
-                            <p className='text-xs font-medium text-gray-500'>
-                              Coletado por
-                            </p>
-                            <p className='font-medium'>
-                              {withdrawal.collectedByWorkerId
-                                ? `Trabalhador ${withdrawal.collectedByWorkerId}`
-                                : withdrawal.collectedByUserId
-                                  ? `Usuário ${withdrawal.collectedByUserId}`
-                                  : withdrawal.collectedByOther ||
-                                    'Não informado'}
-                            </p>
-                          </div>
-                          <div>
-                            <p className='text-xs font-medium text-gray-500'>
-                              Ordem de Coleta
-                            </p>
-                            <p className='font-medium'>
-                              #{withdrawal.materialPickingOrderId}
+                              {withdrawal.warehouse?.name ||
+                                `Depósito ${withdrawal.warehouseId}`}
                             </p>
                           </div>
                           <div>
@@ -680,10 +912,104 @@ export default async function MaterialRequestShowPage({
                               Tipo de Movimento
                             </p>
                             <p className='font-medium'>
-                              #{withdrawal.movementTypeId}
+                              {withdrawal.movementType?.name ||
+                                `Tipo ${withdrawal.movementTypeId}`}
+                            </p>
+                          </div>
+                          <div>
+                            <p className='text-xs font-medium text-gray-500'>
+                              Processado por
+                            </p>
+                            <p className='font-medium'>
+                              {withdrawal.processedByUser?.name ||
+                                withdrawal.processedByUser?.login ||
+                                `Usuário ${withdrawal.processedByUserId}`}
+                            </p>
+                          </div>
+                          <div>
+                            <p className='text-xs font-medium text-gray-500'>
+                              Autorizado por
+                            </p>
+                            <p className='font-medium'>
+                              {withdrawal.authorizedByUser?.name ||
+                                withdrawal.authorizedByUser?.login ||
+                                `Usuário ${withdrawal.authorizedByUserId}`}
+                            </p>
+                          </div>
+                          <div>
+                            <p className='text-xs font-medium text-gray-500'>
+                              Coletado por
+                            </p>
+                            <p className='font-medium'>
+                              {withdrawal.collectedByWorker
+                                ? withdrawal.collectedByWorker.name
+                                : withdrawal.collectedByUser
+                                  ? withdrawal.collectedByUser.name ||
+                                    withdrawal.collectedByUser.login
+                                  : withdrawal.collectedByOther ||
+                                    'Não informado'}
                             </p>
                           </div>
                         </div>
+
+                        {/* Itens da Saída */}
+                        {withdrawal.items && withdrawal.items.length > 0 && (
+                          <div className='mt-4 border-t pt-4'>
+                            <p className='mb-2 text-sm font-medium'>
+                              Itens Retirados ({withdrawal.items.length})
+                            </p>
+                            <div className='overflow-x-auto rounded-lg border'>
+                              <table className='w-full text-xs'>
+                                <thead className='bg-gray-100'>
+                                  <tr>
+                                    <th className='px-3 py-2 text-left font-medium text-gray-700'>
+                                      Material
+                                    </th>
+                                    <th className='px-3 py-2 text-left font-medium text-gray-700'>
+                                      Quantidade
+                                    </th>
+                                    <th className='px-3 py-2 text-left font-medium text-gray-700'>
+                                      Valor Unitário
+                                    </th>
+                                    <th className='px-3 py-2 text-left font-medium text-gray-700'>
+                                      Total
+                                    </th>
+                                  </tr>
+                                </thead>
+                                <tbody className='divide-y divide-gray-200'>
+                                  {withdrawal.items.map((item) => {
+                                    const itemTotal =
+                                      Number(item.quantityWithdrawn) *
+                                      Number(item.unitPrice);
+                                    return (
+                                      <tr
+                                        key={item.id}
+                                        className='hover:bg-gray-50'
+                                      >
+                                        <td className='px-3 py-2'>
+                                          {item.globalMaterial?.name ||
+                                            'Material não identificado'}
+                                        </td>
+                                        <td className='px-3 py-2'>
+                                          {Number(
+                                            item.quantityWithdrawn
+                                          ).toLocaleString()}
+                                        </td>
+                                        <td className='px-3 py-2'>
+                                          {formatCurrency(item.unitPrice)}
+                                        </td>
+                                        <td className='px-3 py-2 font-medium'>
+                                          {formatCurrency(itemTotal)}
+                                        </td>
+                                      </tr>
+                                    );
+                                  })}
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        )}
+
                         {withdrawal.notes && (
                           <div className='mt-4 border-t pt-4'>
                             <p className='text-xs font-medium text-gray-500'>
@@ -709,58 +1035,56 @@ export default async function MaterialRequestShowPage({
       </Tabs>
 
       {/* Histórico de Status */}
-      {materialRequestData.statusHistory &&
-        materialRequestData.statusHistory.length > 0 && (
-          <Card>
-            <CardHeader>
-              <CardTitle className='flex items-center gap-2'>
-                <History className='h-5 w-5' />
-                Histórico de Status
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className='space-y-4'>
-                {materialRequestData.statusHistory.map((history, index) => (
-                  <div key={index} className='flex items-start gap-4'>
-                    <div className='flex flex-col items-center'>
-                      <div
-                        className={`h-3 w-3 rounded-full ${
-                          index === 0 ? 'bg-primary' : 'bg-gray-300'
-                        }`}
-                      />
-                      {index <
-                        materialRequestData.statusHistory!.length - 1 && (
-                        <div className='h-8 w-0.5 bg-gray-200' />
-                      )}
-                    </div>
-                    <div className='flex-1'>
-                      <div className='flex flex-wrap items-center justify-between gap-2'>
-                        <div className='flex items-center gap-2'>
-                          <Badge variant='outline'>
-                            {formatStatus(history.status)}
-                          </Badge>
-                          {history.changedById && (
-                            <span className='text-muted-foreground text-sm'>
-                              por Usuário {history.changedById}
-                            </span>
-                          )}
-                        </div>
-                        <p className='text-muted-foreground text-sm'>
-                          {formatDate(history.changeDate)}
-                        </p>
-                      </div>
-                      {history.notes && (
-                        <p className='text-muted-foreground mt-2 text-sm'>
-                          {history.notes}
-                        </p>
-                      )}
-                    </div>
+      {sortedStatusHistory.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle className='flex items-center gap-2'>
+              <History className='h-5 w-5' />
+              Histórico de Status
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className='space-y-4'>
+              {sortedStatusHistory.map((history, index) => (
+                <div key={index} className='flex items-start gap-4'>
+                  <div className='flex flex-col items-center'>
+                    <div
+                      className={`h-3 w-3 rounded-full ${
+                        index === 0 ? 'bg-primary' : 'bg-gray-300'
+                      }`}
+                    />
+                    {index < sortedStatusHistory.length - 1 && (
+                      <div className='h-8 w-0.5 bg-gray-200' />
+                    )}
                   </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        )}
+                  <div className='flex-1'>
+                    <div className='flex flex-wrap items-center justify-between gap-2'>
+                      <div className='flex items-center gap-2'>
+                        <Badge variant='outline'>
+                          {formatStatus(history.status)}
+                        </Badge>
+                        {history.changedById && (
+                          <span className='text-muted-foreground text-sm'>
+                            por Usuário {history.changedById}
+                          </span>
+                        )}
+                      </div>
+                      <p className='text-muted-foreground text-sm'>
+                        {formatDate(history.changeDate)}
+                      </p>
+                    </div>
+                    {history.notes && (
+                      <p className='text-muted-foreground mt-2 text-sm'>
+                        {history.notes}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Contadores */}
       <div className='grid grid-cols-1 gap-4 md:grid-cols-4'>

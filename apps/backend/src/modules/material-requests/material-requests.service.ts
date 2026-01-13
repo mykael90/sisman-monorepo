@@ -202,6 +202,7 @@ export class MaterialRequestsService {
         },
         include: {
           items: { include: { requestedGlobalMaterial: true } },
+          storage: { select: { id: true, name: true } },
           statusHistory: {
             orderBy: {
               changeDate: 'desc'
@@ -224,14 +225,19 @@ export class MaterialRequestsService {
           materialPickingOrders: {
             include: {
               items: { include: { globalMaterial: true } },
-              requestedByUser: true
+              requestedByUser: true,
+              warehouse: true
             }
           },
           materialWithdrawals: {
             include: {
               items: { include: { globalMaterial: true } },
               collectedByWorker: true,
-              collectedByUser: true
+              collectedByUser: true,
+              processedByUser: true,
+              warehouse: true,
+              movementType: true,
+              authorizedByUser: true
             }
           },
           materialReceipts: {
