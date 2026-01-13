@@ -217,9 +217,27 @@ export class MaterialRequestsService {
             }
           },
           requestedBy: true, // Example: if you have a relation to User
-          materialPickingOrders: true,
-          materialWithdrawals: true,
-          materialReceipts: true
+          materialPickingOrders: {
+            include: {
+              items: { include: { globalMaterial: true } },
+              requestedByUser: true
+            }
+          },
+          materialWithdrawals: {
+            include: {
+              items: { include: { globalMaterial: true } },
+              collectedByWorker: true,
+              collectedByUser: true
+            }
+          },
+          materialReceipts: {
+            include: {
+              items: { include: { material: true } },
+              processedByUser: true,
+              destinationWarehouse: true,
+              movementType: true
+            }
+          }
         }
       });
       if (!materialRequest) {

@@ -18,6 +18,9 @@ export type IMaterialRequestWithRelations = Prisma.MaterialRequestGetPayload<{
         completedAt: true;
       };
     };
+    materialPickingOrders: true;
+    materialWithdrawals: true;
+    materialReceipts: true;
     _count: {
       select: {
         materialPickingOrders: true;
