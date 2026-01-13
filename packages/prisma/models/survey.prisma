@@ -35,7 +35,7 @@ model SurveyQuestion {
     required Boolean            @default(true)
 
     surveyId String
-    survey   Survey @relation(fields: [surveyId], references: [id])
+    survey   Survey @relation(fields: [surveyId], references: [id], onDelete: Cascade)
 
     answers               SurveyAnswer[] // Relacionamento inverso para análises
     surveyQuestionOptions SurveyQuestionOptions[]
@@ -52,7 +52,7 @@ model SurveyQuestionOptions {
 
     // Relacionamento
     questionId String
-    question   SurveyQuestion @relation(fields: [questionId], references: [id])
+    question   SurveyQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
 
     answers SurveyAnswerOption[]
 
@@ -93,7 +93,7 @@ model SurveyAnswer {
     question   SurveyQuestion @relation(fields: [questionId], references: [id])
 
     responseId String
-    response   SurveyResponse @relation(fields: [responseId], references: [id])
+    response   SurveyResponse @relation(fields: [responseId], references: [id], onDelete: Cascade)
 
     options SurveyAnswerOption[]
 
@@ -105,7 +105,7 @@ model SurveyAnswerOption {
     id String @id @default(uuid())
 
     answerId String
-    answer   SurveyAnswer @relation(fields: [answerId], references: [id])
+    answer   SurveyAnswer @relation(fields: [answerId], references: [id], onDelete: Cascade)
 
     optionId String
     option   SurveyQuestionOptions @relation(fields: [optionId], references: [id])

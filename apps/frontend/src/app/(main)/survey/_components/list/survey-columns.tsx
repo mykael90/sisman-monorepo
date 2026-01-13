@@ -56,7 +56,8 @@ export const columns = (
   }),
   columnHelper.accessor('description', {
     header: 'Descrição',
-    cell: (props) => props.getValue()
+    size: 700,
+    cell: (props) => <div className='whitespace-normal'>{props.getValue()}</div>
   }),
   columnHelper.accessor('uniqueAnswerByUser', {
     header: 'Resposta Única',

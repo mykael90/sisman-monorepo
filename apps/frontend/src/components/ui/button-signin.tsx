@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useSession, signIn } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,9 +21,11 @@ import handleManualSignOut from '@/lib/auth/signout-ufrn';
 import { useEffect, useState } from 'react';
 import SignInButtonSkeleton from '../skeletons/button-signin-skeleton';
 import { getPublicFotoSigaa } from '@/lib/fetch/get-public-foto-sigaa';
+import { Session } from 'next-auth';
 
-const SignInButton = () => {
-  const { data: session } = useSession();
+const SignInButton = ({ session }: { session: Session | null }) => {
+  console.log(`session on SignInButton = ${JSON.stringify(session, null, 2)}`);
+
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
@@ -38,7 +40,7 @@ const SignInButton = () => {
             <div className='flex items-center gap-2'>
               <UserAvatar
                 imageUrl={
-                  session.user.image
+                  session?.user?.image
                     ? getPublicFotoSigaa(session.user.image)
                     : undefined
                 }

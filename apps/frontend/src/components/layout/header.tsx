@@ -2,25 +2,39 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useSidebarContext } from '@/src/components/context/sidebar-provider';
 import Image from 'next/image';
 import logo from '@/assets/img/logo.svg';
 import logo_dark from '@/assets/img/logo-dark.svg';
 // Importe o useState e o ícone X (fechar)
-import { Suspense, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { Menu, Search, Bell, X } from 'lucide-react'; // Adicione X
 import ThemeToggle from '../../theme/theme-toogle';
 import ButtonNavBar from '../ui/button-navbar';
 import SiginButton from '../ui/button-signin';
 import { Input } from '../ui/input';
 import { Badge } from '../ui/badge';
+import { Session } from 'next-auth';
+import { Button } from '../ui/button';
+import { ISurveyWithRelations } from '../../app/(main)/survey/survey-types';
 
-const Header: React.FC = () => {
+const Header: React.FC<{
+  session: Session | null;
+  surveyToDisplay?: ISurveyWithRelations | null;
+}> = ({ session, surveyToDisplay }) => {
+  const router = useRouter();
   const pathname = usePathname();
   const { toggleCollapse } = useSidebarContext();
   // Estado para controlar a visibilidade da busca em telas pequenas
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
+
+  // Só mostrar se existir surveyDisplayed e o usuario atual ainda não tiver respondido
+  useEffect(() => {
+    if (surveyToDisplay) {
+      router.push(`survey-response/${surveyToDisplay.id}`);
+    }
+  }, [surveyToDisplay?.id, router]);
 
   return (
     // Adicione 'relative' para o posicionamento absoluto do input expandido
@@ -60,6 +74,16 @@ const Header: React.FC = () => {
         </div>
         {/* Lado Direito: Busca, Notificações, Tema, Login */}
         <div className='flex flex-grow items-center justify-end gap-2 sm:gap-3'>
+          {surveyToDisplay && (
+            <Button
+              className='hidden animate-pulse cursor-pointer rounded-md px-4 py-2 text-sm font-semibold text-white sm:block'
+              onClick={() =>
+                router.push(`/survey-response/${surveyToDisplay.id}`)
+              }
+            >
+              Responder formulário
+            </Button>
+          )}
           {/* --- Área de Busca --- */}
           <div className='flex items-center'>
             {/* Botão de busca para telas pequenas (< sm) */}
@@ -120,7 +144,7 @@ const Header: React.FC = () => {
             </ButtonNavBar>
             <ThemeToggle />
             <Suspense fallback={<div className='text-center'>Loading...</div>}>
-              <SiginButton />
+              <SiginButton session={session} />
             </Suspense>
           </div>
         </div>
