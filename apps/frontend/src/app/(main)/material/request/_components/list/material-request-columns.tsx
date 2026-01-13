@@ -455,14 +455,16 @@ export const columns = (
   }),
   columnHelper.group({
     id: 'quantities',
-    header: () => <div className='text-center font-medium'>Quantidade</div>,
+    header: () => (
+      <div className='w-full text-center font-medium'>Quantidade</div>
+    ),
     columns: [
       columnHelper.accessor((row) => row._count.materialReceipts, {
         id: 'numeroEntradas',
         size: 100,
         header: () => {
           return (
-            <div className='flex items-center justify-center gap-2'>
+            <div className='flex w-full items-center justify-center gap-2'>
               Entradas
               <InfoHoverCard
                 title='Entrada de Materiais'
@@ -478,7 +480,7 @@ export const columns = (
       columnHelper.accessor((row) => row._count.materialPickingOrders, {
         id: 'numeroReservas',
         size: 100,
-        header: 'Reservas',
+        header: () => <div className='w-full text-center'>Reservas</div>,
         cell: (props) => (
           <div className='text-center'>{props.getValue() as any}</div>
         )
@@ -486,7 +488,7 @@ export const columns = (
       columnHelper.accessor((row) => row._count.materialWithdrawals, {
         id: 'numeroSaidas',
         size: 100,
-        header: 'Saidas',
+        header: () => <div className='w-full text-center'>Saidas</div>,
         cell: (props) => (
           <div className='text-center'>{props.getValue() as any}</div>
         )
