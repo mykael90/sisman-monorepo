@@ -44,7 +44,9 @@ export type IMaterialRequestShowWithRelations =
       };
       sipacUnitRequesting: true;
       sipacUnitCost: true;
-      restrictionOrders: true;
+      restrictionOrders: {
+        include: { items: true; processedByUser: true; warehouse: true };
+      };
       maintenanceRequest: {
         select: {
           id: true;

@@ -210,7 +210,9 @@ export class MaterialRequestsService {
           },
           sipacUnitRequesting: true,
           sipacUnitCost: true,
-          restrictionOrders: true,
+          restrictionOrders: {
+            include: { items: true, processedByUser: true, warehouse: true }
+          },
           maintenanceRequest: {
             select: {
               id: true,
