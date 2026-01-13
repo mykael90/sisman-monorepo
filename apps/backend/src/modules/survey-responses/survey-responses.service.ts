@@ -35,6 +35,11 @@ export class SurveyResponsesService {
             surveyQuestionOptions: true
           }
         }
+      },
+      orderBy: {
+        question: {
+          order: 'asc'
+        }
       }
     }
   };

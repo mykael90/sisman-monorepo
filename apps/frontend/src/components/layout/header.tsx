@@ -32,7 +32,7 @@ const Header: React.FC<{
   // Só mostrar se existir surveyDisplayed e o usuario atual ainda não tiver respondido
   useEffect(() => {
     if (surveyToDisplay) {
-      router.push(`survey-response/${surveyToDisplay.id}`);
+      router.push(`/survey-response/${surveyToDisplay.id}`);
     }
   }, [surveyToDisplay?.id, router]);
 
@@ -81,7 +81,7 @@ const Header: React.FC<{
                 router.push(`/survey-response/${surveyToDisplay.id}`)
               }
             >
-              Responder formulário
+              Responder questionário
             </Button>
           )}
           {/* --- Área de Busca --- */}
