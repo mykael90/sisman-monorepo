@@ -110,9 +110,7 @@ export class MaterialRequestsController {
       }
     ]
   })
-  async show(
-    @Param('id') id: number
-  ): Promise<MaterialRequestWithRelationsResponseDto> {
+  async show(@Param('id') id: number): Promise<any> {
     return this.materialRequestsService.show(id);
   }
 

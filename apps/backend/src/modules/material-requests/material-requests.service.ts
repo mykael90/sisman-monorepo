@@ -201,12 +201,25 @@ export class MaterialRequestsService {
           id
         },
         include: {
-          items: true,
+          items: { include: { requestedGlobalMaterial: true } },
           statusHistory: true,
           sipacUnitRequesting: true,
           sipacUnitCost: true,
+          restrictionOrders: true,
+          maintenanceRequest: {
+            select: {
+              id: true,
+              protocolNumber: true,
+              building: { select: { id: true, name: true } },
+              updatedAt: true,
+              createdAt: true,
+              completedAt: true
+            }
+          },
           requestedBy: true, // Example: if you have a relation to User
-          maintenanceRequest: true // Example: if you have a relation
+          materialPickingOrders: true,
+          materialWithdrawals: true,
+          materialReceipts: true
         }
       });
       if (!materialRequest) {
