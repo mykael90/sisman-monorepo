@@ -30,6 +30,32 @@ import {
 import { cn } from '@/lib/utils';
 import { Separator } from '@/components/ui/separator';
 
+const FormattedText = ({ text }: { text: string }) => {
+  if (!text) return null;
+
+  // Processar quebras de linha primeiro
+  const lines = text.split('\n');
+
+  return (
+    <>
+      {lines.map((line, i) => (
+        <span key={i}>
+          {line.split(/(\*\*.*?\*\*|\*.*?\*)/).map((part, j) => {
+            if (part.startsWith('**') && part.endsWith('**')) {
+              return <strong key={j}>{part.slice(2, -2)}</strong>;
+            }
+            if (part.startsWith('*') && part.endsWith('*')) {
+              return <em key={j}>{part.slice(1, -1)}</em>;
+            }
+            return part;
+          })}
+          {i < lines.length - 1 && <br />}
+        </span>
+      ))}
+    </>
+  );
+};
+
 const AnswerField = ({
   form,
   question,
@@ -210,14 +236,14 @@ const AnswerField = ({
         isAnswered && !hasError && 'border-primary/20 bg-primary/[0.01]'
       )}
     >
-      <CardHeader className='pb-3'>
+      <CardHeader>
         <div className='flex items-start justify-between gap-4'>
           <div className='space-y-1'>
-            <CardTitle className='flex items-center gap-2 text-lg leading-tight font-bold'>
-              <span className='bg-muted text-muted-foreground flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-bold'>
+            <CardTitle className='flex items-center gap-2 leading-tight font-medium'>
+              <span className='bg-sisman-blue/50 flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white'>
                 {index + 1}
               </span>
-              {question.text}
+              <FormattedText text={question.text} />
               {question.required && (
                 <span className='text-destructive ml-0.5' title='Obrigatório'>
                   *
@@ -236,7 +262,7 @@ const AnswerField = ({
         </div>
       </CardHeader>
       <CardContent>
-        <div className='pt-2'>{renderInput()}</div>
+        <div>{renderInput()}</div>
         {hasError && (
           <div className='text-destructive animate-in fade-in slide-in-from-top-1 mt-4 flex items-center gap-2 text-sm font-medium'>
             <AlertCircle className='h-4 w-4' />
@@ -306,17 +332,20 @@ export default function SurveyResponseForm({
 
   return (
     <div className='animate-in fade-in mx-auto max-w-3xl space-y-8 duration-500'>
-      <header className='space-y-2 text-center'>
-        <h1 className='text-3xl font-extrabold tracking-tight sm:text-4xl'>
+      <div className='from-primary/5 to-primary/10 border-primary/10 bg-gradient-to-br p-8 shadow-sm'>
+        <h2 className='text-center text-2xl font-bold tracking-tight text-slate-700'>
           {survey.title}
-        </h1>
+        </h2>
         {survey.description && (
-          <p className='text-muted-foreground text-lg'>{survey.description}</p>
+          <p className='text-md mt-3 text-justify leading-relaxed text-slate-600 italic'>
+            <FormattedText text={survey.description} />
+          </p>
         )}
-        <div className='pt-4'>
-          <Separator className='bg-primary/20 mx-auto h-1 w-24 rounded-full' />
+        <div className='mt-6 flex items-center gap-2 text-sm font-medium text-slate-500'>
+          <div className='bg-primary h-2 w-2 animate-pulse rounded-full' />
+          Pesquisa ativa
         </div>
-      </header>
+      </div>
 
       <form
         onSubmit={(e) => {
@@ -328,7 +357,7 @@ export default function SurveyResponseForm({
       >
         <ErrorServerForm serverState={serverState} />
 
-        <div className='flex flex-col gap-6'>
+        <div className='mx-4 flex flex-col gap-6'>
           {survey.questions
             .sort((a, b) => a.order - b.order)
             .map((q, i) => (
@@ -336,7 +365,7 @@ export default function SurveyResponseForm({
             ))}
         </div>
 
-        <Card className='border-primary/20 bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky bottom-6 z-10 shadow-lg backdrop-blur'>
+        <Card className='border-primary/20 bg-background/95 supports-[backdrop-filter]:bg-background/60 mx-4 my-6 shadow-lg backdrop-blur'>
           <CardContent className='flex items-center justify-between py-4'>
             <Button type='button' variant='ghost' onClick={onCancel}>
               Cancelar

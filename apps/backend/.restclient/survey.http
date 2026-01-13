@@ -150,3 +150,95 @@ Authorization: Bearer {{token}}
 DELETE {{urlLocal}}/{{surveyId}}
 Content-Type: {{contentType}}
 Authorization: Bearer {{token}}
+
+### POST create survey WITH RELATIONS (Avaliação SISMAN)
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "title": "Questionário de Avaliação do SISMAN: (Interface e Usabilidade)",
+    "description": "Este questionário tem como objetivo coletar a percepção dos usuários sobre a interface e a usabilidade do sistema web SISMAN. As respostas contribuirão para a avaliação e o aprimoramento da plataforma. Não há identificação individual dos participantes.",
+    "questions": [
+                        {
+                        "text": "Qual forma de autenticação você utiliza no sistema?",
+                        "order": 1,
+                        "type": "SINGLE",
+                        "required": true,
+                        "surveyQuestionOptions": [
+                        { "label": "Credenciais SIPAC", "value": "sipac", "order": 1 },
+                        { "label": "Código único enviado por e-mail", "value": "email_code", "order": 2 }
+                        ]
+                        },
+                        {
+                        "text": "Quão fácil foi realizar a autenticação e o primeiro acesso ao sistema? *(1: Muito difícil — 5: Muito fácil)*",
+                        "order": 2,
+                        "type": "RATING",
+                        "required": true
+                        },
+                        {
+                        "text": "Senti-me confiante ao utilizar o sistema sem a necessidade de consultar manual ou ajuda externa.",
+                        "order": 3,
+                        "type": "BOOLEAN",
+                        "required": true
+                        },
+                        {
+                        "text": "A organização visual das informações facilita a identificação dos elementos mais importantes na tela. *(1: Discordo totalmente — 5: Concordo totalmente)*",
+                        "order": 4,
+                        "type": "RATING",
+                        "required": true
+                        },
+                        {
+                        "text": "Como você avalia a paleta de cores e o contraste do sistema?",
+                        "order": 5,
+                        "type": "SINGLE",
+                        "required": true,
+                        "surveyQuestionOptions": [
+                        { "label": "Excelente, favorece a leitura e o uso prolongado.", "value": "excellent", "order": 1 },
+                        { "label": "Adequada, porém cansativa após longos períodos de uso.", "value": "adequate", "order": 2 },
+                        { "label": "Insatisfatória, dificulta a distinção entre textos e botões.", "value": "unsatisfactory", "order": 3 }
+                        ]
+                        },
+                        {
+                        "text": "Os ícones utilizados no sistema são intuitivos e representam adequadamente suas funcionalidades.",
+                        "order": 6,
+                        "type": "BOOLEAN",
+                        "required": true
+                        },
+                        {
+                        "text": "O sistema indica claramente a seção ou página em que o usuário se encontra.",
+                        "order": 7,
+                        "type": "BOOLEAN",
+                        "required": true
+                        },
+                        {
+                        "text": "Ao clicar em links ou botões, o comportamento do sistema correspondeu às suas expectativas?",
+                        "order": 8,
+                        "type": "SINGLE",
+                        "required": true,
+                        "surveyQuestionOptions": [
+                        { "label": "Sim, sempre.", "value": "always", "order": 1 },
+                        { "label": "Na maioria das vezes.", "value": "mostly", "order": 2 },
+                        { "label": "Raramente.", "value": "rarely", "order": 3 }
+                        ]
+                        },
+                        {
+                        "text": "Quando ocorre um erro, o sistema apresenta mensagens claras e compreensíveis. *(1: Discordo totalmente — 5: Concordo totalmente)*",
+                        "order": 9,
+                        "type": "RATING",
+                        "required": true
+                        },
+                        {
+                        "text": "Após a realização de uma ação importante, o sistema apresenta algum tipo de confirmação visual (ex.: mensagem ou indicador de carregamento).",
+                        "order": 10,
+                        "type": "BOOLEAN",
+                        "required": true
+                        },
+                        {
+                        "text": "Se fosse possível modificar apenas uma interação no sistema para torná-lo mais simples ou eficiente, qual seria?",
+                        "order": 11,
+                        "type": "TEXT",
+                        "required": false
+                        }
+                ]
+}
