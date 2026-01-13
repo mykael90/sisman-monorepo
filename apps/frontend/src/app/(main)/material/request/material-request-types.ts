@@ -15,6 +15,7 @@ export type IMaterialRequestWithRelations = Prisma.MaterialRequestGetPayload<{
         building: { select: { id: true; name: true } };
         updatedAt: true;
         createdAt: true;
+        completedAt: true;
       };
     };
     _count: {

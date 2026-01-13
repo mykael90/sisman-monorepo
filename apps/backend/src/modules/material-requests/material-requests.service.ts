@@ -170,7 +170,8 @@ export class MaterialRequestsService {
               protocolNumber: true,
               building: { select: { id: true, name: true } },
               updatedAt: true,
-              createdAt: true
+              createdAt: true,
+              completedAt: true
             }
           },
           _count: {

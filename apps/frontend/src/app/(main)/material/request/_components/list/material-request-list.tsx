@@ -21,7 +21,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import Loading from '@/components/loading';
 import { getRequests } from '../../material-request-actions'; // Alterado
 import { DateRange } from 'react-day-picker';
-import { subDays } from 'date-fns';
+import { endOfDay, startOfDay, subDays } from 'date-fns';
 import { DateRangeFilter } from '@/components/filters/date-range-filter';
 import { TableTanstackFaceted } from '../../../../../../components/table-tanstack/table-tanstack-faceted';
 import { DefaultGlobalFilter } from '../../../../../../components/table-tanstack/default-global-filter';
@@ -33,11 +33,16 @@ export function MaterialRequestListPage() {
   const queryClient = useQueryClient();
 
   const [date, setDateState] = useState<DateRange | undefined>({
-    from: subDays(new Date(), 10),
-    to: new Date()
+    from: subDays(startOfDay(new Date()), 30),
+    to: endOfDay(new Date())
   });
 
-  const [sorting, setSorting] = useState<SortingState>([]);
+  const [sorting, setSorting] = useState<SortingState>([
+    {
+      id: 'createdAt',
+      desc: true
+    }
+  ]);
 
   const initialColumnFilter: ColumnFiltersState = [];
 

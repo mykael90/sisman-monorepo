@@ -51,6 +51,10 @@ import { useSession } from 'next-auth/react';
 import { QueryClient } from '@tanstack/react-query';
 import { updateRequest } from '../../material-request-actions';
 import { materialRequestStatusDisplayMap } from '../../../../../../mappers/material-request-mappers';
+import {
+  statusMaterialRestrictionDisplayMap,
+  StatusMaterialRestrictionKey
+} from '../../../../../../mappers/material-restriction-mappers-translate';
 
 const columnHelper = createColumnHelper<IMaterialRequestWithRelations>(); // Alterado
 
@@ -386,7 +390,7 @@ export const columns = (
     },
     {
       id: 'status',
-      header: 'Status', // Alterado
+      header: 'Status RM', // Alterado
       enableColumnFilter: true,
       filterFn: 'arrIncludesSome',
       cell: ({ row }) => {
@@ -409,6 +413,32 @@ export const columns = (
           </Badge>
         );
       }
+    }
+  ),
+  columnHelper.accessor(
+    (row) => {
+      const restriction = row.restrictionOrders
+        ?.status as StatusMaterialRestrictionKey; // Alterado
+      return statusMaterialRestrictionDisplayMap[restriction] || 'Não'; // Alterado
+    },
+    {
+      id: 'statusRestricao',
+      size: 100,
+      header: () => {
+        return (
+          <div className='flex items-center justify-center gap-2'>
+            Restrição
+            <InfoHoverCard
+              title='Restrição Associada'
+              subtitle='Indica se a requisição de material tem restrição total, parcial, está livre ou não possui restrição associada.'
+            />
+          </div>
+        );
+      },
+      cell: (props) => (
+        <div className='text-center'>{props.getValue() ?? 'Não'}</div>
+      ),
+      enableColumnFilter: true
     }
   ),
   columnHelper.accessor((row) => row.maintenanceRequest?.protocolNumber, {
@@ -453,10 +483,47 @@ export const columns = (
       );
     }
   }),
+  columnHelper.accessor((row) => row.maintenanceRequest?.completedAt, {
+    id: 'RManCompletedAt',
+    header: () => <div className='w-full text-center'>RMan Finalizada</div>,
+    enableResizing: false,
+    size: 200,
+    cell: (props) => {
+      if (props.getValue() === null)
+        return <div className='w-full text-center'>Não</div>;
+
+      const date = new Date(props.getValue());
+      return (
+        <div className='w-full text-center'>
+          <div>{date.toLocaleDateString('pt-BR')}</div>
+          {/* <div>
+            {date.toLocaleTimeString('pt-BR', {
+              hour: '2-digit',
+              minute: '2-digit'
+            })}
+          </div> */}
+        </div>
+      );
+    }
+  }),
+  columnHelper.accessor((row) => row.sipacUserLoginRequest, {
+    // Alterado para lidar com 'requestedByUser' opcional e tipagem
+    header: 'Solicitado por',
+    id: 'sipacUserLoginRequest',
+    enableColumnFilter: true,
+    cell: (props) => <div className='whitespace-normal'>{props.getValue()}</div>
+  }),
+  columnHelper.accessor((row) => row.maintenanceRequest?.building?.name, {
+    id: 'building',
+    header: 'Ativo',
+    enableResizing: false,
+    size: 400,
+    cell: (props) => <div className='whitespace-normal'>{props.getValue()}</div>
+  }),
   columnHelper.group({
     id: 'quantities',
     header: () => (
-      <div className='w-full text-center font-medium'>Quantidade</div>
+      <div className='w-full text-center font-medium'>Quantidades</div>
     ),
     columns: [
       columnHelper.accessor((row) => row._count.materialReceipts, {
@@ -468,7 +535,7 @@ export const columns = (
               Entradas
               <InfoHoverCard
                 title='Entrada de Materiais'
-                subtitle='Representa a quantidade de entradas no depósito transitório referente a respectiva requisição de material'
+                subtitle='Representa a quantidade de entradas no depósito transitório referente a respectiva requisição de material. (Retornos e sobras de serviço também contam como entradas).'
               />
             </div>
           );
@@ -480,7 +547,17 @@ export const columns = (
       columnHelper.accessor((row) => row._count.materialPickingOrders, {
         id: 'numeroReservas',
         size: 100,
-        header: () => <div className='w-full text-center'>Reservas</div>,
+        header: () => {
+          return (
+            <div className='flex w-full items-center justify-center gap-2'>
+              Reservas
+              <InfoHoverCard
+                title='Reservas de Materiais'
+                subtitle='Representa a quantidade de reservas no depósito transitório referente a respectiva requisição de material.'
+              />
+            </div>
+          );
+        },
         cell: (props) => (
           <div className='text-center'>{props.getValue() as any}</div>
         )
@@ -488,45 +565,38 @@ export const columns = (
       columnHelper.accessor((row) => row._count.materialWithdrawals, {
         id: 'numeroSaidas',
         size: 100,
-        header: () => <div className='w-full text-center'>Saidas</div>,
+        header: () => {
+          return (
+            <div className='flex w-full items-center justify-center gap-2'>
+              Saídas
+              <InfoHoverCard
+                title='Saídas de Materiais'
+                subtitle='Representa a quantidade de saídas no depósito transitório referente a respectiva requisição de material.'
+              />
+            </div>
+          );
+        },
         cell: (props) => (
           <div className='text-center'>{props.getValue() as any}</div>
         )
       })
     ]
   }),
-  columnHelper.accessor((row) => row.restrictionOrders?.status, {
-    id: 'statusRestricao',
-    header: 'Status Restrição',
-    cell: (props) => (
-      <div className='text-center'>
-        {props.getValue() ? props.getValue() : 'NÃO ASSOCIADA'}
-      </div>
-    ),
-    enableColumnFilter: true
-  }),
-  columnHelper.accessor((row) => row.sipacUserLoginRequest, {
-    // Alterado para lidar com 'requestedByUser' opcional e tipagem
-    header: 'Solicitado por',
-    id: 'sipacUserLoginRequest',
-    enableColumnFilter: true,
-    cell: (props) => <div className='whitespace-normal'>{props.getValue()}</div>
-  }),
   // Removida a coluna 'value' pois não existe diretamente em IMaterialRequestWithRelations
-  columnHelper.accessor('createdAt', {
-    header: 'Gerada em',
+  columnHelper.accessor('requestDate', {
+    header: () => <div className='w-full text-center'>Solicitação</div>,
     enableColumnFilter: false,
     cell: ({ row }) => {
-      const date = new Date(row.getValue('createdAt'));
+      const date = new Date(row.getValue('requestDate'));
       return (
         <div className='text-center'>
           <div>{date.toLocaleDateString('pt-BR')}</div>
-          <div>
+          {/* <div>
             {date.toLocaleTimeString('pt-BR', {
               hour: '2-digit',
               minute: '2-digit'
             })}
-          </div>
+          </div> */}
         </div>
       );
     }
@@ -604,7 +674,7 @@ export const SubRowComponent = ({
   return (
     <div className='p-2 pl-8'>
       <h4 className='mb-2 text-sm font-semibold'>
-        Itens da Requisição de Material: // Alterado
+        Itens da Requisição de Material:
       </h4>
       <Table>
         <TableHeader>
@@ -614,6 +684,8 @@ export const SubRowComponent = ({
             <TableHead>Unidade</TableHead>
             <TableHead>Qtd Solicitada</TableHead>
             <TableHead>Qtd Aprovada</TableHead>
+            <TableHead>Qtd Entregue</TableHead>
+            <TableHead>Qtd Retornada</TableHead>
             <TableHead>Valor Unitário</TableHead>
           </TableRow>
         </TableHeader>
@@ -623,15 +695,25 @@ export const SubRowComponent = ({
               <TableRow key={index}>
                 <TableCell>{item.requestedGlobalMaterial?.id}</TableCell>{' '}
                 {/* Alterado para acessar o ID do material global */}
-                <TableCell>
+                <TableCell className='whitespace-normal'>
                   {item.requestedGlobalMaterial?.name || 'N/A'}
                 </TableCell>
-                <TableCell>
+                <TableCell className='text-center'>
                   {item.requestedGlobalMaterial?.unitOfMeasure || 'N/A'}
                 </TableCell>
-                <TableCell>{item.quantityRequested.toString()}</TableCell>
-                <TableCell>{(item.quantityApproved || 0).toString()}</TableCell>
-                <TableCell>
+                <TableCell className='text-center'>
+                  {item.quantityRequested.toString()}
+                </TableCell>
+                <TableCell className='text-center'>
+                  {(item.quantityApproved || 0).toString()}
+                </TableCell>
+                <TableCell className='text-center'>
+                  {(item.quantityDelivered || 0).toString()}
+                </TableCell>
+                <TableCell className='text-center'>
+                  {(item.quantityReturned || 0).toString()}
+                </TableCell>
+                <TableCell className='text-right'>
                   {item.unitPrice
                     ? Number(item.unitPrice).toLocaleString('pt-BR', {
                         minimumFractionDigits: 2,
