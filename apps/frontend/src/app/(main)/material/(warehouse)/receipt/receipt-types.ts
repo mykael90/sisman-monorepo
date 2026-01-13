@@ -2,7 +2,7 @@ import { MaterialReceipt, MaterialReceiptItem, Prisma } from '@sisman/prisma';
 import { IMaterialGlobalCatalogEdit } from '../../global-catalog/material-global-catalog-types';
 import { Session } from 'next-auth';
 import { MaterialOperationOutKey } from '../../../../../mappers/material-operations-mappers';
-import { IMaterialRequestWithRelations } from '../../request/material-request-types';
+import { IMaterialRequestListWithRelations } from '../../request/material-request-types';
 import { IMaterialWithdrawalWithRelations } from '../withdrawal/withdrawal-types';
 
 export type IMaterialReceipt = MaterialReceipt;
@@ -47,14 +47,13 @@ export type IMaterialReceiptItem = Prisma.MaterialReceiptItemGetPayload<{
   };
 }>;
 
-export interface IMaterialReceiptAddPayload
-  extends Omit<
-    Prisma.MaterialReceiptCreateManyInput,
-    | 'destinationWarehouseId'
-    | 'movementTypeId'
-    | 'processedByUserId'
-    | 'materialRequestId'
-  > {
+export interface IMaterialReceiptAddPayload extends Omit<
+  Prisma.MaterialReceiptCreateManyInput,
+  | 'destinationWarehouseId'
+  | 'movementTypeId'
+  | 'processedByUserId'
+  | 'materialRequestId'
+> {
   items: Prisma.MaterialReceiptItemCreateManyMaterialReceiptInput[];
   destinationWarehouse: { id: number };
   movementType: { code: MaterialOperationOutKey };
@@ -65,18 +64,19 @@ export interface IMaterialReceiptAddPayload
 
 export type IMaterialReceiptRelatedData = {
   session?: Session;
-  materialRequest?: IMaterialRequestWithRelations;
+  materialRequest?: IMaterialRequestListWithRelations;
   materialWithdrawal?: IMaterialWithdrawalWithRelations;
 };
-export interface IMaterialReceiptAddForm
-  extends Omit<Prisma.MaterialReceiptCreateManyInput, 'movementTypeId'> {
+export interface IMaterialReceiptAddForm extends Omit<
+  Prisma.MaterialReceiptCreateManyInput,
+  'movementTypeId'
+> {
   movementTypeCode: string;
   items: IMaterialReceiptItemAddForm[];
   materialWithdrawalId?: number;
 }
 
-export interface IMaterialReceiptEdit
-  extends Partial<IMaterialReceiptAddForm> {}
+export interface IMaterialReceiptEdit extends Partial<IMaterialReceiptAddForm> {}
 
 export type IMaterialReceiptItemAddForm =
   Prisma.MaterialReceiptItemCreateManyMaterialReceiptInput &

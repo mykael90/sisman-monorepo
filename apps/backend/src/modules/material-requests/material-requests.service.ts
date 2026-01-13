@@ -202,7 +202,11 @@ export class MaterialRequestsService {
         },
         include: {
           items: { include: { requestedGlobalMaterial: true } },
-          statusHistory: true,
+          statusHistory: {
+            orderBy: {
+              changeDate: 'desc'
+            }
+          },
           sipacUnitRequesting: true,
           sipacUnitCost: true,
           restrictionOrders: true,

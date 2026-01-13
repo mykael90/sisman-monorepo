@@ -1,4 +1,4 @@
-import { IMaterialRequestWithRelations } from '../../material-request-types'; // Alterado
+import { IMaterialRequestListWithRelations } from '../../material-request-types'; // Alterado
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Package } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 
 interface MaterialRequestCardProps {
   // Alterado
-  materialRequest: IMaterialRequestWithRelations; // Alterado
+  materialRequest: IMaterialRequestListWithRelations; // Alterado
 }
 
 export function MaterialRequestCard({

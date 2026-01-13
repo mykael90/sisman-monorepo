@@ -1,7 +1,7 @@
 'use client';
 
 import { ColumnDef, createColumnHelper, Row } from '@tanstack/react-table';
-import { IMaterialRequestWithRelations } from '../../material-request-types'; // Alterado
+import { IMaterialRequestListWithRelations } from '../../material-request-types'; // Alterado
 import {
   statusMaterialRequestDisplayMap, // Alterado
   StatusMaterialRequestKey // Alterado
@@ -56,7 +56,7 @@ import {
   StatusMaterialRestrictionKey
 } from '../../../../../../mappers/material-restriction-mappers-translate';
 
-const columnHelper = createColumnHelper<IMaterialRequestWithRelations>(); // Alterado
+const columnHelper = createColumnHelper<IMaterialRequestListWithRelations>(); // Alterado
 
 const materialRequestStatusConfig: Record<
   StatusMaterialRequestKey,
@@ -166,7 +166,7 @@ type ActionHandlers<TData> = {
 export const createActions = (
   router: AppRouterInstance,
   queryClient: QueryClient
-): ActionHandlers<IMaterialRequestWithRelations> => {
+): ActionHandlers<IMaterialRequestListWithRelations> => {
   // Alterado
   const [isPending, startTransition] = useTransition();
   const { data: session } = useSession();
@@ -203,85 +203,85 @@ export const createActions = (
   };
 
   return {
-    onEdit: (row: Row<IMaterialRequestWithRelations>) => {
+    onEdit: (row: Row<IMaterialRequestListWithRelations>) => {
       // Alterado
       router.push(`request/edit/${row.original.id}`); // Alterado
     },
-    onView: (row: Row<IMaterialRequestWithRelations>) => {
+    onView: (row: Row<IMaterialRequestListWithRelations>) => {
       // Alterado
       router.push(`request/${row.original.id}`); // Alterado
     },
-    onApprove: (row: Row<IMaterialRequestWithRelations>) => {
+    onApprove: (row: Row<IMaterialRequestListWithRelations>) => {
       // Nova ação
       handleStatusUpdate(
         row.original.id,
         materialRequestStatusDisplayMap.APPROVED
       );
     },
-    onReject: (row: Row<IMaterialRequestWithRelations>) => {
+    onReject: (row: Row<IMaterialRequestListWithRelations>) => {
       // Nova ação
       handleStatusUpdate(
         row.original.id,
         materialRequestStatusDisplayMap.REJECTED
       );
     },
-    onCancel: (row: Row<IMaterialRequestWithRelations>) => {
+    onCancel: (row: Row<IMaterialRequestListWithRelations>) => {
       // Nova ação
       handleStatusUpdate(
         row.original.id,
         materialRequestStatusDisplayMap.CANCELLED
       );
     },
-    onForward: (row: Row<IMaterialRequestWithRelations>) => {
+    onForward: (row: Row<IMaterialRequestListWithRelations>) => {
       // Nova ação
       handleStatusUpdate(
         row.original.id,
         materialRequestStatusDisplayMap.FORWARDED
       );
     },
-    onReverse: (row: Row<IMaterialRequestWithRelations>) => {
+    onReverse: (row: Row<IMaterialRequestListWithRelations>) => {
       // Nova ação
       handleStatusUpdate(
         row.original.id,
         materialRequestStatusDisplayMap.REVERSED
       );
     },
-    onMaterialSent: (row: Row<IMaterialRequestWithRelations>) => {
+    onMaterialSent: (row: Row<IMaterialRequestListWithRelations>) => {
       // Nova ação
       handleStatusUpdate(
         row.original.id,
         materialRequestStatusDisplayMap.MATERIAL_SENT
       );
     },
-    onMaterialReceived: (row: Row<IMaterialRequestWithRelations>) => {
+    onMaterialReceived: (row: Row<IMaterialRequestListWithRelations>) => {
       // Nova ação
       handleStatusUpdate(
         row.original.id,
         materialRequestStatusDisplayMap.MATERIAL_RECEIVED
       );
     },
-    onPendingChief: (row: Row<IMaterialRequestWithRelations>) => {
+    onPendingChief: (row: Row<IMaterialRequestListWithRelations>) => {
       // Nova ação
       handleStatusUpdate(
         row.original.id,
         materialRequestStatusDisplayMap.PENDING_CHIEF
       );
     },
-    onChanged: (row: Row<IMaterialRequestWithRelations>) => {
+    onChanged: (row: Row<IMaterialRequestListWithRelations>) => {
       // Nova ação
       handleStatusUpdate(
         row.original.id,
         materialRequestStatusDisplayMap.CHANGED
       );
     },
-    onItemReturned: (row: Row<IMaterialRequestWithRelations>) => {
+    onItemReturned: (row: Row<IMaterialRequestListWithRelations>) => {
       // Nova ação
       handleStatusUpdate(
         row.original.id,
         materialRequestStatusDisplayMap.ITEM_RETURNED
       );
     },
-    onReturned: (row: Row<IMaterialRequestWithRelations>) => {
+    onReturned: (row: Row<IMaterialRequestListWithRelations>) => {
       // Nova ação
       handleStatusUpdate(
         row.original.id,
@@ -292,7 +292,7 @@ export const createActions = (
 };
 
 export const defaultColumn: Partial<
-  ColumnDef<IMaterialRequestWithRelations> // Alterado
+  ColumnDef<IMaterialRequestListWithRelations> // Alterado
 > = {
   // Largura padrão
   size: 150,
@@ -311,8 +311,8 @@ export const defaultColumn: Partial<
 };
 
 export const columns = (
-  configuredActions: ActionHandlers<IMaterialRequestWithRelations> // Alterado
-): ColumnDef<IMaterialRequestWithRelations, any>[] => [
+  configuredActions: ActionHandlers<IMaterialRequestListWithRelations> // Alterado
+): ColumnDef<IMaterialRequestListWithRelations, any>[] => [
   // Alterado
   columnHelper.display({
     id: 'expander',
@@ -667,7 +667,7 @@ export const columns = (
 export const SubRowComponent = ({
   row
 }: {
-  row: Row<IMaterialRequestWithRelations>; // Alterado
+  row: Row<IMaterialRequestListWithRelations>; // Alterado
 }) => {
   const items = row.original.items || [];
 

@@ -8,7 +8,7 @@ import { IActionResultForm } from '@/types/types-server-actions';
 import {
   IMaterialRequestAdd,
   IMaterialRequestBalanceWithRelations,
-  IMaterialRequestWithRelations,
+  IMaterialRequestListWithRelations,
   IRequestEdit
 } from './material-request-types';
 import { handleApiAction } from '@/lib/fetch/handle-form-action-sisman';
@@ -169,11 +169,11 @@ interface IRequestDataSearch {
 export async function handleMaterialRequestSearch(
   prevState: IActionResultForm<
     IRequestDataSearch,
-    IMaterialRequestWithRelations
+    IMaterialRequestListWithRelations
   >,
   data: IRequestDataSearch
 ): Promise<
-  IActionResultForm<IRequestDataSearch, IMaterialRequestWithRelations>
+  IActionResultForm<IRequestDataSearch, IMaterialRequestListWithRelations>
 > {
   let protocolNumber: string | null = null;
 
@@ -184,7 +184,7 @@ export async function handleMaterialRequestSearch(
 
     const response = await handleApiAction<
       IRequestDataSearch,
-      IMaterialRequestWithRelations,
+      IMaterialRequestListWithRelations,
       IRequestDataSearch
     >(
       data,

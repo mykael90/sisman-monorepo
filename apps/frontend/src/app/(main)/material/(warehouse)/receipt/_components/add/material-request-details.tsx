@@ -1,13 +1,13 @@
 import { Label } from '@/components/ui/label';
 import { statusMaterialRequestDisplayMap } from '@/mappers/material-request-mappers-translate';
-import { IMaterialRequestWithRelations } from '../../../../request/material-request-types';
+import { IMaterialRequestListWithRelations } from '../../../../request/material-request-types';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
 export function MaterialRequestDetails({
   materialRequest
 }: {
-  materialRequest: IMaterialRequestWithRelations;
+  materialRequest: IMaterialRequestListWithRelations;
 }) {
   return (
     <div className='grid grid-cols-1 gap-4 px-4 md:grid-cols-4'>

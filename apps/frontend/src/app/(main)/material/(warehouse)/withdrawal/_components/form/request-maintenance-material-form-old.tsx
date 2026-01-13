@@ -20,7 +20,7 @@ import { schemaZodRequisicoesSipac } from '@/lib/schema-zod-requisicoes-sipac';
 import { fetchOneAndPersistSipacRequisicoesManutencao } from '../../../../../sipac/requisicoes-manutencoes/requisicoes-manutencoes-actions';
 import { ISipacRequisicaoManutencaoWithRelations } from '../../../../../sipac/requisicoes-manutencoes/requisicoes-manutencoes-types';
 import { format } from 'date-fns';
-import { IMaterialRequestWithRelations } from '../../../../request/material-request-types';
+import { IMaterialRequestListWithRelations } from '../../../../request/material-request-types';
 import { handleFetchOneAndPersistRequisicaoMaterialComRequisicaoManutencaoVinculada } from '../../../../../sipac/requisicoes-materiais/requisicoes-materiais-actions';
 import { ISipacRequisicaoMaterialWithRelations } from '../../../../../sipac/requisicoes-materiais/requisicoes-materiais-types';
 import { handleMaterialRequestSearch } from '../../../../request/material-request-actions';
@@ -50,7 +50,7 @@ const initialServerStateScrapingManutencao: IActionResultForm<
 
 const initialServerStateRequestMaterial: IActionResultForm<
   IRequestDataSearch,
-  IMaterialRequestWithRelations
+  IMaterialRequestListWithRelations
 > = {
   isSubmitSuccessful: false,
   message: '',
@@ -87,9 +87,9 @@ export function RequestMaintenanceMaterialFormNew({
   >;
   maintenanceRequestData?: IMaintenanceRequestWithRelations | null;
   setMaterialRequestData: React.Dispatch<
-    React.SetStateAction<IMaterialRequestWithRelations | null>
+    React.SetStateAction<IMaterialRequestListWithRelations | null>
   >;
-  materialRequestData?: IMaterialRequestWithRelations | null;
+  materialRequestData?: IMaterialRequestListWithRelations | null;
 }) {
   // Estado referente ao formulário de consulta da requisição de manutenção SISMAN
   const [

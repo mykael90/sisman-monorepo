@@ -1,35 +1,83 @@
 import { MaterialRequest, Prisma } from '@sisman/prisma';
 import { IMaterialGlobalCatalog } from '../global-catalog/material-global-catalog-types';
 
-export type IMaterialRequestWithRelations = Prisma.MaterialRequestGetPayload<{
-  include: {
-    items: { include: { requestedGlobalMaterial: true } };
-    statusHistory: true;
-    sipacUnitRequesting: true;
-    sipacUnitCost: true;
-    restrictionOrders: true;
-    maintenanceRequest: {
-      select: {
-        id: true;
-        protocolNumber: true;
-        building: { select: { id: true; name: true } };
-        updatedAt: true;
-        createdAt: true;
-        completedAt: true;
+export type IMaterialRequestListWithRelations =
+  Prisma.MaterialRequestGetPayload<{
+    include: {
+      items: { include: { requestedGlobalMaterial: true } };
+      statusHistory: true;
+      sipacUnitRequesting: true;
+      sipacUnitCost: true;
+      restrictionOrders: true;
+      maintenanceRequest: {
+        select: {
+          id: true;
+          protocolNumber: true;
+          building: { select: { id: true; name: true } };
+          updatedAt: true;
+          createdAt: true;
+          completedAt: true;
+        };
+      };
+      materialPickingOrders: true;
+      materialWithdrawals: true;
+      materialReceipts: true;
+      _count: {
+        select: {
+          materialPickingOrders: true;
+          materialWithdrawals: true;
+          materialReceipts: true;
+        };
       };
     };
-    materialPickingOrders: true;
-    materialWithdrawals: true;
-    materialReceipts: true;
-    _count: {
-      select: {
-        materialPickingOrders: true;
-        materialWithdrawals: true;
-        materialReceipts: true;
+  }>;
+
+export type IMaterialRequestShowWithRelations =
+  Prisma.MaterialRequestGetPayload<{
+    include: {
+      items: { include: { requestedGlobalMaterial: true } };
+      statusHistory: {
+        orderBy: {
+          changeDate: 'desc';
+        };
+      };
+      sipacUnitRequesting: true;
+      sipacUnitCost: true;
+      restrictionOrders: true;
+      maintenanceRequest: {
+        select: {
+          id: true;
+          protocolNumber: true;
+          building: { select: { id: true; name: true } };
+          updatedAt: true;
+          createdAt: true;
+          completedAt: true;
+        };
+      };
+      requestedBy: true; // Example: if you have a relation to User
+      materialPickingOrders: {
+        include: {
+          items: { include: { globalMaterial: true } };
+          requestedByUser: true;
+        };
+      };
+      materialWithdrawals: {
+        include: {
+          items: { include: { globalMaterial: true } };
+          collectedByWorker: true;
+          collectedByUser: true;
+        };
+      };
+      materialReceipts: {
+        include: {
+          items: { include: { material: true } };
+          processedByUser: true;
+          destinationWarehouse: true;
+          movementType: true;
+        };
       };
     };
-  };
-}>;
+  }>;
 
 export interface IMaterialRequestAdd extends Omit<
   Prisma.MaterialRequestCreateInput,
@@ -59,7 +107,7 @@ export type IMaterialRequestRelatedData = {
   // Will be added later
 };
 
-export interface IMaterialRequestBalanceWithRelations extends IMaterialRequestWithRelations {
+export interface IMaterialRequestBalanceWithRelations extends IMaterialRequestListWithRelations {
   itemsBalance: IItemMaterialRequestBalance[];
 }
 

@@ -12,7 +12,7 @@ import { Badge } from '@/components/ui/badge';
 
 // Importa as funções originais das Server Actions
 import { showMaterialRequestByProtocol } from '../../../../request/material-request-actions';
-import { IMaterialRequestWithRelations } from '../../../../request/material-request-types';
+import { IMaterialRequestListWithRelations } from '../../../../request/material-request-types';
 import { schemaZodRequisicoesSipac } from '@/lib/schema-zod-requisicoes-sipac';
 import { handleFetchOneAndPersistRequisicaoMaterialComRequisicaoManutencaoVinculada } from '../../../../../sipac/requisicoes-materiais/requisicoes-materiais-actions';
 import { ISipacRequisicaoMaterialWithRelations } from '../../../../../sipac/requisicoes-materiais/requisicoes-materiais-types';
@@ -24,7 +24,7 @@ interface RequestFormValues {
     status: 'pending' | 'success' | 'failed';
     message?: string;
     data?:
-      | IMaterialRequestWithRelations
+      | IMaterialRequestListWithRelations
       | ISipacRequisicaoMaterialWithRelations;
   }[];
 }
@@ -34,9 +34,9 @@ export function RequestMaterialForm({
   materialRequestsData
 }: {
   setMaterialRequestsData: React.Dispatch<
-    React.SetStateAction<IMaterialRequestWithRelations[] | null>
+    React.SetStateAction<IMaterialRequestListWithRelations[] | null>
   >;
-  materialRequestsData?: IMaterialRequestWithRelations[] | null;
+  materialRequestsData?: IMaterialRequestListWithRelations[] | null;
 }) {
   const [isPendingTransition, startTransition] = useTransition();
 
@@ -121,7 +121,7 @@ export function RequestMaterialForm({
   ) => {
     if (protocolsToFind.length === 0) return;
 
-    const foundRequests: IMaterialRequestWithRelations[] = [];
+    const foundRequests: IMaterialRequestListWithRelations[] = [];
 
     const results = await Promise.all(
       protocolsToFind.map((p) => showMaterialRequestByProtocol(p))

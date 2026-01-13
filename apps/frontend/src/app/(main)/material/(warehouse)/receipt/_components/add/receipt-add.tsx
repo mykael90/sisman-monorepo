@@ -15,7 +15,7 @@ import { addReceipt } from '../../receipt-actions';
 import { MaterialReceiptForm } from '../form/material-receipt-form';
 import { useRouter } from 'next/navigation';
 import { FilePlus } from 'lucide-react';
-import { IMaterialRequestWithRelations } from '../../../../request/material-request-types';
+import { IMaterialRequestListWithRelations } from '../../../../request/material-request-types';
 import { RequestMaterialForm } from '../form/request-material-form';
 import {
   materialReceiptFormSchemaAdd,
@@ -41,7 +41,7 @@ export function MaterialReceiptAdd({
     useState<MaterialOperationInKey>(materialOperationInDisplayMap.IN_CENTRAL);
 
   const [materialRequestsData, setMaterialRequestsData] = useState<
-    IMaterialRequestWithRelations[] | null
+    IMaterialRequestListWithRelations[] | null
   >(null);
 
   const [materialWithdrawalData, setMaterialWithdrawalData] =

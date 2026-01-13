@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { showRequest } from '@/app/(main)/material/request/material-request-actions';
-import { IMaterialRequestWithRelations } from '@/app/(main)/material/request/material-request-types';
+import { IMaterialRequestShowWithRelations } from '@/app/(main)/material/request/material-request-types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Label } from '@/components/ui/label';
@@ -81,7 +81,7 @@ export default async function MaterialRequestShowPage({
     notFound();
   }
 
-  const materialRequestData: IMaterialRequestWithRelations | null =
+  const materialRequestData: IMaterialRequestShowWithRelations | null =
     await showRequest(id);
 
   if (!materialRequestData) {
@@ -769,10 +769,10 @@ export default async function MaterialRequestShowPage({
             <div className='flex items-center justify-between'>
               <div>
                 <p className='text-muted-foreground text-sm font-medium'>
-                  Ordens de Coleta
+                  Ordens de Reserva
                 </p>
                 <p className='text-2xl font-bold'>
-                  {materialRequestData._count?.materialPickingOrders || 0}
+                  {materialRequestData.materialPickingOrders?.length || 0}
                 </p>
               </div>
               <ClipboardList className='text-primary h-8 w-8' />
@@ -788,7 +788,7 @@ export default async function MaterialRequestShowPage({
                   Entradas
                 </p>
                 <p className='text-2xl font-bold'>
-                  {materialRequestData._count?.materialReceipts || 0}
+                  {materialRequestData.materialReceipts?.length || 0}
                 </p>
               </div>
               <Truck className='h-8 w-8 text-green-500' />
@@ -804,7 +804,7 @@ export default async function MaterialRequestShowPage({
                   Saídas
                 </p>
                 <p className='text-2xl font-bold'>
-                  {materialRequestData._count?.materialWithdrawals || 0}
+                  {materialRequestData.materialWithdrawals?.length || 0}
                 </p>
               </div>
               <Truck className='h-8 w-8 rotate-180 text-red-500' />
@@ -817,7 +817,7 @@ export default async function MaterialRequestShowPage({
             <div className='flex items-center justify-between'>
               <div>
                 <p className='text-muted-foreground text-sm font-medium'>
-                  Itens
+                  Itens na Requisição
                 </p>
                 <p className='text-2xl font-bold'>{totalItems}</p>
               </div>
