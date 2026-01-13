@@ -343,6 +343,42 @@ export const columns = (
       </Button>
     )
   }),
+  columnHelper.accessor('protocolNumber', {
+    // Alterado
+    header: () => (
+      <div className='flex items-center justify-center gap-2'>
+        <div>{'RM'}</div>
+        <InfoHoverCard
+          title='Requisição de Material'
+          content={
+            <>
+              <p className='pl-2'>
+                Número da requisição de material, acompanhado da data da última
+                sincronização do registro.
+              </p>
+            </>
+          }
+        />
+      </div>
+    ),
+    size: 150,
+    enableResizing: false,
+    enableColumnFilter: false,
+    cell: (props) => {
+      const updateDate = new Date(props.row.original.updatedAt);
+
+      return (
+        <div className='space-y-.5 flex-col items-center whitespace-normal'>
+          <div>{props.getValue()}</div>
+          <div className='flex items-center justify-center gap-1'>
+            <div className='text-muted-foreground text-xs'>
+              {updateDate.toLocaleDateString()}{' '}
+            </div>
+          </div>
+        </div>
+      );
+    }
+  }),
   columnHelper.accessor(
     (row) => {
       const status = row.currentStatus as StatusMaterialRequestKey; // Alterado
@@ -350,7 +386,7 @@ export const columns = (
     },
     {
       id: 'status',
-      header: 'Requisição', // Alterado
+      header: 'Status', // Alterado
       enableColumnFilter: true,
       filterFn: 'arrIncludesSome',
       cell: ({ row }) => {
@@ -375,26 +411,6 @@ export const columns = (
       }
     }
   ),
-  columnHelper.accessor('protocolNumber', {
-    // Alterado
-    header: ({ column }) => {
-      return (
-        <div
-          className='flex cursor-pointer items-center'
-          onClick={() => column.toggleSorting()}
-        >
-          Protocolo
-          <ArrowUpDown className='text-muted-foreground ml-2 h-4 w-4' />
-        </div>
-      );
-    },
-    size: 150,
-    enableResizing: false,
-    enableColumnFilter: false,
-    cell: ({ row }) => (
-      <div className='text-center'>{row.getValue('protocolNumber')}</div>
-    )
-  }),
   columnHelper.accessor((row) => row.maintenanceRequest?.protocolNumber, {
     id: 'protocolNumberRMan',
     header: () => (
@@ -436,6 +452,56 @@ export const columns = (
         </div>
       );
     }
+  }),
+  columnHelper.group({
+    id: 'quantities',
+    header: () => <div className='text-center font-medium'>Quantidade</div>,
+    columns: [
+      columnHelper.accessor((row) => row._count.materialReceipts, {
+        id: 'numeroEntradas',
+        size: 100,
+        header: () => {
+          return (
+            <div className='flex items-center justify-center gap-2'>
+              Entradas
+              <InfoHoverCard
+                title='Entrada de Materiais'
+                subtitle='Representa a quantidade de entradas no depósito transitório referente a respectiva requisição de material'
+              />
+            </div>
+          );
+        },
+        cell: (props) => (
+          <div className='text-center'>{props.getValue() as any}</div>
+        )
+      }),
+      columnHelper.accessor((row) => row._count.materialPickingOrders, {
+        id: 'numeroReservas',
+        size: 100,
+        header: 'Reservas',
+        cell: (props) => (
+          <div className='text-center'>{props.getValue() as any}</div>
+        )
+      }),
+      columnHelper.accessor((row) => row._count.materialWithdrawals, {
+        id: 'numeroSaidas',
+        size: 100,
+        header: 'Saidas',
+        cell: (props) => (
+          <div className='text-center'>{props.getValue() as any}</div>
+        )
+      })
+    ]
+  }),
+  columnHelper.accessor((row) => row.restrictionOrders?.status, {
+    id: 'statusRestricao',
+    header: 'Status Restrição',
+    cell: (props) => (
+      <div className='text-center'>
+        {props.getValue() ? props.getValue() : 'NÃO ASSOCIADA'}
+      </div>
+    ),
+    enableColumnFilter: true
   }),
   columnHelper.accessor((row) => row.sipacUserLoginRequest, {
     // Alterado para lidar com 'requestedByUser' opcional e tipagem
