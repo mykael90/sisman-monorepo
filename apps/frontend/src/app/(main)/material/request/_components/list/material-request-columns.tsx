@@ -437,10 +437,10 @@ export const columns = (
       );
     }
   }),
-  columnHelper.accessor((row) => (row.requestedByUser as any)?.login, {
+  columnHelper.accessor((row) => row.sipacUserLoginRequest, {
     // Alterado para lidar com 'requestedByUser' opcional e tipagem
     header: 'Solicitado por',
-    id: 'requestedByUser',
+    id: 'sipacUserLoginRequest',
     enableColumnFilter: true,
     cell: (props) => <div className='whitespace-normal'>{props.getValue()}</div>
   }),

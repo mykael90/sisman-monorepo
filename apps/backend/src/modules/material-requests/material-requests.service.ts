@@ -141,7 +141,11 @@ export class MaterialRequestsService {
 
   async list(queryParams?: { [key: string]: string }) {
     try {
-      const whereArgs: Prisma.MaterialRequestWhereInput = {};
+      const whereArgs: Prisma.MaterialRequestWhereInput = {
+        // restrictionOrders: {
+        //   isNot: null
+        // }
+      };
 
       if (queryParams && !!Object.keys(queryParams).length) {
         const { startDate, endDate } = queryParams;
@@ -155,10 +159,27 @@ export class MaterialRequestsService {
 
       const materialRequests = await this.prisma.materialRequest.findMany({
         include: {
-          items: true,
+          items: { include: { requestedGlobalMaterial: true } },
           statusHistory: true,
           sipacUnitRequesting: true,
-          sipacUnitCost: true
+          sipacUnitCost: true,
+          restrictionOrders: true,
+          maintenanceRequest: {
+            select: {
+              id: true,
+              protocolNumber: true,
+              building: { select: { id: true, name: true } },
+              updatedAt: true,
+              createdAt: true
+            }
+          },
+          _count: {
+            select: {
+              materialPickingOrders: true,
+              materialWithdrawals: true,
+              materialReceipts: true
+            }
+          }
         },
         where: whereArgs
       });

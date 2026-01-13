@@ -3,14 +3,34 @@ import { IMaterialGlobalCatalog } from '../global-catalog/material-global-catalo
 
 export type IMaterialRequestWithRelations = Prisma.MaterialRequestGetPayload<{
   include: {
-    maintenanceRequest: true;
     items: { include: { requestedGlobalMaterial: true } };
-    requestedByUser: true; // Adicionado para incluir a relação com o usuário solicitante
+    statusHistory: true;
+    sipacUnitRequesting: true;
+    sipacUnitCost: true;
+    restrictionOrders: true;
+    maintenanceRequest: {
+      select: {
+        id: true;
+        protocolNumber: true;
+        building: { select: { id: true; name: true } };
+        updatedAt: true;
+        createdAt: true;
+      };
+    };
+    _count: {
+      select: {
+        materialPickingOrders: true;
+        materialWithdrawals: true;
+        materialReceipts: true;
+      };
+    };
   };
 }>;
 
-export interface IMaterialRequestAdd
-  extends Omit<Prisma.MaterialRequestCreateInput, 'maintenanceRequest'> {}
+export interface IMaterialRequestAdd extends Omit<
+  Prisma.MaterialRequestCreateInput,
+  'maintenanceRequest'
+> {}
 
 export interface IRequestEdit extends IMaterialRequestAdd {
   id: number;
@@ -35,8 +55,7 @@ export type IMaterialRequestRelatedData = {
   // Will be added later
 };
 
-export interface IMaterialRequestBalanceWithRelations
-  extends IMaterialRequestWithRelations {
+export interface IMaterialRequestBalanceWithRelations extends IMaterialRequestWithRelations {
   itemsBalance: IItemMaterialRequestBalance[];
 }
 

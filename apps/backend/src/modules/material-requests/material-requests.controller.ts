@@ -81,7 +81,7 @@ export class MaterialRequestsController {
     queryParams: {
       [key: string]: string;
     }
-  ): Promise<MaterialRequestWithRelationsResponseDto[]> {
+  ): Promise<any[]> {
     return this.materialRequestsService.list(queryParams);
   }
 
