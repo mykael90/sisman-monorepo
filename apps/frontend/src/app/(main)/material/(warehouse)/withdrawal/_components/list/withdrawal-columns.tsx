@@ -30,6 +30,7 @@ import {
 } from '../../../../../../../mappers/material-operations-mappers-translate';
 import { Badge } from '@/components/ui/badge';
 import { useMemo } from 'react';
+import Link from 'next/link';
 
 const columnHelper = createColumnHelper<IMaterialWithdrawalWithRelations>();
 
@@ -127,7 +128,13 @@ export const columns = (
     id: 'protocolNumberRM',
     header: 'RM',
     enableColumnFilter: false,
-    cell: (props) => props.getValue()
+    cell: (props) => (
+      <Link
+        href={`/material/request/show/${props.row.original.materialRequestId}`}
+      >
+        {props.getValue()}
+      </Link>
+    )
   }),
   columnHelper.accessor((row) => row.withdrawalDate, {
     id: 'withdrawalDate',

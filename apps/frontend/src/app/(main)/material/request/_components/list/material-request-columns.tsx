@@ -614,14 +614,14 @@ export const columns = (
         >
           <Eye className='h-4 w-4' />
         </Button>
-        <Button
+        {/* <Button
           title='Editar Requisição' // Alterado
           variant='ghost'
           size='icon'
           onClick={() => configuredActions.onEdit!(row)}
         >
           <Edit className='h-4 w-4' />
-        </Button>
+        </Button> */}
         {row.original.currentStatus ===
           materialRequestStatusDisplayMap.PENDING && (
           <Popover>

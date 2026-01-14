@@ -71,6 +71,7 @@ import { QueryClient } from '@tanstack/react-query';
 import { handleFetchOneAndPersistRequisicaoMaterialComRequisicaoManutencaoVinculada } from '../../../../../sipac/requisicoes-materiais/requisicoes-materiais-actions';
 import { is } from 'date-fns/locale';
 import { getDateUTC } from '../../../../../../../lib/utils';
+import Link from 'next/link';
 
 const columnHelper = createColumnHelper<IMaterialPickingOrderWithRelations>();
 
@@ -537,7 +538,7 @@ export const columns = (
 
       return (
         <div className='space-y-.5 flex-col items-center whitespace-normal'>
-          <div>{props.getValue()}</div>
+          <Link href={`/material/request/show/${props.row.original.materialRequestId}`}>{props.getValue()}</Link>
           <div className='flex items-center justify-center gap-1'>
             <div className='text-muted-foreground text-xs'>
               {updateDate.toLocaleDateString()}{' '}

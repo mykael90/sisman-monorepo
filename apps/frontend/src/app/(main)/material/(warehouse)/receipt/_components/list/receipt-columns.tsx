@@ -35,6 +35,7 @@ import { Badge } from '@/components/ui/badge';
 import { useMemo } from 'react';
 import { Prosto_One } from 'next/font/google';
 import { formatCodigoUnidade } from '../../../../../../../lib/utils';
+import Link from 'next/link';
 
 const columnHelper = createColumnHelper<IMaterialReceiptWithRelations>();
 
@@ -130,7 +131,13 @@ export const columns = (
     id: 'protocolNumberRM',
     header: 'RM',
     enableColumnFilter: false,
-    cell: (props) => props.getValue()
+    cell: (props) => (
+      <Link
+        href={`/material/request/show/${props.row.original.materialRequestId}`}
+      >
+        {props.getValue()}
+      </Link>
+    )
   }),
   columnHelper.accessor((row) => row.receiptDate, {
     id: 'receiptDate',

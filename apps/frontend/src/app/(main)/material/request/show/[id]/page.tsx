@@ -1,6 +1,12 @@
 import { notFound } from 'next/navigation';
-import { showRequest } from '@/app/(main)/material/request/material-request-actions';
-import { IMaterialRequestShowWithRelations } from '@/app/(main)/material/request/material-request-types';
+import {
+  showMaterialRequestBalanceByProtocol,
+  showRequest
+} from '@/app/(main)/material/request/material-request-actions';
+import {
+  IMaterialRequestBalanceWithRelations,
+  IMaterialRequestShowWithRelations
+} from '@/app/(main)/material/request/material-request-types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Label } from '@/components/ui/label';
@@ -83,6 +89,11 @@ export default async function MaterialRequestShowPage({
 
   const materialRequestData: IMaterialRequestShowWithRelations | null =
     await showRequest(id);
+
+  const materialRequestDataBalance: IMaterialRequestBalanceWithRelations | null =
+    await showMaterialRequestBalanceByProtocol(
+      materialRequestData?.protocolNumber as string
+    );
 
   if (!materialRequestData) {
     notFound();
@@ -311,6 +322,263 @@ export default async function MaterialRequestShowPage({
           )}
         </CardContent>
       </Card>
+
+      {/* Card de Balanço da Requisição */}
+      {materialRequestDataBalance?.itemsBalance &&
+        materialRequestDataBalance.itemsBalance.length > 0 && (
+          <Card>
+            <CardHeader>
+              <CardTitle className='flex items-center gap-2'>
+                <BarChart3 className='h-5 w-5' />
+                Balanço da Requisição de Material
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className='overflow-x-auto rounded-lg border'>
+                <table className='w-full text-sm'>
+                  <thead className='bg-gray-100'>
+                    <tr>
+                      <th className='px-4 py-3 text-left font-medium text-gray-700'>
+                        Material
+                      </th>
+                      <th className='px-4 py-3 text-left font-medium text-gray-700'>
+                        Unidade
+                      </th>
+                      <th className='px-4 py-3 text-left font-medium text-gray-700'>
+                        Qtd Solicitada
+                      </th>
+                      <th className='px-4 py-3 text-left font-medium text-gray-700'>
+                        Qtd Aprovada
+                      </th>
+                      <th className='px-4 py-3 text-left font-medium text-gray-700'>
+                        Qtd Recebida
+                      </th>
+                      <th className='px-4 py-3 text-left font-medium text-gray-700'>
+                        Qtd Retirada
+                      </th>
+                      <th className='px-4 py-3 text-left font-medium text-gray-700'>
+                        Qtd Reservada
+                      </th>
+                      <th className='px-4 py-3 text-left font-medium text-gray-700'>
+                        Qtd Restrita
+                      </th>
+                      <th className='px-4 py-3 text-left font-medium text-gray-700'>
+                        Saldo Livre Efetivo
+                      </th>
+                      <th className='px-4 py-3 text-left font-medium text-gray-700'>
+                        Saldo Livre Potencial
+                      </th>
+                      <th className='px-4 py-3 text-left font-medium text-gray-700'>
+                        Saldo Potencial
+                      </th>
+                      <th className='px-4 py-3 text-left font-medium text-gray-700'>
+                        Valor Unitário
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className='divide-y divide-gray-200'>
+                    {materialRequestDataBalance.itemsBalance.map((item) => (
+                      <tr
+                        key={item.globalMaterialId}
+                        className='hover:bg-gray-50'
+                      >
+                        <td className='px-4 py-3'>
+                          <div>
+                            <p className='font-medium'>{item.name}</p>
+                            {item.description && (
+                              <p className='text-muted-foreground mt-1 line-clamp-1 text-xs'>
+                                {item.description}
+                              </p>
+                            )}
+                          </div>
+                        </td>
+                        <td className='px-4 py-3'>{item.unitOfMeasure}</td>
+                        <td className='px-4 py-3'>
+                          {Number(item.quantityRequested).toLocaleString()}
+                        </td>
+                        <td className='px-4 py-3'>
+                          {Number(item.quantityApproved).toLocaleString()}
+                        </td>
+                        <td className='px-4 py-3'>
+                          {Number(item.quantityReceivedSum).toLocaleString()}
+                        </td>
+                        <td className='px-4 py-3'>
+                          {Number(item.quantityWithdrawnSum).toLocaleString()}
+                        </td>
+                        <td className='px-4 py-3'>
+                          {Number(item.quantityReserved).toLocaleString()}
+                        </td>
+                        <td className='px-4 py-3'>
+                          {Number(item.quantityRestricted).toLocaleString()}
+                        </td>
+                        <td className='px-4 py-3 font-medium'>
+                          <span
+                            className={
+                              Number(item.quantityFreeBalanceEffective) >= 0
+                                ? 'text-green-600'
+                                : 'text-red-600'
+                            }
+                          >
+                            {Number(
+                              item.quantityFreeBalanceEffective
+                            ).toLocaleString()}
+                          </span>
+                        </td>
+                        <td className='px-4 py-3'>
+                          <span
+                            className={
+                              Number(item.quantityFreeBalancePotential) >= 0
+                                ? 'text-green-600'
+                                : 'text-red-600'
+                            }
+                          >
+                            {Number(
+                              item.quantityFreeBalancePotential
+                            ).toLocaleString()}
+                          </span>
+                        </td>
+                        <td className='px-4 py-3'>
+                          <span
+                            className={
+                              Number(item.quantityBalancePotential) >= 0
+                                ? 'text-green-600'
+                                : 'text-red-600'
+                            }
+                          >
+                            {Number(
+                              item.quantityBalancePotential
+                            ).toLocaleString()}
+                          </span>
+                        </td>
+                        <td className='px-4 py-3'>
+                          {formatCurrency(item.unitPrice)}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                  <tfoot className='bg-gray-50'>
+                    <tr>
+                      <td
+                        colSpan={2}
+                        className='px-4 py-3 text-right font-medium'
+                      >
+                        Totais:
+                      </td>
+                      <td className='px-4 py-3 font-medium'>
+                        {materialRequestDataBalance.itemsBalance
+                          .reduce(
+                            (sum, item) => sum + Number(item.quantityRequested),
+                            0
+                          )
+                          .toLocaleString()}
+                      </td>
+                      <td className='px-4 py-3 font-medium'>
+                        {materialRequestDataBalance.itemsBalance
+                          .reduce(
+                            (sum, item) => sum + Number(item.quantityApproved),
+                            0
+                          )
+                          .toLocaleString()}
+                      </td>
+                      <td className='px-4 py-3 font-medium'>
+                        {materialRequestDataBalance.itemsBalance
+                          .reduce(
+                            (sum, item) =>
+                              sum + Number(item.quantityReceivedSum),
+                            0
+                          )
+                          .toLocaleString()}
+                      </td>
+                      <td className='px-4 py-3 font-medium'>
+                        {materialRequestDataBalance.itemsBalance
+                          .reduce(
+                            (sum, item) =>
+                              sum + Number(item.quantityWithdrawnSum),
+                            0
+                          )
+                          .toLocaleString()}
+                      </td>
+                      <td className='px-4 py-3 font-medium'>
+                        {materialRequestDataBalance.itemsBalance
+                          .reduce(
+                            (sum, item) => sum + Number(item.quantityReserved),
+                            0
+                          )
+                          .toLocaleString()}
+                      </td>
+                      <td className='px-4 py-3 font-medium'>
+                        {materialRequestDataBalance.itemsBalance
+                          .reduce(
+                            (sum, item) =>
+                              sum + Number(item.quantityRestricted),
+                            0
+                          )
+                          .toLocaleString()}
+                      </td>
+                      <td className='px-4 py-3 font-medium'>
+                        {materialRequestDataBalance.itemsBalance
+                          .reduce(
+                            (sum, item) =>
+                              sum + Number(item.quantityFreeBalanceEffective),
+                            0
+                          )
+                          .toLocaleString()}
+                      </td>
+                      <td className='px-4 py-3 font-medium'>
+                        {materialRequestDataBalance.itemsBalance
+                          .reduce(
+                            (sum, item) =>
+                              sum + Number(item.quantityFreeBalancePotential),
+                            0
+                          )
+                          .toLocaleString()}
+                      </td>
+                      <td className='px-4 py-3 font-medium'>
+                        {materialRequestDataBalance.itemsBalance
+                          .reduce(
+                            (sum, item) =>
+                              sum + Number(item.quantityBalancePotential),
+                            0
+                          )
+                          .toLocaleString()}
+                      </td>
+                      <td className='px-4 py-3 font-medium'>
+                        {formatCurrency(
+                          materialRequestDataBalance.itemsBalance.reduce(
+                            (sum, item) =>
+                              sum +
+                              Number(item.quantityRequested) *
+                                Number(item.unitPrice),
+                            0
+                          )
+                        )}
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+              <div className='mt-4 text-sm text-gray-600'>
+                <p>
+                  <strong>Legenda:</strong>
+                </p>
+                <ul className='mt-1 list-inside list-disc space-y-1'>
+                  <li>
+                    <strong>Saldo Livre Efetivo:</strong> Quantidade realmente
+                    disponível para uso
+                  </li>
+                  <li>
+                    <strong>Saldo Livre Potencial:</strong> Quantidade que
+                    poderá ficar disponível após liberações
+                  </li>
+                  <li>
+                    <strong>Saldo Potencial:</strong> Quantidade total potencial
+                    considerando todas as transações
+                  </li>
+                </ul>
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
       {/* Abas para diferentes seções */}
       <Tabs defaultValue='materials' className='space-y-4'>
