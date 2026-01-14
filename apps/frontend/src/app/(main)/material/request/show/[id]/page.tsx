@@ -33,7 +33,7 @@ export default async function MaterialRequestShowPage({
   );
 
   return (
-    <div className='container mx-auto space-y-6 p-6'>
+    <div className='container mx-auto space-y-6 pb-6'>
       <MaterialRequestHeader data={requestData} />
 
       <MaterialRequestGeneralInfo data={requestData} />
