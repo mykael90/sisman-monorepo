@@ -29,9 +29,11 @@ export default async function SurveyStatsPage({
     totalResponses: number;
     options?: { [key: string]: { count: number; percentage: number } };
     ratings?: {
-      sum: number;
-      average: number;
-      [key: string]: { count: number; percentage: number };
+      individualRatings: {
+        [key: string]: { count: number; percentage: number };
+      }; // Stores 1, 2, 3, 4, 5 ratings
+      sumOfRatings: number;
+      averageRating: number;
     };
     textResponses?: string[];
   }
@@ -44,11 +46,7 @@ export default async function SurveyStatsPage({
       type: question.type,
       totalResponses: 0
     };
-    if (
-      question.type === 'SINGLE' ||
-      question.type === 'MULTIPLE' ||
-      question.type === 'BOOLEAN'
-    ) {
+    if (question.type === 'SINGLE' || question.type === 'MULTIPLE') {
       aggregatedStats[question.id].options = {};
       question.surveyQuestionOptions.forEach((option) => {
         if (aggregatedStats[question.id].options) {
@@ -58,12 +56,24 @@ export default async function SurveyStatsPage({
           };
         }
       });
+    } else if (question.type === 'BOOLEAN') {
+      // For boolean, explicitly add 'true' and 'false' as options
+      aggregatedStats[question.id].options = {
+        true: { count: 0, percentage: 0 },
+        false: { count: 0, percentage: 0 }
+      };
     } else if (question.type === 'RATING') {
-      aggregatedStats[question.id].ratings = { sum: 0, average: 0 };
+      aggregatedStats[question.id].ratings = {
+        individualRatings: {},
+        sumOfRatings: 0,
+        averageRating: 0
+      };
       for (let i = 1; i <= 5; i++) {
         // Assumindo rating de 1 a 5
         if (aggregatedStats[question.id].ratings) {
-          aggregatedStats[question.id].ratings![i.toString()] = {
+          aggregatedStats[question.id].ratings!.individualRatings[
+            i.toString()
+          ] = {
             count: 0,
             percentage: 0
           };
@@ -82,11 +92,7 @@ export default async function SurveyStatsPage({
         const stats = aggregatedStats[question.id];
         stats.totalResponses++;
 
-        if (
-          question.type === 'SINGLE' ||
-          question.type === 'MULTIPLE' ||
-          question.type === 'BOOLEAN'
-        ) {
+        if (question.type === 'SINGLE' || question.type === 'MULTIPLE') {
           if (stats.options && answer.options && answer.options.length > 0) {
             // For these types, the chosen option is in answer.options[0].optionId
             const chosenOptionId = answer.options[0].optionId;
@@ -95,15 +101,25 @@ export default async function SurveyStatsPage({
             }
           }
         } else if (
+          question.type === 'BOOLEAN' &&
+          typeof answer.boolValue === 'boolean'
+        ) {
+          if (stats.options) {
+            const booleanValue = answer.boolValue.toString(); // 'true' or 'false'
+            if (stats.options[booleanValue]) {
+              stats.options[booleanValue].count++;
+            }
+          }
+        } else if (
           question.type === 'RATING' &&
           typeof answer.intValue === 'number'
         ) {
           if (stats.ratings) {
             const ratingValue = answer.intValue.toString();
-            if (stats.ratings[ratingValue]) {
-              stats.ratings[ratingValue].count++;
+            if (stats.ratings.individualRatings[ratingValue]) {
+              stats.ratings.individualRatings[ratingValue].count++;
             }
-            stats.ratings.sum += answer.intValue;
+            stats.ratings.sumOfRatings += answer.intValue;
           }
         } else if (
           question.type === 'TEXT' &&
@@ -127,13 +143,14 @@ export default async function SurveyStatsPage({
             (stats.options![optionId].count / stats.totalResponses) * 100;
         });
       } else if (stats.ratings) {
-        Object.keys(stats.ratings).forEach((ratingValue) => {
-          if (ratingValue !== 'sum' && ratingValue !== 'average') {
-            stats.ratings![ratingValue].percentage =
-              (stats.ratings![ratingValue].count / stats.totalResponses) * 100;
-          }
+        Object.keys(stats.ratings.individualRatings).forEach((ratingValue) => {
+          stats.ratings!.individualRatings[ratingValue].percentage =
+            (stats.ratings!.individualRatings[ratingValue].count /
+              stats.totalResponses) *
+            100;
         });
-        stats.ratings.average = stats.ratings.sum / stats.totalResponses;
+        stats.ratings.averageRating =
+          stats.ratings.sumOfRatings / stats.totalResponses;
       }
     }
   });
@@ -154,26 +171,25 @@ export default async function SurveyStatsPage({
                     <div>
                       <p className='font-medium'>
                         Média:{' '}
-                        {aggregatedStats[question.id].ratings!.average.toFixed(
-                          2
-                        )}
+                        {aggregatedStats[
+                          question.id
+                        ].ratings!.averageRating.toFixed(2)}
                       </p>
                       <ul className='mt-2 list-disc pl-5'>
-                        {Object.keys(aggregatedStats[question.id].ratings!).map(
-                          (key) => {
-                            if (key !== 'sum' && key !== 'average') {
-                              const rating =
-                                aggregatedStats[question.id].ratings![key];
-                              return (
-                                <li key={key}>
-                                  Rating {key}: {rating.count} escolhas (
-                                  {rating.percentage.toFixed(2)}%)
-                                </li>
-                              );
-                            }
-                            return null;
-                          }
-                        )}
+                        {Object.keys(
+                          aggregatedStats[question.id].ratings!
+                            .individualRatings
+                        ).map((key) => {
+                          const rating =
+                            aggregatedStats[question.id].ratings!
+                              .individualRatings[key];
+                          return (
+                            <li key={key}>
+                              Rating {key}: {rating.count} escolhas (
+                              {rating.percentage.toFixed(2)}%)
+                            </li>
+                          );
+                        })}
                       </ul>
                     </div>
                   )}
@@ -185,17 +201,23 @@ export default async function SurveyStatsPage({
                     <div>
                       <ul className='mt-2 list-disc pl-5'>
                         {Object.keys(aggregatedStats[question.id].options!).map(
-                          (optionId) => {
+                          (optionKey) => {
                             const option =
-                              aggregatedStats[question.id].options![optionId];
-                            const surveyOption =
-                              question.surveyQuestionOptions.find(
-                                (opt) => opt.id === optionId
-                              );
+                              aggregatedStats[question.id].options![optionKey];
+                            // For BOOLEAN, optionKey will be 'true' or 'false'
+                            // For SINGLE/MULTIPLE, optionKey will be option.id
+                            const optionLabel =
+                              question.type === 'BOOLEAN'
+                                ? optionKey === 'true'
+                                  ? 'Verdadeiro'
+                                  : 'Falso'
+                                : question.surveyQuestionOptions.find(
+                                    (opt) => opt.id === optionKey
+                                  )?.label || `Opção ${optionKey}`;
+
                             return (
-                              <li key={optionId}>
-                                {surveyOption?.label || `Opção ${optionId}`}:{' '}
-                                {option.count} escolhas (
+                              <li key={optionKey}>
+                                {optionLabel}: {option.count} escolhas (
                                 {option.percentage.toFixed(2)}%)
                               </li>
                             );
