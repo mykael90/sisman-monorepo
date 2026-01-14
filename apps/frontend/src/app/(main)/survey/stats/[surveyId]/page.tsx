@@ -158,6 +158,7 @@ export default async function SurveyStatsPage({
   return (
     <div>
       <h1>Estatísticas do Questionário: {survey?.title}</h1>
+      <h2>Número de Avaliações: {surveyResponses.length}</h2>
       <div className='space-y-8'>
         {survey.questions.map((question) => (
           <div key={question.id} className='rounded-lg border p-4 shadow-sm'>
