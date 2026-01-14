@@ -538,7 +538,7 @@ export const columns = (
 
       return (
         <div className='space-y-.5 flex-col items-center whitespace-normal'>
-          <Link href={`/material/request/show/${props.row.original.materialRequestId}`}>{props.getValue()}</Link>
+          <Link href={`/material/request/show/${props.row.original.materialRequestId}`}><span className='text-blue-600'>{props.getValue()}</span></Link>
           <div className='flex items-center justify-center gap-1'>
             <div className='text-muted-foreground text-xs'>
               {updateDate.toLocaleDateString()}{' '}

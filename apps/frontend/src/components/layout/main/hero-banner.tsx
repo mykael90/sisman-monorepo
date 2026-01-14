@@ -5,9 +5,6 @@ import { FileText, Plus } from 'lucide-react';
 import Image from 'next/image';
 import HeroImage from '@/assets/img/hero-image.jpg';
 
-import { toast } from 'sonner';
-import { showBuilding } from '../../../app/(main)/infrastructure/building/building-actions';
-
 export default function HeroBanner() {
   return (
     <div

@@ -135,7 +135,7 @@ export const columns = (
       <Link
         href={`/material/request/show/${props.row.original.materialRequestId}`}
       >
-        {props.getValue()}
+        <span className='text-blue-600'>{props.getValue()}</span>
       </Link>
     )
   }),
