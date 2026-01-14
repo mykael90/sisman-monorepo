@@ -11,7 +11,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Separator } from '@/components/ui/separator';
 import {
   Building,
   Calendar,
@@ -25,63 +24,25 @@ import {
   BarChart3,
   History
 } from 'lucide-react';
-import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
+import { formatCurrency, formatDate, formatOnlyDate } from '@/lib/utils';
+import {
+  materialOriginDisplayMap,
+  materialPurposeDisplayMap,
+  materialRequestTypeDisplayMap,
+  statusMaterialRequestDisplayMap
+} from '@/mappers/material-request-mappers-translate';
+import { statusMaterialRestrictionDisplayMap } from '../../../../../../mappers/material-restriction-mappers-translate';
 
 interface MaterialRequestShowPageProps {
-  params: {
-    id: string;
-  };
+  params: Promise<{
+    id: number;
+  }>;
 }
-
-// Função para formatar status
-const formatStatus = (status: string) => {
-  const statusMap: Record<string, string> = {
-    REGISTERED: 'Registrada',
-    APPROVED: 'Aprovada',
-    FORWARDED: 'Encaminhada',
-    FULLY_ATTENDED: 'Totalmente Atendida',
-    PARTIALLY_ATTENDED: 'Parcialmente Atendida',
-    CANCELLED: 'Cancelada'
-  };
-  return statusMap[status] || status;
-};
-
-// Função para formatar tipo de requisição
-const formatRequestType = (type: string) => {
-  const typeMap: Record<string, string> = {
-    NEW_MATERIALS: 'Materiais Novos',
-    REPLACEMENT: 'Reposição',
-    OTHER: 'Outro'
-  };
-  return typeMap[type] || type;
-};
-
-// Função para formatar propósito
-const formatPurpose = (purpose: string) => {
-  const purposeMap: Record<string, string> = {
-    SUPPLY_MAINTENANCE: 'Suprimento de Manutenção',
-    STOCK_REPLENISHMENT: 'Reabastecimento de Estoque',
-    PROJECT: 'Projeto',
-    OTHER: 'Outro'
-  };
-  return purposeMap[purpose] || purpose;
-};
-
-// Função para formatar origem
-const formatOrigin = (origin: string) => {
-  const originMap: Record<string, string> = {
-    SIPAC: 'SIPAC',
-    INTERNAL: 'Interna',
-    EXTERNAL: 'Externa'
-  };
-  return originMap[origin] || origin;
-};
 
 export default async function MaterialRequestShowPage({
   params
 }: MaterialRequestShowPageProps) {
-  const id = Number(params.id);
+  const { id } = await params;
 
   if (isNaN(id)) {
     notFound();
@@ -98,52 +59,6 @@ export default async function MaterialRequestShowPage({
   if (!materialRequestData) {
     notFound();
   }
-
-  const formatDate = (dateInput: string | Date | null | undefined) => {
-    if (!dateInput) {
-      return '-';
-    }
-    try {
-      const date =
-        typeof dateInput === 'string' ? new Date(dateInput) : dateInput;
-      return format(date, "dd/MM/yyyy 'às' HH:mm", { locale: ptBR });
-    } catch (error) {
-      return String(dateInput);
-    }
-  };
-  const formatOnlyDate = (dateInput: string | Date | null | undefined) => {
-    if (!dateInput) {
-      return '-';
-    }
-    try {
-      const date =
-        typeof dateInput === 'string' ? new Date(dateInput) : dateInput;
-      return format(date, 'dd/MM/yyyy', { locale: ptBR });
-    } catch (error) {
-      return String(dateInput);
-    }
-  };
-
-  const formatCurrency = (value: string | number | null | undefined | any) => {
-    if (!value) return 'R$ 0,00';
-
-    let numValue: number;
-    if (typeof value === 'string') {
-      numValue = parseFloat(value);
-    } else if (typeof value === 'number') {
-      numValue = value;
-    } else if (value && typeof value === 'object' && 'toNumber' in value) {
-      // Handle Decimal type from Prisma
-      numValue = Number(value);
-    } else {
-      numValue = Number(value);
-    }
-
-    return new Intl.NumberFormat('pt-BR', {
-      style: 'currency',
-      currency: 'BRL'
-    }).format(numValue);
-  };
 
   // Calcular totais dos itens
   const totalItems = materialRequestData.items?.length || 0;
@@ -174,13 +89,21 @@ export default async function MaterialRequestShowPage({
             </CardTitle>
             <div className='mt-2 flex flex-wrap gap-2'>
               <Badge variant='secondary' className='text-sm'>
-                Status: {formatStatus(materialRequestData.currentStatus)}
+                Status:{' '}
+                {statusMaterialRequestDisplayMap[
+                  materialRequestData.currentStatus
+                ] || materialRequestData.currentStatus}
               </Badge>
               <Badge variant='outline' className='text-sm'>
-                Tipo: {formatRequestType(materialRequestData.requestType)}
+                Tipo:{' '}
+                {materialRequestTypeDisplayMap[
+                  materialRequestData.requestType
+                ] || materialRequestData.requestType}
               </Badge>
               <Badge variant='outline' className='text-sm'>
-                Origem: {formatOrigin(materialRequestData.origin)}
+                Origem:{' '}
+                {materialOriginDisplayMap[materialRequestData.origin] ||
+                  materialRequestData.origin}
               </Badge>
             </div>
           </div>
@@ -256,7 +179,8 @@ export default async function MaterialRequestShowPage({
                 Finalidade
               </Label>
               <p className='text-muted-foreground'>
-                {formatPurpose(materialRequestData.purpose)}
+                {materialPurposeDisplayMap[materialRequestData.purpose] ||
+                  materialRequestData.purpose}
               </p>
             </div>
 
@@ -1284,8 +1208,11 @@ export default async function MaterialRequestShowPage({
                             : 'secondary'
                         }
                       >
-                        {materialRequestData.restrictionOrders.status === 'FREE'
-                          ? 'Livre'
+                        Restrição{' '}
+                        {materialRequestData.restrictionOrders.status
+                          ? statusMaterialRestrictionDisplayMap[
+                              materialRequestData.restrictionOrders.status
+                            ]
                           : materialRequestData.restrictionOrders.status}
                       </Badge>
                     </div>
@@ -1316,10 +1243,14 @@ export default async function MaterialRequestShowPage({
                       </div>
                       <div>
                         <p className='text-xs font-medium text-gray-500'>
-                          Status
+                          Restrição
                         </p>
                         <p className='font-medium'>
-                          {materialRequestData.restrictionOrders.status}
+                          {materialRequestData.restrictionOrders.status
+                            ? statusMaterialRestrictionDisplayMap[
+                                materialRequestData.restrictionOrders.status
+                              ]
+                            : materialRequestData.restrictionOrders.status}
                         </p>
                       </div>
                     </div>
@@ -1440,7 +1371,8 @@ export default async function MaterialRequestShowPage({
                     <div className='flex flex-wrap items-center justify-between gap-2'>
                       <div className='flex items-center gap-2'>
                         <Badge variant='outline'>
-                          {formatStatus(history.status)}
+                          {statusMaterialRequestDisplayMap[history.status] ||
+                            history.status}
                         </Badge>
                         {history.changedById && (
                           <span className='text-muted-foreground text-sm'>

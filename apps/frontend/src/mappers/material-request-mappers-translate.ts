@@ -40,3 +40,40 @@ export type StatusMaterialRequestKey =
 // Deriva a união dos VALORES (ex: 'Cadastrada' | 'Pendente de Autorização' | ...)
 export type StatusMaterialRequestDisplay =
   (typeof statusMaterialRequestDisplayMap)[StatusMaterialRequestKey];
+
+// Função para formatar tipo de requisição
+export const materialRequestTypeDisplayMap: Record<string, string> = {
+  NEW_MATERIALS: 'Materiais Novos',
+  REPLACEMENT: 'Reposição',
+  OTHER: 'Outro'
+};
+
+export type typeMaterialRequestKey = keyof typeof materialRequestTypeDisplayMap;
+
+export type typeMaterialRequestDisplay =
+  (typeof materialRequestTypeDisplayMap)[typeMaterialRequestKey];
+
+// Função para formatar propósito
+export const materialPurposeDisplayMap: Record<string, string> = {
+  SUPPLY_MAINTENANCE: 'Suprimento de Manutenção',
+  STOCK_REPLENISHMENT: 'Reabastecimento de Estoque',
+  PROJECT: 'Projeto',
+  OTHER: 'Outro'
+};
+
+export type purposeMaterialRequestKey = keyof typeof materialPurposeDisplayMap;
+
+export type purposeMaterialRequestDisplay =
+  (typeof materialPurposeDisplayMap)[purposeMaterialRequestKey];
+
+// Função para formatar origem
+export const materialOriginDisplayMap: Record<string, string> = {
+  SIPAC: 'SIPAC',
+  INTERNAL: 'Interna',
+  EXTERNAL: 'Externa'
+};
+
+export type originMaterialRequestKey = keyof typeof materialOriginDisplayMap;
+
+export type originMaterialRequestDisplay =
+  (typeof materialOriginDisplayMap)[originMaterialRequestKey];

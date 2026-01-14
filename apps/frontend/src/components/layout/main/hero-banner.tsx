@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { FileText, Plus } from 'lucide-react';
 import Image from 'next/image';
 import HeroImage from '@/assets/img/hero-image.jpg';
+import DemoWatermark from '../../demo-watermark';
 
 export default function HeroBanner() {
   return (
@@ -13,6 +14,11 @@ export default function HeroBanner() {
         backgroundImage: 'url(/placeholder.svg?height=400&width=1200)'
       }}
     >
+      <DemoWatermark
+        label='DADOS FICTÍCIOS NA PÁGINA INICIAL: MOCKUP VISUAL'
+        position='top-left'
+      />
+
       <Image
         src={HeroImage}
         alt='Hero Image'

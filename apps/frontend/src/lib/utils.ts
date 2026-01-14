@@ -7,6 +7,7 @@ import {
   format,
   interval
 } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 import { twMerge } from 'tailwind-merge';
 import { formatInTimeZone } from 'date-fns-tz';
 
@@ -337,3 +338,51 @@ export function formatCodigoUnidade(
   const formattedCodigo = codigoUnidade?.replace(/(\d{2})(?=\d)/g, '$1.');
   return `${formattedCodigo} ${sigla}`;
 }
+
+export const formatDate = (dateInput: string | Date | null | undefined) => {
+  if (!dateInput) {
+    return '-';
+  }
+  try {
+    const date =
+      typeof dateInput === 'string' ? new Date(dateInput) : dateInput;
+    return format(date, "dd/MM/yyyy 'às' HH:mm", { locale: ptBR });
+  } catch (error) {
+    return String(dateInput);
+  }
+};
+export const formatOnlyDate = (dateInput: string | Date | null | undefined) => {
+  if (!dateInput) {
+    return '-';
+  }
+  try {
+    const date =
+      typeof dateInput === 'string' ? new Date(dateInput) : dateInput;
+    return format(date, 'dd/MM/yyyy', { locale: ptBR });
+  } catch (error) {
+    return String(dateInput);
+  }
+};
+
+export const formatCurrency = (
+  value: string | number | null | undefined | any
+) => {
+  if (!value) return 'R$ 0,00';
+
+  let numValue: number;
+  if (typeof value === 'string') {
+    numValue = parseFloat(value);
+  } else if (typeof value === 'number') {
+    numValue = value;
+  } else if (value && typeof value === 'object' && 'toNumber' in value) {
+    // Handle Decimal type from Prisma
+    numValue = Number(value);
+  } else {
+    numValue = Number(value);
+  }
+
+  return new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL'
+  }).format(numValue);
+};

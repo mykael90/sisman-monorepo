@@ -23,7 +23,41 @@ export const materialRequestStatusDisplayMap = {
   RETURNED: 'RETURNED'
 } as const;
 
+// Função para formatar tipo de requisição
+export const materialRequestTypeDisplayMap: Record<string, string> = {
+  NEW_MATERIALS: 'NEW_MATERIALS',
+  REPLACEMENT: 'REPLACEMENT',
+  OTHER: 'OTHER'
+};
+
+// Função para formatar propósito
+export const materialPurposeDisplayMap: Record<string, string> = {
+  SUPPLY_MAINTENANCE: 'SUPPLY_MAINTENANCE',
+  STOCK_REPLENISHMENT: 'STOCK_REPLENISHMENT',
+  PROJECT: 'PROJECT',
+  OTHER: 'OTHER'
+};
+
+// Função para formatar origem
+export const materialOriginDisplayMap: Record<string, string> = {
+  SIPAC: 'SIPAC',
+  INTERNAL: 'INTERNAL',
+  EXTERNAL: 'EXTERNAL'
+};
+
 export type MaterialRequestStatusKey =
   keyof typeof materialRequestStatusDisplayMap;
 export type MaterialRequestStatusDisplay =
   (typeof materialRequestStatusDisplayMap)[MaterialRequestStatusKey];
+
+export type MaterialRequestTypeKey = keyof typeof materialRequestTypeDisplayMap;
+export type MaterialRequestTypeDisplay =
+  (typeof materialRequestTypeDisplayMap)[MaterialRequestTypeKey];
+
+export type MaterialPurposeKey = keyof typeof materialPurposeDisplayMap;
+export type MaterialPurposeDisplay =
+  (typeof materialPurposeDisplayMap)[MaterialPurposeKey];
+
+export type MaterialOriginKey = keyof typeof materialOriginDisplayMap;
+export type MaterialOriginDisplay =
+  (typeof materialOriginDisplayMap)[MaterialOriginKey];
