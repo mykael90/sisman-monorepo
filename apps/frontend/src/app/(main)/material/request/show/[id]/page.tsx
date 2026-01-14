@@ -314,7 +314,7 @@ export default async function MaterialRequestShowPage({
 
       {/* Abas para diferentes seções */}
       <Tabs defaultValue='materials' className='space-y-4'>
-        <TabsList className='grid w-full grid-cols-4'>
+        <TabsList className='grid w-full grid-cols-5'>
           <TabsTrigger value='materials' className='flex items-center gap-2'>
             <Package className='h-4 w-4' />
             Itens da Requisição ({totalItems})
@@ -324,8 +324,11 @@ export default async function MaterialRequestShowPage({
             Entradas Associadas (
             {materialRequestData.materialReceipts?.length || 0})
           </TabsTrigger>
-          <TabsTrigger value='restrictions' className='flex items-center gap-2'>
-            <Warehouse className='h-4 w-4' />
+          <TabsTrigger
+            value='pickingOrders'
+            className='flex items-center gap-2'
+          >
+            <ClipboardList className='h-4 w-4' />
             Reservas Associadas (
             {materialRequestData.materialPickingOrders?.length || 0})
           </TabsTrigger>
@@ -333,6 +336,10 @@ export default async function MaterialRequestShowPage({
             <Truck className='h-4 w-4 rotate-180' />
             Saídas Associadas (
             {materialRequestData.materialWithdrawals?.length || 0})
+          </TabsTrigger>
+          <TabsTrigger value='restrictions' className='flex items-center gap-2'>
+            <Warehouse className='h-4 w-4' />
+            Restrição ({materialRequestData.restrictionOrders ? '1' : '0'})
           </TabsTrigger>
         </TabsList>
 
@@ -536,6 +543,9 @@ export default async function MaterialRequestShowPage({
                                 <thead className='bg-gray-100'>
                                   <tr>
                                     <th className='px-3 py-2 text-left font-medium text-gray-700'>
+                                      Código
+                                    </th>
+                                    <th className='px-3 py-2 text-left font-medium text-gray-700'>
                                       Material
                                     </th>
                                     <th className='px-3 py-2 text-left font-medium text-gray-700'>
@@ -565,6 +575,10 @@ export default async function MaterialRequestShowPage({
                                         key={item.id}
                                         className='hover:bg-gray-50'
                                       >
+                                        <td className='px-3 py-2'>
+                                          {item.materialId ||
+                                            'Código não identificado'}
+                                        </td>
                                         <td className='px-3 py-2'>
                                           {item.material?.name ||
                                             'Material não identificado'}
@@ -622,11 +636,11 @@ export default async function MaterialRequestShowPage({
           </Card>
         </TabsContent>
 
-        {/* Aba de Reservas (Picking Orders) */}
-        <TabsContent value='restrictions' className='space-y-4'>
+        {/* Aba de Ordens de Reserva */}
+        <TabsContent value='pickingOrders' className='space-y-4'>
           <Card>
             <CardHeader>
-              <CardTitle>Ordens de Coleta/Reserva</CardTitle>
+              <CardTitle>Ordens de Reserva</CardTitle>
             </CardHeader>
             <CardContent>
               {materialRequestData.materialPickingOrders &&
@@ -709,6 +723,9 @@ export default async function MaterialRequestShowPage({
                                     <thead className='bg-gray-100'>
                                       <tr>
                                         <th className='px-3 py-2 text-left font-medium text-gray-700'>
+                                          Código
+                                        </th>
+                                        <th className='px-3 py-2 text-left font-medium text-gray-700'>
                                           Material
                                         </th>
                                         <th className='px-3 py-2 text-left font-medium text-gray-700'>
@@ -731,6 +748,10 @@ export default async function MaterialRequestShowPage({
                                           key={item.id}
                                           className='hover:bg-gray-50'
                                         >
+                                          <td className='px-3 py-2'>
+                                            {item.globalMaterialId ||
+                                              'Código não identificado'}
+                                          </td>
                                           <td className='px-3 py-2'>
                                             {item.globalMaterial?.name ||
                                               'Material não identificado'}
@@ -776,87 +797,9 @@ export default async function MaterialRequestShowPage({
                     )
                   )}
                 </div>
-              ) : materialRequestData.restrictionOrders ? (
-                <Card className='overflow-hidden'>
-                  <CardHeader className='bg-gray-50 py-3'>
-                    <div className='flex flex-wrap items-center justify-between gap-2'>
-                      <div>
-                        <CardTitle className='text-sm'>
-                          Ordem de Restrição:{' '}
-                          {
-                            materialRequestData.restrictionOrders
-                              .restrictionOrderNumber
-                          }
-                        </CardTitle>
-                        <p className='text-sm text-gray-500'>
-                          Processada em:{' '}
-                          {formatDate(
-                            materialRequestData.restrictionOrders.processedAt
-                          )}
-                        </p>
-                      </div>
-                      <Badge
-                        variant={
-                          materialRequestData.restrictionOrders.status ===
-                          'FREE'
-                            ? 'default'
-                            : 'secondary'
-                        }
-                      >
-                        {materialRequestData.restrictionOrders.status === 'FREE'
-                          ? 'Livre'
-                          : materialRequestData.restrictionOrders.status}
-                      </Badge>
-                    </div>
-                  </CardHeader>
-                  <CardContent className='p-4'>
-                    <div className='grid grid-cols-2 gap-4 md:grid-cols-3'>
-                      <div>
-                        <p className='text-xs font-medium text-gray-500'>
-                          Depósito Transitório
-                        </p>
-                        <p className='font-medium'>
-                          Depósito Transitório{' '}
-                          {materialRequestData.restrictionOrders.warehouseId}
-                        </p>
-                      </div>
-                      <div>
-                        <p className='text-xs font-medium text-gray-500'>
-                          Processado por
-                        </p>
-                        <p className='font-medium'>
-                          Usuário{' '}
-                          {
-                            materialRequestData.restrictionOrders
-                              .processedByUserId
-                          }
-                        </p>
-                      </div>
-                      <div>
-                        <p className='text-xs font-medium text-gray-500'>
-                          Status
-                        </p>
-                        <p className='font-medium'>
-                          {materialRequestData.restrictionOrders.status}
-                        </p>
-                      </div>
-                    </div>
-                    {materialRequestData.restrictionOrders.notes && (
-                      <div className='mt-4 border-t pt-4'>
-                        <p className='text-xs font-medium text-gray-500'>
-                          Observações
-                        </p>
-                        <p className='text-muted-foreground text-sm'>
-                          {materialRequestData.restrictionOrders.notes}
-                        </p>
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
               ) : (
                 <p className='text-muted-foreground py-8 text-center'>
-                  Nenhuma reserva ou ordem de coleta registrada para esta
-                  requisição.
+                  Nenhuma ordem de reserva registrada para esta requisição.
                 </p>
               )}
             </CardContent>
@@ -963,6 +906,9 @@ export default async function MaterialRequestShowPage({
                                 <thead className='bg-gray-100'>
                                   <tr>
                                     <th className='px-3 py-2 text-left font-medium text-gray-700'>
+                                      Código
+                                    </th>
+                                    <th className='px-3 py-2 text-left font-medium text-gray-700'>
                                       Material
                                     </th>
                                     <th className='px-3 py-2 text-left font-medium text-gray-700'>
@@ -986,6 +932,10 @@ export default async function MaterialRequestShowPage({
                                         key={item.id}
                                         className='hover:bg-gray-50'
                                       >
+                                        <td className='px-3 py-2'>
+                                          {item.globalMaterialId ||
+                                            'Código não identificado'}
+                                        </td>
                                         <td className='px-3 py-2'>
                                           {item.globalMaterial?.name ||
                                             'Material não identificado'}
@@ -1027,6 +977,167 @@ export default async function MaterialRequestShowPage({
               ) : (
                 <p className='text-muted-foreground py-8 text-center'>
                   Nenhuma saída registrada para esta requisição.
+                </p>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
+        {/* Aba de Restrições */}
+        <TabsContent value='restrictions' className='space-y-4'>
+          <Card>
+            <CardHeader>
+              <CardTitle>Restrição de Materiais</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {materialRequestData.restrictionOrders ? (
+                <Card className='overflow-hidden'>
+                  <CardHeader className='bg-gray-50 py-3'>
+                    <div className='flex flex-wrap items-center justify-between gap-2'>
+                      <div>
+                        <CardTitle className='text-sm'>
+                          Ordem de Restrição:{' '}
+                          {
+                            materialRequestData.restrictionOrders
+                              .restrictionOrderNumber
+                          }
+                        </CardTitle>
+                        <p className='text-sm text-gray-500'>
+                          Processada em:{' '}
+                          {formatDate(
+                            materialRequestData.restrictionOrders.processedAt
+                          )}
+                        </p>
+                      </div>
+                      <Badge
+                        variant={
+                          materialRequestData.restrictionOrders.status ===
+                          'FREE'
+                            ? 'default'
+                            : 'secondary'
+                        }
+                      >
+                        {materialRequestData.restrictionOrders.status === 'FREE'
+                          ? 'Livre'
+                          : materialRequestData.restrictionOrders.status}
+                      </Badge>
+                    </div>
+                  </CardHeader>
+                  <CardContent className='p-4'>
+                    <div className='grid grid-cols-2 gap-4 md:grid-cols-3'>
+                      <div>
+                        <p className='text-xs font-medium text-gray-500'>
+                          Depósito
+                        </p>
+                        <p className='font-medium'>
+                          {materialRequestData.restrictionOrders.warehouse
+                            ?.name ||
+                            `Depósito ${materialRequestData.restrictionOrders.warehouseId}`}
+                        </p>
+                      </div>
+                      <div>
+                        <p className='text-xs font-medium text-gray-500'>
+                          Processado por
+                        </p>
+                        <p className='font-medium'>
+                          {materialRequestData.restrictionOrders.processedByUser
+                            ?.name ||
+                            materialRequestData.restrictionOrders
+                              .processedByUser?.login ||
+                            `Usuário ${materialRequestData.restrictionOrders.processedByUserId}`}
+                        </p>
+                      </div>
+                      <div>
+                        <p className='text-xs font-medium text-gray-500'>
+                          Status
+                        </p>
+                        <p className='font-medium'>
+                          {materialRequestData.restrictionOrders.status}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Itens da Restrição */}
+                    {materialRequestData.restrictionOrders.items &&
+                      materialRequestData.restrictionOrders.items.length >
+                        0 && (
+                        <div className='mt-4 border-t pt-4'>
+                          <p className='mb-2 text-sm font-medium'>
+                            Itens Restritos (
+                            {materialRequestData.restrictionOrders.items.length}
+                            )
+                          </p>
+                          <div className='overflow-x-auto rounded-lg border'>
+                            <table className='w-full text-xs'>
+                              <thead className='bg-gray-100'>
+                                <tr>
+                                  <th className='px-3 py-2 text-left font-medium text-gray-700'>
+                                    Código Material
+                                  </th>
+                                  <th className='px-3 py-2 text-left font-medium text-gray-700'>
+                                    Nome
+                                  </th>
+                                  <th className='px-3 py-2 text-left font-medium text-gray-700'>
+                                    Unidade
+                                  </th>
+                                  <th className='px-3 py-2 text-left font-medium text-gray-700'>
+                                    Quantidade Restrita
+                                  </th>
+                                  <th className='px-3 py-2 text-left font-medium text-gray-700'>
+                                    Item da Requisição
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody className='divide-y divide-gray-200'>
+                                {materialRequestData.restrictionOrders.items.map(
+                                  (item) => (
+                                    <tr
+                                      key={item.id}
+                                      className='hover:bg-gray-50'
+                                    >
+                                      <td className='px-3 py-2'>
+                                        {item.globalMaterialId ||
+                                          'Não especificado'}
+                                      </td>
+                                      <td className='px-3 py-2'>
+                                        {item.globalMaterial?.name ||
+                                          'Não especificado'}
+                                      </td>
+                                      <td className='px-3 py-2'>
+                                        {item.globalMaterial?.unitOfMeasure ||
+                                          'Não especificado'}
+                                      </td>
+                                      <td className='px-3 py-2'>
+                                        {Number(
+                                          item.quantityRestricted || 0
+                                        ).toLocaleString()}
+                                      </td>
+                                      <td className='px-3 py-2'>
+                                        ID: {item.targetMaterialRequestItemId}
+                                      </td>
+                                    </tr>
+                                  )
+                                )}
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      )}
+
+                    {materialRequestData.restrictionOrders.notes && (
+                      <div className='mt-4 border-t pt-4'>
+                        <p className='text-xs font-medium text-gray-500'>
+                          Observações
+                        </p>
+                        <p className='text-muted-foreground text-sm'>
+                          {materialRequestData.restrictionOrders.notes}
+                        </p>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              ) : (
+                <p className='text-muted-foreground py-8 text-center'>
+                  Nenhuma restrição registrada para esta requisição.
                 </p>
               )}
             </CardContent>
