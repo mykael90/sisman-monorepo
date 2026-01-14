@@ -26,7 +26,7 @@ export function MaterialRequestStats({ requestData }: Props) {
       <StatCard
         label='Saídas'
         value={requestData.materialWithdrawals?.length || 0}
-        icon={<Truck className='h-8 w-8 rotate-180 text-red-500' />}
+        icon={<Truck className='h-8 w-8 -scale-x-100 text-red-500' />}
       />
 
       <StatCard

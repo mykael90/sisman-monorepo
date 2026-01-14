@@ -45,7 +45,7 @@ export function MaterialRequestTabs({ requestData }: MaterialRequestTabsProps) {
           value='withdrawals'
           className='flex items-center gap-2 py-2'
         >
-          <Truck className='h-4 w-4 rotate-180' />
+          <Truck className='h-4 w-4 -scale-x-100' />
           <span className='truncate'>Saídas ({totalWithdrawals})</span>
         </TabsTrigger>
 
