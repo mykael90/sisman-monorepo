@@ -1,22 +1,10 @@
 'use client';
 
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, ClipboardList } from 'lucide-react';
-import { formatDate } from '@/lib/utils';
-import {
-  materialOriginDisplayMap,
-  materialRequestTypeDisplayMap,
-  statusMaterialRequestDisplayMap
-} from '@/mappers/material-request-mappers-translate';
-import { IMaterialRequestShowWithRelations } from '@/app/(main)/material/request/material-request-types';
 import { useRouter } from 'next/navigation';
 
-export function MaterialRequestHeader({
-  data
-}: {
-  data: IMaterialRequestShowWithRelations;
-}) {
+export function MaterialRequestHeader() {
   const router = useRouter();
 
   return (
@@ -27,26 +15,13 @@ export function MaterialRequestHeader({
         </div>
         <div>
           <h1 className='text-primary text-xl font-bold'>
-            Requisição de Material: {data.protocolNumber}
+            Detalhes da Requisição de Material
           </h1>
-          <p className='text-sm text-muted-foreground'>
-            ID: {data.id} | Criada em: {formatDate(data.createdAt)}
+          <p className='text-muted-foreground text-sm'>
+            Informações sobre status, movimentações de materiais, manutenção
+            vinculada, entre outros, relativa à requisição de material
+            específica.
           </p>
-          <div className='mt-2 flex flex-wrap gap-2'>
-            <Badge variant='secondary'>
-              Status:{' '}
-              {statusMaterialRequestDisplayMap[data.currentStatus] ||
-                data.currentStatus}
-            </Badge>
-            <Badge variant='outline'>
-              Tipo:{' '}
-              {materialRequestTypeDisplayMap[data.requestType] ||
-                data.requestType}
-            </Badge>
-            <Badge variant='outline'>
-              Origem: {materialOriginDisplayMap[data.origin] || data.origin}
-            </Badge>
-          </div>
         </div>
       </div>
       <div className='flex w-full justify-end sm:w-auto'>

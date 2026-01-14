@@ -1,4 +1,4 @@
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import {
   Calendar,
@@ -7,11 +7,18 @@ import {
   DollarSign,
   BarChart3,
   Warehouse,
-  FileText
+  FileText,
+  ClipboardList
 } from 'lucide-react';
-import { formatCurrency, formatOnlyDate } from '@/lib/utils';
-import { materialPurposeDisplayMap } from '@/mappers/material-request-mappers-translate';
+import { formatCurrency, formatDate, formatOnlyDate } from '@/lib/utils';
+import {
+  materialOriginDisplayMap,
+  materialPurposeDisplayMap,
+  materialRequestTypeDisplayMap,
+  statusMaterialRequestDisplayMap
+} from '@/mappers/material-request-mappers-translate';
 import { IMaterialRequestShowWithRelations } from '@/app/(main)/material/request/material-request-types';
+import { Badge } from '../../../../../../components/ui/badge';
 
 interface Props {
   data: IMaterialRequestShowWithRelations;
@@ -28,7 +35,36 @@ export function MaterialRequestGeneralInfo({ data }: Props) {
 
   return (
     <Card>
-      <CardContent className='space-y-6 pt-6'>
+      <CardHeader className='flex flex-row items-start justify-between'>
+        <div>
+          <CardTitle className='text-md flex items-center gap-2'>
+            {/* <ClipboardList className='h-6 w-6' /> */}
+            Requisição de Material: {data.protocolNumber}
+          </CardTitle>
+          <div className='mt-2 flex flex-wrap gap-2'>
+            <Badge variant='secondary' className='text-xs'>
+              Status:{' '}
+              {statusMaterialRequestDisplayMap[data.currentStatus] ||
+                data.currentStatus}
+            </Badge>
+            <Badge variant='outline' className='text-xs'>
+              Tipo:{' '}
+              {materialRequestTypeDisplayMap[data.requestType] ||
+                data.requestType}
+            </Badge>
+            <Badge variant='outline' className='text-xs'>
+              Origem: {materialOriginDisplayMap[data.origin] || data.origin}
+            </Badge>
+          </div>
+        </div>
+        <div className='text-right'>
+          <p className='text-muted-foreground text-sm'>ID: {data.id}</p>
+          <p className='text-muted-foreground text-sm'>
+            Criada em: {formatDate(data.createdAt)}
+          </p>
+        </div>
+      </CardHeader>
+      <CardContent className='space-y-6'>
         {/* Grid de Detalhes */}
         <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3'>
           <div className='space-y-2'>
