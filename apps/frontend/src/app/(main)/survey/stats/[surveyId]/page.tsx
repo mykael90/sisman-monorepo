@@ -2,6 +2,8 @@ import React from 'react';
 import { getSismanAccessToken } from '@/lib/auth/get-access-token';
 import { getSurvey } from '@/app/(main)/survey/survey-actions';
 import { getSurveyResponses } from '@/app/(main)/survey-response/survey-response-actions';
+import { SurveyStatsHeader } from '../../_components/survey-stats-header';
+import { SurveyStatsCard } from '../../_components/survey-stats-card';
 
 export default async function SurveyStatsPage({
   params
@@ -156,103 +158,19 @@ export default async function SurveyStatsPage({
   });
 
   return (
-    <div>
-      <h1>Estatísticas do Questionário: {survey?.title}</h1>
-      <h2>Número de Avaliações: {surveyResponses.length}</h2>
-      <div className='space-y-8'>
+    <div className='container mx-auto space-y-6 pb-6'>
+      <SurveyStatsHeader
+        title={survey.title}
+        numberOfEvaluations={surveyResponses.length}
+      />
+
+      <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
         {survey.questions.map((question) => (
-          <div key={question.id} className='rounded-lg border p-4 shadow-sm'>
-            <h2 className='mb-2 text-xl font-semibold'>
-              {question.text} ({question.type})
-            </h2>
-            {aggregatedStats[question.id] && (
-              <div>
-                {aggregatedStats[question.id].type === 'RATING' &&
-                  aggregatedStats[question.id].ratings && (
-                    <div>
-                      <p className='font-medium'>
-                        Média:{' '}
-                        {aggregatedStats[
-                          question.id
-                        ].ratings!.averageRating.toFixed(2)}
-                      </p>
-                      <ul className='mt-2 list-disc pl-5'>
-                        {Object.keys(
-                          aggregatedStats[question.id].ratings!
-                            .individualRatings
-                        ).map((key) => {
-                          const rating =
-                            aggregatedStats[question.id].ratings!
-                              .individualRatings[key];
-                          return (
-                            <li key={key}>
-                              Rating {key}: {rating.count} escolhas (
-                              {rating.percentage.toFixed(2)}%)
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    </div>
-                  )}
-
-                {(aggregatedStats[question.id].type === 'SINGLE' ||
-                  aggregatedStats[question.id].type === 'MULTIPLE' ||
-                  aggregatedStats[question.id].type === 'BOOLEAN') &&
-                  aggregatedStats[question.id].options && (
-                    <div>
-                      <ul className='mt-2 list-disc pl-5'>
-                        {Object.keys(aggregatedStats[question.id].options!).map(
-                          (optionKey) => {
-                            const option =
-                              aggregatedStats[question.id].options![optionKey];
-                            // For BOOLEAN, optionKey will be 'true' or 'false'
-                            // For SINGLE/MULTIPLE, optionKey will be option.id
-                            const optionLabel =
-                              question.type === 'BOOLEAN'
-                                ? optionKey === 'true'
-                                  ? 'Verdadeiro'
-                                  : 'Falso'
-                                : question.surveyQuestionOptions.find(
-                                    (opt) => opt.id === optionKey
-                                  )?.label || `Opção ${optionKey}`;
-
-                            return (
-                              <li key={optionKey}>
-                                {optionLabel}: {option.count} escolhas (
-                                {option.percentage.toFixed(2)}%)
-                              </li>
-                            );
-                          }
-                        )}
-                      </ul>
-                    </div>
-                  )}
-
-                {aggregatedStats[question.id].type === 'TEXT' &&
-                  aggregatedStats[question.id].textResponses &&
-                  aggregatedStats[question.id].textResponses!.length > 0 && (
-                    <div>
-                      <h3 className='mt-2 font-medium'>Respostas de Texto:</h3>
-                      <ul className='mt-2 list-disc pl-5'>
-                        {aggregatedStats[question.id].textResponses!.map(
-                          (text, index) => (
-                            <li key={index}>{text}</li>
-                          )
-                        )}
-                      </ul>
-                    </div>
-                  )}
-
-                {((aggregatedStats[question.id].type === 'TEXT' &&
-                  aggregatedStats[question.id].textResponses &&
-                  aggregatedStats[question.id].textResponses!.length === 0) ||
-                  (aggregatedStats[question.id].type !== 'TEXT' &&
-                    aggregatedStats[question.id].totalResponses === 0)) && (
-                  <p>Nenhuma resposta para esta questão.</p>
-                )}
-              </div>
-            )}
-          </div>
+          <SurveyStatsCard
+            key={question.id}
+            question={question}
+            stats={aggregatedStats[question.id]}
+          />
         ))}
       </div>
     </div>
