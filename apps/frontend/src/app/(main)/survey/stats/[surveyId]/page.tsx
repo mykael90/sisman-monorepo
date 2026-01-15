@@ -161,6 +161,7 @@ export default async function SurveyStatsPage({
     <div className='container mx-auto space-y-6 pb-6'>
       <SurveyStatsHeader
         title={survey.title}
+        description={survey.description}
         numberOfEvaluations={surveyResponses.length}
       />
 
