@@ -182,7 +182,10 @@ export class MaterialRequestsService {
             }
           }
         },
-        where: whereArgs
+        where: whereArgs,
+        orderBy: {
+          requestDate: 'desc'
+        }
       });
 
       return materialRequests;

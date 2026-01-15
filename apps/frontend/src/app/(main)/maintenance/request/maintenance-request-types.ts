@@ -20,6 +20,73 @@ export type IMaintenanceRequestWithRelations =
     };
   }>;
 
+export type IMaintenanceRequestShowWithRelations =
+  Prisma.MaintenanceRequestGetPayload<{
+          include: {
+            currentMaintenanceInstance: true,
+            createdBy: true,
+            assignedTo: true,
+            facilityComplex: true,
+            building: true,
+            space: true,
+            system: true,
+            // equipment: true,
+            serviceType: true,
+            statuses: true,
+            diagnosis: { include: { occurrence: true } },
+            // originatingOccurrences: true, // Cannot include reverse relation directly
+            timelineEvents: true,
+            materialRequests: {
+              include: {
+                items: {
+                  include: { requestedGlobalMaterial: true },
+                  orderBy: {
+                    requestedGlobalMaterial: {
+                      name: 'asc'
+                    }
+                  }
+                },
+                materialReceipts: {
+                  include: {
+                    items: { include: { material: true } },
+                    processedByUser: true,
+                    destinationWarehouse: true,
+                    movementType: true
+                  }
+                }
+              },
+              orderBy: {
+                requestDate: 'desc'
+              }
+            },
+            sipacUnitRequesting: true,
+            sipacUnitCost: true,
+            infrastructureNetwork: true,
+            maintenanceContractOrders: true,
+            materialPickingOrders: {
+              include: {
+                items: { include: { globalMaterial: true } },
+                requestedByUser: true,
+                warehouse: true
+              }
+            },
+            materialWithdrawals: {
+              include: {
+                items: { include: { globalMaterial: true } },
+                collectedByWorker: true,
+                collectedByUser: true,
+                processedByUser: true,
+                warehouse: true,
+                movementType: true,
+                authorizedByUser: true
+              }
+            },
+            priorities: true,
+            serviceOrders: true
+          }
+    };
+  }>;
+
 export interface IMaintenanceRequestAdd {
   title: string;
   description?: string;
@@ -55,8 +122,7 @@ export type IMaintenanceRequestRelatedData = {
   listMaintenanceInstances: any[];
 };
 
-export interface IMaintenanceRequestBalanceWithRelations
-  extends IMaintenanceRequestWithRelations {
+export interface IMaintenanceRequestBalanceWithRelations extends IMaintenanceRequestWithRelations {
   itemsBalance: IItemMaintenanceRequestBalance[];
 }
 

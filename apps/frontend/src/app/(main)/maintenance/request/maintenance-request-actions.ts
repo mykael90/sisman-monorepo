@@ -10,6 +10,7 @@ import {
   IMaintenanceRequestAdd,
   IMaintenanceRequestBalanceWithRelations,
   IMaintenanceRequestEdit,
+  IMaintenanceRequestShowWithRelations,
   IMaintenanceRequestWithRelations,
   IPaginatedMaintenanceRequestDeficit
 } from './maintenance-request-types';
@@ -136,7 +137,7 @@ export async function handleMaintenanceRequestSearch(
 
 export async function showMaintenanceRequest(
   id: number
-): Promise<IMaintenanceRequestWithRelations> {
+): Promise<IMaintenanceRequestShowWithRelations> {
   logger.info(
     `(Server Action) showMaintenanceRequest: Buscando requisição com ID ${id}.`
   );
@@ -162,7 +163,7 @@ export async function showMaintenanceRequest(
 
 export async function showMaintenanceRequestByProtocol(
   protocolNumber: string
-): Promise<IMaintenanceRequestWithRelations | null> {
+): Promise<IMaintenanceRequestShowWithRelations | null> {
   logger.info(
     `(Server Action) showMaintenanceRequest: Buscando requisição com ID ${protocolNumber}.`
   );

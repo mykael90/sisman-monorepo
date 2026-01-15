@@ -258,8 +258,24 @@ export class MaintenanceRequestsService {
     }
   }
 
-  async list() {
+  async list(queryParams?: { [key: string]: string }) {
     try {
+      const whereArgs: Prisma.MaintenanceRequestWhereInput = {
+        // restrictionOrders: {
+        //   isNot: null
+        // }
+      };
+
+      if (queryParams && !!Object.keys(queryParams).length) {
+        const { startDate, endDate } = queryParams;
+        if (startDate && endDate) {
+          whereArgs.requestedAt = {
+            gte: new Date(startDate),
+            lte: new Date(endDate)
+          };
+        }
+      }
+
       const maintenanceRequests = await this.prisma.maintenanceRequest.findMany(
         {
           include: {
@@ -279,6 +295,10 @@ export class MaintenanceRequestsService {
             materialRequests: true,
             sipacUnitRequesting: true,
             sipacUnitCost: true
+          },
+          where: whereArgs,
+          orderBy: {
+            requestedAt: 'desc'
           }
         }
       );
@@ -307,7 +327,7 @@ export class MaintenanceRequestsService {
             // equipment: true,
             serviceType: true,
             statuses: true,
-            diagnosis: true,
+            diagnosis: { include: { occurrence: true } },
             // originatingOccurrences: true, // Cannot include reverse relation directly
             timelineEvents: true,
             materialRequests: {
@@ -319,6 +339,14 @@ export class MaintenanceRequestsService {
                       name: 'asc'
                     }
                   }
+                },
+                materialReceipts: {
+                  include: {
+                    items: { include: { material: true } },
+                    processedByUser: true,
+                    destinationWarehouse: true,
+                    movementType: true
+                  }
                 }
               },
               orderBy: {
@@ -326,7 +354,29 @@ export class MaintenanceRequestsService {
               }
             },
             sipacUnitRequesting: true,
-            sipacUnitCost: true
+            sipacUnitCost: true,
+            infrastructureNetwork: true,
+            maintenanceContractOrders: true,
+            materialPickingOrders: {
+              include: {
+                items: { include: { globalMaterial: true } },
+                requestedByUser: true,
+                warehouse: true
+              }
+            },
+            materialWithdrawals: {
+              include: {
+                items: { include: { globalMaterial: true } },
+                collectedByWorker: true,
+                collectedByUser: true,
+                processedByUser: true,
+                warehouse: true,
+                movementType: true,
+                authorizedByUser: true
+              }
+            },
+            priorities: true,
+            serviceOrders: true
           }
         });
       if (!maintenanceRequest) {

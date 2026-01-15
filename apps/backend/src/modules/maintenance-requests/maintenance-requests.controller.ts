@@ -81,8 +81,13 @@ export class MaintenanceRequestsController {
   }
 
   @Get()
-  async list() {
-    return this.maintenanceRequestsService.list();
+  async list(
+    @Query()
+    queryParams: {
+      [key: string]: string;
+    }
+  ) {
+    return this.maintenanceRequestsService.list(queryParams);
   }
 
   @Put(':id')
