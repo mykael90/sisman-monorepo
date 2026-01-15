@@ -3,7 +3,7 @@
 import { ColumnDef, createColumnHelper, Row } from '@tanstack/react-table';
 import { ISurveyWithRelations } from '../../survey-types';
 import { Button } from '@/components/ui/button';
-import { Edit, Megaphone, Trash2 } from 'lucide-react';
+import { ClipboardList, Edit, Megaphone, Trash2 } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
@@ -23,6 +23,14 @@ export const createActions = (
   onEdit: (row: Row<ISurveyWithRelations>) => {
     if (row.original.id) {
       router.push(`survey/edit/${row.original.id}`);
+    } else {
+      console.error('Survey ID missing');
+      throw new Error('Survey ID required for navigation');
+    }
+  },
+  onStats: (row: Row<ISurveyWithRelations>) => {
+    if (row.original.id) {
+      router.push(`survey/stats/${row.original.id}`);
     } else {
       console.error('Survey ID missing');
       throw new Error('Survey ID required for navigation');
@@ -95,6 +103,14 @@ export const columns = (
           title='Responder'
         >
           <Megaphone className='h-4 w-4' />
+        </Button>
+        <Button
+          variant='ghost'
+          size='icon'
+          onClick={() => configuredActions.onStats(row)}
+          title='Estatísticas'
+        >
+          <ClipboardList className='h-4 w-4' />
         </Button>
         {/* <Button
           variant='ghost'
