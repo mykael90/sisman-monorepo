@@ -14,7 +14,7 @@ export function MaintenanceRequestStatusHistory({
       <CardHeader>
         <CardTitle className='text-lg'>Histórico de Status</CardTitle>
       </CardHeader>
-      <CardContent className='space-y-4 pt-6'>
+      <CardContent className='space-y-4'>
         {data?.statuses && data.statuses.length > 0 ? (
           data.statuses.map((status, index) => (
             <div

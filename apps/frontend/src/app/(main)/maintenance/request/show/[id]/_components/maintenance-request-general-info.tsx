@@ -16,34 +16,9 @@ export function MaintenanceRequestGeneralInfo({
   return (
     <Card>
       <CardHeader>
-        <CardTitle className='text-lg'>Informações Gerais</CardTitle>
-        Requisição de Manutenção: {data?.protocolNumber} -{' '}
-        {data?.building?.name}
-      </CardHeader>
-      <CardContent className='space-y-6 pt-6'>
-        {/* Seção de Descrição e Data */}
-        <div className='space-y-2'>
-          <p className='text-muted-foreground text-sm'>
-            {data.description || 'Nenhuma descrição fornecida.'}
-          </p>
-        </div>
-        <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
-          <div className='space-y-2'>
-            <p className='text-muted-foreground'>
-              Data da Solicitação:{' '}
-              {data.requestedAt
-                ? format(new Date(data.requestedAt), 'dd/MM/yyyy HH:mm')
-                : 'Não informada'}
-            </p>
-          </div>
-          <div className='space-y-2'>
-            <p className='text-muted-foreground'>
-              Solicitante:{' '}
-              {`${data?.sipacUnitRequesting?.nomeUnidade || 'Unidade não informada'} (${data?.sipacUserLoginRequest || 'usuário desconhecido'})`}
-            </p>
-          </div>
-        </div>
-
+        <CardTitle className='text-lg'>
+          Requisição de Manutenção: {data?.protocolNumber}
+        </CardTitle>
         {/* Seção de Badges de Resumo */}
         <div className='flex flex-wrap gap-2'>
           {data?.facilityComplex?.name && (
@@ -65,6 +40,44 @@ export function MaintenanceRequestGeneralInfo({
             </Badge>
           )}
         </div>
+        {/* <div className='inline-flex flex-row gap-2'>
+          <Label>RMan:</Label>{' '}
+          <p className='text-muted-foreground text-sm'>
+            {data?.protocolNumber}
+          </p>
+        </div> */}
+        {/* <div className='inline-flex flex-row gap-2'>
+          <Label>Unidade:</Label>{' '}
+          <p className='text-muted-foreground text-sm'>
+            {data?.sipacUnitRequesting?.nomeUnidade || 'Unidade não informada'}
+          </p>
+        </div> */}
+      </CardHeader>
+      <CardContent className='space-y-4'>
+        {/* Seção de Descrição e Data */}
+        <div className='inline-flex flex-row gap-2'>
+          <Label>Descrição:</Label>
+          <p className='text-muted-foreground text-sm'>
+            {data.description || 'Nenhuma descrição fornecida.'}
+          </p>
+        </div>
+        <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+          <div className='space-y-2'>
+            <Label>Data de Solicitação:</Label>
+            <span className='text-muted-foreground'>
+              {data.requestedAt
+                ? format(new Date(data.requestedAt), 'dd/MM/yyyy HH:mm')
+                : 'Não informada'}
+            </span>
+          </div>
+          <div className='space-y-2'>
+            <Label>Solicitante</Label>
+            <p className='text-muted-foreground'>
+              {`${data?.sipacUnitRequesting?.nomeUnidade || 'Unidade não informada'} (${data?.sipacUserLoginRequest || 'usuário desconhecido'})`}
+            </p>
+          </div>
+        </div>
+
         {/* Seção de Localização */}
         <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
           <div className='space-y-2'>

@@ -55,12 +55,6 @@ export function MaterialRequestReceiptsList({ receipts }: Props) {
             {/* Informações do Header do Card */}
             <div className='grid grid-cols-2 gap-4 md:grid-cols-4'>
               <div>
-                <p className='text-xs font-medium text-gray-500'>Valor Total</p>
-                <p className='font-medium'>
-                  {formatCurrency(receipt.valueReceipt)}
-                </p>
-              </div>
-              <div>
                 <p className='text-xs font-medium text-gray-500'>
                   Depósito Destino
                 </p>
@@ -86,6 +80,12 @@ export function MaterialRequestReceiptsList({ receipts }: Props) {
                   {receipt.processedByUser?.name ||
                     receipt.processedByUser?.login ||
                     `Usuário ${receipt.processedByUserId}`}
+                </p>
+              </div>
+              <div>
+                <p className='text-xs font-medium text-gray-500'>Valor Total</p>
+                <p className='font-medium'>
+                  {formatCurrency(receipt.valueReceipt)}
                 </p>
               </div>
             </div>

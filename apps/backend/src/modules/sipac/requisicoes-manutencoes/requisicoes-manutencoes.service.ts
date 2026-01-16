@@ -709,6 +709,70 @@ export class RequisicoesManutencoesService {
     });
   }
 
+  async show(id: number) {
+    try {
+      const result = await this.prisma.sipacRequisicaoManutencao.findUnique({
+        where: { id },
+        include: {
+          informacoesServico: true,
+          requisicoesMateriais: true,
+          predios: true
+        }
+      });
+
+      if (!result) {
+        throw new NotFoundException(
+          `Requisição de manutenção com id ${id} não encontrada.`
+        );
+      }
+      return result;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      handlePrismaError(error, this.logger, 'RequisicoesManutencoesService', {
+        operation: 'show',
+        id
+      });
+      throw error;
+    }
+  }
+
+  async showByNumeroAno(numeroAno: string) {
+    try {
+      const result = await this.prisma.sipacRequisicaoManutencao.findUnique({
+        where: { numeroRequisicao: numeroAno },
+        include: {
+          informacoesServico: true,
+          requisicoesMateriais: true,
+          predios: true,
+          arquivos: true,
+          historico: true,
+          requisicaoManutencaoMae: true,
+          requisicoesManutencaoFilhas: true,
+          unidadeCusto: true,
+          unidadeRequisitante: true
+        }
+      });
+
+      if (!result) {
+        throw new NotFoundException(
+          `Requisição de manutenção número/ano ${numeroAno} não encontrada.`
+        );
+      }
+      return result;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      handlePrismaError(error, this.logger, 'RequisicoesManutencoesService', {
+        operation: 'show',
+        numeroAno
+      });
+      throw error;
+    }
+  }
+
   async fetchCompleteAndPersistCreateOrUpdateRequisicaoManutencaoArray(
     numeroAnoArray: string[]
   ): Promise<{

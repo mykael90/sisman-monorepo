@@ -390,8 +390,10 @@ export const columns = (
     },
     {
       id: 'status',
-      header: 'Status RM', // Alterado
+      header: () => <span>Status RM</span>, // Alterado
       enableColumnFilter: true,
+      size: 150,
+      enableResizing: false,
       filterFn: 'arrIncludesSome',
       cell: ({ row }) => {
         const statusKey = row.original
@@ -407,10 +409,12 @@ export const columns = (
         }
         const Icon = config.icon;
         return (
-          <Badge variant={config.variant}>
-            <Icon className='h-3 w-3' />
-            {config.label}
-          </Badge>
+          <div className='w-full'>
+            <Badge variant={config.variant}>
+              <Icon className='h-3 w-3' />
+              {config.label}
+            </Badge>
+          </div>
         );
       }
     }

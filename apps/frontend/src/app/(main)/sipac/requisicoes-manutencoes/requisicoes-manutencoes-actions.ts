@@ -42,6 +42,27 @@ export async function getSipacRequisicoesManutencao(
   }
 }
 
+export async function showSipacRequisicaoManutencao(id: number) {
+  logger.info(
+    `(Server Action) showSipacRequisicaoManutencao: Buscando requisição de manutenção com ID ${id}.`
+  );
+  try {
+    const accessTokenSisman = await getSismanAccessToken();
+    const data = await fetchApiSisman(
+      `${API_RELATIVE_PATH}/${id}`,
+      accessTokenSisman,
+      { cache: 'force-cache' }
+    );
+    return data;
+  } catch (error) {
+    logger.error(
+      `(Server Action) showSipacRequisicaoManutencao: Erro ao buscar requisição de manutenção com ID ${id}.`,
+      error
+    );
+    throw error;
+  }
+}
+
 export async function handleFetchRequisicaoManutencao(
   prevState: IActionResultForm<
     IRequestDataSearch,

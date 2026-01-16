@@ -53,7 +53,9 @@ export type IMaintenanceRequestShowWithRelations =
                     destinationWarehouse: true,
                     movementType: true
                   }
-                }
+                },
+                storage: true,
+                requestedBy: true,
               },
               orderBy: {
                 requestDate: 'desc'

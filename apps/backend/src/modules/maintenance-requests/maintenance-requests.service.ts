@@ -347,7 +347,9 @@ export class MaintenanceRequestsService {
                     destinationWarehouse: true,
                     movementType: true
                   }
-                }
+                },
+                requestedBy: true,
+                storage: true
               },
               orderBy: {
                 requestDate: 'desc'

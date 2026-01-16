@@ -18,6 +18,7 @@ import { MaintenanceRequestTimeline } from './_components/maintenance-request-ti
 import { MaintenanceRequestStats } from './_components/maintenance-request-stats';
 import { MaterialBalanceSummaryTable } from '../../../../material/(warehouse)/withdrawal/_components/material-balance-summary-table';
 import { MaintenanceRequestMaterialBalance } from './_components/maintenance-request-material-balance';
+import { MaintenanceRequestMaterialTabs } from './_components/maitenance-request-tabs-material';
 
 interface MaintenanceRequestShowPageProps {
   params: {
@@ -45,6 +46,8 @@ export default async function MaintenanceRequestShowPage({
     notFound();
   }
 
+  const { origin } = maintenanceRequestDataBase;
+
   // Merge the two data sources
   const maintenanceRequestData: IMaintenanceRequestShowWithRelations & {
     itemsBalance?: IItemMaintenanceRequestBalance[];
@@ -56,14 +59,15 @@ export default async function MaintenanceRequestShowPage({
 
   return (
     <div className='container mx-auto space-y-6 pb-6'>
-      <MaintenanceRequestHeader data={maintenanceRequestData} />
+      <MaintenanceRequestHeader />
       <MaintenanceRequestGeneralInfo data={maintenanceRequestData} />
       <MaintenanceRequestDemandInfo data={maintenanceRequestData} />
       <MaintenanceRequestStatusHistory data={maintenanceRequestData} />
       <MaintenanceRequestServiceFlow data={maintenanceRequestData} />
       <MaintenanceRequestMaterialBalance data={maintenanceRequestDataBalance} />
 
-      <MaintenanceRequestMaterialMovement data={maintenanceRequestData} />
+      {/* <MaintenanceRequestMaterialMovement data={maintenanceRequestData} /> */}
+      <MaintenanceRequestMaterialTabs data={maintenanceRequestData} />
       <MaintenanceRequestTimeline data={maintenanceRequestData} />
       <MaintenanceRequestStats data={maintenanceRequestData} />
     </div>

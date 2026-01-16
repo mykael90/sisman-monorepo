@@ -14,7 +14,7 @@ export function MaintenanceRequestServiceFlow({
       <CardHeader>
         <CardTitle className='text-lg'>Fluxo do Serviço</CardTitle>
       </CardHeader>
-      <CardContent className='space-y-6 pt-6'>
+      <CardContent className='space-y-6'>
         {/* Seção de Ordens de Serviço */}
         <div>
           <Label className='text-md font-semibold'>Ordens de Serviço</Label>
