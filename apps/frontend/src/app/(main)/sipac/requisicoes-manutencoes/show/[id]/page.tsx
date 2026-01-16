@@ -6,7 +6,7 @@ import { ManutencaoRequisicaoGeralInfo } from '../../_components/show/manutencao
 import { ManutencaoRequisicaoDemandInfo } from '../../_components/show/manutencao-requisicao-demand-info';
 import { ManutencaoRequisicaoHistoricoStatus } from '../../_components/show/manutencao-requisicao-historico-status';
 import { ManutencaoRequisicaoFluxoServico } from '../../_components/show/manutencao-requisicao-fluxo-servico';
-import { ManutencaoRequisicaoAbasMaterial } from '../../_components/show/manutencao-requisicao-abas-material';
+import { ManutencaoRequisicaoListaMateriais } from '../../_components/show/manutencao-requisicao-lista-materiais';
 import { ManutencaoRequisicaoEstatisticas } from '../../_components/show/manutencao-requisicao-estatisticas';
 import { ManutencaoRequisicaoAnexos } from '../../_components/show/manutencao-requisicao-anexos';
 
@@ -38,7 +38,7 @@ export default async function RequisicaoManutencaoShowPage({
       <ManutencaoRequisicaoDemandInfo data={requisicaoManutencaoData} />
       <ManutencaoRequisicaoHistoricoStatus data={requisicaoManutencaoData} />
       <ManutencaoRequisicaoFluxoServico data={requisicaoManutencaoData} />
-      <ManutencaoRequisicaoAbasMaterial data={requisicaoManutencaoData} />
+      <ManutencaoRequisicaoListaMateriais data={requisicaoManutencaoData} />
       <ManutencaoRequisicaoAnexos data={requisicaoManutencaoData} />
       <ManutencaoRequisicaoEstatisticas data={requisicaoManutencaoData} />
     </div>
