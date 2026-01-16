@@ -1,6 +1,8 @@
 import { notFound } from 'next/navigation';
 import { ISipacRequisicaoManutencaoShow } from '../../requisicoes-manutencoes-types';
 import { showSipacRequisicaoManutencao } from '../../requisicoes-manutencoes-actions';
+import { ManutencaoRequisicaoHeader } from '../../_components/show/manutencao-requisicao-header';
+import { ManutencaoRequisicaoGeralInfo } from '../../_components/show/manutencao-requisicao-geral-info';
 
 interface RequisicaoManutencaoShowPageProps {
   params: Promise<{
@@ -25,9 +27,8 @@ export default async function RequisicaoManutencaoShowPage({
 
   return (
     <div className='container mx-auto space-y-6 pb-6'>
-      Vamos mostrar as informações da requisição de id ${id} de manutenção aqui!
-      {requisicaoManutencaoData &&
-        JSON.stringify(requisicaoManutencaoData, null, 2)}
+      <ManutencaoRequisicaoHeader />
+      <ManutencaoRequisicaoGeralInfo data={requisicaoManutencaoData} />
     </div>
   );
 }

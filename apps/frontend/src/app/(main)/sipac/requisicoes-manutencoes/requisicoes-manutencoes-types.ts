@@ -20,7 +20,7 @@ export type ISipacRequisicaoManutencaoWithRelations =
   ISipacRequisicaoManutencao & Partial<ISipacRequisicaoManutencaoRelationsOnly>;
 
 export type ISipacRequisicaoManutencaoShow =
-  Prisma.SipacRequisicaoMaterialGetPayload<{
+  Prisma.SipacRequisicaoManutencaoGetPayload<{
     include: {
       informacoesServico: true;
       requisicoesMateriais: true;
