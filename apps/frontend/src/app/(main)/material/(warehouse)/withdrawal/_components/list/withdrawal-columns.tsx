@@ -122,7 +122,13 @@ export const columns = (
     id: 'protocolNumberRMan',
     header: 'RMan',
     enableColumnFilter: false,
-    cell: (props) => props.getValue()
+    cell: (props) => (
+      <Link
+        href={`/maintenance/request/show/${props.row.original.maintenanceRequestId}`}
+      >
+        <span className='text-blue-600'>{props.getValue()}</span>
+      </Link>
+    )
   }),
   columnHelper.accessor((row) => row.materialRequest?.protocolNumber, {
     id: 'protocolNumberRM',

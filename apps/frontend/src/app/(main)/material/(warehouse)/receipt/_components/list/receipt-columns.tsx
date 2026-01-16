@@ -124,7 +124,16 @@ export const columns = (
       id: 'protocolNumberRMan',
       header: 'RMan',
       enableColumnFilter: false,
-      cell: (props) => props.getValue()
+      cell: (props) => {
+        const id =
+          props.row.original.materialRequest?.maintenanceRequestId ||
+          props.row.original.materialWithdrawal?.maintenanceRequestId;
+        return (
+          <Link href={`/maintenance/request/show/${id}`}>
+            <span className='text-blue-600'>{props.getValue()}</span>
+          </Link>
+        );
+      }
     }
   ),
   columnHelper.accessor((row) => row.materialRequest?.protocolNumber, {
