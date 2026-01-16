@@ -750,7 +750,7 @@ export class RequisicoesManutencoesService {
         where: { numeroRequisicao: numeroAno },
         include: {
           informacoesServico: true,
-          requisicoesMateriais: true,
+          requisicoesMateriais: { include: { itensDaRequisicao: true } },
           predios: true,
           arquivos: true,
           historico: true,

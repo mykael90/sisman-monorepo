@@ -36,10 +36,10 @@ export default async function RequisicaoManutencaoShowPage({
       <ManutencaoRequisicaoHeader />
       <ManutencaoRequisicaoGeralInfo data={requisicaoManutencaoData} />
       <ManutencaoRequisicaoDemandInfo data={requisicaoManutencaoData} />
+      <ManutencaoRequisicaoAnexos data={requisicaoManutencaoData} />
       <ManutencaoRequisicaoHistoricoStatus data={requisicaoManutencaoData} />
       <ManutencaoRequisicaoFluxoServico data={requisicaoManutencaoData} />
       <ManutencaoRequisicaoListaMateriais data={requisicaoManutencaoData} />
-      <ManutencaoRequisicaoAnexos data={requisicaoManutencaoData} />
       <ManutencaoRequisicaoEstatisticas data={requisicaoManutencaoData} />
     </div>
   );
