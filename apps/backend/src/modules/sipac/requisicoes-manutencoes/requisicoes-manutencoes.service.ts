@@ -716,7 +716,13 @@ export class RequisicoesManutencoesService {
         include: {
           informacoesServico: true,
           requisicoesMateriais: true,
-          predios: true
+          predios: true,
+          arquivos: true,
+          historico: true,
+          requisicaoManutencaoMae: true,
+          requisicoesManutencaoFilhas: true,
+          unidadeCusto: true,
+          unidadeRequisitante: true
         }
       });
 

@@ -29,6 +29,16 @@ export class RequisicoesManutencoesController {
     return this.requisicoesManutencoesService.list();
   }
 
+  @Get('/numeroano')
+  async showByProtocolNumber(@Query('value') value: string) {
+    return this.requisicoesManutencoesService.showByNumeroAno(value);
+  }
+
+  @Get(':id')
+  async show(@Param('id') id: number) {
+    return this.requisicoesManutencoesService.show(id);
+  }
+
   // Example endpoint to trigger sync of all maintenance requisitions within a date range
   @Get('list/sync-all')
   @HttpCode(HttpStatus.ACCEPTED) // Return 202 Accepted for long-running tasks

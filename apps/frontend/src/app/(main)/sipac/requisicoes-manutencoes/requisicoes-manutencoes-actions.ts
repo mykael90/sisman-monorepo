@@ -5,7 +5,10 @@ import { revalidatePath } from 'next/cache';
 import { getSismanAccessToken } from '@/lib/auth/get-access-token';
 import { fetchApiSisman, SismanApiError } from '@/lib/fetch/api-sisman';
 import { IActionResultForm } from '@/types/types-server-actions';
-import { ISipacRequisicaoManutencaoWithRelations } from './requisicoes-manutencoes-types';
+import {
+  ISipacRequisicaoManutencaoShow,
+  ISipacRequisicaoManutencaoWithRelations
+} from './requisicoes-manutencoes-types';
 import { handleApiAction } from '@/lib/fetch/handle-form-action-sisman';
 
 const PAGE_PATH = '/sipac/requisicoes-manutencoes';
@@ -42,7 +45,9 @@ export async function getSipacRequisicoesManutencao(
   }
 }
 
-export async function showSipacRequisicaoManutencao(id: number) {
+export async function showSipacRequisicaoManutencao(
+  id: number
+): Promise<ISipacRequisicaoManutencaoShow | null> {
   logger.info(
     `(Server Action) showSipacRequisicaoManutencao: Buscando requisição de manutenção com ID ${id}.`
   );
@@ -50,8 +55,8 @@ export async function showSipacRequisicaoManutencao(id: number) {
     const accessTokenSisman = await getSismanAccessToken();
     const data = await fetchApiSisman(
       `${API_RELATIVE_PATH}/${id}`,
-      accessTokenSisman,
-      { cache: 'force-cache' }
+      accessTokenSisman
+      // { cache: 'force-cache' }
     );
     return data;
   } catch (error) {
@@ -59,6 +64,47 @@ export async function showSipacRequisicaoManutencao(id: number) {
       `(Server Action) showSipacRequisicaoManutencao: Erro ao buscar requisição de manutenção com ID ${id}.`,
       error
     );
+    throw error;
+  }
+}
+
+export async function showSipacRequisicaoManutencaoByNumeroAno(
+  value: string
+): Promise<ISipacRequisicaoManutencaoShow | null> {
+  logger.info(
+    `(Server Action) showSipacRequisicaoManutencaoByNumeroAno: Buscando requisição de manutenção com numero/ano ${value}.`
+  );
+  try {
+    const accessTokenSisman = await getSismanAccessToken();
+    const data = await fetchApiSisman(
+      `${API_RELATIVE_PATH}/numeroano`,
+      accessTokenSisman,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        cache: 'no-store' // Garante que a requisição não seja cacheada
+      },
+      { value }
+    );
+    logger.info(
+      `(Server Action) showSipacRequisicaoManutencaoByNumeroAno: Requisição com numero/ano ${value} retornada.`
+    );
+    return data;
+  } catch (error: any) {
+    logger.error(
+      `(Server Action) showSipacRequisicaoManutencaoByNumeroAno: Erro ao buscar requisição com numero/ano ${value}.`,
+      error
+    );
+
+    if (error instanceof SismanApiError) {
+      if (error.statusCode === 404) {
+        return null;
+      } else {
+        throw error;
+      }
+    }
     throw error;
   }
 }

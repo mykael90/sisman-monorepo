@@ -48,6 +48,8 @@ export default async function MaintenanceRequestShowPage({
 
   const { origin } = maintenanceRequestDataBase;
 
+  const maintenanceRequestDataSipac = origin !== 'SIPAC'? null : await 
+
   // Merge the two data sources
   const maintenanceRequestData: IMaintenanceRequestShowWithRelations & {
     itemsBalance?: IItemMaintenanceRequestBalance[];
