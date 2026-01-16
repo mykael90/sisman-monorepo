@@ -715,7 +715,7 @@ export class RequisicoesManutencoesService {
         where: { id },
         include: {
           informacoesServico: true,
-          requisicoesMateriais: true,
+          requisicoesMateriais: { include: { itensDaRequisicao: true } },
           predios: true,
           arquivos: true,
           historico: true,

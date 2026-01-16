@@ -3,6 +3,12 @@ import { ISipacRequisicaoManutencaoShow } from '../../requisicoes-manutencoes-ty
 import { showSipacRequisicaoManutencao } from '../../requisicoes-manutencoes-actions';
 import { ManutencaoRequisicaoHeader } from '../../_components/show/manutencao-requisicao-header';
 import { ManutencaoRequisicaoGeralInfo } from '../../_components/show/manutencao-requisicao-geral-info';
+import { ManutencaoRequisicaoDemandInfo } from '../../_components/show/manutencao-requisicao-demand-info';
+import { ManutencaoRequisicaoHistoricoStatus } from '../../_components/show/manutencao-requisicao-historico-status';
+import { ManutencaoRequisicaoFluxoServico } from '../../_components/show/manutencao-requisicao-fluxo-servico';
+import { ManutencaoRequisicaoAbasMaterial } from '../../_components/show/manutencao-requisicao-abas-material';
+import { ManutencaoRequisicaoEstatisticas } from '../../_components/show/manutencao-requisicao-estatisticas';
+import { ManutencaoRequisicaoAnexos } from '../../_components/show/manutencao-requisicao-anexos';
 
 interface RequisicaoManutencaoShowPageProps {
   params: Promise<{
@@ -29,6 +35,12 @@ export default async function RequisicaoManutencaoShowPage({
     <div className='container mx-auto space-y-6 pb-6'>
       <ManutencaoRequisicaoHeader />
       <ManutencaoRequisicaoGeralInfo data={requisicaoManutencaoData} />
+      <ManutencaoRequisicaoDemandInfo data={requisicaoManutencaoData} />
+      <ManutencaoRequisicaoHistoricoStatus data={requisicaoManutencaoData} />
+      <ManutencaoRequisicaoFluxoServico data={requisicaoManutencaoData} />
+      <ManutencaoRequisicaoAbasMaterial data={requisicaoManutencaoData} />
+      <ManutencaoRequisicaoAnexos data={requisicaoManutencaoData} />
+      <ManutencaoRequisicaoEstatisticas data={requisicaoManutencaoData} />
     </div>
   );
 }
