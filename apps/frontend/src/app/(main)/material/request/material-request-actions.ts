@@ -85,6 +85,20 @@ interface IRequestDataSearch {
   requestProtocolNumber: string;
 }
 
+export async function getRefreshedMaterialRequestShow(id: number) {
+  logger.info(
+    `(Server Action) getRefreshedMaterialRequestShow: Iniciando revalidação para ${PAGE_PATH}/show/${id}.`
+  );
+  try {
+    revalidatePath(`${PAGE_PATH}/show/${id}`);
+  } catch (error) {
+    logger.error(
+      `(Server Action) getRefreshedMaterialRequestShow: Erro ao revalidar caminho ${PAGE_PATH}/show/${id}.`,
+      error
+    );
+  }
+}
+
 export async function showMaterialRequestByProtocol(protocolNumber: string) {
   logger.info(
     `(Server Action) showRequest: Fetching request ${protocolNumber}`

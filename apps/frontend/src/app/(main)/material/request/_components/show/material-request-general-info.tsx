@@ -19,6 +19,7 @@ import {
 } from '@/mappers/material-request-mappers-translate';
 import { IMaterialRequestShowWithRelations } from '@/app/(main)/material/request/material-request-types';
 import { Badge } from '../../../../../../components/ui/badge';
+import { MaterialRequestRefreshButton } from './material-request-refresh';
 
 interface Props {
   data: IMaterialRequestShowWithRelations;
@@ -56,13 +57,14 @@ export function MaterialRequestGeneralInfo({ data }: Props) {
               Origem: {materialOriginDisplayMap[data.origin] || data.origin}
             </Badge>
           </div>
+          {/* <div className='text-left'>
+            <p className='text-muted-foreground text-sm'>ID: {data.id}</p>
+            <p className='text-muted-foreground text-sm'>
+              Criada em: {formatDate(data.createdAt)}
+            </p>
+          </div> */}
         </div>
-        <div className='text-right'>
-          <p className='text-muted-foreground text-sm'>ID: {data.id}</p>
-          <p className='text-muted-foreground text-sm'>
-            Criada em: {formatDate(data.createdAt)}
-          </p>
-        </div>
+        <MaterialRequestRefreshButton data={data} />
       </CardHeader>
       <CardContent className='space-y-6'>
         {/* Grid de Detalhes */}

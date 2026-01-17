@@ -1,57 +1,58 @@
 'use client';
 
-import { format } from 'date-fns';
-import { Button } from '../../../../../../../components/ui/button';
-import { IMaintenanceRequestShowWithRelations } from '../../../maintenance-request-types';
-import { RefreshCcw } from 'lucide-react';
-import { fetchOneAndPersistSipacRequisicoesManutencao } from '../../../../../sipac/requisicoes-manutencoes/requisicoes-manutencoes-actions';
 import { useTransition } from 'react';
+import { IMaterialRequestShowWithRelations } from '../../material-request-types';
+import { handleFetchOneAndPersistRequisicaoMaterialComRequisicaoManutencaoVinculada } from '../../../../sipac/requisicoes-materiais/requisicoes-materiais-actions';
 import { toast } from 'sonner';
-import { getRefreshedMaintenanceRequestShow } from '../../../maintenance-request-actions';
+import { getRefreshedMaterialRequestShow } from '../../material-request-actions';
+import { format } from 'date-fns';
+import { Button } from '../../../../../../components/ui/button';
+import { RefreshCcw } from 'lucide-react';
 
-export function MaintenanceRequestRefreshButton({
+export function MaterialRequestRefreshButton({
   data
 }: {
-  data: IMaintenanceRequestShowWithRelations;
+  data: IMaterialRequestShowWithRelations;
 }) {
   const [isPendingTransition, startTransition] = useTransition();
 
-  const scrapeOrUpdateRequisicaoManutencaoSipac = async (
+  const scrapeOrUpdateRequisicaoMaterialSipac = async (
     formattedProtocolNumber: string,
     id: number
   ) => {
-    const scrapingRequisicaoManutencaoSipac =
-      await fetchOneAndPersistSipacRequisicoesManutencao(
+    const scrapingRequisicaoMaterialSipac =
+      await handleFetchOneAndPersistRequisicaoMaterialComRequisicaoManutencaoVinculada(
         formattedProtocolNumber
       );
-    if (scrapingRequisicaoManutencaoSipac) {
+    if (scrapingRequisicaoMaterialSipac) {
       // When you use await inside a startTransition function, the state updates that happen after the await are not marked as Transitions. You must wrap state updates after each await in a startTransition call:
 
-      // setMaintenanceRequestData(scrapingRequisicaoManutencaoSipac);
+      // setMaterialRequestData(scrapingRequisicaoMaterialSipac);
       console.log(
-        'Requisição de manutenção sincronizada do SIPAC:',
-        scrapingRequisicaoManutencaoSipac
+        'Requisição de material sincronizada do SIPAC:',
+        scrapingRequisicaoMaterialSipac
       );
       startTransition(() => {
         //Uso de recursividade, como foi bem sucedido, vai localizar corretamente e vai exibir em tela na próxima chamada
         toast.success(
-          `Requisição de manutenção nº ${formattedProtocolNumber} sincronizada do SIPAC com sucesso!`
+          `Requisição de material nº ${formattedProtocolNumber} sincronizada do SIPAC com sucesso!`
         );
-        getRefreshedMaintenanceRequestShow(id);
+        getRefreshedMaterialRequestShow(id);
       });
     } else {
       toast.error(
-        `Falha ao importar requisição de manutenção nº ${formattedProtocolNumber} do SIPAC. Verifique os dados e tente novamente.`
+        `Falha ao sincronizar requisição de material nº ${formattedProtocolNumber} do SIPAC. Verifique os dados e tente novamente.`
       );
     }
   };
+
   return (
     <div className='gap-4 lg:flex'>
       {data?.origin === 'SIPAC' ? (
         <div className='flex flex-col self-end'>
           <div className='text-muted-foreground pb-1 text-center text-sm'>
             Última sincronização: <br />
-            Requisição de Manutenção <br />
+            Requisição de Material <br />
             {format(new Date(data?.updatedAt), 'dd/MM/yyyy HH:mm')}
           </div>
           <Button
@@ -62,7 +63,7 @@ export function MaintenanceRequestRefreshButton({
             onClick={() => {
               console.log('Sincronizando com SIPAC...');
               startTransition(() => {
-                scrapeOrUpdateRequisicaoManutencaoSipac(
+                scrapeOrUpdateRequisicaoMaterialSipac(
                   data.protocolNumber,
                   data.id
                 );

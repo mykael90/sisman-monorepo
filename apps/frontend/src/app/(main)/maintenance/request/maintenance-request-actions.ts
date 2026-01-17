@@ -166,7 +166,7 @@ export async function getRefreshedMaintenanceRequestShow(id: number) {
     `(Server Action) getRefreshedMaintenanceRequestShow: Iniciando revalidação para ${PAGE_PATH}/show/${id}.`
   );
   try {
-    revalidatePath(`${PAGE_PATH}/edit/${id}`);
+    revalidatePath(`${PAGE_PATH}/show/${id}`);
   } catch (error) {
     logger.error(
       `(Server Action) getRefreshedMaintenanceRequestShow: Erro ao revalidar caminho ${PAGE_PATH}/show/${id}.`,
