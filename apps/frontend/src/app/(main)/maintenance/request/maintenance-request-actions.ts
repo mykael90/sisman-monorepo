@@ -161,6 +161,20 @@ export async function showMaintenanceRequest(
   }
 }
 
+export async function getRefreshedMaintenanceRequestShow(id: number) {
+  logger.info(
+    `(Server Action) getRefreshedMaintenanceRequestShow: Iniciando revalidação para ${PAGE_PATH}/show/${id}.`
+  );
+  try {
+    revalidatePath(`${PAGE_PATH}/edit/${id}`);
+  } catch (error) {
+    logger.error(
+      `(Server Action) getRefreshedMaintenanceRequestShow: Erro ao revalidar caminho ${PAGE_PATH}/show/${id}.`,
+      error
+    );
+  }
+}
+
 export async function showMaintenanceRequestByProtocol(
   protocolNumber: string
 ): Promise<IMaintenanceRequestShowWithRelations | null> {

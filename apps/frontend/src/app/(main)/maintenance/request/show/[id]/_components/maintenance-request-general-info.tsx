@@ -2,9 +2,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { IMaintenanceRequestShowWithRelations } from '@/app/(main)/maintenance/request/maintenance-request-types';
 import Image from 'next/image';
-import { Building, MapPin, User } from 'lucide-react';
+import { Building, MapPin, RefreshCcw, User } from 'lucide-react';
 import { Badge } from '../../../../../../../components/ui/badge';
 import { format } from 'date-fns';
+import { Button } from '../../../../../../../components/ui/button';
+import { MaintenanceRequestRefreshButton } from './maintenance-request-refresh';
 
 interface MaintenanceRequestGeneralInfoProps {
   data: IMaintenanceRequestShowWithRelations;
@@ -15,43 +17,46 @@ export function MaintenanceRequestGeneralInfo({
 }: MaintenanceRequestGeneralInfoProps) {
   return (
     <Card>
-      <CardHeader>
-        <CardTitle className='text-lg'>
-          Requisição de Manutenção: {data?.protocolNumber}
-        </CardTitle>
-        {/* Seção de Badges de Resumo */}
-        <div className='flex flex-wrap gap-2'>
-          {data?.facilityComplex?.name && (
-            <Badge variant='secondary' className='flex items-center gap-1'>
-              <Building className='h-3 w-3' />
-              {data.facilityComplex.name}
-            </Badge>
-          )}
-          {data?.building?.name && (
-            <Badge variant='secondary' className='flex items-center gap-1'>
-              <MapPin className='h-3 w-3' />
-              {data.building.name}
-            </Badge>
-          )}
-          {data?.sipacUnitRequesting?.sigla && (
-            <Badge variant='secondary' className='flex items-center gap-1'>
-              <User className='h-3 w-3' />
-              {`Solicitante: ${data.sipacUnitRequesting.sigla}`}
-            </Badge>
-          )}
+      <CardHeader className='flex items-start justify-between'>
+        <div>
+          <CardTitle className='text-lg'>
+            Requisição de Manutenção: {data?.protocolNumber}
+          </CardTitle>
+          {/* Seção de Badges de Resumo */}
+          <div className='flex flex-wrap gap-2'>
+            {data?.facilityComplex?.name && (
+              <Badge variant='secondary' className='flex items-center gap-1'>
+                <Building className='h-3 w-3' />
+                {data.facilityComplex.name}
+              </Badge>
+            )}
+            {data?.building?.name && (
+              <Badge variant='secondary' className='flex items-center gap-1'>
+                <MapPin className='h-3 w-3' />
+                {data.building.name}
+              </Badge>
+            )}
+            {data?.sipacUnitRequesting?.sigla && (
+              <Badge variant='secondary' className='flex items-center gap-1'>
+                <User className='h-3 w-3' />
+                {`Solicitante: ${data.sipacUnitRequesting.sigla}`}
+              </Badge>
+            )}
+          </div>
+          {/* <div className='inline-flex flex-row gap-2'>
+            <Label>RMan:</Label>{' '}
+            <p className='text-muted-foreground text-sm'>
+              {data?.protocolNumber}
+            </p>
+          </div> */}
+          {/* <div className='inline-flex flex-row gap-2'>
+            <Label>Unidade:</Label>{' '}
+            <p className='text-muted-foreground text-sm'>
+              {data?.sipacUnitRequesting?.nomeUnidade || 'Unidade não informada'}
+            </p>
+          </div> */}
         </div>
-        {/* <div className='inline-flex flex-row gap-2'>
-          <Label>RMan:</Label>{' '}
-          <p className='text-muted-foreground text-sm'>
-            {data?.protocolNumber}
-          </p>
-        </div> */}
-        {/* <div className='inline-flex flex-row gap-2'>
-          <Label>Unidade:</Label>{' '}
-          <p className='text-muted-foreground text-sm'>
-            {data?.sipacUnitRequesting?.nomeUnidade || 'Unidade não informada'}
-          </p>
-        </div> */}
+        <MaintenanceRequestRefreshButton data={data} />
       </CardHeader>
       <CardContent className='space-y-4'>
         {/* Seção de Descrição e Data */}
