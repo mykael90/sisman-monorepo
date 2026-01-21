@@ -19,17 +19,18 @@ function UserRequest({ onAccept, onCancel }: IUserRequestProps) {
     <div className='mx-auto max-w-2xl'>
       <div className='p-6 py-14'>
         <h1 className='text-sisman-blue mb-4 text-center text-2xl font-bold dark:text-gray-100'>
-          Topa participar de uma pesquisa rápida?
+          Topa responder um último formulário?
         </h1>
         <p className='mb-6 text-justify leading-relaxed text-gray-700 dark:text-gray-300'>
-          Olá! Este protótipo de software faz parte de uma pesquisa de mestrado,
-          que busca entender e contribuir com a atividade de manutenção nas
-          instituições federais de ensino. Por isso, convido você a avaliar o
-          SISMAN e compartilhar sua opinião sobre a interface, usabilidade,
-          funcionalidades. A participação é voluntária, não há qualquer
-          identificação individual, e as respostas serão analisadas de forma
-          agregada, exclusivamente para fins acadêmicos. Sua contribuição é
-          muito importante!
+          Agradeço pela sua participação no questionário anterior! Sua
+          colaboração é fundamental para a avaliação do SISMAN.
+        </p>
+        <p className='mb-6 text-justify leading-relaxed text-gray-700 dark:text-gray-300'>
+          Dando continuidade à pesquisa de mestrado, convido você a responder
+          este segundo e <strong>último</strong> questionário, que tem como
+          objetivo avaliar especificamente o módulo de materiais. A participação
+          permanece voluntária, não há qualquer identificação individual. Sua
+          contribuição é muito importante!
         </p>
 
         <div className='flex justify-end gap-2 pt-2'>

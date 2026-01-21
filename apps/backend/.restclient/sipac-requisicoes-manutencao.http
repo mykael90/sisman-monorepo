@@ -151,3 +151,11 @@ Content-Type: {{contentType}}
 {
     "numeroAno": "13195/2025"
 }
+
+### GET one by id
+# @prompt id
+GET {{urlLocal}}/{{id}}
+
+### GET one by numeroano
+GET {{urlLocal}}/numeroano
+?value=8518/2025

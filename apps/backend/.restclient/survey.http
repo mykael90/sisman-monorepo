@@ -242,3 +242,118 @@ Authorization: Bearer {{token}}
                         }
                 ]
 }
+
+### POST create survey WITH RELATIONS (Avaliação SISMAN)
+POST {{urlLocal}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+  "title": "Avaliação do SISMAN: Módulo de Materiais",
+  "description": "Este questionário tem como objetivo avaliar a adequação funcional, a eficácia operacional e o impacto institucional do módulo de materiais do sistema SISMAN. As respostas são anônimas e serão utilizadas exclusivamente para fins de avaliação e melhoria do sistema.",
+  "questions": [
+    {
+      "text": "Quais operações relacionadas a materiais você realiza no SISMAN? (Marque todas as opções aplicáveis)",
+      "order": 1,
+      "type": "MULTIPLE",
+      "required": true,
+      "surveyQuestionOptions": [
+        { "label": "Reserva de materiais", "value": "reserva", "order": 1 },
+        { "label": "Recebimento de materiais", "value": "recebimento", "order": 2 },
+        { "label": "Retirada de materiais", "value": "retirada", "order": 3 },
+        { "label": "Contagem de estoque", "value": "contagem", "order": 4 },
+        { "label": "Restrição de materiais", "value": "restricao", "order": 5 }
+      ]
+    },
+    {
+      "text": "Você realiza consultas aos dados de materiais do SISMAN em sua rotina operacional?",
+      "order": 2,
+      "type": "BOOLEAN",
+      "required": true
+    },
+    {
+      "text": "O fluxo operacional do sistema para a realização de reservas é coerente com a rotina real do depósito?",
+      "order": 3,
+      "type": "SINGLE",
+      "required": true,
+      "surveyQuestionOptions": [
+        { "label": "Sim, reflete adequadamente a rotina diária.", "value": "sim", "order": 1 },
+        { "label": "Parcialmente, exigindo adaptações operacionais.", "value": "parcialmente", "order": 2 },
+        { "label": "Não, o fluxo do sistema é distante da prática cotidiana.", "value": "nao", "order": 3 },
+        { "label": "N/A. Não utilizo essa funcionalidade.", "value": "na", "order": 4 }
+      ]
+    },
+    {
+      "text": "Qual foi o impacto da implementação da lógica de reservas em relação ao tempo de atendimento no balcão para retirada de materiais?",
+      "order": 4,
+      "type": "SINGLE",
+      "required": true,
+      "surveyQuestionOptions": [
+        { "label": "Houve grande redução do tempo gasto.", "value": "grande_reducao", "order": 1 },
+        { "label": "Houve pequena redução do tempo gasto.", "value": "pequena_reducao", "order": 2 },
+        { "label": "Não houve alteração perceptível.", "value": "sem_alteracao", "order": 3 },
+        { "label": "Houve aumento do tempo gasto.", "value": "aumento", "order": 4 },
+        { "label": "N/A. Não acompanho essa rotina.", "value": "na", "order": 5 }
+      ]
+    },
+    {
+      "text": "A implantação do SISMAN contribuiu para a redução do tempo de abastecimento da frota destinada às rotas de entrega?",
+      "order": 5,
+      "type": "SINGLE",
+      "required": true,
+      "surveyQuestionOptions": [
+        { "label": "Sim", "value": "sim", "order": 1 },
+        { "label": "Não", "value": "nao", "order": 2 },
+        { "label": "N/A. Não acompanho essa rotina", "value": "na", "order": 3 }
+      ]
+    },
+    {
+      "text": "O fluxo operacional do sistema para recebimentos e retiradas de materiais é coerente com a rotina real do depósito?",
+      "order": 6,
+      "type": "SINGLE",
+      "required": true,
+      "surveyQuestionOptions": [
+        { "label": "Sim, reflete adequadamente a rotina diária.", "value": "sim", "order": 1 },
+        { "label": "Parcialmente, exigindo adaptações operacionais.", "value": "parcialmente", "order": 2 },
+        { "label": "Não, o fluxo do sistema é distante da prática cotidiana.", "value": "nao", "order": 3 },
+        { "label": "N/A. Não utilizo essa funcionalidade.", "value": "na", "order": 4 }
+      ]
+    },
+    {
+      "text": "O uso do SISMAN contribuiu para a substituição de registros manuais ou informais por um processo mais transparente, eficiente e padronizado? (1: Discordo totalmente — 5: Concordo totalmente)",
+      "order": 7,
+      "type": "RATING",
+      "required": true
+    },
+    {
+      "text": "O SISMAN aumentou a confiabilidade das informações sobre estoque e movimentação de materiais em relação ao processo anterior? (1: Discordo totalmente — 5: Concordo totalmente)",
+      "order": 8,
+      "type": "RATING",
+      "required": true
+    },
+    {
+      "text": "Como você avalia o impacto do módulo de materiais sobre o comportamento dos profissionais da operação quanto ao uso e controle de materiais?",
+      "order": 9,
+      "type": "SINGLE",
+      "required": true,
+      "surveyQuestionOptions": [
+        { "label": "Observa-se maior zelo e senso de responsabilidade, devido à rastreabilidade dos materiais.", "value": "maior_zelo", "order": 1 },
+        { "label": "Não houve mudança perceptível de comportamento.", "value": "sem_mudanca", "order": 2 },
+        { "label": "O registro digital tornou o processo mais burocrático, sem impacto no zelo pelos materiais.", "value": "burocratico", "order": 3 },
+        { "label": "N/A. Não possuo elementos suficientes para avaliar.", "value": "na", "order": 4 }
+      ]
+    },
+    {
+      "text": "Na sua percepção, o SISMAN contribui para a formalização dos processos, a rastreabilidade das operações e o fortalecimento da governança institucional? (1: Discordo totalmente — 5: Concordo totalmente)",
+      "order": 10,
+      "type": "RATING",
+      "required": true
+    },
+    {
+      "text": "Se fosse possível incluir apenas uma nova funcionalidade no sistema para o módulo de materiais, qual seria?",
+      "order": 11,
+      "type": "TEXT",
+      "required": false
+    }
+  ]
+}

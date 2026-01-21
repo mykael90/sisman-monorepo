@@ -2189,7 +2189,7 @@ model Survey {
 // 2. As Perguntas (Definição do que será perguntado)
 model SurveyQuestion {
   id       String             @id @default(uuid())
-  text     String // O enunciado da pergunta
+  text     String             @db.Text // O enunciado da pergunta
   order    Int // Para ordenar as perguntas na tela (1, 2, 3...)
   type     SurveyQuestionType @default(RATING)
   required Boolean            @default(true)
