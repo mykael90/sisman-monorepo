@@ -511,7 +511,8 @@ export class MaintenanceRequestsService {
             }
           },
           _sum: {
-            quantityRequested: true
+            quantityRequested: true,
+            quantityDelivered: true
           }
         })
       ]);
@@ -523,6 +524,7 @@ export class MaintenanceRequestsService {
       // TODO; ggregatedRequesteds
 
       const materialGlobalIdMap = new Map<string, undefined>();
+
       aggregatedReceiveds.forEach((materialReceived) => {
         materialGlobalIdMap.set(materialReceived.materialId, undefined);
       });
@@ -575,6 +577,14 @@ export class MaintenanceRequestsService {
         );
       });
 
+      const deliveredMap = new Map<string, Prisma.Decimal>();
+      aggregatedRequesteds.forEach((item) => {
+        deliveredMap.set(
+          item.requestedGlobalMaterialId,
+          item._sum.quantityDelivered ?? new Prisma.Decimal(0)
+        );
+      });
+
       const withdrawnMap = new Map<string, Prisma.Decimal>();
       aggregatedWithdrawals.forEach((item) => {
         withdrawnMap.set(
@@ -605,12 +615,18 @@ export class MaintenanceRequestsService {
         const quantityRequestedSum =
           requestedMap.get(globalMaterialId) ?? new Prisma.Decimal(0);
 
+        // Ajuste necessário para calcular o saldo potencial.
+        const quantityDeliveredSum =
+          deliveredMap.get(globalMaterialId) ?? new Prisma.Decimal(0);
+
         // Realizar os cálculos usando os métodos de Decimal.js (a API é a mesma)
         const effectiveBalance =
           quantityReceivedSum.minus(quantityWithdrawnSum);
 
-        const potentialBalance =
-          quantityRequestedSum.minus(quantityWithdrawnSum);
+        // correção. saldo efetivo + o que falta ser entregue da requisição.
+        const potentialBalance = effectiveBalance.plus(
+          quantityRequestedSum.minus(quantityDeliveredSum)
+        );
 
         // Montar o objeto de retorno, convertendo para número no final
         return {
