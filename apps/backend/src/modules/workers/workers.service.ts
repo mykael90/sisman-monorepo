@@ -349,4 +349,46 @@ export class WorkersService {
       throw new NotFoundException(`Worker ${id} not found`);
     }
   }
+
+  async listWorkersWithdrawals(queryParams?: {
+    startDate?: string;
+    endDate?: string;
+  }) {
+    try {
+      const whereArgs: Prisma.WorkerWhereInput = {};
+
+      if (queryParams && Object.keys(queryParams).length) {
+        const { startDate, endDate } = queryParams;
+
+        if (startDate && endDate) {
+          // whereArgs.id = 191;
+          whereArgs.withdrawalsCollected = {
+            every: {
+              createdAt: {
+                gte: new Date(startDate),
+                lte: new Date(endDate)
+              }
+            }
+          };
+        }
+      }
+
+      return await this.prisma.worker.findMany({
+        include: {
+          withdrawalsCollected: {
+            include: { items: { include: { globalMaterial: true } } }
+          }
+        },
+        where: whereArgs,
+        orderBy: {
+          name: 'asc'
+        }
+      });
+    } catch (error) {
+      handlePrismaError(error, this.logger, 'WorkersService', {
+        operation: 'MaterialStockMovementsService'
+      });
+      throw error;
+    }
+  }
 }

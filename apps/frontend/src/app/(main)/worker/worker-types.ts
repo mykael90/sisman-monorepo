@@ -142,3 +142,11 @@ export type IWorkerContractRemove = {
 };
 
 export type IWorkerContractSelect = Prisma.WorkerContractSelect;
+
+export type IWorkerWithdrawals = Prisma.WorkerGetPayload<{
+  include: {
+    withdrawalsCollected: {
+      include: { items: { include: { globalMaterial: true } } };
+    };
+  };
+}>;

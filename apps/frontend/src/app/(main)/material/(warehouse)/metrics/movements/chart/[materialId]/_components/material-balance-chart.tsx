@@ -221,7 +221,7 @@ export function MaterialIdMovementMetricsPage({
       }));
   }, [metricsDataByMaterialId]);
 
-  // 2. Dados para o gráfico de Saldo (Balance) - Período Completo
+  // 2. Dados para o gráfico de Balanço (Balance) - Período Completo
   const balanceChartData = useMemo(() => {
     if (!metricsDataByMaterialId) return [];
     return generateBalanceChartData(metricsDataByMaterialId);
@@ -231,9 +231,9 @@ export function MaterialIdMovementMetricsPage({
   const chartConfig = {
     inQuantity: { label: 'Entradas', color: 'hsl(var(--chart-2))' }, // Verde padrão Shadcn ou custom
     outQuantity: { label: 'Saídas', color: 'hsl(var(--destructive))' },
-    simpleBalance: { label: 'Saldo Mensal', color: 'hsl(var(--primary))' },
+    simpleBalance: { label: 'Balanço Mensal', color: 'hsl(var(--primary))' },
     accumulatedBalance: {
-      label: 'Saldo Acumulado',
+      label: 'Balanço Acumulado',
       color: 'hsl(var(--chart-1))'
     }
   } satisfies ChartConfig;
@@ -261,7 +261,7 @@ export function MaterialIdMovementMetricsPage({
           {/* --- NOVO GRÁFICO: SALDO (COMPOSED CHART) --- */}
           <Card className='w-full'>
             <CardHeader>
-              <CardTitle>Evolução de Saldo (Período Completo)</CardTitle>
+              <CardTitle>Evolução de Balanço (Período Completo)</CardTitle>
               <CardDescription>
                 Comparativo entre o saldo mensal (barras) e o acumulado no tempo
                 (linha).
@@ -304,10 +304,10 @@ export function MaterialIdMovementMetricsPage({
 
                   {/* <ChartLegend content={<ChartLegendContent />} /> */}
 
-                  {/* Barras: Saldo Mensal (Verde se > 0, Vermelho se < 0) */}
+                  {/* Barras: Balanço Mensal (Verde se > 0, Vermelho se < 0) */}
                   <Bar
                     dataKey='simpleBalance'
-                    name='Saldo Mensal'
+                    name='Balanço Mensal'
                     radius={[4, 4, 0, 0]}
                     barSize={40}
                   >
@@ -320,11 +320,11 @@ export function MaterialIdMovementMetricsPage({
                     ))}
                   </Bar>
 
-                  {/* Linha: Saldo Acumulado */}
+                  {/* Linha: Balanço Acumulado */}
                   <Line
                     type='monotone'
                     dataKey='accumulatedBalance'
-                    name='Saldo Acumulado'
+                    name='Balanço Acumulado'
                     stroke='var(--color-accumulatedBalance)'
                     strokeWidth={3}
                     dot={false}

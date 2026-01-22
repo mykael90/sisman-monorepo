@@ -10,6 +10,7 @@ import {
   IWorkerAdd,
   IWorkerEdit,
   IWorkerSpecialtyWithRelations,
+  IWorkerWithdrawals,
   IWorkerWithRelations
 } from './worker-types';
 // import {
@@ -345,5 +346,48 @@ export async function updateWorker(
       submittedData: data,
       message: 'Erro inesperado.'
     };
+  }
+}
+
+export async function listWorkersWithdrawals(params?: {
+  from?: Date;
+  to?: Date;
+}): Promise<IWorkerWithdrawals[]> {
+  const urlParams = new URLSearchParams();
+  if (params?.from) {
+    urlParams.append('startDate', params.from.toISOString());
+  }
+
+  if (params?.to) {
+    urlParams.append('endDate', params.to.toISOString());
+  }
+
+  console.log(urlParams.toString());
+
+  try {
+    const accessTokenSisman = await getSismanAccessToken();
+    logger.info(
+      `(Server Action) listWorkersWithdrawals: Buscando lista de trabalhadores com retiradas.`
+    );
+
+    const data = await fetchApiSisman(
+      `${API_RELATIVE_PATH}/withdrawals`,
+      accessTokenSisman,
+      { cache: 'no-store' },
+      {
+        startDate: urlParams.get('startDate'),
+        endDate: urlParams.get('endDate')
+      }
+    );
+    logger.info(
+      `(Server Action) listWorkersWithdrawals: ${data.length} workers returned`
+    );
+    return data;
+  } catch (error) {
+    logger.error(
+      `(Server Action) listWorkersWithdrawals: Error fetching`,
+      error
+    );
+    throw error;
   }
 }

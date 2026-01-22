@@ -119,26 +119,6 @@ export class WorkersController {
     return this.workersService.listWithActiveContract();
   }
 
-  @Get(':id')
-  @ApiEndpointSwagger({
-    summary: 'Buscar worker por ID',
-    description: 'Retorna um worker específico pelo seu ID.',
-    response: {
-      status: HttpStatus.OK,
-      description: 'Worker encontrado.',
-      type: WorkerWithRelationsResponseDto
-    },
-    errors: [
-      {
-        status: HttpStatus.NOT_FOUND,
-        description: 'Worker não encontrado.'
-      }
-    ]
-  })
-  async show(@Param('id', ParseIntPipe) id: number) {
-    return this.workersService.show(id);
-  }
-
   @Roles(Role.Adm, Role.AdmWorkers, Role.SuperWorkers)
   @Put(':id')
   @ApiEndpointSwagger({
@@ -190,5 +170,56 @@ export class WorkersController {
   })
   async delete(@Param('id', ParseIntPipe) id: number): Promise<void> {
     await this.workersService.delete(id);
+  }
+
+  /**
+   * Lista de trabalhadores com saídas de materiais associadas.
+   */
+  @Get('withdrawals')
+  @ApiEndpointSwagger({
+    summary: 'Listar trabalhadores e as saídas de materiais associadas a eles',
+    description:
+      'Retorna uma lista de trabalhadores com suas saídas de materiais associadas.',
+    response: {
+      status: HttpStatus.OK,
+      description: 'Trabalhadores com materiais associados',
+      type: Object // Usar Object ou um DTO mais específico se for criado
+    },
+    errors: [
+      {
+        status: HttpStatus.NOT_FOUND,
+        description:
+          'Listagem de trabalhadores sem saídas de materiais associadas'
+      }
+    ]
+  })
+  async listWorkersWithdrawals(
+    @Query()
+    queryParams: {
+      startDate?: string;
+      endDate?: string;
+    }
+  ) {
+    return this.workersService.listWorkersWithdrawals(queryParams);
+  }
+
+  @Get(':id')
+  @ApiEndpointSwagger({
+    summary: 'Buscar worker por ID',
+    description: 'Retorna um worker específico pelo seu ID.',
+    response: {
+      status: HttpStatus.OK,
+      description: 'Worker encontrado.',
+      type: WorkerWithRelationsResponseDto
+    },
+    errors: [
+      {
+        status: HttpStatus.NOT_FOUND,
+        description: 'Worker não encontrado.'
+      }
+    ]
+  })
+  async show(@Param('id', ParseIntPipe) id: number) {
+    return this.workersService.show(id);
   }
 }

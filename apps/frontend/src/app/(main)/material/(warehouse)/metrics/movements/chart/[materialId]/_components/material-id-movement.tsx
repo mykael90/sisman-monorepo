@@ -221,7 +221,7 @@ export function MaterialIdMovementMetricsPage({
       }));
   }, [metricsDataByMaterialId]);
 
-  // 2. Dados para o gráfico de Saldo (Balance) - Período Completo
+  // 2. Dados para o gráfico de Balanço (Balance) - Período Completo
   const balanceChartData = useMemo(() => {
     if (!metricsDataByMaterialId) return [];
     return generateBalanceChartData(metricsDataByMaterialId);
@@ -231,9 +231,9 @@ export function MaterialIdMovementMetricsPage({
   const chartConfig = {
     inQuantity: { label: 'Entradas', color: 'var(--accent)' }, // Verde padrão Shadcn ou custom
     outQuantity: { label: 'Saídas', color: 'var(--destructive)' },
-    simpleBalance: { label: 'Saldo Mensal', color: 'var(--primary)' },
+    simpleBalance: { label: 'Balanço Mensal', color: 'var(--primary)' },
     accumulatedBalance: {
-      label: 'Saldo Acumulado',
+      label: 'Balanço Acumulado',
       color: 'var(--secondary)'
     }
   } satisfies ChartConfig;
@@ -304,10 +304,10 @@ export function MaterialIdMovementMetricsPage({
 
                   <ChartLegend content={<ChartLegendContent />} />
 
-                  {/* Barras: Saldo Mensal (Verde se > 0, Vermelho se < 0) */}
+                  {/* Barras: Balanço Mensal (Verde se > 0, Vermelho se < 0) */}
                   <Bar
                     dataKey='simpleBalance'
-                    name='Saldo Mensal'
+                    name='Balanço Mensal'
                     radius={[4, 4, 0, 0]}
                     barSize={40}
                   >
@@ -320,11 +320,11 @@ export function MaterialIdMovementMetricsPage({
                     ))}
                   </Bar>
 
-                  {/* Linha: Saldo Acumulado */}
+                  {/* Linha: Balanço Acumulado */}
                   <Line
                     type='monotone'
                     dataKey='accumulatedBalance'
-                    name='Saldo Acumulado'
+                    name='Balanço Acumulado'
                     stroke='var(--color-accumulatedBalance)'
                     strokeWidth={3}
                     dot={false}
