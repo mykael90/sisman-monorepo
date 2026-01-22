@@ -1,7 +1,5 @@
 'use client';
 
-'use client';
-
 import { SetStateAction, useCallback, useRef, useState } from 'react';
 import { SectionListHeaderSmall } from '@/components/section-list-header-small';
 import {

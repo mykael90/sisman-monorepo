@@ -15,3 +15,5 @@ Esta é uma lista de dívidas técnicas conhecidas no projeto.
     - **Problema:** O backend espera em muitos modelos (MaterialPickingOrder, MaterialWithdraw, etc) DTOs complexos, como: `data: {material :{id: int}}` ao invés de `data:{materialId:int}`. Isso aumenta a complexidade do código do frontend e a carga de dados desnecessariamente. Essa abordagem também dificulta o envio de anexos, pois o `FormData` de requisições `multipart/form-data` possui uma estrutura plana ("flat"), o que conflita com a necessidade de aninhar objetos JSON.
     - **Solução:** Refatorar os DTOs e os respectivos controllers para aceitar Ids diretos (ex: `materialId: int`) para relações.
     - **Benefício:** Simplificação do código do frontend, redução da carga de dados e uma API mais limpa e intuitiva.
+
+1. Respostas de listagens com muitos aninhamentos.

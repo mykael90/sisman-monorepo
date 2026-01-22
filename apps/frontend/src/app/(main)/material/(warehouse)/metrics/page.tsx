@@ -1,12 +1,4 @@
-'use client';
-import { Suspense } from 'react';
-import Loading from '@/components/loading';
-import { MetricsListPage } from './_components/list/metrics-list';
-
+import { redirect, RedirectType } from 'next/navigation';
 export default function Page() {
-  return (
-    <Suspense fallback={<Loading />}>
-      <MetricsListPage />
-    </Suspense>
-  );
+  redirect('metrics/movements', RedirectType.replace);
 }

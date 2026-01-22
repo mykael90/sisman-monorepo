@@ -42,3 +42,59 @@ export interface IMaterialStockMovementMetricsByWarehouse {
   totalRestrictionValue?: string; // Alterado de Decimal para string
   operations: IOperationMetrics[];
 }
+
+/**
+ * Interface para representar as métricas detalhadas de um mês específico.
+ */
+export interface IMonthlyMetric {
+  year: number;
+  month: number;
+  count: number;
+  totalQuantity: string;
+  totalValue: string;
+}
+
+/**
+ * Interface para representar o agrupamento de operações por tipo contendo a lista de meses.
+ */
+export interface IOperationByMonth {
+  operation: string; // Ex: 'ADJUSTMENT', 'IN', 'OUT', 'RESERVATION'
+  months: IMonthlyMetric[];
+}
+
+/**
+ * Interface principal para a resposta HTTP contendo os dados do material,
+ * totais acumulados e o histórico de operações por mês.
+ */
+export interface IMaterialStockMovementMetricsByWarehouseAndByMaterial {
+  materialId: string;
+  materialName: string;
+
+  // Totais de Entrada (IN)
+  totalInCount: number;
+  totalInQuantity: string;
+  totalInValue: string;
+
+  // Totais de Saída (OUT)
+  totalOutCount: number;
+  totalOutQuantity: string;
+  totalOutValue: string;
+
+  // Totais de Ajuste (ADJUSTMENT)
+  totalAdjustmentCount: number;
+  totalAdjustmentQuantity: string;
+  totalAdjustmentValue: string;
+
+  // Totais de Reserva (RESERVATION)
+  totalReservationCount: number;
+  totalReservationQuantity: string;
+  totalReservationValue: string;
+
+  // Totais de Restrição (RESTRICTION)
+  totalRestrictionCount: number;
+  totalRestrictionQuantity: string;
+  totalRestrictionValue: string;
+
+  // Lista de operações detalhadas por mês
+  operationsByMonth: IOperationByMonth[];
+}
