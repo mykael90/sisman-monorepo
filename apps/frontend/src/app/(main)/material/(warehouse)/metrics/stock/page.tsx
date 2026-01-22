@@ -1,3 +1,5 @@
+import UnderConstruction from '../../../../under-construction/page';
+
 export default function Page() {
-  return <div>Hello stock</div>;
+  return <UnderConstruction />;
 }
