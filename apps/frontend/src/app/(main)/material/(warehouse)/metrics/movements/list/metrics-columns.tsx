@@ -585,14 +585,14 @@ export const columns = (
     header: 'Ações',
     cell: ({ row }) => (
       <div className='flex gap-2'>
-        <Button
+        {/* <Button
           title='Ver detalhes das métricas do material'
           variant='ghost'
           size='icon'
           onClick={() => configuredActions.onViewDetails(row)}
         >
           <FileText className='h-4 w-4' />
-        </Button>
+        </Button> */}
         <Button
           title='Ver gráficos das métricas do material'
           variant='ghost'
