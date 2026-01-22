@@ -56,7 +56,7 @@ export function WorkersWithdrawalsListPage() {
 
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
-    pageSize: 10
+    pageSize: 100
   });
 
   const setGlobalFilterValue = useCallback(
