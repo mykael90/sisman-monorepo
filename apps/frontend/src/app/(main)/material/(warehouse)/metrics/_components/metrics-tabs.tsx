@@ -7,7 +7,10 @@ export function MetricsTabs() {
     <Tabs defaultValue='movements' className='space-y-4'>
       {/* Lista de Navegação (Abas) */}
       <TabsList className='grid h-auto w-full grid-cols-1 md:grid-cols-4'>
-        <Link href={'movements'} className='flex items-center gap-2'>
+        <Link
+          href={'/material/metrics/movements'}
+          className='flex items-center gap-2'
+        >
           <TabsTrigger
             value='movements'
             className='flex items-center gap-2 py-2'
@@ -18,21 +21,30 @@ export function MetricsTabs() {
         </Link>
 
         <Link href={'workers'} className='flex items-center gap-2'>
-          <TabsTrigger value='workers' className='flex items-center gap-2 py-2'>
+          <TabsTrigger
+            value='/material/metrics/workers'
+            className='flex items-center gap-2 py-2'
+          >
             <HardHat className='h-4 w-4' />
             <span className='truncate'>Profissionais </span>
           </TabsTrigger>
         </Link>
 
         <Link href={'users'} className='flex items-center gap-2'>
-          <TabsTrigger value='users' className='flex items-center gap-2 py-2'>
+          <TabsTrigger
+            value='/material/metrics/users'
+            className='flex items-center gap-2 py-2'
+          >
             <User2 className='h-4 w-4' />
             <span className='truncate'>Usuarios </span>
           </TabsTrigger>
         </Link>
 
         <Link href={'stock'} className='flex items-center gap-2'>
-          <TabsTrigger value='stock' className='flex items-center gap-2 py-2'>
+          <TabsTrigger
+            value='/material/metrics/stock'
+            className='flex items-center gap-2 py-2'
+          >
             <Package2Icon className='h-4 w-4 -scale-x-100' />
             <span className='truncate'>Inventário </span>
           </TabsTrigger>

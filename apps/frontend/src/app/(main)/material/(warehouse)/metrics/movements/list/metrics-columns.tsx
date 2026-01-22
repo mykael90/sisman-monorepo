@@ -7,7 +7,14 @@ import {
   useReactTable
 } from '@tanstack/react-table';
 import { Button } from '@/components/ui/button';
-import { FileText, ChevronRight, ChevronDown, ArrowUpDown } from 'lucide-react';
+import {
+  FileText,
+  ChevronRight,
+  ChevronDown,
+  ArrowUpDown,
+  ChartBar,
+  ChartArea
+} from 'lucide-react';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import {
   IMaterialStockMovementMetricsByWarehouse,
@@ -53,6 +60,11 @@ export const createActions = (
     console.log('View material metrics details', row.original);
     // TODO: Implementar navegação para uma página de detalhes de métricas, se houver.
     // router.push(`metrics/details/${row.original.materialId}`);
+  },
+  onViewChart: (row: Row<IMaterialStockMovementMetricsByWarehouse>) => {
+    console.log('View material metrics chart', row.original);
+    // TODO: Implementar navegação para uma página de gráfico de métricas, se houver.
+    router.push(`movements/chart/${row.original.materialId}`);
   }
 });
 
@@ -580,6 +592,14 @@ export const columns = (
           onClick={() => configuredActions.onViewDetails(row)}
         >
           <FileText className='h-4 w-4' />
+        </Button>
+        <Button
+          title='Ver gráficos das métricas do material'
+          variant='ghost'
+          size='icon'
+          onClick={() => configuredActions.onViewChart(row)}
+        >
+          <ChartArea className='h-4 w-4' />
         </Button>
       </div>
     )
