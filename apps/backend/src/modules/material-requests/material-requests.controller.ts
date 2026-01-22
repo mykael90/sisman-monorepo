@@ -63,6 +63,26 @@ export class MaterialRequestsController {
   }
 
   /**
+   * Lista todas as requisições de material com restrições.
+   */
+  @Get('with-restrictions')
+  @ApiEndpointSwagger({
+    summary: 'Listar Requisições de Material com Restrições',
+    description:
+      'Retorna uma lista de todas as requisições de material com restrições.',
+    response: {
+      status: HttpStatus.OK,
+      description:
+        'Lista de requisições com restrições recuperada com sucesso.',
+      type: MaterialRequestWithRelationsResponseDto, // Usa a DTO de resposta
+      isArray: true // Indica que a resposta é um array
+    }
+  })
+  async listWithRestrictions(): Promise<any[]> {
+    return this.materialRequestsService.listWithRestrictions();
+  }
+
+  /**
    * Lista todas as requisições de material.
    */
   @Get()

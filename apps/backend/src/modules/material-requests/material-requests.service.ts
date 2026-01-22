@@ -934,4 +934,75 @@ export class MaterialRequestsService {
       return updateItemsForRestrictionOrder;
     }
   }
+
+  async listWithRestrictions() {
+    // Data limite: 30 dias atrás
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    thirtyDaysAgo.setHours(0, 0, 0, 0);
+
+    try {
+      const materialRequests =
+        await this.prisma.materialRestrictionOrder.findMany({
+          select: {
+            id: true,
+            status: true,
+            targetMaterialRequest: {
+              select: {
+                id: true,
+                protocolNumber: true,
+                requestDate: true,
+                maintenanceRequest: {
+                  select: {
+                    id: true,
+                    protocolNumber: true,
+                    completedAt: true,
+                    updatedAt: true,
+                    requestedAt: true
+                  }
+                }
+              }
+            }
+          },
+          orderBy: {
+            targetMaterialRequest: {
+              requestDate: 'desc'
+            }
+          },
+          where: {
+            AND: {
+              status: {
+                not: RestrictionOrderStatus.FREE
+              },
+              targetMaterialRequest: {
+                maintenanceRequest: {
+                  // Apenas registros que NÃO foram atualizados nos últimos 30 dias
+                  updatedAt: {
+                    lt: thirtyDaysAgo
+                  }
+                }
+              }
+              // targetMaterialRequest: {
+              //   maintenanceRequest: {
+              //     completedAt: {
+              //       not: null
+              //     }
+              //   }
+              // }
+            }
+          }
+        });
+
+      this.logger.log(
+        `Retornando ${materialRequests.length} materialRestrictionOrders.`
+      );
+
+      return materialRequests;
+    } catch (error) {
+      handlePrismaError(error, this.logger, 'MaterialRequestsService', {
+        operation: 'listWithRestrictions'
+      });
+      throw error;
+    }
+  }
 }

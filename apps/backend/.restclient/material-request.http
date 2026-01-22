@@ -12,6 +12,10 @@ GET {{urlLocal}}
 &endDate=2026-12-31T23:59:59Z
 Authorization: Bearer {{token}}
 
+### GET all with restrictions
+GET {{urlLocal}}/with-restrictions
+Authorization: Bearer {{token}}
+
 ### GET one
 # @prompt id
 GET {{urlLocal}}/{{id}}

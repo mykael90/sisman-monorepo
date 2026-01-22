@@ -108,3 +108,9 @@ Authorization: Bearer {{token}}
 DELETE {{urlLocal}}/{{workerId}}
 Content-Type: {{contentType}}
 Authorization: Bearer {{token}}
+
+### GET workers with withdrawals
+GET {{urlLocal}}/withdrawals/
+?startDate=2025-12-20T00:00:00Z
+&endDate=2025-12-31T23:59:59Z
+Authorization: Bearer {{token}}
