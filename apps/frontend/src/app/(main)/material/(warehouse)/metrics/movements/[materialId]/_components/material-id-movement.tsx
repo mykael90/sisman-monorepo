@@ -125,11 +125,11 @@ export function MaterialIdMovementMetricsPage({
   const chartConfig: ChartConfig = {
     inQuantity: {
       label: 'Entradas',
-      color: 'hsl(12 76% 61%)' // Um tom de laranja/vermelho
+      color: 'var(--accent)'
     },
     outQuantity: {
       label: 'Saídas',
-      color: 'hsl(221 83% 53%)' // Um tom de azul
+      color: 'var(--destructive)' // Um tom de azul
     }
   } satisfies ChartConfig;
 
@@ -197,7 +197,17 @@ export function MaterialIdMovementMetricsPage({
                 tickMargin={8}
                 tickFormatter={(value) => value.slice(0, 3)}
               />
-              <YAxis tickLine={false} axisLine={false} tickMargin={8} />
+              <YAxis
+                tickLine={false}
+                axisLine={false}
+                tickMargin={8} // 2. ADIÇÃO IMPORTANTE: Padding interno no eixo
+                // Isso força o eixo a ter espaço extra acima do maior valor
+                padding={{ top: 30 }}
+                // 3. (Opcional) Força o início no 0 e o topo automático
+                domain={[0, 'auto']}
+                // 4. (Opcional) Aumente a largura se os números forem grandes (ex: 10.000) para não cortar à esquerda
+                width={40}
+              />
               <ChartTooltip
                 cursor={false}
                 content={<ChartTooltipContent indicator='dot' />}
