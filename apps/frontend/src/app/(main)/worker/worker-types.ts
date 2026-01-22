@@ -148,5 +148,19 @@ export type IWorkerWithdrawals = Prisma.WorkerGetPayload<{
     withdrawalsCollected: {
       include: { items: { include: { globalMaterial: true } } };
     };
+    workerContracts: {
+      include: {
+        contract: {
+          include: {
+            providers: true;
+          };
+        };
+        workerSpecialty: true;
+        sipacUnitLocation: true;
+      };
+      orderBy: {
+        startDate: 'desc';
+      };
+    };
   };
 }>;

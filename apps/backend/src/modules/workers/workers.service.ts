@@ -356,30 +356,53 @@ export class WorkersService {
   }) {
     try {
       const whereArgs: Prisma.WorkerWhereInput = {};
+      const withdrawalWhere: Prisma.MaterialWithdrawalWhereInput = {};
 
       if (queryParams && Object.keys(queryParams).length) {
         const { startDate, endDate } = queryParams;
 
         if (startDate && endDate) {
-          // whereArgs.id = 191;
+          const dateFilter = {
+            gte: new Date(startDate),
+            lte: new Date(endDate)
+          };
+
           whereArgs.withdrawalsCollected = {
-            every: {
-              createdAt: {
-                gte: new Date(startDate),
-                lte: new Date(endDate)
-              }
+            some: {
+              withdrawalDate: dateFilter
             }
           };
+
+          withdrawalWhere.withdrawalDate = dateFilter;
         }
       }
 
       return await this.prisma.worker.findMany({
+        where: whereArgs,
         include: {
           withdrawalsCollected: {
-            include: { items: { include: { globalMaterial: true } } }
+            where: withdrawalWhere,
+            include: {
+              items: {
+                include: { globalMaterial: true }
+              }
+            }
+          },
+          workerContracts: {
+            include: {
+              contract: {
+                include: {
+                  providers: true
+                }
+              },
+              workerSpecialty: true,
+              sipacUnitLocation: true
+            },
+            orderBy: {
+              startDate: 'desc'
+            }
           }
         },
-        where: whereArgs,
         orderBy: {
           name: 'asc'
         }
