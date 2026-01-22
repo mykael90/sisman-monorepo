@@ -3,7 +3,14 @@
 import { useRouter } from 'next/navigation';
 import { useWarehouseContext } from '../../../../../choose-warehouse/context/warehouse-provider';
 import { useState } from 'react';
-import { addDays, endOfDay, startOfDay, subDays } from 'date-fns';
+import {
+  addDays,
+  endOfDay,
+  setYear,
+  startOfDay,
+  startOfYear,
+  subDays
+} from 'date-fns';
 import { DateRange } from 'react-day-picker';
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
@@ -56,10 +63,11 @@ export function MaterialIdMovementMetricsPage({
   const { warehouse } = useWarehouseContext();
   const router = useRouter();
   // const isDesktop = useMediaQuery('(min-width: 768px)');
+  const currentYear = new Date().getFullYear();
 
   const [date, setDateState] = useState<DateRange | undefined>({
-    from: subDays(startOfDay(new Date()), 100),
-    to: addDays(endOfDay(new Date()), 100) // Usar endOfDay para definir o final do dia
+    from: startOfYear(setYear(new Date(), currentYear - 5)), // 5 anos para tras
+    to: addDays(endOfDay(new Date()), 0) // Usar endOfDay para definir o final do dia
   });
 
   const {
