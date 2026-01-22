@@ -179,7 +179,7 @@ export function TableTanstackFaceted<TData>({
                                           ?.entries() || []
                                       )
                                         .sort((a, b) => b[1] - a[1])
-                                        .slice(0, 5)
+                                        .slice(0, 10)
                                         .map(([value, count]) => {
                                           const isSelected = (
                                             (header.column.getFilterValue() as string[]) ||

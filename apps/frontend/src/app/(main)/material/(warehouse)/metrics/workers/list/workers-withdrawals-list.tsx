@@ -36,6 +36,7 @@ import {
   startOfMonth,
   subDays
 } from 'date-fns';
+import { DateRangeFilter } from '../../../../../../../components/filters/date-range-filter';
 
 export function WorkersWithdrawalsListPage() {
   const router = useRouter();
@@ -121,16 +122,12 @@ export function WorkersWithdrawalsListPage() {
 
       <div className='mt-4 mb-4 h-auto rounded-xl border-0 bg-white px-4 py-3.5'>
         <div className='text-md mb-2 font-semibold'>
-          Retiradas retornadas no intervalo das datas
+          Métricas retornadas no intervalo das datas
         </div>
 
         <Separator className='my-2' />
         <div className='flex flex-col gap-4 md:flex-row'>
-          <WorkersWithdrawalsFilters
-            date={date}
-            setDate={setDate}
-            onClearFilters={handleClearFilters}
-          />
+          <DateRangeFilter date={date} setDate={setDate} />
         </div>
       </div>
 

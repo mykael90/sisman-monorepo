@@ -15,6 +15,11 @@ import {
   ChartBar,
   ChartArea
 } from 'lucide-react';
+import {
+  differenceInDays,
+  differenceInMonths,
+  differenceInYears
+} from 'date-fns';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import React from 'react';
 import {
@@ -87,50 +92,73 @@ export const columns = (
   columnHelper.accessor('name', {
     id: 'name',
     header: ({ column }) => {
-      return (
-        <Button
-          variant='ghost'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Nome do Trabalhador
-          <ArrowUpDown className='ml-2 h-4 w-4' />
-        </Button>
-      );
+      return <div>Nome do Trabalhador</div>;
     },
     cell: (props) => props.getValue(),
     size: 300
   }),
-  // columnHelper.accessor('cpf', {
-  //   id: 'cpf',
-  //   header: ({ column }) => {
-  //     return (
-  //       <Button
-  //         variant='ghost'
-  //         onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-  //       >
-  //         CPF
-  //         <ArrowUpDown className='ml-2 h-4 w-4' />
-  //       </Button>
-  //     );
-  //   },
-  //   cell: (props) => props.getValue(),
-  //   size: 150
-  // }),
+  columnHelper.accessor(
+    (row) => row.workerContracts[0]?.workerSpecialty?.name,
+    {
+      id: 'workerSpecialty',
+      header: ({ column }) => {
+        return <div>Especialidade</div>;
+      },
+      cell: (props) => props.getValue() || 'N/A',
+      enableColumnFilter: true,
+      size: 200
+    }
+  ),
+  columnHelper.accessor(
+    (row) => {
+      const latestContract = row.workerContracts[0];
+      if (latestContract?.startDate) {
+        const start = new Date(latestContract.startDate);
+        const end = latestContract.endDate
+          ? new Date(latestContract.endDate)
+          : new Date();
+
+        const years = differenceInYears(end, start);
+        const months = differenceInMonths(end, start) % 12;
+        const days = differenceInDays(end, start);
+
+        let duration = '';
+        if (years > 0) duration += `${years} ano(s) `;
+        if (months > 0) duration += `${months} mês(es) `;
+        if (days > 0) duration += `${days} dia(s)`;
+
+        return duration.trim() || 'Menos de um dia';
+      }
+      return 'N/A';
+    },
+    {
+      id: 'contractDuration',
+      header: ({ column }) => {
+        return <div>Tempo de Contrato</div>;
+      },
+      cell: (props) => props.getValue(),
+      size: 200
+    }
+  ),
   columnHelper.accessor('withdrawalsCollected', {
     id: 'totalWithdrawals',
     header: ({ column }) => {
       return (
-        <Button
-          variant='ghost'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        <div
+          className='flex cursor-pointer items-center text-center'
+          onClick={() => column.toggleSorting()}
         >
-          Total Retiradas
-          <ArrowUpDown className='ml-2 h-4 w-4' />
-        </Button>
+          Retiradas
+          <ArrowUpDown className='text-muted-foreground ml-2 h-4 w-4' />
+        </div>
       );
     },
-    cell: (props) => props.getValue()?.length || 0,
-    size: 100,
+    cell: (props) => (
+      <div className='w-full text-center'>{props.getValue()?.length || 0}</div>
+    ),
+    size: 30,
+    enableResizing: false,
+    enableColumnFilter: false,
     footer: ({ table }) => {
       const total = table
         .getFilteredRowModel()
@@ -143,17 +171,17 @@ export const columns = (
   }),
   columnHelper.display({
     id: 'actions',
-    header: 'Ações',
+    header: '',
     cell: ({ row }) => (
       <div className='flex gap-2'>
-        <Button
+        {/* <Button
           title='Ver detalhes das retiradas do trabalhador'
           variant='ghost'
           size='icon'
           onClick={() => configuredActions.onViewDetails(row)}
         >
           <FileText className='h-4 w-4' />
-        </Button>
+        </Button> */}
       </div>
     )
   })
