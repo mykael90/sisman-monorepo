@@ -29,10 +29,10 @@ export class ReleaseMaterialRestrictionOrdersTask {
       'Verificar a necessidade de liberar restrições de requisições de materiais'
     );
 
-    // Data limite: 30 dias atrás
-    const thirtyDaysAgo = new Date();
-    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-    thirtyDaysAgo.setHours(0, 0, 0, 0);
+    // Data limite: 7 dias atrás
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+    sevenDaysAgo.setHours(0, 0, 0, 0);
 
     try {
       const maintenanceRequestsWithRestrictionsToUpdate =
@@ -71,7 +71,7 @@ export class ReleaseMaterialRestrictionOrdersTask {
                 maintenanceRequest: {
                   // Apenas registros que NÃO foram atualizados nos últimos 30 dias
                   updatedAt: {
-                    lt: thirtyDaysAgo
+                    lt: sevenDaysAgo
                   }
                 }
               }
