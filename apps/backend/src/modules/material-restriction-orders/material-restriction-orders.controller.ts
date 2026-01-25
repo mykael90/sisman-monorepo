@@ -21,6 +21,7 @@ import { AuthGuard } from '../../shared/auth/guards/auth.guard';
 import { ApiTags } from '@nestjs/swagger';
 import { ApiEndpointSwagger } from '../../shared/decorators/swagger/api-endpoint.decorator';
 import { Material } from '../../shared/entities/material.entity';
+import { User } from '../../shared/decorators/user-decorator';
 
 @ApiTags('Material Restriction Orders') // Agrupa os endpoints na UI do Swagger
 @UseGuards(AuthGuard)
@@ -130,9 +131,11 @@ export class MaterialRestrictionOrdersController {
     ]
   })
   async update(
+    @User(['id']) user: { id: number },
     @Param('id', ParseIntPipe) id: number,
     @Body() data: UpdateMaterialRestrictionOrderWithRelationsDto
   ) {
+    data.processedByUser = { id: user.id } as any;
     return this.materialRestrictionOrdersService.update(id, data);
   }
 

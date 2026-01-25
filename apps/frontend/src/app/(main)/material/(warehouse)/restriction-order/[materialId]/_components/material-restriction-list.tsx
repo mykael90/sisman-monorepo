@@ -90,7 +90,7 @@ export function MaterialRestrictionListByWarehouseAndMaterial({
     enabled: !!warehouse && !!globalMaterial
   });
 
-  const columnActions = createActions(router);
+  const columnActions = createActions(router, queryClient);
 
   if (isLoading) {
     return <Loading />;

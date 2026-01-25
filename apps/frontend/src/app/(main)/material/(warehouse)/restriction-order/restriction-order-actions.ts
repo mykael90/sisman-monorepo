@@ -166,6 +166,48 @@ export async function updateRestrictionOrder(
   }
 }
 
+export async function releaseRestrictionOrderItem(
+  id: number,
+  data: any
+): Promise<IActionResultForm<IRestrictionOrderEdit, any>> {
+  logger.info(
+    `(Server Action) releaseRestrictionOrder: Attempt to release restriction-order ${id}`,
+    data
+  );
+  try {
+    const accessToken = await getSismanAccessToken();
+    return await handleApiAction<
+      IRestrictionOrderEdit,
+      any,
+      IRestrictionOrderEdit
+    >(
+      data,
+      data,
+      {
+        endpoint: `${API_RELATIVE_PATH}/${id}`,
+        method: 'PUT',
+        accessToken: accessToken
+      },
+      {
+        mainPath: PAGE_PATH,
+        detailPath: `${PAGE_PATH}/edit/${id}`
+      },
+      `Material ${data.items[0].materialId} liberado com sucesso da ordem de restrição ${id}!`
+    );
+  } catch (error) {
+    logger.error(
+      `(Server Action) updateRestrictionOrder: Error updating restriction-order ${id}`,
+      error
+    );
+    return {
+      isSubmitSuccessful: false,
+      errorsServer: ['An unexpected error occurred'],
+      submittedData: data,
+      message: 'Unexpected error'
+    };
+  }
+}
+
 export async function getMaterialsRestrictedByWarehouseAndMaterial(
   warehouseId: number,
   globalMaterialId: string

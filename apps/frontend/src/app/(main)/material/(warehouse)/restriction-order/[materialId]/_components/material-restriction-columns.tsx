@@ -10,6 +10,11 @@ import { Button } from '../../../../../../../components/ui/button';
 import { ArrowUpDown, Edit, UnlockKeyhole } from 'lucide-react';
 import { StatusRmBadge } from '../../../../request/_components/list/status-rm-badge';
 import { InfoHoverCard } from '../../../../../../../components/info-hover-card';
+import { useTransition } from 'react';
+import { useSession } from 'next-auth/react';
+import { releaseRestrictionOrderItem } from '../../restriction-order-actions';
+import { toast } from 'sonner';
+import { QueryClient } from '@tanstack/react-query';
 
 const columnHelper =
   createColumnHelper<IRestrictionsItemsByWarehouseAndByMaterialId>();
@@ -19,23 +24,82 @@ type ActionHandlers<TData> = {
 };
 
 export const createActions = (
-  router: AppRouterInstance
-): ActionHandlers<IRestrictionsItemsByWarehouseAndByMaterialId> => ({
-  onEdit: (row: Row<IRestrictionsItemsByWarehouseAndByMaterialId>) => {
-    console.log('Edit withdrawal', row.original);
-    // if (row.original.id) {
-    //   router.push(`withdrawal/edit/${row.original.id}`);
-    // } else {
-    //   console.error('Withdrawal ID is missing, cannot navigate to edit page.');
-    //   throw new Error(
-    //     'Withdrawal ID is missing, cannot navigate to edit page.'
+  router: AppRouterInstance,
+  queryClient: QueryClient
+): ActionHandlers<IRestrictionsItemsByWarehouseAndByMaterialId> => {
+  const [isPending, startTransition] = useTransition();
+  const { data: session } = useSession();
+  const userId = session?.user.idSisman
+    ? Number(session.user.idSisman)
+    : undefined;
+
+  const handleReleaseMaterialRestrictionOrderItem = async (
+    id: number,
+    data: any
+  ) => {
+    // if (!userId) {
+    //   toast.error(
+    //     'ID do usuário não disponível. Não foi possível atualizar o status.'
     //   );
+    //   return;
     // }
-  },
-  onRelease: (row: Row<IRestrictionsItemsByWarehouseAndByMaterialId>) => {
-    console.log('Release withdrawal', row.original);
-  }
-});
+    startTransition(async () => {
+      // When you use await inside a startTransition function, the state updates that happen after the await are not marked as Transitions. You must wrap state updates after each await in a startTransition call:
+
+      const result = await releaseRestrictionOrderItem(id, data);
+      if (result.isSubmitSuccessful) {
+        startTransition(() => {
+          toast.success(result.message);
+          queryClient.invalidateQueries({
+            queryKey: ['materialRestrictionByWarehouseIdAndMaterialId']
+          }); // Invalida o cache do react-query
+        });
+      } else {
+        toast.error(
+          result.message || 'Erro liberar item da ordem de restrição.'
+        );
+      }
+    });
+  };
+
+  return {
+    onEdit: (row: Row<IRestrictionsItemsByWarehouseAndByMaterialId>) => {
+      console.log('Edit Restriction', row.original);
+      // if (row.original.id) {
+      //   router.push(`withdrawal/edit/${row.original.id}`);
+      // } else {
+      //   console.error('Withdrawal ID is missing, cannot navigate to edit page.');
+      //   throw new Error(
+      //     'Withdrawal ID is missing, cannot navigate to edit page.'
+      //   );
+      // }
+    },
+    onRelease: (row: Row<IRestrictionsItemsByWarehouseAndByMaterialId>) => {
+      console.log('Release item from restrictions', row.original);
+      if (row.original.materialRestrictionOrderId) {
+        handleReleaseMaterialRestrictionOrderItem(
+          row.original.materialRestrictionOrderId,
+          {
+            notes: 'Liberação manual',
+            items: [
+              {
+                id: row.original.id,
+                globalMaterialId: row.original.globalMaterialId,
+                quantityRestricted: 0,
+                targetMaterialRequestItemId:
+                  row.original.targetMaterialRequestItemId
+              }
+            ]
+          }
+        );
+      } else {
+        console.error(
+          'Ordem de restrição não encontrada, não foi possível liberar item.'
+        );
+      }
+    }
+  };
+};
 
 export const columns = (
   configuredActions: ActionHandlers<IRestrictionsItemsByWarehouseAndByMaterialId>
@@ -248,14 +312,14 @@ export const columns = (
     header: 'Ações',
     cell: ({ row }) => (
       <div className='flex gap-2'>
-        {/* <Button
+        <Button
           variant='ghost'
           size='icon'
-          onClick={() => configuredActions.onRelase(row)}
+          onClick={() => configuredActions.onRelease!(row)}
           title='Liberar material'
         >
           <UnlockKeyhole className='h-4 w-4' />
-        </Button> */}
+        </Button>
         {/* <Button
             variant='ghost'
             size='icon'
