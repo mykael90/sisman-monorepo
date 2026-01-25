@@ -206,6 +206,7 @@ export const columns = (
       columnHelper.accessor((row) => row.restrictedQuantity, {
         id: 'restrictedQuantity',
         size: 100,
+        filterFn: 'inNumberRange',
         header: () => {
           return (
             <div className='flex items-center justify-center gap-2'>

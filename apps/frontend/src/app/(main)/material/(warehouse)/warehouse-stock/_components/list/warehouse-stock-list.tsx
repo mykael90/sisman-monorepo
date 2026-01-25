@@ -34,6 +34,7 @@ export function WarehouseStockListPage() {
 
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [showOnlyCounted, setShowOnlyCounted] = useState(false);
+  const [showOnlyRestricted, setShowOnlyRestricted] = useState(false);
 
   // --- Estado dos Filtros Movido para Cá ---
   const [globalFilterValue, setGlobalFilterValue] = useState('');
@@ -102,25 +103,49 @@ export function WarehouseStockListPage() {
           inputDebounceRef={inputDebounceRef} // Passa a ref
           label={'Material'}
         />
-        <div className='mt-4 flex items-center space-x-2'>
-          <Checkbox
-            id='showOnlyCounted'
-            checked={showOnlyCounted}
-            onCheckedChange={(checked) => {
-              setShowOnlyCounted(!!checked);
-              setColumnFilters((prev) => [
-                ...prev.filter((f) => f.id !== 'lastStockCountDate'),
-                {
-                  id: 'lastStockCountDate',
-                  value: !!checked,
-                  filterFn: 'isNotNullFilter'
-                }
-              ]);
-            }}
-          />
-          <Label htmlFor='showOnlyCounted' className='text-muted-foreground'>
-            Mostrar apenas materiais contabilizados
-          </Label>
+        <div className='flex gap-4'>
+          <div className='mt-4 flex items-center space-x-2'>
+            <Checkbox
+              id='showOnlyCounted'
+              checked={showOnlyCounted}
+              onCheckedChange={(checked) => {
+                setShowOnlyCounted(!!checked);
+                setColumnFilters((prev) => [
+                  ...prev.filter((f) => f.id !== 'lastStockCountDate'),
+                  {
+                    id: 'lastStockCountDate',
+                    value: !!checked,
+                    filterFn: 'isNotNullFilter'
+                  }
+                ]);
+              }}
+            />
+            <Label htmlFor='showOnlyCounted' className='text-muted-foreground'>
+              Mostrar apenas materiais contabilizados
+            </Label>
+          </div>
+          <div className='mt-4 flex items-center space-x-2'>
+            <Checkbox
+              id='showOnlyRestricted'
+              checked={showOnlyRestricted}
+              onCheckedChange={(checked) => {
+                setShowOnlyRestricted(!!checked);
+                setColumnFilters((prev) => [
+                  ...prev.filter((f) => f.id !== 'restrictedQuantity'),
+                  {
+                    id: 'restrictedQuantity',
+                    value: [checked ? 0.1 : null, null]
+                  }
+                ]);
+              }}
+            />
+            <Label
+              htmlFor='showOnlyRestricted'
+              className='text-muted-foreground'
+            >
+              Mostrar apenas materiais com restrições
+            </Label>
+          </div>
         </div>
       </div>
 
