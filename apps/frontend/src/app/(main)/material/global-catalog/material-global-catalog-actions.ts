@@ -76,14 +76,12 @@ export async function getMaterialGlobalCatalogsByWarehouse(
   }
 }
 
-export async function showMaterialGlobalCatalog(
-  accessTokenSisman: string,
-  id: string
-) {
+export async function showMaterialGlobalCatalog(id: string) {
   logger.info(
     `(Server Action) showMaterialGlobalCatalog: Fetching material-global-catalog ${id}`
   );
   try {
+    const accessTokenSisman = await getSismanAccessToken();
     const data = await fetchApiSisman(
       `${API_RELATIVE_PATH}/${id}`,
       accessTokenSisman

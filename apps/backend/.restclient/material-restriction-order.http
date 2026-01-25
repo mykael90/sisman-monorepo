@@ -12,7 +12,7 @@ GET {{urlLocal}}/{{id}}
 Authorization: Bearer {{token}}
 
 ### GET material reserverd by warehouse and material
-GET {{urlLocal}}/materials-restricted/warehouse/1/material/302400029342
+GET {{urlLocal}}/materials-restricted/warehouse/1/material/302400000104
 Authorization: Bearer {{token}}
 
 ### POST

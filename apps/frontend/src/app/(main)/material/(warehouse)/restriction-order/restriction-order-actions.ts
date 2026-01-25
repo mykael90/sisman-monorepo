@@ -12,7 +12,7 @@ import {
 import { handleApiAction } from '@/lib/fetch/handle-form-action-sisman';
 
 const PAGE_PATH = '/material/restriction-order';
-const API_RELATIVE_PATH = '/material/restriction-order';
+const API_RELATIVE_PATH = '/material-restriction-order';
 
 const logger = new Logger(`${PAGE_PATH}/restriction-order-actions`);
 
@@ -163,5 +163,34 @@ export async function updateRestrictionOrder(
       submittedData: data,
       message: 'Unexpected error'
     };
+  }
+}
+
+export async function getMaterialsRestrictedByWarehouseAndMaterial(
+  warehouseId: number,
+  globalMaterialId: string
+) {
+  logger.info(
+    `(Server Action) getMaterialsRestrictedByWarehouseAndMaterial: Fetching`
+  );
+  try {
+    const accessTokenSisman = await getSismanAccessToken();
+    const data = await fetchApiSisman(
+      `${API_RELATIVE_PATH}/materials-restricted/warehouse/${warehouseId}/material/${globalMaterialId}`,
+      accessTokenSisman,
+      {
+        // cache: 'force-cache'
+      }
+    );
+    logger.info(
+      `(Server Action) getMaterialsRestricted: ${data.length} restriction-orders returned`
+    );
+    return data;
+  } catch (error) {
+    logger.error(
+      `(Server Action) getMaterialsRestricted: Error fetching restriction-orders`,
+      error
+    );
+    throw error;
   }
 }
