@@ -20,6 +20,7 @@ import {
 import { AuthGuard } from '../../shared/auth/guards/auth.guard';
 import { ApiTags } from '@nestjs/swagger';
 import { ApiEndpointSwagger } from '../../shared/decorators/swagger/api-endpoint.decorator';
+import { Material } from '../../shared/entities/material.entity';
 
 @ApiTags('Material Restriction Orders') // Agrupa os endpoints na UI do Swagger
 @UseGuards(AuthGuard)
@@ -158,5 +159,30 @@ export class MaterialRestrictionOrdersController {
   })
   async delete(@Param('id', ParseIntPipe) id: number): Promise<void> {
     await this.materialRestrictionOrdersService.delete(id);
+  }
+
+  /**
+   * Lista todos os materiais em ordens de restrição ativas por depósito e por material.
+   */
+  @Get('/materials-restricted/warehouse/:warehouseId/material/:materialId')
+  @ApiEndpointSwagger({
+    summary: 'Listar materiais por ordens de restrição de material',
+    description:
+      'Retorna uma lista de todos os materiais e ordens de restrição de material.',
+    response: {
+      status: HttpStatus.OK,
+      description: 'Lista de materiais em ordens de restrição de material.',
+      type: MaterialRestrictionOrderWithRelationsResponseDto, // Usa a DTO de resposta
+      isArray: true // Indica que a resposta é um array
+    }
+  })
+  async listMaterialsReservedByWarehouse(
+    @Param('warehouseId', ParseIntPipe) warehouseId: number,
+    @Param('materialId') materialId: string
+  ) {
+    return this.materialRestrictionOrdersService.listMaterialsRestrictionsByWarehouseAndByMaterialId(
+      warehouseId,
+      materialId
+    );
   }
 }

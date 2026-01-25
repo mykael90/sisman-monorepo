@@ -1361,4 +1361,68 @@ export class MaterialPickingOrdersService {
       throw error;
     }
   }
+
+  async listMaterialsReservedByWarehouseAndByMaterialId(
+    warehouseId: number,
+    materialId: string
+  ): Promise<any[]> {
+    if (!warehouseId && !materialId) {
+      throw new BadRequestException(
+        'É necessário fornecer warehouseId e materialId.'
+      );
+    }
+
+    try {
+      return await this.prisma.materialPickingOrderItem.findMany({
+        include: {
+          materialPickingOrder: {
+            select: {
+              materialRequest: {
+                select: {
+                  id: true,
+                  protocolNumber: true,
+                  requestDate: true,
+                  currentStatus: true,
+                  origin: true,
+                  updatedAt: true,
+                  sipacUserLoginRequest: true,
+                  sipacUnitCost: {
+                    select: {
+                      id: true,
+                      codigoUnidade: true,
+                      nomeUnidade: true,
+                      sigla: true
+                    }
+                  },
+                  maintenanceRequest: {
+                    select: {
+                      id: true,
+                      protocolNumber: true,
+                      requestedAt: true,
+                      origin: true,
+                      updatedAt: true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        where: {
+          globalMaterialId: materialId,
+          quantityPicked: {
+            gt: 0
+          },
+          materialPickingOrder: {
+            warehouseId
+          }
+        }
+      });
+    } catch (error) {
+      handlePrismaError(error, this.logger, 'MaterialPickingOrdersService', {
+        operation: 'listMaterialsReservedByWarehouseAndByMaterialId'
+      });
+      throw error;
+    }
+  }
 }

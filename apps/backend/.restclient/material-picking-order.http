@@ -13,6 +13,11 @@ GET {{urlLocal}}/warehouse/1
 &movementSubTypeCode=OUT_CENTRAL
 Authorization: Bearer {{token}}
 
+
+### GET material reserverd by warehouse and material
+GET {{urlLocal}}/materials-reserved/warehouse/1/material/302400029342
+Authorization: Bearer {{token}}
+
 ### GET one
 # @prompt id
 GET {{urlLocal}}/{{id}}

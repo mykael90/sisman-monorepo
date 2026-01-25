@@ -259,4 +259,29 @@ export class MaterialPickingOrdersController {
   async delete(@Param('id', ParseIntPipe) id: number): Promise<void> {
     await this.materialPickingOrdersService.delete(id);
   }
+
+  /**
+   * Lista todos os materiais em ordens de separação ativas por depósito.
+   */
+  @Get('/materials-reserved/warehouse/:warehouseId/material/:materialId')
+  @ApiEndpointSwagger({
+    summary: 'Listar materiais por ordens de separação de material',
+    description:
+      'Retorna uma lista de todos os materiais e ordens de separação de material.',
+    response: {
+      status: HttpStatus.OK,
+      description: 'Lista de materiais em ordens de separação de material.',
+      type: MaterialPickingOrderWithRelationsResponseDto, // Usa a DTO de resposta
+      isArray: true // Indica que a resposta é um array
+    }
+  })
+  async listMaterialsReservedByWarehouse(
+    @Param('warehouseId', ParseIntPipe) warehouseId: number,
+    @Param('materialId') materialId: string
+  ) {
+    return this.materialPickingOrdersService.listMaterialsReservedByWarehouseAndByMaterialId(
+      warehouseId,
+      materialId
+    );
+  }
 }

@@ -802,6 +802,75 @@ export class MaterialRestrictionOrdersService {
     }
   }
 
+  async listMaterialsRestrictionsByWarehouseAndByMaterialId(
+    warehouseId: number,
+    materialId: string
+  ): Promise<any[]> {
+    if (!warehouseId && !materialId) {
+      throw new BadRequestException(
+        'É necessário fornecer warehouseId e materialId.'
+      );
+    }
+
+    try {
+      return await this.prisma.materialRestrictionOrderItem.findMany({
+        include: {
+          materialRestrictionOrder: {
+            select: {
+              targetMaterialRequest: {
+                select: {
+                  id: true,
+                  protocolNumber: true,
+                  requestDate: true,
+                  currentStatus: true,
+                  origin: true,
+                  updatedAt: true,
+                  sipacUserLoginRequest: true,
+                  sipacUnitCost: {
+                    select: {
+                      id: true,
+                      codigoUnidade: true,
+                      nomeUnidade: true,
+                      sigla: true
+                    }
+                  },
+                  maintenanceRequest: {
+                    select: {
+                      id: true,
+                      protocolNumber: true,
+                      requestedAt: true,
+                      origin: true,
+                      updatedAt: true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        where: {
+          globalMaterialId: materialId,
+          quantityRestricted: {
+            gt: 0
+          },
+          materialRestrictionOrder: {
+            warehouseId
+          }
+        }
+      });
+    } catch (error) {
+      handlePrismaError(
+        error,
+        this.logger,
+        'MaterialRestrictionOrdersService',
+        {
+          operation: 'listMaterialsRestrictionsByWarehouseAndByMaterialId'
+        }
+      );
+      throw error;
+    }
+  }
+
   async show(
     id: number
   ): Promise<MaterialRestrictionOrderWithRelationsResponseDto> {
