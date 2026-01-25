@@ -817,6 +817,9 @@ export class MaterialRestrictionOrdersService {
         include: {
           materialRestrictionOrder: {
             select: {
+              id: true,
+              notes: true,
+              status: true,
               targetMaterialRequest: {
                 select: {
                   id: true,

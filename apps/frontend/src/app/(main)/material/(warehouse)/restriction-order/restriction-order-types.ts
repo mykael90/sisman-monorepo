@@ -30,6 +30,9 @@ export type IRestrictionsItemsByWarehouseAndByMaterialId =
   Prisma.MaterialRestrictionOrderItemGetPayload<{
     include: {
       materialRestrictionOrder: {
+        id: true;
+        notes: true;
+        status: true;
         select: {
           targetMaterialRequest: {
             select: {
