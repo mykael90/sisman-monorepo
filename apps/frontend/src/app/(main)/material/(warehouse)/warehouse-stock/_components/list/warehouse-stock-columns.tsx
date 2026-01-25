@@ -14,6 +14,7 @@ import React from 'react';
 import { InfoHoverCard } from '@/components/info-hover-card';
 import { get } from 'http';
 import { isNotNullFilter } from '../../../../../worker-manual-frequency/_components/list/custom-filters-functions-columns';
+import Link from 'next/link';
 
 const columnHelper = createColumnHelper<IWarehouseStockWithRelations>();
 
@@ -217,9 +218,13 @@ export const columns = (
           );
         },
         cell: (props) => (
-          <div className='text-center'>
-            {props.getValue() ? props.getValue().toString() : 'N/A'}
-          </div>
+          <Link
+            href={`/material/restriction-order/${props.row.original.materialId}`}
+          >
+            <div className='cursor-pointer text-center text-blue-600'>
+              {props.getValue() ? props.getValue().toString() : 'N/A'}
+            </div>
+          </Link>
         )
       }),
       columnHelper.accessor((row) => row.reservedQuantity, {
