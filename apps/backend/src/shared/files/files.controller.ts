@@ -2,6 +2,7 @@ import {
   Controller,
   Get,
   Param,
+  Put,
   Response,
   StreamableFile,
   UseGuards
@@ -14,6 +15,11 @@ import { RoleGuard } from '../auth/guards/role.guard';
 @Controller('file')
 export class FilesController {
   constructor(private readonly fileService: FilesService) {}
+
+  @Put('correct-images')
+  async correctImagesWithoutMetadata() {
+    return await this.fileService.correctImagesWithoutMetadata();
+  }
 
   @Get(':id/download')
   async downloadFile(

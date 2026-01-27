@@ -9,6 +9,7 @@ import { Prisma } from '@sisman/prisma';
 import { SismanLegacyApiService } from './sisman-legacy-api.service';
 import {
   SismanLegacyMaterialInResponseItem,
+  SismanLegacyMaterialOutFile,
   SismanLegacyMaterialOutItem,
   SismanLegacyMaterialOutResponseItem
 } from './sisman-legacy-api.interfaces';
@@ -21,6 +22,7 @@ import {
   SismanLegacyWorkerManualFrequencyResponse,
   SismanLegacyMaterialReserve
 } from './sisman-legacy-api.interfaces';
+import { MaterialWithdrawalFileMapper } from './mappers/materials-withdrawal-files.mapper';
 
 export interface FailedImport {
   id: number | string;
@@ -328,6 +330,60 @@ export class SismanLegacyService {
 
     this.logger.log(
       `Importação de reservas de material concluída. Processados: ${result.totalProcessed}, Sucesso: ${result.successful}, Falhas: ${result.failed}.`
+    );
+
+    return result;
+  }
+
+  //esse método é para os files da retirada de materiais
+  async importAndPersistManyMaterialsFilesOut(
+    relativePath: string
+  ): Promise<SyncResult> {
+    this.logger.log(
+      `Iniciando importação de arquivos das retiradas de material de: ${relativePath}`
+    );
+    const sismanLegacyMaterialFilesOut: SismanLegacyMaterialOutFile[] =
+      await this.testFetchSismanLegacy(relativePath);
+
+    let successful = 0;
+    const failedItems: FailedImport[] = [];
+
+    if (sismanLegacyMaterialFilesOut.length === 0) {
+      this.logger.log('Nenhum arquivo de retirada de material para importar.');
+      return { totalProcessed: 0, successful: 0, failed: [] };
+    }
+
+    const createDtos = sismanLegacyMaterialFilesOut.map((item) =>
+      MaterialWithdrawalFileMapper.toCreateDto(item)
+    );
+
+    for (const dto of createDtos) {
+      try {
+        // Supondo que 'id' exista ou seja gerado após a criação
+        await this.prisma.attachment.create({ data: dto });
+        successful++;
+      } catch (error: any) {
+        failedItems.push({
+          // Você precisará de um identificador único no DTO para isso
+          id: (dto as any).id || 'unknown_id', // Ajuste conforme a estrutura do seu DTO
+          error: error.message
+        });
+      }
+    }
+
+    const result: SyncResult = {
+      totalProcessed: sismanLegacyMaterialFilesOut.length,
+      successful,
+      // Se `failedItems` tem algo, significa que o lote inteiro falhou.
+      // Caso contrário, calculamos as falhas (que deve ser 0 se o lote teve sucesso).
+      failed:
+        failedItems.length > 0
+          ? failedItems
+          : sismanLegacyMaterialFilesOut.length - successful
+    };
+
+    this.logger.log(
+      `Importação de arquivos de retiradas concluída. Processados: ${result.totalProcessed}, Sucesso: ${result.successful}, Falhas: ${result.failed}.`
     );
 
     return result;

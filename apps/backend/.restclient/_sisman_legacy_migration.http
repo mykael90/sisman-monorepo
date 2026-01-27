@@ -32,6 +32,12 @@ Content-Type: {{contentType}}
 
 {"relativePath":"materials/out/?startDate=2025-05-20&endDate=2025-05-20"}
 
+### Importação de arquivos de materials-out
+POST {{urlLocal}}/import-materials-files-out
+Content-Type: {{contentType}}
+
+{"relativePath":"materials/out/files"}
+
 ### Importação de materials-items out
 POST {{urlLocal}}/import-materials-items-out
 Content-Type: {{contentType}}

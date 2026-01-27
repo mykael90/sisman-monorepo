@@ -17,8 +17,8 @@ import { join } from 'path';
 import * as sharp from 'sharp';
 
 // Constantes ajustadas para a regra da Maior/Menor dimensão
-const MAX_LONG_EDGE = 1920; // A maior aresta não pode passar disso
-const MAX_SHORT_EDGE = 1080; // A menor aresta não pode passar disso
+const MAX_LONG_EDGE = 800; // A maior aresta não pode passar disso
+const MAX_SHORT_EDGE = 600; // A menor aresta não pode passar disso
 
 interface CreateAttachmentParams {
   file: Express.Multer.File;

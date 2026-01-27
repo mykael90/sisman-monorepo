@@ -59,6 +59,24 @@ export class SismanLegacyController {
     }
   }
 
+  @Post('import-materials-files-out')
+  async importMaterialsFilesOut(@Body('relativePath') relativePath: string) {
+    this.logger.log(
+      `Importar arquivos das retiradas do material out do Sisman Legacy para o caminho: ${relativePath}`
+    );
+    try {
+      const result =
+        await this.sismanLegacyService.importAndPersistManyMaterialsFilesOut(
+          relativePath
+        );
+      this.logger.log('Teste de busca no Sisman Legacy concluído com sucesso.');
+      return result;
+    } catch (error) {
+      this.logger.error('Erro ao testar busca no Sisman Legacy.', error.stack);
+      throw error;
+    }
+  }
+
   @Post('import-materials-in')
   async importMaterialsIn(@Body('relativePath') relativePath: string) {
     this.logger.log(

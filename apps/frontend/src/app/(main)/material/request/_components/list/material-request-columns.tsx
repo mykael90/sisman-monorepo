@@ -41,6 +41,7 @@ import {
   StatusMaterialRestrictionKey
 } from '../../../../../../mappers/material-restriction-mappers-translate';
 import { StatusRmBadge } from './status-rm-badge';
+import Link from 'next/link';
 
 const columnHelper = createColumnHelper<IMaterialRequestListWithRelations>(); // Alterado
 
@@ -345,7 +346,11 @@ export const columns = (
 
       return (
         <div className='space-y-.5 flex-col items-center whitespace-normal'>
-          <div>{props.getValue()}</div>
+          <Link
+            href={`/maintenance/request/show/${props.row.original.maintenanceRequestId}`}
+          >
+            <span className='text-blue-600'>{props.getValue()}</span>
+          </Link>
           <div className='flex items-center justify-center gap-1'>
             <div className='text-muted-foreground text-xs'>
               {updateDate.toLocaleDateString()}{' '}

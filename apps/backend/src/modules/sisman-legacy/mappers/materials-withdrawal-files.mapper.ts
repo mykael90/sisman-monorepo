@@ -16,7 +16,8 @@ export class MaterialWithdrawalFileMapper {
       storedFileName: item.filename,
       relatedModel: 'MaterialWithdrawal',
       relatedId: String(item.MaterialOutId),
-      sizeInBytes: 1
+      sizeInBytes: 1,
+      localPath: `/home/node/sisman-monorepo/apps/backend/storage/materialwithdrawal/${item.filename}`
     };
   }
 }

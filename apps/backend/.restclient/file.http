@@ -11,3 +11,9 @@ Authorization: Bearer {{token}}
 # @prompt attachmentId
 GET {{urlLocal}}/{{attachmentId}}/download
 Authorization: Bearer {{token}}
+
+
+### PUT correct images without metadata
+PUT {{urlLocal}}/correct-images
+Authorization: Bearer {{token}}
+
