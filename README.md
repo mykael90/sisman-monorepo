@@ -1,7 +1,7 @@
 # SISMAN Monorepo
 
 [![Status da Build](https://img.shields.io/github/actions/workflow/status/mykael90/sisman-monorepo/ci.yml?branch=main&style=for-the-badge)](https://github.com/mykael90/sisman-monorepo/actions)
-[![Licença](https://img.shields.io/badge/licen%C3%A7a-MIT-blue.svg?style=for-the-badge)](/LICENSE)
+[![Licença](https://img.shields.io/badge/licen%C3%A7a-AGPL%20v3.0-blue.svg?style=for-the-badge)](/LICENSE)
 
 Um monorepo para o projeto Sisman, utilizando PNPM Workspaces para gerenciar múltiplos pacotes e aplicações (Next.js, NestJS) de forma coesa.
 
