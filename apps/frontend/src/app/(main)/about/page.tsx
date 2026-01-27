@@ -5,10 +5,16 @@ import { User, CheckCircle, Target, Square } from 'lucide-react';
 
 export default function About() {
   return (
-    <main className='flex flex-col p-8'>
-      <h1 className='mb-8 text-4xl font-bold text-gray-800 dark:text-gray-200'>
-        Sobre o Projeto
-      </h1>
+    <main className='container mx-auto flex flex-col gap-6 p-8'>
+      {/* Cabeçalho */}
+      <div className='space-y-4 text-center md:text-left'>
+        <h1 className='text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100'>
+          Sobre o projeto
+        </h1>
+        <p className='text-gray-500 dark:text-gray-400'>
+          Informações sobre o projeto do Sisman CMMS.
+        </p>
+      </div>
 
       {/* Hero Section with a static image */}
       {/* <section className='relative mb-8'>

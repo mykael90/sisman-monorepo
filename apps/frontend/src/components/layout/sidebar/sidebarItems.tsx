@@ -11,7 +11,8 @@ import {
   Settings,
   Construction, // Assuming this is for Maintenance
   Database, // Assuming this is for API SIPAC
-  PackagePlus
+  PackagePlus,
+  Copyright
 } from 'lucide-react';
 
 export interface SidebarItem {
@@ -232,5 +233,10 @@ export const sidebarItems: SidebarItem[] = [
     label: 'Sobre',
     href: '/about',
     icon: <BookOpen className='h-6 w-6' />
+  },
+  {
+    label: 'Licença',
+    href: '/licence',
+    icon: <Copyright className='h-6 w-6' />
   }
 ];
