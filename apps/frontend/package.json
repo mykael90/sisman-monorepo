@@ -2,6 +2,12 @@
   "name": "sisman-frontend",
   "version": "0.1.0",
   "private": true,
+  "license": "AGPL-3.0-or-later",
+  "author": {
+    "name": "Mykael dos Anjos e Mello",
+    "email": "mykael.mello@ifpb.edu.br",
+    "url": "https://github.com/mykael90"
+  },
   "scripts": {
     "start:dev": "next dev",
     "build": "next build",

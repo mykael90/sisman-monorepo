@@ -4,7 +4,12 @@
   "description": "",
   "author": "",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "AGPL-3.0-or-later",
+  "author": {
+    "name": "Mykael dos Anjos e Mello",
+    "email": "mykael.mello@ifpb.edu.br",
+    "url": "https://github.com/mykael90"
+  },
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",

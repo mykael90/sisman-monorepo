@@ -1,6 +1,13 @@
 {
     "name": "@sisman/prisma",
     "version": "1.0.0",
+    "license": "AGPL-3.0-or-later",
+    "author": {
+        "name": "Mykael dos Anjos e Mello",
+        "email": "mykael.mello@ifpb.edu.br",
+        "url": "https://github.com/mykael90"
+    },
+    "private": true,
     "main": "./generated/client/index.js",
     "types": "./generated/client/index.d.ts",
     "scripts": {

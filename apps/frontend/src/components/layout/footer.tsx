@@ -11,7 +11,7 @@ export default function Footer() {
             <ul className='space-y-2'>
               <li>
                 <Link
-                  href='#'
+                  href='/under-construction'
                   className='text-gray-300 transition-colors hover:text-white'
                 >
                   Localizador de Edifícios
@@ -19,7 +19,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href='#'
+                  href='/under-construction'
                   className='text-gray-300 transition-colors hover:text-white'
                 >
                   Guia de Manutenção
@@ -27,7 +27,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href='#'
+                  href='/under-construction'
                   className='text-gray-300 transition-colors hover:text-white'
                 >
                   Perguntas Frequentes
@@ -87,13 +87,42 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className='mt-8 flex flex-col items-center justify-between border-t border-gray-400 pt-6 md:flex-row dark:text-gray-300'>
-          <p className='text-sm text-gray-300 dark:text-gray-300'>
-            © 2025 Sisman CMMS. Todos os direitos reservados.
-          </p>
-          <p className='mt-2 text-sm font-bold text-gray-200 md:mt-0 dark:text-gray-300'>
-            Desenvolvido por Mykael Mello, Prof. Eng. Civil
-          </p>
+        <div className='mt-8 flex flex-col items-center justify-between gap-4 border-t border-gray-400 pt-6 md:flex-row dark:text-gray-300'>
+          {/* Bloco da Esquerda: Copyright e Licença */}
+          <div className='text-center md:text-left'>
+            <p className='text-sm text-gray-300 dark:text-gray-300'>
+              © 2025 Sisman CMMS.
+            </p>
+            <p className='mt-1 text-xs text-gray-400'>
+              Software Livre sob licença{' '}
+              <Link
+                href='https://www.gnu.org/licenses/agpl-3.0.html'
+                target='_blank'
+                rel='noopener noreferrer'
+                className='underline transition-colors hover:text-gray-200'
+              >
+                GNU AGPLv3
+              </Link>
+              .{/* Link Obrigatório da AGPL */}
+              <span className='mx-1'>•</span>
+              <Link
+                href='https://github.com/mykael90/sisman-monorepo'
+                target='_blank'
+                rel='noopener noreferrer'
+                className='font-medium text-blue-400 underline transition-colors hover:text-blue-300'
+              >
+                Acessar Código Fonte
+              </Link>
+            </p>
+          </div>
+
+          {/* Bloco da Direita: Autoria */}
+          <div className='text-center md:text-right'>
+            <p className='text-sm font-bold text-gray-200 dark:text-gray-300'>
+              Desenvolvido por Mykael Mello
+            </p>
+            <p className='text-xs text-gray-400'>Prof. Eng. Civil</p>
+          </div>
         </div>
       </div>
     </footer>

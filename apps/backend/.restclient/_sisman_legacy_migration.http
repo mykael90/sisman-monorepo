@@ -20,6 +20,12 @@ Content-Type: {{contentType}}
 
 {"relativePath":"materials/out/items"}
 
+### GET materials-out files
+POST {{urlLocal}}/test-fetch
+Content-Type: {{contentType}}
+
+{"relativePath":"materials/out/files"}
+
 ### Importação de materials out
 POST {{urlLocal}}/import-materials-out
 Content-Type: {{contentType}}

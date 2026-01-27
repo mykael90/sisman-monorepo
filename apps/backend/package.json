@@ -2,7 +2,13 @@
   "name": "sisman-backend",
   "version": "0.0.1",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "AGPL-3.0-or-later",
+  "author": {
+    "name": "Mykael dos Anjos e Mello",
+    "email": "mykael.mello@ifpb.edu.br",
+    "url": "https://github.com/mykael90"
+  },
+  "private": true,
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",

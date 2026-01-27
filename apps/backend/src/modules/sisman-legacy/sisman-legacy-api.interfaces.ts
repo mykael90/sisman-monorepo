@@ -1,3 +1,10 @@
+export interface SismanLegacyMaterialOutFile {
+  src: string;
+  filename: string;
+  originalName: string;
+  order: number;
+  MaterialOutId: number;
+}
 export interface SismanLegacyMaterialInItem {
   MaterialId: number;
   name: string;
@@ -166,5 +173,4 @@ export interface SismanLegacyMaterialReserve {
   MaterialReserveItems: SismanLegacyMaterialReserveItem[];
 }
 
-export type SismanLegacyMaterialReserveResponse =
-  SismanLegacyMaterialReserve[];
+export type SismanLegacyMaterialReserveResponse = SismanLegacyMaterialReserve[];

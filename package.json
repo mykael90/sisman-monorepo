@@ -1,5 +1,11 @@
 {
   "name": "sisman-monorepo",
+  "license": "AGPL-3.0-or-later",
+  "author": {
+    "name": "Mykael dos Anjos e Mello",
+    "email": "mykael.mello@ifpb.edu.br",
+    "url": "https://github.com/mykael90"
+  },
   "private": true,
   "version": "1.0.0",
   "scripts": {
@@ -7,7 +13,7 @@
     "backend:seed:dev": "pnpm --filter sisman-backend seed:dev",
     "frontend:dev": "pnpm --filter sisman-frontend start:dev",
     "scraping-api:dev": "pnpm --filter scraping-api start:dev",
-    "build": "pnpm run --recursive build",
+    "build": "pnpm generate:licenses && pnpm run --recursive build",
     "lint": "pnpm run --recursive lint",
     "format": "pnpm run --recursive format",
     "prisma:generate": "pnpm --filter @sisman/prisma db:generate",
@@ -17,7 +23,8 @@
     "prisma:db:push": "pnpm --filter @sisman/prisma db:push",
     "prisma:db:pull": "pnpm --filter @sisman/prisma db:pull",
     "typecheck": "pnpm run --recursive typecheck",
-    "prepare": "husky"
+    "prepare": "husky",
+    "generate:licenses": "node ./scripts/generate-licenses.mjs"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",
@@ -27,6 +34,7 @@
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
     "husky": "^9.1.7",
+    "license-checker-rseidelsohn": "^4.4.2",
     "prettier": "^3.7.4",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
@@ -36,13 +44,13 @@
     "pnpm": ">=10"
   },
   "packageManager": "pnpm@10.0.0",
-    "pnpm": {
+  "pnpm": {
     "overrides": {
-      "next": "^15.2.7", 
+      "next": "^15.2.7",
       "form-data": "^4.0.4",
       "glob": "^10.5.0",
       "minimatch": "^9.0.5",
-      "ip": "^2.0.1" ,
+      "ip": "^2.0.1",
       "js-yaml": "^4.1.0",
       "brace-expansion": "^2.0.2"
     }
